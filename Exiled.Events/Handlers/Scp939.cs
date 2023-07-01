@@ -93,6 +93,6 @@ namespace Exiled.Events.Handlers
         /// Called after SCP-939 attacks.
         /// </summary>
         /// <param name="ev">The <see cref="AttackedEventArgs"/> instance.</param>
-        public static void OnAttacking(AttackedEventArgs ev) => Attacked.InvokeSafely(ev);
+        public static void OnAttacked(AttackedEventArgs ev) => Attacked.InvokeSafely(ev);
     }
 }

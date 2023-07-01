@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Scp939
 
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AttackedEventArgs))[0]),
 
-                    new(OpCodes.Call, Method(typeof(Handlers.Scp939), nameof(Handlers.Scp939.OnAttacking))),
+                    new(OpCodes.Call, Method(typeof(Handlers.Scp939), nameof(Handlers.Scp939.OnAttacked))),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
