@@ -51,7 +51,7 @@ namespace Exiled.Events.Handlers
         /// Invoked after SCP-939 attack.
         /// </summary>
         /// <remarks>This event is calling only when attack doesn't have target.</remarks>
-        public static event CustomEventHandler<AttackedEventArgs> Attacked;
+        public static event CustomEventHandler<ClawedEventArgs> Clawed;
 
         /// <summary>
         ///     Called before SCP-939 changes its target focus.
@@ -92,7 +92,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called after SCP-939 attacks.
         /// </summary>
-        /// <param name="ev">The <see cref="AttackedEventArgs"/> instance.</param>
-        public static void OnAttacked(AttackedEventArgs ev) => Attacked.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ClawedEventArgs"/> instance.</param>
+        public static void OnClawed(ClawedEventArgs ev) => Clawed.InvokeSafely(ev);
     }
 }

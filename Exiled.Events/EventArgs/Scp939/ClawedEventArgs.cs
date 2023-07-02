@@ -13,13 +13,13 @@ namespace Exiled.Events.EventArgs.Scp939
     /// <summary>
     /// Contains all information after SCP-939 attacks.
     /// </summary>
-    public class AttackedEventArgs : IPlayerEvent
+    public class ClawedEventArgs : IPlayerEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AttackedEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ClawedEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        public AttackedEventArgs(Player player)
+        public ClawedEventArgs(Player player)
         {
             Player = player;
         }

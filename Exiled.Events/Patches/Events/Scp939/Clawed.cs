@@ -1,9 +1,11 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Attacked.cs" company="Exiled Team">
+// <copyright file="Clawed.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
+
+using Exiled.Events.Handlers;
 
 namespace Exiled.Events.Patches.Events.Scp939
 {
@@ -20,10 +22,10 @@ namespace Exiled.Events.Patches.Events.Scp939
 
     /// <summary>
     /// Patches <see cref="Scp939ClawAbility.ServerProcessCmd(Mirror.NetworkReader)"/>
-    /// to add <see cref="Handlers.Scp939.Attacked"/> event.
+    /// to add <see cref="Scp939.Clawed"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp939ClawAbility), nameof(Scp939ClawAbility.ServerProcessCmd))]
-    internal class Attacked
+    internal class Clawed
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -40,9 +42,9 @@ namespace Exiled.Events.Patches.Events.Scp939
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp939ClawAbility), nameof(Scp939ClawAbility.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AttackedEventArgs))[0]),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ClawedEventArgs))[0]),
 
-                    new(OpCodes.Call, Method(typeof(Handlers.Scp939), nameof(Handlers.Scp939.OnAttacked))),
+                    new(OpCodes.Call, Method(typeof(Handlers.Scp939), nameof(Handlers.Scp939.OnClawed))),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
