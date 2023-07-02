@@ -10,14 +10,12 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
 
     using CommandSystem;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Components;
-    using Exiled.API.Features.Pools;
 
     using Footprinting;
 
@@ -140,18 +138,21 @@ namespace Exiled.API.Features
         /// Spawns an NPC based on the given parameters.
         /// </summary>
         /// <param name="name">The name of the NPC.</param>
-        /// <param name="role">The role type ID of the NPC.</param>
-        /// <param name="id">The ID of the NPC.</param>
-        /// <param name="userId">The user ID of the NPC.</param>
+        /// <param name="role">The RoleTypeId of the NPC.</param>
+        /// <param name="id">The player ID of the NPC.</param>
+        /// <param name="userId">The userID of the NPC.</param>
         /// <param name="position">The position to spawn the NPC.</param>
         /// <returns>The <see cref="Npc"/> spawned.</returns>
         public static Npc Spawn(string name, RoleTypeId role, int id = 0, string userId = "", Vector3? position = null)
         {
             GameObject newObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
-            Npc npc = new(newObject);
+            Npc npc = new(newObject)
+            {
+                IsVerified = true,
+            };
             try
             {
-                npc.Role.Set(RoleTypeId.None);
+                npc.ReferenceHub.roleManager.InitializeNewRole(RoleTypeId.None, RoleChangeReason.None);
             }
             catch (Exception e)
             {
@@ -167,34 +168,31 @@ namespace Exiled.API.Features
                 RecyclablePlayerId._autoIncrement = id = RecyclablePlayerId._autoIncrement + 1;
             }
 
-            ReferenceHub hubPlayer = npc.ReferenceHub;
             FakeConnection fakeConnection = new(id);
             NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
             try
             {
-                hubPlayer.characterClassManager.UserId = string.IsNullOrEmpty(userId) ? "Dummy@localhost" : userId;
+                npc.ReferenceHub.characterClassManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy@localhost" : userId;
             }
             catch (Exception e)
             {
                 Log.Debug($"Ignore: {e}");
             }
 
-            hubPlayer.nicknameSync.Network_myNickSync = name;
+            npc.ReferenceHub.nicknameSync.Network_myNickSync = name;
             Dictionary.Add(newObject, npc);
-            hubPlayer.characterClassManager.GodMode = false;
+            npc.ReferenceHub.characterClassManager.GodMode = false;
 
             Timing.CallDelayed(
                 0.3f,
                 () =>
                 {
                     npc.Role.Set(role, SpawnReason.RoundStart, position is null ? RoleSpawnFlags.All : RoleSpawnFlags.AssignInventory);
-                    npc.IsVerified = true;
                 });
 
             if (position is not null)
                 Timing.CallDelayed(0.5f, () => npc.Position = position.Value);
             npc.IsNPC = true;
-            npc.Id = id;
             return npc;
         }
 
