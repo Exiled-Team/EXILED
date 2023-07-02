@@ -310,8 +310,35 @@ namespace Exiled.CustomRoles.API.Features
                     continue;
                 }
 
-                Log.Debug("Getting attributed for {type");
-                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), inheritAttributes).Cast<Attribute>())
+                if (inheritAttributes)
+                {
+                    Log.Debug("Getting attributed for {type");
+                    foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), inheritAttributes).Cast<Attribute>())
+                    {
+                        CustomRole? customRole = null;
+
+                        if (!skipReflection && Server.PluginAssemblies.TryGetValue(assembly, out IPlugin<IConfig> plugin))
+                        {
+                            foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ?? plugin.Config.GetType().GetProperties())
+                            {
+                                if (property.PropertyType != type)
+                                    continue;
+
+                                customRole = property.GetValue(overrideClass ?? plugin.Config) as CustomRole;
+                                break;
+                            }
+                        }
+
+                        customRole ??= (CustomRole)Activator.CreateInstance(type);
+
+                        if (customRole.Role == RoleTypeId.None)
+                            customRole.Role = ((CustomRoleAttribute)attribute).RoleTypeId;
+
+                        if (customRole.TryRegister())
+                            roles.Add(customRole);
+                    }
+                }
+                else
                 {
                     CustomRole? customRole = null;
 
@@ -330,7 +357,10 @@ namespace Exiled.CustomRoles.API.Features
                     customRole ??= (CustomRole)Activator.CreateInstance(type);
 
                     if (customRole.Role == RoleTypeId.None)
-                        customRole.Role = ((CustomRoleAttribute)attribute).RoleTypeId;
+                    {
+                        Log.Error($"Custom role {customRole.Name} in {type} cannot be registered due to incorrect RoleTypeId");
+                        continue;
+                    }
 
                     if (customRole.TryRegister())
                         roles.Add(customRole);
