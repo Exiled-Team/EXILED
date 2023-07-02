@@ -304,15 +304,16 @@ namespace Exiled.CustomRoles.API.Features
 
             foreach (Type type in assembly.GetTypes())
             {
-                if (type.BaseType != typeof(CustomRole) && type.GetCustomAttribute(typeof(CustomRoleAttribute), inheritAttributes) is null)
-                {
-                    Log.Debug($"{type} base: {type.BaseType} -- {type.GetCustomAttribute(typeof(CustomRoleAttribute), inheritAttributes) is null}");
-                    continue;
-                }
-
                 if (inheritAttributes)
                 {
-                    Log.Debug("Getting attributed for {type");
+                    Log.Debug($"Getting attributed for {type}");
+
+                    if (type.BaseType != typeof(CustomRole) && type.GetCustomAttribute(typeof(CustomRoleAttribute), inheritAttributes) is null)
+                    {
+                        Log.Debug($"{type} base: {type.BaseType} -- {type.GetCustomAttribute(typeof(CustomRoleAttribute), inheritAttributes) is null}");
+                        continue;
+                    }
+
                     foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), inheritAttributes).Cast<Attribute>())
                     {
                         CustomRole? customRole = null;
@@ -340,6 +341,12 @@ namespace Exiled.CustomRoles.API.Features
                 }
                 else
                 {
+                    if (type.BaseType != typeof(CustomRole))
+                    {
+                        Log.Debug($"{type} base: {type.BaseType}");
+                        continue;
+                    }
+
                     CustomRole? customRole = null;
 
                     if (!skipReflection && Server.PluginAssemblies.TryGetValue(assembly, out IPlugin<IConfig> plugin))
