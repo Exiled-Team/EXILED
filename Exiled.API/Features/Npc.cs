@@ -181,7 +181,6 @@ namespace Exiled.API.Features
 
             npc.ReferenceHub.nicknameSync.Network_myNickSync = name;
             Dictionary.Add(newObject, npc);
-            npc.ReferenceHub.characterClassManager.GodMode = false;
 
             Timing.CallDelayed(
                 0.3f,
