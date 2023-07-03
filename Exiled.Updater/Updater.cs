@@ -102,13 +102,11 @@ namespace Exiled.Updater
             Thread updateThread = new(
                 () =>
                 {
-                    using (HttpClient client = CreateHttpClient())
+                    using HttpClient client = CreateHttpClient();
+                    if (FindUpdate(client, forced, out NewVersion newVersion))
                     {
-                        if (FindUpdate(client, forced, out NewVersion newVersion))
-                        {
-                            _stage = Stage.Installing;
-                            Update(client, newVersion);
-                        }
+                        _stage = Stage.Installing;
+                        Update(client, newVersion);
                     }
                 })
                 {
@@ -129,7 +127,11 @@ namespace Exiled.Updater
             }
 
             if (_stage == Stage.Installed)
-                Application.Quit();
+            {
+                ServerLogs.AddLog(ServerLogs.Modules.Administrative, "Exiled scheduled server restart after the round end.", ServerLogs.ServerLogType.RemoteAdminActivity_GameChanging, false);
+                ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
+                ServerConsole.AddOutputEntry(default(ServerOutput.ExitActionRestartEntry));
+            }
 
             _stage = Stage.Free;
         }
@@ -266,78 +268,76 @@ namespace Exiled.Updater
             try
             {
                 Log.Info("Downloading installer...");
-                using (HttpResponseMessage installer = client.GetAsync(newVersion.Asset.BrowserDownloadUrl).ConfigureAwait(false).GetAwaiter().GetResult())
+                using HttpResponseMessage installer = client.GetAsync(newVersion.Asset.BrowserDownloadUrl).ConfigureAwait(false).GetAwaiter().GetResult();
+                Log.Info("Downloaded!");
+
+                string serverPath = Environment.CurrentDirectory;
+                string installerPath = Path.Combine(serverPath, newVersion.Asset.Name);
+
+                if (File.Exists(installerPath) && (PlatformId == PlatformID.Unix))
+                    LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
+
+                using (Stream installerStream = installer.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult())
+                using (FileStream fs = new(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
-                    Log.Info("Downloaded!");
+                    installerStream.CopyToAsync(fs).ConfigureAwait(false).GetAwaiter().GetResult();
+                }
 
-                    string serverPath = Environment.CurrentDirectory;
-                    string installerPath = Path.Combine(serverPath, newVersion.Asset.Name);
+                if (PlatformId == PlatformID.Unix)
+                    LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
 
-                    if (File.Exists(installerPath) && (PlatformId == PlatformID.Unix))
-                        LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
+                if (!File.Exists(installerPath))
+                {
+                    Log.Error("Couldn't find the downloaded installer!");
+                }
 
-                    using (Stream installerStream = installer.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult())
-                    using (FileStream fs = new(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
-                    {
-                        installerStream.CopyToAsync(fs).ConfigureAwait(false).GetAwaiter().GetResult();
-                    }
+                ProcessStartInfo startInfo = new()
+                {
+                    WorkingDirectory = serverPath,
+                    FileName = installerPath,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    Arguments = $"--exit --target-version {newVersion.Release.TagName} --appdata \"{Paths.AppData}\" --exiled \"{Path.Combine(Paths.Exiled, "..")}\"",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    StandardErrorEncoding = ProcessEncoding,
+                    StandardOutputEncoding = ProcessEncoding,
+                };
 
-                    if (PlatformId == PlatformID.Unix)
-                        LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
+                Process installerProcess = Process.Start(startInfo);
 
-                    if (!File.Exists(installerPath))
-                    {
-                        Log.Error("Couldn't find the downloaded installer!");
-                    }
+                if (installerProcess is null)
+                {
+                    Log.Error("Unable to start installer.");
+                    _stage = Stage.Free;
+                    return;
+                }
 
-                    ProcessStartInfo startInfo = new()
-                    {
-                        WorkingDirectory = serverPath,
-                        FileName = installerPath,
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        Arguments = $"--exit --target-version {newVersion.Release.TagName} --appdata \"{Paths.AppData}\" --exiled \"{Path.Combine(Paths.Exiled, "..")}\"",
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        StandardErrorEncoding = ProcessEncoding,
-                        StandardOutputEncoding = ProcessEncoding,
-                    };
+                installerProcess.OutputDataReceived += (s, args) =>
+                {
+                    if (!string.IsNullOrEmpty(args.Data))
+                        Log.Info($"[Installer] {args.Data}");
+                };
+                installerProcess.BeginOutputReadLine();
+                installerProcess.ErrorDataReceived += (s, args) =>
+                {
+                    if (!string.IsNullOrEmpty(args.Data))
+                        Log.Error($"[Installer] {args.Data}");
+                };
+                installerProcess.BeginErrorReadLine();
 
-                    Process installerProcess = Process.Start(startInfo);
+                installerProcess.WaitForExit();
 
-                    if (installerProcess is null)
-                    {
-                        Log.Error("Unable to start installer.");
-                        _stage = Stage.Free;
-                        return;
-                    }
-
-                    installerProcess.OutputDataReceived += (s, args) =>
-                    {
-                        if (!string.IsNullOrEmpty(args.Data))
-                            Log.Info($"[Installer] {args.Data}");
-                    };
-                    installerProcess.BeginOutputReadLine();
-                    installerProcess.ErrorDataReceived += (s, args) =>
-                    {
-                        if (!string.IsNullOrEmpty(args.Data))
-                            Log.Error($"[Installer] {args.Data}");
-                    };
-                    installerProcess.BeginErrorReadLine();
-
-                    installerProcess.WaitForExit();
-
-                    Log.Info($"Installer exit code: {installerProcess.ExitCode}");
-                    if (installerProcess.ExitCode == 0)
-                    {
-                        Log.Info("Auto-update complete, restarting server...");
-                        _stage = Stage.Installed;
-                    }
-                    else
-                    {
-                        Log.Error($"Installer error occured.");
-                        _stage = Stage.Free;
-                    }
+                Log.Info($"Installer exit code: {installerProcess.ExitCode}");
+                if (installerProcess.ExitCode == 0)
+                {
+                    Log.Info("Auto-update complete, restarting server...");
+                    _stage = Stage.Installed;
+                }
+                else
+                {
+                    Log.Error($"Installer error occured.");
+                    _stage = Stage.Free;
                 }
             }
             catch (Exception ex)
