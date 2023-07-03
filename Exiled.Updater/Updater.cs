@@ -16,6 +16,7 @@ namespace Exiled.Updater
     using System.Runtime.InteropServices;
     using System.Text;
     using System.Threading;
+    using System.Threading.Tasks;
 
     using Exiled.API.Features;
     using Exiled.Updater.GHApi;
@@ -99,14 +100,38 @@ namespace Exiled.Updater
         {
             _stage = Stage.Start;
 
-            Thread updateThread = new(
-                () =>
+            TaskCompletionSource<bool> updateCompleted = new();
+            TaskCompletionSource<(bool, NewVersion)> findUpdateCompleted = new();
+
+            Thread updateThread =
+                new(() =>
                 {
                     using HttpClient client = CreateHttpClient();
-                    if (FindUpdate(client, forced, out NewVersion newVersion))
+                    FindUpdate(client, forced).ContinueWith(task =>
+                    {
+                        if (task.Exception != null)
+                        {
+                            Log.Error($"{nameof(Update)} threw an exception");
+                            Log.Error(task.Exception);
+                        }
+                    });
+                    if (findUpdateCompleted.Task.Result.Item1)
                     {
                         _stage = Stage.Installing;
-                        Update(client, newVersion);
+                        Update(client, findUpdateCompleted.Task.Result.Item2).ContinueWith(task =>
+                        {
+                            if (task.Exception != null)
+                            {
+                                Log.Error($"{nameof(Update)} threw an exception");
+                                Log.Error(task.Exception);
+                            }
+
+                            updateCompleted.SetResult(true);
+                        });
+                    }
+                    else
+                    {
+                        updateCompleted.SetResult(false);
                     }
                 })
                 {
@@ -139,7 +164,7 @@ namespace Exiled.Updater
 
         #region Finders
 
-        private bool FindUpdate(HttpClient client, bool forced, out NewVersion newVersion)
+        private async Task<(bool, NewVersion)> FindUpdate(HttpClient client, bool forced)
         {
             try
             {
@@ -147,9 +172,11 @@ namespace Exiled.Updater
                 Log.Info($"Found the smallest version of Exiled - {smallestVersion.Library.GetName().Name}:{smallestVersion.Version}");
 
                 // TODO: make it loop pages to find an update
-                TaggedRelease[] releases = TagReleases(client.GetReleases(REPOID, new GetReleasesSettings(50, 1)).GetAwaiter().GetResult());
+                Release[] releases = await client.GetReleases(REPOID, new GetReleasesSettings(50, 1));
 
-                if (FindRelease(releases, out Release targetRelease, smallestVersion, forced))
+                TaggedRelease[] taggedReleases = releases.Select(r => new TaggedRelease(r)).ToArray();
+
+                if (FindRelease(taggedReleases, out Release targetRelease, smallestVersion, forced))
                 {
                     if (!FindAsset(GetInstallerName(), targetRelease, out ReleaseAsset asset))
                     {
@@ -159,8 +186,7 @@ namespace Exiled.Updater
                     else
                     {
                         Log.Info($"Found asset - Name: {asset.Name} | Size: {asset.Size} Download: {asset.BrowserDownloadUrl}");
-                        newVersion = new NewVersion(targetRelease, asset);
-                        return true;
+                        return (true, new NewVersion(targetRelease, asset));
                     }
                 }
                 else
@@ -178,8 +204,7 @@ namespace Exiled.Updater
                 Log.Error($"{nameof(FindUpdate)} threw an exception:\n{ex}");
             }
 
-            newVersion = default;
-            return false;
+            return (false, default);
         }
 
         private bool FindRelease(TaggedRelease[] releases, out Release release, ExiledLibrary smallestVersion, bool forced = false)
@@ -264,35 +289,40 @@ namespace Exiled.Updater
 
         #endregion
 
-        private void Update(HttpClient client, NewVersion newVersion)
+        private async Task Update(HttpClient client, NewVersion newVersion)
         {
             try
             {
                 Log.Info("Downloading installer...");
-                using HttpResponseMessage installer = client.GetAsync(newVersion.Asset.BrowserDownloadUrl).ConfigureAwait(false).GetAwaiter().GetResult();
+                HttpResponseMessage installerResponse = await client.GetAsync(newVersion.Asset.BrowserDownloadUrl).ConfigureAwait(false);
                 Log.Info("Downloaded!");
 
                 string serverPath = Environment.CurrentDirectory;
                 string installerPath = Path.Combine(serverPath, newVersion.Asset.Name);
 
-                if (File.Exists(installerPath) && (PlatformId == PlatformID.Unix))
-                    LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
-
-                using (Stream installerStream = installer.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult())
-                using (FileStream fs = new(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                if (File.Exists(installerPath) && PlatformId == PlatformID.Unix)
                 {
-                    installerStream.CopyToAsync(fs).ConfigureAwait(false).GetAwaiter().GetResult();
+                    LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
+                }
+
+                using (Stream installerStream = await installerResponse.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                using (FileStream fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    await installerStream.CopyToAsync(fs).ConfigureAwait(false);
                 }
 
                 if (PlatformId == PlatformID.Unix)
+                {
                     LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
+                }
 
                 if (!File.Exists(installerPath))
                 {
                     Log.Error("Couldn't find the downloaded installer!");
+                    return;
                 }
 
-                ProcessStartInfo startInfo = new()
+                ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     WorkingDirectory = serverPath,
                     FileName = installerPath,
@@ -305,45 +335,41 @@ namespace Exiled.Updater
                     StandardOutputEncoding = ProcessEncoding,
                 };
 
-                Process installerProcess = Process.Start(startInfo);
+                using (Process installerProcess = new Process { StartInfo = startInfo })
+                {
+                    installerProcess.OutputDataReceived += (s, args) =>
+                    {
+                        if (!string.IsNullOrEmpty(args.Data))
+                            Log.Info($"[Installer] {args.Data}");
+                    };
+                    installerProcess.ErrorDataReceived += (s, args) =>
+                    {
+                        if (!string.IsNullOrEmpty(args.Data))
+                            Log.Error($"[Installer] {args.Data}");
+                    };
 
-                if (installerProcess is null)
-                {
-                    Log.Error("Unable to start installer.");
-                    _stage = Stage.Free;
-                    return;
-                }
+                    installerProcess.Start();
+                    installerProcess.BeginOutputReadLine();
+                    installerProcess.BeginErrorReadLine();
+                    installerProcess.WaitForExit();
 
-                installerProcess.OutputDataReceived += (s, args) =>
-                {
-                    if (!string.IsNullOrEmpty(args.Data))
-                        Log.Info($"[Installer] {args.Data}");
-                };
-                installerProcess.BeginOutputReadLine();
-                installerProcess.ErrorDataReceived += (s, args) =>
-                {
-                    if (!string.IsNullOrEmpty(args.Data))
-                        Log.Error($"[Installer] {args.Data}");
-                };
-                installerProcess.BeginErrorReadLine();
+                    Log.Info($"Installer exit code: {installerProcess.ExitCode}");
 
-                installerProcess.WaitForExit();
-
-                Log.Info($"Installer exit code: {installerProcess.ExitCode}");
-                if (installerProcess.ExitCode == 0)
-                {
-                    Log.Info("Auto-update complete, restarting server next round...");
-                    _stage = Stage.Installed;
-                }
-                else
-                {
-                    Log.Error($"Installer error occured.");
-                    _stage = Stage.Free;
+                    if (installerProcess.ExitCode == 0)
+                    {
+                        Log.Info("Auto-update complete, restarting server next round...");
+                        _stage = Stage.Installed;
+                    }
+                    else
+                    {
+                        Log.Error($"Installer error occurred.");
+                        _stage = Stage.Free;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Log.Error($"{nameof(Update)} throw an exception");
+                Log.Error($"{nameof(Update)} threw an exception");
                 Log.Error(ex);
             }
         }
