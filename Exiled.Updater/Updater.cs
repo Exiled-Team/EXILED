@@ -126,6 +126,7 @@ namespace Exiled.Updater
                 yield return 0f;
             }
 
+            updateThread.Abort();
             if (_stage == Stage.Installed)
             {
                 ServerLogs.AddLog(ServerLogs.Modules.Administrative, "Exiled scheduled server restart after the round end.", ServerLogs.ServerLogType.RemoteAdminActivity_GameChanging, false);
