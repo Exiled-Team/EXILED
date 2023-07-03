@@ -386,6 +386,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="inheritAttributes">Whether or not inherited attributes should be taken into account for registration.</param>
         /// <param name="assembly">Assembly which is calling this method.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
+        [Obsolete("Use RegisterRoles(bool, object?, bool, bool, Assembly?) instead.")]
         public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object? overrideClass = null, bool inheritAttributes = true, Assembly? assembly = null) => RegisterRoles(skipReflection, overrideClass, true, inheritAttributes, assembly);
 
         /// <summary>
@@ -395,7 +396,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
         /// <param name="inheritAttributes">Whether or not inherited attributes should be taken into account for registration.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
-        [Obsolete("Use RegisterRoles(bool, object?, bool, Assembly?) instead.")]
+        [Obsolete("Use RegisterRoles(bool, object?, bool, bool, Assembly?) instead.")]
         public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object? overrideClass = null, bool inheritAttributes = true) => RegisterRoles(skipReflection, overrideClass, inheritAttributes, Assembly.GetCallingAssembly());
 
         /// <summary>
