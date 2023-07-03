@@ -397,7 +397,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="inheritAttributes">Whether or not inherited attributes should be taken into account for registration.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
         [Obsolete("Use RegisterRoles(bool, object?, bool, bool, Assembly?) instead.")]
-        public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object? overrideClass = null, bool inheritAttributes = true) => RegisterRoles(skipReflection, overrideClass, inheritAttributes, Assembly.GetCallingAssembly());
+        public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object? overrideClass = null, bool inheritAttributes = true) => RegisterRoles(skipReflection, overrideClass, true, inheritAttributes, Assembly.GetCallingAssembly());
 
         /// <summary>
         /// Registers all the <see cref="CustomRole"/>'s present in the current assembly.
