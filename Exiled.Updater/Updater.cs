@@ -331,7 +331,7 @@ namespace Exiled.Updater
                 Log.Info($"Installer exit code: {installerProcess.ExitCode}");
                 if (installerProcess.ExitCode == 0)
                 {
-                    Log.Info("Auto-update complete, restarting server...");
+                    Log.Info("Auto-update complete, restarting server next round...");
                     _stage = Stage.Installed;
                 }
                 else
