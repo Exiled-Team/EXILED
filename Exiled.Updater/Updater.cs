@@ -114,7 +114,10 @@ namespace Exiled.Updater
                             Log.Error($"{nameof(Update)} threw an exception");
                             Log.Error(task.Exception);
                         }
+
+                        findUpdateCompleted.SetResult(task.Result);
                     });
+
                     if (findUpdateCompleted.Task.Result.Item1)
                     {
                         _stage = Stage.Installing;
@@ -294,7 +297,7 @@ namespace Exiled.Updater
             try
             {
                 Log.Info("Downloading installer...");
-                HttpResponseMessage installerResponse = await client.GetAsync(newVersion.Asset.BrowserDownloadUrl).ConfigureAwait(false);
+                HttpResponseMessage installerResponse = client.GetAsync(newVersion.Asset.BrowserDownloadUrl).ConfigureAwait(false).GetAwaiter().GetResult();
                 Log.Info("Downloaded!");
 
                 string serverPath = Environment.CurrentDirectory;
@@ -306,7 +309,7 @@ namespace Exiled.Updater
                 }
 
                 using (Stream installerStream = await installerResponse.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                using (FileStream fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                using (FileStream fs = new(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
                     await installerStream.CopyToAsync(fs).ConfigureAwait(false);
                 }
@@ -322,7 +325,7 @@ namespace Exiled.Updater
                     return;
                 }
 
-                ProcessStartInfo startInfo = new ProcessStartInfo
+                ProcessStartInfo startInfo = new()
                 {
                     WorkingDirectory = serverPath,
                     FileName = installerPath,
@@ -335,37 +338,44 @@ namespace Exiled.Updater
                     StandardOutputEncoding = ProcessEncoding,
                 };
 
-                using (Process installerProcess = new Process { StartInfo = startInfo })
+                using Process installerProcess = new()
                 {
-                    installerProcess.OutputDataReceived += (s, args) =>
-                    {
-                        if (!string.IsNullOrEmpty(args.Data))
-                            Log.Info($"[Installer] {args.Data}");
-                    };
-                    installerProcess.ErrorDataReceived += (s, args) =>
-                    {
-                        if (!string.IsNullOrEmpty(args.Data))
-                            Log.Error($"[Installer] {args.Data}");
-                    };
+                    StartInfo = startInfo,
+                };
 
-                    installerProcess.Start();
-                    installerProcess.BeginOutputReadLine();
-                    installerProcess.BeginErrorReadLine();
-                    installerProcess.WaitForExit();
+                installerProcess.OutputDataReceived += (s, args) =>
+                {
+                    if (!string.IsNullOrEmpty(args.Data))
+                        Log.Info($"[Installer] {args.Data}");
+                };
+                installerProcess.ErrorDataReceived += (s, args) =>
+                {
+                    if (!string.IsNullOrEmpty(args.Data))
+                        Log.Error($"[Installer] {args.Data}");
+                };
 
-                    Log.Info($"Installer exit code: {installerProcess.ExitCode}");
+                installerProcess.Start();
+                installerProcess.BeginOutputReadLine();
+                installerProcess.BeginErrorReadLine();
+                installerProcess.WaitForExit();
 
-                    if (installerProcess.ExitCode == 0)
-                    {
-                        Log.Info("Auto-update complete, restarting server next round...");
-                        _stage = Stage.Installed;
-                    }
-                    else
-                    {
-                        Log.Error($"Installer error occurred.");
-                        _stage = Stage.Free;
-                    }
+                Log.Info($"Installer exit code: {installerProcess.ExitCode}");
+
+                if (installerProcess.ExitCode == 0)
+                {
+                    Log.Info("Auto-update complete, restarting server next round...");
+                    _stage = Stage.Installed;
                 }
+                else
+                {
+                    Log.Error($"Installer error occurred.");
+                    _stage = Stage.Free;
+                }
+            }
+            catch (TaskCanceledException taskfailed)
+            {
+                Log.Error($"{nameof(Update)} threw an exception");
+                Log.Error(taskfailed);
             }
             catch (Exception ex)
             {

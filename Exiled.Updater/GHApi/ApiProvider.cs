@@ -24,13 +24,11 @@ namespace Exiled.Updater.GHApi
         public static async Task<Release[]> GetReleases(long repoId, GetReleasesSettings settings, HttpClient client)
         {
             string url = string.Format(GetReleasesTemplate, repoId) + settings.Build();
-            using (HttpResponseMessage httpResponse = await client.GetAsync(url).ConfigureAwait(false))
-            using (Stream streamContnet = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false))
-            {
-                return JsonSerializer.Deserialize<Release[]>(streamContnet)
-                    .OrderByDescending(r => r.CreatedAt.Ticks)
-                    .ToArray();
-            }
+            using HttpResponseMessage httpResponse = await client.GetAsync(url).ConfigureAwait(false);
+            using Stream streamContnet = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            return JsonSerializer.Deserialize<Release[]>(streamContnet)
+                .OrderByDescending(r => r.CreatedAt.Ticks)
+                .ToArray();
         }
     }
 }
