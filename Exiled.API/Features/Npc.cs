@@ -149,6 +149,7 @@ namespace Exiled.API.Features
             Npc npc = new(newObject)
             {
                 IsVerified = true,
+                npc.IsNPC = true;
             };
             try
             {
@@ -191,7 +192,6 @@ namespace Exiled.API.Features
 
             if (position is not null)
                 Timing.CallDelayed(0.5f, () => npc.Position = position.Value);
-            npc.IsNPC = true;
             return npc;
         }
 
