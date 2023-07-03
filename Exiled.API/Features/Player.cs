@@ -304,7 +304,6 @@ namespace Exiled.API.Features
                     "steam" => AuthenticationType.Steam,
                     "discord" => AuthenticationType.Discord,
                     "northwood" => AuthenticationType.Northwood,
-                    "patreon" => AuthenticationType.Patreon,
                     _ => AuthenticationType.Unknown,
                 };
             }
