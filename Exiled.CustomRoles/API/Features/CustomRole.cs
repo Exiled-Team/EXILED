@@ -291,10 +291,11 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
         /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
+        /// <param name="shouldHaveAttributes">Whether or not <see cref="CustomRole"/> should have <see cref="CustomRoleAttribute"/>.</param>
         /// <param name="inheritAttributes">Whether or not inherited attributes should be taken into account for registration.</param>
         /// <param name="assembly">Assembly which is calling this method.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
-        public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object? overrideClass = null, bool inheritAttributes = true, Assembly? assembly = null)
+        public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object? overrideClass = null, bool shouldHaveAttributes = true, bool inheritAttributes = true, Assembly? assembly = null)
         {
             List<CustomRole> roles = new();
 
@@ -304,7 +305,7 @@ namespace Exiled.CustomRoles.API.Features
 
             foreach (Type type in assembly.GetTypes())
             {
-                if (inheritAttributes)
+                if (shouldHaveAttributes)
                 {
                     Log.Debug($"Getting attributed for {type}");
 
@@ -376,6 +377,16 @@ namespace Exiled.CustomRoles.API.Features
 
             return roles;
         }
+
+        /// <summary>
+        /// Registers all the <see cref="CustomRole"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
+        /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
+        /// <param name="inheritAttributes">Whether or not inherited attributes should be taken into account for registration.</param>
+        /// <param name="assembly">Assembly which is calling this method.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
+        public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object? overrideClass = null, bool inheritAttributes = true, Assembly? assembly = null) => RegisterRoles(skipReflection, overrideClass, true, inheritAttributes, assembly);
 
         /// <summary>
         /// Registers all the <see cref="CustomRole"/>'s present in the current assembly.
