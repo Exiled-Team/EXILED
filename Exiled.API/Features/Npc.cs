@@ -149,7 +149,7 @@ namespace Exiled.API.Features
             Npc npc = new(newObject)
             {
                 IsVerified = true,
-                npc.IsNPC = true;
+                npc.IsNPC = true,
             };
             try
             {
