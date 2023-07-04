@@ -23,7 +23,6 @@ namespace Exiled.CustomItems.API.Features
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
     using Mirror;
-    using RelativePositioning;
     using UnityEngine;
 
     using Object = UnityEngine.Object;

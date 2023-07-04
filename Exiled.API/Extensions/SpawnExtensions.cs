@@ -35,6 +35,7 @@ namespace Exiled.API.Extensions
             SpawnLocationType.InsideGr18,
             SpawnLocationType.Inside914,
             SpawnLocationType.InsideHid,
+            SpawnLocationType.Inside049Armory,
         };
 
         /// <summary>
