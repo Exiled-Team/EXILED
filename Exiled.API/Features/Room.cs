@@ -138,7 +138,7 @@ namespace Exiled.API.Features
             {
                 if (RoomLightController)
                 {
-                    RoomLightController.OverrideColorHook(RoomLightController.NetworkOverrideColor, value);
+                    RoomLightController.NetworkOverrideColor = value;
                 }
             }
         }
@@ -344,7 +344,7 @@ namespace Exiled.API.Features
             if (!RoomLightController)
                 return;
 
-            RoomLightController.OverrideColorHook(RoomLightController.NetworkOverrideColor, default);
+            RoomLightController.NetworkOverrideColor = Color.clear;
         }
 
         /// <summary>

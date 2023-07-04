@@ -7,7 +7,6 @@
 
 namespace Exiled.CustomItems.API.EventArgs
 {
-    using System;
     using System.Collections.Generic;
 
     using Exiled.API.Enums;

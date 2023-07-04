@@ -47,6 +47,7 @@ namespace Exiled.Events.EventArgs.Map
         /// <summary>
         /// Gets or sets a value indicating how long the fuse of the changed grenade will be.
         /// </summary>
+        // TODO: float
         public double FuseTime { get; set; }
     }
 }

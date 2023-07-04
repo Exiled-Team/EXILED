@@ -11,8 +11,6 @@ namespace Exiled.Events.EventArgs.Player
 
     using Interfaces;
 
-    using PlayerRoles.FirstPersonControl.Thirdperson;
-
     /// <summary>
     ///     Contains all information before a player makes noise.
     /// </summary>
