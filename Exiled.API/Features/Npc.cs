@@ -54,9 +54,9 @@ namespace Exiled.API.Features
             get
             {
                 List<Npc> npcS = new();
-                foreach (Player player in Player.List)
+                foreach (ReferenceHub hub in ReferenceHub.AllHubs)
                 {
-                    if (player is Npc npc)
+                    if (Get(hub) is Npc npc)
                         npcS.Add(npc);
                 }
 
