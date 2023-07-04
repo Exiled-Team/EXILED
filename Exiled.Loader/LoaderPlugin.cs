@@ -41,6 +41,7 @@ namespace Exiled.Loader
                 return;
             }
 
+            Log.Info($"Loading EXILED Version: {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}");
             if (!Config.ShouldLoadOutdatedExiled &&
                 !GameCore.Version.CompatibilityCheck(
                     (byte)AutoUpdateFiles.RequiredSCPSLVersion.Major,
@@ -55,8 +56,6 @@ namespace Exiled.Loader
                 ServerConsole.AddLog($"Exiled is outdated, please update to the latest version. Wait for release if still shows after update.\nSCP:SL: {GameCore.Version.VersionString} Exiled Supported Version: {AutoUpdateFiles.RequiredSCPSLVersion}", ConsoleColor.DarkRed);
                 return;
             }
-
-            Log.Info($"Loading EXILED Version: {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}");
 
             Paths.Reload(Config.ExiledDirectoryPath);
 
