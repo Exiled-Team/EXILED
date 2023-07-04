@@ -9,8 +9,6 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
-    using CustomPlayerEffects;
-
     using Exiled.API.Enums;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
