@@ -140,7 +140,7 @@ namespace Exiled.API.Features
         /// <param name="name">The name of the NPC.</param>
         /// <param name="role">The RoleTypeId of the NPC.</param>
         /// <param name="id">The player ID of the NPC.</param>
-        /// <param name="userId">The userID of the NPC. Leave empty for Unverified, VSR Compliant</param>
+        /// <param name="userId">The userID of the NPC. Leave empty for Unverified, VSR Compliant.</param>
         /// <param name="position">The position to spawn the NPC.</param>
         /// <returns>The <see cref="Npc"/> spawned.</returns>
         public static Npc Spawn(string name, RoleTypeId role, int id = 0, string userId = "", Vector3? position = null)
@@ -171,9 +171,9 @@ namespace Exiled.API.Features
 
             FakeConnection fakeConnection = new(id);
             NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
-            if(string.IsNullOrEmpty(userId)) {
-                npc.ReferenceHub.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
-            } else {
+            if(string.IsNullOrEmpty(userId)) npc.ReferenceHub.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
+            else 
+            {
                 try
                 {
                     npc.ReferenceHub.characterClassManager.UserId = userId;
