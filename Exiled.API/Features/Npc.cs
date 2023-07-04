@@ -135,12 +135,12 @@ namespace Exiled.API.Features
         public static new Npc? Get(NetworkConnection conn) => Player.Get(conn) as Npc;
 
         /// <summary>
-        /// Spawns an Verified NPC based on the given parameters.
+        /// Spawns an NPC based on the given parameters.
         /// </summary>
         /// <param name="name">The name of the NPC.</param>
         /// <param name="role">The RoleTypeId of the NPC.</param>
         /// <param name="id">The player ID of the NPC.</param>
-        /// <param name="userId">The userID of the NPC.</param>
+        /// <param name="userId">The userID of the NPC. Leave empty for Unverified, VSR Compliant</param>
         /// <param name="position">The position to spawn the NPC.</param>
         /// <returns>The <see cref="Npc"/> spawned.</returns>
         public static Npc Spawn(string name, RoleTypeId role, int id = 0, string userId = "", Vector3? position = null)
@@ -148,7 +148,7 @@ namespace Exiled.API.Features
             GameObject newObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
             Npc npc = new(newObject)
             {
-                IsVerified = true,
+                IsVerified = string.IsNullOrEmpty(userId),
                 IsNPC = true,
             };
             try
@@ -171,66 +171,18 @@ namespace Exiled.API.Features
 
             FakeConnection fakeConnection = new(id);
             NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
-            try
-            {
-                npc.ReferenceHub.characterClassManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy@localhost" : userId;
-            }
-            catch (Exception e)
-            {
-                Log.Debug($"Ignore: {e}");
-            }
-
-            npc.ReferenceHub.nicknameSync.Network_myNickSync = name;
-            Dictionary.Add(newObject, npc);
-
-            Timing.CallDelayed(
-                0.3f,
-                () =>
+            if(string.IsNullOrEmpty(userId)) {
+                npc.ReferenceHub.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
+            } else {
+                try
                 {
-                    npc.Role.Set(role, SpawnReason.RoundStart, position is null ? RoleSpawnFlags.All : RoleSpawnFlags.AssignInventory);
-                });
-
-            if (position is not null)
-                Timing.CallDelayed(0.5f, () => npc.Position = position.Value);
-            return npc;
-        }
-
-        /// <summary>
-        /// Spawns an Unverified NPC based on the given parameters.
-        /// </summary>
-        /// <param name="name">The name of the NPC.</param>
-        /// <param name="role">The RoleTypeId of the NPC.</param>
-        /// <param name="id">The player ID of the NPC.</param>
-        /// <param name="position">The position to spawn the NPC.</param>
-        /// <returns>The <see cref="Npc"/> spawned.</returns>
-        public static Npc Spawn(string name, RoleTypeId role, int id = 0, Vector3? position = null)
-        {
-            GameObject newObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
-            Npc npc = new(newObject)
-            {
-                IsNPC = true
-            };
-            try
-            {
-                npc.ReferenceHub.roleManager.InitializeNewRole(RoleTypeId.None, RoleChangeReason.None);
+                    npc.ReferenceHub.characterClassManager.UserId = userId;
+                }
+                catch (Exception e)
+                {
+                    Log.Debug($"Ignore: {e}");
+                }
             }
-            catch (Exception e)
-            {
-                Log.Debug($"Ignore: {e}");
-            }
-
-            if (RecyclablePlayerId.FreeIds.Contains(id))
-            {
-                RecyclablePlayerId.FreeIds.RemoveFromQueue(id);
-            }
-            else if (RecyclablePlayerId._autoIncrement >= id)
-            {
-                RecyclablePlayerId._autoIncrement = id = RecyclablePlayerId._autoIncrement + 1;
-            }
-
-            FakeConnection fakeConnection = new(id);
-            NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
-            npc.ReferenceHub.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
 
             npc.ReferenceHub.nicknameSync.Network_myNickSync = name;
             Dictionary.Add(newObject, npc);
