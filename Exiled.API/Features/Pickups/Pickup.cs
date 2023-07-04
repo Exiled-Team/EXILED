@@ -109,6 +109,19 @@ namespace Exiled.API.Features.Pickups
         public Room Room => Room.FindParentRoom(GameObject);
 
         /// <summary>
+        /// Gets or sets the pickup's scale value.
+        /// </summary>
+        public PickupStandardPhysics PhysicsModule
+        {
+            get => Base.PhysicsModule as PickupStandardPhysics;
+            set
+            {
+                Base.PhysicsModule.DestroyModule();
+                Base.PhysicsModule = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the unique serial number for the item.
         /// </summary>
         public ushort Serial

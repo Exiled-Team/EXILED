@@ -45,7 +45,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the pickup's scale value.
         /// </summary>
-        public Scp018Physics PhysicsModule
+        public new Scp018Physics PhysicsModule
         {
             get => Base.PhysicsModule as Scp018Physics;
             set
