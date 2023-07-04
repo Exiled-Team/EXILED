@@ -192,7 +192,7 @@ You can add any config option in there and reference it like so:
 ```csharp
    public override OnEnabled()
    {
-        Log.Info(Config.TextThatINeed);
+        Log.Info(new Config().TextThatINeed);
    }
 ```
 
