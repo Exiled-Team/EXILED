@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Features;
@@ -37,11 +38,15 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
             Label continueLabel = generator.DefineLabel();
+            Label retLabel = generator.DefineLabel();
 
-            int offset = -2;
-            int index = newInstructions.FindIndex(x => x.opcode == OpCodes.Callvirt && x.operand == (object)Method(typeof(UsableItem), nameof(UsableItem.ServerOnUsingCompleted))) + offset;
+            int offset = -1;
+            int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(Dictionary<ReferenceHub, PlayerHandler>.Enumerator), nameof(Dictionary<ReferenceHub, PlayerHandler>.Enumerator.MoveNext)))) + offset;
 
-            newInstructions[index].labels.Add(continueLabel);
+            newInstructions[index].labels.Add(retLabel);
+
+            offset = -2;
+            index = newInstructions.FindIndex(x => x.Calls(Method(typeof(UsableItem), nameof(UsableItem.ServerOnUsingCompleted)))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
@@ -87,14 +92,23 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldfld, Field(typeof(CurrentlyUsedItem), nameof(CurrentlyUsedItem.ItemSerial))),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StatusMessage))[0]),
                 new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Callvirt, Method(typeof(Mirror.NetworkConnection), nameof(Mirror.NetworkConnection.Send), new[] { typeof(StatusMessage).MakeGenericType(typeof(NetworkMessage)), typeof(int) })),
+                new(OpCodes.Callvirt, FirstMethod(
+                    typeof(Mirror.NetworkConnection),
+                    m =>
+                    {
+                        return m.IsGenericMethod && m.Name == nameof(Mirror.NetworkConnection.Send);
+                    }).MakeGenericMethod(typeof(StatusMessage))),
 
                 // goto ret;
-                new(OpCodes.Br, newInstructions.Find(x => x.opcode == OpCodes.Br).operand),
+                new(OpCodes.Br_S, retLabel),
+                new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
+            {
+                Log.Warn(newInstructions[z]);
                 yield return newInstructions[z];
+            }
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
