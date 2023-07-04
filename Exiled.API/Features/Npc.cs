@@ -148,7 +148,7 @@ namespace Exiled.API.Features
             GameObject newObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
             Npc npc = new(newObject)
             {
-                IsVerified = string.IsNullOrEmpty(userId),
+                IsVerified = !string.IsNullOrEmpty(userId),
                 IsNPC = true,
             };
             try
