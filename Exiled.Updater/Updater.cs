@@ -25,8 +25,9 @@ namespace Exiled.Updater
     using Exiled.Updater.Models;
 
     using MEC;
+    using PluginAPI.Core;
 
-    using UnityEngine;
+    using Log = API.Features.Log;
 
 #pragma warning disable SA1124 // Do not use regions
 
@@ -302,6 +303,12 @@ namespace Exiled.Updater
 
                 string serverPath = Environment.CurrentDirectory;
                 string installerPath = Path.Combine(serverPath, newVersion.Asset.Name);
+                PluginAPI.Loader.AssemblyLoader.Plugins.Values.Single(x => x.ContainsKey(typeof(Loader.Loader))).TryGetValue(typeof(Loader.Loader), out PluginHandler pluginHandler);
+                char[] separators = { '/', '\\' };
+
+                int lastSeparatorIndex = pluginHandler.PluginFilePath.LastIndexOfAny(separators);
+                int secondLastSeparatorIndex = pluginHandler.PluginFilePath.LastIndexOfAny(separators, lastSeparatorIndex - 1);
+                string exiledLoaderPort = pluginHandler.PluginFilePath.Substring(secondLastSeparatorIndex + 1, lastSeparatorIndex - secondLastSeparatorIndex - 1);
 
                 if (File.Exists(installerPath) && PlatformId == PlatformID.Unix)
                 {
@@ -331,7 +338,7 @@ namespace Exiled.Updater
                     FileName = installerPath,
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                    Arguments = $"--exit --target-version {newVersion.Release.TagName} --appdata \"{Paths.AppData}\" --exiled \"{Path.Combine(Paths.Exiled, "..")}\"",
+                    Arguments = $"--exit --target-version {newVersion.Release.TagName} --appdata \"{Paths.AppData}\" --exiled \"{Path.Combine(Paths.Exiled, "..")}\" --target-port {exiledLoaderPort}",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     StandardErrorEncoding = ProcessEncoding,

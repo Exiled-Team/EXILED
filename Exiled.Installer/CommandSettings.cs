@@ -94,6 +94,11 @@ namespace Exiled.Installer
                 { IsRequired = false },
 
             new Option<string?>(
+                "--target-port",
+                "Target port for ExiledLoader installation")
+                { IsRequired = false },
+
+            new Option<string?>(
                 "--target-version",
                 "Target version for installation")
                 { IsRequired = false },
@@ -123,6 +128,7 @@ namespace Exiled.Installer
 #nullable restore
 
         public bool PreReleases { get; set; }
+        public string? TargetPort { get; set; }
 
         public string? TargetVersion { get; set; }
 
