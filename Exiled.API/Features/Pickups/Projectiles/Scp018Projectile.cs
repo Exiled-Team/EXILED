@@ -43,6 +43,37 @@ namespace Exiled.API.Features.Pickups.Projectiles
         public new BaseScp018Projectile Base { get; }
 
         /// <summary>
+        /// Gets or sets the pickup's scale value.
+        /// </summary>
+        public Scp018Physics PhysicsModule
+        {
+            get => Base.PhysicsModule as Scp018Physics;
+            set
+            {
+                Base.PhysicsModule.DestroyModule();
+                Base.PhysicsModule = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the pickup's scale value.
+        /// </summary>
+        public float MaxVelocity
+        {
+            get => PhysicsModule._maxVel;
+            set => PhysicsModule = new Scp018Physics(Base, PhysicsModule._trail, PhysicsModule._radius, value, PhysicsModule._velPerBounce);
+        }
+
+        /// <summary>
+        /// Gets or sets the pickup's scale value.
+        /// </summary>
+        public float VelocityPerBounce
+        {
+            get => PhysicsModule._maxVel;
+            set => PhysicsModule = new Scp018Physics(Base, PhysicsModule._trail, PhysicsModule._radius, MaxVelocity, value);
+        }
+
+        /// <summary>
         /// Gets a value indicating whether or not SCP-018 can injure teammates.
         /// </summary>
         public bool IgnoreFriendlyFire => Base.IgnoreFriendlyFire;
