@@ -135,7 +135,7 @@ namespace Exiled.API.Features
         public static new Npc? Get(NetworkConnection conn) => Player.Get(conn) as Npc;
 
         /// <summary>
-        /// Spawns an NPC based on the given parameters.
+        /// Spawns an Verified NPC based on the given parameters.
         /// </summary>
         /// <param name="name">The name of the NPC.</param>
         /// <param name="role">The RoleTypeId of the NPC.</param>
@@ -179,6 +179,58 @@ namespace Exiled.API.Features
             {
                 Log.Debug($"Ignore: {e}");
             }
+
+            npc.ReferenceHub.nicknameSync.Network_myNickSync = name;
+            Dictionary.Add(newObject, npc);
+
+            Timing.CallDelayed(
+                0.3f,
+                () =>
+                {
+                    npc.Role.Set(role, SpawnReason.RoundStart, position is null ? RoleSpawnFlags.All : RoleSpawnFlags.AssignInventory);
+                });
+
+            if (position is not null)
+                Timing.CallDelayed(0.5f, () => npc.Position = position.Value);
+            return npc;
+        }
+
+        /// <summary>
+        /// Spawns an Unverified NPC based on the given parameters.
+        /// </summary>
+        /// <param name="name">The name of the NPC.</param>
+        /// <param name="role">The RoleTypeId of the NPC.</param>
+        /// <param name="id">The player ID of the NPC.</param>
+        /// <param name="position">The position to spawn the NPC.</param>
+        /// <returns>The <see cref="Npc"/> spawned.</returns>
+        public static Npc Spawn(string name, RoleTypeId role, int id = 0, Vector3? position = null)
+        {
+            GameObject newObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
+            Npc npc = new(newObject)
+            {
+                IsNPC = true
+            };
+            try
+            {
+                npc.ReferenceHub.roleManager.InitializeNewRole(RoleTypeId.None, RoleChangeReason.None);
+            }
+            catch (Exception e)
+            {
+                Log.Debug($"Ignore: {e}");
+            }
+
+            if (RecyclablePlayerId.FreeIds.Contains(id))
+            {
+                RecyclablePlayerId.FreeIds.RemoveFromQueue(id);
+            }
+            else if (RecyclablePlayerId._autoIncrement >= id)
+            {
+                RecyclablePlayerId._autoIncrement = id = RecyclablePlayerId._autoIncrement + 1;
+            }
+
+            FakeConnection fakeConnection = new(id);
+            NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
+            npc.ReferenceHub.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
 
             npc.ReferenceHub.nicknameSync.Network_myNickSync = name;
             Dictionary.Add(newObject, npc);
