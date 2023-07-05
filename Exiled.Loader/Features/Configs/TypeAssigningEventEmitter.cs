@@ -28,7 +28,7 @@ namespace Exiled.Loader.Features.Configs
         public override void Emit(ScalarEventInfo eventInfo, IEmitter emitter)
         {
             if (eventInfo.Source.StaticType != typeof(object) && Type.GetTypeCode(eventInfo.Source.StaticType) == TypeCode.String && !UnderscoredNamingConvention.Instance.Properties.Contains(eventInfo.Source.Value))
-                eventInfo.Style = LoaderPlugin.Config.ScalarStyle;
+                eventInfo.Style = Loader.Config.ScalarStyle;
 
             base.Emit(eventInfo, emitter);
         }
