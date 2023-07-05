@@ -67,12 +67,6 @@ namespace Exiled.Loader
             Directory.CreateDirectory(Paths.Plugins);
             Directory.CreateDirectory(Paths.Dependencies);
 
-            if (!File.Exists(Path.Combine(Paths.Dependencies, "Exiled.API.dll")))
-            {
-                Log.Error($"Exiled.API.dll was not found at {Path.Combine(Paths.Dependencies, "Exiled.API.dll")}, Exiled won't be loaded!");
-                return;
-            }
-
             new Loader().Run();
         }
     }
