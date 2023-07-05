@@ -1309,6 +1309,15 @@ namespace Exiled.API.Features
                     }
                 }
 
+                if (playerFound is null && Misc.ValidateIpOrHostname(args, out Misc.IPAddressType ipaddressType, true, true))
+                {
+                    playerFound = ipaddressType switch
+                    {
+                        Misc.IPAddressType.Localhost or Misc.IPAddressType.Hostname => Server.Host,
+                        _ => List.FirstOrDefault(x => x.IPAddress == args),
+                    };
+                }
+
                 if (playerFound is not null)
                     UserIdsCache[args] = playerFound;
 
