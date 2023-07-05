@@ -10,7 +10,6 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.Jailbird;
-    using UnityEngine;
 
     using BaseJailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
 
@@ -53,17 +52,6 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets the amount of damage remaining before the Jailbird breaks.
-        /// </summary>
-        /// <remarks>Modifying this value will directly modify <see cref="TotalDamageDealt"/>.</remarks>
-        /// <seealso cref="TotalDamageDealt"/>
-        public float RemainingDamage
-        {
-            get => JailbirdItem.DamageLimit - TotalDamageDealt;
-            set => TotalDamageDealt = Mathf.Clamp(JailbirdItem.DamageLimit - value, 0, JailbirdItem.DamageLimit);
-        }
-
-        /// <summary>
         /// Gets or sets the number of times the item has been charged and used.
         /// </summary>
         public int TotalCharges
@@ -73,14 +61,12 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets the amount of charges remaining before the Jailbird breaks.
+        /// Gets or sets the <see cref="JailbirdWearState"/> of the item.
         /// </summary>
-        /// <remarks>Modifying this value will directly modify <see cref="TotalCharges"/>.</remarks>
-        /// <seealso cref="TotalCharges"/>
-        public int RemainingCharges
+        public JailbirdWearState WearState
         {
-            get => JailbirdItem.ChargesLimit - TotalCharges;
-            set => TotalCharges = Mathf.Clamp(JailbirdItem.ChargesLimit - value, 0, JailbirdItem.ChargesLimit);
+            get => Base.NetworkWear;
+            set => Base.NetworkWear = value;
         }
 
         /// <summary>

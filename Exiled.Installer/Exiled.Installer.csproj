@@ -3,7 +3,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <PlatformTarget>x64</PlatformTarget>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <LangVersion>9.0</LangVersion>
         <Nullable>enable</Nullable>
         <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
@@ -17,11 +17,12 @@
         <OutputPath>bin\$(Configuration)\</OutputPath>
 
         <AssemblyTitle>Exiled online installer</AssemblyTitle>
-        <Version>3.2.3</Version>
         <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
         <NoWarn>$(NoWarn);CS1591</NoWarn>
         <Configurations>Debug;Release;Installer</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <AssemblyVersion>4.0.0</AssemblyVersion>
+        <FileVersion>4.0.0</FileVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="$(Configuration) == 'Release'">

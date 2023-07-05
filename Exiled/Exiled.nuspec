@@ -27,6 +27,7 @@
     <file src="..\References\CommandSystem.Core.dll" target="lib\net48" />
     <file src="..\References\NorthwoodLib.dll" target="lib\net48" />
     <file src="..\References\PluginAPI.dll" target="lib\net48" />
+    <file src="..\References\YamlDotNet.dll" target="lib\net48" />
     <file src="..\bin\Release\Exiled.API.dll" target="lib\net48" />
     <file src="..\bin\Release\Exiled.API.xml" target="lib\net48" />
 

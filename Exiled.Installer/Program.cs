@@ -63,6 +63,7 @@ namespace Exiled.Installer
 
         internal async static Task MainSafe(CommandSettings args)
         {
+            bool error = false;
             try
             {
                 Console.WriteLine(Header);
@@ -94,17 +95,12 @@ namespace Exiled.Installer
                 IEnumerable<Release> releases = await GetReleases().ConfigureAwait(false);
                 Console.WriteLine(Resources.Program_MainSafe_Searching_for_the_latest_release_that_matches_the_parameters___);
 
-                if (!TryFindRelease(args, releases, out Release? targetRelease))
-                {
-                    Console.WriteLine(Resources.Program_MainSafe_____RELEASES____);
-                    Console.WriteLine(string.Join(Environment.NewLine, releases.Select(FormatRelease)));
-                    throw new InvalidOperationException("Couldn't find release");
-                }
+                Release targetRelease = FindRelease(args, releases);
 
                 Console.WriteLine(Resources.Program_MainSafe_Release_found_);
                 Console.WriteLine(FormatRelease(targetRelease!));
 
-                ReleaseAsset exiledAsset = targetRelease!.Assets.FirstOrDefault(a => a.Name.Equals(ExiledAssetName, StringComparison.OrdinalIgnoreCase));
+                ReleaseAsset? exiledAsset = targetRelease!.Assets.FirstOrDefault(a => a.Name.Equals(ExiledAssetName, StringComparison.OrdinalIgnoreCase));
                 if (exiledAsset is null)
                 {
                     Console.WriteLine(Resources.Program_MainSafe_____ASSETS____);
@@ -145,7 +141,7 @@ namespace Exiled.Installer
             }
 
             if (args.Exit)
-                Environment.Exit(0);
+                Environment.Exit(error ? 1 : 0);
         }
 
         private async static Task<IEnumerable<Release>> GetReleases()
@@ -276,24 +272,23 @@ namespace Exiled.Installer
             return PathResolution.Undefined;
         }
 
-        private static bool TryFindRelease(CommandSettings args, IEnumerable<Release> releases, out Release? release)
+        private static Release FindRelease(CommandSettings args, IEnumerable<Release> releases)
         {
             Console.WriteLine(Resources.Program_TryFindRelease_Trying_to_find_release__);
-            Version targetVersion = args.TargetVersion is not null ? new Version(args.TargetVersion) : VersionLimit;
+            Version targetVersion = args.TargetVersion is not null ? new Version(args.TargetVersion) : new Version(releases.First().TagName);
 
             foreach (Release r in releases)
             {
-                release = r;
+                if (targetVersion != new Version(r.TagName))
+                    continue;
 
-                if (targetVersion == new Version(r.TagName))
-                    return true;
+                if (targetVersion.IsPreRelease && !args.PreReleases)
+                    continue;
 
-                if ((r.Prerelease && args.PreReleases) || !r.Prerelease)
-                    return true;
+                return r;
             }
 
-            release = null;
-            return false;
+            return releases.First();
         }
     }
 }

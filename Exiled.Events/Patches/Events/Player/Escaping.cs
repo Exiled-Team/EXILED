@@ -7,19 +7,28 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+#pragma warning disable SA1402 // File may only contain a single type
+
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
     using System.Reflection.Emit;
 
+    using API.Enums;
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.EventArgs.Player;
+
+    using EventArgs.Player;
 
     using HarmonyLib;
+
+    using Respawning;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Escape.ServerHandlePlayer(ReferenceHub)"/> for <see cref="Handlers.Player.Escaping"/>.
+    /// Patches <see cref="Escape.ServerHandlePlayer(ReferenceHub)"/> for <see cref="Handlers.Player.Escaping" />.
     /// </summary>
     [HarmonyPatch(typeof(Escape), nameof(Escape.ServerHandlePlayer))]
     internal static class Escaping
@@ -28,12 +37,13 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
+            List<Label> labels;
             Label returnLabel = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(EscapingEventArgs));
 
-            const int offset = 0;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S) + offset;
+            int offset = -2;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -46,8 +56,17 @@ namespace Exiled.Events.Patches.Events.Player
                     // roleTypeId
                     new(OpCodes.Ldloc_0),
 
-                    // EscapingEventArgs ev = new(Player, RoleTypeId)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EscapingEventArgs))[0]),
+                    // escapeScenario
+                    new(OpCodes.Ldloc_1),
+
+                    // teamToGrantTickets
+                    new(OpCodes.Ldloc_2),
+
+                    // ticketsToGrant
+                    new(OpCodes.Ldloc_3),
+
+                    // EscapingEventArgs ev = new(Player, RoleTypeId, EscapeScenario, SpawnableTeamType, float)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EscapingEventArgs)).First(cctor => cctor.GetParameters().Any(param => param.ParameterType == typeof(SpawnableTeamType)))),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc, ev.LocalIndex),
@@ -66,7 +85,59 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Stloc_0),
                 });
 
+            // replace base-game grant token logic
+            offset = -2;
+            index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(RespawnTokensManager), nameof(RespawnTokensManager.GrantTokens)))) + offset;
+            labels = newInstructions[index].ExtractLabels();
+            newInstructions.RemoveRange(index, 3);
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // GrantAllTickets(ev)
+                    new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex).WithLabels(labels),
+                    new(OpCodes.Call, Method(typeof(Escaping), nameof(GrantAllTickets))),
+                });
+
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+
+        private static void GrantAllTickets(EscapingEventArgs ev)
+        {
+            if (Enum.IsDefined(typeof(SpawnableTeamType), ev.RespawnTickets.Key) && ev.RespawnTickets.Key != SpawnableTeamType.None)
+                RespawnTokensManager.ModifyTokens(ev.RespawnTickets.Key, ev.RespawnTickets.Value);
+        }
+    }
+
+    /// <summary>
+    /// Patches <see cref="Escape.ServerGetScenario(ReferenceHub)"/> for <see cref="Handlers.Player.Escaping"/>.
+    /// Replaces last returned <see cref="EscapeScenario.None"/> to <see cref="EscapeScenario.CustomEscape"/>.
+    /// </summary>
+    [HarmonyPatch(typeof(Escape), nameof(Escape.ServerGetScenario))]
+    internal static class GetScenario
+    {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            int e = 0;
+            for (int i = 0; i < newInstructions.Count; i++)
+            {
+                CodeInstruction codeInstruction = newInstructions[i];
+                if (codeInstruction.opcode == OpCodes.Ldc_I4_0)
+                {
+                    e++;
+                    if (e > 3)
+                    {
+                        newInstructions[i].opcode = OpCodes.Ldc_I4_5;
+                    }
+                }
+            }
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Scp939
 {
+    using System;
+
     using API.Features;
     using Interfaces;
 
@@ -27,17 +29,17 @@ namespace Exiled.Events.EventArgs.Scp939
         public LungingEventArgs(ReferenceHub player, bool isAllowed = true)
         {
             Player = Player.Get(player);
-            IsAllowed = isAllowed;
         }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-939 can lunge.
-        /// </summary>
-        public bool IsAllowed { get; set; }
 
         /// <summary>
         ///     Gets the player who's controlling SCP-939.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether or not SCP-939 can lunge.
+        /// </summary>
+        [Obsolete("Deprecated.")]
+        public bool IsAllowed { get; set; } = true;
     }
 }

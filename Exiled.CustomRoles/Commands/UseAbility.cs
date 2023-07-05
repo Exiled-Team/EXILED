@@ -49,10 +49,17 @@ namespace Exiled.CustomRoles.Commands
 
             if (arguments.Count > 1)
             {
-                CustomRole role = CustomRole.Get(arguments.At(1));
+                CustomRole? role = CustomRole.Get(arguments.At(1));
                 if (role is null)
                 {
                     response = $"The specified role {arguments.At(1)} does not exist.";
+
+                    return false;
+                }
+
+                if (role.CustomAbilities is null)
+                {
+                    response = "You do not have any custom abilities for this role.";
 
                     return false;
                 }
@@ -77,7 +84,7 @@ namespace Exiled.CustomRoles.Commands
 
             foreach (CustomRole customRole in roles)
             {
-                if (customRole.CustomAbilities.Count < abilityNumber + 1 || !(customRole.CustomAbilities[abilityNumber] is ActiveAbility activeAbility) || !activeAbility.CanUseAbility(player, out response))
+                if (customRole.CustomAbilities is null || customRole.CustomAbilities.Count < abilityNumber + 1 || !(customRole.CustomAbilities[abilityNumber] is ActiveAbility activeAbility) || !activeAbility.CanUseAbility(player, out response))
                     continue;
 
                 activeAbility.UseAbility(player);

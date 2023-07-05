@@ -50,6 +50,8 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, player.LocalIndex),
+                    new(OpCodes.Brfalse_S, ret),
+                    new(OpCodes.Ldloc_S, player),
 
                     // handler
                     new(OpCodes.Ldarg_1),

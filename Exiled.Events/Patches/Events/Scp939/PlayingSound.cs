@@ -26,18 +26,16 @@ namespace Exiled.Events.Patches.Events.Scp939
     {
         private static bool Prefix(EnvironmentalMimicry __instance, NetworkReader reader)
         {
-            byte category = reader.ReadByte();
             byte option = reader.ReadByte();
 
-            EnvMimicryOption sound = __instance.Categories[category].Options[option];
+            EnvMimicrySequence sound = __instance.Sequences[option];
 
             PlayingSoundEventArgs ev = new(__instance.Owner, sound, __instance.Cooldown.IsReady, __instance._activationCooldown, __instance.Cooldown.IsReady);
             Scp939.OnPlayingSound(ev);
 
             if (ev.IsReady && ev.IsAllowed)
             {
-                __instance._syncCat = category;
-                __instance._syncSound = option;
+                __instance._syncOption = option;
                 __instance.Cooldown.Trigger(ev.Cooldown);
                 __instance.ServerSendRpc(toAll: true);
             }

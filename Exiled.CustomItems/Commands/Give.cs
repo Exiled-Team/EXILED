@@ -57,7 +57,7 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item))
+            if (!CustomItem.TryGet(arguments.At(0), out CustomItem? item))
             {
                 response = $"Custom item {arguments.At(0)} not found!";
                 return false;
@@ -75,8 +75,8 @@ namespace Exiled.CustomItems.Commands
                         return false;
                     }
 
-                    item.Give(player);
-                    response = $"{item.Name} given to {player.Nickname} ({player.UserId})";
+                    item?.Give(player);
+                    response = $"{item?.Name} given to {player.Nickname} ({player.UserId})";
                     return true;
                 }
 
@@ -92,12 +92,12 @@ namespace Exiled.CustomItems.Commands
                 case "all":
                     List<Player> eligiblePlayers = Player.List.Where(CheckEligible).ToList();
                     foreach (Player ply in eligiblePlayers)
-                        item.Give(ply);
+                        item?.Give(ply);
 
-                    response = $"Custom item {item.Name} given to all players who can receive them ({eligiblePlayers.Count} players)";
+                    response = $"Custom item {item?.Name} given to all players who can receive them ({eligiblePlayers.Count} players)";
                     return true;
                 default:
-                    if (Player.Get(identifier) is not Player player)
+                    if (Player.Get(identifier) is not { } player)
                     {
                         response = $"Unable to find player: {identifier}.";
                         return false;
@@ -109,8 +109,8 @@ namespace Exiled.CustomItems.Commands
                         return false;
                     }
 
-                    item.Give(player);
-                    response = $"{item.Name} given to {player.Nickname} ({player.UserId})";
+                    item?.Give(player);
+                    response = $"{item?.Name} given to {player.Nickname} ({player.UserId})";
                     return true;
             }
         }

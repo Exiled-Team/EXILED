@@ -26,7 +26,7 @@ namespace Exiled.CustomRoles.API.Features.Parsers
     {
         private const string TargetKey = nameof(CustomAbility.AbilityType);
         private readonly string targetKey;
-        private readonly Dictionary<string, Type> typeLookup;
+        private readonly Dictionary<string, Type?> typeLookup;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateExpectationTypeResolver{T}"/> class.
@@ -35,12 +35,12 @@ namespace Exiled.CustomRoles.API.Features.Parsers
         public AggregateExpectationTypeResolver(INamingConvention namingConvention)
         {
             targetKey = namingConvention.Apply(TargetKey);
-            typeLookup = new Dictionary<string, Type>();
+            typeLookup = new Dictionary<string, Type?>();
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 try
                 {
-                    foreach (Type t in assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(T))))
+                    foreach (Type? t in assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(T))))
                         typeLookup.Add(t.Name, t);
                 }
                 catch (Exception e)
@@ -55,12 +55,12 @@ namespace Exiled.CustomRoles.API.Features.Parsers
         public Type BaseType => typeof(CustomAbility);
 
         /// <inheritdoc />
-        public bool TryResolve(ParsingEventBuffer buffer, out Type suggestedType)
+        public bool TryResolve(ParsingEventBuffer buffer, out Type? suggestedType)
         {
             if (buffer.TryFindMappingEntry(
                 scalar => targetKey == scalar.Value,
-                out Scalar key,
-                out ParsingEvent value))
+                out Scalar? key,
+                out ParsingEvent? value))
             {
                 if (value is Scalar valueScalar)
                 {
@@ -81,9 +81,9 @@ namespace Exiled.CustomRoles.API.Features.Parsers
             throw new Exception($"Could not determine expectation type, {targetKey} has an empty value");
         }
 
-        private Type CheckName(string value)
+        private Type? CheckName(string value)
         {
-            if (typeLookup.TryGetValue(value, out Type childType))
+            if (typeLookup.TryGetValue(value, out Type? childType))
                 return childType;
 
             string known = string.Join(",", typeLookup.Keys);

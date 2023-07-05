@@ -53,7 +53,7 @@ namespace Exiled.API.Features.Items
             Base = itemBase;
             BaseToItem.Add(itemBase, this);
 
-            if (Serial is 0 && itemBase.Owner != null)
+            if (Base.ItemSerial is 0 && itemBase.Owner != null)
             {
                 ushort serial = ItemSerialGenerator.GenerateNext();
                 Serial = serial;
@@ -86,12 +86,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public ushort Serial
         {
-            get
-            {
-                if (Base.ItemSerial is 0)
-                    return Serial = ItemSerialGenerator.GenerateNext();
-                return Base.ItemSerial;
-            }
+            get => Base.ItemSerial;
             set => Base.ItemSerial = value;
         }
 
@@ -293,7 +288,7 @@ namespace Exiled.API.Features.Items
         {
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
 
-            ipb.Info = new(Type, position, rotation, Weight, ItemSerialGenerator.GenerateNext());
+            ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
             ipb.gameObject.transform.localScale = Scale;
 
             Pickup pickup = Pickup.Get(ipb);

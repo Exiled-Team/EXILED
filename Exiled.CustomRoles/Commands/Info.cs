@@ -54,8 +54,7 @@ namespace Exiled.CustomRoles.Commands
                 return false;
             }
 
-            if (!(int.TryParse(arguments.At(0), out int id) && CustomRole.TryGet(id, out CustomRole role)) &&
-                !CustomRole.TryGet(arguments.At(0), out role))
+            if ((!(uint.TryParse(arguments.At(0), out uint id) && CustomRole.TryGet(id, out CustomRole? role)) && !CustomRole.TryGet(arguments.At(0), out role)) || role is null)
             {
                 response = $"{arguments.At(0)} is not a valid custom role.";
                 return false;

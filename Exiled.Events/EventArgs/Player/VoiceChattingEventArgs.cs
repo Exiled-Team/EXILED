@@ -12,6 +12,8 @@ namespace Exiled.Events.EventArgs.Player
 
     using PlayerRoles.Voice;
 
+    using VoiceChat.Networking;
+
     /// <summary>
     ///     Contains all information after a player presses the voicechat key.
     /// </summary>
@@ -23,15 +25,19 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
+        /// <param name="voiceMessage">
+        ///     <inheritdoc cref="VoiceMessage" />
+        /// </param>
         /// <param name="voiceModule">
         ///     <inheritdoc cref="VoiceModule" />
         /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public VoiceChattingEventArgs(Player player, VoiceModuleBase voiceModule, bool isAllowed = true)
+        public VoiceChattingEventArgs(Player player, VoiceMessage voiceMessage, VoiceModuleBase voiceModule, bool isAllowed = true)
         {
             Player = player;
+            VoiceMessage = voiceMessage;
             VoiceModule = voiceModule;
             IsAllowed = isAllowed;
         }
@@ -40,6 +46,11 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the player who's voicechatting.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        ///     Gets or sets the <see cref="Player"/>'s <see cref="VoiceMessage" />.
+        /// </summary>
+        public VoiceMessage VoiceMessage { get; set; }
 
         /// <summary>
         ///     Gets the <see cref="Player"/>'s <see cref="VoiceModuleBase" />.

@@ -11,9 +11,6 @@ namespace Exiled.Events.Handlers
 
     using Extensions;
 
-    using PlayerRoles;
-    using PlayerRoles.FirstPersonControl.Thirdperson;
-
     using PluginAPI.Core.Attributes;
     using PluginAPI.Enums;
     using PluginAPI.Events;
@@ -460,6 +457,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ExitingEnvironmentalHazardEventArgs> ExitingEnvironmentalHazard;
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/>'s nickname is changed.
+        /// </summary>
+        public static event CustomEventHandler<ChangingNicknameEventArgs> ChangingNickname;
+
+        /// <summary>
         /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="ReservedSlotsCheckEventArgs"/> instance.</param>
@@ -560,6 +562,7 @@ namespace Exiled.Events.Handlers
         /// Called before throwing a grenade.
         /// </summary>
         /// <param name="ev">The <see cref="ThrownProjectileEventArgs"/> instance.</param>
+        // TODO: rename that to OnThrownProjectile
         public static void OnThrowingProjectile(ThrownProjectileEventArgs ev) => ThrownProjectile.InvokeSafely(ev);
 
         /// <summary>
@@ -787,10 +790,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> makes noise.
         /// </summary>
-        /// <param name="animatedCharacterModel"> The <see cref="AnimatedCharacterModel"/> instance.</param>
-        /// <param name="distance">The footsteps distance.</param>
-        public static void OnMakingNoise(AnimatedCharacterModel animatedCharacterModel, float distance)
-            => MakingNoise.InvokeSafely(new MakingNoiseEventArgs(animatedCharacterModel, distance));
+        /// <param name="ev">The <see cref="MakingNoiseEventArgs"/> instance.</param>
+        public static void OnMakingNoise(MakingNoiseEventArgs ev) => MakingNoise.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> jumps.
@@ -968,6 +969,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DestroyingEventArgs"/> instance. </param>
         public static void OnDestroying(DestroyingEventArgs ev) => Destroying.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="Player"/>'s custom display name is changed.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingNicknameEventArgs"/> instance.</param>
+        public static void OnChangingNickname(ChangingNicknameEventArgs ev) => ChangingNickname.InvokeSafely(ev);
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.

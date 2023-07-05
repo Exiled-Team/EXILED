@@ -18,7 +18,6 @@
 
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
-        <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
     </ItemGroup>
 
     <ItemGroup>
@@ -30,6 +29,7 @@
         <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
         <Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll" Private="false" />
         <Reference Include="System.ComponentModel.DataAnnotations" Private="false" />
+        <Reference Include="YamlDotNet" HintPath="$(EXILED_REFERENCES)\YamlDotNet.dll" Private="false" />
     </ItemGroup>
 
     <ItemGroup>
@@ -50,10 +50,6 @@
         <DependentUpon>AutoUpdateFiles.tt</DependentUpon>
       </Compile>
     </ItemGroup>
-
-
-
-
 
     <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
         <PostBuildEvent>if not "$(EXILED_DEV_PLUGINAPI_REFERENCE)"=="" copy /y "$(OutputPath)$(AssemblyName).dll" "$(EXILED_DEV_PLUGINAPI_REFERENCE)\"</PostBuildEvent>

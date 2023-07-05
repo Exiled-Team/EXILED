@@ -10,7 +10,6 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Enums;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
-    using Exiled.API.Interfaces;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
@@ -99,7 +98,7 @@ namespace Exiled.API.Features.Items
 #endif
             ItemPickupBase ipb = Object.Instantiate(Projectile.Base, position, Quaternion.identity);
 
-            ipb.Info = new PickupSyncInfo(Type, position, Quaternion.identity, Weight, ItemSerialGenerator.GenerateNext());
+            ipb.Info = new PickupSyncInfo(Type, Weight, ItemSerialGenerator.GenerateNext());
 
             FlashbangProjectile grenade = (FlashbangProjectile)Pickup.Get(ipb);
 

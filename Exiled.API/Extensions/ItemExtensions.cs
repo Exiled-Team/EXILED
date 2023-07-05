@@ -46,7 +46,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether or not the <see cref="ItemType"/> is an SCP.</returns>
-        public static bool IsScp(this ItemType type) => type is ItemType.SCP018 or ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP244a or ItemType.SCP244b or ItemType.SCP2176 or ItemType.SCP1853;
+        public static bool IsScp(this ItemType type) => type is ItemType.SCP018 or ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP244a or ItemType.SCP244b or ItemType.SCP2176 or ItemType.SCP1853 or ItemType.AntiSCP207 or ItemType.SCP1576;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a throwable item.
@@ -307,6 +307,36 @@ namespace Exiled.API.Extensions
                 return baseCode;
             else
                 throw new KeyNotFoundException($"Basecode for weapon {type} not found! Stored BaseCodesValue:\n{Firearm.BaseCodesValue.Keys.ToString(true)}\n{Firearm.BaseCodesValue.Values.ToString(true)}");
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ItemCategory"/> of the specified <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to check.</param>
+        /// <returns><see cref="ItemCategory"/> of the specified <see cref="ItemType"/>.</returns>
+        public static ItemCategory GetCategory(this ItemType type)
+        {
+            if (type is ItemType.MicroHID)
+                return ItemCategory.MicroHID;
+            if (type is ItemType.Radio)
+                return ItemCategory.Radio;
+
+            if (type.IsAmmo())
+                return ItemCategory.Ammo;
+            if (type.IsKeycard())
+                return ItemCategory.Keycard;
+            if (type.IsArmor())
+                return ItemCategory.Armor;
+            if (type.IsMedical())
+                return ItemCategory.Medical;
+            if (type.IsWeapon())
+                return ItemCategory.Firearm;
+            if (type.IsThrowable())
+                return ItemCategory.Grenade;
+            if (type.IsScp())
+                return ItemCategory.SCPItem;
+
+            return ItemCategory.None;
         }
     }
 }

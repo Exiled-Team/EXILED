@@ -28,8 +28,6 @@ namespace Exiled.Events.Patches.Generic
 
     using static HarmonyLib.AccessTools;
 
-    using ExiledEvents = Exiled.Events.Events;
-
     /// <summary>
     /// Checks friendly fire rules.
     /// </summary>
@@ -147,24 +145,37 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool))]
     internal static class HitboxIdentityCheckFriendlyFire
     {
-        private static bool Prefix(ReferenceHub attacker, ReferenceHub victim, ref bool __result)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
-            {
-                Log.Debug($"Hitbox patch {Server.FriendlyFire} || {IndividualFriendlyFire.CheckFriendlyFirePlayerRules(attacker, victim, out _)}");
-                bool currentResult = IndividualFriendlyFire.CheckFriendlyFirePlayerHitbox(attacker, victim);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-                if (!currentResult)
-                    return true;
+            Label jmp = generator.DefineLabel();
 
-                __result = currentResult;
-                return false;
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"{exception}");
-                return true;
-            }
+            // CheckFriendlyFirePlayer(this.PreviousOwner.Hub, referenceHub)
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    // CheckFriendlyFirePlayerHitbox(attacker, victim);
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerHitbox))),
+
+                    // goto base game logic if false
+                    new(OpCodes.Brfalse_S, jmp),
+
+                    // Return true
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Ret),
+
+                    // jmp
+                    new CodeInstruction(OpCodes.Nop).WithLabels(jmp),
+                });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 
@@ -252,9 +263,9 @@ namespace Exiled.Events.Patches.Generic
     }
 
     /// <summary>
-    /// Patches <see cref="FlashbangGrenade.PlayExplosionEffects()"/>.
+    /// Patches <see cref="FlashbangGrenade.ServerFuseEnd()"/>.
     /// </summary>
-    [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PlayExplosionEffects))]
+    [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ServerFuseEnd))]
     internal static class FlashbangGrenadePlayExplosionEffectsPatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -280,7 +291,7 @@ namespace Exiled.Events.Patches.Generic
                     new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
 
                     // referenceHub
-                    new(OpCodes.Ldloc_2),
+                    new(OpCodes.Ldloc_3),
 
                     // CheckFriendlyFirePlayer(this.PreviousOwner.Hub, referenceHub)
                     new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer))),

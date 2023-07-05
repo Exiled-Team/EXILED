@@ -38,10 +38,11 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label returnLabel = generator.DefineLabel();
+            Label jump = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ShotEventArgs));
 
-            const int offset = 2;
+            int offset = 2;
             int index = newInstructions.FindLastIndex(
                 instruction => instruction.Calls(Method(typeof(FirearmBaseStats), nameof(FirearmBaseStats.DamageAtDistance)))) + offset;
 
@@ -49,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new CodeInstruction[]
                 {
-                    // Player.Get(this.Hub)
+                    // this.Hub
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(StandardHitregBase), nameof(StandardHitregBase.Hub))),
 
@@ -67,6 +68,39 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (!ev.CanHurt)
                     //    return;
                     new(OpCodes.Brfalse_S, returnLabel),
+                });
+
+            offset = -3;
+            index = newInstructions.FindLastIndex(
+                instruction => instruction.Calls(Method(typeof(StandardHitregBase), nameof(StandardHitregBase.PlaceBulletholeDecal)))) + offset;
+
+            // replace the original goto label
+            newInstructions.FindAll(instruction => instruction.opcode == OpCodes.Brfalse).ForEach(instruction => instruction.operand = jump);
+
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    new CodeInstruction(OpCodes.Nop).WithLabels(jump),
+
+                    // this.Hub
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StandardHitregBase), nameof(StandardHitregBase.Hub))),
+
+                    // hit
+                    new(OpCodes.Ldarg_2),
+
+                    // destructible
+                    new(OpCodes.Ldnull),
+
+                    // damage
+                    new(OpCodes.Ldc_R4, 0f),
+                    new(OpCodes.Stloc_S, 1),
+                    new(OpCodes.Ldloca_S, 1),
+
+                    // Shot.ProcessShot
+                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot), new[] { typeof(ReferenceHub), typeof(RaycastHit), typeof(IDestructible), typeof(float).MakeByRefType(), })),
+                    new(OpCodes.Pop),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
@@ -89,8 +123,37 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label returnLabel = generator.DefineLabel();
 
-            const int offset = 0;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
+            int offset = -3;
+            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(StandardHitregBase), nameof(StandardHitregBase.PlaceBulletholeDecal)))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // this.Hub
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(BuckshotHitreg), nameof(BuckshotHitreg.Hub))),
+
+                    // hit
+                    new(OpCodes.Ldloc_2),
+
+                    // destructible
+                    new(OpCodes.Ldloc_3),
+
+                    // damage
+                    new(OpCodes.Ldc_R4, 0f),
+                    new(OpCodes.Stloc_S, 4),
+                    new(OpCodes.Ldloca_S, 4),
+
+                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot), new[] { typeof(ReferenceHub), typeof(RaycastHit), typeof(IDestructible), typeof(float).MakeByRefType(), })),
+
+                    // if (!ev.CanHurt)
+                    //    return;
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
+
+            offset = 0;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
 
             newInstructions.InsertRange(
                 index,

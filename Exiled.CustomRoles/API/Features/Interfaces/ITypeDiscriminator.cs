@@ -27,6 +27,6 @@ namespace Exiled.CustomRoles.API.Features.Interfaces
         /// <param name="buffer">The <see cref="ParsingEventBuffer"/> parser buffer.</param>
         /// <param name="suggestedType">The <see cref="Type"/> to resolve the mapping key.</param>
         /// <returns><see langword="true"/> if resolution is successful; otherwise, <see langword="false"/>.</returns>
-        bool TryResolve(ParsingEventBuffer buffer, out Type suggestedType);
+        bool TryResolve(ParsingEventBuffer buffer, out Type? suggestedType);
     }
 }

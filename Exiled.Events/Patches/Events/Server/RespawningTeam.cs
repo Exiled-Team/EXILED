@@ -9,16 +9,15 @@ namespace Exiled.Events.Patches.Events.Server
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
     using Exiled.Events.EventArgs.Server;
     using Exiled.Events.Handlers;
-
     using HarmonyLib;
-
     using Respawning;
+    using Respawning.NamingRules;
 
     using static HarmonyLib.AccessTools;
 
@@ -35,8 +34,8 @@ namespace Exiled.Events.Patches.Events.Server
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int offset = -2;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_3) + offset;
+            int offset = -6;
+            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(UnitNamingRule), nameof(UnitNamingRule.TryGetNamingRule)))) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(RespawningTeamEventArgs));
 
@@ -47,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Server
                 new[]
                 {
                     // GetPlayers(list);
-                    new(OpCodes.Ldloc_1),
+                    new CodeInstruction(OpCodes.Ldloc_1).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetPlayers))),
 
                     // maxWaveSize
@@ -81,8 +80,9 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Stfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
                     new(OpCodes.Ret),
 
-                    // load "ev" three times
+                    // load "ev" four times
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
+                    new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
 
@@ -98,7 +98,14 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.Players))),
                     new(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetHubs))),
                     new(OpCodes.Stloc_1),
+
+                    // queueToFill = ev.SpawnQueue;
+                    new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.SpawnQueue))),
+                    new(OpCodes.Stloc, 7),
                 });
+
+            offset = -6;
+            newInstructions.RemoveRange(newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(SpawnableTeamHandlerBase), nameof(SpawnableTeamHandlerBase.GenerateQueue))) + offset, 7);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

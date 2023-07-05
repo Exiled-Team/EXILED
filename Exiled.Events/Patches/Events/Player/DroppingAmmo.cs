@@ -22,10 +22,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Inventory.UserCode_CmdDropAmmo" />.
+    ///     Patches <see cref="Inventory.UserCode_CmdDropAmmo__Byte__UInt16" />.
     ///     Adds the <see cref="DroppingAmmo" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdDropAmmo))]
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdDropAmmo__Byte__UInt16))]
     internal static class DroppingAmmo
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

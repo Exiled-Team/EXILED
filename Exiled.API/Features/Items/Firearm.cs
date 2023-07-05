@@ -71,8 +71,7 @@ namespace Exiled.API.Features.Items
             if (Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.Flashlight))
                 firearmStatusFlags |= FirearmStatusFlags.FlashlightEnabled;
 
-            Base.Status = new FirearmStatus(0, firearmStatusFlags, Base.Status.Attachments);
-            Base._refillAmmo = true;
+            Base.Status = new FirearmStatus(Base.AmmoManagerModule.MaxAmmo, firearmStatusFlags, Base.Status.Attachments);
         }
 
         /// <inheritdoc cref="BaseCodesValue"/>.
@@ -571,7 +570,7 @@ namespace Exiled.API.Features.Items
         {
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
 
-            ipb.Info = new(Type, position, rotation, Weight, ItemSerialGenerator.GenerateNext());
+            ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
             ipb.gameObject.transform.localScale = Scale;
 
             FirearmPickup pickup = Pickup.Get(ipb).As<FirearmPickup>();
@@ -620,7 +619,7 @@ namespace Exiled.API.Features.Items
                 AutomaticFirearm automaticFirearm =>
                     new SingleBulletHitreg(automaticFirearm, automaticFirearm.Owner, automaticFirearm._recoilPattern),
                 Shotgun shotgun =>
-                    new BuckshotHitreg(shotgun, shotgun.Owner, shotgun._buckshotStats),
+                    new BuckshotHitreg(shotgun, shotgun.Owner, shotgun.GetBuckshotPattern),
                 ParticleDisruptor particleDisruptor =>
                     new DisruptorHitreg(particleDisruptor, particleDisruptor.Owner, particleDisruptor._explosionSettings),
                 Revolver revolver =>

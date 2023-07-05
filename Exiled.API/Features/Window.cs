@@ -7,7 +7,9 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using DamageHandlers;
 
@@ -149,6 +151,37 @@ namespace Exiled.API.Features
         public static Window Get(BreakableWindow breakableWindow) => BreakableWindowToWindow.TryGetValue(breakableWindow, out Window window)
             ? window
             : new(breakableWindow);
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Window"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Window"/> which contains elements that satify the condition.</returns>
+        public static IEnumerable<Window> Get(Func<Window, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Try-get a <see cref="Window"/> belonging to the <see cref="BreakableWindow"/>, if any.
+        /// </summary>
+        /// <param name="breakableWindow">The <see cref="BreakableWindow"/> instance.</param>
+        /// <param name="window">A <see cref="Window"/> or <see langword="null"/> if not found.</param>
+        /// <returns>Whether or not a window was found.</returns>
+        public static bool TryGet(BreakableWindow breakableWindow, out Window window)
+        {
+            window = Get(breakableWindow);
+            return window is not null;
+        }
+
+        /// <summary>
+        /// Try-get a <see cref="IEnumerable{T}"/> of <see cref="Window"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="windows">A <see cref="IEnumerable{T}"/> of <see cref="Window"/> which contains elements that satify the condition.</param>
+        /// <returns>Whether or not at least one window was found.</returns>
+        public static bool TryGet(Func<Window, bool> predicate, out IEnumerable<Window> windows)
+        {
+            windows = Get(predicate);
+            return windows.Any();
+        }
 
         /// <summary>
         /// Break the window.

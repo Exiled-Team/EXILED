@@ -47,6 +47,7 @@ namespace Exiled.API.Features.DamageHandlers
         {
             this.player = player;
             this.damageType = damageType;
+            cassieAnnouncement ??= DamageHandlerBase.CassieAnnouncement.Default;
             customCassieAnnouncement = cassieAnnouncement;
 
             if (customCassieAnnouncement is not null)

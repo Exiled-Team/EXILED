@@ -14,15 +14,17 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs.Server;
+
     using GameCore;
     using HarmonyLib;
     using MEC;
     using PlayerRoles;
     using PluginAPI.Core;
-    using PluginAPI.Enums;
     using PluginAPI.Events;
     using RoundRestarting;
     using UnityEngine;
+
+    using Round = API.Features.Round;
 
     /// <summary>
     ///     Patches <see cref="RoundSummary.Start" />.
@@ -47,6 +49,9 @@ namespace Exiled.Events.Patches.Events.Server
                         RoundSummary.SumInfo_ClassList newList = default;
                         foreach (ReferenceHub referenceHub in ReferenceHub.AllHubs)
                         {
+                            if (Round.IgnoredPlayers.Contains(referenceHub))
+                                continue;
+
                             switch (referenceHub.GetTeam())
                             {
                                 case Team.SCPs:
@@ -109,7 +114,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                         if (!roundSummary._roundEnded)
                         {
-                            RoundEndConditionsCheckCancellationData.RoundEndConditionsCheckCancellation cancellation = EventManager.ExecuteEvent<RoundEndConditionsCheckCancellationData>(ServerEventType.RoundEndConditionsCheck, new object[] { shouldRoundEnd }).Cancellation;
+                            RoundEndConditionsCheckCancellationData.RoundEndConditionsCheckCancellation cancellation = EventManager.ExecuteEvent<RoundEndConditionsCheckCancellationData>(new RoundEndConditionsCheckEvent(shouldRoundEnd)).Cancellation;
                             int num4 = (int)cancellation;
                             if (num4 != 1)
                             {
@@ -146,17 +151,18 @@ namespace Exiled.Events.Patches.Events.Server
 
                         EndingRoundEventArgs endingRoundEventArgs = new(leadingTeam, newList, shouldRoundEnd);
                         Handlers.Server.OnEndingRound(endingRoundEventArgs);
+                        leadingTeam = (RoundSummary.LeadingTeam)endingRoundEventArgs.LeadingTeam;
                         if (endingRoundEventArgs.IsRoundEnded)
                         {
                             roundSummary._roundEnded = true;
-                            RoundEndCancellationData roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(ServerEventType.RoundEnd, new object[] { leadingTeam });
+                            RoundEndCancellationData roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(new RoundEndEvent(leadingTeam));
                             while (roundEndCancellationData.IsCancelled)
                             {
                                 if (roundEndCancellationData.Delay <= 0f)
                                     break;
 
                                 yield return Timing.WaitForSeconds(roundEndCancellationData.Delay);
-                                roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(ServerEventType.RoundEnd, new object[] { leadingTeam });
+                                roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(new RoundEndEvent(leadingTeam));
                             }
 
                             if (Statistics.FastestEndedRound.Duration > RoundStart.RoundLength)
@@ -181,7 +187,7 @@ namespace Exiled.Events.Patches.Events.Server
                             if (roundSummary != null)
                             {
                                 roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, newList, leadingTeam, RoundSummary.EscapedClassD, RoundSummary.EscapedScientists, RoundSummary.KilledBySCPs, num5, (int)RoundStart.RoundLength.TotalSeconds);
-                                RoundEndedEventArgs roundEndedEventArgs = new(endingRoundEventArgs.LeadingTeam, newList, num5);
+                                RoundEndedEventArgs roundEndedEventArgs = new((API.Enums.LeadingTeam)leadingTeam, newList, num5);
 
                                 Handlers.Server.OnRoundEnded(roundEndedEventArgs);
                             }

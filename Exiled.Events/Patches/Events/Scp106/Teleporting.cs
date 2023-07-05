@@ -11,91 +11,77 @@ namespace Exiled.Events.Patches.Events.Scp106
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
     using Exiled.Events.EventArgs.Scp106;
     using Exiled.Events.Handlers;
-
     using HarmonyLib;
-
     using PlayerRoles.PlayableScps.Scp106;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Scp106HuntersAtlasAbility.ServerProcessCmd" />.
+    ///     Patches <see cref="Scp106HuntersAtlasAbility.GetSafePosition" />.
     ///     Adds the <see cref="Handlers.Scp106.Teleporting" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.ServerProcessCmd))]
+    [HarmonyPatch(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.GetSafePosition))]
     internal static class Teleporting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            // The index offset.
-            const int offset = 1;
-
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_0) + offset;
-
-            // Declare TeleportingEventArgs, to be able to store its instance.
             LocalBuilder ev = generator.DeclareLocal(typeof(TeleportingEventArgs));
+            Label continueLabel = generator.DefineLabel();
 
-            // Get the count to find the previous index
-            int oldCount = newInstructions.Count;
+            int offset = -2;
+            int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ret) + offset;
 
-            // Define the return label for the last instruction.
-            Label returnLabel = generator.DefineLabel();
-
-            // TeleportingEventArgs ev = new TeleportingEventArgs(Player.Get(base.Owner), this.Position, true);
-            //
-            // Handlers.Scp106.OnTeleporting(ev);
-            //
-            // if (!ev.IsAllowed)
-            //   return;
-            //
-            // position = ev.Position;
             newInstructions.InsertRange(
                 index,
-                new CodeInstruction[]
+                new[]
                 {
-                    // Player.Get(base.Owner)
+                    // Player player = Player.Get(this.Owner);
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp106Role>), nameof(ScpStandardSubroutine<Scp106Role>.Owner))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                    // position
+                    // safePosition
                     new(OpCodes.Ldloc_0),
 
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // TeleportingEventArgs ev = new(Player, Vector3, bool)
+                    // TeleportingEventArgs ev = new(player, safePosition, true);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TeleportingEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
+                    new(OpCodes.Stloc, ev.LocalIndex),
 
-                    // Scp106.OnTeleporting(ev)
+                    // Handlers.Scp106.OnTeleporting(ev)
                     new(OpCodes.Call, Method(typeof(Scp106), nameof(Scp106.OnTeleporting))),
 
-                    // if (!ev.IsAllowed)
-                    //    return;
+                    // if (ev.IsAllowed)
+                    //     goto continueLabel;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TeleportingEventArgs), nameof(TeleportingEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, returnLabel),
+                    new(OpCodes.Brtrue_S, continueLabel),
 
-                    // position = ev.Position
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    // return this.Owner.transform.position;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.Owner))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.transform))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.position))),
+                    new(OpCodes.Ret),
+
+                    // safePosition = ev.Position;
+                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TeleportingEventArgs), nameof(TeleportingEventArgs.Position))),
                     new(OpCodes.Stloc_0),
                 });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+            foreach (var instruction in newInstructions)
+                yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }

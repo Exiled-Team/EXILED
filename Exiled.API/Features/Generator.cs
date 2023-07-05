@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -191,6 +192,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the last activator for the generator.
+        /// </summary>
+        public Player LastActivator
+        {
+            get => Player.Get(Base._lastActivator.Hub);
+            set => Base._lastActivator = value.Footprint;
+        }
+
+        /// <summary>
         /// Gets the generator position.
         /// </summary>
         public Vector3 Position => Base.transform.position;
@@ -214,10 +224,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/> instance.</param>
         /// <returns>A <see cref="Generator"/> or <see langword="null"/> if not found.</returns>
-        public static Generator Get(Scp079Generator scp079Generator) =>
-            Scp079GeneratorToGenerator.TryGetValue(scp079Generator, out Generator generator) ?
-            generator :
-            new(scp079Generator);
+        public static Generator Get(Scp079Generator scp079Generator) => scp079Generator == null ? null :
+            Scp079GeneratorToGenerator.TryGetValue(scp079Generator, out Generator generator) ? generator : new(scp079Generator);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> given the specified <see cref="GeneratorState"/>.
@@ -226,6 +234,49 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="Generator"/> with the given <see cref="GeneratorState"/> or <see langword="null"/> if not found.</returns>
         public static IEnumerable<Generator> Get(GeneratorState state)
             => List.Where(generator => generator.Base.HasFlag(generator.Base.Network_flags, (Scp079Generator.GeneratorFlags)state));
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satify the condition.</returns>
+        public static IEnumerable<Generator> Get(Func<Generator, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Try-get a <see cref="Generator"/> belonging to the <see cref="Scp079Generator"/>, if any.
+        /// </summary>
+        /// <param name="scp079Generator">The <see cref="Scp079Generator"/> instance.</param>
+        /// <param name="generator">A <see cref="Generator"/> or <see langword="null"/> if not found.</param>
+        /// <returns>Whether or not a generator was found.</returns>
+        public static bool TryGet(Scp079Generator scp079Generator, out Generator generator)
+        {
+            generator = Get(scp079Generator);
+            return generator is not null;
+        }
+
+        /// <summary>
+        /// Try-get a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> given the specified <see cref="GeneratorState"/>.
+        /// </summary>
+        /// <param name="state">The <see cref="GeneratorState"/> to search for.</param>
+        /// <param name="generators">A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> matching the <see cref="GeneratorState"/>.</param>
+        /// <returns>Whether or not at least one generator was found.</returns>
+        public static bool TryGet(GeneratorState state, out IEnumerable<Generator> generators)
+        {
+            generators = Get(state);
+            return generators.Any();
+        }
+
+        /// <summary>
+        /// Try-get a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="generators">A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satify the condition.</param>
+        /// <returns>Whether or not at least one generator was found.</returns>
+        public static bool TryGet(Func<Generator, bool> predicate, out IEnumerable<Generator> generators)
+        {
+            generators = Get(predicate);
+            return generators.Any();
+        }
 
         /// <summary>
         /// Denies the unlock.

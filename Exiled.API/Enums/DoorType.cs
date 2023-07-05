@@ -57,9 +57,9 @@ namespace Exiled.API.Enums
         Scp096,
 
         /// <summary>
-        /// Represents the 106_BOTTOM door.
+        /// Represents the 079_ARMORY door.
         /// </summary>
-        Scp106Bottom,
+        Scp079Armory,
 
         /// <summary>
         /// Represents the 106_PRIMARY door.
@@ -72,7 +72,7 @@ namespace Exiled.API.Enums
         Scp106Secondary,
 
         /// <summary>
-        /// Represents the 173 gate.
+        /// Represents the 173_GATE door.
         /// </summary>
         Scp173Gate,
 
@@ -300,5 +300,10 @@ namespace Exiled.API.Enums
         /// Represents the door inside <see cref="RoomType.LczAirlock"/> with <see cref="Interactables.Interobjects.AirlockController"/> component.
         /// </summary>
         Airlock,
+
+        /// <summary>
+        /// Represents the New Gate where Scp173 spawn in the <see cref="RoomType.Hcz049"/>.
+        /// </summary>
+        Scp173NewGate,
     }
 }

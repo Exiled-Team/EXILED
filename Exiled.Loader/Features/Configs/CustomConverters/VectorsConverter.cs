@@ -25,10 +25,10 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
     /// </summary>
     public sealed class VectorsConverter : IYamlTypeConverter
     {
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public bool Accepts(Type type) => type == typeof(Vector2) || type == typeof(Vector3) || type == typeof(Vector4);
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public object ReadYaml(IParser parser, Type type)
         {
             if (!parser.TryConsume<MappingStart>(out _))
@@ -61,7 +61,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
             return vector;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public void WriteYaml(IEmitter emitter, object value, Type type)
         {
             Dictionary<string, float> coordinates = DictionaryPool<string, float>.Pool.Get();

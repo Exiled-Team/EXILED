@@ -17,7 +17,6 @@
 
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
-        <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,6 +28,7 @@
         <Reference Include="NorthwoodLib" HintPath="$(EXILED_REFERENCES)\NorthwoodLib.dll" Private="false" />
         <Reference Include="PluginAPI" HintPath="$(EXILED_REFERENCES)\PluginAPI.dll" Private="false" />
         <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
+        <Reference Include="YamlDotNet" HintPath="$(EXILED_REFERENCES)\YamlDotNet.dll" Private="false" />
     </ItemGroup>
 
     <ItemGroup>

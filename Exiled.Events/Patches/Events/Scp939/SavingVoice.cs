@@ -7,16 +7,18 @@
 
 namespace Exiled.Events.Patches.Events.Scp939
 {
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
-
-    using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
     using PlayerStatsSystem;
-    using VoiceChat;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     ///     Patches <see cref="MimicryRecorder.OnAnyPlayerKilled(ReferenceHub, DamageHandlerBase)" />
@@ -25,40 +27,46 @@ namespace Exiled.Events.Patches.Events.Scp939
     [HarmonyPatch(typeof(MimicryRecorder), nameof(MimicryRecorder.OnAnyPlayerKilled))]
     internal static class SavingVoice
     {
-        private static bool Prefix(MimicryRecorder __instance, ReferenceHub ply, DamageHandlerBase dh)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (dh is not Scp939DamageHandler scp939DamageHandler)
-                return false;
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            if (scp939DamageHandler.Attacker.Hub != __instance.Owner)
-                return false;
+            Label ret = generator.DefineLabel();
 
-            if (__instance.IsMuted(VoiceChatMutes.GetFlags(ply)))
-                return false;
+            int offset = 3;
+            int index = newInstructions.FindIndex(i => i.operand == (object)Method(typeof(MimicryRecorder), nameof(MimicryRecorder.IsPrivacyAccepted))) + offset;
 
-            // Should consider whether to allow users to have this with their own custom DNT
-            if (!__instance.IsPrivacyAccepted(ply))
-                return false;
-
-            SavingVoiceEventArgs ev = new(__instance.Owner, ply);
-            Scp939.OnSavingVoice(ev);
-
-            if (!ev.IsAllowed)
+            newInstructions.InsertRange(index, new[]
             {
-                return false;
-            }
+                // this.Owner
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(MimicryRecorder), nameof(MimicryRecorder.Owner))),
 
-            __instance._syncPlayer = ply;
-            __instance._syncMute = false;
+                // ply
+                new CodeInstruction(OpCodes.Ldarg_1),
 
-            if (__instance.Owner.isLocalPlayer)
-                __instance.SaveRecording(ply);
-            else
-                __instance.ServerSendRpc(false);
+                // true
+                new(OpCodes.Ldc_I4_1),
 
-            __instance._serverSentVoices.Add(ply);
-            __instance._serverSentConfirmations.Remove(ply);
-            return false;
+                // SavingVoiceEventArgs ev = new(referenceHub, ply, isAllowed);
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SavingVoiceEventArgs))[0]),
+                new(OpCodes.Dup),
+
+                // Scp939.OnSavingVoice(ev);
+                new(OpCodes.Call, Method(typeof(Scp939), nameof(Scp939.OnSavingVoice))),
+
+                // if (!ev.IsAllowed)
+                //     return;
+                new(OpCodes.Callvirt, PropertyGetter(typeof(SavingVoiceEventArgs), nameof(SavingVoiceEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, ret),
+            });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(ret);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

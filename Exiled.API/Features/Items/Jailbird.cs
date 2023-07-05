@@ -10,7 +10,6 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.Jailbird;
-    using UnityEngine;
 
     /// <summary>
     /// A wrapped class for <see cref="JailbirdItem"/>.
@@ -86,17 +85,6 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets or sets the amount of damage remaining before the Jailbird breaks.
-        /// </summary>
-        /// <remarks>Modifying this value will directly modify <see cref="TotalDamageDealt"/>.</remarks>
-        /// <seealso cref="TotalDamageDealt"/>
-        public float RemainingDamage
-        {
-            get => JailbirdItem.DamageLimit - TotalDamageDealt;
-            set => TotalDamageDealt = Mathf.Clamp(JailbirdItem.DamageLimit - value, 0, JailbirdItem.DamageLimit);
-        }
-
-        /// <summary>
         /// Gets or sets the number of times the item has been charged and used.
         /// </summary>
         public int TotalCharges
@@ -106,24 +94,23 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets or sets the amount of charges remaining before the Jailbird breaks.
+        /// Gets or sets the <see cref="JailbirdWearState"/> for this item.
         /// </summary>
-        /// <remarks>Modifying this value will directly modify <see cref="TotalCharges"/>.</remarks>
-        /// <seealso cref="TotalCharges"/>
-        public int RemainingCharges
+        public JailbirdWearState WearState
         {
-            get => JailbirdItem.ChargesLimit - TotalCharges;
-            set => TotalCharges = Mathf.Clamp(JailbirdItem.ChargesLimit - value, 0, JailbirdItem.ChargesLimit);
+            get => Base._deterioration.WearState;
+            set
+            {
+                if (JailbirdDeteriorationTracker.ReceivedStates.ContainsKey(Serial))
+                    JailbirdDeteriorationTracker.ReceivedStates[Serial] = value;
+                Base._deterioration.RecheckUsage();
+            }
         }
 
         /// <summary>
         /// Breaks the Jailbird.
         /// </summary>
-        public void Break()
-        {
-            Base._broken = true;
-            Base.SendRpc(JailbirdMessageType.Broken);
-        }
+        public void Break() => WearState = JailbirdWearState.Broken;
 
         /// <summary>
         /// Clones current <see cref="Jailbird"/> object.

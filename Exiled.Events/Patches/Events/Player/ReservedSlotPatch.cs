@@ -11,14 +11,11 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
-    using Exiled.API.Enums;
     using Exiled.Events.EventArgs.Player;
 
     using Handlers;
 
     using HarmonyLib;
-
     using PluginAPI.Events;
 
     using static HarmonyLib.AccessTools;
@@ -33,82 +30,81 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            Label baseGame = generator.DefineLabel();
+            Label conditional = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
+            Label skipLabel = generator.DefineLabel();
+            LocalBuilder ev = generator.DeclareLocal(typeof(ReservedSlotsCheckEventArgs));
 
-            LocalBuilder jumpConditions = generator.DeclareLocal(typeof(ReservedSlotEventResult));
+            int offset = -2;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Newobj) + offset;
 
-            Label continueConditions = generator.DefineLabel();
-
-            Label allowUnconditional = generator.DefineLabel();
-            Label returnTrue = generator.DefineLabel();
-            Label returnFalse = generator.DefineLabel();
-
-            int offset = -1;
-            int index = newInstructions.FindLastIndex(
-                instruction => instruction.LoadsField(Field(typeof(PlayerCheckReservedSlotCancellationData), nameof(PlayerCheckReservedSlotCancellationData.HasReservedSlot)))) + offset;
-
-            newInstructions[index].WithLabels(continueConditions);
+            newInstructions[index].WithLabels(baseGame);
 
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
-                    // Grab user-id, copy label from current newInstruction[index] to ensure jumps to the label come to this instr instead
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-
-                    // Grab reserved slot bool
-                    new(OpCodes.Ldarg_1),
-
-                    // Instantiate object with previous vars
+                    // ReservedSlotCheckEventArgs ev = new(userid, flag);
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldloc_0),
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ReservedSlotsCheckEventArgs))[0]),
-
-                    // Duplicate for future use
                     new(OpCodes.Dup),
+                    new(OpCodes.Stloc, ev.LocalIndex),
 
-                    // Pass event to be invoked
+                    // Handlers.Player.OnReservedSlot(ev);
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnReservedSlot))),
 
-                    // Using duped value from before, grab result from event
+                    // if (ev.Result == ReservedSlotEventResult.UseBaseGameSystem)
+                    //     goto baseGame;
+                    new(OpCodes.Ldloc_S, ev),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ReservedSlotsCheckEventArgs), nameof(ReservedSlotsCheckEventArgs.Result))),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Beq_S, baseGame),
 
-                    // Store result value in local variable.
-                    new(OpCodes.Stloc_S, jumpConditions.LocalIndex),
-
-                    // Let normal NW code proceed. UseBaseGameSystem - 0 -> Allow base game check
-                    new(OpCodes.Ldloc_S, jumpConditions.LocalIndex),
-                    new(OpCodes.Brfalse_S, continueConditions),
-
-                    // Allow use of reserved slots, returning true CanUseReservedSlots - 1 - return true
-                    new(OpCodes.Ldloc_S, jumpConditions.LocalIndex),
-                    new(OpCodes.Ldc_I4_1),
-                    new(OpCodes.Beq_S, returnTrue),
-
-                    // Reserved slot rejection - CannotUseReservedSlots - 2 - return false
-                    new(OpCodes.Ldloc_S, jumpConditions.LocalIndex),
-                    new(OpCodes.Ldc_I4_2),
-                    new(OpCodes.Beq_S, returnFalse),
-
-                    // Allow unconditional connection - AllowConnectionUnconditionally - 3 - return true with bypass to true
-                    new(OpCodes.Ldloc_S, jumpConditions.LocalIndex),
+                    // if (ev.Result == ReservedSlotEventResult.AllowConnectionUnconditionally)
+                    // {
+                    //      bypass = true;
+                    //      return true;
+                    // }
+                    new(OpCodes.Ldloc_S, ev),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ReservedSlotsCheckEventArgs), nameof(ReservedSlotsCheckEventArgs.Result))),
                     new(OpCodes.Ldc_I4_3),
-                    new(OpCodes.Beq_S, allowUnconditional),
-
-                    // Return true, but set bypass to true.
-                    new CodeInstruction(OpCodes.Ldc_I4_1).WithLabels(allowUnconditional),
-                    new CodeInstruction(OpCodes.Starg_S, 1),
-
-                    // Return True
-                    new CodeInstruction(OpCodes.Ldc_I4_1).WithLabels(returnTrue),
+                    new(OpCodes.Bne_Un_S, conditional),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Call, Method(typeof(ReservedSlotPatch), nameof(CallNwEvent))),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Stind_I1),
+                    new(OpCodes.Ldc_I4_1),
                     new(OpCodes.Ret),
 
-                    // Return false
-                    new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(returnFalse),
-                    new(OpCodes.Ret),
+                    // if (ev.Result == ReservedSlotEventResult.CannotUseReservedSlots)
+                    // {
+                    //     bypass = false;
+                    //     return false;
+                    // }
+                    new CodeInstruction(OpCodes.Ldloc_S, ev).WithLabels(conditional),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ReservedSlotsCheckEventArgs), nameof(ReservedSlotsCheckEventArgs.Result))),
+                    new(OpCodes.Ldc_I4_2),
+                    new(OpCodes.Bne_Un_S, continueLabel),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Br_S, skipLabel),
+
+                    new CodeInstruction(OpCodes.Ldc_I4_1).WithLabels(continueLabel),
+                    new CodeInstruction(OpCodes.Stloc_0).WithLabels(skipLabel),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+
+        private static void CallNwEvent(string userId, bool hasReservedSlot)
+        {
+            EventManager.ExecuteEvent(new PlayerCheckReservedSlotEvent(userId, hasReservedSlot));
         }
     }
 }

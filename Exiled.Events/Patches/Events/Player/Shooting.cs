@@ -40,6 +40,7 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(ShootingEventArgs));
             LocalBuilder isAllowed = generator.DeclareLocal(typeof(bool));
             LocalBuilder firearm = generator.DeclareLocal(typeof(Item));
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
             int offset = 2;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Pop) + offset;
@@ -54,6 +55,12 @@ namespace Exiled.Events.Patches.Events.Player
                     // Player.Get(referenceHub)
                     new(OpCodes.Ldloc_0),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, player.LocalIndex),
+
+                    // Check to make sure the player is not null. (Yes, this happens)
+                    new(OpCodes.Brfalse_S, returnLabel),
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
 
                     // msg
                     new(OpCodes.Ldarg_1),

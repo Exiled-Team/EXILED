@@ -17,7 +17,7 @@ namespace Exiled.CustomRoles.API.Features.Parsers
     {
         private readonly LinkedList<ParsingEvent> buffer;
 
-        private LinkedListNode<ParsingEvent> current;
+        private LinkedListNode<ParsingEvent>? current;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParsingEventBuffer"/> class.
@@ -29,13 +29,13 @@ namespace Exiled.CustomRoles.API.Features.Parsers
             current = events.First;
         }
 
-        /// <inheritdoc/>
-        public ParsingEvent Current => current?.Value;
+        /// <inheritdoc cref="IParser"/>
+        public ParsingEvent? Current => current?.Value;
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IParser"/>
         public bool MoveNext()
         {
-            current = current.Next;
+            current = current?.Next;
             return current is not null;
         }
 

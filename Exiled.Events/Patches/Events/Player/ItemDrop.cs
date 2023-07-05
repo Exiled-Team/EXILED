@@ -25,10 +25,10 @@ namespace Exiled.Events.Patches.Events.Player
     using Item = API.Features.Items.Item;
 
     /// <summary>
-    ///     Patches <see cref="Inventory.UserCode_CmdDropItem" />.
+    ///     Patches <see cref="Inventory.UserCode_CmdDropItem__UInt16__Boolean" />.
     ///     Adds the <see cref="Player.DroppingItem" /> and <see cref="Player.DroppingNothing" /> events.
     /// </summary>
-    [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdDropItem))]
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdDropItem__UInt16__Boolean))]
     internal static class ItemDrop
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

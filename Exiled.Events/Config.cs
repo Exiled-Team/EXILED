@@ -33,15 +33,21 @@ namespace Exiled.Events
         public bool CanTutorialTriggerScp096 { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether SCP-049 can activate the sense ability on tutorials.
+        /// </summary>
+        [Description("Indicates whether SCP-049 can sense tutorial players or not")]
+        public bool CanScp049SenseTutorial { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a value indicating whether flashbangs flash original thrower.
         /// </summary>
         [Description("Indicates whether flashbangs flash original thrower.")]
         public bool CanFlashbangsAffectThrower { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the name tracking is enabled or not.
+        /// Gets or sets a value indicating whether the name tracking (invisible EXILED version string added to the end of the server name) is enabled or not.
         /// </summary>
-        [Description("Indicates whether the name tracking is enabled or not")]
+        [Description("Indicates whether the name tracking (invisible EXILED version string added to the end of the server name) is enabled or not")]
         public bool IsNameTrackingEnabled { get; set; } = true;
 
         /// <summary>

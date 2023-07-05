@@ -29,7 +29,6 @@ namespace Exiled.Loader
     using Features.Configs.CustomConverters;
 
     using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.NamingConventions;
     using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
@@ -103,6 +102,7 @@ namespace Exiled.Loader
             .WithTypeConverter(new VectorsConverter())
             .WithTypeConverter(new ColorConverter())
             .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
             .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
             .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -272,6 +272,9 @@ namespace Exiled.Loader
                         plugin.OnRegisteringCommands();
                         toLoad.Remove(plugin);
                     }
+
+                    if (plugin.Config.Debug)
+                        Log.DebugEnabled.Add(plugin.Assembly);
                 }
                 catch (Exception exception)
                 {
@@ -321,6 +324,7 @@ namespace Exiled.Loader
 
             Plugins.Clear();
             Server.PluginAssemblies.Clear();
+            Locations.Clear();
 
             LoadPlugins();
 

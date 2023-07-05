@@ -25,10 +25,10 @@ namespace Exiled.Events.Patches.Events.Server
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="CheaterReport.UserCode_CmdReport(uint, string, byte[], bool)" />.
+    ///     Patches CheaterReport.UserCode_CmdReport__UInt32__String__Byte\u005B\u005D__Boolean(uint, string, byte[], bool) />.
     ///     Adds the <see cref="Server.ReportingCheater" /> and <see cref="Server.LocalReporting" /> events.
     /// </summary>
-    [HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.UserCode_CmdReport))]
+    [HarmonyPatch(typeof(CheaterReport), @"UserCode_CmdReport__UInt32__String__Byte[]__Boolean")]
     internal static class Reporting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Server
             LocalBuilder evLocalReporting = generator.DeclareLocal(typeof(LocalReportingEventArgs));
             LocalBuilder evReportingCheater = generator.DeclareLocal(typeof(ReportingCheaterEventArgs));
 
-            int offset = -2;
+            int offset = -1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newarr) + offset;
 
             Label ret = generator.DefineLabel();
@@ -90,10 +90,10 @@ namespace Exiled.Events.Patches.Events.Server
                 index,
                 new[]
                 {
-                    // Player.Get(base.gameObject)
+                    // Player.Get(this._hub)
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                    new(OpCodes.Ldfld, Field(typeof(CheaterReport), nameof(CheaterReport._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // Player.Get(referenceHub)
                     new(OpCodes.Ldloc_2),

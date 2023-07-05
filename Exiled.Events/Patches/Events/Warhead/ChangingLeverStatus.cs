@@ -22,10 +22,10 @@ namespace Exiled.Events.Patches.Events.Warhead
     using Warhead = Handlers.Warhead;
 
     /// <summary>
-    ///     Patches <see cref="PlayerInteract.UserCode_CmdUsePanel" />.
+    ///     Patches <see cref="PlayerInteract.UserCode_CmdUsePanel__AlphaPanelOperations" />.
     ///     Adds the <see cref="Warhead.ChangingLeverStatus" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUsePanel))]
+    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUsePanel__AlphaPanelOperations))]
     internal static class ChangingLeverStatus
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
