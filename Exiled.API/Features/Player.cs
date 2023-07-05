@@ -1309,7 +1309,7 @@ namespace Exiled.API.Features
                     }
                 }
 
-                if (playerFound is null && Misc.ValidateIpOrHostname(args, out Misc.IPAddressType ipaddressType, true, true))
+                if (playerFound is null && Misc.ValidateIpOrHostname(args, out Misc.IPAddressType ipaddressType))
                 {
                     playerFound = ipaddressType switch
                     {
