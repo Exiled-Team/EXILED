@@ -21,8 +21,6 @@ namespace Exiled.CustomItems.API.Features
     using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
 
-    using PlayerRoles;
-
     using UnityEngine;
 
     using Firearm = Exiled.API.Features.Items.Firearm;
@@ -134,7 +132,7 @@ namespace Exiled.CustomItems.API.Features
             Log.Debug($"{nameof(Give)}: Adding {item.Serial} to tracker.");
             TrackedSerials.Add(item.Serial);
 
-            OnAcquired(player, displayMessage);
+            OnAcquired(player, item, displayMessage);
         }
 
         /// <inheritdoc/>

@@ -21,8 +21,6 @@ namespace Exiled.Events.Patches.Events.Item
 
     using static HarmonyLib.AccessTools;
 
-    using Player = API.Features.Player;
-
     /// <summary>
     ///     Patches <see cref="Firearm.Status" />.
     ///     Adds the <see cref="Item.ChangingAmmo" /> event.
