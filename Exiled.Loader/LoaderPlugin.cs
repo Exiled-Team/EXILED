@@ -58,22 +58,23 @@ namespace Exiled.Loader
 
             Log.Info($"Loading EXILED Version: {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}");
 
-            Paths.Reload(Config.ExiledDirectoryPath);
+            string rootPath = Config.ExiledDirectoryPath;
 
-            Log.Info($"Exiled root path set to: {Paths.Exiled}");
+            string dependenciesPath = Path.Combine(rootPath, "Plugins", "dependencies");
 
-            Directory.CreateDirectory(Paths.Exiled);
-            Directory.CreateDirectory(Paths.Configs);
-            Directory.CreateDirectory(Paths.Plugins);
-            Directory.CreateDirectory(Paths.Dependencies);
+            Log.Info($"Exiled root path set to: {rootPath}");
 
-            if (!File.Exists(Path.Combine(Paths.Dependencies, "Exiled.API.dll")))
+            if (!File.Exists(Path.Combine(dependenciesPath, "Exiled.API.dll")))
             {
-                Log.Error($"Exiled.API.dll was not found at {Path.Combine(Paths.Dependencies, "Exiled.API.dll")}, Exiled won't be loaded!");
+                Log.Error($"Exiled.API.dll was not found at {Path.Combine(dependenciesPath, "Exiled.API.dll")}, Exiled won't be loaded!");
                 return;
             }
 
-            new Loader().Run();
+            new Loader().Run(new[]
+                            {
+                                Assembly.Load(File.ReadAllBytes(Path.Combine(dependenciesPath, "Exiled.API.dll"))),
+                                Assembly.Load(File.ReadAllBytes(Path.Combine(dependenciesPath, "YamlDotNet.dll"))),
+                            });
         }
     }
 }
