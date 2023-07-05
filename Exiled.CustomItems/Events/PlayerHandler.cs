@@ -12,8 +12,6 @@ namespace Exiled.CustomItems.Events
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs.Player;
 
-    using PlayerRoles;
-
     /// <summary>
     /// Handles Player events for the CustomItem API.
     /// </summary>
