@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events.Scp079
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            int offset = 4;
+            int offset = 3;
             int index = newInstructions.FindIndex(
                 instruction => instruction.LoadsField(Field(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility._syncZone)))) + offset;
 

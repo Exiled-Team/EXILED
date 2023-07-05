@@ -91,15 +91,11 @@ namespace Exiled.API.Features
         /// <summary>
         /// Reset the intercom's cooldown.
         /// </summary>
-        public static void Reset() => RemainingCooldown = -1f;
+        public static void Reset() => State = IntercomState.Ready;
 
         /// <summary>
         /// Times out the intercom.
         /// </summary>
-        public static void Timeout()
-        {
-            if (InUse)
-                SpeechRemainingTime = -1f;
-        }
+        public static void Timeout() => State = IntercomState.Cooldown;
     }
 }

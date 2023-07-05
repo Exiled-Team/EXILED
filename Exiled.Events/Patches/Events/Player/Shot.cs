@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection.Emit;
 
     using API.Features;
@@ -124,8 +123,37 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label returnLabel = generator.DefineLabel();
 
-            const int offset = 0;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
+            int offset = -3;
+            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(StandardHitregBase), nameof(StandardHitregBase.PlaceBulletholeDecal)))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // this.Hub
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(BuckshotHitreg), nameof(BuckshotHitreg.Hub))),
+
+                    // hit
+                    new(OpCodes.Ldloc_2),
+
+                    // destructible
+                    new(OpCodes.Ldloc_3),
+
+                    // damage
+                    new(OpCodes.Ldc_R4, 0f),
+                    new(OpCodes.Stloc_S, 4),
+                    new(OpCodes.Ldloca_S, 4),
+
+                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot), new[] { typeof(ReferenceHub), typeof(RaycastHit), typeof(IDestructible), typeof(float).MakeByRefType(), })),
+
+                    // if (!ev.CanHurt)
+                    //    return;
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
+
+            offset = 0;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
 
             newInstructions.InsertRange(
                 index,

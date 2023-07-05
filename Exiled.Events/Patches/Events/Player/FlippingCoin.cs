@@ -12,17 +12,11 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-
     using Exiled.Events.EventArgs.Player;
-
     using HarmonyLib;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Coin;
-
     using Mirror;
-
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -42,18 +36,15 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(FlippingCoinEventArgs));
 
-            int offset = 0;
-            int index = newInstructions.FindIndex(instruction => instruction.LoadsConstant(109)) + offset;
-
-            offset = -1;
-            int replaceIndex = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Random), nameof(Random.value)))) + offset;
+            int offset = -5;
+            int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Brtrue_S) + offset;
 
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
                     // Player.Get(ReferenceHub)
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]).MoveLabelsFrom(newInstructions[replaceIndex]),
+                    new CodeInstruction(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ItemBase), nameof(ItemBase.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
@@ -74,7 +65,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(FlippingCoinEventArgs), nameof(FlippingCoinEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse, returnLabel),
 
-                    // flag = ev.IsTails
+                    // isTails = ev.IsTails
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(FlippingCoinEventArgs), nameof(FlippingCoinEventArgs.IsTails))),
                     new(OpCodes.Stloc_1),

@@ -33,7 +33,6 @@ namespace Exiled.Events.Handlers.Internal
 
     using Utils.NonAllocLINQ;
 
-    using Broadcast = Broadcast;
     using Camera = API.Features.Camera;
     using Object = UnityEngine.Object;
 

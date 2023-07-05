@@ -128,11 +128,6 @@ namespace Exiled.API.Features.Roles
         public bool CanActivateTesla => Base.CanActivateShock;
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-106 is ready for idle.
-        /// </summary>
-        public bool CanActivateIdle => Base.CanActivateIdle;
-
-        /// <summary>
         /// Gets a value indicating whether if SCP-106 <see cref="Scp106StalkAbility"/> can be cleared.
         /// </summary>
         public bool CanStopStalk => StalkAbility.CanBeCleared;
@@ -230,9 +225,7 @@ namespace Exiled.API.Features.Roles
         public bool UsePortal(Vector3 position, float cost = 0f)
         {
             if (Room.Get(position) is not Room room)
-            {
-                throw new System.InvalidOperationException("Invalid room provided.");
-            }
+                return false;
 
             HuntersAtlasAbility._syncRoom = room.Identifier;
             HuntersAtlasAbility._syncPos = position;
@@ -250,8 +243,10 @@ namespace Exiled.API.Features.Roles
         /// Send a player to the pocket dimension.
         /// </summary>
         /// <param name="player">The <see cref="Player"/>to send.</param>
-        public void CapturePlayer(Player player)
+        public void CapturePlayer(Player player) // Convert to bool.
         {
+            if (player is null)
+                return;
             Attack._targetHub = player.ReferenceHub;
             DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, Attack._damage, DeathTranslations.PocketDecay);
 
@@ -263,7 +258,6 @@ namespace Exiled.API.Features.Roles
             Attack.ReduceSinkholeCooldown();
             Hitmarker.SendHitmarker(Attack.Owner, 1f);
 
-            player.EnableEffect(EffectType.Traumatized, 180f);
             player.EnableEffect(EffectType.Corroding);
             player.EnableEffect(EffectType.SinkHole);
         }

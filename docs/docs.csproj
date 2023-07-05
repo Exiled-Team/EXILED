@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AssemblyName>docs</AssemblyName>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Configurations>Debug;Release;Installer</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <Import Project="../EXILED.props" />
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Exiled.API</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
+        <PackageReference Include="System.Memory" Version="4.5.5" />
+        <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" />
+    </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="docs\Resources\Intro.md">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Intro.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="docs\Resources\Intro.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Intro.md</LastGenOutput>
+    </Content>
+  </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Assembly-CSharp">
+          <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp-firstpass" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="false" />
+        <Reference Include="CommandSystem.Core" HintPath="$(EXILED_REFERENCES)\CommandSystem.Core.dll" Private="false" />
+        <Reference Include="Pooling" HintPath="$(EXILED_REFERENCES)\Pooling.dll" Private="false" />
+        <Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll" Private="false" />
+        <Reference Include="NorthwoodLib" HintPath="$(EXILED_REFERENCES)\NorthwoodLib.dll" Private="false" />
+        <Reference Include="PluginAPI" HintPath="$(EXILED_REFERENCES)\PluginAPI.dll" Private="false" />
+        <Reference Include="UnityEngine" HintPath="$(EXILED_REFERENCES)\UnityEngine.dll" Private="false" />
+        <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
+        <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
+        <Reference Include="YamlDotNet" HintPath="$(EXILED_REFERENCES)\YamlDotNet.dll" Private="false" />
+    </ItemGroup>
+    <ItemGroup>
+      <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    </ItemGroup>
+
+</Project>

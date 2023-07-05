@@ -17,8 +17,6 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
-
-    using PluginAPI.Enums;
     using PluginAPI.Events;
 
     using Log = API.Features.Log;
@@ -49,12 +47,7 @@ namespace Exiled.Events.Patches.Events.Player
                 reason = ev.Reason;
                 message = ev.FullMessage;
 
-                if (!EventManager.ExecuteEvent(ServerEventType.PlayerKicked, new object[]
-                {
-                    target,
-                    issuer,
-                    reason,
-                }))
+                if (!EventManager.ExecuteEvent(new PlayerKickedEvent(target, issuer, reason)))
                 {
                     __result = false;
                     return false;

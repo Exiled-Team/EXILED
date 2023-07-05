@@ -13,7 +13,6 @@ namespace Exiled.Events.Patches.Events.Item
     using Exiled.Events.EventArgs.Item;
     using Handlers;
     using HarmonyLib;
-    using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Jailbird;
     using Mirror;
     using NorthwoodLib.Pools;
