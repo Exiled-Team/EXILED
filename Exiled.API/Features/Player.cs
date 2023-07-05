@@ -928,7 +928,7 @@ namespace Exiled.API.Features
                 }
 
                 if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
-                    AddItem(value.Base);
+                    AddItem(value);
 
                 Inventory.ServerSelectItem(value.Serial);
             }
