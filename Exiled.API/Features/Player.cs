@@ -304,7 +304,6 @@ namespace Exiled.API.Features
                     "steam" => AuthenticationType.Steam,
                     "discord" => AuthenticationType.Discord,
                     "northwood" => AuthenticationType.Northwood,
-                    "patreon" => AuthenticationType.Patreon,
                     _ => AuthenticationType.Unknown,
                 };
             }
@@ -319,7 +318,7 @@ namespace Exiled.API.Features
         public bool IsVerified { get; internal set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is NPC.
+        /// Gets or sets a value indicating whether or not the player is a NPC.
         /// </summary>
         public bool IsNPC { get; set; }
 

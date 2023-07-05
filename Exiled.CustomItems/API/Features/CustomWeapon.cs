@@ -132,7 +132,7 @@ namespace Exiled.CustomItems.API.Features
             Log.Debug($"{nameof(Give)}: Adding {item.Serial} to tracker.");
             TrackedSerials.Add(item.Serial);
 
-            OnAcquired(player, displayMessage);
+            OnAcquired(player, item, displayMessage);
         }
 
         /// <inheritdoc/>
