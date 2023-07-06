@@ -8,7 +8,7 @@
 namespace Exiled.Events.Attributes
 {
     using System;
-    using Exiled.Events.EventArgs.Interfaces;
+
     using Exiled.Events.Interfaces;
 
     /// <summary>
