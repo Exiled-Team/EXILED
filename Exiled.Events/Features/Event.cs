@@ -8,6 +8,7 @@
 namespace Exiled.Events.Features
 {
     using System;
+    using System.Linq;
 
     using Exiled.API.Features;
     using Exiled.Events.Interfaces;
@@ -89,7 +90,7 @@ namespace Exiled.Events.Features
         /// </summary>
         public void InvokeSafely()
         {
-            foreach (CustomEventHandler handler in InnerEvent.GetInvocationList())
+            foreach (CustomEventHandler handler in InnerEvent.GetInvocationList().Cast<CustomEventHandler>())
             {
                 try
                 {
