@@ -3172,7 +3172,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="projectileType">The projectile that will create the explosion.</param>
         /// <param name="attacker">The Player that will causing the explosion.</param>
-        public void Explode2(ProjectileType projectileType, Player attacker = null) => Map.Explode(Position, projectileType, attacker);
+        public void Explode(ProjectileType projectileType, Player attacker = null) => Map.Explode(Position, projectileType, attacker);
 
         /// <summary>
         /// Spawn projectile effect on the player.
