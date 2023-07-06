@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -30,6 +30,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="Consumable.ServerOnUsingCompleted" />
     ///     Adds the <see cref="Handlers.Player.UsedItem" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsedItem))]
     [HarmonyPatch(typeof(Consumable), nameof(Consumable.ServerOnUsingCompleted))]
     internal static class UsedItem
     {
@@ -67,6 +68,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="Scp268.ServerOnUsingCompleted" />
     ///     Adds the <see cref="Handlers.Player.UsedItem" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsedItem))]
     [HarmonyPatch(typeof(Scp268), nameof(Scp268.ServerOnUsingCompleted))]
     internal static class UsedItem268
     {
@@ -89,6 +91,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="Scp1576Item.ServerOnUsingCompleted" />
     ///     Adds the <see cref="Handlers.Player.UsedItem" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsedItem))]
     [HarmonyPatch(typeof(Scp1576Item), nameof(Scp1576Item.ServerOnUsingCompleted))]
     internal static class UsedItem1576
     {

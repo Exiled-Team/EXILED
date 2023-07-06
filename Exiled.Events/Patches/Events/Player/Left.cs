@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -25,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="CustomNetworkManager.OnServerDisconnect(NetworkConnectionToClient)" />.
     ///     Adds the <see cref="Handlers.Player.Left" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Left))]
     [HarmonyPatch(typeof(CustomNetworkManager), nameof(CustomNetworkManager.OnServerDisconnect), typeof(NetworkConnectionToClient))]
     internal static class Left
     {

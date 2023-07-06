@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -26,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="EnvironmentalHazard.OnStay(ReferenceHub)"/>.
     /// Adds the <see cref="Handlers.Player.StayingOnEnvironmentalHazard"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.StayingOnEnvironmentalHazard))]
     [HarmonyPatch(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnStay))]
     internal static class StayingOnEnvironmentalHazard
     {

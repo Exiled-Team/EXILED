@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features.Pools;
 
     using EventArgs.Player;
-
+    using Exiled.Events.Attributes;
     using HarmonyLib;
 
     using Respawning;
@@ -30,6 +30,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// Patches <see cref="Escape.ServerHandlePlayer(ReferenceHub)"/> for <see cref="Handlers.Player.Escaping" />.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Escaping))]
     [HarmonyPatch(typeof(Escape), nameof(Escape.ServerHandlePlayer))]
     internal static class Escaping
     {

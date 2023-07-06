@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 
@@ -24,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="FirstPersonMovementModule.SyncMovementState" /> setter.
     ///     Adds the <see cref="Player.ChangingMoveState" /> event.
     /// </summary>
+    [EventPatch(typeof(Player), nameof(Player.ChangingMoveState))]
     [HarmonyPatch(typeof(FirstPersonMovementModule), nameof(FirstPersonMovementModule.SyncMovementState), MethodType.Setter)]
     internal static class ChangingMoveState
     {

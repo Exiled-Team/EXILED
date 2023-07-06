@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features;
     using API.Features.Items;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -26,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="FirearmBasicMessagesHandler.ServerShotReceived" />.
     ///     Adds the <see cref="Handlers.Player.Shooting" /> events.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Shooting))]
     [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerShotReceived))]
     internal static class Shooting
     {
