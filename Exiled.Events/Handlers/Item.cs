@@ -9,9 +9,7 @@ namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs.Item;
 
-    using Extensions;
-
-    using static Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     ///     Item related events.
@@ -19,34 +17,34 @@ namespace Exiled.Events.Handlers
     public static class Item
     {
         /// <summary>
-        ///     Invoked before the ammo of an firearm are changed.
+        ///     Gets or sets invoked before the ammo of an firearm are changed.
         /// </summary>
-        public static event CustomEventHandler<ChangingAmmoEventArgs> ChangingAmmo;
+        public static Event<ChangingAmmoEventArgs> ChangingAmmo { get; set; } = new ();
 
         /// <summary>
-        ///     Invoked before item attachments are changed.
+        ///     Gets or sets invoked before item attachments are changed.
         /// </summary>
-        public static event CustomEventHandler<ChangingAttachmentsEventArgs> ChangingAttachments;
+        public static Event<ChangingAttachmentsEventArgs> ChangingAttachments { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before receiving a preference.
+        ///     Gets or sets invoked before receiving a preference.
         /// </summary>
-        public static event CustomEventHandler<ReceivingPreferenceEventArgs> ReceivingPreference;
+        public static Event<ReceivingPreferenceEventArgs> ReceivingPreference { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a keycard interacts with a door.
+        /// Gets or sets invoked before a keycard interacts with a door.
         /// </summary>
-        public static event CustomEventHandler<KeycardInteractingEventArgs> KeycardInteracting;
+        public static Event<KeycardInteractingEventArgs> KeycardInteracting { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a melee item is swung.
+        /// Gets or sets invoked before a melee item is swung.
         /// </summary>
-        public static event CustomEventHandler<SwingingEventArgs> Swinging;
+        public static Event<SwingingEventArgs> Swinging { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Items.Jailbird"/> is charged.
+        /// Gets or sets invoked before a <see cref="API.Features.Items.Jailbird"/> is charged.
         /// </summary>
-        public static event CustomEventHandler<ChargingJailbirdEventArgs> ChargingJailbird;
+        public static Event<ChargingJailbirdEventArgs> ChargingJailbird { get; set; } = new();
 
         /// <summary>
         /// Called before the ammo of an firearm is changed.

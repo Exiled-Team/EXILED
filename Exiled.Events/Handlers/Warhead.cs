@@ -8,13 +8,10 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs.Warhead;
-
-    using Extensions;
+    using Exiled.Events.Features;
 
     using PluginAPI.Core.Attributes;
     using PluginAPI.Enums;
-
-    using static Events;
 
     /// <summary>
     ///     Handles warhead related events.
@@ -22,29 +19,29 @@ namespace Exiled.Events.Handlers
     public class Warhead
     {
         /// <summary>
-        ///     Invoked before stopping the warhead.
+        ///     Gets or sets invoked before stopping the warhead.
         /// </summary>
-        public static event CustomEventHandler<StoppingEventArgs> Stopping;
+        public static Event<StoppingEventArgs> Stopping { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before starting the warhead.
+        ///     Gets or sets invoked before starting the warhead.
         /// </summary>
-        public static event CustomEventHandler<StartingEventArgs> Starting;
+        public static Event<StartingEventArgs> Starting { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before changing the warhead lever status.
+        ///     Gets or sets invoked before changing the warhead lever status.
         /// </summary>
-        public static event CustomEventHandler<ChangingLeverStatusEventArgs> ChangingLeverStatus;
+        public static Event<ChangingLeverStatusEventArgs> ChangingLeverStatus { get; set; } = new();
 
         /// <summary>
-        ///     Invoked after the warhead has been detonated.
+        ///     Gets or sets invoked after the warhead has been detonated.
         /// </summary>
-        public static event CustomEventHandler Detonated;
+        public static Event Detonated { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before detonating the warhead.
+        ///     Gets or sets invoked before detonating the warhead.
         /// </summary>
-        public static event CustomEventHandler<DetonatingEventArgs> Detonating;
+        public static Event<DetonatingEventArgs> Detonating { get; set; } = new();
 
         /// <summary>
         ///     Called before stopping the warhead.

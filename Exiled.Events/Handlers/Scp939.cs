@@ -8,9 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs.Scp939;
-    using Extensions;
-
-    using static Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     ///     Handles SCP-939 related events.
@@ -18,34 +16,34 @@ namespace Exiled.Events.Handlers
     public static class Scp939
     {
         /// <summary>
-        ///     Invoked before SCP-939 changes its target focus.
+        ///     Gets or sets invoked before SCP-939 changes its target focus.
         /// </summary>
-        public static event CustomEventHandler<ChangingFocusEventArgs> ChangingFocus;
+        public static Event<ChangingFocusEventArgs> ChangingFocus { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-939 uses its lunge ability.
+        ///     Gets or sets invoked before SCP-939 uses its lunge ability.
         /// </summary>
-        public static event CustomEventHandler<LungingEventArgs> Lunging;
+        public static Event<LungingEventArgs> Lunging { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-939 uses its amnestic cloud ability.
+        ///     Gets or sets invoked before SCP-939 uses its amnestic cloud ability.
         /// </summary>
-        public static event CustomEventHandler<PlacingAmnesticCloudEventArgs> PlacingAmnesticCloud;
+        public static Event<PlacingAmnesticCloudEventArgs> PlacingAmnesticCloud { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-939 plays a stolen voice.
+        ///     Gets or sets invoked before SCP-939 plays a stolen voice.
         /// </summary>
-        public static event CustomEventHandler<PlayingVoiceEventArgs> PlayingVoice;
+        public static Event<PlayingVoiceEventArgs> PlayingVoice { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-939 will save Human voice.
+        ///     Gets or sets invoked before SCP-939 will save Human voice.
         /// </summary>
-        public static event CustomEventHandler<SavingVoiceEventArgs> SavingVoice;
+        public static Event<SavingVoiceEventArgs> SavingVoice { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-939 plays a sound effect.
+        ///     Gets or sets invoked before SCP-939 plays a sound effect.
         /// </summary>
-        public static event CustomEventHandler<PlayingSoundEventArgs> PlayingSound;
+        public static Event<PlayingSoundEventArgs> PlayingSound { get; set; } = new();
 
         /// <summary>
         ///     Called before SCP-939 changes its target focus.

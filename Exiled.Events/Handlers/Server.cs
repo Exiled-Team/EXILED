@@ -9,10 +9,7 @@ namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
-
-    using Extensions;
-
-    using static Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// Server related events.
@@ -20,79 +17,79 @@ namespace Exiled.Events.Handlers
     public static class Server
     {
         /// <summary>
-        /// Invoked before waiting for players.
+        /// Gets or sets invoked before waiting for players.
         /// </summary>
-        public static event CustomEventHandler WaitingForPlayers;
+        public static Event WaitingForPlayers { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the start of a new round.
+        /// Gets or sets invoked after the start of a new round.
         /// </summary>
-        public static event CustomEventHandler RoundStarted;
+        public static Event RoundStarted { get; set; } = new();
 
         /// <summary>
-        /// Invoked before ending a round.
+        /// Gets or sets invoked before ending a round.
         /// </summary>
-        public static event CustomEventHandler<EndingRoundEventArgs> EndingRound;
+        public static Event<EndingRoundEventArgs> EndingRound { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the end of a round.
+        /// Gets or sets invoked after the end of a round.
         /// </summary>
-        public static event CustomEventHandler<RoundEndedEventArgs> RoundEnded;
+        public static Event<RoundEndedEventArgs> RoundEnded { get; set; } = new();
 
         /// <summary>
-        /// Invoked before the restart of a round.
+        /// Gets or sets invoked before the restart of a round.
         /// </summary>
-        public static event CustomEventHandler RestartingRound;
+        public static Event RestartingRound { get; set; } = new();
 
         /// <summary>
-        /// Invoked when a player reports a cheater.
+        /// Gets or sets invoked when a player reports a cheater.
         /// </summary>
-        public static event CustomEventHandler<ReportingCheaterEventArgs> ReportingCheater;
+        public static Event<ReportingCheaterEventArgs> ReportingCheater { get; set; } = new();
 
         /// <summary>
-        /// Invoked before respawning a wave of Chaos Insurgency or NTF.
+        /// Gets or sets invoked before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
-        public static event CustomEventHandler<RespawningTeamEventArgs> RespawningTeam;
+        public static Event<RespawningTeamEventArgs> RespawningTeam { get; set; } = new();
 
         /// <summary>
-        /// Invoked before adding an unit name.
+        /// Gets or sets invoked before adding an unit name.
         /// </summary>
-        public static event CustomEventHandler<AddingUnitNameEventArgs> AddingUnitName;
+        public static Event<AddingUnitNameEventArgs> AddingUnitName { get; set; } = new();
 
         /// <summary>
-        /// Invoked when sending a complaint about a player to the local server administrators.
+        /// Gets or sets invoked when sending a complaint about a player to the local server administrators.
         /// </summary>
-        public static event CustomEventHandler<LocalReportingEventArgs> LocalReporting;
+        public static Event<LocalReportingEventArgs> LocalReporting { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the "reload configs" command is ran.
+        /// Gets or sets invoked after the "reload configs" command is ran.
         /// </summary>
-        public static event CustomEventHandler ReloadedConfigs;
+        public static Event ReloadedConfigs { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the "reload translations" command is ran.
+        /// Gets or sets invoked after the "reload translations" command is ran.
         /// </summary>
-        public static event CustomEventHandler ReloadedTranslations;
+        public static Event ReloadedTranslations { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the "reload gameplay" command is ran.
+        /// Gets or sets invoked after the "reload gameplay" command is ran.
         /// </summary>
-        public static event CustomEventHandler ReloadedGameplay;
+        public static Event ReloadedGameplay { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the "reload remoteadminconfigs" command is ran.
+        /// Gets or sets invoked after the "reload remoteadminconfigs" command is ran.
         /// </summary>
-        public static event CustomEventHandler ReloadedRA;
+        public static Event ReloadedRA { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the "reload plugins" command is ran.
+        /// Gets or sets invoked after the "reload plugins" command is ran.
         /// </summary>
-        public static event CustomEventHandler ReloadedPlugins;
+        public static Event ReloadedPlugins { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the "reload permissions" command is ran.
+        /// Gets or sets invoked after the "reload permissions" command is ran.
         /// </summary>
-        public static event CustomEventHandler ReloadedPermissions;
+        public static Event ReloadedPermissions { get; set; } = new();
 
         /// <summary>
         /// Called before waiting for players.

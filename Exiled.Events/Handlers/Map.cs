@@ -9,12 +9,9 @@ namespace Exiled.Events.Handlers
 {
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Map;
-
-    using Extensions;
+    using Exiled.Events.Features;
 
     using MapGeneration.Distributors;
-
-    using static Events;
 
     /// <summary>
     /// Map related events.
@@ -22,69 +19,69 @@ namespace Exiled.Events.Handlers
     public static class Map
     {
         /// <summary>
-        /// Invoked before placing decals.
+        /// Gets or sets invoked before placing decals.
         /// </summary>
-        public static event CustomEventHandler<PlacingBulletHole> PlacingBulletHole;
+        public static Event<PlacingBulletHole> PlacingBulletHole { get; set; } = new();
 
         /// <summary>
-        /// Invoked before placing bloods.
+        /// Gets or sets invoked before placing bloods.
         /// </summary>
-        public static event CustomEventHandler<PlacingBloodEventArgs> PlacingBlood;
+        public static Event<PlacingBloodEventArgs> PlacingBlood { get; set; } = new();
 
         /// <summary>
-        /// Invoked before announcing the light containment zone decontamination.
+        /// Gets or sets invoked before announcing the light containment zone decontamination.
         /// </summary>
-        public static event CustomEventHandler<AnnouncingDecontaminationEventArgs> AnnouncingDecontamination;
+        public static Event<AnnouncingDecontaminationEventArgs> AnnouncingDecontamination { get; set; } = new();
 
         /// <summary>
-        /// Invoked before announcing an SCP termination.
+        /// Gets or sets invoked before announcing an SCP termination.
         /// </summary>
-        public static event CustomEventHandler<AnnouncingScpTerminationEventArgs> AnnouncingScpTermination;
+        public static Event<AnnouncingScpTerminationEventArgs> AnnouncingScpTermination { get; set; } = new();
 
         /// <summary>
-        /// Invoked before announcing the NTF entrance.
+        /// Gets or sets invoked before announcing the NTF entrance.
         /// </summary>
-        public static event CustomEventHandler<AnnouncingNtfEntranceEventArgs> AnnouncingNtfEntrance;
+        public static Event<AnnouncingNtfEntranceEventArgs> AnnouncingNtfEntrance { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="Scp079Generator"/> has been activated.
+        /// Gets or sets invoked after a <see cref="Scp079Generator"/> has been activated.
         /// </summary>
-        public static event CustomEventHandler<GeneratorActivatedEventArgs> GeneratorActivated;
+        public static Event<GeneratorActivatedEventArgs> GeneratorActivated { get; set; } = new();
 
         /// <summary>
-        /// Invoked before decontaminating the light containment zone.
+        /// Gets or sets invoked before decontaminating the light containment zone.
         /// </summary>
-        public static event CustomEventHandler<DecontaminatingEventArgs> Decontaminating;
+        public static Event<DecontaminatingEventArgs> Decontaminating { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a grenade explodes.
+        /// Gets or sets invoked before a grenade explodes.
         /// </summary>
-        public static event CustomEventHandler<ExplodingGrenadeEventArgs> ExplodingGrenade;
+        public static Event<ExplodingGrenadeEventArgs> ExplodingGrenade { get; set; } = new();
 
         /// <summary>
-        /// Invoked before an item is spawned.
+        /// Gets or sets invoked before an item is spawned.
         /// </summary>
-        public static event CustomEventHandler<SpawningItemEventArgs> SpawningItem;
+        public static Event<SpawningItemEventArgs> SpawningItem { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the map is generated.
+        /// Gets or sets invoked after the map is generated.
         /// </summary>
-        public static event CustomEventHandler Generated;
+        public static Event Generated { get; set; } = new();
 
         /// <summary>
-        /// Invoked before the server changes a pickup into a grenade, when triggered by an explosion.
+        /// Gets or sets invoked before the server changes a pickup into a grenade, when triggered by an explosion.
         /// </summary>
-        public static event CustomEventHandler<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade;
+        public static Event<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the server changes a pickup into a grenade, when triggered by an explosion.
+        /// Gets or sets invoked after the server changes a pickup into a grenade, when triggered by an explosion.
         /// </summary>
-        public static event CustomEventHandler<ChangedIntoGrenadeEventArgs> ChangedIntoGrenade;
+        public static Event<ChangedIntoGrenadeEventArgs> ChangedIntoGrenade { get; set; } = new();
 
         /// <summary>
-        /// Invoked before turning off lights.
+        /// Gets or sets invoked before turning off lights.
         /// </summary>
-        public static event CustomEventHandler<TurningOffLightsEventArgs> TurningOffLights;
+        public static Event<TurningOffLightsEventArgs> TurningOffLights { get; set; } = new();
 
         /// <summary>
         /// Called before placing a decal.

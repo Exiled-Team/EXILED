@@ -8,7 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs.Scp0492;
-    using Exiled.Events.Extensions;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// <see cref="API.Features.Roles.Scp0492Role"/> related events.
@@ -16,9 +16,9 @@ namespace Exiled.Events.Handlers
     public class Scp0492
     {
         /// <summary>
-        /// Called before a player triggers the bloodlust effect for 049-2.
+        /// Gets or sets called invoked before a player triggers the bloodlust effect for 049-2.
         /// </summary>
-        public static event Events.CustomEventHandler<TriggeringBloodlustEventArgs> TriggeringBloodlust;
+        public static Event<TriggeringBloodlustEventArgs> TriggeringBloodlust { get; set; } = new ();
 
         /// <summary>
         /// Called before a player triggers the bloodlust effect for 049-2.

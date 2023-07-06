@@ -8,10 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs.Scp096;
-
-    using Extensions;
-
-    using static Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     ///     SCP-096 related events.
@@ -19,34 +16,34 @@ namespace Exiled.Events.Handlers
     public static class Scp096
     {
         /// <summary>
-        ///     Invoked before SCP-096 is enraged.
+        ///     Gets or sets invoked before SCP-096 is enraged.
         /// </summary>
-        public static event CustomEventHandler<EnragingEventArgs> Enraging;
+        public static Event<EnragingEventArgs> Enraging { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-096 calms down.
+        ///     Gets or sets invoked before SCP-096 calms down.
         /// </summary>
-        public static event CustomEventHandler<CalmingDownEventArgs> CalmingDown;
+        public static Event<CalmingDownEventArgs> CalmingDown { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before adding a target to SCP-096.
+        ///     Gets or sets invoked before adding a target to SCP-096.
         /// </summary>
-        public static event CustomEventHandler<AddingTargetEventArgs> AddingTarget;
+        public static Event<AddingTargetEventArgs> AddingTarget { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-096 begins prying open a gate.
+        ///     Gets or sets invoked before SCP-096 begins prying open a gate.
         /// </summary>
-        public static event CustomEventHandler<StartPryingGateEventArgs> StartPryingGate;
+        public static Event<StartPryingGateEventArgs> StartPryingGate { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-096 begins charging.
+        ///     Gets or sets invoked before SCP-096 begins charging.
         /// </summary>
-        public static event CustomEventHandler<ChargingEventArgs> Charging;
+        public static Event<ChargingEventArgs> Charging { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-096 tries not to cry.
+        ///     Gets or sets invoked before SCP-096 tries not to cry.
         /// </summary>
-        public static event CustomEventHandler<TryingNotToCryEventArgs> TryingNotToCry;
+        public static Event<TryingNotToCryEventArgs> TryingNotToCry { get; set; } = new();
 
         /// <summary>
         ///     Called before SCP-096 is enraged.

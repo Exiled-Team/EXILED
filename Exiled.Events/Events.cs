@@ -17,6 +17,7 @@ namespace Exiled.Events
 
     using EventArgs.Interfaces;
     using Exiled.API.Features.Pickups;
+    using Exiled.Events.Features;
     using HarmonyLib;
     using InventorySystem.Items.Pickups;
     using PlayerRoles.Ragdolls;
@@ -31,24 +32,6 @@ namespace Exiled.Events
     public sealed class Events : Plugin<Config>
     {
         private static Events instance;
-
-        /// <summary>
-        /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
-        /// </summary>
-        private int patchesCounter;
-
-        /// <summary>
-        /// The custom <see cref="EventHandler"/> delegate.
-        /// </summary>
-        /// <typeparam name="TInterface">The <see cref="EventHandler{TInterface}"/> type.</typeparam>
-        /// <param name="ev">The <see cref="EventHandler{TInterface}"/> instance.</param>
-        public delegate void CustomEventHandler<TInterface>(TInterface ev)
-            where TInterface : IExiledEvent;
-
-        /// <summary>
-        /// The custom <see cref="EventHandler"/> delegate, with empty parameters.
-        /// </summary>
-        public delegate void CustomEventHandler();
 
         /// <summary>
         /// Gets the plugin instance.
@@ -67,6 +50,11 @@ namespace Exiled.Events
         /// Gets the <see cref="HarmonyLib.Harmony"/> instance.
         /// </summary>
         public Harmony Harmony { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="Patcher"/> used to employ all patches.
+        /// </summary>
+        internal Patcher Patcher { get; private set; }
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -142,7 +130,7 @@ namespace Exiled.Events
         {
             try
             {
-                Harmony = new Harmony($"exiled.events.{++patchesCounter}");
+                Harmony = new Harmony("exiled.events.{++patchesCounter}");
 #if DEBUG
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
