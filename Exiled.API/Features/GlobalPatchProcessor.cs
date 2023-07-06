@@ -20,7 +20,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A <see cref="Harmony"/> alternative detour tool which adds more ways to manage patches and external assemblies.
     /// </summary>
-    public class GlobalPatchProcessor
+    public static class GlobalPatchProcessor
     {
         private static readonly Dictionary<MethodBase, HashSet<string>> PatchedGroupMethodsValue = new();
 
@@ -33,6 +33,32 @@ namespace Exiled.API.Features
         /// Gets all the patched methods and their relative patch group.
         /// </summary>
         public static IReadOnlyDictionary<MethodBase, HashSet<string>> PatchedGroupMethods => PatchedGroupMethodsValue;
+
+        /// <summary>
+        /// Patch all your Harmony and return you the number of failed patch.
+        /// </summary>
+        /// <param name="harmony">The Harmony instance to Patch.</param>
+        /// <param name="failedPatch">The number of failed patch.</param>
+        public static void PatchAll(this Harmony harmony, out int failedPatch)
+        {
+            failedPatch = 0;
+            foreach (Type type in AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()))
+            {
+                try
+                {
+                    harmony.CreateClassProcessor(type).Patch();
+                }
+                catch (HarmonyException exception)
+                {
+                    Log.Error($"Patching by attributes failed!\n{exception}");
+
+                    failedPatch++;
+                    continue;
+                }
+            }
+
+            Log.Debug("Events patched by attributes successfully!");
+        }
 
         /// <summary>
         /// Searches the current assembly for Harmony annotations and uses them to create patches.
