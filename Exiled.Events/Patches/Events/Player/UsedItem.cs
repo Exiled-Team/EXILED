@@ -25,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
 
 #pragma warning disable SA1600 // Elements should be documented
 #pragma warning disable SA1402 // File may only contain a single type
+#pragma warning disable IDE0060 // File may only contain a single type
 
     /// <summary>
     ///     Patches <see cref="Consumable.ServerOnUsingCompleted" />
@@ -48,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
-        internal static List<CodeInstruction> InstructionsToInject() => new List<CodeInstruction>
+        internal static List<CodeInstruction> InstructionsToInject() => new()
         {
             // Player.Get(this.Owner)
             new(OpCodes.Ldarg_0),

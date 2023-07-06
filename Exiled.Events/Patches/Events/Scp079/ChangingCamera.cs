@@ -77,7 +77,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
         private static bool ChangingCameraEvent(Scp079CurrentCameraSync instance, ref float cost)
         {
-            ChangingCameraEventArgs ev = new ChangingCameraEventArgs(Player.Get(instance.Owner), instance._switchTarget, cost);
+            ChangingCameraEventArgs ev = new(Player.Get(instance.Owner), instance._switchTarget, cost);
 
             Scp079.OnChangingCamera(ev);
 

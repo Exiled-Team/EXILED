@@ -56,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Scp079
         {
             RelativePosition curRelativePos = reader.ReadRelativePosition();
             Vector3 syncNormal = reader.ReadVector3();
-            PingingEventArgs ev = new PingingEventArgs(instance.Owner, curRelativePos, instance._cost, instance._syncProcessorIndex, syncNormal);
+            PingingEventArgs ev = new(instance.Owner, curRelativePos, instance._cost, instance._syncProcessorIndex, syncNormal);
 
             Handlers.Scp079.OnPinging(ev);
 
