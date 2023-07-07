@@ -54,7 +54,7 @@ namespace Exiled.Events.Features
         {
             try
             {
-                List<Type> types = types = UnpatchedTypes.Where(x => x.GetCustomAttributes<EventPatchAttribute>().Any((epa) => epa.Event == @event)).ToList();
+                List<Type> types = ListPool<Type>.Pool.Get(UnpatchedTypes.Where(x => x.GetCustomAttributes<EventPatchAttribute>().Any((epa) => epa.Event == @event)));
 
                 for (int i = 0; i < types.Count; i++)
                 {
@@ -62,6 +62,8 @@ namespace Exiled.Events.Features
                     new PatchClassProcessor(Harmony, type).Patch();
                     UnpatchedTypes.Remove(type);
                 }
+
+                ListPool<Type>.Pool.Return(types);
             }
             catch (Exception ex)
             {
