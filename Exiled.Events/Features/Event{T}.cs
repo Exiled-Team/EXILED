@@ -12,7 +12,6 @@ namespace Exiled.Events.Features
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
-    using Exiled.Events.Interfaces;
 
     /// <summary>
     /// The custom <see cref="EventHandler"/> delegate.
@@ -22,11 +21,10 @@ namespace Exiled.Events.Features
     public delegate void CustomEventHandler<TEventArgs>(TEventArgs ev);
 
     /// <summary>
-    /// An implementation of the <see cref="IEvent"/> interface that encapsulates an event with arguments.
+    /// An implementation of the <see cref="IExiledEvent"/> interface that encapsulates an event with arguments.
     /// </summary>
     /// <typeparam name="T">The specified <see cref="EventArgs"/> that the event will use.</typeparam>
-    public class Event<T> : IEvent
-        where T : IExiledEvent
+    public class Event<T> : IExiledEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Event{T}"/> class.

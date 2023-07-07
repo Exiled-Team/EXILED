@@ -15,7 +15,6 @@ namespace Exiled.Events.Features
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Interfaces;
-    using Exiled.Events.Interfaces;
     using HarmonyLib;
 
     /// <summary>
@@ -47,10 +46,10 @@ namespace Exiled.Events.Features
         public Harmony Harmony { get; }
 
         /// <summary>
-        /// Patches all events that target a specific <see cref="IEvent"/>.
+        /// Patches all events that target a specific <see cref="IExiledEvent"/>.
         /// </summary>
-        /// <param name="event">The <see cref="IEvent"/> all matching patches should target.</param>
-        public void Patch(IEvent @event)
+        /// <param name="event">The <see cref="IExiledEvent"/> all matching patches should target.</param>
+        public void Patch(IExiledEvent @event)
         {
             try
             {

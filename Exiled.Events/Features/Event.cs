@@ -11,7 +11,7 @@ namespace Exiled.Events.Features
     using System.Linq;
 
     using Exiled.API.Features;
-    using Exiled.Events.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// The custom <see cref="EventHandler"/> delegate, with empty parameters.
@@ -19,9 +19,9 @@ namespace Exiled.Events.Features
     public delegate void CustomEventHandler();
 
     /// <summary>
-    /// An implementation of <see cref="IEvent"/> that encapsulates a no-argument event.
+    /// An implementation of <see cref="IExiledEvent"/> that encapsulates a no-argument event.
     /// </summary>
-    public class Event : IEvent
+    public class Event : IExiledEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Event"/> class.
