@@ -34,11 +34,6 @@ namespace Exiled.Events
         private static Events instance;
 
         /// <summary>
-        /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
-        /// </summary>
-        private int patchesCounter;
-
-        /// <summary>
         /// Gets the plugin instance.
         /// </summary>
         public static Events Instance => instance;
@@ -136,7 +131,6 @@ namespace Exiled.Events
             try
             {
                 Patcher = new Patcher();
-                Harmony = new Harmony($"exiled.events.{++patchesCounter}");
 #if DEBUG
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
