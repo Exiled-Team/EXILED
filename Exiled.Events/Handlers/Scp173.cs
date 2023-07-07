@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
     using Exiled.Events.EventArgs.Scp173;
     using Exiled.Events.Features;
 
@@ -16,17 +18,17 @@ namespace Exiled.Events.Handlers
     public static class Scp173
     {
         /// <summary>
-        ///     Gets or sets invoked before players near SCP-173 blink.
+        ///     Invoked before players near SCP-173 blink.
         /// </summary>
         public static Event<BlinkingEventArgs> Blinking { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before a tantrum is placed.
+        ///     Invoked before a tantrum is placed.
         /// </summary>
         public static Event<PlacingTantrumEventArgs> PlacingTantrum { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before using breakneck speeds.
+        ///     Invoked before using breakneck speeds.
         /// </summary>
         public static Event<UsingBreakneckSpeedsEventArgs> UsingBreakneckSpeeds { get; set; } = new();
 

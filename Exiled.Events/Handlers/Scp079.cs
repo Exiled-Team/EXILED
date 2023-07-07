@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Features;
 
@@ -16,62 +18,62 @@ namespace Exiled.Events.Handlers
     public static class Scp079
     {
         /// <summary>
-        ///     Gets or sets invoked before SCP-079 switches cameras.
+        ///     Invoked before SCP-079 switches cameras.
         /// </summary>
         public static Event<ChangingCameraEventArgs> ChangingCamera { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before gaining experience with SCP-079.
+        ///     Invoked before gaining experience with SCP-079.
         /// </summary>
         public static Event<GainingExperienceEventArgs> GainingExperience { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before gaining levels with SCP-079.
+        ///     Invoked before gaining levels with SCP-079.
         /// </summary>
         public static Event<GainingLevelEventArgs> GainingLevel { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before triggering a tesla with SCP-079.
+        ///     Invoked before triggering a tesla with SCP-079.
         /// </summary>
         public static Event<InteractingTeslaEventArgs> InteractingTesla { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before triggering a door with SCP-079.
+        ///     Invoked before triggering a door with SCP-079.
         /// </summary>
         public static Event<TriggeringDoorEventArgs> TriggeringDoor { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-079 teleports using an elevator.
+        ///     Invoked before SCP-079 teleports using an elevator.
         /// </summary>
         public static Event<ElevatorTeleportingEventArgs> ElevatorTeleporting { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-079 lockdowns a room.
+        ///     Invoked before SCP-079 lockdowns a room.
         /// </summary>
         public static Event<LockingDownEventArgs> LockingDown { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-079 changes a speaker status.
+        ///     Invoked before SCP-079 changes a speaker status.
         /// </summary>
         public static Event<ChangingSpeakerStatusEventArgs> ChangingSpeakerStatus { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked after SCP-079 recontainment.
+        ///     Invoked after SCP-079 recontainment.
         /// </summary>
         public static Event<RecontainedEventArgs> Recontained { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-079 sends a ping.
+        ///     Invoked before SCP-079 sends a ping.
         /// </summary>
         public static Event<PingingEventArgs> Pinging { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-079 turns off the lights in a room.
+        ///     Invoked before SCP-079 turns off the lights in a room.
         /// </summary>
         public static Event<RoomBlackoutEventArgs> RoomBlackout { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-079 turns off the lights in a zone.
+        ///     Invoked before SCP-079 turns off the lights in a zone.
         /// </summary>
         public static Event<ZoneBlackoutEventArgs> ZoneBlackout { get; set; } = new();
 

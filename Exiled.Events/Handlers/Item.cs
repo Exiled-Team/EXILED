@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
     using Exiled.Events.EventArgs.Item;
 
     using Exiled.Events.Features;
@@ -17,32 +19,32 @@ namespace Exiled.Events.Handlers
     public static class Item
     {
         /// <summary>
-        ///     Gets or sets invoked before the ammo of an firearm are changed.
+        ///     Invoked before the ammo of an firearm are changed.
         /// </summary>
         public static Event<ChangingAmmoEventArgs> ChangingAmmo { get; set; } = new ();
 
         /// <summary>
-        ///     Gets or sets invoked before item attachments are changed.
+        ///     Invoked before item attachments are changed.
         /// </summary>
         public static Event<ChangingAttachmentsEventArgs> ChangingAttachments { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before receiving a preference.
+        ///     Invoked before receiving a preference.
         /// </summary>
         public static Event<ReceivingPreferenceEventArgs> ReceivingPreference { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked before a keycard interacts with a door.
+        /// Invoked before a keycard interacts with a door.
         /// </summary>
         public static Event<KeycardInteractingEventArgs> KeycardInteracting { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked before a melee item is swung.
+        /// Invoked before a melee item is swung.
         /// </summary>
         public static Event<SwingingEventArgs> Swinging { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked before a <see cref="API.Features.Items.Jailbird"/> is charged.
+        /// Invoked before a <see cref="API.Features.Items.Jailbird"/> is charged.
         /// </summary>
         public static Event<ChargingJailbirdEventArgs> ChargingJailbird { get; set; } = new();
 

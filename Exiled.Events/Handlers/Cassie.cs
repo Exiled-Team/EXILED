@@ -15,8 +15,10 @@ namespace Exiled.Events.Handlers
     /// </summary>
     public static class Cassie
     {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
         /// <summary>
-        /// Gets or sets the event invoked before sending a cassie message.
+        /// Invoked before sending a cassie message.
         /// </summary>
         public static Event<SendingCassieMessageEventArgs> SendingCassieMessage { get; set; } = new();
 

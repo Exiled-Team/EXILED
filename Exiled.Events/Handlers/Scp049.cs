@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
     using Exiled.Events.EventArgs.Scp049;
     using Exiled.Events.Features;
 
@@ -16,32 +18,32 @@ namespace Exiled.Events.Handlers
     public static class Scp049
     {
         /// <summary>
-        ///     Gets or sets invoked before SCP-049 finishes recalling a player.
+        ///     Invoked before SCP-049 finishes recalling a player.
         /// </summary>
         public static Event<FinishingRecallEventArgs> FinishingRecall { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-049 begins recalling a player.
+        ///     Invoked before SCP-049 begins recalling a player.
         /// </summary>
         public static Event<StartingRecallEventArgs> StartingRecall { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-049-2 consumes a corpse.
+        ///     Invoked before SCP-049-2 consumes a corpse.
         /// </summary>
         public static Event<ConsumingCorpseEventArgs> ConsumingCorpse { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-049 uses the sense ability.
+        ///     Invoked before SCP-049 uses the sense ability.
         /// </summary>
         public static Event<ActivatingSenseEventArgs> ActivatingSense { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-049 uses the call ability.
+        ///     Invoked before SCP-049 uses the call ability.
         /// </summary>
         public static Event<SendingCallEventArgs> SendingCall { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked before SCP-049 attacks player.
+        /// Invoked before SCP-049 attacks player.
         /// </summary>
         public static Event<AttackingEventArgs> Attacking { get; set; } = new();
 

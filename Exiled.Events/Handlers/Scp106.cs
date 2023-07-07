@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
     using Exiled.Events.EventArgs.Scp106;
     using Exiled.Events.Features;
 
@@ -16,12 +18,12 @@ namespace Exiled.Events.Handlers
     public static class Scp106
     {
         /// <summary>
-        ///     Gets or sets invoked before SCP-106 teleports using the hunter atlas.
+        ///     Invoked before SCP-106 teleports using the hunter atlas.
         /// </summary>
         public static Event<TeleportingEventArgs> Teleporting { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-106 use the stalk ability.
+        ///     Invoked before SCP-106 use the stalk ability.
         /// </summary>
         public static Event<StalkingEventArgs> Stalking { get; set; } = new();
 

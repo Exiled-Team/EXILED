@@ -13,6 +13,7 @@ namespace Exiled.Events.Features
     using System.Reflection;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Interfaces;
     using HarmonyLib;
@@ -83,7 +84,7 @@ namespace Exiled.Events.Features
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                List<Type> toRemove = new();
+                List<Type> toRemove = ListPool<Type>.Pool.Get();
                 IEnumerable<Type> toPatch = includeEvents ? UnpatchedTypes : UnpatchedTypes.Where((type) => !type.GetCustomAttributes<EventPatchAttribute>().Any());
                 foreach (Type patch in toPatch)
                 {
@@ -100,6 +101,8 @@ namespace Exiled.Events.Features
                         continue;
                     }
                 }
+
+                ListPool<Type>.Pool.Return(toRemove);
 
                 if (includeEvents)
                     UnpatchedTypes.Clear();

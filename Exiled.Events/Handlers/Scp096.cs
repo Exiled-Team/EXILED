@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
     using Exiled.Events.EventArgs.Scp096;
     using Exiled.Events.Features;
 
@@ -16,32 +18,32 @@ namespace Exiled.Events.Handlers
     public static class Scp096
     {
         /// <summary>
-        ///     Gets or sets invoked before SCP-096 is enraged.
+        ///     Invoked before SCP-096 is enraged.
         /// </summary>
         public static Event<EnragingEventArgs> Enraging { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-096 calms down.
+        ///     Invoked before SCP-096 calms down.
         /// </summary>
         public static Event<CalmingDownEventArgs> CalmingDown { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before adding a target to SCP-096.
+        ///     Invoked before adding a target to SCP-096.
         /// </summary>
         public static Event<AddingTargetEventArgs> AddingTarget { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-096 begins prying open a gate.
+        ///     Invoked before SCP-096 begins prying open a gate.
         /// </summary>
         public static Event<StartPryingGateEventArgs> StartPryingGate { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-096 begins charging.
+        ///     Invoked before SCP-096 begins charging.
         /// </summary>
         public static Event<ChargingEventArgs> Charging { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-096 tries not to cry.
+        ///     Invoked before SCP-096 tries not to cry.
         /// </summary>
         public static Event<TryingNotToCryEventArgs> TryingNotToCry { get; set; } = new();
 

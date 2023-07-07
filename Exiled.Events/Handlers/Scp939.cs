@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Features;
 
@@ -16,32 +18,32 @@ namespace Exiled.Events.Handlers
     public static class Scp939
     {
         /// <summary>
-        ///     Gets or sets invoked before SCP-939 changes its target focus.
+        ///     Invoked before SCP-939 changes its target focus.
         /// </summary>
         public static Event<ChangingFocusEventArgs> ChangingFocus { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-939 uses its lunge ability.
+        ///     Invoked before SCP-939 uses its lunge ability.
         /// </summary>
         public static Event<LungingEventArgs> Lunging { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-939 uses its amnestic cloud ability.
+        ///     Invoked before SCP-939 uses its amnestic cloud ability.
         /// </summary>
         public static Event<PlacingAmnesticCloudEventArgs> PlacingAmnesticCloud { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-939 plays a stolen voice.
+        ///     Invoked before SCP-939 plays a stolen voice.
         /// </summary>
         public static Event<PlayingVoiceEventArgs> PlayingVoice { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-939 will save Human voice.
+        ///     Invoked before SCP-939 will save Human voice.
         /// </summary>
         public static Event<SavingVoiceEventArgs> SavingVoice { get; set; } = new();
 
         /// <summary>
-        ///     Gets or sets invoked before SCP-939 plays a sound effect.
+        ///     Invoked before SCP-939 plays a sound effect.
         /// </summary>
         public static Event<PlayingSoundEventArgs> PlayingSound { get; set; } = new();
 

@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
     using Exiled.Events.Features;
@@ -17,77 +19,77 @@ namespace Exiled.Events.Handlers
     public static class Server
     {
         /// <summary>
-        /// Gets or sets invoked before waiting for players.
+        /// Invoked before waiting for players.
         /// </summary>
         public static Event WaitingForPlayers { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked after the start of a new round.
+        /// Invoked after the start of a new round.
         /// </summary>
         public static Event RoundStarted { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked before ending a round.
+        /// Invoked before ending a round.
         /// </summary>
         public static Event<EndingRoundEventArgs> EndingRound { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked after the end of a round.
+        /// Invoked after the end of a round.
         /// </summary>
         public static Event<RoundEndedEventArgs> RoundEnded { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked before the restart of a round.
+        /// Invoked before the restart of a round.
         /// </summary>
         public static Event RestartingRound { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked when a player reports a cheater.
+        /// Invoked when a player reports a cheater.
         /// </summary>
         public static Event<ReportingCheaterEventArgs> ReportingCheater { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked before respawning a wave of Chaos Insurgency or NTF.
+        /// Invoked before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
         public static Event<RespawningTeamEventArgs> RespawningTeam { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked before adding an unit name.
+        /// Invoked before adding an unit name.
         /// </summary>
         public static Event<AddingUnitNameEventArgs> AddingUnitName { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked when sending a complaint about a player to the local server administrators.
+        /// Invoked when sending a complaint about a player to the local server administrators.
         /// </summary>
         public static Event<LocalReportingEventArgs> LocalReporting { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked after the "reload configs" command is ran.
+        /// Invoked after the "reload configs" command is ran.
         /// </summary>
         public static Event ReloadedConfigs { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked after the "reload translations" command is ran.
+        /// Invoked after the "reload translations" command is ran.
         /// </summary>
         public static Event ReloadedTranslations { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked after the "reload gameplay" command is ran.
+        /// Invoked after the "reload gameplay" command is ran.
         /// </summary>
         public static Event ReloadedGameplay { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked after the "reload remoteadminconfigs" command is ran.
+        /// Invoked after the "reload remoteadminconfigs" command is ran.
         /// </summary>
         public static Event ReloadedRA { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked after the "reload plugins" command is ran.
+        /// Invoked after the "reload plugins" command is ran.
         /// </summary>
         public static Event ReloadedPlugins { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets invoked after the "reload permissions" command is ran.
+        /// Invoked after the "reload permissions" command is ran.
         /// </summary>
         public static Event ReloadedPermissions { get; set; } = new();
 
