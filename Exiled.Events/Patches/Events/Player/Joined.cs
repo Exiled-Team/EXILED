@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1600
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
     using System;
 
@@ -55,9 +56,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
         }
 
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
         private static void Postfix(ReferenceHub __instance)
-#pragma warning restore SA1313 // Parameter names should begin with lower-case letter
         {
             if (ReferenceHub.AllHubs.Count - 1 >= CustomNetworkManager.slots)
             {

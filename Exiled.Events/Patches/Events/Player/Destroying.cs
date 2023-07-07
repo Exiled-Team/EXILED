@@ -26,7 +26,6 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patch the <see cref="ReferenceHub.OnDestroy" />.
     ///     Adds the <see cref="Handlers.Player.Destroying" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Destroying))]
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.OnDestroy))]
     internal static class Destroying
     {

@@ -26,7 +26,6 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="ServerRoles.UserCode_CmdServerSignatureComplete__String__String__String__Boolean" />.
     ///     Adds the <see cref="Handlers.Player.Verified" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Verified))]
     [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdServerSignatureComplete__String__String__String__Boolean))]
     internal static class Verified
     {

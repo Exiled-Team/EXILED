@@ -35,8 +35,6 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="PlayerRoleManager.InitializeNewRole(RoleTypeId, RoleChangeReason, RoleSpawnFlags, Mirror.NetworkReader)" />
     ///     Adds the <see cref="Player.ChangingRole" /> event.
     /// </summary>
-    [EventPatch(typeof(Player), nameof(Player.ChangingRole))]
-
     [HarmonyPatch(typeof(PlayerRoleManager), nameof(PlayerRoleManager.InitializeNewRole))]
     internal static class ChangingRoleAndSpawned
     {
