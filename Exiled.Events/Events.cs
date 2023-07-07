@@ -67,8 +67,6 @@ namespace Exiled.Events
             instance = this;
             base.OnEnabled();
 
-            Patcher = new Patcher();
-
             Stopwatch watch = Stopwatch.StartNew();
 
             Patch();
@@ -137,6 +135,7 @@ namespace Exiled.Events
         {
             try
             {
+                Patcher = new Patcher();
                 Harmony = new Harmony($"exiled.events.{++patchesCounter}");
 #if DEBUG
                 bool lastDebugStatus = Harmony.DEBUG;
@@ -176,8 +175,8 @@ namespace Exiled.Events
         public void Unpatch()
         {
             Log.Debug("Unpatching events...");
-            Harmony.UnpatchAll();
-
+            Patcher.UnpatchAll();
+            Patcher = null;
             Log.Debug("All events have been unpatched complete. Goodbye!");
         }
     }
