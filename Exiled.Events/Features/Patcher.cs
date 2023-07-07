@@ -89,7 +89,8 @@ namespace Exiled.Events.Features
                     toRemove.Add(patch);
                 }
 
-                UnpatchedTypes.RemoveWhere((type) => toRemove.Contains(type));
+                if (includeEvents)
+                    UnpatchedTypes.Clear();
 
                 Log.Debug("Events patched by attributes successfully!");
 #if DEBUG
