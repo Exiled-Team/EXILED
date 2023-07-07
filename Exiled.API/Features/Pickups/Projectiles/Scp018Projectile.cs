@@ -13,6 +13,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
 
     using BaseScp018Projectile = InventorySystem.Items.ThrowableProjectiles.Scp018Projectile;
 
+
     /// <summary>
     /// A wrapper class for Scp018Projectile.
     /// </summary>
@@ -43,7 +44,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         public new BaseScp018Projectile Base { get; }
 
         /// <summary>
-        /// Gets or sets the pickup's scale value.
+        /// Gets or sets the pickup's PhysicsModule.
         /// </summary>
         public new Scp018Physics PhysicsModule
         {
@@ -56,7 +57,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         }
 
         /// <summary>
-        /// Gets or sets the pickup's scale value.
+        /// Gets or sets the pickup's max velocity.
         /// </summary>
         public float MaxVelocity
         {
@@ -65,7 +66,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         }
 
         /// <summary>
-        /// Gets or sets the pickup's scale value.
+        /// Gets or sets the pickup's velocity per bounce.
         /// </summary>
         public float VelocityPerBounce
         {
