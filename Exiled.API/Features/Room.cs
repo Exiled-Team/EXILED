@@ -281,7 +281,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="offset">Local position.</param>
         /// <returns>World position, based on the room.</returns>
-        public Vector3 PositionFromRoom(Vector3 offset) => Transform.InverseTransformPoint(offset);
+        public Vector3 ReverseLocalPosition(Vector3 offset) => Transform.InverseTransformPoint(offset);
 
         /// <summary>
         /// Flickers the room's lights off for a duration.
