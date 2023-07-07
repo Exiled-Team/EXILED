@@ -59,7 +59,7 @@ namespace Exiled.Events
         /// <summary>
         /// Gets the <see cref="Patcher"/> used to employ all patches.
         /// </summary>
-        internal Patcher Patcher { get; private set; } = new();
+        internal Patcher Patcher { get; private set; }
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -67,13 +67,15 @@ namespace Exiled.Events
             instance = this;
             base.OnEnabled();
 
+            Patcher = new Patcher();
+
             Stopwatch watch = Stopwatch.StartNew();
 
             Patch();
 
             watch.Stop();
 
-            Log.Info($"Patching completed in {watch.Elapsed}");
+            Log.Info($"{(Config.UseDynamicPatching ? "Non-event" : "All")} patches completed in {watch.Elapsed}");
             CharacterClassManager.OnInstanceModeChanged -= RoleAssigner.CheckLateJoin;
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
@@ -140,7 +142,7 @@ namespace Exiled.Events
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                Patcher.PatchAll(Config.UseDynamicPatching, out int failedPatch);
+                Patcher.PatchAll(!Config.UseDynamicPatching, out int failedPatch);
                 if (failedPatch == 0)
                     Log.Debug("Events patched successfully!");
                 else
