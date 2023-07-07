@@ -73,8 +73,11 @@ namespace Exiled.Events.Features
         /// Patches all events.
         /// </summary>
         /// <param name="includeEvents">Whether to patch events as well as all required patches.</param>
-        public void PatchAll(bool includeEvents)
+        /// <param name="failedPatch">the number of failed patch returned.</param>
+        public void PatchAll(bool includeEvents, out int failedPatch)
         {
+            failedPatch = 0;
+
             try
             {
 #if DEBUG
@@ -85,8 +88,18 @@ namespace Exiled.Events.Features
                 IEnumerable<Type> toPatch = includeEvents ? UnpatchedTypes : UnpatchedTypes.Where((type) => !type.GetCustomAttributes<EventPatchAttribute>().Any());
                 foreach (Type patch in toPatch)
                 {
-                    new PatchClassProcessor(Harmony, patch).Patch();
-                    toRemove.Add(patch);
+                    try
+                    {
+                        Harmony.CreateClassProcessor(patch).Patch();
+                        toRemove.Add(patch);
+                    }
+                    catch (HarmonyException exception)
+                    {
+                        Log.Error($"Patching by attributes failed!\n{exception}");
+
+                        failedPatch++;
+                        continue;
+                    }
                 }
 
                 if (includeEvents)

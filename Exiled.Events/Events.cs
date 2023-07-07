@@ -140,7 +140,7 @@ namespace Exiled.Events
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                PatchByAttributes(out int failedPatch);
+                Patcher.PatchAll(Config.UseDynamicPatching, out int failedPatch);
                 if (failedPatch == 0)
                     Log.Debug("Events patched successfully!");
                 else
@@ -177,27 +177,6 @@ namespace Exiled.Events
             Harmony.UnpatchAll();
 
             Log.Debug("All events have been unpatched complete. Goodbye!");
-        }
-
-        private void PatchByAttributes(out int failedPatch)
-        {
-            failedPatch = 0;
-            foreach (Type type in AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()))
-            {
-                try
-                {
-                    Harmony.CreateClassProcessor(type).Patch();
-                }
-                catch (HarmonyException exception)
-                {
-                    Log.Error($"Patching by attributes failed!\n{exception}");
-
-                    failedPatch++;
-                    continue;
-                }
-            }
-
-            Log.Debug("Events patched by attributes successfully!");
         }
     }
 }

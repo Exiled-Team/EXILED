@@ -8,6 +8,7 @@
 namespace Exiled.Events.Features
 {
     using System;
+    using System.Linq;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
@@ -99,7 +100,7 @@ namespace Exiled.Events.Features
             if (InnerEvent is null)
                 return;
 
-            foreach (CustomEventHandler<T> handler in InnerEvent.GetInvocationList())
+            foreach (CustomEventHandler<T> handler in InnerEvent.GetInvocationList().Cast<CustomEventHandler<T>>())
             {
                 try
                 {
