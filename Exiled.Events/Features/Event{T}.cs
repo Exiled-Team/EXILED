@@ -63,29 +63,23 @@ namespace Exiled.Events.Features
         /// Subscribes a target <see cref="CustomEventHandler{T}"/> to the inner event if the conditional is true.
         /// </summary>
         /// <param name="handler">The handler to add.</param>
-        /// <param name="shouldSubscribe">Whether the handler should be subscribed or not.</param>
-        public void Subscribe(CustomEventHandler<T> handler, bool shouldSubscribe = true)
+        public void Subscribe(CustomEventHandler<T> handler)
         {
-            if (shouldSubscribe)
-            {
-                Log.Assert(Events.Instance is not null, $"{nameof(Events.Instance)} is null, please ensure you have exiled_events enabled!");
+            Log.Assert(Events.Instance is not null, $"{nameof(Events.Instance)} is null, please ensure you have exiled_events enabled!");
 
-                if (Events.Instance.Config.UseDynamicPatching && InnerEvent is null)
-                    Events.Instance.Patcher.Patch(this);
+            if (Events.Instance.Config.UseDynamicPatching && InnerEvent is null)
+                Events.Instance.Patcher.Patch(this);
 
-                InnerEvent += handler;
-            }
+            InnerEvent += handler;
         }
 
         /// <summary>
         /// Unsubscribes a target <see cref="CustomEventHandler{T}"/> from the inner event if the conditional is true.
         /// </summary>
         /// <param name="handler">The handler to add.</param>
-        /// <param name="shouldUnsubscribe">Whether the handler should be subscribed or not.</param>
-        public void Unsubscribe(CustomEventHandler<T> handler, bool shouldUnsubscribe = true)
+        public void Unsubscribe(CustomEventHandler<T> handler)
         {
-            if (shouldUnsubscribe)
-                InnerEvent -= handler;
+            InnerEvent -= handler;
         }
 
         /// <summary>
