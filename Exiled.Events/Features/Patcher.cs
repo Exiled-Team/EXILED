@@ -54,17 +54,14 @@ namespace Exiled.Events.Features
         {
             try
             {
-                List<Type> toRemove = new();
-                foreach (Type type in UnpatchedTypes)
-                {
-                    if (type.GetCustomAttributes<EventPatchAttribute>().Any((epa) => epa.Event == @event))
-                    {
-                        new PatchClassProcessor(Harmony, type).Patch();
-                        toRemove.Add(type);
-                    }
-                }
+                List<Type> types = types = UnpatchedTypes.Where(x => x.GetCustomAttributes<EventPatchAttribute>().Any((epa) => epa.Event == @event)).ToList();
 
-                UnpatchedTypes.RemoveWhere((type) => toRemove.Contains(type));
+                for (int i = 0; i < types.Count; i++)
+                {
+                    Type type = types[i];
+                    new PatchClassProcessor(Harmony, type).Patch();
+                    UnpatchedTypes.Remove(type);
+                }
             }
             catch (Exception ex)
             {
