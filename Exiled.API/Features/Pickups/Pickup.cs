@@ -101,7 +101,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the <see cref="UnityEngine.Rigidbody"/> of the Pickup.
         /// </summary>
-        public Rigidbody Rigidbody => (Base.PhysicsModule as PickupStandardPhysics).Rb;
+        public Rigidbody Rigidbody => PhysicsModule?.Rb;
 
         /// <summary>
         /// Gets the current <see cref="Room"/> the Pickup is in.
@@ -109,7 +109,7 @@ namespace Exiled.API.Features.Pickups
         public Room Room => Room.FindParentRoom(GameObject);
 
         /// <summary>
-        /// Gets or sets the pickup's scale value.
+        /// Gets or sets the pickup's PhysicsModule.
         /// </summary>
         public PickupStandardPhysics PhysicsModule
         {
