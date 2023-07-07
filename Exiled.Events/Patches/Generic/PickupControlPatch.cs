@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1402
+    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -23,14 +24,16 @@ namespace Exiled.Events.Patches.Generic
 
     using MapGeneration.Distributors;
 
+    using UnityEngine;
+
     using static HarmonyLib.AccessTools;
 
-    using Inventory = InventorySystem.Inventory;
-
+#pragma warning disable CS1584 /// Semantically incorrect cref attribute.
+#pragma warning disable SA1402 /// File may only contain a single type.
     /// <summary>
-    /// Patches <see cref="InventoryExtensions.ServerCreatePickup(Inventory, ItemBase, PickupSyncInfo, bool)"/> to save scale for pickups and control <see cref="Pickup.IsSpawned"/> property.
+    /// Patches <see cref="InventoryExtensions.ServerCreatePickup(ItemBase, PickupSyncInfo, Vector3, Quaternion, bool, Action{ItemPickupBase})"/> to save scale for pickups and control <see cref="Pickup.IsSpawned"/> property.
     /// </summary>
-    [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerCreatePickup))]
+    [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerCreatePickup), typeof(ItemBase), typeof(PickupSyncInfo), typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Action<ItemPickupBase>))]
     internal static class PickupControlPatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(
@@ -40,7 +43,7 @@ namespace Exiled.Events.Patches.Generic
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             const int offset = 0;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldarg_3) + offset;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldarg_S) + offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
@@ -50,7 +53,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Dup),
 
                 // Item.Get(itemBase);
-                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
 
                 // pickup.Scale = item.Scale
@@ -58,7 +61,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.Scale))),
 
                 // pickup.IsSpawned = spawn
-                new(OpCodes.Ldarg_3),
+                new(OpCodes.Ldarg_S, 4),
                 new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.IsSpawned))),
             });
 

@@ -23,10 +23,7 @@ namespace Exiled.API.Extensions
     using Mirror;
 
     using PlayerRoles;
-    using PlayerRoles.Filmmaker;
     using PlayerRoles.FirstPersonControl;
-    using PlayerRoles.SpawnData;
-    using PlayerRoles.Spectating;
 
     using RelativePositioning;
 
@@ -161,8 +158,8 @@ namespace Exiled.API.Extensions
         /// <param name="color">Color to set.</param>
         public static void SetRoomColorForTargetOnly(this Room room, Player target, Color color)
         {
-            target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_warheadLightColor), color);
-            target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_warheadLightOverride), true);
+            target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkOverrideColor), color);
+            target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkOverrideColor), true);
         }
 
         /// <summary>
@@ -177,14 +174,13 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Sets <see cref="Room.LightIntensity"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
+        /// Sets <see cref="Room"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="room">Room to modify.</param>
         /// <param name="target">Only this player can see room color.</param>
         /// <param name="multiplier">Light intensity multiplier to set.</param>
         public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier)
         {
-            target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_lightIntensityMultiplier), multiplier);
         }
 
         /// <summary>

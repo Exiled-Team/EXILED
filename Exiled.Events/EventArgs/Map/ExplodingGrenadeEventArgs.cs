@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="position"><inheritdoc cref="Position"/></param>
         /// <param name="grenade"><inheritdoc cref="Projectile"/></param>
         /// <param name="targets"><inheritdoc cref="TargetsToAffect"/></param>
-        public ExplodingGrenadeEventArgs(Footprint thrower, Vector3 position, EffectGrenade grenade, Collider[] targets)
+        public ExplodingGrenadeEventArgs(Footprint thrower, Vector3 position, ExplosionGrenade grenade, Collider[] targets)
         {
             Player = Player.Get(thrower.Hub);
             Projectile = (EffectGrenadeProjectile)Pickup.Get(grenade);
