@@ -13,7 +13,6 @@ namespace Exiled.API.Features.Pickups.Projectiles
 
     using BaseScp018Projectile = InventorySystem.Items.ThrowableProjectiles.Scp018Projectile;
 
-
     /// <summary>
     /// A wrapper class for Scp018Projectile.
     /// </summary>
