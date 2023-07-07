@@ -17,6 +17,7 @@ namespace Exiled.Events.Features
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Interfaces;
     using HarmonyLib;
+    using UnityEngine;
 
     /// <summary>
     /// A tool for patching.
@@ -86,14 +87,13 @@ namespace Exiled.Events.Features
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                List<Type> toRemove = ListPool<Type>.Pool.Get();
-                IEnumerable<Type> toPatch = includeEvents ? UnpatchedTypes : UnpatchedTypes.Where((type) => !type.GetCustomAttributes<EventPatchAttribute>().Any());
-                foreach (Type patch in toPatch)
+                List<Type> toPatch = ListPool<Type>.Pool.Get(includeEvents ? UnpatchedTypes : UnpatchedTypes.Where((type) => !type.GetCustomAttributes<EventPatchAttribute>().Any()));
+                for (int i = 0; i < toPatch.Count; i++)
                 {
+                    Type patch = toPatch[i];
                     try
                     {
                         Harmony.CreateClassProcessor(patch).Patch();
-                        toRemove.Add(patch);
                     }
                     catch (HarmonyException exception)
                     {
@@ -104,7 +104,7 @@ namespace Exiled.Events.Features
                     }
                 }
 
-                ListPool<Type>.Pool.Return(toRemove);
+                ListPool<Type>.Pool.Return(toPatch);
 
                 if (includeEvents)
                     UnpatchedTypes.Clear();
