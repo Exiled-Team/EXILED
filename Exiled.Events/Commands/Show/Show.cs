@@ -33,15 +33,19 @@ namespace Exiled.Events.Commands.Show
         public override string[] Aliases { get; } = Array.Empty<string>();
 
         /// <inheritdoc/>
-        public override string Description { get; } = "Show plugins";
+        public override string Description { get; } = "Shows information about something";
 
         /// <inheritdoc/>
-        public override void LoadGeneratedCommands() => RegisterCommand(new Plugins());
+        public override void LoadGeneratedCommands()
+        {
+            RegisterCommand(new Plugins());
+            RegisterCommand(new Patches());
+        }
 
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Please, specify a valid subcommand! Available: plugins";
+            response = "Please, specify a valid subcommand! Available: plugins, patches";
             return false;
         }
     }
