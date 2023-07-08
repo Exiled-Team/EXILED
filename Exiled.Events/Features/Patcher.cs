@@ -43,6 +43,11 @@ namespace Exiled.Events.Features
         public static HashSet<Type> UnpatchedTypes { get; private set; } = GetAllPatchTypes();
 
         /// <summary>
+        /// Gets a set of types and methods for which EXILED patches should not be run.
+        /// </summary>
+        public static HashSet<MethodBase> DisabledPatchesHashSet { get; } = new();
+
+        /// <summary>
         /// Gets the <see cref="HarmonyLib.Harmony"/> instance.
         /// </summary>
         public Harmony Harmony { get; }
@@ -59,7 +64,8 @@ namespace Exiled.Events.Features
 
                 foreach (Type type in types)
                 {
-                    new PatchClassProcessor(Harmony, type).Patch();
+                    if (DisabledPatchesHashSet.Any(x => new PatchClassProcessor(Harmony, type).Patch().Contains(x)))
+                        ReloadDisabledPatches();
                     UnpatchedTypes.Remove(type);
                 }
 
@@ -116,6 +122,19 @@ namespace Exiled.Events.Features
             catch (Exception exception)
             {
                 Log.Error($"Patching by attributes failed!\n{exception}");
+            }
+        }
+
+        /// <summary>
+        /// Checks the <see cref="DisabledPatchesHashSet"/> list and un-patches any methods that have been defined there. Once un-patching has been done, they can be patched by plugins, but will not be re-patchable by Exiled until a server reboot.
+        /// </summary>
+        public void ReloadDisabledPatches()
+        {
+            foreach (MethodBase method in DisabledPatchesHashSet)
+            {
+                Harmony.Unpatch(method, HarmonyPatchType.All, Harmony.Id);
+
+                Log.Info($"Unpatched {method.Name}");
             }
         }
 
