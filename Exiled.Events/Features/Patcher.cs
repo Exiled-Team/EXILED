@@ -57,9 +57,8 @@ namespace Exiled.Events.Features
             {
                 List<Type> types = ListPool<Type>.Pool.Get(UnpatchedTypes.Where(x => x.GetCustomAttributes<EventPatchAttribute>().Any((epa) => epa.Event == @event)));
 
-                for (int i = 0; i < types.Count; i++)
+                foreach (Type type in types)
                 {
-                    Type type = types[i];
                     new PatchClassProcessor(Harmony, type).Patch();
                     UnpatchedTypes.Remove(type);
                 }
