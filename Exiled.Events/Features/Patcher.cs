@@ -22,7 +22,7 @@ namespace Exiled.Events.Features
     /// <summary>
     /// A tool for patching.
     /// </summary>
-    internal class Patcher
+    public class Patcher
     {
         /// <summary>
         /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.

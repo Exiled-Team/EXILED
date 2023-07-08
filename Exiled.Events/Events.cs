@@ -54,7 +54,7 @@ namespace Exiled.Events
         /// <summary>
         /// Gets the <see cref="Patcher"/> used to employ all patches.
         /// </summary>
-        internal Patcher Patcher { get; private set; }
+        public Patcher Patcher { get; private set; }
 
         /// <inheritdoc/>
         public override void OnEnabled()
