@@ -52,7 +52,7 @@ namespace Exiled.Events
         public Harmony Harmony { get; private set; }
 
         /// <summary>
-        /// Gets the <see cref="Patcher"/> used to employ all patches.
+        /// Gets the <see cref="Features.Patcher"/> used to employ all patches.
         /// </summary>
         public Patcher Patcher { get; private set; }
 
