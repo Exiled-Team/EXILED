@@ -27,6 +27,7 @@ namespace Exiled.API.Features
     using PlayerRoles.PlayableScps.Scp079;
     using RelativePositioning;
     using UnityEngine;
+    using Utils.NonAllocLINQ;
 
     /// <summary>
     /// The in-game room.
@@ -447,7 +448,7 @@ namespace Exiled.API.Features
             Speaker = Scp079Speaker.SpeakersInRooms.ContainsKey(Identifier) ? Scp079Speaker.SpeakersInRooms[Identifier] : new();
 
             if (Type is RoomType.HczTesla)
-                TeslaGate = TeslaGate.List.Single(x => this == x.Room);
+                TeslaGate = TeslaGate.Get(TeslaGateController.Singleton.TeslaGates.FirstOrDefault(x => Identifier == RoomIdUtils.RoomAtPosition(x.transform.position)));
         }
     }
 }
