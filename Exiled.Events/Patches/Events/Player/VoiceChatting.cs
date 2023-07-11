@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// patches <see cref="VoiceTransceiver.ServerReceiveMessage(NetworkConnection, VoiceMessage)"/> to add the <see cref="Handlers.Player.VoiceChatting"/> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Verified))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.VoiceChatting))]
     [HarmonyPatch(typeof(VoiceTransceiver), nameof(VoiceTransceiver.ServerReceiveMessage))]
     internal static class VoiceChatting
     {

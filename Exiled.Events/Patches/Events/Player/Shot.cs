@@ -137,6 +137,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="BuckshotHitreg.ShootPellet" />.
     ///     Adds the <see cref="Handlers.Player.Shot" /> events.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Shot))]
     [HarmonyPatch(typeof(BuckshotHitreg), nameof(BuckshotHitreg.ShootPellet))]
     internal static class Shot2
     {
