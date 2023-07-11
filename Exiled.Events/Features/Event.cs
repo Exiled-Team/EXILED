@@ -23,6 +23,8 @@ namespace Exiled.Events.Features
     /// </summary>
     public class Event : IExiledEvent
     {
+        private bool patched;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Event"/> class.
         /// </summary>
@@ -64,8 +66,11 @@ namespace Exiled.Events.Features
         {
             Log.Assert(Events.Instance is not null, $"{nameof(Events.Instance)} is null, please ensure you have exiled_events enabled!");
 
-            if (Events.Instance.Config.UseDynamicPatching && InnerEvent is null)
+            if (Events.Instance.Config.UseDynamicPatching && !patched)
+            {
                 Events.Instance.Patcher.Patch(this);
+                patched = true;
+            }
 
             InnerEvent += handler;
         }

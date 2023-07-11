@@ -26,6 +26,8 @@ namespace Exiled.Events.Features
     /// <typeparam name="T">The specified <see cref="EventArgs"/> that the event will use.</typeparam>
     public class Event<T> : IExiledEvent
     {
+        private bool patched;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Event{T}"/> class.
         /// </summary>
@@ -67,8 +69,11 @@ namespace Exiled.Events.Features
         {
             Log.Assert(Events.Instance is not null, $"{nameof(Events.Instance)} is null, please ensure you have exiled_events enabled!");
 
-            if (Events.Instance.Config.UseDynamicPatching && InnerEvent is null)
+            if (Events.Instance.Config.UseDynamicPatching && !patched)
+            {
                 Events.Instance.Patcher.Patch(this);
+                patched = true;
+            }
 
             InnerEvent += handler;
         }
