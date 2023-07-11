@@ -99,6 +99,7 @@ namespace Exiled.Events.Features
                     try
                     {
                         Harmony.CreateClassProcessor(patch).Patch();
+                        UnpatchedTypes.Remove(patch);
                     }
                     catch (HarmonyException exception)
                     {
@@ -110,9 +111,6 @@ namespace Exiled.Events.Features
                 }
 
                 ListPool<Type>.Pool.Return(toPatch);
-
-                if (includeEvents)
-                    UnpatchedTypes.Clear();
 
                 Log.Debug("Events patched by attributes successfully!");
 #if DEBUG
