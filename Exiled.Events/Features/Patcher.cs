@@ -64,7 +64,7 @@ namespace Exiled.Events.Features
 
                 foreach (Type type in types)
                 {
-                    if (!DisabledPatchesHashSet.Any(x => new PatchClassProcessor(Harmony, type).Patch().Contains(x)))
+                    if (DisabledPatchesHashSet.Any(x => new PatchClassProcessor(Harmony, type).Patch().Contains(x)))
                         ReloadDisabledPatches();
                     UnpatchedTypes.Remove(type);
                 }
