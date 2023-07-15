@@ -7,28 +7,39 @@
 
 namespace Exiled.API.Features.Hazards
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Interfaces;
     using global::Hazards;
     using UnityEngine;
 
-    public class Hazard
+    /// <summary>
+    /// A wrapper for <see cref="EnvironmentalHazard"/>.
+    /// </summary>
+    public class Hazard : IWrapper<EnvironmentalHazard>
     {
-        internal static Dictionary<EnvironmentalHazard, Hazard> EnviromentalHazardToHazard { get; } = new();
-
-        public static IEnumerable<Hazard> List => EnviromentalHazardToHazard.Values;
+        /// <summary>
+        /// <see cref="Dictionary{TKey,TValue}"/> with <see cref="EnvironmentalHazard"/> to it's <see cref="Hazard"/>.
+        /// </summary>
+        internal static readonly Dictionary<EnvironmentalHazard, Hazard> EnvironmentalHazardToHazard = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Hazard"/> class.
         /// </summary>
-        /// <param name="hazard"></param>
-        protected Hazard(EnvironmentalHazard hazard)
+        /// <param name="hazard">The <see cref="EnvironmentalHazard"/> instance.</param>
+        public Hazard(EnvironmentalHazard hazard)
         {
             Base = hazard;
 
-            EnviromentalHazardToHazard.Add(hazard, this);
+            EnvironmentalHazardToHazard.Add(hazard, this);
         }
+
+        /// <summary>
+        /// Gets the list of all hazards.
+        /// </summary>
+        public static IEnumerable<Hazard> List => EnvironmentalHazardToHazard.Values;
 
         /// <summary>
         /// Gets the <see cref="EnvironmentalHazard"/>.
@@ -81,13 +92,25 @@ namespace Exiled.API.Features.Hazards
             set => Base.SourcePosition = value;
         }
 
+        /// <summary>
+        /// Gets the <see cref="Hazard"/> by <see cref="EnvironmentalHazard"/>.
+        /// </summary>
+        /// <param name="hazard">The <see cref="EnvironmentalHazard"/> instance.</param>
+        /// <returns><see cref="Hazard"/> for <see cref="EnvironmentalHazard"/>.</returns>
         public static Hazard Get(EnvironmentalHazard hazard)
         {
-            if (EnviromentalHazardToHazard.TryGetValue(hazard, out Hazard result))
+            if (EnvironmentalHazardToHazard.TryGetValue(hazard, out Hazard result))
                 return result;
 
             return new(hazard);
         }
+
+        /// <summary>
+        /// Gets the <see cref="IEnumerable{T}"/> of <see cref="Hazard"/> based on predicate.
+        /// </summary>
+        /// <param name="predicate">Condition to satisfy.</param>
+        /// <returns><see cref="IEnumerable{T}"/> of <see cref="Hazard"/> based on predicate.</returns>
+        public static IEnumerable<Hazard> Get(Func<Hazard, bool> predicate) => List.Where(predicate);
 
         /// <summary>
         /// Checks if player is in hazard zone.

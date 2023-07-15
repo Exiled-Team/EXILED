@@ -357,7 +357,7 @@ namespace Exiled.API.Features
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
             Warhead.InternalBlastDoors.Clear();
-            Hazard.EnviromentalHazardToHazard.Clear();
+            Hazard.EnvironmentalHazardToHazard.Clear();
         }
     }
 }

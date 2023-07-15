@@ -13,22 +13,25 @@ namespace Exiled.API.Features.Hazards
     using global::Hazards;
     using RelativePositioning;
 
+    /// <summary>
+    /// A wrapper for <see cref="TantrumEnvironmentalHazard"/>.
+    /// </summary>
     public class TantrumHazard : Hazard
     {
         /// <summary>
-        /// Gets the list of all <see cref="TantrumHazard"/>.
-        /// </summary>
-        public static IEnumerable<TantrumHazard> AllTantrums => TantrumEnvironmentalHazard.AllTantrums.Select(x => Get(x) as TantrumHazard);
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TantrumHazard"/> class.
         /// </summary>
-        /// <param name="hazard"></param>
+        /// <param name="hazard">The <see cref="TantrumEnvironmentalHazard"/> instance.</param>
         public TantrumHazard(TantrumEnvironmentalHazard hazard)
             : base(hazard)
         {
             Base = hazard;
         }
+
+        /// <summary>
+        /// Gets the list of all <see cref="TantrumHazard"/>.
+        /// </summary>
+        public static IEnumerable<TantrumHazard> AllTantrums => TantrumEnvironmentalHazard.AllTantrums.Select(x => Get(x) as TantrumHazard);
 
         /// <summary>
         /// Gets the <see cref="TantrumEnvironmentalHazard"/>.

@@ -7,8 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using Exiled.API.Features.Hazards;
     using Hazards;
-
     using Interfaces;
 
     /// <summary>
@@ -26,6 +26,7 @@ namespace Exiled.Events.EventArgs.Player
         {
             Player = player;
             EnvironmentalHazard = environmentalHazard;
+            Hazard = Hazard.Get(environmentalHazard);
             IsAllowed = isAllowed;
         }
 
@@ -38,6 +39,9 @@ namespace Exiled.Events.EventArgs.Player
         /// Gets the environmental hazard that the player is entering in.
         /// </summary>
         public EnvironmentalHazard EnvironmentalHazard { get; }
+
+        /// <inheritdoc cref="EnvironmentalHazard"/>
+        public Hazard Hazard { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player should be affected by the environmental hazard.

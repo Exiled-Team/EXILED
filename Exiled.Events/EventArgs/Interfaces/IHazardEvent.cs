@@ -7,6 +7,9 @@
 
 namespace Exiled.Events.EventArgs.Interfaces
 {
+    using System;
+
+    using Exiled.API.Features.Hazards;
     using Hazards;
 
     /// <summary>
@@ -17,6 +20,10 @@ namespace Exiled.Events.EventArgs.Interfaces
         /// <summary>
         /// Gets the environmental hazard that the player is interacting with.
         /// </summary>
+        [Obsolete("Use Hazard property instead")]
         public EnvironmentalHazard EnvironmentalHazard { get; }
+
+        /// <inheritdoc cref="EnvironmentalHazard"/>
+        public Hazard Hazard { get; }
     }
 }
