@@ -120,7 +120,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not this door is an elevator door.
         /// </summary>
-        public bool IsElevator => this is ElevatorDoor;
+        public bool IsElevator => Base is ElevatorDoor;
 
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.
@@ -164,7 +164,7 @@ namespace Exiled.API.Features.Doors
             {
                 if (value)
                 {
-                    Lock(float.MaxValue, DoorLockType.AdminCommand);
+                    ChangeLock(DoorLockType.AdminCommand);
                     return;
                 }
 
