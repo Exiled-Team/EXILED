@@ -10,7 +10,7 @@ namespace Exiled.API.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using System.Numerics;
     using Enums;
 
     using Exiled.API.Extensions;
@@ -337,8 +337,22 @@ namespace Exiled.API.Features
             if (!RoomLightController)
                 return;
 
-            RoomLightController.NetworkOverrideColor = Color.clear;
+            RoomLightController.OverrideColorHook(RoomLightController.NetworkOverrideColor, default);
         }
+
+        /// <summary>
+        /// Converts a position relative into the room into an absolute position.
+        /// </summary>
+        /// <param name="relativePosition">The relative position to convert.</param>
+        /// <returns>An absolute position.</returns>
+        public Vector3 GetAbsolutePosition(Vector3 relativePosition) => Position - GetRotatedPointAroundCenter(relativePosition, -Rotation.eulerAngles.y);
+
+        /// <summary>
+        /// Converts an absolute position into a position relative to the room.
+        /// </summary>
+        /// <param name="position">The absolute position to convert.</param>
+        /// <returns>A relative position.</returns>
+        public Vector3 GetRelativePosition(Vector3 position) => GetRotatedPointAroundCenter(Position - position, Rotation.eulerAngles.y);
 
         /// <summary>
         /// Returns the Room in a human-readable format.
@@ -433,6 +447,13 @@ namespace Exiled.API.Features
                 _ => transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified,
             };
         }
+
+        private static Vector3 GetRotatedPointAroundCenter(Vector3 originalPosition, float rotationDiffY) =>
+            new(
+                (originalPosition.x * (float)Math.Cos(rotationDiffY * Math.PI / 180)) - (originalPosition.z * (float)Math.Sin(rotationDiffY * Math.PI / 180)), // Math.PI / 180 : converts angle to radian
+                originalPosition.y,
+                (originalPosition.z * (float)Math.Cos(rotationDiffY * Math.PI / 180)) + (originalPosition.x * (float)Math.Sin(rotationDiffY * Math.PI / 180))
+            );
 
         private void Awake()
         {
