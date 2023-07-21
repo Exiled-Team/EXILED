@@ -134,6 +134,8 @@ namespace Exiled.API.Features
         /// <returns>The NPC associated with the NetworkConnection, or <c>null</c> if not found.</returns>
         public static new Npc? Get(NetworkConnection conn) => Player.Get(conn) as Npc;
 
+        private int serialDummy = 0;
+        
         /// <summary>
         /// Spawns an NPC based on the given parameters.
         /// </summary>
@@ -171,9 +173,10 @@ namespace Exiled.API.Features
 
             FakeConnection fakeConnection = new(id);
             NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
+            serialDummy++;
             try
             {
-                npc.ReferenceHub.characterClassManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy@localhost" : userId;
+                npc.ReferenceHub.characterClassManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy{serialDummy}@localhost" : userId;
             }
             catch (Exception e)
             {
