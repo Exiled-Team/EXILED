@@ -607,7 +607,7 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not the player is cuffed.
         /// </summary>
         /// <remarks>Players can be cuffed without another player being the cuffer.</remarks>
-        public bool IsCuffed => Cuffer is not null;
+        public bool IsCuffed => Inventory.IsDisarmed();
 
         /// <summary>
         /// Gets a value indicating whether or not the player is reloading a weapon.
