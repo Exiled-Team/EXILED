@@ -452,8 +452,7 @@ namespace Exiled.API.Features
             new(
                 (originalPosition.x * (float)Math.Cos(rotationDiffY * Math.PI / 180)) - (originalPosition.z * (float)Math.Sin(rotationDiffY * Math.PI / 180)), // Math.PI / 180 : converts angle to radian
                 originalPosition.y,
-                (originalPosition.z * (float)Math.Cos(rotationDiffY * Math.PI / 180)) + (originalPosition.x * (float)Math.Sin(rotationDiffY * Math.PI / 180))
-            );
+                (originalPosition.z * (float)Math.Cos(rotationDiffY * Math.PI / 180)) + (originalPosition.x * (float)Math.Sin(rotationDiffY * Math.PI / 180)));
 
         private void Awake()
         {
