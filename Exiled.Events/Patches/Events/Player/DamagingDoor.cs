@@ -55,14 +55,14 @@ namespace Exiled.Events.Patches.Events.Player
                     // DoorDamageType
                     new(OpCodes.Ldarg_2),
 
-                    // DamagingWindowEventArgs ev = new(player, this, doorDamageType);
+                    // DamagingDoorEventArgs ev = new(player, this, doorDamageType);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingDoorEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc, ev.LocalIndex),
 
-                    // Handlers.Player.OnPlayerDamageWindow(ev);
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.DamagingDoor))),
+                    // Handlers.Player.OnDamagingDoor(ev);
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDamagingDoor))),
 
                     // if (!ev.IsAllowed)
                     //    return;
