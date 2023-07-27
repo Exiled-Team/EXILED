@@ -166,6 +166,11 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Brfalse_S, continueLabel2),
 
+                    // if (changingRoleEventArgs == null)
+                    //     continue
+                    new CodeInstruction(OpCodes.Ldloc_S, changingRoleEventArgs.LocalIndex),
+                    new(OpCodes.Brfalse_S, continueLabel2),
+
                     // changingRoleEventArgs
                     new(OpCodes.Ldloc_S, changingRoleEventArgs.LocalIndex),
 
