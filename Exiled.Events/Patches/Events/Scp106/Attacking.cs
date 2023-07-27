@@ -34,9 +34,8 @@ namespace Exiled.Events.Patches.Events.Scp106
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            int offset = -4;
-            int index = newInstructions.FindIndex(x => x.operand == (object)DeclaredConstructor(typeof(PluginAPI.Events.Scp106TeleportPlayerEvent), new[] { typeof(ReferenceHub), typeof(ReferenceHub), })) + offset;
-
+            int offset = 2;
+            int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(Scp106Attack), nameof(Scp106Attack.SendCooldown)))) + offset;
             Label continueLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(
