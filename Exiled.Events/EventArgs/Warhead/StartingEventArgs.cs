@@ -18,15 +18,17 @@ namespace Exiled.Events.EventArgs.Warhead
         ///     Initializes a new instance of the <see cref="StartingEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player who's going to start the warhead.</param>
+        /// <param name="isAuto">Indicating whether or not the nuke was set off automatically.</param>
         /// <param name="isAllowed">Indicating whether the event can be executed or not.</param>
-        public StartingEventArgs(Player player, bool isAllowed = true)
+        public StartingEventArgs(Player player, bool isAuto, bool isAllowed = true)
             : base(player, isAllowed)
         {
+            IsAuto = isAuto;
         }
 
         /// <summary>
-        ///     Gets a value indicating whether or not the nuke was set off automatically.
+        ///     Gets or sets a value indicating whether or not the nuke was set off automatically.
         /// </summary>
-        public bool IsAuto { get; } = AlphaWarheadController.Singleton._autoDetonate && (AlphaWarheadController.Singleton._autoDetonateTime <= 0);
+        public bool IsAuto { get; set; }
     }
 }

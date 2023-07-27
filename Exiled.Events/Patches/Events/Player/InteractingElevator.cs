@@ -20,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Mirror;
 
-    using PluginAPI.Enums;
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>
