@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Server;
     using HarmonyLib;
     using PlayerRoles.RoleAssign;
@@ -28,11 +29,9 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(ChoosingStartTeamEventArgs));
-
             Label continueLabel = generator.DefineLabel();
 
-            int offset = 1;
+            int offset = 0;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Dup) + offset;
 
             newInstructions.InsertRange(
