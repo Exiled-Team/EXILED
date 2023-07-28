@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before damage is dealt to a <see cref="DoorVariant" />.
     /// </summary>
-    public class DamagingDoorEventArgs : IPlayerEvent, IDeniableEvent
+    public class DamagingDoorEventArgs : IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DamagingDoorEventArgs" /> class.
