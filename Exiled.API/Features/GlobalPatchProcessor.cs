@@ -42,7 +42,7 @@ namespace Exiled.API.Features
         public static void PatchAll(this Harmony harmony, out int failedPatch)
         {
             failedPatch = 0;
-            foreach (Type type in AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()))
+            foreach (Type type in AccessTools.GetTypesFromAssembly(Assembly.GetCallingAssembly()))
             {
                 try
                 {
