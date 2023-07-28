@@ -48,11 +48,6 @@ namespace Exiled.Events.EventArgs.Player
         public float Damage { get; set; }
 
         /// <summary>
-        ///     Gets the <see cref="API.Features.Player" /> causing the damage.
-        /// </summary>
-        public Player Player { get; }
-
-        /// <summary>
         ///     Gets or sets a value indicating whether the door can be broken.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
