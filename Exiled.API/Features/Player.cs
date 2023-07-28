@@ -71,7 +71,7 @@ namespace Exiled.API.Features
     using RoundRestarting;
 
     using UnityEngine;
-
+    using Utils;
     using Utils.Networking;
 
     using VoiceChat;
@@ -3197,6 +3197,24 @@ namespace Exiled.API.Features
         /// <param name="itemType">The itemtypes to choose for being cooldown.</param>
         public void SetCooldownItem(float time, ItemType itemType)
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
+
+        /// <summary>
+        /// Explode the player.
+        /// </summary>
+        public void Explode() => ExplosionUtils.ServerExplode(ReferenceHub);
+
+        /// <summary>
+        /// Explode the player.
+        /// </summary>
+        /// <param name="projectileType">The projectile that will create the explosion.</param>
+        /// <param name="attacker">The Player that will causing the explosion.</param>
+        public void Explode(ProjectileType projectileType, Player attacker = null) => Map.Explode(Position, projectileType, attacker);
+
+        /// <summary>
+        /// Spawn projectile effect on the player.
+        /// </summary>
+        /// <param name="projectileType">The projectile that will create the effect.</param>
+        public void ExplodeEffect(ProjectileType projectileType) => Map.ExplodeEffect(Position, projectileType);
 
         /// <summary>
         /// Converts the player in a human-readable format.
