@@ -10,7 +10,6 @@ namespace Exiled.Loader.Features.Configs
     using System.Collections.Generic;
 
     using Exiled.API.Extensions;
-    using Exiled.API.Features;
     using YamlDotNet.Serialization;
 
     /// <inheritdoc cref="YamlDotNet.Serialization.NamingConventions.UnderscoredNamingConvention"/>

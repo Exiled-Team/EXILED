@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ExplosiveGrenade.cs" company="Exiled Team">
+// <copyright file="Scp018.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -18,30 +18,34 @@ namespace Exiled.API.Features.Items
 
     using UnityEngine;
 
+    using BaseScp018Projectile = InventorySystem.Items.ThrowableProjectiles.Scp018Projectile;
+
     using Object = UnityEngine.Object;
 
+    using Scp018Projectile = Pickups.Projectiles.Scp018Projectile;
+
     /// <summary>
-    /// A wrapper class for <see cref="ExplosionGrenade"/>.
+    /// A wrapper class for <see cref="BaseScp018Projectile"/> item.
     /// </summary>
-    public class ExplosiveGrenade : Throwable
+    public class Scp018 : Throwable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExplosiveGrenade"/> class.
+        /// Initializes a new instance of the <see cref="Scp018"/> class.
         /// </summary>
         /// <param name="itemBase">The base <see cref="ThrowableItem"/> class.</param>
-        public ExplosiveGrenade(ThrowableItem itemBase)
+        public Scp018(ThrowableItem itemBase)
             : base(itemBase)
         {
-            Projectile = (ExplosionGrenadeProjectile)((Throwable)this).Projectile;
+            Projectile = (Scp018Projectile)((Throwable)this).Projectile;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExplosiveGrenade"/> class.
+        /// Initializes a new instance of the <see cref="Scp018"/> class.
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the grenade.</param>
         /// <param name="player">The owner of the grenade. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
-        internal ExplosiveGrenade(ItemType type, Player player = null)
+        internal Scp018(ItemType type, Player player = null)
             : this((ThrowableItem)(player ?? Server.Host).Inventory.CreateItemInstance(new(type, 0), true))
         {
         }
@@ -49,51 +53,15 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a <see cref="ExplosionGrenadeProjectile"/> to change grenade properties.
         /// </summary>
-        public new ExplosionGrenadeProjectile Projectile { get; }
+        public new Scp018Projectile Projectile { get; }
 
         /// <summary>
-        /// Gets or sets the maximum radius of the grenade.
+        /// Gets or sets the time for SCP-018 not to ignore the friendly fire.
         /// </summary>
-        public float MaxRadius
+        public float FriendlyFireTime
         {
-            get => Projectile.MaxRadius;
-            set => Projectile.MaxRadius = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the multiplier for damage against <see cref="Side.Scp"/> players.
-        /// </summary>
-        public float ScpDamageMultiplier
-        {
-            get => Projectile.ScpDamageMultiplier;
-            set => Projectile.ScpDamageMultiplier = value;
-        }
-
-        /// <summary>
-        /// Gets or sets how long the <see cref="EffectType.Burned"/> effect will last.
-        /// </summary>
-        public float BurnDuration
-        {
-            get => Projectile.BurnDuration;
-            set => Projectile.BurnDuration = value;
-        }
-
-        /// <summary>
-        /// Gets or sets how long the <see cref="EffectType.Deafened"/> effect will last.
-        /// </summary>
-        public float DeafenDuration
-        {
-            get => Projectile.DeafenDuration;
-            set => Projectile.DeafenDuration = value;
-        }
-
-        /// <summary>
-        /// Gets or sets how long the <see cref="EffectType.Concussed"/> effect will last.
-        /// </summary>
-        public float ConcussDuration
-        {
-            get => Projectile.ConcussDuration;
-            set => Projectile.ConcussDuration = value;
+            get => Projectile.FriendlyFireTime;
+            set => Projectile.FriendlyFireTime = value;
         }
 
         /// <summary>
@@ -110,8 +78,8 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="position">The location to spawn the grenade.</param>
         /// <param name="owner">Optional: The <see cref="Player"/> owner of the grenade.</param>
-        /// <returns>Spawned <see cref="ExplosionGrenadeProjectile">grenade</see>.</returns>
-        public ExplosionGrenadeProjectile SpawnActive(Vector3 position, Player owner = null)
+        /// <returns>Spawned <see cref="Scp018Projectile">grenade</see>.</returns>
+        public Scp018Projectile SpawnActive(Vector3 position, Player owner = null)
         {
 #if DEBUG
             Log.Debug($"Spawning active grenade: {FuseTime}");
@@ -120,15 +88,11 @@ namespace Exiled.API.Features.Items
 
             ipb.Info = new PickupSyncInfo(Type, Weight, ItemSerialGenerator.GenerateNext());
 
-            ExplosionGrenadeProjectile grenade = (ExplosionGrenadeProjectile)Pickup.Get(ipb);
+            Scp018Projectile grenade = (Scp018Projectile)Pickup.Get(ipb);
 
             grenade.Base.gameObject.SetActive(true);
 
-            grenade.MaxRadius = MaxRadius;
-            grenade.ScpDamageMultiplier = ScpDamageMultiplier;
-            grenade.BurnDuration = BurnDuration;
-            grenade.DeafenDuration = DeafenDuration;
-            grenade.ConcussDuration = ConcussDuration;
+            grenade.FriendlyFireTime = FriendlyFireTime;
             grenade.FuseTime = FuseTime;
 
             grenade.PreviousOwner = owner ?? Server.Host;
@@ -150,13 +114,9 @@ namespace Exiled.API.Features.Items
         /// Clones current <see cref="ExplosiveGrenade"/> object.
         /// </summary>
         /// <returns> New <see cref="ExplosiveGrenade"/> object. </returns>
-        public override Item Clone() => new ExplosiveGrenade(Type)
+        public override Item Clone() => new Scp018(Type)
         {
-            MaxRadius = MaxRadius,
-            ScpDamageMultiplier = ScpDamageMultiplier,
-            BurnDuration = BurnDuration,
-            DeafenDuration = DeafenDuration,
-            ConcussDuration = ConcussDuration,
+            FriendlyFireTime = FriendlyFireTime,
             FuseTime = FuseTime,
             PinPullTime = PinPullTime,
             Repickable = Repickable,

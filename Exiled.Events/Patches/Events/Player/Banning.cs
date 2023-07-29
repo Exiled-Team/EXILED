@@ -17,8 +17,6 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
-
-    using PluginAPI.Enums;
     using PluginAPI.Events;
 
     using Log = API.Features.Log;
@@ -54,7 +52,13 @@ namespace Exiled.Events.Patches.Events.Player
                 string originalName = BanPlayer.ValidateNick(target.nicknameSync.MyNick);
                 string message = $"You have been banned. {(!string.IsNullOrEmpty(reason) ? "Reason: " + reason : string.Empty)}";
 
-                BanningEventArgs ev = new(Player.Get(target), Player.Get(issuer), duration, reason, message);
+                Player issuerPlayer = Player.Get(issuer);
+                if (issuerPlayer == null)
+                {
+                    issuerPlayer = Server.Host;
+                }
+
+                BanningEventArgs ev = new(Player.Get(target), issuerPlayer, duration, reason, message);
 
                 Handlers.Player.OnBanning(ev);
 

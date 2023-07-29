@@ -28,8 +28,6 @@ namespace Exiled.Events.Patches.Generic
 
     using static HarmonyLib.AccessTools;
 
-    using ExiledEvents = Exiled.Events.Events;
-
     /// <summary>
     /// Checks friendly fire rules.
     /// </summary>
