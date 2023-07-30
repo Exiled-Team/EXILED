@@ -56,10 +56,13 @@ namespace Exiled.Events.Patches.Events.Scp079
                     // amount
                     new(OpCodes.Ldarg_1),
 
+                    // subject
+                    new(OpCodes.Ldarg_3),
+
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // GainingExperienceEventArgs ev = new(Player, Scp079HudTranslation, int, bool)
+                    // GainingExperienceEventArgs ev = new(Player, Scp079HudTranslation, int, roleType, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(GainingExperienceEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
@@ -77,6 +80,11 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.GainType))),
                     new(OpCodes.Starg_S, 2),
+
+                    // subject = ev.RoleType
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.RoleType))),
+                    new(OpCodes.Starg_S, 3),
 
                     // amount = ev.Amount
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
