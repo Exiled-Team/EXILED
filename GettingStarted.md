@@ -89,7 +89,7 @@ public override OnDisable()
     // Make it dynamically updatable.
     // We do this by removing the listener for the event and then nulling the event handler.
     // This process must be repeated for each event.
-    Player.Joined -= EventHandler.PlayerJoined;
+    Player.Verified -= EventHandler.PlayerVerified;
     EventHandler = null;
 }
 ```
@@ -99,7 +99,7 @@ And in the EventHandlers class we would do:
 ```csharp
 public class EventHandlers
 {
-    public void PlayerJoined(JoinedEventArgs ev)
+    public void PlayerVerified(VerifiedEventArgs ev)
     {
 
     }
@@ -112,7 +112,7 @@ EXILED already provides a broadcast function, so let's use it in our event:
 ```csharp
 public class EventHandlers
 {
-    public void PlayerJoined(JoinedEventArgs ev)
+    public void PlayerVerified(VerifiedEventArgs ev)
     {
         ev.Player.Broadcast(5, "<color=lime>Welcome to my cool server!</color>");
     }
