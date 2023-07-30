@@ -38,6 +38,7 @@ namespace Exiled.API.Extensions
             EffectType.Burned => typeof(Burned),
             EffectType.CardiacArrest => typeof(CardiacArrest),
             EffectType.Concussed => typeof(Concussed),
+            EffectType.PocketCorroding => typeof(PocketCorroding),
             EffectType.Corroding => typeof(Corroding),
             EffectType.DamageReduction => typeof(DamageReduction),
             EffectType.Deafened => typeof(Deafened),
@@ -63,9 +64,60 @@ namespace Exiled.API.Extensions
             EffectType.SoundtrackMute => typeof(SoundtrackMute),
             EffectType.SpawnProtected => typeof(SpawnProtected),
             EffectType.Traumatized => typeof(Traumatized),
+            EffectType.AntiScp207 => typeof(AntiScp207),
+            EffectType.Scanned => typeof(Scanned),
 
             // This should never happen
             _ => throw new InvalidOperationException("Invalid effect enum provided"),
+        };
+
+        /// <summary>
+        /// Gets the <see cref="EffectType"/> of the specified <see cref="StatusEffectBase"/>.
+        /// </summary>
+        /// <param name="statusEffectBase">The <see cref="StatusEffectBase"/> enum.</param>
+        /// <returns>The <see cref="EffectType"/>.</returns>
+        public static EffectType GetEffectType(this StatusEffectBase statusEffectBase) => statusEffectBase switch
+        {
+            AmnesiaItems => EffectType.AmnesiaItems,
+            AmnesiaVision => EffectType.AmnesiaVision,
+            Asphyxiated => EffectType.Asphyxiated,
+            Bleeding => EffectType.Bleeding,
+            Blinded => EffectType.Blinded,
+            BodyshotReduction => EffectType.BodyshotReduction,
+            Burned => EffectType.Burned,
+            CardiacArrest => EffectType.CardiacArrest,
+            Concussed => EffectType.Concussed,
+            PocketCorroding => EffectType.PocketCorroding,
+            Corroding => EffectType.Corroding,
+            DamageReduction => EffectType.DamageReduction,
+            Deafened => EffectType.Deafened,
+            Decontaminating => EffectType.Decontaminating,
+            Disabled => EffectType.Disabled,
+            Ensnared => EffectType.Ensnared,
+            Exhausted => EffectType.Exhausted,
+            Flashed => EffectType.Flashed,
+            Hemorrhage => EffectType.Hemorrhage,
+            Hypothermia => EffectType.Hypothermia,
+            InsufficientLighting => EffectType.InsufficientLighting,
+            Invigorated => EffectType.Invigorated,
+            Invisible => EffectType.Invisible,
+            MovementBoost => EffectType.MovementBoost,
+            Poisoned => EffectType.Poisoned,
+            RainbowTaste => EffectType.RainbowTaste,
+            Scp207 => EffectType.Scp207,
+            Scp1853 => EffectType.Scp1853,
+            SeveredHands => EffectType.SeveredHands,
+            Sinkhole => EffectType.SinkHole,
+            Stained => EffectType.Stained,
+            Vitality => EffectType.Vitality,
+            SoundtrackMute => EffectType.SoundtrackMute,
+            SpawnProtected => EffectType.SpawnProtected,
+            Traumatized => EffectType.Traumatized,
+            AntiScp207 => EffectType.AntiScp207,
+            Scanned => EffectType.Scanned,
+
+            // This should never happen
+            _ => throw new InvalidOperationException("Invalid effect status base provided"),
         };
 
         /// <summary>
@@ -95,7 +147,7 @@ namespace Exiled.API.Extensions
         public static bool IsNegative(this EffectType effect) => IsHarmful(effect) || effect is EffectType.AmnesiaItems
             or EffectType.AmnesiaVision or EffectType.Blinded or EffectType.Burned or EffectType.Concussed or EffectType.Deafened
             or EffectType.Disabled or EffectType.Ensnared or EffectType.Exhausted or EffectType.Flashed or EffectType.SinkHole
-            or EffectType.Stained or EffectType.InsufficientLighting or EffectType.SoundtrackMute;
+            or EffectType.Stained or EffectType.InsufficientLighting or EffectType.SoundtrackMute or EffectType.Scanned;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> is a positive effect.
@@ -105,7 +157,7 @@ namespace Exiled.API.Extensions
         /// <seealso cref="IsHealing(EffectType)"/>
         public static bool IsPositive(this EffectType effect) => effect is EffectType.BodyshotReduction or EffectType.DamageReduction
             or EffectType.Invigorated or EffectType.Invisible or EffectType.MovementBoost or EffectType.RainbowTaste
-            or EffectType.Scp207 or EffectType.Scp1853 or EffectType.Vitality;
+            or EffectType.Scp207 or EffectType.Scp1853 or EffectType.Vitality or EffectType.AntiScp207;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> affects the player's movement speed.

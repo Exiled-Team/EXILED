@@ -166,6 +166,10 @@ namespace Exiled.Updater
                     Log.Info("No new versions found, you're using the most recent version of Exiled!");
                 }
             }
+            catch (Utf8Json.JsonParsingException)
+            {
+                Log.Error("Encountered GitHub ratelimit, unable to check and download the latest version of Exiled.");
+            }
             catch (Exception ex)
             {
                 Log.Error($"{nameof(FindUpdate)} threw an exception:\n{ex}");
@@ -300,6 +304,14 @@ namespace Exiled.Updater
                     };
 
                     Process installerProcess = Process.Start(startInfo);
+
+                    if (installerProcess is null)
+                    {
+                        Log.Error("Unable to start installer.");
+                        _stage = Stage.Free;
+                        return;
+                    }
+
                     installerProcess.OutputDataReceived += (s, args) =>
                     {
                         if (!string.IsNullOrEmpty(args.Data))
@@ -316,9 +328,16 @@ namespace Exiled.Updater
                     installerProcess.WaitForExit();
 
                     Log.Info($"Installer exit code: {installerProcess.ExitCode}");
-                    Log.Info("Auto-update complete, restarting server...");
-
-                    _stage = Stage.Installed;
+                    if (installerProcess.ExitCode == 0)
+                    {
+                        Log.Info("Auto-update complete, restarting server...");
+                        _stage = Stage.Installed;
+                    }
+                    else
+                    {
+                        Log.Error($"Installer error occured.");
+                        _stage = Stage.Free;
+                    }
                 }
             }
             catch (Exception ex)

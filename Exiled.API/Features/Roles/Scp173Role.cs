@@ -33,6 +33,7 @@ namespace Exiled.API.Features.Roles
         internal Scp173Role(Scp173GameRole baseRole)
             : base(baseRole)
         {
+            Base = baseRole;
             SubroutineModule = baseRole.SubroutineModule;
             HumeShieldModule = baseRole.HumeShieldModule;
             MovementModule = FirstPersonController.FpcModule as Scp173MovementModule;
@@ -61,6 +62,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp173AudioPlayer not found in Scp173Role::ctor");
 
             AudioPlayer = scp173AudioPlayer;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp173BreakneckSpeedsAbility scp173BreakneckSpeedsAbility))
+                Log.Error("Scp173BreakneckSpeedsAbility not found in Scp173Role::ctor");
+
+            BreakneckSpeedsAbility = scp173BreakneckSpeedsAbility;
         }
 
         /// <summary>
@@ -103,6 +109,11 @@ namespace Exiled.API.Features.Roles
         public Scp173TantrumAbility TantrumAbility { get; }
 
         /// <summary>
+        /// Gets SCP-173's <see cref="Scp173BreakneckSpeedsAbility"/>.
+        /// </summary>
+        public Scp173BreakneckSpeedsAbility BreakneckSpeedsAbility { get; }
+
+        /// <summary>
         /// Gets the SCP-173's <see cref="Scp173AudioPlayer"/>.
         /// </summary>
         public Scp173AudioPlayer AudioPlayer { get; }
@@ -110,12 +121,28 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-173 can use breakneck speed again.
         /// </summary>
-        public float BreakneckCooldown { get; set; } = 40f; // It's hardcoded //TODO
+        public float RemainingBreakneckCooldown
+        {
+            get => BreakneckSpeedsAbility.Cooldown.Remaining;
+            set
+            {
+                BreakneckSpeedsAbility.Cooldown.Remaining = value;
+                BreakneckSpeedsAbility.ServerSendRpc(true);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the amount of time before SCP-173 can place a tantrum.
         /// </summary>
-        public float TantrumCooldown { get; set; } = 30f; // It's hardcoded //TODO
+        public float RemainingTantrumCooldown
+        {
+            get => TantrumAbility.Cooldown.Remaining;
+            set
+            {
+                TantrumAbility.Cooldown.Remaining = value;
+                TantrumAbility.ServerSendRpc(true);
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-173 is currently being viewed by one or more players.
@@ -154,9 +181,19 @@ namespace Exiled.API.Features.Roles
             get => BlinkTimer.AbilityReady;
             set
             {
-                BlinkTimer._endSustainTime = -1;
-                BlinkTimer._totalCooldown = 0;
-                BlinkTimer._initialStopTime = NetworkTime.time;
+                if (value)
+                {
+                    BlinkTimer._endSustainTime = -1;
+                    BlinkTimer._totalCooldown = 0;
+                    BlinkTimer._initialStopTime = NetworkTime.time;
+                }
+                else
+                {
+                    BlinkTimer.ResetObject();
+                    BlinkTimer._observers.UpdateObservers();
+                }
+
+                BlinkTimer.ServerSendRpc(true);
             }
         }
 
@@ -170,6 +207,7 @@ namespace Exiled.API.Features.Roles
             {
                 BlinkTimer._initialStopTime = NetworkTime.time;
                 BlinkTimer._totalCooldown = value;
+                BlinkTimer.ServerSendRpc(true);
             }
         }
 
@@ -183,9 +221,14 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public bool BreakneckActive
         {
-            get => TeleportAbility._breakneckSpeedsAbility.IsActive;
-            set => TeleportAbility._breakneckSpeedsAbility.IsActive = value;
+            get => BreakneckSpeedsAbility.IsActive;
+            set => BreakneckSpeedsAbility.IsActive = value;
         }
+
+        /// <summary>
+        /// Gets the <see cref="Scp173GameRole"/> instance.
+        /// </summary>
+        public new Scp173GameRole Base { get; }
 
         /// <summary>
         /// Places a Tantrum (SCP-173's ability) under the player.
@@ -208,5 +251,18 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="soundId">The SoundId to Play.</param>
         public void SendAudio(Scp173AudioPlayer.Scp173SoundId soundId) => AudioPlayer.ServerSendSound(soundId);
+
+        /// <summary>
+        /// Teleport SCP-173 using the blink ability to the Target Position.
+        /// </summary>
+        /// <param name="targetPos">The Target Position.</param>
+        public void Blink(Vector3 targetPos) => BlinkTimer.ServerBlink(targetPos);
+
+        /// <summary>
+        /// Gets the Spawn Chance of SCP-173.
+        /// </summary>
+        /// <param name="alreadySpawned">The List of Roles already spawned.</param>
+        /// <returns>The Spawn Chance.</returns>
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base.GetSpawnChance(alreadySpawned);
     }
 }

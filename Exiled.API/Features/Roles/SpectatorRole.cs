@@ -27,7 +27,7 @@ namespace Exiled.API.Features.Roles
         internal SpectatorRole(SpectatorGameRole baseRole)
             : base(baseRole)
         {
-            Internal = baseRole;
+            Base = baseRole;
         }
 
         /// <inheritdoc/>
@@ -46,12 +46,12 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Player"/>'s death position.
         /// </summary>
-        public Vector3 DeathPosition => Internal.DeathPosition.Position;
+        public Vector3 DeathPosition => Base.DeathPosition.Position;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="Player"/> is ready to respawn or not.
         /// </summary>
-        public bool IsReadyToRespawn => Internal.ReadyToRespawn;
+        public bool IsReadyToRespawn => Base.ReadyToRespawn;
 
         /// <summary>
         /// Gets currently spectated <see cref="Player"/> by this <see cref="Player"/>. May be <see langword="null"/>.
@@ -60,7 +60,7 @@ namespace Exiled.API.Features.Roles
         {
             get
             {
-                Player spectatedPlayer = Player.Get(Internal.SyncedSpectatedNetId);
+                Player spectatedPlayer = Player.Get(Base.SyncedSpectatedNetId);
 
                 return spectatedPlayer != Owner ? spectatedPlayer : null;
             }
@@ -69,6 +69,6 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the game <see cref="SpectatorGameRole"/>.
         /// </summary>
-        private SpectatorGameRole Internal { get; }
+        public new SpectatorGameRole Base { get; }
     }
 }

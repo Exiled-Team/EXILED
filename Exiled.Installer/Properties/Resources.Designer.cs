@@ -10,8 +10,8 @@
 
 namespace Exiled.Installer.Properties {
     using System;
-    
-    
+
+
     /// <summary>
     ///   Classe di risorse fortemente tipizzata per la ricerca di stringhe localizzate e così via.
     /// </summary>
@@ -23,15 +23,15 @@ namespace Exiled.Installer.Properties {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-        
+
         /// <summary>
         ///   Restituisce l'istanza di ResourceManager nella cache utilizzata da questa classe.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Exiled.Installer.Properties {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Esegue l'override della proprietà CurrentUICulture del thread corrente per tutte le
         ///   ricerche di risorse eseguite utilizzando questa classe di risorse fortemente tipizzata.
@@ -59,7 +59,7 @@ namespace Exiled.Installer.Properties {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a EXILED\:EXILED
         ///SCP Secret Laboratory\:ABSOLUTE
@@ -70,7 +70,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Markup", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Does it exist? - {0}.
         /// </summary>
@@ -79,7 +79,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_EnsureDirExists_Does_it_exist_____0_", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Ensuring directory path: {0}.
         /// </summary>
@@ -88,7 +88,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_EnsureDirExists_Ensuring_directory_path___0_", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a An exception occurred while trying to extract a file.
         /// </summary>
@@ -97,7 +97,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_ExtractEntry_An_exception_occurred_while_trying_to_extract_a_file", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Extracting &apos;{0}&apos; into &apos;{1}&apos;....
         /// </summary>
@@ -106,7 +106,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_ExtractEntry_Extracting___0___into___1_____", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a --- ASSETS ---.
         /// </summary>
@@ -115,7 +115,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_MainSafe_____ASSETS____", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a --- AVAILABLE VERSIONS ---.
         /// </summary>
@@ -124,16 +124,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_MainSafe_____AVAILABLE_VERSIONS____", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a --- RELEASES ---.
-        /// </summary>
-        internal static string Program_MainSafe_____RELEASES____ {
-            get {
-                return ResourceManager.GetString("Program_MainSafe_____RELEASES____", resourceCulture);
-            }
-        }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a AppData folder: {0}.
         /// </summary>
@@ -142,7 +133,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_MainSafe_AppData_folder___0_", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Asset found!.
         /// </summary>
@@ -151,16 +142,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_MainSafe_Asset_found_", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a Couldn&apos;t find &apos;{0}&apos; in &apos;{1}&apos;.
-        /// </summary>
-        internal static string Program_MainSafe_Couldn_t_find___0___in___1__ {
-            get {
-                return ResourceManager.GetString("Program_MainSafe_Couldn_t_find___0___in___1__", resourceCulture);
-            }
-        }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Exiled folder: {0}.
         /// </summary>
@@ -169,7 +151,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_MainSafe_Exiled_folder___0_", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Installation complete.
         /// </summary>
@@ -178,7 +160,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_MainSafe_Installation_complete", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Prereleases included - {0}.
         /// </summary>
@@ -187,7 +169,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_MainSafe_Prereleases_included____0_", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Read the exception message, read the readme, and if you still don&apos;t understand what to do, then contact #support in our discord server with the attached screenshot of the full exception.
         /// </summary>
@@ -198,7 +180,7 @@ namespace Exiled.Installer.Properties {
                         "attached_screenshot_of_the_full_exception", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Receiving releases....
         /// </summary>
@@ -207,7 +189,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_MainSafe_Receiving_releases___", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Release found!.
         /// </summary>
@@ -216,7 +198,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_MainSafe_Release_found_", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Searching for the latest release that matches the parameters....
         /// </summary>
@@ -225,7 +207,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_MainSafe_Searching_for_the_latest_release_that_matches_the_parameters___", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Target release version - {0}.
         /// </summary>
@@ -234,7 +216,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_MainSafe_Target_release_version____0_", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Token detected! Using the token....
         /// </summary>
@@ -243,7 +225,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_MainSafe_Token_detected__Using_the_token___", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Couldn&apos;t resolve path for &apos;{0}&apos;, update installer.
         /// </summary>
@@ -252,7 +234,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_ProcessTarEntry_Couldn_t_resolve_path_for___0____update_installer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Extract for {0} is disabled.
         /// </summary>
@@ -261,7 +243,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_ProcessTarEntry_Extract_for__0__is_disabled", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Processing &apos;{0}&apos;.
         /// </summary>
@@ -270,7 +252,7 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_ProcessTarEntry_Processing___0__", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a Trying to find release...
         /// </summary>

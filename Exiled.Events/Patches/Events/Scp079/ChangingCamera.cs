@@ -18,10 +18,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using HarmonyLib;
 
     using Mirror;
-
-    using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
-    using PlayerRoles.PlayableScps.Subroutines;
 
     using static HarmonyLib.AccessTools;
 

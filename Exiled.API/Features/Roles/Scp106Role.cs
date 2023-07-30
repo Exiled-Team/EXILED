@@ -7,10 +7,14 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using System.Collections.Generic;
+
+    using Exiled.API.Enums;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerStatsSystem;
 
     using UnityEngine;
 
@@ -30,7 +34,7 @@ namespace Exiled.API.Features.Roles
         {
             SubroutineModule = baseRole.SubroutineModule;
             HumeShieldModule = baseRole.HumeShieldModule;
-            Internal = baseRole;
+            Base = baseRole;
             MovementModule = FirstPersonController.FpcModule as Scp106MovementModule;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp106Vigor scp106Vigor))
@@ -114,19 +118,63 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public bool IsSubmerged
         {
-            get => Internal.IsSubmerged;
+            get => Base.IsSubmerged;
             set => HuntersAtlasAbility.SetSubmerged(value);
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-106 is ready for idle.
+        /// Gets a value indicating whether or not SCP-106 can activate teslas.
         /// </summary>
-        public bool CanActivateIdle => Internal.CanActivateIdle;
+        public bool CanActivateTesla => Base.CanActivateShock;
+
+        /// <summary>
+        /// Gets a value indicating whether if SCP-106 <see cref="Scp106StalkAbility"/> can be cleared.
+        /// </summary>
+        public bool CanStopStalk => StalkAbility.CanBeCleared;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently slow down by a door.
         /// </summary>
         public bool IsSlowdown => MovementModule._slowndownTarget is < 1;
+
+        /// <summary>
+        /// Gets a value indicating the current time of the sinkhole.
+        /// </summary>
+        public float SinkholeCurrentTime => SinkholeController.ElapsedToggle;
+
+        /// <summary>
+        /// Gets a value indicating the normalized state of the sinkhole.
+        /// </summary>
+        public float SinkholeNormalizedState => SinkholeController.NormalizedState;
+
+        /// <summary>
+        /// Gets a value indicating whether or not SCP-106 is currently in the middle of an animation.
+        /// </summary>
+        public bool IsDuringAnimation => SinkholeController.IsDuringAnimation;
+
+        /// <summary>
+        /// Gets a value indicating whether or not SCP-106 sinkhole is hidden.
+        /// </summary>
+        public bool IsSinkholeHidden => SinkholeController.IsHidden;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the current sinkhole state.
+        /// </summary>
+        public bool SinkholeState
+        {
+            get => SinkholeController.State;
+            set => SinkholeController.State = value;
+        }
+
+        /// <summary>
+        /// Gets the sinkhole target duration.
+        /// </summary>
+        public float SinkholeTargetDuration => SinkholeController.TargetDuration;
+
+        /// <summary>
+        /// Gets the speed multiplier of the sinkhole.
+        /// </summary>
+        public float SinkholeSpeedMultiplier => SinkholeController.SpeedMultiplier;
 
         /// <summary>
         /// Gets or sets the amount of time in between player captures.
@@ -142,6 +190,19 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets or sets the Sinkhole cooldown.
+        /// </summary>
+        public float RemainingSinkholeCooldown
+        {
+            get => SinkholeController.Cooldown.Remaining;
+            set
+            {
+                SinkholeController.Cooldown.Remaining = value;
+                SinkholeController.ServerSendRpc(true);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not SCP-106 will enter his stalking mode.
         /// </summary>
         public bool IsStalking
@@ -153,7 +214,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp106GameRole"/>.
         /// </summary>
-        protected Scp106GameRole Internal { get; }
+        public new Scp106GameRole Base { get; }
 
         /// <summary>
         /// Forces SCP-106 to use its portal, and Teleport to position.
@@ -164,9 +225,7 @@ namespace Exiled.API.Features.Roles
         public bool UsePortal(Vector3 position, float cost = 0f)
         {
             if (Room.Get(position) is not Room room)
-            {
-                throw new System.InvalidOperationException("Invalid room provided.");
-            }
+                return false;
 
             HuntersAtlasAbility._syncRoom = room.Identifier;
             HuntersAtlasAbility._syncPos = position;
@@ -179,5 +238,35 @@ namespace Exiled.API.Features.Roles
 
             return true;
         }
+
+        /// <summary>
+        /// Send a player to the pocket dimension.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/>to send.</param>
+        public void CapturePlayer(Player player) // Convert to bool.
+        {
+            if (player is null)
+                return;
+            Attack._targetHub = player.ReferenceHub;
+            DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, Attack._damage, DeathTranslations.PocketDecay);
+
+            if (!Attack._targetHub.playerStats.DealDamage(handler))
+                return;
+
+            Attack.SendCooldown(Attack._hitCooldown);
+            Attack.Vigor.VigorAmount += Scp106Attack.VigorCaptureReward;
+            Attack.ReduceSinkholeCooldown();
+            Hitmarker.SendHitmarker(Attack.Owner, 1f);
+
+            player.EnableEffect(EffectType.Corroding);
+            player.EnableEffect(EffectType.SinkHole);
+        }
+
+        /// <summary>
+        /// Gets the Spawn Chance of SCP-106.
+        /// </summary>
+        /// <param name="alreadySpawned">The List of Roles already spawned.</param>
+        /// <returns>The Spawn Chance.</returns>
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base.GetSpawnChance(alreadySpawned);
     }
 }

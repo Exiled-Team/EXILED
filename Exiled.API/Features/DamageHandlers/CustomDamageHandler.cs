@@ -118,7 +118,7 @@ namespace Exiled.API.Features.DamageHandlers
             AhpStat ahpModule = player.GetModule<AhpStat>();
             HealthStat healthModule = player.GetModule<HealthStat>();
 
-            if (Damage <= -1f)
+            if (Damage <= StandardDamageHandler.KillValue)
                 return KillPlayer(player, CustomBase);
 
             ProcessDamage(player);

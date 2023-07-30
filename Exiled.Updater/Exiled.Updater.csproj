@@ -6,17 +6,17 @@
 
         <AssemblyName>Exiled.Updater</AssemblyName>
         <BaseProperties>false</BaseProperties>
-        <Version>3.1.1</Version>
         <NoWarn>$(NoWarn);CS1591;SA1600;SA1401;SA1309;SA1134;SA1123;SA1201</NoWarn>
         <Configurations>Debug;Release;Installer</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <AssemblyVersion>3.1.2</AssemblyVersion>
+        <FileVersion>3.1.2</FileVersion>
     </PropertyGroup>
 
     <Import Project="../EXILED.props" />
 
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
-        <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
         <PackageReference Include="SemanticVersioning" Version="$(SemanticVersioningVersion)" />
     </ItemGroup>
 

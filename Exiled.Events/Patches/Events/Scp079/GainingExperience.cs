@@ -17,6 +17,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using HarmonyLib;
 
+    using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Subroutines;
 
@@ -25,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Scp079TierManager.ServerGrantExperience(int, Scp079HudTranslation)" />.
+    ///     Patches <see cref="Scp079TierManager.ServerGrantExperience(int, Scp079HudTranslation, RoleTypeId)" />.
     ///     Adds the <see cref="Scp079.GainingExperience" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079TierManager), nameof(Scp079TierManager.ServerGrantExperience))]
@@ -55,10 +56,13 @@ namespace Exiled.Events.Patches.Events.Scp079
                     // amount
                     new(OpCodes.Ldarg_1),
 
+                    // subject
+                    new(OpCodes.Ldarg_3),
+
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // GainingExperienceEventArgs ev = new(Player, Scp079HudTranslation, int, bool)
+                    // GainingExperienceEventArgs ev = new(Player, Scp079HudTranslation, int, roleType, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(GainingExperienceEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
@@ -76,6 +80,11 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.GainType))),
                     new(OpCodes.Starg_S, 2),
+
+                    // subject = ev.RoleType
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.RoleType))),
+                    new(OpCodes.Starg_S, 3),
 
                     // amount = ev.Amount
                     new(OpCodes.Ldloc_S, ev.LocalIndex),

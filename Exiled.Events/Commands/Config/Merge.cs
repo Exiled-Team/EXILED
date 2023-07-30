@@ -9,14 +9,12 @@ namespace Exiled.Events.Commands.Config
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
+    using System.Linq;
 
     using API.Enums;
     using API.Features;
     using API.Interfaces;
-
     using CommandSystem;
-
     using Loader;
 
     /// <summary>
@@ -50,7 +48,7 @@ namespace Exiled.Events.Commands.Config
             SortedDictionary<string, IConfig> configs = ConfigManager.LoadSorted(ConfigManager.Read());
             LoaderPlugin.Config.ConfigType = ConfigType.Default;
             bool haveBeenSaved = ConfigManager.Save(configs);
-            File.WriteAllText(Paths.LoaderConfig, Loader.Serializer.Serialize(LoaderPlugin.Config));
+            PluginAPI.Loader.AssemblyLoader.InstalledPlugins.FirstOrDefault(x => x.PluginName == "Exiled Loader")?.SaveConfig(new LoaderPlugin(), nameof(LoaderPlugin.Config));
 
             response = $"Configs have been merged successfully! Feel free to remove the directory in the following path:\n\"{Paths.IndividualConfigs}\"";
             return haveBeenSaved;

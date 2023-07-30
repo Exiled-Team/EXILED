@@ -13,7 +13,6 @@ namespace Exiled.API.Features.Items
 
     using Exiled.API.Interfaces;
 
-    using InventorySystem.Items;
     using InventorySystem.Items.Armor;
 
     using PlayerRoles;

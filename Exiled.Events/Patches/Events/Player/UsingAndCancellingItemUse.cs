@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Features;
@@ -18,6 +19,8 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     using InventorySystem.Items.Usables;
+
+    using PluginAPI.Events;
 
     using static HarmonyLib.AccessTools;
 
@@ -74,8 +77,8 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Stloc_S, 4),
                 });
 
-            offset = 0;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S) + offset;
+            offset = -16;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Newobj && (ConstructorInfo)instruction.operand == GetDeclaredConstructors(typeof(PlayerCancelUsingItemEvent))[0]) + offset;
 
             newInstructions.InsertRange(
                 index,

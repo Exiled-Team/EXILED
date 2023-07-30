@@ -12,34 +12,27 @@ namespace Exiled.API.Features
     using System.Collections.ObjectModel;
     using System.Linq;
 
+    using Decals;
     using Enums;
-
     using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Features.Roles;
     using Exiled.API.Features.Toys;
-
     using Hazards;
-
+    using InventorySystem;
     using InventorySystem.Items.Firearms.BasicMessages;
-
+    using InventorySystem.Items.Pickups;
+    using InventorySystem.Items.ThrowableProjectiles;
     using Items;
-
     using LightContainmentZoneDecontamination;
-
     using MapGeneration;
     using MapGeneration.Distributors;
-
     using Mirror;
-
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Scp939;
-
     using RelativePositioning;
-
     using UnityEngine;
-
+    using Utils;
     using Utils.Networking;
 
     using Object = UnityEngine.Object;
@@ -204,11 +197,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Starts the light containment zone decontamination process.
         /// </summary>
-        public static void StartDecontamination()
-        {
-            DecontaminationController.Singleton.FinishDecontamination();
-            DecontaminationController.Singleton.NetworkRoundStartTime = -1f;
-        }
+        public static void StartDecontamination() => DecontaminationController.Singleton.ForceDecontamination();
 
         /// <summary>
         /// Turns off all lights in the facility.
@@ -217,7 +206,7 @@ namespace Exiled.API.Features
         /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
         public static void TurnOffAllLights(float duration, ZoneType zoneTypes = ZoneType.Unspecified)
         {
-            foreach (FlickerableLightController controller in FlickerableLightController.Instances)
+            foreach (RoomLightController controller in RoomLightController.Instances)
             {
                 Room room = controller.GetComponentInParent<Room>();
                 if (room is null)
@@ -297,11 +286,49 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Destroy all <see cref="ItemPickupBase"/> objects.
+        /// </summary>
+        public static void CleanAllItems()
+        {
+            foreach (Pickup pickup in Pickup.List.ToList())
+                pickup.Destroy();
+        }
+
+        /// <summary>
+        /// Destroy all the <see cref="Pickup"/> objects from the specified list.
+        /// </summary>
+        /// <param name="pickups">The List of pickups to destroy.</param>
+        public static void CleanAllItems(IEnumerable<Pickup> pickups)
+        {
+            foreach (Pickup pickup in pickups)
+                pickup.Destroy();
+        }
+
+        /// <summary>
+        /// Destroy all <see cref="BasicRagdoll"/> objects.
+        /// </summary>
+        public static void CleanAllRagdolls()
+        {
+            foreach (Ragdoll ragDoll in Ragdoll.List.ToList())
+                ragDoll.Destroy();
+        }
+
+        /// <summary>
+        /// Destroy all <see cref="Ragdoll"/> objects from the specified list.
+        /// </summary>
+        /// <param name="ragDolls">The List of RagDolls to destroy.</param>
+        public static void CleanAllRagdolls(IEnumerable<Ragdoll> ragDolls)
+        {
+            foreach (Ragdoll ragDoll in ragDolls)
+                ragDoll.Destroy();
+        }
+
+        /// <summary>
         /// Places a blood decal.
         /// </summary>
         /// <param name="position">The position of the blood decal.</param>
         /// <param name="direction">The direction of the blood decal.</param>
-        public static void PlaceBlood(Vector3 position, Vector3 direction) => new GunHitMessage(position, direction, true).SendToAuthenticated(0);
+        public static void PlaceBlood(Vector3 position, Vector3 direction) => new GunDecalMessage(position, direction, DecalPoolType.Blood).SendToAuthenticated(0);
 
         /// <summary>
         /// Gets all the near cameras.
@@ -311,6 +338,39 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the found cameras.</returns>
         public static IEnumerable<Camera> GetNearCameras(Vector3 position, float toleration = 15f)
             => Camera.Get(cam => (position - cam.Position).sqrMagnitude <= toleration * toleration);
+
+        /// <summary>
+        /// Explode.
+        /// </summary>
+        /// <param name="position">The position where explosion will be created.</param>
+        /// <param name="projectileType">The projectile that will create the explosion.</param>
+        /// <param name="attacker">The player who create the explosion.</param>
+        public static void Explode(Vector3 position, ProjectileType projectileType, Player attacker = null)
+        {
+            ItemType item;
+            if ((item = projectileType.GetItemType()) is ItemType.None)
+                return;
+            attacker ??= Server.Host;
+            if (!InventoryItemLoader.TryGetItem(item, out ThrowableItem throwableItem))
+                return;
+            ExplosionUtils.ServerSpawnEffect(position, item);
+
+            if (throwableItem.Projectile is ExplosionGrenade explosionGrenade)
+                ExplosionGrenade.Explode(attacker.Footprint, position, explosionGrenade);
+        }
+
+        /// <summary>
+        /// Spawn projectile effect.
+        /// </summary>
+        /// <param name="position">The position where effect will be created.</param>
+        /// <param name="projectileType">The projectile that will create the effect.</param>
+        public static void ExplodeEffect(Vector3 position, ProjectileType projectileType)
+        {
+            ItemType item;
+            if ((item = projectileType.GetItemType()) is ItemType.None)
+                return;
+            ExplosionUtils.ServerSpawnEffect(position, item);
+        }
 
         /// <summary>
         /// Clears the lazy loading game object cache.

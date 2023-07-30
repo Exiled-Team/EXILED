@@ -48,12 +48,14 @@ namespace Exiled.Events.Commands.Reload
             bool haveBeenReloaded = ConfigManager.Reload();
 
             Handlers.Server.OnReloadedConfigs();
-            API.Features.Log.KnownDebugValues.Clear();
+            API.Features.Log.DebugEnabled.Clear();
 
             foreach (IPlugin<IConfig> plugin in Loader.Plugins)
             {
                 plugin.OnUnregisteringCommands();
                 plugin.OnRegisteringCommands();
+                if (plugin.Config.Debug)
+                    API.Features.Log.DebugEnabled.Add(plugin.Assembly);
             }
 
             response = "Plugin configs have been reloaded successfully!";

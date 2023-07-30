@@ -16,10 +16,9 @@ namespace Exiled.Events
     using API.Features;
 
     using EventArgs.Interfaces;
-
+    using Exiled.API.Features.Pickups;
     using HarmonyLib;
-
-    using PlayerRoles.FirstPersonControl.Thirdperson;
+    using InventorySystem.Items.Pickups;
     using PlayerRoles.Ragdolls;
     using PlayerRoles.RoleAssign;
     using PluginAPI.Events;
@@ -97,11 +96,10 @@ namespace Exiled.Events
 
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
 
-            AnimatedCharacterModel.OnFootstepPlayed += Handlers.Player.OnMakingNoise;
-
             RagdollManager.OnRagdollSpawned += Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
-
+            ItemPickupBase.OnPickupAdded += x => Pickup.Get(x);
+            ItemPickupBase.OnPickupDestroyed += x => Pickup.BaseToPickup.Remove(x);
             ServerConsole.ReloadServerName();
 
             EventManager.RegisterEvents<Handlers.Warhead>(this);
@@ -129,8 +127,6 @@ namespace Exiled.Events
             CharacterClassManager.OnRoundStarted -= Handlers.Server.OnRoundStarted;
 
             InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
-
-            AnimatedCharacterModel.OnFootstepPlayed -= Handlers.Player.OnMakingNoise;
 
             RagdollManager.OnRagdollSpawned -= Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved -= Handlers.Internal.RagdollList.OnRemovedRagdoll;
@@ -199,9 +195,10 @@ namespace Exiled.Events
                 {
                     Harmony.CreateClassProcessor(type).Patch();
                 }
-                catch (Exception exception)
+                catch (HarmonyException exception)
                 {
                     Log.Error($"Patching by attributes failed!\n{exception}");
+
                     failedPatch++;
                     continue;
                 }

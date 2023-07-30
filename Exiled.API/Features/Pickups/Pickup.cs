@@ -75,10 +75,11 @@ namespace Exiled.API.Features.Pickups
             {
                 ItemId = type,
                 Serial = ItemSerialGenerator.GenerateNext(),
-                Weight = itemBase.Weight,
+                WeightKg = itemBase.Weight,
             };
 
             Info = psi;
+
             BaseToPickup.Add(Base, this);
         }
 
@@ -98,6 +99,11 @@ namespace Exiled.API.Features.Pickups
         public Transform Transform => Base.transform;
 
         /// <summary>
+        /// Gets the <see cref="UnityEngine.Rigidbody"/> of the Pickup.
+        /// </summary>
+        public Rigidbody Rigidbody => (Base.PhysicsModule as PickupStandardPhysics).Rb;
+
+        /// <summary>
         /// Gets the current <see cref="Room"/> the Pickup is in.
         /// </summary>
         public Room Room => Room.FindParentRoom(GameObject);
@@ -107,13 +113,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public ushort Serial
         {
-            get
-            {
-                if (Base.Info.Serial is 0)
-                    return Serial = ItemSerialGenerator.GenerateNext();
-                return Base.Info.Serial;
-            }
-
+            get => Base.Info.Serial;
             set
             {
                 Base.Info.Serial = value;
@@ -147,10 +147,10 @@ namespace Exiled.API.Features.Pickups
         /// <seealso cref="PickupTime"/>
         public float Weight
         {
-            get => Info.Weight;
+            get => Info.WeightKg;
             set
             {
-                Base.Info.Weight = value;
+                Base.Info.WeightKg = value;
                 Info = Base.Info;
             }
         }
@@ -234,12 +234,8 @@ namespace Exiled.API.Features.Pickups
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
         public Vector3 Position
         {
-            get => Base.transform.position;
-            set
-            {
-                Base.transform.position = value;
-                Base.RefreshPositionAndRotation();
-            }
+            get => Base.Position;
+            set => Base.Position = value;
         }
 
         /// <summary>
@@ -247,7 +243,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public RelativePosition RelativePosition
         {
-            get => Base.Info.RelativePosition;
+            get => new(Room.transform.TransformPoint(Position));
             set => Position = value.Position;
         }
 
@@ -257,12 +253,8 @@ namespace Exiled.API.Features.Pickups
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
         public Quaternion Rotation
         {
-            get => Base.transform.rotation;
-            set
-            {
-                Base.transform.rotation = value;
-                Base.RefreshPositionAndRotation();
-            }
+            get => Base.Rotation;
+            set => Base.Rotation = value;
         }
 
         /// <summary>
@@ -366,6 +358,8 @@ namespace Exiled.API.Features.Pickups
             ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new KeycardPickup(type),
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new BodyArmorPickup(type),
             ItemType.SCP330 => new Scp330Pickup(),
+            ItemType.Jailbird => new JailbirdPickup(),
+            ItemType.SCP1576 => new Scp1576Pickup(),
             _ => new Pickup(type),
         };
 

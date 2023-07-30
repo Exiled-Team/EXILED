@@ -57,6 +57,13 @@ namespace Exiled.CustomRoles.Commands
                     return false;
                 }
 
+                if (role.CustomAbilities is null)
+                {
+                    response = "You do not have any custom abilities for this role.";
+
+                    return false;
+                }
+
                 if (role.CustomAbilities.Count >= abilityNumber + 1)
                 {
                     if (role.CustomAbilities[abilityNumber] is ActiveAbility active)
@@ -77,7 +84,7 @@ namespace Exiled.CustomRoles.Commands
 
             foreach (CustomRole customRole in roles)
             {
-                if (customRole.CustomAbilities.Count < abilityNumber + 1 || !(customRole.CustomAbilities[abilityNumber] is ActiveAbility activeAbility) || !activeAbility.CanUseAbility(player, out response))
+                if (customRole.CustomAbilities is null || customRole.CustomAbilities.Count < abilityNumber + 1 || !(customRole.CustomAbilities[abilityNumber] is ActiveAbility activeAbility) || !activeAbility.CanUseAbility(player, out response))
                     continue;
 
                 activeAbility.UseAbility(player);

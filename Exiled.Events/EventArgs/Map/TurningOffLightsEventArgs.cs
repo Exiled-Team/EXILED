@@ -18,19 +18,19 @@ namespace Exiled.Events.EventArgs.Map
         /// Initializes a new instance of the <see cref="TurningOffLightsEventArgs"/> class.
         /// </summary>
         /// <param name="duration"><inheritdoc cref="Duration"/></param>
-        /// <param name="flickerableLightControllerHandler"><inheritdoc cref="FlickerableLightControllerHandler"/></param>
+        /// <param name="flickerableLightControllerHandler"><inheritdoc cref="RoomLightController"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public TurningOffLightsEventArgs(FlickerableLightController flickerableLightControllerHandler, float duration, bool isAllowed = true)
+        public TurningOffLightsEventArgs(RoomLightController flickerableLightControllerHandler, float duration, bool isAllowed = true)
         {
-            FlickerableLightControllerHandler = flickerableLightControllerHandler;
+            RoomLightController = flickerableLightControllerHandler;
             Duration = duration;
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        /// Gets the <see cref="FlickerableLightController"/>.
+        /// Gets the <see cref="RoomLightController"/>.
         /// </summary>
-        public FlickerableLightController FlickerableLightControllerHandler { get; }
+        public RoomLightController RoomLightController { get; }
 
         /// <summary>
         /// Gets or sets the blackout duration.
