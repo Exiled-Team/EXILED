@@ -170,6 +170,7 @@ namespace Exiled.API.Extensions
         /// <returns>The hashed userid.</returns>
         public static string GetHashedUserId(this string userId)
         {
+            
             byte[] textData = Encoding.UTF8.GetBytes(userId.Substring(0, userId.LastIndexOf('@')));
             byte[] hash = Sha256.ComputeHash(textData);
             return BitConverter.ToString(hash).Replace("-", string.Empty);
