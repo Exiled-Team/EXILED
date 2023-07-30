@@ -269,9 +269,9 @@ namespace Exiled.Loader
                     if (plugin.Config.Debug)
                         Log.DebugEnabled.Add(plugin.Assembly);
                 }
-                catch (Exception exception)
+                catch (Exception ex)
                 {
-                    Log.Error($"Plugin \"{plugin.Name}\" threw an exeption while enabling: {exception}");
+                    Log.Error($"Plugin \"{plugin.Name}\" threw an exeption while enabling: {ex}");
                 }
             }
 
@@ -285,9 +285,9 @@ namespace Exiled.Loader
                         plugin.OnRegisteringCommands();
                     }
                 }
-                catch (Exception exception)
+                catch (Exception ex)
                 {
-                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while enabling: {exception}");
+                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while enabling: {ex}");
                 }
             }
         }
@@ -309,9 +309,9 @@ namespace Exiled.Loader
 
                     plugin.OnDisabled();
                 }
-                catch (Exception exception)
+                catch (Exception ex)
                 {
-                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {exception}");
+                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {ex}");
                 }
             }
 
@@ -339,9 +339,9 @@ namespace Exiled.Loader
                     plugin.OnUnregisteringCommands();
                     plugin.OnDisabled();
                 }
-                catch (Exception exception)
+                catch (Exception ex)
                 {
-                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while disabling: {exception}");
+                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while disabling: {ex}");
                 }
             }
         }
@@ -376,11 +376,7 @@ namespace Exiled.Loader
 
             EnablePlugins();
 
-            BuildInfoCommand.ModDescription = string.Join(
-                "\n",
-                AppDomain.CurrentDomain.GetAssemblies()
-                    .Where(a => a.FullName.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase))
-                    .Select(a => $"{a.GetName().Name} - Version {a.GetName().Version.ToString(3)}"));
+            BuildInfoCommand.ModDescription = string.Join("\n", AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase)).Select(a => $"{a.GetName().Name} - Version {a.GetName().Version.ToString(3)}"));
 
             ServerConsole.AddLog($"Welcome to {LoaderMessages.GetMessage()}", ConsoleColor.Green);
         }
@@ -424,17 +420,13 @@ namespace Exiled.Loader
                 // Exiled is outdated
                 if (requiredVersion.Major > actualVersion.Major)
                 {
-                    Log.Error(
-                        $"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
-                        $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
+                    Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} requires version {plugin.RequiredExiledVersion.ToString(3)}.");
 
                     return true;
                 }
                 else if ((requiredVersion.Major < actualVersion.Major) && !LoaderPlugin.Config.ShouldLoadOutdatedPlugins)
                 {
-                    Log.Error(
-                        $"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
-                        $"Its Required Major version is {requiredVersion.Major}, but the actual version is: {actualVersion.Major}. This plugin will not be loaded!");
+                    Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " + $"Its Required Major version is {requiredVersion.Major}, but the actual version is: {actualVersion.Major}. This plugin will not be loaded!");
 
                     return true;
                 }

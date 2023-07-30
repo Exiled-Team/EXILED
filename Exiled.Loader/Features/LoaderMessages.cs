@@ -41,6 +41,7 @@ namespace Exiled.Loader.Features
    ▄█    ███   ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
  ▄████████▀    ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
                                                                                 ";
+        //NOTE: This is why we can't have nice things.
 
         /// <summary>
         /// Gets the christmas loader message.

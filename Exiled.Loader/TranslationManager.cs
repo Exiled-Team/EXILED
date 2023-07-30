@@ -36,15 +36,12 @@ namespace Exiled.Loader
             try
             {
                 Log.Info($"Loading plugin translations... ({LoaderPlugin.Config.ConfigType})");
-
                 Dictionary<string, object> rawDeserializedTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? DictionaryPool<string, object>.Pool.Get();
                 SortedDictionary<string, ITranslation> deserializedTranslations = new(StringComparer.Ordinal);
-
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
                     if (plugin.InternalTranslation is null)
                         continue;
-
                     deserializedTranslations.Add(plugin.Prefix, plugin.LoadTranslation(rawDeserializedTranslations));
                 }
 
@@ -56,14 +53,12 @@ namespace Exiled.Loader
                 }
 
                 Log.Info("Plugin translations loaded successfully!");
-
                 DictionaryPool<string, object>.Pool.Return(rawDeserializedTranslations);
                 return deserializedTranslations;
             }
             catch (Exception exception)
             {
                 Log.Error($"An error has occurred while loading translations!\n{exception}");
-
                 return null;
             }
         }
@@ -96,13 +91,11 @@ namespace Exiled.Loader
             try
             {
                 File.WriteAllText(Paths.Translations, translations ?? string.Empty);
-
                 return true;
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                Log.Error($"An error has occurred while saving translations to {Paths.Translations} path:\n{exception}");
-
+                Log.Error($"An error has occurred while saving translations to {Paths.Translations} path:\n{ex}");
                 return false;
             }
         }
@@ -124,9 +117,9 @@ namespace Exiled.Loader
 
                 return true;
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                Log.Error($"An error has occurred while saving translations to {translationsPath} path: {exception}");
+                Log.Error($"An error has occurred while saving translations to {translationsPath} path: {ex}");
 
                 return false;
             }
@@ -143,18 +136,14 @@ namespace Exiled.Loader
             {
                 if (translations is null || translations.Count == 0)
                     return false;
-
                 if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
-                {
                     return SaveDefaultTranslation(Loader.Serializer.Serialize(translations));
-                }
 
                 return translations.All(plugin => SaveSeparatedTranslation(plugin.Key, Loader.Serializer.Serialize(plugin.Value)));
             }
             catch (YamlException yamlException)
             {
                 Log.Error($"An error has occurred while serializing translations:\n{yamlException}");
-
                 return false;
             }
         }
@@ -197,9 +186,9 @@ namespace Exiled.Loader
 
                 return Loader.Plugins.All(plugin => SaveSeparatedTranslation(plugin.Prefix, string.Empty));
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Log.Error("An error has occurred while clearing translations:\n" + e);
+                Log.Error($"An error has occurred while clearing translations:\n{ex}");
                 return false;
             }
         }
