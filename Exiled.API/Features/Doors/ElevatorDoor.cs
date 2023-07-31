@@ -26,6 +26,7 @@ namespace Exiled.API.Features.Doors
             : base(door, room)
         {
             Base = door;
+            Lift = Lift.Get(x => x.Group == Group).FirstOrDefault();
         }
 
         /// <summary>

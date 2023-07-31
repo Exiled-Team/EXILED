@@ -24,6 +24,7 @@ namespace Exiled.API.Features.Doors
             : base(door, room)
         {
             Base = door;
+            Subdoors = new List<Door>(Base.SubDoors.Select(Get));
         }
 
         /// <summary>

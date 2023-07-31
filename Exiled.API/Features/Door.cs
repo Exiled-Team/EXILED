@@ -159,19 +159,9 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the door is locked.
+        /// Gets a value indicating whether or not the door is locked.
         /// </summary>
-        public bool IsLocked
-        {
-            get => DoorLockType > 0;
-            set
-            {
-                if (value)
-                    ChangeLock(DoorLockType.AdminCommand);
-                else
-                    Unlock();
-            }
-        }
+        public bool IsLocked => DoorLockType > 0;
 
         /// <summary>
         /// Gets or sets the door lock type.
@@ -366,7 +356,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <returns><see cref="Door"/> object.</returns>
         public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
         {
-            List<Door> doors = onlyUnbroken || type is not ZoneType.Unspecified ? Get(x => (x.Room is null || x.Room.Zone.HasFlag(type) || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : DoorVariantToDoor.Values.ToList();
+            List<Door> doors = onlyUnbroken || type is not ZoneType.Unspecified ? Get(x => (x.Room is null || x.Room.Zone.HasFlag(type) || type == ZoneType.Unspecified) && (x is Doors.BreakableDoor { IsDestroyed: true } || !onlyUnbroken)).ToList() : DoorVariantToDoor.Values.ToList();
             return doors[UnityEngine.Random.Range(0, doors.Count)];
         }
 
@@ -555,6 +545,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <param name="player">Player to check.</param>
         /// <returns><see langword="true"/> if anybody can interact. Otherwise, false.</returns>
         public bool IsAllowToInteract(Player player = null) => Base.AllowInteracting(player?.ReferenceHub, 0);
+
         /// <summary>
         /// Returns the Door in a human-readable format.
         /// </summary>
