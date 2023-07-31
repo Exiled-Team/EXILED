@@ -29,10 +29,6 @@ namespace Exiled.Events.Patches.Events.Scp939
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            Label continueLabel = generator.DefineLabel();
-
-            newInstructions[0].labels.Add(continueLabel);
-
             newInstructions.InsertRange(
                 0, new CodeInstruction[]
                 {
