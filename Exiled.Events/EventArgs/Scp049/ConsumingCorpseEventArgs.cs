@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ConsumingCorpseEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Scp049
 {
+    using System;
+
     using API.Features;
 
     using Interfaces;
@@ -23,14 +25,13 @@ namespace Exiled.Events.EventArgs.Scp049
         /// </summary>
         /// <param name="player"> <inheritdoc cref="Player"/></param>
         /// <param name="ragDoll"> <inheritdoc cref="Ragdoll"/> </param>
-        /// <param name="error"> <inheritdoc cref="ErrorCode"/> </param>
         /// <param name="isAllowed"> <inheritdoc cref="IsAllowed"/> </param>
         /// <remarks> See <see cref="ZombieConsumeAbility.ConsumedRagdolls"/> for all RagDolls consumed. </remarks>
-        public ConsumingCorpseEventArgs(Player player, Ragdoll ragDoll, ZombieConsumeAbility.ConsumeError error, bool isAllowed = true)
+        public ConsumingCorpseEventArgs(Player player, Ragdoll ragDoll, bool isAllowed = true)
         {
             Player = player;
             Ragdoll = ragDoll;
-            ErrorCode = error;
+            ConsumeHeal = ZombieConsumeAbility.ConsumeHeal;
             IsAllowed = isAllowed;
         }
 
@@ -45,8 +46,14 @@ namespace Exiled.Events.EventArgs.Scp049
         public Ragdoll Ragdoll { get; }
 
         /// <summary>
+        ///     Gets or sets a value indicating whether 049-2 can consume a corpse.
+        /// </summary>
+        public float ConsumeHeal { get; set; }
+
+        /// <summary>
         /// Gets or sets error code to send back to client.
         /// </summary>
+        [Obsolete("Removed", true)]
         public ZombieConsumeAbility.ConsumeError ErrorCode { get; set; }
 
         /// <summary>

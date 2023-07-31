@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="SendingCallEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs.Scp049
     using API.Features;
 
     using Interfaces;
+    using PlayerRoles.PlayableScps.Scp049;
 
     /// <summary>
     /// Contains all information before SCP-049 Call is activated.
@@ -20,12 +21,11 @@ namespace Exiled.Events.EventArgs.Scp049
         /// Initializes a new instance of the <see cref="SendingCallEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="duration"><inheritdoc cref="Duration"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public SendingCallEventArgs(Player player, float duration, bool isAllowed = true)
+        public SendingCallEventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
-            Duration = duration;
+            Duration = Scp049CallAbility.EffectDuration;
             IsAllowed = isAllowed;
         }
 
