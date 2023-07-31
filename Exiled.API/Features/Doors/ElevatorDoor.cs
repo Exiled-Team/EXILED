@@ -60,6 +60,6 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets the target lift for this door.
         /// </summary>
-        public Lift Lift => Lift.Get(x => x.Group == Group).FirstOrDefault();
+        public Lift Lift { get; }
     }
 }
