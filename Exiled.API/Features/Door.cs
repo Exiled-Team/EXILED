@@ -5,30 +5,32 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
+namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Enums;
+    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
-    using Extensions;
-
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
-
     using MEC;
-
     using Mirror;
     using UnityEngine;
 
     using static Interactables.Interobjects.ElevatorManager;
 
+    using Checkpoint = Exiled.API.Features.Doors.CheckpointDoor;
+    using Elevator = Exiled.API.Features.Doors.ElevatorDoor;
+    using Gate = Exiled.API.Features.Doors.Gate;
+
     /// <summary>
     /// A wrapper class for <see cref="DoorVariant"/>.
     /// </summary>
-    public class Door : IWrapper<DoorVariant>, IWorldSpace
+    public class Door : TypeCastObject<Door>, IWrapper<DoorVariant>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>s and their corresponding <see cref="Door"/>.
@@ -112,17 +114,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not this door is a gate.
         /// </summary>
-        public bool IsGate => Base is PryableDoor;
+        public bool IsGate => this is Gate;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is a checkpoint door.
         /// </summary>
-        public bool IsCheckpoint => Base is CheckpointDoor;
+        public bool IsCheckpoint => this is Checkpoint;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is an elevator door.
         /// </summary>
-        public bool IsElevator => Base is ElevatorDoor;
+        public bool IsElevator => this is Elevator;
 
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.
@@ -144,28 +146,52 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-106 can walk through the door.
+        /// Gets or sets a value indicating whether or not SCP-106 can walk through the door.
         /// </summary>
-        public bool AllowsScp106 => Base is IScp106PassableDoor door && door.IsScp106Passable;
+        public bool AllowsScp106
+        {
+            get => Base is IScp106PassableDoor door && door.IsScp106Passable;
+            set
+            {
+                if (Base is IScp106PassableDoor door)
+                    door.IsScp106Passable = value;
+            }
+        }
 
         /// <summary>
-        /// Gets a value indicating whether or not the door is locked.
+        /// Gets or sets a value indicating whether or not the door is locked.
         /// </summary>
-        public bool IsLocked => DoorLockType > 0;
+        public bool IsLocked
+        {
+            get => DoorLockType > 0;
+            set
+            {
+                if (value)
+                    ChangeLock(DoorLockType.AdminCommand);
+                else
+                    Unlock();
+            }
+        }
 
         /// <summary>
-        /// Gets or the door lock type.
+        /// Gets or sets the door lock type.
         /// </summary>
-        public DoorLockType DoorLockType => (DoorLockType)Base.NetworkActiveLocks;
+        public DoorLockType DoorLockType
+        {
+            get => (DoorLockType)Base.NetworkActiveLocks;
+            set => ChangeLock(value);
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this door is breakable.
         /// </summary>
+        [Obsolete("Use BreakableDoor::IsBreakable instead.")]
         public bool IsBreakable => Base is IDamageableDoor dDoor && !dDoor.IsDestroyed;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is broken.
         /// </summary>
+        [Obsolete("Use BreakableDoor::IsDestroyed instead.")]
         public bool IsBroken => Base is IDamageableDoor dDoor && dDoor.IsDestroyed;
 
         /// <summary>
@@ -205,6 +231,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the max health of the door. No effect if the door cannot be broken.
         /// </summary>
+        [Obsolete("Use BreakableDoor::MaxHealth instead.")]
         public float MaxHealth
         {
             get => Base is BreakableDoor breakable ? breakable._maxHealth : float.NaN;
@@ -218,6 +245,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the door's remaining health. No effect if the door cannot be broken.
         /// </summary>
+        [Obsolete("Use BreakableDoor::Health instead.")]
         public float Health
         {
             get => Base is BreakableDoor breakable ? breakable.RemainingHealth : float.NaN;
@@ -231,6 +259,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the damage types this door ignores, if it is breakable.
         /// </summary>
+        [Obsolete("Use BreakableDoor::IgnoredDamage instead.")]
         public DoorDamageType IgnoredDamageTypes
         {
             get => Base is BreakableDoor breakable ? breakable._ignoredDamageSources : DoorDamageType.None;
@@ -420,6 +449,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="type">The <see cref="DoorDamageType"/> to apply to the door.</param>
         /// <returns><see langword="true"/> if the door was broken, <see langword="false"/> if it was unable to be broken, or was already broken before.</returns>
+        [Obsolete("Use BreakableDoor::Break instead.")]
         public bool BreakDoor(DoorDamageType type = DoorDamageType.ServerCommand)
         {
             if (Base is IDamageableDoor dmg && !dmg.IsDestroyed)
@@ -437,12 +467,14 @@ namespace Exiled.API.Features
         /// <param name="amount">The amount of damage to deal.</param>
         /// <param name="type">The damage type to use.</param>
         /// <returns><see langword="true"/> if the door was damaged.</returns>
+        [Obsolete("Use BreakableDoor::Damage instead.")]
         public bool DamageDoor(float amount, DoorDamageType type = DoorDamageType.ServerCommand) => Base is BreakableDoor breakable && breakable.ServerDamage(amount, type);
 
         /// <summary>
         /// Tries to pry the door open. No effect if the door cannot be pried.
         /// </summary>
         /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
+        [Obsolete("Use Gate::TryPry instead.")]
         public bool TryPryOpen() => Base is PryableDoor pryable && pryable.TryPryGate(null);
 
         /// <summary>
@@ -450,6 +482,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
         /// <param name="player">The amount of damage to deal.</param>
+        [Obsolete("Use Gate::TryPry(Player) instead.")]
         public bool TryPryOpen(Player player) => Base is PryableDoor pryable && pryable.TryPryGate(player.ReferenceHub);
 
         /// <summary>
@@ -517,10 +550,23 @@ namespace Exiled.API.Features
         public void Unlock(float time, DoorLockType flagsToUnlock) => DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
 
         /// <summary>
+        /// Checks if specified <see cref="Player"/> can interact with the door.
+        /// </summary>
+        /// <param name="player">Player to check.</param>
+        /// <returns><see langword="true"/> if anybody can interact. Otherwise, false.</returns>
+        public bool IsAllowToInteract(Player player) => Base.AllowInteracting(player.ReferenceHub, 0);
+
+        /// <summary>
+        /// Checks if anybody can interact with the door.
+        /// </summary>
+        /// <returns><see langword="true"/> if anybody can interact. Otherwise, false.</returns>
+        public bool IsAllowToInteract() => Base.AllowInteracting(null, 0);
+
+        /// <summary>
         /// Returns the Door in a human-readable format.
         /// </summary>
         /// <returns>A string containing Door-related data.</returns>
-        public override string ToString() => $"{Type} ({Zone}) [{Room}] *{DoorLockType}* |{Health}/{MaxHealth}| ={RequiredPermissions.RequiredPermissions}= -{IgnoredDamageTypes}-";
+        public override string ToString() => $"{Type} ({Zone}) [{Room}] *{DoorLockType}* ={RequiredPermissions.RequiredPermissions}=";
 
         /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.

@@ -75,7 +75,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value of the internal doors list.
         /// </summary>
-        public IReadOnlyCollection<ElevatorDoor> Doors => internalDoorsList;
+        public IReadOnlyCollection<Doors.ElevatorDoor> Doors => internalDoorsList.Select(x => Door.Get(x).As<Doors.ElevatorDoor>()).ToList();
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
@@ -263,23 +263,23 @@ namespace Exiled.API.Features
         {
             bool forceLock = lockReason != DoorLockReason.None;
 
-            foreach (ElevatorDoor door in Doors)
+            foreach (Doors.ElevatorDoor door in Doors)
             {
                 if (!forceLock)
                 {
-                    door.NetworkActiveLocks = 0;
+                    door.DoorLockType = 0;
 
-                    door.ServerChangeLock(DoorLockReason.None, true);
+                    door.ChangeLock(DoorLockType.None);
                 }
                 else
                 {
-                    door.ServerChangeLock(lockReason, true);
+                    door.ChangeLock((DoorLockType)lockReason);
 
                     if (CurrentLevel != 1)
                         TrySetDestination(Group, 1, true);
                 }
 
-                Base.RefreshLocks(Group, door);
+                Base.RefreshLocks(Group, door.Base);
             }
         }
 
