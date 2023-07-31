@@ -554,14 +554,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// </summary>
         /// <param name="player">Player to check.</param>
         /// <returns><see langword="true"/> if anybody can interact. Otherwise, false.</returns>
-        public bool IsAllowToInteract(Player player) => Base.AllowInteracting(player.ReferenceHub, 0);
-
-        /// <summary>
-        /// Checks if anybody can interact with the door.
-        /// </summary>
-        /// <returns><see langword="true"/> if anybody can interact. Otherwise, false.</returns>
-        public bool IsAllowToInteract() => Base.AllowInteracting(null, 0);
-
+        public bool IsAllowToInteract(Player player = null) => Base.AllowInteracting(player?.ReferenceHub, 0);
         /// <summary>
         /// Returns the Door in a human-readable format.
         /// </summary>
