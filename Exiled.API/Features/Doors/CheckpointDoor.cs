@@ -34,7 +34,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets the list of all sub doors for this <see cref="CheckpointDoor"/>.
         /// </summary>
-        public IEnumerable<Door> Subdoors => Base.SubDoors.Select(Get);
+        public IReadOnlyCollection<Door> Subdoors { get; }
 
         /// <summary>
         /// Gets or sets the current stage.
