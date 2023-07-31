@@ -13,14 +13,13 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Server;
+
     using GameCore;
     using HarmonyLib;
     using MEC;
     using PlayerRoles;
     using PluginAPI.Core;
-    using PluginAPI.Enums;
     using PluginAPI.Events;
     using RoundRestarting;
     using UnityEngine;

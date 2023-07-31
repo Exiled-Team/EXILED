@@ -15,7 +15,6 @@ namespace Exiled.Events.Patches.Events.Scp079
     using HarmonyLib;
     using Mirror;
     using PlayerRoles.PlayableScps.Scp079.Pinging;
-    using PluginAPI.Core;
     using RelativePositioning;
     using UnityEngine;
 

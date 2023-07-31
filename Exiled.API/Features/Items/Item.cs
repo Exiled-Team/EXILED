@@ -201,6 +201,7 @@ namespace Exiled.API.Features.Items
                     FlashbangGrenade => new FlashGrenade(throwable),
                     ExplosionGrenade => new ExplosiveGrenade(throwable),
                     Scp2176Projectile => new Scp2176(throwable),
+                    Scp018Projectile => new Scp018(throwable),
                     _ => new Throwable(throwable),
                 },
                 _ => new Item(itemBase),
@@ -254,7 +255,8 @@ namespace Exiled.API.Features.Items
             ItemType.Radio => new Radio(),
             ItemType.MicroHID => new MicroHid(),
             ItemType.GrenadeFlash => new FlashGrenade(owner),
-            ItemType.GrenadeHE or ItemType.SCP018 => new ExplosiveGrenade(type, owner),
+            ItemType.GrenadeHE => new ExplosiveGrenade(type, owner),
+            ItemType.SCP018 => new Scp018(type, owner),
             ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunCom45 or ItemType.GunE11SR or ItemType.GunFSP9 or ItemType.ParticleDisruptor => new Firearm(type),
             ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardChaosInsurgency or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or
             ItemType.KeycardNTFOfficer => new Keycard(type),
