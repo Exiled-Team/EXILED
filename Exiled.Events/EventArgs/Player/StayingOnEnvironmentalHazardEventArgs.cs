@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+
     using Exiled.API.Features.Hazards;
     using Hazards;
     using Interfaces;
@@ -24,7 +26,6 @@ namespace Exiled.Events.EventArgs.Player
         public StayingOnEnvironmentalHazardEventArgs(API.Features.Player player, EnvironmentalHazard environmentalHazard)
         {
             Player = player;
-            EnvironmentalHazard = environmentalHazard;
             Hazard = Hazard.Get(environmentalHazard);
         }
 
@@ -36,7 +37,8 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets the environmental hazard that the player is staying on.
         /// </summary>
-        public EnvironmentalHazard EnvironmentalHazard { get; }
+        [Obsolete("Use Hazard property instead.")]
+        public EnvironmentalHazard EnvironmentalHazard => Hazard.Base;
 
         /// <inheritdoc cref="EnvironmentalHazard"/>
         public Hazard Hazard { get; }
