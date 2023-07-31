@@ -54,10 +54,10 @@ namespace Exiled.Events.EventArgs.Scp096
         /// <summary>
         ///     Gets the <see cref="PryableDoor" /> to be pried open.
         /// </summary>
-        public Door Door { get; }
+        public Door Door => Gate;
 
         /// <inheritdoc cref="Door"/>
-        public Gate Gate => Door.Is(out Gate gate) ? gate : null;
+        public Gate Gate { get; }
 
         /// <summary>
         ///     Gets the player that is controlling SCP-096.
