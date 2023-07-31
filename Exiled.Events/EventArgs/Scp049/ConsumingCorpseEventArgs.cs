@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs.Scp049
         public Ragdoll Ragdoll { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether 049-2 can consume a corpse.
+        ///     Gets or sets a value about how mush heath the Zombie will get.
         /// </summary>
         public float ConsumeHeal { get; set; }
 

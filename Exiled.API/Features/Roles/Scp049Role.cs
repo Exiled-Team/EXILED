@@ -119,6 +119,31 @@ namespace Exiled.API.Features.Roles
         public HashSet<uint> DeadZombies => Scp049ResurrectAbility.DeadZombies;
 
         /// <summary>
+        /// Gets or sets .
+        /// </summary>
+        public double CallAbilityDuration { get; set; } = Scp049CallAbility.EffectDuration;
+
+        /// <summary>
+        /// Gets or sets .
+        /// </summary>
+        public double CallAbilityBaseCooldown { get; set; } = Scp049CallAbility.BaseCooldown;
+
+        /// <summary>
+        /// Gets or sets .
+        /// </summary>
+        public double SenseAbilityBaseCooldown { get; set; } = Scp049SenseAbility.BaseCooldown;
+
+        /// <summary>
+        /// Gets or sets .
+        /// </summary>
+        public double SenseAbilityDuration { get; set; } = Scp049SenseAbility.EffectDuration;
+
+        /// <summary>
+        /// Gets or sets .
+        /// </summary>
+        public double SenseAbilityFailCooldown { get; set; } = Scp049SenseAbility.AttemptFailCooldown;
+
+        /// <summary>
         /// Gets all the resurrected players.
         /// </summary>
         public Dictionary<uint, int> ResurrectedPlayers => Scp049ResurrectAbility.ResurrectedPlayers;

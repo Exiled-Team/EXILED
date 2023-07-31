@@ -8,14 +8,13 @@
 namespace Exiled.Events.EventArgs.Scp049
 {
     using API.Features;
-
+    using Exiled.API.Features.Roles;
     using Interfaces;
-    using PlayerRoles.PlayableScps.Scp049;
 
     /// <summary>
     /// Contains all information before SCP-049 Call is activated.
     /// </summary>
-    public class SendingCallEventArgs : IPlayerEvent, IDeniableEvent
+    public class SendingCallEventArgs : IScp049Event, IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SendingCallEventArgs"/> class.
@@ -25,9 +24,13 @@ namespace Exiled.Events.EventArgs.Scp049
         public SendingCallEventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
-            Duration = Scp049CallAbility.EffectDuration;
+            Scp049 = Player.Role.As<Scp049Role>();
+            Duration = (float)Scp049.CallAbilityBaseCooldown;
             IsAllowed = isAllowed;
         }
+
+        /// <inheritdoc/>
+        public Scp049Role Scp049 { get; }
 
         /// <summary>
         /// Gets the player who is controlling SCP-049.

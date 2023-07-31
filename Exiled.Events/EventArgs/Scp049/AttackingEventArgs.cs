@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="AttackingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -8,12 +8,13 @@
 namespace Exiled.Events.EventArgs.Scp049
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// Contains all information before SCP-049 attacks player.
     /// </summary>
-    public class AttackingEventArgs : IPlayerEvent, IDeniableEvent
+    public class AttackingEventArgs : IScp049Event, IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AttackingEventArgs"/> class.
@@ -24,9 +25,13 @@ namespace Exiled.Events.EventArgs.Scp049
         public AttackingEventArgs(Player player, Player target, bool isAllowed = true)
         {
             Player = player;
+            Scp049 = player.Role.As<Scp049Role>();
             Target = target;
             IsAllowed = isAllowed;
         }
+
+        /// <inheritdoc/>
+        public Scp049Role Scp049 { get; }
 
         /// <summary>
         /// Gets the player controlling SCP-049.
