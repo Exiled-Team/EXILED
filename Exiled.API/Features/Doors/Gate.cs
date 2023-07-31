@@ -58,10 +58,7 @@ namespace Exiled.API.Features.Doors
             set => Base._blockPryingMask = (DoorLockReason)value;
         }
 
-        /// <inheritdoc cref="Door.TryPryOpen()"/>
-        public bool TryPry() => Base.TryPryGate(null);
-
         /// <inheritdoc cref="Door.TryPryOpen(Player)"/>
-        public bool TryPry(Player player) => Base.TryPryGate(player.ReferenceHub);
+        public bool TryPry(Player player = null) => Base.TryPryGate(player?.ReferenceHub);
     }
 }
