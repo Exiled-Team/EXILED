@@ -119,27 +119,32 @@ namespace Exiled.API.Features.Roles
         public HashSet<uint> DeadZombies => Scp049ResurrectAbility.DeadZombies;
 
         /// <summary>
-        /// Gets or sets .
+        /// Gets or sets how mush time the Call Ability will be effective.
         /// </summary>
         public double CallAbilityDuration { get; set; } = Scp049CallAbility.EffectDuration;
 
         /// <summary>
-        /// Gets or sets .
+        /// Gets or sets the Cooldown of the Call Ability.
         /// </summary>
         public double CallAbilityBaseCooldown { get; set; } = Scp049CallAbility.BaseCooldown;
 
         /// <summary>
-        /// Gets or sets .
+        /// Gets or sets the Cooldown of the Sense Ability.
         /// </summary>
         public double SenseAbilityBaseCooldown { get; set; } = Scp049SenseAbility.BaseCooldown;
 
         /// <summary>
-        /// Gets or sets .
+        /// Gets or sets the Cooldown of the Sense Ability when you lost your target.
+        /// </summary>
+        public double SenseAbilityReducedCooldown { get; set; } = Scp049SenseAbility.ReducedCooldown;
+
+        /// <summary>
+        /// Gets or sets the Cooldown of the Sense Ability when it's failed.
         /// </summary>
         public double SenseAbilityDuration { get; set; } = Scp049SenseAbility.EffectDuration;
 
         /// <summary>
-        /// Gets or sets .
+        /// Gets or sets how mush time the Sense Ability will be effective.
         /// </summary>
         public double SenseAbilityFailCooldown { get; set; } = Scp049SenseAbility.AttemptFailCooldown;
 
