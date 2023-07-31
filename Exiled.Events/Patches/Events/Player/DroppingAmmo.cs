@@ -46,6 +46,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // ammoType
                     new(OpCodes.Ldarg_1),
+                    new(OpCodes.Call, Method(typeof(API.Extensions.ItemExtensions), nameof(API.Extensions.ItemExtensions.GetAmmoType))),
 
                     // amount
                     new(OpCodes.Ldarg_2),
