@@ -296,7 +296,7 @@ namespace Exiled.API.Features.Roles
             }
 
             SenseAbility.HasTarget = false;
-            SenseAbility.Cooldown.Trigger(Scp049SenseAbility.ReducedCooldown);
+            SenseAbility.Cooldown.Trigger(SenseAbilityBaseCooldown);
             SenseAbility.ServerSendRpc(true);
 
             AttackAbility.ServerSendRpc(true);
@@ -317,7 +317,7 @@ namespace Exiled.API.Features.Roles
 
             if (SenseAbility.Target is null)
             {
-                SenseAbility.Cooldown.Trigger(Scp049SenseAbility.AttemptFailCooldown);
+                SenseAbility.Cooldown.Trigger(SenseAbilityFailCooldown);
                 SenseAbility.ServerSendRpc(true);
                 return;
             }
@@ -330,7 +330,7 @@ namespace Exiled.API.Features.Roles
                 if (!VisionInformation.GetVisionInformation(SenseAbility.Owner, SenseAbility.Owner.PlayerCameraReference, humanRole.CameraPosition, radius, SenseAbility._distanceThreshold).IsLooking)
                     return;
 
-                SenseAbility.Duration.Trigger(Scp049SenseAbility.ReducedCooldown);
+                SenseAbility.Duration.Trigger(SenseAbilityDuration);
                 SenseAbility.HasTarget = true;
                 SenseAbility.ServerSendRpc(true);
             }
