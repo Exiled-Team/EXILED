@@ -38,14 +38,14 @@ namespace Exiled.Events.Patches.Events.Player
                 Log.Debug($"Object exists {player is not null}");
                 Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}");
 #endif
-                Player.UnverifiedPlayers.Add(hub.gameObject, player);
-
                 if (ReferenceHub.HostHub == null)
                 {
                     Server.Host = player;
                 }
                 else
                 {
+                    Player.UnverifiedPlayers.Add(hub.gameObject, player);
+
                     Handlers.Player.OnJoined(new JoinedEventArgs(player));
                 }
             }
