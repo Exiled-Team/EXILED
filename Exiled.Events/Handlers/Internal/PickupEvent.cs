@@ -17,7 +17,7 @@ namespace Exiled.Events.Handlers.Internal
     internal static class PickupEvent
     {
         /// <summary>
-        /// Called after a ragdoll is spawned. Hooked to <see cref="ItemPickupBase.OnPickupAdded"/>.
+        /// Called after a pickup is spawned. Hooked to <see cref="ItemPickupBase.OnPickupAdded"/>.
         /// </summary>
         /// <param name="itemPickupBase">The spawned Pickup.</param>
         public static void OnSpawnedPickup(ItemPickupBase itemPickupBase)
