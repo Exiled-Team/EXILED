@@ -11,7 +11,7 @@ namespace Exiled.API.Features.Doors
     using System.Linq;
 
     /// <summary>
-    /// Represents a check point door.
+    /// Represents a checkpoint door.
     /// </summary>
     public class CheckpointDoor : Door
     {
