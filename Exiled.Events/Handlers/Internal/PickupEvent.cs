@@ -12,7 +12,7 @@ namespace Exiled.Events.Handlers.Internal
     using InventorySystem.Items.Pickups;
 
     /// <summary>
-    /// Handles adding and removing from <see cref="Ragdoll.BasicRagdollToRagdoll"/>.
+    /// Handles adding and removing from <see cref="Pickup.BaseToPickup"/>.
     /// </summary>
     internal static class PickupEvent
     {
