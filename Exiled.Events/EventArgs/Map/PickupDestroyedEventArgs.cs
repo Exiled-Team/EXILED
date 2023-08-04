@@ -28,7 +28,7 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        ///     Gets a value indicating the pickup being spawned.
+        ///     Gets a value indicating the pickup being destroyed.
         /// </summary>
         public Pickup Pickup { get; }
     }
