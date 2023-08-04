@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Map
     using InventorySystem.Items.Pickups;
 
     /// <summary>
-    ///     Contains all information after the server destroy a pickup.
+    ///     Contains all information after the server destroys a pickup.
     /// </summary>
     public class PickupDestroyedEventArgs : IExiledEvent
     {
