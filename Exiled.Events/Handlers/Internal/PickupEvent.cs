@@ -26,7 +26,7 @@ namespace Exiled.Events.Handlers.Internal
         }
 
         /// <summary>
-        /// Called before a ragdoll is destroyed. Hooked to <see cref="ItemPickupBase.OnPickupDestroyed"/>.
+        /// Called before a pickup is destroyed. Hooked to <see cref="ItemPickupBase.OnPickupDestroyed"/>.
         /// </summary>
         /// <param name="itemPickupBase">The destroyed Pickup.</param>
         public static void OnRemovedPickup(ItemPickupBase itemPickupBase)
