@@ -18,10 +18,7 @@ namespace Exiled.Events
     using EventArgs.Interfaces;
     using Exiled.API.Features.Pickups;
     using HarmonyLib;
-
-    using InventorySystem;
     using InventorySystem.Items.Pickups;
-    using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.Ragdolls;
     using PlayerRoles.RoleAssign;
     using PluginAPI.Events;
