@@ -56,7 +56,9 @@ namespace Exiled.Events.EventArgs.Scp096
         /// </summary>
         public Door Door => Gate;
 
+        /// <summary>
         ///     Gets the <see cref="Gate" /> to be pried open.
+        /// <summary>
         public Gate Gate { get; }
 
         /// <summary>
