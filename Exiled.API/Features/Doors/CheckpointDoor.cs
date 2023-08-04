@@ -76,7 +76,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Toggles all doors from <see cref="Subdoors"/>.
         /// </summary>
-        /// <param name="newState">New state for doors.</param>
+        /// <param name="newState">New state for the subdoors.</param>
         public void ToggleAllDoors(bool newState) => Base.ToggleAllDoors(newState);
     }
 }
