@@ -52,7 +52,7 @@ namespace Exiled.Events.EventArgs.Scp096
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the <see cref="PryableDoor" /> to be pried open.
+        ///     Gets the <see cref="Door" /> to be pried open.
         /// </summary>
         public Door Door => Gate;
 
