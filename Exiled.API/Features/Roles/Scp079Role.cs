@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Roles
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -370,6 +369,14 @@ namespace Exiled.API.Features.Roles
         /// <param name="amount">The amount to grant.</param>
         /// <param name="reason">The reason to grant experience.</param>
         public void AddExperience(int amount, Scp079HudTranslation reason = Scp079HudTranslation.ExpGainAdminCommand) => TierManager.ServerGrantExperience(amount, reason);
+
+        /// <summary>
+        /// Grants SCP-079 experience.
+        /// </summary>
+        /// <param name="amount">The amount to grant.</param>
+        /// <param name="reason">The reason to grant experience.</param>
+        /// <param name="subject">The RoleType of the player that's causing it to happen.</param>
+        public void AddExperience(int amount, Scp079HudTranslation reason, RoleTypeId subject) => TierManager.ServerGrantExperience(amount, reason, subject);
 
         /// <summary>
         /// Locks the provided <paramref name="door"/>.

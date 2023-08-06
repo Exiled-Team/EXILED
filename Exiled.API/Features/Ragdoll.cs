@@ -139,9 +139,17 @@ namespace Exiled.API.Features
         public Player Owner => Player.Get(NetworkInfo.OwnerHub);
 
         /// <summary>
-        /// Gets the time that the ragdoll was spawned.
+        /// Gets or sets the time that the ragdoll was spawned.
         /// </summary>
-        public DateTime CreationTime => new((long)NetworkInfo.CreationTime);
+        public DateTime CreationTime
+        {
+            get => DateTime.Now - TimeSpan.FromSeconds(NetworkInfo.ExistenceTime);
+            set
+            {
+                float creationTime = (float)(NetworkTime.time - (DateTime.Now - value).TotalSeconds);
+                NetworkInfo = new RagdollData(NetworkInfo.OwnerHub, NetworkInfo.Handler, NetworkInfo.RoleType, NetworkInfo.StartPosition, NetworkInfo.StartRotation, NetworkInfo.Nickname, creationTime);
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="RoleTypeId"/> of the ragdoll.
