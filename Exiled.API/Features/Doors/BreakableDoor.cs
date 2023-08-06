@@ -81,11 +81,15 @@ namespace Exiled.API.Features.Doors
         /// </summary>
         /// <param name="amount">Amount to be dealt.</param>
         /// <param name="damageType">Damage type. Some types can be ignored according to <see cref="IgnoredDamage"/>.</param>
-        /// <returns><see langword="true"/> if door was damaged. Otherwise, false.</returns>>
+        /// <returns><see langword="true"/> if door was damaged. Otherwise, false.</returns>
         public bool Damage(float amount, DoorDamageType damageType = DoorDamageType.ServerCommand) => Base.ServerDamage(amount, damageType);
 
-        /// <inheritdoc cref="Door.BreakDoor"/>.
-        public void Break(DoorDamageType type = DoorDamageType.ServerCommand) => Damage(float.MaxValue, type);
+        /// <summary>
+        /// Breaks the specified door. No effect if the door cannot be broken, or if it is already broken.
+        /// </summary>
+        /// <param name="type">The <see cref="DoorDamageType"/> to apply to the door.</param>
+        /// <returns><see langword="true"/> if the door was broken, <see langword="false"/> if it was unable to be broken, or was already broken before.</returns>
+        public bool Break(DoorDamageType type = DoorDamageType.ServerCommand) => Damage(float.MaxValue, type);
 
         /// <summary>
         /// Returns the Door in a human-readable format.

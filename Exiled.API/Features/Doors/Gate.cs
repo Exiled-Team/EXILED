@@ -58,7 +58,11 @@ namespace Exiled.API.Features.Doors
             set => Base._blockPryingMask = (DoorLockReason)value;
         }
 
-        /// <inheritdoc cref="Door.TryPryOpen(Player)"/>
+        /// <summary>
+        /// Tries to pry the door open. No effect if the door cannot be pried.
+        /// </summary>
+        /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
+        /// <param name="player">The amount of damage to deal.</param>
         public bool TryPry(Player player = null) => Base.TryPryGate(player?.ReferenceHub);
 
         /// <summary>
