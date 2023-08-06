@@ -58,7 +58,7 @@ namespace Exiled.Events.EventArgs.Scp096
 
         /// <summary>
         ///     Gets the <see cref="Gate" /> to be pried open.
-        /// <summary>
+        /// </summary>
         public Gate Gate { get; }
 
         /// <summary>
