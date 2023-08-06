@@ -54,7 +54,7 @@ namespace Exiled.Events.EventArgs.Player
             Amount = damage;
             Distance = distance;
             ShootingTarget = ShootingTargetToy.Get(shootingTarget);
-            Item = player.CurrentItem;
+            Item = player?.CurrentItem;
             DamageHandler = (AttackerDamageHandler)damageHandler;
             HitLocation = hitLocation;
             IsAllowed = isAllowed;

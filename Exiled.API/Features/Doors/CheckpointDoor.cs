@@ -11,7 +11,7 @@ namespace Exiled.API.Features.Doors
     using System.Linq;
 
     /// <summary>
-    /// Represents a check point door.
+    /// Represents a checkpoint door.
     /// </summary>
     public class CheckpointDoor : Door
     {
@@ -74,9 +74,9 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
-        /// Toggles all doors from <see cref="Subdoors"/>.
+        /// Toggles the state of the doors from <see cref="Subdoors"/>.
         /// </summary>
-        /// <param name="newState">New state for doors.</param>
+        /// <param name="newState">New state for the subdoors.</param>
         public void ToggleAllDoors(bool newState) => Base.ToggleAllDoors(newState);
 
         /// <summary>

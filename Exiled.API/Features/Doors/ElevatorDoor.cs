@@ -59,7 +59,7 @@ namespace Exiled.API.Features.Doors
         public ElevatorPanel Panel => Base.TargetPanel;
 
         /// <summary>
-        /// Gets the target lift for this door.
+        /// Gets the <see cref="Lift"/> associated with the elevator door.
         /// </summary>
         public Lift Lift { get; }
 
