@@ -15,6 +15,8 @@ namespace Exiled.Events.Patches.Generic
     using HarmonyLib;
     using Hazards;
 
+    using TemporaryHazard = global::Hazards.TemporaryHazard;
+
     /// <summary>
     /// Patches <see cref="TemporaryHazard.ServerDestroy()"/> and <see cref="EnvironmentalHazard.OnDestroy()"/>.
     /// </summary>

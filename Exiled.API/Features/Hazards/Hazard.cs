@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Hazards
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using global::Hazards;
     using UnityEngine;
@@ -18,7 +19,7 @@ namespace Exiled.API.Features.Hazards
     /// <summary>
     /// A wrapper for <see cref="EnvironmentalHazard"/>.
     /// </summary>
-    public class Hazard : IWrapper<EnvironmentalHazard>
+    public class Hazard : TypeCastObject<Hazard>, IWrapper<EnvironmentalHazard>
     {
         /// <summary>
         /// <see cref="Dictionary{TKey,TValue}"/> with <see cref="EnvironmentalHazard"/> to it's <see cref="Hazard"/>.
@@ -84,6 +85,11 @@ namespace Exiled.API.Features.Hazards
         }
 
         /// <summary>
+        /// Gets the room where this hazard is located.
+        /// </summary>
+        public Room Room => Base.GetComponentInParent<Room>();
+
+        /// <summary>
         /// Gets or sets the position.
         /// </summary>
         public Vector3 Position
@@ -102,8 +108,33 @@ namespace Exiled.API.Features.Hazards
             if (EnvironmentalHazardToHazard.TryGetValue(hazard, out Hazard result))
                 return result;
 
-            return new(hazard);
+            if (hazard is global::Hazards.TemporaryHazard thazard)
+            {
+                if (thazard.IsActive)
+                {
+                    return thazard switch
+                    {
+                        TantrumEnvironmentalHazard tantrumEnvironmentalHazard => new TantrumHazard(tantrumEnvironmentalHazard),
+                        _ => new TemporaryHazard(thazard)
+                    };
+                }
+
+                return new Hazard(thazard);
+            }
+
+            return hazard switch
+            {
+                SinkholeEnvironmentalHazard sinkholeEnvironmentalHazard => new SinkholeHazard(sinkholeEnvironmentalHazard),
+                _ => new Hazard(hazard)
+            };
         }
+
+        /// <summary>
+        /// Gets the hazard by the room where it's located.
+        /// </summary>
+        /// <param name="room">Room.</param>
+        /// <returns><see cref="Hazard"/> in given <see cref="Exiled.API.Features.Room"/>.</returns>
+        public static Hazard Get(Room room) => Get(room.GetComponentInChildren<EnvironmentalHazard>());
 
         /// <summary>
         /// Gets the <see cref="IEnumerable{T}"/> of <see cref="Hazard"/> based on predicate.

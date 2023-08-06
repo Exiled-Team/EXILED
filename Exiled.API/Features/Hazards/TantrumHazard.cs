@@ -12,11 +12,12 @@ namespace Exiled.API.Features.Hazards
 
     using global::Hazards;
     using RelativePositioning;
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper for <see cref="TantrumEnvironmentalHazard"/>.
     /// </summary>
-    public class TantrumHazard : Hazard
+    public class TantrumHazard : TemporaryHazard
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TantrumHazard"/> class.
@@ -54,6 +55,15 @@ namespace Exiled.API.Features.Hazards
         {
             get => Base.SynchronizedPosition;
             set => Base.SynchronizedPosition = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the correct position of tantrum hazard.
+        /// </summary>
+        public Transform CorrectPosition
+        {
+            get => Base._correctPosition;
+            set => Base._correctPosition = value;
         }
     }
 }
