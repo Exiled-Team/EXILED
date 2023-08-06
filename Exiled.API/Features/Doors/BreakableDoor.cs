@@ -86,5 +86,11 @@ namespace Exiled.API.Features.Doors
 
         /// <inheritdoc cref="Door.BreakDoor"/>.
         public void Break(DoorDamageType type = DoorDamageType.ServerCommand) => Damage(float.MaxValue, type);
+
+        /// <summary>
+        /// Returns the Door in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Door-related data.</returns>
+        public override string ToString() => $"{base.ToString()} |{Health}/{MaxHealth}| -{IgnoredDamage}- *{IsDestroyed}*";
     }
 }

@@ -42,7 +42,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets the type according to <see cref="Group"/>.
         /// </summary>
-        public ElevatorType ElevatorTypeType => Group switch
+        public ElevatorType ElevatorType => Group switch
         {
             ElevatorManager.ElevatorGroup.Scp049 => ElevatorType.Scp049,
             ElevatorManager.ElevatorGroup.GateA => ElevatorType.GateA,
@@ -62,5 +62,11 @@ namespace Exiled.API.Features.Doors
         /// Gets the target lift for this door.
         /// </summary>
         public Lift Lift { get; }
+
+        /// <summary>
+        /// Returns the Door in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Door-related data.</returns>
+        public override string ToString() => $"{base.ToString()} !{ElevatorType}!";
     }
 }

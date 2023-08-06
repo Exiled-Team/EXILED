@@ -300,7 +300,13 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <returns>A <see cref="Door"/> wrapper object.</returns>
         public static Door Get(DoorVariant doorVariant) => doorVariant != null ? (DoorVariantToDoor.TryGetValue(doorVariant, out Door door)
             ? door
-            : new Door(doorVariant, doorVariant.GetComponentInParent<Room>())) : null;
+            : doorVariant switch
+            {
+                CheckpointDoor chkpt => new Checkpoint(chkpt, chkpt.GetComponentInParent<Room>()),
+                BreakableDoor brkbl => new Doors.BreakableDoor(brkbl, brkbl.GetComponentInParent<Room>()),
+                ElevatorDoor elvtr => new Elevator(elvtr, elvtr.GetComponentInParent<Room>()),
+                _ => new Door(doorVariant, doorVariant.GetComponentInParent<Room>())
+            }) : null;
 
         /// <summary>
         /// Gets a <see cref="Door"/> given the specified name.

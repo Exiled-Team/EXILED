@@ -60,5 +60,11 @@ namespace Exiled.API.Features.Doors
 
         /// <inheritdoc cref="Door.TryPryOpen(Player)"/>
         public bool TryPry(Player player = null) => Base.TryPryGate(player?.ReferenceHub);
+
+        /// <summary>
+        /// Returns the Door in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Door-related data.</returns>
+        public override string ToString() => $"{base.ToString()} |{BlockingPryingMask}| -{RemainingPryCooldown}-";
     }
 }

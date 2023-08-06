@@ -78,5 +78,11 @@ namespace Exiled.API.Features.Doors
         /// </summary>
         /// <param name="newState">New state for doors.</param>
         public void ToggleAllDoors(bool newState) => Base.ToggleAllDoors(newState);
+
+        /// <summary>
+        /// Returns the Door in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Door-related data.</returns>
+        public override string ToString() => $"{base.ToString()} |{WaitTime}| -{WarningTime}-";
     }
 }
