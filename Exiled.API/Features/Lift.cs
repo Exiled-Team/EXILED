@@ -75,7 +75,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value of the internal doors list.
         /// </summary>
-        public IReadOnlyCollection<Doors.ElevatorDoor> Doors => internalDoorsList.Select(x => Door.Get(x).As<Doors.ElevatorDoor>()).ToList();
+        [Obsolete("Use ElevatorDoors property instead.")]
+        public IReadOnlyCollection<ElevatorDoor> Doors => internalDoorsList;
+
+        /// <summary>
+        /// Gets a value of the internal doors list.
+        /// </summary>
+        public IReadOnlyCollection<Doors.ElevatorDoor> ElevatorDoors => internalDoorsList.Select(x => Door.Get(x).As<Doors.ElevatorDoor>()).ToList();
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
@@ -180,7 +186,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="CurrentDestination"/>.
         /// </summary>
+        [Obsolete("Use CurrentDoor property instead.")]
         public ElevatorDoor CurrentDestination => Base.CurrentDestination;
+
+        /// <summary>
+        /// Gets the <see cref="CurrentDoor"/>.
+        /// </summary>
+        public Doors.ElevatorDoor CurrentDoor => Door.Get(Base.CurrentDestination).As<Exiled.API.Features.Doors.ElevatorDoor>();
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances from the specified <see cref="Status"/>.
@@ -263,7 +275,7 @@ namespace Exiled.API.Features
         {
             bool forceLock = lockReason != DoorLockReason.None;
 
-            foreach (Doors.ElevatorDoor door in Doors)
+            foreach (Doors.ElevatorDoor door in ElevatorDoors)
             {
                 if (!forceLock)
                 {
