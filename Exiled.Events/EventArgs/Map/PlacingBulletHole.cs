@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Map
     /// <summary>
     ///     Contains all information before placing a bullet hole decal.
     /// </summary>
-    public class PlacingBulletHole : IPlayerEvent, IDeniableEvent
+    public class PlacingBulletHole : IPlayerEvent, IDeniableEvent // TODO: This is an EventArgs should be "PlacingBulletHoleEventArgs"
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlacingBulletHole" /> class.
