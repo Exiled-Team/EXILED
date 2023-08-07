@@ -24,7 +24,7 @@ namespace Exiled.API.Features.Doors
             : base(door, room)
         {
             Base = door;
-            Subdoors = new List<Door>(Base.SubDoors.Select(Get));
+            Subdoors = new List<BreakableDoor>(Base.SubDoors.Select(x => Get(x).As<BreakableDoor>()));
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets the list of all sub doors for this <see cref="CheckpointDoor"/>.
         /// </summary>
-        public IReadOnlyCollection<Door> Subdoors { get; }
+        public IReadOnlyCollection<BreakableDoor> Subdoors { get; }
 
         /// <summary>
         /// Gets or sets the current stage.
