@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Commands.Show
+namespace Exiled.Events.Commands.PluginManager
 {
     using System;
     using System.Linq;
@@ -25,6 +25,11 @@ namespace Exiled.Events.Commands.Show
     /// </summary>
     public sealed class Patches : ICommand
     {
+        /// <summary>
+        /// Gets static instance of the <see cref="Patches"/> command.
+        /// </summary>
+        public static Patches Instance { get; } = new();
+
         /// <inheritdoc/>
         public string Command { get; } = "patches";
 
