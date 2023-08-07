@@ -132,6 +132,21 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         public bool IsElevator => this is Elevator;
 
         /// <summary>
+        /// Gets a value indicating whether or not this door is damageable.
+        /// </summary>
+        public bool IsDamageable => this is Interfaces.IDamageableDoor;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this door is non-interactable.
+        /// </summary>
+        public bool IsNonInteractable => this is Interfaces.INonInteractableDoor;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this door is one of airlock's doors.
+        /// </summary>
+        public bool IsAirlock => Doors.AirlockController.List.Any(x => x.DoorA == this || x.DoorB == this);
+
+        /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.
         /// </summary>
         public bool IsKeycardDoor => KeycardPermissions is not KeycardPermissions.None;
@@ -189,26 +204,26 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not this door is breakable.
         /// </summary>
-        /// <remarks>Will return <see langword="false"/> if door is not <see cref="Interfaces.IDamageableDoor"/>.</remarks>
-        public bool IsBreakable => this is Interfaces.IDamageableDoor dDoor && !dDoor.IsDestroyed;
+        [Obsolete("Use IDamageableDoor::IsBreakable instead.")]
+        public bool IsBreakable => this is Interfaces.IDamageableDoor dDoor && dDoor.IsBreakable;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is broken.
         /// </summary>
-        /// <remarks>Will return <see langword="false"/> if door is not <see cref="Interfaces.IDamageableDoor"/>.</remarks>
+        [Obsolete("Use IDamageableDoor::IsDestroyed instead.")]
         public bool IsBroken => this is Interfaces.IDamageableDoor dDoor && dDoor.IsDestroyed;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is ignoring lockdown.
         /// </summary>
-        [Obsolete("Use BasicNonInteractableDoor::IngoreLockdowns")]
-        public bool IgnoresLockdowns => Base is INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreLockdowns;
+        [Obsolete("Use INonInteractableDoor::IgnoreLockdowns")]
+        public bool IgnoresLockdowns => this is Interfaces.INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreLockdowns;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is ignoring remoteAdmin commands.
         /// </summary>
-        [Obsolete("Use BasicNonInteractableDoor::IngoreRemoteAdmin")]
-        public bool IgnoresRemoteAdmin => Base is INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreRemoteAdmin;
+        [Obsolete("Use INonInteractableDoor::IgnoreRemoteAdmin")]
+        public bool IgnoresRemoteAdmin => this is Interfaces.INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreRemoteAdmin;
 
         /// <summary>
         /// Gets the door's Instance ID.

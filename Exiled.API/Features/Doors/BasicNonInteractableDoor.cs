@@ -7,12 +7,14 @@
 
 namespace Exiled.API.Features.Doors
 {
+    using Exiled.API.Interfaces;
+
     using Basegame = Interactables.Interobjects.BasicNonInteractableDoor;
 
     /// <summary>
     /// Represents a basic non-interactable door.
     /// </summary>
-    public class BasicNonInteractableDoor : BasicDoor
+    public class BasicNonInteractableDoor : BasicDoor, INonInteractableDoor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicNonInteractableDoor"/> class.
@@ -30,18 +32,14 @@ namespace Exiled.API.Features.Doors
         /// </summary>
         public new Basegame Base { get; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether or not door should ignore lockdowns.
-        /// </summary>
+        /// <inheritdoc/>
         public bool IgnoreLockdowns
         {
             get => Base._ignoreLockdowns;
             set => Base._ignoreLockdowns = value;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether or not door should ignore RA requests.
-        /// </summary>
+        /// <inheritdoc/>
         public bool IgnoreRemoteAdmin
         {
             get => Base._ignoreRemoteAdmin;

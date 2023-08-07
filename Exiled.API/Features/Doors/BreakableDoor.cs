@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Doors
     /// <summary>
     /// Represents <see cref="Interactables.Interobjects.BreakableDoor"/>.
     /// </summary>
-    public class BreakableDoor : BasicDoor, Interfaces.IDamageableDoor
+    public class BreakableDoor : BasicDoor, Interfaces.IDamageableDoor, Interfaces.INonInteractableDoor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BreakableDoor"/> class.
@@ -74,6 +74,20 @@ namespace Exiled.API.Features.Doors
         {
             get => Base._ignoredDamageSources;
             set => Base._ignoredDamageSources = value;
+        }
+
+        /// <inheritdoc/>
+        public bool IgnoreLockdowns
+        {
+            get => Base._nonInteractable;
+            set => Base._nonInteractable = value;
+        }
+
+        /// <inheritdoc/>
+        public bool IgnoreRemoteAdmin
+        {
+            get => Base._nonInteractable;
+            set => Base._nonInteractable = value;
         }
 
         /// <summary>
