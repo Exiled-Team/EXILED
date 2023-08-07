@@ -176,6 +176,11 @@ namespace Exiled.Installer
 
         private static void ProcessTarEntry(CommandSettings args, TarInputStream tarInputStream, TarEntry entry)
         {
+            if (entry.Name.Contains("global") && args.TargetPort is not null)
+            {
+                entry.Name = entry.Name.Replace("global", args.TargetPort);
+            }
+
             if (entry.IsDirectory)
             {
                 TarEntry[] entries = entry.GetDirectoryEntries();

@@ -11,9 +11,6 @@ namespace Exiled.Events.Handlers
 
     using Extensions;
 
-    using PlayerRoles;
-    using PlayerRoles.FirstPersonControl.Thirdperson;
-
     using PluginAPI.Core.Attributes;
     using PluginAPI.Enums;
     using PluginAPI.Events;
@@ -431,7 +428,7 @@ namespace Exiled.Events.Handlers
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> damage a Window.
-        /// </summary>
+        /// </summary> // TODO: DamagingWindow instead of PlayerDamageWindow
         public static event CustomEventHandler<DamagingWindowEventArgs> PlayerDamageWindow;
 
         /// <summary>
@@ -565,6 +562,7 @@ namespace Exiled.Events.Handlers
         /// Called before throwing a grenade.
         /// </summary>
         /// <param name="ev">The <see cref="ThrownProjectileEventArgs"/> instance.</param>
+        // TODO: rename that to OnThrownProjectile
         public static void OnThrowingProjectile(ThrownProjectileEventArgs ev) => ThrownProjectile.InvokeSafely(ev);
 
         /// <summary>

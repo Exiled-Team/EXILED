@@ -9,7 +9,6 @@ namespace Exiled.Events.Commands.Config
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
 
     using API.Enums;
