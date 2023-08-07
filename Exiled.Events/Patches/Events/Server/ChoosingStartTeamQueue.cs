@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ChoosingStartTeam.cs" company="Exiled Team">
+// <copyright file="ChoosingStartTeamQueue.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -20,10 +20,10 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="RoleAssigner.OnRoundStarted" /> setter.
-    ///     Adds the <see cref="Handlers.Server.ChoosingStartTeam" />.
+    ///     Adds the <see cref="Handlers.Server.ChoosingStartTeamQueue" />.
     /// </summary>
     [HarmonyPatch(typeof(RoleAssigner), nameof(RoleAssigner.OnRoundStarted))]
-    internal static class ChoosingStartTeam
+    internal static class ChoosingStartTeamQueue
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {

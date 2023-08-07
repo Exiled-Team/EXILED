@@ -67,7 +67,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before choosing the Team than player will get.
         /// </summary>
-        public static event CustomEventHandler<ChoosingStartTeamEventArgs> ChoosingStartTeam;
+        public static event CustomEventHandler<ChoosingStartTeamQueueEventArgs> ChoosingStartTeamQueue;
 
         /// <summary>
         /// Invoked after the "reload configs" command is ran.
@@ -153,8 +153,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a <see cref="Player"/>'s custom display name is changed.
         /// </summary>
-        /// <param name="ev">The <see cref="ChoosingStartTeamEventArgs"/> instance.</param>
-        public static void OnChoosingStartTeam(ChoosingStartTeamEventArgs ev) => ChoosingStartTeam.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ChoosingStartTeamQueueEventArgs"/> instance.</param>
+        public static void OnChoosingStartTeam(ChoosingStartTeamQueueEventArgs ev) => ChoosingStartTeamQueue.InvokeSafely(ev);
 
         /// <summary>
         /// Called after the "reload configs" command is ran.

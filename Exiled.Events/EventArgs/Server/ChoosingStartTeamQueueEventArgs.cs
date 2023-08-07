@@ -18,15 +18,15 @@ namespace Exiled.Events.EventArgs.Server
     /// <summary>
     ///     Contains all information before a spectator changes the spectated player.
     /// </summary>
-    public class ChoosingStartTeamEventArgs : IDeniableEvent
+    public class ChoosingStartTeamQueueEventArgs : IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ChoosingStartTeamEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="ChoosingStartTeamQueueEventArgs" /> class.
         /// </summary>
         /// <param name="teamRespawnQueue">
         ///     <inheritdoc cref="TeamRespawnQueue" />
         /// </param>
-        public ChoosingStartTeamEventArgs(string teamRespawnQueue)
+        public ChoosingStartTeamQueueEventArgs(string teamRespawnQueue)
         {
             TeamRespawnQueue = new();
             foreach (char ch in teamRespawnQueue)
