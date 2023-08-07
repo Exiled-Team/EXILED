@@ -474,7 +474,7 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="camera">The camera to get the cost to switch to.</param>
         /// <returns>The cost to switch from the current camera to the new camera.</returns>
-        public int GetSwitchCost(Camera camera) => camera is null ? CurrentCameraSync.GetSwitchCost(camera.Base) : 0;
+        public int GetSwitchCost(Camera camera) => camera is null ? 0 : CurrentCameraSync.GetSwitchCost(camera.Base);
 
         /// <summary>
         /// Gets the cost to modify a door.
