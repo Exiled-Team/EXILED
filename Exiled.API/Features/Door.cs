@@ -605,7 +605,9 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
                 CheckpointDoor chkpt => new Checkpoint(chkpt, room),
                 BaseBreakableDoor brkbl => new Breakable(brkbl, room),
                 ElevatorDoor elvtr => new Elevator(elvtr, room),
-                _ => new Door(doorVariant, room),
+                BasicNonInteractableDoor nonInteractableDoor => new Doors.BasicNonInteractableDoor(nonInteractableDoor, room),
+                BasicDoor basicDoor => new Doors.BasicDoor(basicDoor, room),
+                _ => new Door(doorVariant, room)
             };
 
         private DoorType GetDoorType()
