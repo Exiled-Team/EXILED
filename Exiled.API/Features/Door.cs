@@ -23,9 +23,14 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
 
     using static Interactables.Interobjects.ElevatorManager;
 
-    using Checkpoint = Exiled.API.Features.Doors.CheckpointDoor;
-    using Elevator = Exiled.API.Features.Doors.ElevatorDoor;
-    using Gate = Exiled.API.Features.Doors.Gate;
+    using BaseBreakableDoor = Interactables.Interobjects.BreakableDoor;
+    using BaseKeycardPermissions = Interactables.Interobjects.DoorUtils.KeycardPermissions;
+
+    using Breakable = Doors.BreakableDoor;
+    using Checkpoint = Doors.CheckpointDoor;
+    using Elevator = Doors.ElevatorDoor;
+    using Gate = Doors.Gate;
+    using KeycardPermissions = Enums.KeycardPermissions;
 
     /// <summary>
     /// A wrapper class for <see cref="DoorVariant"/>.
@@ -85,17 +90,17 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not the door is fully closed.
         /// </summary>
-        public bool IsFullyClosed => IsGate ? (!IsOpen && ((PryableDoor)Base)._remainingPryCooldown <= 0) : ExactState is 0;
+        public bool IsFullyClosed => IsGate ? (!IsOpen && ((Gate)this).RemainingPryCooldown <= 0) : ExactState is 0;
 
         /// <summary>
         /// Gets a value indicating whether the door is fully open.
         /// </summary>
-        public bool IsFullyOpen => IsGate ? (IsOpen && ((PryableDoor)Base)._remainingPryCooldown <= 0) : ExactState is 1;
+        public bool IsFullyOpen => IsGate ? (IsOpen && ((Gate)this).RemainingPryCooldown <= 0) : ExactState is 1;
 
         /// <summary>
         /// Gets a value indicating whether or not the door is currently moving.
         /// </summary>
-        public bool IsMoving => IsGate ? ((PryableDoor)Base)._remainingPryCooldown > 0 : ExactState is not(0 or 1);
+        public bool IsMoving => IsGate ? ((Gate)this).RemainingPryCooldown > 0 : ExactState is not(0 or 1);
 
         /// <summary>
         /// Gets a value indicating the precise state of the door, from <c>0-1</c>. A value of <c>0</c> indicates the door is fully closed, while a value of <c>1</c> indicates the door is fully open. Values in-between represent the door's animation progress.
@@ -129,7 +134,16 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.
         /// </summary>
-        public bool IsKeycardDoor => RequiredPermissions.RequiredPermissions != Interactables.Interobjects.DoorUtils.KeycardPermissions.None;
+        public bool IsKeycardDoor => KeycardPermissions is not KeycardPermissions.None;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not this door requires a keycard to open.
+        /// </summary>
+        public KeycardPermissions KeycardPermissions
+        {
+            get => (KeycardPermissions)RequiredPermissions.RequiredPermissions;
+            set => RequiredPermissions.RequiredPermissions = (BaseKeycardPermissions)value;
+        }
 
         /// <summary>
         /// Gets or sets the door's position.
@@ -175,13 +189,11 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not this door is breakable.
         /// </summary>
-        [Obsolete("Use BreakableDoor::IsBreakable instead.")]
         public bool IsBreakable => Base is IDamageableDoor dDoor && !dDoor.IsDestroyed;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is broken.
         /// </summary>
-        [Obsolete("Use BreakableDoor::IsDestroyed instead.")]
         public bool IsBroken => Base is IDamageableDoor dDoor && dDoor.IsDestroyed;
 
         /// <summary>
@@ -303,7 +315,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
             : doorVariant switch
             {
                 CheckpointDoor chkpt => new Checkpoint(chkpt, chkpt.GetComponentInParent<Room>()),
-                BreakableDoor brkbl => new Doors.BreakableDoor(brkbl, brkbl.GetComponentInParent<Room>()),
+                BaseBreakableDoor brkbl => new Breakable(brkbl, brkbl.GetComponentInParent<Room>()),
                 ElevatorDoor elvtr => new Elevator(elvtr, elvtr.GetComponentInParent<Room>()),
                 _ => new Door(doorVariant, doorVariant.GetComponentInParent<Room>())
             }) : null;
@@ -565,9 +577,15 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <param name="room">The <see cref="Room"/> this door is in.</param>
         /// <remarks>The 'room' parameter is only used if a new door wrapper needs to be created.</remarks>
         /// <returns>A <see cref="Door"/> wrapper object.</returns>
-        internal static Door Get(DoorVariant doorVariant, Room room) => DoorVariantToDoor.ContainsKey(doorVariant)
-            ? DoorVariantToDoor[doorVariant]
-            : new Door(doorVariant, room);
+        internal static Door Get(DoorVariant doorVariant, Room room) => DoorVariantToDoor.TryGetValue(doorVariant, out Door door)
+            ? door
+            : doorVariant switch
+            {
+                CheckpointDoor chkpt => new Checkpoint(chkpt, room),
+                BaseBreakableDoor brkbl => new Breakable(brkbl, room),
+                ElevatorDoor elvtr => new Elevator(elvtr, room),
+                _ => new Door(doorVariant, room),
+            };
 
         private DoorType GetDoorType()
         {
@@ -599,7 +617,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
                         RoomType.Hcz049 => Position.y < -805 ? DoorType.Scp049Gate : DoorType.Scp173NewGate,
                         _ => DoorType.UnknownGate,
                     },
-                    "Elevator" => (Base as ElevatorDoor)?.Group switch
+                    "Elevator" => As<Elevator>()?.Group switch
                     {
                         ElevatorGroup.Nuke => DoorType.ElevatorNuke,
                         ElevatorGroup.Scp049 => DoorType.ElevatorScp049,
