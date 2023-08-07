@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
-    using System;
     using System.Collections.Generic;
 
     using API.Features;
