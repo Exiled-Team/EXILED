@@ -48,6 +48,16 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
         /// </summary>
+        /// <remarks>
+        /// Created only for <see cref="Projectile"/> properly work.
+        /// </remarks>
+        internal Pickup()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Pickup"/> class.
+        /// </summary>
         /// <param name="pickupBase">The base <see cref="ItemPickupBase"/> class.</param>
         internal Pickup(ItemPickupBase pickupBase)
         {
@@ -181,9 +191,9 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets the <see cref="ItemBase"/> of the item.
+        /// Gets or sets the <see cref="ItemBase"/> of the item.
         /// </summary>
-        public ItemPickupBase Base { get; }
+        public ItemPickupBase Base { get; protected set; }
 
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.
@@ -344,7 +354,7 @@ namespace Exiled.API.Features.Pickups
         /// <br />- All valid firearms (not including the Micro HID) should be casted to the <see cref="FirearmPickup"/> class.
         /// <br />- All valid keycards should be casted to the <see cref="KeycardPickup"/> class.
         /// <br />- All valid armor should be casted to the <see cref="BodyArmorPickup"/> class.
-        /// <br />- All grenades and throwables (SCP-018 and SCP-2176) should be casted to the <see cref="GrenadePickup"/> class.
+        /// <br />- All grenades and throwables (not including SCP-018 and SCP-2176) should be casted to the <see cref="GrenadePickup"/> class.
         /// </para>
         /// <para>
         /// <br />The following have their own respective classes:
@@ -352,6 +362,8 @@ namespace Exiled.API.Features.Pickups
         /// <br />- The Micro HID can be casted to <see cref="MicroHIDPickup"/>.
         /// <br />- SCP-244 A and B variants can be casted to <see cref="Scp244Pickup"/>.
         /// <br />- SCP-330 can be casted to <see cref="Scp330Pickup"/>.
+        /// <br />- SCP-018 can be casted to <see cref="Projectiles.Scp018Projectile"/>.
+        /// <br />- SCP-2176 can be casted to <see cref="Projectiles.Scp2176Projectile"/>.
         /// </para>
         /// <para>
         /// Items that are not listed above do not have a subclass, and can only use the base <see cref="Pickup"/> class.
@@ -373,6 +385,8 @@ namespace Exiled.API.Features.Pickups
             ItemType.SCP330 => new Scp330Pickup(),
             ItemType.Jailbird => new JailbirdPickup(),
             ItemType.SCP1576 => new Scp1576Pickup(),
+            ItemType.SCP2176 => new Projectiles.Scp2176Projectile(),
+            ItemType.SCP018 => new Projectiles.Scp018Projectile(),
             _ => new Pickup(type),
         };
 
@@ -438,6 +452,12 @@ namespace Exiled.API.Features.Pickups
         /// <seealso cref="UnSpawn"/>
         public void Spawn()
         {
+            // condition for projectiles
+            if (!GameObject.activeSelf)
+            {
+                GameObject.SetActive(true);
+            }
+
             if (!IsSpawned)
             {
                 NetworkServer.Spawn(GameObject);
