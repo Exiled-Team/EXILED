@@ -31,6 +31,11 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
+        /// Gets the list with all airlocks.
+        /// </summary>
+        public static IReadOnlyCollection<AirlockController> List => BaseToExiledControllers.Values;
+
+        /// <summary>
         /// Gets the basegame controller.
         /// </summary>
         public BaseController Base { get; }

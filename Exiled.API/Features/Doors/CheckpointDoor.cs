@@ -10,10 +10,12 @@ namespace Exiled.API.Features.Doors
     using System.Collections.Generic;
     using System.Linq;
 
+    using Interactables.Interobjects.DoorUtils;
+
     /// <summary>
     /// Represents a checkpoint door.
     /// </summary>
-    public class CheckpointDoor : Door
+    public class CheckpointDoor : Door, Interfaces.IDamageableDoor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckpointDoor"/> class.
@@ -73,11 +75,60 @@ namespace Exiled.API.Features.Doors
             set => Base._warningTime = value;
         }
 
+        /// <inheritdoc/>
+        public bool IsDestroyed
+        {
+            get => Base.IsDestroyed;
+            set => Base.IsDestroyed = value;
+        }
+
+        /// <inheritdoc/>
+        public new bool IsBreakable => !IsDestroyed;
+
+        /// <inheritdoc/>
+        public new float Health
+        {
+            get => Base.GetHealthPercent();
+            set { }
+        }
+
+        /// <inheritdoc/>
+        public new float MaxHealth
+        {
+            get => Subdoors.Sum(door => door.MaxHealth);
+            set
+            {
+                foreach (var door in Subdoors)
+                {
+                    door.MaxHealth = value;
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public DoorDamageType IgnoredDamage
+        {
+            get => Subdoors.Aggregate(DoorDamageType.None, (current, door) => current | door.IgnoredDamage);
+            set
+            {
+                foreach (var door in Subdoors)
+                {
+                    door.IgnoredDamage = value;
+                }
+            }
+        }
+
         /// <summary>
         /// Toggles the state of the doors from <see cref="Subdoors"/>.
         /// </summary>
         /// <param name="newState">New state for the subdoors.</param>
         public void ToggleAllDoors(bool newState) => Base.ToggleAllDoors(newState);
+
+        /// <inheritdoc/>
+        public bool Damage(float amount, DoorDamageType damageType = DoorDamageType.ServerCommand) => Base.ServerDamage(amount, damageType);
+
+        /// <inheritdoc/>
+        public bool Break(DoorDamageType type = DoorDamageType.ServerCommand) => Base.ServerDamage(float.MaxValue, type);
 
         /// <summary>
         /// Returns the Door in a human-readable format.

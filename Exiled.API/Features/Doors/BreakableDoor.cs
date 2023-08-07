@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Doors
     /// <summary>
     /// Represents <see cref="Interactables.Interobjects.BreakableDoor"/>.
     /// </summary>
-    public class BreakableDoor : Door
+    public class BreakableDoor : BasicDoor, Interfaces.IDamageableDoor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BreakableDoor"/> class.

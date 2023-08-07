@@ -189,21 +189,25 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not this door is breakable.
         /// </summary>
-        public bool IsBreakable => Base is IDamageableDoor dDoor && !dDoor.IsDestroyed;
+        /// <remarks>Will return <see langword="false"/> if door is not <see cref="Interfaces.IDamageableDoor"/>.</remarks>
+        public bool IsBreakable => this is Interfaces.IDamageableDoor dDoor && !dDoor.IsDestroyed;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is broken.
         /// </summary>
-        public bool IsBroken => Base is IDamageableDoor dDoor && dDoor.IsDestroyed;
+        /// <remarks>Will return <see langword="false"/> if door is not <see cref="Interfaces.IDamageableDoor"/>.</remarks>
+        public bool IsBroken => this is Interfaces.IDamageableDoor dDoor && dDoor.IsDestroyed;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is ignoring lockdown.
         /// </summary>
+        [Obsolete("Use BasicNonInteractableDoor::IngoreLockdowns")]
         public bool IgnoresLockdowns => Base is INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreLockdowns;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is ignoring remoteAdmin commands.
         /// </summary>
+        [Obsolete("Use BasicNonInteractableDoor::IngoreRemoteAdmin")]
         public bool IgnoresRemoteAdmin => Base is INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreRemoteAdmin;
 
         /// <summary>
@@ -233,7 +237,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <summary>
         /// Gets or sets the max health of the door. No effect if the door cannot be broken.
         /// </summary>
-        [Obsolete("Use BreakableDoor::MaxHealth instead.")]
+        [Obsolete("Use IDamageableDoor::MaxHealth instead.")]
         public float MaxHealth
         {
             get => Base is BreakableDoor breakable ? breakable._maxHealth : float.NaN;
@@ -247,7 +251,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <summary>
         /// Gets or sets the door's remaining health. No effect if the door cannot be broken.
         /// </summary>
-        [Obsolete("Use BreakableDoor::Health instead.")]
+        [Obsolete("Use IDamageableDoor::Health instead.")]
         public float Health
         {
             get => Base is BreakableDoor breakable ? breakable.RemainingHealth : float.NaN;
@@ -261,7 +265,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <summary>
         /// Gets or sets the damage types this door ignores, if it is breakable.
         /// </summary>
-        [Obsolete("Use BreakableDoor::IgnoredDamage instead.")]
+        [Obsolete("Use IDamageableDoor::IgnoredDamage instead.")]
         public DoorDamageType IgnoredDamageTypes
         {
             get => Base is BreakableDoor breakable ? breakable._ignoredDamageSources : DoorDamageType.None;
@@ -317,6 +321,8 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
                 CheckpointDoor chkpt => new Checkpoint(chkpt, chkpt.GetComponentInParent<Room>()),
                 BaseBreakableDoor brkbl => new Breakable(brkbl, brkbl.GetComponentInParent<Room>()),
                 ElevatorDoor elvtr => new Elevator(elvtr, elvtr.GetComponentInParent<Room>()),
+                BasicNonInteractableDoor nonInteractableDoor => new Doors.BasicNonInteractableDoor(nonInteractableDoor, nonInteractableDoor.GetComponentInParent<Room>()),
+                BasicDoor basicDoor => new Doors.BasicDoor(basicDoor, basicDoor.GetComponentInParent<Room>()),
                 _ => new Door(doorVariant, doorVariant.GetComponentInParent<Room>())
             }) : null;
 
@@ -457,12 +463,12 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// </summary>
         /// <param name="type">The <see cref="DoorDamageType"/> to apply to the door.</param>
         /// <returns><see langword="true"/> if the door was broken, <see langword="false"/> if it was unable to be broken, or was already broken before.</returns>
-        [Obsolete("Use BreakableDoor::Break instead.")]
+        [Obsolete("Use IDamageableDoor::Break instead.")]
         public bool BreakDoor(DoorDamageType type = DoorDamageType.ServerCommand)
         {
-            if (Base is IDamageableDoor dmg && !dmg.IsDestroyed)
+            if (this is Interfaces.IDamageableDoor dmg && !dmg.IsDestroyed)
             {
-                dmg.ServerDamage(ushort.MaxValue, type);
+                dmg.Break(type);
                 return true;
             }
 
@@ -475,7 +481,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <param name="amount">The amount of damage to deal.</param>
         /// <param name="type">The damage type to use.</param>
         /// <returns><see langword="true"/> if the door was damaged.</returns>
-        [Obsolete("Use BreakableDoor::Damage instead.")]
+        [Obsolete("Use IDamageableDoor::Damage instead.")]
         public bool DamageDoor(float amount, DoorDamageType type = DoorDamageType.ServerCommand) => Base is BreakableDoor breakable && breakable.ServerDamage(amount, type);
 
         /// <summary>

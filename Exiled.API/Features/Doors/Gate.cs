@@ -17,7 +17,7 @@ namespace Exiled.API.Features.Doors
     /// <summary>
     /// Represents a "pryable" door or gate.
     /// </summary>
-    public class Gate : Door
+    public class Gate : BasicDoor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Gate"/> class.

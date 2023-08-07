@@ -15,7 +15,7 @@ namespace Exiled.API.Features.Doors
     /// <summary>
     /// Represents an elevator door.
     /// </summary>
-    public class ElevatorDoor : Door
+    public class ElevatorDoor : BasicDoor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ElevatorDoor"/> class.
