@@ -9,7 +9,7 @@ namespace Exiled.Events.EventArgs.Scp079
 {
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
-
+    using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
 
     /// <summary>
@@ -26,24 +26,34 @@ namespace Exiled.Events.EventArgs.Scp079
         /// <param name="gainType">
         ///     <inheritdoc cref="GainType" />
         /// </param>
+        /// <param name="roleType">
+        ///     <inheritdoc cref="RoleType" />
+        /// </param>
         /// <param name="amount">
         ///     <inheritdoc cref="Amount" />
         /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public GainingExperienceEventArgs(Player player, Scp079HudTranslation gainType, int amount, bool isAllowed = true)
+        public GainingExperienceEventArgs(Player player, Scp079HudTranslation gainType, int amount, RoleTypeId roleType, bool isAllowed = true)
         {
             Player = player;
             GainType = gainType;
+            RoleType = roleType;
             Amount = amount;
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        ///     Gets the experience gain type.
+        ///     Gets or sets the role that was used to gain experience.
+        ///     <remark>The RoleType will be <see cref="RoleTypeId.None"/> when it's not an assisted experience.</remark>
         /// </summary>
-        public Scp079HudTranslation GainType { get; }
+        public RoleTypeId RoleType { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the experience gain type.
+        /// </summary>
+        public Scp079HudTranslation GainType { get; set; }
 
         /// <summary>
         ///     Gets or sets the amount of experience to be gained.

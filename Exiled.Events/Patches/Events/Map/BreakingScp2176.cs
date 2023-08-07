@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
