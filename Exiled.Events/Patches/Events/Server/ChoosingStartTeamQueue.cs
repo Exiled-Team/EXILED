@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new[]
                 {
                 // new ChoosingStartTeamEventArgs(string)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChoosingStartTeamEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChoosingStartTeamQueueEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
 
@@ -48,13 +48,13 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // if (!ev.IsAllowed)
                 //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChoosingStartTeamEventArgs), nameof(ChoosingStartTeamEventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChoosingStartTeamQueueEventArgs), nameof(ChoosingStartTeamQueueEventArgs.IsAllowed))),
                 new(OpCodes.Brtrue_S, continueLabel),
                 new(OpCodes.Pop),
                 new(OpCodes.Ret),
 
                 // ev.GetTeamRespawnQueue();
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(ChoosingStartTeamEventArgs), nameof(ChoosingStartTeamEventArgs.GetTeamRespawnQueue))).WithLabels(continueLabel),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(ChoosingStartTeamQueueEventArgs), nameof(ChoosingStartTeamQueueEventArgs.GetTeamRespawnQueue))).WithLabels(continueLabel),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
