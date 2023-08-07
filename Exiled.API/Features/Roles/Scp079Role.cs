@@ -313,22 +313,6 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets SCP-079's scanned zone.
-        /// </summary>
-        public ZoneType ScannerZoneSelected
-        {
-            get => ScannerZoneSelector._selectedZones.ToFlagEnum<ZoneType>();
-            set
-            {
-                bool[] newSeletedZone = value.ToBoolArray();
-                bool[] selectedZones = ScannerZoneSelector._selectedZones;
-                for (int i = 0; i < selectedZones.Length; i++)
-                    selectedZones[i] = newSeletedZone[i];
-                ScannerZoneSelector.ClientSendCmd();
-            }
-        }
-
-        /// <summary>
         /// Gets the Remaining Lockdown Duration.
         /// </summary>
         public float RemainingLockdownDuration => LockdownRoomAbility.RemainingLockdownDuration;
