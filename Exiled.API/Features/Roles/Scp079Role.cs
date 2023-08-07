@@ -388,12 +388,43 @@ namespace Exiled.API.Features.Roles
             if (door is not null)
             {
                 DoorLockChanger.LockedDoor = door.Base;
-                door.Lock((float)DoorLockChanger._lockTime, DoorLockType.Regular079);
+                DoorLockChanger._lockTime = NetworkTime.time;
+                DoorLockChanger.LockedDoor.ServerChangeLock(DoorLockReason.Regular079, true);
+                if (door.Room is not null)
+                    MarkRoom(door.Room);
+                AuxManager.CurrentAux -= DoorLockChanger.GetCostForDoor(DoorAction.Locked, DoorLockChanger.LockedDoor);
                 return true;
             }
 
             return false;
         }
+
+        /// <summary>
+        /// Locks the provided <paramref name="door"/>.
+        /// </summary>
+        /// <param name="door">The door to lock.</param>
+        /// <returns><see langword="true"/> if the door has been lock; otherwise, <see langword="false"/>.</returns>
+        /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
+        public bool LockDoor(Door door, bool consumeEnergy = true)
+        {
+            if (door is not null)
+            {
+                DoorLockChanger.LockedDoor = door.Base;
+                DoorLockChanger._lockTime = NetworkTime.time;
+                DoorLockChanger.LockedDoor.ServerChangeLock(DoorLockReason.Regular079, true);
+                MarkRoom(door.Room);
+                if (consumeEnergy)
+                    AuxManager.CurrentAux -= GetCost(door, DoorAction.Locked);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Unlocks the <see cref="LockedDoor"/>.
+        /// </summary>
+        public void UnlockDoor() => LockedDoor?.Unlock();
 
         /// <summary>
         /// Unlocks the provided <paramref name="door"/>.
@@ -500,10 +531,9 @@ namespace Exiled.API.Features.Roles
         /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
         public void Ping(Vector3 position, PingType pingType = PingType.Default, bool consumeEnergy = true)
         {
-            var relativePosition = new RelativePosition(position);
-            PingAbility._syncPos = relativePosition;
+            PingAbility._syncPos = new(position);
             PingAbility._syncNormal = position;
-            pingType = (PingType)PingAbility._syncProcessorIndex;
+            PingAbility._syncProcessorIndex = (byte)pingType;
 
             PingAbility.ServerSendRpc(x => PingAbility.ServerCheckReceiver(x, PingAbility._syncPos.Position, (int)pingType));
 
