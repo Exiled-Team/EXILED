@@ -41,10 +41,8 @@ namespace Exiled.Events.Patches.Events.Scp173
 
             LocalBuilder ev = generator.DeclareLocal(typeof(PlacingTantrumEventArgs));
 
-            const int offset = -3;
-            int index = newInstructions.FindIndex(
-                instruction => instruction.Calls(
-                    Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) }))) + offset;
+            const int offset = -2;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
 
             // PlacingTantrumEventArgs ev = new(this, Player, gameObject, cooldown, true);
             //
@@ -59,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Scp173
                 new CodeInstruction[]
                 {
                     // base.ScpRole
-                    new (OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new (OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp173Role>), nameof(ScpStandardSubroutine<Scp173Role>.ScpRole))),
 
                     // Player.Get(base.Hub)
