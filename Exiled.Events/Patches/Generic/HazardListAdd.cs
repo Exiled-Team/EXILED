@@ -30,6 +30,8 @@ namespace Exiled.Events.Patches.Generic
                         TantrumEnvironmentalHazard tantrumEnvironmentalHazard => new TantrumHazard(tantrumEnvironmentalHazard),
                         _ => new Exiled.API.Features.Hazards.TemporaryHazard(thazard)
                     };
+
+                    return;
                 }
 
                 _ = new Hazard(thazard);
