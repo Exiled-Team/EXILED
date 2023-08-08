@@ -428,7 +428,7 @@ namespace Exiled.Events.Handlers
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> damage a Window.
-        /// </summary>
+        /// </summary> // TODO: DamagingWindow instead of PlayerDamageWindow
         public static event CustomEventHandler<DamagingWindowEventArgs> PlayerDamageWindow;
 
         /// <summary>
