@@ -18,6 +18,7 @@ namespace Exiled.API.Features.Items
     using PlayerRoles;
 
     using Structs;
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="BodyArmor"/>.
@@ -84,32 +85,36 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how strong the helmet on the armor is.
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">When trying to set the value below 0 or above 100.</exception>
         public int HelmetEfficacy
         {
             get => Base.HelmetEfficacy;
             set
             {
-                if (value is <= 101 and >= 0)
-                    Base.HelmetEfficacy = value;
-                else
-                    throw new ArgumentOutOfRangeException(nameof(HelmetEfficacy), "Value of armor efficacy must be between 0 and 100.");
+                if (value is > 101 or < 0)
+                {
+                    Log.Warn($"{nameof(HelmetEfficacy)} Value of armor efficacy must be between 0 and 100.");
+                    value = Mathf.Clamp(value, 0, 100);
+                }
+
+                Base.HelmetEfficacy = value;
             }
         }
 
         /// <summary>
         /// Gets or sets how strong the vest on the armor is.
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">When trying to set the value below 0 or above 100.</exception>
         public int VestEfficacy
         {
             get => Base.VestEfficacy;
             set
             {
-                if (value is <= 101 and >= 0)
-                    Base.VestEfficacy = value;
-                else
-                    throw new ArgumentOutOfRangeException(nameof(VestEfficacy), "Value of armor efficacy must be between 0 and 100.");
+                if (value is > 101 or < 0)
+                {
+                    Log.Warn($"{nameof(VestEfficacy)} Value of armor efficacy must be between 0 and 100.");
+                    value = Mathf.Clamp(value, 0, 100);
+                }
+
+                Base.VestEfficacy = value;
             }
         }
 

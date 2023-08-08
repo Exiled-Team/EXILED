@@ -17,6 +17,7 @@ namespace Exiled.API.Features.Pickups
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using PlayerRoles;
+    using UnityEngine;
 
     using BaseBodyArmor = InventorySystem.Items.Armor.BodyArmorPickup;
 
@@ -76,32 +77,36 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets how strong the helmet on the armor is.
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">When trying to set the value below 0 or above 100.</exception>
         public int HelmetEfficacy
         {
             get => helmetEfficacy;
             set
             {
-                if (value is <= 101 and >= 0)
-                    helmetEfficacy = value;
-                else
-                    throw new ArgumentOutOfRangeException(nameof(HelmetEfficacy), "Value of armor efficacy must be between 0 and 100.");
+                if (value is > 101 or < 0)
+                {
+                    Log.Warn($"{nameof(HelmetEfficacy)} Value of armor efficacy must be between 0 and 100.");
+                    value = Mathf.Clamp(value, 0, 100);
+                }
+
+                helmetEfficacy = value;
             }
         }
 
         /// <summary>
         /// Gets or sets how strong the vest on the armor is.
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">When trying to set the value below 0 or above 100.</exception>
         public int VestEfficacy
         {
             get => vestEfficacy;
             set
             {
-                if (value is <= 101 and >= 0)
-                    vestEfficacy = value;
-                else
-                    throw new ArgumentOutOfRangeException(nameof(VestEfficacy), "Value of armor efficacy must be between 0 and 100.");
+                if (value is > 101 or < 0)
+                {
+                    Log.Warn($"{nameof(VestEfficacy)} Value of armor efficacy must be between 0 and 100.");
+                    value = Mathf.Clamp(value, 0, 100);
+                }
+
+                vestEfficacy = value;
             }
         }
 
