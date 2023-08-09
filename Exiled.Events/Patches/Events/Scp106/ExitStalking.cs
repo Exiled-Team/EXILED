@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Scp106
 {
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Features;

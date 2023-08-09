@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Enums;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
+    using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.PlayableScps.Subroutines;
     using PlayerStatsSystem;
@@ -175,6 +176,16 @@ namespace Exiled.API.Features.Roles
         /// Gets the speed multiplier of the sinkhole.
         /// </summary>
         public float SinkholeSpeedMultiplier => SinkholeController.SpeedMultiplier;
+
+        /// <summary>
+        /// Gets or sets how mush cost the Ability Stalk will cost per tick when being stationary.
+        /// </summary>
+        public double VigorStalkCostStationary { get; set; } = Scp106StalkAbility.VigorStalkCostStationary;
+
+        /// <summary>
+        /// Gets or sets how mush cost the Ability Stalk will cost per tick when moving.
+        /// </summary>
+        public double VigorStalkCostMoving { get; set; } = Scp106StalkAbility.VigorStalkCostMoving;
 
         /// <summary>
         /// Gets or sets the amount of time in between player captures.
