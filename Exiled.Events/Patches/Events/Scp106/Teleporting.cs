@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                 index,
                 new[]
                 {
-                    // Player player = Player.Get(this.Owner);
+                    // Player.Get(this.Owner);
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
