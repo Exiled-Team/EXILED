@@ -188,7 +188,7 @@ namespace Exiled.API.Features.Roles
         public float VigorStalkCostMoving { get; set; } = Scp106StalkAbility.VigorStalkCostMoving;
 
         /// <summary>
-        /// Gets or sets how mush vigor will be regenerate while moving per tick.
+        /// Gets or sets how mush vigor will be regenerate while moving per seconds.
         /// </summary>
         public float VigorRegeneration { get; set; } = Scp106StalkAbility.VigorRegeneration;
 
