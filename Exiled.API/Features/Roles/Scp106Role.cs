@@ -193,6 +193,36 @@ namespace Exiled.API.Features.Roles
         public float VigorRegeneration { get; set; } = Scp106StalkAbility.VigorRegeneration;
 
         /// <summary>
+        /// Gets or sets how mush vigor will be regenerate while moving per seconds.
+        /// </summary>
+        public float AttackDamage { get; set; } = Scp106Attack.AttackDamage;
+
+        /// <summary>
+        /// Gets or sets how mush vigor will be regenerate while moving per seconds.
+        /// </summary>
+        public float CorrodingTime { get; set; } = Scp106Attack.CorrodingTime;
+
+        /// <summary>
+        /// Gets or sets how mush vigor will be regenerate while moving per seconds.
+        /// </summary>
+        public float VigorCaptureReward { get; set; } = Scp106Attack.VigorCaptureReward;
+
+        /// <summary>
+        /// Gets or sets how mush vigor will be regenerate while moving per seconds.
+        /// </summary>
+        public float CooldownReductionReward { get; set; } = Scp106Attack.CooldownReductionReward;
+
+        /// <summary>
+        /// Gets or sets how mush vigor will be regenerate while moving per seconds.
+        /// </summary>
+        public float SinkholeCooldownDuration { get; set; } = Scp106SinkholeController.CooldownDuration;
+
+        /// <summary>
+        /// Gets or sets how mush vigor will be regenerate while moving per seconds.
+        /// </summary>
+        public float HuntersAtlasCostPerMeter { get; set; } = Scp106HuntersAtlasAbility.CostPerMeter;
+
+        /// <summary>
         /// Gets or sets the amount of time in between player captures.
         /// </summary>
         public float CaptureCooldown
