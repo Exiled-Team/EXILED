@@ -180,12 +180,17 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when being stationary.
         /// </summary>
-        public double VigorStalkCostStationary { get; set; } = Scp106StalkAbility.VigorStalkCostStationary;
+        public float VigorStalkCostStationary { get; set; } = Scp106StalkAbility.VigorStalkCostStationary;
 
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when moving.
         /// </summary>
-        public double VigorStalkCostMoving { get; set; } = Scp106StalkAbility.VigorStalkCostMoving;
+        public float VigorStalkCostMoving { get; set; } = Scp106StalkAbility.VigorStalkCostMoving;
+
+        /// <summary>
+        /// Gets or sets how mush vigor will be regenerate while moving per tick.
+        /// </summary>
+        public float VigorRegeneration { get; set; } = Scp106StalkAbility.VigorRegeneration;
 
         /// <summary>
         /// Gets or sets the amount of time in between player captures.
