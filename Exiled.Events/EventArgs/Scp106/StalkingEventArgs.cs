@@ -45,9 +45,9 @@ namespace Exiled.Events.EventArgs.Scp106
         public float Vigor
         {
             [Obsolete("Use Scp106.Vigor instead of this")]
-            get => Scp106StalkAbility.Vigor.VigorAmount;
+            get => Scp106.Vigor;
             [Obsolete("Use Scp106.Vigor instead of this")]
-            set => Scp106StalkAbility.Vigor.VigorAmount = value;
+            set => Scp106.Vigor = value;
         }
 
         /// <summary>
