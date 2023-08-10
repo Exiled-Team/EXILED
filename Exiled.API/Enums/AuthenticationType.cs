@@ -40,5 +40,15 @@ namespace Exiled.API.Enums
         /// Indicates that the player has been authenticated through an unknown provider.
         /// </summary>
         Unknown,
+
+        /// <summary>
+        /// Indicates that the player has been authenticated as localhost.
+        /// </summary>
+        LocalHost,
+
+        /// <summary>
+        /// Indicates that the player has been authenticated as DedicatedServer.
+        /// </summary>
+        DedicatedServer,
     }
 }
