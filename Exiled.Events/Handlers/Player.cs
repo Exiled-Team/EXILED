@@ -57,6 +57,14 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<BannedEventArgs> Banned;
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> earns an achievement.
+        /// </summary>
+        /// <remarks>
+        /// Will not fire for certain client-side achievements.
+        /// </remarks>
+        public static event CustomEventHandler<EarningAchievementEventArgs> EarningAchievement;
+
+        /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Item"/>.
         /// </summary>
         /// <remarks>
@@ -490,6 +498,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="BannedEventArgs"/> instance.</param>
         public static void OnBanned(BannedEventArgs ev) => Banned.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/>  earns an achievement.
+        /// </summary>
+        /// <param name="ev">The <see cref="EarningAchievementEventArgs"/> instance.</param>
+        public static void OnEarningAchievement(EarningAchievementEventArgs ev) => EarningAchievement.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="API.Features.Player"/> used a medical item.
