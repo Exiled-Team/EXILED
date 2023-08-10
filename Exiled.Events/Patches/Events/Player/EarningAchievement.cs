@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patch the <see cref="AchievementHandlerBase.ServerAchieve"/>.
-    ///     Adds the <see cref="Handlers.Player.ActivatingWarheadPanel"/> event.
+    ///     Adds the <see cref="Handlers.Player.EarningAchievement"/> event.
     /// </summary>
     [HarmonyPatch(typeof(AchievementHandlerBase), nameof(AchievementHandlerBase.ServerAchieve))]
     internal static class EarningAchievement
