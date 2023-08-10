@@ -1666,17 +1666,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Forces the player to reload their current weapon.
         /// </summary>
-        /// <exception cref="InvalidOperationException">If the item is not a firearm.</exception>
-        public void ReloadWeapon() // TODO: Convert to bool instead of Exception
+        /// <returns>True if succesful, otherwise false.</returns>
+        public bool ReloadWeapon()
         {
             if (CurrentItem is Firearm firearm)
             {
                 firearm.Base.AmmoManagerModule.ServerTryReload();
                 Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
+                return true;
             }
             else
             {
-                throw new InvalidOperationException("The player's CurrentItem is not a firearm.");
+                return false;
             }
         }
 
