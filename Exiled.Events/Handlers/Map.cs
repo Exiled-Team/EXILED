@@ -87,12 +87,12 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<TurningOffLightsEventArgs> TurningOffLights;
 
         /// <summary>
-        /// Invoked after an item is spawned.
+        /// Invoked after an pickup is spawned.
         /// </summary>
         public static event CustomEventHandler<PickupAddedEventArgs> PickupAdded;
 
         /// <summary>
-        /// Invoked after an item is destroyed.
+        /// Invoked after an pickup is destroyed.
         /// </summary>
         public static event CustomEventHandler<PickupDestroyedEventArgs> PickupDestroyed;
 
@@ -174,13 +174,13 @@ namespace Exiled.Events.Handlers
         public static void OnTurningOffLights(TurningOffLightsEventArgs ev) => TurningOffLights.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after an item is spawned.
+        /// Called after an pickup is spawned.
         /// </summary>
         /// <param name="ev">The <see cref="PickupAddedEventArgs"/> instance.</param>
         public static void OnPickupAdded(PickupAddedEventArgs ev) => PickupAdded.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after an item is destroyed.
+        /// Called after an pickup is destroyed.
         /// </summary>
         /// <param name="ev">The <see cref="PickupDestroyedEventArgs"/> instance.</param>
         public static void OnPickupDestroyed(PickupDestroyedEventArgs ev) => PickupDestroyed.InvokeSafely(ev);
