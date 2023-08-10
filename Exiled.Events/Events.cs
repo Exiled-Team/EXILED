@@ -147,7 +147,7 @@ namespace Exiled.Events
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                Harmony.PatchAll(out int failedPatch);
+                GlobalPatchProcessor.PatchAll(Harmony, out int failedPatch);
                 if (failedPatch == 0)
                     Log.Debug("Events patched successfully!");
                 else

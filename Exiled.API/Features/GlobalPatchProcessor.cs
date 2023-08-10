@@ -20,7 +20,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A <see cref="Harmony"/> alternative detour tool which adds more ways to manage patches and external assemblies.
     /// </summary>
-    public static class GlobalPatchProcessor
+    public class GlobalPatchProcessor
     {
         private static readonly Dictionary<MethodBase, HashSet<string>> PatchedGroupMethodsValue = new();
 
@@ -39,7 +39,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="harmony">The Harmony instance to Patch.</param>
         /// <param name="failedPatch">The number of failed patch.</param>
-        public static void PatchAll(this Harmony harmony, out int failedPatch)
+        public static void PatchAll(Harmony harmony, out int failedPatch)
         {
             failedPatch = 0;
             foreach (Type type in AccessTools.GetTypesFromAssembly(Assembly.GetCallingAssembly()))
