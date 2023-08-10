@@ -51,7 +51,7 @@ namespace Exiled.Events.Handlers
         /// Invoked after SCP-939 attack.
         /// </summary>
         /// <remarks>This event is calling only when attack doesn't have target.</remarks>
-        public static event CustomEventHandler<ClawedEventArgs> Clawed;
+        public static Event<ClawedEventArgs> Clawed { get; set; } = new();
 
         /// <summary>
         ///     Called before SCP-939 changes its target focus.
