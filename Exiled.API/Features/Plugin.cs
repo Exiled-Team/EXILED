@@ -126,7 +126,7 @@ namespace Exiled.API.Features
                             command = (ICommand)Activator.CreateInstance(type);
 
                         command.Aliases.AddToArray(command.Command);
-                        SetCommand.SetValue(command, Prefix + command.Command);
+                        SetCommand.SetValue(command, $"{Prefix}.{command.Command}");
 
                         try
                         {
