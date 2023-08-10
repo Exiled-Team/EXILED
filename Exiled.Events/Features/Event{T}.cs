@@ -31,7 +31,7 @@ namespace Exiled.Events.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Event{T}"/> class.
         /// </summary>
-        internal Event()
+        public Event()
         {
         }
 
