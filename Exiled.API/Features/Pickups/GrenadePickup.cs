@@ -13,6 +13,8 @@ namespace Exiled.API.Features.Pickups
 
     using InventorySystem.Items.ThrowableProjectiles;
 
+    using Footprinting;
+
     /// <summary>
     /// A wrapper class for a grenade pickup.
     /// </summary>
@@ -51,6 +53,16 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Trigger the grenade to make it Explode.
         /// </summary>
-        public void Explode() => Base._replaceNextFrame = true;
+        public void Explode() => Explode(Base.PreviousOwner);
+
+        /// <summary>
+        /// Trigger the grenade to make it Explode.
+        /// </summary>
+        /// <param name="attacker">The <see cref="Footprint"/> of the explosion.</param> 
+        public void Explode(Footprint attacker) 
+        {
+            Base._replaceNextFrame = true;
+            Base._attacker = attacker;
+        }
     }
 }
