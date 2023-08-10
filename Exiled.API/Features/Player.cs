@@ -1669,16 +1669,11 @@ namespace Exiled.API.Features
         /// <returns>True if succesful, otherwise false.</returns>
         public bool ReloadWeapon()
         {
-            if (CurrentItem is Firearm firearm)
-            {
-                firearm.Base.AmmoManagerModule.ServerTryReload();
-                Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
-                return true;
-            }
-            else
-            {
+            if (!CurrentItem is Firearm firearm)
                 return false;
-            }
+            firearm.Base.AmmoManagerModule.ServerTryReload();
+            Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
+            return true;
         }
 
         /// <summary>
