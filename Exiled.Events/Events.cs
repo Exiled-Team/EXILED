@@ -124,6 +124,7 @@ namespace Exiled.Events
                 Harmony.DEBUG = true;
 #endif
                 Patcher.PatchAll(!Config.UseDynamicPatching, out int failedPatch);
+
                 if (failedPatch == 0)
                     Log.Debug("Events patched successfully!");
                 else
