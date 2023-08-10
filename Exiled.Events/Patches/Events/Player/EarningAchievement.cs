@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(EarningAchievementEventArgs));
 
-            const int offset = -1;
+            const int offset = 2;
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brfalse_S) + offset;
 
             newInstructions.InsertRange(
@@ -44,17 +44,20 @@ namespace Exiled.Events.Patches.Events.Player
                 new[]
                 {
                     // Player.Get(conn);
-                    new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(NetworkConnection) })),
 
                     // achievementName
-                    new(OpCodes.Ldarg_2),
+                    new(OpCodes.Ldarg_1),
+
+                    // true
+                    new(OpCodes.Ldc_I4_1),
 
                     // EarningAchievementEventArgs ev = new(Player, AchievementName)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EarningAchievementEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
-                    new(OpCodes.Stloc, ev.LocalIndex),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Handlers.Player.OnEarningAchievement(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEarningAchievement))),
@@ -63,6 +66,8 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(EarningAchievementEventArgs), nameof(EarningAchievementEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse, ret),
                 });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
