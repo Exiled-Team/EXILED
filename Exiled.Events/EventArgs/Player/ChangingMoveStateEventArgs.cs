@@ -54,11 +54,13 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets or sets the new state.
         /// </summary>
+        // TODO: remove setter
         public PlayerMovementState NewState { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the player can change the movement state.
         /// </summary>
+        // TODO: remove
         public bool IsAllowed { get; set; }
     }
 }
