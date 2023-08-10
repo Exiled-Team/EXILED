@@ -23,26 +23,27 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
+        /// <param name="firearm">
+        ///     <inheritdoc cref="Firearm" />
+        /// </param>
         /// <param name="newState">
         ///     <inheritdoc cref="NewState" />
         /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public TogglingWeaponFlashlightEventArgs(Player player, bool newState, bool isAllowed = true)
+        public TogglingWeaponFlashlightEventArgs(Player player, Firearm firearm, bool newState, bool isAllowed = true)
         {
-            Firearm = player.CurrentItem as Firearm;
+            Firearm = firearm;
             Player = player;
             NewState = newState;
             IsAllowed = isAllowed;
         }
 
-#pragma warning disable SA1623 // Property summary documentation should match accessors
         /// <summary>
-        ///     Gets or sets the new weapon's flashlight state.
+        ///     Gets or sets a value indicating whether or not the new weapon's flashlight state will be enabled or not.
         /// </summary>
         public bool NewState { get; set; }
-#pragma warning restore SA1623 // Property summary documentation should match accessors
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the weapon's flashlight can be toggled.
