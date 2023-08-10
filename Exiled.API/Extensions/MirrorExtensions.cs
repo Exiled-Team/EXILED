@@ -23,10 +23,7 @@ namespace Exiled.API.Extensions
     using Mirror;
 
     using PlayerRoles;
-    using PlayerRoles.Filmmaker;
     using PlayerRoles.FirstPersonControl;
-    using PlayerRoles.SpawnData;
-    using PlayerRoles.Spectating;
 
     using RelativePositioning;
 

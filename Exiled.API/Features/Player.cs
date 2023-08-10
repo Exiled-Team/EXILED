@@ -12,7 +12,6 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using System.Text.RegularExpressions;
 
     using Core;
 
@@ -72,7 +71,7 @@ namespace Exiled.API.Features
     using RoundRestarting;
 
     using UnityEngine;
-
+    using Utils;
     using Utils.Networking;
 
     using VoiceChat;
@@ -295,17 +294,13 @@ namespace Exiled.API.Features
                 if (string.IsNullOrEmpty(UserId))
                     return AuthenticationType.Unknown;
 
-                int index = UserId.LastIndexOf('@');
-
-                if (index == -1)
-                    return AuthenticationType.Unknown;
-
-                return UserId.Substring(index + 1) switch
+                return UserId.Substring(UserId.LastIndexOf('@') + 1) switch
                 {
                     "steam" => AuthenticationType.Steam,
                     "discord" => AuthenticationType.Discord,
                     "northwood" => AuthenticationType.Northwood,
-                    "patreon" => AuthenticationType.Patreon,
+                    "localhost" => AuthenticationType.LocalHost,
+                    "ID_Dedicated" => AuthenticationType.DedicatedServer,
                     _ => AuthenticationType.Unknown,
                 };
             }
@@ -320,7 +315,7 @@ namespace Exiled.API.Features
         public bool IsVerified { get; internal set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is NPC.
+        /// Gets or sets a value indicating whether or not the player is a NPC.
         /// </summary>
         public bool IsNPC { get; set; }
 
@@ -609,7 +604,7 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not the player is cuffed.
         /// </summary>
         /// <remarks>Players can be cuffed without another player being the cuffer.</remarks>
-        public bool IsCuffed => Cuffer is not null;
+        public bool IsCuffed => Inventory.IsDisarmed();
 
         /// <summary>
         /// Gets a value indicating whether or not the player is reloading a weapon.
@@ -2961,72 +2956,80 @@ namespace Exiled.API.Features
         public void Teleport(Vector3 position) => Position = position;
 
         /// <summary>
-        /// Teleports the player to the given object.
+        /// Teleports the player to the given object, with no offset.
+        /// </summary>
+        /// <param name="obj">The object to teleport to.</param>
+        public void Teleport(object obj)
+            => Teleport(obj, Vector3.zero);
+
+        /// <summary>
+        /// Teleports the player to the given object, offset by the defined offset value.
         /// </summary>
         /// <param name="obj">The object to teleport the player to.</param>
-        public void Teleport(object obj)
+        /// <param name="offset">The offset to teleport.</param>
+        public void Teleport(object obj, Vector3 offset)
         {
             switch (obj)
             {
                 case TeslaGate teslaGate:
                     Teleport(
-                        teslaGate.Position + Vector3.up +
+                        teslaGate.Position + offset + Vector3.up +
                         (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
                             ? new Vector3(3, 0, 0)
                             : new Vector3(0, 0, 3)));
                     break;
                 case IPosition positionObject:
-                    Teleport(positionObject.Position + Vector3.up);
+                    Teleport(positionObject.Position + Vector3.up + offset);
                     break;
                 case DoorType doorType:
-                    Teleport(Door.Get(doorType).Position + Vector3.up);
+                    Teleport(Door.Get(doorType).Position + Vector3.up + offset);
                     break;
                 case SpawnLocationType sp:
-                    Teleport(sp.GetPosition());
+                    Teleport(sp.GetPosition() + offset);
                     break;
                 case RoomType roomType:
-                    Teleport(Room.Get(roomType).Position + Vector3.up);
+                    Teleport(Room.Get(roomType).Position + Vector3.up + offset);
                     break;
                 case Enums.CameraType cameraType:
-                    Teleport(Camera.Get(cameraType).Position);
+                    Teleport(Camera.Get(cameraType).Position + offset);
                     break;
                 case ElevatorType elevatorType:
-                    Teleport(Lift.Get(elevatorType).Position + Vector3.up);
+                    Teleport(Lift.Get(elevatorType).Position + Vector3.up + offset);
                     break;
                 case Scp914Controller scp914:
-                    Teleport(scp914._knobTransform.position + Vector3.up);
+                    Teleport(scp914._knobTransform.position + Vector3.up + offset);
                     break;
                 case Role role:
                     if (role.Owner is not null)
-                        Teleport(role.Owner.Position);
+                        Teleport(role.Owner.Position + offset);
                     else
                         Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid role teleport (role is missing Owner).");
                     break;
                 case Locker locker:
-                    Teleport(locker.transform.position + Vector3.up);
+                    Teleport(locker.transform.position + Vector3.up + offset);
                     break;
                 case LockerChamber chamber:
-                    Teleport(chamber._spawnpoint.position + Vector3.up);
+                    Teleport(chamber._spawnpoint.position + Vector3.up + offset);
                     break;
                 case ElevatorChamber elevator:
-                    Teleport(elevator.transform.position + Vector3.up);
+                    Teleport(elevator.transform.position + Vector3.up + offset);
                     break;
                 case Item item:
                     if (item.Owner is not null)
-                        Teleport(item.Owner.Position);
+                        Teleport(item.Owner.Position + offset);
                     else
                         Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid item teleport (item is missing Owner).");
                     break;
 
                 // Unity
                 case Vector3 v3: // I wouldn't be surprised if someone calls this method with a Vector3.
-                    Teleport(v3);
+                    Teleport(v3 + offset);
                     break;
                 case Component comp:
-                    Teleport(comp.transform.position + Vector3.up);
+                    Teleport(comp.transform.position + Vector3.up + offset);
                     break;
                 case GameObject go:
-                    Teleport(go.transform.position + Vector3.up);
+                    Teleport(go.transform.position + Vector3.up + offset);
                     break;
 
                 default:
@@ -3191,6 +3194,24 @@ namespace Exiled.API.Features
         /// <param name="itemType">The itemtypes to choose for being cooldown.</param>
         public void SetCooldownItem(float time, ItemType itemType)
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
+
+        /// <summary>
+        /// Explode the player.
+        /// </summary>
+        public void Explode() => ExplosionUtils.ServerExplode(ReferenceHub);
+
+        /// <summary>
+        /// Explode the player.
+        /// </summary>
+        /// <param name="projectileType">The projectile that will create the explosion.</param>
+        /// <param name="attacker">The Player that will causing the explosion.</param>
+        public void Explode(ProjectileType projectileType, Player attacker = null) => Map.Explode(Position, projectileType, attacker);
+
+        /// <summary>
+        /// Spawn projectile effect on the player.
+        /// </summary>
+        /// <param name="projectileType">The projectile that will create the effect.</param>
+        public void ExplodeEffect(ProjectileType projectileType) => Map.ExplodeEffect(Position, projectileType);
 
         /// <summary>
         /// Converts the player in a human-readable format.
