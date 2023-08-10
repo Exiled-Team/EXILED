@@ -82,7 +82,7 @@ namespace Exiled.API.Features.Pickups
             get => helmetEfficacy;
             set
             {
-                if (value is > 101 or < 0)
+                if (value is > 100 or < 0)
                 {
                     Log.Warn($"{nameof(HelmetEfficacy)} Value of armor efficacy must be between 0 and 100.");
                     value = Mathf.Clamp(value, 0, 100);
