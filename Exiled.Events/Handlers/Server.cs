@@ -66,7 +66,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before choosing the Team than player will get.
         /// </summary>
-        public static event CustomEventHandler<ChoosingStartTeamQueueEventArgs> ChoosingStartTeamQueue;
+        public static Event<ChoosingStartTeamQueueEventArgs> ChoosingStartTeamQueue { get; set; } = new();
 
         /// <summary>
         /// Invoked after the "reload configs" command is ran.
