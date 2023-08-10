@@ -8,6 +8,8 @@
 namespace Exiled.API.Features
 {
 #pragma warning disable SA1402
+#pragma warning disable SA1201 // Elements should appear in the correct order
+
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -15,6 +17,7 @@ namespace Exiled.API.Features
     using CommandSystem;
     using Enums;
     using Extensions;
+    using HarmonyLib;
     using Interfaces;
     using RemoteAdmin;
 
@@ -25,6 +28,8 @@ namespace Exiled.API.Features
     public abstract class Plugin<TConfig> : IPlugin<TConfig>
         where TConfig : IConfig, new()
     {
+        private static PropertyInfo SetCommand { get; } = typeof(ICommand).GetProperty(nameof(ICommand.Command), BindingFlags.Instance | BindingFlags.NonPublic);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Plugin{TConfig}"/> class.
         /// </summary>
@@ -119,6 +124,9 @@ namespace Exiled.API.Features
 
                         if (!typeCommands.TryGetValue(type, out ICommand command))
                             command = (ICommand)Activator.CreateInstance(type);
+
+                        command.Aliases.AddToArray(command.Command);
+                        SetCommand.SetValue(command, Prefix + command.Command);
 
                         try
                         {
