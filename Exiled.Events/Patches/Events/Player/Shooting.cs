@@ -63,7 +63,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // firearm = (Firearm)Item.Get(curInstance)
                     new(OpCodes.Ldloc_1),
                     new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
-                    new(OpCodes.Castclass, typeof(Firearm)),
+                    new(OpCodes.Isinst, typeof(Firearm)),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, firearm.LocalIndex),
 
