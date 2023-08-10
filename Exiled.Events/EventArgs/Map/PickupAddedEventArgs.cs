@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Map
     /// <summary>
     ///     Contains all information after the server spawns a pickup.
     /// </summary>
-    public class PickupAddedEventArgs : IExiledEvent
+    public class PickupAddedEventArgs : IPickupEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PickupAddedEventArgs" /> class.

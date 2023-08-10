@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Map
     /// <summary>
     ///     Contains all information after the server destroys a pickup.
     /// </summary>
-    public class PickupDestroyedEventArgs : IExiledEvent
+    public class PickupDestroyedEventArgs : IPickupEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PickupDestroyedEventArgs" /> class.
