@@ -95,7 +95,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before placing bloods.
         /// </summary>
-        /// <param name="ev">The <see cref="EventArgs.Map.PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="PlacingBloodEventArgs"/> instance.</param>
         public static void OnPlacingBlood(PlacingBloodEventArgs ev) => PlacingBlood.InvokeSafely(ev);
 
         /// <summary>
