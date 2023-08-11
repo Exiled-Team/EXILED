@@ -40,7 +40,9 @@ namespace Exiled.CustomItems
             Exiled.Events.Handlers.Player.ChangingItem += playerHandler.OnChangingItem;
 
             harmony = new Harmony($"com.{nameof(CustomItems)}.ExiledTeam-{DateTime.Now.Ticks}");
-            harmony.PatchAll();
+            GlobalPatchProcessor.PatchAll(harmony, out int failedPatch);
+            if (failedPatch != 0)
+                Log.Error($"Patching failed! There are {failedPatch} broken patches.");
 
             base.OnEnabled();
         }
