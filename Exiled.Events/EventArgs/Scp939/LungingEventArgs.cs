@@ -23,9 +23,10 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
-        public LungingEventArgs(Player player)
+        public LungingEventArgs(ReferenceHub player, bool isAllowed = true)
         {
             Player = player;
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
@@ -37,6 +38,6 @@ namespace Exiled.Events.EventArgs.Scp939
         ///     Gets or sets a value indicating whether or not SCP-939 can lunge.
         /// </summary>
         [Obsolete("Deprecated.")]
-        public bool IsAllowed { get; set; } = true;
+        public bool IsAllowed { get; set; }
     }
 }
