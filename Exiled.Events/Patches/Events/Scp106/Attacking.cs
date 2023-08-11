@@ -38,6 +38,8 @@ namespace Exiled.Events.Patches.Events.Scp106
             int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(Scp106Attack), nameof(Scp106Attack.SendCooldown)))) + offset;
             Label continueLabel = generator.DefineLabel();
 
+            newInstructions[index].labels.Add(continueLabel);
+
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
@@ -69,8 +71,6 @@ namespace Exiled.Events.Patches.Events.Scp106
 
                     new(OpCodes.Leave, newInstructions[newInstructions.Count - 1].labels.First()),
                 });
-
-            newInstructions[index].labels.Add(continueLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
