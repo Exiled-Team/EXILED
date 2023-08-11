@@ -98,8 +98,8 @@ namespace Exiled.API.Extensions
 
                         byte[] bytecodes = methodBody.GetILAsByteArray();
 
-                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.DeclaringType.Name}.{property.Name}"))
-                            SyncVarDirtyBitsValue.Add($"{property.DeclaringType.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
+                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.ReflectedType.Name}.{property.Name}"))
+                            SyncVarDirtyBitsValue.Add($"{property.ReflectedType.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
                     }
                 }
 
@@ -127,8 +127,8 @@ namespace Exiled.API.Extensions
 
                         byte[] bytecodes = methodBody.GetILAsByteArray();
 
-                        if (!RpcFullNamesValue.ContainsKey($"{method.DeclaringType.Name}.{method.Name}"))
-                            RpcFullNamesValue.Add($"{method.DeclaringType.Name}.{method.Name}", method.Module.ResolveString(BitConverter.ToInt32(bytecodes, bytecodes.LastIndexOf((byte)OpCodes.Ldstr.Value) + 1)));
+                        if (!RpcFullNamesValue.ContainsKey($"{method.ReflectedType.Name}.{method.Name}"))
+                            RpcFullNamesValue.Add($"{method.ReflectedType.Name}.{method.Name}", method.Module.ResolveString(BitConverter.ToInt32(bytecodes, bytecodes.LastIndexOf((byte)OpCodes.Ldstr.Value) + 1)));
                     }
                 }
 
