@@ -38,10 +38,13 @@ namespace Exiled.API.Extensions
     {
         private static readonly Dictionary<Type, MethodInfo> WriterExtensionsValue = new();
         private static readonly Dictionary<string, ulong> SyncVarDirtyBitsValue = new();
+        private static readonly Dictionary<string, string> RpcFullNamesValue = new();
         private static readonly ReadOnlyDictionary<Type, MethodInfo> ReadOnlyWriterExtensionsValue = new(WriterExtensionsValue);
         private static readonly ReadOnlyDictionary<string, ulong> ReadOnlySyncVarDirtyBitsValue = new(SyncVarDirtyBitsValue);
+        private static readonly ReadOnlyDictionary<string, string> ReadOnlyRpcFullNamesValue = new(RpcFullNamesValue);
         private static MethodInfo setDirtyBitsMethodInfoValue;
         private static MethodInfo sendSpawnMessageMethodInfoValue;
+        private static MethodInfo bufferRpcMethodInfoValue;
 
         /// <summary>
         /// Gets <see cref="MethodInfo"/> corresponding to <see cref="Type"/>.
@@ -95,12 +98,41 @@ namespace Exiled.API.Extensions
 
                         byte[] bytecodes = methodBody.GetILAsByteArray();
 
-                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.Name}"))
-                            SyncVarDirtyBitsValue.Add($"{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
+                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.DeclaringType.Name}.{property.Name}"))
+                            SyncVarDirtyBitsValue.Add($"{property.DeclaringType.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
                     }
                 }
 
                 return ReadOnlySyncVarDirtyBitsValue;
+            }
+        }
+
+        /// <summary>
+        /// Gets Rpc's FullName <see cref="string"/> corresponding to <see cref="StringExtensions"/>(format:classname.methodname).
+        /// </summary>
+        public static ReadOnlyDictionary<string, string> RpcFullNames
+        {
+            get
+            {
+                if (RpcFullNamesValue.Count == 0)
+                {
+                    foreach (MethodInfo method in typeof(ServerConsole).Assembly.GetTypes()
+                        .SelectMany(x => x.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+                        .Where(m => m.GetCustomAttributes(typeof(ClientRpcAttribute), false).Length > 0 || m.GetCustomAttributes(typeof(TargetRpcAttribute), false).Length > 0))
+                    {
+                        MethodBody methodBody = method.GetMethodBody();
+
+                        if (methodBody is null)
+                            continue;
+
+                        byte[] bytecodes = methodBody.GetILAsByteArray();
+
+                        if (!RpcFullNamesValue.ContainsKey($"{method.DeclaringType.Name}.{method.Name}"))
+                            RpcFullNamesValue.Add($"{method.DeclaringType.Name}.{method.Name}", method.Module.ResolveString(BitConverter.ToInt32(bytecodes, bytecodes.LastIndexOf((byte)OpCodes.Ldstr.Value) + 1)));
+                    }
+                }
+
+                return ReadOnlyRpcFullNamesValue;
             }
         }
 
@@ -113,6 +145,11 @@ namespace Exiled.API.Extensions
         /// Gets a NetworkServer.SendSpawnMessage's <see cref="MethodInfo"/>.
         /// </summary>
         public static MethodInfo SendSpawnMessageMethodInfo => sendSpawnMessageMethodInfoValue ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
+
+        /// <summary>
+        /// Gets a NetworkConnectionToClient.BufferRpc's <see cref="MethodInfo"/>.
+        /// </summary>
+        public static MethodInfo BufferRpcMethodInfo => bufferRpcMethodInfoValue ??= typeof(NetworkConnectionToClient).GetMethod("BufferRpc", BindingFlags.NonPublic | BindingFlags.Instance, null, CallingConventions.HasThis, new Type[] { typeof(RpcMessage), typeof(int) }, null);
 
         /// <summary>
         /// Plays a beep sound that only the target <paramref name="player"/> can hear.
@@ -332,7 +369,7 @@ namespace Exiled.API.Extensions
             NetworkWriterPool.Return(writer2);
             void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
-                targetWriter.WriteULong(SyncVarDirtyBits[propertyName]);
+                targetWriter.WriteULong(SyncVarDirtyBits[$"{targetType.Name}.{propertyName}"]);
                 WriterExtensions[value.GetType()]?.Invoke(null, new object[2] { targetWriter, value });
             }
         }
@@ -355,8 +392,6 @@ namespace Exiled.API.Extensions
         /// <param name="values">Values of send to target.</param>
         public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
         {
-            Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} has tried to send a fake RPC. This is currently broken. This warning does not indicate an error, but expect something to not be working as intended.");
-            /*
             NetworkWriterPooled writer = NetworkWriterPool.Get();
 
             foreach (object value in values)
@@ -366,14 +401,13 @@ namespace Exiled.API.Extensions
             {
                 netId = behaviorOwner.netId,
                 componentIndex = (byte)GetComponentIndex(behaviorOwner, targetType),
-                functionHash = (ushort)((targetType.FullName.GetStableHashCode() * 503) + rpcName.GetStableHashCode()),
+                functionHash = (ushort)RpcFullNames[$"{targetType.Name}.{rpcName}"].GetStableHashCode(),
                 payload = writer.ToArraySegment(),
             };
 
-            target.Connection.Send(msg, 0);
+            BufferRpcMethodInfo.Invoke(target.Connection, new object[] { msg, 0 });
 
             NetworkWriterPool.Return(writer);
-            */
         }
 
         /// <summary>
