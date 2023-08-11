@@ -48,6 +48,12 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<PlayingSoundEventArgs> PlayingSound;
 
         /// <summary>
+        /// Invoked after SCP-939 attack.
+        /// </summary>
+        /// <remarks>This event is calling only when attack doesn't have target.</remarks>
+        public static event CustomEventHandler<ClawedEventArgs> Clawed;
+
+        /// <summary>
         ///     Called before SCP-939 changes its target focus.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingFocusEventArgs" /> instance.</param>
@@ -82,5 +88,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="PlayingSoundEventArgs"/> instance.</param>
         public static void OnPlayingSound(PlayingSoundEventArgs ev) => PlayingSound.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after SCP-939 attacks.
+        /// </summary>
+        /// <param name="ev">The <see cref="ClawedEventArgs"/> instance.</param>
+        public static void OnClawed(ClawedEventArgs ev) => Clawed.InvokeSafely(ev);
     }
 }
