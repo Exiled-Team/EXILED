@@ -56,7 +56,7 @@ namespace Exiled.Events.EventArgs.Server
             StringBuilder teamRespawnQueue = StringBuilderPool.Pool.Get();
 
             foreach (Team team in TeamRespawnQueue)
-                teamRespawnQueue.Append((int)team + '0');
+                teamRespawnQueue.Append((int)team);
 
             return StringBuilderPool.Pool.ToStringReturn(teamRespawnQueue);
         }
