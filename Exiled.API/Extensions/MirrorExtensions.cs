@@ -229,7 +229,7 @@ namespace Exiled.API.Extensions
 
             if (roleBase is FpcStandardRoleBase fpc)
             {
-                fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort value, out ushort num);
+                fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort value, out ushort _);
                 writer.WriteRelativePosition(new RelativePosition(fpc._hubTransform.position));
                 writer.WriteUShort(value);
             }
