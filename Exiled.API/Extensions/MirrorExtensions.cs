@@ -26,6 +26,7 @@ namespace Exiled.API.Extensions
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PluginAPI.Events;
     using RelativePositioning;
 
     using Respawning;
@@ -235,7 +236,7 @@ namespace Exiled.API.Extensions
 
             if (roleBase is ZombieRole)
             {
-                writer.WriteUShort((ushort)player.MaxHealth);
+                writer.WriteUShort((ushort)Mathf.Clamp(Mathf.CeilToInt(player.MaxHealth), ushort.MinValue, ushort.MaxValue);
             }
 
             foreach (Player target in playersToAffect)
