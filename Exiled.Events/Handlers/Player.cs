@@ -431,7 +431,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> damage a Door.
         /// </summary>
-        public static event CustomEventHandler<DamagingDoorEventArgs> DamagingDoor;
+        public static Event<DamagingDoorEventArgs> DamagingDoor { get; set; } = new();
 
         /// <summary>
         /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
