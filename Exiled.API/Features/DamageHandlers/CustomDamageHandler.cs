@@ -21,6 +21,7 @@ namespace Exiled.API.Features.DamageHandlers
 
     using BaseFirearmHandler = PlayerStatsSystem.FirearmDamageHandler;
     using BaseHandler = PlayerStatsSystem.DamageHandlerBase;
+    using BaseScpDamageHandler = PlayerStatsSystem.ScpDamageHandler;
 
     /// <summary>
     /// A wrapper to easily manipulate the behavior of <see cref="BaseHandler"/>.
@@ -37,7 +38,7 @@ namespace Exiled.API.Features.DamageHandlers
         {
             if (Attacker is not null)
             {
-                if (Attacker.IsScp)
+                if (baseHandler is BaseScpDamageHandler)
                     CustomBase = new ScpDamageHandler(target, baseHandler);
                 else if (Attacker.CurrentItem is not null && Attacker.CurrentItem.Type.IsWeapon() && baseHandler is BaseFirearmHandler)
                     CustomBase = new FirearmDamageHandler(Attacker.CurrentItem, target, baseHandler);
