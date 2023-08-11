@@ -236,7 +236,7 @@ namespace Exiled.API.Extensions
 
             if (roleBase is ZombieRole)
             {
-                writer.WriteUShort((ushort)Mathf.Clamp(Mathf.CeilToInt(player.MaxHealth), ushort.MinValue, ushort.MaxValue);
+                writer.WriteUShort((ushort)Mathf.Clamp(Mathf.CeilToInt(player.MaxHealth), ushort.MinValue, ushort.MaxValue));
             }
 
             foreach (Player target in playersToAffect)
