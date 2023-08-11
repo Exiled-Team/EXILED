@@ -304,7 +304,12 @@ namespace Exiled.API.Features.Pickups
                 BaseAmmoPickup ammoPickup => new AmmoPickup(ammoPickup),
                 BaseRadioPickup radioPickup => new RadioPickup(radioPickup),
                 BaseMicroHIDPickup microHidPickup => new MicroHIDPickup(microHidPickup),
-                TimedGrenadePickup timeGrenade => new GrenadePickup(timeGrenade),
+                TimedGrenadePickup timeGrenade => timeGrenade.NetworkInfo.ItemId switch
+                {
+                    ItemType.GrenadeHE => new ExplosiveGrenadePickup(),
+                    ItemType.GrenadeFlash => new FlashGrenadePickup(),
+                    _ => new GrenadePickup(timeGrenade),
+                },
                 BaseFirearmPickup firearmPickup => new FirearmPickup(firearmPickup),
                 BaseKeycardPickup keycardPickup => new KeycardPickup(keycardPickup),
                 BaseBodyArmorPickup bodyArmorPickup => new BodyArmorPickup(bodyArmorPickup),
@@ -378,11 +383,13 @@ namespace Exiled.API.Features.Pickups
             ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39 => new AmmoPickup(type),
             ItemType.Radio => new RadioPickup(),
             ItemType.MicroHID => new MicroHIDPickup(),
-            ItemType.GrenadeHE or ItemType.GrenadeFlash => new GrenadePickup(type),
+            ItemType.GrenadeFlash => new FlashGrenadePickup(),
+            ItemType.GrenadeHE => new ExplosiveGrenadePickup(),
             ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 or ItemType.ParticleDisruptor => new FirearmPickup(type),
             ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new KeycardPickup(type),
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new BodyArmorPickup(type),
             ItemType.SCP330 => new Scp330Pickup(),
+            ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP1853 or ItemType.Painkillers or ItemType.Medkit or ItemType.Adrenaline => new UsablePickup(type),
             ItemType.Jailbird => new JailbirdPickup(),
             ItemType.SCP1576 => new Scp1576Pickup(),
             ItemType.SCP2176 => new Projectiles.Scp2176Projectile(),
@@ -419,17 +426,6 @@ namespace Exiled.API.Features.Pickups
 
             return pickup;
         }
-
-        /// <summary>
-        /// Clones current <see cref="Pickup"/> object.
-        /// </summary>
-        /// <returns> New <see cref="Pickup"/> object.</returns>
-        public Pickup Clone() => new(Type)
-        {
-            Scale = Scale,
-            PreviousOwner = PreviousOwner,
-            Info = Info,
-        };
 
         /// <summary>
         /// Returns the amount of time it will take for the provided <paramref name="player"/> to pick up this item, based on <see cref="Weight"/> and active status effects.
@@ -486,9 +482,50 @@ namespace Exiled.API.Features.Pickups
         public void Destroy() => Base.DestroySelf();
 
         /// <summary>
+        /// Clones the current pickup with a different serial.
+        /// </summary>
+        /// <returns> Cloned pickup object. </returns>
+        public virtual Pickup Clone() => new(Type)
+        {
+            Scale = Scale,
+            PreviousOwner = PreviousOwner,
+            Info = Info,
+        };
+
+        /// <summary>
         /// Returns the Pickup in a human readable format.
         /// </summary>
         /// <returns>A string containing Pickup-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{IsLocked}- ={InUse}=";
+
+        /// <summary>
+        /// Returns the Pickup with the according property from the Item.
+        /// </summary>
+        /// <param name="item"> Item-related data to give to the Pickup.</param>
+        /// <returns>A Pickup containing the Item-related data.</returns>
+        internal virtual Pickup GetItemInfo(Items.Item item)
+        {
+            if (item is not null)
+            {
+                Scale = item.Scale;
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Returns the Item with the according property from the Pickup.
+        /// </summary>
+        /// <param name="item"> Pickup-related data to give to the Item.</param>
+        /// <returns>A Item containing the Pickup-related data.</returns>
+        internal virtual Items.Item GetPickupInfo(Items.Item item)
+        {
+            if (item is not null)
+            {
+                item.Scale = Scale;
+            }
+
+            return item;
+        }
     }
 }
