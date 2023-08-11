@@ -222,7 +222,7 @@ namespace Exiled.API.Extensions
             writer.WriteUInt(player.NetId);
             writer.WriteRoleType(type);
 
-            if (roleBase is PlayerRoles.HumanRole humanRole && humanRole.UsesUnitNames)
+            if (roleBase is HumanRole humanRole && humanRole.UsesUnitNames)
             {
                 writer.WriteByte(unitId);
             }
