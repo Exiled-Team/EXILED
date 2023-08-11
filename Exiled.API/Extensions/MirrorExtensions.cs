@@ -13,6 +13,7 @@ namespace Exiled.API.Extensions
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
+    using System.Runtime.Remoting.Messaging;
     using System.Text;
 
     using Features;
@@ -24,7 +25,7 @@ namespace Exiled.API.Extensions
 
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-
+    using PlayerRoles.PlayableScps.Scp049.Zombies;
     using RelativePositioning;
 
     using Respawning;
@@ -213,21 +214,28 @@ namespace Exiled.API.Extensions
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
         {
-            if (player.Role.Type is RoleTypeId.Spectator or RoleTypeId.Filmmaker or RoleTypeId.Overwatch)
-                throw new InvalidOperationException("You cannot change a spectator into non-spectator via change appearance.");
-
+            if (!RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))
+                return;
             NetworkWriterPooled writer = NetworkWriterPool.Get();
             writer.WriteUShort(38952);
             writer.WriteUInt(player.NetId);
             writer.WriteRoleType(type);
-            if (PlayerRolesUtils.GetTeam(type) == Team.FoundationForces)
-                writer.WriteByte(unitId);
 
-            if (type != RoleTypeId.Spectator && player.Role.Base is IFpcRole fpc)
+            if (roleBase is PlayerRoles.HumanRole humanRole && humanRole.UsesUnitNames)
             {
-                fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort syncH, out _);
-                writer.WriteRelativePosition(new(player.ReferenceHub.transform.position));
-                writer.WriteUShort(syncH);
+                writer.WriteByte(unitId);
+            }
+
+            if (roleBase is FpcStandardRoleBase fpc)
+            {
+                fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort value, out ushort num);
+                writer.WriteRelativePosition(new RelativePosition(fpc._hubTransform.position));
+                writer.WriteUShort(value);
+            }
+
+            if (roleBase is ZombieRole)
+            {
+                writer.WriteUShort((ushort)player.MaxHealth);
             }
 
             foreach (Player target in playersToAffect)
@@ -356,7 +364,7 @@ namespace Exiled.API.Extensions
         public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
         {
             Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} has tried to send a fake RPC. This is currently broken. This warning does not indicate an error, but expect something to not be working as intended.");
-            /*
+
             NetworkWriterPooled writer = NetworkWriterPool.Get();
 
             foreach (object value in values)
@@ -370,10 +378,9 @@ namespace Exiled.API.Extensions
                 payload = writer.ToArraySegment(),
             };
 
-            target.Connection.Send(msg, 0);
+            target.Connection.Send(msg);
 
             NetworkWriterPool.Return(writer);
-            */
         }
 
         /// <summary>
