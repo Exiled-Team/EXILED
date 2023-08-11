@@ -88,12 +88,12 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked after an pickup is spawned.
         /// </summary>
-        public static event CustomEventHandler<PickupAddedEventArgs> PickupAdded;
+        public static Event<PickupAddedEventArgs> PickupAdded { get; set; } = new();
 
         /// <summary>
         /// Invoked after an pickup is destroyed.
         /// </summary>
-        public static event CustomEventHandler<PickupDestroyedEventArgs> PickupDestroyed;
+        public static Event<PickupDestroyedEventArgs> PickupDestroyed { get; set; } = new();
 
         /// <summary>
         /// Called before placing a decal.
