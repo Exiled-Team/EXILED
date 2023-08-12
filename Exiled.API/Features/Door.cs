@@ -90,12 +90,12 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not the door is fully closed.
         /// </summary>
-        public bool IsFullyClosed => IsGate ? (!IsOpen && (Cast<Gate>().RemainingPryCooldown <= 0) : ExactState is 0;
+        public bool IsFullyClosed => IsGate ? (!IsOpen && (Cast<Gate>().RemainingPryCooldown <= 0)) : ExactState is 0;
 
         /// <summary>
         /// Gets a value indicating whether the door is fully open.
         /// </summary>
-        public bool IsFullyOpen => IsGate ? (IsOpen && (Cast<Gate>().RemainingPryCooldown <= 0) : ExactState is 1;
+        public bool IsFullyOpen => IsGate ? (IsOpen && (Cast<Gate>().RemainingPryCooldown <= 0)) : ExactState is 1;
 
         /// <summary>
         /// Gets a value indicating whether or not the door is currently moving.
