@@ -55,6 +55,16 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<RespawningTeamEventArgs> RespawningTeam;
 
         /// <summary>
+        /// Invoked before respawning a wave of a custome team.
+        /// </summary>
+        public static event CustomEventHandler<RespawningCustomTeamEventArgs> RespawningCustomTeam;
+
+        /// <summary>
+        /// Invoked when the selection occurs of team for the next wave.
+        /// </summary>
+        public static event CustomEventHandler<SelectTeamEventArgs> SelectTeam;
+
+        /// <summary>
         /// Invoked before adding an unit name.
         /// </summary>
         public static event CustomEventHandler<AddingUnitNameEventArgs> AddingUnitName;
@@ -137,6 +147,18 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="RespawningTeamEventArgs"/> instance.</param>
         public static void OnRespawningTeam(RespawningTeamEventArgs ev) => RespawningTeam.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before the selection of a wave of a custome team.
+        /// </summary>
+        /// <param name="ev">The <see cref="RespawningCustomTeamEventArgs"/> instance.</param>
+        public static void OnRespawningCustomTeam(RespawningCustomTeamEventArgs ev) => RespawningCustomTeam.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before the selection of a wave of Chaos Insurgency or NTF.
+        /// </summary>
+        /// <param name="ev">The <see cref="SelectTeamEventArgs"/> instance.</param>
+        public static void OnSelectTeam(SelectTeamEventArgs ev) => SelectTeam.InvokeSafely(ev);
 
         /// <summary>
         /// Called before adding an unit name.

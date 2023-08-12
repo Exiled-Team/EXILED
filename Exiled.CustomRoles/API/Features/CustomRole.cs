@@ -85,6 +85,12 @@ namespace Exiled.CustomRoles.API.Features
         public virtual RoleTypeId Role { get; set; }
 
         /// <summary>
+        /// Gets or sets the custom team <see cref="Features.CustomTeam"/>.
+        /// Is null when the role is not linked to a specific team.
+        /// </summary>
+        public virtual CustomTeam? CustomTeam { get; set; }
+
+        /// <summary>
         /// Gets or sets a list of the roles custom abilities.
         /// </summary>
         public virtual List<CustomAbility>? CustomAbilities { get; set; } = new();
@@ -314,6 +320,7 @@ namespace Exiled.CustomRoles.API.Features
                 foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), inheritAttributes).Cast<Attribute>())
                 {
                     CustomRole? customRole = null;
+                    CustomRoleAttribute customRoleAttribute = (CustomRoleAttribute)attribute;
 
                     if (!skipReflection && Server.PluginAssemblies.TryGetValue(assembly, out IPlugin<IConfig> plugin))
                     {
@@ -330,7 +337,10 @@ namespace Exiled.CustomRoles.API.Features
                     customRole ??= (CustomRole)Activator.CreateInstance(type);
 
                     if (customRole.Role == RoleTypeId.None)
-                        customRole.Role = ((CustomRoleAttribute)attribute).RoleTypeId;
+                        customRole.Role = customRoleAttribute.RoleTypeId;
+
+                    if (customRole.CustomTeam == null && customRoleAttribute.TeamId != 0)
+                        customRole.CustomTeam = CustomTeam.Get(customRoleAttribute.TeamId);
 
                     if (customRole.TryRegister())
                         roles.Add(customRole);
