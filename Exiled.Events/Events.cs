@@ -91,6 +91,7 @@ namespace Exiled.Events
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
             Handlers.Player.Verified += Handlers.Internal.Round.OnVerified;
+            Handlers.Map.ChangedIntoGrenade += Handlers.Internal.ExplodingGrenade.OnChangedIntoGrenade;
 
             CharacterClassManager.OnRoundStarted += Handlers.Server.OnRoundStarted;
 
@@ -123,6 +124,7 @@ namespace Exiled.Events
             Handlers.Server.RoundStarted -= Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole -= Handlers.Internal.Round.OnChangingRole;
             Handlers.Player.Verified -= Handlers.Internal.Round.OnVerified;
+            Handlers.Map.ChangedIntoGrenade -= Handlers.Internal.ExplodingGrenade.OnChangedIntoGrenade;
 
             CharacterClassManager.OnRoundStarted -= Handlers.Server.OnRoundStarted;
 
