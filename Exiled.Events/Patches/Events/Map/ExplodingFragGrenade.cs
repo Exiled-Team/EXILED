@@ -89,7 +89,7 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc, ev.LocalIndex),
 
-                    // Map.OnChangedIntoGrenade(ev);
+                    // Map.OnExplodingGrenade(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnExplodingGrenade))),
 
                     // if (!ev.IsAllowed)
