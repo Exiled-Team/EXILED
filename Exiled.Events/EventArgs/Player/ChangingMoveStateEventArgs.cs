@@ -61,7 +61,7 @@ namespace Exiled.Events.EventArgs.Player
         public PlayerMovementState NewState
         {
             get;
-            [Obsolete("Functional was removed due desync problems")]
+            [Obsolete("Setter was removed due to desync problems.")]
             set;
         }
 
@@ -69,7 +69,7 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets or sets a value indicating whether the player can change the movement state.
         /// </summary>
         // TODO: remove
-        [Obsolete("Functional was removed due desync problems")]
+        [Obsolete("Property was removed due to desync problems.")]
         public bool IsAllowed { get; set; } = true;
     }
 }

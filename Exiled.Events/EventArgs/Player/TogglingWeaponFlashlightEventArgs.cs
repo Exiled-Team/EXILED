@@ -41,7 +41,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the new weapon's flashlight state will be enabled or not.
+        ///     Gets or sets a value indicating whether the new weapon's flashlight state will be enabled.
         /// </summary>
         public bool NewState { get; set; }
 
