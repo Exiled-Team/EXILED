@@ -73,22 +73,11 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingMoveStateEventArgs), nameof(ChangingMoveStateEventArgs.NewState))),
                     new(OpCodes.Beq_S, continueLabel),
 
-                    // load ev twice
+                    // load ev
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Dup),
 
                     // Player.OnChangingMoveState(ev)
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnChangingMoveState))),
-
-                    // if (!ev.IsAllowed)
-                    //    return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingMoveStateEventArgs), nameof(ChangingMoveStateEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, returnLabel),
-
-                    // value = ev.NewState
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Call, PropertyGetter(typeof(ChangingMoveStateEventArgs), nameof(ChangingMoveStateEventArgs.NewState))),
-                    new(OpCodes.Starg_S, 1),
                 });
 
             // return the state

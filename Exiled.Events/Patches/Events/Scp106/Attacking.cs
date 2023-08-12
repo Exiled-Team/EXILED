@@ -70,9 +70,9 @@ namespace Exiled.Events.Patches.Events.Scp106
                     new(OpCodes.Brtrue_S, continueLabel),
 
                     new(OpCodes.Leave, newInstructions[newInstructions.Count - 1].labels.First()),
-                });
 
-            newInstructions[index].labels.Add(continueLabel);
+                    new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
