@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
 
     using API.Features;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -27,6 +27,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="RoleSpawnpointManager.Init"/> delegate.
     /// Adds the <see cref="Handlers.Player.Spawning"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Spawning))]
     [HarmonyPatch]
     internal static class Spawning
     {

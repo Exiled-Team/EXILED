@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -24,6 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="TantrumEnvironmentalHazard.OnEnter(ReferenceHub)"/>.
     /// Adds the <see cref="Handlers.Player.EnteringEnvironmentalHazard"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.EnteringEnvironmentalHazard))]
     [HarmonyPatch(typeof(TantrumEnvironmentalHazard), nameof(TantrumEnvironmentalHazard.OnEnter))]
     internal static class EnteringTantrumEnvironmentalHazard
     {

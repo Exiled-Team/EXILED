@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Consuming.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp049
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp049;
 
     using HarmonyLib;
@@ -33,6 +33,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     ///     Adds the <see cref="Handlers.Scp049.ConsumingCorpse" /> event.
     /// </summary>
     // TODO: REWORK TRANSPILER
+    [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.ConsumingCorpse))]
     [HarmonyPatch]
     public class Consuming
     {
