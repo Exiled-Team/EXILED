@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
 
@@ -28,6 +28,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     ///     Patches Scp079VoiceModule.ServerIsSending />.
     ///     Adds the <see cref="Scp079.ChangingSpeakerStatus" /> and the <see cref="Handlers.Player.VoiceChatting"/> events.
     /// </summary>
+    [EventPatch(typeof(Scp079), nameof(Scp079.ChangingSpeakerStatus))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.VoiceChatting))]
     [HarmonyPatch(typeof(VoiceModuleBase), nameof(VoiceModuleBase.ServerIsSending), MethodType.Setter)]
     internal static class ChangingSpeakerStatusAndVoiceChatting
     {
