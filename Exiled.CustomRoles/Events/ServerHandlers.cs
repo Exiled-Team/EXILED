@@ -35,6 +35,9 @@ namespace Exiled.CustomRoles.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Server.EndingRound"/>
         public void OnEndingRound(EndingRoundEventArgs ev)
         {
+            if (!plugin.CheckRoundEnd)
+                return;
+
             HashSet<CustomTeam> customTeams = new();
             HashSet<Team> teams = new();
 
@@ -83,7 +86,6 @@ namespace Exiled.CustomRoles.Events
                     return;
                 }
             }
-
 
             ev.IsRoundEnded = true;
         }

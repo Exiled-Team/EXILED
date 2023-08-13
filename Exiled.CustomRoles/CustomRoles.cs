@@ -49,6 +49,11 @@ namespace Exiled.CustomRoles
         public static CustomRoles? Instance { get; private set; }
 
         /// <summary>
+        /// Gets or Sets if the plugin need to check the round end.
+        /// </summary>
+        public bool CheckRoundEnd { get; set; }
+
+        /// <summary>
         /// Gets a list of players to stop spawning ragdolls for.
         /// </summary>
         internal List<Player> StopRagdollPlayers { get; } = new();
