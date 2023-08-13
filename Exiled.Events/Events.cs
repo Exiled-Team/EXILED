@@ -91,6 +91,7 @@ namespace Exiled.Events
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
             Handlers.Player.Verified += Handlers.Internal.Round.OnVerified;
+            Handlers.Map.ChangedIntoGrenade += Handlers.Internal.ExplodingGrenade.OnChangedIntoGrenade;
 
             CharacterClassManager.OnRoundStarted += Handlers.Server.OnRoundStarted;
 
@@ -98,8 +99,8 @@ namespace Exiled.Events
 
             RagdollManager.OnRagdollSpawned += Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
-            ItemPickupBase.OnPickupAdded += x => Pickup.Get(x);
-            ItemPickupBase.OnPickupDestroyed += x => Pickup.BaseToPickup.Remove(x);
+            ItemPickupBase.OnPickupAdded += Handlers.Internal.PickupEvent.OnSpawnedPickup;
+            ItemPickupBase.OnPickupDestroyed += Handlers.Internal.PickupEvent.OnRemovedPickup;
             ServerConsole.ReloadServerName();
 
             EventManager.RegisterEvents<Handlers.Warhead>(this);
@@ -123,6 +124,7 @@ namespace Exiled.Events
             Handlers.Server.RoundStarted -= Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole -= Handlers.Internal.Round.OnChangingRole;
             Handlers.Player.Verified -= Handlers.Internal.Round.OnVerified;
+            Handlers.Map.ChangedIntoGrenade -= Handlers.Internal.ExplodingGrenade.OnChangedIntoGrenade;
 
             CharacterClassManager.OnRoundStarted -= Handlers.Server.OnRoundStarted;
 
@@ -147,7 +149,7 @@ namespace Exiled.Events
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                PatchByAttributes(out int failedPatch);
+                GlobalPatchProcessor.PatchAll(Harmony, out int failedPatch);
                 if (failedPatch == 0)
                     Log.Debug("Events patched successfully!");
                 else
@@ -184,27 +186,6 @@ namespace Exiled.Events
             Harmony.UnpatchAll();
 
             Log.Debug("All events have been unpatched complete. Goodbye!");
-        }
-
-        private void PatchByAttributes(out int failedPatch)
-        {
-            failedPatch = 0;
-            foreach (Type type in AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()))
-            {
-                try
-                {
-                    Harmony.CreateClassProcessor(type).Patch();
-                }
-                catch (HarmonyException exception)
-                {
-                    Log.Error($"Patching by attributes failed!\n{exception}");
-
-                    failedPatch++;
-                    continue;
-                }
-            }
-
-            Log.Debug("Events patched by attributes successfully!");
         }
     }
 }
