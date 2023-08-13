@@ -76,8 +76,10 @@ namespace Exiled.Events.Patches.Generic
         private static void AddItem(Player player, ItemBase itemBase, ItemPickupBase itemPickupBase)
         {
             Item item = Item.Get(itemBase);
+            Pickup pickup = Pickup.Get(itemPickupBase);
 
-            Pickup.Get(itemPickupBase)?.GetPickupInfo(item);
+            if (pickup?.IsLoaded ?? false)
+                pickup.GetPickupInfo(item);
 
             player?.ItemsValue.Add(item);
         }
