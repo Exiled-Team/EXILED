@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp049
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp049;
 
     using HarmonyLib;
@@ -25,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     ///     Adds the <see cref="Handlers.Scp049.SendingCall" /> event.
     /// </summary>
     // TODO: REWORK TRANSPILER
+    [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.SendingCall))]
     [HarmonyPatch]
     public class SendingCall
     {

@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features.Pools;
     using API.Features.Roles;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
@@ -28,6 +29,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="PlayerStats.DealDamage(DamageHandlerBase)" />.
     ///     Adds the <see cref="Handlers.Player.Hurting" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Hurting))]
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.DealDamage))]
     internal static class Hurting
     {
