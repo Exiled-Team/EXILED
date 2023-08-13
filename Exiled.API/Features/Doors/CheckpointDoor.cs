@@ -89,7 +89,15 @@ namespace Exiled.API.Features.Doors
         public new float Health
         {
             get => Base.GetHealthPercent();
-            set { }
+            set
+            {
+                float health = value / Subdoors.Count();
+
+                foreach (var door in Subdoors)
+                {
+                    door.Health = health;
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -98,9 +106,11 @@ namespace Exiled.API.Features.Doors
             get => Subdoors.Sum(door => door.MaxHealth);
             set
             {
+                float health = value / Subdoors.Count();
+
                 foreach (var door in Subdoors)
                 {
-                    door.MaxHealth = value;
+                    door.MaxHealth = health;
                 }
             }
         }
