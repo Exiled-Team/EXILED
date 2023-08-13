@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Map;
 
     using Handlers;
@@ -26,7 +26,6 @@ namespace Exiled.Events.Patches.Events.Map
     ///     Patches <see cref="DecontaminationController.UpdateSpeaker" />.
     ///     Adds the <see cref="AnnouncingDecontamination" /> event.
     /// </summary>
-    [EventPatch(typeof(Map), nameof(Map.AnnouncingDecontamination))]
     [HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.UpdateSpeaker))]
     internal static class AnnouncingDecontamination
     {

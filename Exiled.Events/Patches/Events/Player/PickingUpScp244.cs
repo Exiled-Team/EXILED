@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -24,9 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="Scp244SearchCompletor" /> to add missing event handler to the
-    ///     <see cref="Handlers.Player.PickingUpItem" />.
+    ///     <see cref="Scp244SearchCompletor" />.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.PickingUpItem))]
     [HarmonyPatch(typeof(Scp244SearchCompletor), nameof(Scp244SearchCompletor.Complete))]
     internal static class PickingUpScp244
     {

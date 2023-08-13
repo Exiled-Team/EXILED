@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="Clawed.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Scp939
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp939;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp939;
@@ -23,7 +22,6 @@ namespace Exiled.Events.Patches.Events.Scp939
     /// Patches <see cref="Scp939ClawAbility.ServerProcessCmd(Mirror.NetworkReader)"/>
     /// to add <see cref="Scp939.Clawed"/> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Scp939), nameof(Handlers.Scp939.Clawed))]
     [HarmonyPatch(typeof(Scp939ClawAbility), nameof(Scp939ClawAbility.ServerProcessCmd))]
     internal class Clawed
     {

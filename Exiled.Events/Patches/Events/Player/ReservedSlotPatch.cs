@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using Handlers;
@@ -25,7 +24,6 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="ReservedSlot.HasReservedSlot(string, out bool)" />.
     ///     Adds the <see cref="Player.ReservedSlot" /> event.
     /// </summary>
-    [EventPatch(typeof(Player), nameof(Player.ReservedSlot))]
     [HarmonyPatch(typeof(ReservedSlot), nameof(ReservedSlot.HasReservedSlot))]
     internal static class ReservedSlotPatch
     {

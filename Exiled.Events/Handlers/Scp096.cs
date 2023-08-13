@@ -7,10 +7,11 @@
 
 namespace Exiled.Events.Handlers
 {
-#pragma warning disable SA1623 // Property summary documentation should match accessors
-
     using Exiled.Events.EventArgs.Scp096;
-    using Exiled.Events.Features;
+
+    using Extensions;
+
+    using static Events;
 
     /// <summary>
     ///     SCP-096 related events.
@@ -20,32 +21,32 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before SCP-096 is enraged.
         /// </summary>
-        public static Event<EnragingEventArgs> Enraging { get; set; } = new();
+        public static event CustomEventHandler<EnragingEventArgs> Enraging;
 
         /// <summary>
         ///     Invoked before SCP-096 calms down.
         /// </summary>
-        public static Event<CalmingDownEventArgs> CalmingDown { get; set; } = new();
+        public static event CustomEventHandler<CalmingDownEventArgs> CalmingDown;
 
         /// <summary>
         ///     Invoked before adding a target to SCP-096.
         /// </summary>
-        public static Event<AddingTargetEventArgs> AddingTarget { get; set; } = new();
+        public static event CustomEventHandler<AddingTargetEventArgs> AddingTarget;
 
         /// <summary>
         ///     Invoked before SCP-096 begins prying open a gate.
         /// </summary>
-        public static Event<StartPryingGateEventArgs> StartPryingGate { get; set; } = new();
+        public static event CustomEventHandler<StartPryingGateEventArgs> StartPryingGate;
 
         /// <summary>
         ///     Invoked before SCP-096 begins charging.
         /// </summary>
-        public static Event<ChargingEventArgs> Charging { get; set; } = new();
+        public static event CustomEventHandler<ChargingEventArgs> Charging;
 
         /// <summary>
         ///     Invoked before SCP-096 tries not to cry.
         /// </summary>
-        public static Event<TryingNotToCryEventArgs> TryingNotToCry { get; set; } = new();
+        public static event CustomEventHandler<TryingNotToCryEventArgs> TryingNotToCry;
 
         /// <summary>
         ///     Called before SCP-096 is enraged.

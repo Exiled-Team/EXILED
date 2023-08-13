@@ -8,11 +8,11 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1402 // File may only contain a single type
-#pragma warning disable IDE0060
 
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Enums;
@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features.Pools;
 
     using EventArgs.Player;
-    using Exiled.Events.Attributes;
+
     using HarmonyLib;
 
     using Respawning;
@@ -30,7 +30,6 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// Patches <see cref="Escape.ServerHandlePlayer(ReferenceHub)"/> for <see cref="Handlers.Player.Escaping" />.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Escaping))]
     [HarmonyPatch(typeof(Escape), nameof(Escape.ServerHandlePlayer))]
     internal static class Escaping
     {
@@ -119,7 +118,6 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="Escape.ServerGetScenario(ReferenceHub)"/> for <see cref="Handlers.Player.Escaping"/>.
     /// Replaces last returned <see cref="EscapeScenario.None"/> to <see cref="EscapeScenario.CustomEscape"/>.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Escaping))]
     [HarmonyPatch(typeof(Escape), nameof(Escape.ServerGetScenario))]
     internal static class GetScenario
     {

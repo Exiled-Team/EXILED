@@ -13,7 +13,6 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Server;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -28,7 +27,6 @@ namespace Exiled.Events.Patches.Events.Server
     ///     Patch the <see cref="RespawnManager.Spawn" />.
     ///     Adds the <see cref="Server.RespawningTeam" /> event.
     /// </summary>
-    [EventPatch(typeof(Server), nameof(Server.RespawningTeam))]
     [HarmonyPatch(typeof(RespawnManager), nameof(RespawnManager.Spawn))]
     internal static class RespawningTeam
     {
