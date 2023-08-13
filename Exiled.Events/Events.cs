@@ -149,7 +149,7 @@ namespace Exiled.Events
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                GlobalPatchProcessor.PatchAll(Harmony, out int failedPatch);
+                PatchAll(Harmony, out int failedPatch);
                 if (failedPatch == 0)
                     Log.Debug("Events patched successfully!");
                 else
@@ -162,6 +162,27 @@ namespace Exiled.Events
             {
                 Log.Error($"Patching failed!\n{exception}");
             }
+        }
+
+        public static void PatchAll(Harmony harmony, out int failedPatch)
+        {
+            failedPatch = 0;
+            foreach (Type type in AccessTools.GetTypesFromAssembly(Assembly.GetCallingAssembly()))
+            {
+                try
+                {
+                    harmony.CreateClassProcessor(type).Patch();
+                }
+                catch (HarmonyException exception)
+                {
+                    Log.Error($"Patching by attributes failed!\n{exception}");
+
+                    failedPatch++;
+                    continue;
+                }
+            }
+
+            Log.Debug("Events patched by attributes successfully!");
         }
 
         /// <summary>

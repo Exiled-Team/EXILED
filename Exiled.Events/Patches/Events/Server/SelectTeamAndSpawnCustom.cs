@@ -59,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Server
                     new CodeMatch(OpCodes.Ldloc_1),
                     new CodeMatch(OpCodes.Newobj),
                     new CodeMatch(instuction => (instuction.operand as MethodInfo)?.Name == nameof(EventManager.ExecuteEvent)))
-                .ThrowIfInvalid("MatchStartForward to found EventManager.ExecuteEvent() faild");
+                .ThrowIfInvalid("MatchStartForward to found \"EventManager.ExecuteEvent()\" faild");
 
             // Save the label use to ignore the trow and remove it
             var throwlabel = codeMatcher.Labels[0];
@@ -92,7 +92,7 @@ namespace Exiled.Events.Patches.Events.Server
                     new CodeMatch(OpCodes.Ldarg_0),
                     new CodeMatch(OpCodes.Ldloc_2),
                     new CodeMatch(instuction => (instuction.operand as MethodInfo)?.Name == "get_EffectTime"))
-                .ThrowIfInvalid("MatchStartForward to found SpawnableTeamHandlerBase.EffectTime faild")
+                .ThrowIfInvalid("MatchStartForward to found \"SpawnableTeamHandlerBase.EffectTime\" faild")
                 .Advance(1)
                 .RemoveInstructions(2)
                 .Insert(
@@ -100,20 +100,13 @@ namespace Exiled.Events.Patches.Events.Server
                 .MatchStartForward(
                     new CodeMatch(OpCodes.Ldarg_0),
                     new CodeMatch(instuction => (instuction.operand as MethodInfo)?.Name == nameof(RespawnManager.Spawn)))
+                .ThrowIfInvalid("MatchStartForward to found \"RespawnManager.Spawn()\" faild")
                 .InsertAndAdvance(
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Call, Method(typeof(SelectTeamAndSpawnCustom), nameof(ProcessEventSpawnCustomTeam))),
                     new CodeInstruction(OpCodes.Brfalse_S, endLabel))
                 .End()
                 .Labels.Add(endLabel);
-
-            // TODO: add devent le spawn un if qui fait vanila spawn ou custom team
-
-            /*
-            foreach (var instruction in codeMatcher.Instructions())
-            {
-                Exiled.API.Features.Log.Info(instruction);
-            }*/
 
             return codeMatcher.Instructions();
         }
