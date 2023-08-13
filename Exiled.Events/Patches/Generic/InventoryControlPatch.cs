@@ -77,8 +77,7 @@ namespace Exiled.Events.Patches.Generic
         {
             Item item = Item.Get(itemBase);
 
-            if (itemPickupBase != null)
-                item.Scale = itemPickupBase.transform.localScale;
+            Pickup.Get(itemPickupBase)?.GetPickupInfo(item);
 
             player?.ItemsValue.Add(item);
         }
