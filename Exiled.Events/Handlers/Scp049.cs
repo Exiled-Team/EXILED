@@ -7,11 +7,10 @@
 
 namespace Exiled.Events.Handlers
 {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
     using Exiled.Events.EventArgs.Scp049;
-
-    using Extensions;
-
-    using static Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     ///     SCP-049 related events.
@@ -21,32 +20,32 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before SCP-049 finishes recalling a player.
         /// </summary>
-        public static event CustomEventHandler<FinishingRecallEventArgs> FinishingRecall;
+        public static Event<FinishingRecallEventArgs> FinishingRecall { get; set; } = new();
 
         /// <summary>
         ///     Invoked before SCP-049 begins recalling a player.
         /// </summary>
-        public static event CustomEventHandler<StartingRecallEventArgs> StartingRecall;
+        public static Event<StartingRecallEventArgs> StartingRecall { get; set; } = new();
 
         /// <summary>
         ///     Invoked before SCP-049-2 consumes a corpse.
         /// </summary>
-        public static event CustomEventHandler<ConsumingCorpseEventArgs> ConsumingCorpse;
+        public static Event<ConsumingCorpseEventArgs> ConsumingCorpse { get; set; } = new();
 
         /// <summary>
         ///     Invoked before SCP-049 uses the sense ability.
         /// </summary>
-        public static event CustomEventHandler<ActivatingSenseEventArgs> ActivatingSense;
+        public static Event<ActivatingSenseEventArgs> ActivatingSense { get; set; } = new();
 
         /// <summary>
         ///     Invoked before SCP-049 uses the call ability.
         /// </summary>
-        public static event CustomEventHandler<SendingCallEventArgs> SendingCall;
+        public static Event<SendingCallEventArgs> SendingCall { get; set; } = new();
 
         /// <summary>
         /// Invoked before SCP-049 attacks player.
         /// </summary>
-        public static event CustomEventHandler<AttackingEventArgs> Attacking;
+        public static Event<AttackingEventArgs> Attacking { get; set; } = new();
 
         /// <summary>
         ///     Called before SCP-049 finishes recalling a player.

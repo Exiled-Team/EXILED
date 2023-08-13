@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -21,6 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// Patches <see cref="NicknameSync.set_Network_displayName"/> to add the <see cref="Handlers.Player.ChangingNickname"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingNickname))]
     [HarmonyPatch(typeof(NicknameSync), nameof(NicknameSync.Network_displayName), MethodType.Setter)]
     internal static class ChangingNickname
     {

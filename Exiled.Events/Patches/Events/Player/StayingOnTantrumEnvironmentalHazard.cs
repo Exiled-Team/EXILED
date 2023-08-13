@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using HarmonyLib;
 
     using Hazards;
@@ -20,6 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="TantrumEnvironmentalHazard"/>.
     /// <br>Adds the <see cref="Handlers.Player.StayingOnEnvironmentalHazard"/> event.</br>
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.StayingOnEnvironmentalHazard))]
     [HarmonyPatch(typeof(TantrumEnvironmentalHazard), nameof(TantrumEnvironmentalHazard.OnStay))]
     internal static class StayingOnTantrumEnvironmentalHazard
     {

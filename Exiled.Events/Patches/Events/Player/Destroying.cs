@@ -7,15 +7,13 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1600
-
     using System.Collections.Generic;
     using System.Reflection.Emit;
     using System.Runtime.CompilerServices;
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -24,6 +22,10 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
+    /// <summary>
+    ///     Patch the <see cref="ReferenceHub.OnDestroy" />.
+    ///     Adds the <see cref="Handlers.Player.Destroying" /> event.
+    /// </summary>
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.OnDestroy))]
     internal static class Destroying
     {
