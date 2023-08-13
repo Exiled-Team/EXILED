@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="MakingNoise.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using HarmonyLib;
     using PlayerRoles.FirstPersonControl.Thirdperson;
@@ -23,7 +22,6 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="AnimatedCharacterModel.PlayFootstep()"/>
     /// to add <see cref="Handlers.Player.MakingNoise"/> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.MakingNoise))]
     [HarmonyPatch(typeof(AnimatedCharacterModel), nameof(AnimatedCharacterModel.PlayFootstep))]
     internal class MakingNoise
     {

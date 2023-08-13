@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using Handlers;
@@ -26,7 +25,6 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patch the <see cref="WorkstationController.NetworkStatus" />.
     ///     Adds the <see cref="Player.DeactivatingWorkstation" /> event.
     /// </summary>
-    [EventPatch(typeof(Player), nameof(Player.DeactivatingWorkstation))]
     [HarmonyPatch(typeof(WorkstationController), nameof(WorkstationController.NetworkStatus), MethodType.Setter)]
     internal static class DeactivatingWorkstation
     {

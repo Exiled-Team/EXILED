@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp096
 
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Scp096;
 
     using HarmonyLib;
@@ -26,7 +26,6 @@ namespace Exiled.Events.Patches.Events.Scp096
     ///     Patches <see cref="Scp096TargetsTracker.AddTarget(ReferenceHub, bool)" />.
     ///     Adds the <see cref="Handlers.Scp096.AddingTarget" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.AddingTarget))]
     [HarmonyPatch(typeof(Scp096TargetsTracker), nameof(Scp096TargetsTracker.AddTarget))]
     internal static class AddingTarget
     {

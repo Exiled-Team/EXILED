@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Events.Scp939
     using System.Reflection.Emit;
 
     using Exiled.API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
 
@@ -27,7 +26,6 @@ namespace Exiled.Events.Patches.Events.Scp939
     ///     Patches <see cref="MimicryRecorder.ServerProcessCmd(NetworkReader)" />
     ///     to add the <see cref="Scp939.PlayingVoice" /> event.
     /// </summary>
-    [EventPatch(typeof(Scp939), nameof(Scp939.PlayingVoice))]
     [HarmonyPatch(typeof(MimicryRecorder), nameof(MimicryRecorder.ServerProcessCmd))]
     internal static class PlayingVoice
     {

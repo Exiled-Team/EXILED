@@ -7,13 +7,14 @@
 
 namespace Exiled.Events.Handlers
 {
-#pragma warning disable SA1623 // Property summary documentation should match accessors
-
     using Exiled.Events.EventArgs.Warhead;
-    using Exiled.Events.Features;
+
+    using Extensions;
 
     using PluginAPI.Core.Attributes;
     using PluginAPI.Enums;
+
+    using static Events;
 
     /// <summary>
     ///     Handles warhead related events.
@@ -23,27 +24,27 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before stopping the warhead.
         /// </summary>
-        public static Event<StoppingEventArgs> Stopping { get; set; } = new();
+        public static event CustomEventHandler<StoppingEventArgs> Stopping;
 
         /// <summary>
         ///     Invoked before starting the warhead.
         /// </summary>
-        public static Event<StartingEventArgs> Starting { get; set; } = new();
+        public static event CustomEventHandler<StartingEventArgs> Starting;
 
         /// <summary>
         ///     Invoked before changing the warhead lever status.
         /// </summary>
-        public static Event<ChangingLeverStatusEventArgs> ChangingLeverStatus { get; set; } = new();
+        public static event CustomEventHandler<ChangingLeverStatusEventArgs> ChangingLeverStatus;
 
         /// <summary>
         ///     Invoked after the warhead has been detonated.
         /// </summary>
-        public static Event Detonated { get; set; } = new();
+        public static event CustomEventHandler Detonated;
 
         /// <summary>
         ///     Invoked before detonating the warhead.
         /// </summary>
-        public static Event<DetonatingEventArgs> Detonating { get; set; } = new();
+        public static event CustomEventHandler<DetonatingEventArgs> Detonating;
 
         /// <summary>
         ///     Called before stopping the warhead.

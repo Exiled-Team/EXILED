@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
 
@@ -29,9 +29,8 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     /// <summary>
     ///     Patches <see cref="Scp079LockdownRoomAbility.ServerProcessCmd(NetworkReader)" />.
-    ///     Adds the <see cref="Scp079.LockingDown" /> event for SCP-079.
+    ///     Adds the <see cref="LockingDownEventArgs" /> event for SCP-079.
     /// </summary>
-    [EventPatch(typeof(Scp079), nameof(Scp079.LockingDown))]
     [HarmonyPatch(typeof(Scp079LockdownRoomAbility), nameof(Scp079LockdownRoomAbility.ServerProcessCmd))]
     internal static class LockingDown
     {

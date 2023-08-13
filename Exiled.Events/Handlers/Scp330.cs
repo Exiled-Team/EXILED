@@ -7,10 +7,11 @@
 
 namespace Exiled.Events.Handlers
 {
-#pragma warning disable SA1623 // Property summary documentation should match accessors
-
     using Exiled.Events.EventArgs.Scp330;
-    using Exiled.Events.Features;
+
+    using Extensions;
+
+    using static Events;
 
     /// <summary>
     ///     Scp330 related events.
@@ -20,22 +21,22 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before a <see cref="API.Features.Player" /> interacts with SCP-330.
         /// </summary>
-        public static Event<InteractingScp330EventArgs> InteractingScp330 { get; set; } = new();
+        public static event CustomEventHandler<InteractingScp330EventArgs> InteractingScp330;
 
         /// <summary>
         ///     Invoked before a <see cref="API.Features.Player" /> drop a SCP-330 candy.
         /// </summary>
-        public static Event<DroppingScp330EventArgs> DroppingScp330 { get; set; } = new();
+        public static event CustomEventHandler<DroppingScp330EventArgs> DroppingScp330;
 
         /// <summary>
         ///     Invoked before a player eats a candy from SCP-330.
         /// </summary>
-        public static Event<EatingScp330EventArgs> EatingScp330 { get; set; } = new();
+        public static event CustomEventHandler<EatingScp330EventArgs> EatingScp330;
 
         /// <summary>
         ///     Invoked after the player has eaten a candy from SCP-330.
         /// </summary>
-        public static Event<EatenScp330EventArgs> EatenScp330 { get; set; } = new();
+        public static event CustomEventHandler<EatenScp330EventArgs> EatenScp330;
 
         /// <summary>
         ///     Called before a player eats a candy from SCP-330.

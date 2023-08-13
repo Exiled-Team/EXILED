@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="PluginManager.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -41,7 +41,6 @@ namespace Exiled.Events.Commands.PluginManager
             RegisterCommand(Show.Instance);
             RegisterCommand(Enable.Instance);
             RegisterCommand(Disable.Instance);
-            RegisterCommand(Patches.Instance);
         }
 
         /// <inheritdoc/>

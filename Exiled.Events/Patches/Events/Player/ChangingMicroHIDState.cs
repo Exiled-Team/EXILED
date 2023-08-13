@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -23,9 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="MicroHIDItem.ServerSendStatus(HidStatusMessageType, byte)"/>.
-    /// Adds the <see cref="Handlers.Player.ChangingMicroHIDState"/> event.
+    /// Adds the <see cref="Handlers.Player.OnChangingMicroHIDState"/> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingMicroHIDState))]
     [HarmonyPatch(typeof(MicroHIDItem), nameof(MicroHIDItem.ExecuteServerside))]
     internal static class ChangingMicroHIDState
     {
