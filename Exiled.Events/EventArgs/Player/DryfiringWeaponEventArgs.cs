@@ -23,12 +23,15 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
+        /// <param name="firearm">
+        ///     <inheritdoc cref="Firearm" />
+        /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public DryfiringWeaponEventArgs(Player player, bool isAllowed = true)
+        public DryfiringWeaponEventArgs(Player player, Firearm firearm, bool isAllowed = true)
         {
-            Firearm = player.CurrentItem as Firearm;
+            Firearm = firearm;
             Player = player;
             IsAllowed = isAllowed;
         }

@@ -14,7 +14,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -29,6 +29,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="ShootingTarget.Damage(float, DamageHandlerBase, Vector3)" />.
     ///     Adds the <see cref="Handlers.Player.DamagingShootingTarget" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DamagingShootingTarget))]
     [HarmonyPatch(typeof(ShootingTarget), nameof(ShootingTarget.Damage))]
     internal static class DamagingShootingTarget
     {

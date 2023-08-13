@@ -27,6 +27,7 @@ namespace Exiled.API.Features
     using PlayerRoles.PlayableScps.Scp079;
     using RelativePositioning;
     using UnityEngine;
+    using Utils.NonAllocLINQ;
 
     /// <summary>
     /// The in-game room.
@@ -277,6 +278,13 @@ namespace Exiled.API.Features
         public Vector3 LocalPosition(Vector3 position) => Transform.TransformPoint(position);
 
         /// <summary>
+        /// Returns the World position, based on a local space position.
+        /// </summary>
+        /// <param name="offset">Local position.</param>
+        /// <returns>World position, based on the room.</returns>
+        public Vector3 WorldPosition(Vector3 offset) => Transform.InverseTransformPoint(offset);
+
+        /// <summary>
         /// Flickers the room's lights off for a duration.
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
@@ -447,7 +455,7 @@ namespace Exiled.API.Features
             Speaker = Scp079Speaker.SpeakersInRooms.ContainsKey(Identifier) ? Scp079Speaker.SpeakersInRooms[Identifier] : new();
 
             if (Type is RoomType.HczTesla)
-                TeslaGate = TeslaGate.List.Single(x => this == x.Room);
+                TeslaGate = TeslaGate.Get(TeslaGateController.Singleton.TeslaGates.FirstOrDefault(x => Identifier == RoomIdUtils.RoomAtPosition(x.transform.position)));
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
 
     using HarmonyLib;
@@ -26,8 +26,9 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     /// Patches <see cref="StandardHitregBase.PlaceBloodDecal(Ray, RaycastHit, IDestructible)"/>.
-    /// Adds the <see cref="PlacingBlood"/> event.
+    /// Adds the <see cref="Handlers.Map.PlacingBlood"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.PlacingBlood))]
     [HarmonyPatch(typeof(StandardHitregBase), nameof(StandardHitregBase.PlaceBloodDecal))]
     internal static class PlacingBlood
     {

@@ -35,6 +35,32 @@ namespace Exiled.API.Features
         public static IReadOnlyDictionary<MethodBase, HashSet<string>> PatchedGroupMethods => PatchedGroupMethodsValue;
 
         /// <summary>
+        /// Patch all your Harmony and return you the number of failed patch.
+        /// </summary>
+        /// <param name="harmony">The Harmony instance to Patch.</param>
+        /// <param name="failedPatch">The number of failed patch.</param>
+        public static void PatchAll(Harmony harmony, out int failedPatch)
+        {
+            failedPatch = 0;
+            foreach (Type type in AccessTools.GetTypesFromAssembly(Assembly.GetCallingAssembly()))
+            {
+                try
+                {
+                    harmony.CreateClassProcessor(type).Patch();
+                }
+                catch (HarmonyException exception)
+                {
+                    Log.Error($"Patching by attributes failed!\n{exception}");
+
+                    failedPatch++;
+                    continue;
+                }
+            }
+
+            Log.Debug("Events patched by attributes successfully!");
+        }
+
+        /// <summary>
         /// Searches the current assembly for Harmony annotations and uses them to create patches.
         /// <br>It supports target-patching using <see cref="PatchGroupAttribute"/> and the relative <paramref name="groupId"/>.</br>
         /// </summary>

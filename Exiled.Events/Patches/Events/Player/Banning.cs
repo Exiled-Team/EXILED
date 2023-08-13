@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features;
     using CommandSystem;
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using Footprinting;
     using HarmonyLib;
@@ -23,6 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="BanPlayer.BanUser(Footprint, ICommandSender, string, long)" />.
     ///     Adds the <see cref="Handlers.Player.Banning" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Banning))]
     [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), typeof(Footprint), typeof(ICommandSender), typeof(string), typeof(long))]
     internal static class Banning
     {

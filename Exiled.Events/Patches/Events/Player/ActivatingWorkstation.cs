@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -25,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patch the <see cref="WorkstationController.ServerInteract" />.
     ///     Adds the <see cref="Handlers.Player.ActivatingWorkstation" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ActivatingWorkstation))]
     [HarmonyPatch(typeof(WorkstationController), nameof(WorkstationController.ServerInteract))]
     internal static class ActivatingWorkstation
     {
