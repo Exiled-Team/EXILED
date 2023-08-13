@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.Jailbird;
@@ -43,6 +44,26 @@ namespace Exiled.API.Features.Pickups
         public new BaseJailbirdPickup Base { get; }
 
         /// <summary>
+        /// Gets or sets the amount of damage dealt with a Jailbird melee hit.
+        /// </summary>
+        public float MeleeDamage { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount of damage dealt with a Jailbird charge hit.
+        /// </summary>
+        public float ChargeDamage { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount of time in seconds that the <see cref="CustomPlayerEffects.Flashed"/> effect will be applied on being hit.
+        /// </summary>
+        public float FlashDuration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the radius of the Jailbird's hit register.
+        /// </summary>
+        public float Radius { get; set; }
+
+        /// <summary>
         /// Gets or sets the total amount of damage dealt with the Jailbird.
         /// </summary>
         public float TotalDamageDealt
@@ -74,5 +95,35 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <returns>A string containing jailbird related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
+
+        /// <inheritdoc/>
+        internal override Pickup GetItemInfo(Item item)
+        {
+            base.GetItemInfo(item);
+            if (item is Jailbird jailBirditem)
+            {
+                MeleeDamage = jailBirditem.MeleeDamage;
+                ChargeDamage = jailBirditem.ChargeDamage;
+                FlashDuration = jailBirditem.FlashDuration;
+                Radius = jailBirditem.Radius;
+            }
+
+            return this;
+        }
+
+        /// <inheritdoc/>
+        internal override Item GetPickupInfo(Item item)
+        {
+            base.GetPickupInfo(item);
+            if (item is Jailbird jailBirditem)
+            {
+                jailBirditem.MeleeDamage = MeleeDamage;
+                jailBirditem.ChargeDamage = ChargeDamage;
+                jailBirditem.FlashDuration = FlashDuration;
+                jailBirditem.Radius = Radius;
+            }
+
+            return item;
+        }
     }
 }
