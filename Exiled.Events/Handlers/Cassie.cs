@@ -8,19 +8,20 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs.Cassie;
-    using Exiled.Events.Features;
+
+    using Extensions;
+
+    using static Events;
 
     /// <summary>
     ///     Cassie related events.
     /// </summary>
     public static class Cassie
     {
-#pragma warning disable SA1623 // Property summary documentation should match accessors
-
         /// <summary>
-        /// Invoked before sending a cassie message.
+        ///     Invoked before sending a cassie message.
         /// </summary>
-        public static Event<SendingCassieMessageEventArgs> SendingCassieMessage { get; set; } = new();
+        public static event CustomEventHandler<SendingCassieMessageEventArgs> SendingCassieMessage;
 
         /// <summary>
         ///     Called before sending a cassie message.

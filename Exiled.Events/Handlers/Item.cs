@@ -7,11 +7,11 @@
 
 namespace Exiled.Events.Handlers
 {
-#pragma warning disable SA1623 // Property summary documentation should match accessors
-
     using Exiled.Events.EventArgs.Item;
 
-    using Exiled.Events.Features;
+    using Extensions;
+
+    using static Events;
 
     /// <summary>
     ///     Item related events.
@@ -21,32 +21,32 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before the ammo of an firearm are changed.
         /// </summary>
-        public static Event<ChangingAmmoEventArgs> ChangingAmmo { get; set; } = new ();
+        public static event CustomEventHandler<ChangingAmmoEventArgs> ChangingAmmo;
 
         /// <summary>
         ///     Invoked before item attachments are changed.
         /// </summary>
-        public static Event<ChangingAttachmentsEventArgs> ChangingAttachments { get; set; } = new();
+        public static event CustomEventHandler<ChangingAttachmentsEventArgs> ChangingAttachments;
 
         /// <summary>
         ///     Invoked before receiving a preference.
         /// </summary>
-        public static Event<ReceivingPreferenceEventArgs> ReceivingPreference { get; set; } = new();
+        public static event CustomEventHandler<ReceivingPreferenceEventArgs> ReceivingPreference;
 
         /// <summary>
         /// Invoked before a keycard interacts with a door.
         /// </summary>
-        public static Event<KeycardInteractingEventArgs> KeycardInteracting { get; set; } = new();
+        public static event CustomEventHandler<KeycardInteractingEventArgs> KeycardInteracting;
 
         /// <summary>
         /// Invoked before a melee item is swung.
         /// </summary>
-        public static Event<SwingingEventArgs> Swinging { get; set; } = new();
+        public static event CustomEventHandler<SwingingEventArgs> Swinging;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Items.Jailbird"/> is charged.
         /// </summary>
-        public static Event<ChargingJailbirdEventArgs> ChargingJailbird { get; set; } = new();
+        public static event CustomEventHandler<ChargingJailbirdEventArgs> ChargingJailbird;
 
         /// <summary>
         /// Called before the ammo of an firearm is changed.

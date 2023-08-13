@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
 
@@ -29,7 +29,6 @@ namespace Exiled.Events.Patches.Events.Scp079
     ///     Patches <see cref="Scp079TierManager.ServerGrantExperience(int, Scp079HudTranslation, RoleTypeId)" />.
     ///     Adds the <see cref="Scp079.GainingExperience" /> event.
     /// </summary>
-    [EventPatch(typeof(Scp079), nameof(Scp079.GainingExperience))]
     [HarmonyPatch(typeof(Scp079TierManager), nameof(Scp079TierManager.ServerGrantExperience))]
     internal static class GainingExperience
     {

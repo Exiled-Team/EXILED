@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -25,7 +24,6 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="ThrowableNetworkHandler.ServerProcessRequest" />.
     ///     Adds the <see cref="Handlers.Player.ThrowingRequest" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ThrowingRequest))]
     [HarmonyPatch(typeof(ThrowableNetworkHandler), nameof(ThrowableNetworkHandler.ServerProcessRequest))]
     internal static class ThrowingRequest
     {

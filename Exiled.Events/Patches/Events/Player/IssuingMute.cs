@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -25,7 +24,6 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patch the <see cref="VoiceChatMutes.IssueLocalMute(string, bool)" />.
     ///     Adds the <see cref="Handlers.Player.IssuingMute" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.IssuingMute))]
     [HarmonyPatch(typeof(VoiceChatMutes), nameof(VoiceChatMutes.IssueLocalMute))]
     internal static class IssuingMute
     {

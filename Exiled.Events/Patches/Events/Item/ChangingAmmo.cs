@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Item;
 
     using Handlers;
@@ -26,7 +25,6 @@ namespace Exiled.Events.Patches.Events.Item
     ///     Patches <see cref="Firearm.Status" />.
     ///     Adds the <see cref="Item.ChangingAmmo" /> event.
     /// </summary>
-    [EventPatch(typeof(Item), nameof(Item.ChangingAmmo))]
     [HarmonyPatch(typeof(Firearm), nameof(Firearm.Status), MethodType.Setter)]
     internal static class ChangingAmmo
     {

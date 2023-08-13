@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
 
@@ -28,9 +28,8 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     /// <summary>
     ///     Patches <see cref="Scp079TeslaAbility.ServerProcessCmd(NetworkReader)" />.
-    ///     Adds the <see cref="Scp079.InteractingTesla" /> event for SCP-079.
+    ///     Adds the <see cref="InteractingTeslaEventArgs" /> event for SCP-079.
     /// </summary>
-    [EventPatch(typeof(Scp079), nameof(Scp079.InteractingTesla))]
     [HarmonyPatch(typeof(Scp079TeslaAbility), nameof(Scp079TeslaAbility.ServerProcessCmd))]
     internal static class InteractingTesla
     {

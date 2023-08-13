@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Warhead;
 
     using HarmonyLib;
@@ -25,7 +25,6 @@ namespace Exiled.Events.Patches.Events.Warhead
     ///     Patches <see cref="PlayerInteract.UserCode_CmdUsePanel__AlphaPanelOperations" />.
     ///     Adds the <see cref="Warhead.ChangingLeverStatus" /> event.
     /// </summary>
-    [EventPatch(typeof(Warhead), nameof(Warhead.ChangingLeverStatus))]
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUsePanel__AlphaPanelOperations))]
     internal static class ChangingLeverStatus
     {
