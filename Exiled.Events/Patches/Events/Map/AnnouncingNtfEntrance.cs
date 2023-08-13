@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Text.RegularExpressions;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
 
     using Handlers;
@@ -27,6 +27,7 @@ namespace Exiled.Events.Patches.Events.Map
     ///     Patch the <see cref="NineTailedFoxNamingRule.PlayEntranceAnnouncement(string)" />.
     ///     Adds the <see cref="Map.AnnouncingNtfEntrance" /> event.
     /// </summary>
+    [EventPatch(typeof(Map), nameof(Map.AnnouncingNtfEntrance))]
     [HarmonyPatch(typeof(NineTailedFoxNamingRule), nameof(NineTailedFoxNamingRule.PlayEntranceAnnouncement))]
     internal static class AnnouncingNtfEntrance
     {

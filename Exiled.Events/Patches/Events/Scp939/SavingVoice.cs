@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     using System.Reflection.Emit;
 
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
 
@@ -24,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     ///     Patches <see cref="MimicryRecorder.OnAnyPlayerKilled(ReferenceHub, DamageHandlerBase)" />
     ///     to add the <see cref="Scp939.SavingVoice" /> event.
     /// </summary>
+    [EventPatch(typeof(Scp939), nameof(Scp939.SavingVoice))]
     [HarmonyPatch(typeof(MimicryRecorder), nameof(MimicryRecorder.OnAnyPlayerKilled))]
     internal static class SavingVoice
     {

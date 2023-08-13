@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -22,6 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="CheckpointKiller.OnTriggerEnter"/>.
     /// Adds the <see cref="Handlers.Player.EnteringKillerCollision"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.EnteringKillerCollision))]
     [HarmonyPatch(typeof(CheckpointKiller), nameof(CheckpointKiller.OnTriggerEnter))]
     internal static class EnteringKillerCollision
     {
