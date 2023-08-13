@@ -339,8 +339,15 @@ namespace Exiled.CustomRoles.API.Features
                     if (customRole.Role == RoleTypeId.None)
                         customRole.Role = customRoleAttribute.RoleTypeId;
 
-                    if (customRole.CustomTeam == null && customRoleAttribute.TeamId != 0)
-                        customRole.CustomTeam = CustomTeam.Get(customRoleAttribute.TeamId);
+                    if (customRole.CustomTeam == null && customRoleAttribute.TeamId.HasValue)
+                    {
+                        CustomTeam? team = CustomTeam.Get(customRoleAttribute.TeamId.Value);
+                        if (team != null)
+                        {
+                            customRole.CustomTeam = team;
+                            customRole.CustomTeam.Roles.Add(customRole);
+                        }
+                    }
 
                     if (customRole.TryRegister())
                         roles.Add(customRole);
@@ -527,6 +534,7 @@ namespace Exiled.CustomRoles.API.Features
         {
             Log.Debug($"{Name}: Adding role to {player.Nickname}.");
             TrackedPlayers.Add(player);
+            CustomTeam?.TrackedPlayers.Add(player);
 
             if (Role != RoleTypeId.None)
             {

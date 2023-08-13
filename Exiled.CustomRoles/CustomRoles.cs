@@ -60,6 +60,8 @@ namespace Exiled.CustomRoles
             playerHandlers = new PlayerHandlers(this);
 
             Exiled.Events.Handlers.Player.SpawningRagdoll += playerHandlers.OnSpawningRagdoll;
+            Exiled.Events.Handlers.Player.Hurting += playerHandlers.OnHurting;
+
             base.OnEnabled();
         }
 
@@ -67,6 +69,8 @@ namespace Exiled.CustomRoles
         public override void OnDisabled()
         {
             Exiled.Events.Handlers.Player.SpawningRagdoll -= playerHandlers!.OnSpawningRagdoll;
+            Exiled.Events.Handlers.Player.Hurting += playerHandlers.OnHurting;
+
             base.OnDisabled();
         }
     }

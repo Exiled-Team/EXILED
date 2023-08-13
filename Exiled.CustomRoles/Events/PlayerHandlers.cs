@@ -7,6 +7,9 @@
 
 namespace Exiled.CustomRoles.Events
 {
+    using System.Linq;
+
+    using Exiled.CustomRoles.API;
     using Exiled.Events.EventArgs.Player;
 
     /// <summary>
@@ -33,6 +36,16 @@ namespace Exiled.CustomRoles.Events
                 ev.IsAllowed = false;
                 plugin.StopRagdollPlayers.Remove(ev.Player);
             }
+        }
+
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.Hurting"/>
+        internal void OnHurting(HurtingEventArgs ev)
+        {
+            if (!ev.IsAllowed)
+                return;
+
+            if (ev.Player.GetCustomRoles().Any(p => p.CustomTeam?.IsAlly(ev.Attacker) ?? false))
+                ev.IsAllowed = false;
         }
     }
 }

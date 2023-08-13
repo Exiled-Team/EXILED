@@ -17,6 +17,8 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Features.Pools;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
+    using PlayerRoles;
     using Respawning;
     using YamlDotNet.Serialization;
 
@@ -58,10 +60,36 @@ namespace Exiled.CustomRoles.API.Features
         public virtual float TimeBeforeSpawn { get; set; }
 
         /// <summary>
+        /// Gets or sets the ally customs teams.
+        /// </summary>
+        public virtual HashSet<uint> EnemyCustomsTeamsId { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the ally teams.
+        /// </summary>
+        public virtual HashSet<Team> EnemyFaction { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the enemy customs teams.
+        /// </summary>
+        public virtual HashSet<uint> AllyCustomsTeamsId { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the enemy teams.
+        /// </summary>
+        public virtual HashSet<Team> AllyTeams { get; set; } = new();
+
+        /// <summary>
         /// Gets all roles link to this team.
         /// </summary>
         [YamlIgnore]
-        public HashSet<CustomTeam> TrackedTeams { get; } = new();
+        public HashSet<CustomRole> Roles { get; } = new();
+
+        /// <summary>
+        /// Gets all of the players currently set to this team.
+        /// </summary>
+        [YamlIgnore]
+        public HashSet<Player> TrackedPlayers { get; } = new();
 
         /// <summary>
         /// Gets a <see cref="CustomTeam"/> by ID.
@@ -328,6 +356,54 @@ namespace Exiled.CustomRoles.API.Features
         public static IEnumerable<CustomTeam> UnregisterTeams(IEnumerable<CustomTeam> targetTeams, bool isIgnored = false) => UnregisterTeams(targetTeams.Select(x => x.GetType()), isIgnored);
 
         /// <summary>
+        /// Check if the <paramref name="player"/> is ally to this team.
+        /// </summary>
+        /// <param name="player">The player we want to check.</param>
+        /// <returns><see langword="true"/> if the player is ally.</returns>
+        public virtual bool IsAlly(Player player)
+        {
+            foreach (CustomRole role in player.GetCustomRoles())
+            {
+                if (role.CustomTeam == null)
+                {
+                    if (AllyTeams.Contains(player.Role.Team))
+                        return true;
+                }
+                else
+                {
+                    if (AllyCustomsTeamsId.Contains(role.CustomTeam.Id))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Check if the <paramref name="player"/> is enemy to this team.
+        /// </summary>
+        /// <param name="player">The player we want to check.</param>
+        /// <returns><see langword="true"/> if the player is enemy.</returns>
+        public virtual bool IsEnemy(Player player)
+        {
+            foreach (CustomRole role in player.GetCustomRoles())
+            {
+                if (role.CustomTeam == null)
+                {
+                    if (EnemyFaction.Contains(player.Role.Team))
+                        return true;
+                }
+                else
+                {
+                    if (EnemyCustomsTeamsId.Contains(role.CustomTeam.Id))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Calculates if the team should spawn or not.
         /// </summary>
         /// <param name="spawnableTeam">The team that will spawn if the return value is <see langword="false"/>.</param>
@@ -345,7 +421,7 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns>True if the player has this team.</returns>
-        public virtual bool Check(Player? player) => player is not null && TrackedTeams.Any(p => p.Check(player));
+        public virtual bool Check(Player? player) => player is not null && TrackedPlayers.Contains(player);
 
         /// <summary>
         /// Initializes this team manager.
@@ -425,7 +501,7 @@ namespace Exiled.CustomRoles.API.Features
         {
             Log.Debug($"{Name}: Loading events.");
             Exiled.Events.Handlers.Server.SelectTeam += OnSelectTeam;
-            Exiled.Events.Handlers.Server.RespawningCustomTeam += OnRespawningCustomTeam; ;
+            Exiled.Events.Handlers.Server.RespawningCustomTeam += OnRespawningCustomTeam;
         }
 
         /// <summary>

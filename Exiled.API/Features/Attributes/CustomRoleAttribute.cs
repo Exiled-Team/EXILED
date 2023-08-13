@@ -34,6 +34,6 @@ namespace Exiled.API.Features.Attributes
         /// <summary>
         /// Gets or sets the linked Team Id.
         /// </summary>
-        public uint TeamId { get; set; }
+        public uint? TeamId { get; set; } = null;
     }
 }
