@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp049
 
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Scp049;
 
     using HarmonyLib;
@@ -25,7 +25,6 @@ namespace Exiled.Events.Patches.Events.Scp049
     ///     Patches <see cref="Scp049ResurrectAbility.ServerValidateBegin" />.
     ///     Adds the <see cref="Handlers.Scp049.StartingRecall" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.StartingRecall))]
     [HarmonyPatch(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.ServerValidateBegin))]
     internal static class StartingRecall
     {

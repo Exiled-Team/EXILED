@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -26,7 +25,6 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="Scp106Attack.ServerShoot" />.
     ///     Adds the <see cref="Handlers.Player.EnteringPocketDimension" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.EnteringPocketDimension))]
     [HarmonyPatch(typeof(Scp106Attack), nameof(Scp106Attack.ServerShoot))]
     internal static class EnteringPocketDimension
     {

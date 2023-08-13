@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -28,8 +28,6 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="DisarmingHandlers.ServerProcessDisarmMessage" />.
     ///     Adds the <see cref="Handlers.Player.Handcuffing" /> and <see cref="Handlers.Player.RemovingHandcuffs" /> events.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Handcuffing))]
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.RemovingHandcuffs))]
     [HarmonyPatch(typeof(DisarmingHandlers), nameof(DisarmingHandlers.ServerProcessDisarmMessage))]
     internal static class ProcessDisarmMessage
     {

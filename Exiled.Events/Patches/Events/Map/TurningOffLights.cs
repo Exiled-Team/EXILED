@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Map;
 
     using HarmonyLib;
@@ -22,7 +22,6 @@ namespace Exiled.Events.Patches.Events.Map
     /// Patches <see cref="RoomLightController.ServerFlickerLights"/>.
     /// Adds the <see cref="Handlers.Map.TurningOffLights"/> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.TurningOffLights))]
     [HarmonyPatch(typeof(RoomLightController), nameof(RoomLightController.ServerFlickerLights))]
     internal static class TurningOffLights
     {

@@ -14,7 +14,6 @@ namespace Exiled.Events.Patches.Events.Item
     using API.Features.Pools;
 
     using Exiled.Events;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Item;
 
     using Footprinting;
@@ -33,7 +32,6 @@ namespace Exiled.Events.Patches.Events.Item
     /// Patches <see cref="KeycardPickup.ProcessCollision(Collision)"/>.
     /// Adds the <see cref="Handlers.Player.InteractingDoor"/> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.InteractingDoor))]
     [HarmonyPatch(typeof(KeycardPickup), nameof(KeycardPickup.ProcessCollision))]
     internal static class KeycardInteracting
     {

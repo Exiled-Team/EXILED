@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Events.Scp106
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp106;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -24,9 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     /// <summary>
     ///     Patches <see cref="Scp106HuntersAtlasAbility.GetSafePosition" />.
-    ///     Adds the <see cref="Scp106.Teleporting" /> event.
+    ///     Adds the <see cref="Handlers.Scp106.Teleporting" /> event.
     /// </summary>
-    [EventPatch(typeof(Scp106), nameof(Scp106.Teleporting))]
     [HarmonyPatch(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.GetSafePosition))]
     internal static class Teleporting
     {

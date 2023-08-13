@@ -7,10 +7,11 @@
 
 namespace Exiled.Events.Handlers
 {
-#pragma warning disable SA1623 // Property summary documentation should match accessors
-
     using Exiled.Events.EventArgs.Scp914;
-    using Exiled.Events.Features;
+
+    using Extensions;
+
+    using static Events;
 
     /// <summary>
     ///     Handles SCP-914 related events.
@@ -20,27 +21,27 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before SCP-914 upgrades a Pickup.
         /// </summary>
-        public static Event<UpgradingPickupEventArgs> UpgradingPickup { get; set; } = new();
+        public static event CustomEventHandler<UpgradingPickupEventArgs> UpgradingPickup;
 
         /// <summary>
         ///     Invoked before SCP-914 upgrades an item in a player's inventory.
         /// </summary>
-        public static Event<UpgradingInventoryItemEventArgs> UpgradingInventoryItem { get; set; } = new();
+        public static event CustomEventHandler<UpgradingInventoryItemEventArgs> UpgradingInventoryItem;
 
         /// <summary>
         ///     Invoked before SCP-914 upgrades a player.
         /// </summary>
-        public static Event<UpgradingPlayerEventArgs> UpgradingPlayer { get; set; } = new();
+        public static event CustomEventHandler<UpgradingPlayerEventArgs> UpgradingPlayer;
 
         /// <summary>
         ///     Invoked before activating the SCP-914 machine.
         /// </summary>
-        public static Event<ActivatingEventArgs> Activating { get; set; } = new();
+        public static event CustomEventHandler<ActivatingEventArgs> Activating;
 
         /// <summary>
         ///     Invoked before changing the SCP-914 machine knob setting.
         /// </summary>
-        public static Event<ChangingKnobSettingEventArgs> ChangingKnobSetting { get; set; } = new();
+        public static event CustomEventHandler<ChangingKnobSettingEventArgs> ChangingKnobSetting;
 
         /// <summary>
         ///     Called before SCP-914 upgrades a item.

@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="Attacking.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Scp049
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp049;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp049;
@@ -24,7 +23,6 @@ namespace Exiled.Events.Patches.Events.Scp049
     /// Patches <see cref="Scp049AttackAbility.ServerProcessCmd(Mirror.NetworkReader)"/>
     /// to add <see cref="Handlers.Scp049.Attacking"/> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.Attacking))]
     [HarmonyPatch(typeof(Scp049AttackAbility), nameof(Scp049AttackAbility.ServerProcessCmd))]
     internal class Attacking
     {

@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -25,7 +25,6 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="RadioItem.Update" />.
     ///     Adds the <see cref="Handlers.Player.UsingRadioBattery" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsingRadioBattery))]
     [HarmonyPatch(typeof(RadioItem), nameof(RadioItem.Update))]
     internal static class UsingRadioBattery
     {
