@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -25,11 +25,13 @@ namespace Exiled.Events.Patches.Events.Player
 
 #pragma warning disable SA1600 // Elements should be documented
 #pragma warning disable SA1402 // File may only contain a single type
+#pragma warning disable IDE0060 // File may only contain a single type
 
     /// <summary>
     ///     Patches <see cref="Consumable.ServerOnUsingCompleted" />
     ///     Adds the <see cref="Handlers.Player.UsedItem" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsedItem))]
     [HarmonyPatch(typeof(Consumable), nameof(Consumable.ServerOnUsingCompleted))]
     internal static class UsedItem
     {
@@ -47,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
-        internal static List<CodeInstruction> InstructionsToInject() => new List<CodeInstruction>
+        internal static List<CodeInstruction> InstructionsToInject() => new()
         {
             // Player.Get(this.Owner)
             new(OpCodes.Ldarg_0),
@@ -67,6 +69,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="Scp268.ServerOnUsingCompleted" />
     ///     Adds the <see cref="Handlers.Player.UsedItem" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsedItem))]
     [HarmonyPatch(typeof(Scp268), nameof(Scp268.ServerOnUsingCompleted))]
     internal static class UsedItem268
     {
@@ -89,6 +92,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="Scp1576Item.ServerOnUsingCompleted" />
     ///     Adds the <see cref="Handlers.Player.UsedItem" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsedItem))]
     [HarmonyPatch(typeof(Scp1576Item), nameof(Scp1576Item.ServerOnUsingCompleted))]
     internal static class UsedItem1576
     {

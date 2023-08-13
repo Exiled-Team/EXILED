@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -27,6 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches the <see cref="PocketDimensionTeleport.OnTriggerEnter(Collider)"/> method.
     /// Adds the <see cref="Handlers.Player.EscapingPocketDimension"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.EscapingPocketDimension))]
     [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.OnTriggerEnter))]
     internal static class EscapingPocketDimension
     {

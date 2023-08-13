@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Scp106;
     using Footprinting;
@@ -27,6 +28,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     /// Patches <see cref="Scp106Attack.ServerShoot"/>
     /// to add <see cref="Handlers.Scp106.Attacking"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp106), nameof(Handlers.Scp106.Attacking))]
     [HarmonyPatch(typeof(Scp106Attack), nameof(Scp106Attack.ServerShoot))]
     internal class Attacking
     {
@@ -68,9 +70,9 @@ namespace Exiled.Events.Patches.Events.Scp106
                     new(OpCodes.Brtrue_S, continueLabel),
 
                     new(OpCodes.Leave, newInstructions[newInstructions.Count - 1].labels.First()),
-                });
 
-            newInstructions[index].labels.Add(continueLabel);
+                    new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

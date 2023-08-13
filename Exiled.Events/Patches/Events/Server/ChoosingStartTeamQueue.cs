@@ -5,13 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
+namespace Exiled.Events.Patches.Events.Server
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using API.Features.Pools;
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Server;
     using HarmonyLib;
     using PlayerRoles.RoleAssign;
@@ -22,6 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="RoleAssigner.OnRoundStarted" /> setter.
     ///     Adds the <see cref="Handlers.Server.ChoosingStartTeamQueue" />.
     /// </summary>
+    [EventPatch(typeof(Handlers.Server), nameof(Handlers.Server.ChoosingStartTeamQueue))]
     [HarmonyPatch(typeof(RoleAssigner), nameof(RoleAssigner.OnRoundStarted))]
     internal static class ChoosingStartTeamQueue
     {
