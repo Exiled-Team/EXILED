@@ -71,15 +71,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Called before detonating the warhead.
         /// </summary>
-        /// <returns>Returns whether the event is allowed or not.</returns>
-        [PluginEvent(ServerEventType.WarheadDetonation)]
-        public bool OnDetonating()
-        {
-            DetonatingEventArgs ev = new();
-
-            Detonating.InvokeSafely(ev);
-
-            return ev.IsAllowed;
-        }
+        /// <param name="ev">The <see cref="DetonatingEventArgs"/> instance.</param>
+        public static void OnDetonating(DetonatingEventArgs ev) => Detonating.InvokeSafely(ev);
     }
 }
