@@ -293,16 +293,13 @@ namespace Exiled.API.Features
                 if (string.IsNullOrEmpty(UserId))
                     return AuthenticationType.Unknown;
 
-                int index = UserId.LastIndexOf('@');
-
-                if (index == -1)
-                    return AuthenticationType.Unknown;
-
-                return UserId.Substring(index + 1) switch
+                return UserId.Substring(UserId.LastIndexOf('@') + 1) switch
                 {
                     "steam" => AuthenticationType.Steam,
                     "discord" => AuthenticationType.Discord,
                     "northwood" => AuthenticationType.Northwood,
+                    "localhost" => AuthenticationType.LocalHost,
+                    "ID_Dedicated" => AuthenticationType.DedicatedServer,
                     _ => AuthenticationType.Unknown,
                 };
             }
