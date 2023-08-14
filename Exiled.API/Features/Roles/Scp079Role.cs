@@ -117,6 +117,11 @@ namespace Exiled.API.Features.Roles
             ScannerZoneSelector = scp079ScannerZoneSelector;
         }
 
+        /// <summary>
+        /// Gets a list of players who will be turned away from SCP-079' scan.
+        /// </summary>
+        public static HashSet<Player> TurnedPlayers { get; } = new(20);
+
         /// <inheritdoc/>
         public override RoleTypeId Type { get; } = RoleTypeId.Scp079;
 
