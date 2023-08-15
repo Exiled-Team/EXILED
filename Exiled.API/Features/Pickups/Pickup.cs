@@ -286,6 +286,11 @@ namespace Exiled.API.Features.Pickups
         public bool IsSpawned { get; internal set; }
 
         /// <summary>
+        /// Gets a value indicating whether or not this is a worn item.
+        /// </summary>
+        public bool IsLoaded { get; internal set; }
+
+        /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.
         /// </summary>
         /// <param name="pickupBase">The <see cref="ItemPickupBase"/> to convert into a <see cref="Pickup"/>.</param>
@@ -505,6 +510,8 @@ namespace Exiled.API.Features.Pickups
         /// <returns>A Pickup containing the Item-related data.</returns>
         internal virtual Pickup GetItemInfo(Items.Item item)
         {
+            IsLoaded = true;
+
             if (item is not null)
             {
                 Scale = item.Scale;
