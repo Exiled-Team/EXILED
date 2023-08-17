@@ -11,6 +11,7 @@ namespace Exiled.CustomRoles.API.Features
     using System.Collections.Generic;
 
     using Exiled.API.Features;
+    using Exiled.CustomRoles.API.Features.Enums;
 
     using MEC;
 
@@ -21,6 +22,11 @@ namespace Exiled.CustomRoles.API.Features
     /// </summary>
     public abstract class ActiveAbility : CustomAbility
     {
+        /// <summary>
+        /// Gets a <see cref="Dictionary{TKey,TValue}"/> containing all players with active abilities, and the abilities they have access to.
+        /// </summary>
+        public static Dictionary<Player, HashSet<ActiveAbility>> AllActiveAbilities { get; } = new();
+
         /// <summary>
         /// Gets or sets how long the ability lasts.
         /// </summary>
@@ -50,6 +56,12 @@ namespace Exiled.CustomRoles.API.Features
         public HashSet<Player> ActivePlayers { get; } = new();
 
         /// <summary>
+        /// Gets all players who have this ability selected.
+        /// </summary>
+        [YamlIgnore]
+        public HashSet<Player> SelectedPlayers { get; } = new();
+
+        /// <summary>
         /// Uses the ability.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> using the ability.</param>
@@ -76,24 +88,83 @@ namespace Exiled.CustomRoles.API.Features
         }
 
         /// <summary>
+        /// Selects the ability.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to select the ability.</param>
+        public void SelectAbility(Player player)
+        {
+            if (!SelectedPlayers.Contains(player))
+            {
+                SelectedPlayers.Add(player);
+                Selected(player);
+            }
+        }
+
+        /// <summary>
+        /// Un-Selects the ability.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to un-select the ability.</param>
+        public void UnSelectAbility(Player player)
+        {
+            if (SelectedPlayers.Contains(player))
+            {
+                SelectedPlayers.Remove(player);
+                if (Check(player, CheckType.Active))
+                    EndAbility(player);
+                Unselected(player);
+            }
+        }
+
+        /// <summary>
         /// Checks if the specified player is using the ability.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns>True if the player is actively using the ability.</returns>
-        public override bool Check(Player player) => ActivePlayers.Contains(player);
+        public override bool Check(Player player) => Check(player, CheckType.Active);
+
+        /// <summary>
+        /// Checks if the specified <see cref="Player"/> meets certain check criteria.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <param name="type">The <see cref="CheckType"/> type of check to preform.</param>
+        /// <returns>The results of the check.
+        /// <see cref="CheckType.Active"/>: Checks if the ability is currently active for the player.
+        /// <see cref="CheckType.Selected"/>: Checks if the player has the ability selected.
+        /// <see cref="CheckType.Available"/>: Checks if the player has the ability.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">This should never happen unless Joker fucks up.</exception>
+        public virtual bool Check(Player player, CheckType type)
+        {
+            bool result = type switch
+            {
+                CheckType.Active => ActivePlayers.Contains(player),
+                CheckType.Selected => SelectedPlayers.Contains(player),
+                CheckType.Available => Players.Contains(player),
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
+
+            return result;
+        }
 
         /// <summary>
         /// Checks to see if the ability is usable by the player.
         /// </summary>
         /// <param name="player">The player to check.</param>
         /// <param name="response">The response to send to the player.</param>
+        /// <param name="selectedOnly">Whether to disallow usage if the ability is not selected.</param>
         /// <returns>True if the ability is usable.</returns>
-        public virtual bool CanUseAbility(Player player, out string response)
+        public virtual bool CanUseAbility(Player player, out string response, bool selectedOnly = false)
         {
             if (CanUseOverride is not null)
             {
                 response = string.Empty;
                 return CanUseOverride.Invoke();
+            }
+
+            if (selectedOnly && !SelectedPlayers.Contains(player))
+            {
+                response = $"{Name} not selected.";
+                return false;
             }
 
             if (!LastUsed.ContainsKey(player))
@@ -114,6 +185,29 @@ namespace Exiled.CustomRoles.API.Features
                 $"You must wait another {Math.Round((usableTime - DateTime.Now).TotalSeconds, 2)} seconds to use {Name}";
 
             return false;
+        }
+
+        /// <inheritdoc />
+        protected override void AbilityAdded(Player player)
+        {
+            if (!AllActiveAbilities.ContainsKey(player))
+                AllActiveAbilities.Add(player, new());
+
+            if (!AllActiveAbilities[player].Contains(this))
+                AllActiveAbilities[player].Add(this);
+            base.AbilityAdded(player);
+        }
+
+        /// <inheritdoc />
+        protected override void AbilityRemoved(Player player)
+        {
+            if (!AllActiveAbilities.ContainsKey(player))
+                return;
+            if (SelectedPlayers.Contains(player))
+                SelectedPlayers.Remove(player);
+
+            AllActiveAbilities[player].Remove(this);
+            base.AbilityRemoved(player);
         }
 
         /// <summary>
@@ -138,5 +232,21 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> using the ability.</param>
         protected virtual void ShowMessage(Player player) =>
             player.ShowHint(string.Format(CustomRoles.Instance!.Config.UsedAbilityHint.Content, Name, Description), CustomRoles.Instance.Config.UsedAbilityHint.Duration);
+
+        /// <summary>
+        /// Called when the ability is selected.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> selecting the ability.</param>
+        protected virtual void Selected(Player player)
+        {
+        }
+
+        /// <summary>
+        /// Called when the ability is un-selected.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> un-selecting the ability.</param>
+        protected virtual void Unselected(Player player)
+        {
+        }
     }
 }
