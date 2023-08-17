@@ -132,9 +132,7 @@ namespace Exiled.CustomRoles.API.Features
                 if (selected is not null)
                 {
                     int index = abilities.IndexOf(selected);
-                    Log.Warn(index);
                     int mod = type == AbilityKeypressTriggerType.SwitchForward ? 1 : -1;
-                    Log.Warn(mod);
                     if (index + mod > abilities.Count - 1)
                         index = 0;
                     else if (index + mod < 0)
@@ -142,7 +140,6 @@ namespace Exiled.CustomRoles.API.Features
                     else
                         index += mod;
 
-                    Log.Warn($"{index} - {index + mod} {abilities.Count}");
                     if (index < 0 || index > abilities.Count - 1)
                     {
                         Log.Warn("Joker can't do math.");
@@ -152,7 +149,6 @@ namespace Exiled.CustomRoles.API.Features
 
                     if (abilities[index] == selected)
                     {
-                        Log.Warn("Switching to current ability.");
                         response = "No abilities to switch to.";
                         return false;
                     }
