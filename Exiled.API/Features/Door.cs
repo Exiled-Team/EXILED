@@ -142,9 +142,9 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         public bool IsNonInteractable => this is Interfaces.INonInteractableDoor;
 
         /// <summary>
-        /// Gets a value indicating whether or not this door is one of airlock's doors.
+        /// Gets a value indicating whether or not this door is subdoor for checkpoint.
         /// </summary>
-        public bool IsAirlock => Doors.AirlockController.List.Any(x => x.DoorA == this || x.DoorB == this);
+        public bool IsPartOfCheckpoint => List.Where(x => x is Checkpoint).Any(x => x.Cast<Checkpoint>().Subdoors.Contains(this));
 
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.
@@ -336,6 +336,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
                 CheckpointDoor chkpt => new Checkpoint(chkpt, chkpt.GetComponentInParent<Room>()),
                 BaseBreakableDoor brkbl => new Breakable(brkbl, brkbl.GetComponentInParent<Room>()),
                 ElevatorDoor elvtr => new Elevator(elvtr, elvtr.GetComponentInParent<Room>()),
+                PryableDoor prbl => new Gate(prbl, prbl.GetComponentInParent<Room>()),
                 BasicNonInteractableDoor nonInteractableDoor => new Doors.BasicNonInteractableDoor(nonInteractableDoor, nonInteractableDoor.GetComponentInParent<Room>()),
                 BasicDoor basicDoor => new Doors.BasicDoor(basicDoor, basicDoor.GetComponentInParent<Room>()),
                 _ => new Door(doorVariant, doorVariant.GetComponentInParent<Room>())
@@ -605,6 +606,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
                 CheckpointDoor chkpt => new Checkpoint(chkpt, room),
                 BaseBreakableDoor brkbl => new Breakable(brkbl, room),
                 ElevatorDoor elvtr => new Elevator(elvtr, room),
+                PryableDoor prbl => new Gate(prbl, room),
                 BasicNonInteractableDoor nonInteractableDoor => new Doors.BasicNonInteractableDoor(nonInteractableDoor, room),
                 BasicDoor basicDoor => new Doors.BasicDoor(basicDoor, room),
                 _ => new Door(doorVariant, room)
