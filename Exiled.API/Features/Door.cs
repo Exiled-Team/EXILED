@@ -642,7 +642,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
                         RoomType.Hcz049 => Position.y < -805 ? DoorType.Scp049Gate : DoorType.Scp173NewGate,
                         _ => DoorType.UnknownGate,
                     },
-                    "Elevator" => As<Elevator>()?.Group switch
+                    "Elevator" => (Base as ElevatorDoor)?.Group switch
                     {
                         ElevatorGroup.Nuke => DoorType.ElevatorNuke,
                         ElevatorGroup.Scp049 => DoorType.ElevatorScp049,
@@ -703,6 +703,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
                 // also gameobject names
                 "LightContainmentDoor" => DoorType.LightContainmentDoor,
                 "EntrDoor" => DoorType.EntranceDoor,
+
                 _ => DoorType.UnknownDoor,
             };
         }
