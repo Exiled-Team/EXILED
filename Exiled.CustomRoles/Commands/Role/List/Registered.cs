@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Commands.List
+namespace Exiled.CustomRoles.Commands.Role.List
 {
     using System;
     using System.Linq;

@@ -26,6 +26,7 @@ namespace Exiled.CustomRoles
     public class CustomRoles : Plugin<Config>
     {
         private PlayerHandlers? playerHandlers;
+        private ServerHandlers? serverHandlers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomRoles"/> class.
@@ -49,7 +50,7 @@ namespace Exiled.CustomRoles
         public static CustomRoles? Instance { get; private set; }
 
         /// <summary>
-        /// Gets or Sets if the plugin need to check the round end.
+        /// Gets or sets a value indicating whether the plugin need to check the round end.
         /// </summary>
         public bool CheckRoundEnd { get; set; }
 
@@ -63,9 +64,11 @@ namespace Exiled.CustomRoles
         {
             Instance = this;
             playerHandlers = new PlayerHandlers(this);
+            serverHandlers = new ServerHandlers(this);
 
             Exiled.Events.Handlers.Player.SpawningRagdoll += playerHandlers.OnSpawningRagdoll;
             Exiled.Events.Handlers.Player.Hurting += playerHandlers.OnHurting;
+            Exiled.Events.Handlers.Server.EndingRound += serverHandlers.OnEndingRound;
 
             base.OnEnabled();
         }
@@ -74,7 +77,8 @@ namespace Exiled.CustomRoles
         public override void OnDisabled()
         {
             Exiled.Events.Handlers.Player.SpawningRagdoll -= playerHandlers!.OnSpawningRagdoll;
-            Exiled.Events.Handlers.Player.Hurting += playerHandlers.OnHurting;
+            Exiled.Events.Handlers.Player.Hurting -= playerHandlers!.OnHurting;
+            Exiled.Events.Handlers.Server.EndingRound -= serverHandlers!.OnEndingRound;
 
             base.OnDisabled();
         }

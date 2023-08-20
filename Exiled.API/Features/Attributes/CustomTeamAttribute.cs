@@ -20,15 +20,8 @@ namespace Exiled.API.Features.Attributes
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomTeamAttribute"/> class.
         /// </summary>
-        /// <param name="type">The <see cref="PlayerRoles.RoleTypeId"/> to serialize.</param>
-        public CustomTeamAttribute(uint type)
+        public CustomTeamAttribute()
         {
-            TeamId = type;
         }
-
-        /// <summary>
-        /// Gets the attribute's <see cref="PlayerRoles.RoleTypeId"/>.
-        /// </summary>
-        public uint TeamId { get; }
     }
 }

@@ -17,7 +17,6 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Features.Pools;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
-    using Exiled.Events.EventArgs.Interfaces;
     using PlayerRoles;
     using Respawning;
     using YamlDotNet.Serialization;
@@ -41,7 +40,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets the custom RoleID of the team.
         /// </summary>
-        public virtual uint Id { get; set; }
+        public abstract uint Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name of this team.
@@ -49,9 +48,14 @@ namespace Exiled.CustomRoles.API.Features
         public abstract string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the description of this team.
+        /// </summary>
+        public abstract string Description { get; set; }
+
+        /// <summary>
         /// Gets or sets the amount of players respawning per wave.
         /// </summary>
-        public abstract uint ResapwnAmount { get; set; }
+        public abstract int ResapwnAmount { get; set; }
 
         /// <summary>
         /// Gets or sets the time before this team sapwn.
@@ -243,9 +247,6 @@ namespace Exiled.CustomRoles.API.Features
 
                     customTeam ??= (CustomTeam)Activator.CreateInstance(type);
 
-                    if (customTeam.Id == 0)
-                        customTeam.Id = ((CustomTeamAttribute)attribute).TeamId;
-
                     if (customTeam.TryRegister())
                         teams.Add(customTeam);
                 }
@@ -296,9 +297,6 @@ namespace Exiled.CustomRoles.API.Features
                     }
 
                     customTeam ??= (CustomTeam)Activator.CreateInstance(type);
-
-                    if (customTeam.Id == 0)
-                        customTeam.Id = ((CustomTeamAttribute)attribute).TeamId;
 
                     if (customTeam.TryRegister())
                         teams.Add(customTeam);
@@ -528,6 +526,11 @@ namespace Exiled.CustomRoles.API.Features
 
         private void OnRespawningCustomTeam(Exiled.Events.EventArgs.Server.RespawningCustomTeamEventArgs ev)
         {
+            if (ev.TeamId != Id)
+                return;
+
+            if (ev.MaximumRespawnAmount > ResapwnAmount)
+                ev.MaximumRespawnAmount = ResapwnAmount;
             Spawn(ev.Players);
         }
     }

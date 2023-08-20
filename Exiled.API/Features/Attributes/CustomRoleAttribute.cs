@@ -21,9 +21,19 @@ namespace Exiled.API.Features.Attributes
         /// Initializes a new instance of the <see cref="CustomRoleAttribute"/> class.
         /// </summary>
         /// <param name="type">The <see cref="PlayerRoles.RoleTypeId"/> to serialize.</param>
+        /// <param name="teamId">To witch team this custom role belong to.</param>
+        public CustomRoleAttribute(RoleTypeId type, uint teamId)
+        {
+            RoleTypeId = type;
+            TeamId = teamId;
+        }
+
+        /// <inheritdoc cref="CustomRoleAttribute"/>
+        /// <param name="type">The <see cref="PlayerRoles.RoleTypeId"/> to serialize.</param>
         public CustomRoleAttribute(RoleTypeId type)
         {
             RoleTypeId = type;
+            TeamId = null;
         }
 
         /// <summary>
@@ -32,8 +42,8 @@ namespace Exiled.API.Features.Attributes
         public RoleTypeId RoleTypeId { get; }
 
         /// <summary>
-        /// Gets or sets the linked Team Id.
+        /// Gets the linked Team Id.
         /// </summary>
-        public uint? TeamId { get; set; } = null;
+        public uint? TeamId { get; }
     }
 }

@@ -82,7 +82,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> to spawn this role as.
         /// </summary>
-        public virtual RoleTypeId Role { get; set; }
+        public virtual RoleTypeId Role { get; set; } = RoleTypeId.None;
 
         /// <summary>
         /// Gets or sets the custom team <see cref="Features.CustomTeam"/>.

@@ -43,7 +43,6 @@ namespace Exiled.Events.Patches.Events.Server
     {
         private static SelectTeamEventArgs.CustomTeamRespawnInfo customTeamRespawnInfo;
 
-        [HarmonyDebug]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             const int dominatingTeamVarIndex = 1;

@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Commands
+namespace Exiled.CustomRoles.Commands.Team
 {
     using System;
 
@@ -27,10 +27,10 @@ namespace Exiled.CustomRoles.Commands
         }
 
         /// <inheritdoc/>
-        public override string Command { get; } = "customroles";
+        public override string Command { get; } = "customteams";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = { "cr", "crs" };
+        public override string[] Aliases { get; } = { "ct", "cts" };
 
         /// <inheritdoc/>
         public override string Description { get; } = string.Empty;
@@ -38,7 +38,7 @@ namespace Exiled.CustomRoles.Commands
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()
         {
-            RegisterCommand(Give.Instance);
+            RegisterCommand(Spawn.Instance);
             RegisterCommand(Info.Instance);
             RegisterCommand(List.List.Instance);
         }
@@ -46,7 +46,7 @@ namespace Exiled.CustomRoles.Commands
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Invalid subcommand! Available: give, info, list";
+            response = "Invalid subcommand! Available: spawn, info, list";
             return false;
         }
     }

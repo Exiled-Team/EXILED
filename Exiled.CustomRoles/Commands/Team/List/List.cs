@@ -5,14 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Commands.List
+namespace Exiled.CustomRoles.Commands.Team.List
 {
     using System;
 
     using CommandSystem;
 
     /// <summary>
-    /// The command to list all registered roles.
+    /// The command to list all registered team.
     /// </summary>
     internal sealed class List : ParentCommand
     {
@@ -33,7 +33,7 @@ namespace Exiled.CustomRoles.Commands.List
         public override string[] Aliases { get; } = { "l" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = "Gets a list of all currently registered custom roles.";
+        public override string Description { get; } = "Gets a list of all currently registered custom team.";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()
