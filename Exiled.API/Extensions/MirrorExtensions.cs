@@ -254,6 +254,9 @@ namespace Exiled.API.Extensions
         {
             if (!RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))
                 return;
+
+            bool isRisky = type.GetTeam() is Team.Dead || player.IsDead;
+
             NetworkWriterPooled writer = NetworkWriterPool.Get();
             writer.WriteUShort(38952);
             writer.WriteUInt(player.NetId);
@@ -261,23 +264,39 @@ namespace Exiled.API.Extensions
 
             if (roleBase is HumanRole humanRole && humanRole.UsesUnitNames)
             {
+                if (player.Role.Base is not HumanRole)
+                    isRisky = true;
                 writer.WriteByte(unitId);
             }
 
             if (roleBase is FpcStandardRoleBase fpc)
             {
+                if (player.Role.Base is not FpcStandardRoleBase playerfpc)
+                    isRisky = true;
+                else
+                    fpc = playerfpc;
+
                 fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort value, out ushort _);
-                writer.WriteRelativePosition(new RelativePosition(fpc._hubTransform.position));
+                writer.WriteRelativePosition(player.RelativePosition);
                 writer.WriteUShort(value);
             }
 
             if (roleBase is ZombieRole)
             {
+                if (player.Role.Base is not ZombieRole)
+                    isRisky = true;
+
                 writer.WriteUShort((ushort)Mathf.Clamp(Mathf.CeilToInt(player.MaxHealth), ushort.MinValue, ushort.MaxValue));
             }
 
             foreach (Player target in playersToAffect)
-                target.Connection.Send(writer.ToArraySegment());
+            {
+                if (target != player || !isRisky)
+                    target.Connection.Send(writer.ToArraySegment());
+                else
+                    Log.Error($"Prevent Seld-Desync of {player.Nickname} with {type}");
+            }
+
             NetworkWriterPool.Return(writer);
 
             // To counter a bug that makes the player invisible until they move after changing their appearance, we will teleport them upwards slightly to force a new position update for all clients.

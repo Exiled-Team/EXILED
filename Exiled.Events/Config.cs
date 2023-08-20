@@ -21,12 +21,6 @@ namespace Exiled.Events
         public bool Debug { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether events are only patched if they have delegates subscribed to them.
-        /// </summary>
-        [Description("Indicates whether events are patched only if they have delegates subscribed to them")]
-        public bool UseDynamicPatching { get; set; } = true;
-
-        /// <summary>
         /// Gets or sets a value indicating whether SCP-173 can be blocked or not by the tutorial.
         /// </summary>
         [Description("Indicates whether SCP-173 can be blocked or not by the tutorial")]

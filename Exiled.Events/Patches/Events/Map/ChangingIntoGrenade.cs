@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Map;
 
     using Handlers;
@@ -32,8 +32,6 @@ namespace Exiled.Events.Patches.Events.Map
     ///     Patches <see cref="TimedGrenadePickup.Update" />.
     ///     Adds the <see cref="Map.ChangingIntoGrenade" /> and <see cref="Map.ChangedIntoGrenade" /> events.
     /// </summary>
-    [EventPatch(typeof(Map), nameof(Map.ChangingIntoGrenade))]
-    [EventPatch(typeof(Map), nameof(Map.ChangedIntoGrenade))]
     [HarmonyPatch(typeof(TimedGrenadePickup), nameof(TimedGrenadePickup.Update))]
     internal static class ChangingIntoGrenade
     {
@@ -120,14 +118,6 @@ namespace Exiled.Events.Patches.Events.Map
                 // thrownProjectile
                 new(OpCodes.Ldloc_S, thrownProjectile.LocalIndex),
 
-                // if (thrownProjectile is not TimeGrenade timeGrenade)
-                //    goto skipfuse;
-                new(OpCodes.Ldloc_S, thrownProjectile.LocalIndex),
-                new(OpCodes.Isinst, typeof(TimeGrenade)),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, timeGrenade.LocalIndex),
-                new(OpCodes.Brfalse_S, skipFuse),
-
                 // var ev = new ChangedIntoGrenadeEventArgs(timedGrenadePickup, thrownProjectile);
                 // Map.OnChangingIntoGrenade(ev);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangedIntoGrenadeEventArgs))[0]),
@@ -135,13 +125,18 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnChangedIntoGrenade))),
                 new(OpCodes.Stloc_S, changedIntoGrenade.LocalIndex),
 
-                // timeGrenade._fuseTime = ev.FuseTime;
+                // if (thrownProjectile is TimeGrenade timeGrenade)
+                //    timeGrenade._fuseTime = ev.FuseTime;
+                new(OpCodes.Ldloc_S, thrownProjectile.LocalIndex),
+                new(OpCodes.Isinst, typeof(TimeGrenade)),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, timeGrenade.LocalIndex),
+                new(OpCodes.Brfalse_S, skipFuse),
+
                 new(OpCodes.Ldloc_S, timeGrenade.LocalIndex),
                 new(OpCodes.Ldloc_S, changedIntoGrenade.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangedIntoGrenadeEventArgs), nameof(ChangedIntoGrenadeEventArgs.FuseTime))),
                 new(OpCodes.Stfld, Field(typeof(TimeGrenade), nameof(TimeGrenade._fuseTime))),
-
-                // skipfuse:
                 new CodeInstruction(OpCodes.Nop).WithLabels(skipFuse),
             });
 

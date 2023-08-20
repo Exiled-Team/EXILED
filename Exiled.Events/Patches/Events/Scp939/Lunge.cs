@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Events.Scp939
     using System.Reflection.Emit;
 
     using Exiled.API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -20,11 +19,11 @@ namespace Exiled.Events.Patches.Events.Scp939
 
     using static HarmonyLib.AccessTools;
 
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     /// <summary>
     ///     Patches <see cref="Scp939LungeAbility.ServerProcessCmd(NetworkReader)" />
-    ///     to add the <see cref="Scp939.Lunging" /> event.
+    ///     to add the <see cref="Scp939" /> event.
     /// </summary>
-    [EventPatch(typeof(Scp939), nameof(Scp939.Lunging))]
     [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.TriggerLunge))]
     internal static class Lunge
     {

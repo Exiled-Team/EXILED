@@ -7,10 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
-#pragma warning disable SA1623 // Property summary documentation should match accessors
-
     using Exiled.Events.EventArgs.Scp0492;
-    using Exiled.Events.Features;
+    using Exiled.Events.Extensions;
 
     /// <summary>
     /// <see cref="API.Features.Roles.Scp0492Role"/> related events.
@@ -18,9 +16,9 @@ namespace Exiled.Events.Handlers
     public class Scp0492
     {
         /// <summary>
-        /// Invoked before a player triggers the bloodlust effect for 049-2.
+        /// Called before a player triggers the bloodlust effect for 049-2.
         /// </summary>
-        public static Event<TriggeringBloodlustEventArgs> TriggeringBloodlust { get; set; } = new ();
+        public static event Events.CustomEventHandler<TriggeringBloodlustEventArgs> TriggeringBloodlust;
 
         /// <summary>
         /// Called before a player triggers the bloodlust effect for 049-2.

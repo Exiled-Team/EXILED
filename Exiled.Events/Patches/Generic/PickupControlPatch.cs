@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Generic
 {
+#pragma warning disable SA1402
     using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -27,6 +28,7 @@ namespace Exiled.Events.Patches.Generic
 
     using static HarmonyLib.AccessTools;
 
+#pragma warning disable CS1584 /// Semantically incorrect cref attribute.
 #pragma warning disable SA1402 /// File may only contain a single type.
     /// <summary>
     /// Patches <see cref="InventoryExtensions.ServerCreatePickup(ItemBase, PickupSyncInfo, Vector3, Quaternion, bool, Action{ItemPickupBase})"/> to save scale for pickups and control <see cref="Pickup.IsSpawned"/> property.
@@ -45,13 +47,13 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                // Item.Get(itemBase);
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
-
                 // pickup = Pickup.Get(pickupBase);
                 new(OpCodes.Ldloc_0),
                 new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get), new[] { typeof(ItemPickupBase) })),
+
+                // Item.Get(itemBase);
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
 
                 // pickup.GetItemInfo(item);
                 new(OpCodes.Callvirt, Method(typeof(Pickup), nameof(Pickup.GetItemInfo))),

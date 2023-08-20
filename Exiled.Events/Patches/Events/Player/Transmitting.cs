@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -27,7 +26,6 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="PersonalRadioPlayback.Update()" />.
     ///     Adds the <see cref="Handlers.Player.Transmitting" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Transmitting))]
     [HarmonyPatch(typeof(PersonalRadioPlayback), nameof(PersonalRadioPlayback.Update))]
     internal static class Transmitting
     {

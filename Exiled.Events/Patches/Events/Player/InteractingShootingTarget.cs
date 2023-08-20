@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
+
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -29,7 +29,6 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="BaseTarget.ServerInteract(ReferenceHub, byte)" />.
     ///     Adds the <see cref="Handlers.Player.InteractingShootingTarget" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.InteractingShootingTarget))]
     [HarmonyPatch(typeof(BaseTarget), nameof(BaseTarget.ServerInteract))]
     internal static class InteractingShootingTarget
     {

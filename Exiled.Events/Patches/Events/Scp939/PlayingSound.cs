@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Scp939
 {
-    using Exiled.Events.Attributes;
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
@@ -22,7 +21,6 @@ namespace Exiled.Events.Patches.Events.Scp939
     ///     Patches <see cref="Scp939AmnesticCloudAbility.ServerProcessCmd(NetworkReader)" />
     ///     to add the <see cref="Scp939.PlayingSound" /> event.
     /// </summary>
-    [EventPatch(typeof(Scp939), nameof(Scp939.PlayingSound))]
     [HarmonyPatch(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry.ServerProcessCmd))]
     internal static class PlayingSound
     {

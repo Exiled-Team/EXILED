@@ -11,8 +11,6 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Warhead;
     using Handlers;
     using HarmonyLib;
@@ -23,7 +21,6 @@ namespace Exiled.Events.Patches.Events.Warhead
     ///     Patches <see cref="AlphaWarheadController.Detonate" />
     ///     to add <see cref="Warhead.Detonating"/> and <see cref="Warhead.Detonated"/> events.
     /// </summary>
-    [EventPatch(typeof(Warhead), nameof(Warhead.Detonated))]
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]
     internal static class Detonated
     {
