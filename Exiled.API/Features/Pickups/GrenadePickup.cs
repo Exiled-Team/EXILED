@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.API.Interfaces;
 
     using Footprinting;
@@ -41,6 +42,11 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
+        /// Gets or sets how long the fuse will last.
+        /// </summary>
+        public float FuseTime { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="Enums.ProjectileType"/> of the item.
         /// </summary>
         public ProjectileType ProjectileType => Type.GetProjectileType();
@@ -63,6 +69,21 @@ namespace Exiled.API.Features.Pickups
         {
             Base._replaceNextFrame = true;
             Base._attacker = attacker;
+        }
+
+        /// <summary>
+        /// Returns the Projectile with the according property from the Pickup.
+        /// </summary>
+        /// <param name="projectile"> Pickup-related data to give to the Projectile.</param>
+        /// <returns>A Projectile containing the Pickup-related data.</returns>
+        internal virtual Pickup GetPickupInfo(Projectile projectile)
+        {
+            if (projectile is TimeGrenadeProjectile timeGrenadeProjectile)
+            {
+                timeGrenadeProjectile.FuseTime = FuseTime;
+            }
+
+            return projectile;
         }
     }
 }

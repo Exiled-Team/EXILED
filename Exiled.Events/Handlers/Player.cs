@@ -442,6 +442,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DamagingWindowEventArgs> PlayerDamageWindow;
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> damage a Door.
+        /// </summary>
+        public static event CustomEventHandler<DamagingDoorEventArgs> DamagingDoor;
+
+        /// <summary>
         /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
         /// </summary>
         public static event CustomEventHandler<ItemAddedEventArgs> ItemAdded;
@@ -901,6 +906,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance. </param>
         public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> damage a window.
+        /// </summary>
+        /// <param name="ev">The <see cref="DamagingDoorEventArgs"/> instance. </param>
+        public static void OnDamagingDoor(DamagingDoorEventArgs ev) => DamagingDoor.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> unlocks a generator.
