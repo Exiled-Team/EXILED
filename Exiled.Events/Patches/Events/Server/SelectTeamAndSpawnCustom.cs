@@ -51,6 +51,7 @@ namespace Exiled.Events.Patches.Events.Server
             LocalBuilder effectTimeVar = generator.DeclareLocal(typeof(float));
             Label endLabel = generator.DefineLabel();
             CodeMatcher codeMatcher = new CodeMatcher(instructions, generator);
+            MethodInfo efffectTime = PropertyGetter(typeof(SpawnableTeamHandlerBase), nameof(SpawnableTeamHandlerBase.EffectTime));
 
             // Go beffore the call of the NW Event
             codeMatcher
@@ -90,7 +91,7 @@ namespace Exiled.Events.Patches.Events.Server
                 .MatchStartForward(
                     new CodeMatch(OpCodes.Ldarg_0),
                     new CodeMatch(OpCodes.Ldloc_2),
-                    new CodeMatch(instuction => (instuction.operand as MethodInfo)?.Name == "get_EffectTime"))
+                    new CodeMatch(instuction => (instuction.operand as MethodInfo) == efffectTime))
                 .ThrowIfInvalid("MatchStartForward to found \"SpawnableTeamHandlerBase.EffectTime\" faild")
                 .Advance(1)
                 .RemoveInstructions(2)
