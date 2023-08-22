@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using PlayerRoles.PlayableScps.Scp939;
+
 namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1313
@@ -21,13 +23,14 @@ namespace Exiled.Events.Patches.Generic
     {
         private static void Postfix(EnvironmentalHazard __instance)
         {
-            if (__instance is global::Hazards.TemporaryHazard thazard)
+            if (__instance is Hazards.TemporaryHazard thazard)
             {
                 if (thazard.IsActive)
                 {
                     _ = thazard switch
                     {
                         TantrumEnvironmentalHazard tantrumEnvironmentalHazard => new TantrumHazard(tantrumEnvironmentalHazard),
+                        Scp939AmnesticCloudInstance scp939AmnesticCloudInstance => new AmnesticCloudHazard(scp939AmnesticCloudInstance),
                         _ => new Exiled.API.Features.Hazards.TemporaryHazard(thazard)
                     };
 

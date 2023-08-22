@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using PlayerRoles.PlayableScps.Scp939;
+
 namespace Exiled.API.Features.Hazards
 {
     using System;
@@ -115,6 +117,7 @@ namespace Exiled.API.Features.Hazards
                     return thazard switch
                     {
                         TantrumEnvironmentalHazard tantrumEnvironmentalHazard => new TantrumHazard(tantrumEnvironmentalHazard),
+                        Scp939AmnesticCloudInstance scp939AmnesticCloudInstance => new AmnesticCloudHazard(scp939AmnesticCloudInstance),
                         _ => new TemporaryHazard(thazard)
                     };
                 }
