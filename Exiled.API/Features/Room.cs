@@ -81,6 +81,11 @@ namespace Exiled.API.Features
         public RoomName RoomName => Identifier.Name;
 
         /// <summary>
+        /// Gets the room's <see cref="MapGeneration.RoomShape"/>.
+        /// </summary>
+        public RoomShape RoomShape => Identifier.Shape;
+
+        /// <summary>
         /// Gets the <see cref="RoomType"/>.
         /// </summary>
         public RoomType Type { get; private set; } = RoomType.Unknown;
