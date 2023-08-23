@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using PlayerRoles.PlayableScps.Scp939;
-
 namespace Exiled.API.Features.Hazards
 {
     using System;
@@ -16,6 +14,7 @@ namespace Exiled.API.Features.Hazards
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using global::Hazards;
+    using PlayerRoles.PlayableScps.Scp939;
     using UnityEngine;
 
     /// <summary>

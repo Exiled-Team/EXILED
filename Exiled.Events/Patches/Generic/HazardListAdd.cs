@@ -5,10 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using PlayerRoles.PlayableScps.Scp939;
-
 namespace Exiled.Events.Patches.Generic
 {
+    using PlayerRoles.PlayableScps.Scp939;
+
 #pragma warning disable SA1313
 
     using Exiled.API.Features.Hazards;
