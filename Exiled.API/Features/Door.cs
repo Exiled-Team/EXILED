@@ -511,7 +511,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// Tries to pry the door open. No effect if the door cannot be pried.
         /// </summary>
         /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
-        /// <param name="player">The amount of damage to deal.</param>
+        /// <param name="player">The player who tries to open the gate.</param>
         [Obsolete("Use Gate::TryPry(Player) instead.")]
         public bool TryPryOpen(Player player) => Base is PryableDoor pryable && pryable.TryPryGate(player.ReferenceHub);
 
