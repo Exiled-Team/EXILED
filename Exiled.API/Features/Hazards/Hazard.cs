@@ -104,32 +104,14 @@ namespace Exiled.API.Features.Hazards
         /// </summary>
         /// <param name="hazard">The <see cref="EnvironmentalHazard"/> instance.</param>
         /// <returns><see cref="Hazard"/> for <see cref="EnvironmentalHazard"/>.</returns>
-        public static Hazard Get(EnvironmentalHazard hazard)
+        public static Hazard Get(EnvironmentalHazard hazard) => hazard switch
         {
-            if (EnvironmentalHazardToHazard.TryGetValue(hazard, out Hazard result))
-                return result;
-
-            if (hazard is global::Hazards.TemporaryHazard thazard)
-            {
-                if (thazard.IsActive)
-                {
-                    return thazard switch
-                    {
-                        TantrumEnvironmentalHazard tantrumEnvironmentalHazard => new TantrumHazard(tantrumEnvironmentalHazard),
-                        Scp939AmnesticCloudInstance scp939AmnesticCloudInstance => new AmnesticCloudHazard(scp939AmnesticCloudInstance),
-                        _ => new TemporaryHazard(thazard)
-                    };
-                }
-
-                return new Hazard(thazard);
-            }
-
-            return hazard switch
-            {
-                SinkholeEnvironmentalHazard sinkholeEnvironmentalHazard => new SinkholeHazard(sinkholeEnvironmentalHazard),
-                _ => new Hazard(hazard)
-            };
-        }
+            TantrumEnvironmentalHazard tantrumEnvironmentalHazard => new TantrumHazard(tantrumEnvironmentalHazard),
+            Scp939AmnesticCloudInstance scp939AmnesticCloudInstance => new AmnesticCloudHazard(scp939AmnesticCloudInstance),
+            SinkholeEnvironmentalHazard sinkholeEnvironmentalHazard => new SinkholeHazard(sinkholeEnvironmentalHazard),
+            global::Hazards.TemporaryHazard temporaryHazard => new TemporaryHazard(temporaryHazard),
+            _ => new Hazard(hazard)
+        };
 
         /// <summary>
         /// Gets the hazard by the room where it's located.
@@ -139,7 +121,7 @@ namespace Exiled.API.Features.Hazards
         public static Hazard Get(Room room) => Get(x => x.Room == room).FirstOrDefault();
 
         /// <summary>
-        /// Gets the hazard by it's <see cref="GameObject"/>
+        /// Gets the hazard by it's <see cref="GameObject"/>.
         /// </summary>
         /// <param name="obj">Game object.</param>
         /// <returns><see cref="Hazard"/> in given <see cref="Exiled.API.Features.Room"/>.</returns>

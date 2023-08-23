@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="HazardListRemove.cs" company="Exiled Team">
+// <copyright file="HazardList.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -13,16 +13,18 @@ namespace Exiled.Events.Patches.Generic
     using HarmonyLib;
     using Hazards;
 
-    using TemporaryHazard = Hazards.TemporaryHazard;
-
     /// <summary>
-    /// Patches <see cref="TemporaryHazard.ServerDestroy()"/> and <see cref="EnvironmentalHazard.OnDestroy()"/>.
+    /// Patch for controlling hazard list.
     /// </summary>
     [HarmonyPatch]
-    internal class HazardListRemove
+    internal class HazardList
     {
+        [HarmonyPatch(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.Start))]
+        [HarmonyPostfix]
+        private static void Adding(EnvironmentalHazard __instance) => _ = Hazard.Get(__instance);
+
         [HarmonyPatch(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnDestroy))]
-        [HarmonyPatch(typeof(TemporaryHazard), nameof(TemporaryHazard.ServerDestroy))]
-        private static void Postfix(EnvironmentalHazard __instance) => Hazard.EnvironmentalHazardToHazard.Remove(__instance);
+        [HarmonyPostfix]
+        private static void Removing(EnvironmentalHazard __instance) => Hazard.EnvironmentalHazardToHazard.Remove(__instance);
     }
 }
