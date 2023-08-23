@@ -19,7 +19,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a SCP-244 pickup.
     /// </summary>
-    public class Scp244Pickup : Pickup, IWrapper<Scp244DeployablePickup>
+    public class Scp244Pickup : UsablePickup, IWrapper<Scp244DeployablePickup>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp244Pickup"/> class.
