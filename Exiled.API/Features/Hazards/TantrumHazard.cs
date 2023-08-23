@@ -32,7 +32,7 @@ namespace Exiled.API.Features.Hazards
         /// <summary>
         /// Gets the list of all <see cref="TantrumHazard"/>.
         /// </summary>
-        public static IEnumerable<TantrumHazard> AllTantrums => TantrumEnvironmentalHazard.AllTantrums.Select(x => Get(x) as TantrumHazard);
+        public static IEnumerable<TantrumHazard> AllTantrums => TantrumEnvironmentalHazard.AllTantrums.Select(x => Get(x).Cast<TantrumHazard>());
 
         /// <summary>
         /// Gets the <see cref="TantrumEnvironmentalHazard"/>.

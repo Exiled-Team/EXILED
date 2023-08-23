@@ -270,6 +270,7 @@ namespace Exiled.API.Features
         /// <param name="isActive">Whether or not the tantrum will apply the <see cref="EffectType.Stained"/> effect.</param>
         /// <remarks>If <paramref name="isActive"/> is <see langword="true"/>, the tantrum is moved slightly up from its original position. Otherwise, the collision will not be detected and the slowness will not work.</remarks>
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
+        [Obsolete("Use PlaceTantrumHazard instead.")]
         public static GameObject PlaceTantrum(Vector3 position, bool isActive = true)
         {
             TantrumEnvironmentalHazard tantrum = Object.Instantiate(TantrumPrefab);
@@ -284,6 +285,29 @@ namespace Exiled.API.Features
             NetworkServer.Spawn(tantrum.gameObject);
 
             return tantrum.gameObject;
+        }
+
+        /// <summary>
+        /// Places a Tantrum (SCP-173's ability) in the indicated position.
+        /// </summary>
+        /// <param name="position">The position where you want to spawn the Tantrum.</param>
+        /// <param name="isActive">Whether or not the tantrum will apply the <see cref="EffectType.Stained"/> effect.</param>
+        /// <remarks>If <paramref name="isActive"/> is <see langword="true"/>, the tantrum is moved slightly up from its original position. Otherwise, the collision will not be detected and the slowness will not work.</remarks>
+        /// <returns>The <see cref="TantrumHazard"/> instance.</returns>
+        public static TantrumHazard PlaceTantrumHazard(Vector3 position, bool isActive = true)
+        {
+            TantrumEnvironmentalHazard tantrum = Object.Instantiate(TantrumPrefab);
+
+            if (!isActive)
+                tantrum.SynchronizedPosition = new RelativePosition(position);
+            else
+                tantrum.SynchronizedPosition = new RelativePosition(position + (Vector3.up * 0.25f));
+
+            tantrum._destroyed = !isActive;
+
+            NetworkServer.Spawn(tantrum.gameObject);
+
+            return Hazard.Get(tantrum).Cast<TantrumHazard>();
         }
 
         /// <summary>

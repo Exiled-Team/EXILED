@@ -88,7 +88,7 @@ namespace Exiled.API.Features.Hazards
         /// <summary>
         /// Gets the room where this hazard is located.
         /// </summary>
-        public Room Room => Base.GetComponentInParent<Room>();
+        public Room Room => Room.FindParentRoom(Base.gameObject);
 
         /// <summary>
         /// Gets or sets the position.
@@ -136,7 +136,14 @@ namespace Exiled.API.Features.Hazards
         /// </summary>
         /// <param name="room">Room.</param>
         /// <returns><see cref="Hazard"/> in given <see cref="Exiled.API.Features.Room"/>.</returns>
-        public static Hazard Get(Room room) => Get(room.GetComponentInChildren<EnvironmentalHazard>());
+        public static Hazard Get(Room room) => Get(x => x.Room == room).FirstOrDefault();
+
+        /// <summary>
+        /// Gets the hazard by it's <see cref="GameObject"/>
+        /// </summary>
+        /// <param name="obj">Game object.</param>
+        /// <returns><see cref="Hazard"/> in given <see cref="Exiled.API.Features.Room"/>.</returns>
+        public static Hazard Get(GameObject obj) => Get(x => x.Base.gameObject == obj).FirstOrDefault();
 
         /// <summary>
         /// Gets the <see cref="IEnumerable{T}"/> of <see cref="Hazard"/> based on predicate.
