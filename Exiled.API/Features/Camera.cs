@@ -264,6 +264,71 @@ namespace Exiled.API.Features
         public static IEnumerable<Camera> Get(Func<Camera, bool> predicate) => List.Where(predicate);
 
         /// <summary>
+        /// Get a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the <see cref="Camera"/> instance given a <see cref="IEnumerable{T}"/> of <see cref="Scp079Camera"/>.
+        /// </summary>
+        /// <param name="cameras">the <see cref="IEnumerable{T}"/> of <see cref="Scp079Camera"/>.</param>
+        /// <param name="result">return a <see cref="IEnumerable{T}"/> of <see cref="Camera"/>, it's can be valid, or <see langword="null"/>, depending if <see cref="Scp079Camera"/> it's null or not.</param>
+        /// <returns>a bool result if return sequence contain valid element.</returns>
+        public static bool TryGet(IEnumerable<Scp079Camera> cameras, out IEnumerable<Camera> result)
+        {
+            result = Get(cameras);
+            if (result == null || !result.Any())
+                return false;
+            if (result.All(x => x == null))
+                return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Camera"/> belonging to the <see cref="Scp079Camera"/>, if any.
+        /// </summary>
+        /// <param name="camera">The base <see cref="Scp079Camera"/>.</param>
+        /// <param name="result">The instance of <see cref="Camera"/> which <see cref="Scp079Camera"/> base.</param>
+        /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
+        public static bool TryGet(Scp079Camera camera, out Camera result) => (result = Get(camera)) != null;
+
+        /// <summary>
+        /// Gets a <see cref="Camera"/> given the specified <paramref name="cameraId"/>.
+        /// </summary>
+        /// <param name="cameraId">The id camera to be shearch</param>
+        /// <param name="result">the result of <see cref="Camera"/>, if <paramref name="cameraId"/> is valid.</param>
+        /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
+        public static bool TryGet(uint cameraId, out Camera result) => (result = Get(cameraId)) != null;
+
+        /// <summary>
+        /// Gets a <see cref="Camera"/> given the specified <paramref name="cameraName"/>.
+        /// </summary>
+        /// <param name="cameraName">The name of the camera.</param>
+        /// <param name="result">The <see cref="Camera"/>, if <paramref name="cameraName"/> is valid.</param>
+        /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
+        public static bool TryGet(string cameraName, out Camera result) => (result = Get(cameraName)) != null;
+
+        /// <summary>
+        /// Gets a <see cref="Camera"/> given the specified <paramref name="cameraType"/>.
+        /// </summary>
+        /// <param name="cameraType">The <see cref="CameraType"/> to search for.</param>
+        /// <param name="result">The <see cref="Camera"/> with the given <see cref="CameraType"/>.</param>
+        /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
+        public static bool TryGet(CameraType cameraType, out Camera result) => (result = Get(cameraType)) != null;
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="result">A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satify the condition.</param>
+        /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
+        public static bool TryGet(Func<Camera, bool> predicate, out IEnumerable<Camera> result)
+        {
+            result = null;
+            if (predicate == null)
+                return false;
+            result = List.Where(predicate);
+            if (!result.Any() || result == null)
+                return false;
+            return true;
+        }
+
+        /// <summary>
         /// Returns the Camera in a human-readable format.
         /// </summary>
         /// <returns>A string containing Camera-related data.</returns>

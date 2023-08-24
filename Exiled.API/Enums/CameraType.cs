@@ -18,6 +18,7 @@ namespace Exiled.API.Enums
     /// </summary>
     /// <seealso cref="Camera.Type"/>
     /// <seealso cref="Camera.Get(CameraType)"/>
+    /// <seealso cref="Camera.TryGet(CameraType, out Camera)"/>
     public enum CameraType
     {
         /// <summary>
