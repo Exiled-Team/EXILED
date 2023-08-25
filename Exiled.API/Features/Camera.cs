@@ -56,7 +56,6 @@ namespace Exiled.API.Features
             ["049 HALLWAY"] = CameraType.Hcz049Hallway,
             ["173 OUTSIDE"] = CameraType.Hcz173Outside,
             ["049/173 BOTTOM"] = CameraType.Hcz049TopFloor,
-            ["049 TUNNEL"] = CameraType.Hcz049Tunnel,
             ["079 AIRLOCK"] = CameraType.Hcz079Airlock,
             ["079 CONT CHAMBER"] = CameraType.Hcz079ContChamber,
             ["079 HALLWAY"] = CameraType.Hcz079Hallway,
