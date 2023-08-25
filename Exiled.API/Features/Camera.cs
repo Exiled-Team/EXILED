@@ -50,11 +50,10 @@ namespace Exiled.API.Features
             ["TWO-STORY OFFICE"] = CameraType.EzTwoStoryOffice,
 
             // Heavy Containment Zone
-            ["049 ARMORY"] = CameraType.Hcz049Armory,
+            ["049 OUTSIDE"] = CameraType.Hcz049Outside,
             ["049 CONT CHAMBER"] = CameraType.Hcz049ContChamber,
             ["049/173 TOP"] = CameraType.Hcz049ElevTop,
             ["049 HALLWAY"] = CameraType.Hcz049Hallway,
-            ["049 OUTSIDE"] = CameraType.Hcz049Outside,
             ["173 OUTSIDE"] = CameraType.Hcz173Outside,
             ["049/173 BOTTOM"] = CameraType.Hcz049TopFloor,
             ["049 TUNNEL"] = CameraType.Hcz049Tunnel,
