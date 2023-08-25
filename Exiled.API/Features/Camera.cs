@@ -13,7 +13,7 @@ namespace Exiled.API.Features
 
     using Enums;
     using Exiled.API.Interfaces;
-
+    using MapGeneration;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
 
     using UnityEngine;
@@ -184,7 +184,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's <see cref="ZoneType"/>.
         /// </summary>
-        public ZoneType Zone => Room.Zone;
+        public ZoneType Zone => Room?.Zone ?? ZoneType.Unspecified;
 
         /// <summary>
         /// Gets the camera's <see cref="CameraType"/>.
@@ -265,21 +265,21 @@ namespace Exiled.API.Features
         /// Returns the Camera in a human-readable format.
         /// </summary>
         /// <returns>A string containing Camera-related data.</returns>
-        public override string ToString() => $"{Zone} ({Type}) [{Room}] *{Name}* |{Id}| ={IsBeingUsed}=";
+        public override string ToString() => $"({Type}) [{Room}] *{Name}* |{Id}| ={IsBeingUsed}=";
 
         private CameraType GetCameraType()
         {
             if (NameToCameraType.ContainsKey(Name))
                 return NameToCameraType[Name];
-            return Room?.Type switch
+            return Base.Room.Name switch
             {
-                RoomType.Hcz049 => Name switch
+                RoomName.Hcz049 => Name switch
                 {
                     "173 STAIRS" => CameraType.Hcz173Stairs,
                     "173 CONT CHAMBER" => CameraType.Hcz173ContChamber,
                     _ => CameraType.Unknown,
                 },
-                RoomType.Lcz173 => Name switch
+                RoomName.Lcz173 => Name switch
                 {
                     "173 STAIRS" => CameraType.Lcz173Stairs,
                     "173 CONT CHAMBER" => CameraType.Lcz173ContChamber,
