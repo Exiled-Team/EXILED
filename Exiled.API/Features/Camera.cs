@@ -52,9 +52,10 @@ namespace Exiled.API.Features
             // Heavy Containment Zone
             ["049 ARMORY"] = CameraType.Hcz049Armory,
             ["049 CONT CHAMBER"] = CameraType.Hcz049ContChamber,
-            ["049 ELEV TOP"] = CameraType.Hcz049ElevTop,
-            ["049 HALLWAY"] = CameraType.Hcz049Hallway,
-            ["049 TOP FLOOR"] = CameraType.Hcz049TopFloor,
+            ["049/173 TOP"] = CameraType.Hcz049ElevTop,
+            ["049 OUTSIDE"] = CameraType.Hcz049Hallway,
+            ["173 OUTSIDE"] = CameraType.Hcz173Outside,
+            ["049/173 BOTTOM"] = CameraType.Hcz049TopFloor,
             ["049 TUNNEL"] = CameraType.Hcz049Tunnel,
             ["079 AIRLOCK"] = CameraType.Hcz079Airlock,
             ["079 CONT CHAMBER"] = CameraType.Hcz079ContChamber,
@@ -72,6 +73,7 @@ namespace Exiled.API.Features
             ["HCZ ARMORY"] = CameraType.HczArmory,
             ["HCZ ARMORY INTERIOR"] = CameraType.HczArmoryInterior,
             ["HCZ CROSSING"] = CameraType.HczCrossing,
+            ["HCZ CURVE"] = CameraType.HczCurve,
             ["HCZ ELEV SYS A"] = CameraType.HczElevSysA,
             ["HCZ ELEV SYS B"] = CameraType.HczElevSysB,
             ["HCZ HALLWAY"] = CameraType.HczHallway,
@@ -90,9 +92,7 @@ namespace Exiled.API.Features
 
             // Light Containment Zone
             ["173 BOTTOM"] = CameraType.Lcz173Bottom,
-            ["173 CONT CHAMBER"] = CameraType.Lcz173ContChamber,
             ["173 HALL"] = CameraType.Lcz173Hall,
-            ["173 STAIRS"] = CameraType.Lcz173Stairs,
             ["914 AIRLOCK"] = CameraType.Lcz914Airlock,
             ["914 CONT CHAMBER"] = CameraType.Lcz914ContChamber,
             ["AIRLOCK"] = CameraType.LczAirlock,
@@ -137,6 +137,7 @@ namespace Exiled.API.Features
         {
             Base = camera079;
             Camera079ToCamera.Add(camera079, this);
+            Type = GetCameraType();
         }
 
         /// <summary>
@@ -188,10 +189,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's <see cref="CameraType"/>.
         /// </summary>
-        public CameraType Type
-        {
-            get => NameToCameraType.ContainsKey(Name) ? NameToCameraType[Name] : CameraType.Unknown;
-        }
+        public CameraType Type { get; private set; }
 
         /// <summary>
         /// Gets the camera's position.
@@ -268,5 +266,27 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>A string containing Camera-related data.</returns>
         public override string ToString() => $"{Zone} ({Type}) [{Room}] *{Name}* |{Id}| ={IsBeingUsed}=";
+
+        private CameraType GetCameraType()
+        {
+            if (NameToCameraType.ContainsKey(Name))
+                return NameToCameraType[Name];
+            return Room?.Type switch
+            {
+                RoomType.Hcz049 => Name switch
+                {
+                    "173 STAIRS" => CameraType.Hcz173Stairs,
+                    "173 CONT CHAMBER" => CameraType.Hcz173ContChamber,
+                    _ => CameraType.Unknown,
+                },
+                RoomType.Lcz173 => Name switch
+                {
+                    "173 STAIRS" => CameraType.Lcz173Stairs,
+                    "173 CONT CHAMBER" => CameraType.Lcz173ContChamber,
+                    _ => CameraType.Unknown,
+                },
+                _ => CameraType.Unknown,
+            };
+        }
     }
 }

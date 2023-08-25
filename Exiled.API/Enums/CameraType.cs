@@ -48,6 +48,7 @@ namespace Exiled.API.Enums
         Hcz049ContChamber,
         Hcz049ElevTop,
         Hcz049Hallway,
+        Hcz049Outside = Hcz049Hallway,
         Hcz049TopFloor,
         Hcz049Tunnel,
         Hcz079Airlock,
@@ -121,6 +122,14 @@ namespace Exiled.API.Enums
         SurfaceAirlock,
         SurfaceBridge,
         TunnelEntrance,
+        #endregion
+
+        #region new
+        Hcz173Outside,
+        Hcz173Stairs,
+        Hcz173ContChamber,
+        Hcz173Hallway,
+        HczCurve,
         #endregion
     }
 }
