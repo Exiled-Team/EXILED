@@ -53,7 +53,8 @@ namespace Exiled.API.Features
             ["049 ARMORY"] = CameraType.Hcz049Armory,
             ["049 CONT CHAMBER"] = CameraType.Hcz049ContChamber,
             ["049/173 TOP"] = CameraType.Hcz049ElevTop,
-            ["049 OUTSIDE"] = CameraType.Hcz049Hallway,
+            ["049 HALLWAY"] = CameraType.Hcz049Hallway,
+            ["049 OUTSIDE"] = CameraType.Hcz049Outside,
             ["173 OUTSIDE"] = CameraType.Hcz173Outside,
             ["049/173 BOTTOM"] = CameraType.Hcz049TopFloor,
             ["049 TUNNEL"] = CameraType.Hcz049Tunnel,
@@ -138,6 +139,8 @@ namespace Exiled.API.Features
             Base = camera079;
             Camera079ToCamera.Add(camera079, this);
             Type = GetCameraType();
+            if (Type is CameraType.Unknown)
+                Log.Error($"[CAMERA UNKNOWN] {this}");
         }
 
         /// <summary>

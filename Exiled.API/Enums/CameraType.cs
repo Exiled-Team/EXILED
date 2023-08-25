@@ -45,10 +45,10 @@ namespace Exiled.API.Enums
 
         #region Hcz
         Hcz049Armory,
+        Hcz049Outside = Hcz049Armory,
         Hcz049ContChamber,
         Hcz049ElevTop,
         Hcz049Hallway,
-        Hcz049Outside = Hcz049Hallway,
         Hcz049TopFloor,
         Hcz049Tunnel,
         Hcz079Airlock,
