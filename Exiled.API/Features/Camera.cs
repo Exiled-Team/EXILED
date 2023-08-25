@@ -137,8 +137,10 @@ namespace Exiled.API.Features
             Base = camera079;
             Camera079ToCamera.Add(camera079, this);
             Type = GetCameraType();
+#if Debug
             if (Type is CameraType.Unknown)
                 Log.Error($"[CAMERA UNKNOWN] {this}");
+#endif
         }
 
         /// <summary>
