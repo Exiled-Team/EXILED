@@ -149,7 +149,7 @@ public class EventHandlers
 {
     public void TriggeringTesla(TriggeringTeslaEventArgs ev)
     {
-        // Disable the event for fondation personel players.
+        // Disable the event for fondation personnel players.
         // This can be accomplished by checking the player's side.
         if (ev.Player.Role.Side == Side.Mtf) {
             // Disable the tesla trigger by setting ev.IsTriggerable to false.
