@@ -81,6 +81,11 @@ namespace Exiled.API.Features
         public RoomName RoomName => Identifier.Name;
 
         /// <summary>
+        /// Gets the room's <see cref="MapGeneration.RoomShape"/>.
+        /// </summary>
+        public RoomShape RoomShape => Identifier.Shape;
+
+        /// <summary>
         /// Gets the <see cref="RoomType"/>.
         /// </summary>
         public RoomType Type { get; private set; } = RoomType.Unknown;
@@ -275,6 +280,13 @@ namespace Exiled.API.Features
         /// <param name="position">World position.</param>
         /// <returns>Local position, based on the room.</returns>
         public Vector3 LocalPosition(Vector3 position) => Transform.TransformPoint(position);
+
+        /// <summary>
+        /// Returns the World position, based on a local space position.
+        /// </summary>
+        /// <param name="offset">Local position.</param>
+        /// <returns>World position, based on the room.</returns>
+        public Vector3 WorldPosition(Vector3 offset) => Transform.InverseTransformPoint(offset);
 
         /// <summary>
         /// Flickers the room's lights off for a duration.

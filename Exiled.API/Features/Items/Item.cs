@@ -172,7 +172,7 @@ namespace Exiled.API.Features.Items
         /// <returns>The item wrapper for the given <see cref="ItemBase"/>.</returns>
         public static Item Get(ItemBase itemBase)
         {
-            if (itemBase is null)
+            if (itemBase == null)
                 return null;
 
             if (BaseToItem.TryGetValue(itemBase, out Item item))
