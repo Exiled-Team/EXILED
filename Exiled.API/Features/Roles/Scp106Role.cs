@@ -193,32 +193,32 @@ namespace Exiled.API.Features.Roles
         public float VigorRegeneration { get; set; } = Scp106StalkAbility.VigorRegeneration;
 
         /// <summary>
-        /// Gets or sets how mush vigor will be regenerate while moving per seconds.
+        /// Gets or sets how mush damage Scp106 will dealt when attacking a player.
         /// </summary>
         public float AttackDamage { get; set; } = Scp106Attack.AttackDamage;
 
         /// <summary>
-        /// Gets or sets how mush vigor will be regenerate while moving per seconds.
+        /// Gets or sets the duration of Corroding effect.
         /// </summary>
         public float CorrodingTime { get; set; } = Scp106Attack.CorrodingTime;
 
         /// <summary>
-        /// Gets or sets how mush vigor will be regenerate while moving per seconds.
+        /// Gets or sets how mush vigor Scp106 will gain when being reward for having caught a player.
         /// </summary>
         public float VigorCaptureReward { get; set; } = Scp106Attack.VigorCaptureReward;
 
         /// <summary>
-        /// Gets or sets how mush vigor will be regenerate while moving per seconds.
+        /// Gets or sets how mush reduction cooldown Scp106 will gain when being reward for having caught a player.
         /// </summary>
         public float CooldownReductionReward { get; set; } = Scp106Attack.CooldownReductionReward;
 
         /// <summary>
-        /// Gets or sets how mush vigor will be regenerate while moving per seconds.
+        /// Gets or sets the cooldown duration of it's Sinkhole ability's.
         /// </summary>
         public float SinkholeCooldownDuration { get; set; } = Scp106SinkholeController.CooldownDuration;
 
         /// <summary>
-        /// Gets or sets how mush vigor will be regenerate while moving per seconds.
+        /// Gets or sets how mush vigor it's ability Hunter Atlas will cost per meter.
         /// </summary>
         public float HuntersAtlasCostPerMeter { get; set; } = Scp106HuntersAtlasAbility.CostPerMeter;
 
