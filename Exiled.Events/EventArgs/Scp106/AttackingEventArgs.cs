@@ -8,12 +8,13 @@
 namespace Exiled.Events.EventArgs.Scp106
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// Contains all information before SCP-106 attacks player.
     /// </summary>
-    public class AttackingEventArgs : IPlayerEvent, IDeniableEvent
+    public class AttackingEventArgs : IScp106Event, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AttackingEventArgs"/> class.
@@ -24,6 +25,7 @@ namespace Exiled.Events.EventArgs.Scp106
         public AttackingEventArgs(Player player, Player target, bool isAllowed = true)
         {
             Player = player;
+            Scp106 = player.Role.As<Scp106Role>();
             Target = target;
             IsAllowed = isAllowed;
         }
@@ -32,6 +34,9 @@ namespace Exiled.Events.EventArgs.Scp106
         /// Gets the player controlling SCP-106.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp106Role Scp106 { get; }
 
         /// <summary>
         /// Gets the target of attack.

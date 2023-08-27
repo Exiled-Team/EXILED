@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs.Scp106
     /// <summary>
     ///     Contains all information before SCP-106 use the stalk ability.
     /// </summary>
-    public class StalkingEventArgs : IPlayerEvent, IDeniableEvent
+    public class StalkingEventArgs : IScp106Event, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StalkingEventArgs"/> class.
@@ -60,9 +60,7 @@ namespace Exiled.Events.EventArgs.Scp106
         /// </summary>
         public Player Player { get; }
 
-        /// <summary>
-        /// Gets the player who's controlling SCP-106.
-        /// </summary>
+        /// <inheritdoc/>
         public Scp106Role Scp106 { get; }
 
         /// <summary>
