@@ -294,18 +294,17 @@ namespace Exiled.API.Features.Roles
             if (player is null)
                 return;
             Attack._targetHub = player.ReferenceHub;
-            DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, Attack._damage, DeathTranslations.PocketDecay);
+            DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, AttackDamage, DeathTranslations.PocketDecay);
 
             if (!Attack._targetHub.playerStats.DealDamage(handler))
                 return;
 
             Attack.SendCooldown(Attack._hitCooldown);
-            Attack.Vigor.VigorAmount += Scp106Attack.VigorCaptureReward;
+            Attack.Vigor.VigorAmount += VigorCaptureReward;
             Attack.ReduceSinkholeCooldown();
             Hitmarker.SendHitmarker(Attack.Owner, 1f);
 
-            player.EnableEffect(EffectType.Corroding);
-            player.EnableEffect(EffectType.SinkHole);
+            player.EnableEffect(EffectType.PocketCorroding);
         }
 
         /// <summary>
