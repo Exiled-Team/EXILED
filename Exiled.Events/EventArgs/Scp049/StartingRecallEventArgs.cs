@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Scp049
     /// <summary>
     ///     Contains all information before SCP-049 begins recalling a player.
     /// </summary>
-    public class StartingRecallEventArgs : IScp049Event, IPlayerEvent, IRagdollEvent, IDeniableEvent
+    public class StartingRecallEventArgs : IScp049Event, IRagdollEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="StartingRecallEventArgs" /> class.

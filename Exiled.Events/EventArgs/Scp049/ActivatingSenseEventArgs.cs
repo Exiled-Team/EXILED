@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Scp049
     /// <summary>
     ///     Contains all information before SCP-049 sense is activated.
     /// </summary>
-    public class ActivatingSenseEventArgs : IScp049Event, IPlayerEvent, IDeniableEvent
+    public class ActivatingSenseEventArgs : IScp049Event, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivatingSenseEventArgs"/> class with information before SCP-049 sense is activated.

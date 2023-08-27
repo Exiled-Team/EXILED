@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Scp049
     /// <summary>
     /// Contains all information before SCP-049 Call is activated.
     /// </summary>
-    public class SendingCallEventArgs : IScp049Event, IPlayerEvent, IDeniableEvent
+    public class SendingCallEventArgs : IScp049Event, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SendingCallEventArgs"/> class.

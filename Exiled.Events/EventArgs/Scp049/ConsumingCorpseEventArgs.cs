@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs.Scp049
     using System;
 
     using API.Features;
-
+    using Exiled.API.Features.Roles;
     using Interfaces;
 
     using PlayerRoles.PlayableScps.Scp049.Zombies;
@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs.Scp049
     /// <summary>
     ///     Contains all information before zombie consumes RagDolls.
     /// </summary>
-    public class ConsumingCorpseEventArgs : IPlayerEvent, IRagdollEvent, IDeniableEvent
+    public class ConsumingCorpseEventArgs : IScp0492Event, IRagdollEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsumingCorpseEventArgs"/> class.
@@ -30,6 +30,7 @@ namespace Exiled.Events.EventArgs.Scp049
         public ConsumingCorpseEventArgs(Player player, Ragdoll ragDoll, bool isAllowed = true)
         {
             Player = player;
+            Scp0492 = player.Role.As<Scp0492Role>();
             Ragdoll = ragDoll;
             ConsumeHeal = ZombieConsumeAbility.ConsumeHeal;
             IsAllowed = isAllowed;
@@ -39,6 +40,9 @@ namespace Exiled.Events.EventArgs.Scp049
         ///     Gets the player who is controlling SCP-049-2.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp0492Role Scp0492 { get; }
 
         /// <summary>
         ///     Gets the RagDoll to be consumed.

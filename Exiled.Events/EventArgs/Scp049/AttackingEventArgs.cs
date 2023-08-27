@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Scp049
     /// <summary>
     /// Contains all information before SCP-049 attacks player.
     /// </summary>
-    public class AttackingEventArgs : IScp049Event, IPlayerEvent, IDeniableEvent
+    public class AttackingEventArgs : IScp049Event, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AttackingEventArgs"/> class.
