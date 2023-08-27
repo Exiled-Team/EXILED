@@ -305,35 +305,9 @@ namespace Exiled.API.Extensions
             else
                 throw new KeyNotFoundException($"Basecode for weapon {type} not found! Stored BaseCodesValue:\n{Firearm.BaseCodesValue.Keys.ToString(true)}\n{Firearm.BaseCodesValue.Values.ToString(true)}");
         }
-
-        /// <summary>
-        /// Gets the <see cref="ItemCategory"/> of the specified <see cref="ItemType"/>.
-        /// </summary>
+       
         /// <param name="type">The <see cref="ItemType"/> to check.</param>
         /// <returns><see cref="ItemCategory"/> of the specified <see cref="ItemType"/>.</returns>
-        public static ItemCategory GetCategory(this ItemType type)
-        {
-            if (type is ItemType.MicroHID)
-                return ItemCategory.MicroHID;
-            if (type is ItemType.Radio)
-                return ItemCategory.Radio;
-
-            if (type.IsAmmo())
-                return ItemCategory.Ammo;
-            if (type.IsKeycard())
-                return ItemCategory.Keycard;
-            if (type.IsArmor())
-                return ItemCategory.Armor;
-            if (type.IsMedical())
-                return ItemCategory.Medical;
-            if (type.IsWeapon())
-                return ItemCategory.Firearm;
-            if (type.IsThrowable())
-                return ItemCategory.Grenade;
-            if (type.IsScp())
-                return ItemCategory.SCPItem;
-
-            return ItemCategory.None;
-        }
+        public static ItemCategory GetCategory(this ItemType type) => GetItemBase(type).Category;
     }
 }
