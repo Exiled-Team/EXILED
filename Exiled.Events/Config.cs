@@ -39,6 +39,12 @@ namespace Exiled.Events
         public bool CanScp049SenseTutorial { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether tutorial is affected by SCP-079 scan.
+        /// </summary>
+        [Description("Indicates whether tutorial is affected by SCP-079 scan.")]
+        public bool TutorialNotAffectedByScp079Scan { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets a value indicating whether flashbangs flash original thrower.
         /// </summary>
         [Description("Indicates whether flashbangs flash original thrower.")]
