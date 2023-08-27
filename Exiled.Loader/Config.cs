@@ -61,7 +61,13 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets or sets the quotes wrapper type.
         /// </summary>
-        [Description("Indicates in which qoutes strings in configs will be wrapped (Any, SingleQuoted, DoubleQuoted, Folded, Literal)")]
+        [Description("Indicates in which quoted strings in configs will be wrapped (Any, SingleQuoted, DoubleQuoted, Folded, Literal)")]
         public ScalarStyle ScalarStyle { get; set; } = ScalarStyle.SingleQuoted;
+
+        /// <summary>
+        /// Gets or sets the quotes wrapper type.
+        /// </summary>
+        [Description("Indicates in which quoted strings with multiline in configs will be wrapped (Any, SingleQuoted, DoubleQuoted, Folded, Literal)")]
+        public ScalarStyle MultiLineScalarStyle { get; set; } = ScalarStyle.Literal;
     }
 }

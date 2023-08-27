@@ -18,6 +18,8 @@ namespace Exiled.Loader.Features.Configs
     /// </summary>
     public class TypeAssigningEventEmitter : ChainedEventEmitter
     {
+        private readonly char[] multiline = new char[] { '\r', '\n', '\x85', '\x2028', '\x2029' };
+
         /// <inheritdoc cref="ChainedEventEmitter"/>
         public TypeAssigningEventEmitter(IEventEmitter nextEmitter)
             : base(nextEmitter)
@@ -28,7 +30,12 @@ namespace Exiled.Loader.Features.Configs
         public override void Emit(ScalarEventInfo eventInfo, IEmitter emitter)
         {
             if (eventInfo.Source.StaticType != typeof(object) && Type.GetTypeCode(eventInfo.Source.StaticType) == TypeCode.String && !UnderscoredNamingConvention.Instance.Properties.Contains(eventInfo.Source.Value))
-                eventInfo.Style = LoaderPlugin.Config.ScalarStyle;
+            {
+                if (eventInfo.Source.Value.ToString().IndexOfAny(multiline) is -1)
+                    eventInfo.Style = LoaderPlugin.Config.ScalarStyle;
+                else
+                    eventInfo.Style = LoaderPlugin.Config.MultiLineScalarStyle;
+            }
 
             base.Emit(eventInfo, emitter);
         }

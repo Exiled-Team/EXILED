@@ -46,7 +46,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether or not the <see cref="ItemType"/> is an SCP.</returns>
-        public static bool IsScp(this ItemType type) => type is ItemType.SCP018 or ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP244a or ItemType.SCP244b or ItemType.SCP2176 or ItemType.SCP1853 or ItemType.AntiSCP207 or ItemType.SCP1576;
+        public static bool IsScp(this ItemType type) => type is ItemType.SCP018 or ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP244a or ItemType.SCP244b or ItemType.SCP2176 or ItemType.SCP1853 or ItemType.SCP330 or ItemType.AntiSCP207 or ItemType.SCP1576;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a throwable item.
