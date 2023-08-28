@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Scp079
     /// <summary>
     ///     Contains all information before SCP-079 lockdowns a room.
     /// </summary>
-    public class LockingDownEventArgs : IPlayerEvent, IRoomEvent, IDeniableEvent
+    public class LockingDownEventArgs : IScp079Event, IRoomEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="LockingDownEventArgs" /> class.
@@ -33,15 +33,19 @@ namespace Exiled.Events.EventArgs.Scp079
         public LockingDownEventArgs(Player player, RoomIdentifier roomIdentifier, float auxiliaryPowerCost)
         {
             Player = player;
+            Scp079 = player.Role.As<Scp079Role>();
             Room = Room.Get(roomIdentifier);
             AuxiliaryPowerCost = auxiliaryPowerCost;
-            IsAllowed = auxiliaryPowerCost <= player.Role.As<Scp079Role>().Energy;
+            IsAllowed = auxiliaryPowerCost <= Scp079.Energy;
         }
 
         /// <summary>
         ///     Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp079Role Scp079 { get; }
 
         /// <summary>
         ///     Gets the <see cref="RoomIdentifier" /> of the room that will be locked down.

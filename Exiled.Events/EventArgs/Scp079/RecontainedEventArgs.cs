@@ -8,28 +8,32 @@
 namespace Exiled.Events.EventArgs.Scp079
 {
     using API.Features;
-
+    using Exiled.API.Features.Roles;
     using Interfaces;
 
     /// <summary>
     ///     Contains information after SCP-079 recontainment.
     /// </summary>
-    public class RecontainedEventArgs : IPlayerEvent
+    public class RecontainedEventArgs : IScp079Event
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecontainedEventArgs" /> class.
         /// </summary>
-        /// <param name="target">
+        /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
-        public RecontainedEventArgs(Player target)
+        public RecontainedEventArgs(Player player)
         {
-            Player = target;
+            Player = player;
+            Scp079 = player.Role.As<Scp079Role>();
         }
 
         /// <summary>
         ///     Gets the player that previously controlled SCP-079.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp079Role Scp079 { get; }
     }
 }

@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Scp079
     /// <summary>
     ///     Contains all information before SCP-079 uses a speaker.
     /// </summary>
-    public class ChangingSpeakerStatusEventArgs : IPlayerEvent, IRoomEvent, IDeniableEvent
+    public class ChangingSpeakerStatusEventArgs : IScp079Event, IRoomEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ChangingSpeakerStatusEventArgs" /> class.
@@ -30,7 +30,8 @@ namespace Exiled.Events.EventArgs.Scp079
         public ChangingSpeakerStatusEventArgs(Player player, bool isAllowed)
         {
             Player = player;
-            Room = Room.Get(player.Role.As<Scp079Role>().Speaker.Room);
+            Scp079 = player.Role.As<Scp079Role>();
+            Room = Room.Get(Scp079.Speaker.Room);
             IsAllowed = isAllowed;
         }
 
@@ -38,6 +39,9 @@ namespace Exiled.Events.EventArgs.Scp079
         ///     Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp079Role Scp079 { get; }
 
         /// <summary>
         ///     Gets the room that the speaker is located in.

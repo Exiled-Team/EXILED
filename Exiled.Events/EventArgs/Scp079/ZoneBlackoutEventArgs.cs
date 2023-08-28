@@ -20,7 +20,7 @@ namespace Exiled.Events.EventArgs.Scp079
     /// <summary>
     ///     Contains all information before SCP-079 lockdowns a room.
     /// </summary>
-    public class ZoneBlackoutEventArgs : IPlayerEvent, IDeniableEvent
+    public class ZoneBlackoutEventArgs : IScp079Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ZoneBlackoutEventArgs" /> class.
@@ -46,6 +46,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public ZoneBlackoutEventArgs(ReferenceHub player, FacilityZone zone, float auxiliaryPowerCost, float blackoutduration, float cooldown, Scp079HudTranslation scp079HudTranslation)
         {
             Player = Player.Get(player);
+            Scp079 = Player.Role.As<API.Features.Roles.Scp079Role>();
             Zone = zone.GetZone();
             AuxiliaryPowerCost = auxiliaryPowerCost;
             BlackoutDuration = blackoutduration;
@@ -88,5 +89,8 @@ namespace Exiled.Events.EventArgs.Scp079
         ///     Gets or sets a value indicating whether or not SCP-079 can lockdown a room.
         /// </summary>
         public bool IsAllowed { get; set; }
+
+        /// <inheritdoc/>
+        public API.Features.Roles.Scp079Role Scp079 { get; }
     }
 }

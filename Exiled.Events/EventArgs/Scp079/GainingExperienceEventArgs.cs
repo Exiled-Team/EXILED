@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Scp079
     /// <summary>
     ///     Contains all information before SCP-079 gains experience.
     /// </summary>
-    public class GainingExperienceEventArgs : IPlayerEvent, IDeniableEvent
+    public class GainingExperienceEventArgs : IScp079Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="GainingExperienceEventArgs" /> class.
@@ -38,6 +38,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public GainingExperienceEventArgs(Player player, Scp079HudTranslation gainType, int amount, RoleTypeId roleType, bool isAllowed = true)
         {
             Player = player;
+            Scp079 = player.Role.As<API.Features.Roles.Scp079Role>();
             GainType = gainType;
             RoleType = roleType;
             Amount = amount;
@@ -69,5 +70,8 @@ namespace Exiled.Events.EventArgs.Scp079
         ///     Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public API.Features.Roles.Scp079Role Scp079 { get; }
     }
 }
