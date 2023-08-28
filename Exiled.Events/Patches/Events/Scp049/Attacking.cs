@@ -35,8 +35,6 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             Label continueLabel = generator.DefineLabel();
 
-            newInstructions[index].labels.Add(continueLabel);
-
             newInstructions.InsertRange(
                 index,
                 new[]
@@ -67,6 +65,8 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new(OpCodes.Brtrue_S, continueLabel),
 
                     new(OpCodes.Ret),
+
+                    new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
