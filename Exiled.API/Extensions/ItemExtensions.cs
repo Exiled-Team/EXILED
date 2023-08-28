@@ -305,7 +305,10 @@ namespace Exiled.API.Extensions
             else
                 throw new KeyNotFoundException($"Basecode for weapon {type} not found! Stored BaseCodesValue:\n{Firearm.BaseCodesValue.Keys.ToString(true)}\n{Firearm.BaseCodesValue.Values.ToString(true)}");
         }
-       
+        
+        /// <summary>
+        /// Gets the item category of the specified <see cref="ItemType"/>.
+        /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to check.</param>
         /// <returns><see cref="ItemCategory"/> of the specified <see cref="ItemType"/>.</returns>
         public static ItemCategory GetCategory(this ItemType type) => GetItemBase(type).Category;
