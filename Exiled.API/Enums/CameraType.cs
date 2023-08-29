@@ -53,9 +53,9 @@ namespace Exiled.API.Enums
         Hcz049ElevTop,
         Hcz049Hallway,
         Hcz049TopFloor,
+        Hcz049Outside,
         [Obsolete("Has been renamed Hcz049Outside")]
-        Hcz049Tunnel,
-        Hcz049Outside = Hcz049Tunnel,
+        Hcz049Tunnel = Hcz049Outside,
         Hcz079Airlock,
         Hcz079ContChamber,
         Hcz079Hallway,
