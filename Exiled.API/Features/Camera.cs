@@ -272,7 +272,7 @@ namespace Exiled.API.Features
         public static bool TryGet(IEnumerable<Scp079Camera> cameras, out IEnumerable<Camera> result)
         {
             result = Get(cameras);
-            if (result == null || !result.Any())
+            if (!result.Any())
                 return false;
             if (result.All(x => x == null))
                 return false;
@@ -290,7 +290,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Camera"/> given the specified <paramref name="cameraId"/>.
         /// </summary>
-        /// <param name="cameraId">The id camera to be shearch</param>
+        /// <param name="cameraId">The id camera to be shearch.</param>
         /// <param name="result">the result of <see cref="Camera"/>, if <paramref name="cameraId"/> is valid.</param>
         /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
         public static bool TryGet(uint cameraId, out Camera result) => (result = Get(cameraId)) != null;
@@ -319,11 +319,7 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
         public static bool TryGet(Func<Camera, bool> predicate, out IEnumerable<Camera> result)
         {
-            result = null;
-            if (predicate == null)
-                return false;
-            result = List.Where(predicate);
-            if (!result.Any() || result == null)
+            if (!result.Any())
                 return false;
             return true;
         }
