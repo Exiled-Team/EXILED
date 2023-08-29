@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             LocalBuilder ev = generator.DeclareLocal(typeof(PingingEventArgs));
 
             int offset = 1;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Stfld) + offset;
+            int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Stfld) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -99,7 +99,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             // with
             // "base.AuxManager.CurrentAux -= ev.AuxiliaryPowerCost;"
             offset = -1;
-            index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)Field(typeof(Scp079PingAbility), nameof(Scp079PingAbility._cost))) + offset;
+            index = newInstructions.FindLastIndex(x => x.operand == (object)Field(typeof(Scp079PingAbility), nameof(Scp079PingAbility._cost))) + offset;
 
             newInstructions.RemoveRange(index, 3);
 

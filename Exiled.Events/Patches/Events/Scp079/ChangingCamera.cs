@@ -56,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
                     // this._switchTarget
                     new CodeInstruction(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(Scp079CurrentCameraSync), nameof(Scp079CurrentCameraSync._switchTarget))),
+                    new(OpCodes.Ldfld, Field(typeof(Scp079CurrentCameraSync), nameof(Scp079CurrentCameraSync._switchTarget))),
 
                     // num (cost)
                     new(OpCodes.Ldloc_0),
@@ -88,8 +88,8 @@ namespace Exiled.Events.Patches.Events.Scp079
                 });
 
             // return as the same way than NW does
-            offset = 2;
-            index = newInstructions.FindIndex(instruction => instruction.operand == (object)Method(typeof(EventManager), nameof(EventManager.ExecuteEvent))) + offset;
+            offset = 1;
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + offset;
             newInstructions[index].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
