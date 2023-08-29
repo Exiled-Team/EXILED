@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using API.Features.Pools;
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Scp079;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp079;
@@ -55,9 +56,10 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldfld, Field(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility._roomController))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RoomLightController), nameof(RoomLightController.Room))),
 
-                    // this._cost
+                    // (float)this._cost
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility._cost))),
+                    new(OpCodes.Conv_R4),
 
                     // this._duration
                     new(OpCodes.Ldarg_0),
@@ -128,9 +130,9 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RoomBlackoutEventArgs), nameof(RoomBlackoutEventArgs.Cooldown))),
                 });
 
-            // replace "this._blackoutCooldowns[this._roomController.netId] = NetworkTime.time + (double)this._cooldown;"
+            // replace "this._roomController.ServerFlickerLights(this._blackoutDuration);"
             // with
-            // "this._blackoutCooldowns[this._roomController.netId] = NetworkTime.time + ev.Cooldown;"
+            // "this._roomController.ServerFlickerLights(ev.BlackoutDuration);"
             offset = -1;
             index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)Field(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility._blackoutDuration))) + offset;
 
@@ -144,6 +146,9 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RoomBlackoutEventArgs), nameof(RoomBlackoutEventArgs.BlackoutDuration))),
                 });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                Log.Info($"opcode: {newInstructions[z].opcode} operand:{newInstructions[z].operand}: {newInstructions[z].labels.Count}");
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

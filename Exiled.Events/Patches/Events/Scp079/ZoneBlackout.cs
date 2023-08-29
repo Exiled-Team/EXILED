@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using API.Features.Pools;
     using Exiled.API.Extensions;
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Scp079;
 
     using HarmonyLib;
@@ -34,8 +35,12 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ZoneBlackoutEventArgs));
 
-            int offset = 0;
-            int index = newInstructions.FindIndex(x => x.opcode == OpCodes.Brfalse) + offset;
+            int offset = -2;
+            int index = newInstructions.FindIndex(x => x.opcode == OpCodes.Brfalse_S) + offset;
+            Log.Info($"ZoneBlackout {index}");
+
+            // remove "this.ErrorCode"
+            newInstructions.RemoveRange(index, 2);
 
             newInstructions.InsertRange(
                 index,
@@ -49,9 +54,10 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility._syncZone))),
 
-                    // this._cost
+                    // (float)this._cost
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility._cost))),
+                    new(OpCodes.Conv_R4),
 
                     // this._duration
                     new(OpCodes.Ldarg_0),
@@ -82,6 +88,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             offset = 1;
             index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ret) + offset;
+            Log.Info($"ZoneBlackout {index}");
 
             newInstructions.InsertRange(
                 index,
@@ -92,7 +99,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ZoneBlackoutEventArgs), nameof(ZoneBlackoutEventArgs.Zone))),
                     new(OpCodes.Call, Method(typeof(RoomExtensions), nameof(RoomExtensions.GetZone), new[] { typeof(API.Enums.ZoneType), })),
-                    new(OpCodes.Callvirt, PropertySetter(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility._syncZone))),
+                    new(OpCodes.Stfld, Field(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility._syncZone))),
                 });
 
             // replace "roomLightController.ServerFlickerLights(this._duration);"
@@ -100,6 +107,8 @@ namespace Exiled.Events.Patches.Events.Scp079
             // "roomLightController.ServerFlickerLights(ev.Duration);"
             offset = -1;
             index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)Field(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility._duration))) + offset;
+            Log.Info($"ZoneBlackout {index}");
+
             newInstructions.RemoveRange(index, 2);
 
             newInstructions.InsertRange(
@@ -116,7 +125,8 @@ namespace Exiled.Events.Patches.Events.Scp079
             // "this._cooldownTimer.Trigger((double)ev._cooldown);"
             offset = -1;
             index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)Field(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility._cooldown))) + offset;
-            newInstructions.RemoveRange(index, 3);
+            Log.Info($"ZoneBlackout {index}");
+            newInstructions.RemoveRange(index, 2);
 
             newInstructions.InsertRange(
                 index,
@@ -129,9 +139,10 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             // replace "base.AuxManager.CurrentAux -= (float)this._cost;"
             // with
-            // "base.AuxManager.CurrentAux -= (float)ev.AuxiliaryPowerCost;"
+            // "base.AuxManager.CurrentAux -= ev.AuxiliaryPowerCost;"
             offset = -1;
             index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)Field(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility._cost))) + offset;
+            Log.Info($"ZoneBlackout {index}");
             newInstructions.RemoveRange(index, 3);
 
             newInstructions.InsertRange(
@@ -142,6 +153,9 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ZoneBlackoutEventArgs), nameof(ZoneBlackoutEventArgs.AuxiliaryPowerCost))),
                 });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                Log.Info($"opcode: {newInstructions[z].opcode} operand:{newInstructions[z].operand}: {newInstructions[z].labels.Count}");
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
