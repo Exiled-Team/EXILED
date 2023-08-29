@@ -269,15 +269,7 @@ namespace Exiled.API.Features
         /// <param name="cameras">the <see cref="IEnumerable{T}"/> of <see cref="Scp079Camera"/>.</param>
         /// <param name="result">return a <see cref="IEnumerable{T}"/> of <see cref="Camera"/>, it's can be valid, or <see langword="null"/>, depending if <see cref="Scp079Camera"/> it's null or not.</param>
         /// <returns>a bool result if return sequence contain valid element.</returns>
-        public static bool TryGet(IEnumerable<Scp079Camera> cameras, out IEnumerable<Camera> result)
-        {
-            result = Get(cameras);
-            if (!result.Any())
-                return false;
-            if (result.All(x => x == null))
-                return false;
-            return true;
-        }
+        public static bool TryGet(IEnumerable<Scp079Camera> cameras, out IEnumerable<Camera> result) => (result = Get(cameras)).Any();
 
         /// <summary>
         /// Gets the <see cref="Camera"/> belonging to the <see cref="Scp079Camera"/>, if any.
@@ -317,12 +309,7 @@ namespace Exiled.API.Features
         /// <param name="predicate">The condition to satify.</param>
         /// <param name="result">A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satify the condition.</param>
         /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
-        public static bool TryGet(Func<Camera, bool> predicate, out IEnumerable<Camera> result)
-        {
-            if (!result.Any())
-                return false;
-            return true;
-        }
+        public static bool TryGet(Func<Camera, bool> predicate, out IEnumerable<Camera> result) => (result = Get(predicate)).Any();
 
         /// <summary>
         /// Returns the Camera in a human-readable format.
