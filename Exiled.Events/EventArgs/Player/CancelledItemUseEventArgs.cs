@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player cancels usage of an item.
     /// </summary>
-    public class CancelledItemUseEventArgs : IPlayerEvent
+    public class CancelledItemUseEventArgs : IPlayerEvent, IItemEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="CancelledItemUseEventArgs" /> class.
@@ -27,13 +27,16 @@ namespace Exiled.Events.EventArgs.Player
         public CancelledItemUseEventArgs(Player player, UsableItem item)
         {
             Player = player;
-            Item = API.Features.Items.Item.Get(item) is Usable usable ? usable : null;
+            Usable = Item.Get(item) is Usable usable ? usable : null;
         }
 
         /// <summary>
         ///     Gets the item that the player cancelling.
         /// </summary>
-        public Usable Item { get; }
+        public Usable Usable { get; }
+
+        /// <inheritdoc/>
+        public Item Item => Usable;
 
         /// <summary>
         ///     Gets the player who cancelling the item.

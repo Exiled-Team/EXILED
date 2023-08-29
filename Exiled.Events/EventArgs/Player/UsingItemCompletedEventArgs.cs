@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player uses an item.
     /// </summary>
-    public class UsingItemCompletedEventArgs : IPlayerEvent, IDeniableEvent
+    public class UsingItemCompletedEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UsingItemCompletedEventArgs" /> class.
@@ -28,13 +28,16 @@ namespace Exiled.Events.EventArgs.Player
         public UsingItemCompletedEventArgs(Player player, UsableItem item)
         {
             Player = player;
-            Item = API.Features.Items.Item.Get(item) is Usable usable ? usable : null;
+            Usable = Item.Get(item) is Usable usable ? usable : null;
         }
 
         /// <summary>
         ///     Gets the item that the player using.
         /// </summary>
-        public Usable Item { get; }
+        public Usable Usable { get; }
+
+        /// <inheritdoc/>
+        public Item Item => Usable;
 
         /// <summary>
         ///     Gets the player who using the item.
