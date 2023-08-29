@@ -46,7 +46,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether or not the <see cref="ItemType"/> is an SCP.</returns>
-        public static bool IsScp(this ItemType type) => type is ItemType.SCP018 or ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP244a or ItemType.SCP244b or ItemType.SCP2176 or ItemType.SCP1853 or ItemType.SCP330 or ItemType.AntiSCP207 or ItemType.SCP1576;
+        public static bool IsScp(this ItemType type) => GetCategory(type) == ItemCategory.SCPItem;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a throwable item.
@@ -60,7 +60,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether or not the <see cref="ItemType"/> is a medical item.</returns>
-        public static bool IsMedical(this ItemType type) => type is ItemType.Painkillers or ItemType.Medkit or ItemType.SCP500 or ItemType.Adrenaline;
+        public static bool IsMedical(this ItemType type) => GetCategory(type) == ItemCategory.Medical;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a utility item.
@@ -74,17 +74,14 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether or not the <see cref="ItemType"/> is an armor.</returns>
-        public static bool IsArmor(this ItemType type) => type is ItemType.ArmorCombat or ItemType.ArmorHeavy or ItemType.ArmorLight;
+        public static bool IsArmor(this ItemType type) => GetCategory(type) == ItemCategory.Armor;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a keycard.
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether or not the <see cref="ItemType"/> is a keycard.</returns>
-        public static bool IsKeycard(this ItemType type) => type is ItemType.KeycardJanitor or ItemType.KeycardScientist or
-            ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardGuard or ItemType.KeycardNTFOfficer or
-            ItemType.KeycardContainmentEngineer or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFCommander or
-            ItemType.KeycardFacilityManager or ItemType.KeycardChaosInsurgency or ItemType.KeycardO5;
+        public static bool IsKeycard(this ItemType type) => GetCategory(type) == ItemCategory.Keycard;
 
         /// <summary>
         /// Given an <see cref="ItemType"/>, returns the matching <see cref="ItemBase"/>.
@@ -314,29 +311,6 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to check.</param>
         /// <returns><see cref="ItemCategory"/> of the specified <see cref="ItemType"/>.</returns>
-        public static ItemCategory GetCategory(this ItemType type)
-        {
-            if (type is ItemType.MicroHID)
-                return ItemCategory.MicroHID;
-            if (type is ItemType.Radio)
-                return ItemCategory.Radio;
-
-            if (type.IsAmmo())
-                return ItemCategory.Ammo;
-            if (type.IsKeycard())
-                return ItemCategory.Keycard;
-            if (type.IsArmor())
-                return ItemCategory.Armor;
-            if (type.IsMedical())
-                return ItemCategory.Medical;
-            if (type.IsWeapon())
-                return ItemCategory.Firearm;
-            if (type.IsThrowable())
-                return ItemCategory.Grenade;
-            if (type.IsScp())
-                return ItemCategory.SCPItem;
-
-            return ItemCategory.None;
-        }
+        public static ItemCategory GetCategory(this ItemType type) => GetItemBase(type).Category;
     }
 }
