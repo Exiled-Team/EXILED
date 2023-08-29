@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information after a player's held item changes.
     /// </summary>
-    public class ChangedItemEventArgs : IPlayerEvent
+    public class ChangedItemEventArgs : IPlayerEvent, IItemEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ChangedItemEventArgs" /> class.
@@ -44,6 +44,11 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the new item.
         /// </summary>
         public Item NewItem { get; }
+
+        /// <summary>
+        ///     Gets the new item.
+        /// </summary>
+        public Item Item => NewItem;
 
         /// <summary>
         ///     Gets the player who's changed the item.
