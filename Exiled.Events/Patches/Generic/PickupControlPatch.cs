@@ -47,6 +47,7 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
+                /*
                 // pickup = Pickup.Get(pickupBase);
                 new(OpCodes.Ldloc_0),
                 new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get), new[] { typeof(ItemPickupBase) })),
@@ -56,7 +57,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
 
                 // pickup.GetItemInfo(item);
-                new(OpCodes.Callvirt, Method(typeof(Pickup), nameof(Pickup.GetItemInfo))),
+                new(OpCodes.Callvirt, Method(typeof(Pickup), nameof(Pickup.GetItemInfo))),*/
 
                 // pickup.IsSpawned = spawn
                 new(OpCodes.Ldarg_S, 4),
