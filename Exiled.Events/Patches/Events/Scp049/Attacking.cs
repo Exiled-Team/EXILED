@@ -32,19 +32,17 @@ namespace Exiled.Events.Patches.Events.Scp049
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            int offset = -4;
+            int offset = -3;
             int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger)))) + offset;
 
             Label continueLabel = generator.DefineLabel();
 
-            newInstructions[index].labels.Add(continueLabel);
-
             newInstructions.InsertRange(
                 index,
-                new CodeInstruction[]
+                new[]
                 {
                     // Player player = Player.Get(this.Owner);
-                    new(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp049AttackAbility), nameof(Scp049AttackAbility.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
@@ -69,6 +67,8 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new(OpCodes.Brtrue_S, continueLabel),
 
                     new(OpCodes.Ret),
+
+                    new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
