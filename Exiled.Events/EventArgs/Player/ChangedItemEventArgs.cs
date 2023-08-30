@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the new item.
         /// </summary>
         [Obsolete("Use ev.Item instead of this")]
-        public Item NewItem => NewItem;
+        public Item NewItem => Item;
 
         /// <summary>
         ///     Gets the new item.
