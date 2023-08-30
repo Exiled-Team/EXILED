@@ -37,11 +37,6 @@ namespace Exiled.API.Features.Roles
             Base = baseRole;
             MovementModule = FirstPersonController.FpcModule as Scp106MovementModule;
 
-            if (!SubroutineModule.TryGetSubroutine(out Scp106Vigor scp106Vigor))
-                Log.Error("Scp106Vigor subroutine not found in Scp096Role::ctor");
-
-            VigorComponent = scp106Vigor;
-
             if (!SubroutineModule.TryGetSubroutine(out Scp106Attack scp106Attack))
                 Log.Error("Scp106Attack subroutine not found in Scp096Role::ctor");
 
@@ -77,7 +72,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp106Vigor"/>.
         /// </summary>
-        public Scp106Vigor VigorComponent { get; }
+        public Scp106Vigor VigorComponent => Attack.Vigor;
 
         /// <summary>
         /// Gets the <see cref="Scp106Attack"/>.
@@ -109,8 +104,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float Vigor
         {
-            get => VigorComponent.VigorAmount;
-            set => VigorComponent.VigorAmount = value;
+            get => VigorComponent.CurValue;
+            set => VigorComponent.CurValue = value;
         }
 
         /// <summary>
@@ -254,7 +249,7 @@ namespace Exiled.API.Features.Roles
                 return;
 
             Attack.SendCooldown(Attack._hitCooldown);
-            Attack.Vigor.VigorAmount += Scp106Attack.VigorCaptureReward;
+            Attack.Vigor.CurValue += Scp106Attack.VigorCaptureReward;
             Attack.ReduceSinkholeCooldown();
             Hitmarker.SendHitmarker(Attack.Owner, 1f);
 

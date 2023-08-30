@@ -24,9 +24,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="FpcMotor.UpdateGrounded(ref Vector3, ref bool, float)" />
+    ///     Patches <see cref="FpcMotor.UpdateGrounded(ref bool, float)" />
     ///     Adds the <see cref="Player.Jumping" /> event.
     /// </summary>
+    // TODO: rewrite
     [HarmonyPatch(typeof(FpcMotor), nameof(FpcMotor.UpdateGrounded))]
     internal static class Jumping
     {

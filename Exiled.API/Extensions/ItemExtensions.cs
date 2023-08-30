@@ -82,8 +82,8 @@ namespace Exiled.API.Extensions
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether or not the <see cref="ItemType"/> is a keycard.</returns>
         public static bool IsKeycard(this ItemType type) => type is ItemType.KeycardJanitor or ItemType.KeycardScientist or
-            ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardGuard or ItemType.KeycardNTFOfficer or
-            ItemType.KeycardContainmentEngineer or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFCommander or
+            ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardGuard or ItemType.KeycardMTFCaptain or
+            ItemType.KeycardContainmentEngineer or ItemType.KeycardMTFOperative or ItemType.KeycardMTFPrivate or
             ItemType.KeycardFacilityManager or ItemType.KeycardChaosInsurgency or ItemType.KeycardO5;
 
         /// <summary>
