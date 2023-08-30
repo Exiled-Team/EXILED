@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+    
     using API.Features;
     using API.Features.Items;
 
@@ -31,7 +33,7 @@ namespace Exiled.Events.EventArgs.Player
         public ChangedItemEventArgs(Player player, ItemBase oldItem)
         {
             Player = player;
-            NewItem = Player.CurrentItem;
+            Item = Player.CurrentItem;
             OldItem = Item.Get(oldItem);
         }
 
@@ -43,12 +45,13 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets the new item.
         /// </summary>
-        public Item NewItem { get; }
+        [Obsolete("Use ev.Item instead of this")
+        public Item NewItem => NewItem;
 
         /// <summary>
         ///     Gets the new item.
         /// </summary>
-        public Item Item => NewItem;
+        public Item Item { get; }
 
         /// <summary>
         ///     Gets the player who's changed the item.
