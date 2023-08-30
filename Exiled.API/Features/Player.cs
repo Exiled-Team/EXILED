@@ -1247,7 +1247,7 @@ namespace Exiled.API.Features
                 if (string.IsNullOrWhiteSpace(args))
                     return null;
 
-                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound?.ReferenceHub is not null)
+                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound.IsConnected)
                     return playerFound;
 
                 if (int.TryParse(args, out int id))
@@ -1289,7 +1289,7 @@ namespace Exiled.API.Features
                 }
 
                 if (playerFound is not null)
-                    UserIdsCache[args] = playerFound;
+                    UserIdsCache[playerFound.UserId] = playerFound;
 
                 return playerFound;
             }
