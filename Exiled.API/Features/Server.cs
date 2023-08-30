@@ -175,8 +175,8 @@ namespace Exiled.API.Features
         /// </summary>
         public static bool IsHeavilyModded
         {
-            get => CustomNetworkManager.Modded;
-            set => CustomNetworkManager.Modded = value;
+            get => ServerConsole.TransparentlyModdedServerConfig;
+            set => ServerConsole.TransparentlyModdedServerConfig = value;
         }
 
         /// <summary>
