@@ -77,10 +77,10 @@ namespace Exiled.Events.Patches.Generic
         {
             Item item = Item.Get(itemBase);
             Pickup pickup = Pickup.Get(itemPickupBase);
-
+            /*
             if (pickup?.IsLoaded ?? false)
                 pickup.GetPickupInfo(item);
-
+            */
             player?.ItemsValue.Add(item);
         }
     }
