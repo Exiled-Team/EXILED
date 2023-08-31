@@ -450,7 +450,15 @@ namespace Exiled.API.Features
         private void Awake()
         {
             Zone = FindZone(gameObject);
+#if Debug
+            if (Type is RoomType.Unknown)
+                Log.Error($"[ZONETYPE UNKNOWN] {this}");
+#endif
             Type = FindType(gameObject);
+#if Debug
+            if (Type is RoomType.Unknown)
+                Log.Error($"[ROOMTYPE UNKNOWN] {this}");
+#endif
 
             Identifier = gameObject.GetComponent<RoomIdentifier>();
             RoomLightController = gameObject.GetComponentInChildren<RoomLightController>();
