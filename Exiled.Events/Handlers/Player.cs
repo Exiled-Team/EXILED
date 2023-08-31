@@ -15,7 +15,6 @@ namespace Exiled.Events.Handlers
 
     using Exiled.Events.EventArgs.Player;
 
-    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Features;
 
     using PluginAPI.Core.Attributes;
@@ -60,12 +59,12 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before using an <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static event CustomEventHandler<UsingItemEventArgs> UsingItem;
+        public static Event<UsingItemEventArgs> UsingItem { get; set; } = new();
 
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Usable"/>.
         /// </summary>
-        public static event CustomEventHandler<UsingItemCompletedEventArgs> UsingItemCompleted;
+        public static Event<UsingItemCompletedEventArgs> UsingItemCompleted { get; set; } = new ();
 
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Usable"/>.
@@ -84,7 +83,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> has stopped the use of a <see cref="API.Features.Items.Usable"/>.
         /// </summary>
-        public static event CustomEventHandler<CancelledItemUseEventArgs> CancelledItemUse;
+        public static Event<CancelledItemUseEventArgs> CancelledItemUse { get; set; } = new();
 
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> interacted with something.
@@ -110,11 +109,6 @@ namespace Exiled.Events.Handlers
         /// Invoked before deactivating a workstation.
         /// </summary>
         public static Event<DeactivatingWorkstationEventArgs> DeactivatingWorkstation { get; set; } = new();
-
-        /// <summary>
-        /// Invoked before using an <see cref="API.Features.Items.Item"/>.
-        /// </summary>
-        public static Event<UsingItemEventArgs> UsingItem { get; set; } = new();
 
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> has joined the server.
@@ -754,13 +748,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="UsingMicroHIDEnergyEventArgs"/> instance.</param>
         public static void OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs ev) => UsingMicroHIDEnergy.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before processing a hotkey.
-        /// </summary>
-        /// <param name="ev">The <see cref="ProcessingHotkeyEventArgs"/> instance.</param>
-        [Obsolete("No more used by base-game", true)]
-        public static void OnProcessingHotkey(ProcessingHotkeyEventArgs ev) => ProcessingHotkey.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with a shooting target.
