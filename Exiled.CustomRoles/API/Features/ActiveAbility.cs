@@ -203,8 +203,8 @@ namespace Exiled.CustomRoles.API.Features
         {
             if (!AllActiveAbilities.ContainsKey(player))
                 return;
-            if (SelectedPlayers.Contains(player))
-                SelectedPlayers.Remove(player);
+
+            SelectedPlayers.Remove(player);
 
             AllActiveAbilities[player].Remove(this);
             base.AbilityRemoved(player);

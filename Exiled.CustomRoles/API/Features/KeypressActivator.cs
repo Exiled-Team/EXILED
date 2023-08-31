@@ -87,7 +87,7 @@ namespace Exiled.CustomRoles.API.Features
             if (!altTracker.TryGetValue(player, out int pressCount))
                 yield break;
 
-            Log.Warn($"{player.Nickname}: {pressCount} {(player.Role is FpcRole fpc ? fpc.MoveState : false)}");
+            Log.Debug($"{player.Nickname}: {pressCount} {(player.Role is FpcRole fpc ? fpc.MoveState : false)}");
             AbilityKeypressTriggerType type = pressCount switch
             {
                 1 when player.Role is FpcRole { MoveState: PlayerMovementState.Sneaking } => AbilityKeypressTriggerType.DisplayInfo,
@@ -147,7 +147,7 @@ namespace Exiled.CustomRoles.API.Features
                         return false;
                     }
 
-                    if (abilities[index] == selected)
+                    if (abilities.Count <= 1)
                     {
                         response = "No abilities to switch to.";
                         return false;
