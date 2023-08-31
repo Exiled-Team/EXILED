@@ -1,11 +1,11 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ConsumingCorpseEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Scp049
+namespace Exiled.Events.EventArgs.Scp0492
 {
     using API.Features;
 
@@ -26,10 +26,10 @@ namespace Exiled.Events.EventArgs.Scp049
         /// <param name="error"> <inheritdoc cref="ErrorCode"/> </param>
         /// <param name="isAllowed"> <inheritdoc cref="IsAllowed"/> </param>
         /// <remarks> See <see cref="ZombieConsumeAbility.ConsumedRagdolls"/> for all RagDolls consumed. </remarks>
-        public ConsumingCorpseEventArgs(Player player, Ragdoll ragDoll, ZombieConsumeAbility.ConsumeError error, bool isAllowed = true)
+        public ConsumingCorpseEventArgs(ReferenceHub player, BasicRagdoll ragDoll, ZombieConsumeAbility.ConsumeError error, bool isAllowed = true)
         {
-            Player = player;
-            Ragdoll = ragDoll;
+            Player = Player.Get(player);
+            Ragdoll = Ragdoll.Get(ragDoll);
             ErrorCode = error;
             IsAllowed = isAllowed;
         }
