@@ -21,7 +21,10 @@ namespace Exiled.API.Features.Lockers
     /// </summary>
     public class Chamber : IWrapper<LockerChamber>
     {
-        internal static Dictionary<LockerChamber, Chamber> Chambers = new();
+        /// <summary>
+        /// <see cref="Dictionary{TKey,TValue}"/> with <see cref="LockerChamber"/> and <see cref="Chamber"/>.
+        /// </summary>
+        internal static readonly Dictionary<LockerChamber, Chamber> Chambers = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Chamber"/> class.

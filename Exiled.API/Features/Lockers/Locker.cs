@@ -17,10 +17,20 @@ namespace Exiled.API.Features.Lockers
 
     using BaseLocker = MapGeneration.Distributors.Locker;
 
+    /// <summary>
+    /// Represents a basic locker.
+    /// </summary>
     public class Locker : TypeCastObject<Locker>, IWrapper<BaseLocker>
     {
-        internal static Dictionary<BaseLocker, Locker> BaseToExiledLockers = new();
+        /// <summary>
+        /// <see cref="Dictionary{TKey,TValue}"/> with <see cref="BaseLocker"/> and <see cref="Locker"/>.
+        /// </summary>
+        internal static readonly Dictionary<BaseLocker, Locker> BaseToExiledLockers = new();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Locker"/> class.
+        /// </summary>
+        /// <param name="locker">The <see cref="BaseLocker"/> instance.</param>
         public Locker(BaseLocker locker)
         {
             Base = locker;

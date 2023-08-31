@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Lockers;
-
 namespace Exiled.API.Features
 {
     using System;
@@ -17,6 +15,7 @@ namespace Exiled.API.Features
     using Decals;
     using Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Toys;
     using Hazards;

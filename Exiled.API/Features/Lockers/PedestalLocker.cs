@@ -10,6 +10,9 @@ namespace Exiled.API.Features.Lockers
     using Exiled.API.Interfaces;
     using MapGeneration.Distributors;
 
+    /// <summary>
+    /// Represents a pedestal.
+    /// </summary>
     public class PedestalLocker : Locker, IWrapper<PedestalScpLocker>
     {
         /// <summary>
