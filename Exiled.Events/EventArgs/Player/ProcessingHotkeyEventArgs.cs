@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+
     using API.Enums;
     using API.Features;
 
@@ -15,6 +17,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before pressing a hotkey.
     /// </summary>
+    [Obsolete("No more used by base-game", true)]
     public class ProcessingHotkeyEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
