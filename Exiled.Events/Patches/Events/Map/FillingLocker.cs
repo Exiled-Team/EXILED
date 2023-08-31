@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new[]
                 {
                     // FillingLockerEventArgs ev = new(ItemPickupBase, loockerChamber)
-                    new(OpCodes.Ldloc_2),
+                    new(OpCodes.Ldloc_S, 4),
                     new(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(FillingLockerEventArgs))[0]),
                     new(OpCodes.Dup),
