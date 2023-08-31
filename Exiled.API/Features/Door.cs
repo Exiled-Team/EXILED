@@ -55,6 +55,10 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
             Base = door;
             Room = room;
             Type = GetDoorType();
+#if Debug
+            if (Type is DoorType.Unknown)
+                Log.Error($"[DOORTYPE UNKNOWN] {this}");
+#endif
         }
 
         /// <summary>

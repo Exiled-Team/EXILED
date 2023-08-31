@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+    using System;
+
     using Exiled.Events.EventArgs.Player;
 
     using Extensions;
@@ -57,7 +59,17 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<BannedEventArgs> Banned;
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Item"/>.
+        /// Invoked before using an <see cref="API.Features.Items.Item"/>.
+        /// </summary>
+        public static event CustomEventHandler<UsingItemEventArgs> UsingItem;
+
+        /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Usable"/>.
+        /// </summary>
+        public static event CustomEventHandler<UsingItemCompletedEventArgs> UsingItemCompleted;
+
+        /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Usable"/>.
         /// </summary>
         /// <remarks>
         /// Invoked after <see cref="UsingItem"/>, if a player's class has
@@ -66,9 +78,14 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<UsedItemEventArgs> UsedItem;
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> has stopped the use of a <see cref="API.Features.Items.Usable"/>.
+        /// Invoked before a <see cref="API.Features.Player"/> has stopped the use of a <see cref="API.Features.Items.Usable"/>.
         /// </summary>
         public static event CustomEventHandler<CancellingItemUseEventArgs> CancellingItemUse;
+
+        /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> has stopped the use of a <see cref="API.Features.Items.Usable"/>.
+        /// </summary>
+        public static event CustomEventHandler<CancelledItemUseEventArgs> CancelledItemUse;
 
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> interacted with something.
@@ -94,11 +111,6 @@ namespace Exiled.Events.Handlers
         /// Invoked before deactivating a workstation.
         /// </summary>
         public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
-
-        /// <summary>
-        /// Invoked before using an <see cref="API.Features.Items.Item"/>.
-        /// </summary>
-        public static event CustomEventHandler<UsingItemEventArgs> UsingItem;
 
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> has joined the server.
@@ -329,6 +341,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before processing a hotkey.
         /// </summary>
+        [Obsolete("No more used by base-game", true)]
         public static event CustomEventHandler<ProcessingHotkeyEventArgs> ProcessingHotkey;
 
         /// <summary>
@@ -497,16 +510,34 @@ namespace Exiled.Events.Handlers
         public static void OnBanned(BannedEventArgs ev) => Banned.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after a <see cref="API.Features.Player"/> used a medical item.
+        /// Called before using a usable item.
+        /// </summary>
+        /// <param name="ev">The <see cref="UsingItemEventArgs"/> instance.</param>
+        public static void OnUsingItem(UsingItemEventArgs ev) => UsingItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before completed using of a usable item.
+        /// </summary>
+        /// <param name="ev">The <see cref="UsingItemEventArgs"/> instance.</param>
+        public static void OnUsingItemCompleted(UsingItemCompletedEventArgs ev) => UsingItemCompleted.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> used a <see cref="API.Features.Items.Usable"/> item.
         /// </summary>
         /// <param name="ev">The <see cref="UsedItemEventArgs"/> instance.</param>
         public static void OnUsedItem(UsedItemEventArgs ev) => UsedItem.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after a <see cref="API.Features.Player"/> has stopped the use of a medical item.
+        /// Called before a <see cref="API.Features.Player"/> has stopped the use of a <see cref="API.Features.Items.Usable"/> item.
         /// </summary>
         /// <param name="ev">The <see cref="CancellingItemUseEventArgs"/> instance.</param>
         public static void OnCancellingItemUse(CancellingItemUseEventArgs ev) => CancellingItemUse.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> has stopped the use of a <see cref="API.Features.Items.Usable"/> item.
+        /// </summary>
+        /// <param name="ev">The <see cref="CancelledItemUseEventArgs"/> instance.</param>
+        public static void OnCancelledItemUse(CancelledItemUseEventArgs ev) => CancelledItemUse.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="API.Features.Player"/> interacted with something.
@@ -537,12 +568,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DeactivatingWorkstationEventArgs"/> instance.</param>
         public static void OnDeactivatingWorkstation(DeactivatingWorkstationEventArgs ev) => DeactivatingWorkstation.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before using a usable item.
-        /// </summary>
-        /// <param name="ev">The <see cref="UsingItemEventArgs"/> instance.</param>
-        public static void OnUsingItem(UsingItemEventArgs ev) => UsingItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="API.Features.Player"/> has left the server.
@@ -736,6 +761,7 @@ namespace Exiled.Events.Handlers
         /// Called before processing a hotkey.
         /// </summary>
         /// <param name="ev">The <see cref="ProcessingHotkeyEventArgs"/> instance.</param>
+        [Obsolete("No more used by base-game", true)]
         public static void OnProcessingHotkey(ProcessingHotkeyEventArgs ev) => ProcessingHotkey.InvokeSafely(ev);
 
         /// <summary>

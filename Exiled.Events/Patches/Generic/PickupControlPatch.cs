@@ -51,12 +51,13 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Ldloc_0),
                 new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get), new[] { typeof(ItemPickupBase) })),
 
+                /*
                 // Item.Get(itemBase);
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
 
                 // pickup.GetItemInfo(item);
-                new(OpCodes.Callvirt, Method(typeof(Pickup), nameof(Pickup.GetItemInfo))),
+                new(OpCodes.Callvirt, Method(typeof(Pickup), nameof(Pickup.GetItemInfo))),*/
 
                 // pickup.IsSpawned = spawn
                 new(OpCodes.Ldarg_S, 4),
