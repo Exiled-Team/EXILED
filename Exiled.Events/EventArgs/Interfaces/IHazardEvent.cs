@@ -14,7 +14,6 @@ namespace Exiled.Events.EventArgs.Interfaces
     /// </summary>
     public interface IHazardEvent : IExiledEvent
     {
-
         /// <summary>
         /// Gets the environmental hazard that the player is interacting with.
         /// </summary>
