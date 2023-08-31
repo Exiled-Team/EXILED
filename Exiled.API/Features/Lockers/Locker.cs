@@ -84,7 +84,7 @@ namespace Exiled.API.Features.Lockers
         /// <summary>
         /// Interacts with a specific chamber.
         /// </summary>
-        /// <param name="chamber">Chamber. If <see langword="null"/>, will interact with random</param>
+        /// <param name="chamber">Chamber. If <see langword="null"/>, will interact with random.</param>
         /// <param name="player">Player who interacts.</param>
         public void Interact(Chamber chamber = null, Player player = null) => Base.ServerInteract(player?.ReferenceHub, (byte)(chamber == null ? Random.Range(0, Chambers.Count + 1) : Chambers.ToList().IndexOf(chamber)));
 
