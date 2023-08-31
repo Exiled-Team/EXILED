@@ -310,7 +310,7 @@ namespace Exiled.CustomRoles.API.Features
                     continue;
                 }
 
-                Log.Debug("Getting attributed for {type");
+                Log.Debug($"Getting attributed for {type}");
                 foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), inheritAttributes).Cast<Attribute>())
                 {
                     CustomRole? customRole = null;

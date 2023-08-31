@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+
     using API.Features;
     using API.Features.Items;
 
@@ -17,7 +19,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information after a player's held item changes.
     /// </summary>
-    public class ChangedItemEventArgs : IPlayerEvent
+    public class ChangedItemEventArgs : IPlayerEvent, IItemEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ChangedItemEventArgs" /> class.
@@ -31,7 +33,7 @@ namespace Exiled.Events.EventArgs.Player
         public ChangedItemEventArgs(Player player, ItemBase oldItem)
         {
             Player = player;
-            NewItem = Player.CurrentItem;
+            Item = Player.CurrentItem;
             OldItem = Item.Get(oldItem);
         }
 
@@ -43,7 +45,13 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets the new item.
         /// </summary>
-        public Item NewItem { get; }
+        [Obsolete("Use ev.Item instead of this")]
+        public Item NewItem => Item;
+
+        /// <summary>
+        ///     Gets the new item.
+        /// </summary>
+        public Item Item { get; }
 
         /// <summary>
         ///     Gets the player who's changed the item.

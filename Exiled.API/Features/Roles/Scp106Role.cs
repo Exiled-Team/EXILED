@@ -37,28 +37,28 @@ namespace Exiled.API.Features.Roles
             Base = baseRole;
             MovementModule = FirstPersonController.FpcModule as Scp106MovementModule;
 
-            if (!SubroutineModule.TryGetSubroutine(out Scp106Vigor scp106Vigor))
-                Log.Error("Scp106Vigor subroutine not found in Scp096Role::ctor");
+            if (!SubroutineModule.TryGetSubroutine(out Scp106VigorAbilityBase scp106VigorAbilityBase))
+                Log.Error("Scp106VigorAbilityBase subroutine not found in Scp106Role::ctor");
 
-            VigorComponent = scp106Vigor;
+            VigorAbility = scp106VigorAbilityBase;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp106Attack scp106Attack))
-                Log.Error("Scp106Attack subroutine not found in Scp096Role::ctor");
+                Log.Error("Scp106Attack subroutine not found in Scp106Role::ctor");
 
             Attack = scp106Attack;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp106StalkAbility scp106StalkAbility))
-                Log.Error("Scp106StalkAbility not found in Scp096Role::ctor");
+                Log.Error("Scp106StalkAbility not found in Scp106Role::ctor");
 
             StalkAbility = scp106StalkAbility;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp106HuntersAtlasAbility scp106HuntersAtlasAbility))
-                Log.Error("Scp106StalkAbility not found in Scp096Role::ctor");
+                Log.Error("Scp106HuntersAtlasAbility not found in Scp106Role::ctor");
 
             HuntersAtlasAbility = scp106HuntersAtlasAbility;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp106SinkholeController scp106SinkholeController))
-                Log.Error("Scp106StalkAbility not found in Scp096Role::ctor");
+                Log.Error("Scp106SinkholeController not found in Scp106Role::ctor");
 
             SinkholeController = scp106SinkholeController;
         }
@@ -75,9 +75,14 @@ namespace Exiled.API.Features.Roles
         public HumeShieldModuleBase HumeShieldModule { get; }
 
         /// <summary>
+        /// Gets the <see cref="Scp106VigorAbilityBase"/>.
+        /// </summary>
+        public Scp106VigorAbilityBase VigorAbility { get; }
+
+        /// <summary>
         /// Gets the <see cref="Scp106Vigor"/>.
         /// </summary>
-        public Scp106Vigor VigorComponent { get; }
+        public Scp106Vigor VigorComponent => VigorAbility.Vigor;
 
         /// <summary>
         /// Gets the <see cref="Scp106Attack"/>.
@@ -109,8 +114,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float Vigor
         {
-            get => VigorComponent.VigorAmount;
-            set => VigorComponent.VigorAmount = value;
+            get => VigorAbility.VigorAmount;
+            set => VigorAbility.VigorAmount = value;
         }
 
         /// <summary>
@@ -254,7 +259,7 @@ namespace Exiled.API.Features.Roles
                 return;
 
             Attack.SendCooldown(Attack._hitCooldown);
-            Attack.Vigor.VigorAmount += Scp106Attack.VigorCaptureReward;
+            VigorAbility.VigorAmount += Scp106Attack.VigorCaptureReward;
             Attack.ReduceSinkholeCooldown();
             Hitmarker.SendHitmarker(Attack.Owner, 1f);
 
