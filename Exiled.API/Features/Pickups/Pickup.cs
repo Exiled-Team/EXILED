@@ -286,6 +286,11 @@ namespace Exiled.API.Features.Pickups
         public bool IsSpawned { get; internal set; }
 
         /// <summary>
+        /// Gets a value indicating whether or not this is a worn item.
+        /// </summary>
+        public bool IsLoaded { get; internal set; }
+
+        /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.
         /// </summary>
         /// <param name="pickupBase">The <see cref="ItemPickupBase"/> to convert into a <see cref="Pickup"/>.</param>
@@ -386,7 +391,7 @@ namespace Exiled.API.Features.Pickups
             ItemType.GrenadeFlash => new FlashGrenadePickup(),
             ItemType.GrenadeHE => new ExplosiveGrenadePickup(),
             ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 or ItemType.ParticleDisruptor => new FirearmPickup(type),
-            ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new KeycardPickup(type),
+            ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardMTFCaptain or ItemType.KeycardMTFOperative or ItemType.KeycardMTFPrivate => new KeycardPickup(type),
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new BodyArmorPickup(type),
             ItemType.SCP330 => new Scp330Pickup(),
             ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP1853 or ItemType.Painkillers or ItemType.Medkit or ItemType.Adrenaline => new UsablePickup(type),
@@ -505,6 +510,8 @@ namespace Exiled.API.Features.Pickups
         /// <returns>A Pickup containing the Item-related data.</returns>
         internal virtual Pickup GetItemInfo(Items.Item item)
         {
+            IsLoaded = true;
+
             if (item is not null)
             {
                 Scale = item.Scale;

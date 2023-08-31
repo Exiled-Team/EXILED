@@ -26,7 +26,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="UsableItemsController.ServerReceivedStatus" />.
-    ///     Adds the <see cref="Handlers.Player.UsingItem" /> event.
+    ///     Adds the <see cref="Handlers.Player.UsingItem" /> event,
+    ///     <see cref="Handlers.Player.CancellingItemUse" /> event and
+    ///     <see cref="Handlers.Player.CancelledItemUse" /> event.
     /// </summary>
     [HarmonyPatch(typeof(UsableItemsController), nameof(UsableItemsController.ServerReceivedStatus))]
     internal static class UsingAndCancellingItemUse
@@ -104,6 +106,29 @@ namespace Exiled.Events.Patches.Events.Player
                     //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(CancellingItemUseEventArgs), nameof(CancellingItemUseEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, returnLabel),
+                });
+
+            offset = -1;
+            index = newInstructions.Count + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player.Get(referenceHub)
+                    new CodeInstruction(OpCodes.Ldloc_0),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    // handler.CurrentUsable.Item
+                    new(OpCodes.Ldloc_2),
+                    new(OpCodes.Ldflda, Field(typeof(PlayerHandler), nameof(PlayerHandler.CurrentUsable))),
+                    new(OpCodes.Ldfld, Field(typeof(CurrentlyUsedItem), nameof(CurrentlyUsedItem.Item))),
+
+                    // CancellingItemUseEventArgs ev = new(Player, UsableItem)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(CancelledItemUseEventArgs))[0]),
+
+                    // Handlers.Player.OnCancellingItemUse(ev)
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnCancelledItemUse))),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
