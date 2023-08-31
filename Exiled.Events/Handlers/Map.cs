@@ -24,7 +24,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before placing decals.
         /// </summary>
-        public static event CustomEventHandler<PlacingBulletHole> PlacingBulletHole;
+        public static event CustomEventHandler<PlacingBulletHoleEventArgs> PlacingBulletHole;
 
         /// <summary>
         /// Invoked before placing bloods.
@@ -99,8 +99,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before placing a decal.
         /// </summary>
-        /// <param name="ev">The <see cref="EventArgs.Map.PlacingBulletHole"/> instance.</param>
-        public static void OnPlacingBulletHole(PlacingBulletHole ev) => PlacingBulletHole.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="PlacingBulletHoleEventArgs"/> instance.</param>
+        public static void OnPlacingBulletHole(PlacingBulletHoleEventArgs ev) => PlacingBulletHole.InvokeSafely(ev);
 
         /// <summary>
         /// Called before placing bloods.

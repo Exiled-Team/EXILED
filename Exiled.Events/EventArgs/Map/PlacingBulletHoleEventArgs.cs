@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="PlacingBulletHole.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -16,10 +16,10 @@ namespace Exiled.Events.EventArgs.Map
     /// <summary>
     ///     Contains all information before placing a bullet hole decal.
     /// </summary>
-    public class PlacingBulletHole : IPlayerEvent, IDeniableEvent // TODO: This is an EventArgs should be "PlacingBulletHoleEventArgs"
+    public class PlacingBulletHoleEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PlacingBulletHole" /> class.
+        ///     Initializes a new instance of the <see cref="PlacingBulletHoleEventArgs" /> class.
         /// </summary>
         /// <param name="owner">
         ///     <inheritdoc cref="Player" />
@@ -27,7 +27,7 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="hit">
         ///     <inheritdoc cref="RaycastHit" />
         /// </param>
-        public PlacingBulletHole(Player owner, RaycastHit hit)
+        public PlacingBulletHoleEventArgs(Player owner, RaycastHit hit)
         {
             Player = owner;
             Position = hit.point;
