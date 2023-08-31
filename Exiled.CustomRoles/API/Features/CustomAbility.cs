@@ -228,6 +228,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> to give the ability to.</param>
         public void AddAbility(Player player)
         {
+            Log.Debug($"Added {Name} to {player.Nickname}");
             Players.Add(player);
             AbilityAdded(player);
         }
@@ -238,6 +239,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> to remove this ability from.</param>
         public void RemoveAbility(Player player)
         {
+            Log.Debug($"Removed {Name} from {player.Nickname}");
             Players.Remove(player);
             AbilityRemoved(player);
         }

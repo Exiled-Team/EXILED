@@ -30,17 +30,10 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="item">
         ///     <inheritdoc cref="Item" />
         /// </param>
-        public UsedItemEventArgs(Player player, UsableItem item)
+        public UsedItemEventArgs(ReferenceHub player, UsableItem item)
         {
-            try
-            {
-                Player = player;
-                Item = item is null ? null : (Usable)API.Features.Items.Item.Get(item);
-            }
-            catch (Exception e)
-            {
-                Log.Error($"{nameof(UsedItemEventArgs)}.ctor: {e}");
-            }
+            Player = Player.Get(player);
+            Item = API.Features.Items.Item.Get(item) is Usable usable ? usable : null;
         }
 
         /// <summary>

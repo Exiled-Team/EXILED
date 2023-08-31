@@ -14,15 +14,15 @@ namespace Exiled.Events
 
     using API.Enums;
     using API.Features;
-
     using EventArgs.Interfaces;
     using Exiled.API.Features.Pickups;
     using HarmonyLib;
     using InventorySystem.Items.Pickups;
+    using InventorySystem.Items.Usables;
+
     using PlayerRoles.Ragdolls;
     using PlayerRoles.RoleAssign;
     using PluginAPI.Events;
-
     using UnityEngine.SceneManagement;
 
     /// <summary>
@@ -85,7 +85,7 @@ namespace Exiled.Events
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
-
+            UsableItemsController.ServerOnUsingCompleted += (hub, usable) => Handlers.Player.OnUsedItem(new(hub, usable));
             Handlers.Server.WaitingForPlayers += Handlers.Internal.Round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
@@ -103,7 +103,6 @@ namespace Exiled.Events
             ItemPickupBase.OnPickupDestroyed += Handlers.Internal.PickupEvent.OnRemovedPickup;
             ServerConsole.ReloadServerName();
 
-            EventManager.RegisterEvents<Handlers.Warhead>(this);
             EventManager.RegisterEvents<Handlers.Player>(this);
         }
 
@@ -133,7 +132,6 @@ namespace Exiled.Events
             RagdollManager.OnRagdollSpawned -= Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved -= Handlers.Internal.RagdollList.OnRemovedRagdoll;
 
-            EventManager.UnregisterEvents<Handlers.Warhead>(this);
             EventManager.UnregisterEvents<Handlers.Player>(this);
         }
 
