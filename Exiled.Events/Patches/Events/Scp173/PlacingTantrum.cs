@@ -55,12 +55,8 @@ namespace Exiled.Events.Patches.Events.Scp173
                 index,
                 new CodeInstruction[]
                 {
-                    // base.ScpRole
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                    new (OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp173Role>), nameof(ScpStandardSubroutine<Scp173Role>.ScpRole))),
-
                     // Player.Get(base.Hub)
-                    new(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp173Role>), nameof(ScpStandardSubroutine<Scp173Role>.Owner))),
                     new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
@@ -74,7 +70,7 @@ namespace Exiled.Events.Patches.Events.Scp173
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // PlacingTantrumEventArgs ev = new(Scp173Role, Player, TantrumEnvironmentalHazard, AbilityCooldown, bool)
+                    // PlacingTantrumEventArgs ev = new(Player, TantrumEnvironmentalHazard, AbilityCooldown, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlacingTantrumEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),

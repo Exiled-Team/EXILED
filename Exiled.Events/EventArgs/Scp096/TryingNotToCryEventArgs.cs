@@ -14,36 +14,33 @@ namespace Exiled.Events.EventArgs.Scp096
 
     using UnityEngine;
 
+    using Scp096Role = API.Features.Roles.Scp096Role;
+
     /// <summary>
     ///     Contains all information before SCP-096 tries not to cry.
     /// </summary>
-    public class TryingNotToCryEventArgs : IPlayerEvent, IDoorEvent, IDeniableEvent
+    public class TryingNotToCryEventArgs : IScp096Event, IDoorEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="TryingNotToCryEventArgs" /> class.
         /// </summary>
-        /// <param name="scp096">
-        ///     <inheritdoc cref="Scp096" />
-        /// </param>
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public TryingNotToCryEventArgs(Scp096Role scp096, Player player, bool isAllowed = true)
+        public TryingNotToCryEventArgs(Player player, bool isAllowed = true)
         {
-            Scp096 = scp096;
             Player = player;
+            Scp096 = player.Role.As<Scp096Role>();
             GameObject = Physics.Raycast(player.CameraTransform.position, player.CameraTransform.forward, out RaycastHit hit, 1f) ?
                         hit.collider.gameObject : null;
             Door = Door.Get(GameObject);
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the SCP-096 instance.
-        /// </summary>
+        /// <inheritdoc/>
         public Scp096Role Scp096 { get; }
 
         /// <summary>
