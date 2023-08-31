@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-
 namespace Exiled.API.Features.Lockers
 {
     using System.Collections.Generic;
@@ -71,7 +69,7 @@ namespace Exiled.API.Features.Lockers
         /// </summary>
         /// <param name="predicate">Predicate to match.</param>
         /// <returns>List of <see cref="Locker"/> which matches predicate.</returns>
-        public static IEnumerable<Locker> Get(Func<Locker, bool> predicate) => List.Where(predicate);
+        public static IEnumerable<Locker> Get(System.Func<Locker, bool> predicate) => List.Where(predicate);
 
         /// <summary>
         /// Interacts with a specific chamber.
