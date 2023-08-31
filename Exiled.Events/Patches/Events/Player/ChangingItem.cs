@@ -73,13 +73,13 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (ev.NewItem == null)
                     //    goto nullLabel;
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingItemEventArgs), nameof(ChangingItemEventArgs.NewItem))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingItemEventArgs), nameof(ChangingItemEventArgs.Item))),
                     new(OpCodes.Brfalse_S, nullLabel),
 
                     // itemBase = ev.NewItem.Base;
                     // itemSerial = ev.NewItem.Serial;
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingItemEventArgs), nameof(ChangingItemEventArgs.NewItem))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingItemEventArgs), nameof(ChangingItemEventArgs.Item))),
                     new(OpCodes.Dup),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Base))),
                     new(OpCodes.Stloc_1),

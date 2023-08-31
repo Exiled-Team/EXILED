@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.EventArgs.Map;
     using Handlers;
 
     using HarmonyLib;
@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Map
 
             Label returnLabel = generator.DefineLabel();
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(EventArgs.Map.PlacingBulletHole));
+            LocalBuilder ev = generator.DeclareLocal(typeof(PlacingBulletHoleEventArgs));
             LocalBuilder rotation = generator.DeclareLocal(typeof(Quaternion));
 
             newInstructions.InsertRange(
@@ -53,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Ldarg_2),
 
                     // PlacingBulletHole ev = new(Player, RaycastHit)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EventArgs.Map.PlacingBulletHole))[0]),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlacingBulletHoleEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
@@ -63,19 +63,19 @@ namespace Exiled.Events.Patches.Events.Map
 
                     // if (!ev.IsAllowed)
                     //     return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(EventArgs.Map.PlacingBulletHole), nameof(EventArgs.Map.PlacingBulletHole.IsAllowed))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBulletHoleEventArgs), nameof(PlacingBulletHoleEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse, returnLabel),
 
                     // hit.info = ev.Position
                     new(OpCodes.Ldarga_S, 2),
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(EventArgs.Map.PlacingBulletHole), nameof(EventArgs.Map.PlacingBulletHole.Position))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBulletHoleEventArgs), nameof(PlacingBulletHoleEventArgs.Position))),
                     new(OpCodes.Callvirt, PropertySetter(typeof(RaycastHit), nameof(RaycastHit.point))),
 
                     // hit.normal = ev.Rotation
                     new(OpCodes.Ldarga_S, 2),
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(EventArgs.Map.PlacingBulletHole), nameof(EventArgs.Map.PlacingBulletHole.Rotation))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBulletHoleEventArgs), nameof(PlacingBulletHoleEventArgs.Rotation))),
                     new(OpCodes.Stloc_S, rotation),
                     new(OpCodes.Ldloca_S, rotation),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Quaternion), nameof(Quaternion.eulerAngles))),
