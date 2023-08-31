@@ -294,16 +294,13 @@ namespace Exiled.API.Features
                 if (string.IsNullOrEmpty(UserId))
                     return AuthenticationType.Unknown;
 
-                int index = UserId.LastIndexOf('@');
-
-                if (index == -1)
-                    return AuthenticationType.Unknown;
-
-                return UserId.Substring(index + 1) switch
+                return UserId.Substring(UserId.LastIndexOf('@') + 1) switch
                 {
                     "steam" => AuthenticationType.Steam,
                     "discord" => AuthenticationType.Discord,
                     "northwood" => AuthenticationType.Northwood,
+                    "localhost" => AuthenticationType.LocalHost,
+                    "ID_Dedicated" => AuthenticationType.DedicatedServer,
                     _ => AuthenticationType.Unknown,
                 };
             }
@@ -1268,7 +1265,7 @@ namespace Exiled.API.Features
                 if (string.IsNullOrWhiteSpace(args))
                     return null;
 
-                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound?.ReferenceHub is not null)
+                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound.IsConnected)
                     return playerFound;
 
                 if (int.TryParse(args, out int id))
@@ -1310,7 +1307,7 @@ namespace Exiled.API.Features
                 }
 
                 if (playerFound is not null)
-                    UserIdsCache[args] = playerFound;
+                    UserIdsCache[playerFound.UserId] = playerFound;
 
                 return playerFound;
             }

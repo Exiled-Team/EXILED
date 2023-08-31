@@ -94,9 +94,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the ragdoll's <see cref="DamageHandlerBase"/>.
+        /// Gets or sets the ragdoll's <see cref="DamageHandlerBase"/>.
         /// </summary>
-        public DamageHandlerBase DamageHandler => NetworkInfo.Handler;
+        public DamageHandlerBase DamageHandler
+        {
+            get => NetworkInfo.Handler;
+            set => NetworkInfo = new(NetworkInfo.OwnerHub, value, NetworkInfo.RoleType, NetworkInfo.StartPosition, NetworkInfo.StartRotation, NetworkInfo.Nickname, NetworkInfo.CreationTime);
+        }
 
         /// <summary>
         /// Gets the ragdoll's <see cref="Rigidbody"/>[].
@@ -134,9 +138,27 @@ namespace Exiled.API.Features
         public string Name => Base.name;
 
         /// <summary>
-        /// Gets the owner <see cref="Player"/>. Can be <see langword="null"/> if the ragdoll does not have an owner.
+        /// Gets or sets the ragdoll's nickname.
         /// </summary>
-        public Player Owner => Player.Get(NetworkInfo.OwnerHub);
+        public string Nickname
+        {
+            get => NetworkInfo.Nickname;
+            set => NetworkInfo = new(NetworkInfo.OwnerHub, NetworkInfo.Handler, NetworkInfo.RoleType, NetworkInfo.StartPosition, NetworkInfo.StartRotation, value, NetworkInfo.CreationTime);
+        }
+
+        /// <summary>
+        /// Gets the ragdoll's existence time.
+        /// </summary>
+        public float ExistenceTime => NetworkInfo.ExistenceTime;
+
+        /// <summary>
+        /// Gets or sets the owner <see cref="Player"/>. Can be <see langword="null"/> if the ragdoll does not have an owner.
+        /// </summary>
+        public Player Owner
+        {
+            get => Player.Get(NetworkInfo.OwnerHub);
+            set => NetworkInfo = new(value.ReferenceHub, NetworkInfo.Handler, NetworkInfo.RoleType, NetworkInfo.StartPosition, NetworkInfo.StartRotation, NetworkInfo.Nickname, NetworkInfo.CreationTime);
+        }
 
         /// <summary>
         /// Gets or sets the time that the ragdoll was spawned.
@@ -152,12 +174,17 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the <see cref="RoleTypeId"/> of the ragdoll.
+        /// Gets or sets the <see cref="RoleTypeId"/> of the ragdoll.
         /// </summary>
-        public RoleTypeId Role => NetworkInfo.RoleType;
+        public RoleTypeId Role
+        {
+            get => NetworkInfo.RoleType;
+            set => NetworkInfo = new(NetworkInfo.OwnerHub, NetworkInfo.Handler, value, NetworkInfo.StartPosition, NetworkInfo.StartRotation, NetworkInfo.Nickname, NetworkInfo.CreationTime);
+        }
 
         /// <summary>
-        /// Gets a value indicating whether or not the ragdoll has expired and SCP-049 is unable to revive it.
+        /// Gets a value indicating whether or not the ragdoll has expired and SCP-049 is unable to revive it if was not being targets.
+        /// <seealso cref="Roles.Scp049Role.CanResurrect(Ragdoll)"/>
         /// </summary>
         public bool IsExpired => NetworkInfo.ExistenceTime > PlayerRoles.PlayableScps.Scp049.Scp049ResurrectAbility.HumanCorpseDuration;
 
