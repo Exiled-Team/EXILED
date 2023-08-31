@@ -39,6 +39,10 @@ namespace Exiled.API.Features
             Base = window;
             Room = room;
             Type = GetGlassType();
+#if Debug
+            if (Type is GlassType.Unknown)
+                Log.Error($"[GLASSTYPE UNKNOWN] {this}");
+#endif
         }
 
         /// <summary>

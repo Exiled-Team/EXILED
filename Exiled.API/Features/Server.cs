@@ -175,8 +175,8 @@ namespace Exiled.API.Features
         /// </summary>
         public static bool IsHeavilyModded
         {
-            get => CustomNetworkManager.HeavilyModded;
-            set => CustomNetworkManager.HeavilyModded = value;
+            get => ServerConsole.TransparentlyModdedServerConfig;
+            set => ServerConsole.TransparentlyModdedServerConfig = value;
         }
 
         /// <summary>
@@ -187,6 +187,11 @@ namespace Exiled.API.Features
             get => ServerConsole.WhiteListEnabled;
             set => ServerConsole.WhiteListEnabled = value;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not this server is verified.
+        /// </summary>
+        public static bool IsVerified => CustomNetworkManager.IsVerified;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not idle mode is enabled.

@@ -53,6 +53,10 @@ namespace Exiled.API.Features
             Rooms = RoomsValue.AsReadOnly();
 
             Type = GetDoorType();
+#if Debug
+            if (Type is DoorType.Unknown)
+                Log.Error($"[DOORTYPE UNKNOWN] {this}");
+#endif
         }
 
         /// <summary>
@@ -464,7 +468,7 @@ namespace Exiled.API.Features
         /// Tries to pry the door open. No effect if the door cannot be pried.
         /// </summary>
         /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
-        /// <param name="player">The amount of damage to deal.</param>
+        /// <param name="player">The player who tries to open the gate.</param>
         public bool TryPryOpen(Player player) => Base is PryableDoor pryable && pryable.TryPryGate(player.ReferenceHub);
 
         /// <summary>
