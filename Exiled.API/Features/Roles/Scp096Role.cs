@@ -216,20 +216,23 @@ namespace Exiled.API.Features.Roles
         /// Adds the specified <paramref name="player"/> as an SCP-096 target.
         /// </summary>
         /// <param name="player">The player to add as a target.</param>
-        public void AddTarget(Player player) => _ = player is not null && TargetsTracker.AddTarget(player.ReferenceHub, false); // TODO: Convert to bool
+        /// <returns><see langword="true"/> if target was successfully added. Otherwise, <see langword="false"/>.</returns>
+        public bool AddTarget(Player player) => player is not null && TargetsTracker.AddTarget(player.ReferenceHub, false);
 
         /// <summary>
         /// Adds the specified <paramref name="player"/> as an SCP-096 target.
         /// </summary>
         /// <param name="player">The player to add as a target.</param>
         /// <param name="isLooking">Is because player look SCP-096.</param>
-        public void AddTarget(Player player, bool isLooking) => _ = player is not null && TargetsTracker.AddTarget(player.ReferenceHub, isLooking); // TODO: Convert to bool
+        /// <returns><see langword="true"/> if target was successfully added. Otherwise, <see langword="false"/>.</returns>
+        public bool AddTarget(Player player, bool isLooking) => player is not null && TargetsTracker.AddTarget(player.ReferenceHub, isLooking);
 
         /// <summary>
         /// Removes the specified <paramref name="player"/> from SCP-096's targets.
         /// </summary>
         /// <param name="player">The player to remove as a target.</param>
-        public void RemoveTarget(Player player) => _ = player is not null && TargetsTracker.RemoveTarget(player.ReferenceHub); // TODO: Convert to bool
+        /// <returns><see langword="true"/> if target was successfully removed. Otherwise, <see langword="false"/>.</returns>
+        public bool RemoveTarget(Player player) => player is not null && TargetsTracker.RemoveTarget(player.ReferenceHub);
 
         /// <summary>
         /// Enrages SCP-096 for the given amount of times.

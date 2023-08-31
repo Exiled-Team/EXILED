@@ -624,7 +624,7 @@ namespace Exiled.API.Features.Items
                     new DisruptorHitreg(particleDisruptor, particleDisruptor.Owner, particleDisruptor._explosionSettings),
                 Revolver revolver =>
                     new SingleBulletHitreg(revolver, revolver.Owner),
-                _ => throw new NotImplementedException("Should never happend"),
+                _ => throw new Exception("Should never happend"),
             };
 
             Base._sendStatusNextFrame = true;

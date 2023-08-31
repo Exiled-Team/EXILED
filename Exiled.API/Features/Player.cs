@@ -88,7 +88,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
-    public class Player : IEntity, IPosition // Todo: Convert to IWorldSpace (Rotation Vector3 -> Quaternion)
+    public class Player : IEntity, IWorldSpace
     {
 #pragma warning disable SA1401
         /// <summary>
@@ -529,10 +529,10 @@ namespace Exiled.API.Features
         /// Gets or sets the player's rotation.
         /// </summary>
         /// <returns>Returns the direction the player is looking at.</returns>
-        public Vector3 Rotation
+        public Quaternion Rotation
         {
-            get => Transform.eulerAngles;
-            set => ReferenceHub.TryOverridePosition(Position, value - Rotation);
+            get => Transform.rotation;
+            set => ReferenceHub.TryOverridePosition(Position, value.eulerAngles);
         }
 
         /// <summary>
@@ -1666,18 +1666,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Forces the player to reload their current weapon.
         /// </summary>
-        /// <exception cref="InvalidOperationException">If the item is not a firearm.</exception>
-        public void ReloadWeapon() // TODO: Convert to bool instead of Exception
+        /// <returns><see langword="true"/> if firearm was successfully reloaded. Otherwise, <see langword="false"/>.</returns>
+        public bool ReloadWeapon()
         {
             if (CurrentItem is Firearm firearm)
             {
-                firearm.Base.AmmoManagerModule.ServerTryReload();
+                bool result = firearm.Base.AmmoManagerModule.ServerTryReload();
                 Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
+                return result;
             }
-            else
-            {
-                throw new InvalidOperationException("The player's CurrentItem is not a firearm.");
-            }
+
+            return false;
         }
 
         /// <summary>
@@ -1774,12 +1773,13 @@ namespace Exiled.API.Features
         /// Drops the held item. Will not do anything if the player is not holding an item.
         /// </summary>
         /// <seealso cref="CurrentItem"/>
-        public void DropHeldItem() // TODO: Return Pickup.
+        /// <returns>Dropped item's <see cref="Pickup"/>.</returns>
+        public Pickup DropHeldItem()
         {
             if (CurrentItem is null)
-                return;
+                return null;
 
-            DropItem(CurrentItem);
+            return DropItem(CurrentItem);
         }
 
         /// <summary>
@@ -2002,23 +2002,26 @@ namespace Exiled.API.Features
         /// Forces the player to use an item.
         /// </summary>
         /// <param name="usableItem">The ItemType to be used.</param>
-        public void UseItem(ItemType usableItem) => UseItem(Item.Create(usableItem)); // TODO: Convert to bool if succesfully done.
+        /// <returns><see langword="true"/> if item was used successfully. Otherwise, <see langword="false"/>.</returns>
+        public bool UseItem(ItemType usableItem) => UseItem(Item.Create(usableItem));
 
         /// <summary>
         /// Forces the player to use an item.
         /// </summary>
         /// <param name="item">The item to be used.</param>
-        /// <exception cref="ArgumentException">The provided item is not a usable item.</exception>
-        public void UseItem(Item item) // TODO: Convert to bool if succesfully done instead of throwing error.
+        /// <returns><see langword="true"/> if item was used successfully. Otherwise, <see langword="false"/>.</returns>
+        public bool UseItem(Item item)
         {
             if (item is not Usable usableItem)
-                throw new ArgumentException($"The provided item [{item.Type}] is not a usable item.", nameof(item));
+                return false;
 
             usableItem.Base.Owner = referenceHub;
             usableItem.Base.ServerOnUsingCompleted();
 
             if (usableItem.Base is not null)
                 usableItem.Destroy();
+
+            return true;
         }
 
         /// <summary>
@@ -3177,16 +3180,6 @@ namespace Exiled.API.Features
         /// <returns>Return the time in seconds of the cooldowns.</returns>
         public float GetCooldownItem(ItemType itemType)
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns.TryGetValue(itemType, out float value) ? value : -1;
-
-        /// <summary>
-        /// Set the time cooldown on this ItemType.
-        /// </summary>
-        /// <param name="time">The times for the cooldown.</param>
-        /// <param name="itemType">The itemtypes to choose for being cooldown.</param>
-        [Obsolete("Use SetCooldownItem instead", true)]
-        public void GetCooldownItem(float time, ItemType itemType)
-            => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
-
         /// <summary>
         /// Set the time cooldown on this ItemType.
         /// </summary>

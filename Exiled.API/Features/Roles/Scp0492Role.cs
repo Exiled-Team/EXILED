@@ -42,8 +42,6 @@ namespace Exiled.API.Features.Roles
                 Log.Error("ZombieConsumeAbility subroutine not found in Scp0492Role::ctor");
 
             ConsumeAbility = zombieConsumeAbility492;
-
-            AttackDamage = AttackAbility.DamageAmount;
         }
 
         /// <inheritdoc/>
@@ -80,10 +78,9 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets the SCP-049-2 attack damage.
+        /// Gets the SCP-049-2 attack damage.
         /// </summary>
-        /// <remarks>Setter will work later //TODO.</remarks>
-        public float AttackDamage { get; set; }
+        public float AttackDamage => AttackAbility.DamageAmount;
 
         /// <summary>
         /// Gets or sets a value indicating the amount of time to simulate SCP-049-2's Bloodlust ability.
