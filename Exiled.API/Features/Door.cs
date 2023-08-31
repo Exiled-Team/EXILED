@@ -44,13 +44,14 @@ namespace Exiled.API.Features
         /// <param name="rooms">The <see cref="List{T}"/> of <see cref="Features.Room"/>'s for this door.</param>
         internal Door(DoorVariant door, List<Room> rooms)
         {
-            if (rooms != null)
-                DoorVariantToDoor.Add(door, this);
-
             Base = door;
 
-            RoomsValue = rooms;
-            Rooms = RoomsValue.AsReadOnly();
+            if (rooms != null)
+            {
+                DoorVariantToDoor.Add(door, this);
+                RoomsValue = rooms;
+                Rooms = RoomsValue.AsReadOnly();
+            }
 
             Type = GetDoorType();
 #if Debug
