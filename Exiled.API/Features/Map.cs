@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Features.Lockers;
+
 namespace Exiled.API.Features
 {
     using System;
@@ -25,7 +27,6 @@ namespace Exiled.API.Features
     using Items;
     using LightContainmentZoneDecontamination;
     using MapGeneration;
-    using MapGeneration.Distributors;
     using Mirror;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
@@ -116,9 +117,9 @@ namespace Exiled.API.Features
         public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports => ReadOnlyTeleportsValue;
 
         /// <summary>
-        /// Gets all <see cref="Locker"/> objects.
+        /// Gets all <see cref="Lockers.Locker"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<Locker> Lockers => ReadOnlyLockersValue;
+        public static ReadOnlyCollection<Lockers.Locker> Lockers => ReadOnlyLockersValue;
 
         /// <summary>
         /// Gets all <see cref="AdminToy"/> objects.

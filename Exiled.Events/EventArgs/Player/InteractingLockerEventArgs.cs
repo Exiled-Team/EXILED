@@ -39,8 +39,8 @@ namespace Exiled.Events.EventArgs.Player
         public InteractingLockerEventArgs(Player player, Locker locker, LockerChamber lockerChamber, byte chamberId, bool isAllowed)
         {
             Player = player;
-            Locker = locker;
-            Chamber = lockerChamber;
+            Locker = API.Features.Lockers.Locker.Get(locker);
+            Chamber = API.Features.Lockers.Chamber.Get(lockerChamber);
             ChamberId = chamberId;
             IsAllowed = isAllowed;
         }
@@ -48,12 +48,12 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets the <see cref="MapGeneration.Distributors.Locker" /> instance.
         /// </summary>
-        public Locker Locker { get; }
+        public API.Features.Lockers.Locker Locker { get; }
 
         /// <summary>
         ///     Gets the interacting chamber.
         /// </summary>
-        public LockerChamber Chamber { get; }
+        public API.Features.Lockers.Chamber Chamber { get; }
 
         /// <summary>
         ///     Gets the chamber id.

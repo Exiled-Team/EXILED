@@ -3005,11 +3005,11 @@ namespace Exiled.API.Features
                     else
                         Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid role teleport (role is missing Owner).");
                     break;
-                case Locker locker:
-                    Teleport(locker.transform.position + Vector3.up + offset);
+                case Lockers.Locker locker:
+                    Teleport(locker.Base.transform.position + Vector3.up + offset);
                     break;
-                case LockerChamber chamber:
-                    Teleport(chamber._spawnpoint.position + Vector3.up + offset);
+                case Lockers.Chamber chamber:
+                    Teleport(chamber.UseMultipleSpawnpoints ? chamber.Spawnpoints.ElementAt(Random.Range(0, chamber.Spawnpoints.Count() - 1)).transform.position : chamber.Spawnpoint.transform.position + Vector3.up + offset);
                     break;
                 case ElevatorChamber elevator:
                     Teleport(elevator.transform.position + Vector3.up + offset);
@@ -3044,7 +3044,7 @@ namespace Exiled.API.Features
         /// <param name="type">Object for teleport.</param>
         public void RandomTeleport(Type type)
         {
-            LockerChamber[] chambers;
+            Lockers.Chamber[] chambers;
 
             object randomObject = type.Name switch
             {
@@ -3059,7 +3059,7 @@ namespace Exiled.API.Features
                 nameof(Generator) => Generator.List.ElementAt(Random.Range(0, Generator.Scp079GeneratorToGenerator.Count)),
                 nameof(Window) => Window.List.ElementAt(Random.Range(0, Window.BreakableWindowToWindow.Count)),
                 nameof(Scp914) => Scp914.Scp914Controller,
-                nameof(LockerChamber) => (chambers = Map.GetRandomLocker().Chambers)[Random.Range(0, chambers.Length)],
+                nameof(Lockers.Chamber) => (chambers = Map.GetRandomLocker().Chambers.ToArray())[Random.Range(0, chambers.Length)],
                 _ => null,
             };
 

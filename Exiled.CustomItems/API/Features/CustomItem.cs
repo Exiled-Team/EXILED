@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Features.Lockers;
+
 namespace Exiled.CustomItems.API.Features
 {
     using System;
@@ -681,7 +683,7 @@ namespace Exiled.CustomItems.API.Features
                             continue;
                         }
 
-                        Locker locker =
+                        Exiled.API.Features.Lockers.Locker locker =
                             Map.Lockers[
                                 Loader.Random.Next(Map.Lockers.Count)];
 
@@ -703,7 +705,7 @@ namespace Exiled.CustomItems.API.Features
                             continue;
                         }
 
-                        LockerChamber chamber = locker.Chambers[Loader.Random.Next(Mathf.Max(0, locker.Chambers.Length - 1))];
+                        Chamber chamber = locker.Chambers.ElementAt(Loader.Random.Next(Mathf.Max(0, locker.Chambers.Count - 1)));
 
                         if (chamber is null)
                         {
@@ -711,7 +713,11 @@ namespace Exiled.CustomItems.API.Features
                             continue;
                         }
 
-                        Vector3 position = chamber._spawnpoint.transform.position;
+                        Vector3 position = chamber.Spawnpoint.transform.position;
+
+                        if (chamber.UseMultipleSpawnpoints)
+                            position = chamber.Spawnpoints.ElementAt(Loader.Random.Next(Mathf.Max(0, chamber.Spawnpoints.Count() - 1))).transform.position;
+
                         Spawn(position, null);
                         Log.Debug($"Spawned {Name} at {position} ({spawnPoint.Name})");
 

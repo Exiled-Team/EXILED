@@ -113,7 +113,7 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
 
-        private static void GenerateLockers() => Map.LockersValue.AddRange(Object.FindObjectsOfType<Locker>());
+        private static void GenerateLockers() => Map.LockersValue.AddRange(Object.FindObjectsOfType<Locker>().Select(API.Features.Lockers.Locker.Get));
 
         private static void GenerateAttachments()
         {

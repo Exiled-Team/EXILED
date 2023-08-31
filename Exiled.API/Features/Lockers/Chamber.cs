@@ -106,7 +106,7 @@ namespace Exiled.API.Features.Lockers
         /// Gets or sets a value indicating whether or not multiple spawnpoint system should be used.
         /// </summary>
         /// <remarks>
-        /// If true, spawnpoint system will use <see cref="Spawnpoints"/>. Otherwise, <see cref="SpawnPoint"/>.
+        /// If true, spawnpoint system will use <see cref="Spawnpoints"/>. Otherwise, <see cref="Spawnpoint"/>.
         /// </remarks>
         public bool UseMultipleSpawnpoints
         {
@@ -120,7 +120,7 @@ namespace Exiled.API.Features.Lockers
         /// <remarks>
         /// Will be used if <see cref="UseMultipleSpawnpoints"/> is <see langword="false"/>.
         /// </remarks>
-        public Transform SpawnPoint
+        public Transform Spawnpoint
         {
             get => Base._spawnpoint;
             set => Base._spawnpoint = value;
