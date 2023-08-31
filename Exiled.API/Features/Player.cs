@@ -3180,6 +3180,7 @@ namespace Exiled.API.Features
         /// <returns>Return the time in seconds of the cooldowns.</returns>
         public float GetCooldownItem(ItemType itemType)
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns.TryGetValue(itemType, out float value) ? value : -1;
+
         /// <summary>
         /// Set the time cooldown on this ItemType.
         /// </summary>
