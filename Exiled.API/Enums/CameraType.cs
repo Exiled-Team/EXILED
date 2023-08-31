@@ -6,11 +6,14 @@
 // -----------------------------------------------------------------------
 
 #pragma warning disable SA1124 // Do not use regions
+#pragma warning disable CS0618 // Obsolete
 #pragma warning disable CS1591 // XML Comment Missing
 #pragma warning disable SA1602 // Enumeration items should be documented
 
 namespace Exiled.API.Enums
 {
+    using System;
+
     using Features;
 
     /// <summary>
@@ -18,6 +21,7 @@ namespace Exiled.API.Enums
     /// </summary>
     /// <seealso cref="Camera.Type"/>
     /// <seealso cref="Camera.Get(CameraType)"/>
+    /// <seealso cref="Camera.TryGet(CameraType, out Camera)"/>
     public enum CameraType
     {
         /// <summary>
@@ -44,12 +48,15 @@ namespace Exiled.API.Enums
         #endregion
 
         #region Hcz
+        [Obsolete("Has been removed from the game")]
         Hcz049Armory,
         Hcz049ContChamber,
         Hcz049ElevTop,
         Hcz049Hallway,
         Hcz049TopFloor,
-        Hcz049Tunnel,
+        Hcz049Outside,
+        [Obsolete("Has been renamed Hcz049Outside")]
+        Hcz049Tunnel = Hcz049Outside,
         Hcz079Airlock,
         Hcz079ContChamber,
         Hcz079Hallway,
@@ -121,6 +128,14 @@ namespace Exiled.API.Enums
         SurfaceAirlock,
         SurfaceBridge,
         TunnelEntrance,
+        #endregion
+
+        #region new
+        Hcz173Outside,
+        Hcz173Stairs,
+        Hcz173ContChamber,
+        Hcz173Hallway,
+        HczCurve,
         #endregion
     }
 }

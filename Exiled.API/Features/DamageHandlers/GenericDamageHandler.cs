@@ -165,7 +165,7 @@ namespace Exiled.API.Features.DamageHandlers
                     if (curr939 != null)
                         curr939._lastOwner = attacker.ReferenceHub;
 
-                    Base = new Scp939DamageHandler(curr939, Scp939DamageType.LungeTarget) { Damage = damage, };
+                    Base = new Scp939DamageHandler(curr939, damage, Scp939DamageType.LungeTarget);
                     break;
                 case DamageType.Scp:
                     Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Unknown);

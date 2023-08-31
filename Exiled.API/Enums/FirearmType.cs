@@ -79,5 +79,10 @@ namespace Exiled.API.Enums
         /// Represents the <see cref="ItemType.ParticleDisruptor"/>.
         /// </summary>
         ParticleDisruptor,
+
+        /// <summary>
+        /// Represents the <see cref="ItemType.GunFRMG0"/>.
+        /// </summary>
+        FRMG0,
     }
 }
