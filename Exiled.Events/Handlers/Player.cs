@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+    using System;
+
     using Exiled.Events.EventArgs.Player;
 
     using Extensions;
@@ -339,6 +341,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before processing a hotkey.
         /// </summary>
+        [Obsolete("No more used by base-game", true)]
         public static event CustomEventHandler<ProcessingHotkeyEventArgs> ProcessingHotkey;
 
         /// <summary>
@@ -758,6 +761,7 @@ namespace Exiled.Events.Handlers
         /// Called before processing a hotkey.
         /// </summary>
         /// <param name="ev">The <see cref="ProcessingHotkeyEventArgs"/> instance.</param>
+        [Obsolete("No more used by base-game", true)]
         public static void OnProcessingHotkey(ProcessingHotkeyEventArgs ev) => ProcessingHotkey.InvokeSafely(ev);
 
         /// <summary>

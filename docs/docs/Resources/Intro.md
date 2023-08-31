@@ -35,7 +35,7 @@ sidebar_position: 1
 
 <details><summary> <b>Roles</b></summary>
 
-```md title="Latest Updated: 13.1.0.0"
+```md title="Latest Updated: 13.2.0.0"
 | Id  | RoleTypeId     | Team             | Side             | LeadingTeam     |
 |-----|----------------|------------------|------------------|-----------------|
 | -1  | None           | Dead             | None             | Draw            |
@@ -70,17 +70,17 @@ sidebar_position: 1
 
 <details><summary> <b>Items</b></summary>
 
-```md  title="Latest Updated: 13.1.0.0"
+```md  title="Latest Updated: 13.2.0.0"
 [-1] None 
 [0] KeycardJanitor 
 [1] KeycardScientist 
 [2] KeycardResearchCoordinator 
 [3] KeycardZoneManager 
 [4] KeycardGuard 
-[5] KeycardNTFOfficer 
+[5] KeycardMTFPrivate 
 [6] KeycardContainmentEngineer 
-[7] KeycardNTFLieutenant 
-[8] KeycardNTFCommander 
+[7] KeycardMTFOperative 
+[8] KeycardMTFCaptain 
 [9] KeycardFacilityManager 
 [10] KeycardChaosInsurgency 
 [11] KeycardO5 
@@ -124,6 +124,8 @@ sidebar_position: 1
 [49] SCP1576 
 [50] Jailbird 
 [51] AntiSCP207 
+[52] GunFRMG0 
+[53] GunA7 
 ```
 
 </details>
@@ -133,7 +135,7 @@ sidebar_position: 1
 
 <details><summary> <b>Ammo</b></summary>
 
-```md title="Latest Updated: 7.1.0.0"
+```md title="Latest Updated: 7.2.0.0"
 [0] None 
 [1] Nato556 
 [2] Nato762 
@@ -148,7 +150,7 @@ sidebar_position: 1
 
 <details><summary> <b>Doors</b></summary>
 
-```md title="Latest Updated: 7.1.0.0"
+```md title="Latest Updated: 7.2.0.0"
 [0] UnknownDoor 
 [1] Scp914Door 
 [2] GR18Inner 
@@ -217,7 +219,7 @@ sidebar_position: 1
 
 <details><summary> <b>Rooms</b></summary>
 
-```md title="Latest Updated: 7.1.0.0"
+```md title="Latest Updated: 7.2.0.0"
 [0] Unknown 
 [1] LczArmory 
 [2] LczCurve 
@@ -281,7 +283,7 @@ sidebar_position: 1
 
 <details><summary> <b>Elevators</b></summary>
 
-```md title="Latest Updated: 7.1.0.0"
+```md title="Latest Updated: 7.2.0.0"
 [0] Unknown 
 [1] GateA 
 [2] GateB 
@@ -297,7 +299,7 @@ sidebar_position: 1
 
 <details><summary> <b>DamageType</b></summary>
 
-```md title="Latest Updated: 7.1.0.0"
+```md title="Latest Updated: 7.2.0.0"
 [0] Unknown 
 [1] Falldown 
 [2] Warhead 
@@ -374,7 +376,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Effects</b></summary>
 
-```md title="Latest Updated: 7.1.0.0"
+```md title="Latest Updated: 7.2.0.0"
 [0] AmnesiaItems 
 [1] AmnesiaVision 
 [2] Asphyxiated 
@@ -420,7 +422,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Keycard Perms</b></summary>
 
-```md title="Latest Updated: 7.1.0.0"
+```md title="Latest Updated: 7.2.0.0"
 [0] None 
 [1] Checkpoints 
 [2] ExitGates 
@@ -441,7 +443,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Lock Type</b></summary>
 
-```md title="Latest Updated: 7.1.0.0"
+```md title="Latest Updated: 7.2.0.0"
 [0] None 
 [1] Regular079 
 [2] Lockdown079 
@@ -461,7 +463,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Structures</b></summary>
 
-```md title="Latest Updated: 13.1.0.0"
+```md title="Latest Updated: 13.2.0.0"
 [0] StandardLocker 
 [1] LargeGunLocker 
 [2] ScpPedestal 
@@ -476,7 +478,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Blood</b></summary>
 
-```md title="Latest Updated: 7.1.0.0"
+```md title="Latest Updated: 7.2.0.0"
 [0] Default 
 [1] Scp106 
 [2] Spreaded 
@@ -489,7 +491,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>GeneratorState</b></summary>
 
-```md title="Latest Updated: 7.1.0.0"
+```md title="Latest Updated: 7.2.0.0"
 [1] None 
 [2] Unlocked 
 [4] Open 
@@ -503,7 +505,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Hot Keys</b></summary>
 
-```md title="Latest Updated: 7.1.0.0"
+```md title="Latest Updated: 7.2.0.0"
 [0] Keycard 
 [1] PrimaryFirearm 
 [2] SecondaryFirearm 
@@ -517,7 +519,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Intercom States</b></summary>
 
-```md title="Latest Updated: 13.1.0.0"
+```md title="Latest Updated: 13.2.0.0"
 [0] Ready 
 [1] Starting 
 [2] InUse 
@@ -531,7 +533,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>BroadcastFlags</b></summary>
 
-```md title="Latest Updated: 13.1.0.0"
+```md title="Latest Updated: 13.2.0.0"
 [0] Normal 
 [1] Truncated 
 [2] AdminChat 
@@ -545,7 +547,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Attachment Names</b></summary>
 
-```md title="Latest Updated: 7.1.0.0"
+```md title="Latest Updated: 7.2.0.0"
 [0] None 
 [1] IronSights 
 [2] DotSight 
@@ -600,7 +602,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Spawn Reasons</b></summary>
 
-```md title="Latest Updated: 7.1.0.0"
+```md title="Latest Updated: 7.2.0.0"
 [0] None 
 [1] RoundStart 
 [2] LateJoin 
