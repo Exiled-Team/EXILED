@@ -38,7 +38,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets or sets max health of the door.
         /// </summary>
-        public new float MaxHealth
+        public float MaxHealth
         {
             get => Base.MaxHealth;
             set => Base.MaxHealth = value;
@@ -56,12 +56,12 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not this door is breakable.
         /// </summary>
-        public new bool IsBreakable => !IsDestroyed;
+        public bool IsBreakable => !IsDestroyed;
 
         /// <summary>
         /// Gets or sets remaining health of the door.
         /// </summary>
-        public new float Health
+        public float Health
         {
             get => Base.RemainingHealth;
             set => Base.RemainingHealth = value;

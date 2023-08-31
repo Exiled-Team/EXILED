@@ -83,10 +83,10 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <inheritdoc/>
-        public new bool IsBreakable => !IsDestroyed;
+        public bool IsBreakable => !IsDestroyed;
 
         /// <inheritdoc/>
-        public new float Health
+        public float Health
         {
             get => Base.GetHealthPercent();
             set
@@ -101,7 +101,7 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <inheritdoc/>
-        public new float MaxHealth
+        public float MaxHealth
         {
             get => Subdoors.Sum(door => door.MaxHealth);
             set

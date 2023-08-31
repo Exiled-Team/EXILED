@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
+namespace Exiled.API.Features.Doors
 {
     using System;
     using System.Collections.Generic;
@@ -25,11 +25,9 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
 
     using BaseBreakableDoor = Interactables.Interobjects.BreakableDoor;
     using BaseKeycardPermissions = Interactables.Interobjects.DoorUtils.KeycardPermissions;
-
     using Breakable = Doors.BreakableDoor;
     using Checkpoint = Doors.CheckpointDoor;
     using Elevator = Doors.ElevatorDoor;
-    using Gate = Doors.Gate;
     using KeycardPermissions = Enums.KeycardPermissions;
 
     /// <summary>
@@ -94,17 +92,17 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not the door is fully closed.
         /// </summary>
-        public bool IsFullyClosed => Is(out Gate gate) ? !IsOpen && gate.RemainingPryCooldown <= 0 : ExactState is 0;
+        public bool IsFullyClosed => Is(out Doors.Gate gate) ? !IsOpen && gate.RemainingPryCooldown <= 0 : ExactState is 0;
 
         /// <summary>
         /// Gets a value indicating whether the door is fully open.
         /// </summary>
-        public bool IsFullyOpen => Is(out Gate gate) ? !IsOpen && gate.RemainingPryCooldown <= 0 : ExactState is 1;
+        public bool IsFullyOpen => Is(out Doors.Gate gate) ? !IsOpen && gate.RemainingPryCooldown <= 0 : ExactState is 1;
 
         /// <summary>
         /// Gets a value indicating whether or not the door is currently moving.
         /// </summary>
-        public bool IsMoving => Is(out Gate gate) ? !IsOpen && gate.RemainingPryCooldown > 0 : ExactState is not(0 or 1);
+        public bool IsMoving => Is(out Doors.Gate gate) ? !IsOpen && gate.RemainingPryCooldown > 0 : ExactState is not(0 or 1);
 
         /// <summary>
         /// Gets a value indicating the precise state of the door, from <c>0-1</c>. A value of <c>0</c> indicates the door is fully closed, while a value of <c>1</c> indicates the door is fully open. Values in-between represent the door's animation progress.
@@ -206,30 +204,6 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not this door is breakable.
-        /// </summary>
-        [Obsolete("Use IDamageableDoor::IsBreakable instead.")]
-        public bool IsBreakable => this is Interfaces.IDamageableDoor dDoor && dDoor.IsBreakable;
-
-        /// <summary>
-        /// Gets a value indicating whether or not this door is broken.
-        /// </summary>
-        [Obsolete("Use IDamageableDoor::IsDestroyed instead.")]
-        public bool IsBroken => this is Interfaces.IDamageableDoor dDoor && dDoor.IsDestroyed;
-
-        /// <summary>
-        /// Gets a value indicating whether or not this door is ignoring lockdown.
-        /// </summary>
-        [Obsolete("Use INonInteractableDoor::IgnoreLockdowns")]
-        public bool IgnoresLockdowns => this is Interfaces.INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreLockdowns;
-
-        /// <summary>
-        /// Gets a value indicating whether or not this door is ignoring remoteAdmin commands.
-        /// </summary>
-        [Obsolete("Use INonInteractableDoor::IgnoreRemoteAdmin")]
-        public bool IgnoresRemoteAdmin => this is Interfaces.INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreRemoteAdmin;
-
-        /// <summary>
         /// Gets the door's Instance ID.
         /// </summary>
         public int InstanceId => Base.GetInstanceID();
@@ -251,48 +225,6 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         {
             get => Base.RequiredPermissions;
             set => Base.RequiredPermissions = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the max health of the door. No effect if the door cannot be broken.
-        /// </summary>
-        [Obsolete("Use IDamageableDoor::MaxHealth instead.")]
-        public float MaxHealth
-        {
-            get => Base is BreakableDoor breakable ? breakable._maxHealth : float.NaN;
-            set
-            {
-                if (Base is BreakableDoor breakable)
-                    breakable._maxHealth = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the door's remaining health. No effect if the door cannot be broken.
-        /// </summary>
-        [Obsolete("Use IDamageableDoor::Health instead.")]
-        public float Health
-        {
-            get => Base is BreakableDoor breakable ? breakable.RemainingHealth : float.NaN;
-            set
-            {
-                if (Base is BreakableDoor breakable)
-                    breakable.RemainingHealth = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the damage types this door ignores, if it is breakable.
-        /// </summary>
-        [Obsolete("Use IDamageableDoor::IgnoredDamage instead.")]
-        public DoorDamageType IgnoredDamageTypes
-        {
-            get => Base is BreakableDoor breakable ? breakable._ignoredDamageSources : DoorDamageType.None;
-            set
-            {
-                if (Base is BreakableDoor breakable)
-                    breakable._ignoredDamageSources = value;
-            }
         }
 
         /// <summary>
@@ -337,12 +269,12 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
             ? door
             : doorVariant switch
             {
-                CheckpointDoor chkpt => new Checkpoint(chkpt, chkpt.GetComponentInParent<Room>()),
+                Interactables.Interobjects.CheckpointDoor chkpt => new Checkpoint(chkpt, chkpt.GetComponentInParent<Room>()),
                 BaseBreakableDoor brkbl => new Breakable(brkbl, brkbl.GetComponentInParent<Room>()),
-                ElevatorDoor elvtr => new Elevator(elvtr, elvtr.GetComponentInParent<Room>()),
-                PryableDoor prbl => new Gate(prbl, prbl.GetComponentInParent<Room>()),
-                BasicNonInteractableDoor nonInteractableDoor => new Doors.BasicNonInteractableDoor(nonInteractableDoor, nonInteractableDoor.GetComponentInParent<Room>()),
-                BasicDoor basicDoor => new Doors.BasicDoor(basicDoor, basicDoor.GetComponentInParent<Room>()),
+                Interactables.Interobjects.ElevatorDoor elvtr => new Elevator(elvtr, elvtr.GetComponentInParent<Room>()),
+                PryableDoor prbl => new Doors.Gate(prbl, prbl.GetComponentInParent<Room>()),
+                Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new Doors.BasicNonInteractableDoor(nonInteractableDoor, nonInteractableDoor.GetComponentInParent<Room>()),
+                Interactables.Interobjects.BasicDoor basicDoor => new Doors.BasicDoor(basicDoor, basicDoor.GetComponentInParent<Room>()),
                 _ => new Door(doorVariant, doorVariant.GetComponentInParent<Room>())
             }) : null;
 
@@ -479,47 +411,6 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         }
 
         /// <summary>
-        /// Breaks the specified door. No effect if the door cannot be broken, or if it is already broken.
-        /// </summary>
-        /// <param name="type">The <see cref="DoorDamageType"/> to apply to the door.</param>
-        /// <returns><see langword="true"/> if the door was broken, <see langword="false"/> if it was unable to be broken, or was already broken before.</returns>
-        [Obsolete("Use IDamageableDoor::Break instead.")]
-        public bool BreakDoor(DoorDamageType type = DoorDamageType.ServerCommand)
-        {
-            if (this is Interfaces.IDamageableDoor dmg && !dmg.IsDestroyed)
-            {
-                dmg.Break(type);
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Damages the door. No effect if the door cannot be broken.
-        /// </summary>
-        /// <param name="amount">The amount of damage to deal.</param>
-        /// <param name="type">The damage type to use.</param>
-        /// <returns><see langword="true"/> if the door was damaged.</returns>
-        [Obsolete("Use IDamageableDoor::Damage instead.")]
-        public bool DamageDoor(float amount, DoorDamageType type = DoorDamageType.ServerCommand) => Base is BreakableDoor breakable && breakable.ServerDamage(amount, type);
-
-        /// <summary>
-        /// Tries to pry the door open. No effect if the door cannot be pried.
-        /// </summary>
-        /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
-        [Obsolete("Use Gate::TryPry instead.")]
-        public bool TryPryOpen() => Base is PryableDoor pryable && pryable.TryPryGate(null);
-
-        /// <summary>
-        /// Tries to pry the door open. No effect if the door cannot be pried.
-        /// </summary>
-        /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
-        /// <param name="player">The player who tries to open the gate.</param>
-        [Obsolete("Use Gate::TryPry(Player) instead.")]
-        public bool TryPryOpen(Player player) => Base is PryableDoor pryable && pryable.TryPryGate(player.ReferenceHub);
-
-        /// <summary>
         /// Makes the door play a beep sound.
         /// </summary>
         /// <param name="beep">The beep sound to play.</param>
@@ -527,10 +418,10 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
         {
             switch (Base)
             {
-                case BasicDoor basic:
+                case Interactables.Interobjects.BasicDoor basic:
                     basic.RpcPlayBeepSound(beep is not DoorBeepType.InteractionAllowed);
                     break;
-                case CheckpointDoor chkPt:
+                case Interactables.Interobjects.CheckpointDoor chkPt:
                     chkPt.RpcPlayBeepSound((byte)Mathf.Min((int)beep, 3));
                     break;
             }
@@ -607,12 +498,12 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
             ? door
             : doorVariant switch
             {
-                CheckpointDoor chkpt => new Checkpoint(chkpt, room),
+                Interactables.Interobjects.CheckpointDoor chkpt => new Checkpoint(chkpt, room),
                 BaseBreakableDoor brkbl => new Breakable(brkbl, room),
-                ElevatorDoor elvtr => new Elevator(elvtr, room),
-                PryableDoor prbl => new Gate(prbl, room),
-                BasicNonInteractableDoor nonInteractableDoor => new Doors.BasicNonInteractableDoor(nonInteractableDoor, room),
-                BasicDoor basicDoor => new Doors.BasicDoor(basicDoor, room),
+                Interactables.Interobjects.ElevatorDoor elvtr => new Elevator(elvtr, room),
+                PryableDoor prbl => new Doors.Gate(prbl, room),
+                Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new Doors.BasicNonInteractableDoor(nonInteractableDoor, room),
+                Interactables.Interobjects.BasicDoor basicDoor => new Doors.BasicDoor(basicDoor, room),
                 _ => new Door(doorVariant, room)
             };
 
@@ -626,8 +517,8 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
                     "LCZ" => Room?.Type switch
                     {
                         RoomType.LczCheckpointA or RoomType.LczCheckpointB or RoomType.HczEzCheckpointA
-                        or RoomType.HczEzCheckpointB => Get(Base.GetComponentInParent<CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor,
-                        RoomType.LczAirlock => (Base.GetComponentInParent<AirlockController>() != null) ? DoorType.Airlock : DoorType.LightContainmentDoor,
+                        or RoomType.HczEzCheckpointB => Get(Base.GetComponentInParent<Interactables.Interobjects.CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor,
+                        RoomType.LczAirlock => (Base.GetComponentInParent<Interactables.Interobjects.AirlockController>() != null) ? DoorType.Airlock : DoorType.LightContainmentDoor,
                         _ => DoorType.LightContainmentDoor,
                     },
                     "HCZ" => DoorType.HeavyContainmentDoor,
@@ -646,7 +537,7 @@ namespace Exiled.API.Features // TODO: Move to Exiled.API.Features.Doors
                         RoomType.Hcz049 => Position.y < -805 ? DoorType.Scp049Gate : DoorType.Scp173NewGate,
                         _ => DoorType.UnknownGate,
                     },
-                    "Elevator" => (Base as ElevatorDoor)?.Group switch
+                    "Elevator" => (Base as Interactables.Interobjects.ElevatorDoor)?.Group switch
                     {
                         ElevatorGroup.Nuke => DoorType.ElevatorNuke,
                         ElevatorGroup.Scp049 => DoorType.ElevatorScp049,
