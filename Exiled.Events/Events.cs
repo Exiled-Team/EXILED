@@ -103,7 +103,6 @@ namespace Exiled.Events
             ItemPickupBase.OnPickupDestroyed += Handlers.Internal.PickupEvent.OnRemovedPickup;
             ServerConsole.ReloadServerName();
 
-            EventManager.RegisterEvents<Handlers.Warhead>(this);
             EventManager.RegisterEvents<Handlers.Player>(this);
         }
 
@@ -133,7 +132,6 @@ namespace Exiled.Events
             RagdollManager.OnRagdollSpawned -= Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved -= Handlers.Internal.RagdollList.OnRemovedRagdoll;
 
-            EventManager.UnregisterEvents<Handlers.Warhead>(this);
             EventManager.UnregisterEvents<Handlers.Player>(this);
         }
 

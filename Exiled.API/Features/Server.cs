@@ -189,6 +189,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a value indicating whether or not this server is verified.
+        /// </summary>
+        public static bool IsVerified => CustomNetworkManager.IsVerified;
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not idle mode is enabled.
         /// </summary>
         public static bool IsIdleModeEnabled
