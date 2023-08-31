@@ -48,6 +48,9 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ItemBase), nameof(ItemBase.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                    // this
+                    new CodeInstruction(OpCodes.Ldarg_0),
+
                     // isTails
                     new(OpCodes.Ldloc_1),
 
