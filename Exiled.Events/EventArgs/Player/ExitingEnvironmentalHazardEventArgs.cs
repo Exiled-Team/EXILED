@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
-    using System;
-
     using Exiled.API.Features.Hazards;
     using Hazards;
     using Interfaces;
@@ -35,12 +33,6 @@ namespace Exiled.Events.EventArgs.Player
         /// Gets the player who's exiting from the environmental hazard.
         /// </summary>
         public API.Features.Player Player { get; }
-
-        /// <summary>
-        /// Gets the environmental hazard that the player is exiting from.
-        /// </summary>
-        [Obsolete("Use Hazard property instead.")]
-        public EnvironmentalHazard EnvironmentalHazard => Hazard.Base;
 
         /// <inheritdoc cref="EnvironmentalHazard"/>
         public Hazard Hazard { get; }
