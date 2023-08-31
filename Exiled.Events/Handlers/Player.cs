@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+    using System;
+
     using Exiled.Events.EventArgs.Player;
 
     using Extensions;
@@ -329,6 +331,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before processing a hotkey.
         /// </summary>
+        [Obsolete("No more used by base-game", true)]
         public static event CustomEventHandler<ProcessingHotkeyEventArgs> ProcessingHotkey;
 
         /// <summary>
@@ -430,6 +433,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before a <see cref="API.Features.Player"/> damage a Window.
         /// </summary> // TODO: DamagingWindow instead of PlayerDamageWindow
         public static event CustomEventHandler<DamagingWindowEventArgs> PlayerDamageWindow;
+
+        /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> damage a Door.
+        /// </summary>
+        public static event CustomEventHandler<DamagingDoorEventArgs> DamagingDoor;
 
         /// <summary>
         /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
@@ -731,6 +739,7 @@ namespace Exiled.Events.Handlers
         /// Called before processing a hotkey.
         /// </summary>
         /// <param name="ev">The <see cref="ProcessingHotkeyEventArgs"/> instance.</param>
+        [Obsolete("No more used by base-game", true)]
         public static void OnProcessingHotkey(ProcessingHotkeyEventArgs ev) => ProcessingHotkey.InvokeSafely(ev);
 
         /// <summary>
@@ -879,6 +888,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance. </param>
         public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> damage a window.
+        /// </summary>
+        /// <param name="ev">The <see cref="DamagingDoorEventArgs"/> instance. </param>
+        public static void OnDamagingDoor(DamagingDoorEventArgs ev) => DamagingDoor.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> unlocks a generator.
