@@ -13,7 +13,7 @@ namespace Exiled.API.Features
 
     using Enums;
     using Exiled.API.Interfaces;
-
+    using MapGeneration;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
 
     using UnityEngine;
@@ -50,12 +50,12 @@ namespace Exiled.API.Features
             ["TWO-STORY OFFICE"] = CameraType.EzTwoStoryOffice,
 
             // Heavy Containment Zone
-            ["049 ARMORY"] = CameraType.Hcz049Armory,
+            ["049 OUTSIDE"] = CameraType.Hcz049Outside,
             ["049 CONT CHAMBER"] = CameraType.Hcz049ContChamber,
-            ["049 ELEV TOP"] = CameraType.Hcz049ElevTop,
+            ["049/173 TOP"] = CameraType.Hcz049ElevTop,
             ["049 HALLWAY"] = CameraType.Hcz049Hallway,
-            ["049 TOP FLOOR"] = CameraType.Hcz049TopFloor,
-            ["049 TUNNEL"] = CameraType.Hcz049Tunnel,
+            ["173 OUTSIDE"] = CameraType.Hcz173Outside,
+            ["049/173 BOTTOM"] = CameraType.Hcz049TopFloor,
             ["079 AIRLOCK"] = CameraType.Hcz079Airlock,
             ["079 CONT CHAMBER"] = CameraType.Hcz079ContChamber,
             ["079 HALLWAY"] = CameraType.Hcz079Hallway,
@@ -72,6 +72,7 @@ namespace Exiled.API.Features
             ["HCZ ARMORY"] = CameraType.HczArmory,
             ["HCZ ARMORY INTERIOR"] = CameraType.HczArmoryInterior,
             ["HCZ CROSSING"] = CameraType.HczCrossing,
+            ["HCZ CURVE"] = CameraType.HczCurve,
             ["HCZ ELEV SYS A"] = CameraType.HczElevSysA,
             ["HCZ ELEV SYS B"] = CameraType.HczElevSysB,
             ["HCZ HALLWAY"] = CameraType.HczHallway,
@@ -90,9 +91,7 @@ namespace Exiled.API.Features
 
             // Light Containment Zone
             ["173 BOTTOM"] = CameraType.Lcz173Bottom,
-            ["173 CONT CHAMBER"] = CameraType.Lcz173ContChamber,
             ["173 HALL"] = CameraType.Lcz173Hall,
-            ["173 STAIRS"] = CameraType.Lcz173Stairs,
             ["914 AIRLOCK"] = CameraType.Lcz914Airlock,
             ["914 CONT CHAMBER"] = CameraType.Lcz914ContChamber,
             ["AIRLOCK"] = CameraType.LczAirlock,
@@ -137,6 +136,11 @@ namespace Exiled.API.Features
         {
             Base = camera079;
             Camera079ToCamera.Add(camera079, this);
+            Type = GetCameraType();
+#if Debug
+            if (Type is CameraType.Unknown)
+                Log.Error($"[CAMERATYPE UNKNOWN] {this}");
+#endif
         }
 
         /// <summary>
@@ -183,15 +187,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's <see cref="ZoneType"/>.
         /// </summary>
-        public ZoneType Zone => Room.Zone;
+        public ZoneType Zone => Room?.Zone ?? ZoneType.Unspecified;
 
         /// <summary>
         /// Gets the camera's <see cref="CameraType"/>.
         /// </summary>
-        public CameraType Type
-        {
-            get => NameToCameraType.ContainsKey(Name) ? NameToCameraType[Name] : CameraType.Unknown;
-        }
+        public CameraType Type { get; private set; }
 
         /// <summary>
         /// Gets the camera's position.
@@ -267,6 +268,28 @@ namespace Exiled.API.Features
         /// Returns the Camera in a human-readable format.
         /// </summary>
         /// <returns>A string containing Camera-related data.</returns>
-        public override string ToString() => $"{Zone} ({Type}) [{Room}] *{Name}* |{Id}| ={IsBeingUsed}=";
+        public override string ToString() => $"({Type}) [{Room}] *{Name}* |{Id}| ={IsBeingUsed}=";
+
+        private CameraType GetCameraType()
+        {
+            if (NameToCameraType.ContainsKey(Name))
+                return NameToCameraType[Name];
+            return Base.Room.Name switch
+            {
+                RoomName.Hcz049 => Name switch
+                {
+                    "173 STAIRS" => CameraType.Hcz173Stairs,
+                    "173 CONT CHAMBER" => CameraType.Hcz173ContChamber,
+                    _ => CameraType.Unknown,
+                },
+                RoomName.Lcz173 => Name switch
+                {
+                    "173 STAIRS" => CameraType.Lcz173Stairs,
+                    "173 CONT CHAMBER" => CameraType.Lcz173ContChamber,
+                    _ => CameraType.Unknown,
+                },
+                _ => CameraType.Unknown,
+            };
+        }
     }
 }
