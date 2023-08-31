@@ -31,7 +31,6 @@ sidebar_position: 1
 - [StructureType](#structuretype)
 - [BloodType](#bloodtype)
 - [GeneratorState](#generatorstate)
-- [HotKeyButton](#hotkeybutton)
 - [IntercomStates](#intercomstates)
 - [BroadcastType](#broadcasttype)
 - [Attachment Names](#attachmentnames)
@@ -202,16 +201,6 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 ```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(GeneratorState)).Cast<GeneratorState>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
-```
-
-</details>
-
-### HotKeyButton
-
-<details><summary> <b>Hot Keys</b></summary>
-
-```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
-<#= string.Join("\n",Enum.GetValues(typeof(HotkeyButton)).Cast<HotkeyButton>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
