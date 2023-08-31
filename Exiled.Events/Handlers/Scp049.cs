@@ -29,11 +29,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<StartingRecallEventArgs> StartingRecall;
 
         /// <summary>
-        ///     Invoked before SCP-049-2 consumes a corpse.
-        /// </summary>
-        public static event CustomEventHandler<ConsumingCorpseEventArgs> ConsumingCorpse;
-
-        /// <summary>
         ///     Invoked before SCP-049 uses the sense ability.
         /// </summary>
         public static event CustomEventHandler<ActivatingSenseEventArgs> ActivatingSense;
@@ -59,12 +54,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="StartingRecallEventArgs" /> instance.</param>
         public static void OnStartingRecall(StartingRecallEventArgs ev) => StartingRecall.InvokeSafely(ev);
-
-        /// <summary>
-        ///     Called before SCP-049-2 consumes a corpse.
-        /// </summary>
-        /// <param name="ev">The <see cref="ConsumingCorpseEventArgs" /> instance.</param>
-        public static void OnConsumingCorpse(ConsumingCorpseEventArgs ev) => ConsumingCorpse.InvokeSafely(ev);
 
         /// <summary>
         ///     Called before SCP-049 starts the sense ability.
