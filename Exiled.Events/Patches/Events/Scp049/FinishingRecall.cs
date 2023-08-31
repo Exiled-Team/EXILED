@@ -24,9 +24,9 @@ namespace Exiled.Events.Patches.Events.Scp049
 
     /// <summary>
     ///     Patches <see cref="Scp049ResurrectAbility.ServerComplete" />.
-    ///     Adds the <see cref="Handlers.Scp049.FinishingRecall" /> event.
+    ///     Adds the <see cref="Handlers.Scp0492.ConsumingCorpse" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.ConsumingCorpse))]
+    [EventPatch(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.ConsumingCorpse))]
     [HarmonyPatch(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.ServerComplete))]
     internal static class FinishingRecall
     {
