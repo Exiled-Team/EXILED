@@ -118,7 +118,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets a list of players who will be turned away from SCP-079' scan.
+        /// Gets a list of players who will be turned away from SCP-079's scan.
         /// </summary>
         public static HashSet<Player> TurnedPlayers { get; } = new(20);
 
