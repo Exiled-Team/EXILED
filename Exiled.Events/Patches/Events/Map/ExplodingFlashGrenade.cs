@@ -45,14 +45,15 @@ namespace Exiled.Events.Patches.Events.Map
                 {
                     // FlashbangGrenade
                     new CodeInstruction(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0),
 
-                    // Processes ExplodingGrenadeEventArgs
+                    // Processes ExplodingGrenadeEventArgs and stores flashed players count
                     new(OpCodes.Call, Method(typeof(ExplodingFlashGrenade), nameof(ProcessEvent))),
-                    new(OpCodes.Stloc_1),
+                    new(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._hitPlayerCount))),
                     new(OpCodes.Br_S, returnLabel),
                 });
 
-            newInstructions[newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ble_S) - 2].WithLabels(returnLabel);
+            newInstructions[newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ble_S) - 3].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
