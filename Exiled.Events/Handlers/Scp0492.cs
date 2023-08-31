@@ -25,7 +25,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before 049-2 gets his benefits from consuming ability.
         /// </summary>
-        public static event Events.CustomEventHandler<ConsumingCorpseEventArgs> ConsumingCorpse;
+        public static Event<ConsumingCorpseEventArgs> ConsumingCorpse { get; set; } = new();
 
         /// <summary>
         /// Called before a player triggers the bloodlust effect for 049-2.
