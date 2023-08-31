@@ -41,7 +41,7 @@ namespace Exiled.API.Features.Hazards
         /// <summary>
         /// Gets the list of all hazards.
         /// </summary>
-        public static IEnumerable<Hazard> List => EnvironmentalHazardToHazard.Values;
+        public static IReadOnlyCollection<Hazard> List => EnvironmentalHazardToHazard.Values;
 
         /// <summary>
         /// Gets the <see cref="EnvironmentalHazard"/>.
@@ -49,9 +49,17 @@ namespace Exiled.API.Features.Hazards
         public EnvironmentalHazard Base { get; }
 
         /// <summary>
-        /// Gets the list with all affected by this hazard players.
+        /// Gets or sets the list with all affected by this hazard players.
         /// </summary>
-        public IEnumerable<Player> AffectedPlayers => Base.AffectedPlayers.Select(Player.Get);
+        public IEnumerable<Player> AffectedPlayers
+        {
+            get => Base.AffectedPlayers.Select(Player.Get);
+            set
+            {
+                Base.AffectedPlayers.Clear();
+                Base.AffectedPlayers.AddRange(value.Select(x => x.ReferenceHub));
+            }
+        }
 
         /// <summary>
         /// Gets or sets max hazard distance.

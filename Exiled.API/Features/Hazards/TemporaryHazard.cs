@@ -28,11 +28,6 @@ namespace Exiled.API.Features.Hazards
         }
 
         /// <summary>
-        /// Gets the list of all <see cref="TemporaryHazard"/> that are not active and not visible for players.
-        /// </summary>
-        public static IReadOnlyCollection<TemporaryHazard> NotActiveList => List.Where(x => x.Is(out TemporaryHazard hazard) && hazard.IsDestroyed).Select(x => x.As<TemporaryHazard>()).ToList();
-
-        /// <summary>
         /// Gets the <see cref="BaseHazard"/>.
         /// </summary>
         public new BaseHazard Base { get; }
