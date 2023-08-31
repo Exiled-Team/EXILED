@@ -149,9 +149,9 @@ public class EventHandlers
 {
     public void TriggeringTesla(TriggeringTeslaEventArgs ev)
     {
-        // Disable the event for nine tailed fox players.
-        // This can be accomplished by checking the player's team.
-        if (ev.Player.Team == Team.MTF) {
+        // Disable the event for foundation personnel players.
+        // This can be accomplished by checking the player's side.
+        if (ev.Player.Role.Side == Side.Mtf) {
             // Disable the tesla trigger by setting ev.IsTriggerable to false.
             // Players who have a MTF ranking will no longer trigger tesla gates.
             ev.IsTriggerable = false;
