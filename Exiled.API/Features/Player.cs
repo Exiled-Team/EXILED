@@ -19,6 +19,7 @@ namespace Exiled.API.Features
     using Enums;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Doors;
+    using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pools;
@@ -2891,8 +2892,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="isActive">Whether or not the tantrum will apply the <see cref="EffectType.Stained"/> effect.</param>
         /// <remarks>If <paramref name="isActive"/> is <see langword="true"/>, the tantrum is moved slightly up from its original position. Otherwise, the collision will not be detected and the slowness will not work.</remarks>
-        /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
-        public GameObject PlaceTantrum(bool isActive = true) => Map.PlaceTantrum(Position, isActive);
+        /// <returns>The <see cref="TantrumHazard"/> instance..</returns>
+        public TantrumHazard PlaceTantrum(bool isActive = true) => Map.PlaceTantrum(Position, isActive);
 
         /// <summary>
         /// Gives a new <see cref="AhpStat">to the player</see>.
