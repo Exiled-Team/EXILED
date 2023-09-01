@@ -12,14 +12,11 @@ namespace Exiled.Events.Patches.Events.Map
 
     using API.Features.Pickups;
     using API.Features.Pools;
+    using Exiled.API.Features.Doors;
     using Exiled.Events.EventArgs.Map;
-
     using Handlers;
-
     using HarmonyLib;
-
     using Interactables.Interobjects.DoorUtils;
-
     using MapGeneration.Distributors;
 
     using static HarmonyLib.AccessTools;
@@ -131,7 +128,7 @@ namespace Exiled.Events.Patches.Events.Map
                 // door = ev.Door.Base
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.TriggerDoor))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Door), nameof(API.Features.Door.Base))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Door), nameof(Door.Base))),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);

@@ -8,10 +8,9 @@
 namespace Exiled.Events.EventArgs.Scp096
 {
     using API.Features;
+    using Exiled.API.Features.Doors;
     using Interfaces;
-
     using PlayerRoles.PlayableScps.Scp096;
-
     using UnityEngine;
 
     using Scp096Role = API.Features.Roles.Scp096Role;
@@ -49,7 +48,7 @@ namespace Exiled.Events.EventArgs.Scp096
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets the <see cref="API.Features.Door" /> to be cried on.
+        ///     Gets the <see cref="API.Features.Doors.Door" /> to be cried on.
         ///     <remarks>the value can be null</remarks>
         /// </summary>
         public Door Door { get; }

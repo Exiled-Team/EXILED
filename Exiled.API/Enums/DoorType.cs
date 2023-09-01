@@ -7,13 +7,15 @@
 
 namespace Exiled.API.Enums
 {
+    using Exiled.API.Features.Doors;
+
     using static Interactables.Interobjects.ElevatorManager;
 
     /// <summary>
     /// Unique identifier for the different types of doors.
     /// </summary>
-    /// <seealso cref="Features.Door.Type"/>
-    /// <seealso cref="Features.Door.Get(DoorType)"/>
+    /// <seealso cref="Door.Type"/>
+    /// <seealso cref="Door.Get(DoorType)"/>
     public enum DoorType
     {
         /// <summary>

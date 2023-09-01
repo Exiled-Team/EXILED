@@ -15,6 +15,7 @@ namespace Exiled.API.Features
     using Decals;
     using Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Toys;
