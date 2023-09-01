@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
 
     using HarmonyLib;
@@ -25,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Map
     ///     Patches <see cref="LockerChamber.SpawnItem" />.
     ///     Adds the <see cref="Handlers.Map.FillingLocker" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.FillingLocker))]
     [HarmonyPatch(typeof(LockerChamber), nameof(LockerChamber.SpawnItem))]
     internal static class FillingLocker
     {

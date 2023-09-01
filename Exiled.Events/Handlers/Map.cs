@@ -68,7 +68,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before an item is spawned in locker.
         /// </summary>
-        public static event CustomEventHandler<FillingLockerEventArgs> FillingLocker;
+        public static Event<FillingLockerEventArgs> FillingLocker { get; set; } = new();
 
         /// <summary>
         /// Invoked after the map is generated.
