@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs.Scp079
     using API.Features;
 
     using Exiled.API.Enums;
-
+    using Exiled.API.Features.Roles;
     using Interfaces;
 
     using RelativePositioning;
@@ -20,7 +20,7 @@ namespace Exiled.Events.EventArgs.Scp079
     /// <summary>
     ///     Contains all information before SCP-079 pings a location.
     /// </summary>
-    public class PingingEventArgs : IPlayerEvent, IRoomEvent, IDeniableEvent
+    public class PingingEventArgs : IScp079Event, IRoomEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PingingEventArgs" /> class.
@@ -46,6 +46,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public PingingEventArgs(ReferenceHub hub, RelativePosition position, int powerCost, byte proccesorindex, Vector3 syncNormal, bool isAllowed = true)
         {
             Player = Player.Get(hub);
+            Scp079 = Player.Role.As<Scp079Role>();
             Position = position.Position;
             Room = Room.Get(Position);
             AuxiliaryPowerCost = powerCost;
@@ -88,5 +89,8 @@ namespace Exiled.Events.EventArgs.Scp079
         ///     Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp079Role Scp079 { get; }
     }
 }

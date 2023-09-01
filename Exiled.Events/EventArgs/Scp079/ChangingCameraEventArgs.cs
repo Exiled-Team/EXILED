@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Scp079
     /// <summary>
     ///     Contains all information before a SCP-079 changes the current camera.
     /// </summary>
-    public class ChangingCameraEventArgs : IPlayerEvent, ICameraEvent, IDeniableEvent
+    public class ChangingCameraEventArgs : IScp079Event, ICameraEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ChangingCameraEventArgs" /> class.
@@ -33,15 +33,19 @@ namespace Exiled.Events.EventArgs.Scp079
         public ChangingCameraEventArgs(Player player, Scp079Camera camera, float auxiliaryPowerCost)
         {
             Player = player;
+            Scp079 = Player.Role.As<Scp079Role>();
             Camera = Camera.Get(camera);
             AuxiliaryPowerCost = auxiliaryPowerCost;
-            IsAllowed = auxiliaryPowerCost <= player.Role.As<Scp079Role>().Energy;
+            IsAllowed = auxiliaryPowerCost <= Scp079.Energy;
         }
 
         /// <summary>
         ///     Gets the player who is SCP-079.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp079Role Scp079 { get; }
 
         /// <summary>
         ///     Gets or sets the amount of auxiliary power that will be required to switch cameras.

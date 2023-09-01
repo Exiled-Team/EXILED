@@ -8,13 +8,13 @@
 namespace Exiled.Events.EventArgs.Scp173
 {
     using API.Features;
-
+    using Exiled.API.Features.Roles;
     using Interfaces;
 
     /// <summary>
     ///     Contains all information before an Scp-173 uses breakneck speeds.
     /// </summary>
-    public class UsingBreakneckSpeedsEventArgs : IPlayerEvent, IDeniableEvent
+    public class UsingBreakneckSpeedsEventArgs : IScp173Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UsingBreakneckSpeedsEventArgs" /> class.
@@ -28,6 +28,7 @@ namespace Exiled.Events.EventArgs.Scp173
         public UsingBreakneckSpeedsEventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
+            Scp173 = player.Role.As<Scp173Role>();
             IsAllowed = isAllowed;
         }
 
@@ -40,5 +41,8 @@ namespace Exiled.Events.EventArgs.Scp173
         ///     Gets the player who's using breakneck speeds.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp173Role Scp173 { get; }
     }
 }
