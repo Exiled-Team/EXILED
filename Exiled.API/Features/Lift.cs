@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Extensions;
-
 namespace Exiled.API.Features
 {
     using System;
@@ -14,6 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pools;
     using Exiled.API.Interfaces;
