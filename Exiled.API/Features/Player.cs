@@ -14,31 +14,22 @@ namespace Exiled.API.Features
     using System.Runtime.CompilerServices;
 
     using Core;
-
     using CustomPlayerEffects;
-
     using DamageHandlers;
-
     using Enums;
-
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
-
     using Extensions;
-
     using Footprinting;
-
     using global::Scp914;
-
     using Hints;
-
     using Interactables.Interobjects;
-
     using InventorySystem;
     using InventorySystem.Disarming;
     using InventorySystem.Items;
@@ -48,32 +39,23 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
-
     using MapGeneration.Distributors;
-
     using MEC;
-
     using Mirror;
     using Mirror.LiteNetLib4Mirror;
-
     using NorthwoodLib;
-
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.RoleAssign;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
-
     using PlayerStatsSystem;
     using RelativePositioning;
     using RemoteAdmin;
-
     using RoundRestarting;
-
     using UnityEngine;
     using Utils;
     using Utils.Networking;
-
     using VoiceChat;
     using VoiceChat.Playbacks;
 
@@ -2909,8 +2891,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="isActive">Whether or not the tantrum will apply the <see cref="EffectType.Stained"/> effect.</param>
         /// <remarks>If <paramref name="isActive"/> is <see langword="true"/>, the tantrum is moved slightly up from its original position. Otherwise, the collision will not be detected and the slowness will not work.</remarks>
-        /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
-        public GameObject PlaceTantrum(bool isActive = true) => Map.PlaceTantrum(Position, isActive);
+        /// <returns>The <see cref="TantrumHazard"/> instance..</returns>
+        public TantrumHazard PlaceTantrum(bool isActive = true) => Map.PlaceTantrum(Position, isActive);
 
         /// <summary>
         /// Gives a new <see cref="AhpStat">to the player</see>.
