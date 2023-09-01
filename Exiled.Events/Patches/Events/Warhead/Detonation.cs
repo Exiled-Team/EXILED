@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="Detonated.cs" company="Exiled Team">
+// <copyright file="Detonation.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     [EventPatch(typeof(Warhead), nameof(Warhead.Detonated))]
     [EventPatch(typeof(Warhead), nameof(Warhead.Detonating))]
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]
-    internal static class Detonated
+    internal static class Detonation
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
