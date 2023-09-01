@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="SinkholeEnvironmentalHazard.OnExit(ReferenceHub)"/> with <see cref="SinkholeEnvironmentalHazard"/>.
     /// Adds the <see cref="Handlers.Player.ExitingEnvironmentalHazard"/> event.
     /// </summary>
-    /// <seealso cref="StayingOnSinkholeEnvironmentalHazard"/>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ExitingEnvironmentalHazard))]
     [HarmonyPatch(typeof(SinkholeEnvironmentalHazard), nameof(SinkholeEnvironmentalHazard.OnExit))]
     internal static class ExitingSinkholeEnvironmentalHazard
     {

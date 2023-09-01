@@ -14,7 +14,7 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features.Pools;
 
     using CustomPlayerEffects;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -25,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches the <see cref="StatusEffectBase.Intensity"/> method.
     /// Adds the <see cref="Handlers.Player.ReceivingEffect"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ReceivingEffect))]
     [HarmonyPatch(typeof(StatusEffectBase), nameof(StatusEffectBase.ForceIntensity))]
     internal static class ReceivingStatusEffect
     {

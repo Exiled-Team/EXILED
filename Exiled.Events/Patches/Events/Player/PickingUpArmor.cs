@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -25,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches the <see cref="ArmorSearchCompletor.Complete" /> method to add the
     ///     <see cref="Handlers.Player.PickingUpItem" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.PickingUpItem))]
     [HarmonyPatch(typeof(ArmorSearchCompletor), nameof(ArmorSearchCompletor.Complete))]
     internal static class PickingUpArmor
     {

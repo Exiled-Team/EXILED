@@ -11,7 +11,10 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using API.Features.Pools;
+
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
+
     using Handlers;
 
     using HarmonyLib;
@@ -28,6 +31,7 @@ namespace Exiled.Events.Patches.Events.Map
     ///     Patches <see cref="StandardHitregBase.PlaceBulletholeDecal" />.
     ///     Adds the <see cref="Map.PlacingBulletHole" /> event.
     /// </summary>
+    [EventPatch(typeof(Map), nameof(Map.PlacingBulletHole))]
     [HarmonyPatch(typeof(StandardHitregBase), nameof(StandardHitregBase.PlaceBulletholeDecal))]
     internal static class PlacingBulletHole
     {
