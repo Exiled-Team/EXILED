@@ -8,6 +8,7 @@
 namespace Exiled.Events.EventArgs.Scp173
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
     using Hazards;
@@ -15,17 +16,16 @@ namespace Exiled.Events.EventArgs.Scp173
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Subroutines;
 
+    using Scp173Role = API.Features.Roles.Scp173Role;
+
     /// <summary>
     ///     Contains all information before the tantrum is placed.
     /// </summary>
-    public class PlacingTantrumEventArgs : IPlayerEvent, IDeniableEvent
+    public class PlacingTantrumEventArgs : IScp173Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlacingTantrumEventArgs" /> class.
         /// </summary>
-        /// <param name="scp173">
-        ///     <inheritdoc cref="Scp173" />
-        /// </param>
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
@@ -38,10 +38,10 @@ namespace Exiled.Events.EventArgs.Scp173
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public PlacingTantrumEventArgs(Scp173Role scp173, Player player, TantrumEnvironmentalHazard tantrumHazard, AbilityCooldown cooldown, bool isAllowed = true)
+        public PlacingTantrumEventArgs(Player player, TantrumEnvironmentalHazard tantrumHazard, AbilityCooldown cooldown, bool isAllowed = true)
         {
-            Scp173 = scp173;
             Player = player;
+            Scp173 = Player.Role.As<Scp173Role>();
             TantrumHazard = tantrumHazard;
             Cooldown = cooldown;
             IsAllowed = isAllowed;

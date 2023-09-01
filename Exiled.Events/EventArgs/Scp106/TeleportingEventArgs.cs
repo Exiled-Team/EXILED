@@ -8,7 +8,7 @@
 namespace Exiled.Events.EventArgs.Scp106
 {
     using API.Features;
-
+    using Exiled.API.Features.Roles;
     using Interfaces;
 
     using UnityEngine;
@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Scp106
     /// <summary>
     ///     Contains all information before SCP-106 teleports using the hunter atlas.
     /// </summary>
-    public class TeleportingEventArgs : IPlayerEvent, IDeniableEvent
+    public class TeleportingEventArgs : IScp106Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="TeleportingEventArgs" /> class.
@@ -33,6 +33,7 @@ namespace Exiled.Events.EventArgs.Scp106
         public TeleportingEventArgs(Player player, Vector3 position, bool isAllowed = true)
         {
             Player = player;
+            Scp106 = Player.Role.As<Scp106Role>();
             Position = position;
             IsAllowed = isAllowed;
         }
@@ -51,5 +52,8 @@ namespace Exiled.Events.EventArgs.Scp106
         ///     Gets the player who's controlling SCP-106.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp106Role Scp106 { get; }
     }
 }

@@ -38,9 +38,6 @@ namespace Exiled.Events.Patches.Events.Scp939
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.Owner))),
 
-                // true
-                new(OpCodes.Ldc_I4_1),
-
                 // LungingEventArgs ev = new (...)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LungingEventArgs))[0]),
 

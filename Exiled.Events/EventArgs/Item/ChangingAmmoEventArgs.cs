@@ -47,6 +47,9 @@ namespace Exiled.Events.EventArgs.Item
         /// </summary>
         public Firearm Firearm { get; }
 
+        /// <inheritdoc/>
+        public Item Item => Firearm;
+
         /// <summary>
         /// Gets the old ammo.
         /// </summary>
