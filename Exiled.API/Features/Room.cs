@@ -146,10 +146,8 @@ namespace Exiled.API.Features
             get => RoomLightController.NetworkOverrideColor;
             set
             {
-                if (RoomLightController)
-                {
-                    RoomLightController.NetworkOverrideColor = value;
-                }
+                foreach (RoomLightController roomLightController in RoomLightControllers)
+                    roomLightController.NetworkOverrideColor = value;
             }
         }
 
@@ -161,8 +159,8 @@ namespace Exiled.API.Features
             get => RoomLightController && !RoomLightController.NetworkLightsEnabled;
             set
             {
-                if (RoomLightController)
-                    RoomLightController.NetworkLightsEnabled = !value;
+                foreach (RoomLightController roomLightController in RoomLightControllers)
+                    roomLightController.NetworkLightsEnabled = !value;
             }
         }
 
@@ -369,7 +367,8 @@ namespace Exiled.API.Features
             if (!RoomLightController)
                 return;
 
-            RoomLightController.NetworkOverrideColor = Color.clear;
+            foreach (RoomLightController roomLightController in RoomLightControllers)
+                roomLightController.NetworkOverrideColor = Color.clear;
         }
 
         /// <summary>
