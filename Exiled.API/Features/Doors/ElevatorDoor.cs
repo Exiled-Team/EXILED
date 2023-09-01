@@ -35,7 +35,7 @@ namespace Exiled.API.Features.Doors
         public new Interactables.Interobjects.ElevatorDoor Base { get; }
 
         /// <summary>
-        /// Gets the group for elevator for this door.
+        /// Gets the <see cref="ElevatorManager.ElevatorGroup"/> that this door's <see cref="Lift"/> belongs to.
         /// </summary>
         public ElevatorManager.ElevatorGroup Group => Base.Group;
 
@@ -59,7 +59,7 @@ namespace Exiled.API.Features.Doors
         public ElevatorPanel Panel => Base.TargetPanel;
 
         /// <summary>
-        /// Gets the <see cref="Lift"/> associated with the elevator door.
+        /// Gets the <see cref="Lift"/> associated with this elevator door.
         /// </summary>
         public Lift Lift { get; }
 

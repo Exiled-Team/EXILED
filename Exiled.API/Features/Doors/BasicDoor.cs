@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="BasicDoor.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -40,7 +40,7 @@ namespace Exiled.API.Features.Doors
         public IEnumerable<Collider> Scp106Colliders => Base.Scp106Colliders;
 
         /// <summary>
-        /// Gets or sets total cooldown before door can be triggered again.
+        /// Gets or sets the total cooldown before door can be triggered again.
         /// </summary>
         public float Cooldown
         {

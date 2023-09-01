@@ -22,7 +22,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Initializes a new instance of the <see cref="AirlockController"/> class.
         /// </summary>
-        /// <param name="controller">Basegame controller.</param>
+        /// <param name="controller">Base-game controller.</param>
         public AirlockController(BaseController controller)
         {
             Base = controller;
@@ -69,9 +69,9 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
-        /// Gets the <see cref="AirlockController"/> bu it's basegame controller.
+        /// Gets the <see cref="AirlockController"/> by its base-game controller.
         /// </summary>
-        /// <param name="controller">Basegame controller.</param>
+        /// <param name="controller">Base-game controller.</param>
         /// <returns>Instance of <see cref="AirlockController"/>.</returns>
         public static AirlockController Get(BaseController controller) => controller != null ? (BaseToExiledControllers.TryGetValue(controller, out AirlockController airlockController) ? airlockController : new AirlockController(controller)) : null;
 

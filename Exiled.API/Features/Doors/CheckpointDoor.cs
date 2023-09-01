@@ -35,12 +35,12 @@ namespace Exiled.API.Features.Doors
         public new Interactables.Interobjects.CheckpointDoor Base { get; }
 
         /// <summary>
-        /// Gets the list of all sub doors for this <see cref="CheckpointDoor"/>.
+        /// Gets the list of all sub doors belonging to this <see cref="CheckpointDoor"/>.
         /// </summary>
         public IReadOnlyCollection<BreakableDoor> Subdoors { get; }
 
         /// <summary>
-        /// Gets or sets the current stage.
+        /// Gets or sets the current checkpoint stage.
         /// </summary>
         public Interactables.Interobjects.CheckpointDoor.CheckpointSequenceStage CurrentStage
         {

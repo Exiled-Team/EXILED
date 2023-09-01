@@ -25,9 +25,9 @@ namespace Exiled.API.Features.Doors
 
     using BaseBreakableDoor = Interactables.Interobjects.BreakableDoor;
     using BaseKeycardPermissions = Interactables.Interobjects.DoorUtils.KeycardPermissions;
-    using Breakable = Doors.BreakableDoor;
-    using Checkpoint = Doors.CheckpointDoor;
-    using Elevator = Doors.ElevatorDoor;
+    using Breakable = BreakableDoor;
+    using Checkpoint = CheckpointDoor;
+    using Elevator = ElevatorDoor;
     using KeycardPermissions = Enums.KeycardPermissions;
 
     /// <summary>
@@ -65,12 +65,12 @@ namespace Exiled.API.Features.Doors
         public static IEnumerable<Door> List => DoorVariantToDoor.Values;
 
         /// <summary>
-        /// Gets the base-game <see cref="DoorVariant"/> for this door.
+        /// Gets the base-game <see cref="DoorVariant"/> corresponding with this door.
         /// </summary>
         public DoorVariant Base { get; }
 
         /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the door.
+        /// Gets the door's <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         public GameObject GameObject => Base.gameObject;
 
@@ -80,7 +80,7 @@ namespace Exiled.API.Features.Doors
         public Transform Transform => Base.transform;
 
         /// <summary>
-        /// Gets the <see cref="DoorType"/> of the door.
+        /// Gets the door's <see cref="DoorType"/>.
         /// </summary>
         public DoorType Type { get; }
 
@@ -92,17 +92,17 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not the door is fully closed.
         /// </summary>
-        public bool IsFullyClosed => Is(out Doors.Gate gate) ? !IsOpen && gate.RemainingPryCooldown <= 0 : ExactState is 0;
+        public bool IsFullyClosed => Is(out Gate gate) ? !IsOpen && gate.RemainingPryCooldown <= 0 : ExactState is 0;
 
         /// <summary>
         /// Gets a value indicating whether the door is fully open.
         /// </summary>
-        public bool IsFullyOpen => Is(out Doors.Gate gate) ? !IsOpen && gate.RemainingPryCooldown <= 0 : ExactState is 1;
+        public bool IsFullyOpen => Is(out Gate gate) ? !IsOpen && gate.RemainingPryCooldown <= 0 : ExactState is 1;
 
         /// <summary>
         /// Gets a value indicating whether or not the door is currently moving.
         /// </summary>
-        public bool IsMoving => Is(out Doors.Gate gate) ? !IsOpen && gate.RemainingPryCooldown > 0 : ExactState is not(0 or 1);
+        public bool IsMoving => Is(out Gate gate) ? !IsOpen && gate.RemainingPryCooldown > 0 : ExactState is not(0 or 1);
 
         /// <summary>
         /// Gets a value indicating the precise state of the door, from <c>0-1</c>. A value of <c>0</c> indicates the door is fully closed, while a value of <c>1</c> indicates the door is fully open. Values in-between represent the door's animation progress.
@@ -134,7 +134,7 @@ namespace Exiled.API.Features.Doors
         public bool IsElevator => this is Elevator;
 
         /// <summary>
-        /// Gets a value indicating whether or not this door is damageable.
+        /// Gets a value indicating whether or not this door can be damaged.
         /// </summary>
         public bool IsDamageable => this is Interfaces.IDamageableDoor;
 
@@ -144,18 +144,24 @@ namespace Exiled.API.Features.Doors
         public bool IsNonInteractable => this is Interfaces.INonInteractableDoor;
 
         /// <summary>
-        /// Gets a value indicating whether or not this door is subdoor for checkpoint.
+        /// Gets a value indicating whether or not this door is subdoor belonging to a checkpoint.
         /// </summary>
         public bool IsPartOfCheckpoint => List.Where(x => x is Checkpoint).Any(x => x.Cast<Checkpoint>().Subdoors.Contains(this));
 
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.
         /// </summary>
+        /// <remarks>
+        /// This value is <see langword="false"/> if <see cref="KeycardPermissions"/> is equal to <see cref="KeycardPermissions.None"/>.
+        /// </remarks>
         public bool IsKeycardDoor => KeycardPermissions is not KeycardPermissions.None;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not this door requires a keycard to open.
+        /// Gets or sets the keycard permissions required to open the door.
         /// </summary>
+        /// <remarks>
+        /// Setting this value to <see cref="KeycardPermissions.None"/> will allow this door to be opened without a keycard.
+        /// </remarks>
         public KeycardPermissions KeycardPermissions
         {
             get => (KeycardPermissions)RequiredPermissions.RequiredPermissions;
@@ -272,9 +278,9 @@ namespace Exiled.API.Features.Doors
                 Interactables.Interobjects.CheckpointDoor chkpt => new Checkpoint(chkpt, chkpt.GetComponentInParent<Room>()),
                 BaseBreakableDoor brkbl => new Breakable(brkbl, brkbl.GetComponentInParent<Room>()),
                 Interactables.Interobjects.ElevatorDoor elvtr => new Elevator(elvtr, elvtr.GetComponentInParent<Room>()),
-                PryableDoor prbl => new Doors.Gate(prbl, prbl.GetComponentInParent<Room>()),
-                Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new Doors.BasicNonInteractableDoor(nonInteractableDoor, nonInteractableDoor.GetComponentInParent<Room>()),
-                Interactables.Interobjects.BasicDoor basicDoor => new Doors.BasicDoor(basicDoor, basicDoor.GetComponentInParent<Room>()),
+                PryableDoor prbl => new Gate(prbl, prbl.GetComponentInParent<Room>()),
+                Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new BasicNonInteractableDoor(nonInteractableDoor, nonInteractableDoor.GetComponentInParent<Room>()),
+                Interactables.Interobjects.BasicDoor basicDoor => new BasicDoor(basicDoor, basicDoor.GetComponentInParent<Room>()),
                 _ => new Door(doorVariant, doorVariant.GetComponentInParent<Room>())
             }) : null;
 
@@ -332,7 +338,7 @@ namespace Exiled.API.Features.Doors
         /// <returns><see cref="Door"/> object.</returns>
         public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
         {
-            List<Door> doors = onlyUnbroken || type is not ZoneType.Unspecified ? Get(x => (x.Room is null || x.Room.Zone.HasFlag(type) || type == ZoneType.Unspecified) && (x is Doors.BreakableDoor { IsDestroyed: true } || !onlyUnbroken)).ToList() : DoorVariantToDoor.Values.ToList();
+            List<Door> doors = onlyUnbroken || type is not ZoneType.Unspecified ? Get(x => (x.Room is null || x.Room.Zone.HasFlag(type) || type == ZoneType.Unspecified) && (x is Breakable { IsDestroyed: true } || !onlyUnbroken)).ToList() : DoorVariantToDoor.Values.ToList();
             return doors[UnityEngine.Random.Range(0, doors.Count)];
         }
 
@@ -501,9 +507,9 @@ namespace Exiled.API.Features.Doors
                 Interactables.Interobjects.CheckpointDoor chkpt => new Checkpoint(chkpt, room),
                 BaseBreakableDoor brkbl => new Breakable(brkbl, room),
                 Interactables.Interobjects.ElevatorDoor elvtr => new Elevator(elvtr, room),
-                PryableDoor prbl => new Doors.Gate(prbl, room),
-                Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new Doors.BasicNonInteractableDoor(nonInteractableDoor, room),
-                Interactables.Interobjects.BasicDoor basicDoor => new Doors.BasicDoor(basicDoor, room),
+                PryableDoor prbl => new Gate(prbl, room),
+                Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new BasicNonInteractableDoor(nonInteractableDoor, room),
+                Interactables.Interobjects.BasicDoor basicDoor => new BasicDoor(basicDoor, room),
                 _ => new Door(doorVariant, room)
             };
 
