@@ -28,22 +28,24 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches <see cref="RoomIdentifier.Awake"/>.
     /// </summary>
-    [HarmonyPatch(typeof(RoomIdentifier), nameof(RoomIdentifier.Awake))]
+    [HarmonyPatch(typeof(RoomIdentifier), nameof(RoomIdentifier.TryAssignId))]
     internal class RoomList
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codeInstructions)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(codeInstructions);
 
+            int offset = -3;
+            int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(RoomIdUtils), nameof(RoomIdUtils.PositionToCoords)))) + offset;
+
             // Room.CreateComponent(gameObject);
             newInstructions.InsertRange(
-                0,
+                index,
                 new CodeInstruction[]
                 {
-                    new(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
                     new(OpCodes.Call, Method(typeof(Room), nameof(Room.CreateComponent))),
-                    new(OpCodes.Pop),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)

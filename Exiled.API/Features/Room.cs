@@ -26,6 +26,8 @@ namespace Exiled.API.Features
     using UnityEngine;
     using Utils.NonAllocLINQ;
 
+    using static PlayerList;
+
     /// <summary>
     /// The in-game room.
     /// </summary>
@@ -386,8 +388,10 @@ namespace Exiled.API.Features
         /// We can add parameters to be set privately here.
         /// </summary>
         /// <param name="roomGameObject">The Game Object to attach the Room component to.</param>
-        /// <returns>The Room component that was instantiated onto the Game Object.</returns>
-        internal static Room CreateComponent(GameObject roomGameObject) => roomGameObject.AddComponent<Room>();
+        internal static void CreateComponent(GameObject roomGameObject)
+        {
+            roomGameObject.AddComponent<Room>().InternalCreate();
+        }
 
         private static RoomType FindType(GameObject gameObject)
         {
@@ -469,7 +473,7 @@ namespace Exiled.API.Features
             };
         }
 
-        private void Awake()
+        private void InternalCreate()
         {
             Identifier = gameObject.GetComponent<RoomIdentifier>();
             RoomIdentifierToRoom.Add(Identifier, this);
@@ -488,6 +492,13 @@ namespace Exiled.API.Features
             RoomLightControllersValue.AddRange(gameObject.GetComponentsInChildren<RoomLightController>());
 
             RoomLightControllers = RoomLightControllersValue.AsReadOnly();
+
+            GetComponentsInChildren<BreakableWindow>().ForEach(component =>
+            {
+                Window window = new(component, this);
+                window.Room.WindowsValue.Add(window);
+            });
+
             Windows = WindowsValue.AsReadOnly();
             Doors = DoorsValue.AsReadOnly();
             Speakers = SpeakersValue.AsReadOnly();
