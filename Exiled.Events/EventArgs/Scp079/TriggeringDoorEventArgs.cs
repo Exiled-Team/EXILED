@@ -8,7 +8,7 @@
 namespace Exiled.Events.EventArgs.Scp079
 {
     using API.Features;
-
+    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
     using Interactables.Interobjects.DoorUtils;
@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        ///     Gets or sets the <see cref="API.Features.Door" /> instance.
+        ///     Gets or sets the <see cref="API.Features.Doors.Door" /> instance.
         /// </summary>
         public Door Door { get; set; }
 
