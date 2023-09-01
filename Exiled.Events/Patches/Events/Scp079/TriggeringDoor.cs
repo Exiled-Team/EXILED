@@ -11,14 +11,13 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using API.Features.Pools;
+    using Exiled.API.Features.Doors;
+  
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
-
     using HarmonyLib;
-
     using Interactables.Interobjects.DoorUtils;
-
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Subroutines;
 
@@ -92,7 +91,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringDoorEventArgs), nameof(TriggeringDoorEventArgs.Door))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Door), nameof(API.Features.Door.Base))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Door), nameof(Door.Base))),
                     new(OpCodes.Stfld, Field(typeof(Scp079DoorStateChanger), nameof(Scp079DoorStateChanger.LastDoor))),
                 });
 
