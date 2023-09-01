@@ -89,6 +89,9 @@ namespace Exiled.Events.Features
         /// </summary>
         public void InvokeSafely()
         {
+            if (InnerEvent is null)
+                return;
+
             foreach (CustomEventHandler handler in InnerEvent.GetInvocationList().Cast<CustomEventHandler>())
             {
                 try
