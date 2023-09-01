@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp330;
 
     using Handlers;
@@ -32,6 +32,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     ///     Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived(NetworkConnection, SelectScp330Message)" /> method to add the
     ///     <see cref="Scp330.DroppingScp330" /> event.
     /// </summary>
+    [EventPatch(typeof(Scp330), nameof(Scp330.DroppingScp330))]
     [HarmonyPatch(typeof(Scp330NetworkHandler), nameof(Scp330NetworkHandler.ServerSelectMessageReceived))]
     internal static class DroppingCandy
     {

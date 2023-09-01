@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player uses an item.
     /// </summary>
-    public class UsingItemCompletedEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
+    public class UsingItemCompletedEventArgs : IPlayerEvent, IDeniableEvent, IUsableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UsingItemCompletedEventArgs" /> class.

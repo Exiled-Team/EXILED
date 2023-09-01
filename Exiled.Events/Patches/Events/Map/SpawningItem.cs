@@ -10,16 +10,15 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using API.Features.Doors;
     using API.Features.Pickups;
     using API.Features.Pools;
+
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
-
     using Handlers;
-
     using HarmonyLib;
-
     using Interactables.Interobjects.DoorUtils;
-
     using MapGeneration.Distributors;
 
     using static HarmonyLib.AccessTools;
@@ -28,6 +27,7 @@ namespace Exiled.Events.Patches.Events.Map
     ///     Patches <see cref="ItemDistributor.SpawnPickup" />.
     ///     Adds the <see cref="Map.SpawningItem" /> event.
     /// </summary>
+    [EventPatch(typeof(Map), nameof(Map.SpawningItem))]
     [HarmonyPatch(typeof(ItemDistributor), nameof(ItemDistributor.CreatePickup))]
     internal static class SpawningItem
     {
@@ -131,7 +131,7 @@ namespace Exiled.Events.Patches.Events.Map
                 // door = ev.Door.Base
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.TriggerDoor))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Door), nameof(API.Features.Door.Base))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Door), nameof(Door.Base))),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);

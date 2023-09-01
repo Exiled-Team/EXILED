@@ -158,16 +158,6 @@ namespace Exiled.API.Features
         public static float LateJoinTime => ConfigFile.ServerConfig.GetFloat(RoleAssigner.LateJoinKey, 0f);
 
         /// <summary>
-        /// Gets or sets the spawn protection time, in seconds.
-        /// </summary>
-        [Obsolete("Use Respawn.SpawnProtectTime.")]
-        public static float SpawnProtectTime
-        {
-            get => Respawn.ProtectionTime;
-            set => Respawn.ProtectionTime = value;
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the server is marked as Heavily Modded.
         /// <remarks>
         /// Read the VSR for more info about its usage.
@@ -187,6 +177,11 @@ namespace Exiled.API.Features
             get => ServerConsole.WhiteListEnabled;
             set => ServerConsole.WhiteListEnabled = value;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not this server is verified.
+        /// </summary>
+        public static bool IsVerified => CustomNetworkManager.IsVerified;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not idle mode is enabled.

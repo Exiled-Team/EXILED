@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before MicroHID energy is changed.
     /// </summary>
-    public class UsingMicroHIDEnergyEventArgs : IPlayerEvent, IDeniableEvent
+    public class UsingMicroHIDEnergyEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UsingMicroHIDEnergyEventArgs" /> class.
@@ -50,6 +50,9 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the MicroHID instance.
         /// </summary>
         public MicroHid MicroHID { get; }
+
+        /// <inheritdoc/>
+        public Item Item => MicroHID;
 
         /// <summary>
         ///     Gets the current state of the MicroHID.

@@ -14,31 +14,23 @@ namespace Exiled.API.Features
     using System.Runtime.CompilerServices;
 
     using Core;
-
     using CustomPlayerEffects;
-
     using DamageHandlers;
-
     using Enums;
-
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.API.Features.Doors;
+    using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
-
     using Extensions;
-
     using Footprinting;
-
     using global::Scp914;
-
     using Hints;
-
     using Interactables.Interobjects;
-
     using InventorySystem;
     using InventorySystem.Disarming;
     using InventorySystem.Items;
@@ -48,32 +40,23 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
-
     using MapGeneration.Distributors;
-
     using MEC;
-
     using Mirror;
     using Mirror.LiteNetLib4Mirror;
-
     using NorthwoodLib;
-
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.RoleAssign;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
-
     using PlayerStatsSystem;
     using RelativePositioning;
     using RemoteAdmin;
-
     using RoundRestarting;
-
     using UnityEngine;
     using Utils;
     using Utils.Networking;
-
     using VoiceChat;
     using VoiceChat.Playbacks;
 
@@ -88,7 +71,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
-    public class Player : IEntity, IPosition // Todo: Convert to IWorldSpace (Rotation Vector3 -> Quaternion)
+    public class Player : IEntity, IWorldSpace
     {
 #pragma warning disable SA1401
         /// <summary>
@@ -97,7 +80,6 @@ namespace Exiled.API.Features
         internal readonly List<Item> ItemsValue = new(8);
 #pragma warning restore SA1401
 
-        private readonly IReadOnlyCollection<Item> readOnlyItems;
         private readonly HashSet<EActor> componentsInChildren = new();
 
         private ReferenceHub referenceHub;
@@ -110,8 +92,8 @@ namespace Exiled.API.Features
         /// <param name="referenceHub">The <see cref="global::ReferenceHub"/> of the player to be encapsulated.</param>
         public Player(ReferenceHub referenceHub)
         {
-            readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = referenceHub;
+            Items = ItemsValue.AsReadOnly();
         }
 
         /// <summary>
@@ -120,8 +102,8 @@ namespace Exiled.API.Features
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> of the player.</param>
         public Player(GameObject gameObject)
         {
-            readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = ReferenceHub.GetHub(gameObject);
+            Items = ItemsValue.AsReadOnly();
         }
 
         /// <summary>
@@ -142,7 +124,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
         /// </summary>
-        public static IEnumerable<Player> List => Dictionary.Values;
+        public static IReadOnlyCollection<Player> List => Dictionary.Values;
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.
@@ -529,10 +511,10 @@ namespace Exiled.API.Features
         /// Gets or sets the player's rotation.
         /// </summary>
         /// <returns>Returns the direction the player is looking at.</returns>
-        public Vector3 Rotation
+        public Quaternion Rotation
         {
-            get => Transform.eulerAngles;
-            set => ReferenceHub.TryOverridePosition(Position, value - Rotation);
+            get => Transform.rotation;
+            set => ReferenceHub.TryOverridePosition(Position, value.eulerAngles);
         }
 
         /// <summary>
@@ -1076,7 +1058,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's items.
         /// </summary>
-        public IReadOnlyCollection<Item> Items => readOnlyItems;
+        public IReadOnlyCollection<Item> Items { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not the player's inventory is empty.
@@ -1271,7 +1253,7 @@ namespace Exiled.API.Features
                 if (int.TryParse(args, out int id))
                     return Get(id);
 
-                if (args.EndsWith("@steam") || args.EndsWith("@discord") || args.EndsWith("@northwood") || args.EndsWith("@patreon"))
+                if (args.EndsWith("@steam") || args.EndsWith("@discord") || args.EndsWith("@northwood"))
                 {
                     foreach (Player player in Dictionary.Values)
                     {
@@ -1666,18 +1648,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Forces the player to reload their current weapon.
         /// </summary>
-        /// <exception cref="InvalidOperationException">If the item is not a firearm.</exception>
-        public void ReloadWeapon() // TODO: Convert to bool instead of Exception
+        /// <returns><see langword="true"/> if firearm was successfully reloaded. Otherwise, <see langword="false"/>.</returns>
+        public bool ReloadWeapon()
         {
             if (CurrentItem is Firearm firearm)
             {
-                firearm.Base.AmmoManagerModule.ServerTryReload();
+                bool result = firearm.Base.AmmoManagerModule.ServerTryReload();
                 Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
+                return result;
             }
-            else
-            {
-                throw new InvalidOperationException("The player's CurrentItem is not a firearm.");
-            }
+
+            return false;
         }
 
         /// <summary>
@@ -1774,12 +1755,13 @@ namespace Exiled.API.Features
         /// Drops the held item. Will not do anything if the player is not holding an item.
         /// </summary>
         /// <seealso cref="CurrentItem"/>
-        public void DropHeldItem() // TODO: Return Pickup.
+        /// <returns>Dropped item's <see cref="Pickup"/>.</returns>
+        public Pickup DropHeldItem()
         {
             if (CurrentItem is null)
-                return;
+                return null;
 
-            DropItem(CurrentItem);
+            return DropItem(CurrentItem);
         }
 
         /// <summary>
@@ -2002,23 +1984,26 @@ namespace Exiled.API.Features
         /// Forces the player to use an item.
         /// </summary>
         /// <param name="usableItem">The ItemType to be used.</param>
-        public void UseItem(ItemType usableItem) => UseItem(Item.Create(usableItem)); // TODO: Convert to bool if succesfully done.
+        /// <returns><see langword="true"/> if item was used successfully. Otherwise, <see langword="false"/>.</returns>
+        public bool UseItem(ItemType usableItem) => UseItem(Item.Create(usableItem));
 
         /// <summary>
         /// Forces the player to use an item.
         /// </summary>
         /// <param name="item">The item to be used.</param>
-        /// <exception cref="ArgumentException">The provided item is not a usable item.</exception>
-        public void UseItem(Item item) // TODO: Convert to bool if succesfully done instead of throwing error.
+        /// <returns><see langword="true"/> if item was used successfully. Otherwise, <see langword="false"/>.</returns>
+        public bool UseItem(Item item)
         {
             if (item is not Usable usableItem)
-                throw new ArgumentException($"The provided item [{item.Type}] is not a usable item.", nameof(item));
+                return false;
 
             usableItem.Base.Owner = referenceHub;
             usableItem.Base.ServerOnUsingCompleted();
 
             if (usableItem.Base is not null)
                 usableItem.Destroy();
+
+            return true;
         }
 
         /// <summary>
@@ -2516,11 +2501,8 @@ namespace Exiled.API.Features
         {
             ClearInventory();
 
-            if (newItems.Any())
-            {
-                foreach (Item item in newItems)
-                    AddItem(item.Base is null ? new Item(item.Type) : item);
-            }
+            foreach (Item item in newItems)
+                AddItem(item.Base is null ? new Item(item.Type) : item);
         }
 
         /// <summary>
@@ -2770,7 +2752,7 @@ namespace Exiled.API.Features
         {
             Array effectTypes = Enum.GetValues(typeof(EffectType));
             IEnumerable<EffectType> validEffects = effectTypes.ToArray<EffectType>().Where(effect => effect.GetCategories().HasFlag(category));
-            EffectType effectType = validEffects.ElementAt(Random.Range(0, effectTypes.Length));
+            EffectType effectType = validEffects.GetRandomValue();
 
             EnableEffect(effectType, duration, addDurationIfActive);
 
@@ -2906,8 +2888,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="isActive">Whether or not the tantrum will apply the <see cref="EffectType.Stained"/> effect.</param>
         /// <remarks>If <paramref name="isActive"/> is <see langword="true"/>, the tantrum is moved slightly up from its original position. Otherwise, the collision will not be detected and the slowness will not work.</remarks>
-        /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
-        public GameObject PlaceTantrum(bool isActive = true) => Map.PlaceTantrum(Position, isActive);
+        /// <returns>The <see cref="TantrumHazard"/> instance..</returns>
+        public TantrumHazard PlaceTantrum(bool isActive = true) => Map.PlaceTantrum(Position, isActive);
 
         /// <summary>
         /// Gives a new <see cref="AhpStat">to the player</see>.
@@ -3044,22 +3026,20 @@ namespace Exiled.API.Features
         /// <param name="type">Object for teleport.</param>
         public void RandomTeleport(Type type)
         {
-            LockerChamber[] chambers;
-
             object randomObject = type.Name switch
             {
-                nameof(Camera) => Camera.List.ElementAt(Random.Range(0, Camera.Camera079ToCamera.Count)),
+                nameof(Camera) => Camera.List.GetRandomValue(),
                 nameof(Door) => Door.Random(),
-                nameof(Room) => Room.List.ElementAt(Random.Range(0, Room.RoomIdentifierToRoom.Count)),
-                nameof(TeslaGate) => TeslaGate.List.ElementAt(Random.Range(0, TeslaGate.BaseTeslaGateToTeslaGate.Count)),
-                nameof(Player) => Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count)),
-                nameof(Pickup) => Pickup.BaseToPickup.ElementAt(Random.Range(0, Pickup.BaseToPickup.Count)).Value,
-                nameof(Ragdoll) => Ragdoll.List.ElementAt(Random.Range(0, Ragdoll.BasicRagdollToRagdoll.Count)),
+                nameof(Room) => Room.List.GetRandomValue(),
+                nameof(TeslaGate) => TeslaGate.List.GetRandomValue(),
+                nameof(Player) => Dictionary.Values.GetRandomValue(),
+                nameof(Pickup) => Pickup.BaseToPickup.GetRandomValue().Value,
+                nameof(Ragdoll) => Ragdoll.List.GetRandomValue(),
                 nameof(Locker) => Map.GetRandomLocker(),
-                nameof(Generator) => Generator.List.ElementAt(Random.Range(0, Generator.Scp079GeneratorToGenerator.Count)),
-                nameof(Window) => Window.List.ElementAt(Random.Range(0, Window.BreakableWindowToWindow.Count)),
+                nameof(Generator) => Generator.List.GetRandomValue(),
+                nameof(Window) => Window.List.GetRandomValue(),
                 nameof(Scp914) => Scp914.Scp914Controller,
-                nameof(LockerChamber) => (chambers = Map.GetRandomLocker().Chambers)[Random.Range(0, chambers.Length)],
+                nameof(LockerChamber) => Map.GetRandomLocker().Chambers.GetRandomValue(),
                 _ => null,
             };
 
@@ -3077,7 +3057,7 @@ namespace Exiled.API.Features
             if (array.Length == 0)
                 return;
 
-            RandomTeleport(array[Random.Range(0, array.Length)]);
+            RandomTeleport(array.GetRandomValue());
         }
 
         /// <summary>
@@ -3177,15 +3157,6 @@ namespace Exiled.API.Features
         /// <returns>Return the time in seconds of the cooldowns.</returns>
         public float GetCooldownItem(ItemType itemType)
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns.TryGetValue(itemType, out float value) ? value : -1;
-
-        /// <summary>
-        /// Set the time cooldown on this ItemType.
-        /// </summary>
-        /// <param name="time">The times for the cooldown.</param>
-        /// <param name="itemType">The itemtypes to choose for being cooldown.</param>
-        [Obsolete("Use SetCooldownItem instead", true)]
-        public void GetCooldownItem(float time, ItemType itemType)
-            => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
 
         /// <summary>
         /// Set the time cooldown on this ItemType.

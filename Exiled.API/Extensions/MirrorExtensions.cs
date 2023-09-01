@@ -228,15 +228,6 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="player">Player to change.</param>
         /// <param name="type">Model type.</param>
-        [Obsolete("Use ChangeAppearance(Player, RoleTypeId, bool, byte) instead.", true)]
-        public static void ChangeAppearance(this Player player, RoleTypeId type) => ChangeAppearance(player, type, 0);
-
-        /// <summary>
-        /// Change <see cref="Player"/> character model for appearance.
-        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
-        /// </summary>
-        /// <param name="player">Player to change.</param>
-        /// <param name="type">Model type.</param>
         /// <param name="skipJump">Whether or not to skip the little jump that works around an invisibility issue.</param>
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public static void ChangeAppearance(this Player player, RoleTypeId type, bool skipJump = false, byte unitId = 0) => ChangeAppearance(player, type, Player.List.Where(x => x != player), skipJump, unitId);
@@ -303,27 +294,6 @@ namespace Exiled.API.Extensions
             if (!skipJump)
                 player.Position += Vector3.up * 0.25f;
         }
-
-        /// <summary>
-        /// Change <see cref="Player"/> character model for appearance.
-        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
-        /// </summary>
-        /// <param name="player">Player to change.</param>
-        /// <param name="type">Model type.</param>
-        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
-        [Obsolete("Use ChangeAppearance(Player, RoleTypeId, bool, byte) instead.", true)]
-        public static void ChangeAppearance(this Player player, RoleTypeId type, byte unitId = 0) => ChangeAppearance(player, type, Player.List.Where(x => x != player), unitId);
-
-        /// <summary>
-        /// Change <see cref="Player"/> character model for appearance.
-        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
-        /// </summary>
-        /// <param name="player">Player to change.</param>
-        /// <param name="type">Model type.</param>
-        /// <param name="playersToAffect">The players who should see the changed appearance.</param>
-        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
-        [Obsolete("Use ChangeAppearance(Player, RoleTypeId, IEnumerable<Player>, bool, byte) instead.", true)]
-        public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, byte unitId = 0) => ChangeAppearance(player, type, playersToAffect, false, unitId);
 
         /// <summary>
         /// Send CASSIE announcement that only <see cref="Player"/> can hear.
@@ -408,7 +378,7 @@ namespace Exiled.API.Extensions
         /// <param name="behaviorOwner"><see cref="NetworkIdentity"/> of object that owns <see cref="NetworkBehaviour"/>.</param>
         /// <param name="targetType"><see cref="NetworkBehaviour"/>'s type.</param>
         /// <param name="propertyName">Property name starting with Network.</param>
-        public static void ResyncSyncVar(NetworkIdentity behaviorOwner, Type targetType, string propertyName) => SetDirtyBitsMethodInfo.Invoke(behaviorOwner.gameObject.GetComponent(targetType), new object[] { SyncVarDirtyBits[$"{propertyName}"] });
+        public static void ResyncSyncVar(NetworkIdentity behaviorOwner, Type targetType, string propertyName) => SetDirtyBitsMethodInfo.Invoke(behaviorOwner.gameObject.GetComponent(targetType), new object[] { SyncVarDirtyBits[$"{targetType.Name}.{propertyName}"] });
 
         /// <summary>
         /// Send fake values to client's <see cref="ClientRpcAttribute"/>.

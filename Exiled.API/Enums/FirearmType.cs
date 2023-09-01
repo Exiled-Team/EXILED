@@ -84,5 +84,10 @@ namespace Exiled.API.Enums
         /// Represents the <see cref="ItemType.GunFRMG0"/>.
         /// </summary>
         FRMG0,
+
+        /// <summary>
+        /// Represents the <see cref="ItemType.GunA7"/>.
+        /// </summary>
+        A7,
     }
 }

@@ -8,12 +8,13 @@
 namespace Exiled.Events.EventArgs.Scp079
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     ///     Contains all information before SCP-079 finishes using a speaker.
     /// </summary>
-    public class StoppingSpeakerEventArgs : IPlayerEvent, IDeniableEvent
+    public class StoppingSpeakerEventArgs : IScp079Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="StoppingSpeakerEventArgs" /> class.
@@ -30,6 +31,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public StoppingSpeakerEventArgs(Player player, Room room, bool isAllowed = true)
         {
             Player = player;
+            Scp079 = Player.Role.As<Scp079Role>();
             Room = room;
             IsAllowed = isAllowed;
         }
@@ -38,6 +40,9 @@ namespace Exiled.Events.EventArgs.Scp079
         ///     Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp079Role Scp079 { get; }
 
         /// <summary>
         ///     Gets the room that the speaker is located in.

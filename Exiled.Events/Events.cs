@@ -16,6 +16,7 @@ namespace Exiled.Events
     using API.Features;
     using EventArgs.Interfaces;
     using Exiled.API.Features.Pickups;
+    using Exiled.Events.Features;
     using HarmonyLib;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables;
@@ -33,40 +34,17 @@ namespace Exiled.Events
         private static Events instance;
 
         /// <summary>
-        /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
-        /// </summary>
-        private int patchesCounter;
-
-        /// <summary>
-        /// The custom <see cref="EventHandler"/> delegate.
-        /// </summary>
-        /// <typeparam name="TInterface">The <see cref="EventHandler{TInterface}"/> type.</typeparam>
-        /// <param name="ev">The <see cref="EventHandler{TInterface}"/> instance.</param>
-        public delegate void CustomEventHandler<TInterface>(TInterface ev)
-            where TInterface : IExiledEvent;
-
-        /// <summary>
-        /// The custom <see cref="EventHandler"/> delegate, with empty parameters.
-        /// </summary>
-        public delegate void CustomEventHandler();
-
-        /// <summary>
         /// Gets the plugin instance.
         /// </summary>
         public static Events Instance => instance;
-
-        /// <summary>
-        /// Gets a set of types and methods for which EXILED patches should not be run.
-        /// </summary>
-        public static HashSet<MethodBase> DisabledPatchesHashSet { get; } = new();
 
         /// <inheritdoc/>
         public override PluginPriority Priority { get; } = PluginPriority.First;
 
         /// <summary>
-        /// Gets the <see cref="HarmonyLib.Harmony"/> instance.
+        /// Gets the <see cref="Features.Patcher"/> used to employ all patches.
         /// </summary>
-        public Harmony Harmony { get; private set; }
+        public Patcher Patcher { get; private set; }
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -80,7 +58,7 @@ namespace Exiled.Events
 
             watch.Stop();
 
-            Log.Info($"Patching completed in {watch.Elapsed}");
+            Log.Info($"{(Config.UseDynamicPatching ? "Non-event" : "All")} patches completed in {watch.Elapsed}");
             CharacterClassManager.OnInstanceModeChanged -= RoleAssigner.CheckLateJoin;
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
@@ -113,8 +91,6 @@ namespace Exiled.Events
 
             Unpatch();
 
-            DisabledPatchesHashSet.Clear();
-
             SceneManager.sceneUnloaded -= Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;
 
@@ -142,12 +118,13 @@ namespace Exiled.Events
         {
             try
             {
-                Harmony = new Harmony($"exiled.events.{++patchesCounter}");
+                Patcher = new Patcher();
 #if DEBUG
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                GlobalPatchProcessor.PatchAll(Harmony, out int failedPatch);
+                Patcher.PatchAll(!Config.UseDynamicPatching, out int failedPatch);
+
                 if (failedPatch == 0)
                     Log.Debug("Events patched successfully!");
                 else
@@ -163,26 +140,13 @@ namespace Exiled.Events
         }
 
         /// <summary>
-        /// Checks the <see cref="DisabledPatchesHashSet"/> list and un-patches any methods that have been defined there. Once un-patching has been done, they can be patched by plugins, but will not be re-patchable by Exiled until a server reboot.
-        /// </summary>
-        public void ReloadDisabledPatches()
-        {
-            foreach (MethodBase method in DisabledPatchesHashSet)
-            {
-                Harmony.Unpatch(method, HarmonyPatchType.All, Harmony.Id);
-
-                Log.Info($"Unpatched {method.Name}");
-            }
-        }
-
-        /// <summary>
         /// Unpatches all events.
         /// </summary>
         public void Unpatch()
         {
             Log.Debug("Unpatching events...");
-            Harmony.UnpatchAll();
-
+            Patcher.UnpatchAll();
+            Patcher = null;
             Log.Debug("All events have been unpatched complete. Goodbye!");
         }
     }

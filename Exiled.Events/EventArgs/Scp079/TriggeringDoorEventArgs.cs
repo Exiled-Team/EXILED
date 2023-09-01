@@ -8,9 +8,9 @@
 namespace Exiled.Events.EventArgs.Scp079
 {
     using API.Features;
-
+    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Roles;
-
+    using Exiled.Events.EventArgs.Interfaces;
     using Interactables.Interobjects.DoorUtils;
 
     using Player;
@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs.Scp079
     /// <summary>
     ///     Contains all information before SCP-079 interacts with a door.
     /// </summary>
-    public class TriggeringDoorEventArgs : InteractingDoorEventArgs
+    public class TriggeringDoorEventArgs : IScp079Event, IDoorEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="TriggeringDoorEventArgs" /> class.
@@ -33,10 +33,30 @@ namespace Exiled.Events.EventArgs.Scp079
         ///     <inheritdoc cref="AuxiliaryPowerCost" />
         /// </param>
         public TriggeringDoorEventArgs(Player player, DoorVariant door, float auxiliaryPowerCost)
-            : base(player, door, auxiliaryPowerCost <= player.Role.As<Scp079Role>().Energy)
         {
+            Player = player;
+            Scp079 = player.Role.As<Scp079Role>();
+            Door = Door.Get(door);
             AuxiliaryPowerCost = auxiliaryPowerCost;
         }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether or not the player can interact with the door.
+        /// </summary>
+        public bool IsAllowed { get; set; } = true;
+
+        /// <summary>
+        ///     Gets or sets the <see cref="API.Features.Doors.Door" /> instance.
+        /// </summary>
+        public Door Door { get; set; }
+
+        /// <summary>
+        ///     Gets the player who's interacting with the door.
+        /// </summary>
+        public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp079Role Scp079 { get; }
 
         /// <summary>
         ///     Gets or sets the amount of auxiliary power required to trigger a door through SCP-079.
