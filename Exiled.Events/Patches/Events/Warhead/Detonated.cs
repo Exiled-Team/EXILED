@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Warhead
             newInstructions[0].labels.Add(continueLabel);
 
             newInstructions.InsertRange(
-                0,
+                newInstructions.Count - 1,
                 new CodeInstruction[]
                 {
                     // DetonatingEventArgs ev = new();

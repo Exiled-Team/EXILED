@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Scp939
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             newInstructions.InsertRange(
-                0, new CodeInstruction[]
+                newInstructions.Count - 1, new CodeInstruction[]
                 {
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp939ClawAbility), nameof(Scp939ClawAbility.Owner))),

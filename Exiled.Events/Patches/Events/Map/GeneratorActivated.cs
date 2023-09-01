@@ -35,8 +35,6 @@ namespace Exiled.Events.Patches.Events.Map
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int index = 0;
-
             Label retModLabel = generator.DefineLabel();
             Label returnLabel = generator.DefineLabel();
 
@@ -49,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Map
             // if (!ev.IsAllowed)
             //   return;
             newInstructions.InsertRange(
-                index,
+                newInstructions.Count - 1,
                 new CodeInstruction[]
                 {
                     // this
