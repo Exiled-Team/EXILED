@@ -81,7 +81,7 @@ public override OnEnable()
     // Register the event handler class. And add the event,
     // to the EXILED_Events event listener so we get the event.
     EventHandler = new EventHandlers();
-    Player.Joined += EventHandler.PlayerJoined;
+    Player.Verified += EventHandler.PlayerVerified;
 }
 
 public override OnDisable()
@@ -89,7 +89,7 @@ public override OnDisable()
     // Make it dynamically updatable.
     // We do this by removing the listener for the event and then nulling the event handler.
     // This process must be repeated for each event.
-    Player.Joined -= EventHandler.PlayerJoined;
+    Player.Verified -= EventHandler.PlayerVerified;
     EventHandler = null;
 }
 ```
@@ -99,20 +99,20 @@ And in the EventHandlers class we would do:
 ```csharp
 public class EventHandlers
 {
-    public void PlayerJoined(JoinedEventArgs ev)
+    public void PlayerVerified(VerifiedEventArgs ev)
     {
 
     }
 }
 ```
-Now we have successfully hooked to a player join event which fires when ever a player joins! It is important to note that every event has different event arguments, and each type of event argument has different properties associated with it.
+Now we have successfully hooked to a player verified event which fires when ever a player is authenticated after joining the server! It is important to note that every event has different event arguments, and each type of event argument has different properties associated with it.
 
 EXILED already provides a broadcast function, so let's use it in our event:
 
 ```csharp
 public class EventHandlers
 {
-    public void PlayerJoined(JoinedEventArgs ev)
+    public void PlayerVerified(VerifiedEventArgs ev)
     {
         ev.Player.Broadcast(5, "<color=lime>Welcome to my cool server!</color>");
     }
@@ -149,9 +149,9 @@ public class EventHandlers
 {
     public void TriggeringTesla(TriggeringTeslaEventArgs ev)
     {
-        // Disable the event for nine tailed fox players.
-        // This can be accomplished by checking the player's team.
-        if (ev.Player.Team == Team.MTF) {
+        // Disable the event for foundation personnel players.
+        // This can be accomplished by checking the player's side.
+        if (ev.Player.Role.Side == Side.Mtf) {
             // Disable the tesla trigger by setting ev.IsTriggerable to false.
             // Players who have a MTF ranking will no longer trigger tesla gates.
             ev.IsTriggerable = false;

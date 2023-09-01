@@ -105,6 +105,16 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp079TeslaAbility subroutine not found in Scp079Role::ctor");
 
             TeslaAbility = scp079TeslaAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079ScannerTracker scp079ScannerTracker))
+                Log.Error("Scp079ScannerTracker subroutine not found in Scp079Role::ctor");
+
+            ScannerTracker = scp079ScannerTracker;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079ScannerZoneSelector scp079ScannerZoneSelector))
+                Log.Error("Scp079ScannerZoneSelector subroutine not found in Scp079Role::ctor");
+
+            ScannerZoneSelector = scp079ScannerZoneSelector;
         }
 
         /// <inheritdoc/>
@@ -179,6 +189,16 @@ namespace Exiled.API.Features.Roles
         public Scp079CurrentCameraSync CurrentCameraSync { get; }
 
         /// <summary>
+        /// Gets SCP-079's <see cref="Scp079ScannerTracker"/>.
+        /// </summary>
+        public Scp079ScannerTracker ScannerTracker { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079ScannerZoneSelector"/>.
+        /// </summary>
+        public Scp079ScannerZoneSelector ScannerZoneSelector { get; }
+
+        /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
         /// <remarks>This value will return the <c>Hcz079ContChamber</c> Camera if SCP-079's current camera cannot be detected.</remarks>
         /// </summary>
@@ -206,7 +226,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the doors SCP-079 has locked. Can be <see langword="null"/>.
         /// </summary>
-        public IEnumerable<Door> LockedDoors => DoorLockChanger._lockedDoors.Select(x => Door.Get(x));
+        public Door LockedDoor => Door.Get(DoorLockChanger.LockedDoor);
 
         /// <summary>
         /// Gets or sets SCP-079's abilities. Can be <see langword="null"/>.
@@ -355,7 +375,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Unlocks all doors that SCP-079 has locked.
         /// </summary>
-        public void UnlockAllDoors() => DoorLockChanger.ServerUnlockAll();
+        public void UnlockAllDoors() => DoorLockChanger.ServerUnlock();
 
         /// <summary>
         /// Forces SCP-079's signal to be lost for the specified amount of time.
@@ -371,23 +391,51 @@ namespace Exiled.API.Features.Roles
         public void AddExperience(int amount, Scp079HudTranslation reason = Scp079HudTranslation.ExpGainAdminCommand) => TierManager.ServerGrantExperience(amount, reason);
 
         /// <summary>
+        /// Grants SCP-079 experience.
+        /// </summary>
+        /// <param name="amount">The amount to grant.</param>
+        /// <param name="reason">The reason to grant experience.</param>
+        /// <param name="subject">The RoleType of the player that's causing it to happen.</param>
+        public void AddExperience(int amount, Scp079HudTranslation reason, RoleTypeId subject) => TierManager.ServerGrantExperience(amount, reason, subject);
+
+        /// <summary>
         /// Locks the provided <paramref name="door"/>.
         /// </summary>
         /// <param name="door">The door to lock.</param>
-        /// <returns>.</returns>
-        public bool LockDoor(Door door) => DoorLockChanger.SetDoorLock(door.Base, true);
+        /// <returns><see langword="true"/> if the door has been lock; otherwise, <see langword="false"/>.</returns>
+        public bool LockDoor(Door door)
+        {
+            if (door is not null)
+            {
+                DoorLockChanger.LockedDoor = door.Base;
+                door.Lock((float)DoorLockChanger._lockTime, DoorLockType.Regular079);
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Unlocks the provided <paramref name="door"/>.
         /// </summary>
         /// <param name="door">The door to unlock.</param>
-        public void UnlockDoor(Door door) => DoorLockChanger.SetDoorLock(door.Base, false);
+        public void UnlockDoor(Door door)
+        {
+            if (door is not null && Door.Get(DoorLockChanger.LockedDoor) == door)
+            {
+                door.Unlock();
+            }
+        }
 
         /// <summary>
         /// Marks a room as being modified by SCP-079 (granting experience if a kill happens in the room).
         /// </summary>
         /// <param name="room">The room to mark.</param>
-        public void MarkRoom(Room room) => RewardManager.MarkRoom(room.Identifier);
+        public void MarkRoom(Room room)
+        {
+            if (room is not null)
+                RewardManager.MarkRoom(room.Identifier);
+        }
 
         /// <summary>
         /// Marks a array of rooms as being modified by SCP-079 (granting experience if a kill happens in the room).
@@ -401,7 +449,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="room">The room to remove.</param>
         public void UnmarkRoom(Room room)
         {
-            if (RewardManager._markedRooms.ContainsKey(room.Identifier))
+            if (room is not null && RewardManager._markedRooms.ContainsKey(room.Identifier))
                 RewardManager._markedRooms.Remove(room.Identifier);
         }
 
@@ -415,7 +463,7 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="camera">The camera to get the cost to switch to.</param>
         /// <returns>The cost to switch from the current camera to the new camera.</returns>
-        public int GetSwitchCost(Camera camera) => CurrentCameraSync.GetSwitchCost(camera.Base);
+        public int GetSwitchCost(Camera camera) => camera is null ? CurrentCameraSync.GetSwitchCost(camera.Base) : 0;
 
         /// <summary>
         /// Gets the cost to modify a door.
@@ -423,13 +471,8 @@ namespace Exiled.API.Features.Roles
         /// <param name="door">The door to get the cost to modify.</param>
         /// <param name="action">The action.</param>
         /// <returns>The cost to modify the door.</returns>
-        public int GetCost(Door door, DoorAction action)
-        {
-            if (action is DoorAction.Locked or DoorAction.Unlocked)
-                return DoorLockChanger.GetCostForDoor(action, door.Base);
-            else
-                return DoorStateChanger.GetCostForDoor(action, door.Base);
-        }
+        public int GetCost(Door door, DoorAction action) => action is DoorAction.Locked or DoorAction.Unlocked ? DoorLockChanger.GetCostForDoor(action, door.Base) :
+            DoorStateChanger.GetCostForDoor(action, door.Base);
 
         /// <summary>
         /// Blackout the current room.
@@ -453,7 +496,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
         public void BlackoutZone(bool consumeEnergy = true)
         {
-            foreach (FlickerableLightController lightController in FlickerableLightController.Instances)
+            foreach (RoomLightController lightController in RoomLightController.Instances)
             {
                 if (lightController.Room.Zone == BlackoutZoneAbility._syncZone)
                 {

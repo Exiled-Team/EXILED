@@ -9,6 +9,7 @@ namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Features.Pools;
@@ -20,6 +21,8 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     using MapGeneration.Distributors;
+
+    using PluginAPI.Events;
 
     using static HarmonyLib.AccessTools;
 
@@ -59,8 +62,8 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Stloc_S, player.LocalIndex),
                 });
 
-            offset = 7;
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Br) + offset;
+            offset = -8;
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newobj && (ConstructorInfo)instruction.operand == GetDeclaredConstructors(typeof(PlayerCloseGeneratorEvent))[0]) + offset;
 
             // if (this.HasFlag(_flags, GeneratorFlags.Open))
             // {
@@ -161,8 +164,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.RemoveRange(index, 7);
 
-            offset = 0;
-            int index2 = newInstructions.FindLastIndex(instruction => instruction.LoadsConstant(51)) + offset;
+            offset = -2;
+            int index2 = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Newobj && (ConstructorInfo)instruction.operand == GetDeclaredConstructors(typeof(PlayerUnlockGeneratorEvent))[0]) + offset;
 
             newInstructions.InsertRange(
                 index,

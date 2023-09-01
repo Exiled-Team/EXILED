@@ -37,28 +37,28 @@ namespace Exiled.API.Features.Roles
             Base = baseRole;
             MovementModule = FirstPersonController.FpcModule as Scp106MovementModule;
 
-            if (!SubroutineModule.TryGetSubroutine(out Scp106Vigor scp106Vigor))
-                Log.Error("Scp106Vigor subroutine not found in Scp096Role::ctor");
+            if (!SubroutineModule.TryGetSubroutine(out Scp106VigorAbilityBase scp106VigorAbilityBase))
+                Log.Error("Scp106VigorAbilityBase subroutine not found in Scp106Role::ctor");
 
-            VigorComponent = scp106Vigor;
+            VigorAbility = scp106VigorAbilityBase;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp106Attack scp106Attack))
-                Log.Error("Scp106Attack subroutine not found in Scp096Role::ctor");
+                Log.Error("Scp106Attack subroutine not found in Scp106Role::ctor");
 
             Attack = scp106Attack;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp106StalkAbility scp106StalkAbility))
-                Log.Error("Scp106StalkAbility not found in Scp096Role::ctor");
+                Log.Error("Scp106StalkAbility not found in Scp106Role::ctor");
 
             StalkAbility = scp106StalkAbility;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp106HuntersAtlasAbility scp106HuntersAtlasAbility))
-                Log.Error("Scp106StalkAbility not found in Scp096Role::ctor");
+                Log.Error("Scp106HuntersAtlasAbility not found in Scp106Role::ctor");
 
             HuntersAtlasAbility = scp106HuntersAtlasAbility;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp106SinkholeController scp106SinkholeController))
-                Log.Error("Scp106StalkAbility not found in Scp096Role::ctor");
+                Log.Error("Scp106SinkholeController not found in Scp106Role::ctor");
 
             SinkholeController = scp106SinkholeController;
         }
@@ -75,9 +75,14 @@ namespace Exiled.API.Features.Roles
         public HumeShieldModuleBase HumeShieldModule { get; }
 
         /// <summary>
+        /// Gets the <see cref="Scp106VigorAbilityBase"/>.
+        /// </summary>
+        public Scp106VigorAbilityBase VigorAbility { get; }
+
+        /// <summary>
         /// Gets the <see cref="Scp106Vigor"/>.
         /// </summary>
-        public Scp106Vigor VigorComponent { get; }
+        public Scp106Vigor VigorComponent => VigorAbility.Vigor;
 
         /// <summary>
         /// Gets the <see cref="Scp106Attack"/>.
@@ -109,8 +114,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float Vigor
         {
-            get => VigorComponent.VigorAmount;
-            set => VigorComponent.VigorAmount = value;
+            get => VigorAbility.VigorAmount;
+            set => VigorAbility.VigorAmount = value;
         }
 
         /// <summary>
@@ -126,11 +131,6 @@ namespace Exiled.API.Features.Roles
         /// Gets a value indicating whether or not SCP-106 can activate teslas.
         /// </summary>
         public bool CanActivateTesla => Base.CanActivateShock;
-
-        /// <summary>
-        /// Gets a value indicating whether or not SCP-106 is ready for idle.
-        /// </summary>
-        public bool CanActivateIdle => Base.CanActivateIdle;
 
         /// <summary>
         /// Gets a value indicating whether if SCP-106 <see cref="Scp106StalkAbility"/> can be cleared.
@@ -230,9 +230,7 @@ namespace Exiled.API.Features.Roles
         public bool UsePortal(Vector3 position, float cost = 0f)
         {
             if (Room.Get(position) is not Room room)
-            {
-                throw new System.InvalidOperationException("Invalid room provided.");
-            }
+                return false;
 
             HuntersAtlasAbility._syncRoom = room.Identifier;
             HuntersAtlasAbility._syncPos = position;
@@ -250,8 +248,10 @@ namespace Exiled.API.Features.Roles
         /// Send a player to the pocket dimension.
         /// </summary>
         /// <param name="player">The <see cref="Player"/>to send.</param>
-        public void CapturePlayer(Player player)
+        public void CapturePlayer(Player player) // Convert to bool.
         {
+            if (player is null)
+                return;
             Attack._targetHub = player.ReferenceHub;
             DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, Attack._damage, DeathTranslations.PocketDecay);
 
@@ -259,11 +259,10 @@ namespace Exiled.API.Features.Roles
                 return;
 
             Attack.SendCooldown(Attack._hitCooldown);
-            Attack.Vigor.VigorAmount += Scp106Attack.VigorCaptureReward;
+            VigorAbility.VigorAmount += Scp106Attack.VigorCaptureReward;
             Attack.ReduceSinkholeCooldown();
             Hitmarker.SendHitmarker(Attack.Owner, 1f);
 
-            player.EnableEffect(EffectType.Traumatized, 180f);
             player.EnableEffect(EffectType.Corroding);
             player.EnableEffect(EffectType.SinkHole);
         }

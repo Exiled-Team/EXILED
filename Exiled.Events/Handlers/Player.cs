@@ -7,12 +7,11 @@
 
 namespace Exiled.Events.Handlers
 {
+    using System;
+
     using Exiled.Events.EventArgs.Player;
 
     using Extensions;
-
-    using PlayerRoles;
-    using PlayerRoles.FirstPersonControl.Thirdperson;
 
     using PluginAPI.Core.Attributes;
     using PluginAPI.Enums;
@@ -60,7 +59,17 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<BannedEventArgs> Banned;
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Item"/>.
+        /// Invoked before using an <see cref="API.Features.Items.Item"/>.
+        /// </summary>
+        public static event CustomEventHandler<UsingItemEventArgs> UsingItem;
+
+        /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Usable"/>.
+        /// </summary>
+        public static event CustomEventHandler<UsingItemCompletedEventArgs> UsingItemCompleted;
+
+        /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Usable"/>.
         /// </summary>
         /// <remarks>
         /// Invoked after <see cref="UsingItem"/>, if a player's class has
@@ -69,9 +78,14 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<UsedItemEventArgs> UsedItem;
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> has stopped the use of a <see cref="API.Features.Items.Usable"/>.
+        /// Invoked before a <see cref="API.Features.Player"/> has stopped the use of a <see cref="API.Features.Items.Usable"/>.
         /// </summary>
         public static event CustomEventHandler<CancellingItemUseEventArgs> CancellingItemUse;
+
+        /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> has stopped the use of a <see cref="API.Features.Items.Usable"/>.
+        /// </summary>
+        public static event CustomEventHandler<CancelledItemUseEventArgs> CancelledItemUse;
 
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> interacted with something.
@@ -97,11 +111,6 @@ namespace Exiled.Events.Handlers
         /// Invoked before deactivating a workstation.
         /// </summary>
         public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
-
-        /// <summary>
-        /// Invoked before using an <see cref="API.Features.Items.Item"/>.
-        /// </summary>
-        public static event CustomEventHandler<UsingItemEventArgs> UsingItem;
 
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> has joined the server.
@@ -330,11 +339,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<UsingMicroHIDEnergyEventArgs> UsingMicroHIDEnergy;
 
         /// <summary>
-        /// Called before processing a hotkey.
-        /// </summary>
-        public static event CustomEventHandler<ProcessingHotkeyEventArgs> ProcessingHotkey;
-
-        /// <summary>
         /// Invoked before dropping ammo.
         /// </summary>
         public static event CustomEventHandler<DroppingAmmoEventArgs> DroppingAmmo;
@@ -431,8 +435,13 @@ namespace Exiled.Events.Handlers
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> damage a Window.
-        /// </summary>
+        /// </summary> // TODO: DamagingWindow instead of PlayerDamageWindow
         public static event CustomEventHandler<DamagingWindowEventArgs> PlayerDamageWindow;
+
+        /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> damage a Door.
+        /// </summary>
+        public static event CustomEventHandler<DamagingDoorEventArgs> DamagingDoor;
 
         /// <summary>
         /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
@@ -495,16 +504,34 @@ namespace Exiled.Events.Handlers
         public static void OnBanned(BannedEventArgs ev) => Banned.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after a <see cref="API.Features.Player"/> used a medical item.
+        /// Called before using a usable item.
+        /// </summary>
+        /// <param name="ev">The <see cref="UsingItemEventArgs"/> instance.</param>
+        public static void OnUsingItem(UsingItemEventArgs ev) => UsingItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before completed using of a usable item.
+        /// </summary>
+        /// <param name="ev">The <see cref="UsingItemEventArgs"/> instance.</param>
+        public static void OnUsingItemCompleted(UsingItemCompletedEventArgs ev) => UsingItemCompleted.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> used a <see cref="API.Features.Items.Usable"/> item.
         /// </summary>
         /// <param name="ev">The <see cref="UsedItemEventArgs"/> instance.</param>
         public static void OnUsedItem(UsedItemEventArgs ev) => UsedItem.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after a <see cref="API.Features.Player"/> has stopped the use of a medical item.
+        /// Called before a <see cref="API.Features.Player"/> has stopped the use of a <see cref="API.Features.Items.Usable"/> item.
         /// </summary>
         /// <param name="ev">The <see cref="CancellingItemUseEventArgs"/> instance.</param>
         public static void OnCancellingItemUse(CancellingItemUseEventArgs ev) => CancellingItemUse.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> has stopped the use of a <see cref="API.Features.Items.Usable"/> item.
+        /// </summary>
+        /// <param name="ev">The <see cref="CancelledItemUseEventArgs"/> instance.</param>
+        public static void OnCancelledItemUse(CancelledItemUseEventArgs ev) => CancelledItemUse.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="API.Features.Player"/> interacted with something.
@@ -537,12 +564,6 @@ namespace Exiled.Events.Handlers
         public static void OnDeactivatingWorkstation(DeactivatingWorkstationEventArgs ev) => DeactivatingWorkstation.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before using a usable item.
-        /// </summary>
-        /// <param name="ev">The <see cref="UsingItemEventArgs"/> instance.</param>
-        public static void OnUsingItem(UsingItemEventArgs ev) => UsingItem.InvokeSafely(ev);
-
-        /// <summary>
         /// Called after a <see cref="API.Features.Player"/> has left the server.
         /// </summary>
         /// <param name="ev">The <see cref="LeftEventArgs"/> instance.</param>
@@ -565,6 +586,7 @@ namespace Exiled.Events.Handlers
         /// Called before throwing a grenade.
         /// </summary>
         /// <param name="ev">The <see cref="ThrownProjectileEventArgs"/> instance.</param>
+        // TODO: rename that to OnThrownProjectile
         public static void OnThrowingProjectile(ThrownProjectileEventArgs ev) => ThrownProjectile.InvokeSafely(ev);
 
         /// <summary>
@@ -730,12 +752,6 @@ namespace Exiled.Events.Handlers
         public static void OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs ev) => UsingMicroHIDEnergy.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before processing a hotkey.
-        /// </summary>
-        /// <param name="ev">The <see cref="ProcessingHotkeyEventArgs"/> instance.</param>
-        public static void OnProcessingHotkey(ProcessingHotkeyEventArgs ev) => ProcessingHotkey.InvokeSafely(ev);
-
-        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with a shooting target.
         /// </summary>
         /// <param name="ev">The <see cref="InteractingShootingTargetEventArgs"/> instance.</param>
@@ -883,6 +899,12 @@ namespace Exiled.Events.Handlers
         public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
 
         /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> damage a window.
+        /// </summary>
+        /// <param name="ev">The <see cref="DamagingDoorEventArgs"/> instance. </param>
+        public static void OnDamagingDoor(DamagingDoorEventArgs ev) => DamagingDoor.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> unlocks a generator.
         /// </summary>
         /// <param name="ev">The <see cref="UnlockingGeneratorEventArgs"/> instance. </param>
@@ -981,7 +1003,30 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
         /// </summary>
-        /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
-        public static void OnPreAuthenticating(PreAuthenticatingEventArgs ev) => PreAuthenticating.InvokeSafely(ev);
+        /// <param name="userId"><inheritdoc cref="PreAuthenticatingEventArgs.UserId"/></param>
+        /// <param name="ipAddress"><inheritdoc cref="PreAuthenticatingEventArgs.IpAddress"/></param>
+        /// <param name="expiration"><inheritdoc cref="PreAuthenticatingEventArgs.Expiration"/></param>
+        /// <param name="flags"><inheritdoc cref="PreAuthenticatingEventArgs.Flags"/></param>
+        /// <param name="country"><inheritdoc cref="PreAuthenticatingEventArgs.Country"/></param>
+        /// <param name="signature"><inheritdoc cref="PreAuthenticatingEventArgs.Signature"/></param>
+        /// <param name="request"><inheritdoc cref="PreAuthenticatingEventArgs.Request"/></param>
+        /// <param name="readerStartPosition"><inheritdoc cref="PreAuthenticatingEventArgs.ReaderStartPosition"/></param>
+        /// <returns>Returns the <see cref="PreauthCancellationData"/> instance.</returns>
+        [PluginEvent(ServerEventType.PlayerPreauth)]
+        public PreauthCancellationData OnPreAuthenticating(
+            string userId,
+            string ipAddress,
+            long expiration,
+            CentralAuthPreauthFlags flags,
+            string country,
+            byte[] signature,
+            LiteNetLib.ConnectionRequest request,
+            int readerStartPosition)
+        {
+            PreAuthenticatingEventArgs ev = new(userId, ipAddress, expiration, flags, country, signature, request, readerStartPosition);
+            PreAuthenticating.InvokeSafely(ev);
+
+            return ev.CachedPreauthData;
+        }
     }
 }

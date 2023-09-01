@@ -216,46 +216,49 @@ namespace Exiled.API.Features.Roles
         /// Adds the specified <paramref name="player"/> as an SCP-096 target.
         /// </summary>
         /// <param name="player">The player to add as a target.</param>
-        public void AddTarget(Player player) => TargetsTracker.AddTarget(player.ReferenceHub, false);
+        /// <returns><see langword="true"/> if target was successfully added. Otherwise, <see langword="false"/>.</returns>
+        public bool AddTarget(Player player) => player is not null && TargetsTracker.AddTarget(player.ReferenceHub, false);
 
         /// <summary>
         /// Adds the specified <paramref name="player"/> as an SCP-096 target.
         /// </summary>
         /// <param name="player">The player to add as a target.</param>
         /// <param name="isLooking">Is because player look SCP-096.</param>
-        public void AddTarget(Player player, bool isLooking) => TargetsTracker.AddTarget(player.ReferenceHub, isLooking);
+        /// <returns><see langword="true"/> if target was successfully added. Otherwise, <see langword="false"/>.</returns>
+        public bool AddTarget(Player player, bool isLooking) => player is not null && TargetsTracker.AddTarget(player.ReferenceHub, isLooking);
 
         /// <summary>
         /// Removes the specified <paramref name="player"/> from SCP-096's targets.
         /// </summary>
         /// <param name="player">The player to remove as a target.</param>
-        public void RemoveTarget(Player player) => TargetsTracker.RemoveTarget(player.ReferenceHub);
+        /// <returns><see langword="true"/> if target was successfully removed. Otherwise, <see langword="false"/>.</returns>
+        public bool RemoveTarget(Player player) => player is not null && TargetsTracker.RemoveTarget(player.ReferenceHub);
 
         /// <summary>
         /// Enrages SCP-096 for the given amount of times.
         /// </summary>
         /// <param name="time">The amount of time to enrage SCP-096.</param>
-        public void Enrage(float time) => RageManager.ServerEnrage(time);
+        public void Enrage(float time = Scp096RageManager.MinimumEnrageTime) => RageManager.ServerEnrage(time);
 
         /// <summary>
         /// Ends SCP-096's enrage cycle.
         /// </summary>
         /// <param name="clearTime">Whether or not to clear the remaining enrage time.</param>
-        public void Calm(bool clearTime) => RageManager.ServerEndEnrage(clearTime);
+        public void Calm(bool clearTime = true) => RageManager.ServerEndEnrage(clearTime);
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="player"/> is a target of SCP-096.
         /// </summary>
         /// <param name="player">The player to check.</param>
         /// <returns>Whether or not the player is a target of SCP-096.</returns>
-        public bool HasTarget(Player player) => TargetsTracker.HasTarget(player.ReferenceHub);
+        public bool HasTarget(Player player) => player is not null && TargetsTracker.HasTarget(player.ReferenceHub);
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="player"/> is observed by SCP-096.
         /// </summary>
         /// <param name="player">The player to check.</param>
         /// <returns>Whether or not the player is observed.</returns>
-        public bool IsObserved(Player player) => TargetsTracker.IsObservedBy(player.ReferenceHub);
+        public bool IsObserved(Player player) => player is not null && TargetsTracker.IsObservedBy(player.ReferenceHub);
 
         /// <summary>
         /// Removes all targets from SCP-096's target list.
@@ -283,7 +286,7 @@ namespace Exiled.API.Features.Roles
         /// Shows the input prompt for the RageCycle ability.
         /// </summary>
         /// <param name="duration">The input prompt duration.</param>
-        public void ShowRageInput(float duration = 10f) => RageCycleAbility.ServerTryEnableInput(duration);
+        public void ShowRageInput(float duration = Scp096RageCycleAbility.DefaultActivationDuration) => RageCycleAbility.ServerTryEnableInput(duration);
 
         /// <summary>
         /// Gets the Spawn Chance of SCP-096.

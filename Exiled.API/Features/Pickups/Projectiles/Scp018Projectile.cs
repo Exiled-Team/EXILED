@@ -16,7 +16,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
     /// <summary>
     /// A wrapper class for Scp018Projectile.
     /// </summary>
-    public class Scp018Projectile : ExplosionGrenadeProjectile, IWrapper<BaseScp018Projectile>
+    public class Scp018Projectile : TimeGrenadeProjectile, IWrapper<BaseScp018Projectile>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp018Projectile"/> class.
@@ -41,6 +41,37 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Gets the <see cref="ExplosionGrenade"/> that this class is encapsulating.
         /// </summary>
         public new BaseScp018Projectile Base { get; }
+
+        /// <summary>
+        /// Gets or sets the pickup's PhysicsModule.
+        /// </summary>
+        public new Scp018Physics PhysicsModule
+        {
+            get => Base.PhysicsModule as Scp018Physics;
+            set
+            {
+                Base.PhysicsModule.DestroyModule();
+                Base.PhysicsModule = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the pickup's max velocity.
+        /// </summary>
+        public float MaxVelocity
+        {
+            get => PhysicsModule._maxVel;
+            set => PhysicsModule = new Scp018Physics(Base, PhysicsModule._trail, PhysicsModule._radius, value, PhysicsModule._velPerBounce);
+        }
+
+        /// <summary>
+        /// Gets or sets the pickup's velocity per bounce.
+        /// </summary>
+        public float VelocityPerBounce
+        {
+            get => PhysicsModule._maxVel;
+            set => PhysicsModule = new Scp018Physics(Base, PhysicsModule._trail, PhysicsModule._radius, MaxVelocity, value);
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-018 can injure teammates.

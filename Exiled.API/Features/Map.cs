@@ -13,35 +13,26 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Decals;
-
     using Enums;
-
     using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Toys;
-
     using Hazards;
-
+    using InventorySystem;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Pickups;
-
+    using InventorySystem.Items.ThrowableProjectiles;
     using Items;
-
     using LightContainmentZoneDecontamination;
-
     using MapGeneration;
     using MapGeneration.Distributors;
-
     using Mirror;
-
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Scp939;
-
     using RelativePositioning;
-
     using UnityEngine;
-
+    using Utils;
     using Utils.Networking;
 
     using Object = UnityEngine.Object;
@@ -117,7 +108,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
-        public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating; // && !DecontaminationController.Singleton.disableDecontamination;
+        public static bool IsLczDecontaminated => DecontaminationController.Singleton.IsDecontaminating;
 
         /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
@@ -151,15 +142,6 @@ namespace Exiled.API.Features
         /// Gets the <see cref="global::AmbientSoundPlayer"/>.
         /// </summary>
         public static AmbientSoundPlayer AmbientSoundPlayer { get; internal set; }
-
-        /// <summary>
-        /// Tries to find the room that a <see cref="GameObject"/> is inside, first using the <see cref="Transform"/>'s parents, then using a Raycast if no room was found.
-        /// </summary>
-        /// <param name="objectInRoom">The <see cref="GameObject"/> inside the room.</param>
-        /// <returns>The <see cref="Room"/> that the <see cref="GameObject"/> is located inside. Can be <see langword="null"/>.</returns>
-        /// <seealso cref="Room.Get(Vector3)"/>
-        [Obsolete("Use Room.FindParentRoom(GameObject) instead.")]
-        public static Room FindParentRoom(GameObject objectInRoom) => Room.FindParentRoom(objectInRoom);
 
         /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
@@ -215,7 +197,7 @@ namespace Exiled.API.Features
         /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
         public static void TurnOffAllLights(float duration, ZoneType zoneTypes = ZoneType.Unspecified)
         {
-            foreach (FlickerableLightController controller in FlickerableLightController.Instances)
+            foreach (RoomLightController controller in RoomLightController.Instances)
             {
                 Room room = controller.GetComponentInParent<Room>();
                 if (room is null)
@@ -347,6 +329,39 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the found cameras.</returns>
         public static IEnumerable<Camera> GetNearCameras(Vector3 position, float toleration = 15f)
             => Camera.Get(cam => (position - cam.Position).sqrMagnitude <= toleration * toleration);
+
+        /// <summary>
+        /// Explode.
+        /// </summary>
+        /// <param name="position">The position where explosion will be created.</param>
+        /// <param name="projectileType">The projectile that will create the explosion.</param>
+        /// <param name="attacker">The player who create the explosion.</param>
+        public static void Explode(Vector3 position, ProjectileType projectileType, Player attacker = null)
+        {
+            ItemType item;
+            if ((item = projectileType.GetItemType()) is ItemType.None)
+                return;
+            attacker ??= Server.Host;
+            if (!InventoryItemLoader.TryGetItem(item, out ThrowableItem throwableItem))
+                return;
+            ExplosionUtils.ServerSpawnEffect(position, item);
+
+            if (throwableItem.Projectile is ExplosionGrenade explosionGrenade)
+                ExplosionGrenade.Explode(attacker.Footprint, position, explosionGrenade);
+        }
+
+        /// <summary>
+        /// Spawn projectile effect.
+        /// </summary>
+        /// <param name="position">The position where effect will be created.</param>
+        /// <param name="projectileType">The projectile that will create the effect.</param>
+        public static void ExplodeEffect(Vector3 position, ProjectileType projectileType)
+        {
+            ItemType item;
+            if ((item = projectileType.GetItemType()) is ItemType.None)
+                return;
+            ExplosionUtils.ServerSpawnEffect(position, item);
+        }
 
         /// <summary>
         /// Clears the lazy loading game object cache.

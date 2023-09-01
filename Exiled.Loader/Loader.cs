@@ -100,6 +100,7 @@ namespace Exiled.Loader
             .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .IgnoreFields()
+            .DisableAliases()
             .Build();
 
         /// <summary>
@@ -317,6 +318,7 @@ namespace Exiled.Loader
 
             Plugins.Clear();
             Server.PluginAssemblies.Clear();
+            Locations.Clear();
 
             LoadPlugins();
 

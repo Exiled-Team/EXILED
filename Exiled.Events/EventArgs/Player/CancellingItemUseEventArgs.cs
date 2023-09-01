@@ -8,24 +8,41 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
-
+    using Exiled.API.Features.Items;
+    using Exiled.Events.EventArgs.Interfaces;
     using InventorySystem.Items.Usables;
 
     /// <summary>
-    ///     Contains all information before a player cancels usage of a medical item.
+    ///     Contains all information before a player cancels usage of an item.
     /// </summary>
-    public class CancellingItemUseEventArgs : UsingItemEventArgs
+    public class CancellingItemUseEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="CancellingItemUseEventArgs" /> class.
         /// </summary>
-        /// <param name="player">The player who's stopping the use of the medical item.</param>
+        /// <param name="player">The player who's stopping the use of an item.</param>
         /// <param name="item">
         ///     <inheritdoc cref="UsedItemEventArgs.Item" />
         /// </param>
         public CancellingItemUseEventArgs(Player player, UsableItem item)
-            : base(player, item, 0)
         {
+            Player = player;
+            Item = API.Features.Items.Item.Get(item) is Usable usable ? usable : null;
         }
+
+        /// <summary>
+        ///     Gets the item that the player cancelling.
+        /// </summary>
+        public Usable Item { get; }
+
+        /// <summary>
+        ///     Gets the player who cancelling the item.
+        /// </summary>
+        public Player Player { get; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether or not the player can cancelling the use of item.
+        /// </summary>
+        public bool IsAllowed { get; set; } = true;
     }
 }

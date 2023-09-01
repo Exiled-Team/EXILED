@@ -263,6 +263,8 @@ namespace Exiled.API.Features.Roles
         /// <param name="playerToSend">The Player to send the Ripple Sound.</param>
         public void PlayRippleSound(UsableRippleType ripple, Vector3 position, Player playerToSend)
         {
+            if (playerToSend is null)
+                return;
             switch (ripple)
             {
                 case UsableRippleType.Footstep:

@@ -14,16 +14,15 @@ namespace Exiled.Events
 
     using API.Enums;
     using API.Features;
-
     using EventArgs.Interfaces;
-
+    using Exiled.API.Features.Pickups;
     using HarmonyLib;
+    using InventorySystem.Items.Pickups;
+    using InventorySystem.Items.Usables;
 
-    using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.Ragdolls;
     using PlayerRoles.RoleAssign;
     using PluginAPI.Events;
-
     using UnityEngine.SceneManagement;
 
     /// <summary>
@@ -86,12 +85,13 @@ namespace Exiled.Events
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
-
+            UsableItemsController.ServerOnUsingCompleted += (hub, usable) => Handlers.Player.OnUsedItem(new(hub, usable));
             Handlers.Server.WaitingForPlayers += Handlers.Internal.Round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
             Handlers.Player.Verified += Handlers.Internal.Round.OnVerified;
+            Handlers.Map.ChangedIntoGrenade += Handlers.Internal.ExplodingGrenade.OnChangedIntoGrenade;
 
             CharacterClassManager.OnRoundStarted += Handlers.Server.OnRoundStarted;
 
@@ -99,10 +99,11 @@ namespace Exiled.Events
 
             RagdollManager.OnRagdollSpawned += Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
-
+            ItemPickupBase.OnPickupAdded += Handlers.Internal.PickupEvent.OnSpawnedPickup;
+            ItemPickupBase.OnPickupDestroyed += Handlers.Internal.PickupEvent.OnRemovedPickup;
             ServerConsole.ReloadServerName();
 
-            EventManager.RegisterEvents<Handlers.Warhead>(this);
+            EventManager.RegisterEvents<Handlers.Player>(this);
         }
 
         /// <inheritdoc/>
@@ -122,6 +123,7 @@ namespace Exiled.Events
             Handlers.Server.RoundStarted -= Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole -= Handlers.Internal.Round.OnChangingRole;
             Handlers.Player.Verified -= Handlers.Internal.Round.OnVerified;
+            Handlers.Map.ChangedIntoGrenade -= Handlers.Internal.ExplodingGrenade.OnChangedIntoGrenade;
 
             CharacterClassManager.OnRoundStarted -= Handlers.Server.OnRoundStarted;
 
@@ -130,7 +132,7 @@ namespace Exiled.Events
             RagdollManager.OnRagdollSpawned -= Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved -= Handlers.Internal.RagdollList.OnRemovedRagdoll;
 
-            EventManager.UnregisterEvents<Handlers.Warhead>(this);
+            EventManager.UnregisterEvents<Handlers.Player>(this);
         }
 
         /// <summary>
@@ -145,7 +147,7 @@ namespace Exiled.Events
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                PatchByAttributes(out int failedPatch);
+                GlobalPatchProcessor.PatchAll(Harmony, out int failedPatch);
                 if (failedPatch == 0)
                     Log.Debug("Events patched successfully!");
                 else
@@ -182,26 +184,6 @@ namespace Exiled.Events
             Harmony.UnpatchAll();
 
             Log.Debug("All events have been unpatched complete. Goodbye!");
-        }
-
-        private void PatchByAttributes(out int failedPatch)
-        {
-            failedPatch = 0;
-            foreach (Type type in AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()))
-            {
-                try
-                {
-                    Harmony.CreateClassProcessor(type).Patch();
-                }
-                catch (Exception exception)
-                {
-                    Log.Error($"Patching by attributes failed!\n{exception}");
-                    failedPatch++;
-                    continue;
-                }
-            }
-
-            Log.Debug("Events patched by attributes successfully!");
         }
     }
 }

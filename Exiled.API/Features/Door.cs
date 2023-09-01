@@ -48,6 +48,10 @@ namespace Exiled.API.Features
             Base = door;
             Room = room;
             Type = GetDoorType();
+#if Debug
+            if (Type is DoorType.Unknown)
+                Log.Error($"[DOORTYPE UNKNOWN] {this}");
+#endif
         }
 
         /// <summary>
@@ -83,17 +87,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the door is fully closed.
         /// </summary>
-        public bool IsFullyClosed => ExactState is 0;
+        public bool IsFullyClosed => IsGate ? (!IsOpen && ((PryableDoor)Base)._remainingPryCooldown <= 0) : ExactState is 0;
 
         /// <summary>
         /// Gets a value indicating whether the door is fully open.
         /// </summary>
-        public bool IsFullyOpen => ExactState is 1;
+        public bool IsFullyOpen => IsGate ? (IsOpen && ((PryableDoor)Base)._remainingPryCooldown <= 0) : ExactState is 1;
 
         /// <summary>
         /// Gets a value indicating whether or not the door is currently moving.
         /// </summary>
-        public bool IsMoving => ExactState is not(0 or 1);
+        public bool IsMoving => IsGate ? ((PryableDoor)Base)._remainingPryCooldown > 0 : ExactState is not(0 or 1);
 
         /// <summary>
         /// Gets a value indicating the precise state of the door, from <c>0-1</c>. A value of <c>0</c> indicates the door is fully closed, while a value of <c>1</c> indicates the door is fully open. Values in-between represent the door's animation progress.
@@ -449,7 +453,7 @@ namespace Exiled.API.Features
         /// Tries to pry the door open. No effect if the door cannot be pried.
         /// </summary>
         /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
-        /// <param name="player">The amount of damage to deal.</param>
+        /// <param name="player">The player who tries to open the gate.</param>
         public bool TryPryOpen(Player player) => Base is PryableDoor pryable && pryable.TryPryGate(player.ReferenceHub);
 
         /// <summary>
@@ -461,7 +465,7 @@ namespace Exiled.API.Features
             switch (Base)
             {
                 case BasicDoor basic:
-                    basic.RpcPlayBeepSound(beep != DoorBeepType.InteractionAllowed);
+                    basic.RpcPlayBeepSound(beep is not DoorBeepType.InteractionAllowed);
                     break;
                 case CheckpointDoor chkPt:
                     chkPt.RpcPlayBeepSound((byte)Mathf.Min((int)beep, 3));
@@ -475,7 +479,7 @@ namespace Exiled.API.Features
         /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
         public void ChangeLock(DoorLockType lockType)
         {
-            if (lockType == DoorLockType.None)
+            if (lockType is DoorLockType.None)
             {
                 Base.NetworkActiveLocks = 0;
             }
@@ -560,7 +564,7 @@ namespace Exiled.API.Features
                     "Unsecured" => Room?.Type switch
                     {
                         RoomType.EzCheckpointHallway => DoorType.CheckpointGate,
-                        RoomType.Hcz049 => DoorType.Scp049Gate,
+                        RoomType.Hcz049 => Position.y < -805 ? DoorType.Scp049Gate : DoorType.Scp173NewGate,
                         _ => DoorType.UnknownGate,
                     },
                     "Elevator" => (Base as ElevatorDoor)?.Group switch
@@ -586,7 +590,6 @@ namespace Exiled.API.Features
                 "CHECKPOINT_EZ_HCZ_B" => DoorType.CheckpointEzHczB,
                 "106_PRIMARY" => DoorType.Scp106Primary,
                 "106_SECONDARY" => DoorType.Scp106Secondary,
-                "106_BOTTOM" => DoorType.Scp106Bottom,
                 "ESCAPE_PRIMARY" => DoorType.EscapePrimary,
                 "ESCAPE_SECONDARY" => DoorType.EscapeSecondary,
                 "INTERCOM" => DoorType.Intercom,
@@ -597,6 +600,7 @@ namespace Exiled.API.Features
                 "HCZ_ARMORY" => DoorType.HczArmory,
                 "096" => DoorType.Scp096,
                 "049_ARMORY" => DoorType.Scp049Armory,
+                "079_ARMORY" => DoorType.Scp079Armory,
                 "914" => DoorType.Scp914Gate,
                 "GATE_A" => DoorType.GateA,
                 "079_FIRST" => DoorType.Scp079First,
