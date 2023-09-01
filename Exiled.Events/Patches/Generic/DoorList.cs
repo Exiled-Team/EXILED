@@ -31,6 +31,7 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches <see cref="DoorVariant.RegisterRooms"/>.
     /// </summary>
+    // TODO: transpiler
     [HarmonyPatch(typeof(DoorVariant), nameof(DoorVariant.RegisterRooms))]
     internal class DoorList
     {
