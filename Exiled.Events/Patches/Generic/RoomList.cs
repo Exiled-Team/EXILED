@@ -63,7 +63,10 @@ namespace Exiled.Events.Patches.Generic
     {
         private static void Postfix(RoomIdentifier __instance)
         {
-            Room room = Room.RoomIdentifierToRoom[__instance];
+            if (!Room.RoomIdentifierToRoom.TryGetValue(__instance, out Room room))
+            {
+                return;
+            }
 
             room.WindowsValue.ForEach(window => Window.BreakableWindowToWindow.Remove(window.Base));
 
