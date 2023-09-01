@@ -23,7 +23,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before placing decals.
         /// </summary>
-        public static Event<PlacingBulletHoleEventArgs> PlacingBulletHoleEventArgs { get; set; } = new();
+        public static Event<PlacingBulletHoleEventArgs> PlacingBulletHole { get; set; } = new();
 
         /// <summary>
         /// Invoked before placing bloods.
