@@ -11,15 +11,12 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
-    using Exiled.API.Enums;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using Handlers;
 
     using HarmonyLib;
-
-    using PluginAPI.Enums;
     using PluginAPI.Events;
 
     using static HarmonyLib.AccessTools;
@@ -28,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="ReservedSlot.HasReservedSlot(string, out bool)" />.
     ///     Adds the <see cref="Player.ReservedSlot" /> event.
     /// </summary>
+    [EventPatch(typeof(Player), nameof(Player.ReservedSlot))]
     [HarmonyPatch(typeof(ReservedSlot), nameof(ReservedSlot.HasReservedSlot))]
     internal static class ReservedSlotPatch
     {
@@ -40,8 +38,8 @@ namespace Exiled.Events.Patches.Events.Player
             Label skipLabel = generator.DefineLabel();
             LocalBuilder ev = generator.DeclareLocal(typeof(ReservedSlotsCheckEventArgs));
 
-            int offset = 0;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldc_I4_S) + offset;
+            int offset = -2;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Newobj) + offset;
 
             newInstructions[index].WithLabels(baseGame);
 
@@ -108,7 +106,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void CallNwEvent(string userId, bool hasReservedSlot)
         {
-            EventManager.ExecuteEvent<PlayerCheckReservedSlotCancellationData>(ServerEventType.PlayerCheckReservedSlot, userId, hasReservedSlot);
+            EventManager.ExecuteEvent(new PlayerCheckReservedSlotEvent(userId, hasReservedSlot));
         }
     }
 }

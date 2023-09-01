@@ -14,6 +14,9 @@ namespace Exiled.Events.EventArgs.Map
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.Patches.Generic;
+
+    using Footprinting;
 
     using InventorySystem.Items.ThrowableProjectiles;
 
@@ -31,9 +34,9 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="position"><inheritdoc cref="Position"/></param>
         /// <param name="grenade"><inheritdoc cref="Projectile"/></param>
         /// <param name="targets"><inheritdoc cref="TargetsToAffect"/></param>
-        public ExplodingGrenadeEventArgs(Player thrower, Vector3 position, EffectGrenade grenade, Collider[] targets)
+        public ExplodingGrenadeEventArgs(Footprint thrower, Vector3 position, ExplosionGrenade grenade, Collider[] targets)
         {
-            Player = thrower ?? Server.Host;
+            Player = Player.Get(thrower.Hub);
             Projectile = (EffectGrenadeProjectile)Pickup.Get(grenade);
             Position = position;
             TargetsToAffect = ListPool<Player>.Pool.Get();
@@ -50,8 +53,29 @@ namespace Exiled.Events.EventArgs.Map
                 if (player is null)
                     continue;
 
-                if (!TargetsToAffect.Contains(player))
-                    TargetsToAffect.Add(player);
+                switch (Player is null)
+                {
+                    case false:
+                        {
+                            if (Server.FriendlyFire || IndividualFriendlyFire.CheckFriendlyFirePlayer(player.ReferenceHub, hub))
+                            {
+                                if (!TargetsToAffect.Contains(player))
+                                    TargetsToAffect.Add(player);
+                            }
+                        }
+
+                        break;
+                    case true:
+                        {
+                            if (Server.FriendlyFire || HitboxIdentity.CheckFriendlyFire(thrower.Role, hub.roleManager.CurrentRole.RoleTypeId))
+                            {
+                                if (!TargetsToAffect.Contains(player))
+                                    TargetsToAffect.Add(player);
+                            }
+                        }
+
+                        break;
+                }
             }
         }
 

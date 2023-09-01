@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs.Player
         public DyingEventArgs(Player target, DamageHandlerBase damageHandler)
         {
             DamageHandler = new CustomDamageHandler(target, damageHandler);
-            ItemsToDrop = new List<Item>(target.Items.ToList());
+            ItemsToDrop = new List<Item>(target?.Items?.ToList() ?? new());
             Attacker = DamageHandler.BaseIs(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
             Player = target;
         }

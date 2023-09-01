@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ActivatingSense.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp049
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp049;
 
     using HarmonyLib;
@@ -32,6 +32,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     ///     Adds the <see cref="Handlers.Scp049.ActivatingSense" /> event.
     /// </summary>
     // TODO: REWORK TRANSPILER
+    [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.ActivatingSense))]
     [HarmonyPatch]
     public class ActivatingSense
     {
@@ -46,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Scp049
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(ActivatingSense), nameof(ActivatingSense.ProcessSense))),
+                new(OpCodes.Call, Method(typeof(ActivatingSense), nameof(ProcessSense))),
                 new(OpCodes.Br, returnLabel),
             });
 
@@ -69,11 +70,17 @@ namespace Exiled.Events.Patches.Events.Scp049
                 return;
 
             Player scp049 = Player.Get(senseAbility.Owner);
-            var target = reader.ReadReferenceHub();
+            var target = Player.Get(reader.ReadReferenceHub());
 
-            var ev = new ActivatingSenseEventArgs(scp049, Player.Get(target));
-            if (ev.Target is not null && ev.Target.IsTutorial && !Exiled.Events.Events.Instance.Config.CanScp049SenseTutorial)
-                ev.IsAllowed = false;
+            if ((target is not null && target.RoleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial && !Exiled.Events.Events.Instance.Config.CanScp049SenseTutorial) || API.Features.Roles.Scp049Role.TurnedPlayers.Contains(target))
+            {
+                senseAbility.Cooldown.Trigger(Scp049SenseAbility.AttemptFailCooldown);
+                senseAbility.HasTarget = false;
+                senseAbility.ServerSendRpc(true);
+                return;
+            }
+
+            var ev = new ActivatingSenseEventArgs(scp049, target);
             Handlers.Scp049.OnActivatingSense(ev);
 
             if (!ev.IsAllowed)
@@ -91,7 +98,7 @@ namespace Exiled.Events.Patches.Events.Scp049
             }
 
             HumanRole humanRole;
-            if ((humanRole = target.roleManager.CurrentRole as HumanRole) == null)
+            if ((humanRole = target?.RoleManager.CurrentRole as HumanRole) == null)
                 return;
 
             senseAbility._distanceThreshold = 100f;

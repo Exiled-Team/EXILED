@@ -11,11 +11,11 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
     using HarmonyLib;
     using Mirror;
     using PlayerRoles.PlayableScps.Scp079.Pinging;
-    using PluginAPI.Core;
     using RelativePositioning;
     using UnityEngine;
 
@@ -23,8 +23,9 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     /// <summary>
     ///     Patches <see cref="Scp079PingAbility.ServerProcessCmd" />.
-    ///     Adds the <see cref="PingingEventArgs" /> event for  SCP-079.
+    ///     Adds the <see cref="Handlers.Scp079.Pinging" /> event for  SCP-079.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp079), nameof(Handlers.Scp079.Pinging))]
     [HarmonyPatch(typeof(Scp079PingAbility), nameof(Scp079PingAbility.ServerProcessCmd))]
     internal static class Pinging
     {
@@ -55,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Scp079
         {
             RelativePosition curRelativePos = reader.ReadRelativePosition();
             Vector3 syncNormal = reader.ReadVector3();
-            PingingEventArgs ev = new PingingEventArgs(instance.Owner, curRelativePos, instance._cost, instance._syncProcessorIndex, syncNormal);
+            PingingEventArgs ev = new(instance.Owner, curRelativePos, instance._cost, instance._syncProcessorIndex, syncNormal);
 
             Handlers.Scp079.OnPinging(ev);
 

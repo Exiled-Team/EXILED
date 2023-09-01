@@ -11,10 +11,12 @@ namespace Exiled.Events.EventArgs.Scp096
 
     using Interfaces;
 
+    using Scp096Role = API.Features.Roles.Scp096Role;
+
     /// <summary>
     ///     Contains all information before adding a target to SCP-096.
     /// </summary>
-    public class AddingTargetEventArgs : IPlayerEvent, IDeniableEvent
+    public class AddingTargetEventArgs : IScp096Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="AddingTargetEventArgs" /> class.
@@ -34,6 +36,7 @@ namespace Exiled.Events.EventArgs.Scp096
         public AddingTargetEventArgs(Player scp096, Player target, bool isForLook, bool isAllowed = true)
         {
             Player = scp096;
+            Scp096 = scp096.Role.As<Scp096Role>();
             Target = target;
             IsLooking = isForLook;
             IsAllowed = isAllowed;
@@ -43,6 +46,9 @@ namespace Exiled.Events.EventArgs.Scp096
         ///     Gets the <see cref="Player" /> that is controlling SCP-096.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp096Role Scp096 { get; }
 
         /// <summary>
         ///     Gets the <see cref="Player" /> being added as a target.

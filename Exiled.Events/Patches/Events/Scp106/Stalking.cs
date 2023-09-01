@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Stalking.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp106;
 
     using HarmonyLib;
@@ -26,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     /// To add the <see cref="Handlers.Scp106.Stalking"/> event.
     /// </summary>
     // TODO: REWORK TRANSPILER
+    [EventPatch(typeof(Handlers.Scp106), nameof(Handlers.Scp106.Stalking))]
     [HarmonyPatch]
     public class Stalking
     {

@@ -25,10 +25,10 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
     /// </summary>
     public sealed class ColorConverter : IYamlTypeConverter
     {
-        /// <inheritdoc />
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public bool Accepts(Type type) => type == typeof(Color);
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public object ReadYaml(IParser parser, Type type)
         {
             if (!parser.TryConsume<MappingStart>(out _))
@@ -61,7 +61,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
             return color;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public void WriteYaml(IEmitter emitter, object value, Type type)
         {
             Dictionary<string, float> coordinates = DictionaryPool<string, float>.Pool.Get();

@@ -21,6 +21,12 @@ namespace Exiled.Events
         public bool Debug { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether events are only patched if they have delegates subscribed to them.
+        /// </summary>
+        [Description("Indicates whether events are patched only if they have delegates subscribed to them")]
+        public bool UseDynamicPatching { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a value indicating whether SCP-173 can be blocked or not by the tutorial.
         /// </summary>
         [Description("Indicates whether SCP-173 can be blocked or not by the tutorial")]
@@ -39,15 +45,21 @@ namespace Exiled.Events
         public bool CanScp049SenseTutorial { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether tutorial is affected by SCP-079 scan.
+        /// </summary>
+        [Description("Indicates whether tutorial is affected by SCP-079 scan.")]
+        public bool TutorialNotAffectedByScp079Scan { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets a value indicating whether flashbangs flash original thrower.
         /// </summary>
         [Description("Indicates whether flashbangs flash original thrower.")]
         public bool CanFlashbangsAffectThrower { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the name tracking is enabled or not.
+        /// Gets or sets a value indicating whether the name tracking (invisible EXILED version string added to the end of the server name) is enabled or not.
         /// </summary>
-        [Description("Indicates whether the name tracking is enabled or not")]
+        [Description("Indicates whether the name tracking (invisible EXILED version string added to the end of the server name) is enabled or not")]
         public bool IsNameTrackingEnabled { get; set; } = true;
 
         /// <summary>

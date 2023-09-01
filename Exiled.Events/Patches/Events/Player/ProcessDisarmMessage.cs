@@ -8,16 +8,19 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using InventorySystem.Disarming;
+
+    using PluginAPI.Events;
 
     using static HarmonyLib.AccessTools;
 
@@ -25,18 +28,19 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="DisarmingHandlers.ServerProcessDisarmMessage" />.
     ///     Adds the <see cref="Handlers.Player.Handcuffing" /> and <see cref="Handlers.Player.RemovingHandcuffs" /> events.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Handcuffing))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.RemovingHandcuffs))]
     [HarmonyPatch(typeof(DisarmingHandlers), nameof(DisarmingHandlers.ServerProcessDisarmMessage))]
     internal static class ProcessDisarmMessage
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-
             Label returnLabel = generator.DefineLabel();
 
-            int offset = -4;
+            int offset = -3;
             int index = newInstructions.FindIndex(
-                instruction => instruction.Calls(Method(typeof(DisarmedPlayers), nameof(DisarmedPlayers.SetDisarmedStatus)))) + offset;
+                instruction => instruction.opcode == OpCodes.Newobj && (ConstructorInfo)instruction.operand == GetDeclaredConstructors(typeof(PlayerRemoveHandcuffsEvent))[0]) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -67,9 +71,9 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brfalse_S, returnLabel),
                 });
 
-            offset = -5;
+            offset = -3;
             index = newInstructions.FindLastIndex(
-                instruction => instruction.Calls(Method(typeof(DisarmedPlayers), nameof(DisarmedPlayers.SetDisarmedStatus)))) + offset;
+                instruction => instruction.opcode == OpCodes.Newobj && (ConstructorInfo)instruction.operand == GetDeclaredConstructors(typeof(PlayerHandcuffEvent))[0]) + offset;
 
             newInstructions.InsertRange(
                 index,

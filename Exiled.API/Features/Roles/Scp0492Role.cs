@@ -42,8 +42,6 @@ namespace Exiled.API.Features.Roles
                 Log.Error("ZombieConsumeAbility subroutine not found in Scp0492Role::ctor");
 
             ConsumeAbility = zombieConsumeAbility492;
-
-            AttackDamage = AttackAbility.DamageAmount;
         }
 
         /// <inheritdoc/>
@@ -80,10 +78,9 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets the SCP-049-2 attack damage.
+        /// Gets the SCP-049-2 attack damage.
         /// </summary>
-        /// <remarks>Setter will work later //TODO.</remarks>
-        public float AttackDamage { get; set; }
+        public float AttackDamage => AttackAbility.DamageAmount;
 
         /// <summary>
         /// Gets or sets a value indicating the amount of time to simulate SCP-049-2's Bloodlust ability.
@@ -120,7 +117,7 @@ namespace Exiled.API.Features.Roles
         /// <remarks>This method only returns whether or not SCP-049-2 is close enough to the body to consume it; the body may have been consumed previously. Make sure to check <see cref="Ragdoll.IsConsumed"/> to ensure the body can be consumed.</remarks>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to consume the body; otherwise, <see langword="false"/>.</returns>
-        public bool IsInConsumeRange(BasicRagdoll ragdoll) => ConsumeAbility.IsCloseEnough(Owner.Position, ragdoll.transform.position);
+        public bool IsInConsumeRange(BasicRagdoll ragdoll) => ragdoll != null && ConsumeAbility.IsCloseEnough(Owner.Position, ragdoll.transform.position);
 
         /// <summary>
         /// Returns a <see langword="bool"/> indicating whether or not SCP-049-2 is close enough to a ragdoll to consume it.
@@ -128,6 +125,6 @@ namespace Exiled.API.Features.Roles
         /// <remarks>This method only returns whether or not SCP-049-2 is close enough to the body to consume it; the body may have been consumed previously. Make sure to check <see cref="Ragdoll.IsConsumed"/> to ensure the body can be consumed.</remarks>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to consume the body; otherwise, <see langword="false"/>.</returns>
-        public bool IsInConsumeRange(Ragdoll ragdoll) => IsInConsumeRange(ragdoll.Base);
+        public bool IsInConsumeRange(Ragdoll ragdoll) => ragdoll is not null && IsInConsumeRange(ragdoll.Base);
     }
 }

@@ -13,8 +13,8 @@ namespace Exiled.Events.Patches.Events.Map
 
     using API.Features;
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
-    using Footprinting;
     using HarmonyLib;
     using InventorySystem.Items.ThrowableProjectiles;
     using UnityEngine;
@@ -24,10 +24,11 @@ namespace Exiled.Events.Patches.Events.Map
     using ExiledEvents = Exiled.Events.Events;
 
     /// <summary>
-    /// Patches <see cref="FlashbangGrenade.PlayExplosionEffects()"/>.
-    /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
+    /// Patches <see cref="FlashbangGrenade.ServerFuseEnd()"/>.
+    /// Adds the <see cref="Handlers.Map.ExplodingGrenade"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PlayExplosionEffects))]
+    [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.ExplodingGrenade))]
+    [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ServerFuseEnd))]
     internal static class ExplodingFlashGrenade
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -46,13 +47,15 @@ namespace Exiled.Events.Patches.Events.Map
                 {
                     // FlashbangGrenade
                     new CodeInstruction(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0),
 
-                    // Processes ExplodingGrenadeEventArgs
+                    // Processes ExplodingGrenadeEventArgs and stores flashed players count
                     new(OpCodes.Call, Method(typeof(ExplodingFlashGrenade), nameof(ProcessEvent))),
+                    new(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._hitPlayerCount))),
                     new(OpCodes.Br_S, returnLabel),
                 });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ble_S) - 3].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -60,23 +63,29 @@ namespace Exiled.Events.Patches.Events.Map
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
-        private static void ProcessEvent(FlashbangGrenade instance)
+        private static int ProcessEvent(FlashbangGrenade instance)
         {
             ExplodingGrenadeEventArgs explodingGrenadeEvent = new ExplodingGrenadeEventArgs(Player.Get(instance.PreviousOwner.Hub), instance);
 
             Handlers.Map.OnExplodingGrenade(explodingGrenadeEvent);
 
             if (!explodingGrenadeEvent.IsAllowed)
-                return;
+                return 0;
 
+            int size = 0;
             foreach (Player player in explodingGrenadeEvent.TargetsToAffect)
             {
                 if (!ExiledEvents.Instance.Config.CanFlashbangsAffectThrower && explodingGrenadeEvent.Player == player)
                     continue;
 
                 if (HitboxIdentity.CheckFriendlyFire(explodingGrenadeEvent.Player.ReferenceHub, player.ReferenceHub))
+                {
                     instance.ProcessPlayer(player.ReferenceHub);
+                    size++;
+                }
             }
+
+            return size;
         }
 
         private static List<Player> ConvertHubs(List<ReferenceHub> hubs) => hubs.Select(Player.Get).ToList();

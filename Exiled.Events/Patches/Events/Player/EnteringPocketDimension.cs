@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -25,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="Scp106Attack.ServerShoot" />.
     ///     Adds the <see cref="Handlers.Player.EnteringPocketDimension" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.EnteringPocketDimension))]
     [HarmonyPatch(typeof(Scp106Attack), nameof(Scp106Attack.ServerShoot))]
     internal static class EnteringPocketDimension
     {
@@ -36,8 +38,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label returnLabel = generator.DefineLabel();
 
-            int offset = 1;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Endfinally) + offset;
+            int offset = 0;
+            int index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(Scp106Attack), nameof(Scp106Attack.OnPlayerTeleported)))) + offset;
 
             // EnteringPocketDimensionEventArgs ev = new(Player.Get(this._targetHub), Player.Get(base.Owner), true);
             //

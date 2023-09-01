@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -22,10 +22,11 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Inventory.UserCode_CmdDropAmmo" />.
-    ///     Adds the <see cref="DroppingAmmo" /> event.
+    ///     Patches <see cref="Inventory.UserCode_CmdDropAmmo__Byte__UInt16" />.
+    ///     Adds the <see cref="Handlers.Player.DroppingAmmo" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdDropAmmo))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DroppingAmmo))]
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdDropAmmo__Byte__UInt16))]
     internal static class DroppingAmmo
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -45,6 +46,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // ammoType
                     new(OpCodes.Ldarg_1),
+                    new(OpCodes.Call, Method(typeof(API.Extensions.ItemExtensions), nameof(API.Extensions.ItemExtensions.GetAmmoType))),
 
                     // amount
                     new(OpCodes.Ldarg_2),

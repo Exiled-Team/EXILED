@@ -35,6 +35,7 @@ namespace Exiled.API.Extensions
             SpawnLocationType.InsideGr18,
             SpawnLocationType.Inside914,
             SpawnLocationType.InsideHid,
+            SpawnLocationType.Inside049Armory,
         };
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace Exiled.API.Extensions
             // The vector3.up * 1.5 is added to ensure they do not spawn inside the floor and get stuck.
             // The transform.forward is added to make them actually spawn INSIDE the room instead of inside the door.
             // ReversedLocations is a list of doors which are facing the wrong way, putting transform.forward outside the room, instead of inside, which means we need to take the negative of that offset to be where we want.
-            return transform.position + (Vector3.up * 1.5f) + (transform.forward * (ReversedLocations.Contains(location) ? -3f : 3f));
+            return transform.position + (Vector3.up * 1.5f) + (transform.forward * (ReversedLocations.Contains(location) ? -1.5f : 3f));
         }
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace Exiled.API.Extensions
         /// <returns>Returns the door name.</returns>
         public static string GetDoorName(this SpawnLocationType spawnLocation) => spawnLocation switch
         {
-            SpawnLocationType.Inside012 => "012",
+            SpawnLocationType.Inside330 => "330",
             SpawnLocationType.Inside096 => "096",
             SpawnLocationType.Inside914 => "914",
             SpawnLocationType.InsideHid => "HID",
@@ -92,8 +93,7 @@ namespace Exiled.API.Extensions
             SpawnLocationType.InsideIntercom => "INTERCOM",
             SpawnLocationType.InsideHidRight => "HID_RIGHT",
             SpawnLocationType.Inside079First => "079_FIRST",
-            SpawnLocationType.Inside012Bottom => "012_BOTTOM",
-            SpawnLocationType.Inside012Locker => "012_LOCKER",
+            SpawnLocationType.Inside330Chamber => "330_CHAMBER",
             SpawnLocationType.Inside049Armory => "049_ARMORY",
             SpawnLocationType.Inside173Armory => "173_ARMORY",
             SpawnLocationType.Inside173Bottom => "173_BOTTOM",

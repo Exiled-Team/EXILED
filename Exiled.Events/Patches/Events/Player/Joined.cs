@@ -8,19 +8,16 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1600
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
     using System;
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader.Features;
 
     using HarmonyLib;
-
-    using static HarmonyLib.AccessTools;
 
     /// <summary>
     ///     Patches <see cref="ReferenceHub.Start" />.
@@ -47,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
                 }
                 else
                 {
-                    Player.UnverifiedPlayers.Add(hub, player);
+                    Player.UnverifiedPlayers.Add(hub.gameObject, player);
 
                     Handlers.Player.OnJoined(new JoinedEventArgs(player));
                 }
@@ -59,9 +56,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
         }
 
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
         private static void Postfix(ReferenceHub __instance)
-#pragma warning restore SA1313 // Parameter names should begin with lower-case letter
         {
             if (ReferenceHub.AllHubs.Count - 1 >= CustomNetworkManager.slots)
             {

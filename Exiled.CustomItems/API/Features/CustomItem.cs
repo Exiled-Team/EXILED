@@ -176,20 +176,6 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="id">The <see cref="CustomItem"/> ID to look for.</param>
         /// <param name="customItem">The found <see cref="CustomItem"/>, <see langword="null"/> if not registered.</param>
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was found or not.</returns>
-        [Obsolete("Use TryGet(uint, out CustomItem?) instead.", true)]
-        public static bool TryGet(int id, out CustomItem? customItem)
-        {
-            customItem = Get((uint)id);
-
-            return customItem is not null;
-        }
-
-        /// <summary>
-        /// Tries to get a <see cref="CustomItem"/> with a specific ID.
-        /// </summary>
-        /// <param name="id">The <see cref="CustomItem"/> ID to look for.</param>
-        /// <param name="customItem">The found <see cref="CustomItem"/>, <see langword="null"/> if not registered.</param>
-        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was found or not.</returns>
         public static bool TryGet(uint id, out CustomItem? customItem)
         {
             customItem = Get(id);
@@ -205,8 +191,9 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was found or not.</returns>
         public static bool TryGet(string name, out CustomItem? customItem)
         {
-            if (name is null)
-                throw new ArgumentNullException(nameof(name));
+            customItem = null;
+            if (string.IsNullOrEmpty(name))
+                return false;
 
             customItem = uint.TryParse(name, out uint id) ? Get(id) : Get(name);
 
@@ -234,8 +221,9 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
         public static bool TryGet(Player player, out CustomItem? customItem)
         {
+            customItem = null;
             if (player is null)
-                throw new ArgumentNullException(nameof(player));
+                return false;
 
             customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Check(player.CurrentItem));
 
@@ -250,8 +238,9 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
         public static bool TryGet(Player player, out IEnumerable<CustomItem>? customItems)
         {
+            customItems = Enumerable.Empty<CustomItem>();
             if (player is null)
-                throw new ArgumentNullException(nameof(player));
+                return false;
 
             customItems = Registered.Where(tempCustomItem => player.Items.Any(tempCustomItem.Check));
 
@@ -282,26 +271,6 @@ namespace Exiled.CustomItems.API.Features
             customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.TrackedSerials.Contains(pickup.Serial));
 
             return customItem is not null;
-        }
-
-        /// <summary>
-        /// Tries to spawn a specific <see cref="CustomItem"/> at a specific <see cref="Vector3"/> position.
-        /// </summary>
-        /// <param name="id">The ID of the <see cref="CustomItem"/> to spawn.</param>
-        /// <param name="position">The <see cref="Vector3"/> location to spawn the item.</param>
-        /// <param name="pickup">The <see cref="ItemPickupBase"/> instance of the <see cref="CustomItem"/>.</param>
-        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was spawned or not.</returns>
-        [Obsolete("Use TrySpawn(uint, Vector3, out Pickup?) instead.", true)]
-        public static bool TrySpawn(int id, Vector3 position, out Pickup? pickup)
-        {
-            pickup = default;
-
-            if (!TryGet((uint)id, out CustomItem? item))
-                return false;
-
-            pickup = item?.Spawn(position);
-
-            return true;
         }
 
         /// <summary>
@@ -352,24 +321,6 @@ namespace Exiled.CustomItems.API.Features
         public static bool TryGive(Player player, string name, bool displayMessage = true)
         {
             if (!TryGet(name, out CustomItem? item))
-                return false;
-
-            item?.Give(player, displayMessage);
-
-            return true;
-        }
-
-        /// <summary>
-        /// Gives to a specific <see cref="Player"/> a specic <see cref="CustomItem"/>.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> to give the item to.</param>
-        /// <param name="id">The IDs of the <see cref="CustomItem"/> to give.</param>
-        /// <param name="displayMessage">Indicates a value whether <see cref="ShowPickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
-        /// <returns>Returns a value indicating if the player was given the <see cref="CustomItem"/> or not.</returns>
-        [Obsolete("Use TryGive(Player, uint, bool) instead.", true)]
-        public static bool TryGive(Player player, int id, bool displayMessage = true)
-        {
-            if (!TryGet((uint)id, out CustomItem? item))
                 return false;
 
             item?.Give(player, displayMessage);
@@ -774,10 +725,7 @@ namespace Exiled.CustomItems.API.Features
                 if (!TrackedSerials.Contains(item.Serial))
                     TrackedSerials.Add(item.Serial);
 
-                if (displayMessage)
-                    ShowPickedUpMessage(player);
-
-                Timing.CallDelayed(0.05f, () => OnAcquired(player));
+                Timing.CallDelayed(0.05f, () => OnAcquired(player, item, displayMessage));
             }
             catch (Exception e)
             {
@@ -815,7 +763,14 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Called when the item is unregistered.
         /// </summary>
-        public virtual void Destroy() => UnsubscribeEvents();
+        public virtual void Destroy()
+        {
+            UnsubscribeEvents();
+
+            typeLookupTable.Remove(GetType());
+            stringLookupTable.Remove(Name);
+            idLookupTable.Remove(Id);
+        }
 
         /// <summary>
         /// Checks the specified pickup to see if it is a custom item.
@@ -904,6 +859,7 @@ namespace Exiled.CustomItems.API.Features
             Exiled.Events.Handlers.Player.ChangingItem += OnInternalChanging;
             Exiled.Events.Handlers.Player.Escaping += OnInternalOwnerEscaping;
             Exiled.Events.Handlers.Player.PickingUpItem += OnInternalPickingUp;
+            Exiled.Events.Handlers.Player.ItemAdded += OnInternalItemAdded;
             Exiled.Events.Handlers.Scp914.UpgradingPickup += OnInternalUpgradingPickup;
             Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.Handcuffing += OnInternalOwnerHandcuffing;
@@ -921,6 +877,7 @@ namespace Exiled.CustomItems.API.Features
             Exiled.Events.Handlers.Player.ChangingItem -= OnInternalChanging;
             Exiled.Events.Handlers.Player.Escaping -= OnInternalOwnerEscaping;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnInternalPickingUp;
+            Exiled.Events.Handlers.Player.ItemAdded -= OnInternalItemAdded;
             Exiled.Events.Handlers.Scp914.UpgradingPickup -= OnInternalUpgradingPickup;
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.Handcuffing -= OnInternalOwnerHandcuffing;
@@ -999,7 +956,11 @@ namespace Exiled.CustomItems.API.Features
         /// Called anytime the item enters a player's inventory by any means.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
-        protected virtual void OnAcquired(Player player) => ShowPickedUpMessage(player);
+        /// <param name="item">The <see cref="Item"/> being acquired.</param>
+        /// <param name="displayMessage">Whether or not the Pickup hint should be displayed.</param>
+        protected virtual void OnAcquired(Player player, Item item, bool displayMessage)
+        {
+        }
 
         /// <summary>
         /// Clears the lists of item uniqIDs and Pickups since any still in the list will be invalid.
@@ -1134,13 +1095,19 @@ namespace Exiled.CustomItems.API.Features
 
             if (!ev.IsAllowed)
                 return;
+        }
 
-            Timing.CallDelayed(0.05f, () => OnAcquired(ev.Player));
+        private void OnInternalItemAdded(ItemAddedEventArgs ev)
+        {
+            if (!Check(ev.Pickup))
+                return;
+
+            OnAcquired(ev.Player, ev.Item, true);
         }
 
         private void OnInternalChanging(ChangingItemEventArgs ev)
         {
-            if (!Check(ev.NewItem))
+            if (!Check(ev.Item))
             {
                 MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName));
                 return;
@@ -1162,7 +1129,7 @@ namespace Exiled.CustomItems.API.Features
 
             ev.IsAllowed = false;
 
-            OnUpgrading(new API.EventArgs.UpgradingItemEventArgs(ev.Player, ev.Item.Base, ev.KnobSetting));
+            OnUpgrading(new UpgradingItemEventArgs(ev.Player, ev.Item.Base, ev.KnobSetting));
         }
 
         private void OnInternalUpgradingPickup(UpgradingPickupEventArgs ev)

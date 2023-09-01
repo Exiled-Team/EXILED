@@ -39,8 +39,8 @@ namespace Exiled.Events.Patches.Fixes
 
             Label cnt = generator.DefineLabel();
 
-            const int offset = -11;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_0) + offset;
+            const int offset = 1;
+            int index = newInstructions.FindLastIndex(i => i.StoresField(Field(typeof(ThrowableItem), nameof(ThrowableItem._alreadyFired)))) + offset;
 
             newInstructions.RemoveRange(index, 11);
 

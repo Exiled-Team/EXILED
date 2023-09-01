@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Scp939
 {
+    using Exiled.Events.Attributes;
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
@@ -21,23 +22,22 @@ namespace Exiled.Events.Patches.Events.Scp939
     ///     Patches <see cref="Scp939AmnesticCloudAbility.ServerProcessCmd(NetworkReader)" />
     ///     to add the <see cref="Scp939.PlayingSound" /> event.
     /// </summary>
+    [EventPatch(typeof(Scp939), nameof(Scp939.PlayingSound))]
     [HarmonyPatch(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry.ServerProcessCmd))]
     internal static class PlayingSound
     {
         private static bool Prefix(EnvironmentalMimicry __instance, NetworkReader reader)
         {
-            byte category = reader.ReadByte();
             byte option = reader.ReadByte();
 
-            EnvMimicryOption sound = __instance.Categories[category].Options[option];
+            EnvMimicrySequence sound = __instance.Sequences[option];
 
             PlayingSoundEventArgs ev = new(__instance.Owner, sound, __instance.Cooldown.IsReady, __instance._activationCooldown, __instance.Cooldown.IsReady);
             Scp939.OnPlayingSound(ev);
 
             if (ev.IsReady && ev.IsAllowed)
             {
-                __instance._syncCat = category;
-                __instance._syncSound = option;
+                __instance._syncOption = option;
                 __instance.Cooldown.Trigger(ev.Cooldown);
                 __instance.ServerSendRpc(toAll: true);
             }

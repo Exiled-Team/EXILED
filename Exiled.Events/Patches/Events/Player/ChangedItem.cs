@@ -7,21 +7,17 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-    using System;
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Items;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using InventorySystem;
-    using InventorySystem.Items;
 
     using static HarmonyLib.AccessTools;
 
@@ -29,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="Inventory.CurInstance" />.
     ///     Adds the <see cref="Handlers.Player.ChangedItem" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangedItem))]
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.CurInstance), MethodType.Setter)]
     internal static class ChangedItem
     {

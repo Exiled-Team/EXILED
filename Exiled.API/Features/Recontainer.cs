@@ -11,9 +11,8 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
-
+    using Exiled.API.Features.Doors;
     using PlayerRoles.PlayableScps.Scp079;
-
     using UnityEngine;
 
     /// <summary>
@@ -39,7 +38,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the containment zone is open.
         /// </summary>
-        public static bool IsContaimentZoneOpen
+        public static bool IsContainmentZoneOpen
         {
             get => ContainmentGates.All(door => door.IsOpen);
             set => Base.SetContainmentDoors(value, IsContainmentZoneLocked);
@@ -51,7 +50,7 @@ namespace Exiled.API.Features
         public static bool IsContainmentZoneLocked
         {
             get => ContainmentGates.All(door => door.IsLocked);
-            set => Base.SetContainmentDoors(IsContaimentZoneOpen, value);
+            set => Base.SetContainmentDoors(IsContainmentZoneOpen, value);
         }
 
         /// <summary>
@@ -171,7 +170,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances locked during the overcharge procedure.
         /// </summary>
-        public static IEnumerable<Door> LockedDoors => Door.Get(door => Base._lockedDoors.Contains(door.Base));
+        public static IEnumerable<Door> LockedDoors => Base._lockedDoors.Select(Door.Get);
 
         /// <summary>
         /// Tries to kill SCP-079.

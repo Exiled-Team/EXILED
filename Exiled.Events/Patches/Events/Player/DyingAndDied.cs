@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features;
     using API.Features.Pools;
     using API.Features.Roles;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -26,8 +26,10 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="PlayerStats.KillPlayer(DamageHandlerBase)" />.
-    ///     Adds the <see cref="Handlers.Player.Died" /> event.
+    ///     Adds the <see cref="Handlers.Player.Dying" /> and <see cref="Handlers.Player.Died" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Dying))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Died))]
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.KillPlayer))]
     internal static class DyingAndDied
     {
@@ -50,6 +52,8 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, player.LocalIndex),
+                    new(OpCodes.Brfalse_S, ret),
+                    new(OpCodes.Ldloc_S, player),
 
                     // handler
                     new(OpCodes.Ldarg_1),

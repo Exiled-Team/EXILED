@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -28,6 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="ThrowableItem.ServerThrow"/>.
     /// Adds the <see cref="Handlers.Player.ThrownProjectile"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ThrownProjectile))]
     [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow))]
     internal static class ThrownProjectile
     {
@@ -37,11 +38,14 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label returnLabel = generator.DefineLabel();
 
-            int offset = -3;
+            int offset = -2;
             int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) }))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
+                // thrownProjectile
+                new(OpCodes.Dup),
+
                 // API.Features.Player.Get(this.Owner)
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowableItem), nameof(ThrowableItem.Owner))),
@@ -50,13 +54,10 @@ namespace Exiled.Events.Patches.Events.Player
                 // this
                 new(OpCodes.Ldarg_0),
 
-                // thrownProjectile
-                new(OpCodes.Ldloc_0),
-
-                // ThrownItemEventArgs ev = new(Player.Get(this.Owner), this, thrownProjectile);
+                // ThrownProjectile ev = new(thrownProjectile, player, this);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrownProjectileEventArgs))[0]),
 
-                // Handlers.Player.OnThrowingItem(ev);
+                // Handlers.Player.OnThrownProjectile(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnThrowingProjectile))),
             });
 

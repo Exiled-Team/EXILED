@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -25,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="PocketDimensionTeleport.OnTriggerEnter(Collider)" />.
     ///     Adds the <see cref="Handlers.Player.FailingEscapePocketDimension" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.FailingEscapePocketDimension))]
     [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.OnTriggerEnter))]
     internal static class FailingEscapePocketDimension
     {
@@ -39,31 +40,19 @@ namespace Exiled.Events.Patches.Events.Player
             // --------- Player check ---------
             // The check is a check that this is a player, if it isn't a player, then we simply call return
             // if we don't, we'll get a NullReferenceException which is also thrown when we try to call the event.
-            int offset = 3;
-            int index = newInstructions.FindIndex(
-                instruction => instruction.Calls(Method(typeof(ReferenceHub), nameof(ReferenceHub.TryGetHubNetID)))) + offset;
+            int offset = -2;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
 
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
-                    // if (player is not Player player)
-                    //    return;
                     new CodeInstruction(OpCodes.Ldloc_1).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, player.LocalIndex),
                     new(OpCodes.Brfalse, returnLabel),
-                });
 
-            // ----------- FailingEscapePocketDimension-------------
-            offset = 0;
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S) + offset;
-
-            newInstructions.InsertRange(
-                index,
-                new[]
-                {
                     // player
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
 

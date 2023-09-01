@@ -18,6 +18,7 @@ namespace Exiled.Loader
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+
     using YamlDotNet.Core;
 
     /// <summary>
@@ -100,7 +101,8 @@ namespace Exiled.Loader
 
             try
             {
-                config = (IConfig)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(rawDeserializedConfig), plugin.Config.GetType());
+                string rawConfigString = Loader.Serializer.Serialize(rawDeserializedConfig);
+                config = (IConfig)Loader.Deserializer.Deserialize(rawConfigString, plugin.Config.GetType());
                 plugin.Config.CopyProperties(config);
             }
             catch (YamlException yamlException)

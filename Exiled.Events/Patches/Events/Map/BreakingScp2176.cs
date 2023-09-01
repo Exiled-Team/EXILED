@@ -7,12 +7,12 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using API.Features;
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
     using Footprinting;
     using HarmonyLib;
@@ -26,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Map
     ///     Patches <see cref="Scp2176Projectile.ServerShatter" />.
     ///     Supplements the <see cref="Map.ExplodingGrenade" /> event.
     /// </summary>
+    [EventPatch(typeof(Map), nameof(Map.ExplodingGrenade))]
     [HarmonyPatch(typeof(Scp2176Projectile), nameof(Scp2176Projectile.ServerShatter))]
     internal static class BreakingScp2176
     {

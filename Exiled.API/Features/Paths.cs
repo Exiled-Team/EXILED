@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.IO;
+    using System.Linq;
 
     /// <summary>
     /// A set of useful paths.
@@ -105,7 +106,7 @@ namespace Exiled.API.Features
             Dependencies = Path.Combine(Plugins, "dependencies");
             Configs = Path.Combine(Exiled, "Configs");
             IndividualConfigs = Path.Combine(Configs, "Plugins");
-            LoaderConfig = Path.Combine(Configs, "loader.yml");
+            LoaderConfig = PluginAPI.Loader.AssemblyLoader.InstalledPlugins.FirstOrDefault(x => x.PluginName == "Exiled Loader")?.MainConfigPath;
             Config = Path.Combine(Configs, $"{Server.Port}-config.yml");
             BackupConfig = Path.Combine(Configs, $"{Server.Port}-config.yml.old");
             IndividualTranslations = Path.Combine(Configs, "Translations");

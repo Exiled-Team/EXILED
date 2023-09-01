@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Player
     using VoiceChat;
 
     /// <summary>
-    ///     Contains all information after a player presses the transmission key.
+    ///     Contains all information regarding the player using the radio.
     /// </summary>
     public class TransmittingEventArgs : IPlayerEvent, IDeniableEvent
     {

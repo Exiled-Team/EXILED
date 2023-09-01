@@ -31,7 +31,7 @@ namespace Exiled.API.Features.Roles
         {
             SubroutineModule = baseRole.SubroutineModule;
             HumeShieldModule = baseRole.HumeShieldModule;
-            Internal = baseRole;
+            Base = baseRole;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp096RageCycleAbility scp096RageCycleAbility))
                 Log.Error("RageCycleAbility subroutine not found in Scp096Role::ctor");
@@ -47,6 +47,21 @@ namespace Exiled.API.Features.Roles
                 Log.Error("TargetsTracker not found in Scp096Role::ctor");
 
             TargetsTracker = scp096TargetsTracker;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp096AttackAbility scp096AttackAbility))
+                Log.Error("AttackAbility not found in Scp096Role::ctor");
+
+            AttackAbility = scp096AttackAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp096TryNotToCryAbility scp096TryNotToCryAbility))
+                Log.Error("TryNotToCryAbility not found in Scp096Role::ctor");
+
+            TryNotToCryAbility = scp096TryNotToCryAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp096ChargeAbility scp096ChargeAbility))
+                Log.Error("ChargeAbility not found in Scp096Role::ctor");
+
+            ChargeAbility = scp096ChargeAbility;
         }
 
         /// <summary>
@@ -79,14 +94,29 @@ namespace Exiled.API.Features.Roles
         public Scp096TargetsTracker TargetsTracker { get; }
 
         /// <summary>
+        /// Gets SCP-096's <see cref="Scp096AttackAbility"/>.
+        /// </summary>
+        public Scp096AttackAbility AttackAbility { get; }
+
+        /// <summary>
+        /// Gets SCP-096's <see cref="Scp096TryNotToCryAbility"/>.
+        /// </summary>
+        public Scp096TryNotToCryAbility TryNotToCryAbility { get; }
+
+        /// <summary>
+        /// Gets SCP-096's <see cref="Scp096ChargeAbility"/>.
+        /// </summary>
+        public Scp096ChargeAbility ChargeAbility { get; }
+
+        /// <summary>
         /// Gets a value indicating SCP-096's ability state.
         /// </summary>
-        public Scp096AbilityState AbilityState => Internal.StateController.AbilityState;
+        public Scp096AbilityState AbilityState => Base.StateController.AbilityState;
 
         /// <summary>
         /// Gets a value indicating SCP-096's rage state.
         /// </summary>
-        public Scp096RageState RageState => Internal.StateController.RageState;
+        public Scp096RageState RageState => Base.StateController.RageState;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-096 can receive targets.
@@ -94,15 +124,33 @@ namespace Exiled.API.Features.Roles
         public bool CanReceiveTargets => RageCycleAbility._targetsTracker.CanReceiveTargets;
 
         /// <summary>
-        /// Gets or sets the amount of time in between SCP-096 charges.
+        /// Gets a value indicating whether or not SCP-096 can attack.
+        /// </summary>
+        public bool AttackPossible => AttackAbility.AttackPossible;
+
+        /// <summary>
+        /// Gets or sets the Charge Ability Cooldown.
         /// </summary>
         public float ChargeCooldown
         {
-            get => RageCycleAbility._timeToChangeState;
+            get => ChargeAbility.Cooldown.Remaining;
             set
             {
-                RageCycleAbility._timeToChangeState = value;
-                RageCycleAbility.ServerSendRpc(true);
+                ChargeAbility.Cooldown.Remaining = value;
+                ChargeAbility.ServerSendRpc(true);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the Charge Ability duration.
+        /// </summary>
+        public float RemainingChargeDuration
+        {
+            get => ChargeAbility.Duration.Remaining;
+            set
+            {
+                ChargeAbility.Duration.Remaining = value;
+                ChargeAbility.ServerSendRpc(true);
             }
         }
 
@@ -146,6 +194,15 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the TryNotToCry ability is active.
+        /// </summary>
+        public bool TryNotToCryActive
+        {
+            get => TryNotToCryAbility.IsActive;
+            set => TryNotToCryAbility.IsActive = value;
+        }
+
+        /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of Players that are currently targeted by SCP-096.
         /// </summary>
         public IReadOnlyCollection<Player> Targets => RageCycleAbility._targetsTracker.Targets.Select(Player.Get).ToList().AsReadOnly();
@@ -153,56 +210,89 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp096GameRole"/>.
         /// </summary>
-        protected Scp096GameRole Internal { get; }
+        public new Scp096GameRole Base { get; }
 
         /// <summary>
         /// Adds the specified <paramref name="player"/> as an SCP-096 target.
         /// </summary>
         /// <param name="player">The player to add as a target.</param>
-        public void AddTarget(Player player) => TargetsTracker.AddTarget(player.ReferenceHub, false);
+        /// <returns><see langword="true"/> if target was successfully added. Otherwise, <see langword="false"/>.</returns>
+        public bool AddTarget(Player player) => player is not null && TargetsTracker.AddTarget(player.ReferenceHub, false);
 
         /// <summary>
         /// Adds the specified <paramref name="player"/> as an SCP-096 target.
         /// </summary>
         /// <param name="player">The player to add as a target.</param>
         /// <param name="isLooking">Is because player look SCP-096.</param>
-        public void AddTarget(Player player, bool isLooking) => TargetsTracker.AddTarget(player.ReferenceHub, isLooking);
+        /// <returns><see langword="true"/> if target was successfully added. Otherwise, <see langword="false"/>.</returns>
+        public bool AddTarget(Player player, bool isLooking) => player is not null && TargetsTracker.AddTarget(player.ReferenceHub, isLooking);
 
         /// <summary>
         /// Removes the specified <paramref name="player"/> from SCP-096's targets.
         /// </summary>
         /// <param name="player">The player to remove as a target.</param>
-        public void RemoveTarget(Player player) => TargetsTracker.RemoveTarget(player.ReferenceHub);
+        /// <returns><see langword="true"/> if target was successfully removed. Otherwise, <see langword="false"/>.</returns>
+        public bool RemoveTarget(Player player) => player is not null && TargetsTracker.RemoveTarget(player.ReferenceHub);
 
         /// <summary>
         /// Enrages SCP-096 for the given amount of times.
         /// </summary>
         /// <param name="time">The amount of time to enrage SCP-096.</param>
-        public void Enrage(float time) => RageManager.ServerEnrage(time);
+        public void Enrage(float time = Scp096RageManager.MinimumEnrageTime) => RageManager.ServerEnrage(time);
 
         /// <summary>
         /// Ends SCP-096's enrage cycle.
         /// </summary>
         /// <param name="clearTime">Whether or not to clear the remaining enrage time.</param>
-        public void Calm(bool clearTime) => RageManager.ServerEndEnrage(clearTime);
+        public void Calm(bool clearTime = true) => RageManager.ServerEndEnrage(clearTime);
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="player"/> is a target of SCP-096.
         /// </summary>
         /// <param name="player">The player to check.</param>
         /// <returns>Whether or not the player is a target of SCP-096.</returns>
-        public bool HasTarget(Player player) => TargetsTracker.HasTarget(player.ReferenceHub);
+        public bool HasTarget(Player player) => player is not null && TargetsTracker.HasTarget(player.ReferenceHub);
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="player"/> is observed by SCP-096.
         /// </summary>
         /// <param name="player">The player to check.</param>
         /// <returns>Whether or not the player is observed.</returns>
-        public bool IsObserved(Player player) => TargetsTracker.IsObservedBy(player.ReferenceHub);
+        public bool IsObserved(Player player) => player is not null && TargetsTracker.IsObservedBy(player.ReferenceHub);
 
         /// <summary>
         /// Removes all targets from SCP-096's target list.
         /// </summary>
         public void ClearTargets() => TargetsTracker.ClearAllTargets();
+
+        /// <summary>
+        /// Trigger the attack ability.
+        /// </summary>
+        public void Attack() => AttackAbility.ServerAttack();
+
+        /// <summary>
+        /// Trigger the charge ability.
+        /// </summary>
+        /// <param name="cooldown">The cooldown time to set before the charge can be executed again.</param>
+        public void Charge(float cooldown = 1f)
+        {
+            ChargeAbility._hitHandler.Clear();
+            ChargeAbility.Duration.Trigger(cooldown);
+            ChargeAbility.ScpRole.StateController.SetAbilityState(Scp096AbilityState.Charging);
+            ChargeAbility.ServerSendRpc(true);
+        }
+
+        /// <summary>
+        /// Shows the input prompt for the RageCycle ability.
+        /// </summary>
+        /// <param name="duration">The input prompt duration.</param>
+        public void ShowRageInput(float duration = Scp096RageCycleAbility.DefaultActivationDuration) => RageCycleAbility.ServerTryEnableInput(duration);
+
+        /// <summary>
+        /// Gets the Spawn Chance of SCP-096.
+        /// </summary>
+        /// <param name="alreadySpawned">The List of Roles already spawned.</param>
+        /// <returns>The Spawn Chance.</returns>
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base.GetSpawnChance(alreadySpawned);
     }
 }

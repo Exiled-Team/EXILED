@@ -40,14 +40,18 @@ namespace Exiled.Events.Handlers.Internal
         /// <inheritdoc cref="Handlers.Server.OnRestartingRound" />
         public static void OnRestartingRound()
         {
+            Scp049Role.TurnedPlayers.Clear();
             Scp173Role.TurnedPlayers.Clear();
             Scp096Role.TurnedPlayers.Clear();
+            Scp079Role.TurnedPlayers.Clear();
 
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_END);
 
             TeslaGate.IgnoredPlayers.Clear();
             TeslaGate.IgnoredRoles.Clear();
             TeslaGate.IgnoredTeams.Clear();
+
+            API.Features.Round.IgnoredPlayers.Clear();
         }
 
         /// <inheritdoc cref="Handlers.Server.OnRoundStarted" />

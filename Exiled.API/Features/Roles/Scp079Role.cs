@@ -11,15 +11,22 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features.Doors;
     using Interactables.Interobjects.DoorUtils;
+    using MapGeneration;
+    using Mirror;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
+    using PlayerRoles.PlayableScps.Scp079.Pinging;
     using PlayerRoles.PlayableScps.Scp079.Rewards;
     using PlayerRoles.PlayableScps.Subroutines;
+    using RelativePositioning;
+    using Utils.NonAllocLINQ;
 
     using Mathf = UnityEngine.Mathf;
     using Scp079GameRole = PlayerRoles.PlayableScps.Scp079.Scp079Role;
+    using Vector3 = UnityEngine.Vector3;
 
     /// <summary>
     /// Defines a role that represents SCP-079.
@@ -34,7 +41,7 @@ namespace Exiled.API.Features.Roles
             : base(baseRole)
         {
             SubroutineModule = baseRole.SubroutineModule;
-            Internal = baseRole;
+            Base = baseRole;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079SpeakerAbility scp079SpeakerAbility))
                 Log.Error("Scp079SpeakerAbility subroutine not found in Scp079Role::ctor");
@@ -89,7 +96,32 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp079CurrentCameraSync subroutine not found in Scp079Role::ctor");
 
             CurrentCameraSync = scp079CameraSync;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079PingAbility scp079PingAbility))
+                Log.Error("Scp079PingAbility subroutine not found in Scp079Role::ctor");
+
+            PingAbility = scp079PingAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079TeslaAbility scp079TeslaAbility))
+                Log.Error("Scp079TeslaAbility subroutine not found in Scp079Role::ctor");
+
+            TeslaAbility = scp079TeslaAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079ScannerTracker scp079ScannerTracker))
+                Log.Error("Scp079ScannerTracker subroutine not found in Scp079Role::ctor");
+
+            ScannerTracker = scp079ScannerTracker;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079ScannerZoneSelector scp079ScannerZoneSelector))
+                Log.Error("Scp079ScannerZoneSelector subroutine not found in Scp079Role::ctor");
+
+            ScannerZoneSelector = scp079ScannerZoneSelector;
         }
+
+        /// <summary>
+        /// Gets a list of players who will be turned away from SCP-079's scan.
+        /// </summary>
+        public static HashSet<Player> TurnedPlayers { get; } = new(20);
 
         /// <inheritdoc/>
         public override RoleTypeId Type { get; } = RoleTypeId.Scp079;
@@ -128,6 +160,16 @@ namespace Exiled.API.Features.Roles
         public Scp079RewardManager RewardManager { get; }
 
         /// <summary>
+        /// Gets SCP-079's <see cref="Scp079PingAbility"/>.
+        /// </summary>
+        public Scp079PingAbility PingAbility { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079TeslaAbility"/>.
+        /// </summary>
+        public Scp079TeslaAbility TeslaAbility { get; }
+
+        /// <summary>
         /// Gets SCP-079's <see cref="Scp079LockdownRoomAbility"/>.
         /// </summary>
         public Scp079LockdownRoomAbility LockdownRoomAbility { get; }
@@ -153,13 +195,23 @@ namespace Exiled.API.Features.Roles
         public Scp079CurrentCameraSync CurrentCameraSync { get; }
 
         /// <summary>
+        /// Gets SCP-079's <see cref="Scp079ScannerTracker"/>.
+        /// </summary>
+        public Scp079ScannerTracker ScannerTracker { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079ScannerZoneSelector"/>.
+        /// </summary>
+        public Scp079ScannerZoneSelector ScannerZoneSelector { get; }
+
+        /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
         /// <remarks>This value will return the <c>Hcz079ContChamber</c> Camera if SCP-079's current camera cannot be detected.</remarks>
         /// </summary>
         public Camera Camera
         {
-            get => Camera.Get(Internal.CurrentCamera) ?? Camera.Get(CameraType.Hcz079ContChamber);
-            set => Internal._curCamSync.CurrentCamera = value.Base;
+            get => Camera.Get(Base.CurrentCamera) ?? Camera.Get(CameraType.Hcz079ContChamber);
+            set => Base._curCamSync.CurrentCamera = value.Base;
         }
 
         /// <summary>
@@ -175,17 +227,17 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the speaker SCP-079 is currently using. Can be <see langword="null"/>.
         /// </summary>
-        public Scp079Speaker Speaker => Scp079Speaker.TryGetSpeaker(Internal.CurrentCamera, out Scp079Speaker speaker) ? speaker : null;
+        public Scp079Speaker Speaker => Scp079Speaker.TryGetSpeaker(Base.CurrentCamera, out Scp079Speaker speaker) ? speaker : null;
 
         /// <summary>
         /// Gets the doors SCP-079 has locked. Can be <see langword="null"/>.
         /// </summary>
-        public IEnumerable<Door> LockedDoors => DoorLockChanger._lockedDoors.Select(x => Door.Get(x));
+        public Door LockedDoor => Door.Get(DoorLockChanger.LockedDoor);
 
         /// <summary>
         /// Gets or sets SCP-079's abilities. Can be <see langword="null"/>.
         /// </summary>
-        public Scp079AbilityBase[] Abilities
+        public IScp079AuxRegenModifier[] Abilities
         {
             get => AuxManager._abilities;
             set => AuxManager._abilities = value;
@@ -199,6 +251,16 @@ namespace Exiled.API.Features.Roles
             get => TierManager.TotalExp;
             set => TierManager.TotalExp = value;
         }
+
+        /// <summary>
+        /// Gets the Current Camera Position.
+        /// </summary>
+        public Vector3 CameraPosition => Base.CameraPosition;
+
+        /// <summary>
+        /// Gets the relative experience.
+        /// </summary>
+        public float RelativeExperience => TierManager.RelativeExp;
 
         /// <summary>
         /// Gets or sets SCP-079's level.
@@ -255,6 +317,11 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets the Remaining Lockdown Duration.
+        /// </summary>
+        public float RemainingLockdownDuration => LockdownRoomAbility.RemainingLockdownDuration;
+
+        /// <summary>
         /// Gets the amount of rooms that SCP-079 has blacked out.
         /// </summary>
         public int BlackoutCount => BlackoutRoomAbility.RoomsOnCooldown;
@@ -287,6 +354,11 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets the Roll Rotation of SCP-079.
+        /// </summary>
+        public float RollRotation => Base.RollRotation;
+
+        /// <summary>
         /// Gets a value indicating whether or not SCP-079's signal is lost due to SCP-2176.
         /// </summary>
         public bool IsLost => LostSignalHandler.Lost;
@@ -304,12 +376,12 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the game <see cref="Scp079GameRole"/>.
         /// </summary>
-        protected Scp079GameRole Internal { get; }
+        public new Scp079GameRole Base { get; }
 
         /// <summary>
         /// Unlocks all doors that SCP-079 has locked.
         /// </summary>
-        public void UnlockAllDoors() => DoorLockChanger.ServerUnlockAll();
+        public void UnlockAllDoors() => DoorLockChanger.ServerUnlock();
 
         /// <summary>
         /// Forces SCP-079's signal to be lost for the specified amount of time.
@@ -325,23 +397,57 @@ namespace Exiled.API.Features.Roles
         public void AddExperience(int amount, Scp079HudTranslation reason = Scp079HudTranslation.ExpGainAdminCommand) => TierManager.ServerGrantExperience(amount, reason);
 
         /// <summary>
+        /// Grants SCP-079 experience.
+        /// </summary>
+        /// <param name="amount">The amount to grant.</param>
+        /// <param name="reason">The reason to grant experience.</param>
+        /// <param name="subject">The RoleType of the player that's causing it to happen.</param>
+        public void AddExperience(int amount, Scp079HudTranslation reason, RoleTypeId subject) => TierManager.ServerGrantExperience(amount, reason, subject);
+
+        /// <summary>
         /// Locks the provided <paramref name="door"/>.
         /// </summary>
         /// <param name="door">The door to lock.</param>
-        /// <returns>.</returns>
-        public bool LockDoor(Door door) => DoorLockChanger.SetDoorLock(door.Base, true);
+        /// <returns><see langword="true"/> if the door has been lock; otherwise, <see langword="false"/>.</returns>
+        public bool LockDoor(Door door)
+        {
+            if (door is not null)
+            {
+                DoorLockChanger.LockedDoor = door.Base;
+                door.Lock((float)DoorLockChanger._lockTime, DoorLockType.Regular079);
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Unlocks the provided <paramref name="door"/>.
         /// </summary>
         /// <param name="door">The door to unlock.</param>
-        public void UnlockDoor(Door door) => DoorLockChanger.SetDoorLock(door.Base, false);
+        public void UnlockDoor(Door door)
+        {
+            if (door is not null && Door.Get(DoorLockChanger.LockedDoor) == door)
+            {
+                door.Unlock();
+            }
+        }
 
         /// <summary>
         /// Marks a room as being modified by SCP-079 (granting experience if a kill happens in the room).
         /// </summary>
         /// <param name="room">The room to mark.</param>
-        public void MarkRoom(Room room) => RewardManager.MarkRoom(room.Identifier);
+        public void MarkRoom(Room room)
+        {
+            if (room is not null)
+                RewardManager.MarkRoom(room.Identifier);
+        }
+
+        /// <summary>
+        /// Marks a array of rooms as being modified by SCP-079 (granting experience if a kill happens in the room).
+        /// </summary>
+        /// <param name="rooms">The Array of Rooms to mark.</param>
+        public void MarkRooms(IEnumerable<Room> rooms) => RewardManager.MarkRooms(rooms.Select(x => x.Identifier).ToArray());
 
         /// <summary>
         /// Removes a marked room.
@@ -349,7 +455,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="room">The room to remove.</param>
         public void UnmarkRoom(Room room)
         {
-            if (RewardManager._markedRooms.ContainsKey(room.Identifier))
+            if (room is not null && RewardManager._markedRooms.ContainsKey(room.Identifier))
                 RewardManager._markedRooms.Remove(room.Identifier);
         }
 
@@ -363,7 +469,7 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="camera">The camera to get the cost to switch to.</param>
         /// <returns>The cost to switch from the current camera to the new camera.</returns>
-        public int GetSwitchCost(Camera camera) => CurrentCameraSync.GetSwitchCost(camera.Base);
+        public int GetSwitchCost(Camera camera) => camera is null ? CurrentCameraSync.GetSwitchCost(camera.Base) : 0;
 
         /// <summary>
         /// Gets the cost to modify a door.
@@ -371,12 +477,103 @@ namespace Exiled.API.Features.Roles
         /// <param name="door">The door to get the cost to modify.</param>
         /// <param name="action">The action.</param>
         /// <returns>The cost to modify the door.</returns>
-        public int GetCost(Door door, DoorAction action)
+        public int GetCost(Door door, DoorAction action) => action is DoorAction.Locked or DoorAction.Unlocked ? DoorLockChanger.GetCostForDoor(action, door.Base) :
+            DoorStateChanger.GetCostForDoor(action, door.Base);
+
+        /// <summary>
+        /// Blackout the current room.
+        /// </summary>
+        /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
+        public void BlackoutRoom(bool consumeEnergy = true)
         {
-            if (action is DoorAction.Locked or DoorAction.Unlocked)
-                return DoorLockChanger.GetCostForDoor(action, door.Base);
-            else
-                return DoorStateChanger.GetCostForDoor(action, door.Base);
+            if (consumeEnergy)
+                BlackoutRoomAbility.AuxManager.CurrentAux -= BlackoutRoomAbility._cost;
+
+            BlackoutRoomAbility.RewardManager.MarkRoom(BlackoutRoomAbility._roomController.Room);
+            BlackoutRoomAbility._blackoutCooldowns[BlackoutRoomAbility._roomController.netId] = NetworkTime.time + BlackoutRoomAbility._cooldown;
+            BlackoutRoomAbility._roomController.ServerFlickerLights(BlackoutRoomAbility._blackoutDuration);
+            BlackoutRoomAbility._successfulController = BlackoutRoomAbility._roomController;
+            BlackoutRoomAbility.ServerSendRpc(true);
         }
+
+        /// <summary>
+        /// Blackout the current zone.
+        /// </summary>
+        /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
+        public void BlackoutZone(bool consumeEnergy = true)
+        {
+            foreach (RoomLightController lightController in RoomLightController.Instances)
+            {
+                if (lightController.Room.Zone == BlackoutZoneAbility._syncZone)
+                {
+                    lightController.ServerFlickerLights(BlackoutZoneAbility._duration);
+                }
+            }
+
+            BlackoutZoneAbility._cooldownTimer.Trigger(BlackoutZoneAbility._cooldown);
+
+            if (consumeEnergy)
+                BlackoutZoneAbility.AuxManager.CurrentAux -= BlackoutZoneAbility._cost;
+
+            BlackoutZoneAbility.ServerSendRpc(true);
+        }
+
+        /// <summary>
+        /// Trigger the Ping Ability to ping a <see cref="RelativePosition"/>.
+        /// </summary>
+        /// <param name="position">The SyncNormal Position.</param>
+        /// <param name="pingType">The PingType to return.</param>
+        /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
+        public void Ping(Vector3 position, PingType pingType = PingType.Default, bool consumeEnergy = true)
+        {
+            var relativePosition = new RelativePosition(position);
+            PingAbility._syncPos = relativePosition;
+            PingAbility._syncNormal = position;
+            pingType = (PingType)PingAbility._syncProcessorIndex;
+
+            PingAbility.ServerSendRpc(x => PingAbility.ServerCheckReceiver(x, PingAbility._syncPos.Position, (int)pingType));
+
+            if (consumeEnergy)
+                PingAbility.AuxManager.CurrentAux -= PingAbility._cost;
+
+            PingAbility._rateLimiter.RegisterInput();
+        }
+
+        /// <summary>
+        /// Trigger the Lockdown Room Ability to lock the current room.
+        /// </summary>
+        public void LockdownRoom() => LockdownRoomAbility.ServerInitLockdown();
+
+        /// <summary>
+        /// Cancels the Actual Lockdown.
+        /// </summary>
+        public void CancelLockdown() => LockdownRoomAbility.ServerCancelLockdown();
+
+        /// <summary>
+        /// Trigger the SCP-079's Tesla Gate Ability.
+        /// </summary>
+        /// <param name="consumeEnergy">Indicates if the energy cost should be consume or not.</param>
+        public void ActivateTesla(bool consumeEnergy = true)
+        {
+            Scp079Camera cam = CurrentCameraSync.CurrentCamera;
+            RewardManager.MarkRoom(cam.Room);
+
+            if (!TeslaGateController.Singleton.TeslaGates.TryGetFirst(x => RoomIdUtils.IsTheSameRoom(cam.Position, x.transform.position), out var teslaGate))
+                return;
+
+            if (consumeEnergy)
+                AuxManager.CurrentAux -= TeslaAbility._cost;
+
+            teslaGate.RpcInstantBurst();
+            TeslaAbility._nextUseTime = NetworkTime.time + TeslaAbility._cooldown;
+            TeslaAbility.ServerSendRpc(false);
+        }
+
+        /// <summary>
+        /// Gets the spawn chance of SCP-079.
+        /// </summary>
+        /// <param name="alreadySpawned">The List of Roles already spawned.</param>
+        /// <returns>The Spawn Chance.</returns>
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base.GetSpawnChance(alreadySpawned);
     }
 }

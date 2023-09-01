@@ -12,11 +12,10 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
-
-    using Mirror;
 
     using PlayerRoles.Voice;
 
@@ -28,6 +27,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="PersonalRadioPlayback.Update()" />.
     ///     Adds the <see cref="Handlers.Player.Transmitting" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Transmitting))]
     [HarmonyPatch(typeof(PersonalRadioPlayback), nameof(PersonalRadioPlayback.Update))]
     internal static class Transmitting
     {
@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label retLabel = generator.DefineLabel();
 
-            const int offset = 3;
+            const int offset = -2;
             int index = newInstructions.FindIndex(
                 instruction => instruction.Calls(Method(typeof(PersonalRadioPlayback), nameof(PersonalRadioPlayback.IsTransmitting)))) + offset;
 

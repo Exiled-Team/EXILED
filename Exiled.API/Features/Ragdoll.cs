@@ -53,21 +53,21 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Ragdoll"/> which contains all the <see cref="Ragdoll"/> instances.
         /// </summary>
-        public static IEnumerable<Ragdoll> List => BasicRagdollToRagdoll.Values;
+        public static IReadOnlyCollection<Ragdoll> List => BasicRagdollToRagdoll.Values;
 
         /// <summary>
         /// Gets or sets the <see cref="BasicRagdoll"/>s clean up time.
         /// </summary>
-        public static int CleanUpTime
+        public static int FreezeTime
         {
-            get => RagdollManager.CleanupTime;
-            set => RagdollManager.CleanupTime = value;
+            get => RagdollManager.FreezeTime;
+            set => RagdollManager.FreezeTime = value;
         }
 
         /// <summary>
         /// Gets a value indicating whether or not the clean up event can be executed.
         /// </summary>
-        public bool AllowCleanUp => NetworkInfo.ExistenceTime < CleanUpTime;
+        public bool AllowCleanUp => NetworkInfo.ExistenceTime < FreezeTime;
 
         /// <summary>
         /// Gets the <see cref="BasicRagdoll"/> instance of the ragdoll.
@@ -94,9 +94,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the ragdoll's <see cref="DamageHandlerBase"/>.
+        /// Gets or sets the ragdoll's <see cref="DamageHandlerBase"/>.
         /// </summary>
-        public DamageHandlerBase DamageHandler => NetworkInfo.Handler;
+        public DamageHandlerBase DamageHandler
+        {
+            get => NetworkInfo.Handler;
+            set => NetworkInfo = new(NetworkInfo.OwnerHub, value, NetworkInfo.RoleType, NetworkInfo.StartPosition, NetworkInfo.StartRotation, NetworkInfo.Nickname, NetworkInfo.CreationTime);
+        }
 
         /// <summary>
         /// Gets the ragdoll's <see cref="Rigidbody"/>[].
@@ -111,7 +115,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the ragdoll has been already cleaned up.
         /// </summary>
-        public bool IsCleanedUp => Base._cleanedUp;
+        public bool IsFrozen => Base._frozen;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the ragdoll can be cleaned up.
@@ -134,22 +138,53 @@ namespace Exiled.API.Features
         public string Name => Base.name;
 
         /// <summary>
-        /// Gets the owner <see cref="Player"/>. Can be <see langword="null"/> if the ragdoll does not have an owner.
+        /// Gets or sets the ragdoll's nickname.
         /// </summary>
-        public Player Owner => Player.Get(NetworkInfo.OwnerHub);
+        public string Nickname
+        {
+            get => NetworkInfo.Nickname;
+            set => NetworkInfo = new(NetworkInfo.OwnerHub, NetworkInfo.Handler, NetworkInfo.RoleType, NetworkInfo.StartPosition, NetworkInfo.StartRotation, value, NetworkInfo.CreationTime);
+        }
 
         /// <summary>
-        /// Gets the time that the ragdoll was spawned.
+        /// Gets the ragdoll's existence time.
         /// </summary>
-        public DateTime CreationTime => new((long)NetworkInfo.CreationTime);
+        public float ExistenceTime => NetworkInfo.ExistenceTime;
 
         /// <summary>
-        /// Gets the <see cref="RoleTypeId"/> of the ragdoll.
+        /// Gets or sets the owner <see cref="Player"/>. Can be <see langword="null"/> if the ragdoll does not have an owner.
         /// </summary>
-        public RoleTypeId Role => NetworkInfo.RoleType;
+        public Player Owner
+        {
+            get => Player.Get(NetworkInfo.OwnerHub);
+            set => NetworkInfo = new(value.ReferenceHub, NetworkInfo.Handler, NetworkInfo.RoleType, NetworkInfo.StartPosition, NetworkInfo.StartRotation, NetworkInfo.Nickname, NetworkInfo.CreationTime);
+        }
 
         /// <summary>
-        /// Gets a value indicating whether or not the ragdoll has expired and SCP-049 is unable to revive it.
+        /// Gets or sets the time that the ragdoll was spawned.
+        /// </summary>
+        public DateTime CreationTime
+        {
+            get => DateTime.Now - TimeSpan.FromSeconds(NetworkInfo.ExistenceTime);
+            set
+            {
+                float creationTime = (float)(NetworkTime.time - (DateTime.Now - value).TotalSeconds);
+                NetworkInfo = new RagdollData(NetworkInfo.OwnerHub, NetworkInfo.Handler, NetworkInfo.RoleType, NetworkInfo.StartPosition, NetworkInfo.StartRotation, NetworkInfo.Nickname, creationTime);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="RoleTypeId"/> of the ragdoll.
+        /// </summary>
+        public RoleTypeId Role
+        {
+            get => NetworkInfo.RoleType;
+            set => NetworkInfo = new(NetworkInfo.OwnerHub, NetworkInfo.Handler, value, NetworkInfo.StartPosition, NetworkInfo.StartRotation, NetworkInfo.Nickname, NetworkInfo.CreationTime);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the ragdoll has expired and SCP-049 is unable to revive it if was not being targets.
+        /// <seealso cref="Roles.Scp049Role.CanResurrect(Ragdoll)"/>
         /// </summary>
         public bool IsExpired => NetworkInfo.ExistenceTime > PlayerRoles.PlayableScps.Scp049.Scp049ResurrectAbility.HumanCorpseDuration;
 
@@ -237,29 +272,38 @@ namespace Exiled.API.Features
         internal static HashSet<BasicRagdoll> IgnoredRagdolls { get; set; } = new();
 
         /// <summary>
+        /// Gets the last ragdoll of the player.
+        /// </summary>
+        /// <param name="player">The player to get the last ragdoll.</param>
+        /// <returns>The Last Ragdoll.</returns>
+        public static Ragdoll GetLast(Player player) => Get(player).LastOrDefault();
+
+        /// <summary>
         /// Creates a new ragdoll.
         /// </summary>
         /// <param name="networkInfo">The data associated with the ragdoll.</param>
-        /// <returns>The ragdoll.</returns>
-        /// <exception cref="ArgumentException">Provided RoleType is not a valid ragdoll role (Spectator, Scp079, etc).</exception>
-        /// <exception cref="InvalidOperationException">Unable to create a ragdoll.</exception>
-        public static Ragdoll Create(RagdollData networkInfo)
+        /// <param name="ragdoll">Created ragdoll. Will be <see langword="null"/> if method retunred <see langword="false"/>.</param>
+        /// <returns><see langword="true"/> if ragdoll was successfully created. Otherwise, false.</returns>
+        public static bool TryCreate(RagdollData networkInfo, out Ragdoll ragdoll)
         {
+            ragdoll = null;
+
             if (networkInfo.RoleType.GetRoleBase() is not IRagdollRole ragdollRole)
-                throw new ArgumentException($"Provided RoleType '{networkInfo.RoleType}' is not a valid ragdoll role.");
+                return false;
 
             GameObject modelRagdoll = ragdollRole.Ragdoll.gameObject;
 
-            if (modelRagdoll == null || !Object.Instantiate(modelRagdoll).TryGetComponent(out BasicRagdoll ragdoll))
-                throw new InvalidOperationException($"Unable to create a ragdoll of type {networkInfo.RoleType}.");
+            if (modelRagdoll == null || !Object.Instantiate(modelRagdoll).TryGetComponent(out BasicRagdoll basicRagdoll))
+                return false;
 
-            ragdoll.NetworkInfo = networkInfo;
+            basicRagdoll.NetworkInfo = networkInfo;
 
-            return new(ragdoll)
+            ragdoll = new(basicRagdoll)
             {
                 Position = networkInfo.StartPosition,
                 Rotation = networkInfo.StartRotation,
             };
+            return true;
         }
 
         /// <summary>
@@ -268,10 +312,11 @@ namespace Exiled.API.Features
         /// <param name="roleType">The <see cref="RoleTypeId"/> of the ragdoll.</param>
         /// <param name="name">The name of the ragdoll.</param>
         /// <param name="damageHandler">The damage handler responsible for the ragdoll's death.</param>
+        /// <param name="ragdoll">Created ragdoll. Will be <see langword="null"/> if method retunred <see langword="false"/>.</param>
         /// <param name="owner">The optional owner of the ragdoll.</param>
         /// <returns>The ragdoll.</returns>
-        public static Ragdoll Create(RoleTypeId roleType, string name, DamageHandlerBase damageHandler, Player owner = null)
-            => Create(new(owner?.ReferenceHub ?? Server.Host.ReferenceHub, damageHandler, roleType, default, default, name, NetworkTime.time));
+        public static bool TryCreate(RoleTypeId roleType, string name, DamageHandlerBase damageHandler, out Ragdoll ragdoll, Player owner = null)
+            => TryCreate(new(owner?.ReferenceHub ?? Server.Host.ReferenceHub, damageHandler, roleType, default, default, name, NetworkTime.time), out ragdoll);
 
         /// <summary>
         /// Creates a new ragdoll.
@@ -279,10 +324,11 @@ namespace Exiled.API.Features
         /// <param name="roleType">The <see cref="RoleTypeId"/> of the ragdoll.</param>
         /// <param name="name">The name of the ragdoll.</param>
         /// <param name="deathReason">The reason the ragdoll died.</param>
+        /// <param name="ragdoll">Created ragdoll. Will be <see langword="null"/> if method retunred <see langword="false"/>.</param>
         /// <param name="owner">The optional owner of the ragdoll.</param>
         /// <returns>The ragdoll.</returns>
-        public static Ragdoll Create(RoleTypeId roleType, string name, string deathReason, Player owner = null)
-            => Create(roleType, name, new CustomReasonDamageHandler(deathReason), owner);
+        public static bool TryCreate(RoleTypeId roleType, string name, string deathReason, out Ragdoll ragdoll, Player owner = null)
+            => TryCreate(roleType: roleType, name: name, damageHandler: new CustomReasonDamageHandler(deathReason), out ragdoll, owner);
 
         /// <summary>
         /// Creates and spawns a new ragdoll.
@@ -291,7 +337,9 @@ namespace Exiled.API.Features
         /// <returns>The ragdoll.</returns>
         public static Ragdoll CreateAndSpawn(RagdollData networkInfo)
         {
-            Ragdoll doll = Create(networkInfo);
+            if (!TryCreate(networkInfo, out Ragdoll doll))
+                return null;
+
             doll.Spawn();
 
             return doll;
@@ -328,16 +376,15 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ragdoll">The <see cref="BasicRagdoll"/> to get.</param>
         /// <returns>A <see cref="Ragdoll"/> or <see langword="null"/> if not found.</returns>
-        public static Ragdoll Get(BasicRagdoll ragdoll) => BasicRagdollToRagdoll.TryGetValue(ragdoll, out Ragdoll doll)
-            ? doll
-            : new Ragdoll(ragdoll);
+        public static Ragdoll Get(BasicRagdoll ragdoll) => ragdoll == null ? null :
+            BasicRagdollToRagdoll.TryGetValue(ragdoll, out Ragdoll doll) ? doll : new Ragdoll(ragdoll);
 
         /// <summary>
         /// Gets the <see cref="IEnumerable{T}"/> of <see cref="Ragdoll"/> belonging to the <see cref="Player"/>, if any.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to get.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Ragdoll"/>.</returns>
-        public static IEnumerable<Ragdoll> Get(Player player) => Ragdoll.List.Where(rd => rd.Owner == player);
+        public static IEnumerable<Ragdoll> Get(Player player) => List.Where(rd => rd.Owner == player);
 
         /// <summary>
         /// Gets the <see cref="IEnumerable{T}"/> of <see cref="Ragdoll"/> belonging to the <see cref="IEnumerable{T}"/> of <see cref="Player"/>, if any.

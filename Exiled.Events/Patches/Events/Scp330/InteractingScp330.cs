@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     using API.Features.Pools;
 
     using CustomPlayerEffects;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp330;
     using Exiled.Events.Handlers;
 
@@ -32,6 +32,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     ///     Patches the <see cref="Scp330Interobject.ServerInteract(ReferenceHub, byte)" /> method to add the
     ///     <see cref="Scp330.InteractingScp330" /> event.
     /// </summary>
+    [EventPatch(typeof(Scp330), nameof(Scp330.InteractingScp330))]
     [HarmonyPatch(typeof(Scp330Interobject), nameof(Scp330Interobject.ServerInteract))]
     public static class InteractingScp330
     {
@@ -111,6 +112,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             // This is to find the location of the next return (End point)
             int includeSameLine = 1;
             int nextReturn = newInstructions.FindIndex(addShouldSeverIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
+            Label originalLabel = newInstructions[addShouldSeverIndex].ExtractLabels()[0];
 
             // Remove original code from after RpcMakeSound to next return and then fully replace it.
             newInstructions.RemoveRange(addShouldSeverIndex, nextReturn - addShouldSeverIndex);
@@ -124,7 +126,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 {
                     // if (!ev.ShouldSever)
                     //    goto shouldNotSever;
-                    new(OpCodes.Ldloc, ev.LocalIndex),
+                    new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex).WithLabels(originalLabel),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
                     new(OpCodes.Brfalse, shouldNotSever),
 

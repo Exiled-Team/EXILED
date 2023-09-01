@@ -7,12 +7,17 @@
 
 namespace Exiled.CustomItems.API.EventArgs
 {
+    using System.Collections.Generic;
+
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs.Player;
 
     using PlayerRoles;
+
+    using Respawning;
 
     /// <summary>
     /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/> escapes.
@@ -25,7 +30,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="EscapingEventArgs"/> instance.</param>
         public OwnerEscapingEventArgs(Item item, EscapingEventArgs ev)
-            : this(item, ev.Player, ev.NewRole)
+            : this(item, ev.Player, ev.NewRole, ev.EscapeScenario, ev.RespawnTickets)
         {
         }
 
@@ -35,8 +40,10 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="player"><inheritdoc cref="EscapingEventArgs.Player"/></param>
         /// <param name="newRole"><inheritdoc cref="EscapingEventArgs.NewRole"/></param>
-        public OwnerEscapingEventArgs(Item item, Player player, RoleTypeId newRole)
-            : base(player, newRole)
+        /// <param name="escapeScenario"><inheritdoc cref="EscapingEventArgs.EscapeScenario"/></param>
+        /// <param name="respawnTickets"><inheritdoc cref="EscapingEventArgs.RespawnTickets"/></param>
+        public OwnerEscapingEventArgs(Item item, Player player, RoleTypeId newRole, EscapeScenario escapeScenario, KeyValuePair<SpawnableTeamType, float> respawnTickets = default)
+            : base(player, newRole, escapeScenario, respawnTickets)
         {
             Item = item;
         }

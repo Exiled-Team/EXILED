@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
 
     using HarmonyLib;
@@ -22,8 +22,9 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     /// <summary>
     ///     Patches <see cref="Scp079BlackoutZoneAbility.ServerProcessCmd" />.
-    ///     Adds the <see cref="ZoneBlackoutEventArgs" /> event for  SCP-079.
+    ///     Adds the <see cref="Handlers.Scp079.ZoneBlackout" /> event for  SCP-079.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp079), nameof(Handlers.Scp079.Pinging))]
     [HarmonyPatch(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility.ServerProcessCmd))]
     internal static class ZoneBlackout
     {
@@ -31,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Scp079
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            int offset = 4;
+            int offset = 3;
             int index = newInstructions.FindIndex(
                 instruction => instruction.LoadsField(Field(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility._syncZone)))) + offset;
 

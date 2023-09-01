@@ -7,30 +7,27 @@
 
 namespace Exiled.API.Enums
 {
+    using System;
+
     /// <summary>
     /// All of the valid spawn location types.
     /// </summary>
     public enum SpawnLocationType
     {
         /// <summary>
-        /// The inside of 012's hallway door.
+        /// The inside of 330's room.
         /// </summary>
-        Inside012,
+        Inside330,
 
         /// <summary>
-        /// The inside of the locked door leaving to SCP-012's room.
+        /// The inside of 330's room test chamber.
         /// </summary>
-        Inside012Bottom,
-
-        /// <summary>
-        /// The inside of the locked 012 armory door.
-        /// </summary>
-        Inside012Locker,
+        Inside330Chamber,
 
         /// <summary>
         /// The inside of SCP-049's Armory room.
         /// </summary>
-        Inside049Armory,
+        Inside049Armory = 3,
 
         /// <summary>
         /// The inside of the inner SCP-079 door.

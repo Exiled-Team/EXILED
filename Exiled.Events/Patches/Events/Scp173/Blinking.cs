@@ -13,9 +13,12 @@ namespace Exiled.Events.Patches.Events.Scp173
 
     using API.Features;
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp173;
 
     using HarmonyLib;
+
+    using PlayerRoles;
 
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Subroutines;
@@ -28,6 +31,7 @@ namespace Exiled.Events.Patches.Events.Scp173
     ///     Patches <see cref="Scp173BlinkTimer.ServerBlink(Vector3)" />.
     ///     Adds the <see cref="Handlers.Scp173.Blinking" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp173.Blinking))]
     [HarmonyPatch(typeof(Scp173BlinkTimer), nameof(Scp173BlinkTimer.ServerBlink))]
     internal static class Blinking
     {
@@ -43,9 +47,10 @@ namespace Exiled.Events.Patches.Events.Scp173
                 0,
                 new[]
                 {
-                    // Player.Get(base.Owner)
+                    // Player.Get(base.Role._lastOwner)
                     new CodeInstruction(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp173Role>), nameof(ScpStandardSubroutine<Scp173Role>.Owner))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ScpSubroutineBase), nameof(ScpSubroutineBase.Role))),
+                    new(OpCodes.Ldfld, Field(typeof(PlayerRoleBase), nameof(PlayerRoleBase._lastOwner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // this._observers.Observers

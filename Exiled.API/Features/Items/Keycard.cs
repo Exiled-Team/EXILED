@@ -10,7 +10,6 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Enums;
     using Exiled.API.Interfaces;
 
-    using InventorySystem.Items;
     using InventorySystem.Items.Keycards;
 
     /// <summary>

@@ -8,13 +8,14 @@
 namespace Exiled.Events.EventArgs.Scp939
 {
     using API.Features;
+    using Exiled.API.Features.Roles;
     using Interfaces;
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
 
     /// <summary>
     ///     Contains all information before SCP-939 plays a sound effect.
     /// </summary>
-    public class PlayingSoundEventArgs : IPlayerEvent, IDeniableEvent
+    public class PlayingSoundEventArgs : IScp939Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlayingSoundEventArgs" /> class.
@@ -34,9 +35,10 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public PlayingSoundEventArgs(ReferenceHub player, EnvMimicryOption sound, bool isReady, float cooldown, bool isAllowed = true)
+        public PlayingSoundEventArgs(ReferenceHub player, EnvMimicrySequence sound, bool isReady, float cooldown, bool isAllowed = true)
         {
             Player = Player.Get(player);
+            Scp939 = Player.Role.As<Scp939Role>();
             Sound = sound;
             IsReady = isReady;
             Cooldown = cooldown;
@@ -52,7 +54,7 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <summary>
         ///     Gets the sound being played.
         /// </summary>
-        public EnvMimicryOption Sound { get; }
+        public EnvMimicrySequence Sound { get; }
 
         /// <summary>
         ///     Gets a value indicating whether or not SCP-939's environmental mimicry cooldown is ready.
@@ -68,5 +70,8 @@ namespace Exiled.Events.EventArgs.Scp939
         ///     Gets the player who's controlling SCP-939.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp939Role Scp939 { get; }
     }
 }

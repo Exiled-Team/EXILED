@@ -12,8 +12,8 @@ namespace Exiled.Loader
 
     using API.Enums;
     using API.Interfaces;
-
     using Exiled.API.Features;
+    using YamlDotNet.Core;
 
     /// <summary>
     /// The configs of the loader.
@@ -57,5 +57,17 @@ namespace Exiled.Loader
         /// </summary>
         [Description("The config files distribution type (Default, Separated)")]
         public ConfigType ConfigType { get; set; } = ConfigType.Default;
+
+        /// <summary>
+        /// Gets or sets the quotes wrapper type.
+        /// </summary>
+        [Description("Indicates in which quoted strings in configs will be wrapped (Any, SingleQuoted, DoubleQuoted, Folded, Literal)")]
+        public ScalarStyle ScalarStyle { get; set; } = ScalarStyle.SingleQuoted;
+
+        /// <summary>
+        /// Gets or sets the quotes wrapper type.
+        /// </summary>
+        [Description("Indicates in which quoted strings with multiline in configs will be wrapped (Any, SingleQuoted, DoubleQuoted, Folded, Literal)")]
+        public ScalarStyle MultiLineScalarStyle { get; set; } = ScalarStyle.Literal;
     }
 }

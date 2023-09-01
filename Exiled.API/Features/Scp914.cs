@@ -11,8 +11,6 @@ namespace Exiled.API.Features
 
     using UnityEngine;
 
-    using Utils.ConfigHandler;
-
     /// <summary>
     /// A set of tools to modify SCP-914's behaviour.
     /// </summary>
@@ -83,11 +81,13 @@ namespace Exiled.API.Features
         /// <remarks>There are two sounds only.
         /// The values to identify them are <c>0</c>, which stands for the soundId played when SCP-914 is being activated,
         /// and <c>1</c>, which stands for the soundId played when SCP-914's knob state is being changed.</remarks>
-        public static void PlaySound(byte soundId) => Scp914Controller.RpcPlaySound(soundId);
+        public static void PlaySound(Scp914InteractCode soundId) => Scp914Controller.RpcPlaySound((byte)soundId);
 
         /// <summary>
         /// Starts SCP-914.
         /// </summary>
-        public static void Start() => Scp914Controller.ServerInteract(Server.Host.ReferenceHub, (byte)Scp914InteractCode.Activate);
+        /// <param name="player">Player who interacts with Scp914.</param>
+        /// <param name="code">Activated code.</param>
+        public static void Start(Player player = null, Scp914InteractCode code = Scp914InteractCode.Activate) => Scp914Controller.ServerInteract((player ?? Server.Host).ReferenceHub, (byte)code);
     }
 }

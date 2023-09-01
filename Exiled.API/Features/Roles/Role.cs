@@ -21,6 +21,7 @@ namespace Exiled.API.Features.Roles
 
     using UnityEngine;
 
+    using FilmmakerGameRole = PlayerRoles.Filmmaker.FilmmakerRole;
     using HumanGameRole = PlayerRoles.HumanRole;
     using OverwatchGameRole = PlayerRoles.Spectating.OverwatchRole;
     using Scp049GameRole = PlayerRoles.PlayableScps.Scp049.Scp049Role;
@@ -225,6 +226,7 @@ namespace Exiled.API.Features.Roles
             OverwatchGameRole overwatchRole => new OverwatchRole(overwatchRole),
             SpectatorGameRole spectatorRole => new SpectatorRole(spectatorRole),
             HumanGameRole humanRole => new HumanRole(humanRole),
+            FilmmakerGameRole filmmakerRole => new FilmMakerRole(filmmakerRole),
             _ => new NoneRole(role),
         };
     }

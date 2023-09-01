@@ -15,6 +15,7 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features.Pools;
 
     using Exiled.API.Extensions;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -22,10 +23,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="ServerRoles.UserCode_CmdServerSignatureComplete" />.
+    ///     Patches <see cref="ServerRoles.UserCode_CmdServerSignatureComplete__String__String__String__Boolean" />.
     ///     Adds the <see cref="Handlers.Player.Verified" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdServerSignatureComplete))]
+    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdServerSignatureComplete__String__String__String__Boolean))]
     internal static class Verified
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -55,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void HandleCmdServerSignature(ServerRoles instance)
         {
-            if (!Player.UnverifiedPlayers.TryGetValue(instance._hub, out Player player))
+            if (!Player.UnverifiedPlayers.TryGetValue(instance._hub.gameObject, out Player player))
                 Joined.CallEvent(instance._hub, out player);
 
             Player.Dictionary.Add(instance._hub.gameObject, player);

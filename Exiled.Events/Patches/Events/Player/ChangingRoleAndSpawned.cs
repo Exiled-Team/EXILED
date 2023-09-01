@@ -16,6 +16,7 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features.Pools;
 
     using API.Features.Roles;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -45,6 +46,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label continueLabel = generator.DefineLabel();
             Label continueLabel1 = generator.DefineLabel();
             Label continueLabel2 = generator.DefineLabel();
+            Label jmp = generator.DefineLabel();
 
             LocalBuilder changingRoleEventArgs = generator.DeclareLocal(typeof(ChangingRoleEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
@@ -64,8 +66,21 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Stloc_S, player.LocalIndex),
                     new(OpCodes.Brfalse_S, continueLabel),
 
-                    // player
+                    // if (Player.IsVerified)
+                    //  goto jmp
                     new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.IsVerified))),
+                    new(OpCodes.Brtrue_S, jmp),
+
+                    // if (!Player.IsNpc)
+                    //  goto continueLabel;
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.IsNPC))),
+                    new(OpCodes.Brfalse_S, continueLabel),
+
+                    // jmp
+                    // player
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).WithLabels(jmp),
 
                     // newRole
                     new(OpCodes.Ldarg_1),
@@ -117,7 +132,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             int offset = 1;
             int index = newInstructions.FindIndex(
-                instruction => instruction.Calls(Method(typeof(GameObjectPools.PoolObject), nameof(GameObjectPools.PoolObject.SpawnPoolObject)))) + offset;
+                instruction => instruction.Calls(Method(typeof(GameObjectPools.PoolObject), nameof(GameObjectPools.PoolObject.SetupPoolObject)))) + offset;
 
             newInstructions[index].WithLabels(continueLabel1);
 
@@ -149,6 +164,11 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (player == null)
                     //     continue
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Brfalse_S, continueLabel2),
+
+                    // if (changingRoleEventArgs == null)
+                    //     continue
+                    new CodeInstruction(OpCodes.Ldloc_S, changingRoleEventArgs.LocalIndex),
                     new(OpCodes.Brfalse_S, continueLabel2),
 
                     // changingRoleEventArgs

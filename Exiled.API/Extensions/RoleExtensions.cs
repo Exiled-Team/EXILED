@@ -39,7 +39,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/> to check the side of.</param>
         /// <returns><see cref="Side"/>.</returns>
-        public static Side GetSide(this RoleTypeId roleType) => GetTeam(roleType).GetSide();
+        public static Side GetSide(this RoleTypeId roleType) => PlayerRolesUtils.GetTeam(roleType).GetSide();
 
         /// <summary>
         /// Gets a <see cref="Team">team's</see> <see cref="Side"/>.

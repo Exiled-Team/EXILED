@@ -35,16 +35,16 @@ namespace Exiled.Loader.Features.Configs
         /// </summary>
         public string Comment { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IObjectDescriptor" />
         public object Value => innerDescriptor.Value;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IObjectDescriptor" />
         public Type Type => innerDescriptor.Type;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IObjectDescriptor" />
         public Type StaticType => innerDescriptor.StaticType;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IObjectDescriptor" />
         public ScalarStyle ScalarStyle => innerDescriptor.ScalarStyle;
     }
 }

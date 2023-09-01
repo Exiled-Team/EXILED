@@ -13,6 +13,7 @@ namespace Exiled.API.Extensions
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
+    using System.Runtime.Remoting.Messaging;
     using System.Text;
 
     using Features;
@@ -23,7 +24,9 @@ namespace Exiled.API.Extensions
     using Mirror;
 
     using PlayerRoles;
-
+    using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PluginAPI.Events;
     using RelativePositioning;
 
     using Respawning;
@@ -37,10 +40,13 @@ namespace Exiled.API.Extensions
     {
         private static readonly Dictionary<Type, MethodInfo> WriterExtensionsValue = new();
         private static readonly Dictionary<string, ulong> SyncVarDirtyBitsValue = new();
+        private static readonly Dictionary<string, string> RpcFullNamesValue = new();
         private static readonly ReadOnlyDictionary<Type, MethodInfo> ReadOnlyWriterExtensionsValue = new(WriterExtensionsValue);
         private static readonly ReadOnlyDictionary<string, ulong> ReadOnlySyncVarDirtyBitsValue = new(SyncVarDirtyBitsValue);
+        private static readonly ReadOnlyDictionary<string, string> ReadOnlyRpcFullNamesValue = new(RpcFullNamesValue);
         private static MethodInfo setDirtyBitsMethodInfoValue;
         private static MethodInfo sendSpawnMessageMethodInfoValue;
+        private static MethodInfo bufferRpcMethodInfoValue;
 
         /// <summary>
         /// Gets <see cref="MethodInfo"/> corresponding to <see cref="Type"/>.
@@ -54,7 +60,8 @@ namespace Exiled.API.Extensions
                     foreach (MethodInfo method in typeof(NetworkWriterExtensions).GetMethods().Where(x => !x.IsGenericMethod && (x.GetParameters()?.Length == 2)))
                         WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
 
-                    foreach (MethodInfo method in typeof(GeneratedNetworkCode).GetMethods().Where(x => !x.IsGenericMethod && (x.GetParameters()?.Length == 2) && (x.ReturnType == typeof(void))))
+                    Type fuckNorthwood = Assembly.GetAssembly(typeof(RoleTypeId)).GetType("Mirror.GeneratedNetworkCode");
+                    foreach (MethodInfo method in fuckNorthwood.GetMethods().Where(x => !x.IsGenericMethod && (x.GetParameters()?.Length == 2) && (x.ReturnType == typeof(void))))
                         WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
 
                     foreach (Type serializer in typeof(ServerConsole).Assembly.GetTypes().Where(x => x.Name.EndsWith("Serializer")))
@@ -93,8 +100,8 @@ namespace Exiled.API.Extensions
 
                         byte[] bytecodes = methodBody.GetILAsByteArray();
 
-                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.Name}"))
-                            SyncVarDirtyBitsValue.Add($"{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
+                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.ReflectedType.Name}.{property.Name}"))
+                            SyncVarDirtyBitsValue.Add($"{property.ReflectedType.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
                     }
                 }
 
@@ -103,14 +110,48 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Gets a <see cref="NetworkBehaviour.SetDirtyBit(ulong)"/>'s <see cref="MethodInfo"/>.
+        /// Gets Rpc's FullName <see cref="string"/> corresponding to <see cref="StringExtensions"/>(format:classname.methodname).
         /// </summary>
-        public static MethodInfo SetDirtyBitsMethodInfo => setDirtyBitsMethodInfoValue ??= typeof(NetworkBehaviour).GetMethod(nameof(NetworkBehaviour.SetDirtyBit));
+        public static ReadOnlyDictionary<string, string> RpcFullNames
+        {
+            get
+            {
+                if (RpcFullNamesValue.Count == 0)
+                {
+                    foreach (MethodInfo method in typeof(ServerConsole).Assembly.GetTypes()
+                        .SelectMany(x => x.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+                        .Where(m => m.GetCustomAttributes(typeof(ClientRpcAttribute), false).Length > 0 || m.GetCustomAttributes(typeof(TargetRpcAttribute), false).Length > 0))
+                    {
+                        MethodBody methodBody = method.GetMethodBody();
+
+                        if (methodBody is null)
+                            continue;
+
+                        byte[] bytecodes = methodBody.GetILAsByteArray();
+
+                        if (!RpcFullNamesValue.ContainsKey($"{method.ReflectedType.Name}.{method.Name}"))
+                            RpcFullNamesValue.Add($"{method.ReflectedType.Name}.{method.Name}", method.Module.ResolveString(BitConverter.ToInt32(bytecodes, bytecodes.LastIndexOf((byte)OpCodes.Ldstr.Value) + 1)));
+                    }
+                }
+
+                return ReadOnlyRpcFullNamesValue;
+            }
+        }
+
+        /// <summary>
+        /// Gets a <see cref="NetworkBehaviour.SetSyncVarDirtyBit(ulong)"/>'s <see cref="MethodInfo"/>.
+        /// </summary>
+        public static MethodInfo SetDirtyBitsMethodInfo => setDirtyBitsMethodInfoValue ??= typeof(NetworkBehaviour).GetMethod(nameof(NetworkBehaviour.SetSyncVarDirtyBit));
 
         /// <summary>
         /// Gets a NetworkServer.SendSpawnMessage's <see cref="MethodInfo"/>.
         /// </summary>
         public static MethodInfo SendSpawnMessageMethodInfo => sendSpawnMessageMethodInfoValue ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
+
+        /// <summary>
+        /// Gets a NetworkConnectionToClient.BufferRpc's <see cref="MethodInfo"/>.
+        /// </summary>
+        public static MethodInfo BufferRpcMethodInfo => bufferRpcMethodInfoValue ??= typeof(NetworkConnectionToClient).GetMethod("BufferRpc", BindingFlags.NonPublic | BindingFlags.Instance, null, CallingConventions.HasThis, new Type[] { typeof(RpcMessage), typeof(int) }, null);
 
         /// <summary>
         /// Plays a beep sound that only the target <paramref name="player"/> can hear.
@@ -156,8 +197,8 @@ namespace Exiled.API.Extensions
         /// <param name="color">Color to set.</param>
         public static void SetRoomColorForTargetOnly(this Room room, Player target, Color color)
         {
-            target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_warheadLightColor), color);
-            target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_warheadLightOverride), true);
+            target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkOverrideColor), color);
+            target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkOverrideColor), true);
         }
 
         /// <summary>
@@ -172,14 +213,13 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Sets <see cref="Room.LightIntensity"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
+        /// Sets <see cref="Room"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="room">Room to modify.</param>
         /// <param name="target">Only this player can see room color.</param>
         /// <param name="multiplier">Light intensity multiplier to set.</param>
         public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier)
         {
-            target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_lightIntensityMultiplier), multiplier);
         }
 
         /// <summary>
@@ -188,10 +228,71 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="player">Player to change.</param>
         /// <param name="type">Model type.</param>
-        public static void ChangeAppearance(this Player player, RoleTypeId type)
+        /// <param name="skipJump">Whether or not to skip the little jump that works around an invisibility issue.</param>
+        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
+        public static void ChangeAppearance(this Player player, RoleTypeId type, bool skipJump = false, byte unitId = 0) => ChangeAppearance(player, type, Player.List.Where(x => x != player), skipJump, unitId);
+
+        /// <summary>
+        /// Change <see cref="Player"/> character model for appearance.
+        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
+        /// </summary>
+        /// <param name="player">Player to change.</param>
+        /// <param name="type">Model type.</param>
+        /// <param name="playersToAffect">The players who should see the changed appearance.</param>
+        /// <param name="skipJump">Whether or not to skip the little jump that works around an invisibility issue.</param>
+        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
+        public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
         {
-            foreach (Player target in Player.List.Where(x => x != player))
-                target.Connection.Send(new RoleSyncInfo(player.ReferenceHub, type, target.ReferenceHub));
+            if (!RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))
+                return;
+
+            bool isRisky = type.GetTeam() is Team.Dead || player.IsDead;
+
+            NetworkWriterPooled writer = NetworkWriterPool.Get();
+            writer.WriteUShort(38952);
+            writer.WriteUInt(player.NetId);
+            writer.WriteRoleType(type);
+
+            if (roleBase is HumanRole humanRole && humanRole.UsesUnitNames)
+            {
+                if (player.Role.Base is not HumanRole)
+                    isRisky = true;
+                writer.WriteByte(unitId);
+            }
+
+            if (roleBase is FpcStandardRoleBase fpc)
+            {
+                if (player.Role.Base is not FpcStandardRoleBase playerfpc)
+                    isRisky = true;
+                else
+                    fpc = playerfpc;
+
+                fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort value, out ushort _);
+                writer.WriteRelativePosition(player.RelativePosition);
+                writer.WriteUShort(value);
+            }
+
+            if (roleBase is ZombieRole)
+            {
+                if (player.Role.Base is not ZombieRole)
+                    isRisky = true;
+
+                writer.WriteUShort((ushort)Mathf.Clamp(Mathf.CeilToInt(player.MaxHealth), ushort.MinValue, ushort.MaxValue));
+            }
+
+            foreach (Player target in playersToAffect)
+            {
+                if (target != player || !isRisky)
+                    target.Connection.Send(writer.ToArraySegment());
+                else
+                    Log.Error($"Prevent Seld-Desync of {player.Nickname} with {type}");
+            }
+
+            NetworkWriterPool.Return(writer);
+
+            // To counter a bug that makes the player invisible until they move after changing their appearance, we will teleport them upwards slightly to force a new position update for all clients.
+            if (!skipJump)
+                player.Position += Vector3.up * 0.25f;
         }
 
         /// <summary>
@@ -253,20 +354,22 @@ namespace Exiled.API.Extensions
         /// <param name="value">Value of send to target.</param>
         public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
         {
+            NetworkWriterPooled writer = NetworkWriterPool.Get();
+            NetworkWriterPooled writer2 = NetworkWriterPool.Get();
+            MakeCustomSyncWriter(behaviorOwner, targetType, null, CustomSyncVarGenerator, writer, writer2);
+            target.Connection.Send(new EntityStateMessage
+            {
+                netId = behaviorOwner.netId,
+                payload = writer.ToArraySegment(),
+            });
+
+            NetworkWriterPool.Return(writer);
+            NetworkWriterPool.Return(writer2);
             void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
-                targetWriter.WriteUInt64(SyncVarDirtyBits[propertyName]);
-                WriterExtensions[value.GetType()]?.Invoke(null, new[] { targetWriter, value });
+                targetWriter.WriteULong(SyncVarDirtyBits[$"{targetType.Name}.{propertyName}"]);
+                WriterExtensions[value.GetType()]?.Invoke(null, new object[2] { targetWriter, value });
             }
-
-            PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
-            PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
-
-            MakeCustomSyncWriter(behaviorOwner, targetType, null, CustomSyncVarGenerator, writer, writer2);
-            target.ReferenceHub.networkIdentity.connectionToClient.Send(new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
-
-            NetworkWriterPool.Recycle(writer);
-            NetworkWriterPool.Recycle(writer2);
         }
 
         /// <summary>
@@ -287,7 +390,7 @@ namespace Exiled.API.Extensions
         /// <param name="values">Values of send to target.</param>
         public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
         {
-            PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
+            NetworkWriterPooled writer = NetworkWriterPool.Get();
 
             foreach (object value in values)
                 WriterExtensions[value.GetType()].Invoke(null, new[] { writer, value });
@@ -295,14 +398,14 @@ namespace Exiled.API.Extensions
             RpcMessage msg = new()
             {
                 netId = behaviorOwner.netId,
-                componentIndex = GetComponentIndex(behaviorOwner, targetType),
-                functionHash = (targetType.FullName.GetStableHashCode() * 503) + rpcName.GetStableHashCode(),
+                componentIndex = (byte)GetComponentIndex(behaviorOwner, targetType),
+                functionHash = (ushort)RpcFullNames[$"{targetType.Name}.{rpcName}"].GetStableHashCode(),
                 payload = writer.ToArraySegment(),
             };
 
-            target.Connection.Send(msg, 0);
+            BufferRpcMethodInfo.Invoke(target.Connection, new object[] { msg, 0 });
 
-            NetworkWriterPool.Recycle(writer);
+            NetworkWriterPool.Return(writer);
         }
 
         /// <summary>
@@ -326,12 +429,12 @@ namespace Exiled.API.Extensions
         /// </example>
         public static void SendFakeSyncObject(Player target, NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customAction)
         {
-            PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
-            PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
+            NetworkWriterPooled writer = NetworkWriterPool.Get();
+            NetworkWriterPooled writer2 = NetworkWriterPool.Get();
             MakeCustomSyncWriter(behaviorOwner, targetType, customAction, null, writer, writer2);
-            target.ReferenceHub.networkIdentity.connectionToClient.Send(new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
-            NetworkWriterPool.Recycle(writer);
-            NetworkWriterPool.Recycle(writer2);
+            target.ReferenceHub.networkIdentity.connectionToClient.Send(new EntityStateMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
+            NetworkWriterPool.Return(writer);
+            NetworkWriterPool.Return(writer2);
         }
 
         /// <summary>
@@ -364,7 +467,7 @@ namespace Exiled.API.Extensions
         // Make custom writer(private)
         private static void MakeCustomSyncWriter(NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customSyncObject, Action<NetworkWriter> customSyncVar, NetworkWriter owner, NetworkWriter observer)
         {
-            byte behaviorDirty = 0;
+            ulong value = 0;
             NetworkBehaviour behaviour = null;
 
             // Get NetworkBehaviors index (behaviorDirty use index)
@@ -373,22 +476,22 @@ namespace Exiled.API.Extensions
                 if (behaviorOwner.NetworkBehaviours[i].GetType() == targetType)
                 {
                     behaviour = behaviorOwner.NetworkBehaviours[i];
-                    behaviorDirty = (byte)i;
+                    value = 1UL << (i & 31);
                     break;
                 }
             }
 
             // Write target NetworkBehavior's dirty
-            owner.WriteByte(behaviorDirty);
+            Compression.CompressVarUInt(owner, value);
 
             // Write init position
             int position = owner.Position;
-            owner.WriteInt32(0);
+            owner.WriteByte(0);
             int position2 = owner.Position;
 
             // Write custom sync data
             if (customSyncObject is not null)
-                customSyncObject.Invoke(owner);
+                customSyncObject(owner);
             else
                 behaviour.SerializeObjectsDelta(owner);
 
@@ -398,15 +501,12 @@ namespace Exiled.API.Extensions
             // Write syncdata position data
             int position3 = owner.Position;
             owner.Position = position;
-            owner.WriteInt32(position3 - position2);
+            owner.WriteByte((byte)(position3 - position2 & 255));
             owner.Position = position3;
 
             // Copy owner to observer
             if (behaviour.syncMode != SyncMode.Observers)
-            {
-                ArraySegment<byte> arraySegment = owner.ToArraySegment();
-                observer.WriteBytes(arraySegment.Array, position, owner.Position - position);
-            }
+                observer.WriteBytes(owner.ToArraySegment().Array, position, owner.Position - position);
         }
     }
 }

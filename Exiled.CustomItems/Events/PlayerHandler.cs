@@ -12,8 +12,6 @@ namespace Exiled.CustomItems.Events
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs.Player;
 
-    using PlayerRoles;
-
     /// <summary>
     /// Handles Player events for the CustomItem API.
     /// </summary>
@@ -24,7 +22,7 @@ namespace Exiled.CustomItems.Events
         {
             if (!ev.IsAllowed)
                 return;
-            if (CustomItem.TryGet(ev.NewItem, out CustomItem? newItem) && (newItem?.ShouldMessageOnGban ?? false))
+            if (CustomItem.TryGet(ev.Item, out CustomItem? newItem) && (newItem?.ShouldMessageOnGban ?? false))
             {
                 SpectatorCustomNickname(ev.Player, $"{ev.Player.CustomName} (CustomItem: {newItem.Name})");
             }

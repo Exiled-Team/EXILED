@@ -20,10 +20,7 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Warhead
     {
-        /// <summary>
-        /// A <see cref="List{T}"/> containing all <see cref="BlastDoor"/>.
-        /// </summary>
-        internal static readonly List<BlastDoor> InternalBlastDoors = new();
+        private static AlphaWarheadOutsitePanel alphaWarheadOutsitePanel;
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadController"/> component.
@@ -38,7 +35,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadOutsitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadOutsitePanel OutsitePanel { get; internal set; }
+        public static AlphaWarheadOutsitePanel OutsitePanel => alphaWarheadOutsitePanel != null ? alphaWarheadOutsitePanel : (alphaWarheadOutsitePanel = Object.FindObjectOfType<AlphaWarheadOutsitePanel>());
 
         /// <summary>
         /// Gets the <see cref="GameObject"/> of the warhead lever.
@@ -66,16 +63,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all of the warhead blast doors.
         /// </summary>
-        public static IReadOnlyCollection<BlastDoor> BlastDoors
-        {
-            get
-            {
-                if (InternalBlastDoors.Count == 0)
-                    InternalBlastDoors.AddRange(Object.FindObjectsOfType<BlastDoor>());
-
-                return InternalBlastDoors.AsReadOnly();
-            }
-        }
+        public static IReadOnlyCollection<BlastDoor> BlastDoors => BlastDoor.Instances;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the warhead lever is enabled.
@@ -138,12 +126,7 @@ namespace Exiled.API.Features
         public static float DetonationTimer
         {
             get => AlphaWarheadController.TimeUntilDetonation;
-            set
-            {
-                Controller.Info.StartTime = NetworkTime.time;
-                Controller.CurScenario.TimeToDetonate = (int)value;
-                Controller.CurScenario.AdditionalTime = 0;
-            }
+            set => Controller.ForceTime(value);
         }
 
         /// <summary>

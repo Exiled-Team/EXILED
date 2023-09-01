@@ -29,10 +29,10 @@ namespace Exiled.CustomRoles.API.Features.Parsers
             current = events.First;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IParser"/>
         public ParsingEvent? Current => current?.Value;
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IParser"/>
         public bool MoveNext()
         {
             current = current?.Next;

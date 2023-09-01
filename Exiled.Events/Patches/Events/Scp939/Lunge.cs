@@ -7,105 +7,50 @@
 
 namespace Exiled.Events.Patches.Events.Scp939
 {
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
+    using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
     using HarmonyLib;
     using Mirror;
-    using PlayerRoles;
-    using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp939;
-    using RelativePositioning;
-    using UnityEngine;
-    using Utils.Networking;
 
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
     ///     Patches <see cref="Scp939LungeAbility.ServerProcessCmd(NetworkReader)" />
-    ///     to add the <see cref="Scp939" /> event.
+    ///     to add the <see cref="Scp939.Lunging" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.ServerProcessCmd))]
+    [EventPatch(typeof(Scp939), nameof(Scp939.Lunging))]
+    [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.TriggerLunge))]
     internal static class Lunge
     {
-        private static bool Prefix(Scp939LungeAbility __instance, NetworkReader reader)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            Vector3 vector = reader.ReadRelativePosition().Position;
-            ReferenceHub referenceHub = reader.ReadReferenceHub();
-            RelativePosition relativePosition = reader.ReadRelativePosition();
-            if (__instance.State != Scp939LungeState.Triggered)
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                if (!__instance.IsReady)
-                    return false;
+                // this.Owner
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.Owner))),
 
-                LungingEventArgs ev = new(__instance.Owner, __instance.IsReady);
-                Handlers.Scp939.OnLunging(ev);
-                if (!ev.IsAllowed)
-                    return false;
+                // LungingEventArgs ev = new (...)
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LungingEventArgs))[0]),
 
-                __instance.TriggerLunge();
+                // Scp939.OnLunging(ev)
+                new(OpCodes.Call, Method(typeof(Scp939), nameof(Scp939.OnLunging))),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+            {
+                yield return newInstructions[z];
             }
 
-            HumanRole humanRole;
-            if (referenceHub == null || (humanRole = referenceHub.roleManager.CurrentRole as HumanRole) == null)
-            {
-                return false;
-            }
-
-            FirstPersonMovementModule fpcModule = humanRole.FpcModule;
-            using (new FpcBacktracker(referenceHub, relativePosition.Position))
-            {
-                using (new FpcBacktracker(__instance.Owner, fpcModule.Position, Quaternion.identity))
-                {
-                    Vector3 vector2 = fpcModule.Position - __instance.ScpRole.FpcModule.Position;
-                    if (vector2.SqrMagnitudeIgnoreY() > __instance._overallTolerance * __instance._overallTolerance)
-                    {
-                        return false;
-                    }
-
-                    if (vector2.y > __instance._overallTolerance || vector2.y < -__instance._bottomTolerance)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            using (new FpcBacktracker(__instance.Owner, vector, Quaternion.identity))
-            {
-                vector = __instance.ScpRole.FpcModule.Position;
-            }
-
-            Transform transform = referenceHub.transform;
-            Vector3 position = fpcModule.Position;
-            Quaternion rotation = transform.rotation;
-            Vector3 vector3 = new(vector.x, position.y, vector.z);
-            transform.forward = -__instance.Owner.transform.forward;
-            fpcModule.Position = vector3;
-            bool flag = referenceHub.playerStats.DealDamage(new Scp939DamageHandler(__instance.ScpRole, Scp939DamageType.LungeTarget));
-            float num = flag ? 1f : 0f;
-            if (!flag || referenceHub.IsAlive())
-            {
-                fpcModule.Position = position;
-                transform.rotation = rotation;
-            }
-
-            foreach (ReferenceHub referenceHub2 in ReferenceHub.AllHubs)
-            {
-                HumanRole humanRole2;
-                if (!(referenceHub2 == referenceHub) && (humanRole2 = referenceHub2.roleManager.CurrentRole as HumanRole) != null
-                                                     && (humanRole2.FpcModule.Position - vector3).sqrMagnitude <= __instance._secondaryRangeSqr
-                                                     && referenceHub2.playerStats.DealDamage(new Scp939DamageHandler(__instance.ScpRole, Scp939DamageType.LungeSecondary)))
-                {
-                    flag = true;
-                    num = Mathf.Max(num, 0.6f);
-                }
-            }
-
-            if (flag)
-            {
-                Hitmarker.SendHitmarker(__instance.Owner, num);
-            }
-
-            __instance.State = Scp939LungeState.LandHit;
-            return false;
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

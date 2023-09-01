@@ -12,6 +12,8 @@ namespace Exiled.Events.EventArgs.Server
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
 
+    using PlayerRoles;
+
     using Respawning;
 
     /// <summary>
@@ -21,6 +23,7 @@ namespace Exiled.Events.EventArgs.Server
     public class RespawningTeamEventArgs : IDeniableEvent
     {
         private SpawnableTeamType nextKnownTeam;
+        private int maximumRespawnAmount;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RespawningTeamEventArgs" /> class.
@@ -43,6 +46,8 @@ namespace Exiled.Events.EventArgs.Server
             MaximumRespawnAmount = maxRespawn;
 
             this.nextKnownTeam = nextKnownTeam;
+            SpawnQueue = new();
+            SpawnableTeam.GenerateQueue(SpawnQueue, players.Count);
             IsAllowed = isAllowed;
         }
 
@@ -54,7 +59,20 @@ namespace Exiled.Events.EventArgs.Server
         /// <summary>
         ///     Gets or sets the maximum amount of respawnable players.
         /// </summary>
-        public int MaximumRespawnAmount { get; set; }
+        public int MaximumRespawnAmount
+        {
+            get => maximumRespawnAmount;
+            set
+            {
+                if (value < maximumRespawnAmount)
+                {
+                    if (Players.Count > value)
+                        Players.RemoveRange(value, Players.Count - value);
+                }
+
+                maximumRespawnAmount = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets a value indicating what the next respawnable team is.
@@ -73,6 +91,8 @@ namespace Exiled.Events.EventArgs.Server
                 }
 
                 MaximumRespawnAmount = spawnableTeam.MaxWaveSize;
+                if (RespawnManager.SpawnableTeams.TryGetValue(nextKnownTeam, out SpawnableTeamHandlerBase @base))
+                    @base.GenerateQueue(SpawnQueue, Players.Count);
             }
         }
 
@@ -86,5 +106,10 @@ namespace Exiled.Events.EventArgs.Server
         ///     Gets or sets a value indicating whether or not the spawn can occur.
         /// </summary>
         public bool IsAllowed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the RoleTypeId spawn queue.
+        /// </summary>
+        public Queue<RoleTypeId> SpawnQueue { get; set; }
     }
 }

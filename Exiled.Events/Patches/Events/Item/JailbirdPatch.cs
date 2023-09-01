@@ -10,10 +10,10 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Item;
     using Handlers;
     using HarmonyLib;
-    using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Jailbird;
     using Mirror;
     using NorthwoodLib.Pools;
@@ -25,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Item
     ///     <see cref="JailbirdItem.ServerProcessCmd(NetworkReader)" />.
     ///     Adds the <see cref="Item.Swinging" /> event.
     /// </summary>
+    [EventPatch(typeof(Item), nameof(Item.Swinging))]
     [HarmonyPatch(typeof(JailbirdItem), nameof(JailbirdItem.ServerProcessCmd))]
     internal static class JailbirdPatch
     {

@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 
@@ -24,9 +24,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="FpcMotor.UpdateGrounded(ref Vector3, ref bool, float)" />
+    ///     Patches <see cref="FpcMotor.UpdateGrounded(ref bool, float)" />
     ///     Adds the <see cref="Player.Jumping" /> event.
     /// </summary>
+    [EventPatch(typeof(Player), nameof(Player.Jumping))]
     [HarmonyPatch(typeof(FpcMotor), nameof(FpcMotor.UpdateGrounded))]
     internal static class Jumping
     {
@@ -35,7 +36,6 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(JumpingEventArgs));
-            LocalBuilder direction = generator.DeclareLocal(typeof(Vector3));
 
             Label ret = generator.DefineLabel();
 
@@ -52,8 +52,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // moveDir
-                    new(OpCodes.Ldarg_1),
-                    new(OpCodes.Ldobj, typeof(Vector3)),
+                    new(OpCodes.Ldloc_0),
 
                     // true
                     new(OpCodes.Ldc_I4_1),
@@ -75,9 +74,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // moveDir = ev.Direction
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(JumpingEventArgs), nameof(JumpingEventArgs.Direction))),
-                    new(OpCodes.Stloc_S, direction.LocalIndex),
-                    new(OpCodes.Ldloca_S, direction.LocalIndex),
-                    new(OpCodes.Starg_S, 1),
+                    new(OpCodes.Stloc_0),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(ret);
