@@ -16,6 +16,7 @@ namespace Exiled.Events.Patches.Generic
 
     using API.Features;
 
+    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pools;
 
     using HarmonyLib;
@@ -60,7 +61,7 @@ namespace Exiled.Events.Patches.Generic
             /*EXILED*/
             List<Room> rooms = __instance.Rooms.Select(identifier => Room.RoomIdentifierToRoom[identifier]).ToList();
 
-            Door door = new(__instance, rooms);
+            Door door = Door.Create(__instance, rooms);
 
             foreach (Room room in rooms)
                 room.DoorsValue.Add(door);
@@ -95,6 +96,23 @@ namespace Exiled.Events.Patches.Generic
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+    }
+
+    /// <summary>
+    /// Patches <see cref="DoorVariant.OnDestroy"/>.
+    /// </summary>
+    [HarmonyPatch(typeof(Interactables.Interobjects.CheckpointDoor), nameof(Interactables.Interobjects.CheckpointDoor.Start))]
+    internal class CheckpointDoorsFix
+    {
+        private static void Postfix(Interactables.Interobjects.CheckpointDoor __instance)
+        {
+            CheckpointDoor checkpoint = Door.Get(__instance).Cast<CheckpointDoor>();
+            foreach (DoorVariant door in __instance.SubDoors)
+            {
+                door.RegisterRooms();
+                checkpoint.SubDoorsValue.Add(Door.Get(door).Cast<BreakableDoor>());
+            }
         }
     }
 }

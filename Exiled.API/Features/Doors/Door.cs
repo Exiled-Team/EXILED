@@ -291,13 +291,13 @@ namespace Exiled.API.Features.Doors
             ? door
             : doorVariant switch
             {
-                Interactables.Interobjects.CheckpointDoor chkpt => new Checkpoint(chkpt, chkpt.GetComponentInParent<Room>()),
-                BaseBreakableDoor brkbl => new Breakable(brkbl, brkbl.GetComponentInParent<Room>()),
-                Interactables.Interobjects.ElevatorDoor elvtr => new Elevator(elvtr, elvtr.GetComponentInParent<Room>()),
-                PryableDoor prbl => new Gate(prbl, prbl.GetComponentInParent<Room>()),
-                Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new BasicNonInteractableDoor(nonInteractableDoor, nonInteractableDoor.GetComponentInParent<Room>()),
-                Interactables.Interobjects.BasicDoor basicDoor => new BasicDoor(basicDoor, basicDoor.GetComponentInParent<Room>()),
-                _ => new Door(doorVariant, doorVariant.GetComponentInParent<Room>())
+                Interactables.Interobjects.CheckpointDoor chkpt => new Checkpoint(chkpt, null),
+                BaseBreakableDoor brkbl => new Breakable(brkbl, null),
+                Interactables.Interobjects.ElevatorDoor elvtr => new Elevator(elvtr, null),
+                PryableDoor prbl => new Gate(prbl, null),
+                Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new BasicNonInteractableDoor(nonInteractableDoor, null),
+                Interactables.Interobjects.BasicDoor basicDoor => new BasicDoor(basicDoor, null),
+                _ => new Door(doorVariant, null)
             }) : null;
 
         /// <summary>
@@ -508,6 +508,25 @@ namespace Exiled.API.Features.Doors
         /// </summary>
         /// <returns>A string containing Door-related data.</returns>
         public override string ToString() => $"{Type} ({Zone}) [{Room}] *{DoorLockType}* ={RequiredPermissions.RequiredPermissions}=";
+
+        /// <summary>
+        /// Creates the door object associated with a specific <see cref="DoorVariant"/>.
+        /// </summary>
+        /// <param name="doorVariant">The base-game <see cref="DoorVariant"/>.</param>
+        /// <param name="rooms">Target door <see cref="Rooms"/>.</param>
+        /// <returns>A <see cref="Door"/> wrapper object.</returns>
+        internal static Door Create(DoorVariant doorVariant, List<Room> rooms) => doorVariant != null ? (DoorVariantToDoor.TryGetValue(doorVariant, out Door door)
+            ? door
+            : doorVariant switch
+            {
+                Interactables.Interobjects.CheckpointDoor chkpt => new Checkpoint(chkpt, rooms),
+                BaseBreakableDoor brkbl => new Breakable(brkbl, rooms),
+                Interactables.Interobjects.ElevatorDoor elvtr => new Elevator(elvtr, rooms),
+                PryableDoor prbl => new Gate(prbl, rooms),
+                Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new BasicNonInteractableDoor(nonInteractableDoor, rooms),
+                Interactables.Interobjects.BasicDoor basicDoor => new BasicDoor(basicDoor, rooms),
+                _ => new Door(doorVariant, rooms)
+            }) : null;
 
         private DoorType GetDoorType()
         {

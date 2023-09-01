@@ -48,7 +48,7 @@ namespace Exiled.API.Features
             Base = elevator;
             ElevatorChamberToLift.Add(elevator, this);
 
-            internalDoorsList.AddRange(ElevatorDoor.AllElevatorDoors[Group]);
+            internalDoorsList.AddRange(Interactables.Interobjects.ElevatorDoor.AllElevatorDoors[Group]);
         }
 
         /// <summary>

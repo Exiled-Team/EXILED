@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Doors
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -22,11 +23,12 @@ namespace Exiled.API.Features.Doors
         /// </summary>
         /// <param name="door">The base <see cref="Interactables.Interobjects.ElevatorDoor"/> for this door.</param>
         /// <param name="room">The <see cref="Room"/> for this door.</param>
-        public ElevatorDoor(Interactables.Interobjects.ElevatorDoor door, Room room)
+        internal ElevatorDoor(Interactables.Interobjects.ElevatorDoor door, List<Room> room)
             : base(door, room)
         {
             Base = door;
             Lift = Lift.Get(x => x.Group == Group).FirstOrDefault();
+            Log.Warn(Lift);
         }
 
         /// <summary>
