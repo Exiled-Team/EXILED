@@ -139,7 +139,7 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Gets or sets a time before player can again interact chamber.
+        /// Gets or sets the amount of time before a player can interact with the chamber again.
         /// </summary>
         public float Cooldown
         {
@@ -148,7 +148,7 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not player can interact with chamber now.
+        /// Gets a value indicating whether or not the chamber can currently be interacted with.
         /// </summary>
         public bool CanInteract => Base.CanInteract;
 
