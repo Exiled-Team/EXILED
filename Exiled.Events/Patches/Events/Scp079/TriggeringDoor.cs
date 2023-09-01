@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using API.Features.Pools;
     using Exiled.API.Features.Doors;
-  
+
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
