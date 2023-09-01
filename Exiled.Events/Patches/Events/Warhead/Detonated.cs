@@ -23,6 +23,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     ///     to add <see cref="Warhead.Detonating"/> and <see cref="Warhead.Detonated"/> events.
     /// </summary>
     [EventPatch(typeof(Warhead), nameof(Warhead.Detonated))]
+    [EventPatch(typeof(Warhead), nameof(Warhead.Detonating))]
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]
     internal static class Detonated
     {
@@ -36,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Warhead
             newInstructions[0].labels.Add(continueLabel);
 
             newInstructions.InsertRange(
-                newInstructions.Count - 1,
+                0,
                 new CodeInstruction[]
                 {
                     // DetonatingEventArgs ev = new();
