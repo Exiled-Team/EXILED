@@ -157,7 +157,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not this door is subdoor belonging to a checkpoint.
         /// </summary>
-        public bool IsPartOfCheckpoint => List.Where(x => x is Checkpoint).Any(x => x.Cast<Checkpoint>().Subdoors.Contains(this));
+        public bool IsPartOfCheckpoint => List.Any(x => x is Checkpoint checkpoint && checkpoint.Subdoors.Contains(this));
 
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.
