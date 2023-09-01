@@ -38,7 +38,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the containment zone is open.
         /// </summary>
-        public static bool IsContaimentZoneOpen // TODO: RENAME TO IsContainmentZoneOpen
+        public static bool IsContainmentZoneOpen
         {
             get => ContainmentGates.All(door => door.IsOpen);
             set => Base.SetContainmentDoors(value, IsContainmentZoneLocked);
@@ -50,7 +50,7 @@ namespace Exiled.API.Features
         public static bool IsContainmentZoneLocked
         {
             get => ContainmentGates.All(door => door.IsLocked);
-            set => Base.SetContainmentDoors(IsContaimentZoneOpen, value);
+            set => Base.SetContainmentDoors(IsContainmentZoneOpen, value);
         }
 
         /// <summary>

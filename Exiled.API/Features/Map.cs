@@ -145,15 +145,6 @@ namespace Exiled.API.Features
         public static AmbientSoundPlayer AmbientSoundPlayer { get; internal set; }
 
         /// <summary>
-        /// Tries to find the room that a <see cref="GameObject"/> is inside, first using the <see cref="Transform"/>'s parents, then using a Raycast if no room was found.
-        /// </summary>
-        /// <param name="objectInRoom">The <see cref="GameObject"/> inside the room.</param>
-        /// <returns>The <see cref="Room"/> that the <see cref="GameObject"/> is located inside. Can be <see langword="null"/>.</returns>
-        /// <seealso cref="Room.Get(Vector3)"/>
-        [Obsolete("Use Room.FindParentRoom(GameObject) instead.")]
-        public static Room FindParentRoom(GameObject objectInRoom) => Room.FindParentRoom(objectInRoom);
-
-        /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>

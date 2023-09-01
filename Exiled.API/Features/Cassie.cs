@@ -110,16 +110,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="message">The message, which duration will be calculated.</param>
         /// <param name="rawNumber">Determines if a number won't be converted to its full pronunciation.</param>
-        /// <returns>Duration (in seconds) of specified message.</returns>
-        [Obsolete("Use CalculateDuration(string, bool, float)")]
-        public static float CalculateDuration(string message, bool rawNumber = false)
-            => CalculateDuration(message, rawNumber, 1f);
-
-        /// <summary>
-        /// Calculates the duration of a C.A.S.S.I.E message.
-        /// </summary>
-        /// <param name="message">The message, which duration will be calculated.</param>
-        /// <param name="rawNumber">Determines if a number won't be converted to its full pronunciation.</param>
         /// <param name="speed">The speed of the message.</param>
         /// <returns>Duration (in seconds) of specified message.</returns>
         public static float CalculateDuration(string message, bool rawNumber = false, float speed = 1f)
