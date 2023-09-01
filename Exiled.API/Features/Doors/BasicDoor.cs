@@ -22,8 +22,8 @@ namespace Exiled.API.Features.Doors
         /// Initializes a new instance of the <see cref="BasicDoor"/> class.
         /// </summary>
         /// <param name="door">The base <see cref="Interactables.Interobjects.BasicDoor"/> for this door.</param>
-        /// <param name="room">The <see cref="Room"/> for this door.</param>
-        public BasicDoor(Basegame door, Room room)
+        /// <param name="room">The <see cref="Room"/>'s for this door.</param>
+        public BasicDoor(Basegame door, List<Room> room)
             : base(door, room)
         {
             Base = door;

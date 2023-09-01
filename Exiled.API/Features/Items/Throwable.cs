@@ -29,7 +29,7 @@ namespace Exiled.API.Features.Items
         {
             Base = itemBase;
             Base.Projectile.gameObject.SetActive(false);
-            Projectile = Pickup.Get(Object.Instantiate(Base.Projectile)) as Projectile;
+            Projectile = (Projectile)Pickup.Get(Object.Instantiate(Base.Projectile));
             Base.Projectile.gameObject.SetActive(true);
             Projectile.Serial = Serial;
         }

@@ -80,7 +80,6 @@ namespace Exiled.API.Features
         internal readonly List<Item> ItemsValue = new(8);
 #pragma warning restore SA1401
 
-        private readonly IReadOnlyCollection<Item> readOnlyItems;
         private readonly HashSet<EActor> componentsInChildren = new();
 
         private ReferenceHub referenceHub;
@@ -93,8 +92,8 @@ namespace Exiled.API.Features
         /// <param name="referenceHub">The <see cref="global::ReferenceHub"/> of the player to be encapsulated.</param>
         public Player(ReferenceHub referenceHub)
         {
-            readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = referenceHub;
+            Items = ItemsValue.AsReadOnly();
         }
 
         /// <summary>
@@ -103,8 +102,8 @@ namespace Exiled.API.Features
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> of the player.</param>
         public Player(GameObject gameObject)
         {
-            readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = ReferenceHub.GetHub(gameObject);
+            Items = ItemsValue.AsReadOnly();
         }
 
         /// <summary>
@@ -125,7 +124,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
         /// </summary>
-        public static IEnumerable<Player> List => Dictionary.Values;
+        public static IReadOnlyCollection<Player> List => Dictionary.Values;
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.
@@ -1059,7 +1058,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's items.
         /// </summary>
-        public IReadOnlyCollection<Item> Items => readOnlyItems;
+        public IReadOnlyCollection<Item> Items { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not the player's inventory is empty.
@@ -2502,11 +2501,8 @@ namespace Exiled.API.Features
         {
             ClearInventory();
 
-            if (newItems.Any())
-            {
-                foreach (Item item in newItems)
-                    AddItem(item.Base is null ? new Item(item.Type) : item);
-            }
+            foreach (Item item in newItems)
+                AddItem(item.Base is null ? new Item(item.Type) : item);
         }
 
         /// <summary>

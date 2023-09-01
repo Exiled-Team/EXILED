@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="BasicNonInteractableDoor.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Doors
 {
+    using System.Collections.Generic;
+
     using Exiled.API.Interfaces;
 
     using Basegame = Interactables.Interobjects.BasicNonInteractableDoor;
@@ -20,8 +22,8 @@ namespace Exiled.API.Features.Doors
         /// Initializes a new instance of the <see cref="BasicNonInteractableDoor"/> class.
         /// </summary>
         /// <param name="door">The base <see cref="Interactables.Interobjects.BasicNonInteractableDoor"/> for this door.</param>
-        /// <param name="room">The <see cref="Room"/> for this door.</param>
-        public BasicNonInteractableDoor(Basegame door, Room room)
+        /// <param name="room">The <see cref="Room"/>'s for this door.</param>
+        public BasicNonInteractableDoor(Basegame door, List<Room> room)
             : base(door, room)
         {
             Base = door;
