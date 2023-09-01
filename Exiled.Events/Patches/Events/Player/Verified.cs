@@ -15,6 +15,7 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features.Pools;
 
     using Exiled.API.Extensions;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
