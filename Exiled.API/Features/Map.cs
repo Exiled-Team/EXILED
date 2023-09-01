@@ -50,7 +50,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A list of <see cref="Locker"/>s on the map.
         /// </summary>
-        internal static readonly List<Locker> LockersValue = new(250);
+        internal static readonly List<Locker> LockersValue = new(35);
 
         /// <summary>
         /// A list of <see cref="PocketDimensionTeleport"/>s on the map.
@@ -62,12 +62,10 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly List<AdminToy> ToysValue = new();
 
-        private static readonly ReadOnlyCollection<PocketDimensionTeleport> ReadOnlyTeleportsValue = TeleportsValue.AsReadOnly();
-        private static readonly ReadOnlyCollection<Locker> ReadOnlyLockersValue = LockersValue.AsReadOnly();
-        private static readonly ReadOnlyCollection<AdminToy> ReadOnlyToysValue = ToysValue.AsReadOnly();
-
         private static TantrumEnvironmentalHazard tantrumPrefab;
         private static Scp939AmnesticCloudInstance amnesticCloudPrefab;
+
+        private static AmbientSoundPlayer ambientSoundPlayer;
 
         /// <summary>
         /// Gets the tantrum prefab.
@@ -78,7 +76,7 @@ namespace Exiled.API.Features
             {
                 if (tantrumPrefab == null)
                 {
-                    Scp173GameRole scp173Role = RoleTypeId.Scp173.GetRoleBase() as Scp173GameRole;
+                    Scp173GameRole scp173Role = (Scp173GameRole)RoleTypeId.Scp173.GetRoleBase();
 
                     if (scp173Role.SubroutineModule.TryGetSubroutine(out Scp173TantrumAbility scp173TantrumAbility))
                         tantrumPrefab = scp173TantrumAbility._tantrumPrefab;
@@ -97,7 +95,7 @@ namespace Exiled.API.Features
             {
                 if (amnesticCloudPrefab == null)
                 {
-                    Scp939GameRole scp939Role = RoleTypeId.Scp939.GetRoleBase() as Scp939GameRole;
+                    Scp939GameRole scp939Role = (Scp939GameRole)RoleTypeId.Scp939.GetRoleBase();
 
                     if (scp939Role.SubroutineModule.TryGetSubroutine(out Scp939AmnesticCloudAbility ability))
                         amnesticCloudPrefab = ability._instancePrefab;
@@ -115,17 +113,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports => ReadOnlyTeleportsValue;
+        public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports { get; } = TeleportsValue.AsReadOnly();
 
         /// <summary>
         /// Gets all <see cref="Locker"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<Locker> Lockers => ReadOnlyLockersValue;
+        public static ReadOnlyCollection<Locker> Lockers { get; } = LockersValue.AsReadOnly();
 
         /// <summary>
         /// Gets all <see cref="AdminToy"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<AdminToy> Toys => ReadOnlyToysValue;
+        public static ReadOnlyCollection<AdminToy> Toys { get; } = ToysValue.AsReadOnly();
 
         /// <summary>
         /// Gets or sets the current seed of the map.
@@ -143,7 +141,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="global::AmbientSoundPlayer"/>.
         /// </summary>
-        public static AmbientSoundPlayer AmbientSoundPlayer { get; internal set; }
+        public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer != null ? ambientSoundPlayer : (ambientSoundPlayer = ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>());
 
         /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
@@ -202,10 +200,10 @@ namespace Exiled.API.Features
             foreach (RoomLightController controller in RoomLightController.Instances)
             {
                 Room room = controller.GetComponentInParent<Room>();
-                if (room is null)
+                if (room == null)
                     continue;
 
-                if (zoneTypes == ZoneType.Unspecified || (room is not null && (zoneTypes == room.Zone)))
+                if (zoneTypes == ZoneType.Unspecified || room.Zone.HasFlag(zoneTypes))
                     controller.ServerFlickerLights(duration);
             }
         }
@@ -370,21 +368,15 @@ namespace Exiled.API.Features
         /// </summary>
         internal static void ClearCache()
         {
-            Room.RoomIdentifierToRoom.Clear();
-            Door.DoorVariantToDoor.Clear();
-            Lift.ElevatorChamberToLift.Clear();
-            Camera.Camera079ToCamera.Clear();
-            Window.BreakableWindowToWindow.Clear();
-            TeslaGate.BaseTeslaGateToTeslaGate.Clear();
-            Pickup.BaseToPickup.Clear();
             Item.BaseToItem.Clear();
-            TeleportsValue.Clear();
-            LockersValue.Clear();
+
+            LockersValue.RemoveAll(locker => locker == null);
+
             Ragdoll.BasicRagdollToRagdoll.Clear();
+
             Firearm.ItemTypeToFirearmInstance.Clear();
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
-            Warhead.InternalBlastDoors.Clear();
         }
     }
 }

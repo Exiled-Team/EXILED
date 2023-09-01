@@ -31,11 +31,12 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Window"/> class.
         /// </summary>
         /// <param name="window">The base <see cref="BreakableWindow"/> for this door.</param>
-        public Window(BreakableWindow window)
+        /// <param name="room">The <see cref="Room"/> for this window.</param>
+        internal Window(BreakableWindow window, Room room)
         {
             BreakableWindowToWindow.Add(window, this);
             Base = window;
-            Room = window.GetComponentInParent<Room>();
+            Room = room;
             Type = GetGlassType();
 #if Debug
             if (Type is GlassType.Unknown)
@@ -46,7 +47,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
-        public static IEnumerable<Window> List => BreakableWindowToWindow.Values;
+        public static IReadOnlyCollection<Window> List => BreakableWindowToWindow.Values;
 
         /// <summary>
         /// Gets the base-game <see cref="BreakableWindow"/> for this window.
@@ -153,7 +154,7 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="Door"/> wrapper object.</returns>
         public static Window Get(BreakableWindow breakableWindow) => BreakableWindowToWindow.TryGetValue(breakableWindow, out Window window)
             ? window
-            : new(breakableWindow);
+            : new(breakableWindow, breakableWindow.GetComponentInParent<Room>());
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Window"/> filtered based on a predicate.
