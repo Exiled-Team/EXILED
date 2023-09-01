@@ -20,11 +20,6 @@ namespace Exiled.Events.Patches.Generic
         private static void Postfix()
         {
             TeslaGate.BaseTeslaGateToTeslaGate.Clear();
-            foreach (global::TeslaGate teslaGate in TeslaGateController.Singleton.TeslaGates)
-            {
-                TeslaGate tesla = new TeslaGate(teslaGate, Room.FindParentRoom(teslaGate.gameObject));
-                tesla.Room.TeslaGate = tesla;
-            }
         }
     }
 }

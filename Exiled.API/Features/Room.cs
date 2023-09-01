@@ -499,6 +499,11 @@ namespace Exiled.API.Features
                 window.Room.WindowsValue.Add(window);
             });
 
+            if (GetComponentInChildren<global::TeslaGate>() is global::TeslaGate tesla)
+            {
+                TeslaGate = new TeslaGate(tesla, this);
+            }
+
             Windows = WindowsValue.AsReadOnly();
             Doors = DoorsValue.AsReadOnly();
             Speakers = SpeakersValue.AsReadOnly();
