@@ -15,9 +15,10 @@ namespace Exiled.API.Features
     using Decals;
     using Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Toys;
-    using Hazards;
+    using global::Hazards;
     using InventorySystem;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Pickups;
@@ -144,15 +145,6 @@ namespace Exiled.API.Features
         public static AmbientSoundPlayer AmbientSoundPlayer { get; internal set; }
 
         /// <summary>
-        /// Tries to find the room that a <see cref="GameObject"/> is inside, first using the <see cref="Transform"/>'s parents, then using a Raycast if no room was found.
-        /// </summary>
-        /// <param name="objectInRoom">The <see cref="GameObject"/> inside the room.</param>
-        /// <returns>The <see cref="Room"/> that the <see cref="GameObject"/> is located inside. Can be <see langword="null"/>.</returns>
-        /// <seealso cref="Room.Get(Vector3)"/>
-        [Obsolete("Use Room.FindParentRoom(GameObject) instead.")]
-        public static Room FindParentRoom(GameObject objectInRoom) => Room.FindParentRoom(objectInRoom);
-
-        /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
@@ -268,8 +260,8 @@ namespace Exiled.API.Features
         /// <param name="position">The position where you want to spawn the Tantrum.</param>
         /// <param name="isActive">Whether or not the tantrum will apply the <see cref="EffectType.Stained"/> effect.</param>
         /// <remarks>If <paramref name="isActive"/> is <see langword="true"/>, the tantrum is moved slightly up from its original position. Otherwise, the collision will not be detected and the slowness will not work.</remarks>
-        /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
-        public static GameObject PlaceTantrum(Vector3 position, bool isActive = true)
+        /// <returns>The <see cref="TantrumHazard"/> instance.</returns>
+        public static TantrumHazard PlaceTantrum(Vector3 position, bool isActive = true)
         {
             TantrumEnvironmentalHazard tantrum = Object.Instantiate(TantrumPrefab);
 
@@ -282,7 +274,7 @@ namespace Exiled.API.Features
 
             NetworkServer.Spawn(tantrum.gameObject);
 
-            return tantrum.gameObject;
+            return Hazard.Get(tantrum).Cast<TantrumHazard>();
         }
 
         /// <summary>

@@ -334,8 +334,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> MicroHID energy is changed.
         /// </summary>
-        public static Event<UsingMicroHIDEnergyEventArgs> UsingMicroHIDEnergy { get; set; } = new();
 
+        public static Event<UsingMicroHIDEnergyEventArgs> UsingMicroHIDEnergy { get; set; } = new();
         /// <summary>
         /// Invoked before dropping ammo.
         /// </summary>

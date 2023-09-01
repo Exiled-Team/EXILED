@@ -7,16 +7,16 @@
 
 namespace Exiled.Events.EventArgs.Interfaces
 {
-    using Hazards;
+    using Exiled.API.Features.Hazards;
 
     /// <summary>
-    /// Event args for all <see cref="Hazards.EnvironmentalHazard"/> related events.
+    /// Event args for all <see cref="Hazard"/> related events.
     /// </summary>
     public interface IHazardEvent : IExiledEvent
     {
         /// <summary>
         /// Gets the environmental hazard that the player is interacting with.
         /// </summary>
-        public EnvironmentalHazard EnvironmentalHazard { get; }
+        public Hazard Hazard { get; }
     }
 }
