@@ -8,14 +8,12 @@
 namespace Exiled.Events.EventArgs.Scp096
 {
     using API.Features;
-    using API.Features.Roles;
     using API.Features.Doors;
-  
+
     using Interactables.Interobjects;
     using Interfaces;
-  
-    using PlayerRoles.PlayableScps.Scp096;
-    using Scp096Role = API.Features.Roles.Scp096Role
+
+    using Scp096Role = API.Features.Roles.Scp096Role;
 
     /// <summary>
     ///     Contains all information before SCP-096 begins prying a gate open.
