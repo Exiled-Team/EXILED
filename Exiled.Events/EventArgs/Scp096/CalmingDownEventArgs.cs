@@ -8,34 +8,29 @@
 namespace Exiled.Events.EventArgs.Scp096
 {
     using API.Features;
-
+    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
-
-    using PlayerRoles.PlayableScps.Scp096;
 
     /// <summary>
     ///     Contains all information before SCP-096 calms down.
     /// </summary>
-    public class CalmingDownEventArgs : IPlayerEvent, IDeniableEvent
+    public class CalmingDownEventArgs : IScp096Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="CalmingDownEventArgs" /> class.
         /// </summary>
-        /// <param name="scp096">The <see cref="Scp096" /> instance.</param>
         /// <param name="player">The player who's controlling SCP-096.</param>
         /// <param name="shouldClearEnragedTimeLeft"><inheritdoc cref="ShouldClearEnragedTimeLeft"/></param>
         /// <param name="isAllowed">Indicates whether or not SCP-096 can calm down.</param>
-        public CalmingDownEventArgs(Scp096Role scp096, Player player, bool shouldClearEnragedTimeLeft, bool isAllowed = true)
+        public CalmingDownEventArgs(Player player, bool shouldClearEnragedTimeLeft, bool isAllowed = true)
         {
-            Scp096 = scp096;
             Player = player;
+            Scp096 = player.Role.As<Scp096Role>();
             ShouldClearEnragedTimeLeft = shouldClearEnragedTimeLeft;
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the SCP-096 instance.
-        /// </summary>
+        /// <inheritdoc/>
         public Scp096Role Scp096 { get; }
 
         /// <summary>

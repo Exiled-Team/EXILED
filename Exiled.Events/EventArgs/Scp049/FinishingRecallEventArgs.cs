@@ -8,13 +8,13 @@
 namespace Exiled.Events.EventArgs.Scp049
 {
     using API.Features;
-
+    using Exiled.API.Features.Roles;
     using Interfaces;
 
     /// <summary>
     ///     Contains all information before SCP-049 finishes recalling a player.
     /// </summary>
-    public class FinishingRecallEventArgs : IPlayerEvent, IDeniableEvent
+    public class FinishingRecallEventArgs : IScp049Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="FinishingRecallEventArgs" /> class.
@@ -35,6 +35,7 @@ namespace Exiled.Events.EventArgs.Scp049
         {
             Target = target;
             Player = scp049;
+            Scp049 = Player.Role.As<Scp049Role>();
             Ragdoll = Ragdoll.Get(ragdoll);
             IsAllowed = isAllowed;
         }
@@ -43,6 +44,9 @@ namespace Exiled.Events.EventArgs.Scp049
         ///     Gets the player who is controlling SCP-049.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp049Role Scp049 { get; }
 
         /// <summary>
         ///     Gets the player who's getting recalled.

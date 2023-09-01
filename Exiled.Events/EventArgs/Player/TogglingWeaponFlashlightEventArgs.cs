@@ -55,6 +55,9 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public Firearm Firearm { get; }
 
+        /// <inheritdoc/>
+        public Item Item => Firearm;
+
         /// <summary>
         ///     Gets the player who's toggling the weapon's flashlight.
         /// </summary>
