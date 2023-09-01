@@ -100,7 +100,7 @@ namespace Exiled.Events.Patches.Generic
     }
 
     /// <summary>
-    /// Patches <see cref="DoorVariant.OnDestroy"/>.
+    /// Patches <see cref="Interactables.Interobjects.CheckpointDoor.Start"/>.
     /// </summary>
     [HarmonyPatch(typeof(Interactables.Interobjects.CheckpointDoor), nameof(Interactables.Interobjects.CheckpointDoor.Start))]
     internal class CheckpointDoorsFix
