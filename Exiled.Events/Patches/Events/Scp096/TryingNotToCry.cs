@@ -51,19 +51,15 @@ namespace Exiled.Events.Patches.Events.Scp096
                 index,
                 new[]
                 {
-                    // base.ScpRole
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp096Role>), nameof(ScpStandardSubroutine<Scp096Role>.ScpRole))),
-
                     // Player.Get(base.Owner)
-                    new(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp096Role>), nameof(ScpStandardSubroutine<Scp096Role>.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // TryingNotToCryEventArgs ev = new(Scp096Role, Player, DoorVariant, bool);
+                    // TryingNotToCryEventArgs ev = new(Player, DoorVariant, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TryingNotToCryEventArgs))[0]),
                     new(OpCodes.Dup),
 
