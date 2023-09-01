@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="StalkingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs.Scp106
             Player = player;
             Scp106StalkAbility = scp106StalkAbility;
             IsAllowed = isAllowed;
-            Vigor = scp106StalkAbility.Vigor.VigorAmount;
+            Vigor = scp106StalkAbility.Vigor.CurValue;
             MinimumVigor = Scp106StalkAbility.MinVigorToSubmerge;
         }
 

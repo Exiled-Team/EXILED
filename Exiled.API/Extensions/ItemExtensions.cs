@@ -132,8 +132,8 @@ namespace Exiled.API.Extensions
         public static AmmoType GetWeaponAmmoType(this FirearmType type) => type switch
         {
             FirearmType.Com15 or FirearmType.Com18 or FirearmType.Com45 or FirearmType.Crossvec or FirearmType.FSP9 => AmmoType.Nato9,
-            FirearmType.E11SR => AmmoType.Nato556,
-            FirearmType.AK or FirearmType.Logicer => AmmoType.Nato762,
+            FirearmType.E11SR or FirearmType.FRMG0 => AmmoType.Nato556,
+            FirearmType.A7 or FirearmType.AK or FirearmType.Logicer => AmmoType.Nato762,
             FirearmType.Revolver => AmmoType.Ammo44Cal,
             FirearmType.Shotgun => AmmoType.Ammo12Gauge,
             _ => AmmoType.None,
@@ -169,8 +169,10 @@ namespace Exiled.API.Extensions
             ItemType.GunLogicer => FirearmType.Logicer,
             ItemType.GunRevolver => FirearmType.Revolver,
             ItemType.GunAK => FirearmType.AK,
+            ItemType.GunA7 => FirearmType.A7,
             ItemType.GunShotgun => FirearmType.Shotgun,
             ItemType.GunCom45 => FirearmType.Com45,
+            ItemType.GunFRMG0 => FirearmType.FRMG0,
             ItemType.ParticleDisruptor => FirearmType.ParticleDisruptor,
             _ => FirearmType.None,
         };
@@ -205,8 +207,10 @@ namespace Exiled.API.Extensions
             FirearmType.Logicer => ItemType.GunLogicer,
             FirearmType.Revolver => ItemType.GunRevolver,
             FirearmType.AK => ItemType.GunAK,
+            FirearmType.A7 => ItemType.GunA7,
             FirearmType.Shotgun => ItemType.GunShotgun,
             FirearmType.Com45 => ItemType.GunCom45,
+            FirearmType.FRMG0 => ItemType.GunFRMG0,
             FirearmType.ParticleDisruptor => ItemType.ParticleDisruptor,
             _ => ItemType.None,
         };
