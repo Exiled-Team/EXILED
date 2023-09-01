@@ -110,7 +110,10 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Breaks the Jailbird.
         /// </summary>
-        public void Break() => WearState = JailbirdWearState.Broken;
+        public void Break()
+        {
+            Base.SendRpc(JailbirdMessageType.Broken);
+        }
 
         /// <summary>
         /// Clones current <see cref="Jailbird"/> object.
