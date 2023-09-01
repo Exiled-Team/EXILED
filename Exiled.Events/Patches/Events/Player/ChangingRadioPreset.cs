@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -26,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="RadioItem.ServerProcessCmd(RadioMessages.RadioCommand)" />.
     ///     Adds the <see cref="Handlers.Player.ChangingRadioPreset" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingRadioPreset))]
     [HarmonyPatch(typeof(RadioItem), nameof(RadioItem.ServerProcessCmd))]
     internal static class ChangingRadioPreset
     {

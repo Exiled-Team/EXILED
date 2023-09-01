@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -28,6 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="ThrowableItem.ServerThrow"/>.
     /// Adds the <see cref="Handlers.Player.ThrownProjectile"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ThrownProjectile))]
     [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow))]
     internal static class ThrownProjectile
     {

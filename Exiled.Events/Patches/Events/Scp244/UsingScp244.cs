@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp244;
 
     using Handlers;
@@ -26,8 +26,9 @@ namespace Exiled.Events.Patches.Events.Scp244
 
     /// <summary>
     ///     Patches <see cref="Scp244Item" /> to add missing event handler to the
-    ///     <see cref="Scp244Item.ServerOnUsingCompleted" />.
+    ///     <see cref="Scp244.UsingScp244" />.
     /// </summary>
+    [EventPatch(typeof(Scp244), nameof(Scp244.UsingScp244))]
     [HarmonyPatch(typeof(Scp244Item), nameof(Scp244Item.ServerOnUsingCompleted))]
     internal static class UsingScp244
     {

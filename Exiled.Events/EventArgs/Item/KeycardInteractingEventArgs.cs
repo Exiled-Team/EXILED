@@ -8,9 +8,9 @@
 namespace Exiled.Events.EventArgs.Item
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
-
     using Interactables.Interobjects.DoorUtils;
 
     using BaseKeycardPickup = InventorySystem.Items.Keycards.KeycardPickup;
@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs.Item
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="API.Features.Door"/> instance.
+        /// Gets the <see cref="API.Features.Doors.Door"/> instance.
         /// </summary>
         public Door Door { get; }
 
