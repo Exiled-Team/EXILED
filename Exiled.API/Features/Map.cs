@@ -377,9 +377,6 @@ namespace Exiled.API.Features
             Firearm.ItemTypeToFirearmInstance.Clear();
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
-
-            // idk about that
-            GC.Collect();
         }
     }
 }
