@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="GeneratorActivatedEventArgs.cs" company="Exiled Team">
+// <copyright file="GeneratorActivatingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -16,10 +16,10 @@ namespace Exiled.Events.EventArgs.Map
     /// <summary>
     ///     Contains all information after activating a generator.
     /// </summary>
-    public class GeneratorActivatedEventArgs : IGeneratorEvent, IDeniableEvent
+    public class GeneratorActivatingEventArgs : IGeneratorEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GeneratorActivatedEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="GeneratorActivatingEventArgs" /> class.
         /// </summary>
         /// <param name="generator">
         ///     <inheritdoc cref="Generator" />
@@ -27,7 +27,7 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public GeneratorActivatedEventArgs(Scp079Generator generator, bool isAllowed = true)
+        public GeneratorActivatingEventArgs(Scp079Generator generator, bool isAllowed = true)
         {
             Generator = Generator.Get(generator);
             IsAllowed = isAllowed;

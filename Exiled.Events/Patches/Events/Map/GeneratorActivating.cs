@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="GeneratorActivated.cs" company="Exiled Team">
+// <copyright file="GeneratorActivating.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -25,11 +25,11 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     ///     Patches <see cref="Scp079Generator.Engaged" />.
-    ///     Adds the <see cref="Map.GeneratorActivated" /> event.
+    ///     Adds the <see cref="Map.GeneratorActivating" /> event.
     /// </summary>
-    [EventPatch(typeof(Map), nameof(Map.GeneratorActivated))]
+    [EventPatch(typeof(Map), nameof(Map.GeneratorActivating))]
     [HarmonyPatch(typeof(Scp079Generator), nameof(Scp079Generator.Engaged), MethodType.Setter)]
-    internal static class GeneratorActivated
+    internal static class GeneratorActivating
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Map
             Label retModLabel = generator.DefineLabel();
             Label returnLabel = generator.DefineLabel();
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(GeneratorActivatedEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(GeneratorActivatingEventArgs));
 
             // GeneratorActivatedEventArgs ev = new(this, true);
             //
@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Map
             // if (!ev.IsAllowed)
             //   return;
             newInstructions.InsertRange(
-                newInstructions.Count - 1,
+                0,
                 new CodeInstruction[]
                 {
                     // this
@@ -57,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Ldc_I4_1),
 
                     // GeneratorActivatedEventArgs ev = new(Scp079Generator, bool)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(GeneratorActivatedEventArgs))[0]),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(GeneratorActivatingEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc, ev.LocalIndex),
@@ -67,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Map
 
                     // if (!ev.IsAllowed)
                     //    return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatedEventArgs), nameof(GeneratorActivatedEventArgs.IsAllowed))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatingEventArgs), nameof(GeneratorActivatingEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, retModLabel),
                 });
 
@@ -78,7 +78,7 @@ namespace Exiled.Events.Patches.Events.Map
                     // if (ev.IsAllowed)
                     //    return;
                     new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex).WithLabels(retModLabel),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatedEventArgs), nameof(GeneratorActivatedEventArgs.IsAllowed))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatingEventArgs), nameof(GeneratorActivatingEventArgs.IsAllowed))),
                     new(OpCodes.Brtrue, returnLabel),
 
                     // this._leverStopwatch.Restart

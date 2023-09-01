@@ -48,7 +48,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked after a <see cref="Scp079Generator"/> has been activated.
         /// </summary>
-        public static Event<GeneratorActivatedEventArgs> GeneratorActivated { get; set; } = new();
+        public static Event<GeneratorActivatingEventArgs> GeneratorActivating { get; set; } = new();
 
         /// <summary>
         /// Invoked before decontaminating the light containment zone.
@@ -128,8 +128,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called after a <see cref="Scp079Generator"/> has been activated.
         /// </summary>
-        /// <param name="ev">The <see cref="GeneratorActivatedEventArgs"/> instance.</param>
-        public static void OnGeneratorActivated(GeneratorActivatedEventArgs ev) => GeneratorActivated.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="GeneratorActivatingEventArgs"/> instance.</param>
+        public static void OnGeneratorActivated(GeneratorActivatingEventArgs ev) => GeneratorActivating.InvokeSafely(ev);
 
         /// <summary>
         /// Called before decontaminating the light containment zone.
