@@ -93,7 +93,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets the <see cref="Features.Room"/> that the door is located in.
         /// </summary>
-        public Room Room => Rooms.Count == 0 ? null : Rooms.First();
+        public Room Room => Rooms.FirstOrDefault();
 
         /// <summary>
         /// Gets the <see cref="Features.Room"/>'s that the door is located in.

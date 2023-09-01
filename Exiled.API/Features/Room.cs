@@ -381,7 +381,7 @@ namespace Exiled.API.Features
         /// Returns the Room in a human-readable format.
         /// </summary>
         /// <returns>A string containing Room-related data.</returns>
-        public override string ToString() => $"{Type} ({Zone}) [{Doors.Count()}] *{Cameras.Count()}* |{TeslaGate != null}|";
+        public override string ToString() => $"{Type} ({Zone}) [{Doors.Count}] *{Cameras.Count}* |{TeslaGate != null}|";
 
         /// <summary>
         /// Factory method to create and add a <see cref="Room"/> component to a Transform.
