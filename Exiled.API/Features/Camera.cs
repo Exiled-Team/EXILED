@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Extensions;
+
 namespace Exiled.API.Features
 {
     using System;
@@ -152,7 +154,7 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Camera"/>.
         /// </summary>
         /// <returns><see cref="Camera"/> object.</returns>
-        public static Camera Random => List.ToArray()[UnityEngine.Random.Range(0, Camera079ToCamera.Count)];
+        public static Camera Random => List.GetRandomValue();
 
         /// <summary>
         /// Gets the base <see cref="Scp079Camera"/>.

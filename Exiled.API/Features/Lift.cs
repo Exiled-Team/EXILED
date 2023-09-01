@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Extensions;
+
 namespace Exiled.API.Features
 {
     using System;
@@ -66,7 +68,7 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Lift"/>.
         /// </summary>
         /// <returns><see cref="Lift"/> object.</returns>
-        public static Lift Random => List.ToArray()[UnityEngine.Random.Range(0, ElevatorChamberToLift.Count)];
+        public static Lift Random => List.GetRandomValue();
 
         /// <summary>
         /// Gets the base <see cref="ElevatorChamber"/>.
