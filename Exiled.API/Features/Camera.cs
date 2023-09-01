@@ -23,7 +23,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game Scp079Camera.
     /// </summary>
-    public class Camera : IWrapper<Scp079Camera>, IPosition // Todo: Convert to IWorldSpace (Rotation Vector3 -> Quaternion)
+    public class Camera : IWrapper<Scp079Camera>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="Scp079Camera"/>s and their corresponding <see cref="Camera"/>.
@@ -202,10 +202,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the camera's rotation.
         /// </summary>
-        public Vector3 Rotation
+        public Quaternion Rotation
         {
-            get => Base._cameraAnchor.rotation.eulerAngles;
-            set => Base._cameraAnchor.rotation = Quaternion.Euler(value);
+            get => Base._cameraAnchor.rotation;
+            set => Base._cameraAnchor.rotation = value;
         }
 
         /// <summary>
