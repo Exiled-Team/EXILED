@@ -93,6 +93,7 @@
   </div>
   <div class="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IScp079Event.html">IScp079Event</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a></div>
@@ -125,25 +126,25 @@
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
   <h5 id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GainingExperienceEventArgs : IPlayerEvent, IDeniableEvent, IExiledEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public class GainingExperienceEventArgs : IScp079Event, IPlayerEvent, IDeniableEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs__ctor_Exiled_API_Features_Player_PlayerRoles_PlayableScps_Scp079_Scp079HudTranslation_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.%23ctor(Exiled.API.Features.Player%2CPlayerRoles.PlayableScps.Scp079.Scp079HudTranslation%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs__ctor_Exiled_API_Features_Player_PlayerRoles_PlayableScps_Scp079_Scp079HudTranslation_System_Int32_PlayerRoles_RoleTypeId_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.%23ctor(Exiled.API.Features.Player%2CPlayerRoles.PlayableScps.Scp079.Scp079HudTranslation%2CSystem.Int32%2CPlayerRoles.RoleTypeId%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L35">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L40">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs__ctor_Exiled_API_Features_Player_PlayerRoles_PlayableScps_Scp079_Scp079HudTranslation_System_Int32_System_Boolean_" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.#ctor(Exiled.API.Features.Player,PlayerRoles.PlayableScps.Scp079.Scp079HudTranslation,System.Int32,System.Boolean)">GainingExperienceEventArgs(Player, Scp079HudTranslation, Int32, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs__ctor_Exiled_API_Features_Player_PlayerRoles_PlayableScps_Scp079_Scp079HudTranslation_System_Int32_PlayerRoles_RoleTypeId_System_Boolean_" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.#ctor(Exiled.API.Features.Player,PlayerRoles.PlayableScps.Scp079.Scp079HudTranslation,System.Int32,PlayerRoles.RoleTypeId,System.Boolean)">GainingExperienceEventArgs(Player, Scp079HudTranslation, Int32, RoleTypeId, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.html">GainingExperienceEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GainingExperienceEventArgs(Player player, Scp079HudTranslation gainType, int amount, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public GainingExperienceEventArgs(Player player, Scp079HudTranslation gainType, int amount, RoleTypeId roleType, bool isAllowed = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -174,6 +175,12 @@
 </td>
       </tr>
       <tr>
+        <td><span class="xref">PlayerRoles.RoleTypeId</span></td>
+        <td><span class="parametername">roleType</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.RoleType"></inheritdoc>
+</td>
+      </tr>
+      <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">isAllowed</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.IsAllowed"></inheritdoc>
@@ -188,7 +195,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_Amount.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.Amount%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L51">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L64">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_Amount_" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.Amount*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_Amount" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.Amount">Amount</h4>
@@ -219,16 +226,16 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_GainType.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.GainType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L46">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L59">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_GainType_" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.GainType*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_GainType" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.GainType">GainType</h4>
-  <div class="markdown level1 summary"><p>Gets the experience gain type.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the experience gain type.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Scp079HudTranslation GainType { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Scp079HudTranslation GainType { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -250,7 +257,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L56">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L69">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.IsAllowed*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.IsAllowed">IsAllowed</h4>
@@ -281,7 +288,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L61">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L74">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_Player" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.Player">Player</h4>
@@ -307,7 +314,72 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_RoleType.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.RoleType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L54">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_RoleType_" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.RoleType*"></a>
+  <h4 id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_RoleType" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.RoleType">RoleType</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the role that was used to gain experience.
+<remark>The RoleType will be <span class="xref">PlayerRoles.RoleTypeId.None</span> when it&apos;s not an assisted experience.</remark></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RoleTypeId RoleType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.RoleTypeId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_Scp079.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.Scp079%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L77">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_Scp079_" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.Scp079*"></a>
+  <h4 id="Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs_Scp079" data-uid="Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs.Scp079">Scp079</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Scp079Role Scp079 { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Roles.Scp079Role.html">Scp079Role</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IScp079Event.html">IScp079Event</a>
+  </div>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a>
   </div>
@@ -332,7 +404,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp079_GainingExperienceEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp079.GainingExperienceEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp079/GainingExperienceEventArgs.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -109,6 +109,9 @@
       <a class="xref" href="Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_RelativePosition">FpcRole.RelativePosition</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_RotationDetected">FpcRole.RotationDetected</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_WalkingSpeed">FpcRole.WalkingSpeed</a>
     </div>
     <div>
@@ -119,6 +122,12 @@
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_CrouchingSpeed">FpcRole.CrouchingSpeed</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_Velocity">FpcRole.Velocity</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_MovementDetected">FpcRole.MovementDetected</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_CanSendInputs">FpcRole.CanSendInputs</a>
@@ -145,6 +154,15 @@
       <a class="xref" href="Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_IsInDarkness">FpcRole.IsInDarkness</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_VerticalRotation">FpcRole.VerticalRotation</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_HorizontalRotation">FpcRole.HorizontalRotation</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_IsAfk">FpcRole.IsAfk</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_IsHumeShieldedRole">FpcRole.IsHumeShieldedRole</a>
     </div>
     <div>
@@ -152,9 +170,6 @@
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Roles.Role.html#Exiled_API_Features_Roles_Role_Owner">Role.Owner</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.API.Features.Roles.Role.html#Exiled_API_Features_Roles_Role_Base">Role.Base</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Roles.Role.html#Exiled_API_Features_Roles_Role_SpawnReason">Role.SpawnReason</a>
@@ -245,7 +260,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_AbilityState.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.AbilityState%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L84">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L114">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_AbilityState_" data-uid="Exiled.API.Features.Roles.Scp096Role.AbilityState*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_AbilityState" data-uid="Exiled.API.Features.Roles.Scp096Role.AbilityState">AbilityState</h4>
@@ -273,10 +288,103 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_AttackAbility.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.AttackAbility%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L99">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Scp096Role_AttackAbility_" data-uid="Exiled.API.Features.Roles.Scp096Role.AttackAbility*"></a>
+  <h4 id="Exiled_API_Features_Roles_Scp096Role_AttackAbility" data-uid="Exiled.API.Features.Roles.Scp096Role.AttackAbility">AttackAbility</h4>
+  <div class="markdown level1 summary"><p>Gets SCP-096&apos;s <span class="xref">PlayerRoles.PlayableScps.Scp096.Scp096AttackAbility</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Scp096AttackAbility AttackAbility { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.PlayableScps.Scp096.Scp096AttackAbility</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_AttackPossible.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.AttackPossible%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L129">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Scp096Role_AttackPossible_" data-uid="Exiled.API.Features.Roles.Scp096Role.AttackPossible*"></a>
+  <h4 id="Exiled_API_Features_Roles_Scp096Role_AttackPossible" data-uid="Exiled.API.Features.Roles.Scp096Role.AttackPossible">AttackPossible</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether or not SCP-096 can attack.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AttackPossible { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L213">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Scp096Role_Base_" data-uid="Exiled.API.Features.Roles.Scp096Role.Base*"></a>
+  <h4 id="Exiled_API_Features_Roles_Scp096Role_Base" data-uid="Exiled.API.Features.Roles.Scp096Role.Base">Base</h4>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">PlayerRoles.PlayableScps.Scp096.Scp096Role</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Scp096Role Base { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.PlayableScps.Scp096.Scp096Role</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_CanReceiveTargets.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.CanReceiveTargets%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L94">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L124">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_CanReceiveTargets_" data-uid="Exiled.API.Features.Roles.Scp096Role.CanReceiveTargets*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_CanReceiveTargets" data-uid="Exiled.API.Features.Roles.Scp096Role.CanReceiveTargets">CanReceiveTargets</h4>
@@ -304,14 +412,45 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_ChargeAbility.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.ChargeAbility%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L109">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Scp096Role_ChargeAbility_" data-uid="Exiled.API.Features.Roles.Scp096Role.ChargeAbility*"></a>
+  <h4 id="Exiled_API_Features_Roles_Scp096Role_ChargeAbility" data-uid="Exiled.API.Features.Roles.Scp096Role.ChargeAbility">ChargeAbility</h4>
+  <div class="markdown level1 summary"><p>Gets SCP-096&apos;s <span class="xref">PlayerRoles.PlayableScps.Scp096.Scp096ChargeAbility</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Scp096ChargeAbility ChargeAbility { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.PlayableScps.Scp096.Scp096ChargeAbility</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_ChargeCooldown.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.ChargeCooldown%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L99">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L134">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_ChargeCooldown_" data-uid="Exiled.API.Features.Roles.Scp096Role.ChargeCooldown*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_ChargeCooldown" data-uid="Exiled.API.Features.Roles.Scp096Role.ChargeCooldown">ChargeCooldown</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the amount of time in between SCP-096 charges.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the Charge Ability Cooldown.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -338,7 +477,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_EnrageCooldown.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.EnrageCooldown%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L112">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L160">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_EnrageCooldown_" data-uid="Exiled.API.Features.Roles.Scp096Role.EnrageCooldown*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_EnrageCooldown" data-uid="Exiled.API.Features.Roles.Scp096Role.EnrageCooldown">EnrageCooldown</h4>
@@ -369,7 +508,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_EnragedTimeLeft.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.EnragedTimeLeft%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L125">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L173">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_EnragedTimeLeft_" data-uid="Exiled.API.Features.Roles.Scp096Role.EnragedTimeLeft*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_EnragedTimeLeft" data-uid="Exiled.API.Features.Roles.Scp096Role.EnragedTimeLeft">EnragedTimeLeft</h4>
@@ -400,7 +539,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_HumeShieldModule.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.HumeShieldModule%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L64">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L79">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_HumeShieldModule_" data-uid="Exiled.API.Features.Roles.Scp096Role.HumeShieldModule*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_HumeShieldModule" data-uid="Exiled.API.Features.Roles.Scp096Role.HumeShieldModule">HumeShieldModule</h4>
@@ -427,41 +566,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_Internal.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.Internal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L156">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Roles_Scp096Role_Internal_" data-uid="Exiled.API.Features.Roles.Scp096Role.Internal*"></a>
-  <h4 id="Exiled_API_Features_Roles_Scp096Role_Internal" data-uid="Exiled.API.Features.Roles.Scp096Role.Internal">Internal</h4>
-  <div class="markdown level1 summary"><p>Gets the <span class="xref">PlayerRoles.PlayableScps.Scp096.Scp096Role</span>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Scp096Role Internal { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">PlayerRoles.PlayableScps.Scp096.Scp096Role</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_RageCycleAbility.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.RageCycleAbility%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L69">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L84">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_RageCycleAbility_" data-uid="Exiled.API.Features.Roles.Scp096Role.RageCycleAbility*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_RageCycleAbility" data-uid="Exiled.API.Features.Roles.Scp096Role.RageCycleAbility">RageCycleAbility</h4>
@@ -492,7 +600,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_RageManager.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.RageManager%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L74">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L89">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_RageManager_" data-uid="Exiled.API.Features.Roles.Scp096Role.RageManager*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_RageManager" data-uid="Exiled.API.Features.Roles.Scp096Role.RageManager">RageManager</h4>
@@ -523,7 +631,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_RageState.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.RageState%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L89">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L119">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_RageState_" data-uid="Exiled.API.Features.Roles.Scp096Role.RageState*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_RageState" data-uid="Exiled.API.Features.Roles.Scp096Role.RageState">RageState</h4>
@@ -551,10 +659,41 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_RemainingChargeDuration.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.RemainingChargeDuration%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L147">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Scp096Role_RemainingChargeDuration_" data-uid="Exiled.API.Features.Roles.Scp096Role.RemainingChargeDuration*"></a>
+  <h4 id="Exiled_API_Features_Roles_Scp096Role_RemainingChargeDuration" data-uid="Exiled.API.Features.Roles.Scp096Role.RemainingChargeDuration">RemainingChargeDuration</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the Charge Ability duration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float RemainingChargeDuration { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_SubroutineModule.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.SubroutineModule%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L61">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L76">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_SubroutineModule_" data-uid="Exiled.API.Features.Roles.Scp096Role.SubroutineModule*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_SubroutineModule" data-uid="Exiled.API.Features.Roles.Scp096Role.SubroutineModule">SubroutineModule</h4>
@@ -584,7 +723,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_Targets.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.Targets%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L151">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L208">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_Targets_" data-uid="Exiled.API.Features.Roles.Scp096Role.Targets*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_Targets" data-uid="Exiled.API.Features.Roles.Scp096Role.Targets">Targets</h4>
@@ -615,7 +754,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_TargetsTracker.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.TargetsTracker%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L79">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L94">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_TargetsTracker_" data-uid="Exiled.API.Features.Roles.Scp096Role.TargetsTracker*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_TargetsTracker" data-uid="Exiled.API.Features.Roles.Scp096Role.TargetsTracker">TargetsTracker</h4>
@@ -646,7 +785,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_TotalEnrageTime.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.TotalEnrageTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L138">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L186">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_TotalEnrageTime_" data-uid="Exiled.API.Features.Roles.Scp096Role.TotalEnrageTime*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_TotalEnrageTime" data-uid="Exiled.API.Features.Roles.Scp096Role.TotalEnrageTime">TotalEnrageTime</h4>
@@ -674,10 +813,72 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_TryNotToCryAbility.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.TryNotToCryAbility%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L104">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Scp096Role_TryNotToCryAbility_" data-uid="Exiled.API.Features.Roles.Scp096Role.TryNotToCryAbility*"></a>
+  <h4 id="Exiled_API_Features_Roles_Scp096Role_TryNotToCryAbility" data-uid="Exiled.API.Features.Roles.Scp096Role.TryNotToCryAbility">TryNotToCryAbility</h4>
+  <div class="markdown level1 summary"><p>Gets SCP-096&apos;s <span class="xref">PlayerRoles.PlayableScps.Scp096.Scp096TryNotToCryAbility</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Scp096TryNotToCryAbility TryNotToCryAbility { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.PlayableScps.Scp096.Scp096TryNotToCryAbility</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_TryNotToCryActive.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.TryNotToCryActive%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L199">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Scp096Role_TryNotToCryActive_" data-uid="Exiled.API.Features.Roles.Scp096Role.TryNotToCryActive*"></a>
+  <h4 id="Exiled_API_Features_Roles_Scp096Role_TryNotToCryActive" data-uid="Exiled.API.Features.Roles.Scp096Role.TryNotToCryActive">TryNotToCryActive</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the TryNotToCry ability is active.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryNotToCryActive { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_TurnedPlayers.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.TurnedPlayers%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L55">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L70">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_TurnedPlayers_" data-uid="Exiled.API.Features.Roles.Scp096Role.TurnedPlayers*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_TurnedPlayers" data-uid="Exiled.API.Features.Roles.Scp096Role.TurnedPlayers">TurnedPlayers</h4>
@@ -708,7 +909,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L58">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L73">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_Type_" data-uid="Exiled.API.Features.Roles.Scp096Role.Type*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_Type" data-uid="Exiled.API.Features.Roles.Scp096Role.Type">Type</h4>
@@ -742,7 +943,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_AddTarget_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.AddTarget(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L162">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L220">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_AddTarget_" data-uid="Exiled.API.Features.Roles.Scp096Role.AddTarget*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_AddTarget_Exiled_API_Features_Player_" data-uid="Exiled.API.Features.Roles.Scp096Role.AddTarget(Exiled.API.Features.Player)">AddTarget(Player)</h4>
@@ -751,7 +952,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AddTarget(Player player)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool AddTarget(Player player)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -771,12 +972,28 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if target was successfully added. Otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_AddTarget_Exiled_API_Features_Player_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.AddTarget(Exiled.API.Features.Player%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L169">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L228">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_AddTarget_" data-uid="Exiled.API.Features.Roles.Scp096Role.AddTarget*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_AddTarget_Exiled_API_Features_Player_System_Boolean_" data-uid="Exiled.API.Features.Roles.Scp096Role.AddTarget(Exiled.API.Features.Player,System.Boolean)">AddTarget(Player, Boolean)</h4>
@@ -785,7 +1002,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AddTarget(Player player, bool isLooking)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool AddTarget(Player player, bool isLooking)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -811,12 +1028,44 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if target was successfully added. Otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_Attack.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.Attack%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L271">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Scp096Role_Attack_" data-uid="Exiled.API.Features.Roles.Scp096Role.Attack*"></a>
+  <h4 id="Exiled_API_Features_Roles_Scp096Role_Attack" data-uid="Exiled.API.Features.Roles.Scp096Role.Attack">Attack()</h4>
+  <div class="markdown level1 summary"><p>Trigger the attack ability.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Attack()</code></pre>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_Calm_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.Calm(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L187">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L247">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_Calm_" data-uid="Exiled.API.Features.Roles.Scp096Role.Calm*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_Calm_System_Boolean_" data-uid="Exiled.API.Features.Roles.Scp096Role.Calm(System.Boolean)">Calm(Boolean)</h4>
@@ -825,7 +1074,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Calm(bool clearTime)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Calm(bool clearTime = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -847,10 +1096,44 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_Charge_System_Single_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.Charge(System.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L277">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Scp096Role_Charge_" data-uid="Exiled.API.Features.Roles.Scp096Role.Charge*"></a>
+  <h4 id="Exiled_API_Features_Roles_Scp096Role_Charge_System_Single_" data-uid="Exiled.API.Features.Roles.Scp096Role.Charge(System.Single)">Charge(Single)</h4>
+  <div class="markdown level1 summary"><p>Trigger the charge ability.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Charge(float cooldown = 1F)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td><span class="parametername">cooldown</span></td>
+        <td><p>The cooldown time to set before the charge can be executed again.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_ClearTargets.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.ClearTargets%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L206">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L266">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_ClearTargets_" data-uid="Exiled.API.Features.Roles.Scp096Role.ClearTargets*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_ClearTargets" data-uid="Exiled.API.Features.Roles.Scp096Role.ClearTargets">ClearTargets()</h4>
@@ -866,7 +1149,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_Enrage_System_Single_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.Enrage(System.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L181">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L241">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_Enrage_" data-uid="Exiled.API.Features.Roles.Scp096Role.Enrage*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_Enrage_System_Single_" data-uid="Exiled.API.Features.Roles.Scp096Role.Enrage(System.Single)">Enrage(Single)</h4>
@@ -875,7 +1158,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Enrage(float time)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Enrage(float time = 20F)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -897,10 +1180,60 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_GetSpawnChance_System_Collections_Generic_List_PlayerRoles_RoleTypeId__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.GetSpawnChance(System.Collections.Generic.List%7BPlayerRoles.RoleTypeId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L296">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Scp096Role_GetSpawnChance_" data-uid="Exiled.API.Features.Roles.Scp096Role.GetSpawnChance*"></a>
+  <h4 id="Exiled_API_Features_Roles_Scp096Role_GetSpawnChance_System_Collections_Generic_List_PlayerRoles_RoleTypeId__" data-uid="Exiled.API.Features.Roles.Scp096Role.GetSpawnChance(System.Collections.Generic.List{PlayerRoles.RoleTypeId})">GetSpawnChance(List&lt;RoleTypeId&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the Spawn Chance of SCP-096.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float GetSpawnChance(List&lt;RoleTypeId&gt; alreadySpawned)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">PlayerRoles.RoleTypeId</span>&gt;</td>
+        <td><span class="parametername">alreadySpawned</span></td>
+        <td><p>The List of Roles already spawned.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td><p>The Spawn Chance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_HasTarget_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.HasTarget(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L194">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L254">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_HasTarget_" data-uid="Exiled.API.Features.Roles.Scp096Role.HasTarget*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_HasTarget_Exiled_API_Features_Player_" data-uid="Exiled.API.Features.Roles.Scp096Role.HasTarget(Exiled.API.Features.Player)">HasTarget(Player)</h4>
@@ -950,7 +1283,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_IsObserved_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.IsObserved(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L201">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L261">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_IsObserved_" data-uid="Exiled.API.Features.Roles.Scp096Role.IsObserved*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_IsObserved_Exiled_API_Features_Player_" data-uid="Exiled.API.Features.Roles.Scp096Role.IsObserved(Exiled.API.Features.Player)">IsObserved(Player)</h4>
@@ -1000,7 +1333,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_RemoveTarget_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.RemoveTarget(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L175">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L235">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Scp096Role_RemoveTarget_" data-uid="Exiled.API.Features.Roles.Scp096Role.RemoveTarget*"></a>
   <h4 id="Exiled_API_Features_Roles_Scp096Role_RemoveTarget_Exiled_API_Features_Player_" data-uid="Exiled.API.Features.Roles.Scp096Role.RemoveTarget(Exiled.API.Features.Player)">RemoveTarget(Player)</h4>
@@ -1009,7 +1342,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RemoveTarget(Player player)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool RemoveTarget(Player player)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1025,6 +1358,56 @@
         <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
         <td><span class="parametername">player</span></td>
         <td><p>The player to remove as a target.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if target was successfully removed. Otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Scp096Role_ShowRageInput_System_Single_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Scp096Role.ShowRageInput(System.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Scp096Role.cs/#L289">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Scp096Role_ShowRageInput_" data-uid="Exiled.API.Features.Roles.Scp096Role.ShowRageInput*"></a>
+  <h4 id="Exiled_API_Features_Roles_Scp096Role_ShowRageInput_System_Single_" data-uid="Exiled.API.Features.Roles.Scp096Role.ShowRageInput(System.Single)">ShowRageInput(Single)</h4>
+  <div class="markdown level1 summary"><p>Shows the input prompt for the RageCycle ability.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ShowRageInput(float duration = 10F)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td><span class="parametername">duration</span></td>
+        <td><p>The input prompt duration.</p>
 </td>
       </tr>
     </tbody>

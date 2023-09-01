@@ -95,6 +95,7 @@
     <h5>Implements</h5>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IFirearmEvent.html">IFirearmEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a></div>
   </div>
   <div class="inheritedMembers">
@@ -125,25 +126,25 @@
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
   <h5 id="Exiled_Events_EventArgs_Player_AimingDownSightEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AimingDownSightEventArgs : IPlayerEvent, IFirearmEvent, IExiledEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public class AimingDownSightEventArgs : IPlayerEvent, IFirearmEvent, IItemEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_AimingDownSightEventArgs__ctor_Exiled_API_Features_Player_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.%23ctor(Exiled.API.Features.Player%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_AimingDownSightEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Items_Firearm_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.%23ctor(Exiled.API.Features.Player%2CExiled.API.Features.Items.Firearm%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/AimingDownSightEventArgs.cs/#L32">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/AimingDownSightEventArgs.cs/#L36">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_AimingDownSightEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_AimingDownSightEventArgs__ctor_Exiled_API_Features_Player_System_Boolean_System_Boolean_" data-uid="Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.#ctor(Exiled.API.Features.Player,System.Boolean,System.Boolean)">AimingDownSightEventArgs(Player, Boolean, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_Player_AimingDownSightEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Items_Firearm_System_Boolean_System_Boolean_" data-uid="Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Items.Firearm,System.Boolean,System.Boolean)">AimingDownSightEventArgs(Player, Firearm, Boolean, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.html">AimingDownSightEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AimingDownSightEventArgs(Player player, bool adsIn, bool adsOut)</code></pre>
+    <pre><code class="lang-csharp hljs">public AimingDownSightEventArgs(Player player, Firearm firearm, bool adsIn, bool adsOut)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -159,6 +160,12 @@
         <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
         <td><span class="parametername">player</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.Player"></inheritdoc>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Items.Firearm.html">Firearm</a></td>
+        <td><span class="parametername">firearm</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.Firearm"></inheritdoc>
 </td>
       </tr>
       <tr>
@@ -272,10 +279,40 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_AimingDownSightEventArgs_Item.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/AimingDownSightEventArgs.cs/#L60">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_AimingDownSightEventArgs_Item_" data-uid="Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.Item*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_AimingDownSightEventArgs_Item" data-uid="Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.Item">Item</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Item Item { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_AimingDownSightEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/AimingDownSightEventArgs.cs/#L62">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/AimingDownSightEventArgs.cs/#L65">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_AimingDownSightEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_AimingDownSightEventArgs_Player" data-uid="Exiled.Events.EventArgs.Player.AimingDownSightEventArgs.Player">Player</h4>
@@ -309,6 +346,9 @@
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IFirearmEvent.html">IFirearmEvent</a>
   </div>
   <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a>
+  </div>
+  <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
@@ -326,7 +366,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_AimingDownSightEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.AimingDownSightEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/AimingDownSightEventArgs.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/AimingDownSightEventArgs.cs/#L19" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

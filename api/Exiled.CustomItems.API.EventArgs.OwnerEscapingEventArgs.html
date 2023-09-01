@@ -107,6 +107,12 @@
       <a class="xref" href="Exiled.Events.EventArgs.Player.EscapingEventArgs.html#Exiled_Events_EventArgs_Player_EscapingEventArgs_NewRole">EscapingEventArgs.NewRole</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Player.EscapingEventArgs.html#Exiled_Events_EventArgs_Player_EscapingEventArgs_EscapeScenario">EscapingEventArgs.EscapeScenario</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Player.EscapingEventArgs.html#Exiled_Events_EventArgs_Player_EscapingEventArgs_RespawnTickets">EscapingEventArgs.RespawnTickets</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.Events.EventArgs.Player.EscapingEventArgs.html#Exiled_Events_EventArgs_Player_EscapingEventArgs_IsAllowed">EscapingEventArgs.IsAllowed</a>
     </div>
     <div>
@@ -141,19 +147,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerEscapingEventArgs__ctor_Exiled_API_Features_Items_Item_Exiled_API_Features_Player_PlayerRoles_RoleTypeId_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.%23ctor(Exiled.API.Features.Items.Item%2CExiled.API.Features.Player%2CPlayerRoles.RoleTypeId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerEscapingEventArgs__ctor_Exiled_API_Features_Items_Item_Exiled_API_Features_Player_PlayerRoles_RoleTypeId_Exiled_API_Enums_EscapeScenario_System_Collections_Generic_KeyValuePair_Respawning_SpawnableTeamType_System_Single__.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.%23ctor(Exiled.API.Features.Items.Item%2CExiled.API.Features.Player%2CPlayerRoles.RoleTypeId%2CExiled.API.Enums.EscapeScenario%2CSystem.Collections.Generic.KeyValuePair%7BRespawning.SpawnableTeamType%2CSystem.Single%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerEscapingEventArgs.cs/#L38">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerEscapingEventArgs.cs/#L45">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_EventArgs_OwnerEscapingEventArgs__ctor_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.#ctor*"></a>
-  <h4 id="Exiled_CustomItems_API_EventArgs_OwnerEscapingEventArgs__ctor_Exiled_API_Features_Items_Item_Exiled_API_Features_Player_PlayerRoles_RoleTypeId_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.#ctor(Exiled.API.Features.Items.Item,Exiled.API.Features.Player,PlayerRoles.RoleTypeId)">OwnerEscapingEventArgs(Item, Player, RoleTypeId)</h4>
+  <h4 id="Exiled_CustomItems_API_EventArgs_OwnerEscapingEventArgs__ctor_Exiled_API_Features_Items_Item_Exiled_API_Features_Player_PlayerRoles_RoleTypeId_Exiled_API_Enums_EscapeScenario_System_Collections_Generic_KeyValuePair_Respawning_SpawnableTeamType_System_Single__" data-uid="Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.#ctor(Exiled.API.Features.Items.Item,Exiled.API.Features.Player,PlayerRoles.RoleTypeId,Exiled.API.Enums.EscapeScenario,System.Collections.Generic.KeyValuePair{Respawning.SpawnableTeamType,System.Single})">OwnerEscapingEventArgs(Item, Player, RoleTypeId, EscapeScenario, KeyValuePair&lt;SpawnableTeamType, Single&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.html">OwnerEscapingEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public OwnerEscapingEventArgs(Item item, Player player, RoleTypeId newRole)</code></pre>
+    <pre><code class="lang-csharp hljs">public OwnerEscapingEventArgs(Item item, Player player, RoleTypeId newRole, EscapeScenario escapeScenario, KeyValuePair&lt;SpawnableTeamType, float&gt; respawnTickets = default(KeyValuePair&lt;SpawnableTeamType, float&gt;))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -180,6 +186,16 @@
         <td><span class="parametername">newRole</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.EscapingEventArgs.NewRole"></inheritdoc></td>
       </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Enums.EscapeScenario.html">EscapeScenario</a></td>
+        <td><span class="parametername">escapeScenario</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.EscapingEventArgs.EscapeScenario"></inheritdoc></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;<span class="xref">Respawning.SpawnableTeamType</span>, <span class="xref">System.Single</span>&gt;</td>
+        <td><span class="parametername">respawnTickets</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.EscapingEventArgs.RespawnTickets"></inheritdoc></td>
+      </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
@@ -187,7 +203,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerEscapingEventArgs__ctor_Exiled_API_Features_Items_Item_Exiled_Events_EventArgs_Player_EscapingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.%23ctor(Exiled.API.Features.Items.Item%2CExiled.Events.EventArgs.Player.EscapingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerEscapingEventArgs.cs/#L27">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerEscapingEventArgs.cs/#L32">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_EventArgs_OwnerEscapingEventArgs__ctor_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.#ctor*"></a>
   <h4 id="Exiled_CustomItems_API_EventArgs_OwnerEscapingEventArgs__ctor_Exiled_API_Features_Items_Item_Exiled_Events_EventArgs_Player_EscapingEventArgs_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.#ctor(Exiled.API.Features.Items.Item,Exiled.Events.EventArgs.Player.EscapingEventArgs)">OwnerEscapingEventArgs(Item, EscapingEventArgs)</h4>
@@ -228,7 +244,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerEscapingEventArgs_Item.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerEscapingEventArgs.cs/#L47">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerEscapingEventArgs.cs/#L54">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_EventArgs_OwnerEscapingEventArgs_Item_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.Item*"></a>
   <h4 id="Exiled_CustomItems_API_EventArgs_OwnerEscapingEventArgs_Item" data-uid="Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.Item">Item</h4>
@@ -279,7 +295,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerEscapingEventArgs.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerEscapingEventArgs.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerEscapingEventArgs.cs/#L25" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -94,6 +94,7 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a></div>
   </div>
   <div class="inheritedMembers">
@@ -124,7 +125,7 @@
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
   <h5 id="Exiled_Events_EventArgs_Player_ChangedItemEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ChangedItemEventArgs : IPlayerEvent, IExiledEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public class ChangedItemEventArgs : IPlayerEvent, IItemEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -133,7 +134,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ChangedItemEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_ItemBase_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ChangedItemEventArgs.%23ctor(Exiled.API.Features.Player%2CInventorySystem.Items.ItemBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ChangedItemEventArgs.cs/#L31">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ChangedItemEventArgs.cs/#L33">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_ChangedItemEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Player.ChangedItemEventArgs.#ctor*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_ChangedItemEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_ItemBase_" data-uid="Exiled.Events.EventArgs.Player.ChangedItemEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.ItemBase)">ChangedItemEventArgs(Player, ItemBase)</h4>
@@ -172,10 +173,41 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ChangedItemEventArgs_Item.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ChangedItemEventArgs.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ChangedItemEventArgs.cs/#L54">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_ChangedItemEventArgs_Item_" data-uid="Exiled.Events.EventArgs.Player.ChangedItemEventArgs.Item*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_ChangedItemEventArgs_Item" data-uid="Exiled.Events.EventArgs.Player.ChangedItemEventArgs.Item">Item</h4>
+  <div class="markdown level1 summary"><p>Gets the new item.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Item Item { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ChangedItemEventArgs_NewItem.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ChangedItemEventArgs.NewItem%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ChangedItemEventArgs.cs/#L46">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ChangedItemEventArgs.cs/#L48">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_ChangedItemEventArgs_NewItem_" data-uid="Exiled.Events.EventArgs.Player.ChangedItemEventArgs.NewItem*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_ChangedItemEventArgs_NewItem" data-uid="Exiled.Events.EventArgs.Player.ChangedItemEventArgs.NewItem">NewItem</h4>
@@ -184,7 +216,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Item NewItem { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use ev.Item instead of this&quot;)]
+public Item NewItem { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -206,7 +239,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ChangedItemEventArgs_OldItem.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ChangedItemEventArgs.OldItem%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ChangedItemEventArgs.cs/#L41">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ChangedItemEventArgs.cs/#L43">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_ChangedItemEventArgs_OldItem_" data-uid="Exiled.Events.EventArgs.Player.ChangedItemEventArgs.OldItem*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_ChangedItemEventArgs_OldItem" data-uid="Exiled.Events.EventArgs.Player.ChangedItemEventArgs.OldItem">OldItem</h4>
@@ -237,7 +270,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ChangedItemEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ChangedItemEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ChangedItemEventArgs.cs/#L51">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ChangedItemEventArgs.cs/#L59">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_ChangedItemEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Player.ChangedItemEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_ChangedItemEventArgs_Player" data-uid="Exiled.Events.EventArgs.Player.ChangedItemEventArgs.Player">Player</h4>
@@ -268,6 +301,9 @@
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a>
   </div>
   <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a>
+  </div>
+  <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
@@ -285,7 +321,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ChangedItemEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ChangedItemEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ChangedItemEventArgs.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ChangedItemEventArgs.cs/#L22" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

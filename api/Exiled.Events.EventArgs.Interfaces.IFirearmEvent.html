@@ -86,11 +86,17 @@
   <div class="markdown level0 summary"><p>Event args used for all <a class="xref" href="Exiled.API.Features.Items.Firearm.html">Firearm</a> related events.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html#Exiled_Events_EventArgs_Interfaces_IItemEvent_Item">IItemEvent.Item</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Exiled.Events.EventArgs.Interfaces.html">Exiled.Events.EventArgs.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
   <h5 id="Exiled_Events_EventArgs_Interfaces_IFirearmEvent_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IFirearmEvent : IExiledEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IFirearmEvent : IItemEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>

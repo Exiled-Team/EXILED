@@ -83,14 +83,13 @@
   
   <h1 id="Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs" data-uid="Exiled.Events.EventArgs.Player.StoppingGeneratorEventArgs" class="text-break">Class StoppingGeneratorEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Contains all information before a player ejects a tablet from a generator.</p>
+  <div class="markdown level0 summary"><p>Contains all information before a player flips the switch of the generator.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Exiled.Events.EventArgs.Player.ActivatingGeneratorEventArgs.html">ActivatingGeneratorEventArgs</a></div>
-    <div class="level2"><span class="xref">StoppingGeneratorEventArgs</span></div>
+    <div class="level1"><span class="xref">StoppingGeneratorEventArgs</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
@@ -101,15 +100,6 @@
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Exiled.Events.EventArgs.Player.ActivatingGeneratorEventArgs.html#Exiled_Events_EventArgs_Player_ActivatingGeneratorEventArgs_IsAllowed">ActivatingGeneratorEventArgs.IsAllowed</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.Events.EventArgs.Player.ActivatingGeneratorEventArgs.html#Exiled_Events_EventArgs_Player_ActivatingGeneratorEventArgs_Generator">ActivatingGeneratorEventArgs.Generator</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.Events.EventArgs.Player.ActivatingGeneratorEventArgs.html#Exiled_Events_EventArgs_Player_ActivatingGeneratorEventArgs_Player">ActivatingGeneratorEventArgs.Player</a>
-    </div>
     <div>
       <span class="xref">System.Object.ToString()</span>
     </div>
@@ -136,7 +126,7 @@
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
   <h5 id="Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class StoppingGeneratorEventArgs : ActivatingGeneratorEventArgs, IPlayerEvent, IGeneratorEvent, IDeniableEvent, IExiledEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public class StoppingGeneratorEventArgs : IPlayerEvent, IGeneratorEvent, IDeniableEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -169,7 +159,7 @@
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
         <td><span class="parametername">player</span></td>
-        <td><p>The player who&apos;s ejecting the tablet.</p>
+        <td><p>The player who&apos;s flipping the switch.</p>
 </td>
       </tr>
       <tr>
@@ -181,8 +171,103 @@
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">isAllowed</span></td>
-        <td><p>Indicates whether or not the tablet can be ejected.</p>
+        <td><p>Indicates whether or not the switch of the generator can be flipped.</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs_Generator.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.StoppingGeneratorEventArgs.Generator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/StoppingGeneratorEventArgs.cs/#L40">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs_Generator_" data-uid="Exiled.Events.EventArgs.Player.StoppingGeneratorEventArgs.Generator*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs_Generator" data-uid="Exiled.Events.EventArgs.Player.StoppingGeneratorEventArgs.Generator">Generator</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.Events.EventArgs.Player.StoppingGeneratorEventArgs.html#Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs_Generator">Generator</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Generator Generator { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Generator.html">Generator</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.StoppingGeneratorEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/StoppingGeneratorEventArgs.cs/#L35">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.Player.StoppingGeneratorEventArgs.IsAllowed*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.Player.StoppingGeneratorEventArgs.IsAllowed">IsAllowed</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not the switch can be flipped.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsAllowed { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.StoppingGeneratorEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/StoppingGeneratorEventArgs.cs/#L45">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Player.StoppingGeneratorEventArgs.Player*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs_Player" data-uid="Exiled.Events.EventArgs.Player.StoppingGeneratorEventArgs.Player">Player</h4>
+  <div class="markdown level1 summary"><p>Gets the player who&apos;s filpping the switch of the generator.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Player Player { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

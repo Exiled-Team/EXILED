@@ -91,6 +91,8 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">TypeCastObject&lt;T&gt;</span></div>
       <div class="level2"><a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a></div>
+      <div class="level2"><a class="xref" href="Exiled.API.Features.Doors.Door.html">Door</a></div>
+      <div class="level2"><a class="xref" href="Exiled.API.Features.Hazards.Hazard.html">Hazard</a></div>
       <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></div>
       <div class="level2"><a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a></div>
       <div class="level2"><a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a></div>
@@ -150,7 +152,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_TypeCastObject_1__ctor.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.TypeCastObject%601.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/TypeCastObject.cs/#L22">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/TypeCastObject.cs/#L20">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_TypeCastObject_1__ctor_" data-uid="Exiled.API.Features.Core.TypeCastObject`1.#ctor*"></a>
   <h4 id="Exiled_API_Features_Core_TypeCastObject_1__ctor" data-uid="Exiled.API.Features.Core.TypeCastObject`1.#ctor">TypeCastObject()</h4>
@@ -168,7 +170,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_TypeCastObject_1_As__1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.TypeCastObject%601.As%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/TypeCastObject.cs/#L53">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/TypeCastObject.cs/#L51">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_TypeCastObject_1_As_" data-uid="Exiled.API.Features.Core.TypeCastObject`1.As*"></a>
   <h4 id="Exiled_API_Features_Core_TypeCastObject_1_As__1" data-uid="Exiled.API.Features.Core.TypeCastObject`1.As``1">As&lt;TObject&gt;()</h4>
@@ -178,7 +180,7 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public TObject As&lt;TObject&gt;()
 
-    where TObject : class</code></pre>
+    where TObject : class, T</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -215,7 +217,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_TypeCastObject_1_Cast__1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.TypeCastObject%601.Cast%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/TypeCastObject.cs/#L31">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/TypeCastObject.cs/#L29">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_TypeCastObject_1_Cast_" data-uid="Exiled.API.Features.Core.TypeCastObject`1.Cast*"></a>
   <h4 id="Exiled_API_Features_Core_TypeCastObject_1_Cast__1" data-uid="Exiled.API.Features.Core.TypeCastObject`1.Cast``1">Cast&lt;TObject&gt;()</h4>
@@ -226,7 +228,7 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public TObject Cast&lt;TObject&gt;()
 
-    where TObject : class</code></pre>
+    where TObject : class, T</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -265,7 +267,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_TypeCastObject_1_Cast__1___0__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.TypeCastObject%601.Cast%60%601(%60%600%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/TypeCastObject.cs/#L40">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/TypeCastObject.cs/#L38">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_TypeCastObject_1_Cast_" data-uid="Exiled.API.Features.Core.TypeCastObject`1.Cast*"></a>
   <h4 id="Exiled_API_Features_Core_TypeCastObject_1_Cast__1___0__" data-uid="Exiled.API.Features.Core.TypeCastObject`1.Cast``1(``0@)">Cast&lt;TObject&gt;(out TObject)</h4>
@@ -276,7 +278,7 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Cast&lt;TObject&gt;(out TObject param)
 
-    where TObject : class</code></pre>
+    where TObject : class, T</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -333,7 +335,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_TypeCastObject_1_Is__1___0__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.TypeCastObject%601.Is%60%601(%60%600%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/TypeCastObject.cs/#L57">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/TypeCastObject.cs/#L55">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_TypeCastObject_1_Is_" data-uid="Exiled.API.Features.Core.TypeCastObject`1.Is*"></a>
   <h4 id="Exiled_API_Features_Core_TypeCastObject_1_Is__1___0__" data-uid="Exiled.API.Features.Core.TypeCastObject`1.Is``1(``0@)">Is&lt;TObject&gt;(out TObject)</h4>
@@ -343,7 +345,7 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Is&lt;TObject&gt;(out TObject param)
 
-    where TObject : class</code></pre>
+    where TObject : class, T</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -407,7 +409,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_TypeCastObject_1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.TypeCastObject%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/TypeCastObject.cs/#L16" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/TypeCastObject.cs/#L14" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -83,36 +83,24 @@
   
   <h1 id="Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs" data-uid="Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs" class="text-break">Class CancellingItemUseEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Contains all information before a player cancels usage of a medical item.</p>
+  <div class="markdown level0 summary"><p>Contains all information before a player cancels usage of an item.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Exiled.Events.EventArgs.Player.UsedItemEventArgs.html">UsedItemEventArgs</a></div>
-    <div class="level2"><a class="xref" href="Exiled.Events.EventArgs.Player.UsingItemEventArgs.html">UsingItemEventArgs</a></div>
-    <div class="level3"><span class="xref">CancellingItemUseEventArgs</span></div>
+    <div class="level1"><span class="xref">CancellingItemUseEventArgs</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IUsableEvent.html">IUsableEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Exiled.Events.EventArgs.Player.UsingItemEventArgs.html#Exiled_Events_EventArgs_Player_UsingItemEventArgs_Cooldown">UsingItemEventArgs.Cooldown</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.Events.EventArgs.Player.UsingItemEventArgs.html#Exiled_Events_EventArgs_Player_UsingItemEventArgs_IsAllowed">UsingItemEventArgs.IsAllowed</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.Events.EventArgs.Player.UsedItemEventArgs.html#Exiled_Events_EventArgs_Player_UsedItemEventArgs_Item">UsedItemEventArgs.Item</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.Events.EventArgs.Player.UsedItemEventArgs.html#Exiled_Events_EventArgs_Player_UsedItemEventArgs_Player">UsedItemEventArgs.Player</a>
-    </div>
     <div>
       <span class="xref">System.Object.ToString()</span>
     </div>
@@ -139,7 +127,7 @@
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
   <h5 id="Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class CancellingItemUseEventArgs : UsingItemEventArgs, IPlayerEvent, IDeniableEvent, IExiledEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public class CancellingItemUseEventArgs : IPlayerEvent, IDeniableEvent, IUsableEvent, IItemEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -148,7 +136,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_Usables_UsableItem_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.%23ctor(Exiled.API.Features.Player%2CInventorySystem.Items.Usables.UsableItem)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/CancellingItemUseEventArgs.cs/#L26">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/CancellingItemUseEventArgs.cs/#L27">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.#ctor*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_Usables_UsableItem_" data-uid="Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.Usables.UsableItem)">CancellingItemUseEventArgs(Player, UsableItem)</h4>
@@ -172,7 +160,7 @@
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
         <td><span class="parametername">player</span></td>
-        <td><p>The player who&apos;s stopping the use of the medical item.</p>
+        <td><p>The player who&apos;s stopping the use of an item.</p>
 </td>
       </tr>
       <tr>
@@ -183,12 +171,143 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/CancellingItemUseEventArgs.cs/#L49">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.IsAllowed*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.IsAllowed">IsAllowed</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not the player can cancelling the use of item.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsAllowed { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_Item.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/CancellingItemUseEventArgs.cs/#L39">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_Item_" data-uid="Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.Item*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_Item" data-uid="Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.Item">Item</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Item Item { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/CancellingItemUseEventArgs.cs/#L44">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.Player*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_Player" data-uid="Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.Player">Player</h4>
+  <div class="markdown level1 summary"><p>Gets the player who cancelling the item.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Player Player { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_Usable.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.Usable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/CancellingItemUseEventArgs.cs/#L36">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_Usable_" data-uid="Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.Usable*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_Usable" data-uid="Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs.Usable">Usable</h4>
+  <div class="markdown level1 summary"><p>Gets the item that the player cancelling.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Usable Usable { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Items.Usable.html">Usable</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a>
   </div>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IUsableEvent.html">IUsableEvent</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a>
   </div>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a>
@@ -208,7 +327,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/CancellingItemUseEventArgs.cs/#L17" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/CancellingItemUseEventArgs.cs/#L18" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -93,6 +93,7 @@
   </div>
   <div class="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IScp096Event.html">IScp096Event</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a></div>
@@ -125,25 +126,25 @@
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
   <h5 id="Exiled_Events_EventArgs_Scp096_EnragingEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class EnragingEventArgs : IPlayerEvent, IDeniableEvent, IExiledEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public class EnragingEventArgs : IScp096Event, IPlayerEvent, IDeniableEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp096_EnragingEventArgs__ctor_PlayerRoles_PlayableScps_Scp096_Scp096Role_Exiled_API_Features_Player_System_Single_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp096.EnragingEventArgs.%23ctor(PlayerRoles.PlayableScps.Scp096.Scp096Role%2CExiled.API.Features.Player%2CSystem.Single%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp096_EnragingEventArgs__ctor_Exiled_API_Features_Player_System_Single_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp096.EnragingEventArgs.%23ctor(Exiled.API.Features.Player%2CSystem.Single%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp096/EnragingEventArgs.cs/#L36">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp096/EnragingEventArgs.cs/#L31">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp096_EnragingEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Scp096.EnragingEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_Scp096_EnragingEventArgs__ctor_PlayerRoles_PlayableScps_Scp096_Scp096Role_Exiled_API_Features_Player_System_Single_System_Boolean_" data-uid="Exiled.Events.EventArgs.Scp096.EnragingEventArgs.#ctor(PlayerRoles.PlayableScps.Scp096.Scp096Role,Exiled.API.Features.Player,System.Single,System.Boolean)">EnragingEventArgs(Scp096Role, Player, Single, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_Scp096_EnragingEventArgs__ctor_Exiled_API_Features_Player_System_Single_System_Boolean_" data-uid="Exiled.Events.EventArgs.Scp096.EnragingEventArgs.#ctor(Exiled.API.Features.Player,System.Single,System.Boolean)">EnragingEventArgs(Player, Single, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.Scp096.EnragingEventArgs.html">EnragingEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public EnragingEventArgs(Scp096Role scp096, Player player, float initialDuration, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public EnragingEventArgs(Player player, float initialDuration, bool isAllowed = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -155,12 +156,6 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><span class="xref">PlayerRoles.PlayableScps.Scp096.Scp096Role</span></td>
-        <td><span class="parametername">scp096</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Scp096.EnragingEventArgs.Scp096"></inheritdoc>
-</td>
-      </tr>
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
         <td><span class="parametername">player</span></td>
@@ -188,7 +183,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp096_EnragingEventArgs_InitialDuration.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp096.EnragingEventArgs.InitialDuration%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp096/EnragingEventArgs.cs/#L57">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp096/EnragingEventArgs.cs/#L50">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp096_EnragingEventArgs_InitialDuration_" data-uid="Exiled.Events.EventArgs.Scp096.EnragingEventArgs.InitialDuration*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp096_EnragingEventArgs_InitialDuration" data-uid="Exiled.Events.EventArgs.Scp096.EnragingEventArgs.InitialDuration">InitialDuration</h4>
@@ -219,7 +214,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp096_EnragingEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp096.EnragingEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp096/EnragingEventArgs.cs/#L62">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp096/EnragingEventArgs.cs/#L55">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp096_EnragingEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.Scp096.EnragingEventArgs.IsAllowed*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp096_EnragingEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.Scp096.EnragingEventArgs.IsAllowed">IsAllowed</h4>
@@ -250,7 +245,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp096_EnragingEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp096.EnragingEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp096/EnragingEventArgs.cs/#L52">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp096/EnragingEventArgs.cs/#L45">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp096_EnragingEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Scp096.EnragingEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp096_EnragingEventArgs_Player" data-uid="Exiled.Events.EventArgs.Scp096.EnragingEventArgs.Player">Player</h4>
@@ -281,12 +276,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp096_EnragingEventArgs_Scp096.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp096.EnragingEventArgs.Scp096%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp096/EnragingEventArgs.cs/#L47">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp096/EnragingEventArgs.cs/#L40">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp096_EnragingEventArgs_Scp096_" data-uid="Exiled.Events.EventArgs.Scp096.EnragingEventArgs.Scp096*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp096_EnragingEventArgs_Scp096" data-uid="Exiled.Events.EventArgs.Scp096.EnragingEventArgs.Scp096">Scp096</h4>
-  <div class="markdown level1 summary"><p>Gets the SCP-096 instance.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -302,12 +296,15 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">PlayerRoles.PlayableScps.Scp096.Scp096Role</span></td>
+        <td><a class="xref" href="Exiled.API.Features.Roles.Scp096Role.html">Scp096Role</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IScp096Event.html">IScp096Event</a>
+  </div>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a>
   </div>
@@ -332,7 +329,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp096_EnragingEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp096.EnragingEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp096/EnragingEventArgs.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp096/EnragingEventArgs.cs/#L17" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

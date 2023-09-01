@@ -90,6 +90,34 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">ParsingEventBuffer</span></div>
   </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">YamlDotNet.Core.IParser</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Exiled.CustomRoles.API.Features.Parsers.html">Exiled.CustomRoles.API.Features.Parsers</a></h6>
   <h6><strong>Assembly</strong>: Exiled.CustomRoles.dll</h6>
   <h5 id="Exiled_CustomRoles_API_Features_Parsers_ParsingEventBuffer_syntax">Syntax</h5>
@@ -100,13 +128,13 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_Parsers_ParsingEventBuffer__ctor_System_Collections_Generic_LinkedList_ParsingEvent__.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer.%23ctor(System.Collections.Generic.LinkedList%7BParsingEvent%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_Parsers_ParsingEventBuffer__ctor_System_Collections_Generic_LinkedList_YamlDotNet_Core_Events_ParsingEvent__.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer.%23ctor(System.Collections.Generic.LinkedList%7BYamlDotNet.Core.Events.ParsingEvent%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/Parsers/ParsingEventBuffer.cs/#L26">View Source</a>
   </span>
   <a id="Exiled_CustomRoles_API_Features_Parsers_ParsingEventBuffer__ctor_" data-uid="Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer.#ctor*"></a>
-  <h4 id="Exiled_CustomRoles_API_Features_Parsers_ParsingEventBuffer__ctor_System_Collections_Generic_LinkedList_ParsingEvent__" data-uid="Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer.#ctor(System.Collections.Generic.LinkedList{ParsingEvent})">ParsingEventBuffer(LinkedList&lt;ParsingEvent&gt;)</h4>
+  <h4 id="Exiled_CustomRoles_API_Features_Parsers_ParsingEventBuffer__ctor_System_Collections_Generic_LinkedList_YamlDotNet_Core_Events_ParsingEvent__" data-uid="Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer.#ctor(System.Collections.Generic.LinkedList{YamlDotNet.Core.Events.ParsingEvent})">ParsingEventBuffer(LinkedList&lt;ParsingEvent&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer.html">ParsingEventBuffer</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -125,7 +153,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.LinkedList</span>&lt;<span class="xref">ParsingEvent</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.LinkedList</span>&lt;<span class="xref">YamlDotNet.Core.Events.ParsingEvent</span>&gt;</td>
         <td><span class="parametername">events</span></td>
         <td><p>The <span class="xref">System.Collections.Generic.LinkedList&lt;T&gt;</span> instance.</p>
 </td>
@@ -147,7 +175,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ParsingEvent? Current { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ParsingEvent Current { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -159,7 +187,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">ParsingEvent</span>&gt;</td>
+        <td><span class="xref">YamlDotNet.Core.Events.ParsingEvent</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -212,9 +240,13 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Reset()</code></pre>
   </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">YamlDotNet.Core.IParser</span>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Exiled.CustomRoles.API.Features.Extensions.ParserExtension.html#Exiled_CustomRoles_API_Features_Extensions_ParserExtension_TryFindMappingEntry_Exiled_CustomRoles_API_Features_Parsers_ParsingEventBuffer_System_Func_Scalar_System_Boolean__System_Nullable_Scalar___System_Nullable_ParsingEvent___">ParserExtension.TryFindMappingEntry(ParsingEventBuffer, Func&lt;Scalar, Boolean&gt;, out Nullable&lt;Scalar&gt;, out Nullable&lt;ParsingEvent&gt;)</a>
+      <a class="xref" href="Exiled.CustomRoles.API.Features.Extensions.ParserExtension.html#Exiled_CustomRoles_API_Features_Extensions_ParserExtension_TryFindMappingEntry_Exiled_CustomRoles_API_Features_Parsers_ParsingEventBuffer_System_Func_YamlDotNet_Core_Events_Scalar_System_Boolean__YamlDotNet_Core_Events_Scalar__YamlDotNet_Core_Events_ParsingEvent__">ParserExtension.TryFindMappingEntry(ParsingEventBuffer, Func&lt;Scalar, Boolean&gt;, out Scalar, out ParsingEvent)</a>
   </div>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>

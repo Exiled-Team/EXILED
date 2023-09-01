@@ -96,6 +96,7 @@
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IFirearmEvent.html">IFirearmEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a></div>
   </div>
   <div class="inheritedMembers">
@@ -126,7 +127,7 @@
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
   <h5 id="Exiled_Events_EventArgs_Item_ChangingAttachmentsEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ChangingAttachmentsEventArgs : IPlayerEvent, IDeniableEvent, IFirearmEvent, IExiledEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public class ChangingAttachmentsEventArgs : IPlayerEvent, IDeniableEvent, IFirearmEvent, IItemEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -310,6 +311,36 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Item_ChangingAttachmentsEventArgs_Item.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Item.ChangingAttachmentsEventArgs.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Item/ChangingAttachmentsEventArgs.cs/#L87">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Item_ChangingAttachmentsEventArgs_Item_" data-uid="Exiled.Events.EventArgs.Item.ChangingAttachmentsEventArgs.Item*"></a>
+  <h4 id="Exiled_Events_EventArgs_Item_ChangingAttachmentsEventArgs_Item" data-uid="Exiled.Events.EventArgs.Item.ChangingAttachmentsEventArgs.Item">Item</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Item Item { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Item_ChangingAttachmentsEventArgs_NewAttachmentIdentifiers.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Item.ChangingAttachmentsEventArgs.NewAttachmentIdentifiers%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -375,7 +406,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Item_ChangingAttachmentsEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Item.ChangingAttachmentsEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Item/ChangingAttachmentsEventArgs.cs/#L89">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Item/ChangingAttachmentsEventArgs.cs/#L92">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Item_ChangingAttachmentsEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Item.ChangingAttachmentsEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_Item_ChangingAttachmentsEventArgs_Player" data-uid="Exiled.Events.EventArgs.Item.ChangingAttachmentsEventArgs.Player">Player</h4>
@@ -410,6 +441,9 @@
   </div>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IFirearmEvent.html">IFirearmEvent</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a>
   </div>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a>

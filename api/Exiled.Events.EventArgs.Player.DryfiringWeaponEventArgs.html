@@ -95,6 +95,7 @@
     <h5>Implements</h5>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IFirearmEvent.html">IFirearmEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a></div>
   </div>
@@ -126,25 +127,25 @@
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
   <h5 id="Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DryfiringWeaponEventArgs : IPlayerEvent, IFirearmEvent, IDeniableEvent, IExiledEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public class DryfiringWeaponEventArgs : IPlayerEvent, IFirearmEvent, IItemEvent, IDeniableEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs__ctor_Exiled_API_Features_Player_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.%23ctor(Exiled.API.Features.Player%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Items_Firearm_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.%23ctor(Exiled.API.Features.Player%2CExiled.API.Features.Items.Firearm%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DryfiringWeaponEventArgs.cs/#L29">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DryfiringWeaponEventArgs.cs/#L32">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs__ctor_Exiled_API_Features_Player_System_Boolean_" data-uid="Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.#ctor(Exiled.API.Features.Player,System.Boolean)">DryfiringWeaponEventArgs(Player, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Items_Firearm_System_Boolean_" data-uid="Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Items.Firearm,System.Boolean)">DryfiringWeaponEventArgs(Player, Firearm, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.html">DryfiringWeaponEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DryfiringWeaponEventArgs(Player player, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public DryfiringWeaponEventArgs(Player player, Firearm firearm, bool isAllowed = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -163,6 +164,12 @@
 </td>
       </tr>
       <tr>
+        <td><a class="xref" href="Exiled.API.Features.Items.Firearm.html">Firearm</a></td>
+        <td><span class="parametername">firearm</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.Firearm"></inheritdoc>
+</td>
+      </tr>
+      <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">isAllowed</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.IsAllowed"></inheritdoc>
@@ -177,7 +184,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_Firearm.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.Firearm%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DryfiringWeaponEventArgs.cs/#L44">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DryfiringWeaponEventArgs.cs/#L47">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_Firearm_" data-uid="Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.Firearm*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_Firearm" data-uid="Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.Firearm">Firearm</h4>
@@ -208,7 +215,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DryfiringWeaponEventArgs.cs/#L39">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DryfiringWeaponEventArgs.cs/#L42">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.IsAllowed*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.IsAllowed">IsAllowed</h4>
@@ -236,10 +243,40 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_Item.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DryfiringWeaponEventArgs.cs/#L50">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_Item_" data-uid="Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.Item*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_Item" data-uid="Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.Item">Item</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Item Item { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DryfiringWeaponEventArgs.cs/#L49">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DryfiringWeaponEventArgs.cs/#L55">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_Player" data-uid="Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs.Player">Player</h4>
@@ -271,6 +308,9 @@
   </div>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IFirearmEvent.html">IFirearmEvent</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a>
   </div>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a>

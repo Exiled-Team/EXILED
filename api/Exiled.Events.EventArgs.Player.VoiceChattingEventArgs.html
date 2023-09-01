@@ -131,19 +131,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_VoiceChattingEventArgs__ctor_Exiled_API_Features_Player_PlayerRoles_Voice_VoiceModuleBase_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.%23ctor(Exiled.API.Features.Player%2CPlayerRoles.Voice.VoiceModuleBase%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_VoiceChattingEventArgs__ctor_Exiled_API_Features_Player_VoiceChat_Networking_VoiceMessage_PlayerRoles_Voice_VoiceModuleBase_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.%23ctor(Exiled.API.Features.Player%2CVoiceChat.Networking.VoiceMessage%2CPlayerRoles.Voice.VoiceModuleBase%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/VoiceChattingEventArgs.cs/#L32">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/VoiceChattingEventArgs.cs/#L37">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_VoiceChattingEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_VoiceChattingEventArgs__ctor_Exiled_API_Features_Player_PlayerRoles_Voice_VoiceModuleBase_System_Boolean_" data-uid="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.#ctor(Exiled.API.Features.Player,PlayerRoles.Voice.VoiceModuleBase,System.Boolean)">VoiceChattingEventArgs(Player, VoiceModuleBase, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_Player_VoiceChattingEventArgs__ctor_Exiled_API_Features_Player_VoiceChat_Networking_VoiceMessage_PlayerRoles_Voice_VoiceModuleBase_System_Boolean_" data-uid="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.#ctor(Exiled.API.Features.Player,VoiceChat.Networking.VoiceMessage,PlayerRoles.Voice.VoiceModuleBase,System.Boolean)">VoiceChattingEventArgs(Player, VoiceMessage, VoiceModuleBase, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.html">VoiceChattingEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public VoiceChattingEventArgs(Player player, VoiceModuleBase voiceModule, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public VoiceChattingEventArgs(Player player, VoiceMessage voiceMessage, VoiceModuleBase voiceModule, bool isAllowed = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -159,6 +159,12 @@
         <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
         <td><span class="parametername">player</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.Player"></inheritdoc>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">VoiceChat.Networking.VoiceMessage</span></td>
+        <td><span class="parametername">voiceMessage</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.VoiceMessage"></inheritdoc>
 </td>
       </tr>
       <tr>
@@ -182,7 +188,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/VoiceChattingEventArgs.cs/#L52">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/VoiceChattingEventArgs.cs/#L63">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.IsAllowed*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.IsAllowed">IsAllowed</h4>
@@ -213,7 +219,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/VoiceChattingEventArgs.cs/#L42">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/VoiceChattingEventArgs.cs/#L48">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_Player" data-uid="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.Player">Player</h4>
@@ -241,10 +247,41 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_VoiceMessage.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.VoiceMessage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/VoiceChattingEventArgs.cs/#L53">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_VoiceMessage_" data-uid="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.VoiceMessage*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_VoiceMessage" data-uid="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.VoiceMessage">VoiceMessage</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.html#Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_Player">Player</a>&apos;s <a class="xref" href="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.html#Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_VoiceMessage">VoiceMessage</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public VoiceMessage VoiceMessage { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">VoiceChat.Networking.VoiceMessage</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_VoiceModule.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.VoiceModule%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/VoiceChattingEventArgs.cs/#L47">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/VoiceChattingEventArgs.cs/#L58">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_VoiceModule_" data-uid="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.VoiceModule*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_VoiceModule" data-uid="Exiled.Events.EventArgs.Player.VoiceChattingEventArgs.VoiceModule">VoiceModule</h4>
@@ -295,7 +332,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_VoiceChattingEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.VoiceChattingEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/VoiceChattingEventArgs.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/VoiceChattingEventArgs.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

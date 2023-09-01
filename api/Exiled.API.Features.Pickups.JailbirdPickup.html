@@ -113,7 +113,13 @@
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Transform">Pickup.Transform</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Rigidbody">Pickup.Rigidbody</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Room">Pickup.Room</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_PhysicsModule">Pickup.PhysicsModule</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Serial">Pickup.Serial</a>
@@ -155,6 +161,9 @@
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_IsSpawned">Pickup.IsSpawned</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_IsLoaded">Pickup.IsLoaded</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Get_InventorySystem_Items_Pickups_ItemPickupBase_">Pickup.Get(ItemPickupBase)</a>
     </div>
     <div>
@@ -176,9 +185,6 @@
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Spawn_Exiled_API_Features_Pickups_Pickup_UnityEngine_Vector3_UnityEngine_Quaternion_Exiled_API_Features_Player_">Pickup.Spawn(Pickup, Vector3, Quaternion, Player)</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Clone">Pickup.Clone()</a>
-    </div>
-    <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_PickupTimeForPlayer_Exiled_API_Features_Player_">Pickup.PickupTimeForPlayer(Player)</a>
     </div>
     <div>
@@ -189,6 +195,9 @@
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Destroy">Pickup.Destroy()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Clone">Pickup.Clone()</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1">TypeCastObject&lt;Pickup&gt;.Cast&lt;TObject&gt;()</a>
@@ -227,128 +236,6 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class JailbirdPickup : Pickup, IWrapper&lt;ItemPickupBase&gt;, IWorldSpace, IPosition, IRotation, IWrapper&lt;JailbirdPickup&gt;</code></pre>
   </div>
-  <h3 id="fields">Fields
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_ChargesLimit.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.ChargesLimit%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L30">View Source</a>
-  </span>
-  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_ChargesLimit" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.ChargesLimit">ChargesLimit</h4>
-  <div class="markdown level1 summary"><p>Number of Charges use before the weapon will being destroy.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int ChargesLimit = 5</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_ChargesWarning.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.ChargesWarning%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L25">View Source</a>
-  </span>
-  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_ChargesWarning" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.ChargesWarning">ChargesWarning</h4>
-  <div class="markdown level1 summary"><p>Number of Charges use before the weapon become AlmostDepleted.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int ChargesWarning = 4</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_DamageLimit.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.DamageLimit%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L40">View Source</a>
-  </span>
-  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_DamageLimit" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.DamageLimit">DamageLimit</h4>
-  <div class="markdown level1 summary"><p>Number of Damage made before the weapon will being destroy.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const float DamageLimit = 500F</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Single</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_DamageWarning.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.DamageWarning%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L35">View Source</a>
-  </span>
-  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_DamageWarning" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.DamageWarning">DamageWarning</h4>
-  <div class="markdown level1 summary"><p>Number of Damage made before the weapon become AlmostDepleted.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const float DamageWarning = 400F</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Single</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
@@ -356,7 +243,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L64">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L44">View Source</a>
   </span>
   <a id="Exiled_API_Features_Pickups_JailbirdPickup_Base_" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.Base*"></a>
   <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_Base" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.Base">Base</h4>
@@ -384,150 +271,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_IsAlmostDepleted.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.IsAlmostDepleted%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_ChargeDamage.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.ChargeDamage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L109">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L54">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Pickups_JailbirdPickup_IsAlmostDepleted_" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.IsAlmostDepleted*"></a>
-  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_IsAlmostDepleted" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.IsAlmostDepleted">IsAlmostDepleted</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether the weapon warn the player than the Item will be broken.</p>
+  <a id="Exiled_API_Features_Pickups_JailbirdPickup_ChargeDamage_" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.ChargeDamage*"></a>
+  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_ChargeDamage" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.ChargeDamage">ChargeDamage</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the amount of damage dealt with a Jailbird charge hit.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsAlmostDepleted { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_IsChargesWarning.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.IsChargesWarning%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L119">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Pickups_JailbirdPickup_IsChargesWarning_" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.IsChargesWarning*"></a>
-  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_IsChargesWarning" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.IsChargesWarning">IsChargesWarning</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether .</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsChargesWarning { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_IsDamageWarning.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.IsDamageWarning%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L114">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Pickups_JailbirdPickup_IsDamageWarning_" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.IsDamageWarning*"></a>
-  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_IsDamageWarning" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.IsDamageWarning">IsDamageWarning</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether .</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsDamageWarning { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_RemainingCharges.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.RemainingCharges%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L100">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Pickups_JailbirdPickup_RemainingCharges_" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.RemainingCharges*"></a>
-  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_RemainingCharges" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.RemainingCharges">RemainingCharges</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the amount of charges remaining before the Jailbird breaks.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int RemainingCharges { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Exiled_API_Features_Pickups_JailbirdPickup_RemainingCharges_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Modifying this value will directly modify <a class="xref" href="Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_TotalCharges">TotalCharges</a>.</p>
-</div>
-  <h5 id="Exiled_API_Features_Pickups_JailbirdPickup_RemainingCharges_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_TotalCharges">TotalCharges</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_RemainingDamage.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.RemainingDamage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L80">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Pickups_JailbirdPickup_RemainingDamage_" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.RemainingDamage*"></a>
-  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_RemainingDamage" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.RemainingDamage">RemainingDamage</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the amount of damage remaining before the Jailbird breaks.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float RemainingDamage { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float ChargeDamage { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -544,19 +300,105 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Exiled_API_Features_Pickups_JailbirdPickup_RemainingDamage_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Modifying this value will directly modify <a class="xref" href="Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_TotalDamageDealt">TotalDamageDealt</a>.</p>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_FlashDuration.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.FlashDuration%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L59">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Pickups_JailbirdPickup_FlashDuration_" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.FlashDuration*"></a>
+  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_FlashDuration" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.FlashDuration">FlashDuration</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the amount of time in seconds that the <span class="xref">CustomPlayerEffects.Flashed</span> effect will be applied on being hit.</p>
 </div>
-  <h5 id="Exiled_API_Features_Pickups_JailbirdPickup_RemainingDamage_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_TotalDamageDealt">TotalDamageDealt</a></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float FlashDuration { get; set; }</code></pre>
   </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_MeleeDamage.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.MeleeDamage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L49">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Pickups_JailbirdPickup_MeleeDamage_" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.MeleeDamage*"></a>
+  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_MeleeDamage" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.MeleeDamage">MeleeDamage</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the amount of damage dealt with a Jailbird melee hit.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MeleeDamage { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_Radius.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.Radius%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L64">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Pickups_JailbirdPickup_Radius_" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.Radius*"></a>
+  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_Radius" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.Radius">Radius</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the radius of the Jailbird&apos;s hit register.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Radius { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_TotalCharges.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.TotalCharges%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L89">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L78">View Source</a>
   </span>
   <a id="Exiled_API_Features_Pickups_JailbirdPickup_TotalCharges_" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.TotalCharges*"></a>
   <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_TotalCharges" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.TotalCharges">TotalCharges</h4>
@@ -613,6 +455,37 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_WearState.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.WearState%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L87">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Pickups_JailbirdPickup_WearState_" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.WearState*"></a>
+  <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_WearState" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.WearState">WearState</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">InventorySystem.Items.Jailbird.JailbirdWearState</span> of the item.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public JailbirdWearState WearState { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">InventorySystem.Items.Jailbird.JailbirdWearState</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -620,7 +493,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_JailbirdPickup_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.JailbirdPickup.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L125">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/JailbirdPickup.cs/#L97">View Source</a>
   </span>
   <a id="Exiled_API_Features_Pickups_JailbirdPickup_ToString_" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.ToString*"></a>
   <h4 id="Exiled_API_Features_Pickups_JailbirdPickup_ToString" data-uid="Exiled.API.Features.Pickups.JailbirdPickup.ToString">ToString()</h4>

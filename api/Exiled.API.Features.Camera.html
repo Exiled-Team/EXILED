@@ -94,7 +94,9 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera</span>&gt;</div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a></div>
     <div><a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -121,7 +123,7 @@
   <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
   <h5 id="Exiled_API_Features_Camera_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Camera : IWrapper&lt;Scp079Camera&gt;, IPosition</code></pre>
+    <pre><code class="lang-csharp hljs">public class Camera : IWrapper&lt;Scp079Camera&gt;, IWorldSpace, IPosition, IRotation</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -130,7 +132,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L156">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L160">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Base_" data-uid="Exiled.API.Features.Camera.Base*"></a>
   <h4 id="Exiled_API_Features_Camera_Base" data-uid="Exiled.API.Features.Camera.Base">Base</h4>
@@ -161,7 +163,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_GameObject.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.GameObject%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L161">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L165">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_GameObject_" data-uid="Exiled.API.Features.Camera.GameObject*"></a>
   <h4 id="Exiled_API_Features_Camera_GameObject" data-uid="Exiled.API.Features.Camera.GameObject">GameObject</h4>
@@ -192,7 +194,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Id.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Id%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L176">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L180">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Id_" data-uid="Exiled.API.Features.Camera.Id*"></a>
   <h4 id="Exiled_API_Features_Camera_Id" data-uid="Exiled.API.Features.Camera.Id">Id</h4>
@@ -223,7 +225,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_IsBeingUsed.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.IsBeingUsed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L218">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L219">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_IsBeingUsed_" data-uid="Exiled.API.Features.Camera.IsBeingUsed*"></a>
   <h4 id="Exiled_API_Features_Camera_IsBeingUsed" data-uid="Exiled.API.Features.Camera.IsBeingUsed">IsBeingUsed</h4>
@@ -254,7 +256,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_List.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.List%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L145">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L149">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_List_" data-uid="Exiled.API.Features.Camera.List*"></a>
   <h4 id="Exiled_API_Features_Camera_List" data-uid="Exiled.API.Features.Camera.List">List</h4>
@@ -263,7 +265,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;Camera&gt; List { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static IReadOnlyCollection&lt;Camera&gt; List { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -275,7 +277,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Camera.html">Camera</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyCollection</span>&lt;<a class="xref" href="Exiled.API.Features.Camera.html">Camera</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -285,7 +287,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Name.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L171">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L175">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Name_" data-uid="Exiled.API.Features.Camera.Name*"></a>
   <h4 id="Exiled_API_Features_Camera_Name" data-uid="Exiled.API.Features.Camera.Name">Name</h4>
@@ -316,7 +318,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Position.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L199">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L200">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Position_" data-uid="Exiled.API.Features.Camera.Position*"></a>
   <h4 id="Exiled_API_Features_Camera_Position" data-uid="Exiled.API.Features.Camera.Position">Position</h4>
@@ -347,7 +349,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Random.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Random%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L151">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L155">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Random_" data-uid="Exiled.API.Features.Camera.Random*"></a>
   <h4 id="Exiled_API_Features_Camera_Random" data-uid="Exiled.API.Features.Camera.Random">Random</h4>
@@ -379,7 +381,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Room.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Room%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L181">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L185">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Room_" data-uid="Exiled.API.Features.Camera.Room*"></a>
   <h4 id="Exiled_API_Features_Camera_Room" data-uid="Exiled.API.Features.Camera.Room">Room</h4>
@@ -410,7 +412,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Rotation.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Rotation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L204">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L205">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Rotation_" data-uid="Exiled.API.Features.Camera.Rotation*"></a>
   <h4 id="Exiled_API_Features_Camera_Rotation" data-uid="Exiled.API.Features.Camera.Rotation">Rotation</h4>
@@ -419,7 +421,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Vector3 Rotation { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Quaternion Rotation { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -431,7 +433,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="xref">UnityEngine.Quaternion</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -441,7 +443,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Transform.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Transform%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L166">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L170">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Transform_" data-uid="Exiled.API.Features.Camera.Transform*"></a>
   <h4 id="Exiled_API_Features_Camera_Transform" data-uid="Exiled.API.Features.Camera.Transform">Transform</h4>
@@ -472,7 +474,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L191">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L195">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Type_" data-uid="Exiled.API.Features.Camera.Type*"></a>
   <h4 id="Exiled_API_Features_Camera_Type" data-uid="Exiled.API.Features.Camera.Type">Type</h4>
@@ -503,7 +505,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Zone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Zone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L186">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L190">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Zone_" data-uid="Exiled.API.Features.Camera.Zone*"></a>
   <h4 id="Exiled_API_Features_Camera_Zone" data-uid="Exiled.API.Features.Camera.Zone">Zone</h4>
@@ -534,7 +536,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Zoom.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Zoom%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L213">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L214">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Zoom_" data-uid="Exiled.API.Features.Camera.Zoom*"></a>
   <h4 id="Exiled_API_Features_Camera_Zoom" data-uid="Exiled.API.Features.Camera.Zoom">Zoom</h4>
@@ -567,7 +569,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Get_Exiled_API_Enums_CameraType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Get(Exiled.API.Enums.CameraType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L257">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L258">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Get_" data-uid="Exiled.API.Features.Camera.Get*"></a>
   <h4 id="Exiled_API_Features_Camera_Get_Exiled_API_Enums_CameraType_" data-uid="Exiled.API.Features.Camera.Get(Exiled.API.Enums.CameraType)">Get(CameraType)</h4>
@@ -617,7 +619,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Get_PlayerRoles_PlayableScps_Scp079_Cameras_Scp079Camera_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Get(PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L236">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L237">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Get_" data-uid="Exiled.API.Features.Camera.Get*"></a>
   <h4 id="Exiled_API_Features_Camera_Get_PlayerRoles_PlayableScps_Scp079_Cameras_Scp079Camera_" data-uid="Exiled.API.Features.Camera.Get(PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera)">Get(Scp079Camera)</h4>
@@ -667,7 +669,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Get_System_Collections_Generic_IEnumerable_PlayerRoles_PlayableScps_Scp079_Cameras_Scp079Camera__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Get(System.Collections.Generic.IEnumerable%7BPlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L229">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L230">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Get_" data-uid="Exiled.API.Features.Camera.Get*"></a>
   <h4 id="Exiled_API_Features_Camera_Get_System_Collections_Generic_IEnumerable_PlayerRoles_PlayableScps_Scp079_Cameras_Scp079Camera__" data-uid="Exiled.API.Features.Camera.Get(System.Collections.Generic.IEnumerable{PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera})">Get(IEnumerable&lt;Scp079Camera&gt;)</h4>
@@ -717,7 +719,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Get_System_Func_Exiled_API_Features_Camera_System_Boolean__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Get(System.Func%7BExiled.API.Features.Camera%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L264">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L265">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Get_" data-uid="Exiled.API.Features.Camera.Get*"></a>
   <h4 id="Exiled_API_Features_Camera_Get_System_Func_Exiled_API_Features_Camera_System_Boolean__" data-uid="Exiled.API.Features.Camera.Get(System.Func{Exiled.API.Features.Camera,System.Boolean})">Get(Func&lt;Camera, Boolean&gt;)</h4>
@@ -767,7 +769,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Get_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Get(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L250">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L251">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Get_" data-uid="Exiled.API.Features.Camera.Get*"></a>
   <h4 id="Exiled_API_Features_Camera_Get_System_String_" data-uid="Exiled.API.Features.Camera.Get(System.String)">Get(String)</h4>
@@ -817,7 +819,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_Get_System_UInt32_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.Get(System.UInt32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L243">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L244">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_Get_" data-uid="Exiled.API.Features.Camera.Get*"></a>
   <h4 id="Exiled_API_Features_Camera_Get_System_UInt32_" data-uid="Exiled.API.Features.Camera.Get(System.UInt32)">Get(UInt32)</h4>
@@ -867,7 +869,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L270">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L319">View Source</a>
   </span>
   <a id="Exiled_API_Features_Camera_ToString_" data-uid="Exiled.API.Features.Camera.ToString*"></a>
   <h4 id="Exiled_API_Features_Camera_ToString" data-uid="Exiled.API.Features.Camera.ToString">ToString()</h4>
@@ -896,12 +898,354 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">System.Object.ToString()</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_TryGet_Exiled_API_Enums_CameraType_Exiled_API_Features_Camera__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.TryGet(Exiled.API.Enums.CameraType%2CExiled.API.Features.Camera%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L305">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Camera_TryGet_" data-uid="Exiled.API.Features.Camera.TryGet*"></a>
+  <h4 id="Exiled_API_Features_Camera_TryGet_Exiled_API_Enums_CameraType_Exiled_API_Features_Camera__" data-uid="Exiled.API.Features.Camera.TryGet(Exiled.API.Enums.CameraType,Exiled.API.Features.Camera@)">TryGet(CameraType, out Camera)</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> given the specified <code data-dev-comment-type="paramref" class="paramref">cameraType</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGet(CameraType cameraType, out Camera result)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Enums.CameraType.html">CameraType</a></td>
+        <td><span class="parametername">cameraType</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Enums.CameraType.html">CameraType</a> to search for.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Camera.html">Camera</a></td>
+        <td><span class="parametername">result</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> with the given <a class="xref" href="Exiled.API.Enums.CameraType.html">CameraType</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> is not <span class="xref">null</span>, or <span class="xref">false</span> if <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_TryGet_PlayerRoles_PlayableScps_Scp079_Cameras_Scp079Camera_Exiled_API_Features_Camera__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.TryGet(PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera%2CExiled.API.Features.Camera%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L281">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Camera_TryGet_" data-uid="Exiled.API.Features.Camera.TryGet*"></a>
+  <h4 id="Exiled_API_Features_Camera_TryGet_PlayerRoles_PlayableScps_Scp079_Cameras_Scp079Camera_Exiled_API_Features_Camera__" data-uid="Exiled.API.Features.Camera.TryGet(PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera,Exiled.API.Features.Camera@)">TryGet(Scp079Camera, out Camera)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> belonging to the <span class="xref">PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera</span>, if any.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGet(Scp079Camera camera, out Camera result)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera</span></td>
+        <td><span class="parametername">camera</span></td>
+        <td><p>The base <span class="xref">PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Camera.html">Camera</a></td>
+        <td><span class="parametername">result</span></td>
+        <td><p>The instance of <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> which <span class="xref">PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera</span> base.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> is not <span class="xref">null</span>, or <span class="xref">false</span> if <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_TryGet_System_Collections_Generic_IEnumerable_PlayerRoles_PlayableScps_Scp079_Cameras_Scp079Camera__System_Collections_Generic_IEnumerable_Exiled_API_Features_Camera___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.TryGet(System.Collections.Generic.IEnumerable%7BPlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera%7D%2CSystem.Collections.Generic.IEnumerable%7BExiled.API.Features.Camera%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L273">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Camera_TryGet_" data-uid="Exiled.API.Features.Camera.TryGet*"></a>
+  <h4 id="Exiled_API_Features_Camera_TryGet_System_Collections_Generic_IEnumerable_PlayerRoles_PlayableScps_Scp079_Cameras_Scp079Camera__System_Collections_Generic_IEnumerable_Exiled_API_Features_Camera___" data-uid="Exiled.API.Features.Camera.TryGet(System.Collections.Generic.IEnumerable{PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera},System.Collections.Generic.IEnumerable{Exiled.API.Features.Camera}@)">TryGet(IEnumerable&lt;Scp079Camera&gt;, out IEnumerable&lt;Camera&gt;)</h4>
+  <div class="markdown level1 summary"><p>Get a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> which contains all the <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> instance given a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <span class="xref">PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGet(IEnumerable&lt;Scp079Camera&gt; cameras, out IEnumerable&lt;Camera&gt; result)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera</span>&gt;</td>
+        <td><span class="parametername">cameras</span></td>
+        <td><p>the <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <span class="xref">PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Camera.html">Camera</a>&gt;</td>
+        <td><span class="parametername">result</span></td>
+        <td><p>return a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a>, it&apos;s can be valid, or <span class="xref">null</span>, depending if <span class="xref">PlayerRoles.PlayableScps.Scp079.Cameras.Scp079Camera</span> it&apos;s null or not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>a bool result if return sequence contain valid element.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_TryGet_System_Func_Exiled_API_Features_Camera_System_Boolean__System_Collections_Generic_IEnumerable_Exiled_API_Features_Camera___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.TryGet(System.Func%7BExiled.API.Features.Camera%2CSystem.Boolean%7D%2CSystem.Collections.Generic.IEnumerable%7BExiled.API.Features.Camera%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L313">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Camera_TryGet_" data-uid="Exiled.API.Features.Camera.TryGet*"></a>
+  <h4 id="Exiled_API_Features_Camera_TryGet_System_Func_Exiled_API_Features_Camera_System_Boolean__System_Collections_Generic_IEnumerable_Exiled_API_Features_Camera___" data-uid="Exiled.API.Features.Camera.TryGet(System.Func{Exiled.API.Features.Camera,System.Boolean},System.Collections.Generic.IEnumerable{Exiled.API.Features.Camera}@)">TryGet(Func&lt;Camera, Boolean&gt;, out IEnumerable&lt;Camera&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> filtered based on a predicate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGet(Func&lt;Camera, bool&gt; predicate, out IEnumerable&lt;Camera&gt; result)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Exiled.API.Features.Camera.html">Camera</a>, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">predicate</span></td>
+        <td><p>The condition to satify.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Camera.html">Camera</a>&gt;</td>
+        <td><span class="parametername">result</span></td>
+        <td><p>A <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> which contains elements that satify the condition.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> is not <span class="xref">null</span>, or <span class="xref">false</span> if <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_TryGet_System_String_Exiled_API_Features_Camera__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.TryGet(System.String%2CExiled.API.Features.Camera%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L297">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Camera_TryGet_" data-uid="Exiled.API.Features.Camera.TryGet*"></a>
+  <h4 id="Exiled_API_Features_Camera_TryGet_System_String_Exiled_API_Features_Camera__" data-uid="Exiled.API.Features.Camera.TryGet(System.String,Exiled.API.Features.Camera@)">TryGet(String, out Camera)</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> given the specified <code data-dev-comment-type="paramref" class="paramref">cameraName</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGet(string cameraName, out Camera result)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">cameraName</span></td>
+        <td><p>The name of the camera.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Camera.html">Camera</a></td>
+        <td><span class="parametername">result</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a>, if <code data-dev-comment-type="paramref" class="paramref">cameraName</code> is valid.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> is not <span class="xref">null</span>, or <span class="xref">false</span> if <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Camera_TryGet_System_UInt32_Exiled_API_Features_Camera__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Camera.TryGet(System.UInt32%2CExiled.API.Features.Camera%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Camera.cs/#L289">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Camera_TryGet_" data-uid="Exiled.API.Features.Camera.TryGet*"></a>
+  <h4 id="Exiled_API_Features_Camera_TryGet_System_UInt32_Exiled_API_Features_Camera__" data-uid="Exiled.API.Features.Camera.TryGet(System.UInt32,Exiled.API.Features.Camera@)">TryGet(UInt32, out Camera)</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> given the specified <code data-dev-comment-type="paramref" class="paramref">cameraId</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGet(uint cameraId, out Camera result)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.UInt32</span></td>
+        <td><span class="parametername">cameraId</span></td>
+        <td><p>The id camera to be shearch.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Camera.html">Camera</a></td>
+        <td><span class="parametername">result</span></td>
+        <td><p>the result of <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a>, if <code data-dev-comment-type="paramref" class="paramref">cameraId</code> is valid.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> is not <span class="xref">null</span>, or <span class="xref">false</span> if <a class="xref" href="Exiled.API.Features.Camera.html">Camera</a> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
   </div>
   <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a>
+  </div>
+  <div>
       <a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

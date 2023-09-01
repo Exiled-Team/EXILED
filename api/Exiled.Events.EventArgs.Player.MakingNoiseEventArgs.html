@@ -94,6 +94,7 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a></div>
   </div>
   <div class="inheritedMembers">
@@ -124,25 +125,25 @@
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
   <h5 id="Exiled_Events_EventArgs_Player_MakingNoiseEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MakingNoiseEventArgs : IPlayerEvent, IExiledEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public class MakingNoiseEventArgs : IPlayerEvent, IDeniableEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_MakingNoiseEventArgs__ctor_PlayerRoles_FirstPersonControl_Thirdperson_AnimatedCharacterModel_System_Single_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.%23ctor(PlayerRoles.FirstPersonControl.Thirdperson.AnimatedCharacterModel%2CSystem.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_MakingNoiseEventArgs__ctor_Exiled_API_Features_Player_System_Single_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.%23ctor(Exiled.API.Features.Player%2CSystem.Single%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/MakingNoiseEventArgs.cs/#L30">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/MakingNoiseEventArgs.cs/#L25">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_MakingNoiseEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_MakingNoiseEventArgs__ctor_PlayerRoles_FirstPersonControl_Thirdperson_AnimatedCharacterModel_System_Single_" data-uid="Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.#ctor(PlayerRoles.FirstPersonControl.Thirdperson.AnimatedCharacterModel,System.Single)">MakingNoiseEventArgs(AnimatedCharacterModel, Single)</h4>
+  <h4 id="Exiled_Events_EventArgs_Player_MakingNoiseEventArgs__ctor_Exiled_API_Features_Player_System_Single_System_Boolean_" data-uid="Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.#ctor(Exiled.API.Features.Player,System.Single,System.Boolean)">MakingNoiseEventArgs(Player, Single, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.html">MakingNoiseEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MakingNoiseEventArgs(AnimatedCharacterModel animatedCharacterModel, float distance)</code></pre>
+    <pre><code class="lang-csharp hljs">public MakingNoiseEventArgs(Player player, float distance, bool isAllowed = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -155,16 +156,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">PlayerRoles.FirstPersonControl.Thirdperson.AnimatedCharacterModel</span></td>
-        <td><span class="parametername">animatedCharacterModel</span></td>
-        <td><p>The <span class="xref">PlayerRoles.FirstPersonControl.Thirdperson.AnimatedCharacterModel</span> instance.</p>
-</td>
+        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
+        <td><span class="parametername">player</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.Player"></inheritdoc></td>
       </tr>
       <tr>
         <td><span class="xref">System.Single</span></td>
         <td><span class="parametername">distance</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.Distance"></inheritdoc>
-</td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.Distance"></inheritdoc></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">isAllowed</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.IsAllowed"></inheritdoc></td>
       </tr>
     </tbody>
   </table>
@@ -175,16 +179,16 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_MakingNoiseEventArgs_Distance.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.Distance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/MakingNoiseEventArgs.cs/#L44">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/MakingNoiseEventArgs.cs/#L40">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_MakingNoiseEventArgs_Distance_" data-uid="Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.Distance*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_MakingNoiseEventArgs_Distance" data-uid="Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.Distance">Distance</h4>
-  <div class="markdown level1 summary"><p>Gets the footsteps distance.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the footsteps distance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float Distance { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float Distance { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -203,10 +207,40 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_MakingNoiseEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/MakingNoiseEventArgs.cs/#L43">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_MakingNoiseEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.IsAllowed*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_MakingNoiseEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.IsAllowed">IsAllowed</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsAllowed { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_MakingNoiseEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/MakingNoiseEventArgs.cs/#L39">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/MakingNoiseEventArgs.cs/#L35">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_MakingNoiseEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_MakingNoiseEventArgs_Player" data-uid="Exiled.Events.EventArgs.Player.MakingNoiseEventArgs.Player">Player</h4>
@@ -237,6 +271,9 @@
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a>
   </div>
   <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a>
+  </div>
+  <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
@@ -254,7 +291,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_MakingNoiseEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.MakingNoiseEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/MakingNoiseEventArgs.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/MakingNoiseEventArgs.cs/#L17" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

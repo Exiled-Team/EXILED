@@ -91,7 +91,8 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html">TypeCastObject</a>&lt;<a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a>&gt;</div>
     <div class="level2"><a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a></div>
-    <div class="level3"><span class="xref">Scp330Pickup</span></div>
+    <div class="level3"><a class="xref" href="Exiled.API.Features.Pickups.UsablePickup.html">UsablePickup</a></div>
+    <div class="level4"><span class="xref">Scp330Pickup</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
@@ -104,6 +105,12 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
+      <a class="xref" href="Exiled.API.Features.Pickups.UsablePickup.html#Exiled_API_Features_Pickups_UsablePickup_UseTime">UsablePickup.UseTime</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Pickups.UsablePickup.html#Exiled_API_Features_Pickups_UsablePickup_MaxCancellableTime">UsablePickup.MaxCancellableTime</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_List">Pickup.List</a>
     </div>
     <div>
@@ -113,7 +120,13 @@
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Transform">Pickup.Transform</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Rigidbody">Pickup.Rigidbody</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Room">Pickup.Room</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_PhysicsModule">Pickup.PhysicsModule</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Serial">Pickup.Serial</a>
@@ -155,6 +168,9 @@
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_IsSpawned">Pickup.IsSpawned</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_IsLoaded">Pickup.IsLoaded</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Get_InventorySystem_Items_Pickups_ItemPickupBase_">Pickup.Get(ItemPickupBase)</a>
     </div>
     <div>
@@ -176,9 +192,6 @@
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Spawn_Exiled_API_Features_Pickups_Pickup_UnityEngine_Vector3_UnityEngine_Quaternion_Exiled_API_Features_Player_">Pickup.Spawn(Pickup, Vector3, Quaternion, Player)</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Clone">Pickup.Clone()</a>
-    </div>
-    <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_PickupTimeForPlayer_Exiled_API_Features_Player_">Pickup.PickupTimeForPlayer(Player)</a>
     </div>
     <div>
@@ -189,6 +202,9 @@
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Destroy">Pickup.Destroy()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Clone">Pickup.Clone()</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1">TypeCastObject&lt;Pickup&gt;.Cast&lt;TObject&gt;()</a>
@@ -225,7 +241,7 @@
   <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
   <h5 id="Exiled_API_Features_Pickups_Scp330Pickup_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Scp330Pickup : Pickup, IWrapper&lt;ItemPickupBase&gt;, IWorldSpace, IPosition, IRotation, IWrapper&lt;Scp330Pickup&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class Scp330Pickup : UsablePickup, IWrapper&lt;ItemPickupBase&gt;, IWorldSpace, IPosition, IRotation, IWrapper&lt;Scp330Pickup&gt;</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>

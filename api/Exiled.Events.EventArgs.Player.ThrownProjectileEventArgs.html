@@ -94,6 +94,8 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPickupEvent.html">IPickupEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a></div>
   </div>
   <div class="inheritedMembers">
@@ -124,25 +126,25 @@
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
   <h5 id="Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ThrownProjectileEventArgs : IPlayerEvent, IExiledEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public class ThrownProjectileEventArgs : IPlayerEvent, IItemEvent, IPickupEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_ThrowableProjectiles_ThrowableItem_InventorySystem_Items_ThrowableProjectiles_ThrownProjectile_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.%23ctor(Exiled.API.Features.Player%2CInventorySystem.Items.ThrowableProjectiles.ThrowableItem%2CInventorySystem.Items.ThrowableProjectiles.ThrownProjectile)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs__ctor_InventorySystem_Items_ThrowableProjectiles_ThrownProjectile_Exiled_API_Features_Player_InventorySystem_Items_ThrowableProjectiles_ThrowableItem_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.%23ctor(InventorySystem.Items.ThrowableProjectiles.ThrownProjectile%2CExiled.API.Features.Player%2CInventorySystem.Items.ThrowableProjectiles.ThrowableItem)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ThrownProjectileEventArgs.cs/#L29">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_ThrowableProjectiles_ThrowableItem_InventorySystem_Items_ThrowableProjectiles_ThrownProjectile_" data-uid="Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.ThrowableProjectiles.ThrowableItem,InventorySystem.Items.ThrowableProjectiles.ThrownProjectile)">ThrownProjectileEventArgs(Player, ThrowableItem, ThrownProjectile)</h4>
+  <h4 id="Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs__ctor_InventorySystem_Items_ThrowableProjectiles_ThrownProjectile_Exiled_API_Features_Player_InventorySystem_Items_ThrowableProjectiles_ThrowableItem_" data-uid="Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.#ctor(InventorySystem.Items.ThrowableProjectiles.ThrownProjectile,Exiled.API.Features.Player,InventorySystem.Items.ThrowableProjectiles.ThrowableItem)">ThrownProjectileEventArgs(ThrownProjectile, Player, ThrowableItem)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.html">ThrownProjectileEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ThrownProjectileEventArgs(Player player, ThrowableItem item, ThrownProjectile projectile)</code></pre>
+    <pre><code class="lang-csharp hljs">public ThrownProjectileEventArgs(ThrownProjectile projectile, Player player, ThrowableItem item)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -155,6 +157,11 @@
     </thead>
     <tbody>
       <tr>
+        <td><span class="xref">InventorySystem.Items.ThrowableProjectiles.ThrownProjectile</span></td>
+        <td><span class="parametername">projectile</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Projectile"></inheritdoc></td>
+      </tr>
+      <tr>
         <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
         <td><span class="parametername">player</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Player"></inheritdoc></td>
@@ -164,15 +171,70 @@
         <td><span class="parametername">item</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Throwable"></inheritdoc></td>
       </tr>
-      <tr>
-        <td><span class="xref">InventorySystem.Items.ThrowableProjectiles.ThrownProjectile</span></td>
-        <td><span class="parametername">projectile</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Projectile"></inheritdoc></td>
-      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
   </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs_Item.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ThrownProjectileEventArgs.cs/#L47">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs_Item_" data-uid="Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Item*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs_Item" data-uid="Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Item">Item</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Item Item { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs_Pickup.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Pickup%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ThrownProjectileEventArgs.cs/#L55">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs_Pickup_" data-uid="Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Pickup*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs_Pickup" data-uid="Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Pickup">Pickup</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Pickup Pickup { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -209,7 +271,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs_Projectile.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Projectile%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ThrownProjectileEventArgs.cs/#L49">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ThrownProjectileEventArgs.cs/#L52">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs_Projectile_" data-uid="Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Projectile*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs_Projectile" data-uid="Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs.Projectile">Projectile</h4>
@@ -269,6 +331,12 @@
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPickupEvent.html">IPickupEvent</a>
   </div>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a>

@@ -1,0 +1,1767 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Npc
+   | EXILED Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Npc
+   | EXILED Docs ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../assets/Exiled_Icon_50x50.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Exiled.API.Features.Npc">
+  
+  
+  <h1 id="Exiled_API_Features_Npc" data-uid="Exiled.API.Features.Npc" class="text-break">Class Npc
+  </h1>
+  <div class="markdown level0 summary"><p>Wrapper class for handling NPC players.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Exiled.API.Features.Player.html">Player</a></div>
+    <div class="level2"><span class="xref">Npc</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.API.Features.Core.Interfaces.IEntity.html">IEntity</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Dictionary">Player.Dictionary</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_UserIdsCache">Player.UserIdsCache</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ComponentsInChildren">Player.ComponentsInChildren</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_FriendlyFireMultiplier">Player.FriendlyFireMultiplier</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_CustomRoleFriendlyFireMultiplier">Player.CustomRoleFriendlyFireMultiplier</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_UniqueRole">Player.UniqueRole</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ReferenceHub">Player.ReferenceHub</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RoleManager">Player.RoleManager</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Ammo">Player.Ammo</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GameObject">Player.GameObject</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Transform">Player.Transform</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_CurrentHint">Player.CurrentHint</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_HasHint">Player.HasHint</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_VoiceModule">Player.VoiceModule</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RadioPlayback">Player.RadioPlayback</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_HintDisplay">Player.HintDisplay</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Inventory">Player.Inventory</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_CameraTransform">Player.CameraTransform</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_VoiceChatMuteFlags">Player.VoiceChatMuteFlags</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Id">Player.Id</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_UserId">Player.UserId</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_CustomUserId">Player.CustomUserId</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RawUserId">Player.RawUserId</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AuthenticationToken">Player.AuthenticationToken</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AuthenticationType">Player.AuthenticationType</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsVerified">Player.IsVerified</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsNPC">Player.IsNPC</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_HasCustomName">Player.HasCustomName</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_DisplayNickname">Player.DisplayNickname</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_CustomName">Player.CustomName</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Nickname">Player.Nickname</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_InfoArea">Player.InfoArea</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_CustomInfo">Player.CustomInfo</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_InfoViewRange">Player.InfoViewRange</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_SessionVariables">Player.SessionVariables</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_DoNotTrack">Player.DoNotTrack</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsConnected">Player.IsConnected</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_HasReservedSlot">Player.HasReservedSlot</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RemoteAdminAccess">Player.RemoteAdminAccess</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_KickPower">Player.KickPower</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsOverwatchEnabled">Player.IsOverwatchEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsNoclipPermitted">Player.IsNoclipPermitted</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Cuffer">Player.Cuffer</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Position">Player.Position</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RelativePosition">Player.RelativePosition</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Rotation">Player.Rotation</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Velocity">Player.Velocity</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_LeadingTeam">Player.LeadingTeam</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RemoteAdminPermissions">Player.RemoteAdminPermissions</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Role">Player.Role</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ScpPreferences">Player.ScpPreferences</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsCuffed">Player.IsCuffed</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsReloading">Player.IsReloading</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsAimingDownWeapon">Player.IsAimingDownWeapon</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_HasFlashlightModuleEnabled">Player.HasFlashlightModuleEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsJumping">Player.IsJumping</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IPAddress">Player.IPAddress</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Sender">Player.Sender</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Connection">Player.Connection</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_NetworkIdentity">Player.NetworkIdentity</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_NetId">Player.NetId</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsHost">Player.IsHost</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsAlive">Player.IsAlive</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsDead">Player.IsDead</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsNTF">Player.IsNTF</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsCHI">Player.IsCHI</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsScp">Player.IsScp</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsHuman">Player.IsHuman</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsTutorial">Player.IsTutorial</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsFriendlyFireEnabled">Player.IsFriendlyFireEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Scale">Player.Scale</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsBypassModeEnabled">Player.IsBypassModeEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsMuted">Player.IsMuted</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsGlobalMuted">Player.IsGlobalMuted</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsIntercomMuted">Player.IsIntercomMuted</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsSpeaking">Player.IsSpeaking</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_VoiceColor">Player.VoiceColor</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_VoiceChannel">Player.VoiceChannel</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsTransmitting">Player.IsTransmitting</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsGodModeEnabled">Player.IsGodModeEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_UnitName">Player.UnitName</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Health">Player.Health</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_MaxHealth">Player.MaxHealth</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ArtificialHealth">Player.ArtificialHealth</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_MaxArtificialHealth">Player.MaxArtificialHealth</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_HumeShield">Player.HumeShield</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ActiveArtificialHealthProcesses">Player.ActiveArtificialHealthProcesses</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_HumeShieldStat">Player.HumeShieldStat</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_CurrentItem">Player.CurrentItem</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_CurrentArmor">Player.CurrentArmor</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_StaminaStat">Player.StaminaStat</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Stamina">Player.Stamina</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsStaffBypassEnabled">Player.IsStaffBypassEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GroupName">Player.GroupName</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_CurrentRoom">Player.CurrentRoom</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Zone">Player.Zone</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Lift">Player.Lift</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ActiveEffects">Player.ActiveEffects</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Group">Player.Group</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RankColor">Player.RankColor</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RankName">Player.RankName</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GlobalBadge">Player.GlobalBadge</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_BadgeHidden">Player.BadgeHidden</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsNorthwoodStaff">Player.IsNorthwoodStaff</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsGlobalModerator">Player.IsGlobalModerator</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsInPocketDimension">Player.IsInPocketDimension</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsUsingStamina">Player.IsUsingStamina</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Ping">Player.Ping</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Items">Player.Items</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsInventoryEmpty">Player.IsInventoryEmpty</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsInventoryFull">Player.IsInventoryFull</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AgreedToRecording">Player.AgreedToRecording</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_CurrentSpectatingPlayers">Player.CurrentSpectatingPlayers</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Preferences">Player.Preferences</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Footprint">Player.Footprint</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsSpawnProtected">Player.IsSpawnProtected</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Get_Exiled_API_Enums_Side_">Player.Get(Side)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Get_PlayerRoles_Team_">Player.Get(Team)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Get_PlayerRoles_RoleTypeId_">Player.Get(RoleTypeId)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Get_System_Func_Exiled_API_Features_Player_System_Boolean__">Player.Get(Func&lt;Player, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Get_Mirror_NetworkIdentity_">Player.Get(NetworkIdentity)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Get_PluginAPI_Core_Player_">Player.Get(Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGet_CommandSystem_ICommandSender_Exiled_API_Features_Player__">Player.TryGet(ICommandSender, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGet_Footprinting_Footprint_Exiled_API_Features_Player__">Player.TryGet(Footprint, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGet_CommandSender_Exiled_API_Features_Player__">Player.TryGet(CommandSender, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGet_ReferenceHub_Exiled_API_Features_Player__">Player.TryGet(ReferenceHub, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGet_System_UInt32_Exiled_API_Features_Player__">Player.TryGet(UInt32, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGet_Mirror_NetworkIdentity_Exiled_API_Features_Player__">Player.TryGet(NetworkIdentity, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGet_Mirror_NetworkConnection_Exiled_API_Features_Player__">Player.TryGet(NetworkConnection, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGet_UnityEngine_GameObject_Exiled_API_Features_Player__">Player.TryGet(GameObject, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGet_System_Int32_Exiled_API_Features_Player__">Player.TryGet(Int32, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGet_System_String_Exiled_API_Features_Player__">Player.TryGet(String, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGet_PluginAPI_Core_Player_Exiled_API_Features_Player__">Player.TryGet(Player, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGet_UnityEngine_Collider_Exiled_API_Features_Player__">Player.TryGet(Collider, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddReservedSlot_System_String_">Player.AddReservedSlot(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ReloadReservedSlots">Player.ReloadReservedSlots()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GiveReservedSlot">Player.GiveReservedSlot()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_SetFriendlyFire_PlayerRoles_RoleTypeId_System_Single_">Player.SetFriendlyFire(RoleTypeId, Single)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_SetFriendlyFire_System_Collections_Generic_KeyValuePair_PlayerRoles_RoleTypeId_System_Single__">Player.SetFriendlyFire(KeyValuePair&lt;RoleTypeId, Single&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryAddFriendlyFire_PlayerRoles_RoleTypeId_System_Single_">Player.TryAddFriendlyFire(RoleTypeId, Single)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryAddFriendlyFire_System_Collections_Generic_KeyValuePair_PlayerRoles_RoleTypeId_System_Single__">Player.TryAddFriendlyFire(KeyValuePair&lt;RoleTypeId, Single&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryAddFriendlyFire_System_Collections_Generic_Dictionary_PlayerRoles_RoleTypeId_System_Single__System_Boolean_">Player.TryAddFriendlyFire(Dictionary&lt;RoleTypeId, Single&gt;, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_SetCustomRoleFriendlyFire_System_String_PlayerRoles_RoleTypeId_System_Single_">Player.SetCustomRoleFriendlyFire(String, RoleTypeId, Single)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_SetCustomRoleFriendlyFire_System_String_System_Collections_Generic_KeyValuePair_PlayerRoles_RoleTypeId_System_Single__">Player.SetCustomRoleFriendlyFire(String, KeyValuePair&lt;RoleTypeId, Single&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryAddCustomRoleFriendlyFire_System_String_System_Collections_Generic_KeyValuePair_PlayerRoles_RoleTypeId_System_Single__">Player.TryAddCustomRoleFriendlyFire(String, KeyValuePair&lt;RoleTypeId, Single&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryAddCustomRoleFriendlyFire_System_String_PlayerRoles_RoleTypeId_System_Single_">Player.TryAddCustomRoleFriendlyFire(String, RoleTypeId, Single)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryAddCustomRoleFriendlyFire_System_String_System_Collections_Generic_Dictionary_PlayerRoles_RoleTypeId_System_Single__System_Boolean_">Player.TryAddCustomRoleFriendlyFire(String, Dictionary&lt;RoleTypeId, Single&gt;, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryAddCustomRoleFriendlyFire_System_Collections_Generic_Dictionary_System_String_System_Collections_Generic_Dictionary_PlayerRoles_RoleTypeId_System_Single___">Player.TryAddCustomRoleFriendlyFire(Dictionary&lt;String, Dictionary&lt;RoleTypeId, Single&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TrySetCustomRoleFriendlyFire_System_Collections_Generic_Dictionary_System_String_System_Collections_Generic_Dictionary_PlayerRoles_RoleTypeId_System_Single___">Player.TrySetCustomRoleFriendlyFire(Dictionary&lt;String, Dictionary&lt;RoleTypeId, Single&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TrySetCustomRoleFriendlyFire_System_String_System_Collections_Generic_Dictionary_PlayerRoles_RoleTypeId_System_Single__">Player.TrySetCustomRoleFriendlyFire(String, Dictionary&lt;RoleTypeId, Single&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryRemoveFriendlyFire_PlayerRoles_RoleTypeId_">Player.TryRemoveFriendlyFire(RoleTypeId)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryRemoveCustomeRoleFriendlyFire_System_String_">Player.TryRemoveCustomeRoleFriendlyFire(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ReloadWeapon">Player.ReloadWeapon()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGetItem_System_UInt16_Exiled_API_Features_Items_Item__">Player.TryGetItem(UInt16, Item)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_SetRank_System_String_UserGroup_">Player.SetRank(String, UserGroup)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Handcuff">Player.Handcuff()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Handcuff_Exiled_API_Features_Player_">Player.Handcuff(Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RemoveHandcuffs">Player.RemoveHandcuffs()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Broadcast_Exiled_API_Features_Broadcast_System_Boolean_">Player.Broadcast(Broadcast, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_DropItem_Exiled_API_Features_Items_Item_">Player.DropItem(Item)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_DropHeldItem">Player.DropHeldItem()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_HasItem_Exiled_API_Features_Items_Item_">Player.HasItem(Item)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_HasItem_ItemType_">Player.HasItem(ItemType)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_CountItem_ItemType_">Player.CountItem(ItemType)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_CountItem_Exiled_API_Enums_ProjectileType_">Player.CountItem(ProjectileType)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_CountItem_ItemCategory_">Player.CountItem(ItemCategory)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RemoveItem_Exiled_API_Features_Items_Item_System_Boolean_">Player.RemoveItem(Item, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RemoveItem_System_UInt16_System_Boolean_">Player.RemoveItem(UInt16, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RemoveItem_System_Func_Exiled_API_Features_Items_Item_System_Boolean__System_Boolean_">Player.RemoveItem(Func&lt;Item, Boolean&gt;, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RemoveHeldItem_System_Boolean_">Player.RemoveHeldItem(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_SendConsoleMessage_System_String_System_String_">Player.SendConsoleMessage(String, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Disconnect_System_String_">Player.Disconnect(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ResetStamina">Player.ResetStamina()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetScpPreference_PlayerRoles_RoleTypeId_">Player.GetScpPreference(RoleTypeId)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Hurt_PlayerStatsSystem_DamageHandlerBase_">Player.Hurt(DamageHandlerBase)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Hurt_Exiled_API_Features_Player_System_Single_Exiled_API_Enums_DamageType_Exiled_API_Features_DamageHandlers_DamageHandlerBase_CassieAnnouncement_">Player.Hurt(Player, Single, DamageType, DamageHandlerBase.CassieAnnouncement)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Hurt_Exiled_API_Features_Player_System_Single_Exiled_API_Enums_DamageType_Exiled_API_Features_DamageHandlers_DamageHandlerBase_CassieAnnouncement_System_String_">Player.Hurt(Player, Single, DamageType, DamageHandlerBase.CassieAnnouncement, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Hurt_Exiled_API_Features_Player_System_Single_UnityEngine_Vector3_System_Int32_">Player.Hurt(Player, Single, Vector3, Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Hurt_System_Single_Exiled_API_Enums_DamageType_System_String_">Player.Hurt(Single, DamageType, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Hurt_System_Single_System_String_System_String_">Player.Hurt(Single, String, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Heal_System_Single_System_Boolean_">Player.Heal(Single, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_UseItem_ItemType_">Player.UseItem(ItemType)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_UseItem_Exiled_API_Features_Items_Item_">Player.UseItem(Item)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Kill_PlayerStatsSystem_DamageHandlerBase_">Player.Kill(DamageHandlerBase)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Kill_Exiled_API_Enums_DamageType_System_String_">Player.Kill(DamageType, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Kill_System_String_System_String_">Player.Kill(String, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Vaporize_Exiled_API_Features_Player_System_String_">Player.Vaporize(Player, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Ban_System_Int32_System_String_Exiled_API_Features_Player_">Player.Ban(Int32, String, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Ban_System_TimeSpan_System_String_Exiled_API_Features_Player_">Player.Ban(TimeSpan, String, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Kick_System_String_Exiled_API_Features_Player_">Player.Kick(String, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Mute_System_Boolean_">Player.Mute(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_UnMute_System_Boolean_">Player.UnMute(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_BlinkTag">Player.BlinkTag()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RemoteAdminMessage_System_String_System_Boolean_System_String_">Player.RemoteAdminMessage(String, Boolean, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Broadcast_System_UInt16_System_String_Broadcast_BroadcastFlags_System_Boolean_">Player.Broadcast(UInt16, String, Broadcast.BroadcastFlags, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ClearBroadcasts">Player.ClearBroadcasts()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddAmmo_Exiled_API_Enums_AmmoType_System_UInt16_">Player.AddAmmo(AmmoType, UInt16)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddAmmo_Exiled_API_Enums_FirearmType_System_UInt16_">Player.AddAmmo(FirearmType, UInt16)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_SetAmmo_Exiled_API_Enums_AmmoType_System_UInt16_">Player.SetAmmo(AmmoType, UInt16)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetAmmo_Exiled_API_Enums_AmmoType_">Player.GetAmmo(AmmoType)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_DropAmmo_Exiled_API_Enums_AmmoType_System_UInt16_System_Boolean_">Player.DropAmmo(AmmoType, UInt16, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetAmmoLimit_Exiled_API_Enums_AmmoType_">Player.GetAmmoLimit(AmmoType)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetCategoryLimit_ItemCategory_">Player.GetCategoryLimit(ItemCategory)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_ItemType_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__">Player.AddItem(ItemType, IEnumerable&lt;AttachmentIdentifier&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_ItemType_System_Int32_">Player.AddItem(ItemType, Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_ItemType_System_Int32_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__">Player.AddItem(ItemType, Int32, IEnumerable&lt;AttachmentIdentifier&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_System_Collections_Generic_IEnumerable_ItemType__">Player.AddItem(IEnumerable&lt;ItemType&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_System_Collections_Generic_Dictionary_ItemType_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier___">Player.AddItem(Dictionary&lt;ItemType, IEnumerable&lt;AttachmentIdentifier&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_Exiled_API_Features_Items_Item_">Player.AddItem(Item)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_Exiled_API_Features_Items_Firearm_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__">Player.AddItem(Firearm, IEnumerable&lt;AttachmentIdentifier&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_Exiled_API_Features_Pickups_Pickup_">Player.AddItem(Pickup)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_Exiled_API_Features_Pickups_FirearmPickup_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__">Player.AddItem(FirearmPickup, IEnumerable&lt;AttachmentIdentifier&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_InventorySystem_Items_ItemBase_Exiled_API_Features_Items_Item_">Player.AddItem(ItemBase, Item)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_Exiled_API_Features_Items_Item_System_Int32_">Player.AddItem(Item, Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_Exiled_API_Features_Items_Firearm_System_Int32_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__">Player.AddItem(Firearm, Int32, IEnumerable&lt;AttachmentIdentifier&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_System_Collections_Generic_IEnumerable_Exiled_API_Features_Items_Item__">Player.AddItem(IEnumerable&lt;Item&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_System_Collections_Generic_Dictionary_Exiled_API_Features_Items_Firearm_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier___">Player.AddItem(Dictionary&lt;Firearm, IEnumerable&lt;AttachmentIdentifier&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryAddCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_">Player.TryAddCandy(CandyKindID)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ResetInventory_System_Collections_Generic_IEnumerable_ItemType__">Player.ResetInventory(IEnumerable&lt;ItemType&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ResetInventory_System_Collections_Generic_IEnumerable_Exiled_API_Features_Items_Item__">Player.ResetInventory(IEnumerable&lt;Item&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ClearInventory_System_Boolean_">Player.ClearInventory(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_DropItems">Player.DropItems()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ThrowGrenade_Exiled_API_Enums_ProjectileType_System_Boolean_">Player.ThrowGrenade(ProjectileType, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ThrowItem_Exiled_API_Features_Items_Throwable_System_Boolean_">Player.ThrowItem(Throwable, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ShowHint_System_String_System_Single_">Player.ShowHint(String, Single)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ShowHint_Exiled_API_Features_Hint_">Player.ShowHint(Hint)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ShowHitMarker_System_Single_">Player.ShowHitMarker(Single)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGetSessionVariable__1_System_String___0__">Player.TryGetSessionVariable&lt;T&gt;(String, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_PlayShieldBreakSound">Player.PlayShieldBreakSound()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetModule__1">Player.GetModule&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_IsEffectActive__1">Player.IsEffectActive&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_DisableAllEffects">Player.DisableAllEffects()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_DisableAllEffects_Exiled_API_Enums_EffectCategory_">Player.DisableAllEffects(EffectCategory)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_DisableEffect__1">Player.DisableEffect&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_DisableEffect_Exiled_API_Enums_EffectType_">Player.DisableEffect(EffectType)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_DisableEffects_System_Collections_Generic_IEnumerable_Exiled_API_Enums_EffectType__">Player.DisableEffects(IEnumerable&lt;EffectType&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_EnableEffect__1_System_Single_System_Boolean_">Player.EnableEffect&lt;T&gt;(Single, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_EnableEffect_CustomPlayerEffects_StatusEffectBase_System_Single_System_Boolean_">Player.EnableEffect(StatusEffectBase, Single, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_EnableEffect_System_String_System_Single_System_Boolean_">Player.EnableEffect(String, Single, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_EnableEffect_Exiled_API_Enums_EffectType_System_Single_System_Boolean_">Player.EnableEffect(EffectType, Single, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_EnableEffect_Exiled_API_Features_Effect_">Player.EnableEffect(Effect)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ApplyRandomEffect_Exiled_API_Enums_EffectCategory_System_Single_System_Boolean_">Player.ApplyRandomEffect(EffectCategory, Single, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_EnableEffects_System_Collections_Generic_IEnumerable_Exiled_API_Enums_EffectType__System_Single_System_Boolean_">Player.EnableEffects(IEnumerable&lt;EffectType&gt;, Single, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_EnableEffects_System_Collections_Generic_IEnumerable_Exiled_API_Features_Effect__">Player.EnableEffects(IEnumerable&lt;Effect&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetEffect_Exiled_API_Enums_EffectType_">Player.GetEffect(EffectType)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGetEffect_Exiled_API_Enums_EffectType_CustomPlayerEffects_StatusEffectBase__">Player.TryGetEffect(EffectType, StatusEffectBase)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGetEffect__1___0__">Player.TryGetEffect&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetEffectIntensity__1">Player.GetEffectIntensity&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ChangeEffectIntensity__1_System_Byte_System_Single_">Player.ChangeEffectIntensity&lt;T&gt;(Byte, Single)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ChangeEffectIntensity_Exiled_API_Enums_EffectType_System_Byte_System_Single_">Player.ChangeEffectIntensity(EffectType, Byte, Single)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ChangeEffectIntensity_System_String_System_Byte_System_Single_">Player.ChangeEffectIntensity(String, Byte, Single)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_OpenReportWindow_System_String_">Player.OpenReportWindow(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_PlaceTantrum_System_Boolean_">Player.PlaceTantrum(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddAhp_System_Single_System_Single_System_Single_System_Single_System_Single_System_Boolean_">Player.AddAhp(Single, Single, Single, Single, Single, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Reconnect_System_UInt16_System_Single_System_Boolean_RoundRestarting_RoundRestartType_">Player.Reconnect(UInt16, Single, Boolean, RoundRestartType)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_PlayGunSound_ItemType_System_Byte_System_Byte_">Player.PlayGunSound(ItemType, Byte, Byte)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_PlaceBlood_UnityEngine_Vector3_">Player.PlaceBlood(Vector3)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetNearCameras_System_Single_">Player.GetNearCameras(Single)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Teleport_UnityEngine_Vector3_">Player.Teleport(Vector3)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Teleport_System_Object_">Player.Teleport(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Teleport_System_Object_UnityEngine_Vector3_">Player.Teleport(Object, Vector3)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RandomTeleport_System_Type_">Player.RandomTeleport(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RandomTeleport_System_Collections_Generic_IEnumerable_System_Type__">Player.RandomTeleport(IEnumerable&lt;Type&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_RandomTeleport__1">Player.RandomTeleport&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddComponent__1_System_String_">Player.AddComponent&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddComponent_System_Type_System_String_">Player.AddComponent(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddComponent__1_System_Type_System_String_">Player.AddComponent&lt;T&gt;(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetComponent__1">Player.GetComponent&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetComponent__1_System_Type_">Player.GetComponent&lt;T&gt;(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetComponent_System_Type_">Player.GetComponent(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGetComponent__1___0__">Player.TryGetComponent&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGetComponent_System_Type_Exiled_API_Features_Core_EActor__">Player.TryGetComponent(Type, EActor)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_TryGetComponent__1_System_Type___0__">Player.TryGetComponent&lt;T&gt;(Type, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_HasComponent__1_System_Boolean_">Player.HasComponent&lt;T&gt;(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_HasComponent_System_Type_System_Boolean_">Player.HasComponent(Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetCooldownItem_ItemType_">Player.GetCooldownItem(ItemType)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_SetCooldownItem_System_Single_ItemType_">Player.SetCooldownItem(Single, ItemType)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Explode">Player.Explode()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Explode_Exiled_API_Enums_ProjectileType_Exiled_API_Features_Player_">Player.Explode(ProjectileType, Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ExplodeEffect_Exiled_API_Enums_ProjectileType_">Player.ExplodeEffect(ProjectileType)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_ToString">Player.ToString()</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Exiled.API.Features.html">Exiled.API.Features</a></h6>
+  <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
+  <h5 id="Exiled_API_Features_Npc_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Npc : Player, IEntity, IWorldSpace, IPosition, IRotation</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc__ctor_ReferenceHub_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.%23ctor(ReferenceHub)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L38">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc__ctor_" data-uid="Exiled.API.Features.Npc.#ctor*"></a>
+  <h4 id="Exiled_API_Features_Npc__ctor_ReferenceHub_" data-uid="Exiled.API.Features.Npc.#ctor(ReferenceHub)">Npc(ReferenceHub)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Npc(ReferenceHub referenceHub)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReferenceHub</span></td>
+        <td><span class="parametername">referenceHub</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc__ctor_UnityEngine_GameObject_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.%23ctor(UnityEngine.GameObject)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L44">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc__ctor_" data-uid="Exiled.API.Features.Npc.#ctor*"></a>
+  <h4 id="Exiled_API_Features_Npc__ctor_UnityEngine_GameObject_" data-uid="Exiled.API.Features.Npc.#ctor(UnityEngine.GameObject)">Npc(GameObject)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Npc(GameObject gameObject)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc_List.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.List%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L52">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc_List_" data-uid="Exiled.API.Features.Npc.List*"></a>
+  <h4 id="Exiled_API_Features_Npc_List" data-uid="Exiled.API.Features.Npc.List">List</h4>
+  <div class="markdown level1 summary"><p>Gets a list of Npcs.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;Npc&gt; List { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Exiled.API.Features.Npc.html">Npc</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc_Destroy.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.Destroy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L201">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc_Destroy_" data-uid="Exiled.API.Features.Npc.Destroy*"></a>
+  <h4 id="Exiled_API_Features_Npc_Destroy" data-uid="Exiled.API.Features.Npc.Destroy">Destroy()</h4>
+  <div class="markdown level1 summary"><p>Destroys the NPC.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Destroy()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc_Get_CommandSender_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.Get(CommandSender)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L114">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc_Get_" data-uid="Exiled.API.Features.Npc.Get*"></a>
+  <h4 id="Exiled_API_Features_Npc_Get_CommandSender_" data-uid="Exiled.API.Features.Npc.Get(CommandSender)">Get(CommandSender)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the NPC associated with the specified CommandSender.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Npc Get(CommandSender sender)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CommandSender</span></td>
+        <td><span class="parametername">sender</span></td>
+        <td><p>The CommandSender to retrieve the NPC for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Npc.html">Npc</a></td>
+        <td><p>The NPC associated with the CommandSender, or <code>null</code> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc_Get_CommandSystem_ICommandSender_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.Get(CommandSystem.ICommandSender)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L100">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc_Get_" data-uid="Exiled.API.Features.Npc.Get*"></a>
+  <h4 id="Exiled_API_Features_Npc_Get_CommandSystem_ICommandSender_" data-uid="Exiled.API.Features.Npc.Get(CommandSystem.ICommandSender)">Get(ICommandSender)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the NPC associated with the specified ICommandSender.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Npc Get(ICommandSender sender)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CommandSystem.ICommandSender</span></td>
+        <td><span class="parametername">sender</span></td>
+        <td><p>The ICommandSender to retrieve the NPC for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Npc.html">Npc</a></td>
+        <td><p>The NPC associated with the ICommandSender, or <code>null</code> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc_Get_Footprinting_Footprint_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.Get(Footprinting.Footprint)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L107">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc_Get_" data-uid="Exiled.API.Features.Npc.Get*"></a>
+  <h4 id="Exiled_API_Features_Npc_Get_Footprinting_Footprint_" data-uid="Exiled.API.Features.Npc.Get(Footprinting.Footprint)">Get(Footprint)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the NPC associated with the specified Footprint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Npc Get(Footprint footprint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Footprinting.Footprint</span></td>
+        <td><span class="parametername">footprint</span></td>
+        <td><p>The Footprint to retrieve the NPC for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Npc.html">Npc</a></td>
+        <td><p>The NPC associated with the Footprint, or <code>null</code> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc_Get_Mirror_NetworkConnection_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.Get(Mirror.NetworkConnection)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L135">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc_Get_" data-uid="Exiled.API.Features.Npc.Get*"></a>
+  <h4 id="Exiled_API_Features_Npc_Get_Mirror_NetworkConnection_" data-uid="Exiled.API.Features.Npc.Get(Mirror.NetworkConnection)">Get(NetworkConnection)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the NPC associated with the specified NetworkConnection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Npc Get(NetworkConnection conn)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Mirror.NetworkConnection</span></td>
+        <td><span class="parametername">conn</span></td>
+        <td><p>The NetworkConnection to retrieve the NPC for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Npc.html">Npc</a></td>
+        <td><p>The NPC associated with the NetworkConnection, or <code>null</code> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc_Get_ReferenceHub_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.Get(ReferenceHub)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L72">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc_Get_" data-uid="Exiled.API.Features.Npc.Get*"></a>
+  <h4 id="Exiled_API_Features_Npc_Get_ReferenceHub_" data-uid="Exiled.API.Features.Npc.Get(ReferenceHub)">Get(ReferenceHub)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the NPC associated with the specified ReferenceHub.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Npc Get(ReferenceHub rHub)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReferenceHub</span></td>
+        <td><span class="parametername">rHub</span></td>
+        <td><p>The ReferenceHub to retrieve the NPC for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Npc.html">Npc</a></td>
+        <td><p>The NPC associated with the ReferenceHub, or <code>null</code> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc_Get_System_Int32_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.Get(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L93">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc_Get_" data-uid="Exiled.API.Features.Npc.Get*"></a>
+  <h4 id="Exiled_API_Features_Npc_Get_System_Int32_" data-uid="Exiled.API.Features.Npc.Get(System.Int32)">Get(Int32)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the NPC associated with the specified ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Npc Get(int id)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">id</span></td>
+        <td><p>The ID to retrieve the NPC for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Npc.html">Npc</a></td>
+        <td><p>The NPC associated with the ID, or <code>null</code> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc_Get_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.Get(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L86">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc_Get_" data-uid="Exiled.API.Features.Npc.Get*"></a>
+  <h4 id="Exiled_API_Features_Npc_Get_System_String_" data-uid="Exiled.API.Features.Npc.Get(System.String)">Get(String)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the NPC associated with the specified user ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Npc Get(string userId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">userId</span></td>
+        <td><p>The user ID to retrieve the NPC for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Npc.html">Npc</a></td>
+        <td><p>The NPC associated with the user ID, or <code>null</code> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc_Get_System_UInt32_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.Get(System.UInt32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L128">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc_Get_" data-uid="Exiled.API.Features.Npc.Get*"></a>
+  <h4 id="Exiled_API_Features_Npc_Get_System_UInt32_" data-uid="Exiled.API.Features.Npc.Get(System.UInt32)">Get(UInt32)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the NPC associated with the specified net ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Npc Get(uint netId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.UInt32</span></td>
+        <td><span class="parametername">netId</span></td>
+        <td><p>The net ID to retrieve the NPC for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Npc.html">Npc</a></td>
+        <td><p>The NPC associated with the net ID, or <code>null</code> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc_Get_UnityEngine_Collider_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.Get(UnityEngine.Collider)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L121">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc_Get_" data-uid="Exiled.API.Features.Npc.Get*"></a>
+  <h4 id="Exiled_API_Features_Npc_Get_UnityEngine_Collider_" data-uid="Exiled.API.Features.Npc.Get(UnityEngine.Collider)">Get(Collider)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the NPC associated with the specified Collider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Npc Get(Collider collider)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Collider</span></td>
+        <td><span class="parametername">collider</span></td>
+        <td><p>The Collider to retrieve the NPC for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Npc.html">Npc</a></td>
+        <td><p>The NPC associated with the Collider, or <code>null</code> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc_Get_UnityEngine_GameObject_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.Get(UnityEngine.GameObject)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L79">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc_Get_" data-uid="Exiled.API.Features.Npc.Get*"></a>
+  <h4 id="Exiled_API_Features_Npc_Get_UnityEngine_GameObject_" data-uid="Exiled.API.Features.Npc.Get(UnityEngine.GameObject)">Get(GameObject)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the NPC associated with the specified GameObject.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Npc Get(GameObject gameObject)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td><p>The GameObject to retrieve the NPC for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Npc.html">Npc</a></td>
+        <td><p>The NPC associated with the GameObject, or <code>null</code> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc_Spawn_System_String_PlayerRoles_RoleTypeId_System_Int32_System_String_System_Nullable_UnityEngine_Vector3__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc.Spawn(System.String%2CPlayerRoles.RoleTypeId%2CSystem.Int32%2CSystem.String%2CSystem.Nullable%7BUnityEngine.Vector3%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L146">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Npc_Spawn_" data-uid="Exiled.API.Features.Npc.Spawn*"></a>
+  <h4 id="Exiled_API_Features_Npc_Spawn_System_String_PlayerRoles_RoleTypeId_System_Int32_System_String_System_Nullable_UnityEngine_Vector3__" data-uid="Exiled.API.Features.Npc.Spawn(System.String,PlayerRoles.RoleTypeId,System.Int32,System.String,System.Nullable{UnityEngine.Vector3})">Spawn(String, RoleTypeId, Int32, String, Nullable&lt;Vector3&gt;)</h4>
+  <div class="markdown level1 summary"><p>Spawns an NPC based on the given parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Npc Spawn(string name, RoleTypeId role, int id = 0, string userId = &quot;&quot;, Vector3? position = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the NPC.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">PlayerRoles.RoleTypeId</span></td>
+        <td><span class="parametername">role</span></td>
+        <td><p>The RoleTypeId of the NPC.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">id</span></td>
+        <td><p>The player ID of the NPC.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">userId</span></td>
+        <td><p>The userID of the NPC.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">UnityEngine.Vector3</span>&gt;</td>
+        <td><span class="parametername">position</span></td>
+        <td><p>The position to spawn the NPC.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Npc.html">Npc</a></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Npc.html">Npc</a> spawned.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Features.Core.Interfaces.IEntity.html">IEntity</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Exiled.Permissions.Extensions.Permissions.html#Exiled_Permissions_Extensions_Permissions_CheckPermission_Exiled_API_Features_Player_System_String_">Permissions.CheckPermission(Player, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.Permissions.Extensions.Permissions.html#Exiled_Permissions_Extensions_Permissions_CheckPermission_Exiled_API_Features_Player_PlayerPermissions___">Permissions.CheckPermission(Player, PlayerPermissions[])</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.CustomItems.API.Extensions.html#Exiled_CustomItems_API_Extensions_ResetInventory_Exiled_API_Features_Player_System_Collections_Generic_IEnumerable_System_String__System_Boolean_">Extensions.ResetInventory(Player, IEnumerable&lt;String&gt;, Boolean)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.CustomRoles.API.Extensions.html#Exiled_CustomRoles_API_Extensions_GetCustomRoles_Exiled_API_Features_Player_">Extensions.GetCustomRoles(Player)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.CustomRoles.API.Extensions.html#Exiled_CustomRoles_API_Extensions_GetActiveAbilities_Exiled_API_Features_Player_">Extensions.GetActiveAbilities(Player)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.CustomRoles.API.Extensions.html#Exiled_CustomRoles_API_Extensions_GetSelectedAbility_Exiled_API_Features_Player_">Extensions.GetSelectedAbility(Player)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.MirrorExtensions.html#Exiled_API_Extensions_MirrorExtensions_PlayBeepSound_Exiled_API_Features_Player_">MirrorExtensions.PlayBeepSound(Player)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.MirrorExtensions.html#Exiled_API_Extensions_MirrorExtensions_SetPlayerInfoForTargetOnly_Exiled_API_Features_Player_Exiled_API_Features_Player_System_String_">MirrorExtensions.SetPlayerInfoForTargetOnly(Player, Player, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.MirrorExtensions.html#Exiled_API_Extensions_MirrorExtensions_PlayGunSound_Exiled_API_Features_Player_UnityEngine_Vector3_ItemType_System_Byte_System_Byte_">MirrorExtensions.PlayGunSound(Player, Vector3, ItemType, Byte, Byte)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.MirrorExtensions.html#Exiled_API_Extensions_MirrorExtensions_SetName_Exiled_API_Features_Player_Exiled_API_Features_Player_System_String_">MirrorExtensions.SetName(Player, Player, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.MirrorExtensions.html#Exiled_API_Extensions_MirrorExtensions_ChangeAppearance_Exiled_API_Features_Player_PlayerRoles_RoleTypeId_System_Boolean_System_Byte_">MirrorExtensions.ChangeAppearance(Player, RoleTypeId, Boolean, Byte)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.MirrorExtensions.html#Exiled_API_Extensions_MirrorExtensions_ChangeAppearance_Exiled_API_Features_Player_PlayerRoles_RoleTypeId_System_Collections_Generic_IEnumerable_Exiled_API_Features_Player__System_Boolean_System_Byte_">MirrorExtensions.ChangeAppearance(Player, RoleTypeId, IEnumerable&lt;Player&gt;, Boolean, Byte)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.MirrorExtensions.html#Exiled_API_Extensions_MirrorExtensions_PlayCassieAnnouncement_Exiled_API_Features_Player_System_String_System_Boolean_System_Boolean_System_Boolean_">MirrorExtensions.PlayCassieAnnouncement(Player, String, Boolean, Boolean, Boolean)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.MirrorExtensions.html#Exiled_API_Extensions_MirrorExtensions_MessageTranslated_Exiled_API_Features_Player_System_String_System_String_System_Boolean_System_Boolean_System_Boolean_">MirrorExtensions.MessageTranslated(Player, String, String, Boolean, Boolean, Boolean)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.MirrorExtensions.html#Exiled_API_Extensions_MirrorExtensions_SendFakeSyncVar_Exiled_API_Features_Player_Mirror_NetworkIdentity_System_Type_System_String_System_Object_">MirrorExtensions.SendFakeSyncVar(Player, NetworkIdentity, Type, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Npc.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Npc%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Npc.cs/#L35" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
