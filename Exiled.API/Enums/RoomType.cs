@@ -35,12 +35,6 @@ namespace Exiled.API.Enums
         LczStraight,
 
         /// <summary>
-        /// Lower Containment SCP-012 Room.
-        /// </summary>
-        [System.Obsolete("This room do not Exist", true)]
-        Lcz012,
-
-        /// <summary>
         /// Lower Containment SCP-914 Room.
         /// </summary>
         Lcz914,
