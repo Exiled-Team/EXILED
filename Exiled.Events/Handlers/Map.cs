@@ -46,7 +46,7 @@ namespace Exiled.Events.Handlers
         public static Event<AnnouncingNtfEntranceEventArgs> AnnouncingNtfEntrance { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="Scp079Generator"/> has been activated.
+        /// Invoked before a <see cref="Scp079Generator"/> has been activated.
         /// </summary>
         public static Event<GeneratorActivatingEventArgs> GeneratorActivating { get; set; } = new();
 
@@ -126,10 +126,10 @@ namespace Exiled.Events.Handlers
         public static void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev) => AnnouncingNtfEntrance.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after a <see cref="Scp079Generator"/> has been activated.
+        /// Called before a <see cref="Scp079Generator"/> has been activated.
         /// </summary>
         /// <param name="ev">The <see cref="GeneratorActivatingEventArgs"/> instance.</param>
-        public static void OnGeneratorActivated(GeneratorActivatingEventArgs ev) => GeneratorActivating.InvokeSafely(ev);
+        public static void OnGeneratorActivating(GeneratorActivatingEventArgs ev) => GeneratorActivating.InvokeSafely(ev);
 
         /// <summary>
         /// Called before decontaminating the light containment zone.

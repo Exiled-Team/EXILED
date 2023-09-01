@@ -23,7 +23,7 @@ namespace Exiled.Example.Events
             Log.Info($"A grenade thrown by {ev.Player.Nickname} is exploding: {ev.Projectile.Type}\n[Targets]\n\n{string.Join("\n", ev.TargetsToAffect.Select(player => $"[{player.Nickname}]"))}");
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Map.OnGeneratorActivated(GeneratorActivatingEventArgs)"/>
+        /// <inheritdoc cref="Exiled.Events.Handlers.Map.OnGeneratorActivating"/>
         public void OnGeneratorActivated(GeneratorActivatingEventArgs ev)
         {
             Log.Info($"A generator has been activated in {ev.Generator.Room.Type}!");

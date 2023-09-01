@@ -63,7 +63,7 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Stloc, ev.LocalIndex),
 
                     // Map.OnGeneratorActivated(ev)
-                    new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnGeneratorActivated))),
+                    new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnGeneratorActivating))),
 
                     // if (!ev.IsAllowed)
                     //    return;
