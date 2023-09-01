@@ -12,12 +12,10 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Interfaces;
-
+    using global::Hazards;
     using Hazards;
     using MEC;
-
     using PlayerRoles;
-
     using UnityEngine;
 
     using BaseTeslaGate = global::TeslaGate;
@@ -179,9 +177,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="List{T}"/> of <see cref="UnityEngine.GameObject"/> which contains all the tantrums to destroy.
+        /// Gets a <see cref="List{T}"/> of <see cref="TantrumHazard"/> which contains all the tantrums to destroy.
         /// </summary>
-        public List<TantrumEnvironmentalHazard> TantrumsToDestroy => Base.TantrumsToBeDestroyed;
+        public IEnumerable<TantrumHazard> TantrumsToDestroy => Base.TantrumsToBeDestroyed.Select(x => Hazard.Get(x) as TantrumHazard);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> which contains all the players inside the hurt range.

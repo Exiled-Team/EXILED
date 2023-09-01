@@ -339,12 +339,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<UsingMicroHIDEnergyEventArgs> UsingMicroHIDEnergy;
 
         /// <summary>
-        /// Called before processing a hotkey.
-        /// </summary>
-        [Obsolete("No more used by base-game", true)]
-        public static event CustomEventHandler<ProcessingHotkeyEventArgs> ProcessingHotkey;
-
-        /// <summary>
         /// Invoked before dropping ammo.
         /// </summary>
         public static event CustomEventHandler<DroppingAmmoEventArgs> DroppingAmmo;
@@ -756,13 +750,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="UsingMicroHIDEnergyEventArgs"/> instance.</param>
         public static void OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs ev) => UsingMicroHIDEnergy.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before processing a hotkey.
-        /// </summary>
-        /// <param name="ev">The <see cref="ProcessingHotkeyEventArgs"/> instance.</param>
-        [Obsolete("No more used by base-game", true)]
-        public static void OnProcessingHotkey(ProcessingHotkeyEventArgs ev) => ProcessingHotkey.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with a shooting target.
