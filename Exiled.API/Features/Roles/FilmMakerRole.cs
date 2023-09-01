@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Roles
     using FilmmakerGameRole = PlayerRoles.Filmmaker.FilmmakerRole;
 
     /// <summary>
-    /// Represents the BaseGame FilmMakerRole.
+    /// Represents the base-game FilmMaker role.
     /// </summary>
     public class FilmMakerRole : Role
     {

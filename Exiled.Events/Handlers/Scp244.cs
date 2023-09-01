@@ -7,11 +7,10 @@
 
 namespace Exiled.Events.Handlers
 {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
     using Exiled.Events.EventArgs.Scp244;
-
-    using Extensions;
-
-    using static Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     ///     Scp244 related events.
@@ -21,17 +20,17 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before using an <see cref="API.Features.Items.Item" />.
         /// </summary>
-        public static event CustomEventHandler<UsingScp244EventArgs> UsingScp244;
+        public static Event<UsingScp244EventArgs> UsingScp244 { get; set; } = new();
 
         /// <summary>
         ///     Invoked before an Scp244 take damage.
         /// </summary>
-        public static event CustomEventHandler<DamagingScp244EventArgs> DamagingScp244;
+        public static Event<DamagingScp244EventArgs> DamagingScp244 { get; set; } = new();
 
         /// <summary>
         ///     Invoked before an Scp244 open because the angle was too low.
         /// </summary>
-        public static event CustomEventHandler<OpeningScp244EventArgs> OpeningScp244;
+        public static Event<OpeningScp244EventArgs> OpeningScp244 { get; set; } = new();
 
         /// <summary>
         ///     Called before using a usable item.

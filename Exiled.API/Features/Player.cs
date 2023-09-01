@@ -18,6 +18,7 @@ namespace Exiled.API.Features
     using DamageHandlers;
     using Enums;
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;

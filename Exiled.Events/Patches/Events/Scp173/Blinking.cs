@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp173
 
     using API.Features;
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp173;
 
     using HarmonyLib;
@@ -30,6 +31,7 @@ namespace Exiled.Events.Patches.Events.Scp173
     ///     Patches <see cref="Scp173BlinkTimer.ServerBlink(Vector3)" />.
     ///     Adds the <see cref="Handlers.Scp173.Blinking" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp173.Blinking))]
     [HarmonyPatch(typeof(Scp173BlinkTimer), nameof(Scp173BlinkTimer.ServerBlink))]
     internal static class Blinking
     {

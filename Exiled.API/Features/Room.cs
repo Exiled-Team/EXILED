@@ -12,20 +12,19 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
-
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
+    using Interactables.Interobjects.DoorUtils;
     using MapGeneration;
-
     using MEC;
-
     using Mirror;
-
     using PlayerRoles.PlayableScps.Scp079;
     using RelativePositioning;
     using UnityEngine;
+    using Utils.NonAllocLINQ;
 
     /// <summary>
     /// The in-game room.
