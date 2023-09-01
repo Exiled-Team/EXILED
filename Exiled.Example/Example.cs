@@ -103,7 +103,7 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Scp914.UpgradingPlayer += playerHandler.OnUpgradingPlayer;
 
             Exiled.Events.Handlers.Map.ExplodingGrenade += mapHandler.OnExplodingGrenade;
-            Exiled.Events.Handlers.Map.GeneratorActivated += mapHandler.OnGeneratorActivated;
+            Exiled.Events.Handlers.Map.GeneratorActivating += mapHandler.OnGeneratorActivated;
 
             Exiled.Events.Handlers.Item.ChangingAmmo += itemHandler.OnChangingAmmo;
             Exiled.Events.Handlers.Item.ChangingAttachments += itemHandler.OnChangingAttachments;
@@ -143,7 +143,7 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Scp914.ChangingKnobSetting -= playerHandler.OnChangingKnobSetting;
 
             Exiled.Events.Handlers.Map.ExplodingGrenade -= mapHandler.OnExplodingGrenade;
-            Exiled.Events.Handlers.Map.GeneratorActivated -= mapHandler.OnGeneratorActivated;
+            Exiled.Events.Handlers.Map.GeneratorActivating -= mapHandler.OnGeneratorActivated;
 
             Exiled.Events.Handlers.Item.ChangingAmmo -= itemHandler.OnChangingAmmo;
             Exiled.Events.Handlers.Item.ChangingAttachments -= itemHandler.OnChangingAttachments;

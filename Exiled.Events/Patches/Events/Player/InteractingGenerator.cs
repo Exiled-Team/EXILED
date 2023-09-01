@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using Handlers;
@@ -30,6 +30,11 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="Scp079Generator.ServerInteract(ReferenceHub, byte)"/>.
     /// Adds the <see cref="Player.ActivatingGenerator"/>, <see cref="Player.ClosingGenerator"/>, <see cref="Player.OpeningGenerator"/>, <see cref="Player.UnlockingGenerator"/> and <see cref="Player.StoppingGenerator"/> events.
     /// </summary>
+    [EventPatch(typeof(Player), nameof(Player.ActivatingGenerator))]
+    [EventPatch(typeof(Player), nameof(Player.ClosingGenerator))]
+    [EventPatch(typeof(Player), nameof(Player.OpeningGenerator))]
+    [EventPatch(typeof(Player), nameof(Player.UnlockingGenerator))]
+    [EventPatch(typeof(Player), nameof(Player.StoppingGenerator))]
     [HarmonyPatch(typeof(Scp079Generator), nameof(Scp079Generator.ServerInteract))]
     internal static class InteractingGenerator
     {

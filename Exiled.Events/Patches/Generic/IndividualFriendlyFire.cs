@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1402
-#pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -253,48 +252,6 @@ namespace Exiled.Events.Patches.Generic
                     new(OpCodes.Ldarg_1),
 
                     // Next line is ProcessDamage, which uses AttackerDamageHandler information.
-                });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Pool.Return(newInstructions);
-        }
-    }
-
-    /// <summary>
-    /// Patches <see cref="FlashbangGrenade.ServerFuseEnd()"/>.
-    /// </summary>
-    [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ServerFuseEnd))]
-    internal static class FlashbangGrenadePlayExplosionEffectsPatch
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-
-            // Replace the original friendly fire check with the Exiled one
-            const int offset = -7;
-            const int instructionsToRemove = 7;
-            int index = newInstructions.FindLastIndex(code => code.opcode == OpCodes.Brfalse_S) + offset;
-
-            // HitboxIdentity.CheckFriendlyFire(RoleTypeId, RoleTypeId, false)
-            newInstructions.RemoveRange(index, instructionsToRemove);
-
-            // CheckFriendlyFirePlayer(this.PreviousOwner.Hub, referenceHub)
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
-                {
-                    // this.PreviousOwner.Hub
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldflda, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PreviousOwner))),
-                    new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
-
-                    // referenceHub
-                    new(OpCodes.Ldloc_3),
-
-                    // CheckFriendlyFirePlayer(this.PreviousOwner.Hub, referenceHub)
-                    new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer))),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)

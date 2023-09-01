@@ -19,7 +19,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information after a player used an item.
     /// </summary>
-    public class UsedItemEventArgs : IPlayerEvent
+    public class UsedItemEventArgs : IPlayerEvent, IUsableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UsedItemEventArgs" /> class.
@@ -30,23 +30,19 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="item">
         ///     <inheritdoc cref="Item" />
         /// </param>
-        public UsedItemEventArgs(Player player, UsableItem item)
+        public UsedItemEventArgs(ReferenceHub player, UsableItem item)
         {
-            try
-            {
-                Player = player;
-                Item = item is null ? null : (Usable)API.Features.Items.Item.Get(item);
-            }
-            catch (Exception e)
-            {
-                Log.Error($"{nameof(UsedItemEventArgs)}.ctor: {e}");
-            }
+            Player = Player.Get(player);
+            Usable = API.Features.Items.Item.Get(item) is Usable usable ? usable : null;
         }
 
         /// <summary>
         ///     Gets the item that the player used.
         /// </summary>
-        public Usable Item { get; }
+        public Usable Usable { get; }
+
+        /// <inheritdoc/>
+        public Item Item => Usable;
 
         /// <summary>
         ///     Gets the player who used the item.

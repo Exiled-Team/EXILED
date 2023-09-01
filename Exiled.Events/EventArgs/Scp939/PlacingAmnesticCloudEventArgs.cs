@@ -8,12 +8,13 @@
 namespace Exiled.Events.EventArgs.Scp939
 {
     using API.Features;
+    using Exiled.API.Features.Roles;
     using Interfaces;
 
     /// <summary>
     ///     Contains all information before SCP-939 uses its amnestic cloud ability.
     /// </summary>
-    public class PlacingAmnesticCloudEventArgs : IPlayerEvent, IDeniableEvent
+    public class PlacingAmnesticCloudEventArgs : IScp939Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlacingAmnesticCloudEventArgs" /> class.
@@ -36,6 +37,7 @@ namespace Exiled.Events.EventArgs.Scp939
         public PlacingAmnesticCloudEventArgs(ReferenceHub player, bool state, bool isReady, float cooldown, bool isAllowed = true)
         {
             Player = Player.Get(player);
+            Scp939 = Player.Role.As<Scp939Role>();
             State = state;
             IsReady = isReady;
             Cooldown = cooldown;
@@ -66,5 +68,8 @@ namespace Exiled.Events.EventArgs.Scp939
         ///     Gets the player who's controlling SCP-939.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp939Role Scp939 { get; }
     }
 }

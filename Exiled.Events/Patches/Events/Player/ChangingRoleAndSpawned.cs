@@ -16,6 +16,7 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features.Pools;
 
     using API.Features.Roles;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -163,6 +164,11 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (player == null)
                     //     continue
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Brfalse_S, continueLabel2),
+
+                    // if (changingRoleEventArgs == null)
+                    //     continue
+                    new CodeInstruction(OpCodes.Ldloc_S, changingRoleEventArgs.LocalIndex),
                     new(OpCodes.Brfalse_S, continueLabel2),
 
                     // changingRoleEventArgs

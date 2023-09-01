@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using CustomPlayerEffects;
 
@@ -116,12 +117,12 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets all the dead zombies.
         /// </summary>
-        public HashSet<uint> DeadZombies => Scp049ResurrectAbility.DeadZombies;
+        public IEnumerable<Player> DeadZombies => Scp049ResurrectAbility.DeadZombies.Select(x => Player.Get(x));
 
         /// <summary>
         /// Gets all the resurrected players.
         /// </summary>
-        public Dictionary<uint, int> ResurrectedPlayers => Scp049ResurrectAbility.ResurrectedPlayers;
+        public Dictionary<Player, int> ResurrectedPlayers => Scp049ResurrectAbility.ResurrectedPlayers.ToDictionary(x => Player.Get(x.Key), x => x.Value);
 
         /// <summary>
         /// Gets or sets the amount of time before SCP-049 can use its Doctor's Call ability again.
@@ -265,9 +266,7 @@ namespace Exiled.API.Features.Roles
                 cardiacArrest.ServerChangeDuration(AttackAbility._statusEffectDuration, false);
             }
 
-            SenseAbility.HasTarget = false;
-            SenseAbility.Cooldown.Trigger(Scp049SenseAbility.ReducedCooldown);
-            SenseAbility.ServerSendRpc(true);
+            SenseAbility.OnServerHit(AttackAbility._target);
 
             AttackAbility.ServerSendRpc(true);
             Hitmarker.SendHitmarker(AttackAbility.Owner, 1f);

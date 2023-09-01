@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Server;
 
     using HarmonyLib;
@@ -25,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// Patches <see cref="UnitNameMessageHandler.SendNew(SpawnableTeamType, UnitNamingRule)"/>.
     /// Adds the <see cref="Handlers.Server.AddingUnitName"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Server), nameof(Handlers.Server.AddingUnitName))]
     [HarmonyPatch(typeof(UnitNameMessageHandler), nameof(UnitNameMessageHandler.SendNew))]
     internal static class AddingUnitName
     {

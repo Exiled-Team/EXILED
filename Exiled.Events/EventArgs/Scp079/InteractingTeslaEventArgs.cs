@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Scp079
     /// <summary>
     ///     Contains all information before SCP-079 triggers a tesla gate.
     /// </summary>
-    public class InteractingTeslaEventArgs : IPlayerEvent, ITeslaEvent, IDeniableEvent
+    public class InteractingTeslaEventArgs : IScp079Event, ITeslaEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="InteractingTeslaEventArgs" /> class.
@@ -33,15 +33,19 @@ namespace Exiled.Events.EventArgs.Scp079
         public InteractingTeslaEventArgs(Player player, TeslaGate teslaGate, float auxiliaryPowerCost)
         {
             Player = player;
+            Scp079 = Player.Role.As<Scp079Role>();
             Tesla = API.Features.TeslaGate.Get(teslaGate);
             AuxiliaryPowerCost = auxiliaryPowerCost;
-            IsAllowed = auxiliaryPowerCost <= player.Role.As<Scp079Role>().Energy;
+            IsAllowed = auxiliaryPowerCost <= Scp079.Energy;
         }
 
         /// <summary>
         ///     Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp079Role Scp079 { get; }
 
         /// <summary>
         ///     Gets the <see cref="API.Features.TeslaGate" /> that SCP-079 is triggering.
