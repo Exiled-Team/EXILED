@@ -102,7 +102,7 @@ namespace Exiled.Events.Patches.Events.Scp939
 
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Callvirt, Method(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry.ServerSendRpc))),
+                new(OpCodes.Callvirt, Method(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry.ServerSendRpc), new[] { typeof(bool) })),
 
                 new CodeInstruction(OpCodes.Ret).WithLabels(ret),
             });
