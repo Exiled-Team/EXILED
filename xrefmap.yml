@@ -721,6 +721,12 @@ references:
   commentId: T:Exiled.API.Enums.DamageType
   fullName: Exiled.API.Enums.DamageType
   nameWithType: DamageType
+- uid: Exiled.API.Enums.DamageType.A7
+  name: A7
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_A7
+  commentId: F:Exiled.API.Enums.DamageType.A7
+  fullName: Exiled.API.Enums.DamageType.A7
+  nameWithType: DamageType.A7
 - uid: Exiled.API.Enums.DamageType.AK
   name: AK
   href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_AK
@@ -823,6 +829,12 @@ references:
   commentId: F:Exiled.API.Enums.DamageType.FriendlyFireDetector
   fullName: Exiled.API.Enums.DamageType.FriendlyFireDetector
   nameWithType: DamageType.FriendlyFireDetector
+- uid: Exiled.API.Enums.DamageType.Frmg0
+  name: Frmg0
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Frmg0
+  commentId: F:Exiled.API.Enums.DamageType.Frmg0
+  fullName: Exiled.API.Enums.DamageType.Frmg0
+  nameWithType: DamageType.Frmg0
 - uid: Exiled.API.Enums.DamageType.Fsp9
   name: Fsp9
   href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Fsp9
@@ -3157,6 +3169,28 @@ references:
   commentId: N:Exiled.API.Extensions
   fullName: Exiled.API.Extensions
   nameWithType: Exiled.API.Extensions
+- uid: Exiled.API.Extensions.CommonExtensions
+  name: CommonExtensions
+  href: api/Exiled.API.Extensions.CommonExtensions.html
+  commentId: T:Exiled.API.Extensions.CommonExtensions
+  fullName: Exiled.API.Extensions.CommonExtensions
+  nameWithType: CommonExtensions
+- uid: Exiled.API.Extensions.CommonExtensions.GetRandomValue*
+  name: GetRandomValue
+  href: api/Exiled.API.Extensions.CommonExtensions.html#Exiled_API_Extensions_CommonExtensions_GetRandomValue_
+  commentId: Overload:Exiled.API.Extensions.CommonExtensions.GetRandomValue
+  isSpec: "True"
+  fullName: Exiled.API.Extensions.CommonExtensions.GetRandomValue
+  nameWithType: CommonExtensions.GetRandomValue
+- uid: Exiled.API.Extensions.CommonExtensions.GetRandomValue``1(System.Collections.Generic.IEnumerable{``0})
+  name: GetRandomValue<T>(IEnumerable<T>)
+  href: api/Exiled.API.Extensions.CommonExtensions.html#Exiled_API_Extensions_CommonExtensions_GetRandomValue__1_System_Collections_Generic_IEnumerable___0__
+  commentId: M:Exiled.API.Extensions.CommonExtensions.GetRandomValue``1(System.Collections.Generic.IEnumerable{``0})
+  name.vb: GetRandomValue(Of T)(IEnumerable(Of T))
+  fullName: Exiled.API.Extensions.CommonExtensions.GetRandomValue<T>(System.Collections.Generic.IEnumerable<T>)
+  fullName.vb: Exiled.API.Extensions.CommonExtensions.GetRandomValue(Of T)(System.Collections.Generic.IEnumerable(Of T))
+  nameWithType: CommonExtensions.GetRandomValue<T>(IEnumerable<T>)
+  nameWithType.vb: CommonExtensions.GetRandomValue(Of T)(IEnumerable(Of T))
 - uid: Exiled.API.Extensions.DamageTypeExtensions
   name: DamageTypeExtensions
   href: api/Exiled.API.Extensions.DamageTypeExtensions.html
@@ -47650,12 +47684,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.Scp939.LungingEventArgs
   fullName: Exiled.Events.EventArgs.Scp939.LungingEventArgs
   nameWithType: LungingEventArgs
-- uid: Exiled.Events.EventArgs.Scp939.LungingEventArgs.#ctor(ReferenceHub)
-  name: LungingEventArgs(ReferenceHub)
-  href: api/Exiled.Events.EventArgs.Scp939.LungingEventArgs.html#Exiled_Events_EventArgs_Scp939_LungingEventArgs__ctor_ReferenceHub_
-  commentId: M:Exiled.Events.EventArgs.Scp939.LungingEventArgs.#ctor(ReferenceHub)
-  fullName: Exiled.Events.EventArgs.Scp939.LungingEventArgs.LungingEventArgs(ReferenceHub)
-  nameWithType: LungingEventArgs.LungingEventArgs(ReferenceHub)
+- uid: Exiled.Events.EventArgs.Scp939.LungingEventArgs.#ctor(Exiled.API.Features.Player)
+  name: LungingEventArgs(Player)
+  href: api/Exiled.Events.EventArgs.Scp939.LungingEventArgs.html#Exiled_Events_EventArgs_Scp939_LungingEventArgs__ctor_Exiled_API_Features_Player_
+  commentId: M:Exiled.Events.EventArgs.Scp939.LungingEventArgs.#ctor(Exiled.API.Features.Player)
+  fullName: Exiled.Events.EventArgs.Scp939.LungingEventArgs.LungingEventArgs(Exiled.API.Features.Player)
+  nameWithType: LungingEventArgs.LungingEventArgs(Player)
 - uid: Exiled.Events.EventArgs.Scp939.LungingEventArgs.#ctor*
   name: LungingEventArgs
   href: api/Exiled.Events.EventArgs.Scp939.LungingEventArgs.html#Exiled_Events_EventArgs_Scp939_LungingEventArgs__ctor_
@@ -47695,12 +47729,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.Scp939.PlacingAmnesticCloudEventArgs
   fullName: Exiled.Events.EventArgs.Scp939.PlacingAmnesticCloudEventArgs
   nameWithType: PlacingAmnesticCloudEventArgs
-- uid: Exiled.Events.EventArgs.Scp939.PlacingAmnesticCloudEventArgs.#ctor(ReferenceHub,System.Boolean,System.Boolean,System.Single,System.Boolean)
-  name: PlacingAmnesticCloudEventArgs(ReferenceHub, Boolean, Boolean, Single, Boolean)
-  href: api/Exiled.Events.EventArgs.Scp939.PlacingAmnesticCloudEventArgs.html#Exiled_Events_EventArgs_Scp939_PlacingAmnesticCloudEventArgs__ctor_ReferenceHub_System_Boolean_System_Boolean_System_Single_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.Scp939.PlacingAmnesticCloudEventArgs.#ctor(ReferenceHub,System.Boolean,System.Boolean,System.Single,System.Boolean)
-  fullName: Exiled.Events.EventArgs.Scp939.PlacingAmnesticCloudEventArgs.PlacingAmnesticCloudEventArgs(ReferenceHub, System.Boolean, System.Boolean, System.Single, System.Boolean)
-  nameWithType: PlacingAmnesticCloudEventArgs.PlacingAmnesticCloudEventArgs(ReferenceHub, Boolean, Boolean, Single, Boolean)
+- uid: Exiled.Events.EventArgs.Scp939.PlacingAmnesticCloudEventArgs.#ctor(Exiled.API.Features.Player,System.Boolean,System.Boolean,System.Single,System.Boolean)
+  name: PlacingAmnesticCloudEventArgs(Player, Boolean, Boolean, Single, Boolean)
+  href: api/Exiled.Events.EventArgs.Scp939.PlacingAmnesticCloudEventArgs.html#Exiled_Events_EventArgs_Scp939_PlacingAmnesticCloudEventArgs__ctor_Exiled_API_Features_Player_System_Boolean_System_Boolean_System_Single_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.Scp939.PlacingAmnesticCloudEventArgs.#ctor(Exiled.API.Features.Player,System.Boolean,System.Boolean,System.Single,System.Boolean)
+  fullName: Exiled.Events.EventArgs.Scp939.PlacingAmnesticCloudEventArgs.PlacingAmnesticCloudEventArgs(Exiled.API.Features.Player, System.Boolean, System.Boolean, System.Single, System.Boolean)
+  nameWithType: PlacingAmnesticCloudEventArgs.PlacingAmnesticCloudEventArgs(Player, Boolean, Boolean, Single, Boolean)
 - uid: Exiled.Events.EventArgs.Scp939.PlacingAmnesticCloudEventArgs.#ctor*
   name: PlacingAmnesticCloudEventArgs
   href: api/Exiled.Events.EventArgs.Scp939.PlacingAmnesticCloudEventArgs.html#Exiled_Events_EventArgs_Scp939_PlacingAmnesticCloudEventArgs__ctor_
@@ -47792,12 +47826,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.Scp939.PlayingSoundEventArgs
   fullName: Exiled.Events.EventArgs.Scp939.PlayingSoundEventArgs
   nameWithType: PlayingSoundEventArgs
-- uid: Exiled.Events.EventArgs.Scp939.PlayingSoundEventArgs.#ctor(ReferenceHub,PlayerRoles.PlayableScps.Scp939.Mimicry.EnvMimicrySequence,System.Boolean,System.Single,System.Boolean)
-  name: PlayingSoundEventArgs(ReferenceHub, EnvMimicrySequence, Boolean, Single, Boolean)
-  href: api/Exiled.Events.EventArgs.Scp939.PlayingSoundEventArgs.html#Exiled_Events_EventArgs_Scp939_PlayingSoundEventArgs__ctor_ReferenceHub_PlayerRoles_PlayableScps_Scp939_Mimicry_EnvMimicrySequence_System_Boolean_System_Single_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.Scp939.PlayingSoundEventArgs.#ctor(ReferenceHub,PlayerRoles.PlayableScps.Scp939.Mimicry.EnvMimicrySequence,System.Boolean,System.Single,System.Boolean)
-  fullName: Exiled.Events.EventArgs.Scp939.PlayingSoundEventArgs.PlayingSoundEventArgs(ReferenceHub, PlayerRoles.PlayableScps.Scp939.Mimicry.EnvMimicrySequence, System.Boolean, System.Single, System.Boolean)
-  nameWithType: PlayingSoundEventArgs.PlayingSoundEventArgs(ReferenceHub, EnvMimicrySequence, Boolean, Single, Boolean)
+- uid: Exiled.Events.EventArgs.Scp939.PlayingSoundEventArgs.#ctor(Exiled.API.Features.Player,PlayerRoles.PlayableScps.Scp939.Mimicry.EnvMimicrySequence,System.Boolean,System.Single,System.Boolean)
+  name: PlayingSoundEventArgs(Player, EnvMimicrySequence, Boolean, Single, Boolean)
+  href: api/Exiled.Events.EventArgs.Scp939.PlayingSoundEventArgs.html#Exiled_Events_EventArgs_Scp939_PlayingSoundEventArgs__ctor_Exiled_API_Features_Player_PlayerRoles_PlayableScps_Scp939_Mimicry_EnvMimicrySequence_System_Boolean_System_Single_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.Scp939.PlayingSoundEventArgs.#ctor(Exiled.API.Features.Player,PlayerRoles.PlayableScps.Scp939.Mimicry.EnvMimicrySequence,System.Boolean,System.Single,System.Boolean)
+  fullName: Exiled.Events.EventArgs.Scp939.PlayingSoundEventArgs.PlayingSoundEventArgs(Exiled.API.Features.Player, PlayerRoles.PlayableScps.Scp939.Mimicry.EnvMimicrySequence, System.Boolean, System.Single, System.Boolean)
+  nameWithType: PlayingSoundEventArgs.PlayingSoundEventArgs(Player, EnvMimicrySequence, Boolean, Single, Boolean)
 - uid: Exiled.Events.EventArgs.Scp939.PlayingSoundEventArgs.#ctor*
   name: PlayingSoundEventArgs
   href: api/Exiled.Events.EventArgs.Scp939.PlayingSoundEventArgs.html#Exiled_Events_EventArgs_Scp939_PlayingSoundEventArgs__ctor_
