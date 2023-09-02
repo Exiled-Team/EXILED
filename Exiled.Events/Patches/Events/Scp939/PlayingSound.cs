@@ -7,8 +7,10 @@
 
 namespace Exiled.Events.Patches.Events.Scp939
 {
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.Events.Attributes;
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
 
@@ -17,6 +19,9 @@ namespace Exiled.Events.Patches.Events.Scp939
 
     using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
+    using PlayerRoles.PlayableScps.Subroutines;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     ///     Patches <see cref="Scp939AmnesticCloudAbility.ServerProcessCmd(NetworkReader)" />
@@ -26,23 +31,84 @@ namespace Exiled.Events.Patches.Events.Scp939
     [HarmonyPatch(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry.ServerProcessCmd))]
     internal static class PlayingSound
     {
-        private static bool Prefix(EnvironmentalMimicry __instance, NetworkReader reader)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            byte option = reader.ReadByte();
+            List<CodeInstruction> newInstructions = new();
 
-            EnvMimicrySequence sound = __instance.Sequences[option];
+            LocalBuilder option = generator.DeclareLocal(typeof(byte));
+            LocalBuilder isReady = generator.DeclareLocal(typeof(bool));
+            LocalBuilder ev = generator.DeclareLocal(typeof(PlayingSoundEventArgs));
 
-            PlayingSoundEventArgs ev = new(__instance.Owner, sound, __instance.Cooldown.IsReady, __instance._activationCooldown, __instance.Cooldown.IsReady);
-            Scp939.OnPlayingSound(ev);
+            Label ret = generator.DefineLabel();
 
-            if (ev.IsReady && ev.IsAllowed)
+            // byte option = reader.ReadByte();
+            // PlayingSoundEventArgs ev = new(Player::Get(Owner), Sequences[option], Cooldown.IsReady, _activationCooldown, Cooldown.IsReady);
+            // Scp939.OnPlayingSound(ev);
+            // if (ev.IsReady && ev.IsAllowed)
+            // {
+            //     _syncOption = option;
+            //     Cooldown.Trigger(ev.Cooldown);
+            //     ServerSendRpc(true);
+            // }
+            newInstructions.AddRange(new CodeInstruction[]
             {
-                __instance._syncOption = option;
-                __instance.Cooldown.Trigger(ev.Cooldown);
-                __instance.ServerSendRpc(toAll: true);
-            }
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Callvirt, Method(typeof(NetworkReader), nameof(NetworkReader.ReadByte))),
+                new(OpCodes.Stloc_S, option.LocalIndex),
 
-            return false;
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry.Owner))),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry.Sequences))),
+
+                new(OpCodes.Ldloc_S, option.LocalIndex),
+                new(OpCodes.Ldelem_Ref),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry.Cooldown))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(AbilityCooldown), nameof(AbilityCooldown.IsReady))),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, isReady.LocalIndex),
+
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry._activationCooldown))),
+
+                new(OpCodes.Ldloc_S, isReady.LocalIndex),
+
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlayingSoundEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
+
+                new(OpCodes.Call, Method(typeof(Scp939), nameof(Scp939.OnPlayingSound))),
+
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(PlayingSoundEventArgs), nameof(PlayingSoundEventArgs.IsReady))),
+                new(OpCodes.Brfalse_S, ret),
+
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(PlayingSoundEventArgs), nameof(PlayingSoundEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, ret),
+
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldloc_S, option.LocalIndex),
+                new(OpCodes.Stfld, Field(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry._syncOption))),
+
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry.Cooldown))),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(PlayingSoundEventArgs), nameof(PlayingSoundEventArgs.Cooldown))),
+                new(OpCodes.Callvirt, Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger))),
+
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Callvirt, Method(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry.ServerSendRpc), new[] { typeof(bool) })),
+
+                new CodeInstruction(OpCodes.Ret).WithLabels(ret),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
         }
     }
 }

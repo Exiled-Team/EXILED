@@ -43,12 +43,6 @@ namespace Exiled.Events.Patches.Events.Scp096
             const int offset = -2;
             int index = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(DoorVariant), nameof(DoorVariant.TargetState)))) + offset;
 
-            // StartPryingGateEventArgs ev = new StartPryingGateEventArgs(this, Player, Gate, true);
-            //
-            // Handlers.Scp096.OnStartPryingGate(ev);
-            //
-            // if (!ev.IsAllowed)
-            //     return;
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
@@ -65,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Scp096
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // StartPryingGateEventArgs ev = new StartPryingGateEventArgs(Scp096Role, Player, PryableDoor, bool);
+                    // StartPryingGateEventArgs ev = new StartPryingGateEventArgs(player, gate, true);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartPryingGateEventArgs))[0]),
                     new(OpCodes.Dup),
 
