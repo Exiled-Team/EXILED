@@ -27,18 +27,18 @@ namespace Exiled.Events.EventArgs.Scp096
         /// <param name="target">
         ///     <inheritdoc cref="Target" />
         /// </param>
-        /// <param name="isForLook">
+        /// <param name="isLooking">
         ///     <inheritdoc cref="IsLooking" />
         /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public AddingTargetEventArgs(Player scp096, Player target, bool isForLook, bool isAllowed = true)
+        public AddingTargetEventArgs(Player scp096, Player target, bool isLooking, bool isAllowed = true)
         {
             Player = scp096;
             Scp096 = scp096.Role.As<Scp096Role>();
             Target = target;
-            IsLooking = isForLook;
+            IsLooking = isLooking;
             IsAllowed = isAllowed;
         }
 
