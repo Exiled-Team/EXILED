@@ -66,6 +66,18 @@ namespace Exiled.Events.Patches.Generic
 
             foreach (Room room in rooms)
                 room.DoorsValue.Add(door);
+
+            if (door.Is(out CheckpointDoor checkpoint))
+            {
+                foreach (DoorVariant subDoor in checkpoint.Base.SubDoors)
+                {
+                    subDoor.RegisterRooms();
+                    BreakableDoor targetDoor = Door.Get(subDoor).Cast<BreakableDoor>();
+
+                    checkpoint.SubDoorsValue.Add(targetDoor);
+                }
+            }
+
             /*EXILED*/
 
             return false;
@@ -97,23 +109,6 @@ namespace Exiled.Events.Patches.Generic
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
-        }
-    }
-
-    /// <summary>
-    /// Patches <see cref="Interactables.Interobjects.CheckpointDoor.Start"/>.
-    /// </summary>
-    [HarmonyPatch(typeof(Interactables.Interobjects.CheckpointDoor), nameof(Interactables.Interobjects.CheckpointDoor.Start))]
-    internal class CheckpointDoorsFix
-    {
-        private static void Postfix(Interactables.Interobjects.CheckpointDoor __instance)
-        {
-            CheckpointDoor checkpoint = Door.Get(__instance).Cast<CheckpointDoor>();
-            foreach (DoorVariant door in __instance.SubDoors)
-            {
-                door.RegisterRooms();
-                checkpoint.SubDoorsValue.Add(Door.Get(door).Cast<BreakableDoor>());
-            }
         }
     }
 }
