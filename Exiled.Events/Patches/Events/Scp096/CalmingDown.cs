@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Scp096
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // CalmingDownEventArgs ev = new(Scp096Role, Player, bool, bool)
+                    // CalmingDownEventArgs ev = new(scp096, bool, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(CalmingDownEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),

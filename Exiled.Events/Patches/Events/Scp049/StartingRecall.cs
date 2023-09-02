@@ -37,15 +37,15 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                // Player player = Player.Get(this.Owner);
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.Owner))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-
                 // Player target = Player.Get(ragdoll.Info.OwnerHub);
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldfld, Field(typeof(BasicRagdoll), nameof(BasicRagdoll.Info))),
                 new(OpCodes.Ldfld, Field(typeof(RagdollData), nameof(RagdollData.OwnerHub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                // Player player = Player.Get(this.Owner);
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.Owner))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // Ragdoll doll = Rangdoll.Get(ragdoll);
@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                 // true
                 new(OpCodes.Ldc_I4_1),
 
-                // StartingRecallEventArgs ev = new(player, target, doll, true);
+                // StartingRecallEventArgs ev = new(target, player, doll, true);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingRecallEventArgs))[0]),
                 new(OpCodes.Dup),
 
