@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="CommonExtensions.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -24,5 +24,14 @@ namespace Exiled.API.Extensions
         /// <typeparam name="T">Type of <see cref="IEnumerable{T}"/> elements.</typeparam>
         /// <returns>Returns a random value from <see cref="IEnumerable{T}"/>.</returns>
         public static T GetRandomValue<T>(this IEnumerable<T> enumerable) => enumerable.ElementAt(Random.Range(0, enumerable.Count()));
+
+        /// <summary>
+        /// Gets a random value from an <see cref="IEnumerable{T}"/> that matches the provided condition.
+        /// </summary>
+        /// <param name="enumerable"><see cref="IEnumerable{T}"/> to be used to get a random value.</param>
+        /// <typeparam name="T">Type of <see cref="IEnumerable{T}"/> elements.</typeparam>
+        /// <param name="condition">The condition to require.</param>
+        /// <returns>Returns a random value from <see cref="IEnumerable{T}"/>.</returns>
+        public static T GetRandomValue<T>(this IEnumerable<T> enumerable, System.Func<T, bool> condition) => enumerable.Where(condition).ElementAt(Random.Range(0, enumerable.Count()));
     }
 }
