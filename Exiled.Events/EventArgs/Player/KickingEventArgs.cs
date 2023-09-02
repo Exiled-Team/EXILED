@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs.Player
         public KickingEventArgs(Player target, Player issuer, string reason, string fullMessage, bool isAllowed = true)
         {
             Target = target;
-            Player = Player.Get(issuer) ?? Server.Host;
+            Player = issuer ?? Server.Host;
             Reason = reason;
             FullMessage = fullMessage;
             IsAllowed = isAllowed;
