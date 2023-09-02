@@ -175,7 +175,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the room's FlickerableLightController.
         /// </summary>
-        public RoomLightController RoomLightController => RoomLightControllers?.FirstOrDefault();
+        public RoomLightController RoomLightController => RoomLightControllers.FirstOrDefault();
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> containing all known <see cref="Window"/>s in that <see cref="Room"/>.
