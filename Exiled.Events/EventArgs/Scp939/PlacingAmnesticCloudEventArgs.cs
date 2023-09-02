@@ -34,9 +34,9 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public PlacingAmnesticCloudEventArgs(ReferenceHub player, bool state, bool isReady, float cooldown, bool isAllowed = true)
+        public PlacingAmnesticCloudEventArgs(Player player, bool state, bool isReady, float cooldown, bool isAllowed = true)
         {
-            Player = Player.Get(player);
+            Player = player;
             Scp939 = Player.Role.As<Scp939Role>();
             State = state;
             IsReady = isReady;

@@ -106,7 +106,7 @@ namespace Exiled.API.Features.Doors
             get => Subdoors.Sum(door => door.MaxHealth);
             set
             {
-                float health = value / Subdoors.Count();
+                float health = value / Subdoors.Count;
 
                 foreach (var door in Subdoors)
                 {

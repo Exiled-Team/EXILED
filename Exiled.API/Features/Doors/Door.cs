@@ -537,8 +537,6 @@ namespace Exiled.API.Features.Doors
                 {
                     "LCZ" => Room?.Type switch
                     {
-                        RoomType.LczCheckpointA or RoomType.LczCheckpointB or RoomType.HczEzCheckpointA
-                        or RoomType.HczEzCheckpointB => Get(Base.GetComponentInParent<Interactables.Interobjects.CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor,
                         RoomType.LczAirlock => (Base.GetComponentInParent<Interactables.Interobjects.AirlockController>() != null) ? DoorType.Airlock : DoorType.LightContainmentDoor,
                         _ => DoorType.LightContainmentDoor,
                     },

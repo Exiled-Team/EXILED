@@ -41,12 +41,6 @@ namespace Exiled.Events.Patches.Events.Scp096
             const int offset = 0;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldarg_0) + offset;
 
-            // EnragingEventArgs ev = new EnragingEventArgs(this, Player, initialDuration, true);
-            //
-            // Handlers.Scp096.OnEnraging(ev);
-            //
-            // if (!ev.IsAllowed)
-            //     return;
             newInstructions.InsertRange(
                 index,
                 new[]
@@ -62,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Scp096
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // EnragingEventArgs ev = new(Scp096Role, Player, float, bool)
+                    // EnragingEventArgs ev = new(player, initialDuration, true)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnragingEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
