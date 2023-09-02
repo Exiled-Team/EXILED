@@ -26,8 +26,6 @@ namespace Exiled.API.Features
     using UnityEngine;
     using Utils.NonAllocLINQ;
 
-    using static PlayerList;
-
     /// <summary>
     /// The in-game room.
     /// </summary>
@@ -141,14 +139,15 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the color of the room's lights by changing the warhead color.
         /// </summary>
+        /// <remarks>Will return <see cref="Color.clear"/> when <see cref="RoomLightController"/> is <see langword="null"/>.</remarks>
         public Color Color
         {
-            get => RoomLightController.NetworkOverrideColor;
+            get => RoomLightController == null ? Color.clear : RoomLightController.NetworkOverrideColor;
             set
             {
-                if (RoomLightController)
+                foreach (RoomLightController light in RoomLightControllers)
                 {
-                    RoomLightController.NetworkOverrideColor = value;
+                    light.NetworkOverrideColor = value;
                 }
             }
         }
@@ -158,23 +157,25 @@ namespace Exiled.API.Features
         /// </summary>
         public bool AreLightsOff
         {
-            get => RoomLightController && !RoomLightController.NetworkLightsEnabled;
+            get => RoomLightController != null && !RoomLightController.NetworkLightsEnabled;
             set
             {
-                if (RoomLightController)
-                    RoomLightController.NetworkLightsEnabled = !value;
+                foreach (RoomLightController light in RoomLightControllers)
+                {
+                    light.NetworkLightsEnabled = value;
+                }
             }
         }
 
         /// <summary>
         /// Gets the FlickerableLightController's NetworkIdentity.
         /// </summary>
-        public NetworkIdentity RoomLightControllerNetIdentity => RoomLightController.netIdentity;
+        public NetworkIdentity RoomLightControllerNetIdentity => RoomLightController?.netIdentity;
 
         /// <summary>
         /// Gets the room's FlickerableLightController.
         /// </summary>
-        public RoomLightController RoomLightController => RoomLightControllers.Count == 0 ? RoomLightControllers.ElementAt(0) : null;
+        public RoomLightController RoomLightController => RoomLightControllers.FirstOrDefault();
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> containing all known <see cref="Window"/>s in that <see cref="Room"/>.
@@ -312,7 +313,13 @@ namespace Exiled.API.Features
         /// Flickers the room's lights off for a duration.
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
-        public void TurnOffLights(float duration) => RoomLightController?.ServerFlickerLights(duration);
+        public void TurnOffLights(float duration)
+        {
+            foreach (RoomLightController light in RoomLightControllers)
+            {
+                light.ServerFlickerLights(duration);
+            }
+        }
 
         /// <summary>
         /// Locks all the doors in the room.
@@ -364,13 +371,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Resets the room color to default.
         /// </summary>
-        public void ResetColor()
-        {
-            if (!RoomLightController)
-                return;
-
-            RoomLightController.NetworkOverrideColor = Color.clear;
-        }
+        public void ResetColor() => Color = Color.clear;
 
         /// <summary>
         /// Returns the Room in a human-readable format.
