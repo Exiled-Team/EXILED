@@ -32,6 +32,6 @@ namespace Exiled.API.Extensions
         /// <typeparam name="T">Type of <see cref="IEnumerable{T}"/> elements.</typeparam>
         /// <param name="condition">The condition to require.</param>
         /// <returns>Returns a random value from <see cref="IEnumerable{T}"/>.</returns>
-        public static T GetRandomValue<T>(this IEnumerable<T> enumerable, System.Func<T, bool> condition) => enumerable.Where(condition).ElementAt(Random.Range(0, enumerable.Count()));
+        public static T GetRandomValue<T>(this IEnumerable<T> enumerable, System.Func<T, bool> condition) => enumerable.Where(condition).GetRandomValue();
     }
 }
