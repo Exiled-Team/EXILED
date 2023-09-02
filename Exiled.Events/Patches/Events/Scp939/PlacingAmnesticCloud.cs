@@ -45,9 +45,10 @@ namespace Exiled.Events.Patches.Events.Scp939
 
             newInstructions.InsertRange(index, new[]
             {
-                // this.Owner
+                // Player::Get(Owner)
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Scp939AmnesticCloudAbility), nameof(Scp939AmnesticCloudAbility.Owner))),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // flag (NewState)
                 new(OpCodes.Ldloc_0),

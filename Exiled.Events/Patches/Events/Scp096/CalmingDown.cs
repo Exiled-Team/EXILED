@@ -41,12 +41,6 @@ namespace Exiled.Events.Patches.Events.Scp096
             const int offset = 0;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldarg_1) + offset;
 
-            // CalmingDownEventArgs ev = new(this, Player, clearTime, true);
-            //
-            // Handlers.Scp096.OnCalmingDown(ev);
-            //
-            // if (!ev.IsAllowed)
-            //     return;
             newInstructions.InsertRange(
                 index,
                 new[]

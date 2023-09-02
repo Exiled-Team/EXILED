@@ -41,12 +41,6 @@ namespace Exiled.Events.Patches.Events.Scp096
             const int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
-            // ChargingEventArgs ev = new ChargingEventArgs(this, Player, true);
-            //
-            // Handlers.Scp096.OnCharging(ev);
-            //
-            // if (!ev.IsAllowed)
-            //     return;
             newInstructions.InsertRange(
                 index,
                 new[]
