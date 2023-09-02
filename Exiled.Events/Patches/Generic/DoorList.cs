@@ -69,12 +69,10 @@ namespace Exiled.Events.Patches.Generic
 
             if (door.Is(out CheckpointDoor checkpoint))
             {
-                Log.Warn($"main door: {checkpoint}");
                 foreach (DoorVariant subDoor in checkpoint.Base.SubDoors)
                 {
                     subDoor.RegisterRooms();
                     BreakableDoor targetDoor = Door.Get(subDoor).Cast<BreakableDoor>();
-                    Log.Warn($"target door: {checkpoint.Type}");
 
                     checkpoint.SubDoorsValue.Add(targetDoor);
                 }
