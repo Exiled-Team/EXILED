@@ -148,6 +148,12 @@ namespace Exiled.API.Features.DamageHandlers
                 case DamageType.Com45:
                     GenericFirearm(player, attacker, damage, damageType, ItemType.GunCom45);
                     break;
+                case DamageType.Frmg0:
+                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunFRMG0);
+                    break;
+                case DamageType.A7:
+                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunA7);
+                    break;
                 case DamageType.ParticleDisruptor:
                     Base = new DisruptorDamageHandler(Attacker, damage);
                     break;
