@@ -13,6 +13,7 @@ namespace Exiled.Events.EventArgs.Player
     /// Contains all information after a <see cref="Player"/> disconnects from the server. <br>This class is inherited from <see cref="JoinedEventArgs" /></br>
     /// </summary>
 
+    // TODO: Remove inherited from JoinedEventArgs
     public class LeftEventArgs : JoinedEventArgs
     {
         /// <summary>
