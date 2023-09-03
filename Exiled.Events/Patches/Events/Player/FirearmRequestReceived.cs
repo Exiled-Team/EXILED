@@ -30,14 +30,16 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     ///     Patches <see cref="FirearmBasicMessagesHandler.ServerRequestReceived" />.
     ///     Adds <see cref="Player.ReloadingWeapon" />, <see cref="Player.UnloadingWeapon" />,
-    ///     <see cref="Player.DryfiringWeapon" />, <see cref="Player.AimingDownSight" /> and
-    ///     <see cref="Player.TogglingWeaponFlashlight" /> events.
+    ///     <see cref="Player.DryfiringWeapon" />, <see cref="Player.AimingDownSight" />,
+    ///     <see cref="Player.TogglingWeaponFlashlight" /> and
+    ///     <see cref="Player.InspectingWeapon" /> events.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.ReloadingWeapon))]
     [EventPatch(typeof(Player), nameof(Player.UnloadingWeapon))]
     [EventPatch(typeof(Player), nameof(Player.DryfiringWeapon))]
     [EventPatch(typeof(Player), nameof(Player.AimingDownSight))]
     [EventPatch(typeof(Player), nameof(Player.TogglingWeaponFlashlight))]
+    [EventPatch(typeof(Player), nameof(Player.InspectingWeapon))]
     [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerRequestReceived))]
     internal static class FirearmRequestReceived
     {
@@ -261,6 +263,34 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldc_I4_0),
                     new(OpCodes.Ceq),
                     new(OpCodes.Stloc_S, 6),
+                });
+
+            offset = -3;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldftn) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // player
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
+
+                    // firearm
+                    new(OpCodes.Ldloc_S, firearm.LocalIndex),
+
+                    // InspectingWeaponEventArgs ev = new(Player, firearm)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InspectingWeaponEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+
+                    // Player.OnInspectingWeapon(ev)
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.InspectingWeapon))),
+
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(InspectingWeaponEventArgs), nameof(InspectingWeaponEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);

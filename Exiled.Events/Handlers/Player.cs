@@ -240,6 +240,12 @@ namespace Exiled.Events.Handlers
         public static Event<ReloadingWeaponEventArgs> ReloadingWeapon { get; set; } = new();
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> inspects a weapon.
+        /// </summary>
+        /// <remarks>Denying this event will only make it so that spectators will not see the inspection, not the player.</remarks>
+        public static Event<InspectingWeaponEventArgs> InspectingWeapon { get; set; } = new();
+
+        /// <summary>
         /// Invoked before spawning a <see cref="API.Features.Player"/>.
         /// </summary>
         public static Event<SpawningEventArgs> Spawning { get; set; } = new();
