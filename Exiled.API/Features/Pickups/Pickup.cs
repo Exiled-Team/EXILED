@@ -311,8 +311,8 @@ namespace Exiled.API.Features.Pickups
                 BaseMicroHIDPickup microHidPickup => new MicroHIDPickup(microHidPickup),
                 TimedGrenadePickup timeGrenade => timeGrenade.NetworkInfo.ItemId switch
                 {
-                    ItemType.GrenadeHE => new ExplosiveGrenadePickup(),
-                    ItemType.GrenadeFlash => new FlashGrenadePickup(),
+                    ItemType.GrenadeHE => new ExplosiveGrenadePickup(timeGrenade),
+                    ItemType.GrenadeFlash => new FlashGrenadePickup(timeGrenade),
                     _ => new GrenadePickup(timeGrenade),
                 },
                 BaseFirearmPickup firearmPickup => new FirearmPickup(firearmPickup),

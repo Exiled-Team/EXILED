@@ -22,11 +22,11 @@ namespace Exiled.API.Features.Doors
         /// </summary>
         /// <param name="door">The base <see cref="Interactables.Interobjects.CheckpointDoor"/> for this door.</param>
         /// <param name="room">The <see cref="Room"/> for this door.</param>
-        public CheckpointDoor(Interactables.Interobjects.CheckpointDoor door, Room room)
+        internal CheckpointDoor(Interactables.Interobjects.CheckpointDoor door, List<Room> room)
             : base(door, room)
         {
             Base = door;
-            Subdoors = new List<BreakableDoor>(Base.SubDoors.Select(x => Get(x).As<BreakableDoor>()));
+            Subdoors = SubDoorsValue.AsReadOnly();
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Exiled.API.Features.Doors
             get => Base.GetHealthPercent();
             set
             {
-                float health = value / Subdoors.Count();
+                float health = value / Subdoors.Count;
 
                 foreach (var door in Subdoors)
                 {
@@ -106,7 +106,7 @@ namespace Exiled.API.Features.Doors
             get => Subdoors.Sum(door => door.MaxHealth);
             set
             {
-                float health = value / Subdoors.Count();
+                float health = value / Subdoors.Count;
 
                 foreach (var door in Subdoors)
                 {
@@ -127,6 +127,11 @@ namespace Exiled.API.Features.Doors
                 }
             }
         }
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all known subdoors <see cref="Door"/>s.
+        /// </summary>
+        internal List<BreakableDoor> SubDoorsValue { get; } = new();
 
         /// <summary>
         /// Toggles the state of the doors from <see cref="Subdoors"/>.

@@ -59,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // FinishingRecallEventArgs ev = new(Player, Player, BasicRagdoll, bool)
+                    // FinishingRecallEventArgs ev = new(target, scp049, BasicRagdoll, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(FinishingRecallEventArgs))[0]),
                     new(OpCodes.Dup),
 

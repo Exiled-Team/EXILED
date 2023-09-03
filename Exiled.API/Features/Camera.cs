@@ -12,10 +12,10 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
     using MapGeneration;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
-
     using UnityEngine;
 
     using CameraType = Enums.CameraType;
@@ -146,13 +146,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the <see cref="Camera"/> instances.
         /// </summary>
-        public static IEnumerable<Camera> List => Camera079ToCamera.Values;
+        public static IReadOnlyCollection<Camera> List => Camera079ToCamera.Values;
 
         /// <summary>
         /// Gets a random <see cref="Camera"/>.
         /// </summary>
         /// <returns><see cref="Camera"/> object.</returns>
-        public static Camera Random => List.ToArray()[UnityEngine.Random.Range(0, Camera079ToCamera.Count)];
+        public static Camera Random => List.GetRandomValue();
 
         /// <summary>
         /// Gets the base <see cref="Scp079Camera"/>.

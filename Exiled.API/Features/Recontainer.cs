@@ -170,7 +170,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances locked during the overcharge procedure.
         /// </summary>
-        public static IEnumerable<Door> LockedDoors => Door.Get(door => Base._lockedDoors.Contains(door.Base));
+        public static IEnumerable<Door> LockedDoors => Base._lockedDoors.Select(Door.Get);
 
         /// <summary>
         /// Tries to kill SCP-079.
