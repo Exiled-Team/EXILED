@@ -71,7 +71,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
-    public class Player : IEntity, IWorldSpace
+    public class Player : TypeCastObject<Player>, IEntity, IWorldSpace
     {
 #pragma warning disable SA1401
         /// <summary>
