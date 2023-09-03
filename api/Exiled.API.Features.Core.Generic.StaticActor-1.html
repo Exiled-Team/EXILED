@@ -1,0 +1,781 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class StaticActor&lt;T&gt;
+   | EXILED Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class StaticActor&lt;T&gt;
+   | EXILED Docs ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../assets/Exiled_Icon_50x50.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1">
+  
+  
+  <h1 id="Exiled_API_Features_Core_Generic_StaticActor_1" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1" class="text-break">Class StaticActor&lt;T&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>This is a generic Singleton implementation for components.
+<br>Create a derived class where the type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> is the script you want to &quot;Singletonize&quot;</br></p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html">TypeCastObject</a>&lt;<a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a>&gt;</div>
+    <div class="level2"><a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a></div>
+    <div class="level3"><a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a></div>
+    <div class="level4"><span class="xref">StaticActor&lt;T&gt;</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.API.Features.Core.Interfaces.IEntity.html">IEntity</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_DefaultFixedTickRate">EActor.DefaultFixedTickRate</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_ComponentsInChildren">EActor.ComponentsInChildren</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Transform">EActor.Transform</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Position">EActor.Position</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Rotation">EActor.Rotation</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Scale">EActor.Scale</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_CanEverTick">EActor.CanEverTick</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_FixedTickRate">EActor.FixedTickRate</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_ComponentsInParent">EActor.ComponentsInParent</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AttachTo_Exiled_API_Features_Core_EActor_UnityEngine_GameObject_">EActor.AttachTo(EActor, GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AttachTo_Exiled_API_Features_Core_EActor_Exiled_API_Features_Core_EActor_">EActor.AttachTo(EActor, EActor)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AddComponent__1_System_String_">EActor.AddComponent&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AddComponent_System_Type_System_String_">EActor.AddComponent(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AddComponent__1_System_Type_System_String_">EActor.AddComponent&lt;T&gt;(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_GetComponent_System_Type_">EActor.GetComponent(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_GetComponent__1">EActor.GetComponent&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_GetComponent__1_System_Type_">EActor.GetComponent&lt;T&gt;(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_TryGetComponent__1_System_Type___0__">EActor.TryGetComponent&lt;T&gt;(Type, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_TryGetComponent__1___0__">EActor.TryGetComponent&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_TryGetComponent_System_Type_Exiled_API_Features_Core_EActor__">EActor.TryGetComponent(Type, EActor)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_HasComponent__1_System_Boolean_">EActor.HasComponent&lt;T&gt;(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_HasComponent_System_Type_System_Boolean_">EActor.HasComponent(Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Tick">EActor.Tick()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_SubscribeEvents">EActor.SubscribeEvents()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_UnsubscribeEvents">EActor.UnsubscribeEvents()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_OnBeginDestroy">EActor.OnBeginDestroy()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_RegisteredTypes">EObject.RegisteredTypes</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Base">EObject.Base</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Name">EObject.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Tag">EObject.Tag</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_IsEditable">EObject.IsEditable</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeByName_System_String_">EObject.GetObjectTypeByName(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_RegisterObjectType__1_System_String_">EObject.RegisterObjectType&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_RegisterObjectType_System_Type_System_String_">EObject.RegisterObjectType(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_UnregisterObjectType_System_Type_">EObject.UnregisterObjectType(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_UnregisterObjectType_System_String_">EObject.UnregisterObjectType(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindObjectDefinedTypeByName_System_String_System_Boolean_">EObject.FindObjectDefinedTypeByName(String, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypes__1">EObject.GetObjectTypeFromRegisteredTypes&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypes__1_System_String_">EObject.GetObjectTypeFromRegisteredTypes&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypes_System_Type_">EObject.GetObjectTypeFromRegisteredTypes(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypes_System_Type_System_String_">EObject.GetObjectTypeFromRegisteredTypes(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypesByName_System_String_">EObject.GetObjectTypeFromRegisteredTypesByName(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_System_Object___">EObject.CreateDefaultSubobject(Type, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_">EObject.CreateDefaultSubobject&lt;T&gt;(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1">EObject.CreateDefaultSubobject&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Object___">EObject.CreateDefaultSubobject&lt;T&gt;(Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_UnityEngine_GameObject_System_String_">EObject.CreateDefaultSubobject&lt;T&gt;(GameObject, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_UnityEngine_GameObject_System_String_System_Object___">EObject.CreateDefaultSubobject&lt;T&gt;(GameObject, String, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_UnityEngine_GameObject_System_String_">EObject.CreateDefaultSubobject&lt;T&gt;(Type, GameObject, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_UnityEngine_GameObject_System_String_System_Object___">EObject.CreateDefaultSubobject&lt;T&gt;(Type, GameObject, String, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_UnityEngine_GameObject_System_String_">EObject.CreateDefaultSubobject(Type, GameObject, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_UnityEngine_GameObject_System_String_System_Object___">EObject.CreateDefaultSubobject(Type, GameObject, String, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyAllObjects">EObject.DestroyAllObjects()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyAllObjectsOfType__1">EObject.DestroyAllObjectsOfType&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectOfType__1_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__">EObject.FindActiveObjectOfType&lt;T&gt;(Func&lt;EObject, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Func&lt;EObject, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1">EObject.FindActiveObjectsOfType&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_String_">EObject.FindActiveObjectsOfType&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Type_">EObject.FindActiveObjectsOfType&lt;T&gt;(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Type_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Type, Func&lt;EObject, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsWithTagOfType__1_System_String_">EObject.FindActiveObjectsWithTagOfType&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func_System_Object_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Func&lt;Object, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func___0_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Func&lt;T, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyActiveObjectsOfType__1">EObject.DestroyActiveObjectsOfType&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyActiveObject__1_UnityEngine_GameObject_">EObject.DestroyActiveObject&lt;T&gt;(GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyActiveObject_System_Type_UnityEngine_GameObject_">EObject.DestroyActiveObject(Type, GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindMostAppropriateEntry__1_System_String_System_Collections_Generic_IEnumerable___0__">EObject.FindMostAppropriateEntry&lt;T&gt;(String, IEnumerable&lt;T&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Destroy">EObject.Destroy()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetHashCode">EObject.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Equals_System_Object_">EObject.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Destroy_System_Boolean_">EObject.Destroy(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_OnDestroyed">EObject.OnDestroyed()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1">TypeCastObject&lt;EObject&gt;.Cast&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1___0__">TypeCastObject&lt;EObject&gt;.Cast&lt;TObject&gt;(TObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_As__1">TypeCastObject&lt;EObject&gt;.As&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Is__1___0__">TypeCastObject&lt;EObject&gt;.Is&lt;TObject&gt;(TObject)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Exiled.API.Features.Core.Generic.html">Exiled.API.Features.Core.Generic</a></h6>
+  <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
+  <h5 id="Exiled_API_Features_Core_Generic_StaticActor_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class StaticActor&lt;T&gt; : EActor, IEntity, IWorldSpace, IPosition, IRotation where T : EActor</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of the class.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Exiled_API_Features_Core_Generic_StaticActor_1_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Do not redefine <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize">PostInitialize()</a> <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_OnBeginPlay">OnBeginPlay()</a> or <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_OnEndPlay">OnEndPlay()</a> in derived classes.
+<br>Instead, use <span class="xref">langword_csharp_protected virtual</span> methods:</br>
+<br><a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize_Static">PostInitialize_Static()</a></br>
+<br><a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_BeginPlay_Static">BeginPlay_Static()</a></br>
+<br><a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_EndPlay_Static">EndPlay_Static()</a></br>
+<p>
+To perform the initialization and cleanup: those methods are guaranteed to only be called once in the entire lifetime of the component.
+</p></p>
+</div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_Instance.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.Instance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L51">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_Instance_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.Instance*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_Instance" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.Instance">Instance</h4>
+  <div class="markdown level1 summary"><p>Gets the global access point to the unique instance of this class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T Instance { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_IsDestroyed.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.IsDestroyed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L46">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_IsDestroyed_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.IsDestroyed*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_IsDestroyed" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.IsDestroyed">IsDestroyed</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_OnEndPlay">OnEndPlay()</a> method has already been called by Unity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsDestroyed { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_IsInitialized.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.IsInitialized%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L36">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_IsInitialized_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.IsInitialized*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_IsInitialized" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.IsInitialized">IsInitialized</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize">PostInitialize()</a> method has already been called by Unity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsInitialized { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_IsStarted.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.IsStarted%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L41">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_IsStarted_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.IsStarted*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_IsStarted" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.IsStarted">IsStarted</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_OnBeginPlay">OnBeginPlay()</a> method has already been called by Unity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsStarted { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_BeginPlay_Static.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.BeginPlay_Static%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L145">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_BeginPlay_Static_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.BeginPlay_Static*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_BeginPlay_Static" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.BeginPlay_Static">BeginPlay_Static()</h4>
+  <div class="markdown level1 summary"><p>Fired on <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_OnBeginPlay">OnBeginPlay()</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void BeginPlay_Static()</code></pre>
+  </div>
+  <h5 id="Exiled_API_Features_Core_Generic_StaticActor_1_BeginPlay_Static_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method will only be called once even if multiple instances of the <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html">StaticActor&lt;T&gt;</a> component exist in the scene.
+<br>You can override this method in derived classes to customize the initialization of the component.</br></p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_CreateNewInstance.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.CreateNewInstance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L67">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_CreateNewInstance_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.CreateNewInstance*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_CreateNewInstance" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.CreateNewInstance">CreateNewInstance()</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html">StaticActor&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T CreateNewInstance()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The created <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> instance, or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_EndPlay_Static.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.EndPlay_Static%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L156">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_EndPlay_Static_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.EndPlay_Static*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_EndPlay_Static" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.EndPlay_Static">EndPlay_Static()</h4>
+  <div class="markdown level1 summary"><p>Fired on <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_OnEndPlay">OnEndPlay()</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void EndPlay_Static()</code></pre>
+  </div>
+  <h5 id="Exiled_API_Features_Core_Generic_StaticActor_1_EndPlay_Static_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method will only be called once even if multiple instances of the <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html">StaticActor&lt;T&gt;</a> component exist in the scene.
+<br>You can override this method in derived classes to customize the initialization of the component.</br></p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_FindExistingInstance.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.FindExistingInstance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L57">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_FindExistingInstance_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.FindExistingInstance*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_FindExistingInstance" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.FindExistingInstance">FindExistingInstance()</h4>
+  <div class="markdown level1 summary"><p>Looks or an existing instance of the <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html">StaticActor&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T FindExistingInstance()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The existing <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> instance, or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_Flush.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.Flush%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L125">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_Flush_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.Flush*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_Flush" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.Flush">Flush()</h4>
+  <div class="markdown level1 summary"><p>Flushes the current actor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Flush()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_NotifyInstanceRepeated.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.NotifyInstanceRepeated%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L167">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_NotifyInstanceRepeated_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.NotifyInstanceRepeated*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_NotifyInstanceRepeated" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.NotifyInstanceRepeated">NotifyInstanceRepeated()</h4>
+  <div class="markdown level1 summary"><p>If a duplicated instance of a <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html">StaticActor&lt;T&gt;</a> component is loaded into the scene this method will be called instead of <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize_Static">PostInitialize_Static()</a>.
+<br>That way you can customize what to do with repeated instances.</br></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void NotifyInstanceRepeated()</code></pre>
+  </div>
+  <h5 id="Exiled_API_Features_Core_Generic_StaticActor_1_NotifyInstanceRepeated_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The default approach is delete the duplicated component.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_OnBeginPlay.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.OnBeginPlay%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L101">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_OnBeginPlay_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.OnBeginPlay*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_OnBeginPlay" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.OnBeginPlay">OnBeginPlay()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnBeginPlay()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_OnBeginPlay">EActor.OnBeginPlay()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_OnEndPlay.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.OnEndPlay%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L113">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_OnEndPlay_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.OnEndPlay*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_OnEndPlay" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.OnEndPlay">OnEndPlay()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnEndPlay()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_OnEndPlay">EActor.OnEndPlay()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.PostInitialize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L75">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.PostInitialize*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.PostInitialize">PostInitialize()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void PostInitialize()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_PostInitialize">EActor.PostInitialize()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize_Static.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601.PostInitialize_Static%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L134">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize_Static_" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.PostInitialize_Static*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize_Static" data-uid="Exiled.API.Features.Core.Generic.StaticActor`1.PostInitialize_Static">PostInitialize_Static()</h4>
+  <div class="markdown level1 summary"><p>Fired on <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize">PostInitialize()</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void PostInitialize_Static()</code></pre>
+  </div>
+  <h5 id="Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize_Static_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method will only be called once even if multiple instances of the <a class="xref" href="Exiled.API.Features.Core.Generic.StaticActor-1.html">StaticActor&lt;T&gt;</a> component exist in the scene.
+<br>You can override this method in derived classes to customize the initialization of the component.</br></p>
+</div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Features.Core.Interfaces.IEntity.html">IEntity</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_StaticActor_1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.StaticActor%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/StaticActor.cs/#L28" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

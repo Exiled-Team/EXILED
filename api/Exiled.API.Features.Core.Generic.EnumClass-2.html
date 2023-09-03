@@ -1,0 +1,1138 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class EnumClass&lt;TSource, TObject&gt;
+   | EXILED Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class EnumClass&lt;TSource, TObject&gt;
+   | EXILED Docs ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../assets/Exiled_Icon_50x50.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2">
+  
+  
+  <h1 id="Exiled_API_Features_Core_Generic_EnumClass_2" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2" class="text-break">Class EnumClass&lt;TSource, TObject&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>A class which allows <span class="xref">System.Enum</span> implicit conversions.
+<p>Can be used along with <span class="xref">System.Enum</span>, means it doesn&apos;t require another <a class="xref" href="Exiled.API.Features.Core.Generic.EnumClass-2.html">EnumClass&lt;TSource, TObject&gt;</a> instance to be comparable or usable.</p></p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">EnumClass&lt;TSource, TObject&gt;</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IComparable</span></div>
+    <div><span class="xref">System.IEquatable</span>&lt;TObject&gt;</div>
+    <div><span class="xref">System.IComparable</span>&lt;TObject&gt;</div>
+    <div><span class="xref">System.Collections.Generic.IComparer</span>&lt;TObject&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Exiled.API.Features.Core.Generic.html">Exiled.API.Features.Core.Generic</a></h6>
+  <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
+  <h5 id="Exiled_API_Features_Core_Generic_EnumClass_2_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class EnumClass&lt;TSource, TObject&gt; : IComparable, IEquatable&lt;TObject&gt;, IComparable&lt;TObject&gt;, IComparer&lt;TObject&gt; where TSource : Enum where TObject : EnumClass&lt;TSource, TObject&gt;</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TSource</span></td>
+        <td><p>The type of the source object to handle the instance of.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TObject</span></td>
+        <td><p>The type of the child object to handle the instance of.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2__ctor__0_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.%23ctor(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L38">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2__ctor_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.#ctor*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2__ctor__0_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.#ctor(`0)">EnumClass(TSource)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.API.Features.Core.Generic.EnumClass-2.html">EnumClass&lt;TSource, TObject&gt;</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected EnumClass(TSource value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TSource</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value of the enum item.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_Name.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L59">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_Name_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Name*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_Name" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Name">Name</h4>
+  <div class="markdown level1 summary"><p>Gets the name determined from reflection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_Value.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.Value%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L54">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_Value_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Value*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_Value" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Value">Value</h4>
+  <div class="markdown level1 summary"><p>Gets the value of the enum item.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TSource Value { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TSource</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_Values.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.Values%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L49">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_Values_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Values*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_Values" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Values">Values</h4>
+  <div class="markdown level1 summary"><p>Gets all <code data-dev-comment-type="typeparamref" class="typeparamref">TObject</code> object instances.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;TObject&gt; Values { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TObject&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_Cast__0_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.Cast(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L104">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_Cast_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Cast*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_Cast__0_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Cast(`0)">Cast(TSource)</h4>
+  <div class="markdown level1 summary"><p>Casts the specified <code data-dev-comment-type="paramref" class="paramref">value</code> to the corresponding type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TObject Cast(TSource value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TSource</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The enum value to be cast.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><p>The cast object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_Cast_System_Collections_Generic_IEnumerable__0__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.Cast(System.Collections.Generic.IEnumerable%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L111">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_Cast_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Cast*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_Cast_System_Collections_Generic_IEnumerable__0__" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Cast(System.Collections.Generic.IEnumerable{`0})">Cast(IEnumerable&lt;TSource&gt;)</h4>
+  <div class="markdown level1 summary"><p>Casts the specified <code data-dev-comment-type="paramref" class="paramref">values</code> to the corresponding type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;TObject&gt; Cast(IEnumerable&lt;TSource&gt; values)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TSource&gt;</td>
+        <td><span class="parametername">values</span></td>
+        <td><p>The enum values to be cast.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TObject&gt;</td>
+        <td><p>The cast object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_Compare__1__1_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.Compare(%601%2C%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L250">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_Compare_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Compare*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_Compare__1__1_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Compare(`1,`1)">Compare(TObject, TObject)</h4>
+  <div class="markdown level1 summary"><p>Compares the specified object instance with another object of the same type and returns
+an integer that indicates whether the current instance precedes, follows, or
+occurs in the same position in the sort order as the other object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Compare(TObject x, TObject y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">x</span></td>
+        <td><p>An object to compare.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">y</span></td>
+        <td><p>Another object to compare.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>A value that indicates the relative order of the objects being compared.
+The return value has these meanings: Value Meaning Less than zero This instance precedes other in the sort order.
+Zero This instance occurs in the same position in the sort order as other.
+Greater than zero This instance follows other in the sort order.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_CompareTo__1_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.CompareTo(%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L220">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_CompareTo_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.CompareTo*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_CompareTo__1_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.CompareTo(`1)">CompareTo(TObject)</h4>
+  <div class="markdown level1 summary"><p>Compares the current instance with another object of the same type and returns
+an integer that indicates whether the current instance precedes, follows, or
+occurs in the same position in the sort order as the other object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CompareTo(TObject other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">other</span></td>
+        <td><p>An object to compare with this instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>A value that indicates the relative order of the objects being compared.
+The return value has these meanings: Value Meaning Less than zero This instance precedes other in the sort order.
+Zero This instance occurs in the same position in the sort order as other.
+Greater than zero This instance follows other in the sort order.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_CompareTo_System_Object_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.CompareTo(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L234">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_CompareTo_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.CompareTo*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_CompareTo_System_Object_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.CompareTo(System.Object)">CompareTo(Object)</h4>
+  <div class="markdown level1 summary"><p>Compares the current instance with another object of the same type and returns
+an integer that indicates whether the current instance precedes, follows, or
+occurs in the same position in the sort order as the other object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CompareTo(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>An object to compare with this instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>A value that indicates the relative order of the objects being compared.
+The return value has these meanings: Value Meaning Less than zero This instance precedes other in the sort order.
+Zero This instance occurs in the same position in the sort order as other.
+Greater than zero This instance follows other in the sort order.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_Equals__1_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.Equals(%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L200">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_Equals_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Equals*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_Equals__1_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Equals(`1)">Equals(TObject)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the specified object is equal to the current object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(TObject other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">other</span></td>
+        <td><p>The object to compare.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the object was equal; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L192">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_Equals_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Equals*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_Equals_System_Object_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the specified object is equal to the current object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object to compare.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the object was equal; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.Equals(System.Object)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_GetHashCode.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L206">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_GetHashCode_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.GetHashCode*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_GetHashCode" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p>Returns a the 32-bit signed hash code of the current object instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>The 32-bit signed hash code of the current object instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.GetHashCode()</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_GetValues_System_Type_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.GetValues(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L122">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_GetValues_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.GetValues*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_GetValues_System_Type_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.GetValues(System.Type)">GetValues(Type)</h4>
+  <div class="markdown level1 summary"><p>Retrieves an array of the values of the constants in a specified <a class="xref" href="Exiled.API.Features.Core.Generic.EnumClass-2.html">EnumClass&lt;TSource, TObject&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TSource[] GetValues(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.Generic.EnumClass-2.html">EnumClass&lt;TSource, TObject&gt;</a> type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>TSource[]</td>
+        <td><p>An array of the values of the constants in a specified <a class="xref" href="Exiled.API.Features.Core.Generic.EnumClass-2.html">EnumClass&lt;TSource, TObject&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_Parse_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.Parse(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L173">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_Parse_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Parse*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_Parse_System_String_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.Parse(System.String)">Parse(String)</h4>
+  <div class="markdown level1 summary"><p>Parses a <span class="xref">System.String</span> object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TObject Parse(string obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object to be parsed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><p>The corresponding <code data-dev-comment-type="typeparamref" class="typeparamref">TObject</code> object instance, or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_SafeCast__0__1__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.SafeCast(%600%2C%601%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L143">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_SafeCast_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.SafeCast*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_SafeCast__0__1__" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.SafeCast(`0,`1@)">SafeCast(TSource, out TObject)</h4>
+  <div class="markdown level1 summary"><p>Safely casts the specified <code data-dev-comment-type="paramref" class="paramref">value</code> to the corresponding type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool SafeCast(TSource value, out TObject result)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TSource</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The enum value to be cast.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">result</span></td>
+        <td><p>The cast <code data-dev-comment-type="paramref" class="paramref">value</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the <code data-dev-comment-type="paramref" class="paramref">value</code> was cast; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_SafeCast_System_Collections_Generic_IEnumerable__0__System_Collections_Generic_IEnumerable__1___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.SafeCast(System.Collections.Generic.IEnumerable%7B%600%7D%2CSystem.Collections.Generic.IEnumerable%7B%601%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L151">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_SafeCast_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.SafeCast*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_SafeCast_System_Collections_Generic_IEnumerable__0__System_Collections_Generic_IEnumerable__1___" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.SafeCast(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{`1}@)">SafeCast(IEnumerable&lt;TSource&gt;, out IEnumerable&lt;TObject&gt;)</h4>
+  <div class="markdown level1 summary"><p>Safely casts the specified <code data-dev-comment-type="paramref" class="paramref">values</code> to the corresponding type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool SafeCast(IEnumerable&lt;TSource&gt; values, out IEnumerable&lt;TObject&gt; results)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TSource&gt;</td>
+        <td><span class="parametername">values</span></td>
+        <td><p>The enum value to be cast.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TObject&gt;</td>
+        <td><span class="parametername">results</span></td>
+        <td><p>The cast <code data-dev-comment-type="paramref" class="paramref">values</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the <code data-dev-comment-type="paramref" class="paramref">values</code> was cast; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L185">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_ToString_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.ToString*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_ToString" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Converts the <a class="xref" href="Exiled.API.Features.Core.Generic.EnumClass-2.html">EnumClass&lt;TSource, TObject&gt;</a> instance to a human-readable <span class="xref">System.String</span> representation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>A human-readable <span class="xref">System.String</span> representation of the <a class="xref" href="Exiled.API.Features.Core.Generic.EnumClass-2.html">EnumClass&lt;TSource, TObject&gt;</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.ToString()</span></div>
+  <h3 id="operators">Operators
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_op_Implicit__0__Exiled_API_Features_Core_Generic_EnumClass__0__1_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.op_Implicit(%600)~Exiled.API.Features.Core.Generic.EnumClass%7B%600%2C%601%7D%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L91">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_op_Implicit_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_op_Implicit__0__Exiled_API_Features_Core_Generic_EnumClass__0__1_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit(`0)~Exiled.API.Features.Core.Generic.EnumClass{`0,`1}">Implicit(TSource to EnumClass&lt;TSource, TObject&gt;)</h4>
+  <div class="markdown level1 summary"><p>Implicitly converts the <code data-dev-comment-type="typeparamref" class="typeparamref">TSource</code> to <a class="xref" href="Exiled.API.Features.Core.Generic.EnumClass-2.html">EnumClass&lt;TSource, TObject&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator EnumClass&lt;TSource, TObject&gt;(TSource value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TSource</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.Generic.EnumClass-2.html">EnumClass</a>&lt;TSource, TObject&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_op_Implicit_Exiled_API_Features_Core_Generic_EnumClass__0__1____0.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.op_Implicit(Exiled.API.Features.Core.Generic.EnumClass%7B%600%2C%601%7D)~%600%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L85">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_op_Implicit_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_op_Implicit_Exiled_API_Features_Core_Generic_EnumClass__0__1____0" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit(Exiled.API.Features.Core.Generic.EnumClass{`0,`1})~`0">Implicit(EnumClass&lt;TSource, TObject&gt; to TSource)</h4>
+  <div class="markdown level1 summary"><p>Implicitly converts the <a class="xref" href="Exiled.API.Features.Core.Generic.EnumClass-2.html">EnumClass&lt;TSource, TObject&gt;</a> to <code data-dev-comment-type="typeparamref" class="typeparamref">TSource</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator TSource(EnumClass&lt;TSource, TObject&gt; value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.Generic.EnumClass-2.html">EnumClass</a>&lt;TSource, TObject&gt;</td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TSource</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2_op_Implicit_Exiled_API_Features_Core_Generic_EnumClass__0__1____1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602.op_Implicit(Exiled.API.Features.Core.Generic.EnumClass%7B%600%2C%601%7D)~%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L97">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_Generic_EnumClass_2_op_Implicit_" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit*"></a>
+  <h4 id="Exiled_API_Features_Core_Generic_EnumClass_2_op_Implicit_Exiled_API_Features_Core_Generic_EnumClass__0__1____1" data-uid="Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit(Exiled.API.Features.Core.Generic.EnumClass{`0,`1})~`1">Implicit(EnumClass&lt;TSource, TObject&gt; to TObject)</h4>
+  <div class="markdown level1 summary"><p>Implicitly converts the <a class="xref" href="Exiled.API.Features.Core.Generic.EnumClass-2.html">EnumClass&lt;TSource, TObject&gt;</a> to <code data-dev-comment-type="typeparamref" class="typeparamref">TObject</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator TObject(EnumClass&lt;TSource, TObject&gt; value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.Generic.EnumClass-2.html">EnumClass</a>&lt;TSource, TObject&gt;</td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IComparable</span>
+  </div>
+  <div>
+      <span class="xref">System.IEquatable&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">System.IComparable&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">System.Collections.Generic.IComparer&lt;T&gt;</span>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_Generic_EnumClass_2.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.Generic.EnumClass%602%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/Generic/EnumClass.cs/#L25" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

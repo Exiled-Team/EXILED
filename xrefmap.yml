@@ -3191,6 +3191,15 @@ references:
   fullName.vb: Exiled.API.Extensions.CommonExtensions.GetRandomValue(Of T)(System.Collections.Generic.IEnumerable(Of T))
   nameWithType: CommonExtensions.GetRandomValue<T>(IEnumerable<T>)
   nameWithType.vb: CommonExtensions.GetRandomValue(Of T)(IEnumerable(Of T))
+- uid: Exiled.API.Extensions.CommonExtensions.GetRandomValue``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})
+  name: GetRandomValue<T>(IEnumerable<T>, Func<T, Boolean>)
+  href: api/Exiled.API.Extensions.CommonExtensions.html#Exiled_API_Extensions_CommonExtensions_GetRandomValue__1_System_Collections_Generic_IEnumerable___0__System_Func___0_System_Boolean__
+  commentId: M:Exiled.API.Extensions.CommonExtensions.GetRandomValue``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})
+  name.vb: GetRandomValue(Of T)(IEnumerable(Of T), Func(Of T, Boolean))
+  fullName: Exiled.API.Extensions.CommonExtensions.GetRandomValue<T>(System.Collections.Generic.IEnumerable<T>, System.Func<T, System.Boolean>)
+  fullName.vb: Exiled.API.Extensions.CommonExtensions.GetRandomValue(Of T)(System.Collections.Generic.IEnumerable(Of T), System.Func(Of T, System.Boolean))
+  nameWithType: CommonExtensions.GetRandomValue<T>(IEnumerable<T>, Func<T, Boolean>)
+  nameWithType.vb: CommonExtensions.GetRandomValue(Of T)(IEnumerable(Of T), Func(Of T, Boolean))
 - uid: Exiled.API.Extensions.DamageTypeExtensions
   name: DamageTypeExtensions
   href: api/Exiled.API.Extensions.DamageTypeExtensions.html
@@ -6509,6 +6518,1012 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Core.EObject.UnregisterObjectType
   nameWithType: EObject.UnregisterObjectType
+- uid: Exiled.API.Features.Core.Generic
+  name: Exiled.API.Features.Core.Generic
+  href: api/Exiled.API.Features.Core.Generic.html
+  commentId: N:Exiled.API.Features.Core.Generic
+  fullName: Exiled.API.Features.Core.Generic
+  nameWithType: Exiled.API.Features.Core.Generic
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2
+  name: EnumClass<TSource, TObject>
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html
+  commentId: T:Exiled.API.Features.Core.Generic.EnumClass`2
+  name.vb: EnumClass(Of TSource, TObject)
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject)
+  nameWithType: EnumClass<TSource, TObject>
+  nameWithType.vb: EnumClass(Of TSource, TObject)
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.#ctor(`0)
+  name: EnumClass(TSource)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2__ctor__0_
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.#ctor(`0)
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.EnumClass(TSource)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).EnumClass(TSource)
+  nameWithType: EnumClass<TSource, TObject>.EnumClass(TSource)
+  nameWithType.vb: EnumClass(Of TSource, TObject).EnumClass(TSource)
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.#ctor*
+  name: EnumClass
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2__ctor_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.#ctor
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.EnumClass
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).EnumClass
+  nameWithType: EnumClass<TSource, TObject>.EnumClass
+  nameWithType.vb: EnumClass(Of TSource, TObject).EnumClass
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Cast(`0)
+  name: Cast(TSource)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Cast__0_
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.Cast(`0)
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Cast(TSource)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Cast(TSource)
+  nameWithType: EnumClass<TSource, TObject>.Cast(TSource)
+  nameWithType.vb: EnumClass(Of TSource, TObject).Cast(TSource)
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Cast(System.Collections.Generic.IEnumerable{`0})
+  name: Cast(IEnumerable<TSource>)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Cast_System_Collections_Generic_IEnumerable__0__
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.Cast(System.Collections.Generic.IEnumerable{`0})
+  name.vb: Cast(IEnumerable(Of TSource))
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Cast(System.Collections.Generic.IEnumerable<TSource>)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Cast(System.Collections.Generic.IEnumerable(Of TSource))
+  nameWithType: EnumClass<TSource, TObject>.Cast(IEnumerable<TSource>)
+  nameWithType.vb: EnumClass(Of TSource, TObject).Cast(IEnumerable(Of TSource))
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Cast*
+  name: Cast
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Cast_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.Cast
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Cast
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Cast
+  nameWithType: EnumClass<TSource, TObject>.Cast
+  nameWithType.vb: EnumClass(Of TSource, TObject).Cast
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Compare(`1,`1)
+  name: Compare(TObject, TObject)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Compare__1__1_
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.Compare(`1,`1)
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Compare(TObject, TObject)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Compare(TObject, TObject)
+  nameWithType: EnumClass<TSource, TObject>.Compare(TObject, TObject)
+  nameWithType.vb: EnumClass(Of TSource, TObject).Compare(TObject, TObject)
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Compare*
+  name: Compare
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Compare_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.Compare
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Compare
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Compare
+  nameWithType: EnumClass<TSource, TObject>.Compare
+  nameWithType.vb: EnumClass(Of TSource, TObject).Compare
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.CompareTo(`1)
+  name: CompareTo(TObject)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_CompareTo__1_
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.CompareTo(`1)
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.CompareTo(TObject)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).CompareTo(TObject)
+  nameWithType: EnumClass<TSource, TObject>.CompareTo(TObject)
+  nameWithType.vb: EnumClass(Of TSource, TObject).CompareTo(TObject)
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.CompareTo(System.Object)
+  name: CompareTo(Object)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_CompareTo_System_Object_
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.CompareTo(System.Object)
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.CompareTo(System.Object)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).CompareTo(System.Object)
+  nameWithType: EnumClass<TSource, TObject>.CompareTo(Object)
+  nameWithType.vb: EnumClass(Of TSource, TObject).CompareTo(Object)
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.CompareTo*
+  name: CompareTo
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_CompareTo_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.CompareTo
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.CompareTo
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).CompareTo
+  nameWithType: EnumClass<TSource, TObject>.CompareTo
+  nameWithType.vb: EnumClass(Of TSource, TObject).CompareTo
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Equals(`1)
+  name: Equals(TObject)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Equals__1_
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.Equals(`1)
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Equals(TObject)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Equals(TObject)
+  nameWithType: EnumClass<TSource, TObject>.Equals(TObject)
+  nameWithType.vb: EnumClass(Of TSource, TObject).Equals(TObject)
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Equals_System_Object_
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.Equals(System.Object)
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Equals(System.Object)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Equals(System.Object)
+  nameWithType: EnumClass<TSource, TObject>.Equals(Object)
+  nameWithType.vb: EnumClass(Of TSource, TObject).Equals(Object)
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Equals*
+  name: Equals
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Equals_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.Equals
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Equals
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Equals
+  nameWithType: EnumClass<TSource, TObject>.Equals
+  nameWithType.vb: EnumClass(Of TSource, TObject).Equals
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.GetHashCode
+  name: GetHashCode()
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_GetHashCode
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.GetHashCode
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.GetHashCode()
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).GetHashCode()
+  nameWithType: EnumClass<TSource, TObject>.GetHashCode()
+  nameWithType.vb: EnumClass(Of TSource, TObject).GetHashCode()
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.GetHashCode*
+  name: GetHashCode
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_GetHashCode_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.GetHashCode
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.GetHashCode
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).GetHashCode
+  nameWithType: EnumClass<TSource, TObject>.GetHashCode
+  nameWithType.vb: EnumClass(Of TSource, TObject).GetHashCode
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.GetValues(System.Type)
+  name: GetValues(Type)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_GetValues_System_Type_
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.GetValues(System.Type)
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.GetValues(System.Type)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).GetValues(System.Type)
+  nameWithType: EnumClass<TSource, TObject>.GetValues(Type)
+  nameWithType.vb: EnumClass(Of TSource, TObject).GetValues(Type)
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.GetValues*
+  name: GetValues
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_GetValues_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.GetValues
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.GetValues
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).GetValues
+  nameWithType: EnumClass<TSource, TObject>.GetValues
+  nameWithType.vb: EnumClass(Of TSource, TObject).GetValues
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Name
+  name: Name
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Name
+  commentId: P:Exiled.API.Features.Core.Generic.EnumClass`2.Name
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Name
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Name
+  nameWithType: EnumClass<TSource, TObject>.Name
+  nameWithType.vb: EnumClass(Of TSource, TObject).Name
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Name*
+  name: Name
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Name_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.Name
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Name
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Name
+  nameWithType: EnumClass<TSource, TObject>.Name
+  nameWithType.vb: EnumClass(Of TSource, TObject).Name
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit(`0)~Exiled.API.Features.Core.Generic.EnumClass{`0,`1}
+  name: Implicit(TSource to EnumClass<TSource, TObject>)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_op_Implicit__0__Exiled_API_Features_Core_Generic_EnumClass__0__1_
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit(`0)~Exiled.API.Features.Core.Generic.EnumClass{`0,`1}
+  name.vb: Widening(TSource to EnumClass(Of TSource, TObject))
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Implicit(TSource to Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Widening(TSource to Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject))
+  nameWithType: EnumClass<TSource, TObject>.Implicit(TSource to EnumClass<TSource, TObject>)
+  nameWithType.vb: EnumClass(Of TSource, TObject).Widening(TSource to EnumClass(Of TSource, TObject))
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit(Exiled.API.Features.Core.Generic.EnumClass{`0,`1})~`0
+  name: Implicit(EnumClass<TSource, TObject> to TSource)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_op_Implicit_Exiled_API_Features_Core_Generic_EnumClass__0__1____0
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit(Exiled.API.Features.Core.Generic.EnumClass{`0,`1})~`0
+  name.vb: Widening(EnumClass(Of TSource, TObject) to TSource)
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Implicit(Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject> to TSource)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Widening(Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject) to TSource)
+  nameWithType: EnumClass<TSource, TObject>.Implicit(EnumClass<TSource, TObject> to TSource)
+  nameWithType.vb: EnumClass(Of TSource, TObject).Widening(EnumClass(Of TSource, TObject) to TSource)
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit(Exiled.API.Features.Core.Generic.EnumClass{`0,`1})~`1
+  name: Implicit(EnumClass<TSource, TObject> to TObject)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_op_Implicit_Exiled_API_Features_Core_Generic_EnumClass__0__1____1
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit(Exiled.API.Features.Core.Generic.EnumClass{`0,`1})~`1
+  name.vb: Widening(EnumClass(Of TSource, TObject) to TObject)
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Implicit(Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject> to TObject)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Widening(Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject) to TObject)
+  nameWithType: EnumClass<TSource, TObject>.Implicit(EnumClass<TSource, TObject> to TObject)
+  nameWithType.vb: EnumClass(Of TSource, TObject).Widening(EnumClass(Of TSource, TObject) to TObject)
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit*
+  name: Implicit
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_op_Implicit_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.op_Implicit
+  isSpec: "True"
+  name.vb: Widening
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Implicit
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Widening
+  nameWithType: EnumClass<TSource, TObject>.Implicit
+  nameWithType.vb: EnumClass(Of TSource, TObject).Widening
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Parse(System.String)
+  name: Parse(String)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Parse_System_String_
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.Parse(System.String)
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Parse(System.String)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Parse(System.String)
+  nameWithType: EnumClass<TSource, TObject>.Parse(String)
+  nameWithType.vb: EnumClass(Of TSource, TObject).Parse(String)
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Parse*
+  name: Parse
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Parse_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.Parse
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Parse
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Parse
+  nameWithType: EnumClass<TSource, TObject>.Parse
+  nameWithType.vb: EnumClass(Of TSource, TObject).Parse
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.SafeCast(`0,`1@)
+  name: SafeCast(TSource, out TObject)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_SafeCast__0__1__
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.SafeCast(`0,`1@)
+  name.vb: SafeCast(TSource, ByRef TObject)
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.SafeCast(TSource, out TObject)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).SafeCast(TSource, ByRef TObject)
+  nameWithType: EnumClass<TSource, TObject>.SafeCast(TSource, out TObject)
+  nameWithType.vb: EnumClass(Of TSource, TObject).SafeCast(TSource, ByRef TObject)
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.SafeCast(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{`1}@)
+  name: SafeCast(IEnumerable<TSource>, out IEnumerable<TObject>)
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_SafeCast_System_Collections_Generic_IEnumerable__0__System_Collections_Generic_IEnumerable__1___
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.SafeCast(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{`1}@)
+  name.vb: SafeCast(IEnumerable(Of TSource), ByRef IEnumerable(Of TObject))
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.SafeCast(System.Collections.Generic.IEnumerable<TSource>, out System.Collections.Generic.IEnumerable<TObject>)
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).SafeCast(System.Collections.Generic.IEnumerable(Of TSource), ByRef System.Collections.Generic.IEnumerable(Of TObject))
+  nameWithType: EnumClass<TSource, TObject>.SafeCast(IEnumerable<TSource>, out IEnumerable<TObject>)
+  nameWithType.vb: EnumClass(Of TSource, TObject).SafeCast(IEnumerable(Of TSource), ByRef IEnumerable(Of TObject))
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.SafeCast*
+  name: SafeCast
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_SafeCast_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.SafeCast
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.SafeCast
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).SafeCast
+  nameWithType: EnumClass<TSource, TObject>.SafeCast
+  nameWithType.vb: EnumClass(Of TSource, TObject).SafeCast
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.ToString
+  name: ToString()
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_ToString
+  commentId: M:Exiled.API.Features.Core.Generic.EnumClass`2.ToString
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.ToString()
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).ToString()
+  nameWithType: EnumClass<TSource, TObject>.ToString()
+  nameWithType.vb: EnumClass(Of TSource, TObject).ToString()
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.ToString*
+  name: ToString
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_ToString_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.ToString
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.ToString
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).ToString
+  nameWithType: EnumClass<TSource, TObject>.ToString
+  nameWithType.vb: EnumClass(Of TSource, TObject).ToString
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Value
+  name: Value
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Value
+  commentId: P:Exiled.API.Features.Core.Generic.EnumClass`2.Value
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Value
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Value
+  nameWithType: EnumClass<TSource, TObject>.Value
+  nameWithType.vb: EnumClass(Of TSource, TObject).Value
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Value*
+  name: Value
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Value_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.Value
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Value
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Value
+  nameWithType: EnumClass<TSource, TObject>.Value
+  nameWithType.vb: EnumClass(Of TSource, TObject).Value
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Values
+  name: Values
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Values
+  commentId: P:Exiled.API.Features.Core.Generic.EnumClass`2.Values
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Values
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Values
+  nameWithType: EnumClass<TSource, TObject>.Values
+  nameWithType.vb: EnumClass(Of TSource, TObject).Values
+- uid: Exiled.API.Features.Core.Generic.EnumClass`2.Values*
+  name: Values
+  href: api/Exiled.API.Features.Core.Generic.EnumClass-2.html#Exiled_API_Features_Core_Generic_EnumClass_2_Values_
+  commentId: Overload:Exiled.API.Features.Core.Generic.EnumClass`2.Values
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.EnumClass<TSource, TObject>.Values
+  fullName.vb: Exiled.API.Features.Core.Generic.EnumClass(Of TSource, TObject).Values
+  nameWithType: EnumClass<TSource, TObject>.Values
+  nameWithType.vb: EnumClass(Of TSource, TObject).Values
+- uid: Exiled.API.Features.Core.Generic.Singleton`1
+  name: Singleton<T>
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html
+  commentId: T:Exiled.API.Features.Core.Generic.Singleton`1
+  name.vb: Singleton(Of T)
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T)
+  nameWithType: Singleton<T>
+  nameWithType.vb: Singleton(Of T)
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.#ctor(`0)
+  name: Singleton(T)
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1__ctor__0_
+  commentId: M:Exiled.API.Features.Core.Generic.Singleton`1.#ctor(`0)
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.Singleton(T)
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).Singleton(T)
+  nameWithType: Singleton<T>.Singleton(T)
+  nameWithType.vb: Singleton(Of T).Singleton(T)
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.#ctor*
+  name: Singleton
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1__ctor_
+  commentId: Overload:Exiled.API.Features.Core.Generic.Singleton`1.#ctor
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.Singleton
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).Singleton
+  nameWithType: Singleton<T>.Singleton
+  nameWithType.vb: Singleton(Of T).Singleton
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.Create(`0)
+  name: Create(T)
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1_Create__0_
+  commentId: M:Exiled.API.Features.Core.Generic.Singleton`1.Create(`0)
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.Create(T)
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).Create(T)
+  nameWithType: Singleton<T>.Create(T)
+  nameWithType.vb: Singleton(Of T).Create(T)
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.Create*
+  name: Create
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1_Create_
+  commentId: Overload:Exiled.API.Features.Core.Generic.Singleton`1.Create
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.Create
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).Create
+  nameWithType: Singleton<T>.Create
+  nameWithType.vb: Singleton(Of T).Create
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.Destroy(`0)
+  name: Destroy(T)
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1_Destroy__0_
+  commentId: M:Exiled.API.Features.Core.Generic.Singleton`1.Destroy(`0)
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.Destroy(T)
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).Destroy(T)
+  nameWithType: Singleton<T>.Destroy(T)
+  nameWithType.vb: Singleton(Of T).Destroy(T)
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.Destroy*
+  name: Destroy
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1_Destroy_
+  commentId: Overload:Exiled.API.Features.Core.Generic.Singleton`1.Destroy
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.Destroy
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).Destroy
+  nameWithType: Singleton<T>.Destroy
+  nameWithType.vb: Singleton(Of T).Destroy
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.Finalize
+  name: Finalize()
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1_Finalize
+  commentId: M:Exiled.API.Features.Core.Generic.Singleton`1.Finalize
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.Finalize()
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).Finalize()
+  nameWithType: Singleton<T>.Finalize()
+  nameWithType.vb: Singleton(Of T).Finalize()
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.Finalize*
+  name: Finalize
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1_Finalize_
+  commentId: Overload:Exiled.API.Features.Core.Generic.Singleton`1.Finalize
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.Finalize
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).Finalize
+  nameWithType: Singleton<T>.Finalize
+  nameWithType.vb: Singleton(Of T).Finalize
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.Instance
+  name: Instance
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1_Instance
+  commentId: P:Exiled.API.Features.Core.Generic.Singleton`1.Instance
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.Instance
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).Instance
+  nameWithType: Singleton<T>.Instance
+  nameWithType.vb: Singleton(Of T).Instance
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.Instance*
+  name: Instance
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1_Instance_
+  commentId: Overload:Exiled.API.Features.Core.Generic.Singleton`1.Instance
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.Instance
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).Instance
+  nameWithType: Singleton<T>.Instance
+  nameWithType.vb: Singleton(Of T).Instance
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.op_Implicit(Exiled.API.Features.Core.Generic.Singleton{`0})~`0
+  name: Implicit(Singleton<T> to T)
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1_op_Implicit_Exiled_API_Features_Core_Generic_Singleton__0____0
+  commentId: M:Exiled.API.Features.Core.Generic.Singleton`1.op_Implicit(Exiled.API.Features.Core.Generic.Singleton{`0})~`0
+  name.vb: Widening(Singleton(Of T) to T)
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.Implicit(Exiled.API.Features.Core.Generic.Singleton<T> to T)
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).Widening(Exiled.API.Features.Core.Generic.Singleton(Of T) to T)
+  nameWithType: Singleton<T>.Implicit(Singleton<T> to T)
+  nameWithType.vb: Singleton(Of T).Widening(Singleton(Of T) to T)
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.op_Implicit*
+  name: Implicit
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1_op_Implicit_
+  commentId: Overload:Exiled.API.Features.Core.Generic.Singleton`1.op_Implicit
+  isSpec: "True"
+  name.vb: Widening
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.Implicit
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).Widening
+  nameWithType: Singleton<T>.Implicit
+  nameWithType.vb: Singleton(Of T).Widening
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.TryGet*
+  name: TryGet
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1_TryGet_
+  commentId: Overload:Exiled.API.Features.Core.Generic.Singleton`1.TryGet
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.TryGet
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).TryGet
+  nameWithType: Singleton<T>.TryGet
+  nameWithType.vb: Singleton(Of T).TryGet
+- uid: Exiled.API.Features.Core.Generic.Singleton`1.TryGet``1(``0@)
+  name: TryGet<TObject>(out TObject)
+  href: api/Exiled.API.Features.Core.Generic.Singleton-1.html#Exiled_API_Features_Core_Generic_Singleton_1_TryGet__1___0__
+  commentId: M:Exiled.API.Features.Core.Generic.Singleton`1.TryGet``1(``0@)
+  name.vb: TryGet(Of TObject)(ByRef TObject)
+  fullName: Exiled.API.Features.Core.Generic.Singleton<T>.TryGet<TObject>(out TObject)
+  fullName.vb: Exiled.API.Features.Core.Generic.Singleton(Of T).TryGet(Of TObject)(ByRef TObject)
+  nameWithType: Singleton<T>.TryGet<TObject>(out TObject)
+  nameWithType.vb: Singleton(Of T).TryGet(Of TObject)(ByRef TObject)
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1
+  name: StaticActor<T>
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html
+  commentId: T:Exiled.API.Features.Core.Generic.StaticActor`1
+  name.vb: StaticActor(Of T)
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T)
+  nameWithType: StaticActor<T>
+  nameWithType.vb: StaticActor(Of T)
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.BeginPlay_Static
+  name: BeginPlay_Static()
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_BeginPlay_Static
+  commentId: M:Exiled.API.Features.Core.Generic.StaticActor`1.BeginPlay_Static
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.BeginPlay_Static()
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).BeginPlay_Static()
+  nameWithType: StaticActor<T>.BeginPlay_Static()
+  nameWithType.vb: StaticActor(Of T).BeginPlay_Static()
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.BeginPlay_Static*
+  name: BeginPlay_Static
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_BeginPlay_Static_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.BeginPlay_Static
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.BeginPlay_Static
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).BeginPlay_Static
+  nameWithType: StaticActor<T>.BeginPlay_Static
+  nameWithType.vb: StaticActor(Of T).BeginPlay_Static
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.CreateNewInstance
+  name: CreateNewInstance()
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_CreateNewInstance
+  commentId: M:Exiled.API.Features.Core.Generic.StaticActor`1.CreateNewInstance
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.CreateNewInstance()
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).CreateNewInstance()
+  nameWithType: StaticActor<T>.CreateNewInstance()
+  nameWithType.vb: StaticActor(Of T).CreateNewInstance()
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.CreateNewInstance*
+  name: CreateNewInstance
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_CreateNewInstance_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.CreateNewInstance
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.CreateNewInstance
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).CreateNewInstance
+  nameWithType: StaticActor<T>.CreateNewInstance
+  nameWithType.vb: StaticActor(Of T).CreateNewInstance
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.EndPlay_Static
+  name: EndPlay_Static()
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_EndPlay_Static
+  commentId: M:Exiled.API.Features.Core.Generic.StaticActor`1.EndPlay_Static
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.EndPlay_Static()
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).EndPlay_Static()
+  nameWithType: StaticActor<T>.EndPlay_Static()
+  nameWithType.vb: StaticActor(Of T).EndPlay_Static()
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.EndPlay_Static*
+  name: EndPlay_Static
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_EndPlay_Static_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.EndPlay_Static
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.EndPlay_Static
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).EndPlay_Static
+  nameWithType: StaticActor<T>.EndPlay_Static
+  nameWithType.vb: StaticActor(Of T).EndPlay_Static
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.FindExistingInstance
+  name: FindExistingInstance()
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_FindExistingInstance
+  commentId: M:Exiled.API.Features.Core.Generic.StaticActor`1.FindExistingInstance
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.FindExistingInstance()
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).FindExistingInstance()
+  nameWithType: StaticActor<T>.FindExistingInstance()
+  nameWithType.vb: StaticActor(Of T).FindExistingInstance()
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.FindExistingInstance*
+  name: FindExistingInstance
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_FindExistingInstance_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.FindExistingInstance
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.FindExistingInstance
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).FindExistingInstance
+  nameWithType: StaticActor<T>.FindExistingInstance
+  nameWithType.vb: StaticActor(Of T).FindExistingInstance
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.Flush
+  name: Flush()
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_Flush
+  commentId: M:Exiled.API.Features.Core.Generic.StaticActor`1.Flush
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.Flush()
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).Flush()
+  nameWithType: StaticActor<T>.Flush()
+  nameWithType.vb: StaticActor(Of T).Flush()
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.Flush*
+  name: Flush
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_Flush_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.Flush
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.Flush
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).Flush
+  nameWithType: StaticActor<T>.Flush
+  nameWithType.vb: StaticActor(Of T).Flush
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.Instance
+  name: Instance
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_Instance
+  commentId: P:Exiled.API.Features.Core.Generic.StaticActor`1.Instance
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.Instance
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).Instance
+  nameWithType: StaticActor<T>.Instance
+  nameWithType.vb: StaticActor(Of T).Instance
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.Instance*
+  name: Instance
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_Instance_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.Instance
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.Instance
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).Instance
+  nameWithType: StaticActor<T>.Instance
+  nameWithType.vb: StaticActor(Of T).Instance
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.IsDestroyed
+  name: IsDestroyed
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_IsDestroyed
+  commentId: P:Exiled.API.Features.Core.Generic.StaticActor`1.IsDestroyed
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.IsDestroyed
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).IsDestroyed
+  nameWithType: StaticActor<T>.IsDestroyed
+  nameWithType.vb: StaticActor(Of T).IsDestroyed
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.IsDestroyed*
+  name: IsDestroyed
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_IsDestroyed_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.IsDestroyed
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.IsDestroyed
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).IsDestroyed
+  nameWithType: StaticActor<T>.IsDestroyed
+  nameWithType.vb: StaticActor(Of T).IsDestroyed
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.IsInitialized
+  name: IsInitialized
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_IsInitialized
+  commentId: P:Exiled.API.Features.Core.Generic.StaticActor`1.IsInitialized
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.IsInitialized
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).IsInitialized
+  nameWithType: StaticActor<T>.IsInitialized
+  nameWithType.vb: StaticActor(Of T).IsInitialized
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.IsInitialized*
+  name: IsInitialized
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_IsInitialized_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.IsInitialized
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.IsInitialized
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).IsInitialized
+  nameWithType: StaticActor<T>.IsInitialized
+  nameWithType.vb: StaticActor(Of T).IsInitialized
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.IsStarted
+  name: IsStarted
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_IsStarted
+  commentId: P:Exiled.API.Features.Core.Generic.StaticActor`1.IsStarted
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.IsStarted
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).IsStarted
+  nameWithType: StaticActor<T>.IsStarted
+  nameWithType.vb: StaticActor(Of T).IsStarted
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.IsStarted*
+  name: IsStarted
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_IsStarted_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.IsStarted
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.IsStarted
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).IsStarted
+  nameWithType: StaticActor<T>.IsStarted
+  nameWithType.vb: StaticActor(Of T).IsStarted
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.NotifyInstanceRepeated
+  name: NotifyInstanceRepeated()
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_NotifyInstanceRepeated
+  commentId: M:Exiled.API.Features.Core.Generic.StaticActor`1.NotifyInstanceRepeated
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.NotifyInstanceRepeated()
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).NotifyInstanceRepeated()
+  nameWithType: StaticActor<T>.NotifyInstanceRepeated()
+  nameWithType.vb: StaticActor(Of T).NotifyInstanceRepeated()
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.NotifyInstanceRepeated*
+  name: NotifyInstanceRepeated
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_NotifyInstanceRepeated_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.NotifyInstanceRepeated
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.NotifyInstanceRepeated
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).NotifyInstanceRepeated
+  nameWithType: StaticActor<T>.NotifyInstanceRepeated
+  nameWithType.vb: StaticActor(Of T).NotifyInstanceRepeated
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.OnBeginPlay
+  name: OnBeginPlay()
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_OnBeginPlay
+  commentId: M:Exiled.API.Features.Core.Generic.StaticActor`1.OnBeginPlay
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.OnBeginPlay()
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).OnBeginPlay()
+  nameWithType: StaticActor<T>.OnBeginPlay()
+  nameWithType.vb: StaticActor(Of T).OnBeginPlay()
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.OnBeginPlay*
+  name: OnBeginPlay
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_OnBeginPlay_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.OnBeginPlay
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.OnBeginPlay
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).OnBeginPlay
+  nameWithType: StaticActor<T>.OnBeginPlay
+  nameWithType.vb: StaticActor(Of T).OnBeginPlay
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.OnEndPlay
+  name: OnEndPlay()
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_OnEndPlay
+  commentId: M:Exiled.API.Features.Core.Generic.StaticActor`1.OnEndPlay
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.OnEndPlay()
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).OnEndPlay()
+  nameWithType: StaticActor<T>.OnEndPlay()
+  nameWithType.vb: StaticActor(Of T).OnEndPlay()
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.OnEndPlay*
+  name: OnEndPlay
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_OnEndPlay_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.OnEndPlay
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.OnEndPlay
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).OnEndPlay
+  nameWithType: StaticActor<T>.OnEndPlay
+  nameWithType.vb: StaticActor(Of T).OnEndPlay
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.PostInitialize
+  name: PostInitialize()
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize
+  commentId: M:Exiled.API.Features.Core.Generic.StaticActor`1.PostInitialize
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.PostInitialize()
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).PostInitialize()
+  nameWithType: StaticActor<T>.PostInitialize()
+  nameWithType.vb: StaticActor(Of T).PostInitialize()
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.PostInitialize*
+  name: PostInitialize
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.PostInitialize
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.PostInitialize
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).PostInitialize
+  nameWithType: StaticActor<T>.PostInitialize
+  nameWithType.vb: StaticActor(Of T).PostInitialize
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.PostInitialize_Static
+  name: PostInitialize_Static()
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize_Static
+  commentId: M:Exiled.API.Features.Core.Generic.StaticActor`1.PostInitialize_Static
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.PostInitialize_Static()
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).PostInitialize_Static()
+  nameWithType: StaticActor<T>.PostInitialize_Static()
+  nameWithType.vb: StaticActor(Of T).PostInitialize_Static()
+- uid: Exiled.API.Features.Core.Generic.StaticActor`1.PostInitialize_Static*
+  name: PostInitialize_Static
+  href: api/Exiled.API.Features.Core.Generic.StaticActor-1.html#Exiled_API_Features_Core_Generic_StaticActor_1_PostInitialize_Static_
+  commentId: Overload:Exiled.API.Features.Core.Generic.StaticActor`1.PostInitialize_Static
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.StaticActor<T>.PostInitialize_Static
+  fullName.vb: Exiled.API.Features.Core.Generic.StaticActor(Of T).PostInitialize_Static
+  nameWithType: StaticActor<T>.PostInitialize_Static
+  nameWithType.vb: StaticActor(Of T).PostInitialize_Static
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2
+  name: UnmanagedEnumClass<TSource, TObject>
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html
+  commentId: T:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2
+  name.vb: UnmanagedEnumClass(Of TSource, TObject)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.#ctor(`0)
+  name: UnmanagedEnumClass(TSource)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2__ctor__0_
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.#ctor(`0)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.UnmanagedEnumClass(TSource)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).UnmanagedEnumClass(TSource)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.UnmanagedEnumClass(TSource)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).UnmanagedEnumClass(TSource)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.#ctor*
+  name: UnmanagedEnumClass
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2__ctor_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.#ctor
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.UnmanagedEnumClass
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).UnmanagedEnumClass
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.UnmanagedEnumClass
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).UnmanagedEnumClass
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Cast(`0)
+  name: Cast(TSource)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Cast__0_
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Cast(`0)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Cast(TSource)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Cast(TSource)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Cast(TSource)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Cast(TSource)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Cast(System.Collections.Generic.IEnumerable{`0})
+  name: Cast(IEnumerable<TSource>)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Cast_System_Collections_Generic_IEnumerable__0__
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Cast(System.Collections.Generic.IEnumerable{`0})
+  name.vb: Cast(IEnumerable(Of TSource))
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Cast(System.Collections.Generic.IEnumerable<TSource>)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Cast(System.Collections.Generic.IEnumerable(Of TSource))
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Cast(IEnumerable<TSource>)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Cast(IEnumerable(Of TSource))
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Cast*
+  name: Cast
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Cast_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Cast
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Cast
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Cast
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Cast
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Cast
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Cast``1(`0)
+  name: Cast<T>(TSource)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Cast__1__0_
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Cast``1(`0)
+  name.vb: Cast(Of T)(TSource)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Cast<T>(TSource)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Cast(Of T)(TSource)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Cast<T>(TSource)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Cast(Of T)(TSource)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Cast``1(System.Collections.Generic.IEnumerable{`0})
+  name: Cast<T>(IEnumerable<TSource>)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Cast__1_System_Collections_Generic_IEnumerable__0__
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Cast``1(System.Collections.Generic.IEnumerable{`0})
+  name.vb: Cast(Of T)(IEnumerable(Of TSource))
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Cast<T>(System.Collections.Generic.IEnumerable<TSource>)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Cast(Of T)(System.Collections.Generic.IEnumerable(Of TSource))
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Cast<T>(IEnumerable<TSource>)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Cast(Of T)(IEnumerable(Of TSource))
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Compare(`1,`1)
+  name: Compare(TObject, TObject)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Compare__1__1_
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Compare(`1,`1)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Compare(TObject, TObject)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Compare(TObject, TObject)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Compare(TObject, TObject)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Compare(TObject, TObject)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Compare*
+  name: Compare
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Compare_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Compare
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Compare
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Compare
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Compare
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Compare
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.CompareTo(`1)
+  name: CompareTo(TObject)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_CompareTo__1_
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.CompareTo(`1)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.CompareTo(TObject)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).CompareTo(TObject)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.CompareTo(TObject)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).CompareTo(TObject)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.CompareTo(System.Object)
+  name: CompareTo(Object)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_CompareTo_System_Object_
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.CompareTo(System.Object)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.CompareTo(System.Object)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).CompareTo(System.Object)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.CompareTo(Object)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).CompareTo(Object)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.CompareTo*
+  name: CompareTo
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_CompareTo_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.CompareTo
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.CompareTo
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).CompareTo
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.CompareTo
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).CompareTo
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Equals(`1)
+  name: Equals(TObject)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Equals__1_
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Equals(`1)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Equals(TObject)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Equals(TObject)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Equals(TObject)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Equals(TObject)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Equals_System_Object_
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Equals(System.Object)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Equals(System.Object)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Equals(System.Object)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Equals(Object)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Equals(Object)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Equals*
+  name: Equals
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Equals_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Equals
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Equals
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Equals
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Equals
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Equals
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.GetHashCode
+  name: GetHashCode()
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_GetHashCode
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.GetHashCode
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.GetHashCode()
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).GetHashCode()
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.GetHashCode()
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).GetHashCode()
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.GetHashCode*
+  name: GetHashCode
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_GetHashCode_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.GetHashCode
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.GetHashCode
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).GetHashCode
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.GetHashCode
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).GetHashCode
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.GetValues(System.Type)
+  name: GetValues(Type)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_GetValues_System_Type_
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.GetValues(System.Type)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.GetValues(System.Type)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).GetValues(System.Type)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.GetValues(Type)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).GetValues(Type)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.GetValues*
+  name: GetValues
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_GetValues_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.GetValues
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.GetValues
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).GetValues
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.GetValues
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).GetValues
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Name
+  name: Name
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Name
+  commentId: P:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Name
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Name
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Name
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Name
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Name
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Name*
+  name: Name
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Name_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Name
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Name
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Name
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Name
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Name
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.op_Implicit(`0)~Exiled.API.Features.Core.Generic.UnmanagedEnumClass{`0,`1}
+  name: Implicit(TSource to UnmanagedEnumClass<TSource, TObject>)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_op_Implicit__0__Exiled_API_Features_Core_Generic_UnmanagedEnumClass__0__1_
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.op_Implicit(`0)~Exiled.API.Features.Core.Generic.UnmanagedEnumClass{`0,`1}
+  name.vb: Widening(TSource to UnmanagedEnumClass(Of TSource, TObject))
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Implicit(TSource to Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Widening(TSource to Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject))
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Implicit(TSource to UnmanagedEnumClass<TSource, TObject>)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Widening(TSource to UnmanagedEnumClass(Of TSource, TObject))
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.op_Implicit(Exiled.API.Features.Core.Generic.UnmanagedEnumClass{`0,`1})~`0
+  name: Implicit(UnmanagedEnumClass<TSource, TObject> to TSource)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_op_Implicit_Exiled_API_Features_Core_Generic_UnmanagedEnumClass__0__1____0
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.op_Implicit(Exiled.API.Features.Core.Generic.UnmanagedEnumClass{`0,`1})~`0
+  name.vb: Widening(UnmanagedEnumClass(Of TSource, TObject) to TSource)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Implicit(Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject> to TSource)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Widening(Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject) to TSource)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Implicit(UnmanagedEnumClass<TSource, TObject> to TSource)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Widening(UnmanagedEnumClass(Of TSource, TObject) to TSource)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.op_Implicit(Exiled.API.Features.Core.Generic.UnmanagedEnumClass{`0,`1})~`1
+  name: Implicit(UnmanagedEnumClass<TSource, TObject> to TObject)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_op_Implicit_Exiled_API_Features_Core_Generic_UnmanagedEnumClass__0__1____1
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.op_Implicit(Exiled.API.Features.Core.Generic.UnmanagedEnumClass{`0,`1})~`1
+  name.vb: Widening(UnmanagedEnumClass(Of TSource, TObject) to TObject)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Implicit(Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject> to TObject)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Widening(Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject) to TObject)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Implicit(UnmanagedEnumClass<TSource, TObject> to TObject)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Widening(UnmanagedEnumClass(Of TSource, TObject) to TObject)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.op_Implicit*
+  name: Implicit
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_op_Implicit_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.op_Implicit
+  isSpec: "True"
+  name.vb: Widening
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Implicit
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Widening
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Implicit
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Widening
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Parse(System.String)
+  name: Parse(String)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Parse_System_String_
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Parse(System.String)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Parse(System.String)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Parse(System.String)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Parse(String)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Parse(String)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Parse*
+  name: Parse
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Parse_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Parse
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Parse
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Parse
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Parse
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Parse
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.SafeCast(`0,`1@)
+  name: SafeCast(TSource, out TObject)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_SafeCast__0__1__
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.SafeCast(`0,`1@)
+  name.vb: SafeCast(TSource, ByRef TObject)
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.SafeCast(TSource, out TObject)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).SafeCast(TSource, ByRef TObject)
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.SafeCast(TSource, out TObject)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).SafeCast(TSource, ByRef TObject)
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.SafeCast(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{`1}@)
+  name: SafeCast(IEnumerable<TSource>, out IEnumerable<TObject>)
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_SafeCast_System_Collections_Generic_IEnumerable__0__System_Collections_Generic_IEnumerable__1___
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.SafeCast(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{`1}@)
+  name.vb: SafeCast(IEnumerable(Of TSource), ByRef IEnumerable(Of TObject))
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.SafeCast(System.Collections.Generic.IEnumerable<TSource>, out System.Collections.Generic.IEnumerable<TObject>)
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).SafeCast(System.Collections.Generic.IEnumerable(Of TSource), ByRef System.Collections.Generic.IEnumerable(Of TObject))
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.SafeCast(IEnumerable<TSource>, out IEnumerable<TObject>)
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).SafeCast(IEnumerable(Of TSource), ByRef IEnumerable(Of TObject))
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.SafeCast*
+  name: SafeCast
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_SafeCast_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.SafeCast
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.SafeCast
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).SafeCast
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.SafeCast
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).SafeCast
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.ToString
+  name: ToString()
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_ToString
+  commentId: M:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.ToString
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.ToString()
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).ToString()
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.ToString()
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).ToString()
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.ToString*
+  name: ToString
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_ToString_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.ToString
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.ToString
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).ToString
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.ToString
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).ToString
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Value
+  name: Value
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Value
+  commentId: P:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Value
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Value
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Value
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Value
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Value
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Value*
+  name: Value
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Value_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Value
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Value
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Value
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Value
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Value
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Values
+  name: Values
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Values
+  commentId: P:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Values
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Values
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Values
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Values
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Values
+- uid: Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Values*
+  name: Values
+  href: api/Exiled.API.Features.Core.Generic.UnmanagedEnumClass-2.html#Exiled_API_Features_Core_Generic_UnmanagedEnumClass_2_Values_
+  commentId: Overload:Exiled.API.Features.Core.Generic.UnmanagedEnumClass`2.Values
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.Generic.UnmanagedEnumClass<TSource, TObject>.Values
+  fullName.vb: Exiled.API.Features.Core.Generic.UnmanagedEnumClass(Of TSource, TObject).Values
+  nameWithType: UnmanagedEnumClass<TSource, TObject>.Values
+  nameWithType.vb: UnmanagedEnumClass(Of TSource, TObject).Values
 - uid: Exiled.API.Features.Core.Interfaces
   name: Exiled.API.Features.Core.Interfaces
   href: api/Exiled.API.Features.Core.Interfaces.html
@@ -6652,6 +7667,225 @@ references:
   fullName.vb: Exiled.API.Features.Core.Interfaces.IEntity.TryGetComponent(Of T)(System.Type, ByRef T)
   nameWithType: IEntity.TryGetComponent<T>(Type, out T)
   nameWithType.vb: IEntity.TryGetComponent(Of T)(Type, ByRef T)
+- uid: Exiled.API.Features.Core.StaticActor
+  name: StaticActor
+  href: api/Exiled.API.Features.Core.StaticActor.html
+  commentId: T:Exiled.API.Features.Core.StaticActor
+  fullName: Exiled.API.Features.Core.StaticActor
+  nameWithType: StaticActor
+- uid: Exiled.API.Features.Core.StaticActor.BeginPlay_Static
+  name: BeginPlay_Static()
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_BeginPlay_Static
+  commentId: M:Exiled.API.Features.Core.StaticActor.BeginPlay_Static
+  fullName: Exiled.API.Features.Core.StaticActor.BeginPlay_Static()
+  nameWithType: StaticActor.BeginPlay_Static()
+- uid: Exiled.API.Features.Core.StaticActor.BeginPlay_Static*
+  name: BeginPlay_Static
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_BeginPlay_Static_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.BeginPlay_Static
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.BeginPlay_Static
+  nameWithType: StaticActor.BeginPlay_Static
+- uid: Exiled.API.Features.Core.StaticActor.CreateNewInstance
+  name: CreateNewInstance()
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_CreateNewInstance
+  commentId: M:Exiled.API.Features.Core.StaticActor.CreateNewInstance
+  fullName: Exiled.API.Features.Core.StaticActor.CreateNewInstance()
+  nameWithType: StaticActor.CreateNewInstance()
+- uid: Exiled.API.Features.Core.StaticActor.CreateNewInstance*
+  name: CreateNewInstance
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_CreateNewInstance_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.CreateNewInstance
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.CreateNewInstance
+  nameWithType: StaticActor.CreateNewInstance
+- uid: Exiled.API.Features.Core.StaticActor.EndPlay_Static
+  name: EndPlay_Static()
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_EndPlay_Static
+  commentId: M:Exiled.API.Features.Core.StaticActor.EndPlay_Static
+  fullName: Exiled.API.Features.Core.StaticActor.EndPlay_Static()
+  nameWithType: StaticActor.EndPlay_Static()
+- uid: Exiled.API.Features.Core.StaticActor.EndPlay_Static*
+  name: EndPlay_Static
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_EndPlay_Static_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.EndPlay_Static
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.EndPlay_Static
+  nameWithType: StaticActor.EndPlay_Static
+- uid: Exiled.API.Features.Core.StaticActor.FindExistingInstance
+  name: FindExistingInstance()
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_FindExistingInstance
+  commentId: M:Exiled.API.Features.Core.StaticActor.FindExistingInstance
+  fullName: Exiled.API.Features.Core.StaticActor.FindExistingInstance()
+  nameWithType: StaticActor.FindExistingInstance()
+- uid: Exiled.API.Features.Core.StaticActor.FindExistingInstance*
+  name: FindExistingInstance
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_FindExistingInstance_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.FindExistingInstance
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.FindExistingInstance
+  nameWithType: StaticActor.FindExistingInstance
+- uid: Exiled.API.Features.Core.StaticActor.Flush
+  name: Flush()
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_Flush
+  commentId: M:Exiled.API.Features.Core.StaticActor.Flush
+  fullName: Exiled.API.Features.Core.StaticActor.Flush()
+  nameWithType: StaticActor.Flush()
+- uid: Exiled.API.Features.Core.StaticActor.Flush*
+  name: Flush
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_Flush_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.Flush
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.Flush
+  nameWithType: StaticActor.Flush
+- uid: Exiled.API.Features.Core.StaticActor.Get(System.Type)
+  name: Get(Type)
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_Get_System_Type_
+  commentId: M:Exiled.API.Features.Core.StaticActor.Get(System.Type)
+  fullName: Exiled.API.Features.Core.StaticActor.Get(System.Type)
+  nameWithType: StaticActor.Get(Type)
+- uid: Exiled.API.Features.Core.StaticActor.Get*
+  name: Get
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_Get_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.Get
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.Get
+  nameWithType: StaticActor.Get
+- uid: Exiled.API.Features.Core.StaticActor.Get``1
+  name: Get<T>()
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_Get__1
+  commentId: M:Exiled.API.Features.Core.StaticActor.Get``1
+  name.vb: Get(Of T)()
+  fullName: Exiled.API.Features.Core.StaticActor.Get<T>()
+  fullName.vb: Exiled.API.Features.Core.StaticActor.Get(Of T)()
+  nameWithType: StaticActor.Get<T>()
+  nameWithType.vb: StaticActor.Get(Of T)()
+- uid: Exiled.API.Features.Core.StaticActor.Get``1(System.Type)
+  name: Get<T>(Type)
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_Get__1_System_Type_
+  commentId: M:Exiled.API.Features.Core.StaticActor.Get``1(System.Type)
+  name.vb: Get(Of T)(Type)
+  fullName: Exiled.API.Features.Core.StaticActor.Get<T>(System.Type)
+  fullName.vb: Exiled.API.Features.Core.StaticActor.Get(Of T)(System.Type)
+  nameWithType: StaticActor.Get<T>(Type)
+  nameWithType.vb: StaticActor.Get(Of T)(Type)
+- uid: Exiled.API.Features.Core.StaticActor.Instance
+  name: Instance
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_Instance
+  commentId: P:Exiled.API.Features.Core.StaticActor.Instance
+  fullName: Exiled.API.Features.Core.StaticActor.Instance
+  nameWithType: StaticActor.Instance
+- uid: Exiled.API.Features.Core.StaticActor.Instance*
+  name: Instance
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_Instance_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.Instance
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.Instance
+  nameWithType: StaticActor.Instance
+- uid: Exiled.API.Features.Core.StaticActor.IsDestroyed
+  name: IsDestroyed
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_IsDestroyed
+  commentId: P:Exiled.API.Features.Core.StaticActor.IsDestroyed
+  fullName: Exiled.API.Features.Core.StaticActor.IsDestroyed
+  nameWithType: StaticActor.IsDestroyed
+- uid: Exiled.API.Features.Core.StaticActor.IsDestroyed*
+  name: IsDestroyed
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_IsDestroyed_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.IsDestroyed
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.IsDestroyed
+  nameWithType: StaticActor.IsDestroyed
+- uid: Exiled.API.Features.Core.StaticActor.IsInitialized
+  name: IsInitialized
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_IsInitialized
+  commentId: P:Exiled.API.Features.Core.StaticActor.IsInitialized
+  fullName: Exiled.API.Features.Core.StaticActor.IsInitialized
+  nameWithType: StaticActor.IsInitialized
+- uid: Exiled.API.Features.Core.StaticActor.IsInitialized*
+  name: IsInitialized
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_IsInitialized_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.IsInitialized
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.IsInitialized
+  nameWithType: StaticActor.IsInitialized
+- uid: Exiled.API.Features.Core.StaticActor.IsStarted
+  name: IsStarted
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_IsStarted
+  commentId: P:Exiled.API.Features.Core.StaticActor.IsStarted
+  fullName: Exiled.API.Features.Core.StaticActor.IsStarted
+  nameWithType: StaticActor.IsStarted
+- uid: Exiled.API.Features.Core.StaticActor.IsStarted*
+  name: IsStarted
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_IsStarted_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.IsStarted
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.IsStarted
+  nameWithType: StaticActor.IsStarted
+- uid: Exiled.API.Features.Core.StaticActor.NotifyInstanceRepeated
+  name: NotifyInstanceRepeated()
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_NotifyInstanceRepeated
+  commentId: M:Exiled.API.Features.Core.StaticActor.NotifyInstanceRepeated
+  fullName: Exiled.API.Features.Core.StaticActor.NotifyInstanceRepeated()
+  nameWithType: StaticActor.NotifyInstanceRepeated()
+- uid: Exiled.API.Features.Core.StaticActor.NotifyInstanceRepeated*
+  name: NotifyInstanceRepeated
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_NotifyInstanceRepeated_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.NotifyInstanceRepeated
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.NotifyInstanceRepeated
+  nameWithType: StaticActor.NotifyInstanceRepeated
+- uid: Exiled.API.Features.Core.StaticActor.OnBeginPlay
+  name: OnBeginPlay()
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_OnBeginPlay
+  commentId: M:Exiled.API.Features.Core.StaticActor.OnBeginPlay
+  fullName: Exiled.API.Features.Core.StaticActor.OnBeginPlay()
+  nameWithType: StaticActor.OnBeginPlay()
+- uid: Exiled.API.Features.Core.StaticActor.OnBeginPlay*
+  name: OnBeginPlay
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_OnBeginPlay_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.OnBeginPlay
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.OnBeginPlay
+  nameWithType: StaticActor.OnBeginPlay
+- uid: Exiled.API.Features.Core.StaticActor.OnEndPlay
+  name: OnEndPlay()
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_OnEndPlay
+  commentId: M:Exiled.API.Features.Core.StaticActor.OnEndPlay
+  fullName: Exiled.API.Features.Core.StaticActor.OnEndPlay()
+  nameWithType: StaticActor.OnEndPlay()
+- uid: Exiled.API.Features.Core.StaticActor.OnEndPlay*
+  name: OnEndPlay
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_OnEndPlay_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.OnEndPlay
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.OnEndPlay
+  nameWithType: StaticActor.OnEndPlay
+- uid: Exiled.API.Features.Core.StaticActor.PostInitialize
+  name: PostInitialize()
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_PostInitialize
+  commentId: M:Exiled.API.Features.Core.StaticActor.PostInitialize
+  fullName: Exiled.API.Features.Core.StaticActor.PostInitialize()
+  nameWithType: StaticActor.PostInitialize()
+- uid: Exiled.API.Features.Core.StaticActor.PostInitialize*
+  name: PostInitialize
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_PostInitialize_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.PostInitialize
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.PostInitialize
+  nameWithType: StaticActor.PostInitialize
+- uid: Exiled.API.Features.Core.StaticActor.PostInitialize_Static
+  name: PostInitialize_Static()
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_PostInitialize_Static
+  commentId: M:Exiled.API.Features.Core.StaticActor.PostInitialize_Static
+  fullName: Exiled.API.Features.Core.StaticActor.PostInitialize_Static()
+  nameWithType: StaticActor.PostInitialize_Static()
+- uid: Exiled.API.Features.Core.StaticActor.PostInitialize_Static*
+  name: PostInitialize_Static
+  href: api/Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_PostInitialize_Static_
+  commentId: Overload:Exiled.API.Features.Core.StaticActor.PostInitialize_Static
+  isSpec: "True"
+  fullName: Exiled.API.Features.Core.StaticActor.PostInitialize_Static
+  nameWithType: StaticActor.PostInitialize_Static
 - uid: Exiled.API.Features.Core.TickComponent
   name: TickComponent
   href: api/Exiled.API.Features.Core.TickComponent.html
@@ -32764,6 +33998,12 @@ references:
   commentId: M:Exiled.CustomRoles.API.Features.CustomAbility.Get(System.String)
   fullName: Exiled.CustomRoles.API.Features.CustomAbility.Get(System.String)
   nameWithType: CustomAbility.Get(String)
+- uid: Exiled.CustomRoles.API.Features.CustomAbility.Get(System.Type)
+  name: Get(Type)
+  href: api/Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_Get_System_Type_
+  commentId: M:Exiled.CustomRoles.API.Features.CustomAbility.Get(System.Type)
+  fullName: Exiled.CustomRoles.API.Features.CustomAbility.Get(System.Type)
+  nameWithType: CustomAbility.Get(Type)
 - uid: Exiled.CustomRoles.API.Features.CustomAbility.Get*
   name: Get
   href: api/Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_Get_
@@ -32880,6 +34120,15 @@ references:
   fullName.vb: Exiled.CustomRoles.API.Features.CustomAbility.TryGet(System.String, ByRef Exiled.CustomRoles.API.Features.CustomAbility)
   nameWithType: CustomAbility.TryGet(String, out CustomAbility)
   nameWithType.vb: CustomAbility.TryGet(String, ByRef CustomAbility)
+- uid: Exiled.CustomRoles.API.Features.CustomAbility.TryGet(System.Type,Exiled.CustomRoles.API.Features.CustomAbility@)
+  name: TryGet(Type, out CustomAbility)
+  href: api/Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_TryGet_System_Type_Exiled_CustomRoles_API_Features_CustomAbility__
+  commentId: M:Exiled.CustomRoles.API.Features.CustomAbility.TryGet(System.Type,Exiled.CustomRoles.API.Features.CustomAbility@)
+  name.vb: TryGet(Type, ByRef CustomAbility)
+  fullName: Exiled.CustomRoles.API.Features.CustomAbility.TryGet(System.Type, out Exiled.CustomRoles.API.Features.CustomAbility)
+  fullName.vb: Exiled.CustomRoles.API.Features.CustomAbility.TryGet(System.Type, ByRef Exiled.CustomRoles.API.Features.CustomAbility)
+  nameWithType: CustomAbility.TryGet(Type, out CustomAbility)
+  nameWithType.vb: CustomAbility.TryGet(Type, ByRef CustomAbility)
 - uid: Exiled.CustomRoles.API.Features.CustomAbility.TryGet*
   name: TryGet
   href: api/Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_TryGet_
@@ -39790,6 +41039,64 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.Player.DyingEventArgs.Player
   nameWithType: DyingEventArgs.Player
+- uid: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs
+  name: EarningAchievementEventArgs
+  href: api/Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.html
+  commentId: T:Exiled.Events.EventArgs.Player.EarningAchievementEventArgs
+  fullName: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs
+  nameWithType: EarningAchievementEventArgs
+- uid: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.#ctor(Exiled.API.Features.Player,Achievements.AchievementName,System.Boolean)
+  name: EarningAchievementEventArgs(Player, AchievementName, Boolean)
+  href: api/Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.html#Exiled_Events_EventArgs_Player_EarningAchievementEventArgs__ctor_Exiled_API_Features_Player_Achievements_AchievementName_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.#ctor(Exiled.API.Features.Player,Achievements.AchievementName,System.Boolean)
+  fullName: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.EarningAchievementEventArgs(Exiled.API.Features.Player, Achievements.AchievementName, System.Boolean)
+  nameWithType: EarningAchievementEventArgs.EarningAchievementEventArgs(Player, AchievementName, Boolean)
+- uid: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.#ctor*
+  name: EarningAchievementEventArgs
+  href: api/Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.html#Exiled_Events_EventArgs_Player_EarningAchievementEventArgs__ctor_
+  commentId: Overload:Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.#ctor
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.EarningAchievementEventArgs
+  nameWithType: EarningAchievementEventArgs.EarningAchievementEventArgs
+- uid: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.AchievementName
+  name: AchievementName
+  href: api/Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.html#Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_AchievementName
+  commentId: P:Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.AchievementName
+  fullName: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.AchievementName
+  nameWithType: EarningAchievementEventArgs.AchievementName
+- uid: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.AchievementName*
+  name: AchievementName
+  href: api/Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.html#Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_AchievementName_
+  commentId: Overload:Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.AchievementName
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.AchievementName
+  nameWithType: EarningAchievementEventArgs.AchievementName
+- uid: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.IsAllowed
+  name: IsAllowed
+  href: api/Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.html#Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_IsAllowed
+  commentId: P:Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.IsAllowed
+  fullName: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.IsAllowed
+  nameWithType: EarningAchievementEventArgs.IsAllowed
+- uid: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.IsAllowed*
+  name: IsAllowed
+  href: api/Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.html#Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_IsAllowed_
+  commentId: Overload:Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.IsAllowed
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.IsAllowed
+  nameWithType: EarningAchievementEventArgs.IsAllowed
+- uid: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.Player
+  name: Player
+  href: api/Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.html#Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_Player
+  commentId: P:Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.Player
+  fullName: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.Player
+  nameWithType: EarningAchievementEventArgs.Player
+- uid: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.Player*
+  name: Player
+  href: api/Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.html#Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_Player_
+  commentId: Overload:Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.Player
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.Player
+  nameWithType: EarningAchievementEventArgs.Player
 - uid: Exiled.Events.EventArgs.Player.EnteringEnvironmentalHazardEventArgs
   name: EnteringEnvironmentalHazardEventArgs
   href: api/Exiled.Events.EventArgs.Player.EnteringEnvironmentalHazardEventArgs.html
@@ -50037,6 +51344,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.Handlers.Player.Dying
   nameWithType: Player.Dying
+- uid: Exiled.Events.Handlers.Player.EarningAchievement
+  name: EarningAchievement
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_EarningAchievement
+  commentId: P:Exiled.Events.Handlers.Player.EarningAchievement
+  fullName: Exiled.Events.Handlers.Player.EarningAchievement
+  nameWithType: Player.EarningAchievement
+- uid: Exiled.Events.Handlers.Player.EarningAchievement*
+  name: EarningAchievement
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_EarningAchievement_
+  commentId: Overload:Exiled.Events.Handlers.Player.EarningAchievement
+  isSpec: "True"
+  fullName: Exiled.Events.Handlers.Player.EarningAchievement
+  nameWithType: Player.EarningAchievement
 - uid: Exiled.Events.Handlers.Player.EnteringEnvironmentalHazard
   name: EnteringEnvironmentalHazard
   href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_EnteringEnvironmentalHazard
@@ -50739,6 +52059,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.Handlers.Player.OnDying
   nameWithType: Player.OnDying
+- uid: Exiled.Events.Handlers.Player.OnEarningAchievement(Exiled.Events.EventArgs.Player.EarningAchievementEventArgs)
+  name: OnEarningAchievement(EarningAchievementEventArgs)
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnEarningAchievement_Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_
+  commentId: M:Exiled.Events.Handlers.Player.OnEarningAchievement(Exiled.Events.EventArgs.Player.EarningAchievementEventArgs)
+  fullName: Exiled.Events.Handlers.Player.OnEarningAchievement(Exiled.Events.EventArgs.Player.EarningAchievementEventArgs)
+  nameWithType: Player.OnEarningAchievement(EarningAchievementEventArgs)
+- uid: Exiled.Events.Handlers.Player.OnEarningAchievement*
+  name: OnEarningAchievement
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnEarningAchievement_
+  commentId: Overload:Exiled.Events.Handlers.Player.OnEarningAchievement
+  isSpec: "True"
+  fullName: Exiled.Events.Handlers.Player.OnEarningAchievement
+  nameWithType: Player.OnEarningAchievement
 - uid: Exiled.Events.Handlers.Player.OnEnteringEnvironmentalHazard(Exiled.Events.EventArgs.Player.EnteringEnvironmentalHazardEventArgs)
   name: OnEnteringEnvironmentalHazard(EnteringEnvironmentalHazardEventArgs)
   href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnEnteringEnvironmentalHazard_Exiled_Events_EventArgs_Player_EnteringEnvironmentalHazardEventArgs_
