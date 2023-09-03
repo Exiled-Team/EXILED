@@ -147,7 +147,7 @@ namespace Exiled.Events
             Log.Debug("Unpatching events...");
             Patcher.UnpatchAll();
             Patcher = null;
-            Log.Debug("All events have been unpatched complete. Goodbye!");
+            Log.Debug("All events have been unpatched. Goodbye!");
         }
     }
 }
