@@ -62,7 +62,7 @@ namespace Exiled.Events.Handlers
         /// <remarks>
         /// Will not fire for certain client-side achievements.
         /// </remarks>
-        public static Event<EarningAchievementEventArgs> EarningAchievement;
+        public static Event<EarningAchievementEventArgs> EarningAchievement { get; set; } = new();
 
         /// <summary>
         /// Invoked before using an <see cref="API.Features.Items.Item"/>.
