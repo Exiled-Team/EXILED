@@ -29,14 +29,19 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(codeInstructions);
 
-            // Map.LockersValue.Add(this);
             newInstructions.InsertRange(
                 0,
                 new CodeInstruction[]
                 {
+                    // Map.LockersValue.Add(this);
                     new(OpCodes.Ldsfld, Field(typeof(Map), nameof(Map.LockersValue))),
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, Method(typeof(List<Locker>), nameof(List<Locker>.Add), new[] { typeof(Locker) })),
+
+                    // API.Features.Lockers.Locker.Get(this)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, Method(typeof(API.Features.Lockers.Locker), nameof(API.Features.Lockers.Locker.Get))),
+                    new(OpCodes.Pop),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)

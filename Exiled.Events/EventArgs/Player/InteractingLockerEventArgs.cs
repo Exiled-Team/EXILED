@@ -7,10 +7,11 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+
     using API.Features;
-
+    using Exiled.API.Features.Lockers;
     using Interfaces;
-
     using MapGeneration.Distributors;
 
     /// <summary>
@@ -36,11 +37,10 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public InteractingLockerEventArgs(Player player, Locker locker, LockerChamber lockerChamber, byte chamberId, bool isAllowed)
+        public InteractingLockerEventArgs(Player player, MapGeneration.Distributors.Locker locker, LockerChamber lockerChamber, byte chamberId, bool isAllowed)
         {
             Player = player;
-            Locker = API.Features.Lockers.Locker.Get(locker);
-            Chamber = API.Features.Lockers.Chamber.Get(lockerChamber);
+            LockerChamber = API.Features.Lockers.Chamber.Get(lockerChamber);
             ChamberId = chamberId;
             IsAllowed = isAllowed;
         }
@@ -48,12 +48,19 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets the <see cref="MapGeneration.Distributors.Locker" /> instance.
         /// </summary>
-        public API.Features.Lockers.Locker Locker { get; }
+        [Obsolete("Use LockerChamber::Locker instead.")]
+        public MapGeneration.Distributors.Locker Locker => LockerChamber.Locker.Base;
 
         /// <summary>
         ///     Gets the interacting chamber.
         /// </summary>
-        public API.Features.Lockers.Chamber Chamber { get; }
+        [Obsolete("Use LockerChamber instead.")]
+        public LockerChamber Chamber => LockerChamber.Base;
+
+        /// <summary>
+        /// Gets the interacting chamber.
+        /// </summary>
+        public Chamber LockerChamber { get; }
 
         /// <summary>
         ///     Gets the chamber id.

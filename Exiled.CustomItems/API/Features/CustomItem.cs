@@ -618,15 +618,13 @@ namespace Exiled.CustomItems.API.Features
                 {
                     for (int i = 0; i < 50; i++)
                     {
-                        if (Map.Lockers is null)
+                        if (Exiled.API.Features.Lockers.Locker.List is null)
                         {
                             Log.Debug($"{nameof(Spawn)}: Locker list is null.");
                             continue;
                         }
 
-                        Exiled.API.Features.Lockers.Locker locker =
-                            Map.Lockers[
-                                Loader.Random.Next(Map.Lockers.Count)];
+                        Exiled.API.Features.Lockers.Locker locker = Exiled.API.Features.Lockers.Locker.List.GetRandomValue();
 
                         if (locker is null)
                         {
@@ -646,7 +644,7 @@ namespace Exiled.CustomItems.API.Features
                             continue;
                         }
 
-                        Chamber chamber = locker.Chambers.ElementAt(Loader.Random.Next(Mathf.Max(0, locker.Chambers.Count - 1)));
+                        Chamber chamber = locker.Chambers.GetRandomValue();
 
                         if (chamber is null)
                         {
@@ -657,7 +655,7 @@ namespace Exiled.CustomItems.API.Features
                         Vector3 position = chamber.Spawnpoint.transform.position;
 
                         if (chamber.UseMultipleSpawnpoints)
-                            position = chamber.Spawnpoints.ElementAt(Loader.Random.Next(Mathf.Max(0, chamber.Spawnpoints.Count() - 1))).transform.position;
+                            position = chamber.Spawnpoints.GetRandomValue().transform.position;
 
                         Spawn(position, null);
                         Log.Debug($"Spawned {Name} at {position} ({spawnPoint.Name})");

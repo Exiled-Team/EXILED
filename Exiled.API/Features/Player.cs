@@ -21,6 +21,7 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
@@ -3026,8 +3027,6 @@ namespace Exiled.API.Features
         /// <param name="type">Object for teleport.</param>
         public void RandomTeleport(Type type)
         {
-            Lockers.Chamber[] chambers;
-
             object randomObject = type.Name switch
             {
                 nameof(Camera) => Camera.List.GetRandomValue(),
@@ -3037,11 +3036,11 @@ namespace Exiled.API.Features
                 nameof(Player) => Dictionary.Values.GetRandomValue(),
                 nameof(Pickup) => Pickup.BaseToPickup.GetRandomValue().Value,
                 nameof(Ragdoll) => Ragdoll.List.GetRandomValue(),
-                nameof(Locker) => Map.GetRandomLocker(),
+                nameof(MapGeneration.Distributors.Locker) or nameof(Lockers.Locker) => Map.GetRandomExiledLocker(),
                 nameof(Generator) => Generator.List.GetRandomValue(),
                 nameof(Window) => Window.List.GetRandomValue(),
                 nameof(Scp914) => Scp914.Scp914Controller,
-                nameof(Lockers.Chamber) => (chambers = Map.GetRandomLocker().Chambers.ToArray())[Random.Range(0, chambers.Length)],
+                nameof(LockerChamber) or nameof(Chamber) => Map.GetRandomExiledLocker().Chambers.GetRandomValue(),
                 _ => null,
             };
 

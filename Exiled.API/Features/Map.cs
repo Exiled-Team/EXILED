@@ -17,7 +17,6 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Hazards;
-    using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Toys;
     using global::Hazards;
@@ -28,6 +27,7 @@ namespace Exiled.API.Features
     using Items;
     using LightContainmentZoneDecontamination;
     using MapGeneration;
+    using MapGeneration.Distributors;
     using Mirror;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
@@ -49,7 +49,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// A list of <see cref="Locker"/>s on the map.
         /// </summary>
-        internal static readonly List<Locker> LockersValue = new(35);
+        // ReSharper disable once CollectionNeverUpdated.Global
+        internal static readonly List<Locker> LockersValue = new(35); // TODO: Remove
 
         /// <summary>
         /// A list of <see cref="PocketDimensionTeleport"/>s on the map.
@@ -117,6 +118,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all <see cref="Lockers.Locker"/> objects.
         /// </summary>
+        [Obsolete("Use Locker::List instead.")]
         public static ReadOnlyCollection<Locker> Lockers { get; } = LockersValue.AsReadOnly();
 
         /// <summary>
@@ -222,7 +224,14 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Locker"/>.
         /// </summary>
         /// <returns><see cref="Locker"/> object.</returns>
+        [Obsolete("Use GetRandomExiledLocker() instead.")]
         public static Locker GetRandomLocker() => Lockers.GetRandomValue();
+
+        /// <summary>
+        /// Gets a random <see cref="Features.Lockers.Locker"/>.
+        /// </summary>
+        /// <returns><see cref="Features.Lockers.Locker"/> object.</returns>
+        public static Lockers.Locker GetRandomExiledLocker() => Features.Lockers.Locker.List.GetRandomValue();
 
         /// <summary>
         /// Gets a random <see cref="Pickup"/>.
@@ -376,9 +385,8 @@ namespace Exiled.API.Features
             Firearm.ItemTypeToFirearmInstance.Clear();
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
-            Warhead.InternalBlastDoors.Clear();
-            Locker.BaseToExiledLockers.Clear();
-            Chamber.Chambers.Clear();
+            Features.Lockers.Locker.BaseToExiledLockers.Clear();
+            Features.Lockers.Chamber.Chambers.Clear();
         }
     }
 }

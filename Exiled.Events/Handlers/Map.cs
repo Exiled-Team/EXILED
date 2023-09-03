@@ -71,11 +71,6 @@ namespace Exiled.Events.Handlers
         public static Event<FillingLockerEventArgs> FillingLocker { get; set; } = new();
 
         /// <summary>
-        /// Invoked before an item is spawned in a locker.
-        /// </summary>
-        public static event CustomEventHandler<SpawningItemInLockerEventArgs> SpawningItemInLocker;
-
-        /// <summary>
         /// Invoked after the map is generated.
         /// </summary>
         public static Event Generated { get; set; } = new();
@@ -159,6 +154,7 @@ namespace Exiled.Events.Handlers
         /// <param name="ev">The <see cref="SpawningItemEventArgs"/> instance.</param>
         public static void OnSpawningItem(SpawningItemEventArgs ev) => SpawningItem.InvokeSafely(ev);
 
+        /// <summary>
         /// Called before an item is spawned in locker.
         /// </summary>
         /// <param name="ev">The <see cref="SpawningItemEventArgs"/> instance.</param>
