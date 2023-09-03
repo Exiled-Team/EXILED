@@ -148,7 +148,7 @@ namespace Exiled.API.Features.Core
 
             if (!IsInitialized)
             {
-                Log.Info($"Start() StaticActor with type {GetType().Name} in the Actor {Name}");
+                Log.Debug($"Start() StaticActor with type {GetType().Name} in the Actor {Name}");
                 PostInitialize_Static();
                 IsInitialized = true;
             }

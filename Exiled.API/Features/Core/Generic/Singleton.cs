@@ -60,12 +60,7 @@ namespace Exiled.API.Features.Core.Generic
         /// <param name="instance">The object instance.</param>
         /// <returns><see langword="true"/> if the object instance is not null and can be casted as the specified type; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet<TObject>(out TObject instance)
-            where TObject : class
-        {
-            instance = Instance as TObject;
-
-            return instance is not null;
-        }
+            where TObject : class => (instance = Instance as TObject) is not null;
 
         /// <inheritdoc cref="Singleton(T)"/>
         public static void Create(T @object) => new Singleton<T>(@object);
@@ -80,8 +75,7 @@ namespace Exiled.API.Features.Core.Generic
             if (Instances.TryGetValue(@object, out Singleton<T> _))
             {
                 Instances[@object] = null;
-                Instances.Remove(@object);
-                return true;
+                return Instances.Remove(@object);
             }
 
             return false;

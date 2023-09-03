@@ -12,6 +12,8 @@ namespace Exiled.API.Features.Core.Generic
     using System.Linq;
     using System.Reflection;
 
+    using Exiled.API.Features.Pools;
+
     using LiteNetLib.Utils;
 
     /// <summary>
@@ -150,7 +152,7 @@ namespace Exiled.API.Features.Core.Generic
         {
             results = null;
 
-            List<TObject> tmpValues = new();
+            List<TObject> tmpValues = ListPool<TObject>.Pool.Get();
             foreach (TSource value in values)
             {
                 if (!EnumClass<TSource, TObject>.values.TryGetValue(value, out TObject result))

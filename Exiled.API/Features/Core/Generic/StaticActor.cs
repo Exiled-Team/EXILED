@@ -57,7 +57,7 @@ namespace Exiled.API.Features.Core.Generic
         public static T FindExistingInstance()
         {
             T[] existingInstances = FindActiveObjectsOfType<T>();
-            return existingInstances == null || existingInstances.Length == 0 ? null : existingInstances[0];
+            return existingInstances?.Length == 0 ? null : existingInstances[0];
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Exiled.API.Features.Core.Generic
 
             if (!IsInitialized)
             {
-                Log.Info($"Start() StaticActor with type {GetType().Name} in the Actor {Name}");
+                Log.Debug($"Start() StaticActor with type {GetType().Name} in the Actor {Name}");
                 PostInitialize_Static();
                 IsInitialized = true;
             }
