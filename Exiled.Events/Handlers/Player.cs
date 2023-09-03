@@ -57,6 +57,14 @@ namespace Exiled.Events.Handlers
         public static Event<BannedEventArgs> Banned { get; set; } = new();
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> earns an achievement.
+        /// </summary>
+        /// <remarks>
+        /// Will not fire for certain client-side achievements.
+        /// </remarks>
+        public static Event<EarningAchievementEventArgs> EarningAchievement { get; set; } = new();
+
+        /// <summary>
         /// Invoked before using an <see cref="API.Features.Items.Item"/>.
         /// </summary>
         public static Event<UsingItemEventArgs> UsingItem { get; set; } = new();
@@ -500,6 +508,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="BannedEventArgs"/> instance.</param>
         public static void OnBanned(BannedEventArgs ev) => Banned.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/>  earns an achievement.
+        /// </summary>
+        /// <param name="ev">The <see cref="EarningAchievementEventArgs"/> instance.</param>
+        public static void OnEarningAchievement(EarningAchievementEventArgs ev) => EarningAchievement.InvokeSafely(ev);
 
         /// <summary>
         /// Called before using a usable item.
