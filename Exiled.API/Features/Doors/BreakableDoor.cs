@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Doors
 {
+    using System.Collections.Generic;
+
     using Interactables.Interobjects.DoorUtils;
 
     /// <summary>
@@ -18,8 +20,8 @@ namespace Exiled.API.Features.Doors
         /// Initializes a new instance of the <see cref="BreakableDoor"/> class.
         /// </summary>
         /// <param name="door">The base <see cref="Interactables.Interobjects.BreakableDoor"/> for this door.</param>
-        /// <param name="room">The <see cref="Room"/> for this door.</param>
-        public BreakableDoor(Interactables.Interobjects.BreakableDoor door, Room room)
+        /// <param name="room">The <see cref="Room"/>'s for this door.</param>
+        internal BreakableDoor(Interactables.Interobjects.BreakableDoor door, List<Room> room)
             : base(door, room)
         {
             Base = door;

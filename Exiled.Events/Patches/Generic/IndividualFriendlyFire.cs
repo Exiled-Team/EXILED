@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1402
-#pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;

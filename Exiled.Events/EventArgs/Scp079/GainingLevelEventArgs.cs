@@ -8,13 +8,13 @@
 namespace Exiled.Events.EventArgs.Scp079
 {
     using API.Features;
-
+    using Exiled.API.Features.Roles;
     using Interfaces;
 
     /// <summary>
     ///     Contains all information before SCP-079 gains a level.
     /// </summary>
-    public class GainingLevelEventArgs : IPlayerEvent, IDeniableEvent
+    public class GainingLevelEventArgs : IScp079Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="GainingLevelEventArgs" /> class.
@@ -31,6 +31,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public GainingLevelEventArgs(Player player, int newLevel, bool isAllowed = true)
         {
             Player = player;
+            Scp079 = Player.Role.As<Scp079Role>();
             NewLevel = newLevel;
             IsAllowed = isAllowed;
         }
@@ -49,5 +50,8 @@ namespace Exiled.Events.EventArgs.Scp079
         ///     Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp079Role Scp079 { get; }
     }
 }

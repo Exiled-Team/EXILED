@@ -71,7 +71,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
-    public class Player : IEntity, IWorldSpace
+    public class Player : TypeCastObject<Player>, IEntity, IWorldSpace
     {
 #pragma warning disable SA1401
         /// <summary>
@@ -80,7 +80,6 @@ namespace Exiled.API.Features
         internal readonly List<Item> ItemsValue = new(8);
 #pragma warning restore SA1401
 
-        private readonly IReadOnlyCollection<Item> readOnlyItems;
         private readonly HashSet<EActor> componentsInChildren = new();
 
         private ReferenceHub referenceHub;
@@ -93,8 +92,8 @@ namespace Exiled.API.Features
         /// <param name="referenceHub">The <see cref="global::ReferenceHub"/> of the player to be encapsulated.</param>
         public Player(ReferenceHub referenceHub)
         {
-            readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = referenceHub;
+            Items = ItemsValue.AsReadOnly();
         }
 
         /// <summary>
@@ -103,8 +102,8 @@ namespace Exiled.API.Features
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> of the player.</param>
         public Player(GameObject gameObject)
         {
-            readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = ReferenceHub.GetHub(gameObject);
+            Items = ItemsValue.AsReadOnly();
         }
 
         /// <summary>
@@ -125,7 +124,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
         /// </summary>
-        public static IEnumerable<Player> List => Dictionary.Values;
+        public static IReadOnlyCollection<Player> List => Dictionary.Values;
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.
@@ -1059,7 +1058,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's items.
         /// </summary>
-        public IReadOnlyCollection<Item> Items => readOnlyItems;
+        public IReadOnlyCollection<Item> Items { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not the player's inventory is empty.
@@ -2502,11 +2501,8 @@ namespace Exiled.API.Features
         {
             ClearInventory();
 
-            if (newItems.Any())
-            {
-                foreach (Item item in newItems)
-                    AddItem(item.Base is null ? new Item(item.Type) : item);
-            }
+            foreach (Item item in newItems)
+                AddItem(item.Base is null ? new Item(item.Type) : item);
         }
 
         /// <summary>
@@ -2756,7 +2752,7 @@ namespace Exiled.API.Features
         {
             Array effectTypes = Enum.GetValues(typeof(EffectType));
             IEnumerable<EffectType> validEffects = effectTypes.ToArray<EffectType>().Where(effect => effect.GetCategories().HasFlag(category));
-            EffectType effectType = validEffects.ElementAt(Random.Range(0, effectTypes.Length));
+            EffectType effectType = validEffects.GetRandomValue();
 
             EnableEffect(effectType, duration, addDurationIfActive);
 
@@ -3034,16 +3030,16 @@ namespace Exiled.API.Features
 
             object randomObject = type.Name switch
             {
-                nameof(Camera) => Camera.List.ElementAt(Random.Range(0, Camera.Camera079ToCamera.Count)),
+                nameof(Camera) => Camera.List.GetRandomValue(),
                 nameof(Door) => Door.Random(),
-                nameof(Room) => Room.List.ElementAt(Random.Range(0, Room.RoomIdentifierToRoom.Count)),
-                nameof(TeslaGate) => TeslaGate.List.ElementAt(Random.Range(0, TeslaGate.BaseTeslaGateToTeslaGate.Count)),
-                nameof(Player) => Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count)),
-                nameof(Pickup) => Pickup.BaseToPickup.ElementAt(Random.Range(0, Pickup.BaseToPickup.Count)).Value,
-                nameof(Ragdoll) => Ragdoll.List.ElementAt(Random.Range(0, Ragdoll.BasicRagdollToRagdoll.Count)),
+                nameof(Room) => Room.List.GetRandomValue(),
+                nameof(TeslaGate) => TeslaGate.List.GetRandomValue(),
+                nameof(Player) => Dictionary.Values.GetRandomValue(),
+                nameof(Pickup) => Pickup.BaseToPickup.GetRandomValue().Value,
+                nameof(Ragdoll) => Ragdoll.List.GetRandomValue(),
                 nameof(Locker) => Map.GetRandomLocker(),
-                nameof(Generator) => Generator.List.ElementAt(Random.Range(0, Generator.Scp079GeneratorToGenerator.Count)),
-                nameof(Window) => Window.List.ElementAt(Random.Range(0, Window.BreakableWindowToWindow.Count)),
+                nameof(Generator) => Generator.List.GetRandomValue(),
+                nameof(Window) => Window.List.GetRandomValue(),
                 nameof(Scp914) => Scp914.Scp914Controller,
                 nameof(Lockers.Chamber) => (chambers = Map.GetRandomLocker().Chambers.ToArray())[Random.Range(0, chambers.Length)],
                 _ => null,
@@ -3063,7 +3059,7 @@ namespace Exiled.API.Features
             if (array.Length == 0)
                 return;
 
-            RandomTeleport(array[Random.Range(0, array.Length)]);
+            RandomTeleport(array.GetRandomValue());
         }
 
         /// <summary>

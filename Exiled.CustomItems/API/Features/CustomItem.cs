@@ -1106,7 +1106,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalChanging(ChangingItemEventArgs ev)
         {
-            if (!Check(ev.NewItem))
+            if (!Check(ev.Item))
             {
                 MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName));
                 return;

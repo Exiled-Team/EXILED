@@ -9,6 +9,8 @@ namespace Exiled.API.Features.Doors
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -36,7 +38,7 @@ namespace Exiled.API.Features.Doors
     public class Door : TypeCastObject<Door>, IWrapper<DoorVariant>, IWorldSpace
     {
         /// <summary>
-        /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>s and their corresponding <see cref="Door"/>.
+        /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>'s and their corresponding <see cref="Door"/>.
         /// </summary>
         internal static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
 
@@ -44,14 +46,18 @@ namespace Exiled.API.Features.Doors
         /// Initializes a new instance of the <see cref="Door"/> class.
         /// </summary>
         /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
-        /// <param name="room">The <see cref="Room"/> for this door.</param>
-        public Door(DoorVariant door, Room room)
+        /// <param name="rooms">The <see cref="List{T}"/> of <see cref="Features.Room"/>'s for this door.</param>
+        internal Door(DoorVariant door, List<Room> rooms)
         {
-            if (room != null)
-                DoorVariantToDoor.Add(door, this);
-
             Base = door;
-            Room = room;
+
+            if (rooms != null)
+            {
+                DoorVariantToDoor.Add(door, this);
+                RoomsValue = rooms;
+                Rooms = RoomsValue.AsReadOnly();
+            }
+
             Type = GetDoorType();
 #if Debug
             if (Type is DoorType.Unknown)
@@ -62,7 +68,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
-        public static IEnumerable<Door> List => DoorVariantToDoor.Values;
+        public static IReadOnlyCollection<Door> List => DoorVariantToDoor.Values;
 
         /// <summary>
         /// Gets the base-game <see cref="DoorVariant"/> corresponding with this door.
@@ -87,7 +93,12 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets the <see cref="Features.Room"/> that the door is located in.
         /// </summary>
-        public Room Room { get; }
+        public Room Room => Rooms?.FirstOrDefault();
+
+        /// <summary>
+        /// Gets the <see cref="Features.Room"/>'s that the door is located in.
+        /// </summary>
+        public IReadOnlyCollection<Room> Rooms { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not the door is fully closed.
@@ -146,7 +157,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not this door is subdoor belonging to a checkpoint.
         /// </summary>
-        public bool IsPartOfCheckpoint => List.Where(x => x is Checkpoint).Any(x => x.Cast<Checkpoint>().Subdoors.Contains(this));
+        public bool IsPartOfCheckpoint => List.Any(x => x is Checkpoint checkpoint && checkpoint.Subdoors.Contains(this));
 
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.
@@ -267,22 +278,28 @@ namespace Exiled.API.Features.Doors
         public ZoneType Zone => Room?.Zone ?? ZoneType.Unspecified;
 
         /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all <see cref="Features.Room"/>'s that are connected with <see cref="Door"/>.
+        /// </summary>
+        internal List<Room> RoomsValue { get; } = new List<Room>();
+
+        /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
         /// </summary>
         /// <param name="doorVariant">The base-game <see cref="DoorVariant"/>.</param>
         /// <returns>A <see cref="Door"/> wrapper object.</returns>
-        public static Door Get(DoorVariant doorVariant) => doorVariant != null ? (DoorVariantToDoor.TryGetValue(doorVariant, out Door door)
-            ? door
-            : doorVariant switch
+        public static Door Get(DoorVariant doorVariant)
+        {
+            if (doorVariant == null)
+                return null;
+
+            if (doorVariant.Rooms == null)
             {
-                Interactables.Interobjects.CheckpointDoor chkpt => new Checkpoint(chkpt, chkpt.GetComponentInParent<Room>()),
-                BaseBreakableDoor brkbl => new Breakable(brkbl, brkbl.GetComponentInParent<Room>()),
-                Interactables.Interobjects.ElevatorDoor elvtr => new Elevator(elvtr, elvtr.GetComponentInParent<Room>()),
-                PryableDoor prbl => new Gate(prbl, prbl.GetComponentInParent<Room>()),
-                Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new BasicNonInteractableDoor(nonInteractableDoor, nonInteractableDoor.GetComponentInParent<Room>()),
-                Interactables.Interobjects.BasicDoor basicDoor => new BasicDoor(basicDoor, basicDoor.GetComponentInParent<Room>()),
-                _ => new Door(doorVariant, doorVariant.GetComponentInParent<Room>())
-            }) : null;
+                doorVariant.RegisterRooms();
+            }
+
+            // Exiled door must be created after the `RegisterRooms` call
+            return DoorVariantToDoor[doorVariant];
+        }
 
         /// <summary>
         /// Gets a <see cref="Door"/> given the specified name.
@@ -494,24 +511,29 @@ namespace Exiled.API.Features.Doors
         public override string ToString() => $"{Type} ({Zone}) [{Room}] *{DoorLockType}* ={RequiredPermissions.RequiredPermissions}=";
 
         /// <summary>
-        /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
+        /// Creates the door object associated with a specific <see cref="DoorVariant"/>.
         /// </summary>
         /// <param name="doorVariant">The base-game <see cref="DoorVariant"/>.</param>
-        /// <param name="room">The <see cref="Room"/> this door is in.</param>
-        /// <remarks>The 'room' parameter is only used if a new door wrapper needs to be created.</remarks>
+        /// <param name="rooms">Target door <see cref="Rooms"/>.</param>
         /// <returns>A <see cref="Door"/> wrapper object.</returns>
-        internal static Door Get(DoorVariant doorVariant, Room room) => DoorVariantToDoor.TryGetValue(doorVariant, out Door door)
-            ? door
-            : doorVariant switch
+        internal static Door Create(DoorVariant doorVariant, List<Room> rooms)
+        {
+            if (doorVariant == null)
             {
-                Interactables.Interobjects.CheckpointDoor chkpt => new Checkpoint(chkpt, room),
-                BaseBreakableDoor brkbl => new Breakable(brkbl, room),
-                Interactables.Interobjects.ElevatorDoor elvtr => new Elevator(elvtr, room),
-                PryableDoor prbl => new Gate(prbl, room),
-                Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new BasicNonInteractableDoor(nonInteractableDoor, room),
-                Interactables.Interobjects.BasicDoor basicDoor => new BasicDoor(basicDoor, room),
-                _ => new Door(doorVariant, room)
+                return null;
+            }
+
+            return doorVariant switch
+            {
+                Interactables.Interobjects.CheckpointDoor chkpt => new Checkpoint(chkpt, rooms),
+                BaseBreakableDoor brkbl => new Breakable(brkbl, rooms),
+                Interactables.Interobjects.ElevatorDoor elvtr => new Elevator(elvtr, rooms),
+                PryableDoor prbl => new Gate(prbl, rooms),
+                Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new BasicNonInteractableDoor(nonInteractableDoor, rooms),
+                Interactables.Interobjects.BasicDoor basicDoor => new BasicDoor(basicDoor, rooms),
+                _ => new Door(doorVariant, rooms)
             };
+        }
 
         private DoorType GetDoorType()
         {
@@ -522,8 +544,6 @@ namespace Exiled.API.Features.Doors
                 {
                     "LCZ" => Room?.Type switch
                     {
-                        RoomType.LczCheckpointA or RoomType.LczCheckpointB or RoomType.HczEzCheckpointA
-                        or RoomType.HczEzCheckpointB => Get(Base.GetComponentInParent<Interactables.Interobjects.CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor,
                         RoomType.LczAirlock => (Base.GetComponentInParent<Interactables.Interobjects.AirlockController>() != null) ? DoorType.Airlock : DoorType.LightContainmentDoor,
                         _ => DoorType.LightContainmentDoor,
                     },

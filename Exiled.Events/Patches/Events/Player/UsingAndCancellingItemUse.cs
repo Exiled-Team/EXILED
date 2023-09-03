@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -30,6 +30,9 @@ namespace Exiled.Events.Patches.Events.Player
     ///     <see cref="Handlers.Player.CancellingItemUse" /> event and
     ///     <see cref="Handlers.Player.CancelledItemUse" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.CancellingItemUse))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsingItem))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.CancelledItemUse))]
     [HarmonyPatch(typeof(UsableItemsController), nameof(UsableItemsController.ServerReceivedStatus))]
     internal static class UsingAndCancellingItemUse
     {

@@ -19,7 +19,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player's held item changes.
     /// </summary>
-    public class ChangingItemEventArgs : IPlayerEvent, IDeniableEvent
+    public class ChangingItemEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {
         private Item newItem;
 
@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs.Player
         ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="newItem">
-        ///     <inheritdoc cref="NewItem" />
+        ///     <inheritdoc cref="Item" />
         /// </param>
         public ChangingItemEventArgs(Player player, ItemBase newItem)
         {
@@ -41,7 +41,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets or sets the new item.
         /// </summary>
-        public Item NewItem
+        public Item Item
         {
             get => newItem;
             set

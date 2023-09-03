@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp0492
     using System.Reflection.Emit;
 
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp0492;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp049;
@@ -23,6 +24,7 @@ namespace Exiled.Events.Patches.Events.Scp0492
     ///     Patches <see cref="RagdollAbilityBase{T}.ServerProcessCmd"/>
     ///     to add <see cref="Handlers.Scp0492.ConsumingCorpse" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.ConsumingCorpse))]
     [HarmonyPatch(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>.ServerProcessCmd))]
     public class Consuming
     {
