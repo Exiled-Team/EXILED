@@ -18,9 +18,12 @@ Wszystkie zdarzenia EXILED'a są zaprogromowane za pomocą Harmony, co oznacza �
  - Po drugie, ponieważ cały kod związany z framework'iem jest wykonywany poza plikami Assembly serwera, rzeczy takie jak małe aktualizacje gry będą miały niewielki (jeżeli jakikolwiek) wpływ na działanie framework'a, sprawiając że najprawdopodobniej będzie on kompatybilny z przyszłymi aktualizacjami gry oraz łatwiejszy do aktualizacji gdy *faktycznie* jest to potrzebne.
 
 # Przetłumaczone README
-- [Русский](https://github.com/Exiled-Team/EXILED/blob/dev/Localization/README-Русский.md)
+- [Русский](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-Русский.md)
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
+- [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
+- [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
+- [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
 
 # Instalacja
 Instalacja EXILED'a może wydawać się bardziej skomplikowana i wymagająca niż innych framework'ów ale tak naprawdę jest to całkiem proste.
