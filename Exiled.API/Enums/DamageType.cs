@@ -224,5 +224,15 @@ namespace Exiled.API.Enums
         /// Damage caused by <see cref="ItemType.Jailbird"/>.
         /// </summary>
         Jailbird,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunFRMG0"/>.
+        /// </summary>
+        Frmg0,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunA7"/>.
+        /// </summary>
+        A7,
     }
 }

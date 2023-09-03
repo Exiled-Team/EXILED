@@ -22,16 +22,16 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Initializes a new instance of the <see cref="Gate"/> class.
         /// </summary>
-        /// <param name="door">The base <see cref="Interactables.Interobjects.PryableDoor"/> for this door.</param>
-        /// <param name="room">The <see cref="Room"/> for this door.</param>
-        public Gate(PryableDoor door, Room room)
+        /// <param name="door">The base <see cref="PryableDoor"/> for this door.</param>
+        /// <param name="room">The <see cref="Room"/>'s for this door.</param>
+        public Gate(PryableDoor door, List<Room> room)
             : base(door, room)
         {
             Base = door;
         }
 
         /// <summary>
-        /// Gets the base <see cref="Interactables.Interobjects.PryableDoor"/>.
+        /// Gets the base <see cref="PryableDoor"/>.
         /// </summary>
         public new PryableDoor Base { get; }
 
@@ -62,7 +62,7 @@ namespace Exiled.API.Features.Doors
         /// Tries to pry the door open. No effect if the door cannot be pried.
         /// </summary>
         /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
-        /// <param name="player">The amount of damage to deal.</param>
+        /// <param name="player"><see cref="Player"/> to perform pry gate.</param>
         public bool TryPry(Player player = null) => Base.TryPryGate(player?.ReferenceHub);
 
         /// <summary>

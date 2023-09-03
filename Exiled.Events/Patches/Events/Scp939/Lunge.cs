@@ -34,9 +34,10 @@ namespace Exiled.Events.Patches.Events.Scp939
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                // this.Owner
+                // Player::Get(Owner)
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.Owner))),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // LungingEventArgs ev = new (...)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LungingEventArgs))[0]),
@@ -46,9 +47,7 @@ namespace Exiled.Events.Patches.Events.Scp939
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
-            {
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }

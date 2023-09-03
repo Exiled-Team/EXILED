@@ -41,12 +41,6 @@ namespace Exiled.Events.Patches.Events.Scp096
             const int offset = 0;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldarg_1) + offset;
 
-            // CalmingDownEventArgs ev = new(this, Player, clearTime, true);
-            //
-            // Handlers.Scp096.OnCalmingDown(ev);
-            //
-            // if (!ev.IsAllowed)
-            //     return;
             newInstructions.InsertRange(
                 index,
                 new[]
@@ -62,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Scp096
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // CalmingDownEventArgs ev = new(Scp096Role, Player, bool, bool)
+                    // CalmingDownEventArgs ev = new(scp096, bool, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(CalmingDownEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
