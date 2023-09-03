@@ -103,10 +103,9 @@ namespace Exiled.Events.Patches.Events.Scp939
                 new(OpCodes.Callvirt, PropertyGetter(typeof(PlayingSoundEventArgs), nameof(PlayingSoundEventArgs.Cooldown))),
                 new(OpCodes.Callvirt, Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger))),
 
-                // ServerSendRpc(true);
+                // ServerSendRpc(EnvironmentalMimicry);
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Callvirt, Method(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry.ServerSendRpc), new[] { typeof(bool) })),
+                new(OpCodes.Call, Method(typeof(PlayingSound), nameof(PlayingSound.ServerSendRpc))),
 
                 // ret [IL_ret]
                 new CodeInstruction(OpCodes.Ret).WithLabels(ret),
@@ -115,5 +114,7 @@ namespace Exiled.Events.Patches.Events.Scp939
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
         }
+
+        private static void ServerSendRpc(EnvironmentalMimicry instance) => instance.ServerSendRpc(true);
     }
 }
