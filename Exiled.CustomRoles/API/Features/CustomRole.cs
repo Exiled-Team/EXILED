@@ -24,6 +24,9 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
 
+    using InventorySystem;
+    using InventorySystem.Configs;
+
     using MEC;
 
     using PlayerRoles;
@@ -912,7 +915,7 @@ namespace Exiled.CustomRoles.API.Features
                             foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
                             {
                                 if (type != AmmoType.None)
-                                    ev.Player.SetAmmo(type, Ammo.ContainsKey(type) ? Ammo[type] : (ushort)0);
+                                    ev.Player.SetAmmo(type, Ammo.ContainsKey(type) ? Ammo[type] == ushort.MaxValue ? InventoryLimits.GetAmmoLimit(type.GetItemType(), ev.Player.ReferenceHub) : Ammo[type] : (ushort)0);
                             }
                         });
                 }
