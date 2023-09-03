@@ -37,7 +37,7 @@ Pokud se rozhodnete použít instalační program, postará se při správném s
   - Stáhněte **`Exiled.Installer-Win.exe` [odsud](https://github.com/Exiled-Team/EXILED/releases)** (Klikněte na Assets -> klikněte na Instalátor)
   - Umístěte ji do složky serveru (pokud jste ji ještě nestáhli, stáhněte si dedikovaný server).
   - Dvakrát klikněte na **`Exiled.Installer.exe`** nebo **[stáhněte tento .bat](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1)** a umístěte jej do složky serveru, abyste nainstalovali nejnovější předběžnou verzi.
-  - Chcete-li nainstalovat a získat pluginy, podívejte se na [Instalace pluginů](#installing-plugins) sekci níže.
+  - Chcete-li nainstalovat a získat pluginy, podívejte se na sekci Instalace pluginů níže.
 **Poznámka:** Pokud instalujete EXILED na vzdálený server, ujistěte se, že spustíte .exe jako stejný uživatel, který spouští servery SCP:SL (nebo uživatel s právy správce).
 
 ### Manuální instalace
@@ -65,7 +65,7 @@ To je vše, EXILED by nyní měl být nainstalován a aktivní při příštím 
   - Nainstalujte jej pomocí **`./Exiled.Installer-Linux --path /cesta/k/serveru`** nebo ji přesuňte přímo do složky serveru, přejděte do ní pomocí terminálu (`cd`) a zadejte: **`./Exiled.Installer-Linux`**.
   - Pokud chcete nejnovější předběžnou verzi, stačí přidat **`--pre-releases`**. Příklad: **`./Exiled.Installer-Linux /home/scp/server --pre-releases`**
   - Další příklad, pokud jste do složky serveru umístili soubor `Exiled.Installer-Linux`: **`/home/scp/server/Exiled.Installer-Linux --pre-releases`**
-  - Chcete-li nainstalovat a získat pluginy, podívejte se na [Instalace pluginů](#installing-plugins) sekci níže.
+  - Chcete-li nainstalovat a získat pluginy, podívejte se na sekci Instalace pluginů níže.
 
 ### Manuální instalace
   - **Ujistěte** se že jste přihlášeni jako uživatel, který spouští servery SCP: SL.
