@@ -24,6 +24,7 @@ Všechny EXILED eventy jsou kódovány pomocí Harmony, což znamená, že ke sv
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
 - [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
 - [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
+- [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
 
 # Instalace
 Instalace EXILED je poměrně jednoduchá. Načítá se prostřednictvím rozhraní NW Plugin API. Proto jsou uvnitř archivu ``Exiled.tar.gz`` ve vydaných verzích EXILED dvě složky. Složka ``SCP Secret Laboratory`` obsahuje soubory potřebné k načtení funkcí EXILED ve složce ``EXILED``. Vzhledem k tomu stačí tyto dvě složky přesunout do příslušné cesty, která je vysvětlena níže, a je hotovo!
