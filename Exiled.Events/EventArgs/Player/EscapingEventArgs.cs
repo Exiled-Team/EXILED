@@ -55,7 +55,7 @@ namespace Exiled.Events.EventArgs.Player
         ///     <inheritdoc cref="EscapeScenario" />
         /// </param>
         /// <param name="respawnTickets">
-        ///     <inheritdoc cref="EscapingEventArgs.RespawnTickets"/>
+        ///     <inheritdoc cref="RespawnTickets"/>
         /// </param>
         public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario, KeyValuePair<SpawnableTeamType, float> respawnTickets)
             : this(player, newRole, escapeScenario)

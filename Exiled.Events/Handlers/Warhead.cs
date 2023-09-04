@@ -12,9 +12,6 @@ namespace Exiled.Events.Handlers
     using Exiled.Events.EventArgs.Warhead;
     using Exiled.Events.Features;
 
-    using PluginAPI.Core.Attributes;
-    using PluginAPI.Enums;
-
     /// <summary>
     ///     Handles warhead related events.
     /// </summary>
