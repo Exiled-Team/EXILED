@@ -99,7 +99,7 @@ namespace Exiled.API.Extensions
                         byte[] bytecodes = methodBody.GetILAsByteArray();
 
                         if (!SyncVarDirtyBitsValue.ContainsKey($"{property.ReflectedType.Name}.{property.Name}"))
-                            SyncVarDirtyBitsValue.Add($"{property.ReflectedType.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
+                            SyncVarDirtyBitsValue.Add($"{property.ReflectedType.Name}.{property.Name}", bytecodes[bytecodes.IndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
                     }
                 }
 
