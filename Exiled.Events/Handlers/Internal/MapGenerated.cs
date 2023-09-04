@@ -18,7 +18,6 @@ namespace Exiled.Events.Handlers.Internal
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Pickups;
 
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
@@ -26,8 +25,6 @@ namespace Exiled.Events.Handlers.Internal
     using MEC;
 
     using Utils.NonAllocLINQ;
-
-    using Camera = API.Features.Camera;
 
     /// <summary>
     /// Handles <see cref="Handlers.Map.Generated"/> event.

@@ -21,7 +21,6 @@ namespace Exiled.API.Features.Pickups
     using InventorySystem.Items.Usables.Scp244;
 
     using Mirror;
-    using PluginAPI.Events;
     using RelativePositioning;
     using UnityEngine;
 

@@ -14,13 +14,9 @@ namespace Exiled.Events.Patches.Events.Scp106
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Scp106;
-    using Footprinting;
     using HarmonyLib;
-    using InventorySystem.Items.ThrowableProjectiles;
     using PlayerRoles.PlayableScps.Scp106;
-    using PlayerRoles.PlayableScps.Subroutines;
 
     using static HarmonyLib.AccessTools;
 

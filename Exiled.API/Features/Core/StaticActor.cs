@@ -10,7 +10,6 @@ namespace Exiled.API.Features.Core
     using System;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Core;
 
     /// <summary>
     /// This is a generic Singleton implementation for components.

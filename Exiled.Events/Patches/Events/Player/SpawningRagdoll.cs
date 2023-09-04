@@ -15,10 +15,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
-    using Handlers;
-
     using HarmonyLib;
-    using LiteNetLib4Mirror.Open.Nat;
     using PlayerRoles.Ragdolls;
 
     using PlayerStatsSystem;
@@ -27,12 +24,14 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Handlers.Player;
+
     /// <summary>
     ///     Patches <see cref="RagdollManager.ServerSpawnRagdoll(ReferenceHub, DamageHandlerBase)" />.
-    ///     <br>Adds the <see cref="Handlers.Player.SpawningRagdoll" /> and <see cref="Handlers.Player.SpawnedRagdoll"/> events.</br>
+    ///     <br>Adds the <see cref="Player.SpawningRagdoll" /> and <see cref="Player.SpawnedRagdoll"/> events.</br>
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.SpawningRagdoll))]
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.SpawnedRagdoll))]
+    [EventPatch(typeof(Player), nameof(Player.SpawningRagdoll))]
+    [EventPatch(typeof(Player), nameof(Player.SpawnedRagdoll))]
     [HarmonyPatch(typeof(RagdollManager), nameof(RagdollManager.ServerSpawnRagdoll))]
     internal static class SpawningRagdoll
     {
@@ -43,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label ret = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(SpawningRagdollEventArgs));
-            LocalBuilder newRagdoll = generator.DeclareLocal(typeof(API.Features.Ragdoll));
+            LocalBuilder newRagdoll = generator.DeclareLocal(typeof(Ragdoll));
             LocalBuilder localScale = generator.DeclareLocal(typeof(Vector3));
             LocalBuilder evScale = generator.DeclareLocal(typeof(Vector3));
             LocalBuilder targetScale = generator.DeclareLocal(typeof(Vector3));
@@ -87,7 +86,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Player.OnSpawningRagdoll(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawningRagdoll))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnSpawningRagdoll))),
 
                 // if (!ev.IsAllowed)
                 //    return;
@@ -176,7 +175,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // Player::OnSpawnedRagdoll(new SpawnedRagdollEventArgs(ev.Player, Ragdoll::Get(basicRagdoll), ev.Info, ev.DamageHandlerBase))
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawnedRagdollEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawnedRagdoll))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnSpawnedRagdoll))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);

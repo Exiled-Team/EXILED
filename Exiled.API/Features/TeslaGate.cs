@@ -12,7 +12,6 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Interfaces;
-    using global::Hazards;
     using Hazards;
     using MEC;
     using PlayerRoles;

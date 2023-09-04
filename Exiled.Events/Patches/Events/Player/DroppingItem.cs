@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection.Emit;
 
     using API.Features.Pools;
@@ -30,7 +29,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="Inventory.UserCode_CmdDropItem__UInt16__Boolean" />.
-    ///     <br>Adds the <see cref="Handlers.Player.DroppingItem" />, <see cref="Handlers.Player.DroppingNothing" /> and <see cref="Handlers.Player.DroppedItem"/> events.</br>
+    ///     <br>Adds the <see cref="Player.DroppingItem" />, <see cref="Player.DroppingNothing" /> and <see cref="Player.DroppedItem"/> events.</br>
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DroppingItem))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DroppingNothing))]

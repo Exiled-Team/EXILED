@@ -66,7 +66,6 @@ namespace Exiled.API.Features
     using Firearm = Items.Firearm;
     using FirearmPickup = Pickups.FirearmPickup;
     using HumanRole = Roles.HumanRole;
-    using Random = UnityEngine.Random;
 
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
