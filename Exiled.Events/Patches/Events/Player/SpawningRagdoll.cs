@@ -31,6 +31,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     <br>Adds the <see cref="Player.SpawningRagdoll" /> and <see cref="Player.SpawnedRagdoll"/> events.</br>
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.SpawningRagdoll))]
+
     [EventPatch(typeof(Player), nameof(Player.SpawnedRagdoll))]
     [HarmonyPatch(typeof(RagdollManager), nameof(RagdollManager.ServerSpawnRagdoll))]
     internal static class SpawningRagdoll
