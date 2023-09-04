@@ -10,12 +10,12 @@ namespace Exiled.Events.EventArgs.Interfaces
     using Exiled.API.Features.Pickups;
 
     /// <summary>
-    ///     Event args used for all <see cref="Exiled.API.Features.Pickups.Pickup" /> related events.
+    ///     Event args used for all <see cref="API.Features.Pickups.Pickup" /> related events.
     /// </summary>
     public interface IPickupEvent : IExiledEvent
     {
         /// <summary>
-        ///     Gets the <see cref="Exiled.API.Features.Pickups.Pickup" /> triggering the event.
+        ///     Gets the <see cref="API.Features.Pickups.Pickup" /> triggering the event.
         /// </summary>
         public Pickup Pickup { get; }
     }

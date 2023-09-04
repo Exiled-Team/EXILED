@@ -65,7 +65,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (!player.IsNpc)
                     //  goto continueLabel;
                     new(OpCodes.Ldloc_S, player.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(API.Features.Player.IsNPC))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsNPC))),
                     new(OpCodes.Brfalse_S, continueLabel),
 
                     // jmp:

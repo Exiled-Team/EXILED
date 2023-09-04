@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs.Player
         public UsedItemEventArgs(ReferenceHub player, UsableItem item)
         {
             Player = Player.Get(player);
-            Usable = API.Features.Items.Item.Get(item) is Usable usable ? usable : null;
+            Usable = Item.Get(item) is Usable usable ? usable : null;
         }
 
         /// <summary>

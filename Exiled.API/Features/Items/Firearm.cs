@@ -32,7 +32,7 @@ namespace Exiled.API.Features.Items
     using UnityEngine;
 
     using BaseFirearm = InventorySystem.Items.Firearms.Firearm;
-    using FirearmPickup = Exiled.API.Features.Pickups.FirearmPickup;
+    using FirearmPickup = Pickups.FirearmPickup;
     using Object = UnityEngine.Object;
 
     /// <summary>

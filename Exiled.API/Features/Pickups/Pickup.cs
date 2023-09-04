@@ -21,6 +21,7 @@ namespace Exiled.API.Features.Pickups
     using InventorySystem.Items.Usables.Scp244;
 
     using Mirror;
+    using PluginAPI.Events;
     using RelativePositioning;
     using UnityEngine;
 
@@ -335,45 +336,126 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets all <see cref="Pickup"/> with the given <see cref="ItemType"/>.
+        /// Gets the <see cref="Pickup"/> given a <see cref="Serial"/>.
+        /// </summary>
+        /// <param name="serial">The serial to look for.</param>
+        /// <returns>The <see cref="Pickup"/> given the specified serial.</returns>
+        public static Pickup Get(ushort serial) => List.SingleOrDefault(x => x.Serial == serial);
+
+        /// <summary>
+        /// Gets the <see cref="Pickup"/> given a <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> to check.</param>
+        /// <returns>The <see cref="Pickup"/> given the specified <see cref="UnityEngine.GameObject"/>.</returns>
+        public static Pickup Get(GameObject gameObject) => !gameObject || !gameObject.TryGetComponent(out ItemPickupBase ipb) ? null : Get(ipb);
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances given an <see cref="IEnumerable{T}"/> of <see cref="ItemPickupBase"/>.
+        /// </summary>
+        /// <param name="pickups">An <see cref="IEnumerable{T}"/> of <see cref="ItemPickupBase"/> to convert into an <see cref="IEnumerable{T}"/> of <see cref="Pickup"/>.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances.</returns>
+        public static IEnumerable<Pickup> Get(IEnumerable<ItemPickupBase> pickups) => from ItemPickupBase ipb in pickups select Get(ipb);
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances given an <see cref="ItemType"/>.
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to look for.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Pickup"/>.</returns>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances.</returns>
         /// <seealso cref="Map.GetRandomPickup(ItemType)"/>
         public static IEnumerable<Pickup> Get(ItemType type) => List.Where(x => x.Type == type);
 
         /// <summary>
-        /// Gets the <see cref="Pickup"/> with the given <see cref="Serial"/>.
+        /// Gets an <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances given an <see cref="IEnumerable{T}"/> of <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        /// <param name="serial"> The serial of the Pickup you search.</param>
-        /// <returns>return the Pickup with Serial choose.</returns>
-        public static Pickup Get(ushort serial) => List.SingleOrDefault(x => x.Serial == serial);
+        /// <param name="gameObjects">The <see cref="UnityEngine.GameObject"/>'s to check.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances.</returns>
+        public static IEnumerable<Pickup> Get(IEnumerable<GameObject> gameObjects)
+        {
+            foreach (GameObject gameObject in gameObjects)
+            {
+                Pickup pickup = Get(gameObject);
+                if (pickup is null)
+                    continue;
+
+                yield return pickup;
+            }
+        }
 
         /// <summary>
-        /// Gets the <see cref="Pickup"/> with the given <see cref="UnityEngine.GameObject"/>.
+        /// Gets an <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances given a <see cref="IEnumerable{T}"/> of <see cref="ItemPickupBase"/>.
         /// </summary>
-        /// <param name="gameObject"> The gameobject of the Pickup you search.</param>
-        /// <returns>return the Pickup with gameObject choose.</returns>
-        public static Pickup Get(GameObject gameObject) => gameObject == null ? null : Get(gameObject.GetComponent<ItemPickupBase>());
+        /// <typeparam name="T">The type <typeparamref name="T"/> to cast the pickups to.</typeparam>
+        /// <param name="pickups">An <see cref="IEnumerable{T}"/> of <see cref="ItemPickupBase"/> to convert into an <see cref="IEnumerable{T}"/> of <see cref="Pickup"/>.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances.</returns>
+        public static IEnumerable<T> Get<T>(IEnumerable<ItemPickupBase> pickups)
+            where T : Pickup
+        {
+            foreach (ItemPickupBase ipb in pickups)
+            {
+                Pickup pickup = Get(ipb);
+                if (pickup is null || !pickup.Cast(out T param))
+                    continue;
+
+                yield return param;
+            }
+        }
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> containing all existing <see cref="ItemPickupBase"/> instances given an <see cref="ItemType"/>.
+        /// </summary>
+        /// <typeparam name="T">The type <typeparamref name="T"/> to cast the pickups to.</typeparam>
+        /// <param name="type">The <see cref="ItemType"/> to look for.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Pickup"/>.</returns>
+        /// <seealso cref="Map.GetRandomPickup(ItemType)"/>
+        public static IEnumerable<T> Get<T>(ItemType type)
+            where T : Pickup
+        {
+            foreach (Pickup pickup in List)
+            {
+                if (pickup.Type != type || !pickup.Cast(out T param))
+                    continue;
+
+                yield return param;
+            }
+        }
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> containing all existing <see cref="ItemPickupBase"/> instances given a <see cref="IEnumerable{T}"/> of <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        /// <typeparam name="T">The type <typeparamref name="T"/> to cast the pickups to.</typeparam>
+        /// <param name="gameObjects">The <see cref="UnityEngine.GameObject"/>'s to check.</param>
+        /// <returns>The <see cref="Pickup"/> given the specified <see cref="UnityEngine.GameObject"/>.</returns>
+        public static IEnumerable<T> Get<T>(IEnumerable<GameObject> gameObjects)
+            where T : Pickup
+        {
+            foreach (GameObject gameObject in gameObjects)
+            {
+                Pickup pickup = Get(gameObject);
+                if (pickup is null || !pickup.Cast(out T param))
+                    continue;
+
+                yield return param;
+            }
+        }
 
         /// <summary>
         /// Creates and returns a new <see cref="Pickup"/> with the proper inherited subclass.
         /// <para>
-        /// Based on the <paramref name="type"/>, the returned <see cref="Pickup"/> can be casted into a subclass to gain more control over the object.
-        /// <br />- All valid ammo should be casted to the <see cref="AmmoPickup"/> class.
-        /// <br />- All valid firearms (not including the Micro HID) should be casted to the <see cref="FirearmPickup"/> class.
-        /// <br />- All valid keycards should be casted to the <see cref="KeycardPickup"/> class.
-        /// <br />- All valid armor should be casted to the <see cref="BodyArmorPickup"/> class.
-        /// <br />- All grenades and throwables (not including SCP-018 and SCP-2176) should be casted to the <see cref="GrenadePickup"/> class.
+        /// Based on the <paramref name="type"/>, the returned <see cref="Pickup"/> can be cast into a subclass to gain more control over the object.
+        /// <br />- All valid ammo should be cast to the <see cref="AmmoPickup"/> class.
+        /// <br />- All valid firearms (not including the Micro HID) should be cast to the <see cref="FirearmPickup"/> class.
+        /// <br />- All valid keycards should be cast to the <see cref="KeycardPickup"/> class.
+        /// <br />- All valid armor should be cast to the <see cref="BodyArmorPickup"/> class.
+        /// <br />- All grenades and throwables (not including SCP-018 and SCP-2176) should be cast to the <see cref="GrenadePickup"/> class.
         /// </para>
         /// <para>
         /// <br />The following have their own respective classes:
-        /// <br />- Radios can be casted to <see cref="RadioPickup"/>.
-        /// <br />- The Micro HID can be casted to <see cref="MicroHIDPickup"/>.
-        /// <br />- SCP-244 A and B variants can be casted to <see cref="Scp244Pickup"/>.
-        /// <br />- SCP-330 can be casted to <see cref="Scp330Pickup"/>.
-        /// <br />- SCP-018 can be casted to <see cref="Projectiles.Scp018Projectile"/>.
-        /// <br />- SCP-2176 can be casted to <see cref="Projectiles.Scp2176Projectile"/>.
+        /// <br />- Radios can be cast to <see cref="RadioPickup"/>.
+        /// <br />- The Micro HID can be cast to <see cref="MicroHIDPickup"/>.
+        /// <br />- SCP-244 A and B variants can be cast to <see cref="Scp244Pickup"/>.
+        /// <br />- SCP-330 can be cast to <see cref="Scp330Pickup"/>.
+        /// <br />- SCP-018 can be cast to <see cref="Scp018Projectile"/>.
+        /// <br />- SCP-2176 can be cast to <see cref="Scp2176Projectile"/>.
         /// </para>
         /// <para>
         /// Items that are not listed above do not have a subclass, and can only use the base <see cref="Pickup"/> class.

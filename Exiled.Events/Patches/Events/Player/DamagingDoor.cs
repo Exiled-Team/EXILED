@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patch the <see cref="BreakableDoor.ServerDamage(float, DoorDamageType)" />.
     ///     Adds the <see cref="Player.DamagingDoor" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DamagingDoor))]
+    [EventPatch(typeof(Player), nameof(Player.DamagingDoor))]
     [HarmonyPatch(typeof(BreakableDoor), nameof(BreakableDoor.ServerDamage))]
     internal static class DamagingDoor
     {

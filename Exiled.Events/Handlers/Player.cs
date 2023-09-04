@@ -104,6 +104,11 @@ namespace Exiled.Events.Handlers
         public static Event<SpawningRagdollEventArgs> SpawningRagdoll { get; set; } = new();
 
         /// <summary>
+        /// Invoked after spawning a <see cref="API.Features.Player"/> <see cref="API.Features.Ragdoll"/>.
+        /// </summary>
+        public static Event<SpawnedRagdollEventArgs> SpawnedRagdoll { get; set; } = new();
+
+        /// <summary>
         /// Invoked before activating the warhead panel.
         /// </summary>
         public static Event<ActivatingWarheadPanelEventArgs> ActivatingWarheadPanel { get; set; } = new();
@@ -173,6 +178,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before dropping an <see cref="API.Features.Items.Item"/>.
         /// </summary>
         public static Event<DroppingItemEventArgs> DroppingItem { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after dropping an <see cref="API.Features.Items.Item"/>.
+        /// </summary>
+        public static Event<DroppedItemEventArgs> DroppedItem { get; set; } = new();
 
         /// <summary>
         /// Invoked before dropping a null <see cref="API.Features.Items.Item"/>.
@@ -348,6 +358,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before dropping ammo.
         /// </summary>
         public static Event<DroppingAmmoEventArgs> DroppingAmmo { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after dropping ammo.
+        /// </summary>
+        public static Event<DroppedAmmoEventArgs> DroppedAmmo { get; set; } = new();
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> interacts with a shooting target.
@@ -558,6 +573,12 @@ namespace Exiled.Events.Handlers
         public static void OnSpawningRagdoll(SpawningRagdollEventArgs ev) => SpawningRagdoll.InvokeSafely(ev);
 
         /// <summary>
+        /// Called after spawning a <see cref="API.Features.Player"/> ragdoll.
+        /// </summary>
+        /// <param name="ev">The <see cref="SpawnedRagdollEventArgs"/> instance.</param>
+        public static void OnSpawnedRagdoll(SpawnedRagdollEventArgs ev) => SpawnedRagdoll.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before activating the warhead panel.
         /// </summary>
         /// <param name="ev">The <see cref="ActivatingWarheadPanelEventArgs"/> instance.</param>
@@ -612,6 +633,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DroppingItemEventArgs"/> instance.</param>
         public static void OnDroppingItem(DroppingItemEventArgs ev) => DroppingItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after dropping an item.
+        /// </summary>
+        /// <param name="ev">The <see cref="DroppedItemEventArgs"/> instance.</param>
+        public static void OnDroppedItem(DroppedItemEventArgs ev) => DroppedItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called before dropping a null item.
@@ -957,6 +984,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DroppingAmmoEventArgs"/> instance. </param>
         public static void OnDroppingAmmo(DroppingAmmoEventArgs ev) => DroppingAmmo.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after dropping ammo.
+        /// </summary>
+        /// <param name="ev">The <see cref="DroppedAmmoEventArgs"/> instance. </param>
+        public static void OnDroppedAmmo(DroppedAmmoEventArgs ev) => DroppedAmmo.InvokeSafely(ev);
 
         /// <summary>
         /// Called before muting a user.

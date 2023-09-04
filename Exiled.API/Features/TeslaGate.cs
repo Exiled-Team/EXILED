@@ -34,7 +34,7 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="TeslaGate"/> class.
         /// </summary>
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
-        /// <param name="room">The <see cref="Exiled.API.Features.Room"/> for this tesla.</param>
+        /// <param name="room">The <see cref="Features.Room"/> for this tesla.</param>
         internal TeslaGate(BaseTeslaGate baseTeslaGate, Room room)
         {
             Base = baseTeslaGate;
