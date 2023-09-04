@@ -278,6 +278,9 @@ namespace Exiled.Events.Patches.Events.Player
                     // firearm
                     new(OpCodes.Ldloc_S, firearm.LocalIndex),
 
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
                     // InspectingWeaponEventArgs ev = new(Player, firearm)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InspectingWeaponEventArgs))[0]),
                     new(OpCodes.Dup),
