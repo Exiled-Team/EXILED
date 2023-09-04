@@ -113,6 +113,7 @@ namespace Exiled.API.Features.Items
         public void Break()
         {
             Base.SendRpc(JailbirdMessageType.Broken);
+            Destroy();
         }
 
         /// <summary>
