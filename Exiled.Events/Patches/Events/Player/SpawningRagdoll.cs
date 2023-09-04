@@ -11,13 +11,14 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
+    using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using Handlers;
 
     using HarmonyLib;
-
+    using LiteNetLib4Mirror.Open.Nat;
     using PlayerRoles.Ragdolls;
 
     using PlayerStatsSystem;
@@ -28,10 +29,10 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="RagdollManager.ServerSpawnRagdoll(ReferenceHub, DamageHandlerBase)" />.
-    ///     <br>Adds the <see cref="Player.SpawningRagdoll" /> and <see cref="Player.SpawnedRagdoll"/> events.</br>
+    ///     <br>Adds the <see cref="Handlers.Player.SpawningRagdoll" /> and <see cref="Handlers.Player.SpawnedRagdoll"/> events.</br>
     /// </summary>
-    [EventPatch(typeof(Player), nameof(Player.SpawningRagdoll))]
-    [EventPatch(typeof(Player), nameof(Player.SpawnedRagdoll))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.SpawningRagdoll))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.SpawnedRagdoll))]
     [HarmonyPatch(typeof(RagdollManager), nameof(RagdollManager.ServerSpawnRagdoll))]
     internal static class SpawningRagdoll
     {
@@ -43,6 +44,9 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(SpawningRagdollEventArgs));
             LocalBuilder newRagdoll = generator.DeclareLocal(typeof(API.Features.Ragdoll));
+            LocalBuilder localScale = generator.DeclareLocal(typeof(Vector3));
+            LocalBuilder evScale = generator.DeclareLocal(typeof(Vector3));
+            LocalBuilder targetScale = generator.DeclareLocal(typeof(Vector3));
 
             int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
@@ -53,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(index, new[]
             {
-                // hub
+                 // hub
                 new CodeInstruction(OpCodes.Ldarg_0),
 
                 // handler
@@ -83,7 +87,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Player.OnSpawningRagdoll(ev)
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnSpawningRagdoll))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawningRagdoll))),
 
                 // if (!ev.IsAllowed)
                 //    return;
@@ -100,6 +104,56 @@ namespace Exiled.Events.Patches.Events.Player
                 // ev.Info
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Info))),
+
+                // new Vector3()
+                new(OpCodes.Ldloca_S, targetScale.LocalIndex),
+                new(OpCodes.Initobj, typeof(Vector3)),
+
+                // localScale = ragdoll.gameObject.transform.localScale
+                new(OpCodes.Ldloc_1),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(BasicRagdoll), nameof(BasicRagdoll.gameObject))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(GameObject), nameof(GameObject.transform))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.localScale))),
+                new(OpCodes.Stloc_S, localScale.LocalIndex),
+
+                // evScale = ev.Scale
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Scale))),
+                new(OpCodes.Stloc_S, evScale.LocalIndex),
+
+                // targetScale.x = evScale.x * localScale.x
+                new(OpCodes.Ldloca_S, targetScale.LocalIndex),
+                new(OpCodes.Ldloc_S, evScale.LocalIndex),
+                new(OpCodes.Ldfld, Field(typeof(Vector3), nameof(Vector3.x))),
+                new(OpCodes.Ldloc_S, localScale.LocalIndex),
+                new(OpCodes.Ldfld, Field(typeof(Vector3), nameof(Vector3.x))),
+                new(OpCodes.Mul),
+                new(OpCodes.Stfld, Field(typeof(Vector3), nameof(Vector3.x))),
+
+                // targetScale.y = evScale.y * localScale.y
+                new(OpCodes.Ldloca_S, targetScale.LocalIndex),
+                new(OpCodes.Ldloc_S, evScale.LocalIndex),
+                new(OpCodes.Ldfld, Field(typeof(Vector3), nameof(Vector3.y))),
+                new(OpCodes.Ldloc_S, localScale.LocalIndex),
+                new(OpCodes.Ldfld, Field(typeof(Vector3), nameof(Vector3.y))),
+                new(OpCodes.Mul),
+                new(OpCodes.Stfld, Field(typeof(Vector3), nameof(Vector3.y))),
+
+                // targetScale.z = evScale.z * localScale.z
+                new(OpCodes.Ldloca_S, targetScale.LocalIndex),
+                new(OpCodes.Ldloc_S, evScale.LocalIndex),
+                new(OpCodes.Ldfld, Field(typeof(Vector3), nameof(Vector3.z))),
+                new(OpCodes.Ldloc_S, localScale.LocalIndex),
+                new(OpCodes.Ldfld, Field(typeof(Vector3), nameof(Vector3.z))),
+                new(OpCodes.Mul),
+                new(OpCodes.Stfld, Field(typeof(Vector3), nameof(Vector3.z))),
+
+                // ragdoll.gameObject.transform.localScale = targetScale
+                new(OpCodes.Ldloc_1),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(BasicRagdoll), nameof(BasicRagdoll.gameObject))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(GameObject), nameof(GameObject.transform))),
+                new(OpCodes.Ldloc_S, targetScale.LocalIndex),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Transform), nameof(Transform.localScale))),
             });
 
             newInstructions.InsertRange(newInstructions.Count - 2, new CodeInstruction[]
@@ -107,6 +161,10 @@ namespace Exiled.Events.Patches.Events.Player
                 // ev.Player
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Player))),
+
+                // Ragdoll::Get(basicRagdoll)
+                new(OpCodes.Ldloc_1),
+                new(OpCodes.Call, Method(typeof(Ragdoll), nameof(Ragdoll.Get), new[] { typeof(BasicRagdoll) })),
 
                 // ev.Info
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
@@ -116,9 +174,9 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.DamageHandlerBase))),
 
-                // Player::OnSpawnedRagdoll(new SpawnedRagdollEventArgs(ev.Player, ev.Info, ev.DamageHandlerBase))
+                // Player::OnSpawnedRagdoll(new SpawnedRagdollEventArgs(ev.Player, Ragdoll::Get(basicRagdoll), ev.Info, ev.DamageHandlerBase))
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawnedRagdollEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnSpawnedRagdoll))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawnedRagdoll))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);

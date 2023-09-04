@@ -28,15 +28,19 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
+        /// <param name="ragdoll">
+        ///     <inheritdoc cref="Ragdoll" />
+        /// </param>
         /// <param name="info">
         ///     <inheritdoc cref="Info" />
         /// </param>
         /// <param name="damageHandlerBase">
         ///     <inheritdoc cref="DamageHandlerBase" />
         /// </param>
-        public SpawnedRagdollEventArgs(Player player, RagdollData info, DamageHandlerBase damageHandlerBase)
+        public SpawnedRagdollEventArgs(Player player, Ragdoll ragdoll, RagdollData info, DamageHandlerBase damageHandlerBase)
         {
             Player = player;
+            Ragdoll = ragdoll;
             Info = info;
             DamageHandlerBase = damageHandlerBase;
         }
@@ -75,6 +79,11 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the ragdoll's <see cref="PlayerStatsSystem.DamageHandlerBase" />.
         /// </summary>
         public DamageHandlerBase DamageHandlerBase { get; }
+
+        /// <summary>
+        ///     Gets the spawned <see cref="API.Features.Ragdoll"/>.
+        /// </summary>
+        public Ragdoll Ragdoll { get; }
 
         /// <summary>
         ///     Gets the <see cref="Player">Owner</see> of the ragdoll.
