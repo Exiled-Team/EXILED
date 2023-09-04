@@ -296,7 +296,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brfalse_S, returnLabel),
                 });
 
-            newInstructions[newInstructions.Count - 1].Labels.Add(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
