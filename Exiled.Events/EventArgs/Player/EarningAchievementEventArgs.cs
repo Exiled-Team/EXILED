@@ -10,7 +10,6 @@ namespace Exiled.Events.EventArgs.Player
     using Achievements;
     using Exiled.API.Features;
     using Interfaces;
-    using Respawning.NamingRules;
 
     /// <summary>
     ///     Contains all information before a player earns an achievement.

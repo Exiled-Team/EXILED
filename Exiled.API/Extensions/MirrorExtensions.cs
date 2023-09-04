@@ -13,7 +13,6 @@ namespace Exiled.API.Extensions
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
-    using System.Runtime.Remoting.Messaging;
     using System.Text;
 
     using Features;
@@ -26,7 +25,6 @@ namespace Exiled.API.Extensions
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
-    using PluginAPI.Events;
     using RelativePositioning;
 
     using Respawning;

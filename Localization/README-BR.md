@@ -22,6 +22,9 @@ Todos os eventos do EXILED são codificados com Harmony, o que significa que nã
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
+- [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
+- [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
+- [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
 
 # Instalação
 A instalação do EXILED é bastante simples. Ele se carrega por meio da API de plug-in da NW. É por isso que existem duas pastas dentro de ``Exiled.tar.gz`` nos arquivos de lançamento. ``SCP Secret Laboratory`` contém os arquivos necessários para carregar os recursos do EXILED na pasta ``EXILED``. Com isso dito, tudo o que você precisa fazer é mover essas duas pastas para o caminho apropriado, explicado abaixo, e pronto!

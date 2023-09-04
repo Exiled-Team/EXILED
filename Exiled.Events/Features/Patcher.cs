@@ -17,7 +17,6 @@ namespace Exiled.Events.Features
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Interfaces;
     using HarmonyLib;
-    using UnityEngine;
 
     /// <summary>
     /// A tool for patching.

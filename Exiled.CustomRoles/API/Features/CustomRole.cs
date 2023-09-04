@@ -23,8 +23,6 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
-
-    using InventorySystem;
     using InventorySystem.Configs;
 
     using MEC;
@@ -241,7 +239,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by name.
         /// </summary>
-        /// <param name="t">The <see cref="System.Type"/> of the role to get.</param>
+        /// <param name="t">The <see cref="Type"/> of the role to get.</param>
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
         /// <exception cref="ArgumentNullException">If the name is <see langword="null"/> or an empty string.</exception>
