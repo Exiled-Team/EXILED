@@ -7,10 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Features;
@@ -86,17 +83,17 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldloca_S,  1),
                 new(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<ReferenceHub, PlayerHandler>), nameof(KeyValuePair<ReferenceHub, PlayerHandler>.Key))),
                 new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.inventory))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Mirror.NetworkBehaviour), nameof(Mirror.NetworkBehaviour.connectionToClient))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkBehaviour), nameof(NetworkBehaviour.connectionToClient))),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Ldloc_2),
                 new(OpCodes.Ldfld, Field(typeof(CurrentlyUsedItem), nameof(CurrentlyUsedItem.ItemSerial))),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StatusMessage))[0]),
                 new(OpCodes.Ldc_I4_0),
                 new(OpCodes.Callvirt, FirstMethod(
-                    typeof(Mirror.NetworkConnection),
+                    typeof(NetworkConnection),
                     m =>
                     {
-                        return m.IsGenericMethod && m.Name == nameof(Mirror.NetworkConnection.Send);
+                        return m.IsGenericMethod && m.Name == nameof(NetworkConnection.Send);
                     }).MakeGenericMethod(typeof(StatusMessage))),
 
                 // goto ret;
