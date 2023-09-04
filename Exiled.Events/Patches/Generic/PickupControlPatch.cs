@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Generic
     using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
     using API.Features.Pickups;
     using API.Features.Pools;
 

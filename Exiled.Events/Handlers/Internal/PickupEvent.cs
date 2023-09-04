@@ -21,7 +21,7 @@ namespace Exiled.Events.Handlers.Internal
         /// <param name="itemPickupBase">The spawned Pickup.</param>
         public static void OnSpawnedPickup(ItemPickupBase itemPickupBase)
         {
-            Handlers.Map.OnPickupAdded(new(itemPickupBase));
+            Map.OnPickupAdded(new(itemPickupBase));
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Exiled.Events.Handlers.Internal
         /// <param name="itemPickupBase">The destroyed Pickup.</param>
         public static void OnRemovedPickup(ItemPickupBase itemPickupBase)
         {
-            Handlers.Map.OnPickupDestroyed(new(itemPickupBase));
+            Map.OnPickupDestroyed(new(itemPickupBase));
             Pickup.BaseToPickup.Remove(itemPickupBase);
         }
     }

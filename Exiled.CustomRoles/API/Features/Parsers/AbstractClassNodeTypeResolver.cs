@@ -40,7 +40,7 @@ namespace Exiled.CustomRoles.API.Features.Parsers
         /// <inheritdoc cref="INodeDeserializer"/>
         public bool Deserialize(IParser reader, Type expectedType, Func<IParser, Type, object?> nestedObjectDeserializer, out object? value)
         {
-            if (!reader.Accept(out MappingStart? mapping))
+            if (!reader.Accept<MappingStart>(out MappingStart? mapping))
             {
                 value = null;
                 return false;

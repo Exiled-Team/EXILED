@@ -11,12 +11,9 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
-
-    using Handlers;
 
     using HarmonyLib;
 
@@ -26,14 +23,15 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     using Item = API.Features.Items.Item;
+    using Player = Handlers.Player;
 
     /// <summary>
     ///     Patches <see cref="Inventory.UserCode_CmdDropItem__UInt16__Boolean" />.
     ///     <br>Adds the <see cref="Player.DroppingItem" />, <see cref="Player.DroppingNothing" /> and <see cref="Player.DroppedItem"/> events.</br>
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DroppingItem))]
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DroppingNothing))]
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DroppedItem))]
+    [EventPatch(typeof(Player), nameof(Player.DroppingItem))]
+    [EventPatch(typeof(Player), nameof(Player.DroppingNothing))]
+    [EventPatch(typeof(Player), nameof(Player.DroppedItem))]
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdDropItem__UInt16__Boolean))]
     internal static class DroppingItem
     {
@@ -68,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingNothingEventArgs))[0]),
 
                 // Player.OnDroppingNothing(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDroppingNothing))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingNothing))),
 
                 // return
                 new(OpCodes.Br_S, returnLabel),
@@ -97,7 +95,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Player.OnDroppingItem(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDroppingItem))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingItem))),
 
                 // if (!ev.IsAllowed)
                 //    return;
@@ -129,7 +127,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // Player::OnDroppedItem(new DroppedItemEventArgs(ev.Player, Player::Get(ItemPickupBase), ev.IsThrown))
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppedItemEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDroppedItem))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppedItem))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
