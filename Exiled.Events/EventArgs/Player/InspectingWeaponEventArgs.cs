@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.Firearms.BasicMessages;
 
     /// <summary>
-    ///     Contains all information before a player fires a weapon.
+    ///     Contains all information before a player inspects a weapon.
     /// </summary>
     public class InspectingWeaponEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {
