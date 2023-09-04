@@ -117,7 +117,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.DamageHandlerBase))),
 
                 // Player::OnSpawnedRagdoll(new SpawnedRagdollEventArgs(ev.Player, ev.Info, ev.DamageHandlerBase))
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawnedRagdollEventArgs))),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawnedRagdollEventArgs))[0]),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnSpawnedRagdoll))),
             });
 
