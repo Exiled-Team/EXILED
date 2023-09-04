@@ -29,10 +29,11 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="firearm">
         ///     <inheritdoc cref="Firearm" />
         /// </param>
-        public InspectingWeaponEventArgs(Player inspector, Firearm firearm)
+        public InspectingWeaponEventArgs(Player inspector, Firearm firearm, bool isAllowed = true)
         {
             Player = inspector;
             Firearm = firearm;
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
