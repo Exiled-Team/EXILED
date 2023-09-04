@@ -46,9 +46,9 @@ namespace Exiled.Events.Handlers
         public static Event<AnnouncingNtfEntranceEventArgs> AnnouncingNtfEntrance { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="Scp079Generator"/> has been activated.
+        /// Invoked before a <see cref="Scp079Generator"/> has been activated.
         /// </summary>
-        public static Event<GeneratorActivatedEventArgs> GeneratorActivated { get; set; } = new();
+        public static Event<GeneratorActivatingEventArgs> GeneratorActivating { get; set; } = new();
 
         /// <summary>
         /// Invoked before decontaminating the light containment zone.
@@ -64,6 +64,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before an item is spawned.
         /// </summary>
         public static Event<SpawningItemEventArgs> SpawningItem { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before an item is spawned in locker.
+        /// </summary>
+        public static Event<FillingLockerEventArgs> FillingLocker { get; set; } = new();
 
         /// <summary>
         /// Invoked after the map is generated.
@@ -126,10 +131,10 @@ namespace Exiled.Events.Handlers
         public static void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev) => AnnouncingNtfEntrance.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after a <see cref="Scp079Generator"/> has been activated.
+        /// Called before a <see cref="Scp079Generator"/> has been activated.
         /// </summary>
-        /// <param name="ev">The <see cref="GeneratorActivatedEventArgs"/> instance.</param>
-        public static void OnGeneratorActivated(GeneratorActivatedEventArgs ev) => GeneratorActivated.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="GeneratorActivatingEventArgs"/> instance.</param>
+        public static void OnGeneratorActivating(GeneratorActivatingEventArgs ev) => GeneratorActivating.InvokeSafely(ev);
 
         /// <summary>
         /// Called before decontaminating the light containment zone.
@@ -148,6 +153,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SpawningItemEventArgs"/> instance.</param>
         public static void OnSpawningItem(SpawningItemEventArgs ev) => SpawningItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before an item is spawned in locker.
+        /// </summary>
+        /// <param name="ev">The <see cref="SpawningItemEventArgs"/> instance.</param>
+        public static void OnFillingLocker(FillingLockerEventArgs ev) => FillingLocker.InvokeSafely(ev);
 
         /// <summary>
         /// Called after the map is generated.
