@@ -2727,6 +2727,12 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         public void EnableEffect(EffectType type, float duration = 0f, bool addDurationIfActive = false)
         {
+            if (type is EffectType.SoundtrackMute)
+            {
+                EnableEffect<SoundtrackMute>(duration, addDurationIfActive);
+                return;
+            }
+
             if (TryGetEffect(type, out StatusEffectBase statusEffect))
                 EnableEffect(statusEffect, duration, addDurationIfActive);
         }
