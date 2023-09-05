@@ -90,7 +90,7 @@ namespace Exiled.CustomRoles.API.Features
         public virtual RoleTypeId Role { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether players can have both this role and other roles
+        /// Gets or sets a value indicating whether or not having the role removed should kill the player.
         /// </summary>
         public virtual bool RemovalKillsPlayer { get; set; } = true;
 
