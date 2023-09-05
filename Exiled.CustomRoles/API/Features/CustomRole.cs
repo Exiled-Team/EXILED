@@ -90,7 +90,7 @@ namespace Exiled.CustomRoles.API.Features
         public virtual RoleTypeId Role { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not having the role removed should kill the player.
+        /// Gets or sets a value indicating whether players die when this role is removed.
         /// </summary>
         public virtual bool RemovalKillsPlayer { get; set; } = true;
 
@@ -125,12 +125,12 @@ namespace Exiled.CustomRoles.API.Features
         public virtual bool KeepInventoryOnSpawn { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether players keep this role when they die.
+        /// Gets or sets a value indicating whether players are allowed other roles than this at the same time.
         /// </summary>
         public virtual bool AllowOtherRoles { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether players die when this role is removed.
+        /// Gets or sets a value indicating whether players keep this role when they die.
         /// </summary>
         public virtual bool KeepRoleOnDeath { get; set; }
 
