@@ -46,6 +46,8 @@ namespace Exiled.CustomRoles.API.Features
 
         private static Dictionary<string, int> spawnedCount = new();
 
+        private static List<Player> restrictedPlayers = new();
+
         /// <summary>
         /// Gets a list of all registered custom roles.
         /// </summary>
@@ -88,6 +90,11 @@ namespace Exiled.CustomRoles.API.Features
         public virtual RoleTypeId Role { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether players can have both this role and other roles
+        /// </summary>
+        public virtual bool RemovalKillsPlayer { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a list of the roles custom abilities.
         /// </summary>
         public virtual List<CustomAbility>? CustomAbilities { get; set; } = new();
@@ -120,7 +127,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether players die when this role is removed.
         /// </summary>
-        public virtual bool RemovalKillsPlayer { get; set; } = true;
+        public virtual bool AllowOtherRoles { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether players keep this role when they die.
@@ -876,6 +883,10 @@ namespace Exiled.CustomRoles.API.Features
         protected virtual void RoleAdded(Player player)
         {
             spawnedCount[Name]++;
+            if (!AllowOtherRoles)
+            {
+                restrictedPlayers.Add(player);
+            }
         }
 
         /// <summary>
@@ -885,6 +896,10 @@ namespace Exiled.CustomRoles.API.Features
         protected virtual void RoleRemoved(Player player)
         {
             spawnedCount[Name]--;
+            if (!AllowOtherRoles)
+            {
+                restrictedPlayers.Remove(player);
+            }
         }
 
         private void OnInternalChangingNickname(ChangingNicknameEventArgs ev)
@@ -897,7 +912,7 @@ namespace Exiled.CustomRoles.API.Features
 
         private void OnInternalSpawning(SpawningEventArgs ev)
         {
-            if (!IgnoreSpawnSystem && SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && SpawnProperties.Limit <= spawnedCount[Name] && Loader.Random.NextDouble() * 100 <= SpawnChance)
+            if (!IgnoreSpawnSystem && SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && !restrictedPlayers.Contains(ev.Player) && SpawnProperties.Limit <= spawnedCount[Name] && Loader.Random.NextDouble() * 100 <= SpawnChance)
                 AddRole(ev.Player);
         }
 
