@@ -945,7 +945,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <inheritdoc cref="OnUpgrading(UpgradingEventArgs)"/>
-        protected virtual void OnUpgrading(API.EventArgs.UpgradingItemEventArgs ev)
+        protected virtual void OnUpgrading(UpgradingItemEventArgs ev)
         {
         }
 

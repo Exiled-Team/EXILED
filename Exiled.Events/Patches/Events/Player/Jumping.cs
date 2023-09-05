@@ -19,8 +19,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using PlayerRoles.FirstPersonControl;
 
-    using UnityEngine;
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>

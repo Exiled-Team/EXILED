@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Enums
 {
-    using System;
-
     /// <summary>
     /// Players authentication types.
     /// </summary>

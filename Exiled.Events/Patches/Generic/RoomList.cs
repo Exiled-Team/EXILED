@@ -19,7 +19,6 @@ namespace Exiled.Events.Patches.Generic
     using HarmonyLib;
 
     using MapGeneration;
-    using MapGeneration.Distributors;
 
     using UnityEngine;
 

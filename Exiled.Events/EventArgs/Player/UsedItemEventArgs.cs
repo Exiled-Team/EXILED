@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
-    using System;
-
     using API.Features;
     using API.Features.Items;
 
@@ -33,7 +31,7 @@ namespace Exiled.Events.EventArgs.Player
         public UsedItemEventArgs(ReferenceHub player, UsableItem item)
         {
             Player = Player.Get(player);
-            Usable = API.Features.Items.Item.Get(item) is Usable usable ? usable : null;
+            Usable = Item.Get(item) is Usable usable ? usable : null;
         }
 
         /// <summary>

@@ -127,14 +127,14 @@ namespace Exiled.API.Features.Hazards
         /// Gets the hazard by the room where it's located.
         /// </summary>
         /// <param name="room">Room.</param>
-        /// <returns><see cref="Hazard"/> in given <see cref="Exiled.API.Features.Room"/>.</returns>
+        /// <returns><see cref="Hazard"/> in given <see cref="Features.Room"/>.</returns>
         public static Hazard Get(Room room) => Get(x => x.Room == room).FirstOrDefault();
 
         /// <summary>
         /// Gets the hazard by it's <see cref="GameObject"/>.
         /// </summary>
         /// <param name="obj">Game object.</param>
-        /// <returns><see cref="Hazard"/> in given <see cref="Exiled.API.Features.Room"/>.</returns>
+        /// <returns><see cref="Hazard"/> in given <see cref="Features.Room"/>.</returns>
         public static Hazard Get(GameObject obj) => Get(x => x.Base.gameObject == obj).FirstOrDefault();
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace Exiled.API.Features.Items
 
     using UnityEngine;
 
-    using Scp2176Projectile = Exiled.API.Features.Pickups.Projectiles.Scp2176Projectile;
+    using Scp2176Projectile = Pickups.Projectiles.Scp2176Projectile;
 
     /// <summary>
     /// A wrapper class for <see cref="Scp2176Projectile"/>.
