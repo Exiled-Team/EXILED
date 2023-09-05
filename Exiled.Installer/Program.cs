@@ -9,8 +9,10 @@ namespace Exiled.Installer
 {
     using System;
     using System.Collections.Generic;
+    using System.Security.Cryptography;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Reflection;
     using System.Text;
@@ -119,6 +121,11 @@ namespace Exiled.Installer
 
                 using HttpResponseMessage downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);
                 using Stream downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                
+                bool validateres = ValidateFileUsingWebsite(Convert.ToBase64String(MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(new StreamReader(downloadArchiveStream).ReadToEnd())))).Result;
+                // TODO: Change Console.WriteLine() string to resource string.
+                if(!validateres)
+                    Console.WriteLine("[WARNING]: Unable to validate application download. Application files may be corrupt or may have been tampered with.");
 
                 using GZipInputStream gzInputStream = new(downloadArchiveStream);
                 using TarInputStream tarInputStream = new(gzInputStream, null);
@@ -174,6 +181,36 @@ namespace Exiled.Installer
 
         private static void ResolvePath(string filePath, string folderPath, out string path) => path = Path.Combine(folderPath, filePath);
 
+        /// <summary>
+        /// Validates download of compressed file and matches it to a response from a website.
+        /// </summary>
+        /// <param name="Hash">The downloaded file hash.</param>
+        /// <returns>Whether the validation succeeded.</returns>
+        
+        #pragma warning disable CS1998
+        private static async Task<bool> ValidateFileUsingWebsite(string Hash)
+        {
+            try
+            {
+                //TODO: Create a Installer Hash URL to get the latest app hash.
+                Task<HttpResponseMessage> response = new HttpClient().GetAsync("installer_hash_URL");
+                Stream webReader = response.Result.Content.ReadAsStream();
+
+                if (webReader != null)
+                {
+                    if (Convert.ToBase64String(MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(new StreamReader(webReader).ReadToEnd()))) == Hash)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         private static void ProcessTarEntry(CommandSettings args, TarInputStream tarInputStream, TarEntry entry)
         {
             if (entry.Name.Contains("global") && args.TargetPort is not null)

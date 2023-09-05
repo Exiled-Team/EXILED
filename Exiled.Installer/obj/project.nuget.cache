@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "dgSpecHash": "X7SnzcpRJeYz93/r716AZ0nB9iNaTZjiXftbwjnJPRYRBVaSVeWbk4dG8ITlh8LPfpF3feDwXxI+VZzv92s4og==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\SERVER_USER_LOCAL\\Desktop\\EXILED-alex-dev-bnch\\Exiled.Installer\\Exiled.Installer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\SERVER_USER_LOCAL\\.nuget\\packages\\microsoft.csharp\\4.4.1\\microsoft.csharp.4.4.1.nupkg.sha512",
+    "C:\\Users\\SERVER_USER_LOCAL\\.nuget\\packages\\octokit\\1.0.1\\octokit.1.0.1.nupkg.sha512",
+    "C:\\Users\\SERVER_USER_LOCAL\\.nuget\\packages\\semanticversioning\\2.0.2\\semanticversioning.2.0.2.nupkg.sha512",
+    "C:\\Users\\SERVER_USER_LOCAL\\.nuget\\packages\\sharpziplib\\1.3.3\\sharpziplib.1.3.3.nupkg.sha512",
+    "C:\\Users\\SERVER_USER_LOCAL\\.nuget\\packages\\system.commandline\\2.0.0-beta1.20371.2\\system.commandline.2.0.0-beta1.20371.2.nupkg.sha512",
+    "C:\\Users\\SERVER_USER_LOCAL\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
+    "C:\\Users\\SERVER_USER_LOCAL\\.nuget\\packages\\microsoft.netcore.app.runtime.linux-x64\\6.0.21\\microsoft.netcore.app.runtime.linux-x64.6.0.21.nupkg.sha512",
+    "C:\\Users\\SERVER_USER_LOCAL\\.nuget\\packages\\microsoft.netcore.app.host.linux-x64\\6.0.21\\microsoft.netcore.app.host.linux-x64.6.0.21.nupkg.sha512",
+    "C:\\Users\\SERVER_USER_LOCAL\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\6.0.21\\microsoft.aspnetcore.app.runtime.win-x64.6.0.21.nupkg.sha512",
+    "C:\\Users\\SERVER_USER_LOCAL\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\6.0.21\\microsoft.windowsdesktop.app.runtime.win-x64.6.0.21.nupkg.sha512",
+    "C:\\Users\\SERVER_USER_LOCAL\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\6.0.21\\microsoft.netcore.app.runtime.win-x64.6.0.21.nupkg.sha512",
+    "C:\\Users\\SERVER_USER_LOCAL\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.linux-x64\\6.0.21\\microsoft.aspnetcore.app.runtime.linux-x64.6.0.21.nupkg.sha512"
+  ],
+  "logs": []
+}
