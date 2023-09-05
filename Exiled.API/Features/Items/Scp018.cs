@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Features.Items
 {
-    using Enums;
-
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
 

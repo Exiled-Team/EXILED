@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Scp939
 
     /// <summary>
     /// Patches <see cref="Scp939ClawAbility.ServerProcessCmd(Mirror.NetworkReader)"/>
-    /// to add <see cref="Scp939.Clawed"/> event.
+    /// to add <see cref="Clawed"/> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp939), nameof(Handlers.Scp939.Clawed))]
     [HarmonyPatch(typeof(Scp939ClawAbility), nameof(Scp939ClawAbility.ServerProcessCmd))]

@@ -66,12 +66,11 @@ namespace Exiled.API.Features
     using Firearm = Items.Firearm;
     using FirearmPickup = Pickups.FirearmPickup;
     using HumanRole = Roles.HumanRole;
-    using Random = UnityEngine.Random;
 
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
-    public class Player : IEntity, IWorldSpace
+    public class Player : TypeCastObject<Player>, IEntity, IWorldSpace
     {
 #pragma warning disable SA1401
         /// <summary>
@@ -540,27 +539,27 @@ namespace Exiled.API.Features
         /// Gets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
         /// <para>
         /// The type of the Role is different based on the <see cref="RoleTypeId"/> of the player, and casting should be used to modify the role.
-        /// <br /><see cref="RoleTypeId.Spectator"/> = <see cref="Roles.SpectatorRole"/>.
-        /// <br /><see cref="RoleTypeId.Overwatch"/> = <see cref="Roles.OverwatchRole"/>.
-        /// <br /><see cref="RoleTypeId.None"/> = <see cref="Roles.NoneRole"/>.
-        /// <br /><see cref="RoleTypeId.Scp049"/> = <see cref="Roles.Scp049Role"/>.
-        /// <br /><see cref="RoleTypeId.Scp0492"/> = <see cref="Roles.Scp0492Role"/>.
-        /// <br /><see cref="RoleTypeId.Scp079"/> = <see cref="Roles.Scp079Role"/>.
-        /// <br /><see cref="RoleTypeId.Scp096"/> = <see cref="Roles.Scp096Role"/>.
-        /// <br /><see cref="RoleTypeId.Scp106"/> = <see cref="Roles.Scp106Role"/>.
-        /// <br /><see cref="RoleTypeId.Scp173"/> = <see cref="Roles.Scp173Role"/>.
-        /// <br /><see cref="RoleTypeId.Scp939"/> = <see cref="Roles.Scp939Role"/>.
+        /// <br /><see cref="RoleTypeId.Spectator"/> = <see cref="SpectatorRole"/>.
+        /// <br /><see cref="RoleTypeId.Overwatch"/> = <see cref="OverwatchRole"/>.
+        /// <br /><see cref="RoleTypeId.None"/> = <see cref="NoneRole"/>.
+        /// <br /><see cref="RoleTypeId.Scp049"/> = <see cref="Scp049Role"/>.
+        /// <br /><see cref="RoleTypeId.Scp0492"/> = <see cref="Scp0492Role"/>.
+        /// <br /><see cref="RoleTypeId.Scp079"/> = <see cref="Scp079Role"/>.
+        /// <br /><see cref="RoleTypeId.Scp096"/> = <see cref="Scp096Role"/>.
+        /// <br /><see cref="RoleTypeId.Scp106"/> = <see cref="Scp106Role"/>.
+        /// <br /><see cref="RoleTypeId.Scp173"/> = <see cref="Scp173Role"/>.
+        /// <br /><see cref="RoleTypeId.Scp939"/> = <see cref="Scp939Role"/>.
         /// <br />If not listed above, the type of Role will be <see cref="HumanRole"/>.
         /// </para>
         /// <para>
-        /// If the role object is stored, it may become invalid if the player changes roles. Thus, the <see cref="Roles.Role.IsValid"/> property can be checked. If this property is <see langword="false"/>, the role should be discarded and this property should be used again to get the new Role.
+        /// If the role object is stored, it may become invalid if the player changes roles. Thus, the <see cref="Role.IsValid"/> property can be checked. If this property is <see langword="false"/>, the role should be discarded and this property should be used again to get the new Role.
         /// This role is automatically cached until it changes, and it is recommended to use this property directly rather than storing the property yourself.
         /// </para>
         /// <para>
-        /// Roles and RoleTypeIds can be compared directly. <c>Player.Role == RoleTypeId.Scp079</c> is valid and will return <see langword="true"/> if the player is SCP-079. To set the player's role, see <see cref="Roles.Role.Set(RoleTypeId, SpawnReason, RoleSpawnFlags)"/>.
+        /// Roles and RoleTypeIds can be compared directly. <c>Player.Role == RoleTypeId.Scp079</c> is valid and will return <see langword="true"/> if the player is SCP-079. To set the player's role, see <see cref="Role.Set(RoleTypeId, SpawnReason, RoleSpawnFlags)"/>.
         /// </para>
         /// </summary>
-        /// <seealso cref="Roles.Role.Set(RoleTypeId, SpawnReason, RoleSpawnFlags)"/>
+        /// <seealso cref="Role.Set(RoleTypeId, SpawnReason, RoleSpawnFlags)"/>
         public Role Role
         {
             get => role ??= Role.Create(RoleManager.CurrentRole);
@@ -1193,7 +1192,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to a specific netId, if any.
         /// </summary>
-        /// <param name="netId">The player's <see cref="Mirror.NetworkIdentity.netId"/>.</param>
+        /// <param name="netId">The player's <see cref="NetworkIdentity.netId"/>.</param>
         /// <returns>The <see cref="Player"/> owning the netId, or <see langword="null"/> if not found.</returns>
         public static Player Get(uint netId) => ReferenceHub.TryGetHubNetID(netId, out ReferenceHub hub) ? Get(hub) : null;
 
@@ -2702,7 +2701,13 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
         public bool EnableEffect(StatusEffectBase statusEffect, float duration = 0f, bool addDurationIfActive = false)
-            => EnableEffect(statusEffect.GetType().Name, duration, addDurationIfActive).IsEnabled;
+        {
+            if (statusEffect is null)
+                return false;
+
+            StatusEffectBase effect = EnableEffect(statusEffect.GetType().Name, duration, addDurationIfActive);
+            return effect is not null && effect.IsEnabled;
+        }
 
         /// <summary>
         /// Enables a <see cref="StatusEffectBase">status effect</see> on the player.
@@ -2752,7 +2757,7 @@ namespace Exiled.API.Features
         {
             Array effectTypes = Enum.GetValues(typeof(EffectType));
             IEnumerable<EffectType> validEffects = effectTypes.ToArray<EffectType>().Where(effect => effect.GetCategories().HasFlag(category));
-            EffectType effectType = validEffects.ElementAt(Random.Range(0, effectTypes.Length));
+            EffectType effectType = validEffects.GetRandomValue();
 
             EnableEffect(effectType, duration, addDurationIfActive);
 
@@ -3026,22 +3031,20 @@ namespace Exiled.API.Features
         /// <param name="type">Object for teleport.</param>
         public void RandomTeleport(Type type)
         {
-            LockerChamber[] chambers;
-
             object randomObject = type.Name switch
             {
-                nameof(Camera) => Camera.List.ElementAt(Random.Range(0, Camera.Camera079ToCamera.Count)),
+                nameof(Camera) => Camera.List.GetRandomValue(),
                 nameof(Door) => Door.Random(),
-                nameof(Room) => Room.List.ElementAt(Random.Range(0, Room.RoomIdentifierToRoom.Count)),
-                nameof(TeslaGate) => TeslaGate.List.ElementAt(Random.Range(0, TeslaGate.BaseTeslaGateToTeslaGate.Count)),
-                nameof(Player) => Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count)),
-                nameof(Pickup) => Pickup.BaseToPickup.ElementAt(Random.Range(0, Pickup.BaseToPickup.Count)).Value,
-                nameof(Ragdoll) => Ragdoll.List.ElementAt(Random.Range(0, Ragdoll.BasicRagdollToRagdoll.Count)),
+                nameof(Room) => Room.List.GetRandomValue(),
+                nameof(TeslaGate) => TeslaGate.List.GetRandomValue(),
+                nameof(Player) => Dictionary.Values.GetRandomValue(),
+                nameof(Pickup) => Pickup.BaseToPickup.GetRandomValue().Value,
+                nameof(Ragdoll) => Ragdoll.List.GetRandomValue(),
                 nameof(Locker) => Map.GetRandomLocker(),
-                nameof(Generator) => Generator.List.ElementAt(Random.Range(0, Generator.Scp079GeneratorToGenerator.Count)),
-                nameof(Window) => Window.List.ElementAt(Random.Range(0, Window.BreakableWindowToWindow.Count)),
+                nameof(Generator) => Generator.List.GetRandomValue(),
+                nameof(Window) => Window.List.GetRandomValue(),
                 nameof(Scp914) => Scp914.Scp914Controller,
-                nameof(LockerChamber) => (chambers = Map.GetRandomLocker().Chambers)[Random.Range(0, chambers.Length)],
+                nameof(LockerChamber) => Map.GetRandomLocker().Chambers.GetRandomValue(),
                 _ => null,
             };
 
@@ -3059,7 +3062,7 @@ namespace Exiled.API.Features
             if (array.Length == 0)
                 return;
 
-            RandomTeleport(array[Random.Range(0, array.Length)]);
+            RandomTeleport(array.GetRandomValue());
         }
 
         /// <summary>

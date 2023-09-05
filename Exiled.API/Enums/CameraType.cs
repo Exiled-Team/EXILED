@@ -11,8 +11,6 @@
 
 namespace Exiled.API.Enums
 {
-    using System;
-
     using Features;
 
     /// <summary>

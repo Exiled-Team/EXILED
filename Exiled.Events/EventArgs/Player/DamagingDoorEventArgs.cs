@@ -7,14 +7,9 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
-    using API.Features;
-    using API.Features.DamageHandlers;
     using Exiled.API.Features.Doors;
     using Interactables.Interobjects.DoorUtils;
     using Interfaces;
-
-    using AttackerDamageHandler = PlayerStatsSystem.AttackerDamageHandler;
-    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
     ///     Contains all information before damage is dealt to a <see cref="DoorVariant" />.

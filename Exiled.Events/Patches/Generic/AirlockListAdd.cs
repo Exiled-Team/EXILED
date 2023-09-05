@@ -14,26 +14,26 @@ namespace Exiled.Events.Patches.Generic
     using Interactables.Interobjects;
 
     /// <summary>
-    /// Patch for adding <see cref="Exiled.API.Features.Doors.AirlockController"/> to list.
+    /// Patch for adding <see cref="API.Features.Doors.AirlockController"/> to list.
     /// </summary>
     [HarmonyPatch(typeof(AirlockController), nameof(AirlockController.Start))]
     internal class AirlockListAdd
     {
         private static void Postfix(AirlockController __instance)
         {
-            _ = new Exiled.API.Features.Doors.AirlockController(__instance);
+            _ = new API.Features.Doors.AirlockController(__instance);
         }
     }
 
     /// <summary>
-    /// Patch for removing <see cref="Exiled.API.Features.Doors.AirlockController"/> to list.
+    /// Patch for removing <see cref="API.Features.Doors.AirlockController"/> to list.
     /// </summary>
     [HarmonyPatch(typeof(AirlockController), nameof(AirlockController.OnDestroy))]
     internal class AirlockListRemove
     {
         private static void Postfix(AirlockController __instance)
         {
-            Exiled.API.Features.Doors.AirlockController.BaseToExiledControllers.Remove(__instance);
+            API.Features.Doors.AirlockController.BaseToExiledControllers.Remove(__instance);
         }
     }
 }

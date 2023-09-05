@@ -23,6 +23,7 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
+    using InventorySystem.Configs;
 
     using MEC;
 
@@ -238,7 +239,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by name.
         /// </summary>
-        /// <param name="t">The <see cref="System.Type"/> of the role to get.</param>
+        /// <param name="t">The <see cref="Type"/> of the role to get.</param>
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
         /// <exception cref="ArgumentNullException">If the name is <see langword="null"/> or an empty string.</exception>
@@ -912,7 +913,7 @@ namespace Exiled.CustomRoles.API.Features
                             foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
                             {
                                 if (type != AmmoType.None)
-                                    ev.Player.SetAmmo(type, Ammo.ContainsKey(type) ? Ammo[type] : (ushort)0);
+                                    ev.Player.SetAmmo(type, Ammo.ContainsKey(type) ? Ammo[type] == ushort.MaxValue ? InventoryLimits.GetAmmoLimit(type.GetItemType(), ev.Player.ReferenceHub) : Ammo[type] : (ushort)0);
                             }
                         });
                 }

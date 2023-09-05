@@ -12,6 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pools;
     using Exiled.API.Interfaces;
@@ -65,7 +66,7 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Lift"/>.
         /// </summary>
         /// <returns><see cref="Lift"/> object.</returns>
-        public static Lift Random => List.ToArray()[UnityEngine.Random.Range(0, ElevatorChamberToLift.Count)];
+        public static Lift Random => List.GetRandomValue();
 
         /// <summary>
         /// Gets the base <see cref="ElevatorChamber"/>.
