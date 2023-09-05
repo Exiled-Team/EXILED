@@ -383,6 +383,7 @@ namespace Exiled.Loader
                 GameCore.Version.BackwardRevision))
             {
                 ServerConsole.AddLog($"Exiled is outdated, a new version will be installed automatically as soon as it's available.\nSCP:SL: {GameCore.Version.VersionString} Exiled Supported Version: {AutoUpdateFiles.RequiredSCPSLVersion}", ConsoleColor.DarkRed);
+                yield break;
             }
 
             if (dependencies?.Length > 0)
