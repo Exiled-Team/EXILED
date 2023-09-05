@@ -9,8 +9,6 @@ namespace Exiled.API.Features.Doors
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Diagnostics;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -287,18 +285,19 @@ namespace Exiled.API.Features.Doors
         /// </summary>
         /// <param name="doorVariant">The base-game <see cref="DoorVariant"/>.</param>
         /// <returns>A <see cref="Door"/> wrapper object.</returns>
-        public static Door Get(DoorVariant doorVariant) => doorVariant != null ? (DoorVariantToDoor.TryGetValue(doorVariant, out Door door)
-            ? door
-            : doorVariant switch
+        public static Door Get(DoorVariant doorVariant)
+        {
+            if (doorVariant == null)
+                return null;
+
+            if (doorVariant.Rooms == null)
             {
-                Interactables.Interobjects.CheckpointDoor chkpt => new Checkpoint(chkpt, null),
-                BaseBreakableDoor brkbl => new Breakable(brkbl, null),
-                Interactables.Interobjects.ElevatorDoor elvtr => new Elevator(elvtr, null),
-                PryableDoor prbl => new Gate(prbl, null),
-                Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new BasicNonInteractableDoor(nonInteractableDoor, null),
-                Interactables.Interobjects.BasicDoor basicDoor => new BasicDoor(basicDoor, null),
-                _ => new Door(doorVariant, null)
-            }) : null;
+                doorVariant.RegisterRooms();
+            }
+
+            // Exiled door must be created after the `RegisterRooms` call
+            return DoorVariantToDoor[doorVariant];
+        }
 
         /// <summary>
         /// Gets a <see cref="Door"/> given the specified name.
@@ -515,9 +514,14 @@ namespace Exiled.API.Features.Doors
         /// <param name="doorVariant">The base-game <see cref="DoorVariant"/>.</param>
         /// <param name="rooms">Target door <see cref="Rooms"/>.</param>
         /// <returns>A <see cref="Door"/> wrapper object.</returns>
-        internal static Door Create(DoorVariant doorVariant, List<Room> rooms) => doorVariant != null ? (DoorVariantToDoor.TryGetValue(doorVariant, out Door door)
-            ? door
-            : doorVariant switch
+        internal static Door Create(DoorVariant doorVariant, List<Room> rooms)
+        {
+            if (doorVariant == null)
+            {
+                return null;
+            }
+
+            return doorVariant switch
             {
                 Interactables.Interobjects.CheckpointDoor chkpt => new Checkpoint(chkpt, rooms),
                 BaseBreakableDoor brkbl => new Breakable(brkbl, rooms),
@@ -526,7 +530,8 @@ namespace Exiled.API.Features.Doors
                 Interactables.Interobjects.BasicNonInteractableDoor nonInteractableDoor => new BasicNonInteractableDoor(nonInteractableDoor, rooms),
                 Interactables.Interobjects.BasicDoor basicDoor => new BasicDoor(basicDoor, rooms),
                 _ => new Door(doorVariant, rooms)
-            }) : null;
+            };
+        }
 
         private DoorType GetDoorType()
         {

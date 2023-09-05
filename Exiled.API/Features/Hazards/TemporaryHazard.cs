@@ -7,9 +7,6 @@
 
 namespace Exiled.API.Features.Hazards
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     using BaseHazard = global::Hazards.TemporaryHazard;
 
     /// <summary>

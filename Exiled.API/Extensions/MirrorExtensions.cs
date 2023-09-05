@@ -13,7 +13,6 @@ namespace Exiled.API.Extensions
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
-    using System.Runtime.Remoting.Messaging;
     using System.Text;
 
     using Features;
@@ -26,7 +25,6 @@ namespace Exiled.API.Extensions
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
-    using PluginAPI.Events;
     using RelativePositioning;
 
     using Respawning;
@@ -130,7 +128,7 @@ namespace Exiled.API.Extensions
                         byte[] bytecodes = methodBody.GetILAsByteArray();
 
                         if (!RpcFullNamesValue.ContainsKey($"{method.ReflectedType.Name}.{method.Name}"))
-                            RpcFullNamesValue.Add($"{method.ReflectedType.Name}.{method.Name}", method.Module.ResolveString(BitConverter.ToInt32(bytecodes, bytecodes.LastIndexOf((byte)OpCodes.Ldstr.Value) + 1)));
+                            RpcFullNamesValue.Add($"{method.ReflectedType.Name}.{method.Name}", method.Module.ResolveString(BitConverter.ToInt32(bytecodes, bytecodes.IndexOf((byte)OpCodes.Ldstr.Value) + 1)));
                     }
                 }
 

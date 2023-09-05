@@ -8,14 +8,10 @@
 namespace Exiled.Events
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Reflection;
 
     using API.Enums;
     using API.Features;
-    using EventArgs.Interfaces;
-    using Exiled.API.Features.Pickups;
     using Exiled.Events.Features;
     using HarmonyLib;
     using InventorySystem.Items.Pickups;

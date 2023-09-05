@@ -10,7 +10,6 @@ namespace Exiled.Events.EventArgs.Scp096
     using API.Features;
     using Exiled.API.Features.Doors;
     using Interfaces;
-    using PlayerRoles.PlayableScps.Scp096;
     using UnityEngine;
 
     using Scp096Role = API.Features.Roles.Scp096Role;
