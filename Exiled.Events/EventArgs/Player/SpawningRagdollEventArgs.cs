@@ -39,6 +39,7 @@ namespace Exiled.Events.EventArgs.Player
             Info = info;
             DamageHandlerBase = damageHandlerBase;
             Player = Player.Get(info.OwnerHub);
+            Scale = Player.Scale;
             IsAllowed = isAllowed;
         }
 
@@ -59,6 +60,11 @@ namespace Exiled.Events.EventArgs.Player
             get => Info.StartRotation;
             set => Info = new RagdollData(Player.ReferenceHub, DamageHandlerBase, Position, value);
         }
+
+        /// <summary>
+        ///     Gets or sets the ragdoll's scale.
+        /// </summary>
+        public Vector3 Scale { get; set; }
 
         /// <summary>
         ///     Gets or sets the ragdoll's <see cref="RoleTypeId" />.

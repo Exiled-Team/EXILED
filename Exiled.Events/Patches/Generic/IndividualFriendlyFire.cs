@@ -19,8 +19,6 @@ namespace Exiled.Events.Patches.Generic
 
     using HarmonyLib;
 
-    using InventorySystem.Items.ThrowableProjectiles;
-
     using PlayerRoles;
 
     using PlayerStatsSystem;
