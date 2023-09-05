@@ -14,18 +14,13 @@ namespace Exiled.Events.Patches.Events.Scp173
     using API.Features;
     using API.Features.Pools;
 
-    using Exiled.API.Extensions;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp173;
 
     using HarmonyLib;
 
-    using PlayerRoles;
-
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Subroutines;
-
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
