@@ -75,7 +75,5 @@ namespace Exiled.Events.Patches.Events.Scp173
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
-
-        private static List<Player> GetObservingPlayers(HashSet<ReferenceHub> hubs) => hubs.Select(Player.Get).ToList();
     }
 }
