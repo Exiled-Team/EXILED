@@ -112,7 +112,6 @@ namespace Exiled.Loader
         /// </summary>
         internal void CheckUpdate()
         {
-            Log.Error(Folder);
             using HttpClient client = CreateHttpClient();
             if (Busy = FindUpdate(client, !File.Exists(Path.Combine(Paths.Dependencies, "Exiled.API.dll")), out NewVersion newVersion))
                 Update(client, newVersion);

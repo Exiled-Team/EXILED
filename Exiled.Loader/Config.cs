@@ -45,7 +45,7 @@ namespace Exiled.Loader
         /// Gets or sets the Exiled directory path from which plugins will be loaded.
         /// </summary>
         [Description("The Exiled directory path from which plugins will be loaded.")]
-        public string ExiledDirectoryPath { get; set; } = Path.Combine(Paths.AppData, "EXILED.");
+        public string ExiledDirectoryPath { get; set; } = Path.Combine(Paths.AppData, "EXILED");
 
         /// <summary>
         /// Gets or sets the environment type.
@@ -72,15 +72,21 @@ namespace Exiled.Loader
         public ScalarStyle MultiLineScalarStyle { get; set; } = ScalarStyle.Literal;
 
         /// <summary>
-        /// Gets a value indicating whether testing releases have to be downloaded or not.
+        /// Gets or sets a value indicating whether testing releases have to be downloaded or not.
         /// </summary>
         [Description("Indicates whether testing releases have to be downloaded or not.")]
-        public bool ShouldDownloadTestingReleases { get; internal set; } = false;
+        public bool ShouldDownloadTestingReleases { get; set; } = false;
 
         /// <summary>
-        /// Gets a value that indicates which assemblies should be excluded from the update.
+        /// Gets or sets which assemblies should be excluded from the update.
         /// </summary>
-        [Description("Indicates which assemblies should be excluded from the update.")]
-        public string[] ExcludeAssemblies { get; internal set; } = Array.Empty<string>();
+        [Description("Indicates which assemblies should be excluded from the updater.")]
+        public string[] ExcludeAssemblies { get; set; } = Array.Empty<string>();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether Exiled should auto-update itself as soon as a new release is available.
+        /// </summary>
+        [Description("Indicates whether Exiled should auto-update itself as soon as a new release is available.")]
+        public bool EnableAutoUpdates { get; set; } = true;
     }
 }
