@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player toggles the flashlight.
     /// </summary>
-    public class TogglingFlashlightEventArgs : IPlayerEvent, IDeniableEvent
+    public class TogglingFlashlightEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {
         private readonly bool initialState;
 
@@ -45,6 +45,9 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the <see cref="API.Features.Items.Flashlight" /> being toggled.
         /// </summary>
         public Flashlight Flashlight { get; }
+
+        /// <inheritdoc/>
+        public Item Item => Flashlight;
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the flashlight should be on.

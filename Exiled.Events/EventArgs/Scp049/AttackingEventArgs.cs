@@ -38,6 +38,9 @@ namespace Exiled.Events.EventArgs.Scp049
         /// </summary>
         public Player Player { get; }
 
+        /// <inheritdoc/>
+        public Scp049Role Scp049 { get; }
+
         /// <summary>
         /// Gets the target of attack.
         /// </summary>

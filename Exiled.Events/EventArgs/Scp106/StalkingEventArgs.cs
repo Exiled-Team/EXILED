@@ -13,10 +13,12 @@ namespace Exiled.Events.EventArgs.Scp106
 
     using PlayerRoles.PlayableScps.Scp106;
 
+    using Scp106Role = API.Features.Roles.Scp106Role;
+
     /// <summary>
     ///     Contains all information before SCP-106 use the stalk ability.
     /// </summary>
-    public class StalkingEventArgs : IPlayerEvent, IDeniableEvent
+    public class StalkingEventArgs : IScp106Event, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StalkingEventArgs"/> class.
@@ -27,9 +29,10 @@ namespace Exiled.Events.EventArgs.Scp106
         public StalkingEventArgs(Player player, Scp106StalkAbility scp106StalkAbility, bool isAllowed = true)
         {
             Player = player;
+            Scp106 = Player.Role.As<Scp106Role>();
             Scp106StalkAbility = scp106StalkAbility;
             IsAllowed = isAllowed;
-            Vigor = scp106StalkAbility.Vigor.VigorAmount;
+            Vigor = scp106StalkAbility.Vigor.CurValue;
             MinimumVigor = Scp106StalkAbility.MinVigorToSubmerge;
         }
 
@@ -52,6 +55,9 @@ namespace Exiled.Events.EventArgs.Scp106
         /// Gets the player who's controlling SCP-106.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp106Role Scp106 { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-106 can stalk.

@@ -8,13 +8,14 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
-
+    using API.Features.Items;
     using Interfaces;
+    using InventorySystem.Items.Coin;
 
     /// <summary>
     ///     Contains all information before a player flips a coin.
     /// </summary>
-    public class FlippingCoinEventArgs : IPlayerEvent, IDeniableEvent
+    public class FlippingCoinEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="FlippingCoinEventArgs" /> class.
@@ -22,12 +23,16 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
+        /// <param name="coin">
+        ///     <inheritdoc cref="Item" />
+        /// </param>
         /// <param name="isTails">
         ///     <inheritdoc cref="IsTails" />
         /// </param>
-        public FlippingCoinEventArgs(Player player, bool isTails)
+        public FlippingCoinEventArgs(Player player, Coin coin, bool isTails)
         {
             Player = player;
+            Item = Item.Get(coin);
             IsTails = isTails;
         }
 
@@ -35,6 +40,9 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the player who's flipping the coin.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Item Item { get; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the coin is landing on tails.

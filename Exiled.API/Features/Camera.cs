@@ -12,10 +12,10 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
-
+    using MapGeneration;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
-
     using UnityEngine;
 
     using CameraType = Enums.CameraType;
@@ -23,7 +23,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game Scp079Camera.
     /// </summary>
-    public class Camera : IWrapper<Scp079Camera>, IPosition // Todo: Convert to IWorldSpace (Rotation Vector3 -> Quaternion)
+    public class Camera : IWrapper<Scp079Camera>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="Scp079Camera"/>s and their corresponding <see cref="Camera"/>.
@@ -50,12 +50,12 @@ namespace Exiled.API.Features
             ["TWO-STORY OFFICE"] = CameraType.EzTwoStoryOffice,
 
             // Heavy Containment Zone
-            ["049 ARMORY"] = CameraType.Hcz049Armory,
+            ["049 OUTSIDE"] = CameraType.Hcz049Outside,
             ["049 CONT CHAMBER"] = CameraType.Hcz049ContChamber,
-            ["049 ELEV TOP"] = CameraType.Hcz049ElevTop,
+            ["049/173 TOP"] = CameraType.Hcz049ElevTop,
             ["049 HALLWAY"] = CameraType.Hcz049Hallway,
-            ["049 TOP FLOOR"] = CameraType.Hcz049TopFloor,
-            ["049 TUNNEL"] = CameraType.Hcz049Tunnel,
+            ["173 OUTSIDE"] = CameraType.Hcz173Outside,
+            ["049/173 BOTTOM"] = CameraType.Hcz049TopFloor,
             ["079 AIRLOCK"] = CameraType.Hcz079Airlock,
             ["079 CONT CHAMBER"] = CameraType.Hcz079ContChamber,
             ["079 HALLWAY"] = CameraType.Hcz079Hallway,
@@ -72,6 +72,7 @@ namespace Exiled.API.Features
             ["HCZ ARMORY"] = CameraType.HczArmory,
             ["HCZ ARMORY INTERIOR"] = CameraType.HczArmoryInterior,
             ["HCZ CROSSING"] = CameraType.HczCrossing,
+            ["HCZ CURVE"] = CameraType.HczCurve,
             ["HCZ ELEV SYS A"] = CameraType.HczElevSysA,
             ["HCZ ELEV SYS B"] = CameraType.HczElevSysB,
             ["HCZ HALLWAY"] = CameraType.HczHallway,
@@ -90,9 +91,7 @@ namespace Exiled.API.Features
 
             // Light Containment Zone
             ["173 BOTTOM"] = CameraType.Lcz173Bottom,
-            ["173 CONT CHAMBER"] = CameraType.Lcz173ContChamber,
             ["173 HALL"] = CameraType.Lcz173Hall,
-            ["173 STAIRS"] = CameraType.Lcz173Stairs,
             ["914 AIRLOCK"] = CameraType.Lcz914Airlock,
             ["914 CONT CHAMBER"] = CameraType.Lcz914ContChamber,
             ["AIRLOCK"] = CameraType.LczAirlock,
@@ -137,18 +136,23 @@ namespace Exiled.API.Features
         {
             Base = camera079;
             Camera079ToCamera.Add(camera079, this);
+            Type = GetCameraType();
+#if Debug
+            if (Type is CameraType.Unknown)
+                Log.Error($"[CAMERATYPE UNKNOWN] {this}");
+#endif
         }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the <see cref="Camera"/> instances.
         /// </summary>
-        public static IEnumerable<Camera> List => Camera079ToCamera.Values;
+        public static IReadOnlyCollection<Camera> List => Camera079ToCamera.Values;
 
         /// <summary>
         /// Gets a random <see cref="Camera"/>.
         /// </summary>
         /// <returns><see cref="Camera"/> object.</returns>
-        public static Camera Random => List.ToArray()[UnityEngine.Random.Range(0, Camera079ToCamera.Count)];
+        public static Camera Random => List.GetRandomValue();
 
         /// <summary>
         /// Gets the base <see cref="Scp079Camera"/>.
@@ -183,15 +187,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's <see cref="ZoneType"/>.
         /// </summary>
-        public ZoneType Zone => Room.Zone;
+        public ZoneType Zone => Room?.Zone ?? ZoneType.Unspecified;
 
         /// <summary>
         /// Gets the camera's <see cref="CameraType"/>.
         /// </summary>
-        public CameraType Type
-        {
-            get => NameToCameraType.ContainsKey(Name) ? NameToCameraType[Name] : CameraType.Unknown;
-        }
+        public CameraType Type { get; private set; }
 
         /// <summary>
         /// Gets the camera's position.
@@ -201,10 +202,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the camera's rotation.
         /// </summary>
-        public Vector3 Rotation
+        public Quaternion Rotation
         {
-            get => Base._cameraAnchor.rotation.eulerAngles;
-            set => Base._cameraAnchor.rotation = Quaternion.Euler(value);
+            get => Base._cameraAnchor.rotation;
+            set => Base._cameraAnchor.rotation = value;
         }
 
         /// <summary>
@@ -264,9 +265,79 @@ namespace Exiled.API.Features
         public static IEnumerable<Camera> Get(Func<Camera, bool> predicate) => List.Where(predicate);
 
         /// <summary>
+        /// Get a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the <see cref="Camera"/> instance given a <see cref="IEnumerable{T}"/> of <see cref="Scp079Camera"/>.
+        /// </summary>
+        /// <param name="cameras">the <see cref="IEnumerable{T}"/> of <see cref="Scp079Camera"/>.</param>
+        /// <param name="result">return a <see cref="IEnumerable{T}"/> of <see cref="Camera"/>, it's can be valid, or <see langword="null"/>, depending if <see cref="Scp079Camera"/> it's null or not.</param>
+        /// <returns>a bool result if return sequence contain valid element.</returns>
+        public static bool TryGet(IEnumerable<Scp079Camera> cameras, out IEnumerable<Camera> result) => (result = Get(cameras)).Any();
+
+        /// <summary>
+        /// Gets the <see cref="Camera"/> belonging to the <see cref="Scp079Camera"/>, if any.
+        /// </summary>
+        /// <param name="camera">The base <see cref="Scp079Camera"/>.</param>
+        /// <param name="result">The instance of <see cref="Camera"/> which <see cref="Scp079Camera"/> base.</param>
+        /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
+        public static bool TryGet(Scp079Camera camera, out Camera result) => (result = Get(camera)) != null;
+
+        /// <summary>
+        /// Gets a <see cref="Camera"/> given the specified <paramref name="cameraId"/>.
+        /// </summary>
+        /// <param name="cameraId">The id camera to be shearch.</param>
+        /// <param name="result">the result of <see cref="Camera"/>, if <paramref name="cameraId"/> is valid.</param>
+        /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
+        public static bool TryGet(uint cameraId, out Camera result) => (result = Get(cameraId)) != null;
+
+        /// <summary>
+        /// Gets a <see cref="Camera"/> given the specified <paramref name="cameraName"/>.
+        /// </summary>
+        /// <param name="cameraName">The name of the camera.</param>
+        /// <param name="result">The <see cref="Camera"/>, if <paramref name="cameraName"/> is valid.</param>
+        /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
+        public static bool TryGet(string cameraName, out Camera result) => (result = Get(cameraName)) != null;
+
+        /// <summary>
+        /// Gets a <see cref="Camera"/> given the specified <paramref name="cameraType"/>.
+        /// </summary>
+        /// <param name="cameraType">The <see cref="CameraType"/> to search for.</param>
+        /// <param name="result">The <see cref="Camera"/> with the given <see cref="CameraType"/>.</param>
+        /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
+        public static bool TryGet(CameraType cameraType, out Camera result) => (result = Get(cameraType)) != null;
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="result">A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satify the condition.</param>
+        /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
+        public static bool TryGet(Func<Camera, bool> predicate, out IEnumerable<Camera> result) => (result = Get(predicate)).Any();
+
+        /// <summary>
         /// Returns the Camera in a human-readable format.
         /// </summary>
         /// <returns>A string containing Camera-related data.</returns>
-        public override string ToString() => $"{Zone} ({Type}) [{Room}] *{Name}* |{Id}| ={IsBeingUsed}=";
+        public override string ToString() => $"({Type}) [{Room}] *{Name}* |{Id}| ={IsBeingUsed}=";
+
+        private CameraType GetCameraType()
+        {
+            if (NameToCameraType.ContainsKey(Name))
+                return NameToCameraType[Name];
+            return Base.Room.Name switch
+            {
+                RoomName.Hcz049 => Name switch
+                {
+                    "173 STAIRS" => CameraType.Hcz173Stairs,
+                    "173 CONT CHAMBER" => CameraType.Hcz173ContChamber,
+                    _ => CameraType.Unknown,
+                },
+                RoomName.Lcz173 => Name switch
+                {
+                    "173 STAIRS" => CameraType.Lcz173Stairs,
+                    "173 CONT CHAMBER" => CameraType.Lcz173ContChamber,
+                    _ => CameraType.Unknown,
+                },
+                _ => CameraType.Unknown,
+            };
+        }
     }
 }

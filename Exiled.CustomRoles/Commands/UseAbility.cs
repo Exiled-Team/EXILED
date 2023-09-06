@@ -8,7 +8,7 @@
 namespace Exiled.CustomRoles.Commands
 {
     using System;
-    using System.Collections.ObjectModel;
+    using System.Linq;
 
     using CommandSystem;
 
@@ -35,64 +35,44 @@ namespace Exiled.CustomRoles.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player player = Player.Get((CommandSender)sender);
-            int abilityNumber = 0;
+            string abilityName = string.Empty;
+            ActiveAbility? ability;
+
             if (arguments.Count > 0)
-                int.TryParse(arguments.At(0), out abilityNumber);
-
-            ReadOnlyCollection<CustomRole> roles = player.GetCustomRoles();
-            if (roles.Count == 0)
             {
-                response = "You do not have any custom roles.";
+                foreach (string s in arguments.Skip(1))
+                    abilityName += s;
 
+                if (!CustomAbility.TryGet(abilityName, out CustomAbility? customAbility) || customAbility is null)
+                {
+                    response = $"Ability {abilityName} does not exist.";
+                    return false;
+                }
+
+                if (customAbility is not ActiveAbility activeAbility)
+                {
+                    response = $"{abilityName} is not an active ability.";
+                    return false;
+                }
+
+                ability = activeAbility;
+            }
+            else
+            {
+                ability = player.GetSelectedAbility();
+            }
+
+            if (ability is null)
+            {
+                response = "No selected ability.";
                 return false;
             }
 
-            if (arguments.Count > 1)
-            {
-                CustomRole? role = CustomRole.Get(arguments.At(1));
-                if (role is null)
-                {
-                    response = $"The specified role {arguments.At(1)} does not exist.";
-
-                    return false;
-                }
-
-                if (role.CustomAbilities is null)
-                {
-                    response = "You do not have any custom abilities for this role.";
-
-                    return false;
-                }
-
-                if (role.CustomAbilities.Count >= abilityNumber + 1)
-                {
-                    if (role.CustomAbilities[abilityNumber] is ActiveAbility active)
-                    {
-                        if (!active.CanUseAbility(player, out response))
-                        {
-                            return false;
-                        }
-
-                        active.UseAbility(player);
-                        response = $"Ability {active.Name} used.";
-                        return true;
-                    }
-                }
-            }
-
-            response = "Could not find an ability that was able to be used.";
-
-            foreach (CustomRole customRole in roles)
-            {
-                if (customRole.CustomAbilities is null || customRole.CustomAbilities.Count < abilityNumber + 1 || !(customRole.CustomAbilities[abilityNumber] is ActiveAbility activeAbility) || !activeAbility.CanUseAbility(player, out response))
-                    continue;
-
-                activeAbility.UseAbility(player);
-                response = $"Ability {activeAbility.Name} used.";
-                return true;
-            }
-
-            return false;
+            if (!ability.CanUseAbility(player, out response, CustomRoles.Instance.Config.ActivateOnlySelected))
+                return false;
+            response = $"{ability.Name} has been used.";
+            ability.UseAbility(player);
+            return true;
         }
     }
 }

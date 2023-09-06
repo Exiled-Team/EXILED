@@ -10,8 +10,11 @@ namespace Exiled.Events.EventArgs.Scp049
     using System;
 
     using API.Features;
-    using Exiled.API.Features.Roles;
-    using Interfaces;
+    using API.Features.Roles;
+
+    using PlayerRoles.PlayableScps.Scp049;
+
+    using Scp049Role = API.Features.Roles.Scp049Role;
 
     /// <summary>
     ///     Contains all information before SCP-049 sense is activated.
@@ -41,6 +44,9 @@ namespace Exiled.Events.EventArgs.Scp049
         /// Gets the Player who is playing as SCP-049.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp049Role Scp049 { get; }
 
         /// <summary>
         /// Gets the Player who the sense ability is affecting.

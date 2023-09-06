@@ -39,6 +39,7 @@ namespace Exiled.CustomRoles.Commands.List
         public override void LoadGeneratedCommands()
         {
             RegisterCommand(Registered.Instance);
+            RegisterCommand(new Abilities());
         }
 
         /// <inheritdoc/>

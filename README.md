@@ -23,6 +23,9 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
 - [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
+- [Italiano](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-IT.md)
+- [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
+- [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
 
 # Installation
 Installation of EXILED is quite simple. It loads itself through NW Plugin API. That's why there are two folder inside the ``Exiled.tar.gz`` in release files. ``SCP Secret Laboratory`` contains the necessary files to load EXILED features in ``EXILED`` folder. With that being said, all you have to do is move these two folders into the appropriate path, which are explained below, and you are done! 
@@ -95,7 +98,7 @@ For more comprehensive and actively updated tutorials, see [the EXILED website](
 But make sure to follow these rules when publishing your plugins:
 
  - Your plugin must contain a class that inherits from ``Exiled.API.Features.Plugin<>``, if it does not, EXILED will not load your plugin when the server starts.
- - When a plugin is loaded, the code within the aforementioned class' ``OnEnabled()`` method is fired immediately, it does not wait for other plugins to be loaded. It does not wait for the server startup process to finish. ***It does not wait for anything.*** When setting up your ``OnEnable()`` method, be sure you are not accessing things which may not be initialized by the server yet, such as ``ServerConsole.Port``, or ``PlayerManager.localPlayer``.
+ - When a plugin is loaded, the code within the aforementioned class' ``OnEnabled()`` method is fired immediately, it does not wait for other plugins to be loaded. It does not wait for the server startup process to finish. ***It does not wait for anything.*** When setting up your ``OnEnabled()`` method, be sure you are not accessing things which may not be initialized by the server yet, such as ``ServerConsole.Port``, or ``PlayerManager.localPlayer``.
  - If you need to access things early on that are not initialized before your plugin is loaded, it is recommended to simply wait for the ``WaitingForPlayers`` event to do so, if you for some reason need to do things sooner, wrap the code in a ``` while(!x)``` loop that checks for the variable/object you need to no longer be null before continuing.
  - EXILED supports dynamically reloading plugin assemblies mid-execution. The means that, if you need to update a plugin, it can be done without rebooting the server, however, if you are updating a plugin mid-execution, the plugin needs to be properly setup to support it, or you will have a very bad time. Refer to the ``Dynamic Updates`` section for more information and guidelines to follow.
  - There is ***NO*** OnUpdate, OnFixedUpdate or OnLateUpdate event within EXILED. If you need to, for some reason, run code that often, you can use a MEC coroutine that waits for one frame, 0.01f, or uses a Timing layer like Timing.FixedUpdate instead.
@@ -145,10 +148,10 @@ This also means that you can *update* plugins without having to fully reboot the
  ***For Developers***
 
  - Plugins that want to support Dynamic Updating need to be sure to unsubscribe from all events they are hooked into when they are Disabled or Reloaded.
- - Plugins that have custom Harmony patches must use some kind of changing variable within the name of the Harmony Instance, and must UnPatchAll() on their harmony instance when the plugin is disabled or reloaded.
+ - Plugins that have custom Harmony patches must use some kind of changing variable within the name of the Harmony Instance, and must ``UnPatchAll()`` on their harmony instance when the plugin is disabled or reloaded.
  - Any coroutines started by the plugin in ``OnEnabled()`` must also be killed when the plugin is disabled or reloaded.
 
-All of these can be achieved in either the ``OnReloaded()`` or ``OnDisabled()`` methods in the plugin class. When EXILED reloads plugins, it calls OnDisabled(), then ``OnReloaded()``, then it will load in the new assemblies, and then executes ``OnEnabled()``.
+All of these can be achieved in either the ``OnReloaded()`` or ``OnDisabled()`` methods in the plugin class. When EXILED reloads plugins, it calls ``OnDisabled()``, then ``OnReloaded()``, then it will load in the new assemblies, and then executes ``OnEnabled()``.
 
 Note that I said *new* assemblies. If you replace an assembly with another one of the same name, it will ***NOT*** be updated. This is due to the GAC (Global Assembly Cache), if you attempt to 'load' and assembly that is already in the cache, it will always use the cached assembly instead.
 For this reason, if your plugin will support Dynamic Updates, you must build each version with a different Assembly Name in the build options (renaming the file will not work). Also, since the old assembly is not "destroyed" when it is no longer needed, if you fail to unsubscribe from events, unpatch your harmony instance, kill coroutines, etc, that code will continue to run aswell as the new version's code.

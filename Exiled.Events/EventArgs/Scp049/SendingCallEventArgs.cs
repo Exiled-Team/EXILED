@@ -37,6 +37,9 @@ namespace Exiled.Events.EventArgs.Scp049
         /// </summary>
         public Player Player { get; }
 
+        /// <inheritdoc/>
+        public Scp049Role Scp049 { get; }
+
         /// <summary>
         /// Gets or sets the duration of the Call Ability.
         /// </summary>

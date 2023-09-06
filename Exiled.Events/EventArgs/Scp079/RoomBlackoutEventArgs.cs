@@ -8,6 +8,7 @@
 namespace Exiled.Events.EventArgs.Scp079
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
     using MapGeneration;
@@ -15,7 +16,7 @@ namespace Exiled.Events.EventArgs.Scp079
     /// <summary>
     ///     Contains all information before SCP-079 turns off the lights in a room.
     /// </summary>
-    public class RoomBlackoutEventArgs : IPlayerEvent, IRoomEvent, IDeniableEvent
+    public class RoomBlackoutEventArgs : IScp079Event, IRoomEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RoomBlackoutEventArgs" /> class.
@@ -41,6 +42,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public RoomBlackoutEventArgs(ReferenceHub player, RoomIdentifier roomIdentifier, float auxiliaryPowerCost, float blackoutduration, float cooldown, bool isAllowed)
         {
             Player = Player.Get(player);
+            Scp079 = Player.Role.As<Scp079Role>();
             Room = Room.Get(roomIdentifier);
             AuxiliaryPowerCost = auxiliaryPowerCost;
             BlackoutDuration = blackoutduration;
@@ -52,6 +54,9 @@ namespace Exiled.Events.EventArgs.Scp079
         ///     Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp079Role Scp079 { get; }
 
         /// <summary>
         ///     Gets the room that will be locked down.
