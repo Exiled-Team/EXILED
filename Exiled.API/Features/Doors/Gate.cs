@@ -41,6 +41,21 @@ namespace Exiled.API.Features.Doors
         public IEnumerable<Transform> PryPositions => Base.PryPositions;
 
         /// <summary>
+        /// Gets a value indicating whether or not the door is fully closed.
+        /// </summary>
+        public new bool IsFullyClosed => base.IsFullyClosed && RemainingPryCooldown > 0;
+
+        /// <summary>
+        /// Gets a value indicating whether the door is fully open.
+        /// </summary>
+        public new bool IsFullyOpen => base.IsFullyOpen && RemainingPryCooldown <= 0;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the door is currently moving.
+        /// </summary>
+        public new bool IsMoving => base.IsMoving && RemainingPryCooldown > 0;
+
+        /// <summary>
         /// Gets or sets remaining cooldown for prying.
         /// </summary>
         public float RemainingPryCooldown
