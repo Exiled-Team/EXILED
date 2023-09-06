@@ -72,15 +72,21 @@ namespace Exiled.Loader
         public ScalarStyle MultiLineScalarStyle { get; set; } = ScalarStyle.Literal;
 
         /// <summary>
-        /// Gets a value indicating whether testing releases have to be downloaded or not.
+        /// Gets or sets a value indicating whether testing releases have to be downloaded or not.
         /// </summary>
         [Description("Indicates whether testing releases have to be downloaded or not.")]
-        public bool ShouldDownloadTestingReleases { get; internal set; } = false;
+        public bool ShouldDownloadTestingReleases { get; set; } = false;
 
         /// <summary>
-        /// Gets a value that indicates which assemblies should be excluded from the update.
+        /// Gets or sets a value that indicates which assemblies should be excluded from the update.
         /// </summary>
         [Description("Indicates which assemblies should be excluded from the update.")]
-        public string[] ExcludeAssemblies { get; internal set; } = Array.Empty<string>();
+        public string[] ExcludeAssemblies { get; set; } = Array.Empty<string>();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether exiled will automatically updated when a new release is found.
+        /// </summary>
+        [Description("Indicating whether Exiled will automatically updated when a new release is found.")]
+        public bool EnableAutoUpdate { get; set; } = true;
     }
 }

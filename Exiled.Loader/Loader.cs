@@ -366,10 +366,11 @@ namespace Exiled.Loader
                 Thread.Sleep(5000);
             }
 
-            Updater updater = Updater.Initialize(LoaderPlugin.Config);
-            updater.CheckUpdate();
-
-            yield return Timing.WaitUntilFalse(() => updater.Busy);
+            if (LoaderPlugin.Config.EnableAutoUpdate)
+            {
+                Updater updater = Updater.Initialize(LoaderPlugin.Config);
+                updater.CheckUpdate();
+            }
 
             if (!LoaderPlugin.Config.ShouldLoadOutdatedExiled &&
                 !GameCore.Version.CompatibilityCheck(
