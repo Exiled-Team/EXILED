@@ -66,8 +66,10 @@ namespace Exiled.Installer
             bool error = false;
             try
             {
-                Console.WriteLine(Header);
-
+                Console.Title = Header;
+                ShowLoaderMessage();
+                //Handles exceptions which haven't been handled in 'trycatch' blocks.
+                AppDomain.CurrentDomain.UnhandledException += (s, e) => { File.WriteAllText($"Logs/error-{DateTime.Now.ToLongTimeString()}.txt", e.ExceptionObject.ToString()); };
                 if (args.GetVersions)
                 {
                     IEnumerable<Release> releases1 = await GetReleases().ConfigureAwait(false);
@@ -142,6 +144,24 @@ namespace Exiled.Installer
 
             if (args.Exit)
                 Environment.Exit(error ? 1 : 0);
+        }
+
+        public static void ShowLoaderMessage()
+        {
+            Console.WriteLine(@"                            Welcome to
+
+   ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
+  ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
+  ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
+ ▄███▄▄▄        ▀███▄███▀    ███▌ ███        ▄███▄▄▄     ███    ███
+▀▀███▀▀▀        ████▀██▄     ███▌ ███       ▀▀███▀▀▀     ███    ███
+  ███    █▄    ▐███  ▀███    ███  ███         ███    █▄  ███    ███
+  ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
+  ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
+                                  ▀                                 ");
+            Console.WriteLine("--------------------------------------------------------------------");
+            Console.WriteLine("");
+            return;
         }
 
         private async static Task<IEnumerable<Release>> GetReleases()
