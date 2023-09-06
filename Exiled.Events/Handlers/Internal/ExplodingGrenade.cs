@@ -11,11 +11,11 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.Events.EventArgs.Map;
 
     /// <summary>
-    /// Handles <see cref="Handlers.Map.ChangedIntoGrenade"/> event.
+    /// Handles <see cref="Map.ChangedIntoGrenade"/> event.
     /// </summary>
     internal static class ExplodingGrenade
     {
-        /// <inheritdoc cref="Handlers.Map.OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs)" />
+        /// <inheritdoc cref="Map.OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs)" />
         public static void OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs ev)
         {
             if (ev.Pickup is GrenadePickup grenadePickup)
