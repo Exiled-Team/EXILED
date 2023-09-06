@@ -7,11 +7,10 @@
 
 namespace Exiled.Events.Handlers
 {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
     using Exiled.Events.EventArgs.Scp106;
-
-    using Extensions;
-
-    using static Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     ///     SCP-106 related events.
@@ -19,14 +18,25 @@ namespace Exiled.Events.Handlers
     public static class Scp106
     {
         /// <summary>
+        ///     Invoked before SCP-106 attacks player.
+        /// </summary>
+        public static Event<AttackingEventArgs> Attacking { get; set; } = new();
+
+        /// <summary>
         ///     Invoked before SCP-106 teleports using the hunter atlas.
         /// </summary>
-        public static event CustomEventHandler<TeleportingEventArgs> Teleporting;
+        public static Event<TeleportingEventArgs> Teleporting { get; set; } = new();
 
         /// <summary>
         ///     Invoked before SCP-106 use the stalk ability.
         /// </summary>
-        public static event CustomEventHandler<StalkingEventArgs> Stalking;
+        public static Event<StalkingEventArgs> Stalking { get; set; } = new();
+
+        /// <summary>
+        ///     Called before SCP-106 attacks player.
+        /// </summary>
+        /// <param name="ev">The <see cref="AttackingEventArgs" /> instance.</param>
+        public static void OnAttacking(AttackingEventArgs ev) => Attacking.InvokeSafely(ev);
 
         /// <summary>
         ///     Called before SCP-106 teleports using the hunter atlas.

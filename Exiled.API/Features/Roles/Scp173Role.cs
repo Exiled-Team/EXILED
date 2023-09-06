@@ -10,13 +10,12 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Features.Hazards;
     using Mirror;
-
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Subroutines;
-
     using UnityEngine;
 
     using Scp173GameRole = PlayerRoles.PlayableScps.Scp173.Scp173Role;
@@ -235,8 +234,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="failIfObserved">Whether or not to place the tantrum if SCP-173 is currently being viewed.</param>
         /// <param name="cooldown">The cooldown until SCP-173 can place a tantrum again. Set to <c>0</c> to not affect the cooldown.</param>
-        /// <returns>The tantrum's <see cref="GameObject"/>, or <see langword="null"/> if it cannot be placed.</returns>
-        public GameObject Tantrum(bool failIfObserved = false, float cooldown = 0)
+        /// <returns>The <see cref="TantrumHazard"/> instance, or <see langword="null"/> if it cannot be placed.</returns>
+        public TantrumHazard PlaceTantrum(bool failIfObserved = false, float cooldown = 0)
         {
             if (failIfObserved && IsObserved)
                 return null;

@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp173
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp173;
 
     using HarmonyLib;
@@ -21,14 +21,13 @@ namespace Exiled.Events.Patches.Events.Scp173
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Subroutines;
 
-    using UnityEngine;
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp173TantrumAbility.ServerProcessCmd(NetworkReader)"/>.
     /// Adds the <see cref="Handlers.Scp173.PlacingTantrum"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp173.PlacingTantrum))]
     [HarmonyPatch(typeof(Scp173TantrumAbility), nameof(Scp173TantrumAbility.ServerProcessCmd))]
     internal static class PlacingTantrum
     {
@@ -40,10 +39,8 @@ namespace Exiled.Events.Patches.Events.Scp173
 
             LocalBuilder ev = generator.DeclareLocal(typeof(PlacingTantrumEventArgs));
 
-            const int offset = -3;
-            int index = newInstructions.FindIndex(
-                instruction => instruction.Calls(
-                    Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) }))) + offset;
+            const int offset = -2;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
 
             // PlacingTantrumEventArgs ev = new(this, Player, gameObject, cooldown, true);
             //
@@ -57,12 +54,8 @@ namespace Exiled.Events.Patches.Events.Scp173
                 index,
                 new CodeInstruction[]
                 {
-                    // base.ScpRole
-                    new (OpCodes.Ldarg_0),
-                    new (OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp173Role>), nameof(ScpStandardSubroutine<Scp173Role>.ScpRole))),
-
                     // Player.Get(base.Hub)
-                    new(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp173Role>), nameof(ScpStandardSubroutine<Scp173Role>.Owner))),
                     new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
@@ -76,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Scp173
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // PlacingTantrumEventArgs ev = new(Scp173Role, Player, TantrumEnvironmentalHazard, AbilityCooldown, bool)
+                    // PlacingTantrumEventArgs ev = new(Player, TantrumEnvironmentalHazard, AbilityCooldown, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlacingTantrumEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),

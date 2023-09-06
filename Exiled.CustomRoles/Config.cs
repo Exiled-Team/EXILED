@@ -40,5 +40,17 @@ namespace Exiled.CustomRoles
         /// </summary>
         [Description("The hint that is shown when someone used a custom ability.")]
         public Broadcast UsedAbilityHint { get; private set; } = new("Ability {0} has been activated.\n{1}", 5);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether keypress ability activations can be used on the server.
+        /// </summary>
+        [Description("Whether or not Keypress ability activations will work on the server.")]
+        public bool UseKeypressActivation { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether abilities that are not the keypress primary can still be activated.
+        /// </summary>
+        [Description("Whether or not abilities that are not selected as the current keypress ability can still be activated.")]
+        public bool ActivateOnlySelected { get; set; } = true;
     }
 }

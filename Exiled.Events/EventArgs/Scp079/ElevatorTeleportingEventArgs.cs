@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs.Scp079
     /// <summary>
     ///     Contains all information before SCP-079 changes rooms via elevator.
     /// </summary>
-    public class ElevatorTeleportingEventArgs : IPlayerEvent, IRoomEvent, IDeniableEvent
+    public class ElevatorTeleportingEventArgs : IScp079Event, IRoomEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ElevatorTeleportingEventArgs" /> class.
@@ -38,16 +38,20 @@ namespace Exiled.Events.EventArgs.Scp079
         public ElevatorTeleportingEventArgs(Player player, RoomIdentifier room, ElevatorDoor elevatorDoor, float auxiliaryPowerCost)
         {
             Player = player;
+            Scp079 = Player.Role.As<Scp079Role>();
             Room = Room.Get(room);
             Lift = Lift.Get(elevatorDoor.TargetPanel.AssignedChamber);
             AuxiliaryPowerCost = auxiliaryPowerCost;
-            IsAllowed = auxiliaryPowerCost <= player.Role.As<Scp079Role>().Energy;
+            IsAllowed = auxiliaryPowerCost <= Scp079.Energy;
         }
 
         /// <summary>
         ///     Gets the player who is controlling SCP-079.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp079Role Scp079 { get; }
 
         /// <summary>
         ///     Gets or sets the amount of auxiliary power required to teleport to an elevator camera.

@@ -48,6 +48,16 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
         /// </summary>
+        /// <remarks>
+        /// Created only for <see cref="Projectile"/> properly work.
+        /// </remarks>
+        internal Pickup()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Pickup"/> class.
+        /// </summary>
         /// <param name="pickupBase">The base <see cref="ItemPickupBase"/> class.</param>
         internal Pickup(ItemPickupBase pickupBase)
         {
@@ -101,12 +111,25 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the <see cref="UnityEngine.Rigidbody"/> of the Pickup.
         /// </summary>
-        public Rigidbody Rigidbody => (Base.PhysicsModule as PickupStandardPhysics).Rb;
+        public Rigidbody Rigidbody => PhysicsModule?.Rb;
 
         /// <summary>
         /// Gets the current <see cref="Room"/> the Pickup is in.
         /// </summary>
         public Room Room => Room.FindParentRoom(GameObject);
+
+        /// <summary>
+        /// Gets or sets the pickup's PhysicsModule.
+        /// </summary>
+        public PickupStandardPhysics PhysicsModule
+        {
+            get => Base.PhysicsModule as PickupStandardPhysics;
+            set
+            {
+                Base.PhysicsModule.DestroyModule();
+                Base.PhysicsModule = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the unique serial number for the item.
@@ -168,9 +191,9 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets the <see cref="ItemBase"/> of the item.
+        /// Gets or sets the <see cref="ItemBase"/> of the item.
         /// </summary>
-        public ItemPickupBase Base { get; }
+        public ItemPickupBase Base { get; protected set; }
 
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.
@@ -263,6 +286,11 @@ namespace Exiled.API.Features.Pickups
         public bool IsSpawned { get; internal set; }
 
         /// <summary>
+        /// Gets a value indicating whether or not this is a worn item.
+        /// </summary>
+        public bool IsLoaded { get; internal set; }
+
+        /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.
         /// </summary>
         /// <param name="pickupBase">The <see cref="ItemPickupBase"/> to convert into a <see cref="Pickup"/>.</param>
@@ -281,7 +309,12 @@ namespace Exiled.API.Features.Pickups
                 BaseAmmoPickup ammoPickup => new AmmoPickup(ammoPickup),
                 BaseRadioPickup radioPickup => new RadioPickup(radioPickup),
                 BaseMicroHIDPickup microHidPickup => new MicroHIDPickup(microHidPickup),
-                TimedGrenadePickup timeGrenade => new GrenadePickup(timeGrenade),
+                TimedGrenadePickup timeGrenade => timeGrenade.NetworkInfo.ItemId switch
+                {
+                    ItemType.GrenadeHE => new ExplosiveGrenadePickup(timeGrenade),
+                    ItemType.GrenadeFlash => new FlashGrenadePickup(timeGrenade),
+                    _ => new GrenadePickup(timeGrenade),
+                },
                 BaseFirearmPickup firearmPickup => new FirearmPickup(firearmPickup),
                 BaseKeycardPickup keycardPickup => new KeycardPickup(keycardPickup),
                 BaseBodyArmorPickup bodyArmorPickup => new BodyArmorPickup(bodyArmorPickup),
@@ -302,43 +335,126 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets all <see cref="Pickup"/> with the given <see cref="ItemType"/>.
+        /// Gets the <see cref="Pickup"/> given a <see cref="Serial"/>.
+        /// </summary>
+        /// <param name="serial">The serial to look for.</param>
+        /// <returns>The <see cref="Pickup"/> given the specified serial.</returns>
+        public static Pickup Get(ushort serial) => List.SingleOrDefault(x => x.Serial == serial);
+
+        /// <summary>
+        /// Gets the <see cref="Pickup"/> given a <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> to check.</param>
+        /// <returns>The <see cref="Pickup"/> given the specified <see cref="UnityEngine.GameObject"/>.</returns>
+        public static Pickup Get(GameObject gameObject) => !gameObject || !gameObject.TryGetComponent(out ItemPickupBase ipb) ? null : Get(ipb);
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances given an <see cref="IEnumerable{T}"/> of <see cref="ItemPickupBase"/>.
+        /// </summary>
+        /// <param name="pickups">An <see cref="IEnumerable{T}"/> of <see cref="ItemPickupBase"/> to convert into an <see cref="IEnumerable{T}"/> of <see cref="Pickup"/>.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances.</returns>
+        public static IEnumerable<Pickup> Get(IEnumerable<ItemPickupBase> pickups) => pickups.Select(ipb => Get(ipb));
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances given an <see cref="ItemType"/>.
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to look for.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Pickup"/>.</returns>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances.</returns>
         /// <seealso cref="Map.GetRandomPickup(ItemType)"/>
         public static IEnumerable<Pickup> Get(ItemType type) => List.Where(x => x.Type == type);
 
         /// <summary>
-        /// Gets the <see cref="Pickup"/> with the given <see cref="Serial"/>.
+        /// Gets an <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances given an <see cref="IEnumerable{T}"/> of <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        /// <param name="serial"> The serial of the Pickup you search.</param>
-        /// <returns>return the Pickup with Serial choose.</returns>
-        public static Pickup Get(ushort serial) => List.SingleOrDefault(x => x.Serial == serial);
+        /// <param name="gameObjects">The <see cref="UnityEngine.GameObject"/>'s to check.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances.</returns>
+        public static IEnumerable<Pickup> Get(IEnumerable<GameObject> gameObjects)
+        {
+            foreach (GameObject gameObject in gameObjects)
+            {
+                Pickup pickup = Get(gameObject);
+                if (pickup is null)
+                    continue;
+
+                yield return pickup;
+            }
+        }
 
         /// <summary>
-        /// Gets the <see cref="Pickup"/> with the given <see cref="UnityEngine.GameObject"/>.
+        /// Gets an <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances given a <see cref="IEnumerable{T}"/> of <see cref="ItemPickupBase"/>.
         /// </summary>
-        /// <param name="gameObject"> The gameobject of the Pickup you search.</param>
-        /// <returns>return the Pickup with gameObject choose.</returns>
-        public static Pickup Get(GameObject gameObject) => gameObject == null ? null : Get(gameObject.GetComponent<ItemPickupBase>());
+        /// <typeparam name="T">The type <typeparamref name="T"/> to cast the pickups to.</typeparam>
+        /// <param name="pickups">An <see cref="IEnumerable{T}"/> of <see cref="ItemPickupBase"/> to convert into an <see cref="IEnumerable{T}"/> of <see cref="Pickup"/>.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all existing <see cref="ItemPickupBase"/> instances.</returns>
+        public static IEnumerable<T> Get<T>(IEnumerable<ItemPickupBase> pickups)
+            where T : Pickup
+        {
+            foreach (ItemPickupBase ipb in pickups)
+            {
+                Pickup pickup = Get(ipb);
+                if (pickup is null || !pickup.Cast(out T param))
+                    continue;
+
+                yield return param;
+            }
+        }
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> containing all existing <see cref="ItemPickupBase"/> instances given an <see cref="ItemType"/>.
+        /// </summary>
+        /// <typeparam name="T">The type <typeparamref name="T"/> to cast the pickups to.</typeparam>
+        /// <param name="type">The <see cref="ItemType"/> to look for.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Pickup"/>.</returns>
+        /// <seealso cref="Map.GetRandomPickup(ItemType)"/>
+        public static IEnumerable<T> Get<T>(ItemType type)
+            where T : Pickup
+        {
+            foreach (Pickup pickup in List)
+            {
+                if (pickup.Type != type || !pickup.Cast(out T param))
+                    continue;
+
+                yield return param;
+            }
+        }
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> containing all existing <see cref="ItemPickupBase"/> instances given a <see cref="IEnumerable{T}"/> of <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        /// <typeparam name="T">The type <typeparamref name="T"/> to cast the pickups to.</typeparam>
+        /// <param name="gameObjects">The <see cref="UnityEngine.GameObject"/>'s to check.</param>
+        /// <returns>The <see cref="Pickup"/> given the specified <see cref="UnityEngine.GameObject"/>.</returns>
+        public static IEnumerable<T> Get<T>(IEnumerable<GameObject> gameObjects)
+            where T : Pickup
+        {
+            foreach (GameObject gameObject in gameObjects)
+            {
+                Pickup pickup = Get(gameObject);
+                if (pickup is null || !pickup.Cast(out T param))
+                    continue;
+
+                yield return param;
+            }
+        }
 
         /// <summary>
         /// Creates and returns a new <see cref="Pickup"/> with the proper inherited subclass.
         /// <para>
-        /// Based on the <paramref name="type"/>, the returned <see cref="Pickup"/> can be casted into a subclass to gain more control over the object.
-        /// <br />- All valid ammo should be casted to the <see cref="AmmoPickup"/> class.
-        /// <br />- All valid firearms (not including the Micro HID) should be casted to the <see cref="FirearmPickup"/> class.
-        /// <br />- All valid keycards should be casted to the <see cref="KeycardPickup"/> class.
-        /// <br />- All valid armor should be casted to the <see cref="BodyArmorPickup"/> class.
-        /// <br />- All grenades and throwables (SCP-018 and SCP-2176) should be casted to the <see cref="GrenadePickup"/> class.
+        /// Based on the <paramref name="type"/>, the returned <see cref="Pickup"/> can be cast into a subclass to gain more control over the object.
+        /// <br />- All valid ammo should be cast to the <see cref="AmmoPickup"/> class.
+        /// <br />- All valid firearms (not including the Micro HID) should be cast to the <see cref="FirearmPickup"/> class.
+        /// <br />- All valid keycards should be cast to the <see cref="KeycardPickup"/> class.
+        /// <br />- All valid armor should be cast to the <see cref="BodyArmorPickup"/> class.
+        /// <br />- All grenades and throwables (not including SCP-018 and SCP-2176) should be cast to the <see cref="GrenadePickup"/> class.
         /// </para>
         /// <para>
         /// <br />The following have their own respective classes:
-        /// <br />- Radios can be casted to <see cref="RadioPickup"/>.
-        /// <br />- The Micro HID can be casted to <see cref="MicroHIDPickup"/>.
-        /// <br />- SCP-244 A and B variants can be casted to <see cref="Scp244Pickup"/>.
-        /// <br />- SCP-330 can be casted to <see cref="Scp330Pickup"/>.
+        /// <br />- Radios can be cast to <see cref="RadioPickup"/>.
+        /// <br />- The Micro HID can be cast to <see cref="MicroHIDPickup"/>.
+        /// <br />- SCP-244 A and B variants can be cast to <see cref="Scp244Pickup"/>.
+        /// <br />- SCP-330 can be cast to <see cref="Scp330Pickup"/>.
+        /// <br />- SCP-018 can be cast to <see cref="Scp018Projectile"/>.
+        /// <br />- SCP-2176 can be cast to <see cref="Scp2176Projectile"/>.
         /// </para>
         /// <para>
         /// Items that are not listed above do not have a subclass, and can only use the base <see cref="Pickup"/> class.
@@ -353,13 +469,17 @@ namespace Exiled.API.Features.Pickups
             ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39 => new AmmoPickup(type),
             ItemType.Radio => new RadioPickup(),
             ItemType.MicroHID => new MicroHIDPickup(),
-            ItemType.GrenadeHE or ItemType.GrenadeFlash => new GrenadePickup(type),
-            ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 or ItemType.ParticleDisruptor => new FirearmPickup(type),
-            ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new KeycardPickup(type),
+            ItemType.GrenadeFlash => new FlashGrenadePickup(),
+            ItemType.GrenadeHE => new ExplosiveGrenadePickup(),
+            ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 or ItemType.ParticleDisruptor or ItemType.GunA7 or ItemType.GunFRMG0 => new FirearmPickup(type),
+            ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardMTFCaptain or ItemType.KeycardMTFOperative or ItemType.KeycardMTFPrivate => new KeycardPickup(type),
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new BodyArmorPickup(type),
             ItemType.SCP330 => new Scp330Pickup(),
+            ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP1853 or ItemType.Painkillers or ItemType.Medkit or ItemType.Adrenaline => new UsablePickup(type),
             ItemType.Jailbird => new JailbirdPickup(),
             ItemType.SCP1576 => new Scp1576Pickup(),
+            ItemType.SCP2176 => new Projectiles.Scp2176Projectile(),
+            ItemType.SCP018 => new Projectiles.Scp018Projectile(),
             _ => new Pickup(type),
         };
 
@@ -394,17 +514,6 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Clones current <see cref="Pickup"/> object.
-        /// </summary>
-        /// <returns> New <see cref="Pickup"/> object.</returns>
-        public Pickup Clone() => new(Type)
-        {
-            Scale = Scale,
-            PreviousOwner = PreviousOwner,
-            Info = Info,
-        };
-
-        /// <summary>
         /// Returns the amount of time it will take for the provided <paramref name="player"/> to pick up this item, based on <see cref="Weight"/> and active status effects.
         /// </summary>
         /// <param name="player">The player to check search time.</param>
@@ -425,6 +534,12 @@ namespace Exiled.API.Features.Pickups
         /// <seealso cref="UnSpawn"/>
         public void Spawn()
         {
+            // condition for projectiles
+            if (!GameObject.activeSelf)
+            {
+                GameObject.SetActive(true);
+            }
+
             if (!IsSpawned)
             {
                 NetworkServer.Spawn(GameObject);
@@ -453,9 +568,52 @@ namespace Exiled.API.Features.Pickups
         public void Destroy() => Base.DestroySelf();
 
         /// <summary>
+        /// Clones the current pickup with a different serial.
+        /// </summary>
+        /// <returns> Cloned pickup object. </returns>
+        public virtual Pickup Clone() => new(Type)
+        {
+            Scale = Scale,
+            PreviousOwner = PreviousOwner,
+            Info = Info,
+        };
+
+        /// <summary>
         /// Returns the Pickup in a human readable format.
         /// </summary>
         /// <returns>A string containing Pickup-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{IsLocked}- ={InUse}=";
+
+        /// <summary>
+        /// Returns the Pickup with the according property from the Item.
+        /// </summary>
+        /// <param name="item"> Item-related data to give to the Pickup.</param>
+        /// <returns>A Pickup containing the Item-related data.</returns>
+        internal virtual Pickup GetItemInfo(Items.Item item)
+        {
+            IsLoaded = true;
+
+            if (item is not null)
+            {
+                Scale = item.Scale;
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Returns the Item with the according property from the Pickup.
+        /// </summary>
+        /// <param name="item"> Pickup-related data to give to the Item.</param>
+        /// <returns>A Item containing the Pickup-related data.</returns>
+        internal virtual Items.Item GetPickupInfo(Items.Item item)
+        {
+            if (item is not null)
+            {
+                item.Scale = Scale;
+            }
+
+            return item;
+        }
     }
 }

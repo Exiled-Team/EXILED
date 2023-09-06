@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
 
@@ -26,8 +26,9 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     /// <summary>
     ///     Patches <see cref="Scp079CurrentCameraSync.ServerProcessCmd(NetworkReader)" />.
-    ///     Adds the <see cref="ChangingCamera" /> event.
+    ///     Adds the <see cref="Scp079.ChangingCamera" /> event.
     /// </summary>
+    [EventPatch(typeof(Scp079), nameof(Scp079.ChangingCamera))]
     [HarmonyPatch(typeof(Scp079CurrentCameraSync), nameof(Scp079CurrentCameraSync.ServerProcessCmd))]
     internal static class ChangingCamera
     {
@@ -76,7 +77,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
         private static bool ChangingCameraEvent(Scp079CurrentCameraSync instance, ref float cost)
         {
-            ChangingCameraEventArgs ev = new ChangingCameraEventArgs(Player.Get(instance.Owner), instance._switchTarget, cost);
+            ChangingCameraEventArgs ev = new(Player.Get(instance.Owner), instance._switchTarget, cost);
 
             Scp079.OnChangingCamera(ev);
 

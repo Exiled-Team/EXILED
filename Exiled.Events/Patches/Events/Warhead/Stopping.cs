@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using API.Features;
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Warhead;
 
     using HarmonyLib;
@@ -24,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     ///     Patches <see cref="AlphaWarheadController.CancelDetonation(ReferenceHub)" />.
     ///     Adds the <see cref="Warhead.Stopping" /> event.
     /// </summary>
+    [EventPatch(typeof(Warhead), nameof(Warhead.Stopping))]
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.CancelDetonation), typeof(ReferenceHub))]
     internal static class Stopping
     {

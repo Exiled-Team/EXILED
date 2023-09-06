@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+
     using API.Features;
 
     using Interfaces;
@@ -37,8 +39,9 @@ namespace Exiled.Events.EventArgs.Player
         {
             Player = player;
             OldState = oldState;
+#pragma warning disable CS0618
             NewState = newState;
-            IsAllowed = isAllowed;
+#pragma warning restore CS0618
         }
 
         /// <summary>
@@ -54,11 +57,19 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets or sets the new state.
         /// </summary>
-        public PlayerMovementState NewState { get; set; }
+        // TODO: remove setter
+        public PlayerMovementState NewState
+        {
+            get;
+            [Obsolete("Setter was removed due to desync problems.")]
+            set;
+        }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the player can change the movement state.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        // TODO: remove
+        [Obsolete("Property was removed due to desync problems.")]
+        public bool IsAllowed { get; set; } = true;
     }
 }

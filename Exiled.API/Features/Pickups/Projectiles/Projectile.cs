@@ -11,6 +11,9 @@ namespace Exiled.API.Features.Pickups.Projectiles
     using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
 
+    using InventorySystem;
+    using InventorySystem.Items;
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
 
     using UnityEngine;
@@ -35,9 +38,23 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Projectile(ItemType type)
-            : base(type)
         {
-            Base = (ThrownProjectile)((Pickup)this).Base;
+            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase) || itemBase is not ThrowableItem throwable)
+                return;
+
+            throwable.Projectile.gameObject.SetActive(false);
+            base.Base = Base = Object.Instantiate(throwable.Projectile);
+            throwable.Projectile.gameObject.SetActive(true);
+
+            PickupSyncInfo psi = new()
+            {
+                ItemId = type,
+                Serial = ItemSerialGenerator.GenerateNext(),
+                WeightKg = itemBase.Weight,
+            };
+
+            Info = psi;
+            BaseToPickup.Add(Base, this);
         }
 
         /// <summary>
@@ -72,7 +89,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
             ProjectileType.Flashbang => new FlashbangProjectile(),
             ProjectileType.Scp2176 => new Scp2176Projectile(),
             ProjectileType.FragGrenade => new ExplosionGrenadeProjectile(ItemType.GrenadeHE),
-            _ => throw new System.Exception($"ProjectilType does not contain a valid value :{projectiletype}"),
+            _ => throw new System.Exception($"ProjectileType does not contain a valid value : {projectiletype}"),
         };
 
         /// <summary>
