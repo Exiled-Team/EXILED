@@ -341,7 +341,7 @@ namespace Exiled.Loader
                 }
                 catch (Exception exception)
                 {
-                    API.Features.Log.Error($"Plugin \"{plugin.Name}\" threw an exception while disabling: {exception}");
+                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while disabling: {exception}");
                 }
             }
         }
