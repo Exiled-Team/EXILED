@@ -948,7 +948,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <inheritdoc cref="OnUpgrading(UpgradingEventArgs)"/>
-        protected virtual void OnUpgrading(API.EventArgs.UpgradingItemEventArgs ev)
+        protected virtual void OnUpgrading(UpgradingItemEventArgs ev)
         {
         }
 
@@ -960,6 +960,8 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="displayMessage">Whether or not the Pickup hint should be displayed.</param>
         protected virtual void OnAcquired(Player player, Item item, bool displayMessage)
         {
+            if (displayMessage)
+                ShowPickedUpMessage(player);
         }
 
         /// <summary>

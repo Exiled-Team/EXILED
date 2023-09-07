@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.EventArgs.Scp939
 {
-    using System;
-
     using API.Features;
     using Exiled.API.Features.Roles;
     using Interfaces;
