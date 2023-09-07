@@ -40,13 +40,13 @@ namespace Exiled.Loader
                 Dictionary<string, object> rawDeserializedConfigs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? DictionaryPool<string, object>.Pool.Get();
                 SortedDictionary<string, IConfig> deserializedConfigs = new(StringComparer.Ordinal);
 
-                //Only allow unique keys to be loaded. Any duplicates in the plugin's config will be skipped.
+                // Only allow unique keys to be loaded. Any duplicates in the plugin's config will be skipped.
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
                     if (!deserializedConfigs.ContainsKey(plugin.Prefix))
                     {
                         deserializedConfigs.Add(plugin.Prefix, plugin.LoadConfig(rawDeserializedConfigs));
-                    }else{
+                    } else {
                         Log.Warn($"{plugin.Prefix} already exists in {plugin.Name}'s configuration. {plugin.Prefix} has been skipped.");
                     }
                 }
