@@ -9,14 +9,12 @@ namespace Exiled.CustomRoles.API.Features
 {
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
     using System.Text;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.CustomRoles.API.Features.Enums;
-    using Exiled.CustomRoles.API.Features.Interfaces;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
 

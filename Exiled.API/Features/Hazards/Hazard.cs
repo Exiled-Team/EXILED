@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Hazard.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -110,29 +110,31 @@ namespace Exiled.API.Features.Hazards
         /// <summary>
         /// Gets the <see cref="Hazard"/> by <see cref="EnvironmentalHazard"/>.
         /// </summary>
-        /// <param name="hazard">The <see cref="EnvironmentalHazard"/> instance.</param>
+        /// <param name="environmentalHazard">The <see cref="EnvironmentalHazard"/> instance.</param>
         /// <returns><see cref="Hazard"/> for <see cref="EnvironmentalHazard"/>.</returns>
-        public static Hazard Get(EnvironmentalHazard hazard) => hazard switch
+        public static Hazard Get(EnvironmentalHazard environmentalHazard) =>
+            EnvironmentalHazardToHazard.TryGetValue(environmentalHazard, out Hazard hazard) ? hazard
+            : environmentalHazard switch
         {
             TantrumEnvironmentalHazard tantrumEnvironmentalHazard => new TantrumHazard(tantrumEnvironmentalHazard),
             Scp939AmnesticCloudInstance scp939AmnesticCloudInstance => new AmnesticCloudHazard(scp939AmnesticCloudInstance),
             SinkholeEnvironmentalHazard sinkholeEnvironmentalHazard => new SinkholeHazard(sinkholeEnvironmentalHazard),
             global::Hazards.TemporaryHazard temporaryHazard => new TemporaryHazard(temporaryHazard),
-            _ => new Hazard(hazard)
+            _ => new Hazard(environmentalHazard)
         };
 
         /// <summary>
         /// Gets the hazard by the room where it's located.
         /// </summary>
         /// <param name="room">Room.</param>
-        /// <returns><see cref="Hazard"/> in given <see cref="Exiled.API.Features.Room"/>.</returns>
+        /// <returns><see cref="Hazard"/> in given <see cref="Features.Room"/>.</returns>
         public static Hazard Get(Room room) => Get(x => x.Room == room).FirstOrDefault();
 
         /// <summary>
         /// Gets the hazard by it's <see cref="GameObject"/>.
         /// </summary>
         /// <param name="obj">Game object.</param>
-        /// <returns><see cref="Hazard"/> in given <see cref="Exiled.API.Features.Room"/>.</returns>
+        /// <returns><see cref="Hazard"/> in given <see cref="Features.Room"/>.</returns>
         public static Hazard Get(GameObject obj) => Get(x => x.Base.gameObject == obj).FirstOrDefault();
 
         /// <summary>

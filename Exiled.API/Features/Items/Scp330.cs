@@ -19,7 +19,7 @@ namespace Exiled.API.Features.Items
     using UnityEngine;
 
     using Object = UnityEngine.Object;
-    using Scp330Pickup = Exiled.API.Features.Pickups.Scp330Pickup;
+    using Scp330Pickup = Pickups.Scp330Pickup;
 
     /// <summary>
     /// Candy enumeration status.

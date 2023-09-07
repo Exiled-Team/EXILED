@@ -35,9 +35,9 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public PlayingSoundEventArgs(ReferenceHub player, EnvMimicrySequence sound, bool isReady, float cooldown, bool isAllowed = true)
+        public PlayingSoundEventArgs(Player player, EnvMimicrySequence sound, bool isReady, float cooldown, bool isAllowed = true)
         {
-            Player = Player.Get(player);
+            Player = player;
             Scp939 = Player.Role.As<Scp939Role>();
             Sound = sound;
             IsReady = isReady;

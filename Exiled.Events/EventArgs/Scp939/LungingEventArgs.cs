@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.EventArgs.Scp939
 {
-    using System;
-
     using API.Features;
     using Exiled.API.Features.Roles;
     using Interfaces;
@@ -24,9 +22,9 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
-        public LungingEventArgs(ReferenceHub player)
+        public LungingEventArgs(Player player)
         {
-            Player = Player.Get(player);
+            Player = player;
             Scp939 = Player.Role.As<Scp939Role>();
         }
 
