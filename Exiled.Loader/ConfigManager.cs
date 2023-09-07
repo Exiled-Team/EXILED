@@ -40,9 +40,15 @@ namespace Exiled.Loader
                 Dictionary<string, object> rawDeserializedConfigs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? DictionaryPool<string, object>.Pool.Get();
                 SortedDictionary<string, IConfig> deserializedConfigs = new(StringComparer.Ordinal);
 
+                //Only allow unique keys to be loaded. Any duplicates in the plugin's config will be skipped.
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
-                    deserializedConfigs.Add(plugin.Prefix, plugin.LoadConfig(rawDeserializedConfigs));
+                    if (!deserializedConfigs.ContainsKey(plugin.Prefix))
+                    {
+                        deserializedConfigs.Add(plugin.Prefix, plugin.LoadConfig(rawDeserializedConfigs));
+                    }else{
+                        Log.Warn($"{plugin.Prefix} already exists in {plugin.Name}'s configuration. {plugin.Prefix} has been skipped.");
+                    }
                 }
 
                 // Make sure that no keys in the config file were discarded. (Individual can ignore this since rawDeserializedConfigs is null)
@@ -52,7 +58,7 @@ namespace Exiled.Loader
                     File.WriteAllText(Paths.BackupConfig, rawConfigs);
                 }
 
-                Log.Info("Plugin configs loaded successfully!");
+                Log.Info("All plugin configs have been loaded successfully!");
 
                 DictionaryPool<string, object>.Pool.Return(rawDeserializedConfigs);
                 return deserializedConfigs;
