@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class EarningAchievementEventArgs
+    <title>Class DroppedItemEventArgs
    | EXILED Docs </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class EarningAchievementEventArgs
+    <meta name="title" content="Class DroppedItemEventArgs
    | EXILED Docs ">
     <meta name="generator" content="docfx 2.59.4.0">
     
@@ -78,23 +78,23 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Exiled.Events.EventArgs.Player.EarningAchievementEventArgs">
+            <article class="content wrap" id="_content" data-uid="Exiled.Events.EventArgs.Player.DroppedItemEventArgs">
   
   
-  <h1 id="Exiled_Events_EventArgs_Player_EarningAchievementEventArgs" data-uid="Exiled.Events.EventArgs.Player.EarningAchievementEventArgs" class="text-break">Class EarningAchievementEventArgs
+  <h1 id="Exiled_Events_EventArgs_Player_DroppedItemEventArgs" data-uid="Exiled.Events.EventArgs.Player.DroppedItemEventArgs" class="text-break">Class DroppedItemEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Contains all information before a player earns an achievement.</p>
+  <div class="markdown level0 summary"><p>Contains all information after a player drops an item.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">EarningAchievementEventArgs</span></div>
+    <div class="level1"><span class="xref">DroppedItemEventArgs</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a></div>
-    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPickupEvent.html">IPickupEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a></div>
   </div>
   <div class="inheritedMembers">
@@ -123,27 +123,27 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Exiled.Events.EventArgs.Player.html">Exiled.Events.EventArgs.Player</a></h6>
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
-  <h5 id="Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_syntax">Syntax</h5>
+  <h5 id="Exiled_Events_EventArgs_Player_DroppedItemEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class EarningAchievementEventArgs : IPlayerEvent, IDeniableEvent, IExiledEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public class DroppedItemEventArgs : IPlayerEvent, IPickupEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_EarningAchievementEventArgs__ctor_Exiled_API_Features_Player_Achievements_AchievementName_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.%23ctor(Exiled.API.Features.Player%2CAchievements.AchievementName%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_DroppedItemEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Pickups_Pickup_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.DroppedItemEventArgs.%23ctor(Exiled.API.Features.Player%2CExiled.API.Features.Pickups.Pickup%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/EarningAchievementEventArgs.cs/#L31">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DroppedItemEventArgs.cs/#L31">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_Player_EarningAchievementEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_EarningAchievementEventArgs__ctor_Exiled_API_Features_Player_Achievements_AchievementName_System_Boolean_" data-uid="Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.#ctor(Exiled.API.Features.Player,Achievements.AchievementName,System.Boolean)">EarningAchievementEventArgs(Player, AchievementName, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.html">EarningAchievementEventArgs</a> class.</p>
+  <a id="Exiled_Events_EventArgs_Player_DroppedItemEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Player.DroppedItemEventArgs.#ctor*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_DroppedItemEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Pickups_Pickup_System_Boolean_" data-uid="Exiled.Events.EventArgs.Player.DroppedItemEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Pickups.Pickup,System.Boolean)">DroppedItemEventArgs(Player, Pickup, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.Player.DroppedItemEventArgs.html">DroppedItemEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public EarningAchievementEventArgs(Player player, AchievementName achievementName, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public DroppedItemEventArgs(Player player, Pickup pickup, bool wasThrown)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -158,19 +158,19 @@
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
         <td><span class="parametername">player</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.Player"></inheritdoc>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Player"></inheritdoc>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Achievements.AchievementName</span></td>
-        <td><span class="parametername">achievementName</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.AchievementName"></inheritdoc>
+        <td><a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a></td>
+        <td><span class="parametername">pickup</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Pickup"></inheritdoc>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">isAllowed</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.IsAllowed"></inheritdoc>
+        <td><span class="parametername">wasThrown</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.DroppedItemEventArgs.WasThrown"></inheritdoc>
 </td>
       </tr>
     </tbody>
@@ -179,19 +179,18 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_AchievementName.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.AchievementName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_DroppedItemEventArgs_Pickup.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Pickup%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/EarningAchievementEventArgs.cs/#L41">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DroppedItemEventArgs.cs/#L44">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_AchievementName_" data-uid="Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.AchievementName*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_AchievementName" data-uid="Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.AchievementName">AchievementName</h4>
-  <div class="markdown level1 summary"><p>Gets the achievement that will be earned.</p>
-</div>
+  <a id="Exiled_Events_EventArgs_Player_DroppedItemEventArgs_Pickup_" data-uid="Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Pickup*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_DroppedItemEventArgs_Pickup" data-uid="Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Pickup">Pickup</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AchievementName AchievementName { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Pickup Pickup { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -203,53 +202,21 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Achievements.AchievementName</span></td>
+        <td><a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_DroppedItemEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/EarningAchievementEventArgs.cs/#L46">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DroppedItemEventArgs.cs/#L47">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.IsAllowed*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.IsAllowed">IsAllowed</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the achievement will be awarded to the player.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsAllowed { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/EarningAchievementEventArgs.cs/#L51">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.Player*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_Player" data-uid="Exiled.Events.EventArgs.Player.EarningAchievementEventArgs.Player">Player</h4>
-  <div class="markdown level1 summary"><p>Gets the player who earned the achievement.</p>
-</div>
+  <a id="Exiled_Events_EventArgs_Player_DroppedItemEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Player*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_DroppedItemEventArgs_Player" data-uid="Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Player">Player</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -270,12 +237,43 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_DroppedItemEventArgs_WasThrown.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.DroppedItemEventArgs.WasThrown%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DroppedItemEventArgs.cs/#L41">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Player_DroppedItemEventArgs_WasThrown_" data-uid="Exiled.Events.EventArgs.Player.DroppedItemEventArgs.WasThrown*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_DroppedItemEventArgs_WasThrown" data-uid="Exiled.Events.EventArgs.Player.DroppedItemEventArgs.WasThrown">WasThrown</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not the pickup was thrown.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool WasThrown { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a>
   </div>
   <div>
-      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPickupEvent.html">IPickupEvent</a>
   </div>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a>
@@ -292,10 +290,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_EarningAchievementEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.EarningAchievementEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_DroppedItemEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.DroppedItemEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/EarningAchievementEventArgs.cs/#L17" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/DroppedItemEventArgs.cs/#L17" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

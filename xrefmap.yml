@@ -10414,6 +10414,45 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Doors.Gate.BlockingPryingMask
   nameWithType: Gate.BlockingPryingMask
+- uid: Exiled.API.Features.Doors.Gate.IsFullyClosed
+  name: IsFullyClosed
+  href: api/Exiled.API.Features.Doors.Gate.html#Exiled_API_Features_Doors_Gate_IsFullyClosed
+  commentId: P:Exiled.API.Features.Doors.Gate.IsFullyClosed
+  fullName: Exiled.API.Features.Doors.Gate.IsFullyClosed
+  nameWithType: Gate.IsFullyClosed
+- uid: Exiled.API.Features.Doors.Gate.IsFullyClosed*
+  name: IsFullyClosed
+  href: api/Exiled.API.Features.Doors.Gate.html#Exiled_API_Features_Doors_Gate_IsFullyClosed_
+  commentId: Overload:Exiled.API.Features.Doors.Gate.IsFullyClosed
+  isSpec: "True"
+  fullName: Exiled.API.Features.Doors.Gate.IsFullyClosed
+  nameWithType: Gate.IsFullyClosed
+- uid: Exiled.API.Features.Doors.Gate.IsFullyOpen
+  name: IsFullyOpen
+  href: api/Exiled.API.Features.Doors.Gate.html#Exiled_API_Features_Doors_Gate_IsFullyOpen
+  commentId: P:Exiled.API.Features.Doors.Gate.IsFullyOpen
+  fullName: Exiled.API.Features.Doors.Gate.IsFullyOpen
+  nameWithType: Gate.IsFullyOpen
+- uid: Exiled.API.Features.Doors.Gate.IsFullyOpen*
+  name: IsFullyOpen
+  href: api/Exiled.API.Features.Doors.Gate.html#Exiled_API_Features_Doors_Gate_IsFullyOpen_
+  commentId: Overload:Exiled.API.Features.Doors.Gate.IsFullyOpen
+  isSpec: "True"
+  fullName: Exiled.API.Features.Doors.Gate.IsFullyOpen
+  nameWithType: Gate.IsFullyOpen
+- uid: Exiled.API.Features.Doors.Gate.IsMoving
+  name: IsMoving
+  href: api/Exiled.API.Features.Doors.Gate.html#Exiled_API_Features_Doors_Gate_IsMoving
+  commentId: P:Exiled.API.Features.Doors.Gate.IsMoving
+  fullName: Exiled.API.Features.Doors.Gate.IsMoving
+  nameWithType: Gate.IsMoving
+- uid: Exiled.API.Features.Doors.Gate.IsMoving*
+  name: IsMoving
+  href: api/Exiled.API.Features.Doors.Gate.html#Exiled_API_Features_Doors_Gate_IsMoving_
+  commentId: Overload:Exiled.API.Features.Doors.Gate.IsMoving
+  isSpec: "True"
+  fullName: Exiled.API.Features.Doors.Gate.IsMoving
+  nameWithType: Gate.IsMoving
 - uid: Exiled.API.Features.Doors.Gate.PryPositions
   name: PryPositions
   href: api/Exiled.API.Features.Doors.Gate.html#Exiled_API_Features_Doors_Gate_PryPositions
@@ -16552,6 +16591,24 @@ references:
   commentId: M:Exiled.API.Features.Pickups.Pickup.Get(ItemType)
   fullName: Exiled.API.Features.Pickups.Pickup.Get(ItemType)
   nameWithType: Pickup.Get(ItemType)
+- uid: Exiled.API.Features.Pickups.Pickup.Get(System.Collections.Generic.IEnumerable{InventorySystem.Items.Pickups.ItemPickupBase})
+  name: Get(IEnumerable<ItemPickupBase>)
+  href: api/Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Get_System_Collections_Generic_IEnumerable_InventorySystem_Items_Pickups_ItemPickupBase__
+  commentId: M:Exiled.API.Features.Pickups.Pickup.Get(System.Collections.Generic.IEnumerable{InventorySystem.Items.Pickups.ItemPickupBase})
+  name.vb: Get(IEnumerable(Of ItemPickupBase))
+  fullName: Exiled.API.Features.Pickups.Pickup.Get(System.Collections.Generic.IEnumerable<InventorySystem.Items.Pickups.ItemPickupBase>)
+  fullName.vb: Exiled.API.Features.Pickups.Pickup.Get(System.Collections.Generic.IEnumerable(Of InventorySystem.Items.Pickups.ItemPickupBase))
+  nameWithType: Pickup.Get(IEnumerable<ItemPickupBase>)
+  nameWithType.vb: Pickup.Get(IEnumerable(Of ItemPickupBase))
+- uid: Exiled.API.Features.Pickups.Pickup.Get(System.Collections.Generic.IEnumerable{UnityEngine.GameObject})
+  name: Get(IEnumerable<GameObject>)
+  href: api/Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Get_System_Collections_Generic_IEnumerable_UnityEngine_GameObject__
+  commentId: M:Exiled.API.Features.Pickups.Pickup.Get(System.Collections.Generic.IEnumerable{UnityEngine.GameObject})
+  name.vb: Get(IEnumerable(Of GameObject))
+  fullName: Exiled.API.Features.Pickups.Pickup.Get(System.Collections.Generic.IEnumerable<UnityEngine.GameObject>)
+  fullName.vb: Exiled.API.Features.Pickups.Pickup.Get(System.Collections.Generic.IEnumerable(Of UnityEngine.GameObject))
+  nameWithType: Pickup.Get(IEnumerable<GameObject>)
+  nameWithType.vb: Pickup.Get(IEnumerable(Of GameObject))
 - uid: Exiled.API.Features.Pickups.Pickup.Get(System.UInt16)
   name: Get(UInt16)
   href: api/Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Get_System_UInt16_
@@ -16571,6 +16628,33 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Pickups.Pickup.Get
   nameWithType: Pickup.Get
+- uid: Exiled.API.Features.Pickups.Pickup.Get``1(ItemType)
+  name: Get<T>(ItemType)
+  href: api/Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Get__1_ItemType_
+  commentId: M:Exiled.API.Features.Pickups.Pickup.Get``1(ItemType)
+  name.vb: Get(Of T)(ItemType)
+  fullName: Exiled.API.Features.Pickups.Pickup.Get<T>(ItemType)
+  fullName.vb: Exiled.API.Features.Pickups.Pickup.Get(Of T)(ItemType)
+  nameWithType: Pickup.Get<T>(ItemType)
+  nameWithType.vb: Pickup.Get(Of T)(ItemType)
+- uid: Exiled.API.Features.Pickups.Pickup.Get``1(System.Collections.Generic.IEnumerable{InventorySystem.Items.Pickups.ItemPickupBase})
+  name: Get<T>(IEnumerable<ItemPickupBase>)
+  href: api/Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Get__1_System_Collections_Generic_IEnumerable_InventorySystem_Items_Pickups_ItemPickupBase__
+  commentId: M:Exiled.API.Features.Pickups.Pickup.Get``1(System.Collections.Generic.IEnumerable{InventorySystem.Items.Pickups.ItemPickupBase})
+  name.vb: Get(Of T)(IEnumerable(Of ItemPickupBase))
+  fullName: Exiled.API.Features.Pickups.Pickup.Get<T>(System.Collections.Generic.IEnumerable<InventorySystem.Items.Pickups.ItemPickupBase>)
+  fullName.vb: Exiled.API.Features.Pickups.Pickup.Get(Of T)(System.Collections.Generic.IEnumerable(Of InventorySystem.Items.Pickups.ItemPickupBase))
+  nameWithType: Pickup.Get<T>(IEnumerable<ItemPickupBase>)
+  nameWithType.vb: Pickup.Get(Of T)(IEnumerable(Of ItemPickupBase))
+- uid: Exiled.API.Features.Pickups.Pickup.Get``1(System.Collections.Generic.IEnumerable{UnityEngine.GameObject})
+  name: Get<T>(IEnumerable<GameObject>)
+  href: api/Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Get__1_System_Collections_Generic_IEnumerable_UnityEngine_GameObject__
+  commentId: M:Exiled.API.Features.Pickups.Pickup.Get``1(System.Collections.Generic.IEnumerable{UnityEngine.GameObject})
+  name.vb: Get(Of T)(IEnumerable(Of GameObject))
+  fullName: Exiled.API.Features.Pickups.Pickup.Get<T>(System.Collections.Generic.IEnumerable<UnityEngine.GameObject>)
+  fullName.vb: Exiled.API.Features.Pickups.Pickup.Get(Of T)(System.Collections.Generic.IEnumerable(Of UnityEngine.GameObject))
+  nameWithType: Pickup.Get<T>(IEnumerable<GameObject>)
+  nameWithType.vb: Pickup.Get(Of T)(IEnumerable(Of GameObject))
 - uid: Exiled.API.Features.Pickups.Pickup.Info
   name: Info
   href: api/Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Info
@@ -40710,6 +40794,138 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.Player.DiedEventArgs.TargetOldRole
   nameWithType: DiedEventArgs.TargetOldRole
+- uid: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs
+  name: DroppedAmmoEventArgs
+  href: api/Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.html
+  commentId: T:Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs
+  fullName: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs
+  nameWithType: DroppedAmmoEventArgs
+- uid: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Enums.AmmoType,System.UInt16,System.Collections.Generic.List{InventorySystem.Items.Firearms.Ammo.AmmoPickup})
+  name: DroppedAmmoEventArgs(Player, AmmoType, UInt16, List<AmmoPickup>)
+  href: api/Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.html#Exiled_Events_EventArgs_Player_DroppedAmmoEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Enums_AmmoType_System_UInt16_System_Collections_Generic_List_InventorySystem_Items_Firearms_Ammo_AmmoPickup__
+  commentId: M:Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Enums.AmmoType,System.UInt16,System.Collections.Generic.List{InventorySystem.Items.Firearms.Ammo.AmmoPickup})
+  name.vb: DroppedAmmoEventArgs(Player, AmmoType, UInt16, List(Of AmmoPickup))
+  fullName: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.DroppedAmmoEventArgs(Exiled.API.Features.Player, Exiled.API.Enums.AmmoType, System.UInt16, System.Collections.Generic.List<InventorySystem.Items.Firearms.Ammo.AmmoPickup>)
+  fullName.vb: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.DroppedAmmoEventArgs(Exiled.API.Features.Player, Exiled.API.Enums.AmmoType, System.UInt16, System.Collections.Generic.List(Of InventorySystem.Items.Firearms.Ammo.AmmoPickup))
+  nameWithType: DroppedAmmoEventArgs.DroppedAmmoEventArgs(Player, AmmoType, UInt16, List<AmmoPickup>)
+  nameWithType.vb: DroppedAmmoEventArgs.DroppedAmmoEventArgs(Player, AmmoType, UInt16, List(Of AmmoPickup))
+- uid: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.#ctor*
+  name: DroppedAmmoEventArgs
+  href: api/Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.html#Exiled_Events_EventArgs_Player_DroppedAmmoEventArgs__ctor_
+  commentId: Overload:Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.#ctor
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.DroppedAmmoEventArgs
+  nameWithType: DroppedAmmoEventArgs.DroppedAmmoEventArgs
+- uid: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.AmmoPickups
+  name: AmmoPickups
+  href: api/Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.html#Exiled_Events_EventArgs_Player_DroppedAmmoEventArgs_AmmoPickups
+  commentId: P:Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.AmmoPickups
+  fullName: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.AmmoPickups
+  nameWithType: DroppedAmmoEventArgs.AmmoPickups
+- uid: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.AmmoPickups*
+  name: AmmoPickups
+  href: api/Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.html#Exiled_Events_EventArgs_Player_DroppedAmmoEventArgs_AmmoPickups_
+  commentId: Overload:Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.AmmoPickups
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.AmmoPickups
+  nameWithType: DroppedAmmoEventArgs.AmmoPickups
+- uid: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.AmmoType
+  name: AmmoType
+  href: api/Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.html#Exiled_Events_EventArgs_Player_DroppedAmmoEventArgs_AmmoType
+  commentId: P:Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.AmmoType
+  fullName: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.AmmoType
+  nameWithType: DroppedAmmoEventArgs.AmmoType
+- uid: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.AmmoType*
+  name: AmmoType
+  href: api/Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.html#Exiled_Events_EventArgs_Player_DroppedAmmoEventArgs_AmmoType_
+  commentId: Overload:Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.AmmoType
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.AmmoType
+  nameWithType: DroppedAmmoEventArgs.AmmoType
+- uid: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.Amount
+  name: Amount
+  href: api/Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.html#Exiled_Events_EventArgs_Player_DroppedAmmoEventArgs_Amount
+  commentId: P:Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.Amount
+  fullName: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.Amount
+  nameWithType: DroppedAmmoEventArgs.Amount
+- uid: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.Amount*
+  name: Amount
+  href: api/Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.html#Exiled_Events_EventArgs_Player_DroppedAmmoEventArgs_Amount_
+  commentId: Overload:Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.Amount
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.Amount
+  nameWithType: DroppedAmmoEventArgs.Amount
+- uid: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.Player
+  name: Player
+  href: api/Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.html#Exiled_Events_EventArgs_Player_DroppedAmmoEventArgs_Player
+  commentId: P:Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.Player
+  fullName: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.Player
+  nameWithType: DroppedAmmoEventArgs.Player
+- uid: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.Player*
+  name: Player
+  href: api/Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.html#Exiled_Events_EventArgs_Player_DroppedAmmoEventArgs_Player_
+  commentId: Overload:Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.Player
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs.Player
+  nameWithType: DroppedAmmoEventArgs.Player
+- uid: Exiled.Events.EventArgs.Player.DroppedItemEventArgs
+  name: DroppedItemEventArgs
+  href: api/Exiled.Events.EventArgs.Player.DroppedItemEventArgs.html
+  commentId: T:Exiled.Events.EventArgs.Player.DroppedItemEventArgs
+  fullName: Exiled.Events.EventArgs.Player.DroppedItemEventArgs
+  nameWithType: DroppedItemEventArgs
+- uid: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Pickups.Pickup,System.Boolean)
+  name: DroppedItemEventArgs(Player, Pickup, Boolean)
+  href: api/Exiled.Events.EventArgs.Player.DroppedItemEventArgs.html#Exiled_Events_EventArgs_Player_DroppedItemEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Pickups_Pickup_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.Player.DroppedItemEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Pickups.Pickup,System.Boolean)
+  fullName: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.DroppedItemEventArgs(Exiled.API.Features.Player, Exiled.API.Features.Pickups.Pickup, System.Boolean)
+  nameWithType: DroppedItemEventArgs.DroppedItemEventArgs(Player, Pickup, Boolean)
+- uid: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.#ctor*
+  name: DroppedItemEventArgs
+  href: api/Exiled.Events.EventArgs.Player.DroppedItemEventArgs.html#Exiled_Events_EventArgs_Player_DroppedItemEventArgs__ctor_
+  commentId: Overload:Exiled.Events.EventArgs.Player.DroppedItemEventArgs.#ctor
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.DroppedItemEventArgs
+  nameWithType: DroppedItemEventArgs.DroppedItemEventArgs
+- uid: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Pickup
+  name: Pickup
+  href: api/Exiled.Events.EventArgs.Player.DroppedItemEventArgs.html#Exiled_Events_EventArgs_Player_DroppedItemEventArgs_Pickup
+  commentId: P:Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Pickup
+  fullName: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Pickup
+  nameWithType: DroppedItemEventArgs.Pickup
+- uid: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Pickup*
+  name: Pickup
+  href: api/Exiled.Events.EventArgs.Player.DroppedItemEventArgs.html#Exiled_Events_EventArgs_Player_DroppedItemEventArgs_Pickup_
+  commentId: Overload:Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Pickup
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Pickup
+  nameWithType: DroppedItemEventArgs.Pickup
+- uid: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Player
+  name: Player
+  href: api/Exiled.Events.EventArgs.Player.DroppedItemEventArgs.html#Exiled_Events_EventArgs_Player_DroppedItemEventArgs_Player
+  commentId: P:Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Player
+  fullName: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Player
+  nameWithType: DroppedItemEventArgs.Player
+- uid: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Player*
+  name: Player
+  href: api/Exiled.Events.EventArgs.Player.DroppedItemEventArgs.html#Exiled_Events_EventArgs_Player_DroppedItemEventArgs_Player_
+  commentId: Overload:Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Player
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.Player
+  nameWithType: DroppedItemEventArgs.Player
+- uid: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.WasThrown
+  name: WasThrown
+  href: api/Exiled.Events.EventArgs.Player.DroppedItemEventArgs.html#Exiled_Events_EventArgs_Player_DroppedItemEventArgs_WasThrown
+  commentId: P:Exiled.Events.EventArgs.Player.DroppedItemEventArgs.WasThrown
+  fullName: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.WasThrown
+  nameWithType: DroppedItemEventArgs.WasThrown
+- uid: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.WasThrown*
+  name: WasThrown
+  href: api/Exiled.Events.EventArgs.Player.DroppedItemEventArgs.html#Exiled_Events_EventArgs_Player_DroppedItemEventArgs_WasThrown_
+  commentId: Overload:Exiled.Events.EventArgs.Player.DroppedItemEventArgs.WasThrown
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.DroppedItemEventArgs.WasThrown
+  nameWithType: DroppedItemEventArgs.WasThrown
 - uid: Exiled.Events.EventArgs.Player.DroppingAmmoEventArgs
   name: DroppingAmmoEventArgs
   href: api/Exiled.Events.EventArgs.Player.DroppingAmmoEventArgs.html
@@ -43743,6 +43959,142 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.Player.SpawnedEventArgs.SpawnFlags
   nameWithType: SpawnedEventArgs.SpawnFlags
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs
+  name: SpawnedRagdollEventArgs
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html
+  commentId: T:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs
+  nameWithType: SpawnedRagdollEventArgs
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Ragdoll,RagdollData,PlayerStatsSystem.DamageHandlerBase)
+  name: SpawnedRagdollEventArgs(Player, Ragdoll, RagdollData, DamageHandlerBase)
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Ragdoll_RagdollData_PlayerStatsSystem_DamageHandlerBase_
+  commentId: M:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Ragdoll,RagdollData,PlayerStatsSystem.DamageHandlerBase)
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.SpawnedRagdollEventArgs(Exiled.API.Features.Player, Exiled.API.Features.Ragdoll, RagdollData, PlayerStatsSystem.DamageHandlerBase)
+  nameWithType: SpawnedRagdollEventArgs.SpawnedRagdollEventArgs(Player, Ragdoll, RagdollData, DamageHandlerBase)
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.#ctor*
+  name: SpawnedRagdollEventArgs
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs__ctor_
+  commentId: Overload:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.#ctor
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.SpawnedRagdollEventArgs
+  nameWithType: SpawnedRagdollEventArgs.SpawnedRagdollEventArgs
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.CreationTime
+  name: CreationTime
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_CreationTime
+  commentId: P:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.CreationTime
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.CreationTime
+  nameWithType: SpawnedRagdollEventArgs.CreationTime
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.CreationTime*
+  name: CreationTime
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_CreationTime_
+  commentId: Overload:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.CreationTime
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.CreationTime
+  nameWithType: SpawnedRagdollEventArgs.CreationTime
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.DamageHandlerBase
+  name: DamageHandlerBase
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_DamageHandlerBase
+  commentId: P:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.DamageHandlerBase
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.DamageHandlerBase
+  nameWithType: SpawnedRagdollEventArgs.DamageHandlerBase
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.DamageHandlerBase*
+  name: DamageHandlerBase
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_DamageHandlerBase_
+  commentId: Overload:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.DamageHandlerBase
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.DamageHandlerBase
+  nameWithType: SpawnedRagdollEventArgs.DamageHandlerBase
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Info
+  name: Info
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Info
+  commentId: P:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Info
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Info
+  nameWithType: SpawnedRagdollEventArgs.Info
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Info*
+  name: Info
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Info_
+  commentId: Overload:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Info
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Info
+  nameWithType: SpawnedRagdollEventArgs.Info
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Nickname
+  name: Nickname
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Nickname
+  commentId: P:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Nickname
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Nickname
+  nameWithType: SpawnedRagdollEventArgs.Nickname
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Nickname*
+  name: Nickname
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Nickname_
+  commentId: Overload:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Nickname
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Nickname
+  nameWithType: SpawnedRagdollEventArgs.Nickname
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Player
+  name: Player
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Player
+  commentId: P:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Player
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Player
+  nameWithType: SpawnedRagdollEventArgs.Player
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Player*
+  name: Player
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Player_
+  commentId: Overload:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Player
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Player
+  nameWithType: SpawnedRagdollEventArgs.Player
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Position
+  name: Position
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Position
+  commentId: P:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Position
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Position
+  nameWithType: SpawnedRagdollEventArgs.Position
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Position*
+  name: Position
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Position_
+  commentId: Overload:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Position
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Position
+  nameWithType: SpawnedRagdollEventArgs.Position
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Ragdoll
+  name: Ragdoll
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Ragdoll
+  commentId: P:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Ragdoll
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Ragdoll
+  nameWithType: SpawnedRagdollEventArgs.Ragdoll
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Ragdoll*
+  name: Ragdoll
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Ragdoll_
+  commentId: Overload:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Ragdoll
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Ragdoll
+  nameWithType: SpawnedRagdollEventArgs.Ragdoll
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Role
+  name: Role
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Role
+  commentId: P:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Role
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Role
+  nameWithType: SpawnedRagdollEventArgs.Role
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Role*
+  name: Role
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Role_
+  commentId: Overload:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Role
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Role
+  nameWithType: SpawnedRagdollEventArgs.Role
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Rotation
+  name: Rotation
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Rotation
+  commentId: P:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Rotation
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Rotation
+  nameWithType: SpawnedRagdollEventArgs.Rotation
+- uid: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Rotation*
+  name: Rotation
+  href: api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_Rotation_
+  commentId: Overload:Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Rotation
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.Rotation
+  nameWithType: SpawnedRagdollEventArgs.Rotation
 - uid: Exiled.Events.EventArgs.Player.SpawningEventArgs
   name: SpawningEventArgs
   href: api/Exiled.Events.EventArgs.Player.SpawningEventArgs.html
@@ -43950,6 +44302,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.Player.SpawningRagdollEventArgs.Rotation
   nameWithType: SpawningRagdollEventArgs.Rotation
+- uid: Exiled.Events.EventArgs.Player.SpawningRagdollEventArgs.Scale
+  name: Scale
+  href: api/Exiled.Events.EventArgs.Player.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawningRagdollEventArgs_Scale
+  commentId: P:Exiled.Events.EventArgs.Player.SpawningRagdollEventArgs.Scale
+  fullName: Exiled.Events.EventArgs.Player.SpawningRagdollEventArgs.Scale
+  nameWithType: SpawningRagdollEventArgs.Scale
+- uid: Exiled.Events.EventArgs.Player.SpawningRagdollEventArgs.Scale*
+  name: Scale
+  href: api/Exiled.Events.EventArgs.Player.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_Player_SpawningRagdollEventArgs_Scale_
+  commentId: Overload:Exiled.Events.EventArgs.Player.SpawningRagdollEventArgs.Scale
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.SpawningRagdollEventArgs.Scale
+  nameWithType: SpawningRagdollEventArgs.Scale
 - uid: Exiled.Events.EventArgs.Player.StayingOnEnvironmentalHazardEventArgs
   name: StayingOnEnvironmentalHazardEventArgs
   href: api/Exiled.Events.EventArgs.Player.StayingOnEnvironmentalHazardEventArgs.html
@@ -51279,6 +51644,32 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.Handlers.Player.Died
   nameWithType: Player.Died
+- uid: Exiled.Events.Handlers.Player.DroppedAmmo
+  name: DroppedAmmo
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_DroppedAmmo
+  commentId: P:Exiled.Events.Handlers.Player.DroppedAmmo
+  fullName: Exiled.Events.Handlers.Player.DroppedAmmo
+  nameWithType: Player.DroppedAmmo
+- uid: Exiled.Events.Handlers.Player.DroppedAmmo*
+  name: DroppedAmmo
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_DroppedAmmo_
+  commentId: Overload:Exiled.Events.Handlers.Player.DroppedAmmo
+  isSpec: "True"
+  fullName: Exiled.Events.Handlers.Player.DroppedAmmo
+  nameWithType: Player.DroppedAmmo
+- uid: Exiled.Events.Handlers.Player.DroppedItem
+  name: DroppedItem
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_DroppedItem
+  commentId: P:Exiled.Events.Handlers.Player.DroppedItem
+  fullName: Exiled.Events.Handlers.Player.DroppedItem
+  nameWithType: Player.DroppedItem
+- uid: Exiled.Events.Handlers.Player.DroppedItem*
+  name: DroppedItem
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_DroppedItem_
+  commentId: Overload:Exiled.Events.Handlers.Player.DroppedItem
+  isSpec: "True"
+  fullName: Exiled.Events.Handlers.Player.DroppedItem
+  nameWithType: Player.DroppedItem
 - uid: Exiled.Events.Handlers.Player.DroppingAmmo
   name: DroppingAmmo
   href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_DroppingAmmo
@@ -51994,6 +52385,32 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.Handlers.Player.OnDied
   nameWithType: Player.OnDied
+- uid: Exiled.Events.Handlers.Player.OnDroppedAmmo(Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs)
+  name: OnDroppedAmmo(DroppedAmmoEventArgs)
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnDroppedAmmo_Exiled_Events_EventArgs_Player_DroppedAmmoEventArgs_
+  commentId: M:Exiled.Events.Handlers.Player.OnDroppedAmmo(Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs)
+  fullName: Exiled.Events.Handlers.Player.OnDroppedAmmo(Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs)
+  nameWithType: Player.OnDroppedAmmo(DroppedAmmoEventArgs)
+- uid: Exiled.Events.Handlers.Player.OnDroppedAmmo*
+  name: OnDroppedAmmo
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnDroppedAmmo_
+  commentId: Overload:Exiled.Events.Handlers.Player.OnDroppedAmmo
+  isSpec: "True"
+  fullName: Exiled.Events.Handlers.Player.OnDroppedAmmo
+  nameWithType: Player.OnDroppedAmmo
+- uid: Exiled.Events.Handlers.Player.OnDroppedItem(Exiled.Events.EventArgs.Player.DroppedItemEventArgs)
+  name: OnDroppedItem(DroppedItemEventArgs)
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnDroppedItem_Exiled_Events_EventArgs_Player_DroppedItemEventArgs_
+  commentId: M:Exiled.Events.Handlers.Player.OnDroppedItem(Exiled.Events.EventArgs.Player.DroppedItemEventArgs)
+  fullName: Exiled.Events.Handlers.Player.OnDroppedItem(Exiled.Events.EventArgs.Player.DroppedItemEventArgs)
+  nameWithType: Player.OnDroppedItem(DroppedItemEventArgs)
+- uid: Exiled.Events.Handlers.Player.OnDroppedItem*
+  name: OnDroppedItem
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnDroppedItem_
+  commentId: Overload:Exiled.Events.Handlers.Player.OnDroppedItem
+  isSpec: "True"
+  fullName: Exiled.Events.Handlers.Player.OnDroppedItem
+  nameWithType: Player.OnDroppedItem
 - uid: Exiled.Events.Handlers.Player.OnDroppingAmmo(Exiled.Events.EventArgs.Player.DroppingAmmoEventArgs)
   name: OnDroppingAmmo(DroppingAmmoEventArgs)
   href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnDroppingAmmo_Exiled_Events_EventArgs_Player_DroppingAmmoEventArgs_
@@ -52582,6 +52999,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.Handlers.Player.OnSpawned
   nameWithType: Player.OnSpawned
+- uid: Exiled.Events.Handlers.Player.OnSpawnedRagdoll(Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs)
+  name: OnSpawnedRagdoll(SpawnedRagdollEventArgs)
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnSpawnedRagdoll_Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_
+  commentId: M:Exiled.Events.Handlers.Player.OnSpawnedRagdoll(Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs)
+  fullName: Exiled.Events.Handlers.Player.OnSpawnedRagdoll(Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs)
+  nameWithType: Player.OnSpawnedRagdoll(SpawnedRagdollEventArgs)
+- uid: Exiled.Events.Handlers.Player.OnSpawnedRagdoll*
+  name: OnSpawnedRagdoll
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnSpawnedRagdoll_
+  commentId: Overload:Exiled.Events.Handlers.Player.OnSpawnedRagdoll
+  isSpec: "True"
+  fullName: Exiled.Events.Handlers.Player.OnSpawnedRagdoll
+  nameWithType: Player.OnSpawnedRagdoll
 - uid: Exiled.Events.Handlers.Player.OnSpawning(Exiled.Events.EventArgs.Player.SpawningEventArgs)
   name: OnSpawning(SpawningEventArgs)
   href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnSpawning_Exiled_Events_EventArgs_Player_SpawningEventArgs_
@@ -53024,6 +53454,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.Handlers.Player.Spawned
   nameWithType: Player.Spawned
+- uid: Exiled.Events.Handlers.Player.SpawnedRagdoll
+  name: SpawnedRagdoll
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_SpawnedRagdoll
+  commentId: P:Exiled.Events.Handlers.Player.SpawnedRagdoll
+  fullName: Exiled.Events.Handlers.Player.SpawnedRagdoll
+  nameWithType: Player.SpawnedRagdoll
+- uid: Exiled.Events.Handlers.Player.SpawnedRagdoll*
+  name: SpawnedRagdoll
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_SpawnedRagdoll_
+  commentId: Overload:Exiled.Events.Handlers.Player.SpawnedRagdoll
+  isSpec: "True"
+  fullName: Exiled.Events.Handlers.Player.SpawnedRagdoll
+  nameWithType: Player.SpawnedRagdoll
 - uid: Exiled.Events.Handlers.Player.Spawning
   name: Spawning
   href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_Spawning
