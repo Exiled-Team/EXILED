@@ -160,7 +160,7 @@ namespace Exiled.Loader
                         case NonNegativeAttribute:
                             if (value is >= 0)
                             {
-                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be non negative. Default value will be used instead.");
+                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be non negative. Default value ({defaultValue}) will be used instead.");
                                 configProperty.SetValue(configType, defaultValue);
                             }
 
@@ -168,7 +168,7 @@ namespace Exiled.Loader
                         case NonPositiveAttribute:
                             if (value is <= 0)
                             {
-                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be non positive. Default value will be used instead.");
+                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be non positive. Default value ({defaultValue}) will be used instead.");
                                 configProperty.SetValue(configType, defaultValue);
                             }
 
@@ -176,7 +176,7 @@ namespace Exiled.Loader
                         case LessThanAttribute lessThanAttribute:
                             if (value is int lessNumber && lessNumber < lessThanAttribute.Number)
                             {
-                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be less than {lessThanAttribute.Number}. Default value will be used instead.");
+                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be less than {lessThanAttribute.Number}. Default value ({defaultValue}) will be used instead.");
                                 configProperty.SetValue(configType, defaultValue);
                             }
 
@@ -184,7 +184,7 @@ namespace Exiled.Loader
                         case GreaterThanAttribute greaterThanAttribute:
                             if (value is int greaterNumber && greaterNumber > greaterThanAttribute.Number)
                             {
-                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be greater than {greaterThanAttribute.Number}. Default value will be used instead.");
+                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be greater than {greaterThanAttribute.Number}. Default value ({defaultValue}) will be used instead.");
                                 configProperty.SetValue(configType, defaultValue);
                             }
 
@@ -192,7 +192,7 @@ namespace Exiled.Loader
                         case PossibleValuesAttribute possibleValuesAttribute:
                             if (!possibleValuesAttribute.Values.Contains(value))
                             {
-                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be one of values: {string.Join(", ", possibleValuesAttribute.Values)}. Default value will be used instead.");
+                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be one of values: {string.Join(", ", possibleValuesAttribute.Values)}. Default value ({defaultValue}) will be used instead.");
                                 configProperty.SetValue(configType, defaultValue);
                             }
 
