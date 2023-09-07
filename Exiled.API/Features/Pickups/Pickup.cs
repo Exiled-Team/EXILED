@@ -596,6 +596,7 @@ namespace Exiled.API.Features.Pickups
             if (item is not null)
             {
                 Scale = item.Scale;
+                Weight = item.Weight;
             }
 
             return this;
@@ -611,6 +612,7 @@ namespace Exiled.API.Features.Pickups
             if (item is not null)
             {
                 item.Scale = Scale;
+                item.Weight = Weight;
             }
 
             return item;

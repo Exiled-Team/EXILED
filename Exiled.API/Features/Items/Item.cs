@@ -52,6 +52,7 @@ namespace Exiled.API.Features.Items
         {
             Base = itemBase;
             BaseToItem.Add(itemBase, this);
+            Weight = Base.Weight;
 
             if (Base.ItemSerial is 0 && itemBase.Owner != null)
             {
@@ -121,9 +122,9 @@ namespace Exiled.API.Features.Items
         public ItemTierFlags TierFlags => Base.TierFlags;
 
         /// <summary>
-        /// Gets the Weight of the item.
+        /// Gets or sets the Weight of the item.
         /// </summary>
-        public float Weight => Base.Weight;
+        public float Weight { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether or not this item is ammunition.
