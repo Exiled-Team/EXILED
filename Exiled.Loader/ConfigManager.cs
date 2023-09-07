@@ -11,14 +11,14 @@ namespace Exiled.Loader
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
 
     using API.Enums;
     using API.Extensions;
     using API.Interfaces;
-
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Pools;
-
     using YamlDotNet.Core;
 
     /// <summary>
@@ -137,7 +137,68 @@ namespace Exiled.Loader
             catch (YamlException yamlException)
             {
                 Log.Error($"{plugin.Name} configs could not be loaded, some of them are in a wrong format, default configs will be loaded instead!\n{yamlException}");
-                config = plugin.Config;
+                return plugin.Config;
+            }
+
+            Type configType = config.GetType();
+            Type pluginConfigType = plugin.Config.GetType();
+
+            foreach (PropertyInfo propertyInfo in configType.GetProperties())
+            {
+                foreach (Attribute attribute in propertyInfo.GetCustomAttributes())
+                {
+                    object value = propertyInfo.GetValue(propertyInfo, null);
+                    object defaultValue = pluginConfigType.GetProperty(propertyInfo.Name)?.GetValue(plugin.Config);
+
+                    PropertyInfo configProperty = configType.GetProperty(propertyInfo.Name);
+
+                    if (value is null || configProperty is null || defaultValue is null)
+                        continue;
+
+                    switch (attribute)
+                    {
+                        case NonNegativeAttribute:
+                            if (value is >= 0)
+                            {
+                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be non negative. Default value will be used instead.");
+                                configProperty.SetValue(configType, defaultValue);
+                            }
+
+                            break;
+                        case NonPositiveAttribute:
+                            if (value is <= 0)
+                            {
+                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be non positive. Default value will be used instead.");
+                                configProperty.SetValue(configType, defaultValue);
+                            }
+
+                            break;
+                        case LessThanAttribute lessThanAttribute:
+                            if (value is int lessNumber && lessNumber < lessThanAttribute.Number)
+                            {
+                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be less than {lessThanAttribute.Number}. Default value will be used instead.");
+                                configProperty.SetValue(configType, defaultValue);
+                            }
+
+                            break;
+                        case GreaterThanAttribute greaterThanAttribute:
+                            if (value is int greaterNumber && greaterNumber > greaterThanAttribute.Number)
+                            {
+                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be greater than {greaterThanAttribute.Number}. Default value will be used instead.");
+                                configProperty.SetValue(configType, defaultValue);
+                            }
+
+                            break;
+                        case PossibleValuesAttribute possibleValuesAttribute:
+                            if (!possibleValuesAttribute.Values.Contains(value))
+                            {
+                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be one of values: {string.Join(", ", possibleValuesAttribute.Values)}. Default value will be used instead.");
+                                configProperty.SetValue(configType, defaultValue);
+                            }
+
+                            break;
+                    }
+                }
             }
 
             return config;
