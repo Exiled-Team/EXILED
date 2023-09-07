@@ -219,7 +219,7 @@ namespace Exiled.Loader
                 installerProcess.OutputDataReceived += (s, args) =>
                 {
                     if (!string.IsNullOrEmpty(args.Data))
-                        Log.Info($"[Installer] {args.Data}");
+                        Log.Debug($"[Installer] {args.Data}");
                 };
                 installerProcess.BeginOutputReadLine();
 
