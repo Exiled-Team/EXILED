@@ -44,11 +44,9 @@ namespace Exiled.Loader
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
                     if (!deserializedConfigs.ContainsKey(plugin.Prefix))
-                    {
                         deserializedConfigs.Add(plugin.Prefix, plugin.LoadConfig(rawDeserializedConfigs));
-                    } else {
+                    else
                         Log.Warn($"{plugin.Prefix} already exists in {plugin.Name}'s configuration. {plugin.Prefix} has been skipped.");
-                    }
                 }
 
                 // Make sure that no keys in the config file were discarded. (Individual can ignore this since rawDeserializedConfigs is null)
@@ -58,7 +56,7 @@ namespace Exiled.Loader
                     File.WriteAllText(Paths.BackupConfig, rawConfigs);
                 }
 
-                Log.Info("All plugin configs have been loaded successfully!");
+                Log.Info("Plugin configs loaded successfully!");
 
                 DictionaryPool<string, object>.Pool.Return(rawDeserializedConfigs);
                 return deserializedConfigs;
