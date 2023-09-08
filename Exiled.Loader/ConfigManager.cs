@@ -17,7 +17,6 @@ namespace Exiled.Loader
     using API.Extensions;
     using API.Interfaces;
     using Exiled.API.Features;
-    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Pools;
     using YamlDotNet.Core;
 
@@ -143,62 +142,33 @@ namespace Exiled.Loader
             Type configType = config.GetType();
             Type pluginConfigType = plugin.Config.GetType();
 
+            int validations = 0;
+
             foreach (PropertyInfo propertyInfo in configType.GetProperties())
             {
                 foreach (Attribute attribute in propertyInfo.GetCustomAttributes())
                 {
-                    object value = propertyInfo.GetValue(propertyInfo, null);
-                    object defaultValue = pluginConfigType.GetProperty(propertyInfo.Name)?.GetValue(plugin.Config);
-
-                    PropertyInfo configProperty = configType.GetProperty(propertyInfo.Name);
-
-                    if (value is null || configProperty is null || defaultValue is null)
+                    if (attribute is not IValidator validator)
                         continue;
 
-                    switch (attribute)
+                    object value = propertyInfo.GetValue(config, null);
+                    object defaultValue = pluginConfigType.GetProperty(propertyInfo.Name)?.GetValue(plugin.Config, null);
+
+                    if (!validator.Validate(value))
                     {
-                        case NonNegativeAttribute:
-                            if (value is >= 0)
-                            {
-                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be non negative. Default value ({defaultValue}) will be used instead.");
-                                configProperty.SetValue(configType, defaultValue);
-                            }
-
-                            break;
-                        case NonPositiveAttribute:
-                            if (value is <= 0)
-                            {
-                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be non positive. Default value ({defaultValue}) will be used instead.");
-                                configProperty.SetValue(configType, defaultValue);
-                            }
-
-                            break;
-                        case LessThanAttribute lessThanAttribute:
-                            if (value is int lessNumber && lessNumber < lessThanAttribute.Number)
-                            {
-                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be less than {lessThanAttribute.Number}. Default value ({defaultValue}) will be used instead.");
-                                configProperty.SetValue(configType, defaultValue);
-                            }
-
-                            break;
-                        case GreaterThanAttribute greaterThanAttribute:
-                            if (value is int greaterNumber && greaterNumber > greaterThanAttribute.Number)
-                            {
-                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be greater than {greaterThanAttribute.Number}. Default value ({defaultValue}) will be used instead.");
-                                configProperty.SetValue(configType, defaultValue);
-                            }
-
-                            break;
-                        case PossibleValuesAttribute possibleValuesAttribute:
-                            if (!possibleValuesAttribute.Values.Contains(value))
-                            {
-                                Log.Error($"{plugin.Name} config value {propertyInfo.Name} has to be one of values: {string.Join(", ", possibleValuesAttribute.Values)}. Default value ({defaultValue}) will be used instead.");
-                                configProperty.SetValue(configType, defaultValue);
-                            }
-
-                            break;
+                        Log.Error($"{plugin.Name} config value {propertyInfo.Name} hasn't pass the validation (attribute ({attribute.GetType().Name})). Default value ({defaultValue}) will be used instead.");
+                        propertyInfo.SetValue(configType, defaultValue);
+                    }
+                    else
+                    {
+                        validations++;
                     }
                 }
+            }
+
+            if (validations > 0)
+            {
+                Log.Info($"Successfully passed {validations} validations");
             }
 
             return config;
