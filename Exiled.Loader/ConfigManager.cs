@@ -156,7 +156,7 @@ namespace Exiled.Loader
 
                     if (!validator.Validate(value))
                     {
-                        Log.Error($"{plugin.Name} config value {propertyInfo.Name} hasn't pass the validation (attribute ({attribute.GetType().Name})). Default value ({defaultValue}) will be used instead.");
+                        Log.Error($"{plugin.Name} config value {propertyInfo.Name} hasn't passed the validation (attribute ({attribute.GetType().Name})). Default value ({defaultValue}) will be used instead.");
                         propertyInfo.SetValue(configType, defaultValue);
                     }
                     else
