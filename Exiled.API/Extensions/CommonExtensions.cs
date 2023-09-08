@@ -33,5 +33,21 @@ namespace Exiled.API.Extensions
         /// <param name="condition">The condition to require.</param>
         /// <returns>Returns a random value from <see cref="IEnumerable{T}"/>.</returns>
         public static T GetRandomValue<T>(this IEnumerable<T> enumerable, System.Func<T, bool> condition) => enumerable is null || enumerable.Count() == 0 ? default : enumerable.Where(condition).GetRandomValue();
+
+        public static AnimationCurve Multiply(this AnimationCurve curve, float amount)
+        {
+            for (var i = 0; i < curve.length; i++)
+                curve.keys[i].value *= amount;
+
+            return curve;
+        }
+
+        public static AnimationCurve Add(this AnimationCurve curve, float amount)
+        {
+            for (var i = 0; i < curve.length; i++)
+                curve.keys[i].value += amount;
+
+            return curve;
+        }
     }
 }
