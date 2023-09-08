@@ -40,9 +40,6 @@
     <file src="..\bin\Release\Exiled.Permissions.dll" target="lib\net48" />
     <file src="..\bin\Release\Exiled.Permissions.xml" target="lib\net48" />
 
-    <file src="..\bin\Release\Exiled.Updater.dll" target="lib\net48" />
-    <file src="..\bin\Release\Exiled.Updater.xml" target="lib\net48" />
-
     <file src="..\bin\Release\Exiled.CreditTags.dll" target="lib\net48" />
     <file src="..\bin\Release\Exiled.CreditTags.xml" target="lib\net48" />
 
