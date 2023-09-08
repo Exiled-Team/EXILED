@@ -236,7 +236,7 @@ namespace Exiled.Loader
 
                 if (installerProcess.ExitCode == 0)
                 {
-                    Log.Info("Auto-update complete, round will be restarted the next round!");
+                    Log.Info("Auto-update complete, server will be restarted the next round!");
                     ServerLogs.AddLog(ServerLogs.Modules.Administrative, "EXILED scheduled server restart after the round end.", ServerLogs.ServerLogType.RemoteAdminActivity_GameChanging, false);
                     ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
                     ServerConsole.AddOutputEntry(default(ExitActionRestartEntry));
