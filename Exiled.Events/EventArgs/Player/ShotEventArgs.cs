@@ -8,7 +8,7 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
-
+    using Exiled.API.Features.Items;
     using Interfaces;
 
     using UnityEngine;
@@ -24,6 +24,9 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="shooter">
         ///     <inheritdoc cref="Player" />
         /// </param>
+        /// <param name="firearm">
+        ///     <inheritdoc cref="Firearm"/>
+        /// </param>
         /// <param name="destructible">The <see cref="IDestructible" /> hit.</param>
         /// <param name="hit">
         ///     <inheritdoc cref="Distance" />
@@ -31,9 +34,10 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="damage">
         ///     <inheritdoc cref="Damage" />
         /// </param>
-        public ShotEventArgs(Player shooter, RaycastHit hit, IDestructible destructible, float damage)
+        public ShotEventArgs(Player shooter, Firearm firearm, RaycastHit hit, IDestructible destructible, float damage)
         {
             Player = shooter;
+            Firearm = firearm;
             Damage = damage;
             Distance = hit.distance;
             Position = hit.point;
@@ -85,5 +89,10 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the player who shot.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        ///     Gets the firearm used to shoot.
+        /// </summary>
+        public Firearm Firearm { get; }
     }
 }
