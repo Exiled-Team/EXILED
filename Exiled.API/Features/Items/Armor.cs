@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.Armor;
@@ -19,6 +20,8 @@ namespace Exiled.API.Features.Items
 
     using Structs;
     using UnityEngine;
+
+    using BodyArmorPickup = Pickups.BodyArmorPickup;
 
     /// <summary>
     /// A wrapper class for <see cref="BodyArmor"/>.
@@ -176,5 +179,21 @@ namespace Exiled.API.Features.Items
             VestEfficacy = VestEfficacy,
             HelmetEfficacy = HelmetEfficacy,
         };
+
+        /// <inheritdoc/>
+        internal override void ReadPickupInfo(Pickup pickup)
+        {
+            base.ReadPickupInfo(pickup);
+            if (pickup is BodyArmorPickup armorPickup)
+            {
+                HelmetEfficacy = armorPickup.HelmetEfficacy;
+                VestEfficacy = armorPickup.VestEfficacy;
+                RemoveExcessOnDrop = armorPickup.RemoveExcessOnDrop;
+                StaminaUseMultiplier = armorPickup.StaminaUseMultiplier;
+                MovementSpeedMultiplier = armorPickup.MovementSpeedMultiplier;
+                AmmoLimits = armorPickup.AmmoLimits;
+                CategoryLimits = armorPickup.CategoryLimits;
+            }
+        }
     }
 }

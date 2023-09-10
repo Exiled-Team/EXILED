@@ -79,14 +79,14 @@ namespace Exiled.API.Features.Pickups
             if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
                 return;
 
-            Base = Object.Instantiate(itemBase.PickupDropModel);
-
             PickupSyncInfo psi = new()
             {
                 ItemId = type,
                 Serial = ItemSerialGenerator.GenerateNext(),
                 WeightKg = itemBase.Weight,
             };
+
+            Base = InventoryExtensions.ServerCreatePickup(itemBase, psi, itemBase.PickupDropModel.transform.position, itemBase.PickupDropModel.transform.rotation, false);
 
             Info = psi;
 
@@ -284,11 +284,6 @@ namespace Exiled.API.Features.Pickups
         /// Gets a value indicating whether this pickup is spawned.
         /// </summary>
         public bool IsSpawned { get; internal set; }
-
-        /// <summary>
-        /// Gets a value indicating whether or not this is a worn item.
-        /// </summary>
-        public bool IsLoaded { get; internal set; }
 
         /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.
@@ -585,35 +580,15 @@ namespace Exiled.API.Features.Pickups
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{IsLocked}- ={InUse}=";
 
         /// <summary>
-        /// Returns the Pickup with the according property from the Item.
+        /// Helper method for saving data between items and pickups.
         /// </summary>
-        /// <param name="item"> Item-related data to give to the Pickup.</param>
-        /// <returns>A Pickup containing the Item-related data.</returns>
-        internal virtual Pickup GetItemInfo(Items.Item item)
+        /// <param name="item"> <see cref="Items.Item"/>-related data to give to the <see cref="Pickup"/>.</param>
+        internal virtual void ReadItemInfo(Items.Item item)
         {
-            IsLoaded = true;
-
             if (item is not null)
             {
                 Scale = item.Scale;
             }
-
-            return this;
-        }
-
-        /// <summary>
-        /// Returns the Item with the according property from the Pickup.
-        /// </summary>
-        /// <param name="item"> Pickup-related data to give to the Item.</param>
-        /// <returns>A Item containing the Pickup-related data.</returns>
-        internal virtual Items.Item GetPickupInfo(Items.Item item)
-        {
-            if (item is not null)
-            {
-                item.Scale = Scale;
-            }
-
-            return item;
         }
     }
 }

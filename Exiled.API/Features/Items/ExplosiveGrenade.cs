@@ -161,5 +161,20 @@ namespace Exiled.API.Features.Items
             PinPullTime = PinPullTime,
             Repickable = Repickable,
         };
+
+        /// <inheritdoc/>
+        internal override void ReadPickupInfo(Pickup pickup)
+        {
+            base.ReadPickupInfo(pickup);
+            if (pickup is ExplosiveGrenadePickup explosiveGrenadePickup)
+            {
+                MaxRadius = explosiveGrenadePickup.MaxRadius;
+                ScpDamageMultiplier = explosiveGrenadePickup.ScpDamageMultiplier;
+                BurnDuration = explosiveGrenadePickup.BurnDuration;
+                DeafenDuration = explosiveGrenadePickup.DeafenDuration;
+                ConcussDuration = explosiveGrenadePickup.ConcussDuration;
+                FuseTime = explosiveGrenadePickup.FuseTime;
+            }
+        }
     }
 }

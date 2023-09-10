@@ -49,27 +49,13 @@ namespace Exiled.API.Features.Pickups
         public new BaseKeycard Base { get; }
 
         /// <inheritdoc/>
-        internal override Pickup GetItemInfo(Item item)
+        internal override void ReadItemInfo(Item item)
         {
-            base.GetItemInfo(item);
+            base.ReadItemInfo(item);
             if (item is Keycard keycarditem)
             {
                 Permissions = keycarditem.Permissions;
             }
-
-            return this;
-        }
-
-        /// <inheritdoc/>
-        internal override Item GetPickupInfo(Item item)
-        {
-            base.GetPickupInfo(item);
-            if (item is Keycard keycarditem)
-            {
-                keycarditem.Permissions = Permissions;
-            }
-
-            return item;
         }
     }
 }

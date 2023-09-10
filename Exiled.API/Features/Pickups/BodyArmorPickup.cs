@@ -136,9 +136,9 @@ namespace Exiled.API.Features.Pickups
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
 
         /// <inheritdoc/>
-        internal override Pickup GetItemInfo(Item item)
+        internal override void ReadItemInfo(Item item)
         {
-            base.GetItemInfo(item);
+            base.ReadItemInfo(item);
             if (item is Armor armoritem)
             {
                 helmetEfficacy = armoritem.HelmetEfficacy;
@@ -149,26 +149,6 @@ namespace Exiled.API.Features.Pickups
                 AmmoLimits = armoritem.AmmoLimits;
                 CategoryLimits = armoritem.CategoryLimits;
             }
-
-            return this;
-        }
-
-        /// <inheritdoc/>
-        internal override Item GetPickupInfo(Item item)
-        {
-            base.GetPickupInfo(item);
-            if (item is Armor armoritem)
-            {
-                armoritem.HelmetEfficacy = helmetEfficacy;
-                armoritem.VestEfficacy = vestEfficacy;
-                armoritem.RemoveExcessOnDrop = RemoveExcessOnDrop;
-                armoritem.StaminaUseMultiplier = StaminaUseMultiplier;
-                armoritem.MovementSpeedMultiplier = MovementSpeedMultiplier;
-                armoritem.AmmoLimits = AmmoLimits;
-                armoritem.CategoryLimits = CategoryLimits;
-            }
-
-            return item;
         }
     }
 }

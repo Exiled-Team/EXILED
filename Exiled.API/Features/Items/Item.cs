@@ -293,6 +293,8 @@ namespace Exiled.API.Features.Items
             ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
             ipb.gameObject.transform.localScale = Scale;
 
+            Base.OnRemoved(ipb);
+
             Pickup pickup = Pickup.Get(ipb);
 
             if (spawn)
@@ -325,6 +327,18 @@ namespace Exiled.API.Features.Items
             Base.Owner = newOwner.ReferenceHub;
 
             Base.OnAdded(null);
+        }
+
+        /// <summary>
+        /// Helper method for saving data between items and pickups.
+        /// </summary>
+        /// <param name="pickup"><see cref="Pickup"/>-related data to give to the <see cref="Item"/>.</param>
+        internal virtual void ReadPickupInfo(Pickup pickup)
+        {
+            if (pickup is not null)
+            {
+                Scale = pickup.Scale;
+            }
         }
     }
 }

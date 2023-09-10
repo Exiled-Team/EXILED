@@ -44,29 +44,14 @@ namespace Exiled.API.Features.Pickups
         public float MaxCancellableTime { get; set; }
 
         /// <inheritdoc/>
-        internal override Pickup GetItemInfo(Item item)
+        internal override void ReadItemInfo(Item item)
         {
-            base.GetItemInfo(item);
+            base.ReadItemInfo(item);
             if (item is Usable usableitem)
             {
                 UseTime = usableitem.UseTime;
                 MaxCancellableTime = usableitem.MaxCancellableTime;
             }
-
-            return this;
-        }
-
-        /// <inheritdoc/>
-        internal override Item GetPickupInfo(Item item)
-        {
-            base.GetPickupInfo(item);
-            if (item is Usable usableitem)
-            {
-                usableitem.UseTime = UseTime;
-                usableitem.MaxCancellableTime = MaxCancellableTime;
-            }
-
-            return item;
         }
     }
 }

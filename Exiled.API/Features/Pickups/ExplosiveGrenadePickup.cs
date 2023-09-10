@@ -60,9 +60,9 @@ namespace Exiled.API.Features.Pickups
         public float ConcussDuration { get; set; }
 
         /// <inheritdoc/>
-        internal override Pickup GetItemInfo(Item item)
+        internal override void ReadItemInfo(Item item)
         {
-            base.GetItemInfo(item);
+            base.ReadItemInfo(item);
             if (item is ExplosiveGrenade explosiveGrenadeitem)
             {
                 MaxRadius = explosiveGrenadeitem.MaxRadius;
@@ -72,25 +72,6 @@ namespace Exiled.API.Features.Pickups
                 ConcussDuration = explosiveGrenadeitem.ConcussDuration;
                 FuseTime = explosiveGrenadeitem.FuseTime;
             }
-
-            return this;
-        }
-
-        /// <inheritdoc/>
-        internal override Item GetPickupInfo(Item item)
-        {
-            base.GetPickupInfo(item);
-            if (item is ExplosiveGrenade explosiveGrenadeitem)
-            {
-                explosiveGrenadeitem.MaxRadius = MaxRadius;
-                explosiveGrenadeitem.ScpDamageMultiplier = ScpDamageMultiplier;
-                explosiveGrenadeitem.BurnDuration = BurnDuration;
-                explosiveGrenadeitem.DeafenDuration = DeafenDuration;
-                explosiveGrenadeitem.ConcussDuration = ConcussDuration;
-                explosiveGrenadeitem.FuseTime = FuseTime;
-            }
-
-            return item;
         }
 
         /// <inheritdoc/>

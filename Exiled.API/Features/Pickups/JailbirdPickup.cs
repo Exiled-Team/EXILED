@@ -97,9 +97,9 @@ namespace Exiled.API.Features.Pickups
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
 
         /// <inheritdoc/>
-        internal override Pickup GetItemInfo(Item item)
+        internal override void ReadItemInfo(Item item)
         {
-            base.GetItemInfo(item);
+            base.ReadItemInfo(item);
             if (item is Jailbird jailBirditem)
             {
                 MeleeDamage = jailBirditem.MeleeDamage;
@@ -107,23 +107,6 @@ namespace Exiled.API.Features.Pickups
                 FlashDuration = jailBirditem.FlashDuration;
                 Radius = jailBirditem.Radius;
             }
-
-            return this;
-        }
-
-        /// <inheritdoc/>
-        internal override Item GetPickupInfo(Item item)
-        {
-            base.GetPickupInfo(item);
-            if (item is Jailbird jailBirditem)
-            {
-                jailBirditem.MeleeDamage = MeleeDamage;
-                jailBirditem.ChargeDamage = ChargeDamage;
-                jailBirditem.FlashDuration = FlashDuration;
-                jailBirditem.Radius = Radius;
-            }
-
-            return item;
         }
     }
 }
