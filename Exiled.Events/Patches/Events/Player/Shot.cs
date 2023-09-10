@@ -26,6 +26,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
+    using Item = API.Features.Items.Item;
+
     /// <summary>
     ///     Patches <see cref="SingleBulletHitreg.ServerProcessRaycastHit(Ray, RaycastHit)" />.
     ///     Adds the <see cref="Handlers.Player.Shot" /> events.
@@ -45,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Player
         /// <returns>If the shot is allowed.</returns>
         internal static bool ProcessShot(ReferenceHub player, Firearm firearm, RaycastHit hit, IDestructible destructible, ref float damage)
         {
-            ShotEventArgs shotEvent = new(Player.Get(player), (API.Features.Items.Firearm)API.Features.Items.Item.Get(firearm), hit, destructible, damage);
+            ShotEventArgs shotEvent = new(Player.Get(player), Item.Get(firearm).Cast<API.Features.Items.Firearm>(), hit, destructible, damage);
 
             Handlers.Player.OnShot(shotEvent);
 
