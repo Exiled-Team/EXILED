@@ -21,9 +21,11 @@ namespace Exiled.API.Features.Attributes.Validators
         /// Initializes a new instance of the <see cref="LessThanAttribute"/> class.
         /// </summary>
         /// <param name="number">A number the value should be less.</param>
-        public LessThanAttribute(int number)
+        /// <param name="isIncluded">Whether or not <param name="number"></param> is included.</param>
+        public LessThanAttribute(int number, bool isIncluded = false)
         {
             Number = number;
+            IsIncluded = isIncluded;
         }
 
         /// <summary>
@@ -31,7 +33,12 @@ namespace Exiled.API.Features.Attributes.Validators
         /// </summary>
         public int Number { get; }
 
+        /// <summary>
+        /// Gets a value indicating whether or not <see cref="Number"/> is included.
+        /// </summary>
+        public bool IsIncluded { get; }
+
         /// <inheritdoc/>
-        public bool Validate(object value) => value is int number && number < Number;
+        public bool Validate(object value) => value is int number && (IsIncluded ? number <= Number : number < Number);
     }
 }
