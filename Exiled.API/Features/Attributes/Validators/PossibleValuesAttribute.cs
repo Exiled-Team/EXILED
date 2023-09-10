@@ -14,15 +14,14 @@ namespace Exiled.API.Features.Attributes.Validators
     /// <summary>
     /// An attribute to easily manage config values.
     /// </summary>
-    /// <typeparam name="T">The type.</typeparam>
     [AttributeUsage(AttributeTargets.Property)]
-    public sealed class PossibleValuesAttribute<T> : Attribute, IValidator
+    public sealed class PossibleValuesAttribute : Attribute, IValidator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PossibleValuesAttribute{T}"/> class.
+        /// Initializes a new instance of the <see cref="PossibleValuesAttribute"/> class.
         /// </summary>
         /// <param name="values">Values should be used.</param>
-        public PossibleValuesAttribute(params T[] values)
+        public PossibleValuesAttribute(params string[] values)
         {
             Values = values;
         }
@@ -30,9 +29,9 @@ namespace Exiled.API.Features.Attributes.Validators
         /// <summary>
         /// Gets the values.
         /// </summary>
-        public T[] Values { get; }
+        public string[] Values { get; }
 
         /// <inheritdoc/>
-        public bool Validate(object value) => value is T type && Values.Contains(type);
+        public bool Validate(object value) => Values.Contains(value.ToString());
     }
 }
