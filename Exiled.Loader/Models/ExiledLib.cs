@@ -49,13 +49,7 @@ namespace Exiled.Loader.Models
         /// Zero This instance occurs in the same position in the sort order as other.
         /// Greater than zero This instance follows other in the sort order.
         /// </returns>
-        public int CompareTo(object obj)
-        {
-            if (obj is ExiledLib l)
-                return CompareTo(l);
-            else
-                return 0;
-        }
+        public int CompareTo(object obj) => obj is ExiledLib l ? CompareTo(l) : 0
 
         /// <summary>
         /// Compares the current instance with another object of the same type and returns
