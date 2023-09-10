@@ -233,7 +233,6 @@ namespace Exiled.Events.Patches.Events.Player
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Shot))]
     [HarmonyPatch(typeof(DisruptorHitreg), nameof(DisruptorHitreg.ServerPerformShot))]
-    [HarmonyDebug]
     internal static class ShotDisruptor
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
