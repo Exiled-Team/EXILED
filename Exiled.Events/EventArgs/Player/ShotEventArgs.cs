@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information after a player has fired a weapon.
     /// </summary>
-    public class ShotEventArgs : IPlayerEvent
+    public class ShotEventArgs : IPlayerEvent, IFirearmEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ShotEventArgs" /> class.
@@ -51,14 +51,27 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the target of the shot. Can be <see langword="null" />!.
+        ///     Gets the player who shot.
         /// </summary>
-        public Player Target { get; }
+        public Player Player { get; }
+
+        /// <summary>
+        ///     Gets the firearm used to shoot.
+        /// </summary>
+        public Firearm Firearm { get; }
+
+        /// <inheritdoc/>
+        public Item Item => Firearm;
 
         /// <summary>
         ///     Gets the hitbox type of the shot. Can be <see langword="null" />!.
         /// </summary>
         public HitboxIdentity Hitbox { get; }
+
+        /// <summary>
+        ///     Gets or sets the inflicted damage.
+        /// </summary>
+        public float Damage { get; set; }
 
         /// <summary>
         ///     Gets the shot distance.
@@ -76,23 +89,13 @@ namespace Exiled.Events.EventArgs.Player
         public RaycastHit RaycastHit { get; }
 
         /// <summary>
-        ///     Gets or sets the inflicted damage.
-        /// </summary>
-        public float Damage { get; set; }
-
-        /// <summary>
         ///     Gets or sets a value indicating whether or not the shot can hurt the target.
         /// </summary>
         public bool CanHurt { get; set; } = true;
 
         /// <summary>
-        ///     Gets the player who shot.
+        ///     Gets the target of the shot. Can be <see langword="null" />!.
         /// </summary>
-        public Player Player { get; }
-
-        /// <summary>
-        ///     Gets the firearm used to shoot.
-        /// </summary>
-        public Firearm Firearm { get; }
+        public Player Target { get; }
     }
 }
