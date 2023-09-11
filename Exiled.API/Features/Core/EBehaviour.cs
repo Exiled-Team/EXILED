@@ -7,10 +7,7 @@
 
 namespace Exiled.API.Features.Core
 {
-    using System;
-
     using Exiled.API.Features;
-    using Exiled.API.Features.DynamicEvents;
 
     /// <summary>
     /// <see cref="EBehaviour"/> is a versatile component designed to enhance the functionality of playable characters.
@@ -19,9 +16,9 @@ namespace Exiled.API.Features.Core
     public abstract class EBehaviour : EActor
     {
         /// <summary>
-        /// Gets the owner of the <see cref="EBehaviour"/>.
+        /// Gets or sets the owner of the <see cref="EBehaviour"/>.
         /// </summary>
-        protected virtual Player Owner { get; private set; }
+        public virtual Player Owner { get; protected set; }
 
         /// <inheritdoc/>
         protected override void PostInitialize()
@@ -51,22 +48,6 @@ namespace Exiled.API.Features.Core
 
             if (Owner is null)
                 return;
-        }
-
-        /// <inheritdoc/>
-        protected override void SubscribeEvents()
-        {
-            base.SubscribeEvents();
-
-            StaticActor.Get<DynamicEventManager>().BindAllFromTypeInstance(this);
-        }
-
-        /// <inheritdoc/>
-        protected override void UnsubscribeEvents()
-        {
-            base.UnsubscribeEvents();
-
-            StaticActor.Get<DynamicEventManager>().UnbindAllFromTypeInstance(this);
         }
 
         /// <summary>
