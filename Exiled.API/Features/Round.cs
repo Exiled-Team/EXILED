@@ -9,15 +9,12 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.Remoting.Messaging;
     using Enums;
 
     using GameCore;
 
     using PlayerRoles;
-    using PluginAPI.Core;
     using RoundRestarting;
-    using UnityEngine;
 
     /// <summary>
     /// A set of tools to handle the round more easily.
