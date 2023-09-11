@@ -89,13 +89,13 @@ namespace Exiled.Events.EventArgs.Player
         public RaycastHit RaycastHit { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the shot can hurt the target.
-        /// </summary>
-        public bool CanHurt { get; set; } = true;
-
-        /// <summary>
         ///     Gets the target of the shot. Can be <see langword="null" />!.
         /// </summary>
         public Player Target { get; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether or not the shot can hurt the target.
+        /// </summary>
+        public bool CanHurt { get; set; } = true;
     }
 }
