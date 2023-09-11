@@ -248,7 +248,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="command">The command to be run.</param>
         /// <param name="sender">The <see cref="CommandSender"/> running the command.</param>
-        public static void RunCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender);
+        public static string RunCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender);
 
         /// <summary>
         /// Safely gets an <see cref="object"/> from <see cref="SessionVariables"/>, then casts it to <typeparamref name="T"/>.
