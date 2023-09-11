@@ -14,6 +14,7 @@ namespace Exiled.API.Features
     using GameCore;
 
     using PlayerRoles;
+    using PluginAPI.Core;
     using RoundRestarting;
 
     /// <summary>
@@ -64,8 +65,8 @@ namespace Exiled.API.Features
         /// </summary>
         public static int ChaosTargetCount
         {
-            get => RoundSummary.singleton.Network_chaosTargetCount;
-            set => RoundSummary.singleton.Network_chaosTargetCount = value;
+            get => RoundSummary.singleton.ChaosTargetCount;
+            set => RoundSummary.singleton.ChaosTargetCount = value;
         }
 
 
