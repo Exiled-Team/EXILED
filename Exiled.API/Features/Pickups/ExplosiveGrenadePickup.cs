@@ -77,7 +77,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <inheritdoc/>
-        internal override Pickup GetPickupInfo(Projectile projectile)
+        internal override void WriteProjectileInfo(Projectile projectile)
         {
             if (projectile is ExplosionGrenadeProjectile explosionGrenadeProjectile)
             {
@@ -88,8 +88,6 @@ namespace Exiled.API.Features.Pickups
                 explosionGrenadeProjectile.ConcussDuration = ConcussDuration;
                 explosionGrenadeProjectile.FuseTime = FuseTime;
             }
-
-            return projectile;
         }
 
         /// <inheritdoc/>

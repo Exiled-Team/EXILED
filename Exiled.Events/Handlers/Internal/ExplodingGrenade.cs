@@ -19,7 +19,7 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs ev)
         {
             if (ev.Pickup is GrenadePickup grenadePickup)
-                grenadePickup.GetPickupInfo(ev.Projectile);
+                grenadePickup.WriteProjectileInfo(ev.Projectile);
         }
     }
 }

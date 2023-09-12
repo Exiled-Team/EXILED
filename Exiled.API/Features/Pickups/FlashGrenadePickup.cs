@@ -65,7 +65,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <inheritdoc/>
-        internal override Pickup GetPickupInfo(Projectile projectile)
+        internal override void WriteProjectileInfo(Projectile projectile)
         {
             if (projectile is FlashbangProjectile flashbangProjectile)
             {
@@ -74,8 +74,6 @@ namespace Exiled.API.Features.Pickups
                 flashbangProjectile.SurfaceDistanceIntensifier = SurfaceDistanceIntensifier;
                 flashbangProjectile.FuseTime = FuseTime;
             }
-
-            return projectile;
         }
 
         /// <inheritdoc/>
