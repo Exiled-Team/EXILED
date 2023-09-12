@@ -83,7 +83,7 @@ namespace Exiled.API.Features.Toys
         /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
         /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
         /// <returns>The new <see cref="Primitive"/>.</returns>
-        [Obsolete("Deprecated due to new methods. Use Create(Vector3, Vector3, Vector3, bool, Color) instead.", true)]
+        [Obsolete("Use Create(Vector3, Vector3, Vector3, bool, Color) instead.", true)]
         public static Primitive Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
         {
             Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
@@ -109,7 +109,7 @@ namespace Exiled.API.Features.Toys
         /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
         /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
         /// <returns>The new <see cref="Primitive"/>.</returns>
-        [Obsolete("Deprecated due to new methods. Use Create(PrimitiveType, Vector3, Vector3, Vector3, bool, Color) instead.", true)]
+        [Obsolete("Use Create(PrimitiveType, Vector3, Vector3, Vector3, bool, Color) instead.", true)]
         public static Primitive Create(PrimitiveType primitiveType = PrimitiveType.Sphere, Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
         {
             Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
