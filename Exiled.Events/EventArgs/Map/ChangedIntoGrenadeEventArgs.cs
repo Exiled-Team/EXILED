@@ -26,9 +26,6 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="projectile">The <see cref="TimeGrenadeProjectile"/>.</param>
         public ChangedIntoGrenadeEventArgs(TimedGrenadePickup pickup, ThrownProjectile projectile)
         {
-            if (pickup is not TimedGrenadePickup)
-                Log.Error($"{nameof(ChangedIntoGrenadeEventArgs)}: Pickup is not TimedGrenadePickup!");
-
             Pickup = (GrenadePickup)API.Features.Pickups.Pickup.Get(pickup);
             Projectile = (Projectile)API.Features.Pickups.Pickup.Get(projectile);
         }
