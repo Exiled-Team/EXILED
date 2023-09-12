@@ -31,7 +31,6 @@ namespace Exiled.Events.EventArgs.Map
 
             Pickup = (GrenadePickup)API.Features.Pickups.Pickup.Get(pickup);
             Projectile = (Projectile)API.Features.Pickups.Pickup.Get(projectile);
-            FuseTime = (Projectile as TimeGrenadeProjectile)?.FuseTime ?? float.NaN;
         }
 
         /// <summary>
@@ -43,11 +42,5 @@ namespace Exiled.Events.EventArgs.Map
         /// Gets a value indicating the projectile that spawned.
         /// </summary>
         public Projectile Projectile { get; }
-
-        /// <summary>
-        /// Gets or sets a value indicating how long the fuse of the changed grenade will be.
-        /// </summary>
-        // TODO: float
-        public double FuseTime { get; set; }
     }
 }
