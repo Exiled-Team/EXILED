@@ -9,11 +9,15 @@ namespace Exiled.API.Features.Pickups
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
+
+    using InventorySystem.Items;
     using InventorySystem.Items.Armor;
+
     using UnityEngine;
 
     using BaseBodyArmor = InventorySystem.Items.Armor.BodyArmorPickup;
@@ -114,10 +118,10 @@ namespace Exiled.API.Features.Pickups
         public float StaminaUseMultiplier { get; set; }
 
         /// <summary>
-        /// Gets or sets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
+        /// Gets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 0 or above 1.</exception>
-        public float MovementSpeedMultiplier { get; set; }
+        public float MovementSpeedMultiplier { get; }
 
         /// <summary>
         /// Gets or sets the ammo limit of the wearer when using this armor.
@@ -145,8 +149,21 @@ namespace Exiled.API.Features.Pickups
                 vestEfficacy = armoritem.VestEfficacy;
                 RemoveExcessOnDrop = armoritem.RemoveExcessOnDrop;
                 StaminaUseMultiplier = armoritem.StaminaUseMultiplier;
-                MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
                 AmmoLimits = armoritem.AmmoLimits;
+                CategoryLimits = armoritem.CategoryLimits;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void InitializeProperties(ItemBase itemBase)
+        {
+            base.InitializeProperties(itemBase);
+            if (itemBase is BodyArmor armoritem)
+            {
+                helmetEfficacy = armoritem.HelmetEfficacy;
+                vestEfficacy = armoritem.VestEfficacy;
+                RemoveExcessOnDrop = !armoritem.DontRemoveExcessOnDrop;
+                AmmoLimits = armoritem.AmmoLimits.Select(limit => (ArmorAmmoLimit)limit);
                 CategoryLimits = armoritem.CategoryLimits;
             }
         }

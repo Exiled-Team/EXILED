@@ -10,6 +10,8 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups.Projectiles;
+
+    using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -88,6 +90,21 @@ namespace Exiled.API.Features.Pickups
             }
 
             return projectile;
+        }
+
+        /// <inheritdoc/>
+        protected override void InitializeProperties(ItemBase itemBase)
+        {
+            base.InitializeProperties(itemBase);
+            if (itemBase is ThrowableItem throwable && throwable.Projectile is ExplosionGrenade explosiveGrenade)
+            {
+                MaxRadius = explosiveGrenade._maxRadius;
+                ScpDamageMultiplier = explosiveGrenade._scpDamageMultiplier;
+                BurnDuration = explosiveGrenade._burnedDuration;
+                DeafenDuration = explosiveGrenade._deafenedDuration;
+                ConcussDuration = explosiveGrenade._concussedDuration;
+                FuseTime = explosiveGrenade._fuseTime;
+            }
         }
     }
 }

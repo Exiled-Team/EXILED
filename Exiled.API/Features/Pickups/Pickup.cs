@@ -68,6 +68,8 @@ namespace Exiled.API.Features.Pickups
                 return;
 
             BaseToPickup.Add(pickupBase, this);
+
+            InitializeProperties(InventoryItemLoader.AvailableItems[pickupBase.Info.ItemId]);
         }
 
         /// <summary>
@@ -91,6 +93,8 @@ namespace Exiled.API.Features.Pickups
             Info = psi;
 
             BaseToPickup.Add(Base, this);
+
+            InitializeProperties(itemBase);
         }
 
         /// <summary>
@@ -589,6 +593,14 @@ namespace Exiled.API.Features.Pickups
             {
                 Scale = item.Scale;
             }
+        }
+
+        /// <summary>
+        /// eeee.
+        /// </summary>
+        /// <param name="itemBase">target item.</param>
+        protected virtual void InitializeProperties(ItemBase itemBase)
+        {
         }
     }
 }

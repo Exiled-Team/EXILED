@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.Jailbird;
 
     using BaseJailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
@@ -106,6 +107,19 @@ namespace Exiled.API.Features.Pickups
                 ChargeDamage = jailBirditem.ChargeDamage;
                 FlashDuration = jailBirditem.FlashDuration;
                 Radius = jailBirditem.Radius;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void InitializeProperties(ItemBase itemBase)
+        {
+            base.InitializeProperties(itemBase);
+            if (itemBase is JailbirdItem jailbirdItem)
+            {
+                MeleeDamage = jailbirdItem._hitreg._damageMelee;
+                ChargeDamage = jailbirdItem._hitreg._damageCharge;
+                FlashDuration = jailbirdItem._hitreg._flashDuration;
+                Radius = jailbirdItem._hitreg._hitregRadius;
             }
         }
     }

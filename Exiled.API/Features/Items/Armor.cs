@@ -132,14 +132,9 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets or sets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
+        /// Gets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 0 or above 1.</exception>
-        public float MovementSpeedMultiplier
-        {
-            get => Base.MovementSpeedMultiplier;
-            set => Base._movementSpeedMultiplier = value;
-        }
+        public float MovementSpeedMultiplier { get; }
 
         /// <summary>
         /// Gets how much worse <see cref="RoleTypeId.ClassD"/> and <see cref="RoleTypeId.Scientist"/>s are affected by wearing this armor.
@@ -190,7 +185,6 @@ namespace Exiled.API.Features.Items
                 VestEfficacy = armorPickup.VestEfficacy;
                 RemoveExcessOnDrop = armorPickup.RemoveExcessOnDrop;
                 StaminaUseMultiplier = armorPickup.StaminaUseMultiplier;
-                MovementSpeedMultiplier = armorPickup.MovementSpeedMultiplier;
                 AmmoLimits = armorPickup.AmmoLimits;
                 CategoryLimits = armorPickup.CategoryLimits;
             }

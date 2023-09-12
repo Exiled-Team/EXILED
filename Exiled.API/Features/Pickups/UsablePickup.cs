@@ -8,7 +8,10 @@
 namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Features.Items;
+
+    using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
+    using InventorySystem.Items.Usables;
 
     /// <summary>
     /// A wrapper class for dropped Usable Pickup.
@@ -48,6 +51,17 @@ namespace Exiled.API.Features.Pickups
         {
             base.ReadItemInfo(item);
             if (item is Usable usableitem)
+            {
+                UseTime = usableitem.UseTime;
+                MaxCancellableTime = usableitem.MaxCancellableTime;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void InitializeProperties(ItemBase itemBase)
+        {
+            base.InitializeProperties(itemBase);
+            if (itemBase is UsableItem usableitem)
             {
                 UseTime = usableitem.UseTime;
                 MaxCancellableTime = usableitem.MaxCancellableTime;
