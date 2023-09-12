@@ -1803,7 +1803,7 @@ namespace Exiled.API.Features
         /// <seealso cref="CountItem(ItemType)"/>
         public int CountItem(ItemCategory category) => category switch
         {
-            ItemCategory.Ammo => Inventory.UserInventory.ReserveAmmo.Where(ammo => ammo.Value > 0).Count(),
+            ItemCategory.Ammo => Inventory.UserInventory.ReserveAmmo.Count(ammo => ammo.Value > 0),
             _ => Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.Category == category),
         };
 
