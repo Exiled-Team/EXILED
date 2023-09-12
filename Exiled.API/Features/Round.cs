@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+
     using Enums;
 
     using GameCore;
@@ -68,7 +69,6 @@ namespace Exiled.API.Features
             get => RoundSummary.singleton.ChaosTargetCount;
             set => RoundSummary.singleton.ChaosTargetCount = value;
         }
-
 
         /// <summary>
         /// Gets or sets a value indicating whether the round is locked or not.
