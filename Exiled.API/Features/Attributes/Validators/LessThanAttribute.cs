@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Attributes.Validators
         /// Initializes a new instance of the <see cref="LessThanAttribute"/> class.
         /// </summary>
         /// <param name="number">A number the value should be less.</param>
-        /// <param name="isIncluded">Whether or not <param name="number"></param> is included.</param>
+        /// <param name="isIncluded">Whether or not <paramref name="number"></paramref> is included.</param>
         public LessThanAttribute(int number, bool isIncluded = false)
         {
             Number = number;
