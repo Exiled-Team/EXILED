@@ -2727,8 +2727,23 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         public void EnableEffect(EffectType type, float duration = 0f, bool addDurationIfActive = false)
         {
-            if (TryGetEffect(type, out StatusEffectBase statusEffect))
-                EnableEffect(statusEffect, duration, addDurationIfActive);
+            switch (type)
+            {
+                case EffectType.AmnesiaItems:
+                    EnableEffect<AmnesiaItems>(duration, addDurationIfActive);
+                    break;
+                case EffectType.AmnesiaVision:
+                    EnableEffect<AmnesiaVision>(duration, addDurationIfActive);
+                    break;
+                case EffectType.SoundtrackMute:
+                    EnableEffect<SoundtrackMute>(duration, addDurationIfActive);
+                    break;
+                default:
+                    if (TryGetEffect(type, out StatusEffectBase statusEffect))
+                        EnableEffect(statusEffect, duration, addDurationIfActive);
+
+                    break;
+            }
         }
 
         /// <summary>
