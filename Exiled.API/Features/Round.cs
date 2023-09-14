@@ -15,7 +15,7 @@ namespace Exiled.API.Features
     using GameCore;
 
     using PlayerRoles;
-
+    using PluginAPI.Core;
     using RoundRestarting;
 
     /// <summary>
@@ -60,6 +60,15 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the round is lobby or not.
         /// </summary>
         public static bool IsLobby => !(IsEnded || IsStarted);
+
+        /// <summary>
+        /// Gets or sets a value indicating the amount of Chaos Targets remaining.
+        /// </summary>
+        public static int ChaosTargetCount
+        {
+            get => RoundSummary.singleton.ChaosTargetCount;
+            set => RoundSummary.singleton.ChaosTargetCount = value;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the round is locked or not.
