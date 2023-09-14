@@ -27939,19 +27939,6 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Round.ChangedIntoZombies
   nameWithType: Round.ChangedIntoZombies
-- uid: Exiled.API.Features.Round.ChaosTargetCount
-  name: ChaosTargetCount
-  href: api/Exiled.API.Features.Round.html#Exiled_API_Features_Round_ChaosTargetCount
-  commentId: P:Exiled.API.Features.Round.ChaosTargetCount
-  fullName: Exiled.API.Features.Round.ChaosTargetCount
-  nameWithType: Round.ChaosTargetCount
-- uid: Exiled.API.Features.Round.ChaosTargetCount*
-  name: ChaosTargetCount
-  href: api/Exiled.API.Features.Round.html#Exiled_API_Features_Round_ChaosTargetCount_
-  commentId: Overload:Exiled.API.Features.Round.ChaosTargetCount
-  isSpec: "True"
-  fullName: Exiled.API.Features.Round.ChaosTargetCount
-  nameWithType: Round.ChaosTargetCount
 - uid: Exiled.API.Features.Round.ElapsedTime
   name: ElapsedTime
   href: api/Exiled.API.Features.Round.html#Exiled_API_Features_Round_ElapsedTime
