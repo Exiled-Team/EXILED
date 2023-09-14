@@ -248,7 +248,16 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="command">The command to be run.</param>
         /// <param name="sender">The <see cref="CommandSender"/> running the command.</param>
+        [Obsolete("Use Server.ExecuteCommand() instead.")]
         public static void RunCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender);
+
+        /// <summary>
+        /// Executes a server command.
+        /// </summary>
+        /// <param name="command">The command to be run.</param>
+        /// <param name="sender">The <see cref="CommandSender"/> running the command.</param>
+        /// <returns>Command response, if there is one; otherwise, <see langword="null"/>.</returns>
+        public static string ExecuteCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender);
 
         /// <summary>
         /// Safely gets an <see cref="object"/> from <see cref="SessionVariables"/>, then casts it to <typeparamref name="T"/>.
