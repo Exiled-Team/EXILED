@@ -83,22 +83,8 @@ namespace Exiled.API.Features.Toys
         /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
         /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
         /// <returns>The new <see cref="Primitive"/>.</returns>
-        [Obsolete("Use Create(Vector3, Vector3, Vector3, bool, Color) instead.", true)]
         public static Primitive Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
-        {
-            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
-
-            primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
-            primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
-            primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
-
-            if (spawn)
-                primitive.Spawn();
-
-            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
-
-            return primitive;
-        }
+            => Create(position, rotation, scale, spawn, null);
 
         /// <summary>
         /// Creates a new <see cref="Primitive"/>.
@@ -109,23 +95,8 @@ namespace Exiled.API.Features.Toys
         /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
         /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
         /// <returns>The new <see cref="Primitive"/>.</returns>
-        [Obsolete("Use Create(PrimitiveType, Vector3, Vector3, Vector3, bool, Color) instead.", true)]
         public static Primitive Create(PrimitiveType primitiveType = PrimitiveType.Sphere, Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
-        {
-            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
-
-            primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
-            primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
-            primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
-
-            if (spawn)
-                primitive.Spawn();
-
-            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
-            primitive.Base.NetworkPrimitiveType = primitiveType;
-
-            return primitive;
-        }
+            => Create(primitiveType, position, rotation, scale, spawn, null);
 
         /// <summary>
         /// Creates a new <see cref="Primitive"/>.
