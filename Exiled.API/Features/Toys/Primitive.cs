@@ -148,7 +148,7 @@ namespace Exiled.API.Features.Toys
                 primitive.Spawn();
 
             primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
-            primitive.Color = color ?? Color.white;
+            primitive.Color = color ?? Color.gray;
 
             return primitive;
         }
