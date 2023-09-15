@@ -116,7 +116,7 @@ namespace Exiled.API.Features.Toys
             if (spawn)
                 light.Spawn();
 
-            light.Color = color ?? Color.white;
+            light.Color = color ?? Color.gray;
 
             return light;
         }
