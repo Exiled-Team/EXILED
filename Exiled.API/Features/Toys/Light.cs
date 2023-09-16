@@ -81,20 +81,8 @@ namespace Exiled.API.Features.Toys
         /// <param name="scale">The scale of the <see cref="Light"/>.</param>
         /// <param name="spawn">Whether the <see cref="Light"/> should be initially spawned.</param>
         /// <returns>The new <see cref="Light"/>.</returns>
-        [Obsolete("Use Create(Vector3, Vector3, Vector3, bool, Color) instead.", true)]
         public static Light Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
-        {
-            Light light = new(UnityEngine.Object.Instantiate(ToysHelper.LightBaseObject));
-
-            light.AdminToyBase.transform.position = position ?? Vector3.zero;
-            light.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
-            light.AdminToyBase.transform.localScale = scale ?? Vector3.one;
-
-            if (spawn)
-                light.Spawn();
-
-            return light;
-        }
+            => Create(position, rotation, scale, spawn, null);
 
         /// <summary>
         /// Creates a new <see cref="Light"/>.
