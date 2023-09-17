@@ -139,7 +139,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
             Spawn();
 
             if (shouldBeActive)
-                Active();
+                Activate();
         }
 
         /// <summary>
