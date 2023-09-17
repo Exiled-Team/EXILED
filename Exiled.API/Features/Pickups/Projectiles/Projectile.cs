@@ -131,6 +131,18 @@ namespace Exiled.API.Features.Pickups.Projectiles
         public void Activate() => Base.ServerActivate();
 
         /// <summary>
+        /// Spawns a <see cref="Projectile"/>.
+        /// </summary>
+        /// <param name="shouldBeActive">Whether the <see cref="Projectile"/> should be in active state after spawn.</param>
+        public void Spawn(bool shouldBeActive = true)
+        {
+            Spawn();
+
+            if (shouldBeActive)
+                Active();
+        }
+
+        /// <summary>
         /// Returns the ProjectilePickup in a human readable format.
         /// </summary>
         /// <returns>A string containing ProjectilePickup-related data.</returns>
