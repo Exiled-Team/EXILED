@@ -491,26 +491,7 @@ namespace Exiled.API.Features.Pickups
         /// <param name="previousOwner">An optional previous owner of the item.</param>
         /// <returns>The <see cref="Pickup"/>. See documentation of <see cref="Create(ItemType)"/> for more information on casting.</returns>
         /// <seealso cref="Projectile.CreateAndSpawn(Enums.ProjectileType, Vector3, Quaternion, bool, Player)"/>
-        public static Pickup CreateAndSpawn(ItemType type, Vector3 position, Quaternion rotation, Player previousOwner = null) => Spawn(Create(type), position, rotation, previousOwner);
-
-        /// <summary>
-        /// Spawns a <see cref="Pickup"/>.
-        /// </summary>
-        /// <param name="pickup">The <see cref="Pickup"/> too spawn.</param>
-        /// <param name="position">The position to spawn the <see cref="Pickup"/> at.</param>
-        /// <param name="rotation">The rotation to spawn the <see cref="Pickup"/>.</param>
-        /// <param name="previousOwner">An optional previous owner of the item.</param>
-        /// <returns>The <see cref="Pickup"/> Spawn.</returns>
-        /// <seealso cref="Projectile.Spawn(Projectile, Vector3, Quaternion, bool, Player)"/>
-        public static Pickup Spawn(Pickup pickup, Vector3 position, Quaternion rotation, Player previousOwner = null)
-        {
-            pickup.Position = position;
-            pickup.Rotation = rotation;
-            pickup.PreviousOwner = previousOwner;
-            pickup.Spawn();
-
-            return pickup;
-        }
+        public static Pickup CreateAndSpawn(ItemType type, Vector3 position, Quaternion rotation, Player previousOwner = null) => Create(type).Spawn(position, rotation, previousOwner);
 
         /// <summary>
         /// Returns the amount of time it will take for the provided <paramref name="player"/> to pick up this item, based on <see cref="Weight"/> and active status effects.
@@ -528,7 +509,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Spawns pickup on server.
+        /// Spawns pickup on a server.
         /// </summary>
         /// <seealso cref="UnSpawn"/>
         public void Spawn()
@@ -544,6 +525,24 @@ namespace Exiled.API.Features.Pickups
                 NetworkServer.Spawn(GameObject);
                 IsSpawned = true;
             }
+        }
+
+        /// <summary>
+        /// Spawns pickup on a server.
+        /// </summary>
+        /// <param name="position">The position to spawn the <see cref="Pickup"/> at.</param>
+        /// <param name="rotation">The rotation to spawn the <see cref="Pickup"/>.</param>
+        /// <param name="previousOwner">An optional previous owner of the item.</param>
+        /// <returns>The spawned <see cref="Pickup"/>.</returns>
+        /// <seealso cref="Projectile.Spawn(Vector3, Quaternion, bool, Player)"/>
+        public Pickup Spawn(Vector3 position, Quaternion rotation, Player previousOwner = null)
+        {
+            Position = position;
+            Rotation = rotation;
+            PreviousOwner = previousOwner;
+            Spawn();
+
+            return this;
         }
 
         /// <summary>
