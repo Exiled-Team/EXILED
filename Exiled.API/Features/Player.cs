@@ -175,7 +175,24 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's ammo.
         /// </summary>
+        [Obsolete("Use AmmoBag property instead.")]
         public Dictionary<ItemType, ushort> Ammo => Inventory.UserInventory.ReserveAmmo;
+
+        /// <summary>
+        /// Gets the player's ammo.
+        /// </summary>
+        public Dictionary<AmmoType, ushort> AmmoBag
+        {
+            get
+            {
+                Dictionary<AmmoType, ushort> result = new();
+
+                foreach (var pair in Inventory.UserInventory.ReserveAmmo)
+                    result.Add(pair.Key.GetAmmoType(), pair.Value);
+
+                return result;
+            }
+        }
 
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
@@ -1803,7 +1820,7 @@ namespace Exiled.API.Features
         /// <seealso cref="CountItem(ItemType)"/>
         public int CountItem(ItemCategory category) => category switch
         {
-            ItemCategory.Ammo => Inventory.UserInventory.ReserveAmmo.Where(ammo => ammo.Value > 0).Count(),
+            ItemCategory.Ammo => Inventory.UserInventory.ReserveAmmo.Count(ammo => ammo.Value > 0),
             _ => Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.Category == category),
         };
 
@@ -2161,6 +2178,31 @@ namespace Exiled.API.Features
         /// <param name="ammoType">The <see cref="AmmoType"/> to be searched for in the player's inventory.</param>
         /// <returns>The specified <see cref="AmmoType">ammo</see> count.</returns>
         public ushort GetAmmo(AmmoType ammoType) => Inventory.GetCurAmmo(ammoType.GetItemType());
+
+        /// <summary>
+        /// Resets player's ammo.
+        /// </summary>
+        /// <param name="newAmmo">New player's ammo.</param>
+        public void ResetAmmo(Dictionary<AmmoType, ushort> newAmmo)
+        {
+            ClearAmmo();
+
+            foreach (var pair in newAmmo)
+            {
+                SetAmmo(pair.Key, pair.Value);
+            }
+        }
+
+        /// <summary>
+        /// Clears player's ammo.
+        /// </summary>
+        public void ClearAmmo()
+        {
+            foreach (var ammoType in AmmoBag.Keys)
+            {
+                SetAmmo(ammoType, 0);
+            }
+        }
 
         /// <summary>
         /// Drops a specific <see cref="AmmoType"/> out of the player's inventory.

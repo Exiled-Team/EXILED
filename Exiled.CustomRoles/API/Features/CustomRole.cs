@@ -166,6 +166,14 @@ namespace Exiled.CustomRoles.API.Features
         public virtual string ConsoleMessage { get; set; } = $"You have spawned as a custom role!";
 
         /// <summary>
+        /// Gets or sets a color of <see cref="ConsoleMessage"/>.
+        /// </summary>
+        /// <remarks>
+        /// You can use <see cref="Color"/> instance in <c>nameof</c>.
+        /// </remarks>
+        public virtual string ConsoleMessageColor { get; set; } = nameof(Color.green);
+
+        /// <summary>
         /// Gets or sets a <see cref="string"/> for the ability usage help sent to players in the player console.
         /// </summary>
         public virtual string AbilityUsage { get; set; } = "Enter \".special\" in the console to use your ability. If you have multiple abilities, you can use this command to cycle through them, or specify the one to use with \".special ROLENAME AbilityNum\"";
@@ -578,7 +586,7 @@ namespace Exiled.CustomRoles.API.Features
                         "You can keybind the command for this ability by using \"cmdbind .special KEY\", where KEY is any un-used letter on your keyboard. You can also keybind each specific ability for a role in this way. For ex: \"cmdbind .special g\" or \"cmdbind .special bulldozer 1 g\"");
                 }
 
-                player.SendConsoleMessage(StringBuilderPool.Pool.ToStringReturn(builder), "green");
+                player.SendConsoleMessage(StringBuilderPool.Pool.ToStringReturn(builder), ConsoleMessageColor);
             }
         }
 
@@ -770,7 +778,7 @@ namespace Exiled.CustomRoles.API.Features
             if (Enum.TryParse(itemName, out ItemType type))
             {
                 if (type.IsAmmo())
-                    player.Ammo[type] = 100;
+                    player.SetAmmo(type.GetAmmoType(), 100);
                 else
                     player.AddItem(type);
 
