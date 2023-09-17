@@ -1832,7 +1832,12 @@ namespace Exiled.API.Features
             {
                 item.ChangeOwner(this, Server.Host);
 
-                if (CurrentItem is not null && CurrentItem.Serial == item.Serial)
+                if (CurrentItem == item)
+                {
+                    Inventory.CurInstance = null;
+                }
+
+                if (item.Serial == Inventory.CurItem.SerialNumber)
                     Inventory.NetworkCurItem = ItemIdentifier.None;
 
                 Inventory.UserInventory.Items.Remove(item.Serial);
