@@ -96,7 +96,7 @@ namespace Exiled.CustomRoles.API.Features
             };
 
             bool preformed = PreformAction(player, type, out string response);
-            if (preformed)
+            if (preformed && type == AbilityKeypressTriggerType.Activate)
             {
                 string[] split = response.Split('|');
                 response = CustomRoles.Instance.Config.UsedAbilityHint.Content.Replace("{0}", split[0]).Replace("{1}", split[1]);
