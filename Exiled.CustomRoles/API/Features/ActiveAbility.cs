@@ -229,6 +229,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Called when the ability is successfully used.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> using the ability.</param>
+        [Obsolete("The Keypress Activator will already do this, you do not need to call this unless you are overwriting the keypress activator.", true)]
         protected virtual void ShowMessage(Player player) =>
             player.ShowHint(string.Format(CustomRoles.Instance!.Config.UsedAbilityHint.Content, Name, Description), CustomRoles.Instance.Config.UsedAbilityHint.Duration);
 
