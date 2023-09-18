@@ -96,14 +96,15 @@ namespace Exiled.CustomRoles.API.Features
             };
 
             bool preformed = PreformAction(player, type, out string response);
-            if (preformed && type == AbilityKeypressTriggerType.Activate)
+            switch (preformed)
             {
-                string[] split = response.Split('|');
-                response = CustomRoles.Instance.Config.UsedAbilityHint.Content.Replace("{0}", split[0]).Replace("{1}", split[1]);
-            }
-            else
-            {
-                response = CustomRoles.Instance.Config.FailedActionHint.Content.Replace("{0}", response);
+                case true when type == AbilityKeypressTriggerType.Activate:
+                    string[] split = response.Split('|');
+                    response = string.Format(CustomRoles.Instance.Config.UsedAbilityHint.Content, split);
+                    break;
+                case false:
+                    response = string.Format(CustomRoles.Instance.Config.FailedActionHint.Content, response);
+                    break;
             }
 
             float dur = preformed ? CustomRoles.Instance.Config.UsedAbilityHint.Duration : CustomRoles.Instance.Config.FailedActionHint.Duration;
