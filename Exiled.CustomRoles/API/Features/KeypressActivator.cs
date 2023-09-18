@@ -103,10 +103,11 @@ namespace Exiled.CustomRoles.API.Features
             }
             else
             {
-                response = CustomRoles.Instance.Config.FailedAbilityHint.Content.Replace("{0}", response);
+                response = CustomRoles.Instance.Config.FailedActionHint.Content.Replace("{0}", response);
             }
 
-            player.ShowHint(response, CustomRoles.Instance.Config.UsedAbilityHint.Duration);
+            float dur = preformed ? CustomRoles.Instance.Config.UsedAbilityHint.Duration : CustomRoles.Instance.Config.FailedActionHint.Duration;
+            player.ShowHint(response, dur);
             altTracker[player] = 0;
         }
 

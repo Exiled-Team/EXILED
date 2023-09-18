@@ -57,6 +57,6 @@ namespace Exiled.CustomRoles
         /// Gets or sets the hing that is shown when someone fails to use a <see cref="ActiveAbility"/>.
         /// </summary>
         [Description("The hint showed to players when they fail to preform an action.")]
-        public Broadcast FailedAbilityHint { get; set; } = new("Failed to preform action: {0}");
+        public Broadcast FailedActionHint { get; set; } = new("Failed to preform action: {0}", 5);
     }
 }
