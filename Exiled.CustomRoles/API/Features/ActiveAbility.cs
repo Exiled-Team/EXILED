@@ -226,6 +226,13 @@ namespace Exiled.CustomRoles.API.Features
         }
 
         /// <summary>
+        /// Called when the ability is successfully used.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> using the ability.</param>
+        protected virtual void ShowMessage(Player player) =>
+            player.ShowHint(string.Format(CustomRoles.Instance!.Config.UsedAbilityHint.Content, Name, Description), CustomRoles.Instance.Config.UsedAbilityHint.Duration);
+
+        /// <summary>
         /// Called when the ability is selected.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> selecting the ability.</param>
