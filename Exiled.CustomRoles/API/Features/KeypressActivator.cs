@@ -95,7 +95,18 @@ namespace Exiled.CustomRoles.API.Features
                 _ => AbilityKeypressTriggerType.None,
             };
 
-            player.ShowHint(!PreformAction(player, type, out string response) ? $"Failed to preform action: {response}" : $"Preformed action: {response}", 5f);
+            bool preformed = PreformAction(player, type, out string response);
+            if (preformed)
+            {
+                string[] split = response.Split('|');
+                response = CustomRoles.Instance.Config.UsedAbilityHint.Content.Replace("{0}", split[0]).Replace("{1}", split[1]);
+            }
+            else
+            {
+                response = CustomRoles.Instance.Config.FailedAbilityHint.Content.Replace("{0}", response);
+            }
+
+            player.ShowHint(response, CustomRoles.Instance.Config.UsedAbilityHint.Duration);
             altTracker[player] = 0;
         }
 
@@ -112,7 +123,7 @@ namespace Exiled.CustomRoles.API.Features
 
                 if (!selected.CanUseAbility(player, out response, CustomRoles.Instance.Config.ActivateOnlySelected))
                     return false;
-                response = $"{selected.Name} used.";
+                response = $"{selected.Name}|{selected.Description}";
                 selected.UseAbility(player);
                 return true;
             }
