@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Respawning;
+
 namespace Exiled.Events
 {
     using System;
@@ -75,6 +77,8 @@ namespace Exiled.Events
             RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
             ItemPickupBase.OnPickupAdded += Handlers.Internal.PickupEvent.OnSpawnedPickup;
             ItemPickupBase.OnPickupDestroyed += Handlers.Internal.PickupEvent.OnRemovedPickup;
+
+            RespawnManager.ServerOnRespawned += Handlers.Internal.Round.OnTeamRespawned;
             ServerConsole.ReloadServerName();
 
             EventManager.RegisterEvents<Handlers.Player>(this);

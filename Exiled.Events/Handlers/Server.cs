@@ -99,6 +99,11 @@ namespace Exiled.Events.Handlers
         public static Event ReloadedPermissions { get; set; } = new();
 
         /// <summary>
+        /// Invoked after new team has been spawned.
+        /// </summary>
+        public static Event<RespawnedTeamEventArgs> RespawnedTeam { get; set; } = new();
+
+        /// <summary>
         /// Called before waiting for players.
         /// </summary>
         public static void OnWaitingForPlayers() => WaitingForPlayers.InvokeSafely();
@@ -184,5 +189,11 @@ namespace Exiled.Events.Handlers
         /// Called after the "reload permissions" command is ran.
         /// </summary>
         public static void OnReloadedPermissions() => ReloadedPermissions.InvokeSafely();
+
+        /// <summary>
+        /// Called after the new team has been spawned.
+        /// </summary>
+        /// <param name="ev">The <see cref="RespawningTeamEventArgs"/> instance.</param>
+        public static void OnTeamRespawned(RespawnedTeamEventArgs ev) => RespawnedTeam.InvokeSafely(ev);
     }
 }

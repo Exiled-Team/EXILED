@@ -5,6 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Respawning;
+
 namespace Exiled.Events.Handlers.Internal
 {
     using Exiled.API.Features;
@@ -69,5 +72,8 @@ namespace Exiled.Events.Handlers.Internal
         {
             RoleAssigner.CheckLateJoin(ev.Player.ReferenceHub, ClientInstanceMode.ReadyClient);
         }
+
+        /// <inheritdoc cref="Handlers.Server.OnTeamRespawned"/>
+        public static void OnTeamRespawned(SpawnableTeamType type, List<ReferenceHub> hubs) => Handlers.Server.OnTeamRespawned(new(hubs, type));
     }
 }
