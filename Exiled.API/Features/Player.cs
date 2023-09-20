@@ -175,7 +175,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's ammo.
         /// </summary>
-        [Obsolete("Use AmmoBag property instead.")]
         public Dictionary<ItemType, ushort> Ammo => Inventory.UserInventory.ReserveAmmo;
 
         /// <summary>

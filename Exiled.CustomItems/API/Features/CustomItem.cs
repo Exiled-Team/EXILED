@@ -132,19 +132,6 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="id">The <see cref="CustomItem"/> ID.</param>
         /// <returns>The <see cref="CustomItem"/> matching the search, <see langword="null"/> if not registered.</returns>
-        [Obsolete("Use Get(uint) instead.", true)]
-        public static CustomItem? Get(int id)
-        {
-            if (!idLookupTable.ContainsKey((uint)id))
-                idLookupTable.Add((uint)id, Registered.FirstOrDefault(i => i.Id == id));
-            return idLookupTable[(uint)id];
-        }
-
-        /// <summary>
-        /// Gets a <see cref="CustomItem"/> with a specific ID.
-        /// </summary>
-        /// <param name="id">The <see cref="CustomItem"/> ID.</param>
-        /// <returns>The <see cref="CustomItem"/> matching the search, <see langword="null"/> if not registered.</returns>
         public static CustomItem? Get(uint id)
         {
             if (!idLookupTable.ContainsKey(id))
