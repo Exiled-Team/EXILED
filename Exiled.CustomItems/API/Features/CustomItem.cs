@@ -132,19 +132,6 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="id">The <see cref="CustomItem"/> ID.</param>
         /// <returns>The <see cref="CustomItem"/> matching the search, <see langword="null"/> if not registered.</returns>
-        [Obsolete("Use Get(uint) instead.", true)]
-        public static CustomItem? Get(int id)
-        {
-            if (!idLookupTable.ContainsKey((uint)id))
-                idLookupTable.Add((uint)id, Registered.FirstOrDefault(i => i.Id == id));
-            return idLookupTable[(uint)id];
-        }
-
-        /// <summary>
-        /// Gets a <see cref="CustomItem"/> with a specific ID.
-        /// </summary>
-        /// <param name="id">The <see cref="CustomItem"/> ID.</param>
-        /// <returns>The <see cref="CustomItem"/> matching the search, <see langword="null"/> if not registered.</returns>
         public static CustomItem? Get(uint id)
         {
             if (!idLookupTable.ContainsKey(id))
@@ -607,6 +594,34 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
+        /// Creates a <see cref="Pickup"/> of this <see cref="CustomItem"/> but not spawns it.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
+        /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
+        /// <param name="previousOwner">The previous owner of the pickup, can be null.</param>
+        /// <returns>Created <see cref="Pickup"/> of this <see cref="CustomItem"/>.</returns>
+        public virtual Pickup Create(Player player, Item item, Player? previousOwner = null) => Create(player.Position, item, previousOwner);
+
+        /// <summary>
+        /// Creates a <see cref="Pickup"/> of this <see cref="CustomItem"/> but not spawns it.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
+        /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
+        /// <param name="previousOwner">The previous owner of the pickup, can be null.</param>
+        /// <returns>Created <see cref="Pickup"/> of this <see cref="CustomItem"/>.</returns>
+        public virtual Pickup Create(Vector3 position, Item item, Player? previousOwner = null)
+        {
+            Pickup? pickup = item.CreatePickup(position, spawn: false);
+            pickup.Scale = Scale;
+            pickup.Weight = Weight;
+
+            if (previousOwner is not null)
+                pickup.PreviousOwner = previousOwner;
+
+            return pickup;
+        }
+
+        /// <summary>
         /// Spawns <see cref="CustomItem"/>s inside <paramref name="spawnPoints"/>.
         /// </summary>
         /// <param name="spawnPoints">The spawn points <see cref="IEnumerable{T}"/>.</param>
@@ -1018,13 +1033,19 @@ namespace Exiled.CustomItems.API.Features
                 if (!Check(item))
                     continue;
 
-                OnOwnerChangingRole(new OwnerChangingRoleEventArgs(item.Base, ev));
+                Pickup pickup = Create(ev.Player, item, ev.Player);
+
+                OnOwnerChangingRole(new OwnerChangingRoleEventArgs(item.Base, pickup, ev));
+
+                if (!ev.IsAllowed)
+                    continue;
 
                 TrackedSerials.Remove(item.Serial);
+                TrackedSerials.Add(pickup.Serial);
 
                 ev.Player.RemoveItem(item);
 
-                Spawn(ev.Player, item, ev.Player);
+                pickup.Spawn();
             }
 
             MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
@@ -1037,7 +1058,9 @@ namespace Exiled.CustomItems.API.Features
                 if (!Check(item))
                     continue;
 
-                OnOwnerDying(new OwnerDyingEventArgs(item, ev));
+                Pickup pickup = Create(ev.Player, item, ev.Player);
+
+                OnOwnerDying(new OwnerDyingEventArgs(item, pickup, ev));
 
                 if (!ev.IsAllowed)
                     continue;
@@ -1045,8 +1068,9 @@ namespace Exiled.CustomItems.API.Features
                 ev.Player.RemoveItem(item);
 
                 TrackedSerials.Remove(item.Serial);
+                TrackedSerials.Add(pickup.Serial);
 
-                Spawn(ev.Player, item, ev.Player);
+                pickup.Spawn();
 
                 MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
