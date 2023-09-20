@@ -11,12 +11,14 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
 
     using Enums;
-
+    using Exiled.API.Extensions;
     using GameCore;
 
     using PlayerRoles;
 
     using RoundRestarting;
+    using YamlDotNet.Core.Tokens;
+    using static PlayerArms;
 
     /// <summary>
     /// A set of tools to handle the round more easily.
@@ -171,6 +173,23 @@ namespace Exiled.API.Features
                 }
 
                 return sides;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a visual offset applied to the target counter for SCPs.
+        /// </summary>
+        /// <remarks>This does not update the target counter automatically. To do that, call Round.UpdateTargetCounter().</remarks>
+        public static int TargetOffset { get; set; } = 0;
+
+        /// <summary>
+        /// Updates the target counter for SCPs.
+        /// </summary>
+        public static void UpdateTargetCounter()
+        {
+            foreach (Player player in Player.List)
+            {
+                player.SendFakeSyncVar(RoundSummary.singleton.netIdentity, typeof(RoundSummary), nameof(RoundSummary.Network_chaosTargetCount), RoundSummary.singleton._chaosTargetCount + TargetOffset);
             }
         }
 
