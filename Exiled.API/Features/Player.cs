@@ -175,12 +175,24 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's ammo.
         /// </summary>
+        [Obsolete("Use AmmoBag property instead.")]
         public Dictionary<ItemType, ushort> Ammo => Inventory.UserInventory.ReserveAmmo;
 
         /// <summary>
         /// Gets the player's ammo.
         /// </summary>
-        public Dictionary<AmmoType, ushort> AmmoBag => Inventory.UserInventory.ReserveAmmo.Where(pair => pair.Key.IsAmmo()).ToDictionary(pair => pair.Key.GetAmmoType(), pair => pair.Value);
+        public Dictionary<AmmoType, ushort> AmmoBag
+        {
+            get
+            {
+                Dictionary<AmmoType, ushort> result = new();
+
+                foreach (var pair in Inventory.UserInventory.ReserveAmmo)
+                    result.Add(pair.Key.GetAmmoType(), pair.Value);
+
+                return result;
+            }
+        }
 
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.

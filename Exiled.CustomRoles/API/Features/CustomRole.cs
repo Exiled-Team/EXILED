@@ -23,13 +23,14 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
-    using InventorySystem;
     using InventorySystem.Configs;
-    using InventorySystem.Items;
-    using InventorySystem.Items.Firearms.Ammo;
+
     using MEC;
+
     using PlayerRoles;
+
     using UnityEngine;
+
     using YamlDotNet.Serialization;
 
     /// <summary>
@@ -777,7 +778,7 @@ namespace Exiled.CustomRoles.API.Features
             if (Enum.TryParse(itemName, out ItemType type))
             {
                 if (type.IsAmmo())
-                    player.SetAmmo(type.GetAmmoType(), InventoryItemLoader.TryGetItem(type, out ItemBase iBase) && iBase.PickupDropModel is AmmoPickup ammoPickup ? (ushort)ammoPickup.MaxAmmo : (ushort)100);
+                    player.SetAmmo(type.GetAmmoType(), 100);
                 else
                     player.AddItem(type);
 
