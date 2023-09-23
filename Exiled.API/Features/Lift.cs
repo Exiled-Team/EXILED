@@ -174,31 +174,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="RotationTime"/>.
+        /// Gets the <see cref="RotationTime"/>.
         /// </summary>
-        public float RotationTime
-        {
-            get => Base._rotationTime;
-            set => Base._rotationTime = value;
-        }
+        public float RotationTime => Base._rotationTime;
 
         /// <summary>
-        /// Gets or sets the <see cref="DoorOpenTime"/>.
+        /// Gets the <see cref="DoorOpenTime"/>.
         /// </summary>
-        public float DoorOpenTime
-        {
-            get => Base._doorOpenTime;
-            set => Base._doorOpenTime = value;
-        }
+        public float DoorOpenTime => Base._doorOpenTime;
 
         /// <summary>
-        /// Gets or sets the <see cref="DoorCloseTime"/>.
+        /// Gets the <see cref="DoorCloseTime"/>.
         /// </summary>
-        public float DoorCloseTime
-        {
-            get => Base._doorCloseTime;
-            set => Base._doorCloseTime = value;
-        }
+        public float DoorCloseTime => Base._doorCloseTime;
 
         /// <summary>
         /// Gets the total <see cref="MoveTime"/>.
