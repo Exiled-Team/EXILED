@@ -168,7 +168,7 @@ namespace Exiled.Loader
 
             if (validations > 0)
             {
-                Log.Info($"Successfully passed {validations} validations");
+                Log.Debug($"Successfully passed {validations} validations");
             }
 
             return config;
