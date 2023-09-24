@@ -53,7 +53,7 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
         /// <returns>True if the attacker can damage the victim.</returns>
-        /// <remarks>Use <see cref="CheckFriendlyFirePlayer(Footprint, ReferenceHub)"/> instead of this if the damage is not done instantly.</remarks>
+        /// <remarks>Use <see cref="CheckFriendlyFirePlayerHitbox(Footprint, ReferenceHub)"/> instead of this if the damage is not done instantly.</remarks>
         public static bool CheckFriendlyFirePlayerHitbox(ReferenceHub attackerHub, ReferenceHub victimHub) => CheckFriendlyFirePlayerHitbox(new Footprint(attackerHub), victimHub);
 
         /// <summary>
@@ -72,6 +72,7 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="ffMultiplier"> FF multiplier. </param>
         /// <returns> True if the attacker can damage the victim.</returns>
         /// <remarks> Friendly fire multiplier is also provided back if needed. </remarks>
+        /// <remarks>Use <see cref="CheckFriendlyFirePlayerRules(Footprint, ReferenceHub, out float)"/> instead of this if the damage is not done instantly.</remarks>
         public static bool CheckFriendlyFirePlayerRules(ReferenceHub attackerHub, ReferenceHub victimHub, out float ffMultiplier) => CheckFriendlyFirePlayerRules(new Footprint(attackerHub), victimHub, out ffMultiplier);
 
         /// <summary>
