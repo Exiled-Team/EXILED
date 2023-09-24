@@ -180,7 +180,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's ammo.
         /// </summary>
-        public Dictionary<AmmoType, ushort> AmmoBag => Inventory.UserInventory.ReserveAmmo.ToDictionary(pair => pair.Key.GetAmmoType(), pair => pair.Value);
+        public Dictionary<AmmoType, ushort> AmmoBox => Inventory.UserInventory.ReserveAmmo.ToDictionary(pair => pair.Key.GetAmmoType(), pair => pair.Value);
 
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
@@ -2186,7 +2186,7 @@ namespace Exiled.API.Features
         /// </summary>
         public void ClearAmmo()
         {
-            foreach (var ammoType in AmmoBag.Keys)
+            foreach (var ammoType in AmmoBox.Keys)
             {
                 SetAmmo(ammoType, 0);
             }

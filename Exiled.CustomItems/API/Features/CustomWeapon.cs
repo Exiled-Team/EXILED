@@ -218,7 +218,7 @@ namespace Exiled.CustomItems.API.Features
 
             AmmoType ammoType = ev.Firearm.AmmoType;
 
-            if (!ev.Player.AmmoBag.ContainsKey(ammoType))
+            if (!ev.Player.AmmoBox.ContainsKey(ammoType))
             {
                 Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: {ev.Player.Nickname} does not have ammo to reload this weapon.");
                 return;
@@ -226,14 +226,14 @@ namespace Exiled.CustomItems.API.Features
 
             ev.Player.Connection.Send(new RequestMessage(ev.Firearm.Serial, RequestType.Reload));
 
-            byte amountToReload = (byte)Math.Min(ClipSize - remainingClip, ev.Player.AmmoBag[ammoType]);
+            byte amountToReload = (byte)Math.Min(ClipSize - remainingClip, ev.Player.AmmoBox[ammoType]);
 
             if (amountToReload <= 0)
                 return;
 
             ev.Player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Invisible>().Intensity = 0;
 
-            ev.Player.AmmoBag[ammoType] -= amountToReload;
+            ev.Player.AmmoBox[ammoType] -= amountToReload;
             ev.Player.Inventory.SendAmmoNextFrame = true;
 
             ((Firearm)ev.Player.CurrentItem).Ammo = (byte)(((Firearm)ev.Player.CurrentItem).Ammo + amountToReload);
