@@ -5,21 +5,19 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.Generic;
-using Respawning;
-
 namespace Exiled.Events.Handlers.Internal
 {
+    using System.Collections.Generic;
+
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
     using Exiled.Loader.Features;
-
     using InventorySystem;
-
     using PlayerRoles;
     using PlayerRoles.RoleAssign;
+    using Respawning;
 
     /// <summary>
     ///     Handles some round clean-up events and some others related to players.
