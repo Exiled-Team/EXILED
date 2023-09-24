@@ -7,32 +7,15 @@
 
 namespace Exiled.Events.Patches.Events.Server
 {
-#pragma warning disable SA1123 // Do not place regions within elements
-
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features.Pools;
-    using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Server;
 
-    using GameCore;
-
     using HarmonyLib;
-
-    using MEC;
-
-    using PlayerRoles;
-    using PluginAPI.Core;
-    using PluginAPI.Events;
-    using RoundRestarting;
-
-    using UnityEngine;
-    using Utf8Json.Internal;
 
     using static HarmonyLib.AccessTools;
 
