@@ -85,7 +85,6 @@ namespace Exiled.Events.Patches.Generic
         public static bool CheckFriendlyFirePlayerRules(Footprint attackerFootprint, ReferenceHub victimHub, out float ffMultiplier)
         {
             ffMultiplier = 1f;
-            ReferenceHub attackerHub = attackerFootprint.Hub;
 
             // Return false, no custom friendly fire allowed, default to NW logic for FF. No point in processing if FF is enabled across the board.
             if (Server.FriendlyFire)
@@ -100,15 +99,15 @@ namespace Exiled.Events.Patches.Generic
             if (!attackerFootprint.SameLife(new(attackerFootprint.Hub)))
                 return HitboxIdentity.CheckFriendlyFire(attackerFootprint.Role, victimHub.roleManager.CurrentRole.RoleTypeId);
 
-            if (attackerHub is null || victimHub is null)
+            if (attackerFootprint.Hub is null || victimHub is null)
             {
-                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker hub null: {attackerHub is null}, Victim hub null: {victimHub is null}");
+                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker hub null: {attackerFootprint.Hub is null}, Victim hub null: {victimHub is null}");
                 return true;
             }
 
             try
             {
-                Player attacker = Player.Get(attackerHub);
+                Player attacker = Player.Get(attackerFootprint.Hub);
                 Player victim = Player.Get(victimHub);
                 if (attacker is null || victim is null)
                 {
