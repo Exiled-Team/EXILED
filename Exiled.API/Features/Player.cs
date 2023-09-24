@@ -544,9 +544,9 @@ namespace Exiled.API.Features
         /// Gets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
         /// <para>
         /// The type of the Role is different based on the <see cref="RoleTypeId"/> of the player, and casting should be used to modify the role.
-        /// <br /><see cref="RoleTypeId.Spectator"/> = <see cref="SpectatorRole"/>.
-        /// <br /><see cref="RoleTypeId.Overwatch"/> = <see cref="OverwatchRole"/>.
-        /// <br /><see cref="RoleTypeId.None"/> = <see cref="NoneRole"/>.
+        /// <br /><see cref="RoleTypeId.Spectator"/> = <see cref="Roles.SpectatorRole"/>.
+        /// <br /><see cref="RoleTypeId.Overwatch"/> = <see cref="Roles.OverwatchRole"/>.
+        /// <br /><see cref="RoleTypeId.None"/> = <see cref="Roles.NoneRole"/>.
         /// <br /><see cref="RoleTypeId.Scp049"/> = <see cref="Scp049Role"/>.
         /// <br /><see cref="RoleTypeId.Scp0492"/> = <see cref="Scp0492Role"/>.
         /// <br /><see cref="RoleTypeId.Scp079"/> = <see cref="Scp079Role"/>.
