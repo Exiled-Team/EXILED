@@ -24,6 +24,7 @@ namespace Exiled.Events.Patches.Generic
     using PlayerStatsSystem;
 
     using static HarmonyLib.AccessTools;
+    using static HarmonyLib.Code;
 
     /// <summary>
     /// Checks friendly fire rules.
@@ -36,7 +37,16 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
         /// <returns>True if the attacker can damage the victim.</returns>
-        public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub) => CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
+        [Obsolete("Use CheckFriendlyFirePlayer(Footprint, ReferenceHub) instead of this", true)]
+        public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub) => CheckFriendlyFirePlayer(new Footprint(attackerHub), victimHub);
+
+        /// <summary>
+        /// Checks if there can be damage between two players, according to the FF rules.
+        /// </summary>
+        /// <param name="attackerFootprint">The person attacking.</param>
+        /// <param name="victimHub">The person being attacked.</param>
+        /// <returns>True if the attacker can damage the victim.</returns>
+        public static bool CheckFriendlyFirePlayer(Footprint attackerFootprint, ReferenceHub victimHub) => CheckFriendlyFirePlayerRules(attackerFootprint, victimHub, out _);
 
         /// <summary>
         /// Checks if there can be damage between two players, according to the FF rules.
@@ -44,23 +54,42 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
         /// <returns>True if the attacker can damage the victim.</returns>
-        public static bool CheckFriendlyFirePlayerHitbox(ReferenceHub attackerHub, ReferenceHub victimHub) => Server.FriendlyFire || CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
+        [Obsolete("Use CheckFriendlyFirePlayerHitbox(Footprint, ReferenceHub) instead of this", true)]
+        public static bool CheckFriendlyFirePlayerHitbox(ReferenceHub attackerHub, ReferenceHub victimHub) => CheckFriendlyFirePlayerHitbox(new Footprint(attackerHub), victimHub);
 
         /// <summary>
         /// Checks if there can be damage between two players, according to the FF rules.
         /// </summary>
-        /// <param name="attackerHub">The person attacking.</param>
+        /// <param name="attackerFootprint">The person attacking.</param>
+        /// <param name="victimHub">The person being attacked.</param>
+        /// <returns>True if the attacker can damage the victim.</returns>
+        public static bool CheckFriendlyFirePlayerHitbox(Footprint attackerFootprint, ReferenceHub victimHub) => Server.FriendlyFire || CheckFriendlyFirePlayerRules(attackerFootprint, victimHub, out _);
+
+        /// <summary>
+        /// Checks if there can be damage between two players, according to the FF rules.
+        /// </summary>
+        /// <param name="attackerFootprint">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
         /// <param name="ffMultiplier"> FF multiplier. </param>
         /// <returns> True if the attacker can damage the victim.</returns>
         /// <remarks> Friendly fire multiplier is also provided back if needed. </remarks>
-        public static bool CheckFriendlyFirePlayerRules(ReferenceHub attackerHub, ReferenceHub victimHub, out float ffMultiplier)
+        public static bool CheckFriendlyFirePlayerRules(Footprint attackerFootprint, ReferenceHub victimHub, out float ffMultiplier)
         {
             ffMultiplier = 1f;
+            ReferenceHub attackerHub = attackerFootprint.Hub;
 
             // Return false, no custom friendly fire allowed, default to NW logic for FF. No point in processing if FF is enabled across the board.
             if (Server.FriendlyFire)
                 return false;
+
+            // always allow damage from Server.Host
+            if (attackerFootprint.Hub == Server.Host.ReferenceHub)
+                return true;
+
+            // Only check friendlyFire if the FootPrint hasn't changed (Fix for Grenade not dealing damage because it's from a dead player)
+            // TODO rework FriendlyFireRule to make it compatible with Footprint
+            if (!attackerFootprint.SameLife(new(attackerFootprint.Hub)))
+                return HitboxIdentity.CheckFriendlyFire(attackerFootprint.Role, victimHub.roleManager.CurrentRole.RoleTypeId);
 
             if (attackerHub is null || victimHub is null)
             {
