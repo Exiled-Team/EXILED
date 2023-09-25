@@ -507,7 +507,7 @@ namespace Exiled.CustomRoles.API.Features
                     player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.None);
                 else if (KeepPositionOnSpawn)
                     player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.AssignInventory);
-                else if (KeepInventoryOnSpawn)
+                else if (KeepInventoryOnSpawn && player.Role != RoleTypeId.Spectator)
                     player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.UseSpawnpoint);
                 else
                     player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
@@ -903,8 +903,10 @@ namespace Exiled.CustomRoles.API.Features
             }
             else if (Check(ev.Player))
             {
+                Log.Debug($"{Name}: Checking ammo stuff {Ammo.Count}");
                 if (Ammo.Count > 0)
                 {
+                    Log.Debug($"{Name}: Clearing ammo");
                     ev.Ammo.Clear();
                     Timing.CallDelayed(
                         0.5f,
