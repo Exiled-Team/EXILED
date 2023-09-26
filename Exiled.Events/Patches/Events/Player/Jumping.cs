@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 
@@ -19,14 +19,13 @@ namespace Exiled.Events.Patches.Events.Player
 
     using PlayerRoles.FirstPersonControl;
 
-    using UnityEngine;
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>
     ///     Patches <see cref="FpcMotor.UpdateGrounded(ref bool, float)" />
     ///     Adds the <see cref="Player.Jumping" /> event.
     /// </summary>
+    [EventPatch(typeof(Player), nameof(Player.Jumping))]
     [HarmonyPatch(typeof(FpcMotor), nameof(FpcMotor.UpdateGrounded))]
     internal static class Jumping
     {

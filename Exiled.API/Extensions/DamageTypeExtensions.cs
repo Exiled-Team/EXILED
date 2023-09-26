@@ -93,6 +93,8 @@ namespace Exiled.API.Extensions
             { ItemType.MicroHID, DamageType.MicroHid },
             { ItemType.ParticleDisruptor, DamageType.ParticleDisruptor },
             { ItemType.Jailbird, DamageType.Jailbird },
+            { ItemType.GunFRMG0, DamageType.Frmg0 },
+            { ItemType.GunA7, DamageType.A7 },
         };
 
         /// <summary>
@@ -118,7 +120,7 @@ namespace Exiled.API.Extensions
         /// <returns>Returns whether or not the <see cref="DamageType"/> is caused by weapon.</returns>
         public static bool IsWeapon(this DamageType type, bool checkMicro = true) => type switch
         {
-            DamageType.Crossvec or DamageType.Logicer or DamageType.Revolver or DamageType.Shotgun or DamageType.AK or DamageType.Com15 or DamageType.Com18 or DamageType.E11Sr or DamageType.Fsp9 or DamageType.ParticleDisruptor or DamageType.Com45 => true,
+            DamageType.Crossvec or DamageType.Logicer or DamageType.Revolver or DamageType.Shotgun or DamageType.AK or DamageType.Com15 or DamageType.Com18 or DamageType.E11Sr or DamageType.Fsp9 or DamageType.ParticleDisruptor or DamageType.Com45 or DamageType.Frmg0 or DamageType.A7 => true,
             DamageType.MicroHid when checkMicro => true,
             _ => false,
         };

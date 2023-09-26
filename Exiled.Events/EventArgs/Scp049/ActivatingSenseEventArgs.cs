@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ActivatingSenseEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -8,15 +8,16 @@
 namespace Exiled.Events.EventArgs.Scp049
 {
     using API.Features;
-
     using Interfaces;
 
     using PlayerRoles.PlayableScps.Scp049;
 
+    using Scp049Role = API.Features.Roles.Scp049Role;
+
     /// <summary>
     ///     Contains all information before SCP-049 sense is activated.
     /// </summary>
-    public class ActivatingSenseEventArgs : IPlayerEvent, IDeniableEvent
+    public class ActivatingSenseEventArgs : IScp049Event, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivatingSenseEventArgs"/> class with information before SCP-049 sense is activated.
@@ -27,6 +28,7 @@ namespace Exiled.Events.EventArgs.Scp049
         public ActivatingSenseEventArgs(Player player, Player target, bool isAllowed = true)
         {
             Player = player;
+            Scp049 = player.Role.As<Scp049Role>();
             Target = target;
             IsAllowed = isAllowed;
             Cooldown = Scp049SenseAbility.AttemptFailCooldown;
@@ -37,6 +39,9 @@ namespace Exiled.Events.EventArgs.Scp049
         /// Gets the Player who is playing as SCP-049.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp049Role Scp049 { get; }
 
         /// <summary>
         /// Gets the Player who the sense ability is affecting.

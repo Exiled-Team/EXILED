@@ -10,9 +10,9 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.DamageHandlers;
     using API.Features.Pools;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using Handlers;
@@ -20,7 +20,6 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -28,6 +27,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patch the <see cref="BreakableDoor.ServerDamage(float, DoorDamageType)" />.
     ///     Adds the <see cref="Player.DamagingDoor" /> event.
     /// </summary>
+    [EventPatch(typeof(Player), nameof(Player.DamagingDoor))]
     [HarmonyPatch(typeof(BreakableDoor), nameof(BreakableDoor.ServerDamage))]
     internal static class DamagingDoor
     {

@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Enums
 {
-    using System;
-
     /// <summary>
     /// Players authentication types.
     /// </summary>
@@ -29,12 +27,6 @@ namespace Exiled.API.Enums
         /// Indicates that the player has been authenticated as a Northwood staffer.
         /// </summary>
         Northwood,
-
-        /// <summary>
-        /// Indicates that the player has been authenticated as a Patreon.
-        /// </summary>
-        [Obsolete("Value is unused.")]
-        Patreon, // TODO: Removing this it's have never exist
 
         /// <summary>
         /// Indicates that the player has been authenticated through an unknown provider.

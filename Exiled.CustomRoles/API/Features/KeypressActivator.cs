@@ -9,14 +9,12 @@ namespace Exiled.CustomRoles.API.Features
 {
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
     using System.Text;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.CustomRoles.API.Features.Enums;
-    using Exiled.CustomRoles.API.Features.Interfaces;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
 
@@ -97,7 +95,29 @@ namespace Exiled.CustomRoles.API.Features
                 _ => AbilityKeypressTriggerType.None,
             };
 
-            player.ShowHint(!PreformAction(player, type, out string response) ? $"Failed to preform action: {response}" : $"Preformed action: {response}", 5f);
+            bool preformed = PreformAction(player, type, out string response);
+            switch (preformed)
+            {
+                case true when type == AbilityKeypressTriggerType.Activate:
+                    string[] split = response.Split('|');
+                    response = string.Format(CustomRoles.Instance.Config.UsedAbilityHint.Content, split);
+                    break;
+                case true when type is AbilityKeypressTriggerType.SwitchBackward or AbilityKeypressTriggerType.SwitchForward:
+                    response = string.Format(CustomRoles.Instance.Config.SwitchedAbilityHint.Content, response);
+                    break;
+                case false:
+                    response = string.Format(CustomRoles.Instance.Config.FailedActionHint.Content, response);
+                    break;
+            }
+
+            float dur = type switch
+            {
+                AbilityKeypressTriggerType.Activate when preformed => CustomRoles.Instance.Config.UsedAbilityHint.Duration,
+                AbilityKeypressTriggerType.SwitchBackward or AbilityKeypressTriggerType.SwitchForward when preformed => CustomRoles.Instance.Config.SwitchedAbilityHint.Duration,
+                _ => CustomRoles.Instance.Config.FailedActionHint.Duration,
+            };
+
+            player.ShowHint(response, dur);
             altTracker[player] = 0;
         }
 
@@ -114,7 +134,7 @@ namespace Exiled.CustomRoles.API.Features
 
                 if (!selected.CanUseAbility(player, out response, CustomRoles.Instance.Config.ActivateOnlySelected))
                     return false;
-                response = $"{selected.Name} used.";
+                response = $"{selected.Name}|{selected.Description}";
                 selected.UseAbility(player);
                 return true;
             }
@@ -155,12 +175,12 @@ namespace Exiled.CustomRoles.API.Features
 
                     selected.UnSelectAbility(player);
                     abilities[index].SelectAbility(player);
-                    response = $"{abilities[index].Name} has been selected.";
+                    response = $"{abilities[index].Name}";
                     return true;
                 }
 
                 abilities[0].SelectAbility(player);
-                response = $"{abilities[0].Name} has been selected.";
+                response = $"{abilities[0].Name}";
                 return true;
             }
 

@@ -9,6 +9,7 @@ namespace Exiled.API.Enums
 {
     using System;
 
+    using Exiled.API.Features.Doors;
     using Features;
 
     /// <summary>

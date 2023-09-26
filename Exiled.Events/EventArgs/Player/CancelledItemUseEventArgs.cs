@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player cancels usage of an item.
     /// </summary>
-    public class CancelledItemUseEventArgs : IPlayerEvent, IItemEvent
+    public class CancelledItemUseEventArgs : IPlayerEvent, IUsableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="CancelledItemUseEventArgs" /> class.

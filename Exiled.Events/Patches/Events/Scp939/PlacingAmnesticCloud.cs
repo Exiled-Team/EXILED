@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     using System.Reflection.Emit;
 
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
 
@@ -25,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     ///     Patches <see cref="Scp939AmnesticCloudAbility.ServerProcessCmd(NetworkReader)" />
     ///     to add the <see cref="Scp939.PlacingAmnesticCloud" /> event.
     /// </summary>
+    [EventPatch(typeof(Scp939), nameof(Scp939.PlacingAmnesticCloud))]
     [HarmonyPatch(typeof(Scp939AmnesticCloudAbility), nameof(Scp939AmnesticCloudAbility.ServerProcessCmd))]
     internal static class PlacingAmnesticCloud
     {
@@ -43,9 +45,10 @@ namespace Exiled.Events.Patches.Events.Scp939
 
             newInstructions.InsertRange(index, new[]
             {
-                // this.Owner
+                // Player::Get(Owner)
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Scp939AmnesticCloudAbility), nameof(Scp939AmnesticCloudAbility.Owner))),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // flag (NewState)
                 new(OpCodes.Ldloc_0),

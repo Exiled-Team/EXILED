@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before radio battery charge is changed.
     /// </summary>
-    public class UsingRadioBatteryEventArgs : IPlayerEvent, IDeniableEvent
+    public class UsingRadioBatteryEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UsingRadioBatteryEventArgs" /> class.
@@ -46,6 +46,9 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the <see cref="API.Features.Items.Radio" /> which is being used.
         /// </summary>
         public Radio Radio { get; }
+
+        /// <inheritdoc/>
+        public Item Item => Radio;
 
         /// <summary>
         ///     Gets or sets the radio battery drain per second.

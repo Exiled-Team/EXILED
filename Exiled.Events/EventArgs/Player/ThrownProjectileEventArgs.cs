@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     /// Contains all information after a player throws a grenade.
     /// </summary>
-    public class ThrownProjectileEventArgs : IPlayerEvent
+    public class ThrownProjectileEventArgs : IPlayerEvent, IItemEvent, IPickupEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ThrownProjectileEventArgs"/> class.
@@ -43,9 +43,15 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public Throwable Throwable { get; }
 
+        /// <inheritdoc/>
+        public Item Item => Throwable;
+
         /// <summary>
         /// Gets the thrown grenade.
         /// </summary>
         public Projectile Projectile { get; }
+
+        /// <inheritdoc/>
+        public Pickup Pickup => Projectile;
     }
 }

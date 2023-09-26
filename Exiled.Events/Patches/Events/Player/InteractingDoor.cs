@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -24,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="DoorVariant.ServerInteract(ReferenceHub, byte)" />.
     ///     Adds the <see cref="Handlers.Player.InteractingDoor" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.InteractingDoor))]
     [HarmonyPatch(typeof(DoorVariant), nameof(DoorVariant.ServerInteract), typeof(ReferenceHub), typeof(byte))]
     internal static class InteractingDoor
     {
