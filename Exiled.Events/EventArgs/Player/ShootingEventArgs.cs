@@ -22,7 +22,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player fires a weapon.
     /// </summary>
-    public class ShootingEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
+    public class ShootingEventArgs : IPlayerEvent, IDeniableEvent, IFirearmEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ShootingEventArgs" /> class.
