@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     /// Patches <see cref="FlashbangGrenade.ServerFuseEnd()"/>.
-    /// Adds the <see cref="Handlers.Map.ExplodingGrenade"/> event.
+    /// Adds the <see cref="Handlers.Map.ExplodingGrenade"/> event and <see cref="Config.CanFlashbangsAffectThrower"/>.
     /// </summary>
     [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ServerFuseEnd))]
     internal static class ExplodingFlashGrenade
