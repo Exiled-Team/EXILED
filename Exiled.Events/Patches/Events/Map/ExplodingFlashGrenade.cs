@@ -15,6 +15,7 @@ namespace Exiled.Events.Patches.Events.Map
     using API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
+    using Exiled.Events.Patches.Generic;
     using HarmonyLib;
     using InventorySystem.Items.ThrowableProjectiles;
     using UnityEngine;
@@ -78,7 +79,7 @@ namespace Exiled.Events.Patches.Events.Map
                 if (!ExiledEvents.Instance.Config.CanFlashbangsAffectThrower && explodingGrenadeEvent.Player == player)
                     continue;
 
-                if (HitboxIdentity.CheckFriendlyFire(explodingGrenadeEvent.Player.ReferenceHub, player.ReferenceHub))
+                if (IndividualFriendlyFire.CheckFriendlyFirePlayer(instance.PreviousOwner, player.ReferenceHub))
                 {
                     instance.ProcessPlayer(player.ReferenceHub);
                     size++;
