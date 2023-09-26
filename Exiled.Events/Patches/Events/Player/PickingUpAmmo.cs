@@ -12,11 +12,11 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
-
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Searching;
 
     using static HarmonyLib.AccessTools;
@@ -24,6 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     ///     Patches <see cref="AmmoSearchCompletor.Complete" /> for the <see cref="Handlers.Player.PickingUpItem" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.PickingUpItem))]
     [HarmonyPatch(typeof(AmmoSearchCompletor), nameof(AmmoSearchCompletor.Complete))]
     internal static class PickingUpAmmo
     {
@@ -31,11 +32,12 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            Label returnLabel = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
 
             int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse) + offset;
 
+            newInstructions[index].labels.Add(continueLabel);
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
@@ -62,10 +64,28 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (!ev.IsAllowed)
                     //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpItemEventArgs), nameof(PickingUpItemEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse, returnLabel),
-                });
+                    new(OpCodes.Brtrue_S, continueLabel),
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+                    // PickupSyncInfo info = this.TargetPickup.Info;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(SearchCompletor), nameof(SearchCompletor.TargetPickup))),
+                    new(OpCodes.Ldfld, Field(typeof(ItemPickupBase), nameof(ItemPickupBase.Info))),
+                    new(OpCodes.Stloc_3),
+
+                    // info.InUse = false;
+                    new(OpCodes.Ldloca_S, 3),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Call, PropertySetter(typeof(PickupSyncInfo), nameof(PickupSyncInfo.InUse))),
+
+                    // this.TargetPickup.NetworkInfo = info;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(SearchCompletor), nameof(SearchCompletor.TargetPickup))),
+                    new(OpCodes.Ldloc_3),
+                    new(OpCodes.Call, PropertySetter(typeof(ItemPickupBase), nameof(ItemPickupBase.NetworkInfo))),
+
+                    // return;
+                    new(OpCodes.Ret),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

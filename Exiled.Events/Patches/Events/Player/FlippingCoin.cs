@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using HarmonyLib;
     using InventorySystem.Items;
@@ -25,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     <see cref="Coin.ServerProcessCmd(NetworkReader)" />.
     ///     Adds the <see cref="Handlers.Player.FlippingCoin" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.FlippingCoin))]
     [HarmonyPatch(typeof(Coin), nameof(Coin.ServerProcessCmd))]
     internal static class FlippingCoin
     {
@@ -47,6 +49,9 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ItemBase), nameof(ItemBase.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    // this
+                    new CodeInstruction(OpCodes.Ldarg_0),
 
                     // isTails
                     new(OpCodes.Ldloc_1),

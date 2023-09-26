@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp0492
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp0492;
 
     using HarmonyLib;
@@ -21,8 +22,9 @@ namespace Exiled.Events.Patches.Events.Scp0492
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="ZombieBloodlustAbility.AnyTargets"/> method to add the <see cref="Handlers.Scp0492.OnTriggeringBloodlust"/>.
+    /// Patches the <see cref="ZombieBloodlustAbility.AnyTargets"/> method to add the <see cref="Handlers.Scp0492.TriggeringBloodlust"/>.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.TriggeringBloodlust))]
     [HarmonyPatch(typeof(ZombieBloodlustAbility), nameof(ZombieBloodlustAbility.AnyTargets))]
     internal static class TriggeringBloodlustEvent
     {

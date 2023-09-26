@@ -3,8 +3,7 @@ name: Bug report
 about: Create a report to help us improve
 title: "[BUG]"
 labels: requires-testing
-assignees: joker-119
-
+assignees:
 ---
 
 **Describe the bug**
@@ -26,7 +25,7 @@ Please include a pastebin of your localadmin log file (or both MA_log and SCP_lo
 **EXILED Version ("latest" is not a version):**
 
 
-**Results of `show plugins` command in console:**
+**Results of `pluginmanager show` command in console:**
 
 
 **Additional context**

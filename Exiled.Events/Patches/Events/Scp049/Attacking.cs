@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp049
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp049;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp049;
@@ -23,6 +24,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     /// Patches <see cref="Scp049AttackAbility.ServerProcessCmd(Mirror.NetworkReader)"/>
     /// to add <see cref="Handlers.Scp049.Attacking"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.Attacking))]
     [HarmonyPatch(typeof(Scp049AttackAbility), nameof(Scp049AttackAbility.ServerProcessCmd))]
     internal class Attacking
     {
@@ -34,8 +36,6 @@ namespace Exiled.Events.Patches.Events.Scp049
             int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger)))) + offset;
 
             Label continueLabel = generator.DefineLabel();
-
-            newInstructions[index].labels.Add(continueLabel);
 
             newInstructions.InsertRange(
                 index,
@@ -67,6 +67,8 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new(OpCodes.Brtrue_S, continueLabel),
 
                     new(OpCodes.Ret),
+
+                    new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)

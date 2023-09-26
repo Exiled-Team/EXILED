@@ -21,6 +21,12 @@ namespace Exiled.Events
         public bool Debug { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether events are only patched if they have delegates subscribed to them.
+        /// </summary>
+        [Description("Indicates whether events are patched only if they have delegates subscribed to them")]
+        public bool UseDynamicPatching { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a value indicating whether SCP-173 can be blocked or not by the tutorial.
         /// </summary>
         [Description("Indicates whether SCP-173 can be blocked or not by the tutorial")]
@@ -37,6 +43,12 @@ namespace Exiled.Events
         /// </summary>
         [Description("Indicates whether SCP-049 can sense tutorial players or not")]
         public bool CanScp049SenseTutorial { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether tutorial is affected by SCP-079 scan.
+        /// </summary>
+        [Description("Indicates whether tutorial is affected by SCP-079 scan.")]
+        public bool TutorialNotAffectedByScp079Scan { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether flashbangs flash original thrower.

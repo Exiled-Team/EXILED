@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     using System.Reflection.Emit;
 
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
 
@@ -25,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     ///     Patches <see cref="Scp939FocusKeySync.ServerProcessCmd(NetworkReader)" />
     ///     to add the <see cref="Scp939.ChangingFocus" /> event.
     /// </summary>
+    [EventPatch(typeof(Scp939), nameof(Scp939.ChangingFocus))]
     [HarmonyPatch(typeof(Scp939FocusKeySync), nameof(Scp939FocusKeySync.ServerProcessCmd))]
     internal static class Focus
     {

@@ -83,6 +83,9 @@ namespace Exiled.Events.EventArgs.Item
         /// </summary>
         public Firearm Firearm { get; }
 
+        /// <inheritdoc/>
+        public Item Item => Firearm;
+
         /// <summary>
         ///     Gets the <see cref="API.Features.Player" /> who's changing attachments.
         /// </summary>

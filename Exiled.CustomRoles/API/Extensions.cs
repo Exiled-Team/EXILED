@@ -10,9 +10,13 @@ namespace Exiled.CustomRoles.API
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
 
     using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
+    using Exiled.CustomRoles.API.Features.Enums;
+
+    using Utils.NonAllocLINQ;
 
     /// <summary>
     /// A collection of API methods.
@@ -46,8 +50,8 @@ namespace Exiled.CustomRoles.API
             if (customRoles is null)
                 throw new ArgumentNullException(nameof(customRoles));
 
-            foreach (CustomRole customItem in customRoles)
-                customItem.TryRegister();
+            foreach (CustomRole customRole in customRoles)
+                customRole.TryRegister();
         }
 
         /// <summary>
@@ -71,8 +75,8 @@ namespace Exiled.CustomRoles.API
             if (customRoles is null)
                 throw new ArgumentNullException(nameof(customRoles));
 
-            foreach (CustomRole customItem in customRoles)
-                customItem.TryUnregister();
+            foreach (CustomRole customRole in customRoles)
+                customRole.TryUnregister();
         }
 
         /// <summary>
@@ -86,5 +90,19 @@ namespace Exiled.CustomRoles.API
         /// </summary>
         /// <param name="ability">The <see cref="CustomAbility"/> to be unregistered.</param>
         public static void Unregister(this CustomAbility ability) => ability.TryUnregister();
+
+        /// <summary>
+        /// Gets all <see cref="ActiveAbility"/>s a specific <see cref="Player"/> is able to use.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to get abilities for.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of their active abilities, or <see langword="null"/> if none.</returns>
+        public static IEnumerable<ActiveAbility>? GetActiveAbilities(this Player player) => !ActiveAbility.AllActiveAbilities.TryGetValue(player, out HashSet<ActiveAbility> abilities) ? null : abilities;
+
+        /// <summary>
+        /// Gets the <see cref="Player"/>'s selected ability.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns>The <see cref="ActiveAbility"/> the <see cref="Player"/> has selected, or <see langword="null"/>.</returns>
+        public static ActiveAbility? GetSelectedAbility(this Player player) => !ActiveAbility.AllActiveAbilities.TryGetValue(player, out HashSet<ActiveAbility> abilities) ? null : abilities.FirstOrDefault(a => a.Check(player, CheckType.Selected));
     }
 }
