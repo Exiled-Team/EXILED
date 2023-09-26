@@ -146,8 +146,8 @@ namespace Exiled.API.Features.Pickups
                 RemoveExcessOnDrop = armoritem.RemoveExcessOnDrop;
                 StaminaUseMultiplier = armoritem.StaminaUseMultiplier;
                 MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
-                AmmoLimits = armoritem.AmmoLimits;
-                CategoryLimits = armoritem.CategoryLimits;
+                /*AmmoLimits = armoritem.AmmoLimits; // Prevent bug with 914
+                CategoryLimits = armoritem.CategoryLimits;*/
             }
 
             return this;
@@ -164,8 +164,8 @@ namespace Exiled.API.Features.Pickups
                 armoritem.RemoveExcessOnDrop = RemoveExcessOnDrop;
                 armoritem.StaminaUseMultiplier = StaminaUseMultiplier;
                 armoritem.MovementSpeedMultiplier = MovementSpeedMultiplier;
-                armoritem.AmmoLimits = AmmoLimits;
-                armoritem.CategoryLimits = CategoryLimits;
+                /*armoritem.AmmoLimits = AmmoLimits; // Prevent bug with 914
+                armoritem.CategoryLimits = CategoryLimits;*/
             }
 
             return item;
