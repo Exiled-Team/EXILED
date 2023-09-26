@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using API.Features.Pools;
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp079;
@@ -21,8 +22,9 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     /// <summary>
     ///     Patches <see cref="Scp079BlackoutRoomAbility.ServerProcessCmd" />.
-    ///     Adds the <see cref="RoomBlackoutEventArgs" /> event for SCP-079.
+    ///     Adds the <see cref="Handlers.Scp079.RoomBlackout" /> event for SCP-079.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp079), nameof(Handlers.Scp079.Pinging))]
     [HarmonyPatch(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility.ServerProcessCmd))]
     internal static class RoomBlackout
     {
@@ -146,9 +148,6 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RoomBlackoutEventArgs), nameof(RoomBlackoutEventArgs.BlackoutDuration))),
                 });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                Log.Info($"opcode: {newInstructions[z].opcode} operand:{newInstructions[z].operand}: {newInstructions[z].labels.Count}");
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

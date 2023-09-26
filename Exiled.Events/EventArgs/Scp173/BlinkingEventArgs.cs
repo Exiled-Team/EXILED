@@ -17,10 +17,12 @@ namespace Exiled.Events.EventArgs.Scp173
 
     using UnityEngine;
 
+    using Scp173Role = API.Features.Roles.Scp173Role;
+
     /// <summary>
     ///     Contains all information before a players blink near SCP-173.
     /// </summary>
-    public class BlinkingEventArgs : IPlayerEvent, IDeniableEvent
+    public class BlinkingEventArgs : IScp173Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="BlinkingEventArgs" /> class.
@@ -37,6 +39,7 @@ namespace Exiled.Events.EventArgs.Scp173
         public BlinkingEventArgs(Player player, List<Player> targets, Vector3 blinkPos)
         {
             Player = player;
+            Scp173 = player.Role.As<Scp173Role>();
             BlinkPosition = blinkPos;
             Targets = targets;
             BlinkCooldown = Scp173BlinkTimer.CooldownBaseline;
@@ -66,5 +69,8 @@ namespace Exiled.Events.EventArgs.Scp173
         ///     Gets the player who controlling SCP-173.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp173Role Scp173 { get; }
     }
 }

@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
     using HarmonyLib;
     using Mirror;
@@ -25,8 +26,9 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     /// <summary>
     ///     Patches <see cref="Scp079PingAbility.ServerProcessCmd" />.
-    ///     Adds the <see cref="PingingEventArgs" /> event for  SCP-079.
+    ///     Adds the <see cref="Handlers.Scp079.Pinging" /> event for  SCP-079.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp079), nameof(Handlers.Scp079.Pinging))]
     [HarmonyPatch(typeof(Scp079PingAbility), nameof(Scp079PingAbility.ServerProcessCmd))]
     internal static class Pinging
     {
@@ -117,7 +119,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+          ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

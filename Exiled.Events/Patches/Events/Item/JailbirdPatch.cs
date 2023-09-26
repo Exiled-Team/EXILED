@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Item;
     using Handlers;
     using HarmonyLib;
@@ -22,8 +23,10 @@ namespace Exiled.Events.Patches.Events.Item
     /// <summary>
     ///     Patches
     ///     <see cref="JailbirdItem.ServerProcessCmd(NetworkReader)" />.
-    ///     Adds the <see cref="Item.Swinging" /> event.
+    ///     Adds the <see cref="Item.Swinging" /> event and <see cref="Item.ChargingJailbird" />.
     /// </summary>
+    [EventPatch(typeof(Item), nameof(Item.Swinging))]
+    [EventPatch(typeof(Item), nameof(Item.ChargingJailbird))]
     [HarmonyPatch(typeof(JailbirdItem), nameof(JailbirdItem.ServerProcessCmd))]
     internal static class JailbirdPatch
     {

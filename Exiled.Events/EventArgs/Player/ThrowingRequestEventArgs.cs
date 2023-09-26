@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     /// Contains all information before receving a throwing request.
     /// </summary>
-    public class ThrowingRequestEventArgs : IPlayerEvent
+    public class ThrowingRequestEventArgs : IPlayerEvent, IItemEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ThrowingRequestEventArgs"/> class.
@@ -41,6 +41,9 @@ namespace Exiled.Events.EventArgs.Player
         /// Gets or sets the item being thrown.
         /// </summary>
         public Throwable Throwable { get; set; }
+
+        /// <inheritdoc/>
+        public Item Item => Throwable;
 
         /// <summary>
         ///  Gets or sets the type of throw being requested.

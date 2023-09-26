@@ -9,13 +9,12 @@ namespace Exiled.Events.EventArgs.Scp079
 {
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
-
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
-
     using MapGeneration;
-
     using PlayerRoles.PlayableScps.Scp079;
+
+    using Scp079Role = API.Features.Roles.Scp079Role;
 
     /// <summary>
     ///     Contains all information before SCP-079 lockdowns a room.
@@ -59,6 +58,9 @@ namespace Exiled.Events.EventArgs.Scp079
         ///     Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp079Role Scp079 { get; }
 
         /// <summary>
         ///     Gets the <see cref="RoomIdentifier" /> of the room that will be locked down.

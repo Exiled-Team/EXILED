@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -43,7 +42,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="NineTailedFoxAnnouncer.VoiceLine"/> objects that C.A.S.S.I.E recognizes.
         /// </summary>
-        public static IReadOnlyCollection<NineTailedFoxAnnouncer.VoiceLine> VoiceLines => Announcer.voiceLines.ToList().AsReadOnly();
+        public static IReadOnlyCollection<NineTailedFoxAnnouncer.VoiceLine> VoiceLines => Announcer.voiceLines;
 
         /// <summary>
         /// Reproduce a non-glitched C.A.S.S.I.E message.
@@ -104,16 +103,6 @@ namespace Exiled.API.Features
         /// <param name="jamChance">The chance of jamming each word.</param>
         public static void DelayedGlitchyMessage(string message, float delay, float glitchChance, float jamChance) =>
             Timing.CallDelayed(delay, () => Announcer.ServerOnlyAddGlitchyPhrase(message, glitchChance, jamChance));
-
-        /// <summary>
-        /// Calculates the duration of a C.A.S.S.I.E message.
-        /// </summary>
-        /// <param name="message">The message, which duration will be calculated.</param>
-        /// <param name="rawNumber">Determines if a number won't be converted to its full pronunciation.</param>
-        /// <returns>Duration (in seconds) of specified message.</returns>
-        [Obsolete("Use CalculateDuration(string, bool, float)")]
-        public static float CalculateDuration(string message, bool rawNumber = false)
-            => CalculateDuration(message, rawNumber, 1f);
 
         /// <summary>
         /// Calculates the duration of a C.A.S.S.I.E message.
