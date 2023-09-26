@@ -50,8 +50,8 @@ namespace Exiled.CustomRoles.API
             if (customRoles is null)
                 throw new ArgumentNullException(nameof(customRoles));
 
-            foreach (CustomRole customItem in customRoles)
-                customItem.TryRegister();
+            foreach (CustomRole customRole in customRoles)
+                customRole.TryRegister();
         }
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace Exiled.CustomRoles.API
             if (customRoles is null)
                 throw new ArgumentNullException(nameof(customRoles));
 
-            foreach (CustomRole customItem in customRoles)
-                customItem.TryUnregister();
+            foreach (CustomRole customRole in customRoles)
+                customRole.TryUnregister();
         }
 
         /// <summary>

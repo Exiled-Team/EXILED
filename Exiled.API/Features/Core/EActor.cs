@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Core
     using System.Linq;
 
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Pools;
     using Exiled.API.Interfaces;
     using MEC;
@@ -268,6 +269,7 @@ namespace Exiled.API.Features.Core
         /// </summary>
         protected virtual void SubscribeEvents()
         {
+            StaticActor.Get<DynamicEventManager>().BindAllFromTypeInstance(this);
         }
 
         /// <summary>
@@ -275,6 +277,7 @@ namespace Exiled.API.Features.Core
         /// </summary>
         protected virtual void UnsubscribeEvents()
         {
+            StaticActor.Get<DynamicEventManager>().UnbindAllFromTypeInstance(this);
         }
 
         /// <inheritdoc/>
