@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features.Doors;
     using Interactables.Interobjects.DoorUtils;
     using MapGeneration;
     using Mirror;
@@ -105,7 +106,22 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp079TeslaAbility subroutine not found in Scp079Role::ctor");
 
             TeslaAbility = scp079TeslaAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079ScannerTracker scp079ScannerTracker))
+                Log.Error("Scp079ScannerTracker subroutine not found in Scp079Role::ctor");
+
+            ScannerTracker = scp079ScannerTracker;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079ScannerZoneSelector scp079ScannerZoneSelector))
+                Log.Error("Scp079ScannerZoneSelector subroutine not found in Scp079Role::ctor");
+
+            ScannerZoneSelector = scp079ScannerZoneSelector;
         }
+
+        /// <summary>
+        /// Gets a list of players who will be turned away from SCP-079's scan.
+        /// </summary>
+        public static HashSet<Player> TurnedPlayers { get; } = new(20);
 
         /// <inheritdoc/>
         public override RoleTypeId Type { get; } = RoleTypeId.Scp079;
@@ -177,6 +193,16 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-079's <see cref="Scp079CurrentCameraSync"/>.
         /// </summary>
         public Scp079CurrentCameraSync CurrentCameraSync { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079ScannerTracker"/>.
+        /// </summary>
+        public Scp079ScannerTracker ScannerTracker { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079ScannerZoneSelector"/>.
+        /// </summary>
+        public Scp079ScannerZoneSelector ScannerZoneSelector { get; }
 
         /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.

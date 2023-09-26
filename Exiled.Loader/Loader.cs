@@ -23,11 +23,10 @@ namespace Exiled.Loader
     using CommandSystem.Commands.Shared;
 
     using Exiled.API.Features;
-
     using Features;
     using Features.Configs;
     using Features.Configs.CustomConverters;
-
+    using MEC;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NodeDeserializers;
 
@@ -100,6 +99,7 @@ namespace Exiled.Loader
             .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .IgnoreFields()
+            .DisableAliases()
             .Build();
 
         /// <summary>
@@ -357,12 +357,43 @@ namespace Exiled.Loader
         /// Runs the plugin manager, by loading all dependencies, plugins, configs and then enables all plugins.
         /// </summary>
         /// <param name="dependencies">The dependencies that could have been loaded by Exiled.Bootstrap.</param>
-        public void Run(Assembly[] dependencies = null)
+        /// <returns>A MEC <see cref="IEnumerator{T}"/>.</returns>
+        public IEnumerator<float> Run(Assembly[] dependencies = null)
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? CheckUAC() : geteuid() == 0)
             {
                 ServerConsole.AddLog("YOU ARE RUNNING THE SERVER AS ROOT / ADMINISTRATOR. THIS IS HIGHLY UNRECOMMENDED. PLEASE INSTALL YOUR SERVER AS A NON-ROOT/ADMIN USER.", ConsoleColor.DarkRed);
                 Thread.Sleep(5000);
+            }
+
+            if (LoaderPlugin.Config.EnableAutoUpdates)
+            {
+                Thread thread = new(() =>
+                {
+                    Updater updater = Updater.Initialize(LoaderPlugin.Config);
+                    updater.CheckUpdate();
+                })
+                {
+                    Name = "Exiled Updater",
+                    Priority = ThreadPriority.AboveNormal,
+                };
+
+                thread.Start();
+            }
+
+            if (!LoaderPlugin.Config.ShouldLoadOutdatedExiled &&
+                !GameCore.Version.CompatibilityCheck(
+                (byte)AutoUpdateFiles.RequiredSCPSLVersion.Major,
+                (byte)AutoUpdateFiles.RequiredSCPSLVersion.Minor,
+                (byte)AutoUpdateFiles.RequiredSCPSLVersion.Revision,
+                GameCore.Version.Major,
+                GameCore.Version.Minor,
+                GameCore.Version.Revision,
+                GameCore.Version.BackwardCompatibility,
+                GameCore.Version.BackwardRevision))
+            {
+                ServerConsole.AddLog($"Exiled is outdated, a new version will be installed automatically as soon as it's available.\nSCP:SL: {GameCore.Version.VersionString} Exiled Supported Version: {AutoUpdateFiles.RequiredSCPSLVersion}", ConsoleColor.DarkRed);
+                yield break;
             }
 
             if (dependencies?.Length > 0)

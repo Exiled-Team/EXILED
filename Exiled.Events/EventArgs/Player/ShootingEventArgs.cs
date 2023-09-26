@@ -9,6 +9,8 @@ namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
 
+    using Exiled.API.Features.Items;
+
     using Interfaces;
 
     using InventorySystem.Items.Firearms.BasicMessages;
@@ -20,7 +22,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player fires a weapon.
     /// </summary>
-    public class ShootingEventArgs : IPlayerEvent, IDeniableEvent
+    public class ShootingEventArgs : IPlayerEvent, IDeniableEvent, IFirearmEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ShootingEventArgs" /> class.
@@ -28,12 +30,16 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="shooter">
         ///     <inheritdoc cref="Player" />
         /// </param>
+        /// <param name="firearm">
+        ///     <inheritdoc cref="Firearm" />
+        /// </param>
         /// <param name="msg">
         ///     <inheritdoc cref="ShotMessage" />
         /// </param>
-        public ShootingEventArgs(Player shooter, ShotMessage msg)
+        public ShootingEventArgs(Player shooter, Firearm firearm, ShotMessage msg)
         {
             Player = shooter;
+            Firearm = firearm;
             ShotMessage = msg;
         }
 
@@ -41,6 +47,14 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the player who's shooting.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        ///     Gets the target <see cref="API.Features.Items.Firearm" />.
+        /// </summary>
+        public Firearm Firearm { get; }
+
+        /// <inheritdoc/>
+        public Item Item => Firearm;
 
         /// <summary>
         ///     Gets or sets the <see cref="ShotMessage" /> for the event.

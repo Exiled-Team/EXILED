@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Interfaces
     /// <summary>
     ///     Event args used for all <see cref="API.Features.Items.Firearm" /> related events.
     /// </summary>
-    public interface IFirearmEvent : IExiledEvent
+    public interface IFirearmEvent : IItemEvent
     {
         /// <summary>
         ///     Gets the <see cref="API.Features.Items.Firearm" /> triggering the event.

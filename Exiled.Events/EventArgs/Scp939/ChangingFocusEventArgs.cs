@@ -8,12 +8,13 @@
 namespace Exiled.Events.EventArgs.Scp939
 {
     using API.Features;
+    using Exiled.API.Features.Roles;
     using Interfaces;
 
     /// <summary>
     ///     Contains all information before SCP-939 changes its target focus.
     /// </summary>
-    public class ChangingFocusEventArgs : IPlayerEvent, IDeniableEvent
+    public class ChangingFocusEventArgs : IScp939Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ChangingFocusEventArgs" /> class.
@@ -30,6 +31,7 @@ namespace Exiled.Events.EventArgs.Scp939
         public ChangingFocusEventArgs(ReferenceHub player, bool state, bool isAllowed = true)
         {
             Player = Player.Get(player);
+            Scp939 = Player.Role.As<Scp939Role>();
             State = state;
             IsAllowed = isAllowed;
         }
@@ -48,5 +50,8 @@ namespace Exiled.Events.EventArgs.Scp939
         ///     Gets the player who's controlling SCP-939.
         /// </summary>
         public Player Player { get; }
+
+        /// <inheritdoc/>
+        public Scp939Role Scp939 { get; }
     }
 }

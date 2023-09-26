@@ -24,7 +24,7 @@ namespace Exiled.API.Extensions
 
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-
+    using PlayerRoles.PlayableScps.Scp049.Zombies;
     using RelativePositioning;
 
     using Respawning;
@@ -38,10 +38,13 @@ namespace Exiled.API.Extensions
     {
         private static readonly Dictionary<Type, MethodInfo> WriterExtensionsValue = new();
         private static readonly Dictionary<string, ulong> SyncVarDirtyBitsValue = new();
+        private static readonly Dictionary<string, string> RpcFullNamesValue = new();
         private static readonly ReadOnlyDictionary<Type, MethodInfo> ReadOnlyWriterExtensionsValue = new(WriterExtensionsValue);
         private static readonly ReadOnlyDictionary<string, ulong> ReadOnlySyncVarDirtyBitsValue = new(SyncVarDirtyBitsValue);
+        private static readonly ReadOnlyDictionary<string, string> ReadOnlyRpcFullNamesValue = new(RpcFullNamesValue);
         private static MethodInfo setDirtyBitsMethodInfoValue;
         private static MethodInfo sendSpawnMessageMethodInfoValue;
+        private static MethodInfo bufferRpcMethodInfoValue;
 
         /// <summary>
         /// Gets <see cref="MethodInfo"/> corresponding to <see cref="Type"/>.
@@ -95,12 +98,41 @@ namespace Exiled.API.Extensions
 
                         byte[] bytecodes = methodBody.GetILAsByteArray();
 
-                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.Name}"))
-                            SyncVarDirtyBitsValue.Add($"{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
+                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.ReflectedType.Name}.{property.Name}"))
+                            SyncVarDirtyBitsValue.Add($"{property.ReflectedType.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
                     }
                 }
 
                 return ReadOnlySyncVarDirtyBitsValue;
+            }
+        }
+
+        /// <summary>
+        /// Gets Rpc's FullName <see cref="string"/> corresponding to <see cref="StringExtensions"/>(format:classname.methodname).
+        /// </summary>
+        public static ReadOnlyDictionary<string, string> RpcFullNames
+        {
+            get
+            {
+                if (RpcFullNamesValue.Count == 0)
+                {
+                    foreach (MethodInfo method in typeof(ServerConsole).Assembly.GetTypes()
+                        .SelectMany(x => x.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+                        .Where(m => m.GetCustomAttributes(typeof(ClientRpcAttribute), false).Length > 0 || m.GetCustomAttributes(typeof(TargetRpcAttribute), false).Length > 0))
+                    {
+                        MethodBody methodBody = method.GetMethodBody();
+
+                        if (methodBody is null)
+                            continue;
+
+                        byte[] bytecodes = methodBody.GetILAsByteArray();
+
+                        if (!RpcFullNamesValue.ContainsKey($"{method.ReflectedType.Name}.{method.Name}"))
+                            RpcFullNamesValue.Add($"{method.ReflectedType.Name}.{method.Name}", method.Module.ResolveString(BitConverter.ToInt32(bytecodes, bytecodes.IndexOf((byte)OpCodes.Ldstr.Value) + 1)));
+                    }
+                }
+
+                return ReadOnlyRpcFullNamesValue;
             }
         }
 
@@ -113,6 +145,11 @@ namespace Exiled.API.Extensions
         /// Gets a NetworkServer.SendSpawnMessage's <see cref="MethodInfo"/>.
         /// </summary>
         public static MethodInfo SendSpawnMessageMethodInfo => sendSpawnMessageMethodInfoValue ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
+
+        /// <summary>
+        /// Gets a NetworkConnectionToClient.BufferRpc's <see cref="MethodInfo"/>.
+        /// </summary>
+        public static MethodInfo BufferRpcMethodInfo => bufferRpcMethodInfoValue ??= typeof(NetworkConnectionToClient).GetMethod("BufferRpc", BindingFlags.NonPublic | BindingFlags.Instance, null, CallingConventions.HasThis, new Type[] { typeof(RpcMessage), typeof(int) }, null);
 
         /// <summary>
         /// Plays a beep sound that only the target <paramref name="player"/> can hear.
@@ -189,15 +226,6 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="player">Player to change.</param>
         /// <param name="type">Model type.</param>
-        [Obsolete("Use ChangeAppearance(Player, RoleTypeId, bool, byte) instead.", true)]
-        public static void ChangeAppearance(this Player player, RoleTypeId type) => ChangeAppearance(player, type, 0);
-
-        /// <summary>
-        /// Change <see cref="Player"/> character model for appearance.
-        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
-        /// </summary>
-        /// <param name="player">Player to change.</param>
-        /// <param name="type">Model type.</param>
         /// <param name="skipJump">Whether or not to skip the little jump that works around an invisibility issue.</param>
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public static void ChangeAppearance(this Player player, RoleTypeId type, bool skipJump = false, byte unitId = 0) => ChangeAppearance(player, type, Player.List.Where(x => x != player), skipJump, unitId);
@@ -213,52 +241,57 @@ namespace Exiled.API.Extensions
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
         {
-            if (player.Role.Type is RoleTypeId.Spectator or RoleTypeId.Filmmaker or RoleTypeId.Overwatch)
-                throw new InvalidOperationException("You cannot change a spectator into non-spectator via change appearance.");
+            if (!RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))
+                return;
+
+            bool isRisky = type.GetTeam() is Team.Dead || player.IsDead;
 
             NetworkWriterPooled writer = NetworkWriterPool.Get();
             writer.WriteUShort(38952);
             writer.WriteUInt(player.NetId);
             writer.WriteRoleType(type);
-            if (PlayerRolesUtils.GetTeam(type) == Team.FoundationForces)
-                writer.WriteByte(unitId);
 
-            if (type != RoleTypeId.Spectator && player.Role.Base is IFpcRole fpc)
+            if (roleBase is HumanRole humanRole && humanRole.UsesUnitNames)
             {
-                fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort syncH, out _);
-                writer.WriteRelativePosition(new(player.ReferenceHub.transform.position));
-                writer.WriteUShort(syncH);
+                if (player.Role.Base is not HumanRole)
+                    isRisky = true;
+                writer.WriteByte(unitId);
+            }
+
+            if (roleBase is FpcStandardRoleBase fpc)
+            {
+                if (player.Role.Base is not FpcStandardRoleBase playerfpc)
+                    isRisky = true;
+                else
+                    fpc = playerfpc;
+
+                fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort value, out ushort _);
+                writer.WriteRelativePosition(player.RelativePosition);
+                writer.WriteUShort(value);
+            }
+
+            if (roleBase is ZombieRole)
+            {
+                if (player.Role.Base is not ZombieRole)
+                    isRisky = true;
+
+                writer.WriteUShort((ushort)Mathf.Clamp(Mathf.CeilToInt(player.MaxHealth), ushort.MinValue, ushort.MaxValue));
             }
 
             foreach (Player target in playersToAffect)
-                target.Connection.Send(writer.ToArraySegment());
+            {
+                if (target != player || !isRisky)
+                    target.Connection.Send(writer.ToArraySegment());
+                else
+                    Log.Error($"Prevent Seld-Desync of {player.Nickname} with {type}");
+            }
+
             NetworkWriterPool.Return(writer);
 
             // To counter a bug that makes the player invisible until they move after changing their appearance, we will teleport them upwards slightly to force a new position update for all clients.
             if (!skipJump)
                 player.Position += Vector3.up * 0.25f;
         }
-
-        /// <summary>
-        /// Change <see cref="Player"/> character model for appearance.
-        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
-        /// </summary>
-        /// <param name="player">Player to change.</param>
-        /// <param name="type">Model type.</param>
-        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
-        [Obsolete("Use ChangeAppearance(Player, RoleTypeId, bool, byte) instead.", true)]
-        public static void ChangeAppearance(this Player player, RoleTypeId type, byte unitId = 0) => ChangeAppearance(player, type, Player.List.Where(x => x != player), unitId);
-
-        /// <summary>
-        /// Change <see cref="Player"/> character model for appearance.
-        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
-        /// </summary>
-        /// <param name="player">Player to change.</param>
-        /// <param name="type">Model type.</param>
-        /// <param name="playersToAffect">The players who should see the changed appearance.</param>
-        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
-        [Obsolete("Use ChangeAppearance(Player, RoleTypeId, IEnumerable<Player>, bool, byte) instead.", true)]
-        public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, byte unitId = 0) => ChangeAppearance(player, type, playersToAffect, false, unitId);
 
         /// <summary>
         /// Send CASSIE announcement that only <see cref="Player"/> can hear.
@@ -332,7 +365,7 @@ namespace Exiled.API.Extensions
             NetworkWriterPool.Return(writer2);
             void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
-                targetWriter.WriteULong(SyncVarDirtyBits[propertyName]);
+                targetWriter.WriteULong(SyncVarDirtyBits[$"{targetType.Name}.{propertyName}"]);
                 WriterExtensions[value.GetType()]?.Invoke(null, new object[2] { targetWriter, value });
             }
         }
@@ -343,7 +376,7 @@ namespace Exiled.API.Extensions
         /// <param name="behaviorOwner"><see cref="NetworkIdentity"/> of object that owns <see cref="NetworkBehaviour"/>.</param>
         /// <param name="targetType"><see cref="NetworkBehaviour"/>'s type.</param>
         /// <param name="propertyName">Property name starting with Network.</param>
-        public static void ResyncSyncVar(NetworkIdentity behaviorOwner, Type targetType, string propertyName) => SetDirtyBitsMethodInfo.Invoke(behaviorOwner.gameObject.GetComponent(targetType), new object[] { SyncVarDirtyBits[$"{propertyName}"] });
+        public static void ResyncSyncVar(NetworkIdentity behaviorOwner, Type targetType, string propertyName) => SetDirtyBitsMethodInfo.Invoke(behaviorOwner.gameObject.GetComponent(targetType), new object[] { SyncVarDirtyBits[$"{targetType.Name}.{propertyName}"] });
 
         /// <summary>
         /// Send fake values to client's <see cref="ClientRpcAttribute"/>.
@@ -355,8 +388,6 @@ namespace Exiled.API.Extensions
         /// <param name="values">Values of send to target.</param>
         public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
         {
-            Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} has tried to send a fake RPC. This is currently broken. This warning does not indicate an error, but expect something to not be working as intended.");
-            /*
             NetworkWriterPooled writer = NetworkWriterPool.Get();
 
             foreach (object value in values)
@@ -366,14 +397,13 @@ namespace Exiled.API.Extensions
             {
                 netId = behaviorOwner.netId,
                 componentIndex = (byte)GetComponentIndex(behaviorOwner, targetType),
-                functionHash = (ushort)((targetType.FullName.GetStableHashCode() * 503) + rpcName.GetStableHashCode()),
+                functionHash = (ushort)RpcFullNames[$"{targetType.Name}.{rpcName}"].GetStableHashCode(),
                 payload = writer.ToArraySegment(),
             };
 
-            target.Connection.Send(msg, 0);
+            BufferRpcMethodInfo.Invoke(target.Connection, new object[] { msg, 0 });
 
             NetworkWriterPool.Return(writer);
-            */
         }
 
         /// <summary>

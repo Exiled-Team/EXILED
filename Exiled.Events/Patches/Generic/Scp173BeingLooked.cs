@@ -16,7 +16,7 @@ namespace Exiled.Events.Patches.Generic
     using PlayerRoles.PlayableScps.Scp173;
 
     using ExiledEvents = Exiled.Events.Events;
-    using Scp173Role = Exiled.API.Features.Roles.Scp173Role;
+    using Scp173Role = API.Features.Roles.Scp173Role;
 
     /// <summary>
     /// Patches <see cref="Scp173ObserversTracker.UpdateObserver(ReferenceHub)"/>.

@@ -12,12 +12,9 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Interfaces;
-
     using Hazards;
     using MEC;
-
     using PlayerRoles;
-
     using UnityEngine;
 
     using BaseTeslaGate = global::TeslaGate;
@@ -31,22 +28,23 @@ namespace Exiled.API.Features
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BaseTeslaGate"/>s and their corresponding <see cref="TeslaGate"/>.
         /// </summary>
         internal static readonly Dictionary<BaseTeslaGate, TeslaGate> BaseTeslaGateToTeslaGate = new(10);
-        private Room room;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeslaGate"/> class.
         /// </summary>
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
-        internal TeslaGate(BaseTeslaGate baseTeslaGate)
+        /// <param name="room">The <see cref="Features.Room"/> for this tesla.</param>
+        internal TeslaGate(BaseTeslaGate baseTeslaGate, Room room)
         {
             Base = baseTeslaGate;
             BaseTeslaGateToTeslaGate.Add(baseTeslaGate, this);
+            Room = room;
         }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains all the <see cref="TeslaGate"/> instances.
         /// </summary>
-        public static IEnumerable<TeslaGate> List => BaseTeslaGateToTeslaGate.Values;
+        public static IReadOnlyCollection<TeslaGate> List => BaseTeslaGateToTeslaGate.Values;
 
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="Player"/> which contains all the players ignored by tesla gates.
@@ -91,7 +89,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the tesla gate's <see cref="Features.Room"/> which is located in.
         /// </summary>
-        public Room Room => room ??= Room.FindParentRoom(GameObject);
+        public Room Room { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not the tesla gate's shock burst is in progess.
@@ -178,9 +176,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="List{T}"/> of <see cref="UnityEngine.GameObject"/> which contains all the tantrums to destroy.
+        /// Gets a <see cref="List{T}"/> of <see cref="TantrumHazard"/> which contains all the tantrums to destroy.
         /// </summary>
-        public List<TantrumEnvironmentalHazard> TantrumsToDestroy => Base.TantrumsToBeDestroyed;
+        public IEnumerable<TantrumHazard> TantrumsToDestroy => Base.TantrumsToBeDestroyed.Select(x => Hazard.Get(x) as TantrumHazard);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> which contains all the players inside the hurt range.
@@ -202,8 +200,9 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
         /// <returns>The corresponding <see cref="TeslaGate"/> instance.</returns>
-        public static TeslaGate Get(BaseTeslaGate baseTeslaGate) => baseTeslaGate == null ? null :
-            BaseTeslaGateToTeslaGate.TryGetValue(baseTeslaGate, out TeslaGate teslagate) ? teslagate : new(baseTeslaGate);
+        public static TeslaGate Get(BaseTeslaGate baseTeslaGate) => BaseTeslaGateToTeslaGate.TryGetValue(baseTeslaGate, out TeslaGate teslagate) ?
+            teslagate :
+            new(baseTeslaGate, Room.FindParentRoom(baseTeslaGate.gameObject));
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> filtered based on a predicate.

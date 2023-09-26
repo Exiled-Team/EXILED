@@ -8,7 +8,7 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
-
+    using Exiled.API.Features.Items;
     using Interfaces;
 
     using InventorySystem.Items.Usables;
@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player uses an item.
     /// </summary>
-    public class UsingItemEventArgs : UsedItemEventArgs, IDeniableEvent
+    public class UsingItemEventArgs : IPlayerEvent, IDeniableEvent, IUsableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UsingItemEventArgs" /> class.
@@ -29,10 +29,24 @@ namespace Exiled.Events.EventArgs.Player
         ///     <inheritdoc cref="UsedItemEventArgs.Item" />
         /// </param>
         public UsingItemEventArgs(Player player, UsableItem item, float cooldown)
-            : base(player, item)
         {
+            Player = player;
+            Usable = Item.Get(item) is Usable usable ? usable : null;
             Cooldown = cooldown;
         }
+
+        /// <summary>
+        ///     Gets the item that the player using.
+        /// </summary>
+        public Usable Usable { get; }
+
+        /// <inheritdoc/>
+        public Item Item => Usable;
+
+        /// <summary>
+        ///     Gets the player who using the item.
+        /// </summary>
+        public Player Player { get; }
 
         /// <summary>
         ///     Gets or sets the item cooldown.

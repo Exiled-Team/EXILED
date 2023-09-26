@@ -7,14 +7,10 @@
 
 namespace Exiled.Events.Handlers
 {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
     using Exiled.Events.EventArgs.Warhead;
-
-    using Extensions;
-
-    using PluginAPI.Core.Attributes;
-    using PluginAPI.Enums;
-
-    using static Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     ///     Handles warhead related events.
@@ -24,27 +20,27 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before stopping the warhead.
         /// </summary>
-        public static event CustomEventHandler<StoppingEventArgs> Stopping;
+        public static Event<StoppingEventArgs> Stopping { get; set; } = new();
 
         /// <summary>
         ///     Invoked before starting the warhead.
         /// </summary>
-        public static event CustomEventHandler<StartingEventArgs> Starting;
+        public static Event<StartingEventArgs> Starting { get; set; } = new();
 
         /// <summary>
         ///     Invoked before changing the warhead lever status.
         /// </summary>
-        public static event CustomEventHandler<ChangingLeverStatusEventArgs> ChangingLeverStatus;
+        public static Event<ChangingLeverStatusEventArgs> ChangingLeverStatus { get; set; } = new();
 
         /// <summary>
         ///     Invoked after the warhead has been detonated.
         /// </summary>
-        public static event CustomEventHandler Detonated;
+        public static Event Detonated { get; set; } = new();
 
         /// <summary>
         ///     Invoked before detonating the warhead.
         /// </summary>
-        public static event CustomEventHandler<DetonatingEventArgs> Detonating;
+        public static Event<DetonatingEventArgs> Detonating { get; set; } = new();
 
         /// <summary>
         ///     Called before stopping the warhead.
@@ -72,15 +68,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Called before detonating the warhead.
         /// </summary>
-        /// <returns>Returns whether the event is allowed or not.</returns>
-        [PluginEvent(ServerEventType.WarheadDetonation)]
-        public bool OnDetonating()
-        {
-            DetonatingEventArgs ev = new();
-
-            Detonating.InvokeSafely(ev);
-
-            return ev.IsAllowed;
-        }
+        /// <param name="ev">The <see cref="DetonatingEventArgs"/> instance.</param>
+        public static void OnDetonating(DetonatingEventArgs ev) => Detonating.InvokeSafely(ev);
     }
 }

@@ -23,6 +23,7 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
+    using InventorySystem.Configs;
 
     using MEC;
 
@@ -174,10 +175,6 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="id">The ID of the role to get.</param>
         /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
-        [Obsolete("Use Get(uint) instead", false)]
-        public static CustomRole? Get(int id) => Get((uint)id);
-
-        /// <inheritdoc cref="Get(int)"/>
         public static CustomRole? Get(uint id)
         {
             if (!idLookupTable.ContainsKey(id))
@@ -208,10 +205,6 @@ namespace Exiled.CustomRoles.API.Features
                 stringLookupTable.Add(name, Registered?.FirstOrDefault(r => r.Name == name));
             return stringLookupTable[name];
         }
-
-        /// <inheritdoc cref="TryGet(uint,out Exiled.CustomRoles.API.Features.CustomRole?)"/>
-        [Obsolete("Use TryGet(uint) instead", false)]
-        public static bool TryGet(int id, out CustomRole? customRole) => TryGet((uint)id, out customRole);
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by <inheritdoc cref="Id"/>.
@@ -246,7 +239,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by name.
         /// </summary>
-        /// <param name="t">The <see cref="System.Type"/> of the role to get.</param>
+        /// <param name="t">The <see cref="Type"/> of the role to get.</param>
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
         /// <exception cref="ArgumentNullException">If the name is <see langword="null"/> or an empty string.</exception>
@@ -310,7 +303,7 @@ namespace Exiled.CustomRoles.API.Features
                     continue;
                 }
 
-                Log.Debug("Getting attributed for {type");
+                Log.Debug($"Getting attributed for {type}");
                 foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), inheritAttributes).Cast<Attribute>())
                 {
                     CustomRole? customRole = null;
@@ -339,16 +332,6 @@ namespace Exiled.CustomRoles.API.Features
 
             return roles;
         }
-
-        /// <summary>
-        /// Registers all the <see cref="CustomRole"/>'s present in the current assembly.
-        /// </summary>
-        /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
-        /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
-        /// <param name="inheritAttributes">Whether or not inherited attributes should be taken into account for registration.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
-        [Obsolete("Use RegisterRoles(bool, object?, bool, Assembly?) instead.")]
-        public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object? overrideClass = null, bool inheritAttributes = true) => RegisterRoles(skipReflection, overrideClass, inheritAttributes, Assembly.GetCallingAssembly());
 
         /// <summary>
         /// Registers all the <see cref="CustomRole"/>'s present in the current assembly.
@@ -930,7 +913,7 @@ namespace Exiled.CustomRoles.API.Features
                             foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
                             {
                                 if (type != AmmoType.None)
-                                    ev.Player.SetAmmo(type, Ammo.ContainsKey(type) ? Ammo[type] : (ushort)0);
+                                    ev.Player.SetAmmo(type, Ammo.ContainsKey(type) ? Ammo[type] == ushort.MaxValue ? InventoryLimits.GetAmmoLimit(type.GetItemType(), ev.Player.ReferenceHub) : Ammo[type] : (ushort)0);
                             }
                         });
                 }

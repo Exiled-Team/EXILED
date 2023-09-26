@@ -60,18 +60,38 @@ namespace Exiled.CustomRoles.API.Features
         public string AbilityType { get; }
 
         /// <summary>
-        /// Gets a <see cref="CustomRole"/> by name.
+        /// Gets a <see cref="CustomAbility"/> by name.
         /// </summary>
-        /// <param name="name">The name of the role to get.</param>
-        /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
+        /// <param name="name">The name of the ability to get.</param>
+        /// <returns>The ability, or <see langword="null"/> if it doesn't exist.</returns>
         public static CustomAbility? Get(string name) => Registered?.FirstOrDefault(r => r.Name == name);
 
         /// <summary>
-        /// Tries to get a <see cref="CustomRole"/> by name.
+        /// Gets a <see cref="CustomAbility"/> by type.
         /// </summary>
-        /// <param name="name">The name of the role to get.</param>
-        /// <param name="customAbility">The custom role.</param>
-        /// <returns>True if the role exists.</returns>
+        /// <param name="type">The type of the ability to get.</param>
+        /// <returns>The type, or <see langword="null"/> if it doesn't exist.</returns>
+        public static CustomAbility? Get(Type type) => Registered?.FirstOrDefault(r => r.GetType() == type);
+
+        /// <summary>
+        /// Tries to get a <see cref="CustomAbility"/> by type.
+        /// </summary>
+        /// <param name="type">The type of the ability to get.</param>
+        /// <param name="customAbility">The custom ability.</param>
+        /// <returns>True if the ability exists, otherwise false.</returns>
+        public static bool TryGet(Type type, out CustomAbility? customAbility)
+        {
+            customAbility = Get(type);
+
+            return customAbility is not null;
+        }
+
+        /// <summary>
+        /// Tries to get a <see cref="CustomAbility"/> by name.
+        /// </summary>
+        /// <param name="name">The name of the ability to get.</param>
+        /// <param name="customAbility">The custom ability.</param>
+        /// <returns>True if the ability exists.</returns>
         /// <exception cref="ArgumentNullException">If the name is <see langword="null"/> or an empty string.</exception>
         public static bool TryGet(string name, out CustomAbility? customAbility)
         {
@@ -228,6 +248,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> to give the ability to.</param>
         public void AddAbility(Player player)
         {
+            Log.Debug($"Added {Name} to {player.Nickname}");
             Players.Add(player);
             AbilityAdded(player);
         }
@@ -238,6 +259,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> to remove this ability from.</param>
         public void RemoveAbility(Player player)
         {
+            Log.Debug($"Removed {Name} from {player.Nickname}");
             Players.Remove(player);
             AbilityRemoved(player);
         }
