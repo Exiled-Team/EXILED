@@ -18,7 +18,6 @@ namespace Exiled.API.Features
 
     using RoundRestarting;
     using YamlDotNet.Core.Tokens;
-    using static PlayerArms;
 
     /// <summary>
     /// A set of tools to handle the round more easily.
