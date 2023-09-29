@@ -106,6 +106,7 @@ namespace Exiled.Events
             RagdollManager.OnRagdollSpawned -= Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved -= Handlers.Internal.RagdollList.OnRemovedRagdoll;
 
+            RespawnManager.ServerOnRespawned -= Handlers.Internal.Round.OnTeamRespawned;
             EventManager.UnregisterEvents<Handlers.Player>(this);
         }
 
