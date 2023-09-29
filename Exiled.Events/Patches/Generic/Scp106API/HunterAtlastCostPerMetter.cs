@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Generic.Scp106API
 
     using API.Features.Pools;
     using Exiled.API.Features;
+    using Exiled.API.Features.DynamicPatch;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.PlayableScps.Subroutines;
@@ -56,6 +57,7 @@ namespace Exiled.Events.Patches.Generic.Scp106API
                     // (Player.Get(base.Owner).Role as Scp106Role).HuntersAtlasCostPerMeter
                     new(OpCodes.Isinst, typeof(Scp106Role)),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp106Role), nameof(Scp106Role.HuntersAtlasCostPerMeter))),
+                    new(OpCodes.Call, Method(typeof(Property<float>), "op_implicit")),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
