@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp106;
     using HarmonyLib;
 
@@ -24,6 +24,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     /// Patches <see cref="Scp106StalkAbility.ServerProcessCmd"/>.
     /// To add the <see cref="Handlers.Scp106.ExitStalking"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp106), nameof(Handlers.Scp106.ExitStalking))]
     [HarmonyPatch(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.IsActive), MethodType.Setter)]
     public class ExitStalking
     {

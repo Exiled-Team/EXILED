@@ -35,7 +35,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before SCP-106 exit the stalk ability.
         /// </summary>
-        public static event CustomEventHandler<ExitStalkingEventArgs> ExitStalking;
+        public static Event<ExitStalkingEventArgs> ExitStalking { get; set; } = new();
 
         /// <summary>
         ///     Called before SCP-106 attacks player.
