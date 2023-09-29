@@ -286,7 +286,7 @@ namespace Exiled.API.Features.Pickups
         public bool IsSpawned { get; internal set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not this is a worn item.
+        /// Gets a value indicating whether this pickup is spawned.
         /// </summary>
         public bool IsLoaded { get; internal set; }
 
@@ -582,7 +582,7 @@ namespace Exiled.API.Features.Pickups
         /// Returns the Pickup in a human readable format.
         /// </summary>
         /// <returns>A string containing Pickup-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{IsLocked}- ={InUse}=";
+        public override string ToString() => $"{IsLoaded} {Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{IsLocked}- ={InUse}=";
 
         /// <summary>
         /// Returns the Pickup with the according property from the Item.
@@ -591,13 +591,15 @@ namespace Exiled.API.Features.Pickups
         /// <returns>A Pickup containing the Item-related data.</returns>
         internal virtual Pickup GetItemInfo(Items.Item item)
         {
-            IsLoaded = true;
-
+            Log.Info($"GetItemStart {item} -> {this}");
             if (item is not null)
             {
+                IsLoaded = item.IsLoaded;
                 Scale = item.Scale;
                 Weight = item.Weight;
             }
+
+            Log.Info($"GetItemEnd {item} -> {this}");
 
             return this;
         }
@@ -611,6 +613,7 @@ namespace Exiled.API.Features.Pickups
         {
             if (item is not null)
             {
+                item.IsLoaded = IsLoaded;
                 item.Scale = Scale;
                 item.Weight = Weight;
             }

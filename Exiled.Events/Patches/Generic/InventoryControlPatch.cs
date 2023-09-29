@@ -78,9 +78,10 @@ namespace Exiled.Events.Patches.Generic
             Item item = Item.Get(itemBase);
             Pickup pickup = Pickup.Get(itemPickupBase);
 
-            if (pickup?.IsLoaded ?? false)
+            if (pickup != null && pickup.IsLoaded)
                 pickup.GetPickupInfo(item);
-
+            item.IsLoaded = true;
+            pickup.IsLoaded = true;
             player?.ItemsValue.Add(item);
         }
     }
@@ -153,17 +154,16 @@ namespace Exiled.Events.Patches.Generic
             player.ItemsValue.Remove(Item.Get(itemBase));
 
             Item.BaseToItem.Remove(itemBase);
-
+#if DEBUG
             Timing.CallDelayed(0.15f, () =>
             {
-#if DEBUG
                 Log.Debug($"Item ({serial}) removed from {player.Nickname}");
                 Log.Debug($"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
 
                 foreach (Item item in player.Items)
                     Log.Debug($"{item})");
+        });
 #endif
-            });
         }
     }
 }

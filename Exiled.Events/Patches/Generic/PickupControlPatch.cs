@@ -33,31 +33,58 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerCreatePickup), typeof(ItemBase), typeof(PickupSyncInfo), typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Action<ItemPickupBase>))]
     internal static class PickupControlPatch
     {
-        private static IEnumerable<CodeInstruction> Transpiler(
-            IEnumerable<CodeInstruction> instructions,
-            ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            Label jump = generator.DefineLabel();
+            LocalBuilder pickup = generator.DeclareLocal(typeof(Pickup));
+            LocalBuilder item = generator.DeclareLocal(typeof(Item));
 
             const int offset = 0;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldarg_S) + offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                // pickup = Pickup.Get(pickupBase);
+                // if ((pickup = Pickup.Get(itemPickupbase) is null) goto jump;
                 new(OpCodes.Ldloc_0),
                 new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get), new[] { typeof(ItemPickupBase) })),
-
-                // Item.Get(itemBase);
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
-
-                // pickup.GetItemInfo(item);
-                new(OpCodes.Callvirt, Method(typeof(Pickup), nameof(Pickup.GetItemInfo))),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, pickup.LocalIndex),
+                new(OpCodes.Brfalse_S, jump),
 
                 // pickup.IsSpawned = spawn
+                new(OpCodes.Ldloc_S, pickup.LocalIndex),
                 new(OpCodes.Ldarg_S, 4),
                 new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.IsSpawned))),
+
+                // if ((item = Item.Get(itembase) is null) goto jump;
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, item.LocalIndex),
+                new(OpCodes.Brfalse_S, jump),
+
+                // if (item.IsLoaded) goto jump;
+                new(OpCodes.Ldloc_S, item.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.IsLoaded))),
+                new(OpCodes.Brfalse_S, jump),
+
+                // pickup.GetItemInfo(item);
+                new(OpCodes.Ldloc_S, pickup.LocalIndex),
+                new(OpCodes.Ldloc_S, item.LocalIndex),
+                new(OpCodes.Callvirt, Method(typeof(Pickup), nameof(Pickup.GetItemInfo))),
+                new(OpCodes.Pop),
+
+                // pickup.IsSpawned = spawn
+                new CodeInstruction(OpCodes.Ldloc_S, pickup.LocalIndex).WithLabels(jump),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.IsSpawned))),
+
+                // item.IsLoaded = true
+                new CodeInstruction(OpCodes.Ldloc_S, item.LocalIndex),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Item), nameof(Item.IsLoaded))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

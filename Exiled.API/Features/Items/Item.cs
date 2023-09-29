@@ -62,6 +62,7 @@ namespace Exiled.API.Features.Items
 #if DEBUG
                 Log.Debug($"{nameof(Item)}.ctor: Generating new serial number. Serial should now be: {serial}. // {Serial}");
 #endif
+                IsLoaded = true;
             }
 #if DEBUG
             Log.Debug($"{nameof(Item)}.ctor: New item created with Serial: {Serial}");
@@ -81,6 +82,11 @@ namespace Exiled.API.Features.Items
         /// Gets a list of all <see cref="Item"/>'s on the server.
         /// </summary>
         public static IEnumerable<Item> List => BaseToItem.Values;
+
+        /// <summary>
+        /// Gets a value indicating whether this pickup is spawned.
+        /// </summary>
+        public bool IsLoaded { get; internal set; }
 
         /// <summary>
         /// Gets or sets the unique serial number for the item.
@@ -312,7 +318,7 @@ namespace Exiled.API.Features.Items
         /// Returns the Item in a human readable format.
         /// </summary>
         /// <returns>A string containing Item-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* ={Owner}=";
+        public override string ToString() => $"{IsLoaded} {Type} ({Serial}) [{Weight}] *{Scale}* ={Owner}=";
 
         /// <summary>
         /// Change the owner of the <see cref="Item"/>.
