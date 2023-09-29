@@ -305,7 +305,7 @@ namespace Exiled.API.Features.Roles
                 return;
 
             Attack.SendCooldown(Attack._hitCooldown);
-            Attack.Vigor.VigorAmount += VigorCaptureReward;
+            Vigor += VigorCaptureReward;
             Attack.ReduceSinkholeCooldown();
             Hitmarker.SendHitmarker(Attack.Owner, 1f);
 
