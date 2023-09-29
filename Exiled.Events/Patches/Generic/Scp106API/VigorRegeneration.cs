@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Generic.Scp106API
             // Scp106Role scp106Role = Player.Get(this.Owner).Role.As<Scp106Role>()
             // "base.Vigor.VigorAmount += scp106Role.VigorRegeneration * Time.deltaTime;"
             int offset = -4;
-            int index = newInstructions.FindIndex(instruction => instruction.operand == (object)PropertySetter(typeof(Scp106Vigor), nameof(Scp106Vigor.VigorAmount))) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.operand == (object)PropertySetter(typeof(Scp106VigorAbilityBase), nameof(Scp106VigorAbilityBase.VigorAmount))) + offset;
             newInstructions.RemoveAt(index);
 
             newInstructions.InsertRange(
