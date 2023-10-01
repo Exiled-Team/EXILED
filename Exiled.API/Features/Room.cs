@@ -143,7 +143,7 @@ namespace Exiled.API.Features
             get => RoomLightController == null ? Color.clear : RoomLightController.NetworkOverrideColor;
             set
             {
-                foreach (RoomLightController light in RoomLightControllers)
+                foreach (RoomLightController light in RoomLightController.Instances)
                 {
                     light.NetworkOverrideColor = value;
                 }
