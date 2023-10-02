@@ -15,6 +15,7 @@ namespace Exiled.Events.Patches.Generic
     using HarmonyLib;
 
     using static HarmonyLib.AccessTools;
+    using static PlayerList;
 
     /// <summary>
     /// Patch the <see cref="ServerConsole.RefreshServerData"/>.
@@ -25,21 +26,24 @@ namespace Exiled.Events.Patches.Generic
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            if (Exiled.Events.Events.Instance.Config.IsNameTrackingEnabled)
+            {
+                const int offset = 6;
+                int index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)"pastebin=") + offset;
 
-            const int offset = 3;
-            int index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)"gameVersion=") + offset;
-
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
-                {
-                    // Exiled.Events.Events.Instance.Version.ToString(3)
+                newInstructions.InsertRange(
+                    index,
+                    new CodeInstruction[]
+                    {
+                    // "PreviousString" + "#Exiled" + Exiled.Events.Events.Instance.Version.ToString(3)
+                    new(OpCodes.Ldstr, "#Exiled_"),
                     new(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Version))),
                     new(OpCodes.Ldc_I4_3),
                     new(OpCodes.Callvirt, Method(typeof(Version), nameof(Version.ToString), new[] { typeof(int) })),
-                    new(OpCodes.Callvirt, Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string) })),
-                });
+                    new(OpCodes.Callvirt, Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string), typeof(string) })),
+                    });
+            }
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
