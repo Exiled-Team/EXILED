@@ -503,14 +503,23 @@ namespace Exiled.CustomRoles.API.Features
 
             if (Role != RoleTypeId.None)
             {
-                if (KeepPositionOnSpawn && KeepInventoryOnSpawn)
-                    player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.None);
-                else if (KeepPositionOnSpawn)
-                    player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.AssignInventory);
-                else if (KeepInventoryOnSpawn && player.IsAlive)
-                    player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.UseSpawnpoint);
-                else
-                    player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
+                switch (KeepPositionOnSpawn)
+                {
+                    case true when KeepInventoryOnSpawn:
+                        player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.None);
+                        break;
+                    case true:
+                        player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.AssignInventory);
+                        break;
+                    default:
+                        {
+                            if (KeepInventoryOnSpawn && player.IsAlive)
+                                player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.UseSpawnpoint);
+                            else
+                                player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
+                            break;
+                        }
+                }
             }
 
             Timing.CallDelayed(
