@@ -44,6 +44,10 @@ namespace Exiled.CustomRoles.API.Features
 
         private static Dictionary<uint, CustomRole?> idLookupTable = new();
 
+        private static Dictionary<string, int> spawnedCount = new();
+
+        private static List<Player> restrictedPlayers = new();
+
         /// <summary>
         /// Gets a list of all registered custom roles.
         /// </summary>
@@ -86,6 +90,11 @@ namespace Exiled.CustomRoles.API.Features
         public virtual RoleTypeId Role { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether players die when this role is removed.
+        /// </summary>
+        public virtual bool RemovalKillsPlayer { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a list of the roles custom abilities.
         /// </summary>
         public virtual List<CustomAbility>? CustomAbilities { get; set; } = new();
@@ -116,9 +125,9 @@ namespace Exiled.CustomRoles.API.Features
         public virtual bool KeepInventoryOnSpawn { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether players die when this role is removed.
+        /// Gets or sets a value indicating whether players are allowed other roles than this at the same time.
         /// </summary>
-        public virtual bool RemovalKillsPlayer { get; set; } = true;
+        public virtual bool AllowOtherRoles { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether players keep this role when they die.
@@ -239,7 +248,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by name.
         /// </summary>
-        /// <param name="t">The <see cref="Type"/> of the role to get.</param>
+        /// <param name="t">The <see cref="System.Type"/> of the role to get.</param>
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
         /// <exception cref="ArgumentNullException">If the name is <see langword="null"/> or an empty string.</exception>
@@ -478,6 +487,7 @@ namespace Exiled.CustomRoles.API.Features
             idLookupTable.Add(Id, this);
             typeLookupTable.Add(GetType(), this);
             stringLookupTable.Add(Name, this);
+            spawnedCount.Add(Name, 0);
             SubscribeEvents();
         }
 
@@ -489,6 +499,7 @@ namespace Exiled.CustomRoles.API.Features
             idLookupTable.Remove(Id);
             typeLookupTable.Remove(GetType());
             stringLookupTable.Remove(Name);
+            spawnedCount.Remove(Name);
             UnsubscribeEvents();
         }
 
@@ -871,6 +882,11 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> the role was added to.</param>
         protected virtual void RoleAdded(Player player)
         {
+            spawnedCount[Name]++;
+            if (!AllowOtherRoles)
+            {
+                restrictedPlayers.Add(player);
+            }
         }
 
         /// <summary>
@@ -879,6 +895,11 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> the role was removed from.</param>
         protected virtual void RoleRemoved(Player player)
         {
+            spawnedCount[Name]--;
+            if (!AllowOtherRoles)
+            {
+                restrictedPlayers.Remove(player);
+            }
         }
 
         private void OnInternalChangingNickname(ChangingNicknameEventArgs ev)
@@ -891,7 +912,7 @@ namespace Exiled.CustomRoles.API.Features
 
         private void OnInternalSpawning(SpawningEventArgs ev)
         {
-            if (!IgnoreSpawnSystem && SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && Loader.Random.NextDouble() * 100 <= SpawnChance)
+            if (!IgnoreSpawnSystem && SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && !restrictedPlayers.Contains(ev.Player) && SpawnProperties.Limit <= spawnedCount[Name] && Loader.Random.NextDouble() * 100 <= SpawnChance)
                 AddRole(ev.Player);
         }
 
