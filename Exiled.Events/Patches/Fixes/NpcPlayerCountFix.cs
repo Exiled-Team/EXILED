@@ -108,9 +108,8 @@ namespace Exiled.Events.Patches.Fixes
                 // list[s] = newString;
                 new(OpCodes.Callvirt, Method(typeof(List<string>), "set_Item")),
 
-                // nop with a label to skip straight to basegame code if our list doesn't have a line with players= in it.
-                new CodeInstruction(OpCodes.Nop).WithLabels(skip2),
-                new(OpCodes.Call, PropertyGetter(typeof(ListPool<string>), nameof(ListPool<string>.Pool))),
+                // ListPool<string>.Pool.Return(list);
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ListPool<string>), nameof(ListPool<string>.Pool))).WithLabels(skip2),
                 new(OpCodes.Ldloc, list),
                 new(OpCodes.Callvirt, Method(typeof(ListPool<string>), nameof(ListPool<string>.Return))),
             });
