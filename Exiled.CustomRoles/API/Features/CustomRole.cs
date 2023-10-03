@@ -507,7 +507,7 @@ namespace Exiled.CustomRoles.API.Features
                     player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.None);
                 else if (KeepPositionOnSpawn)
                     player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.AssignInventory);
-                else if (KeepInventoryOnSpawn && player.Role.Type is not RoleTypeId.Spectator and not RoleTypeId.Overwatch and not RoleTypeId.Filmmaker)
+                else if (KeepInventoryOnSpawn && player.IsAlive)
                     player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.UseSpawnpoint);
                 else
                     player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
