@@ -45,13 +45,20 @@ namespace Exiled.Events.Patches.Fixes
 
             newInstructions.InsertRange(0, new[]
             {
+                // List<string> list = ListPool<string>.Pool.Get(data)
                 new(OpCodes.Call, PropertyGetter(typeof(ListPool<string>), nameof(ListPool<string>.Pool))),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, Method(typeof(ListPool<string>), nameof(ListPool<string>.Get), new[] { typeof(IEnumerable<string>) })),
                 new(OpCodes.Stloc, list),
                 new(OpCodes.Ldloc, list),
+
+                // string s = null;
                 new(OpCodes.Ldnull),
                 new(OpCodes.Stloc, s),
+
+                // foreach (string ss in list)
+                //     if (ss.StartsWith("players="))
+                //         s = ss;
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, Method(typeof(IEnumerable<string>), nameof(IEnumerable<string>.GetEnumerator))),
                 new(OpCodes.Stloc, v2),
@@ -72,12 +79,19 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Brfalse_S, skip),
                 new(OpCodes.Ldloc, v2),
                 new(OpCodes.Callvirt, Method(typeof(IDisposable), nameof(IDisposable.Dispose))),
+
+                // if (s is not null)
+                //    moveToBasegameCode
                 new CodeInstruction(OpCodes.Ldloc, s).WithLabels(skip, end),
                 new(OpCodes.Brfalse_S, skip2),
+
+                // int index = list.IndexOf(s);
                 new(OpCodes.Ldloc, list),
                 new(OpCodes.Dup),
                 new(OpCodes.Ldloc, s),
                 new(OpCodes.Callvirt, Method(typeof(List<string>), nameof(List<string>.IndexOf), new[] { typeof(string) })),
+
+                // string newString = "players=" + (ServerConsole._playersAmount - Npc.List.Count) + "/" + CustomNetworkManager.slots;
                 new(OpCodes.Ldstr, "players="),
                 new(OpCodes.Ldsfld, Field(typeof(ServerConsole), nameof(ServerConsole._playersAmount))),
                 new(OpCodes.Call, PropertyGetter(typeof(Npc), nameof(Npc.List))),
@@ -90,8 +104,15 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Ldsflda, Field(typeof(CustomNetworkManager), nameof(CustomNetworkManager.slots))),
                 new(OpCodes.Call, Method(typeof(int), nameof(int.ToString))),
                 new(OpCodes.Call, Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string), typeof(string), typeof(string) })),
+
+                // list[s] = newString;
                 new(OpCodes.Callvirt, Method(typeof(List<string>), "set_Item")),
+
+                // nop with a label to skip straight to basegame code if our list doesn't have a line with players= in it.
                 new CodeInstruction(OpCodes.Nop).WithLabels(skip2),
+                new(OpCodes.Call, PropertyGetter(typeof(ListPool<string>), nameof(ListPool<string>.Pool))),
+                new(OpCodes.Ldloc, list),
+                new(OpCodes.Callvirt, Method(typeof(ListPool<string>), nameof(ListPool<string>.Return))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
