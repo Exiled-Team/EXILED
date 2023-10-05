@@ -16,8 +16,6 @@ namespace Exiled.Example
     /// </summary>
     public class Example : Plugin<Config>
     {
-        private static readonly Example Singleton = new();
-
         private ServerHandler serverHandler;
         private PlayerHandler playerHandler;
         private WarheadHandler warheadHandler;
@@ -26,14 +24,10 @@ namespace Exiled.Example
         private Scp914Handler scp914Handler;
         private Scp096Handler scp096Handler;
 
-        private Example()
-        {
-        }
-
         /// <summary>
-        /// Gets the only existing instance of this plugin.
+        /// The Instance of the plugin.
         /// </summary>
-        public static Example Instance => Singleton;
+        public static Example Instance;
 
         /// <inheritdoc/>
         public override PluginPriority Priority { get; } = PluginPriority.Last;
@@ -41,6 +35,7 @@ namespace Exiled.Example
         /// <inheritdoc/>
         public override void OnEnabled()
         {
+            Instance = this;
             RegisterEvents();
 
             Log.Warn($"I correctly read the string config, its value is: {Config.String}");
@@ -54,6 +49,8 @@ namespace Exiled.Example
         public override void OnDisabled()
         {
             UnregisterEvents();
+
+            Instance = null;
             base.OnDisabled();
         }
 
