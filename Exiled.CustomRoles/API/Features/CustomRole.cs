@@ -503,14 +503,20 @@ namespace Exiled.CustomRoles.API.Features
 
             if (Role != RoleTypeId.None)
             {
-                if (KeepPositionOnSpawn && KeepInventoryOnSpawn)
-                    player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.None);
-                else if (KeepPositionOnSpawn)
-                    player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.AssignInventory);
-                else if (KeepInventoryOnSpawn)
-                    player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.UseSpawnpoint);
-                else
-                    player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
+                switch (KeepPositionOnSpawn)
+                {
+                    case true when KeepInventoryOnSpawn:
+                        player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.None);
+                        break;
+                    case true:
+                        player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.AssignInventory);
+                        break;
+                    default:
+                        {
+                            player.Role.Set(Role, SpawnReason.ForceClass, KeepInventoryOnSpawn ? RoleSpawnFlags.UseSpawnpoint : RoleSpawnFlags.All);
+                            break;
+                        }
+                }
             }
 
             Timing.CallDelayed(
@@ -528,18 +534,18 @@ namespace Exiled.CustomRoles.API.Features
                         Log.Debug($"{Name}: Adding {itemName} to inventory.");
                         TryAddItem(player, itemName);
                     }
+
+                    Log.Debug($"{Name}: Setting health values.");
+                    player.Health = MaxHealth;
+                    player.MaxHealth = MaxHealth;
+                    player.Scale = Scale;
+
+                    Vector3 position = GetSpawnPosition();
+                    if (position != Vector3.zero)
+                    {
+                        player.Position = position;
+                    }
                 });
-
-            Log.Debug($"{Name}: Setting health values.");
-            player.Health = MaxHealth;
-            player.MaxHealth = MaxHealth;
-            player.Scale = Scale;
-
-            Vector3 position = GetSpawnPosition();
-            if (position != Vector3.zero)
-            {
-                player.Position = position;
-            }
 
             Log.Debug($"{Name}: Setting player info");
 
