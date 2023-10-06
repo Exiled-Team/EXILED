@@ -333,7 +333,7 @@ namespace Exiled.API.Features.Core
             // Do not use implicit bool conversion as @object may be null
             if (@object != null)
             {
-                if (type.GetCustomAttribute<ManagedObjectTypeAttribute>() != null && GetObjectTypeFromRegisteredTypes(type) == null)
+                if (type.GetCustomAttribute<ManagedObjectTypeAttribute>() is not null && GetObjectTypeFromRegisteredTypes(type) == null)
                     RegisterObjectType(type, type.Name);
 
                 return @object;

@@ -18,6 +18,7 @@
 
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
+        <PackageReference Include="SemanticVersioning" Version="$(SemanticVersioningVersion)" />
     </ItemGroup>
 
     <ItemGroup>
@@ -30,6 +31,8 @@
         <Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll" Private="false" />
         <Reference Include="System.ComponentModel.DataAnnotations" Private="false" />
         <Reference Include="YamlDotNet" HintPath="$(EXILED_REFERENCES)\YamlDotNet.dll" Private="false" />
+        <Reference Include="System.Net.Http" />
+        <Reference Include="Mono.Posix" HintPath="$(EXILED_REFERENCES)\Mono.Posix.dll" Private="false" />
     </ItemGroup>
 
     <ItemGroup>
