@@ -237,7 +237,7 @@ namespace Exiled.API.Features.Items
         {
             InventorySystem.Items.Usables.Scp330.Scp330Pickup ipb = (InventorySystem.Items.Usables.Scp330.Scp330Pickup)Object.Instantiate(Base.PickupDropModel, position, rotation);
 
-            ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
+            ipb.Info = new(Type, Weight, Serial);
             ipb.gameObject.transform.localScale = Scale;
 
             Base.OnRemoved(ipb);

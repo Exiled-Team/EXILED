@@ -290,7 +290,7 @@ namespace Exiled.API.Features.Items
         {
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
 
-            ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
+            ipb.Info = new(Type, Weight, Serial);
             ipb.gameObject.transform.localScale = Scale;
 
             Base.OnRemoved(ipb);
