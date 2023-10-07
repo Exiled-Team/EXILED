@@ -329,7 +329,7 @@ namespace Exiled.API.Extensions
             string[] translations = translation.Split('\n');
 
             for (int i = 0; i < cassies.Length; i++)
-                announcement.Append($"{translations[i]}<size=0> {cassies[i].Replace(' ', ' ')} </size><split>");
+                announcement.Append($"{translations[i].Replace(' ', ' ')}<size=0> {cassies[i]} </size><split>");
 
             string message = StringBuilderPool.Pool.ToStringReturn(announcement);
 
