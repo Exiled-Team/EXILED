@@ -50,6 +50,19 @@ namespace Exiled.CustomRoles
         public static CustomRoles Instance { get; private set; } = null!;
 
         /// <summary>
+        /// Gets or sets the <see cref="KeypressActivator"/> used for abilities.
+        /// </summary>
+        public static KeypressActivator? KeypressActivator
+        {
+            get => Instance.keypressActivator;
+            set
+            {
+                Instance.keypressActivator?.Dispose();
+                Instance.keypressActivator = value;
+            }
+        }
+
+        /// <summary>
         /// Gets a list of players to stop spawning ragdolls for.
         /// </summary>
         internal List<Player> StopRagdollPlayers { get; } = new();
