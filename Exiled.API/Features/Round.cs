@@ -178,7 +178,7 @@ namespace Exiled.API.Features
         /// Gets or sets a visual offset applied to the target counter for SCPs.
         /// </summary>
         /// <remarks>This does not update the target counter automatically. To do that, call Round.UpdateTargetCounter().</remarks>
-        public static int TargetOffset { get; set; } = 0;
+        public static int TargetOffset { get; set; }
 
         /// <summary>
         /// Updates the target counter for SCPs.
