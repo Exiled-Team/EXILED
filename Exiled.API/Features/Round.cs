@@ -23,6 +23,8 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Round
     {
+        private static int targetOffset;
+
         /// <summary>
         /// Gets a list of players who will be ignored from determining round end.
         /// </summary>
@@ -177,17 +179,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a visual offset applied to the target counter for SCPs.
         /// </summary>
-        /// <remarks>This does not update the target counter automatically. To do that, call Round.UpdateTargetCounter().</remarks>
-        public static int TargetOffset { get; set; }
-
-        /// <summary>
-        /// Updates the target counter for SCPs.
-        /// </summary>
-        public static void UpdateTargetCounter()
+        public static int TargetOffset
         {
-            foreach (Player player in Player.List)
+            get => targetOffset;
+            set
             {
-                player.SendFakeSyncVar(RoundSummary.singleton.netIdentity, typeof(RoundSummary), nameof(RoundSummary.Network_chaosTargetCount), RoundSummary.singleton._chaosTargetCount + TargetOffset);
+                targetOffset = value;
+                UpdateTargetCounter();
             }
         }
 
@@ -256,5 +254,16 @@ namespace Exiled.API.Features
         /// Start the round.
         /// </summary>
         public static void Start() => CharacterClassManager.ForceRoundStart();
+
+        /// <summary>
+        /// Updates the target counter for SCPs.
+        /// </summary>
+        private static void UpdateTargetCounter()
+        {
+            foreach (Player player in Player.List)
+            {
+                player.SendFakeSyncVar(RoundSummary.singleton.netIdentity, typeof(RoundSummary), nameof(RoundSummary.Network_chaosTargetCount), RoundSummary.singleton._chaosTargetCount + TargetOffset);
+            }
+        }
     }
 }
