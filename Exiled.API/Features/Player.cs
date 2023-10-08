@@ -2691,7 +2691,18 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
         public bool EnableEffect<T>(float duration = 0f, bool addDurationIfActive = false)
-            where T : StatusEffectBase => ReferenceHub.playerEffectsController.EnableEffect<T>(duration, addDurationIfActive);
+                    where T : StatusEffectBase => EnableEffect<T>(duration, 1, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a <see cref="StatusEffectBase">status effect</see> on the player.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="StatusEffectBase"/> to enable.</typeparam>
+        /// <param name="intensity">The intensity of the effect will be active for.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
+        /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
+        public bool EnableEffect<T>(byte intensity = 1, float duration = 0f, bool addDurationIfActive = false)
+            where T : StatusEffectBase => ReferenceHub.playerEffectsController.ChangeState<T>(intensity, duration, addDurationIfActive);
 
         /// <summary>
         /// Enables a <see cref="StatusEffectBase">status effect</see> on the player.
@@ -2701,11 +2712,22 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
         public bool EnableEffect(StatusEffectBase statusEffect, float duration = 0f, bool addDurationIfActive = false)
+            => EnableEffect(statusEffect, 1, duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a <see cref="StatusEffectBase">status effect</see> on the player.
+        /// </summary>
+        /// <param name="statusEffect">The name of the <see cref="StatusEffectBase"/> to enable.</param>
+        /// <param name="intensity">The intensity of the effect will be active for.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
+        /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
+        public bool EnableEffect(StatusEffectBase statusEffect, byte intensity = 1, float duration = 0f, bool addDurationIfActive = false)
         {
             if (statusEffect is null)
                 return false;
 
-            StatusEffectBase effect = EnableEffect(statusEffect.GetType().Name, duration, addDurationIfActive);
+            StatusEffectBase effect = EnableEffect(statusEffect.GetType().Name, intensity, duration, addDurationIfActive);
             return effect is not null && effect.IsEnabled;
         }
 
@@ -2717,7 +2739,18 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         /// <returns>The <see cref="StatusEffectBase"/> instance of the activated effect.</returns>
         public StatusEffectBase EnableEffect(string effectName, float duration = 0f, bool addDurationIfActive = false)
-            => ReferenceHub.playerEffectsController.ChangeState(effectName, 1, duration, addDurationIfActive);
+            => EnableEffect(effectName, 1, duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a <see cref="StatusEffectBase">status effect</see> on the player.
+        /// </summary>
+        /// <param name="effectName">The name of the <see cref="StatusEffectBase"/> to enable.</param>
+        /// <param name="intensity">The intensity of the effect will be active for.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
+        /// <returns>The <see cref="StatusEffectBase"/> instance of the activated effect.</returns>
+        public StatusEffectBase EnableEffect(string effectName, byte intensity = 1, float duration = 0f, bool addDurationIfActive = false)
+            => ReferenceHub.playerEffectsController.ChangeState(effectName, intensity, duration, addDurationIfActive);
 
         /// <summary>
         /// Enables a <see cref="EffectType">status effect</see> on the player.
@@ -2726,6 +2759,16 @@ namespace Exiled.API.Features
         /// <param name="duration">The amount of time the effect will be active for.</param>
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         public void EnableEffect(EffectType type, float duration = 0f, bool addDurationIfActive = false)
+            => EnableEffect(type, 1, duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a <see cref="EffectType">status effect</see> on the player.
+        /// </summary>
+        /// <param name="type">The <see cref="EffectType"/> to enable.</param>
+        /// <param name="intensity">The intensity of the effect will be active for.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
+        public void EnableEffect(EffectType type, byte intensity = 1, float duration = 0f, bool addDurationIfActive = false)
         {
             switch (type)
             {
@@ -2740,7 +2783,7 @@ namespace Exiled.API.Features
                     break;
                 default:
                     if (TryGetEffect(type, out StatusEffectBase statusEffect))
-                        EnableEffect(statusEffect, duration, addDurationIfActive);
+                        EnableEffect(statusEffect, intensity, duration, addDurationIfActive);
 
                     break;
             }
