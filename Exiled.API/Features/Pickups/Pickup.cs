@@ -81,14 +81,14 @@ namespace Exiled.API.Features.Pickups
             if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
                 return;
 
+            Base = Object.Instantiate(itemBase.PickupDropModel);
+
             PickupSyncInfo psi = new()
             {
                 ItemId = type,
                 Serial = ItemSerialGenerator.GenerateNext(),
                 WeightKg = itemBase.Weight,
             };
-
-            Base = InventoryExtensions.ServerCreatePickup(itemBase, psi, itemBase.PickupDropModel.transform.position, itemBase.PickupDropModel.transform.rotation, false);
 
             Info = psi;
 
