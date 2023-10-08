@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Pickups
 
     using Footprinting;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -80,6 +81,16 @@ namespace Exiled.API.Features.Pickups
             if (projectile is TimeGrenadeProjectile timeGrenadeProjectile)
             {
                 timeGrenadeProjectile.FuseTime = FuseTime;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void InitializeProperties(ItemBase itemBase)
+        {
+            base.InitializeProperties(itemBase);
+            if (itemBase is ThrowableItem throwable && throwable.Projectile is TimeGrenade timeGrenade)
+            {
+                FuseTime = timeGrenade._fuseTime;
             }
         }
     }

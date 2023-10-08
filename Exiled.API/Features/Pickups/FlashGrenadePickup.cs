@@ -85,7 +85,6 @@ namespace Exiled.API.Features.Pickups
                 MinimalDurationEffect = flashGrenade._minimalEffectDuration;
                 AdditionalBlindedEffect = flashGrenade._additionalBlurDuration;
                 SurfaceDistanceIntensifier = flashGrenade._surfaceZoneDistanceIntensifier;
-                FuseTime = flashGrenade._fuseTime;
             }
         }
     }

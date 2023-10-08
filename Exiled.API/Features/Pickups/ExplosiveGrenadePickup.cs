@@ -101,7 +101,6 @@ namespace Exiled.API.Features.Pickups
                 BurnDuration = explosiveGrenade._burnedDuration;
                 DeafenDuration = explosiveGrenade._deafenedDuration;
                 ConcussDuration = explosiveGrenade._concussedDuration;
-                FuseTime = explosiveGrenade._fuseTime;
             }
         }
     }
