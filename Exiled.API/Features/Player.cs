@@ -2727,11 +2727,7 @@ namespace Exiled.API.Features
             if (statusEffect is null)
                 return false;
 
-            Type effectType = statusEffect.GetType();
-            if (ReferenceHub.playerEffectsController._effectsByType.TryGetValue(effectType, out statusEffect))
-            {
-                ReferenceHub.playerEffectsController._effectsByType[effectType].ServerSetState(intensity, duration, addDurationIfActive);
-            }
+            statusEffect.ServerSetState(intensity, duration, addDurationIfActive);
 
             return statusEffect is not null && statusEffect.IsEnabled;
         }
