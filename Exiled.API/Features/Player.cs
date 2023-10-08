@@ -2727,8 +2727,13 @@ namespace Exiled.API.Features
             if (statusEffect is null)
                 return false;
 
-            StatusEffectBase effect = EnableEffect(statusEffect.GetType().Name, intensity, duration, addDurationIfActive);
-            return effect is not null && effect.IsEnabled;
+            Type effectType = statusEffect.GetType();
+            if (ReferenceHub.playerEffectsController._effectsByType.TryGetValue(effectType, out statusEffect))
+            {
+                ReferenceHub.playerEffectsController._effectsByType[effectType].ServerSetState(intensity, duration, addDurationIfActive);
+            }
+
+            return statusEffect is not null && statusEffect.IsEnabled;
         }
 
         /// <summary>
@@ -2768,26 +2773,9 @@ namespace Exiled.API.Features
         /// <param name="intensity">The intensity of the effect will be active for.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
-        public void EnableEffect(EffectType type, byte intensity, float duration = 0f, bool addDurationIfActive = false)
-        {
-            switch (type)
-            {
-                case EffectType.AmnesiaItems:
-                    EnableEffect<AmnesiaItems>(intensity, duration, addDurationIfActive);
-                    break;
-                case EffectType.AmnesiaVision:
-                    EnableEffect<AmnesiaVision>(intensity, duration, addDurationIfActive);
-                    break;
-                case EffectType.SoundtrackMute:
-                    EnableEffect<SoundtrackMute>(intensity, duration, addDurationIfActive);
-                    break;
-                default:
-                    if (TryGetEffect(type, out StatusEffectBase statusEffect))
-                        EnableEffect(statusEffect, intensity, duration, addDurationIfActive);
-
-                    break;
-            }
-        }
+        /// <returns>return if the effect has been Enable.</returns>
+        public bool EnableEffect(EffectType type, byte intensity, float duration = 0f, bool addDurationIfActive = false)
+            => TryGetEffect(type, out StatusEffectBase statusEffect) && EnableEffect(statusEffect, intensity, duration, addDurationIfActive);
 
         /// <summary>
         /// Enables a <see cref="Effect">status effect</see> on the player.
