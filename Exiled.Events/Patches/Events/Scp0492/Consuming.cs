@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp049
+namespace Exiled.Events.Patches.Events.Scp0492
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
