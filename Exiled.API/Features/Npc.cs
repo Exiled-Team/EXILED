@@ -49,7 +49,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of Npcs.
         /// </summary>
-        public new List<Npc> List
+        public static new List<Npc> List
         {
             get
             {
