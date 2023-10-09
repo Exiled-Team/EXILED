@@ -10,6 +10,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using CommandSystem;
 
@@ -49,20 +50,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of Npcs.
         /// </summary>
-        public new List<Npc> List
-        {
-            get
-            {
-                List<Npc> npcS = new();
-                foreach (Player player in Player.List)
-                {
-                    if (player is Npc npc)
-                        npcS.Add(npc);
-                }
-
-                return npcS;
-            }
-        }
+        public static new List<Npc> List => Player.List.OfType<Npc>().ToList();
 
         /// <summary>
         /// Retrieves the NPC associated with the specified ReferenceHub.
@@ -169,11 +157,11 @@ namespace Exiled.API.Features
                 RecyclablePlayerId._autoIncrement = id = RecyclablePlayerId._autoIncrement + 1;
             }
 
-            FakeConnection fakeConnection = new(id);
-            NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
+            NetworkServer.AddPlayerForConnection(new(id), newObject);
+
             try
             {
-                npc.ReferenceHub.characterClassManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy@localhost" : userId;
+                npc.ReferenceHub.characterClassManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy{ReferenceHub.AllHubs.Count}@localhost" : userId;
             }
             catch (Exception e)
             {
