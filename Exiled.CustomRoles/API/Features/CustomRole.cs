@@ -912,8 +912,10 @@ namespace Exiled.CustomRoles.API.Features
             }
             else if (Check(ev.Player))
             {
+                Log.Debug($"{Name}: Checking ammo stuff {Ammo.Count}");
                 if (Ammo.Count > 0)
                 {
+                    Log.Debug($"{Name}: Clearing ammo");
                     ev.Ammo.Clear();
                     Timing.CallDelayed(
                         0.5f,
