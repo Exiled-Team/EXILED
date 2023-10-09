@@ -7,6 +7,7 @@
 
 namespace Exiled.CustomRoles.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Text;
@@ -25,7 +26,7 @@ namespace Exiled.CustomRoles.API.Features
     /// <summary>
     /// Control class for keypress ability actions.
     /// </summary>
-    internal class KeypressActivator
+    public class KeypressActivator : IDisposable
     {
         private readonly Dictionary<Player, int> altTracker = DictionaryPool<Player, int>.Pool.Get();
         private readonly Dictionary<Player, CoroutineHandle> coroutineTracker = DictionaryPool<Player, CoroutineHandle>.Pool.Get();
@@ -42,7 +43,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Finalizes an instance of the <see cref="KeypressActivator"/> class.
         /// </summary>
-        ~KeypressActivator()
+        public void Dispose()
         {
             Exiled.Events.Handlers.Player.TogglingNoClip -= OnTogglingNoClip;
             Exiled.Events.Handlers.Server.EndingRound -= OnEndingRound;
@@ -50,35 +51,12 @@ namespace Exiled.CustomRoles.API.Features
             DictionaryPool<Player, CoroutineHandle>.Pool.Return(coroutineTracker);
         }
 
-        private void OnTogglingNoClip(TogglingNoClipEventArgs ev)
-        {
-            if (ev.Player.IsNoclipPermitted)
-                return;
-
-            if (!ActiveAbility.AllActiveAbilities.ContainsKey(ev.Player))
-                return;
-
-            if (!altTracker.ContainsKey(ev.Player))
-                altTracker.Add(ev.Player, 0);
-
-            altTracker[ev.Player]++;
-
-            if (!coroutineTracker.ContainsKey(ev.Player))
-                coroutineTracker.Add(ev.Player, default);
-
-            if (!coroutineTracker[ev.Player].IsRunning)
-                coroutineTracker[ev.Player] = Timing.RunCoroutine(ProcessAltKey(ev.Player));
-        }
-
-        private void OnEndingRound(EndingRoundEventArgs ev)
-        {
-            altTracker.Clear();
-            foreach (CoroutineHandle handle in coroutineTracker.Values)
-                Timing.KillCoroutines(handle);
-            coroutineTracker.Clear();
-        }
-
-        private IEnumerator<float> ProcessAltKey(Player player)
+        /// <summary>
+        /// Processes the hotkey presses for abilities.
+        /// </summary>
+        /// <param name="player">The player being processed.</param>
+        /// <returns><see cref="IEnumerator{T}"/>.</returns>
+        protected virtual IEnumerator<float> ProcessAltKey(Player player)
         {
             yield return Timing.WaitForSeconds(0.25f);
 
@@ -119,6 +97,34 @@ namespace Exiled.CustomRoles.API.Features
 
             player.ShowHint(response, dur);
             altTracker[player] = 0;
+        }
+
+        private void OnTogglingNoClip(TogglingNoClipEventArgs ev)
+        {
+            if (ev.Player.IsNoclipPermitted)
+                return;
+
+            if (!ActiveAbility.AllActiveAbilities.ContainsKey(ev.Player))
+                return;
+
+            if (!altTracker.ContainsKey(ev.Player))
+                altTracker.Add(ev.Player, 0);
+
+            altTracker[ev.Player]++;
+
+            if (!coroutineTracker.ContainsKey(ev.Player))
+                coroutineTracker.Add(ev.Player, default);
+
+            if (!coroutineTracker[ev.Player].IsRunning)
+                coroutineTracker[ev.Player] = Timing.RunCoroutine(ProcessAltKey(ev.Player));
+        }
+
+        private void OnEndingRound(EndingRoundEventArgs ev)
+        {
+            altTracker.Clear();
+            foreach (CoroutineHandle handle in coroutineTracker.Values)
+                Timing.KillCoroutines(handle);
+            coroutineTracker.Clear();
         }
 
         private bool PreformAction(Player player, AbilityKeypressTriggerType type, out string response)
