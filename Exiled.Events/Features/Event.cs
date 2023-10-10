@@ -24,7 +24,7 @@ namespace Exiled.Events.Features
     /// </summary>
     public class Event : IExiledEvent
     {
-        private static readonly List<Event> EventList = new();
+        private static readonly List<Event> EventsValue = new();
 
         private bool patched;
 
@@ -33,7 +33,7 @@ namespace Exiled.Events.Features
         /// </summary>
         public Event()
         {
-            EventList.Add(this);
+            EventsValue.Add(this);
         }
 
         private event CustomEventHandler InnerEvent;
@@ -41,7 +41,7 @@ namespace Exiled.Events.Features
         /// <summary>
         /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="Event{T}"/> which contains all the <see cref="Event{T}"/> instances.
         /// </summary>
-        public static IReadOnlyList<Event> List => EventList;
+        public static IReadOnlyList<Event> List => EventsValue;
 
         /// <summary>
         /// Subscribes a <see cref="CustomEventHandler"/> to the inner event, and checks patches if dynamic patching is enabled.
