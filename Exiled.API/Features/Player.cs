@@ -2154,8 +2154,9 @@ namespace Exiled.API.Features
         /// <param name="amount">The amount of ammo to be set.</param>
         public void SetAmmo(AmmoType ammoType, ushort amount)
         {
-            if (ammoType is not AmmoType.None)
-                Inventory.ServerSetAmmo(ammoType.GetItemType(), amount);
+            ItemType itemType = ammoType.GetItemType();
+            if (itemType is not ItemType.None)
+                Inventory.ServerSetAmmo(itemType, amount);
         }
 
         /// <summary>
