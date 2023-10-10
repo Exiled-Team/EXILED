@@ -13,12 +13,9 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Pickups.Projectiles;
 
     using InventorySystem.Items;
-    using InventorySystem.Items.Armor;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
     using UnityEngine;
-
-    using static ServerConfigSynchronizer;
 
     using Object = UnityEngine.Object;
 
