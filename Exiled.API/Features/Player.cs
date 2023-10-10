@@ -2517,8 +2517,33 @@ namespace Exiled.API.Features
         /// <seealso cref="DropItems()"/>
         public void ClearInventory(bool destroy = true)
         {
+            ClearItem(destroy);
+            ClearAmmo();
+        }
+
+        /// <summary>
+        /// Clears the player's items.
+        /// </summary>
+        /// <param name="destroy">Whether or not to fully destroy the old items.</param>
+        /// <seealso cref="ResetInventory(IEnumerable{Item})"/>
+        /// <seealso cref="ResetInventory(IEnumerable{ItemType})"/>
+        /// <seealso cref="DropItems()"/>
+        public void ClearItem(bool destroy = true)
+        {
             while (Items.Count > 0)
                 RemoveItem(Items.ElementAt(0), destroy);
+        }
+
+        /// <summary>
+        /// Clears all ammo of the inventory.
+        /// </summary>
+        /// <seealso cref="ResetInventory(IEnumerable{Item})"/>
+        /// <seealso cref="SetAmmo(AmmoType, ushort)"/>
+        /// <seealso cref="DropItems()"/>
+        public void ClearAmmo()
+        {
+            ReferenceHub.inventory.UserInventory.ReserveAmmo.Clear();
+            ReferenceHub.inventory.SendAmmoNextFrame = true;
         }
 
         /// <summary>
