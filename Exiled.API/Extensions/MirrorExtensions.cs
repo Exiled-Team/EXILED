@@ -241,13 +241,7 @@ namespace Exiled.API.Extensions
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
         {
-            if (!player.IsConnected)
-            {
-                Log.Error($"Prevented crash of all players who got packet from disconnected player {player.Nickname}");
-                return;
-            }
-
-            if (!RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))
+            if (!player.IsConnected || !RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))
                 return;
 
             bool isRisky = type.GetTeam() is Team.Dead || player.IsDead;
