@@ -12,23 +12,20 @@ namespace Exiled.Events.Patches.Events.Scp049
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-
-    using Exiled.Events.EventArgs.Scp049;
-
+    using Exiled.Events.Attributes;
+    using Exiled.Events.EventArgs.Scp0492;
     using HarmonyLib;
-
-    using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
     using PlayerRoles.PlayableScps.Subroutines;
     using PlayerStatsSystem;
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Adds the <see cref="Handlers.Scp049.ConsumingCorpse" /> event.
+    ///     Adds the <see cref="Handlers.Scp0492.ConsumingCorpse" /> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.ConsumingCorpse))]
     [HarmonyPatch(typeof(ZombieConsumeAbility), nameof(ZombieConsumeAbility.ServerProcessCmd))]
     public class Consuming
     {
@@ -66,7 +63,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Handlers.Scp049.OnSendingCall(ev)
-                    new(OpCodes.Call, Method(typeof(Handlers.Scp049), nameof(Handlers.Scp049.OnConsumingCorpse))),
+                    new(OpCodes.Call, Method(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.OnConsumingCorpse))),
 
                     // if (!ev.IsAllowed)
                     //    return;
