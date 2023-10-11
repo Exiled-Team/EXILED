@@ -136,7 +136,7 @@ namespace Exiled.API.Extensions
         public static string GetBefore(this string input, char symbol)
         {
             int start = input.IndexOf(symbol);
-            if (start != 0)
+            if (start > 0)
                 input = input.Substring(0, start);
 
             return input;
