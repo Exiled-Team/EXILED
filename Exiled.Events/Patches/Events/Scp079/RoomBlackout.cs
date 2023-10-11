@@ -73,11 +73,11 @@ namespace Exiled.Events.Patches.Events.Scp079
 
                     // (!this.IsReady || !base.LostSignalHandler.Lost)
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldfld, PropertyGetter(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility.IsReady))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility.IsReady))),
                     new(OpCodes.Brfalse_S, allowedJump),
 
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldfld, PropertyGetter(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility.LostSignalHandler))),
+                    new(OpCodes.Call, PropertyGetter(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility.LostSignalHandler))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp079LostSignalHandler), nameof(Scp079LostSignalHandler.Lost))),
                     new(OpCodes.Ldc_I4_0),
                     new(OpCodes.Ceq),
@@ -148,9 +148,6 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RoomBlackoutEventArgs), nameof(RoomBlackoutEventArgs.BlackoutDuration))),
                 });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                Log.Info($"opcode: {newInstructions[z].opcode} operand:{newInstructions[z].operand}: {newInstructions[z].labels.Count}");
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

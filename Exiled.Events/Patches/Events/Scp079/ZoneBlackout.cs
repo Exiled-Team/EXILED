@@ -70,7 +70,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
                     // this.ErrorCode
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldfld, PropertyGetter(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility.ErrorCode))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility.ErrorCode))),
 
                     // ZoneBlackoutEventArgs ev = new(ReferenceHub, FacilityZone, float, float, float, Scp079HudTranslation)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ZoneBlackoutEventArgs))[0]),
@@ -152,9 +152,6 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ZoneBlackoutEventArgs), nameof(ZoneBlackoutEventArgs.AuxiliaryPowerCost))),
                 });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                Log.Info($"opcode: {newInstructions[z].opcode} operand:{newInstructions[z].operand}: {newInstructions[z].labels.Count}");
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
