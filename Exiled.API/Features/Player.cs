@@ -2535,7 +2535,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Clears all ammo of the inventory.
+        /// Clears all ammo in the inventory.
         /// </summary>
         /// <seealso cref="ResetInventory(IEnumerable{Item})"/>
         /// <seealso cref="SetAmmo(AmmoType, ushort)"/>
