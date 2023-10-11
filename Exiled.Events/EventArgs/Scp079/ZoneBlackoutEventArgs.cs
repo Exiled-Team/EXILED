@@ -59,9 +59,6 @@ namespace Exiled.Events.EventArgs.Scp079
         /// </summary>
         public Player Player { get; }
 
-        /// <inheritdoc/>
-        public Scp079Role Scp079 { get; }
-
         /// <summary>
         ///     Gets the <see cref="RoomIdentifier" /> of the room that will be locked down.
         /// </summary>
