@@ -36,13 +36,21 @@ namespace Exiled.Events.Patches.Events.Scp0492
             int index = newInstructions.FindIndex(instrc => instrc.Calls(Method(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>.ServerValidateBegin)))) + offset;
 
             Label retLabel = generator.DefineLabel();
+            Label cnt = generator.DefineLabel();
+
             LocalBuilder ev = generator.DeclareLocal(typeof(ConsumingCorpseEventArgs));
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
+                // if (this is not ZombieConsumeAbility)
+                //     return;
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Isinst, typeof(ZombieConsumeAbility)),
+                new(OpCodes.Brfalse_S, cnt),
+
                 // this.Owner
-                new (OpCodes.Ldarg_0),
-                new (OpCodes.Callvirt, PropertyGetter(typeof(ScpStandardSubroutine<ZombieRole>), nameof(ScpStandardSubroutine<ZombieRole>.Owner))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ScpStandardSubroutine<ZombieRole>), nameof(ScpStandardSubroutine<ZombieRole>.Owner))),
 
                 // this.CurRagdoll
                 new(OpCodes.Ldarg_0),
@@ -55,7 +63,7 @@ namespace Exiled.Events.Patches.Events.Scp0492
                 // true
                 new(OpCodes.Ldc_I4_1),
 
-                // ConsumingCorpseEventArgs = new(this.Owner, this.Ragdoll, this._errorCode, true)
+                // ConsumingCorpseEventArgs ev = new(this.Owner, this.Ragdoll, this._errorCode, true)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ConsumingCorpseEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
@@ -76,6 +84,8 @@ namespace Exiled.Events.Patches.Events.Scp0492
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ConsumingCorpseEventArgs), nameof(ConsumingCorpseEventArgs.ErrorCode))),
                 new(OpCodes.Stfld, Field(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>._errorCode))),
+
+                new CodeInstruction(OpCodes.Nop).WithLabels(cnt),
             });
 
             foreach (var instruction in newInstructions)
