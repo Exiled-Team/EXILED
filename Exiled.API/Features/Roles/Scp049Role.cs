@@ -121,7 +121,7 @@ namespace Exiled.API.Features.Roles
 
         // TODO: ReAdd Setter but before making an propper way to overwrite NW constant only when the propperty has been used
 #pragma warning disable SA1623 // Property summary documentation should match accessors
-
+#pragma warning disable SA1202
         /// <summary>
         /// Gets or sets how mush time the Call Ability will be effective.
         /// </summary>
