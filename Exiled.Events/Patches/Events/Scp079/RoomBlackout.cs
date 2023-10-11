@@ -77,7 +77,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Brfalse_S, allowedJump),
 
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility.LostSignalHandler))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility.LostSignalHandler))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp079LostSignalHandler), nameof(Scp079LostSignalHandler.Lost))),
                     new(OpCodes.Ldc_I4_0),
                     new(OpCodes.Ceq),
