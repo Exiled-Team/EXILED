@@ -119,35 +119,39 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public IEnumerable<Player> DeadZombies => Scp049ResurrectAbility.DeadZombies.Select(x => Player.Get(x));
 
+        // TODO: ReAdd Setter but before making an propper way to overwrite NW constant only when the propperty has been used
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+
         /// <summary>
         /// Gets or sets how mush time the Call Ability will be effective.
         /// </summary>
-        public double CallAbilityDuration { get; set; } = Scp049CallAbility.EffectDuration;
+        internal double CallAbilityDuration { get; } = Scp049CallAbility.EffectDuration;
 
         /// <summary>
         /// Gets or sets the Cooldown of the Call Ability.
         /// </summary>
-        public double CallAbilityBaseCooldown { get; set; } = Scp049CallAbility.BaseCooldown;
+        internal double CallAbilityBaseCooldown { get; } = Scp049CallAbility.BaseCooldown;
 
         /// <summary>
         /// Gets or sets the Cooldown of the Sense Ability.
         /// </summary>
-        public double SenseAbilityBaseCooldown { get; set; } = Scp049SenseAbility.BaseCooldown;
+        internal double SenseAbilityBaseCooldown { get; } = Scp049SenseAbility.BaseCooldown;
 
         /// <summary>
         /// Gets or sets the Cooldown of the Sense Ability when you lost your target.
         /// </summary>
-        public double SenseAbilityReducedCooldown { get; set; } = Scp049SenseAbility.ReducedCooldown;
+        internal double SenseAbilityReducedCooldown { get; } = Scp049SenseAbility.ReducedCooldown;
 
         /// <summary>
         /// Gets or sets the Cooldown of the Sense Ability when it's failed.
         /// </summary>
-        public double SenseAbilityDuration { get; set; } = Scp049SenseAbility.EffectDuration;
+        internal double SenseAbilityDuration { get; } = Scp049SenseAbility.EffectDuration;
 
         /// <summary>
         /// Gets or sets how mush time the Sense Ability will be effective.
         /// </summary>
-        public double SenseAbilityFailCooldown { get; set; } = Scp049SenseAbility.AttemptFailCooldown;
+        internal double SenseAbilityFailCooldown { get; } = Scp049SenseAbility.AttemptFailCooldown;
+#pragma warning restore SA1623 // Property summary documentation should match accessors
 
         /// <summary>
         /// Gets all the resurrected players.

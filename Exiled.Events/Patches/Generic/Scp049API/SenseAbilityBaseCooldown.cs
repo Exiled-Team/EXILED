@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Generic.Scp079API
     /// Patches <see cref="Scp049SenseAbility.ServerProcessKilledPlayer"/>.
     /// Adds the <see cref="Scp049Role.SenseAbilityBaseCooldown" /> property.
     /// </summary>
-    [HarmonyPatch(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.ServerProcessKilledPlayer))]
+    // [HarmonyPatch(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.ServerProcessKilledPlayer))]
     internal class SenseAbilityBaseCooldown
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

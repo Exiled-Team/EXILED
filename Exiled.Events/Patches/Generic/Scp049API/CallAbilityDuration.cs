@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Generic.Scp079API
     /// Patches <see cref="Scp049CallAbility.ServerProcessCmd"/>.
     /// Adds the <see cref="Scp049Role.CallAbilityDuration" /> property.
     /// </summary>
-    [HarmonyPatch(typeof(Scp049CallAbility), nameof(Scp049CallAbility.ServerProcessCmd))]
+    // [HarmonyPatch(typeof(Scp049CallAbility), nameof(Scp049CallAbility.ServerProcessCmd))]
     internal class CallAbilityDuration
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

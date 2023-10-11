@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Generic.Scp079API
     /// Patches <see cref="Scp049SenseAbility.ServerLoseTarget"/>.
     /// Adds the <see cref="Scp049Role.SenseAbilityReducedCooldown" /> property.
     /// </summary>
-    [HarmonyPatch(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.ServerLoseTarget))]
+    // [HarmonyPatch(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.ServerLoseTarget))]
     internal class SenseAbilityReducedCooldown
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
