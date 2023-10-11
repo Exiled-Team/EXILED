@@ -182,50 +182,53 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float SinkholeSpeedMultiplier => SinkholeController.SpeedMultiplier;
 
+        // TODO: ReAdd Setter but before making an propper way to overwrite NW constant only when the propperty has been used
+#pragma warning disable SA1623 // Property summary documentation should match accessors
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when being stationary.
         /// </summary>
-        public float VigorStalkCostStationary { get; set; } = Scp106StalkAbility.VigorStalkCostStationary;
+        internal float VigorStalkCostStationary { get; } = Scp106StalkAbility.VigorStalkCostStationary;
 
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when moving.
         /// </summary>
-        public float VigorStalkCostMoving { get; set; } = Scp106StalkAbility.VigorStalkCostMoving;
+        internal float VigorStalkCostMoving { get; } = Scp106StalkAbility.VigorStalkCostMoving;
 
         /// <summary>
         /// Gets or sets how mush vigor will be regenerate while moving per seconds.
         /// </summary>
-        public float VigorRegeneration { get; set; } = Scp106StalkAbility.VigorRegeneration;
+        internal float VigorRegeneration { get; } = Scp106StalkAbility.VigorRegeneration;
 
         /// <summary>
         /// Gets or sets how mush damage Scp106 will dealt when attacking a player.
         /// </summary>
-        public float AttackDamage { get; set; } = Scp106Attack.AttackDamage;
+        internal float AttackDamage { get; } = Scp106Attack.AttackDamage;
 
         /// <summary>
         /// Gets or sets the duration of Corroding effect.
         /// </summary>
-        public float CorrodingTime { get; set; } = Scp106Attack.CorrodingTime;
+        internal float CorrodingTime { get; } = Scp106Attack.CorrodingTime;
 
         /// <summary>
         /// Gets or sets how mush vigor Scp106 will gain when being reward for having caught a player.
         /// </summary>
-        public float VigorCaptureReward { get; set; } = Scp106Attack.VigorCaptureReward;
+        internal float VigorCaptureReward { get; } = Scp106Attack.VigorCaptureReward;
 
         /// <summary>
         /// Gets or sets how mush reduction cooldown Scp106 will gain when being reward for having caught a player.
         /// </summary>
-        public float CooldownReductionReward { get; set; } = Scp106Attack.CooldownReductionReward;
+        internal float CooldownReductionReward { get; } = Scp106Attack.CooldownReductionReward;
 
         /// <summary>
         /// Gets or sets the cooldown duration of it's Sinkhole ability's.
         /// </summary>
-        public float SinkholeCooldownDuration { get; set; } = Scp106SinkholeController.CooldownDuration;
+        internal float SinkholeCooldownDuration { get; } = Scp106SinkholeController.CooldownDuration;
 
         /// <summary>
         /// Gets or sets how mush vigor it's ability Hunter Atlas will cost per meter.
         /// </summary>
-        public float HuntersAtlasCostPerMeter { get; set; } = Scp106HuntersAtlasAbility.CostPerMeter;
+        internal float HuntersAtlasCostPerMeter { get; } = Scp106HuntersAtlasAbility.CostPerMeter;
+#pragma warning restore SA1623 // Property summary documentation should match accessors
 
         /// <summary>
         /// Gets or sets the amount of time in between player captures.
