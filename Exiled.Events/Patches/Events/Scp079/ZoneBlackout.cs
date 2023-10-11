@@ -39,7 +39,6 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             int offset = -2;
             int index = newInstructions.FindIndex(x => x.opcode == OpCodes.Brfalse_S) + offset;
-            Log.Info($"ZoneBlackout {index}");
 
             // remove "this.ErrorCode"
             newInstructions.RemoveRange(index, 2);
@@ -90,7 +89,6 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             offset = 1;
             index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ret) + offset;
-            Log.Info($"ZoneBlackout {index}");
 
             newInstructions.InsertRange(
                 index,
@@ -109,7 +107,6 @@ namespace Exiled.Events.Patches.Events.Scp079
             // "roomLightController.ServerFlickerLights(ev.Duration);"
             offset = -1;
             index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)Field(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility._duration))) + offset;
-            Log.Info($"ZoneBlackout {index}");
 
             newInstructions.RemoveRange(index, 2);
 
@@ -127,7 +124,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             // "this._cooldownTimer.Trigger((double)ev._cooldown);"
             offset = -1;
             index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)Field(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility._cooldown))) + offset;
-            Log.Info($"ZoneBlackout {index}");
+
             newInstructions.RemoveRange(index, 2);
 
             newInstructions.InsertRange(
@@ -144,7 +141,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             // "base.AuxManager.CurrentAux -= ev.AuxiliaryPowerCost;"
             offset = -1;
             index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)Field(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility._cost))) + offset;
-            Log.Info($"ZoneBlackout {index}");
+
             newInstructions.RemoveRange(index, 3);
 
             newInstructions.InsertRange(
