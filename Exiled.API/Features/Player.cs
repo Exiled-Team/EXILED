@@ -540,9 +540,9 @@ namespace Exiled.API.Features
         /// Gets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
         /// <para>
         /// The type of the Role is different based on the <see cref="RoleTypeId"/> of the player, and casting should be used to modify the role.
-        /// <br /><see cref="RoleTypeId.Spectator"/> = <see cref="SpectatorRole"/>.
-        /// <br /><see cref="RoleTypeId.Overwatch"/> = <see cref="OverwatchRole"/>.
-        /// <br /><see cref="RoleTypeId.None"/> = <see cref="NoneRole"/>.
+        /// <br /><see cref="RoleTypeId.Spectator"/> = <see cref="Roles.SpectatorRole"/>.
+        /// <br /><see cref="RoleTypeId.Overwatch"/> = <see cref="Roles.OverwatchRole"/>.
+        /// <br /><see cref="RoleTypeId.None"/> = <see cref="Roles.NoneRole"/>.
         /// <br /><see cref="RoleTypeId.Scp049"/> = <see cref="Scp049Role"/>.
         /// <br /><see cref="RoleTypeId.Scp0492"/> = <see cref="Scp0492Role"/>.
         /// <br /><see cref="RoleTypeId.Scp079"/> = <see cref="Scp079Role"/>.
@@ -2153,8 +2153,12 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
         /// <param name="amount">The amount of ammo to be set.</param>
-        public void SetAmmo(AmmoType ammoType, ushort amount) =>
-            Inventory.ServerSetAmmo(ammoType.GetItemType(), amount);
+        public void SetAmmo(AmmoType ammoType, ushort amount)
+        {
+            ItemType itemType = ammoType.GetItemType();
+            if (itemType is not ItemType.None)
+                Inventory.ServerSetAmmo(itemType, amount);
+        }
 
         /// <summary>
         /// Gets the ammo count of a specified <see cref="AmmoType">ammo type</see> in a player's inventory.
@@ -2728,8 +2732,23 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         public void EnableEffect(EffectType type, float duration = 0f, bool addDurationIfActive = false)
         {
-            if (TryGetEffect(type, out StatusEffectBase statusEffect))
-                EnableEffect(statusEffect, duration, addDurationIfActive);
+            switch (type)
+            {
+                case EffectType.AmnesiaItems:
+                    EnableEffect<AmnesiaItems>(duration, addDurationIfActive);
+                    break;
+                case EffectType.AmnesiaVision:
+                    EnableEffect<AmnesiaVision>(duration, addDurationIfActive);
+                    break;
+                case EffectType.SoundtrackMute:
+                    EnableEffect<SoundtrackMute>(duration, addDurationIfActive);
+                    break;
+                default:
+                    if (TryGetEffect(type, out StatusEffectBase statusEffect))
+                        EnableEffect(statusEffect, duration, addDurationIfActive);
+
+                    break;
+            }
         }
 
         /// <summary>

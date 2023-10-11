@@ -101,17 +101,17 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not the door is fully closed.
         /// </summary>
-        public bool IsFullyClosed => Is(out Gate gate) ? !IsOpen && gate.RemainingPryCooldown <= 0 : ExactState is 0;
+        public virtual bool IsFullyClosed => ExactState is 0;
 
         /// <summary>
         /// Gets a value indicating whether the door is fully open.
         /// </summary>
-        public bool IsFullyOpen => Is(out Gate gate) ? !IsOpen && gate.RemainingPryCooldown <= 0 : ExactState is 1;
+        public virtual bool IsFullyOpen => ExactState is 1;
 
         /// <summary>
         /// Gets a value indicating whether or not the door is currently moving.
         /// </summary>
-        public bool IsMoving => Is(out Gate gate) ? !IsOpen && gate.RemainingPryCooldown > 0 : ExactState is not(0 or 1);
+        public virtual bool IsMoving => ExactState is not(0 or 1);
 
         /// <summary>
         /// Gets a value indicating the precise state of the door, from <c>0-1</c>. A value of <c>0</c> indicates the door is fully closed, while a value of <c>1</c> indicates the door is fully open. Values in-between represent the door's animation progress.
@@ -119,11 +119,16 @@ namespace Exiled.API.Features.Doors
         public float ExactState => Base.GetExactState();
 
         /// <summary>
+        /// Gets a value indicating whether the door is considered open by the game.
+        /// </summary>
+        public bool IsConsideredOpen => Base.IsConsideredOpen();
+
+        /// <summary>
         /// Gets or sets a value indicating whether the door is open.
         /// </summary>
         public bool IsOpen
         {
-            get => Base.IsConsideredOpen();
+            get => Base.NetworkTargetState;
             set => Base.NetworkTargetState = value;
         }
 

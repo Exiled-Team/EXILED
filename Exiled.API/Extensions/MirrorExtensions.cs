@@ -241,7 +241,7 @@ namespace Exiled.API.Extensions
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
         {
-            if (!RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))
+            if (!player.IsConnected || !RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))
                 return;
 
             bool isRisky = type.GetTeam() is Team.Dead || player.IsDead;
@@ -329,7 +329,7 @@ namespace Exiled.API.Extensions
             string[] translations = translation.Split('\n');
 
             for (int i = 0; i < cassies.Length; i++)
-                announcement.Append($"{translations[i]}<size=0> {cassies[i].Replace(' ', ' ')} </size><split>");
+                announcement.Append($"{translations[i].Replace(' ', ' ')}<size=0> {cassies[i]} </size><split>");
 
             string message = StringBuilderPool.Pool.ToStringReturn(announcement);
 
