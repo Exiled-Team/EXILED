@@ -44,9 +44,9 @@ namespace Exiled.Events.EventArgs.Scp049
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the Player who the sense ability is affecting.
+        /// Gets or sets the Player who the sense ability is affecting.
         /// </summary>
-        public Player Target { get; }
+        public Player Target { get; set; }
 
         /// <summary>
         /// Gets or sets the cooldown of the ability.

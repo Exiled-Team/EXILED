@@ -29,20 +29,20 @@ namespace Exiled.Events.Patches.Events.Scp049
     ///     Patches <see cref="Scp049SenseAbility.ServerProcessCmd" />.
     ///     Adds the <see cref="Handlers.Scp049.ActivatingSense" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.ActivatingSense))]
     [HarmonyPatch(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.ServerProcessCmd))]
     public class ActivatingSense
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            int offset = 2;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldnull) + offset;
+            Label failedLabel = (Label)newInstructions[index].operand;
 
-            int offset = 1;
-            int index = newInstructions.FindIndex(instruction => instruction.operand == (object)PropertySetter(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.Target))) + offset;
+            offset = 1;
+            index = newInstructions.FindIndex(instruction => instruction.operand == (object)PropertySetter(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.Target))) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(FinishingRecallEventArgs));
-
-            Label returnLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(
                 index,
@@ -73,7 +73,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                     // if (!ev.IsAllowed)
                     //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingSenseEventArgs), nameof(ActivatingSenseEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, returnLabel),
+                    new(OpCodes.Brfalse_S, failedLabel),
 
                     // this.Target = ev.Target
                     new(OpCodes.Ldarg_0),
@@ -110,8 +110,6 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingSenseEventArgs), nameof(ActivatingSenseEventArgs.Duration))),
                 });
-
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
