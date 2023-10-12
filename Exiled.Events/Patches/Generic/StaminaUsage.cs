@@ -11,9 +11,7 @@ namespace Exiled.Events.Patches.Generic
 
     using Exiled.API.Features;
     using HarmonyLib;
-    using Mirror;
     using PlayerRoles.FirstPersonControl;
-    using UnityEngine;
 
     /// <summary>
     /// Patches <see cref="FpcStateProcessor.UpdateMovementState"/>.
