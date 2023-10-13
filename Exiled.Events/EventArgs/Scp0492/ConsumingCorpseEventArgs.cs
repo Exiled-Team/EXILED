@@ -58,15 +58,8 @@ namespace Exiled.Events.EventArgs.Scp0492
         /// </summary>
         public bool IsAllowed
         {
-            get
-            {
-                return ErrorCode == ZombieConsumeAbility.ConsumeError.None;
-            }
-
-            set
-            {
-                ErrorCode = value ? ZombieConsumeAbility.ConsumeError.None : ZombieConsumeAbility.ConsumeError.TargetNotValid;
-            }
+            get => ErrorCode == ZombieConsumeAbility.ConsumeError.None;
+            set => ErrorCode = value ? ZombieConsumeAbility.ConsumeError.None : ZombieConsumeAbility.ConsumeError.TargetNotValid;
         }
     }
 }
