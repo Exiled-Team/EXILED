@@ -16,6 +16,8 @@ namespace Exiled.CustomRoles.Commands
     using Exiled.CustomRoles.API;
     using Exiled.CustomRoles.API.Features;
 
+    using PlayerRoles;
+
     /// <summary>
     /// Handles the using of custom role abilities.
     /// </summary>
@@ -38,12 +40,20 @@ namespace Exiled.CustomRoles.Commands
             string abilityName = string.Empty;
             ActiveAbility? ability;
 
+            RoleTypeId type = RoleTypeId.None;
             if (arguments.Count > 0)
             {
-                foreach (string s in arguments.Skip(1))
-                    abilityName += s;
+                if (!Enum.TryParse(arguments.Last(), true, out type))
+                {
+                    Log.Warn($"{arguments.Last()} is not a valid role type.");
+                    type = RoleTypeId.None;
+                }
 
-                if (!CustomAbility.TryGet(abilityName, out CustomAbility? customAbility) || customAbility is null)
+                foreach (string s in arguments.Take(arguments.Count - (type == RoleTypeId.None ? 0 : 1)))
+                    abilityName += $"{s} ";
+                abilityName = abilityName.TrimEnd(' ');
+
+                if (!CustomAbility.TryGet(abilityName.ToLower(), out CustomAbility? customAbility) || customAbility is null)
                 {
                     response = $"Ability {abilityName} does not exist.";
                     return false;
@@ -72,6 +82,7 @@ namespace Exiled.CustomRoles.Commands
                 return false;
             response = $"{ability.Name} has been used.";
             ability.UseAbility(player);
+            ability.UseAbility(player, type);
             return true;
         }
     }

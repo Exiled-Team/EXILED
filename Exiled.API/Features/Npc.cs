@@ -184,7 +184,7 @@ namespace Exiled.API.Features
             Dictionary.Add(newObject, npc);
 
             Timing.CallDelayed(
-                0.3f,
+                0.5f,
                 () =>
                 {
                     npc.Role.Set(role, SpawnReason.RoundStart, position is null ? RoleSpawnFlags.All : RoleSpawnFlags.AssignInventory);

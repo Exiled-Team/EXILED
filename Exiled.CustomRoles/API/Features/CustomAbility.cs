@@ -64,7 +64,7 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="name">The name of the ability to get.</param>
         /// <returns>The ability, or <see langword="null"/> if it doesn't exist.</returns>
-        public static CustomAbility? Get(string name) => Registered?.FirstOrDefault(r => r.Name == name);
+        public static CustomAbility? Get(string name) => Registered?.FirstOrDefault(r => r.Name.ToLower() == name);
 
         /// <summary>
         /// Gets a <see cref="CustomAbility"/> by type.

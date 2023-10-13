@@ -77,8 +77,12 @@ namespace Exiled.CustomRoles.API.Features
             switch (preformed)
             {
                 case true when type == AbilityKeypressTriggerType.Activate:
-                    string[] split = response.Split('|');
-                    response = string.Format(CustomRoles.Instance.Config.UsedAbilityHint.Content, split);
+                    if (response.Contains("|"))
+                    {
+                        string[] split = response.Split('|');
+                        response = string.Format(CustomRoles.Instance.Config.UsedAbilityHint.Content, split);
+                    }
+
                     break;
                 case true when type is AbilityKeypressTriggerType.SwitchBackward or AbilityKeypressTriggerType.SwitchForward:
                     response = string.Format(CustomRoles.Instance.Config.SwitchedAbilityHint.Content, response);
@@ -140,7 +144,7 @@ namespace Exiled.CustomRoles.API.Features
 
                 if (!selected.CanUseAbility(player, out response, CustomRoles.Instance.Config.ActivateOnlySelected))
                     return false;
-                response = $"{selected.Name}|{selected.Description}";
+                response = selected.ActivationMessage ?? $"{selected.Name}|{selected.Description}";
                 selected.UseAbility(player);
                 return true;
             }
