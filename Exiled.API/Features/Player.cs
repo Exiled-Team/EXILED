@@ -2785,7 +2785,7 @@ namespace Exiled.API.Features
         public void EnableEffect(Effect effect) => SyncEffect(effect);
 
         /// <summary>
-        /// Sync the <see cref="Effect">status effect</see> on the player.
+        /// Syncs the <see cref="Effect">status effect</see> on the player.
         /// </summary>
         /// <param name="effect">The <see cref="Effect"/> to sync.</param>
         public void SyncEffect(Effect effect)
@@ -2851,7 +2851,7 @@ namespace Exiled.API.Features
         public void EnableEffects(IEnumerable<Effect> effects) => SyncEffects(effects);
 
         /// <summary>
-        /// Sync a <see cref="IEnumerable{T}"/> of <see cref="Effect"/> on the player.
+        /// Syncs a <see cref="IEnumerable{T}"/> of <see cref="Effect"/> on the player.
         /// </summary>
         /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="Effect"/> to enable.</param>
         public void SyncEffects(IEnumerable<Effect> effects)
