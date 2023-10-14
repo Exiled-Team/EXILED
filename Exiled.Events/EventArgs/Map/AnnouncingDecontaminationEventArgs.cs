@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs.Map
         {
             Id = announcementId;
             PhaseFunction = phaseFunction;
-            IsGlobal = PhaseFunction is PhaseFunction.GloballyAudible;
+            IsGlobal = PhaseFunction is PhaseFunction.GloballyAudible or PhaseFunction.Final;
         }
 
         /// <summary>
