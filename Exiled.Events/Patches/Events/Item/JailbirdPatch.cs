@@ -92,7 +92,7 @@ namespace Exiled.Events.Patches.Events.Item
                             return true;
                     instance.SendRpc(JailbirdMessageType.ChargeStarted, wr =>
                     {
-                        wr.WriteDouble(instance._chargeResetTime);
+                        wr.WriteDouble(0);
                     });
                     return false;
                 }
