@@ -7,7 +7,10 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
+    using Exiled.API.Enums;
     using Exiled.Events.EventArgs.Interfaces;
+
+    using static LightContainmentZoneDecontamination.DecontaminationController.DecontaminationPhase;
 
     /// <summary>
     ///     Contains all information before C.A.S.S.I.E announces light containment zone decontamination.
@@ -20,19 +23,30 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="announcementId">
         ///     <inheritdoc cref="Id" />
         /// </param>
-        /// <param name="isGlobal">
-        ///     <inheritdoc cref="IsGlobal" />
+        /// <param name="phaseFunction">
+        ///     <inheritdoc cref="PhaseFunction" />
         /// </param>
-        public AnnouncingDecontaminationEventArgs(int announcementId, bool isGlobal)
+        public AnnouncingDecontaminationEventArgs(int announcementId, PhaseFunction phaseFunction)
         {
             Id = announcementId;
-            IsGlobal = isGlobal;
+            PhaseFunction = phaseFunction;
+            IsGlobal = PhaseFunction is PhaseFunction.GloballyAudible;
         }
 
         /// <summary>
         ///     Gets the announcement id, from 0 to 6.
         /// </summary>
         public int Id { get; }
+
+        /// <summary>
+        ///     Gets the announcement id, from 0 to 6.
+        /// </summary>
+        public DecontaminationState State => (DecontaminationState)Id;
+
+        /// <summary>
+        ///     Gets a value indicating whether the action will be.
+        /// </summary>
+        public PhaseFunction PhaseFunction { get; }
 
         /// <summary>
         ///     Gets a value indicating whether the announcement is going to be global or not.
