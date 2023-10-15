@@ -101,6 +101,11 @@ namespace Exiled.Events.Handlers
         public static Event<PickupDestroyedEventArgs> PickupDestroyed { get; set; } = new();
 
         /// <summary>
+        /// Invoked before a team vehicle is spawned.
+        /// </summary>
+        public static Event<SpawningTeamVehicleEventArgs> SpawningTeamVehicle { get; set; } = new();
+
+        /// <summary>
         /// Called before placing a decal.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingBulletHoleEventArgs"/> instance.</param>
@@ -194,5 +199,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="PickupDestroyedEventArgs"/> instance.</param>
         public static void OnPickupDestroyed(PickupDestroyedEventArgs ev) => PickupDestroyed.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked before a team vehicle is spawned.
+        /// </summary>
+        /// <param name="ev">The <see cref="SpawningTeamVehicleEventArgs"/> instance.</param>
+        public static void OnSpawningTeamVehicle(SpawningTeamVehicleEventArgs ev) => SpawningTeamVehicle.InvokeSafely(ev);
     }
 }

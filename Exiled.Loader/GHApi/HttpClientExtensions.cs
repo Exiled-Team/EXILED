@@ -5,16 +5,26 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Updater.GHApi
+namespace Exiled.Loader.GHApi
 {
     using System.Net.Http;
     using System.Threading.Tasks;
 
-    using Exiled.Updater.GHApi.Models;
-    using Exiled.Updater.GHApi.Settings;
+    using Exiled.Loader.GHApi.Models;
+    using Exiled.Loader.GHApi.Settings;
 
+    /// <summary>
+    /// A set of extensions to be used along with https clients.
+    /// </summary>
     public static class HttpClientExtensions
     {
+        /// <summary>
+        /// Gets all releases from a git repository.
+        /// </summary>
+        /// <param name="client">The <see cref="HttpClient"/>.</param>
+        /// <param name="repoId">The repository from which get the releases.</param>
+        /// <param name="settings">The settings.</param>
+        /// <returns>A <see cref="Release"/>[] containing all requested releases.</returns>
         public static async Task<Release[]> GetReleases(this HttpClient client, long repoId, GetReleasesSettings settings)
             => await ApiProvider.GetReleases(repoId, settings, client).ConfigureAwait(false);
     }

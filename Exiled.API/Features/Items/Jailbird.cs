@@ -8,8 +8,9 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Interfaces;
-
+    using InventorySystem.Items.Autosync;
     using InventorySystem.Items.Jailbird;
+    using Mirror;
 
     /// <summary>
     /// A wrapped class for <see cref="JailbirdItem"/>.
@@ -110,7 +111,20 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Breaks the Jailbird.
         /// </summary>
-        public void Break() => WearState = JailbirdWearState.Broken;
+        public void Break()
+        {
+            WearState = JailbirdWearState.Broken;
+            using (new AutosyncRpc(Base, true, out NetworkWriter networkWriter))
+            {
+                networkWriter.WriteByte(0);
+                networkWriter.WriteByte((byte)JailbirdWearState.Broken);
+            }
+
+            using (new AutosyncRpc(Base, true, out NetworkWriter networkWriter2))
+            {
+                networkWriter2.WriteByte(1);
+            }
+        }
 
         /// <summary>
         /// Clones current <see cref="Jailbird"/> object.
