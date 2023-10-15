@@ -21,6 +21,7 @@ namespace Exiled.API.Features.Items
 
     using Extensions;
 
+    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
@@ -557,30 +558,6 @@ namespace Exiled.API.Features.Items
         {
             foreach (Player player in Player.List)
                 ClearPreferences(player);
-        }
-
-        /// <summary>
-        /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
-        /// </summary>
-        /// <param name="position">The location to spawn the item.</param>
-        /// <param name="rotation">The rotation of the item.</param>
-        /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
-        /// <returns>The created <see cref="Pickup"/>.</returns>
-        public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
-        {
-            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
-
-            ipb.Info = new(Type, Weight, Serial);
-            ipb.gameObject.transform.localScale = Scale;
-
-            FirearmPickup pickup = Pickup.Get(ipb).As<FirearmPickup>();
-
-            pickup.Status = Base.Status;
-
-            if (spawn)
-                pickup.Spawn();
-
-            return pickup;
         }
 
         /// <summary>

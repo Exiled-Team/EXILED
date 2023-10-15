@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
+    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables;
@@ -110,10 +111,9 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
+            PickupSyncInfo info = new(Type, Weight, Serial);
 
-            ipb.Info = new(Type, Weight, Serial);
-            ipb.gameObject.transform.localScale = Scale;
+            ItemPickupBase ipb = InventoryExtensions.ServerCreatePickup(Base, info, position, rotation);
 
             Base.OnRemoved(ipb);
 
