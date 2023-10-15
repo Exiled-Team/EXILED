@@ -2152,8 +2152,12 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
         /// <param name="amount">The amount of ammo to be set.</param>
-        public void SetAmmo(AmmoType ammoType, ushort amount) =>
-            Inventory.ServerSetAmmo(ammoType.GetItemType(), amount);
+        public void SetAmmo(AmmoType ammoType, ushort amount)
+        {
+            ItemType itemType = ammoType.GetItemType();
+            if (itemType is not ItemType.None)
+                Inventory.ServerSetAmmo(itemType, amount);
+        }
 
         /// <summary>
         /// Gets the ammo count of a specified <see cref="AmmoType">ammo type</see> in a player's inventory.
