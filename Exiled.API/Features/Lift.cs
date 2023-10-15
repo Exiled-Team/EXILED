@@ -174,6 +174,26 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the <see cref="RotationTime"/>.
+        /// </summary>
+        public float RotationTime => Base._rotationTime;
+
+        /// <summary>
+        /// Gets the <see cref="DoorOpenTime"/>.
+        /// </summary>
+        public float DoorOpenTime => Base._doorOpenTime;
+
+        /// <summary>
+        /// Gets the <see cref="DoorCloseTime"/>.
+        /// </summary>
+        public float DoorCloseTime => Base._doorCloseTime;
+
+        /// <summary>
+        /// Gets the total <see cref="MoveTime"/>.
+        /// </summary>
+        public float MoveTime => AnimationTime + RotationTime + DoorOpenTime + DoorCloseTime;
+
+        /// <summary>
         /// Gets the <see cref="CurrentLevel"/>.
         /// </summary>
         public int CurrentLevel => Base.CurrentLevel;
