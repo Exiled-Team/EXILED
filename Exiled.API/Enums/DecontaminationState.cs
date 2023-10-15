@@ -15,7 +15,6 @@ namespace Exiled.API.Enums
     /// Represents the state of a <see cref="LightContainmentZoneDecontamination.DecontaminationController"/>.
     /// </summary>
     /// <seealso cref="Map.DecontaminationState"/>
-    [Flags]
     public enum DecontaminationState
     {
         /// <summary>
