@@ -120,6 +120,9 @@ namespace Exiled.Loader
         /// </summary>
         public static void LoadPlugins()
         {
+            // Required to remove the old ExiledUpdater than now integrated inside Exiled.Loader
+            File.Delete($"{Paths.Plugins}/Exiled.Updater.dll");
+
             foreach (string assemblyPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
                 Assembly assembly = LoadAssembly(assemblyPath);
