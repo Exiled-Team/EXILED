@@ -246,15 +246,11 @@ namespace Exiled.API.Features
         /// </summary>
         public string UserId => referenceHub.authManager.UserId;
 
-        /*
         /// <summary>
         /// Gets or sets the player's custom user id.
         /// </summary>
-        public string CustomUserId
-        {
-            get => ReferenceHub.authManager.UserId2;
-            set => ReferenceHub.authManager.UserId2 = value;
-        }*/
+        [Obsolete("Remove by NW")]
+        public string CustomUserId { get; set; }
 
         /// <summary>
         /// Gets the player's user id without the authentication.
