@@ -74,7 +74,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="TimeSpan"/> indicating the amount of time before the next respawn wave will occur.
         /// </summary>
-        public static TimeSpan TimeUntilSpawnWave => TimeSpan.FromSeconds(RespawnManager.Singleton._timeForNextSequence - (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds);
+        public static TimeSpan TimeUntilSpawnWave => TimeSpan.FromSeconds(TimeUntilNextPhase);
 
         /// <summary>
         /// Gets a <see cref="DateTime"/> indicating the moment in UTC time the next respawn wave will occur.
