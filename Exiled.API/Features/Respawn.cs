@@ -80,7 +80,7 @@ namespace Exiled.API.Features
         public static float ChaosTickets
         {
             get => RespawnTokensManager.Counters[0].Amount;
-            set => RespawnTokensManager.GrantTokens(SpawnableTeamType.ChaosInsurgency, value);
+            set => RespawnTokensManager.ModifyTokens(SpawnableTeamType.ChaosInsurgency, value);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Exiled.API.Features
         public static float NtfTickets
         {
             get => RespawnTokensManager.Counters[1].Amount;
-            set => RespawnTokensManager.GrantTokens(SpawnableTeamType.NineTailedFox, value);
+            set => RespawnTokensManager.ModifyTokens(SpawnableTeamType.NineTailedFox, value);
         }
 
         /// <summary>
