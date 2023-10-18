@@ -192,6 +192,13 @@ namespace Exiled.API.Features
         public static void RemoveTickets(SpawnableTeamType team, float amount) => RespawnTokensManager.ModifyTokens(team, Math.Min(0, amount));
 
         /// <summary>
+        /// Modify tickets from a <see cref="SpawnableTeamType"/>.
+        /// </summary>
+        /// <param name="team">The <see cref="SpawnableTeamType"/> to remove tickets from.</param>
+        /// <param name="amount">The amount of tickets to remove.</param>
+        public static void ModifyTokens(SpawnableTeamType team, float amount) => RespawnTokensManager.ModifyTokens(team, amount);
+
+        /// <summary>
         /// Forces a spawn of the given <see cref="SpawnableTeamType"/>.
         /// </summary>
         /// <param name="team">The <see cref="SpawnableTeamType"/> to spawn.</param>
