@@ -249,7 +249,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the player's custom user id.
         /// </summary>
-        [Obsolete("Remove by NW")]
+        [Obsolete("Remove by NW", true)]
         public string CustomUserId { get; set; }
 
         /// <summary>
