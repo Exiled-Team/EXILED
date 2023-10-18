@@ -1007,7 +1007,7 @@ namespace Exiled.API.Features
 
                 ServerRoles serverRoles = ReferenceHub.serverRoles;
 
-                return new Badge(serverRoles._bgt, serverRoles._bgc, serverRoles.GlobalBadgeType, true);
+                return default; // new Badge(serverRoles._bgt, serverRoles._bgc, serverRoles.GlobalBadgeType, true);
             }
         }
 
