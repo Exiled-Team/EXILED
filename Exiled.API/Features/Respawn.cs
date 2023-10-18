@@ -54,9 +54,22 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the next known <see cref="SpawnableTeamType"/> that will spawn.
+        /// Gets or sets the next known <see cref="SpawnableTeamType"/> that will spawn.
         /// </summary>
-        public static SpawnableTeamType NextKnownTeam => RespawnManager.Singleton.NextKnownTeam;
+        public static SpawnableTeamType NextKnownTeam
+        {
+            get => RespawnManager.Singleton.NextKnownTeam;
+            set => RespawnManager.Singleton.NextKnownTeam = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of seconds before the next respawn phase will occur.
+        /// </summary>
+        public static float TimeUntilNextPhase
+        {
+            get => RespawnManager.Singleton._timeForNextSequence - (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds;
+            set => RespawnManager.Singleton._timeForNextSequence = (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds + value;
+        }
 
         /// <summary>
         /// Gets a <see cref="TimeSpan"/> indicating the amount of time before the next respawn wave will occur.
