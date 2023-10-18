@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static void Postfix(FpcStateProcessor __instance, PlayerMovementState state, ref PlayerMovementState __result)
         {
-            if (Player.TryGet(__instance._hub, out Player player) && !player.IsUsingStamina)
+            if (Player.TryGet(__instance.Hub, out Player player) && !player.IsUsingStamina)
                 __instance._stat.CurValue = __instance._stat.MaxValue;
         }
     }
