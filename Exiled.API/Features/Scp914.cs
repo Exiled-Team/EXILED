@@ -7,8 +7,12 @@
 
 namespace Exiled.API.Features
 {
-    using global::Scp914;
+    using System.Collections.Generic;
+    using System.Linq;
 
+    using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pools;
+    using global::Scp914;
     using UnityEngine;
 
     /// <summary>
@@ -65,6 +69,11 @@ namespace Exiled.API.Features
         public static bool IsWorking => Scp914Controller._isUpgrading;
 
         /// <summary>
+        /// Gets a value indicating all GameObject inside the input of Scp914.
+        /// </summary>
+        public static Collider[] Inside914 => Physics.OverlapBox(IntakePosition, Scp914Controller.IntakeChamberSize);
+
+        /// <summary>
         /// Gets the intake booth <see cref="UnityEngine.Transform"/>.
         /// </summary>
         public static Transform IntakeBooth => Scp914Controller.IntakeChamber;
@@ -75,19 +84,51 @@ namespace Exiled.API.Features
         public static Transform OutputBooth => Scp914Controller.OutputChamber;
 
         /// <summary>
+        /// All the Object casted inside 914.
+        /// </summary>
+        /// <param name="playersret">The <see cref="List{Player}"/> to return.</param>
+        /// <param name="pickupsret">The <see cref="List{Pickup}"/> to return.</param>
+        /// <returns>All GameObject inside Scp914.</returns>
+        public static IEnumerable<GameObject> Scp914InputObject(out IEnumerable<Player> playersret, out IEnumerable<Pickup> pickupsret)
+        {
+            HashSet<GameObject> inside914 = HashSetPool<GameObject>.Pool.Get();
+            List<Player> players = ListPool<Player>.Pool.Get();
+            List<Pickup> pickups = ListPool<Pickup>.Pool.Get();
+
+            foreach (Collider collider in Inside914.ToList())
+            {
+                GameObject gameObject = collider.transform.root.gameObject;
+                if (inside914.Add(gameObject))
+                {
+                    Pickup pickup;
+                    if ((pickup = Pickup.Get(gameObject)) is not null && !pickup.IsLocked)
+                    {
+                        pickups.Add(pickup);
+                    }
+                    else if (Player.TryGet(gameObject, out Player player)
+                        && Physics.Linecast(player.Position, IntakePosition, Scp914Upgrader.SolidObjectMask))
+                    {
+                        players.Add(player);
+                    }
+                }
+            }
+
+            playersret = ListPool<Player>.Pool.ToArrayReturn(players);
+            pickupsret = ListPool<Pickup>.Pool.ToArrayReturn(pickups);
+            return HashSetPool<GameObject>.Pool.ToArrayReturn(inside914);
+        }
+
+        /// <summary>
         /// Plays the SCP-914's sound.
         /// </summary>
-        /// <param name="soundId">The soundId to play.</param>
-        /// <remarks>There are two sounds only.
-        /// The values to identify them are <c>0</c>, which stands for the soundId played when SCP-914 is being activated,
-        /// and <c>1</c>, which stands for the soundId played when SCP-914's knob state is being changed.</remarks>
+        /// <param name="soundId">The <see cref="Scp914InteractCode"/> to play.</param>
         public static void PlaySound(Scp914InteractCode soundId) => Scp914Controller.RpcPlaySound((byte)soundId);
 
         /// <summary>
         /// Starts SCP-914.
         /// </summary>
-        /// <param name="player">Player who interacts with Scp914.</param>
-        /// <param name="code">Activated code.</param>
+        /// <param name="player"><see cref="Player"/> who interacts with Scp914.</param>
+        /// <param name="code"><see cref="Scp914InteractCode"/> Interact code.</param>
         public static void Start(Player player = null, Scp914InteractCode code = Scp914InteractCode.Activate) => Scp914Controller.ServerInteract((player ?? Server.Host).ReferenceHub, (byte)code);
     }
 }
