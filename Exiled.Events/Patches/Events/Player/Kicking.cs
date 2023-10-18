@@ -50,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldarg_3),
 
                 // kick start message
-                new(OpCodes.Ldstr, newInstructions[newInstructions.FindIndex(x => x.opcode == OpCodes.Ldstr)]),
+                new(OpCodes.Ldstr, newInstructions[newInstructions.FindIndex(x => x.opcode == OpCodes.Ldstr)].operand),
 
                 // true
                 new(OpCodes.Ldc_I4_1),
