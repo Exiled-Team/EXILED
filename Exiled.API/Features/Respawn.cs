@@ -194,8 +194,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Modify tickets from a <see cref="SpawnableTeamType"/>.
         /// </summary>
-        /// <param name="team">The <see cref="SpawnableTeamType"/> to remove tickets from.</param>
-        /// <param name="amount">The amount of tickets to remove.</param>
+        /// <param name="team">The <see cref="SpawnableTeamType"/> to modify tickets from.</param>
+        /// <param name="amount">The amount of tickets to modify.</param>
         public static void ModifyTokens(SpawnableTeamType team, float amount) => RespawnTokensManager.ModifyTokens(team, amount);
 
         /// <summary>
