@@ -84,7 +84,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not a team is currently being spawned or the animations are playing for a team.
         /// </summary>
-        public static bool IsSpawning => RespawnManager.Singleton._curSequence == RespawnManager.RespawnSequencePhase.PlayingEntryAnimations || RespawnManager.Singleton._curSequence == RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
+        public static bool IsSpawning => RespawnManager.Singleton._curSequence is RespawnManager.RespawnSequencePhase.PlayingEntryAnimations or RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
 
         /// <summary>
         /// Gets or sets the amount of spawn tickets belonging to the Chaos Insurgency.
