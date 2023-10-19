@@ -12,15 +12,8 @@ namespace Exiled.Events.Patches.Fixes
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Footprinting;
     using HarmonyLib;
-    using InventorySystem;
     using InventorySystem.Configs;
-    using InventorySystem.Items.Firearms.Ammo;
-    using InventorySystem.Items.Pickups;
-    using VoiceChat;
-
-    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="InventoryLimits.GetAmmoLimit(InventorySystem.Items.Armor.BodyArmor, ItemType)"/> delegate.
