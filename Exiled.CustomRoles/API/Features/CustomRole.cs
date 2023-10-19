@@ -614,8 +614,6 @@ namespace Exiled.CustomRoles.API.Features
                                         continue;
 
                                     ushort amount = Ammo.ContainsKey(type) ? Ammo[type] == ushort.MaxValue ? InventoryLimits.GetAmmoLimit(type.GetItemType(), player.ReferenceHub) : Ammo[type] : (ushort)0;
-                                    if (amount > ushort.MaxValue)
-                                        amount = 69;
                                     player.SetAmmo(type, amount);
                                 }
                             });
