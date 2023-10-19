@@ -192,7 +192,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's <see cref="CameraType"/>.
         /// </summary>
-        public CameraType Type { get; private set; }
+        public CameraType Type { get; }
 
         /// <summary>
         /// Gets the camera's position.
