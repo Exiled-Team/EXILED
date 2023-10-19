@@ -10,13 +10,13 @@ namespace Exiled.Events.EventArgs.Server
     using System;
 
     using Exiled.API.Features;
-
+    using Exiled.Events.EventArgs.Interfaces;
     using Respawning;
 
     /// <summary>
     /// Contains all information before selecting the team to respawn next.
     /// </summary>
-    public class SelectingRespawnTeamEventArgs : EventArgs
+    public class SelectingRespawnTeamEventArgs : IExiledEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectingRespawnTeamEventArgs"/> class.
