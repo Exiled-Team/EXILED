@@ -69,7 +69,7 @@ namespace Exiled.API.Features
         public static bool IsWorking => Scp914Controller._isUpgrading;
 
         /// <summary>
-        /// Gets a value indicating all GameObject inside the input of Scp914.
+        /// Gets a value indicating all of the GameObjects currently present inside SCP-914's intake chamber.
         /// </summary>
         public static Collider[] Inside914 => Physics.OverlapBox(IntakePosition, Scp914Controller.IntakeChamberSize);
 
