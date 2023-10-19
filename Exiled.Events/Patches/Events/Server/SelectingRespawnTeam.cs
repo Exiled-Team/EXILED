@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Server;
@@ -32,16 +33,15 @@ namespace Exiled.Events.Patches.Events.Server
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-            Label skipReset = generator.DefineLabel();
             LocalBuilder ev = generator.DeclareLocal(typeof(SelectingRespawnTeamEventArgs));
 
-            const int offset = 2;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(RespawnManager), nameof(RespawnManager.RestartSequence))) + offset;
+            const int offset = 1;
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Stloc_1) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
                 // SelectingRespawnTeamEventArgs ev = new(dominatingTeam);
-                new(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Ldloc_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SelectingRespawnTeamEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev),
@@ -49,21 +49,9 @@ namespace Exiled.Events.Patches.Events.Server
                 // Handlers.Server.OnSelectingRespawnTeam(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnSelectingRespawnTeam))),
 
-                // if (ev.ChosenTeam == SpawnableTeamType.None)
-                // {
-                //    this.RestartSequence();
-                //    return;
-                // }
-                new(OpCodes.Ldloc_S, ev),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(SelectingRespawnTeamEventArgs), nameof(SelectingRespawnTeamEventArgs.ChosenTeam))),
-                new(OpCodes.Brfalse_S, skipReset),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(RespawnManager), nameof(RespawnManager.RestartSequence))),
-                new(OpCodes.Ret),
-
                 // dominatingTeam = ev.ChosenTeam;
-                new(OpCodes.Ldloc_S, ev),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SelectingRespawnTeamEventArgs), nameof(SelectingRespawnTeamEventArgs.ChosenTeam))).WithLabels(skipReset),
+                new(OpCodes.Ldloc, ev),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SelectingRespawnTeamEventArgs), nameof(SelectingRespawnTeamEventArgs.ChosenTeam))),
                 new(OpCodes.Stloc_1),
             });
 

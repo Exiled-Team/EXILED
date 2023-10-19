@@ -588,6 +588,9 @@ namespace Exiled.CustomRoles.API.Features
                         StartingInventories.DefinedInventories.TryGetValue(Role is RoleTypeId.None ? player.Role : Role, out InventoryRoleInfo info);
                         foreach (ItemType type in info.Items)
                             TryAddItem(player, type.ToString());
+                        player.Ammo.Clear();
+                        foreach (KeyValuePair<ItemType, ushort> ammo in info.Ammo)
+                            player.SetAmmo(ammo.Key.GetAmmoType(), ammo.Value);
                     }
 
                     Log.Debug($"{Name}: Setting health values.");
@@ -607,10 +610,13 @@ namespace Exiled.CustomRoles.API.Features
                             {
                                 foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
                                 {
+                                    if (type == AmmoType.None)
+                                        continue;
+
                                     ushort amount = Ammo.ContainsKey(type) ? Ammo[type] == ushort.MaxValue ? InventoryLimits.GetAmmoLimit(type.GetItemType(), player.ReferenceHub) : Ammo[type] : (ushort)0;
-                                    Log.Debug($"{Name}: Giving {player.Nickname} {amount} {type} ammo");
-                                    if (type != AmmoType.None)
-                                        player.SetAmmo(type, amount);
+                                    if (amount > 60000)
+                                        amount = 69;
+                                    player.SetAmmo(type, amount);
                                 }
                             });
                     }
@@ -933,7 +939,7 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         protected virtual void UnsubscribeEvents()
         {
-            foreach (Player player in TrackedPlayers)
+            foreach (Player player in TrackedPlayers.ToList())
                 RemoveRole(player);
 
             Log.Debug($"{Name}: Unloading events.");

@@ -2881,7 +2881,7 @@ namespace Exiled.API.Features
             if (TryGetEffect(type, out StatusEffectBase statusEffect))
             {
                 statusEffect.Intensity = intensity;
-                statusEffect.ServerChangeDuration(duration, true);
+                statusEffect.ServerChangeDuration(duration, false);
             }
         }
 
