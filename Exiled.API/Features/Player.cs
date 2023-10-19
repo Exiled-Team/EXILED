@@ -2517,7 +2517,7 @@ namespace Exiled.API.Features
         /// <seealso cref="DropItems()"/>
         public void ClearInventory(bool destroy = true)
         {
-            ClearItem(destroy);
+            ClearItems(destroy);
             ClearAmmo();
         }
 
@@ -2528,7 +2528,7 @@ namespace Exiled.API.Features
         /// <seealso cref="ResetInventory(IEnumerable{Item})"/>
         /// <seealso cref="ResetInventory(IEnumerable{ItemType})"/>
         /// <seealso cref="DropItems()"/>
-        public void ClearItem(bool destroy = true)
+        public void ClearItems(bool destroy = true)
         {
             while (Items.Count > 0)
                 RemoveItem(Items.ElementAt(0), destroy);
