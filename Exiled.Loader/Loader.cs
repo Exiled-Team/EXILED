@@ -41,17 +41,17 @@ namespace Exiled.Loader
         /// </summary>
         public Loader()
         {
-            Log.Info($"Initializing at {Environment.CurrentDirectory}");
+            ServerConsole.AddLog($"Initializing at {Environment.CurrentDirectory}", ConsoleColor.Cyan);
 
 #if PUBLIC_BETA
             Log.Warn("You are running a public beta build. It is not compatible with another version of the game.");
 #endif
 
-            Log.SendRaw($"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}", ConsoleColor.DarkRed);
+            ServerConsole.AddLog($"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}", ConsoleColor.DarkRed);
 
             if (MultiAdminFeatures.MultiAdminUsed)
             {
-                Log.SendRaw($"Detected MultiAdmin! Version: {MultiAdminFeatures.MultiAdminVersion} | Features: {MultiAdminFeatures.MultiAdminModFeatures}", ConsoleColor.Cyan);
+                ServerConsole.AddLog($"Detected MultiAdmin! Version: {MultiAdminFeatures.MultiAdminVersion} | Features: {MultiAdminFeatures.MultiAdminModFeatures}", ConsoleColor.Cyan);
 
                 MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_START);
                 MultiAdminFeatures.CallAction(MultiAdminFeatures.ActionType.SET_SUPPORTED_FEATURES, MultiAdminFeatures.ModFeatures.All);
