@@ -142,6 +142,11 @@ namespace Exiled.API.Features
         public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer != null ? ambientSoundPlayer : (ambientSoundPlayer = ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>());
 
         /// <summary>
+        /// Gets the current <see cref="Enums.DecontaminationPhase"/>.
+        /// </summary>
+        public static DecontaminationPhase DecontaminationPhase => (DecontaminationPhase)DecontaminationController.Singleton._curFunction;
+
+        /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
