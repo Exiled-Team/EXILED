@@ -71,7 +71,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating all of the GameObjects currently present inside SCP-914's intake chamber.
         /// </summary>
-        public static Collider[] Inside914 => Physics.OverlapBox(IntakePosition, Scp914Controller.IntakeChamberSize);
+        public static Collider[] InsideIntake => Physics.OverlapBox(IntakePosition, Scp914Controller.IntakeChamberSize);
 
         /// <summary>
         /// Gets the intake booth <see cref="UnityEngine.Transform"/>.
@@ -88,7 +88,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="playersret">The <see cref="List{Player}"/> to return.</param>
         /// <param name="pickupsret">The <see cref="List{Pickup}"/> to return.</param>
-        /// <returns>All GameObjects present inside SCP-914's intake chamber..</returns>
+        /// <returns>All GameObjects present inside SCP-914's intake chamber. And also return Player and Pickup casted.</returns>
         public static IEnumerable<GameObject> Scp914InputObject(out IEnumerable<Player> playersret, out IEnumerable<Pickup> pickupsret)
         {
             HashSet<GameObject> inside914 = HashSetPool<GameObject>.Pool.Get();
