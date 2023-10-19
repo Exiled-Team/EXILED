@@ -94,6 +94,12 @@ namespace Exiled.Loader
         /// <summary>
         /// Update the Exiled.API.Features.Paths in function of <see cref="ExiledDirectoryPath"/>.
         /// </summary>
-        internal static void UpdateExiledDirectoryPath() => API.Features.Paths.Reload(LoaderPlugin.Config.ExiledDirectoryPath);
+        internal static void UpdateExiledDirectoryPath()
+        {
+            API.Features.Paths.Reload(LoaderPlugin.Config.ExiledDirectoryPath);
+
+            if (LoaderPlugin.Config.ConfigType == ConfigType.Separated)
+                Directory.CreateDirectory(API.Features.Paths.IndividualConfigs);
+        }
     }
 }
