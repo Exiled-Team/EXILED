@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Fixes
             foreach (CodeInstruction instruction in newInstructions)
             {
                 if (instruction.operand == (object)ushort.MaxValue)
-                    instruction.operand = 0;
+                    instruction.operand = ushort.MinValue;
             }
 
             for (int z = 0; z < newInstructions.Count; z++)
