@@ -76,7 +76,7 @@ namespace Exiled.Loader
         /// <returns>The <see cref="ITranslation"/> of the desired plugin.</returns>
         public static ITranslation LoadTranslation(this IPlugin<IConfig> plugin, Dictionary<string, object> rawTranslations = null) => LoaderPlugin.Config.ConfigType switch
         {
-            ConfigType.Separated => plugin.LoadSeparatedTranslation(),
+            Features.Enums.ConfigType.Separated => plugin.LoadSeparatedTranslation(),
             _ => plugin.LoadDefaultTranslation(rawTranslations),
         };
 
@@ -144,7 +144,7 @@ namespace Exiled.Loader
                 if (translations is null || translations.Count == 0)
                     return false;
 
-                if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
+                if (LoaderPlugin.Config.ConfigType == Features.Enums.ConfigType.Default)
                 {
                     return SaveDefaultTranslation(Loader.Serializer.Serialize(translations));
                 }
@@ -165,7 +165,7 @@ namespace Exiled.Loader
         /// <returns>Returns the read translations.</returns>
         public static string Read()
         {
-            if (LoaderPlugin.Config.ConfigType != ConfigType.Default)
+            if (LoaderPlugin.Config.ConfigType != Features.Enums.ConfigType.Default)
                 return string.Empty;
 
             try
@@ -189,7 +189,7 @@ namespace Exiled.Loader
         {
             try
             {
-                if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
+                if (LoaderPlugin.Config.ConfigType == Features.Enums.ConfigType.Default)
                 {
                     SaveDefaultTranslation(string.Empty);
                     return true;

@@ -15,9 +15,6 @@ namespace Exiled.Loader
 
     using PluginAPI.Core.Attributes;
 
-    using Log = API.Features.Log;
-    using Paths = API.Features.Paths;
-
     /// <summary>
     /// The PluginAPI Plugin class for the EXILED Loader.
     /// </summary>
@@ -39,22 +36,21 @@ namespace Exiled.Loader
         {
             if (!Config.IsEnabled)
             {
-                Log.Info("EXILED is disabled on this server via config.");
+                ServerConsole.AddLog("EXILED is disabled on this server via config.", ConsoleColor.Cyan);
                 return;
             }
 
-            Log.Info($"Loading EXILED Version: {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}");
+            ServerConsole.AddLog($"Loading EXILED Version: {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}", ConsoleColor.Cyan);
 
-            Paths.Reload(Config.ExiledDirectoryPath);
+            string dependenciesPath = Path.Combine(Config.ExiledDirectoryPath, "Plugins", "dependencies");
 
-            Log.Info($"Exiled root path set to: {Paths.Exiled}");
+            ServerConsole.AddLog($"Exiled root path set to: {Config.ExiledDirectoryPath}", ConsoleColor.Cyan);
 
-            Directory.CreateDirectory(Paths.Exiled);
-            Directory.CreateDirectory(Paths.Configs);
-            Directory.CreateDirectory(Paths.Plugins);
-            Directory.CreateDirectory(Paths.Dependencies);
-
-            Timing.RunCoroutine(new Loader().Run());
+            Timing.RunCoroutine(new Loader().Run(new Assembly[]
+                {
+                    Assembly.LoadFrom(Path.Combine(dependenciesPath, "Exiled.API.dll")),
+                    Assembly.LoadFrom(Path.Combine(dependenciesPath, "SemanticVersioning.dll")),
+                }));
         }
     }
 }

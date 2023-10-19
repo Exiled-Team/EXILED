@@ -11,21 +11,23 @@ namespace Exiled.Loader
     using System.ComponentModel;
     using System.IO;
 
-    using API.Enums;
-    using API.Interfaces;
-    using Exiled.API.Features;
+    using Exiled.Loader.Features.Enums;
     using YamlDotNet.Core;
 
     /// <summary>
     /// The configs of the loader.
     /// </summary>
-    public sealed class Config : IConfig
+    public sealed class Config
     {
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets a value indicating whether the plugin is enabled or not.
+        /// </summary>
         [Description("Whether or not EXILED is enabled on this server.")]
         public bool IsEnabled { get; set; } = true;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets a value indicating whether debug messages should be displayed in the console or not.
+        /// </summary>
         [Description("Whether or not debug messages should be shown.")]
         public bool Debug { get; set; } = false;
 
@@ -45,7 +47,7 @@ namespace Exiled.Loader
         /// Gets or sets the Exiled directory path from which plugins will be loaded.
         /// </summary>
         [Description("The Exiled directory path from which plugins will be loaded.")]
-        public string ExiledDirectoryPath { get; set; } = Path.Combine(Paths.AppData, "EXILED");
+        public string ExiledDirectoryPath { get; set; } = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "EXILED");
 
         /// <summary>
         /// Gets or sets the environment type.
@@ -88,5 +90,10 @@ namespace Exiled.Loader
         /// </summary>
         [Description("Indicates whether Exiled should auto-update itself as soon as a new release is available.")]
         public bool EnableAutoUpdates { get; set; } = true;
+
+        /// <summary>
+        /// Update the Exiled.API.Features.Paths in function of <see cref="ExiledDirectoryPath"/>.
+        /// </summary>
+        internal static void UpdateExiledDirectoryPath() => API.Features.Paths.Reload(LoaderPlugin.Config.ExiledDirectoryPath);
     }
 }

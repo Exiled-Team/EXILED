@@ -23,6 +23,7 @@ namespace Exiled.Loader
     using CommandSystem.Commands.Shared;
 
     using Exiled.API.Features;
+    using Exiled.Loader.Features.Enums;
     using Features;
     using Features.Configs;
     using Features.Configs.CustomConverters;
@@ -58,7 +59,7 @@ namespace Exiled.Loader
 
             CustomNetworkManager.Modded = true;
 
-            if (LoaderPlugin.Config.ConfigType == ConfigType.Separated)
+            if (LoaderPlugin.Config.ConfigType == Features.Enums.ConfigType.Separated)
                 Directory.CreateDirectory(Paths.IndividualConfigs);
         }
 
@@ -366,6 +367,11 @@ namespace Exiled.Loader
                 Thread.Sleep(5000);
             }
 
+            if (dependencies?.Length > 0)
+                Dependencies.AddRange(dependencies);
+
+            Config.UpdateExiledDirectoryPath();
+
             if (LoaderPlugin.Config.EnableAutoUpdates)
             {
                 Thread thread = new(() =>
@@ -395,9 +401,6 @@ namespace Exiled.Loader
                 ServerConsole.AddLog($"Exiled is outdated, a new version will be installed automatically as soon as it's available.\nSCP:SL: {GameCore.Version.VersionString} Exiled Supported Version: {AutoUpdateFiles.RequiredSCPSLVersion}", ConsoleColor.DarkRed);
                 yield break;
             }
-
-            if (dependencies?.Length > 0)
-                Dependencies.AddRange(dependencies);
 
             LoadDependencies();
             LoadPlugins();

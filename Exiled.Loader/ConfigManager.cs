@@ -73,7 +73,7 @@ namespace Exiled.Loader
         /// <returns>The <see cref="IConfig"/> of the plugin.</returns>
         public static IConfig LoadConfig(this IPlugin<IConfig> plugin, Dictionary<string, object> rawConfigs = null) => LoaderPlugin.Config.ConfigType switch
         {
-            ConfigType.Separated => LoadSeparatedConfig(plugin),
+            Features.Enums.ConfigType.Separated => LoadSeparatedConfig(plugin),
             _ => LoadDefaultConfig(plugin, rawConfigs),
         };
 
@@ -204,7 +204,7 @@ namespace Exiled.Loader
                 if (configs is null || configs.Count == 0)
                     return false;
 
-                if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
+                if (LoaderPlugin.Config.ConfigType == Features.Enums.ConfigType.Default)
                 {
                     return SaveDefaultConfig(Loader.Serializer.Serialize(configs));
                 }
@@ -225,7 +225,7 @@ namespace Exiled.Loader
         /// <returns>Returns the read configs.</returns>
         public static string Read()
         {
-            if (LoaderPlugin.Config.ConfigType != ConfigType.Default)
+            if (LoaderPlugin.Config.ConfigType != Features.Enums.ConfigType.Default)
                 return string.Empty;
 
             try
@@ -249,7 +249,7 @@ namespace Exiled.Loader
         {
             try
             {
-                if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
+                if (LoaderPlugin.Config.ConfigType == Features.Enums.ConfigType.Default)
                 {
                     SaveDefaultConfig(string.Empty);
                     return true;

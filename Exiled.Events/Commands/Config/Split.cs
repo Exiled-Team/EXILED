@@ -39,14 +39,14 @@ namespace Exiled.Events.Commands.Config
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (LoaderPlugin.Config.ConfigType == ConfigType.Separated)
+            if (LoaderPlugin.Config.ConfigType == Exiled.Loader.Features.Enums.ConfigType.Separated)
             {
                 response = "Configs are already separated.";
                 return false;
             }
 
             SortedDictionary<string, IConfig> configs = ConfigManager.LoadSorted(ConfigManager.Read());
-            LoaderPlugin.Config.ConfigType = ConfigType.Separated;
+            LoaderPlugin.Config.ConfigType = Exiled.Loader.Features.Enums.ConfigType.Separated;
             bool haveBeenSaved = ConfigManager.Save(configs);
             PluginAPI.Loader.AssemblyLoader.InstalledPlugins.FirstOrDefault(x => x.PluginName == "Exiled Loader")?.SaveConfig(new LoaderPlugin(), nameof(LoaderPlugin.Config));
 

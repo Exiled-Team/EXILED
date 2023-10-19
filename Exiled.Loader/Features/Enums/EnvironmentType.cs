@@ -5,14 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
+namespace Exiled.Loader.Features.Enums
 {
-    using System;
-
-    /// <summary>
-    /// A set of environment types.
-    /// </summary>
-    [Obsolete("Use EnvironmentType inside Exiled.Loader")]
+     /// <summary>
+     /// A set of environment types.
+     /// </summary>
     public enum EnvironmentType
     {
         /// <summary>

@@ -5,14 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
+namespace Exiled.Loader.Features.Enums
 {
-    using System;
-
     /// <summary>
     /// The different types of configuration files distribution.
     /// </summary>
-    [Obsolete("Use ConfigType inside Exiled.Loader")]
     public enum ConfigType
     {
         /// <summary>
