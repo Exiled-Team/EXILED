@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  EXILED_REFERENCES_URL: https://exiled.host/build_deps/Dev.zip
+  EXILED_REFERENCES_URL: https://dependencies.scpsl.xyz/Dev.zip
   EXILED_REFERENCES_PATH: ${{ github.workspace }}/References
 
 jobs:
