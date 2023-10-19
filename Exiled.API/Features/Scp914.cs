@@ -84,7 +84,7 @@ namespace Exiled.API.Features
         public static Transform OutputBooth => Scp914Controller.OutputChamber;
 
         /// <summary>
-        /// All the Object casted inside 914.
+        /// Filters all GameObjects inside SCP-914's intake chamber into players and items.
         /// </summary>
         /// <param name="playersret">The <see cref="List{Player}"/> to return.</param>
         /// <param name="pickupsret">The <see cref="List{Pickup}"/> to return.</param>
