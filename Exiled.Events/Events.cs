@@ -12,6 +12,7 @@ namespace Exiled.Events
 
     using API.Enums;
     using API.Features;
+    using CentralAuth;
     using Exiled.Events.Features;
     using HarmonyLib;
     using InventorySystem.Items.Pickups;
@@ -55,7 +56,7 @@ namespace Exiled.Events
             watch.Stop();
 
             Log.Info($"{(Config.UseDynamicPatching ? "Non-event" : "All")} patches completed in {watch.Elapsed}");
-            CharacterClassManager.OnInstanceModeChanged -= RoleAssigner.CheckLateJoin;
+            PlayerAuthenticationManager.OnInstanceModeChanged -= RoleAssigner.CheckLateJoin;
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;

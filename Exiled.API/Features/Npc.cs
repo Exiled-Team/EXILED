@@ -173,7 +173,7 @@ namespace Exiled.API.Features
             NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
             try
             {
-                npc.ReferenceHub.characterClassManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy@localhost" : userId;
+                npc.ReferenceHub.authManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy@localhost" : userId;
             }
             catch (Exception e)
             {
