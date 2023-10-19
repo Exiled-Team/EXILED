@@ -88,7 +88,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="playersret">The <see cref="List{Player}"/> to return.</param>
         /// <param name="pickupsret">The <see cref="List{Pickup}"/> to return.</param>
-        /// <returns>All GameObject inside Scp914.</returns>
+        /// <returns>All GameObjects present inside SCP-914's intake chamber..</returns>
         public static IEnumerable<GameObject> Scp914InputObject(out IEnumerable<Player> playersret, out IEnumerable<Pickup> pickupsret)
         {
             HashSet<GameObject> inside914 = HashSetPool<GameObject>.Pool.Get();
