@@ -95,7 +95,7 @@ namespace Exiled.API.Features
             List<Player> players = ListPool<Player>.Pool.Get();
             List<Pickup> pickups = ListPool<Pickup>.Pool.Get();
 
-            foreach (Collider collider in Inside914.ToList())
+            foreach (Collider collider in InsideIntake.ToList())
             {
                 GameObject gameObject = collider.transform.root.gameObject;
                 if (inside914.Add(gameObject))
