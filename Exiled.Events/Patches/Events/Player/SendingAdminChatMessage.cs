@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Adds the <see cref="Handlers.Player.SendingAdminChatMessage" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.SendingAdminChatMessage))]
-    [HarmonyPatch(typeof(SearchCoordinator), nameof(CommandProcessor.ProcessAdminChat))]
+    [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessAdminChat))]
     internal static class SendingAdminChatMessage
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
