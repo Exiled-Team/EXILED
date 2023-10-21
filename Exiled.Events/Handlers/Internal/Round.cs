@@ -9,7 +9,6 @@ namespace Exiled.Events.Handlers.Internal
 {
     using System.Collections.Generic;
 
-    using CentralAuth;
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Player;
