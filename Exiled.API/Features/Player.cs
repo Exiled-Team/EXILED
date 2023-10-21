@@ -244,16 +244,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's user id.
         /// </summary>
-        public string UserId => referenceHub.characterClassManager.UserId;
+        public string UserId => referenceHub.authManager.UserId;
 
         /// <summary>
         /// Gets or sets the player's custom user id.
         /// </summary>
-        public string CustomUserId
-        {
-            get => ReferenceHub.characterClassManager.UserId2;
-            set => ReferenceHub.characterClassManager.UserId2 = value;
-        }
+        [Obsolete("Remove by NW", true)]
+        public string CustomUserId { get; set; }
 
         /// <summary>
         /// Gets the player's user id without the authentication.
@@ -263,7 +260,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's authentication token.
         /// </summary>
-        public string AuthenticationToken => ReferenceHub.characterClassManager.AuthToken;
+        public string AuthenticationToken => ReferenceHub.authManager.GetAuthToken();
 
         /// <summary>
         /// Gets the player's authentication type.
@@ -407,7 +404,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player has Do Not Track (DNT) enabled. If this value is <see langword="true"/>, data about the player unrelated to server security shouldn't be stored.
         /// </summary>
-        public bool DoNotTrack => ReferenceHub.serverRoles.DoNotTrack;
+        public bool DoNotTrack => ReferenceHub.authManager.DoNotTrack;
 
         /// <summary>
         /// Gets a value indicating whether the player is fully connected to the server.
@@ -437,7 +434,7 @@ namespace Exiled.API.Features
         public bool IsOverwatchEnabled
         {
             get => ReferenceHub.serverRoles.IsInOverwatch;
-            set => ReferenceHub.serverRoles.SetOverwatchStatus((byte)(value ? 1 : 0));
+            set => ReferenceHub.serverRoles.IsInOverwatch = value;
         }
 
         /// <summary>
@@ -539,9 +536,9 @@ namespace Exiled.API.Features
         /// Gets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
         /// <para>
         /// The type of the Role is different based on the <see cref="RoleTypeId"/> of the player, and casting should be used to modify the role.
-        /// <br /><see cref="RoleTypeId.Spectator"/> = <see cref="SpectatorRole"/>.
-        /// <br /><see cref="RoleTypeId.Overwatch"/> = <see cref="OverwatchRole"/>.
-        /// <br /><see cref="RoleTypeId.None"/> = <see cref="NoneRole"/>.
+        /// <br /><see cref="RoleTypeId.Spectator"/> = <see cref="Roles.SpectatorRole"/>.
+        /// <br /><see cref="RoleTypeId.Overwatch"/> = <see cref="Roles.OverwatchRole"/>.
+        /// <br /><see cref="RoleTypeId.None"/> = <see cref="Roles.NoneRole"/>.
         /// <br /><see cref="RoleTypeId.Scp049"/> = <see cref="Scp049Role"/>.
         /// <br /><see cref="RoleTypeId.Scp0492"/> = <see cref="Scp0492Role"/>.
         /// <br /><see cref="RoleTypeId.Scp079"/> = <see cref="Scp079Role"/>.
@@ -935,7 +932,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the staff bypass is enabled.
         /// </summary>
-        public bool IsStaffBypassEnabled => ReferenceHub.serverRoles.BypassStaff;
+        public bool IsStaffBypassEnabled => ReferenceHub.authManager.BypassBansFlagSet;
 
         /// <summary>
         /// Gets or sets the player's group name.
@@ -1010,7 +1007,7 @@ namespace Exiled.API.Features
 
                 ServerRoles serverRoles = ReferenceHub.serverRoles;
 
-                return new Badge(serverRoles._bgt, serverRoles._bgc, serverRoles.GlobalBadgeType, true);
+                return new Badge(serverRoles._bgt, serverRoles._bgc, true);
             }
         }
 
@@ -1023,21 +1020,21 @@ namespace Exiled.API.Features
             set
             {
                 if (value)
-                    ReferenceHub.characterClassManager.UserCode_CmdRequestHideTag();
+                    ReferenceHub.serverRoles.TryHideTag();
                 else
-                    ReferenceHub.characterClassManager.UserCode_CmdRequestShowTag__Boolean(false);
+                    ReferenceHub.serverRoles.RefreshLocalTag();
             }
         }
 
         /// <summary>
         /// Gets a value indicating whether or not the player is Northwood staff.
         /// </summary>
-        public bool IsNorthwoodStaff => ReferenceHub.serverRoles.Staff;
+        public bool IsNorthwoodStaff => ReferenceHub.authManager.NorthwoodStaff;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is a global moderator.
         /// </summary>
-        public bool IsGlobalModerator => ReferenceHub.serverRoles.RaEverywhere;
+        public bool IsGlobalModerator => ReferenceHub.authManager.RemoteAdminGlobalAccess;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is in the pocket dimension.
@@ -1687,13 +1684,13 @@ namespace Exiled.API.Features
                 userGroup.HiddenByDefault = !group.Cover;
                 userGroup.Cover = group.Cover;
 
-                ReferenceHub.serverRoles.SetGroup(userGroup, false, false, group.Cover);
+                ReferenceHub.serverRoles.SetGroup(userGroup, false, false);
             }
             else
             {
                 ServerStatic.GetPermissionsHandler()._groups.Add(name, group);
 
-                ReferenceHub.serverRoles.SetGroup(group, false, false, group.Cover);
+                ReferenceHub.serverRoles.SetGroup(group, false, false);
             }
 
             if (ServerStatic.GetPermissionsHandler()._members.ContainsKey(UserId))
@@ -1884,7 +1881,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="message">The message to be sent.</param>
         /// <param name="color">The message color.</param>
-        public void SendConsoleMessage(string message, string color) => ReferenceHub.characterClassManager.ConsolePrint(message, color);
+        public void SendConsoleMessage(string message, string color) => referenceHub.gameConsoleTransmission.SendToClient(message, color);
 
         /// <summary>
         /// Disconnects the player.
@@ -2152,8 +2149,12 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
         /// <param name="amount">The amount of ammo to be set.</param>
-        public void SetAmmo(AmmoType ammoType, ushort amount) =>
-            Inventory.ServerSetAmmo(ammoType.GetItemType(), amount);
+        public void SetAmmo(AmmoType ammoType, ushort amount)
+        {
+            ItemType itemType = ammoType.GetItemType();
+            if (itemType is not ItemType.None)
+                Inventory.ServerSetAmmo(itemType, amount);
+        }
 
         /// <summary>
         /// Gets the ammo count of a specified <see cref="AmmoType">ammo type</see> in a player's inventory.

@@ -44,7 +44,7 @@ namespace Exiled.CustomItems.Commands.List
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("customitems.list.insideinventories") && sender is PlayerCommandSender playerSender && !playerSender.ServerRoles.RaEverywhere)
+            if (!sender.CheckPermission("customitems.list.insideinventories") && sender is PlayerCommandSender playerSender && !playerSender.FullPermissions)
             {
                 response = "Permission Denied, required: customitems.list.insideinventories";
                 return false;

@@ -28,30 +28,23 @@ namespace Exiled.API.Features.Core.Generic
     public abstract class StaticActor<T> : EActor
         where T : EActor
     {
-        private static T instance;
-
         /// <summary>
         /// Gets a value indicating whether the <see cref="PostInitialize()"/> method has already been called by Unity.
         /// </summary>
-        public static bool IsInitialized { get; private set; }
+        public bool IsInitialized { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="OnBeginPlay()"/> method has already been called by Unity.
         /// </summary>
-        public static bool IsStarted { get; private set; }
+        public bool IsStarted { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="OnEndPlay()"/> method has already been called by Unity.
         /// </summary>
-        public static bool IsDestroyed { get; private set; }
+        public bool IsDestroyed { get; private set; }
 
         /// <summary>
-        /// Gets the global access point to the unique instance of this class.
-        /// </summary>
-        public static T Instance => instance ? instance : IsDestroyed ? null : (instance = FindExistingInstance() ?? CreateNewInstance());
-
-        /// <summary>
-        /// Looks or an existing instance of the <see cref="StaticActor{T}"/>.
+        /// Looks for an existing instance of the <see cref="StaticActor{T}"/>.
         /// </summary>
         /// <returns>The existing <typeparamref name="T"/> instance, or <see langword="null"/> if not found.</returns>
         public static T FindExistingInstance()
@@ -71,18 +64,18 @@ namespace Exiled.API.Features.Core.Generic
             return @object.Cast<T>();
         }
 
+        /// <summary>
+        /// Gets or creates a new instance of <see cref="StaticActor{T}"/>.
+        /// </summary>
+        /// <returns>The found or created <typeparamref name="T"/> instance.</returns>
+        public static T Get() => FindExistingInstance() ?? CreateNewInstance();
+
         /// <inheritdoc/>
         protected override void PostInitialize()
         {
             base.PostInitialize();
 
-            T ldarg_0 = GetComponent<T>();
-
-            if (instance == null)
-            {
-                instance = ldarg_0;
-            }
-            else if (ldarg_0 != instance)
+            if (FindExistingInstance())
             {
                 Log.Warn($"Found a duplicated instance of a StaticActor with type {GetType().Name} in the Actor {Name} that will be ignored");
                 NotifyInstanceRepeated();
@@ -112,9 +105,6 @@ namespace Exiled.API.Features.Core.Generic
         /// <inheritdoc/>
         protected override void OnEndPlay()
         {
-            if (this != instance)
-                return;
-
             IsDestroyed = true;
             EndPlay_Static();
         }
