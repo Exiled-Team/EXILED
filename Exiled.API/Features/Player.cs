@@ -419,6 +419,13 @@ namespace Exiled.API.Features
         public bool HasReservedSlot => ReservedSlot.HasReservedSlot(UserId, out _);
 
         /// <summary>
+        /// Gets a value indicating whether or not the player is in white list.
+        /// </summary>
+        /// <seealso cref="GrantWhiteList"/>
+        /// <seealso cref="AddToWhiteList(string)"/>
+        public bool IsWhiteListed => WhiteList.IsWhitelisted(UserId);
+
+        /// <summary>
         /// Gets a value indicating whether or not the player has Remote Admin access.
         /// </summary>
         public bool RemoteAdminAccess => ReferenceHub.serverRoles.RemoteAdmin;
@@ -1409,9 +1416,23 @@ namespace Exiled.API.Features
         public static bool AddReservedSlot(string userId) => ReservedSlot.Users.Add(userId);
 
         /// <summary>
+        /// Adds a player's UserId to the white list.
+        /// </summary>
+        /// <remarks>This method does not permanently add a user to the white list. The record will be removed if the white list is reloaded.</remarks>
+        /// <param name="userId">The UserId of the player to add.</param>
+        /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in white list.</returns>
+        /// <seealso cref="GrantWhiteList()"/>
+        public static bool AddToWhiteList(string userId) => WhiteList.Users.Add(userId);
+
+        /// <summary>
         /// Reloads the reserved slot list, clearing all reserved slot changes made with add/remove methods and reverting to the reserved slots files.
         /// </summary>
         public static void ReloadReservedSlots() => ReservedSlot.Reload();
+
+        /// <summary>
+        /// Reloads the white list, clearing all white list changes made with add/remove methods and reverting to the white list files.
+        /// </summary>
+        public static void ReloadWhiteList() => WhiteList.Reload();
 
         /// <summary>
         /// Adds the player's UserId to the list of reserved slots.
@@ -1420,6 +1441,14 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if the slot was successfully added, or <see langword="false"/> if the player already has a reserved slot.</returns>
         /// <seealso cref="AddReservedSlot(string)"/>
         public bool GiveReservedSlot() => AddReservedSlot(UserId);
+
+        /// <summary>
+        /// Adds the player's UserId to the white list.
+        /// </summary>
+        /// <remarks>This method does not permanently add a user to the white list. The record will be removed if the white list is reloaded.</remarks>
+        /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in white list.</returns>
+        /// <seealso cref="AddToWhiteList(string)"/>
+        public bool GrantWhiteList() => AddToWhiteList(UserId);
 
         /// <summary>
         /// Tries to add <see cref="RoleTypeId"/> to FriendlyFire rules.
