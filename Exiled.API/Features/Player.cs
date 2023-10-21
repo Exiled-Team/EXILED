@@ -28,6 +28,7 @@ namespace Exiled.API.Features
     using Exiled.API.Structs;
     using Extensions;
     using Footprinting;
+    using GameCore;
     using global::Scp914;
     using Hints;
     using Interactables.Interobjects;
@@ -415,16 +416,16 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player has a reserved slot.
         /// </summary>
-        /// <seealso cref="GiveReservedSlot"/>
-        /// <seealso cref="AddReservedSlot(string)"/>
+        /// <seealso cref="GiveReservedSlot(bool)"/>
+        /// <seealso cref="AddReservedSlot(string, bool)"/>
         public bool HasReservedSlot => ReservedSlot.HasReservedSlot(UserId, out _);
 
         /// <summary>
         /// Gets a value indicating whether or not the player is in white list.
         /// </summary>
-        /// <seealso cref="GrantWhiteList"/>
-        /// <seealso cref="AddToWhiteList(string, bool)"/>
-        public bool IsWhiteListed => WhiteList.IsWhitelisted(UserId);
+        /// <seealso cref="GrantWhitelist(bool)"/>
+        /// <seealso cref="AddToWhitelist(string, bool)"/>
+        public bool IsWhitelisted => WhiteList.IsWhitelisted(UserId);
 
         /// <summary>
         /// Gets a value indicating whether or not the player has Remote Admin access.
@@ -1410,11 +1411,22 @@ namespace Exiled.API.Features
         /// <summary>
         /// Adds a player's UserId to the list of reserved slots.
         /// </summary>
-        /// <remarks>This method does not permanently give a user a reserved slot. The slot will be removed if the reserved slots are reloaded.</remarks>
         /// <param name="userId">The UserId of the player to add.</param>
+        /// <param name="isPermanent"> Whether or not to add a UserId permanently. It will write a UserId to UserIDReservedSlots.txt file.</param>
         /// <returns><see langword="true"/> if the slot was successfully added, or <see langword="false"/> if the provided UserId already has a reserved slot.</returns>
-        /// <seealso cref="GiveReservedSlot()"/>
-        public static bool AddReservedSlot(string userId) => ReservedSlot.Users.Add(userId);
+        /// <seealso cref="GiveReservedSlot(bool)"/>
+        public static bool AddReservedSlot(string userId, bool isPermanent = false)
+        {
+            if (isPermanent && !ReservedSlots.HasReservedSlot(userId))
+            {
+                string filePath = ConfigSharing.Paths[3] + "UserIDReservedSlots.txt";
+                List<string> list = FileManager.ReadAllLines(filePath).ToList();
+                list.Add(userId ?? string.Empty);
+                FileManager.WriteToFile(list, filePath);
+            }
+
+            return ReservedSlot.Users.Add(userId);
+        }
 
         /// <summary>
         /// Adds a player's UserId to the white list.
@@ -1422,11 +1434,16 @@ namespace Exiled.API.Features
         /// <param name="userId">The UserId of the player to add.</param>
         /// <param name="isPermanent"> Whether or not to add a UserId permanently. It will write a UserId to UserIDWhitelist.txt file.</param>
         /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in white list.</returns>
-        /// <seealso cref="GrantWhiteList(bool)"/>
-        public static bool AddToWhiteList(string userId, bool isPermanent = false)
+        /// <seealso cref="GrantWhitelist(bool)"/>
+        public static bool AddToWhitelist(string userId, bool isPermanent = false)
         {
-            if (isPermanent)
-                Whitelist.Add(userId);
+            if (isPermanent && !WhiteList.IsOnWhitelist(userId))
+            {
+                string filePath = ConfigSharing.Paths[2] + "UserIDWhitelist.txt";
+                List<string> list = FileManager.ReadAllLines(filePath).ToList();
+                list.Add(userId ?? string.Empty);
+                FileManager.WriteToFile(list, filePath);
+            }
 
             return WhiteList.Users.Add(userId);
         }
@@ -1439,23 +1456,23 @@ namespace Exiled.API.Features
         /// <summary>
         /// Reloads the white list, clearing all white list changes made with add/remove methods and reverting to the white list files.
         /// </summary>
-        public static void ReloadWhiteList() => WhiteList.Reload();
+        public static void ReloadWhitelist() => WhiteList.Reload();
 
         /// <summary>
         /// Adds the player's UserId to the list of reserved slots.
         /// </summary>
-        /// <remarks>This method does not permanently give a user a reserved slot. The slot will be removed if the reserved slots are reloaded.</remarks>
+        /// <param name="isPermanent"> Whether or not to add a UserId permanently. It will write a UserId to UserIDReservedSlots.txt file.</param>
         /// <returns><see langword="true"/> if the slot was successfully added, or <see langword="false"/> if the player already has a reserved slot.</returns>
-        /// <seealso cref="AddReservedSlot(string)"/>
-        public bool GiveReservedSlot() => AddReservedSlot(UserId);
+        /// <seealso cref="AddReservedSlot(string, bool)"/>
+        public bool GiveReservedSlot(bool isPermanent = false) => AddReservedSlot(UserId, isPermanent);
 
         /// <summary>
         /// Adds the player's UserId to the white list.
         /// </summary>
         /// <param name="isPermanent"> Whether or not to add a UserId permanently. It will write a UserId to UserIDWhitelist.txt file.</param>
         /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in white list.</returns>
-        /// <seealso cref="AddToWhiteList(string, bool)"/>
-        public bool GrantWhiteList(bool isPermanent = false) => AddToWhiteList(UserId, isPermanent);
+        /// <seealso cref="AddToWhitelist(string, bool)"/>
+        public bool GrantWhitelist(bool isPermanent = false) => AddToWhitelist(UserId, isPermanent);
 
         /// <summary>
         /// Tries to add <see cref="RoleTypeId"/> to FriendlyFire rules.
