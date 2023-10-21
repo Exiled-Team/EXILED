@@ -51,6 +51,7 @@ namespace Exiled.API.Features
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
     using PlayerStatsSystem;
+    using PluginAPI.Core;
     using RelativePositioning;
     using RemoteAdmin;
     using RoundRestarting;
@@ -422,7 +423,7 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not the player is in white list.
         /// </summary>
         /// <seealso cref="GrantWhiteList"/>
-        /// <seealso cref="AddToWhiteList(string)"/>
+        /// <seealso cref="AddToWhiteList(string, bool)"/>
         public bool IsWhiteListed => WhiteList.IsWhitelisted(UserId);
 
         /// <summary>
@@ -1418,11 +1419,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Adds a player's UserId to the white list.
         /// </summary>
-        /// <remarks>This method does not permanently add a user to the white list. The record will be removed if the white list is reloaded.</remarks>
         /// <param name="userId">The UserId of the player to add.</param>
+        /// <param name="isPermanent"> Whether or not to add a UserId permanently. It will write a UserId to UserIDWhitelist.txt file.</param>
         /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in white list.</returns>
-        /// <seealso cref="GrantWhiteList()"/>
-        public static bool AddToWhiteList(string userId) => WhiteList.Users.Add(userId);
+        /// <seealso cref="GrantWhiteList(bool)"/>
+        public static bool AddToWhiteList(string userId, bool isPermanent = false)
+        {
+            if (isPermanent)
+                Whitelist.Add(userId);
+
+            return WhiteList.Users.Add(userId);
+        }
 
         /// <summary>
         /// Reloads the reserved slot list, clearing all reserved slot changes made with add/remove methods and reverting to the reserved slots files.
@@ -1445,10 +1452,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Adds the player's UserId to the white list.
         /// </summary>
-        /// <remarks>This method does not permanently add a user to the white list. The record will be removed if the white list is reloaded.</remarks>
+        /// <param name="isPermanent"> Whether or not to add a UserId permanently. It will write a UserId to UserIDWhitelist.txt file.</param>
         /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in white list.</returns>
-        /// <seealso cref="AddToWhiteList(string)"/>
-        public bool GrantWhiteList() => AddToWhiteList(UserId);
+        /// <seealso cref="AddToWhiteList(string, bool)"/>
+        public bool GrantWhiteList(bool isPermanent = false) => AddToWhiteList(UserId, isPermanent);
 
         /// <summary>
         /// Tries to add <see cref="RoleTypeId"/> to FriendlyFire rules.
