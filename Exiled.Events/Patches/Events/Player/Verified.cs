@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System;
 
     using API.Features;
-
+    using CentralAuth;
     using Exiled.API.Extensions;
     using Exiled.Events.EventArgs.Player;
 
@@ -19,13 +19,13 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
     /// <summary>
-    ///     Patches <see cref="ServerRoles.UserCode_CmdSetLocalTagPreferences__BadgePreferences__BadgeVisibilityPreferences__BadgeVisibilityPreferences__Boolean" />.
+    ///     Patches <see cref="PlayerAuthenticationManager.FinalizeAuthentication" />.
     ///     Adds the <see cref="Handlers.Player.Verified" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdSetLocalTagPreferences__BadgePreferences__BadgeVisibilityPreferences__BadgeVisibilityPreferences__Boolean))]
+    [HarmonyPatch(typeof(PlayerAuthenticationManager), nameof(PlayerAuthenticationManager.FinalizeAuthentication))]
     internal static class Verified
     {
-        private static void Postfix(ServerRoles __instance)
+        private static void Postfix(PlayerAuthenticationManager __instance)
         {
             if (!Player.UnverifiedPlayers.TryGetValue(__instance._hub.gameObject, out Player player))
                 Joined.CallEvent(__instance._hub, out player);
