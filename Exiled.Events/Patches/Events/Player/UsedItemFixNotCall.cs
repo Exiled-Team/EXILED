@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+#pragma warning disable SA1402 // File may only contain a single type
+
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -26,6 +28,52 @@ namespace Exiled.Events.Patches.Events.Player
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsedItem))]
     [HarmonyPatch(typeof(Consumable), nameof(Consumable.EquipUpdate))]
     internal class UsedItemFixNotCall
+    {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            LocalBuilder ev = generator.DeclareLocal(typeof(UsedItemEventArgs));
+
+            const int offset = -1;
+            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(Consumable), nameof(Consumable.ActivateEffects)))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(base.Owner)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Consumable), nameof(Consumable.Owner))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    // this
+                    new(OpCodes.Ldarg_0),
+
+                    // UsedItemEventArgs ev = new(ReferenceHub, UsableItem)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsedItemEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+
+                    // Handlers.Player.OnUsedItem(ev)
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsedItem))),
+                });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+    }
+
+    /// <summary>
+    ///     Patches <see cref="Consumable.EquipUpdate" />.
+    ///     Adds the <see cref="Handlers.Player.UsedItem" /> event for when NW don't call the <see cref="UsableItemsController.ServerOnUsingCompleted"/>.
+    /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsedItem))]
+    [HarmonyPatch(typeof(Consumable), nameof(Consumable.OnRemoved))]
+    internal class UsedItem2
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
