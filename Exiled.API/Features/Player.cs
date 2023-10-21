@@ -421,7 +421,7 @@ namespace Exiled.API.Features
         public bool HasReservedSlot => ReservedSlot.HasReservedSlot(UserId, out _);
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is in white list.
+        /// Gets a value indicating whether or not the player is in whitelist.
         /// </summary>
         /// <seealso cref="GrantWhitelist(bool)"/>
         /// <seealso cref="AddToWhitelist(string, bool)"/>
@@ -1412,7 +1412,7 @@ namespace Exiled.API.Features
         /// Adds a player's UserId to the list of reserved slots.
         /// </summary>
         /// <param name="userId">The UserId of the player to add.</param>
-        /// <param name="isPermanent"> Whether or not to add a UserId permanently. It will write a UserId to UserIDReservedSlots.txt file.</param>
+        /// <param name="isPermanent"> Whether or not to add a <see langword="userId"/> permanently. It will write a <see langword="userId"/> to UserIDReservedSlots.txt file.</param>
         /// <returns><see langword="true"/> if the slot was successfully added, or <see langword="false"/> if the provided UserId already has a reserved slot.</returns>
         /// <seealso cref="GiveReservedSlot(bool)"/>
         public static bool AddReservedSlot(string userId, bool isPermanent = false)
@@ -1429,11 +1429,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Adds a player's UserId to the white list.
+        /// Adds a player's UserId to the whitelist.
         /// </summary>
         /// <param name="userId">The UserId of the player to add.</param>
-        /// <param name="isPermanent"> Whether or not to add a UserId permanently. It will write a UserId to UserIDWhitelist.txt file.</param>
-        /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in white list.</returns>
+        /// <param name="isPermanent"> Whether or not to add a <see langword="userId"/> permanently. It will write a <see langword="userId"/> to UserIDWhitelist.txt file.</param>
+        /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in whitelist.</returns>
         /// <seealso cref="GrantWhitelist(bool)"/>
         public static bool AddToWhitelist(string userId, bool isPermanent = false)
         {
@@ -1454,23 +1454,23 @@ namespace Exiled.API.Features
         public static void ReloadReservedSlots() => ReservedSlot.Reload();
 
         /// <summary>
-        /// Reloads the white list, clearing all white list changes made with add/remove methods and reverting to the white list files.
+        /// Reloads the whitelist, clearing all whitelist changes made with add/remove methods and reverting to the whitelist files.
         /// </summary>
         public static void ReloadWhitelist() => WhiteList.Reload();
 
         /// <summary>
         /// Adds the player's UserId to the list of reserved slots.
         /// </summary>
-        /// <param name="isPermanent"> Whether or not to add a UserId permanently. It will write a UserId to UserIDReservedSlots.txt file.</param>
+        /// <param name="isPermanent"> Whether or not to add a <see langword="userId"/> permanently. It will write a <see langword="userId"/> to UserIDReservedSlots.txt file.</param>
         /// <returns><see langword="true"/> if the slot was successfully added, or <see langword="false"/> if the player already has a reserved slot.</returns>
         /// <seealso cref="AddReservedSlot(string, bool)"/>
         public bool GiveReservedSlot(bool isPermanent = false) => AddReservedSlot(UserId, isPermanent);
 
         /// <summary>
-        /// Adds the player's UserId to the white list.
+        /// Adds the player's UserId to the whitelist.
         /// </summary>
-        /// <param name="isPermanent"> Whether or not to add a UserId permanently. It will write a UserId to UserIDWhitelist.txt file.</param>
-        /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in white list.</returns>
+        /// <param name="isPermanent"> Whether or not to add a <see langword="userId"/> permanently. It will write a <see langword="userId"/> to UserIDWhitelist.txt file.</param>
+        /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in whitelist.</returns>
         /// <seealso cref="AddToWhitelist(string, bool)"/>
         public bool GrantWhitelist(bool isPermanent = false) => AddToWhitelist(UserId, isPermanent);
 
