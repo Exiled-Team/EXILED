@@ -156,9 +156,10 @@ namespace Exiled.API.Features.Items
         public bool Aiming => Base.AdsModule.ServerAds;
 
         /// <summary>
-        /// Gets a value indicating whether the firearm's flashlight module is enabled.
+        /// Gets a value indicating whether the firearm's flashlight module is enabled or if playing see trough a NightVision.
         /// </summary>
-        public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
+        public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled) ||
+            (Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.NightVision) && Aiming);
 
         /// <summary>
         /// Gets a value indicating whether or not the firearm is automatic.
