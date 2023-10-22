@@ -118,9 +118,27 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets the max ammo for this firearm.
+        /// Gets or sets the max ammo for this firearm.
         /// </summary>
-        public byte MaxAmmo => Base.AmmoManagerModule.MaxAmmo;
+        public byte MaxAmmo
+        {
+            get => Base.AmmoManagerModule.MaxAmmo;
+            set
+            {
+                switch (Base.AmmoManagerModule)
+                {
+                    case TubularMagazineAmmoManager tubularMagazineAmmoManager:
+                        tubularMagazineAmmoManager.MaxAmmo = value;
+                        break;
+                    case ClipLoadedInternalMagAmmoManager clipLoadedInternalMagAmmoManager:
+                        clipLoadedInternalMagAmmoManager.MaxAmmo = value;
+                        break;
+                    case AutomaticAmmoManager automaticAmmoManager:
+                        automaticAmmoManager.MaxAmmo = value;
+                        break;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="Enums.FirearmType"/> of the firearm.
