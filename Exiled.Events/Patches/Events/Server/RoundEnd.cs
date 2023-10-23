@@ -100,9 +100,7 @@ namespace Exiled.Events.Patches.Events.Server
 
             offset = 7;
             index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldstr && x.operand == (object)"auto_round_restart_time") + offset;
-
-            LocalBuilder evEndedRound = generator.DeclareLocal(typeof(RoundEndedEventArgs));
-
+            
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
@@ -121,13 +119,12 @@ namespace Exiled.Events.Patches.Events.Server
                     // RoundEndedEventArgs evEndedRound = new(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RoundEndedEventArgs))[0]),
                     new(OpCodes.Dup),
+                    new(OpCodes.Dup),
 
                     // Handlers.Server.OnRoundEnded(evEndedRound);
                     new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnRoundEnded))),
-                    new(OpCodes.Stloc_S, evEndedRound.LocalIndex),
 
                     // timeToRestart = ev.TimeToRestart
-                    new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RoundEndedEventArgs), nameof(RoundEndedEventArgs.TimeToRestart))),
                     new(OpCodes.Stloc_S, 5),
                 });
