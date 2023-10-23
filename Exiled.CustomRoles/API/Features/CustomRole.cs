@@ -614,8 +614,6 @@ namespace Exiled.CustomRoles.API.Features
                                         continue;
 
                                     ushort amount = Ammo.ContainsKey(type) ? Ammo[type] == ushort.MaxValue ? InventoryLimits.GetAmmoLimit(type.GetItemType(), player.ReferenceHub) : Ammo[type] : (ushort)0;
-                                    if (amount > 60000)
-                                        amount = 69;
                                     player.SetAmmo(type, amount);
                                 }
                             });
@@ -1002,7 +1000,7 @@ namespace Exiled.CustomRoles.API.Features
 
         private void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
         {
-            if (Check(ev.Player) && Role != RoleTypeId.None)
+            if (Check(ev.Player) && Role.GetRoleBase() is IRagdollRole)
                 ev.Role = Role;
         }
 
