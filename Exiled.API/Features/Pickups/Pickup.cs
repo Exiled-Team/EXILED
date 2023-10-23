@@ -610,7 +610,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// eeee.
+        /// initialize item properties.
         /// </summary>
         /// <param name="itemBase">target item.</param>
         protected virtual void InitializeProperties(ItemBase itemBase)
