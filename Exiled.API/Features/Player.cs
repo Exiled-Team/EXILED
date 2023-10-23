@@ -1485,7 +1485,7 @@ namespace Exiled.API.Features
         /// <param name="isPermanent"> Whether or not to add a player's UserId permanently. It will write a player's UserId to UserIDReservedSlots.txt file.</param>
         /// <returns><see langword="true"/> if the slot was successfully added, or <see langword="false"/> if the provided UserId already has a reserved slot.</returns>
         /// <seealso cref="AddReservedSlot(string, bool)"/>
-        public bool GiveReservedSlot(bool isPermanent = false) => AddReservedSlot(UserId, isPermanent);
+        public bool GiveReservedSlot(bool isPermanent) => AddReservedSlot(UserId, isPermanent);
 
         /// <summary>
         /// Adds a player's UserId to the whitelist.
@@ -1493,7 +1493,7 @@ namespace Exiled.API.Features
         /// <param name="isPermanent"> Whether or not to add a player's UserId permanently. It will write a player's UserId to UserIDWhitelist.txt file.</param>
         /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in whitelist.</returns>
         /// <seealso cref="AddToWhitelist(string, bool)"/>
-        public bool GrantWhitelist(bool isPermanent = false) => AddToWhitelist(UserId, isPermanent);
+        public bool GrantWhitelist(bool isPermanent) => AddToWhitelist(UserId, isPermanent);
 
         /// <summary>
         /// Tries to add <see cref="RoleTypeId"/> to FriendlyFire rules.
