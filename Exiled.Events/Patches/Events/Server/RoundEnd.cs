@@ -119,7 +119,6 @@ namespace Exiled.Events.Patches.Events.Server
                     // RoundEndedEventArgs evEndedRound = new(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RoundEndedEventArgs))[0]),
                     new(OpCodes.Dup),
-                    new(OpCodes.Dup),
 
                     // Handlers.Server.OnRoundEnded(evEndedRound);
                     new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnRoundEnded))),
