@@ -17,6 +17,6 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets which SCP: SL version generated Exiled.
         /// </summary>
-        public static readonly Version RequiredSCPSLVersion = new(<#=GameCore.Version.Major#>, <#=GameCore.Version.Minor#>, <#=GameCore.Version.Revision#>, <#=GameCore.Version.BackwardRevision#>);
+        public static readonly Version RequiredSCPSLVersion = new(<#=GameCore.Version.Major#>, <#=GameCore.Version.Minor#>, 0, <#=GameCore.Version.Revision#>);
     }
 }
