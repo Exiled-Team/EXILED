@@ -132,9 +132,14 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
+        /// Gets or sets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
         /// </summary>
-        public float MovementSpeedMultiplier { get; }
+        public float MovementSpeedMultiplier
+        {
+            get => Base.MovementSpeedMultiplier;
+            [Obsolete("This Setter was causing desync to client", true)]
+            set => _ = value;
+        }
 
         /// <summary>
         /// Gets how much worse <see cref="RoleTypeId.ClassD"/> and <see cref="RoleTypeId.Scientist"/>s are affected by wearing this armor.

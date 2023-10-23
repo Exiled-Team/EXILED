@@ -7,11 +7,11 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
-    using Exiled.API.Features;
+    using System;
+
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.Events.EventArgs.Interfaces;
-
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -39,5 +39,11 @@ namespace Exiled.Events.EventArgs.Map
         /// Gets a value indicating the projectile that spawned.
         /// </summary>
         public Projectile Projectile { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating how long the fuse of the changed grenade will be.
+        /// </summary>
+        [Obsolete("Use Projectile.Is(Projectile, out TimeGrenadeProjectile timeGrenadeProjectile) ? timeGrenadeProjectile.FuseTime : 0 instead of this", true)]
+        public double FuseTime { get; set; }
     }
 }
