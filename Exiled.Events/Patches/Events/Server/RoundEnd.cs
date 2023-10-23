@@ -128,8 +128,6 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Stloc_S, 5),
                 });
 
-            Label continueLabel = generator.DefineLabel();
-
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
