@@ -50,18 +50,13 @@ namespace Exiled.Events.Patches.Events.Scp0492
                     // Player.Get(base.Owner)
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<ZombieRole>), nameof(ScpStandardSubroutine<ZombieRole>.Owner))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // base.CurRagdoll
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new(OpCodes.Call, PropertyGetter(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>.CurRagdoll))),
 
-                    // true
-                    new(OpCodes.Ldc_I4_1),
-
                     // ConsumingCorpseEventArgs ev = new(Player, Ragdoll, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ConsumedCorpseEventArgs))[0]),
-                    new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
 

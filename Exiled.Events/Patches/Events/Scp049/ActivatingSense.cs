@@ -85,7 +85,7 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             // replace "this.Cooldown.Trigger(2.5)" with "this.Cooldown.Trigger(ev.FailedCooldown)"
             offset = -1;
-            index = newInstructions.FindIndex(instruction => instruction.operand == (object)PropertySetter(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger))) + offset;
+            index = newInstructions.FindIndex(instruction => instruction.operand == (object)Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger))) + offset;
             newInstructions.RemoveAt(index);
 
             newInstructions.InsertRange(
@@ -99,7 +99,7 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             // replace "this.Duration.Trigger(20.0)" with "this.Duration.Trigger(ev.Duration)"
             offset = -1;
-            index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)PropertySetter(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger))) + offset;
+            index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger))) + offset;
             newInstructions.RemoveAt(index);
 
             newInstructions.InsertRange(
