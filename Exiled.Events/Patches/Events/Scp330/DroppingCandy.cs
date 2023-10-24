@@ -102,10 +102,8 @@ namespace Exiled.Events.Patches.Events.Scp330
                     new(OpCodes.Ldloc, candyKindIdIndex),
                 });
 
-            offset = -2;
-            index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)Method(typeof(NetworkUtils), nameof(NetworkUtils.SendToAuthenticated))) + offset;
-
-            newInstructions[index].labels.Add(returnLabel);
+            // before msg.SendToAuthenticated(0);
+            newInstructions[newInstructions.Count - 5].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
