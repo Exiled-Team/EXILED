@@ -130,7 +130,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                     new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
                     new(OpCodes.Brfalse, shouldNotSever),
 
-                    // ev.Player.EnableEffect("SevereHands", 1, 0f, 0)
+                    // ev.Player.EnableEffect("SevereHands", 1, 0f, false)
                     new(OpCodes.Ldloc, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.Player))),
                     new(OpCodes.Ldstr, nameof(SeveredHands)),
