@@ -57,7 +57,7 @@ namespace Exiled.Events.EventArgs.Map
                 {
                     case false:
                         {
-                            if (Server.FriendlyFire || IndividualFriendlyFire.CheckFriendlyFirePlayer(player.ReferenceHub, hub))
+                            if (Server.FriendlyFire || IndividualFriendlyFire.CheckFriendlyFirePlayer(thrower, hub))
                             {
                                 if (!TargetsToAffect.Contains(player))
                                     TargetsToAffect.Add(player);

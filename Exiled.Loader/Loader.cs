@@ -120,6 +120,8 @@ namespace Exiled.Loader
         /// </summary>
         public static void LoadPlugins()
         {
+            File.Delete(Path.Combine(Paths.Plugins, "Exiled.Updater.dll"));
+
             foreach (string assemblyPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
                 Assembly assembly = LoadAssembly(assemblyPath);
@@ -225,7 +227,7 @@ namespace Exiled.Loader
 
                     Log.Debug($"Instantiated type {type.FullName}");
 
-                    if (CheckPluginRequiredExiledVersion(plugin))
+                    if (CheckPluginRequiredExiledVersion(plugin, assembly.GetReferencedAssemblies()?.FirstOrDefault(x => x?.Name is "Exiled.Loader")?.Version ?? new()))
                         continue;
 
                     return plugin;
@@ -439,12 +441,12 @@ namespace Exiled.Loader
             return false;
         }
 
-        private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
+        private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin, Version pluginVersion)
         {
             if (plugin.IgnoreRequiredVersionCheck)
                 return false;
 
-            Version requiredVersion = plugin.RequiredExiledVersion;
+            Version requiredVersion = plugin.RequiredExiledVersion == default ? pluginVersion : pluginVersion;
             Version actualVersion = Version;
 
             // Check Major version

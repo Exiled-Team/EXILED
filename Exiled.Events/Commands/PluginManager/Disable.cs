@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Disable.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -38,7 +38,7 @@ namespace Exiled.Events.Commands.PluginManager
         {
             const string perm = "pm.disable";
 
-            if (!sender.CheckPermission(perm) && sender is PlayerCommandSender playerSender && !playerSender.ServerRoles.RaEverywhere)
+            if (!sender.CheckPermission(perm) && sender is PlayerCommandSender playerSender && !playerSender.FullPermissions)
             {
                 response = $"You can't disable a plugin, you don't have \"{perm}\" permissions.";
                 return false;
