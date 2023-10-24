@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Generic.Scp106API
     /// Patches <see cref="Scp106HuntersAtlasAbility.ServerProcessCmd"/>.
     /// Adds the <see cref="Scp106Role.HuntersAtlasCostPerMeter" /> property.
     /// </summary>
-    [HarmonyPatch(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.ServerProcessCmd))]
+    // [HarmonyPatch(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.ServerProcessCmd))]
     internal class HunterAtlastCostPerMetter
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

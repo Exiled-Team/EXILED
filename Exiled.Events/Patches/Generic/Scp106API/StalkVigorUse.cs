@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Generic.Scp106API
     /// Patches <see cref="Scp106StalkAbility.UpdateServerside"/>.
     /// Adds the <see cref="Scp106Role.VigorStalkCostMoving" /> and <see cref="Scp106Role.VigorStalkCostStationary" /> property.
     /// </summary>
-    [HarmonyPatch(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.UpdateServerside))]
+    // [HarmonyPatch(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.UpdateServerside))]
     internal class StalkVigorUse
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

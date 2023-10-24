@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Generic.Scp106API
     /// Patches <see cref="Scp106Attack.ServerShoot"/>.
     /// Adds the <see cref="Scp106Role.AttackDamage" />, <see cref="Scp106Role.CorrodingTime" />,  <see cref="Scp106Role.VigorCaptureReward" />property.
     /// </summary>
-    [HarmonyPatch(typeof(Scp106Attack), nameof(Scp106Attack.ServerShoot))]
+    // [HarmonyPatch(typeof(Scp106Attack), nameof(Scp106Attack.ServerShoot))]
     internal class CustomAttack
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
