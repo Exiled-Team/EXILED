@@ -37,11 +37,8 @@ namespace Exiled.Events.Patches.Generic
 
             Label returnLabel = (Label)newInstructions[index].operand;
             Label skip = generator.DefineLabel();
-            Label continueLabel = generator.DefineLabel();
 
             index += 1;
-
-            newInstructions[index].labels.Add(continueLabel);
 
             // if ((referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial && ExiledEvents.Instance.Config.CanScp049SenseTutorial) || Scp049Role.TurnedPlayers.Contains(Player.Get(referenceHub)))
             //     return;
@@ -70,8 +67,6 @@ namespace Exiled.Events.Patches.Generic
                     new(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
                     new(OpCodes.Brtrue_S, returnLabel),
                 });
-
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
