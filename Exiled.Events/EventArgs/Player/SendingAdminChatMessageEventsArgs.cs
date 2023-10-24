@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Searching;
 
     /// <summary>
-    ///     Contains all information before a player send a message in AdminChat.
+    ///     Contains all information before a player sends a message in AdminChat.
     /// </summary>
     public class SendingAdminChatMessageEventsArgs : IPlayerEvent, IDeniableEvent
     {
@@ -39,17 +39,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the Pickup can be searched.
+        ///     Gets or sets a value indicating whether the pickup can be searched.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets or sets the Message that is sending.
+        ///     Gets or sets the message which is being sent.
         /// </summary>
         public string Message { get; set; }
 
         /// <summary>
-        ///     Gets the Player who's sending the Message.
+        ///     Gets the player who's sending the message.
         /// </summary>
         public Player Player { get; }
     }
