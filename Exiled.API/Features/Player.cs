@@ -1874,7 +1874,7 @@ namespace Exiled.API.Features
         /// <seealso cref="CountItem(ItemType)"/>
         public int CountItem(ItemCategory category) => category switch
         {
-            ItemCategory.Ammo => Inventory.UserInventory.ReserveAmmo.Where(ammo => ammo.Value > 0).Count(),
+            ItemCategory.Ammo => Inventory.UserInventory.ReserveAmmo.Count(ammo => ammo.Value > 0),
             _ => Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.Category == category),
         };
 
@@ -1903,7 +1903,12 @@ namespace Exiled.API.Features
             {
                 item.ChangeOwner(this, Server.Host);
 
-                if (CurrentItem is not null && CurrentItem.Serial == item.Serial)
+                if (CurrentItem == item)
+                {
+                    Inventory.CurInstance = null;
+                }
+
+                if (item.Serial == Inventory.CurItem.SerialNumber)
                     Inventory.NetworkCurItem = ItemIdentifier.None;
 
                 Inventory.UserInventory.Items.Remove(item.Serial);
@@ -1920,7 +1925,12 @@ namespace Exiled.API.Features
         /// <param name="serial">The <see cref="Item"/> serial to remove.</param>
         /// <param name="destroy">Whether or not to destroy the item.</param>
         /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
-        public bool RemoveItem(ushort serial, bool destroy = true) => RemoveItem(Item.Get(serial), destroy);
+        public bool RemoveItem(ushort serial, bool destroy = true)
+        {
+            if (Items.SingleOrDefault(item => item.Serial == serial) is not Item item)
+                return false;
+            return RemoveItem(item, destroy);
+        }
 
         /// <summary>
         /// Removes all <see cref="Item"/>'s that satisfy the condition from the player's inventory.
@@ -2291,17 +2301,37 @@ namespace Exiled.API.Features
         /// Adds an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
+        /// <returns>The <see cref="Item"/> given to the player.</returns>
+        public Item AddItem(ItemType itemType)
+        {
+            return Item.Get(Inventory.ServerAddItem(itemType));
+        }
+
+        /// <summary>
+        /// Adds an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="itemType">The item to be added.</param>
         /// <param name="identifiers">The attachments to be added to the item.</param>
         /// <returns>The <see cref="Item"/> given to the player.</returns>
+        [Obsolete("Use AddItem(ItemType) or AddItem(FirearmType, IEnumerable<AttachmentIdentifier>)", true)]
         public Item AddItem(ItemType itemType, IEnumerable<AttachmentIdentifier> identifiers = null)
+            => itemType.GetFirearmType() is FirearmType.None ? AddItem(itemType) : AddItem(itemType.GetFirearmType(), identifiers);
+
+        /// <summary>
+        /// Adds an firearm of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="firearmType">The firearm to be added.</param>
+        /// <param name="identifiers">The attachments to be added to the item.</param>
+        /// <returns>The <see cref="Item"/> given to the player.</returns>
+        public Item AddItem(FirearmType firearmType, IEnumerable<AttachmentIdentifier> identifiers)
         {
-            Item item = Item.Get(Inventory.ServerAddItem(itemType));
+            Item item = Item.Get(Inventory.ServerAddItem(firearmType.GetItemType()));
 
             if (item is Firearm firearm)
             {
                 if (identifiers is not null)
                     firearm.AddAttachment(identifiers);
-                else if (Preferences is not null && Preferences.TryGetValue(itemType.GetFirearmType(), out AttachmentIdentifier[] attachments))
+                else if (Preferences is not null && Preferences.TryGetValue(firearmType, out AttachmentIdentifier[] attachments))
                     firearm.Base.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
 
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
@@ -2340,7 +2370,18 @@ namespace Exiled.API.Features
         /// <param name="amount">The amount of items to be added.</param>
         /// <param name="identifiers">The attachments to be added to the item.</param>
         /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        [Obsolete("Use AddItem(ItemType, int) or AddItem(FirearmType, int, IEnumerable<AttachmentIdentifier>)", true)]
         public IEnumerable<Item> AddItem(ItemType itemType, int amount, IEnumerable<AttachmentIdentifier> identifiers)
+            => itemType.GetFirearmType() is FirearmType.None ? AddItem(itemType, amount) : AddItem(itemType.GetFirearmType(), amount, identifiers);
+
+        /// <summary>
+        /// Adds the amount of firearms of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="firearmType">The item to be added.</param>
+        /// <param name="amount">The amount of items to be added.</param>
+        /// <param name="identifiers">The attachments to be added to the item.</param>
+        /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        public IEnumerable<Item> AddItem(FirearmType firearmType, int amount, IEnumerable<AttachmentIdentifier> identifiers)
         {
             List<Item> items = new(amount > 0 ? amount : 0);
 
@@ -2349,7 +2390,7 @@ namespace Exiled.API.Features
                 IEnumerable<AttachmentIdentifier> attachmentIdentifiers = identifiers.ToList();
 
                 for (int i = 0; i < amount; i++)
-                    items.Add(AddItem(itemType, attachmentIdentifiers));
+                    items.Add(AddItem(firearmType, attachmentIdentifiers));
             }
 
             return items;
@@ -2377,11 +2418,27 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
         /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        [Obsolete("Use AddItem(Dictionary<FirearmType, IEnumerable<AttachmentIdentifier>>) instead of this", true)]
         public IEnumerable<Item> AddItem(Dictionary<ItemType, IEnumerable<AttachmentIdentifier>> items)
         {
             List<Item> returnedItems = new(items.Count);
 
             foreach (KeyValuePair<ItemType, IEnumerable<AttachmentIdentifier>> item in items)
+                returnedItems.Add(AddItem(item.Key, item.Value));
+
+            return returnedItems;
+        }
+
+        /// <summary>
+        /// Adds the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
+        /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        public IEnumerable<Item> AddItem(Dictionary<FirearmType, IEnumerable<AttachmentIdentifier>> items)
+        {
+            List<Item> returnedItems = new(items.Count);
+
+            foreach (KeyValuePair<FirearmType, IEnumerable<AttachmentIdentifier>> item in items)
                 returnedItems.Add(AddItem(item.Key, item.Value));
 
             return returnedItems;
@@ -2395,9 +2452,6 @@ namespace Exiled.API.Features
         {
             try
             {
-                if (item.Base is null)
-                    item = Item.Create(item.Type);
-
                 AddItem(item.Base, item);
             }
             catch (Exception e)
@@ -2415,9 +2469,6 @@ namespace Exiled.API.Features
         {
             try
             {
-                if (item.Base is null)
-                    item = new Firearm(item.Type);
-
                 if (identifiers is not null)
                     item.AddAttachment(identifiers);
 
@@ -2468,13 +2519,14 @@ namespace Exiled.API.Features
 
                 item.ChangeOwner(item.Owner, this);
 
-                if (Inventory.isLocalPlayer && itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
+                if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
                 {
                     acquisitionConfirmationTrigger.ServerConfirmAcqusition();
                     acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
                 }
 
                 // Dont care, didnt ask, ratio
+                // UPD 12.09.23 - maybe some changes will fix candies desync, and that legacy code can be deleted
                 Timing.CallDelayed(0.02f, () =>
                 {
                     if (item.Type is ItemType.SCP330 && item.Base != null)
@@ -2499,14 +2551,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The item to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
-        public void AddItem(Item item, int amount)
-        {
-            if (amount > 0)
-            {
-                for (int i = 0; i < amount; i++)
-                    AddItem(item);
-            }
-        }
+        [Obsolete("Removed this method can't be functional")]
+        public void AddItem(Item item, int amount) => _ = item;
 
         /// <summary>
         /// Adds the <paramref name="amount"/> of items to the player's inventory.
@@ -2514,14 +2560,8 @@ namespace Exiled.API.Features
         /// <param name="firearm">The firearm to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
         /// <param name="identifiers">The attachments to be added to the item.</param>
-        public void AddItem(Firearm firearm, int amount, IEnumerable<AttachmentIdentifier> identifiers)
-        {
-            if (amount > 0)
-            {
-                for (int i = 0; i < amount; i++)
-                    AddItem(firearm, identifiers);
-            }
-        }
+        [Obsolete("Removed this method can't be functional")]
+        public void AddItem(Firearm firearm, int amount, IEnumerable<AttachmentIdentifier> identifiers) => _ = firearm;
 
         /// <summary>
         /// Adds the list of items to the player's inventory.
@@ -2598,7 +2638,7 @@ namespace Exiled.API.Features
             ClearInventory();
 
             foreach (Item item in newItems)
-                AddItem(item.Base is null ? new Item(item.Type) : item);
+                AddItem(item);
         }
 
         /// <summary>

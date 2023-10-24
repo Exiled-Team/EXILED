@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
+    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp330;
@@ -235,12 +236,15 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
+            PickupSyncInfo info = new(Type, Weight, Serial);
 
-            pickup.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-            pickup.Candies = new(Base.Candies);
-            pickup.ExposedCandy = ExposedType;
-            pickup.Scale = Scale;
+            InventorySystem.Items.Usables.Scp330.Scp330Pickup ipb = (InventorySystem.Items.Usables.Scp330.Scp330Pickup)InventoryExtensions.ServerCreatePickup(Base, info, position, rotation);
+
+            Base.OnRemoved(ipb);
+
+            ipb.NetworkExposedCandy = ExposedType;
+
+            Pickup pickup = Pickup.Get(ipb);
 
             if (spawn)
                 pickup.Spawn();

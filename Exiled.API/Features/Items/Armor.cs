@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.Armor;
@@ -19,6 +20,8 @@ namespace Exiled.API.Features.Items
 
     using Structs;
     using UnityEngine;
+
+    using BodyArmorPickup = Pickups.BodyArmorPickup;
 
     /// <summary>
     /// A wrapper class for <see cref="BodyArmor"/>.
@@ -131,11 +134,11 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 0 or above 1.</exception>
         public float MovementSpeedMultiplier
         {
             get => Base.MovementSpeedMultiplier;
-            set => Base._movementSpeedMultiplier = value;
+            [Obsolete("This Setter was causing desync to client", true)]
+            set => _ = value;
         }
 
         /// <summary>
@@ -176,5 +179,20 @@ namespace Exiled.API.Features.Items
             VestEfficacy = VestEfficacy,
             HelmetEfficacy = HelmetEfficacy,
         };
+
+        /// <inheritdoc/>
+        internal override void ReadPickupInfo(Pickup pickup)
+        {
+            base.ReadPickupInfo(pickup);
+            if (pickup is BodyArmorPickup armorPickup)
+            {
+                HelmetEfficacy = armorPickup.HelmetEfficacy;
+                VestEfficacy = armorPickup.VestEfficacy;
+                RemoveExcessOnDrop = armorPickup.RemoveExcessOnDrop;
+                StaminaUseMultiplier = armorPickup.StaminaUseMultiplier;
+                AmmoLimits = armorPickup.AmmoLimits;
+                CategoryLimits = armorPickup.CategoryLimits;
+            }
+        }
     }
 }

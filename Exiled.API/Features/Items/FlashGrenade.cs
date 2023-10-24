@@ -137,5 +137,18 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing FlashGrenade-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}|";
+
+        /// <inheritdoc/>
+        internal override void ReadPickupInfo(Pickup pickup)
+        {
+            base.ReadPickupInfo(pickup);
+            if (pickup is FlashGrenadePickup flashGrenadePickup)
+            {
+                MinimalDurationEffect = flashGrenadePickup.MinimalDurationEffect;
+                AdditionalBlindedEffect = flashGrenadePickup.AdditionalBlindedEffect;
+                SurfaceDistanceIntensifier = flashGrenadePickup.SurfaceDistanceIntensifier;
+                FuseTime = flashGrenadePickup.FuseTime;
+            }
+        }
     }
 }
