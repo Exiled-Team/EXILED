@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Generic.Scp106API
     /// Patches <see cref="Scp106Attack.ReduceSinkholeCooldown"/>.
     /// Adds the <see cref="Scp106Role.CooldownReductionReward" /> property.
     /// </summary>
-    [HarmonyPatch(typeof(Scp106Attack), nameof(Scp106Attack.ReduceSinkholeCooldown))]
+    // [HarmonyPatch(typeof(Scp106Attack), nameof(Scp106Attack.ReduceSinkholeCooldown))]
     internal class CooldownReductionReward
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

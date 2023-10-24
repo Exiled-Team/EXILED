@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Generic.Scp106API
     /// Patches <see cref="Scp106StalkAbility.UpdateServerside"/>.
     /// Adds the <see cref="Scp106Role.VigorRegeneration" /> property.
     /// </summary>
-    [HarmonyPatch(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.UpdateMovementState))]
+    // [HarmonyPatch(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.UpdateMovementState))]
     internal class VigorRegeneration
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
