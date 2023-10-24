@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public InteractingTeslaEventArgs(Player player, TeslaGate teslaGate, float auxiliaryPowerCost)
         {
             Player = player;
-            Scp079 = Player.Role.As<Scp079Role>();
+            Scp079 = player.Role.As<Scp079Role>();
             Tesla = API.Features.TeslaGate.Get(teslaGate);
             AuxiliaryPowerCost = auxiliaryPowerCost;
             IsAllowed = auxiliaryPowerCost <= Scp079.Energy;
