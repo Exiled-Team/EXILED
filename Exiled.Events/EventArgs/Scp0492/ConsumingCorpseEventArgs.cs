@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Scp0492
 {
+    using System;
+
     using API.Features;
     using Exiled.API.Features.Roles;
     using Interfaces;
@@ -23,7 +25,6 @@ namespace Exiled.Events.EventArgs.Scp0492
         /// </summary>
         /// <param name="player"> <inheritdoc cref="Player"/></param>
         /// <param name="ragDoll"> <inheritdoc cref="Ragdoll"/> </param>
-        /// <param name="error"> <inheritdoc cref="ErrorCode"/> </param>
         /// <param name="isAllowed"> <inheritdoc cref="IsAllowed"/> </param>
         /// <remarks> See <see cref="ZombieConsumeAbility.ConsumedRagdolls"/> for all RagDolls consumed.</remarks>
         // TODO: remove isAllowed argument
@@ -40,7 +41,7 @@ namespace Exiled.Events.EventArgs.Scp0492
         /// </summary>
         public Player Player { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public Scp0492Role Scp0492 { get; }
 
         /// <summary>
@@ -49,8 +50,14 @@ namespace Exiled.Events.EventArgs.Scp0492
         public Ragdoll Ragdoll { get; }
 
         /// <summary>
+        ///     Gets or sets a value about how mush heath the Zombie will get.
+        /// </summary>
+        public float ConsumeHeal { get; set; }
+
+        /// <summary>
         /// Gets or sets error code to send back to client.
         /// </summary>
+        [Obsolete("Removed", true)]
         public ZombieConsumeAbility.ConsumeError ErrorCode { get; set; }
 
         /// <summary>
