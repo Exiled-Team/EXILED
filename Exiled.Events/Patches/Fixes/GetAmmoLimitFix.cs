@@ -16,8 +16,8 @@ namespace Exiled.Events.Patches.Fixes
     using InventorySystem.Configs;
 
     /// <summary>
-    /// Patches <see cref="InventoryLimits.GetAmmoLimit(InventorySystem.Items.Armor.BodyArmor, ItemType)"/> delegate.
-    /// Fix than NW return <see cref="ushort.MaxValue"/> instead of <see cref="ushort.MinValue"/>.
+    /// Patches the <see cref="InventoryLimits.GetAmmoLimit(InventorySystem.Items.Armor.BodyArmor, ItemType)"/> delegate.
+    /// Changes <see cref="ushort.MaxValue"/> to <see cref="ushort.MinValue"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryLimits), nameof(InventoryLimits.GetAmmoLimit), new Type[] { typeof(InventorySystem.Items.Armor.BodyArmor), typeof(ItemType), })]
     internal class GetAmmoLimitFix
