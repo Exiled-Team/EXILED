@@ -52,9 +52,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // UsedItemEventArgs ev = new(ReferenceHub, UsableItem)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsedItemEventArgs))[0]),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Handlers.Player.OnUsedItem(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsedItem))),
@@ -98,9 +95,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // UsedItemEventArgs ev = new(ReferenceHub, UsableItem)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsedItemEventArgs))[0]),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Handlers.Player.OnUsedItem(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsedItem))),
