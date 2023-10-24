@@ -35,6 +35,7 @@ namespace Exiled.Loader
         /// Called by PluginAPI when the plugin is enabled.
         /// </summary>
         [PluginEntryPoint("Exiled Loader", null, "Loads the EXILED Plugin Framework.", "Exiled-Team")]
+        [PluginPriority(byte.MinValue)]
         public void Enable()
         {
             if (!Config.IsEnabled)

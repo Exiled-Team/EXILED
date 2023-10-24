@@ -81,9 +81,9 @@ namespace Exiled.API.Features.Roles
         public Scp106VigorAbilityBase VigorAbility { get; }
 
         /// <summary>
-        /// Gets the <see cref="Scp106Vigor"/>.
+        /// Gets the <see cref="VigorStat"/>.
         /// </summary>
-        public Scp106Vigor VigorComponent => VigorAbility.Vigor;
+        public VigorStat VigorComponent => VigorAbility.Vigor;
 
         /// <summary>
         /// Gets the <see cref="Scp106Attack"/>.
