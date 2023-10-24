@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="Consumable.EquipUpdate" />.
-    ///     Adds the <see cref="Handlers.Player.UsedItem" /> event for when NW don't call the <see cref="UsableItemsController.ServerOnUsingCompleted"/>.
+    ///     Adds the <see cref="Handlers.Player.UsedItem" /> event in case of missing <see cref="UsableItemsController.ServerOnUsingCompleted"/> call.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsedItem))]
     [HarmonyPatch(typeof(Consumable), nameof(Consumable.EquipUpdate))]
@@ -69,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="Consumable.EquipUpdate" />.
-    ///     Adds the <see cref="Handlers.Player.UsedItem" /> event for when NW don't call the <see cref="UsableItemsController.ServerOnUsingCompleted"/>.
+    ///     Adds the <see cref="Handlers.Player.UsedItem" /> event in case of missing <see cref="UsableItemsController.ServerOnUsingCompleted"/> call.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsedItem))]
     [HarmonyPatch(typeof(Consumable), nameof(Consumable.OnRemoved))]
