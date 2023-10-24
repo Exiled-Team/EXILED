@@ -10,6 +10,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using CommandSystem;
 
@@ -49,20 +50,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of Npcs.
         /// </summary>
-        public new List<Npc> List
-        {
-            get
-            {
-                List<Npc> npcS = new();
-                foreach (Player player in Player.List)
-                {
-                    if (player is Npc npc)
-                        npcS.Add(npc);
-                }
-
-                return npcS;
-            }
-        }
+        public static new List<Npc> List => Player.List.OfType<Npc>().ToList();
 
         /// <summary>
         /// Retrieves the NPC associated with the specified ReferenceHub.
@@ -139,7 +127,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="name">The name of the NPC.</param>
         /// <param name="role">The RoleTypeId of the NPC.</param>
-        /// <param name="id">The player ID of the NPC.</param>
+        /// <param name="id">The Network ID of the NPC. If 0, one is made.</param>
         /// <param name="userId">The userID of the NPC.</param>
         /// <param name="position">The position to spawn the NPC.</param>
         /// <returns>The <see cref="Npc"/> spawned.</returns>
@@ -160,17 +148,10 @@ namespace Exiled.API.Features
                 Log.Debug($"Ignore: {e}");
             }
 
-            if (RecyclablePlayerId.FreeIds.Contains(id))
-            {
-                RecyclablePlayerId.FreeIds.RemoveFromQueue(id);
-            }
-            else if (RecyclablePlayerId._autoIncrement >= id)
-            {
-                RecyclablePlayerId._autoIncrement = id = RecyclablePlayerId._autoIncrement + 1;
-            }
+            int conId = id == 0 ? ReferenceHub.AllHubs.Count + 1 : id;
 
-            FakeConnection fakeConnection = new(id);
-            NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
+            NetworkServer.AddPlayerForConnection(new(conId), newObject);
+
             try
             {
                 npc.ReferenceHub.authManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy@localhost" : userId;
