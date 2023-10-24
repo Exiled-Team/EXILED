@@ -182,8 +182,6 @@ namespace Exiled.API.Features
         public void Destroy()
         {
             NetworkConnectionToClient conn = ReferenceHub.connectionToClient;
-            if (ReferenceHub._playerId.Value <= RecyclablePlayerId._autoIncrement)
-                ReferenceHub._playerId.Destroy();
             ReferenceHub.OnDestroy();
             CustomNetworkManager.TypedSingleton.OnServerDisconnect(conn);
             Dictionary.Remove(GameObject);
