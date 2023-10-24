@@ -74,6 +74,8 @@ namespace Exiled.Events.Patches.Events.Scp106
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
             newInstructions[index].labels.Add(continueLabel);
 
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
