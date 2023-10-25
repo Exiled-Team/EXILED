@@ -102,6 +102,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // CancellingItemUseEventArgs ev = new(Player, UsableItem)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(CancellingItemUseEventArgs))[0]),
                     new(OpCodes.Dup),
+                    new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, evCancellingItemUseEventArgs.LocalIndex),
 
                     // Handlers.Player.OnCancellingItemUse(ev)
