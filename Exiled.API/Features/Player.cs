@@ -51,6 +51,7 @@ namespace Exiled.API.Features
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
     using PlayerStatsSystem;
+    using PluginAPI.Core;
     using RelativePositioning;
     using RemoteAdmin;
     using RoundRestarting;
@@ -244,16 +245,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's user id.
         /// </summary>
-        public string UserId => referenceHub.characterClassManager.UserId;
+        public string UserId => referenceHub.authManager.UserId;
 
         /// <summary>
         /// Gets or sets the player's custom user id.
         /// </summary>
-        public string CustomUserId
-        {
-            get => ReferenceHub.characterClassManager.UserId2;
-            set => ReferenceHub.characterClassManager.UserId2 = value;
-        }
+        [Obsolete("Remove by NW", true)]
+        public string CustomUserId { get; set; }
 
         /// <summary>
         /// Gets the player's user id without the authentication.
@@ -263,7 +261,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's authentication token.
         /// </summary>
-        public string AuthenticationToken => ReferenceHub.characterClassManager.AuthToken;
+        public string AuthenticationToken => ReferenceHub.authManager.GetAuthToken();
 
         /// <summary>
         /// Gets the player's authentication type.
@@ -407,7 +405,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player has Do Not Track (DNT) enabled. If this value is <see langword="true"/>, data about the player unrelated to server security shouldn't be stored.
         /// </summary>
-        public bool DoNotTrack => ReferenceHub.serverRoles.DoNotTrack;
+        public bool DoNotTrack => ReferenceHub.authManager.DoNotTrack;
 
         /// <summary>
         /// Gets a value indicating whether the player is fully connected to the server.
@@ -417,14 +415,27 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player has a reserved slot.
         /// </summary>
-        /// <seealso cref="GiveReservedSlot"/>
-        /// <seealso cref="AddReservedSlot(string)"/>
+        /// <seealso cref="GiveReservedSlot(bool)"/>
+        /// <seealso cref="AddReservedSlot(string, bool)"/>
         public bool HasReservedSlot => ReservedSlot.HasReservedSlot(UserId, out _);
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is in whitelist.
+        /// </summary>
+        /// <remarks>It will always return <see langword="true"/> if a whitelist is disabled on the server.</remarks>
+        /// <seealso cref="GrantWhitelist(bool)"/>
+        /// <seealso cref="AddToWhitelist(string, bool)"/>
+        public bool IsWhitelisted => WhiteList.IsWhitelisted(UserId);
 
         /// <summary>
         /// Gets a value indicating whether or not the player has Remote Admin access.
         /// </summary>
         public bool RemoteAdminAccess => ReferenceHub.serverRoles.RemoteAdmin;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player has Admin Chat access.
+        /// </summary>
+        public bool AdminChatAccess => ReferenceHub.serverRoles.AdminChatPerms;
 
         /// <summary>
         /// Gets a value indicating a player's kick power.
@@ -437,7 +448,7 @@ namespace Exiled.API.Features
         public bool IsOverwatchEnabled
         {
             get => ReferenceHub.serverRoles.IsInOverwatch;
-            set => ReferenceHub.serverRoles.SetOverwatchStatus((byte)(value ? 1 : 0));
+            set => ReferenceHub.serverRoles.IsInOverwatch = value;
         }
 
         /// <summary>
@@ -935,7 +946,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the staff bypass is enabled.
         /// </summary>
-        public bool IsStaffBypassEnabled => ReferenceHub.serverRoles.BypassStaff;
+        public bool IsStaffBypassEnabled => ReferenceHub.authManager.BypassBansFlagSet;
 
         /// <summary>
         /// Gets or sets the player's group name.
@@ -1010,7 +1021,7 @@ namespace Exiled.API.Features
 
                 ServerRoles serverRoles = ReferenceHub.serverRoles;
 
-                return new Badge(serverRoles._bgt, serverRoles._bgc, serverRoles.GlobalBadgeType, true);
+                return new Badge(serverRoles._bgt, serverRoles._bgc, true);
             }
         }
 
@@ -1023,21 +1034,21 @@ namespace Exiled.API.Features
             set
             {
                 if (value)
-                    ReferenceHub.characterClassManager.UserCode_CmdRequestHideTag();
+                    ReferenceHub.serverRoles.TryHideTag();
                 else
-                    ReferenceHub.characterClassManager.UserCode_CmdRequestShowTag__Boolean(false);
+                    ReferenceHub.serverRoles.RefreshLocalTag();
             }
         }
 
         /// <summary>
         /// Gets a value indicating whether or not the player is Northwood staff.
         /// </summary>
-        public bool IsNorthwoodStaff => ReferenceHub.serverRoles.Staff;
+        public bool IsNorthwoodStaff => ReferenceHub.authManager.NorthwoodStaff;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is a global moderator.
         /// </summary>
-        public bool IsGlobalModerator => ReferenceHub.serverRoles.RaEverywhere;
+        public bool IsGlobalModerator => ReferenceHub.authManager.RemoteAdminGlobalAccess;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is in the pocket dimension.
@@ -1409,7 +1420,50 @@ namespace Exiled.API.Features
         /// <param name="userId">The UserId of the player to add.</param>
         /// <returns><see langword="true"/> if the slot was successfully added, or <see langword="false"/> if the provided UserId already has a reserved slot.</returns>
         /// <seealso cref="GiveReservedSlot()"/>
+        // TODO: Remove this method
         public static bool AddReservedSlot(string userId) => ReservedSlot.Users.Add(userId);
+
+        /// <summary>
+        /// Adds a player's UserId to the list of reserved slots.
+        /// </summary>
+        /// <param name="userId">The UserId of the player to add.</param>
+        /// <param name="isPermanent"> Whether or not to add a <see langword="userId"/> permanently. It will write a <see langword="userId"/> to UserIDReservedSlots.txt file.</param>
+        /// <returns><see langword="true"/> if the slot was successfully added, or <see langword="false"/> if the provided UserId already has a reserved slot.</returns>
+        /// <seealso cref="GiveReservedSlot(bool)"/>
+        public static bool AddReservedSlot(string userId, bool isPermanent)
+        {
+            if (isPermanent)
+            {
+                if (ReservedSlots.HasReservedSlot(userId))
+                    return false;
+
+                ReservedSlots.Add(userId);
+                return true;
+            }
+
+            return ReservedSlot.Users.Add(userId);
+        }
+
+        /// <summary>
+        /// Adds a player's UserId to the whitelist.
+        /// </summary>
+        /// <param name="userId">The UserId of the player to add.</param>
+        /// <param name="isPermanent"> Whether or not to add a <see langword="userId"/> permanently. It will write a <see langword="userId"/> to UserIDWhitelist.txt file.</param>
+        /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in whitelist.</returns>
+        /// <seealso cref="GrantWhitelist(bool)"/>
+        public static bool AddToWhitelist(string userId, bool isPermanent)
+        {
+            if (isPermanent)
+            {
+                if (WhiteList.IsOnWhitelist(userId))
+                    return false;
+
+                Whitelist.Add(userId);
+                return true;
+            }
+
+            return WhiteList.Users.Add(userId);
+        }
 
         /// <summary>
         /// Reloads the reserved slot list, clearing all reserved slot changes made with add/remove methods and reverting to the reserved slots files.
@@ -1417,12 +1471,34 @@ namespace Exiled.API.Features
         public static void ReloadReservedSlots() => ReservedSlot.Reload();
 
         /// <summary>
+        /// Reloads the whitelist, clearing all whitelist changes made with add/remove methods and reverting to the whitelist files.
+        /// </summary>
+        public static void ReloadWhitelist() => WhiteList.Reload();
+
+        /// <summary>
         /// Adds the player's UserId to the list of reserved slots.
         /// </summary>
         /// <remarks>This method does not permanently give a user a reserved slot. The slot will be removed if the reserved slots are reloaded.</remarks>
         /// <returns><see langword="true"/> if the slot was successfully added, or <see langword="false"/> if the player already has a reserved slot.</returns>
         /// <seealso cref="AddReservedSlot(string)"/>
+        // TODO: Remove this method
         public bool GiveReservedSlot() => AddReservedSlot(UserId);
+
+        /// <summary>
+        /// Adds a player's UserId to the list of reserved slots.
+        /// </summary>
+        /// <param name="isPermanent"> Whether or not to add a player's UserId permanently. It will write a player's UserId to UserIDReservedSlots.txt file.</param>
+        /// <returns><see langword="true"/> if the slot was successfully added, or <see langword="false"/> if the provided UserId already has a reserved slot.</returns>
+        /// <seealso cref="AddReservedSlot(string, bool)"/>
+        public bool GiveReservedSlot(bool isPermanent) => AddReservedSlot(UserId, isPermanent);
+
+        /// <summary>
+        /// Adds a player's UserId to the whitelist.
+        /// </summary>
+        /// <param name="isPermanent"> Whether or not to add a player's UserId permanently. It will write a player's UserId to UserIDWhitelist.txt file.</param>
+        /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in whitelist.</returns>
+        /// <seealso cref="AddToWhitelist(string, bool)"/>
+        public bool GrantWhitelist(bool isPermanent) => AddToWhitelist(UserId, isPermanent);
 
         /// <summary>
         /// Tries to add <see cref="RoleTypeId"/> to FriendlyFire rules.
@@ -1687,13 +1763,13 @@ namespace Exiled.API.Features
                 userGroup.HiddenByDefault = !group.Cover;
                 userGroup.Cover = group.Cover;
 
-                ReferenceHub.serverRoles.SetGroup(userGroup, false, false, group.Cover);
+                ReferenceHub.serverRoles.SetGroup(userGroup, false, false);
             }
             else
             {
                 ServerStatic.GetPermissionsHandler()._groups.Add(name, group);
 
-                ReferenceHub.serverRoles.SetGroup(group, false, false, group.Cover);
+                ReferenceHub.serverRoles.SetGroup(group, false, false);
             }
 
             if (ServerStatic.GetPermissionsHandler()._members.ContainsKey(UserId))
@@ -1884,7 +1960,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="message">The message to be sent.</param>
         /// <param name="color">The message color.</param>
-        public void SendConsoleMessage(string message, string color) => ReferenceHub.characterClassManager.ConsolePrint(message, color);
+        public void SendConsoleMessage(string message, string color) => referenceHub.gameConsoleTransmission.SendToClient(message, color);
 
         /// <summary>
         /// Disconnects the player.
@@ -2517,8 +2593,33 @@ namespace Exiled.API.Features
         /// <seealso cref="DropItems()"/>
         public void ClearInventory(bool destroy = true)
         {
+            ClearItems(destroy);
+            ClearAmmo();
+        }
+
+        /// <summary>
+        /// Clears the player's items.
+        /// </summary>
+        /// <param name="destroy">Whether or not to fully destroy the old items.</param>
+        /// <seealso cref="ResetInventory(IEnumerable{Item})"/>
+        /// <seealso cref="ResetInventory(IEnumerable{ItemType})"/>
+        /// <seealso cref="DropItems()"/>
+        public void ClearItems(bool destroy = true)
+        {
             while (Items.Count > 0)
                 RemoveItem(Items.ElementAt(0), destroy);
+        }
+
+        /// <summary>
+        /// Clears all ammo in the inventory.
+        /// </summary>
+        /// <seealso cref="ResetInventory(IEnumerable{Item})"/>
+        /// <seealso cref="SetAmmo(AmmoType, ushort)"/>
+        /// <seealso cref="DropItems()"/>
+        public void ClearAmmo()
+        {
+            ReferenceHub.inventory.UserInventory.ReserveAmmo.Clear();
+            ReferenceHub.inventory.SendAmmoNextFrame = true;
         }
 
         /// <summary>
@@ -2564,6 +2665,7 @@ namespace Exiled.API.Features
         /// <param name="duration">The duration the text will be on screen.</param>
         public void ShowHint(string message, float duration = 3f)
         {
+            message ??= string.Empty;
             HintDisplay.Show(new TextHint(message, new HintParameter[] { new StringHintParameter(message) }, null, duration));
         }
 
