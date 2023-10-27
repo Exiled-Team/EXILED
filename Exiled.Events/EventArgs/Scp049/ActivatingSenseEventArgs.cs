@@ -20,8 +20,6 @@ namespace Exiled.Events.EventArgs.Scp049
     /// </summary>
     public class ActivatingSenseEventArgs : IScp049Event, IDeniableEvent
     {
-        private Player target;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivatingSenseEventArgs"/> class with information before SCP-049 sense is activated.
         /// </summary>
