@@ -53,12 +53,12 @@ namespace Exiled.Events.Patches.Events.Scp049
                 {
                     // Player.Get(base.Owner)
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp049Role>), nameof(ScpStandardSubroutine<Scp049Role>.Owner))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ScpStandardSubroutine<Scp049Role>), nameof(ScpStandardSubroutine<Scp049Role>.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // Player.Get(this.Target)
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.Target))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.Target))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // true
@@ -78,7 +78,14 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingSenseEventArgs), nameof(ActivatingSenseEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, failedLabel),
 
-                    // this.Target = ev.Target
+                    // if (ev.Target == null)
+                    //    return;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingSenseEventArgs), nameof(ActivatingSenseEventArgs.Target))),
+                    new(OpCodes.Brfalse_S, failedLabel),
+
+                    // this.Target = ev.Target.ReferenceHub;
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingSenseEventArgs), nameof(ActivatingSenseEventArgs.Target))),
