@@ -49,7 +49,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets the amount of inflicted damage.
         /// </summary>
-        public float Amount { get; }
+        public float Amount => DamageHandler.Damage;
 
         /// <summary>
         ///     Gets or sets the action than will be made on the player.

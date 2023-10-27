@@ -35,9 +35,12 @@ namespace Exiled.Events.Patches.Events.Scp049
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-            int offset = 2;
+
+            // Label than return in the this.Cooldown.Trigger((double)ev.FailedCooldown)
+            int offset = 3;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldnull) + offset;
-            Label failedLabel = (Label)newInstructions[index].operand;
+            Label failedLabel = generator.DefineLabel();
+            newInstructions[index].labels.Add(failedLabel);
 
             offset = 1;
             index = newInstructions.FindIndex(instruction => instruction.operand == (object)PropertySetter(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.Target))) + offset;
@@ -50,12 +53,12 @@ namespace Exiled.Events.Patches.Events.Scp049
                 {
                     // Player.Get(base.Owner)
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp049Role>), nameof(ScpStandardSubroutine<Scp049Role>.Owner))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ScpStandardSubroutine<Scp049Role>), nameof(ScpStandardSubroutine<Scp049Role>.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // Player.Get(this.Target)
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.Target))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.Target))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // true
@@ -75,15 +78,22 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingSenseEventArgs), nameof(ActivatingSenseEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, failedLabel),
 
-                    // this.Target = ev.Target
+                    // if (ev.Target == null)
+                    //    return;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingSenseEventArgs), nameof(ActivatingSenseEventArgs.Target))),
+                    new(OpCodes.Brfalse_S, failedLabel),
+
+                    // this.Target = ev.Target.ReferenceHub;
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingSenseEventArgs), nameof(ActivatingSenseEventArgs.Target))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
-                    new(OpCodes.Call, PropertySetter(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.Target))),
+                    new(OpCodes.Callvirt, PropertySetter(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.Target))),
                 });
 
-            // replace "this.Cooldown.Trigger(2.5)" with "this.Cooldown.Trigger(ev.FailedCooldown)"
+            // replace "this.Cooldown.Trigger(2.5)" with "this.Cooldown.Trigger((double)ev.FailedCooldown)"
             offset = -1;
             index = newInstructions.FindIndex(instruction => instruction.operand == (object)Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger))) + offset;
             newInstructions.RemoveAt(index);
@@ -92,12 +102,13 @@ namespace Exiled.Events.Patches.Events.Scp049
                 index,
                 new CodeInstruction[]
                 {
-                    // ev.FailedCooldown
+                    // (double)ev.FailedCooldown
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingSenseEventArgs), nameof(ActivatingSenseEventArgs.FailedCooldown))),
+                    new(OpCodes.Conv_R8),
                 });
 
-            // replace "this.Duration.Trigger(20.0)" with "this.Duration.Trigger(ev.Duration)"
+            // replace "this.Duration.Trigger(20.0)" with "this.Duration.Trigger((double)ev.Duration)"
             offset = -1;
             index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger))) + offset;
             newInstructions.RemoveAt(index);
@@ -106,9 +117,10 @@ namespace Exiled.Events.Patches.Events.Scp049
                 index,
                 new CodeInstruction[]
                 {
-                    // ev.Duration
+                    // (double)ev.Duration
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingSenseEventArgs), nameof(ActivatingSenseEventArgs.Duration))),
+                    new(OpCodes.Conv_R8),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)

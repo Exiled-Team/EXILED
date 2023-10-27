@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 {
                     // this.Owner
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp079Role>), nameof(ScpStandardSubroutine<Scp079Role>.Owner))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ScpStandardSubroutine<Scp079Role>), nameof(ScpStandardSubroutine<Scp079Role>.Owner))),
 
                     // this._roomController.Room
                     new(OpCodes.Ldarg_0),

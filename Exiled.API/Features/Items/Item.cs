@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
-
+    using Footprinting;
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
@@ -335,6 +335,9 @@ namespace Exiled.API.Features.Items
         /// <param name="pickup"><see cref="Pickup"/>-related data to give to the <see cref="Item"/>.</param>
         internal virtual void ReadPickupInfo(Pickup pickup)
         {
+            if (!pickup.Base.PreviousOwner.IsSet)
+                pickup.Base.PreviousOwner = new Footprint(Server.Host.ReferenceHub);
+
             if (pickup is not null)
             {
                 Scale = pickup.Scale;

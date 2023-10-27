@@ -111,7 +111,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(HurtEventArgs))[0]),
                     new(OpCodes.Dup),
 
-                    // Handlers.Player.OnHurting(ev);
+                    // Handlers.Player.OnHurt(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHurt))),
 
                     // handlerOutput = ev.HandlerOutput;

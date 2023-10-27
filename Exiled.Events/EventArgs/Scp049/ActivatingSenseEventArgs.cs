@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs.Scp049
     using System;
 
     using API.Features;
+    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
     using Scp049Role = API.Features.Roles.Scp049Role;
@@ -19,6 +20,8 @@ namespace Exiled.Events.EventArgs.Scp049
     /// </summary>
     public class ActivatingSenseEventArgs : IScp049Event, IDeniableEvent
     {
+        private Player target;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivatingSenseEventArgs"/> class with information before SCP-049 sense is activated.
         /// </summary>
