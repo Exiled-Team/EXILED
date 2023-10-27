@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs.Scp049
     using System;
 
     using API.Features;
+    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
     using Scp049Role = API.Features.Roles.Scp049Role;
@@ -19,6 +20,8 @@ namespace Exiled.Events.EventArgs.Scp049
     /// </summary>
     public class ActivatingSenseEventArgs : IScp049Event, IDeniableEvent
     {
+        private Player target;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivatingSenseEventArgs"/> class with information before SCP-049 sense is activated.
         /// </summary>
@@ -46,7 +49,11 @@ namespace Exiled.Events.EventArgs.Scp049
         /// <summary>
         /// Gets or sets the Player who the sense ability is affecting.
         /// </summary>
-        public Player Target { get; set; }
+        public Player Target
+        {
+            get => target;
+            set => _ = value.Role.Is(out HumanRole _) ? target = value : target = null;
+        }
 
         /// <summary>
         /// Gets or sets the cooldown of the ability.
