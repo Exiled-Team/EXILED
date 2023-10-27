@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 {
                     // this.Owner
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp079Role>), nameof(ScpStandardSubroutine<Scp079Role>.Owner))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ScpStandardSubroutine<Scp079Role>), nameof(ScpStandardSubroutine<Scp079Role>.Owner))),
 
                     // this._syncZone
                     new(OpCodes.Ldarg_0),
@@ -81,10 +81,12 @@ namespace Exiled.Events.Patches.Events.Scp079
                     // Scp079.OnZoneBlackout(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnZoneBlackout))),
 
-                    // ev.IsAllowed
+                    // !ev.IsAllowed
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ZoneBlackoutEventArgs), nameof(ZoneBlackoutEventArgs.IsAllowed))),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Ceq),
 
-                    // if (ev.IsAllowed) return;
+                    // if (!ev.IsAllowed) return;
                 });
 
             offset = 1;
