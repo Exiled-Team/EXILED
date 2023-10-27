@@ -182,7 +182,7 @@ namespace Exiled.API.Features.Items
         internal override void ReadPickupInfo(Pickup pickup)
         {
             base.ReadPickupInfo(pickup);
-            if (pickup is BodyArmorPickup armorPickup)
+            if (pickup is Pickups.BodyArmorPickup armorPickup)
             {
                 HelmetEfficacy = armorPickup.HelmetEfficacy;
                 VestEfficacy = armorPickup.VestEfficacy;
