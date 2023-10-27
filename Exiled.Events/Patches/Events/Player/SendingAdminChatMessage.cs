@@ -54,7 +54,10 @@ namespace Exiled.Events.Patches.Events.Player
                     // message
                     new(OpCodes.Ldarg_0),
 
-                    // SearchingPickupEventArgs ev = new(Player, ItemPickupBase, SearchSession, SearchCompletor, float);
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
+                    // SearchingPickupEventArgs ev = new(Player, string, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SendingAdminChatMessageEventsArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),

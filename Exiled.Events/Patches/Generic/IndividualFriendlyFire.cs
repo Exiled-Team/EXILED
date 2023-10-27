@@ -36,7 +36,16 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
         /// <returns>True if the attacker can damage the victim.</returns>
-        public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub) => CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
+        /// <remarks>Use <see cref="CheckFriendlyFirePlayer(Footprint, ReferenceHub)"/> instead of this if the damage is not done instantly.</remarks>
+        public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub) => CheckFriendlyFirePlayer(new Footprint(attackerHub), victimHub);
+
+        /// <summary>
+        /// Checks if there can be damage between two players, according to the FF rules.
+        /// </summary>
+        /// <param name="attackerFootprint">The person attacking.</param>
+        /// <param name="victimHub">The person being attacked.</param>
+        /// <returns>True if the attacker can damage the victim.</returns>
+        public static bool CheckFriendlyFirePlayer(Footprint attackerFootprint, ReferenceHub victimHub) => CheckFriendlyFirePlayerRules(attackerFootprint, victimHub, out _);
 
         /// <summary>
         /// Checks if there can be damage between two players, according to the FF rules.
@@ -44,7 +53,16 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
         /// <returns>True if the attacker can damage the victim.</returns>
-        public static bool CheckFriendlyFirePlayerHitbox(ReferenceHub attackerHub, ReferenceHub victimHub) => Server.FriendlyFire || CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
+        /// <remarks>Use <see cref="CheckFriendlyFirePlayerHitbox(Footprint, ReferenceHub)"/> instead of this if the damage is not done instantly.</remarks>
+        public static bool CheckFriendlyFirePlayerHitbox(ReferenceHub attackerHub, ReferenceHub victimHub) => CheckFriendlyFirePlayerHitbox(new Footprint(attackerHub), victimHub);
+
+        /// <summary>
+        /// Checks if there can be damage between two players, according to the FF rules.
+        /// </summary>
+        /// <param name="attackerFootprint">The person attacking.</param>
+        /// <param name="victimHub">The person being attacked.</param>
+        /// <returns>True if the attacker can damage the victim.</returns>
+        public static bool CheckFriendlyFirePlayerHitbox(Footprint attackerFootprint, ReferenceHub victimHub) => Server.FriendlyFire || CheckFriendlyFirePlayerRules(attackerFootprint, victimHub, out _);
 
         /// <summary>
         /// Checks if there can be damage between two players, according to the FF rules.
@@ -54,7 +72,18 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="ffMultiplier"> FF multiplier. </param>
         /// <returns> True if the attacker can damage the victim.</returns>
         /// <remarks> Friendly fire multiplier is also provided back if needed. </remarks>
-        public static bool CheckFriendlyFirePlayerRules(ReferenceHub attackerHub, ReferenceHub victimHub, out float ffMultiplier)
+        /// <remarks>Use <see cref="CheckFriendlyFirePlayerRules(Footprint, ReferenceHub, out float)"/> instead of this if the damage is not done instantly.</remarks>
+        public static bool CheckFriendlyFirePlayerRules(ReferenceHub attackerHub, ReferenceHub victimHub, out float ffMultiplier) => CheckFriendlyFirePlayerRules(new Footprint(attackerHub), victimHub, out ffMultiplier);
+
+        /// <summary>
+        /// Checks if there can be damage between two players, according to the FF rules.
+        /// </summary>
+        /// <param name="attackerFootprint">The person attacking.</param>
+        /// <param name="victimHub">The person being attacked.</param>
+        /// <param name="ffMultiplier"> FF multiplier. </param>
+        /// <returns> True if the attacker can damage the victim.</returns>
+        /// <remarks> Friendly fire multiplier is also provided back if needed. </remarks>
+        public static bool CheckFriendlyFirePlayerRules(Footprint attackerFootprint, ReferenceHub victimHub, out float ffMultiplier)
         {
             ffMultiplier = 1f;
 
@@ -62,15 +91,24 @@ namespace Exiled.Events.Patches.Generic
             if (Server.FriendlyFire)
                 return false;
 
-            if (attackerHub is null || victimHub is null)
+            // always allow damage from Server.Host
+            if (attackerFootprint.Hub == Server.Host.ReferenceHub)
+                return true;
+
+            // Only check friendlyFire if the FootPrint hasn't changed (Fix for Grenade not dealing damage because it's from a dead player)
+            // TODO rework FriendlyFireRule to make it compatible with Footprint
+            if (!attackerFootprint.SameLife(new(attackerFootprint.Hub)))
+                return HitboxIdentity.CheckFriendlyFire(attackerFootprint.Role, victimHub.roleManager.CurrentRole.RoleTypeId);
+
+            if (attackerFootprint.Hub is null || victimHub is null)
             {
-                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker hub null: {attackerHub is null}, Victim hub null: {victimHub is null}");
+                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker hub null: {attackerFootprint.Hub is null}, Victim hub null: {victimHub is null}");
                 return true;
             }
 
             try
             {
-                Player attacker = Player.Get(attackerHub);
+                Player attacker = Player.Get(attackerFootprint.Hub);
                 Player victim = Player.Get(victimHub);
                 if (attacker is null || victim is null)
                 {
@@ -156,7 +194,7 @@ namespace Exiled.Events.Patches.Generic
                     // CheckFriendlyFirePlayerHitbox(attacker, victim);
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldarg_1),
-                    new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerHitbox))),
+                    new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerHitbox), new Type[] { typeof(ReferenceHub), typeof(ReferenceHub) })),
 
                     // goto base game logic if false
                     new(OpCodes.Brfalse_S, jmp),
@@ -199,10 +237,9 @@ namespace Exiled.Events.Patches.Generic
                 index,
                 new CodeInstruction[]
                 {
-                    // Load Attacker (this.Attacker.Hub)
+                    // Load Attacker (this.Attacker)
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Attacker))),
-                    new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
 
                     // Load Target (ply)
                     new(OpCodes.Ldarg_1),
@@ -215,8 +252,8 @@ namespace Exiled.Events.Patches.Generic
                     new(OpCodes.Ldloca, ffMulti.LocalIndex),
 
                     // Pass over Player hubs, and FF multiplier.
-                    // CheckFriendlyFirePlayerRules(this.Attacker.Hub, ply, ffMulti)
-                    new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerRules), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(float).MakeByRefType() })),
+                    // CheckFriendlyFirePlayerRules(this.Attacker, ply, ffMulti)
+                    new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerRules), new[] { typeof(Footprint), typeof(ReferenceHub), typeof(float).MakeByRefType() })),
 
                     // If we have rules, we branch to custom logic, otherwise, default to NW logic.
                     new(OpCodes.Brtrue_S, uniqueFFMulti),

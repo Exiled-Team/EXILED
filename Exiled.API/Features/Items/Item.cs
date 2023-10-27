@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
+    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms.Ammo;
@@ -288,10 +289,11 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public virtual Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
+            PickupSyncInfo info = new(Type, Weight, Serial);
 
-            ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-            ipb.gameObject.transform.localScale = Scale;
+            ItemPickupBase ipb = InventoryExtensions.ServerCreatePickup(Base, info, position, rotation);
+
+            Base.OnRemoved(ipb);
 
             Pickup pickup = Pickup.Get(ipb);
 
@@ -325,6 +327,18 @@ namespace Exiled.API.Features.Items
             Base.Owner = newOwner.ReferenceHub;
 
             Base.OnAdded(null);
+        }
+
+        /// <summary>
+        /// Helper method for saving data between items and pickups.
+        /// </summary>
+        /// <param name="pickup"><see cref="Pickup"/>-related data to give to the <see cref="Item"/>.</param>
+        internal virtual void ReadPickupInfo(Pickup pickup)
+        {
+            if (pickup is not null)
+            {
+                Scale = pickup.Scale;
+            }
         }
     }
 }

@@ -7,10 +7,10 @@
 
 namespace Exiled.Events.EventArgs.Scp049
 {
-    using API.Features;
-    using Interfaces;
+    using System;
 
-    using PlayerRoles.PlayableScps.Scp049;
+    using API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     using Scp049Role = API.Features.Roles.Scp049Role;
 
@@ -31,30 +31,36 @@ namespace Exiled.Events.EventArgs.Scp049
             Scp049 = player.Role.As<Scp049Role>();
             Target = target;
             IsAllowed = isAllowed;
-            Cooldown = Scp049SenseAbility.AttemptFailCooldown;
-            Duration = Scp049SenseAbility.EffectDuration;
+            FailedCooldown = (float)Scp049.SenseAbilityFailCooldown;
+            Duration = (float)Scp049.SenseAbilityDuration;
         }
+
+        /// <inheritdoc/>
+        public Scp049Role Scp049 { get; }
 
         /// <summary>
         /// Gets the Player who is playing as SCP-049.
         /// </summary>
         public Player Player { get; }
 
-        /// <inheritdoc/>
-        public Scp049Role Scp049 { get; }
-
         /// <summary>
-        /// Gets the Player who the sense ability is affecting.
+        /// Gets or sets the Player who the sense ability is affecting.
         /// </summary>
-        public Player Target { get; }
+        public Player Target { get; set; }
 
         /// <summary>
         /// Gets or sets the cooldown of the ability.
         /// </summary>
-        public float Cooldown { get; set; }
+        public float FailedCooldown { get; set; }
 
         /// <summary>
-        /// Gets or sets the duration of the ability.
+        /// Gets or sets the cooldown of the ability.
+        /// </summary>
+        [Obsolete("Use FailedCooldown instead of this")]
+        public float Cooldown { get => FailedCooldown; set => FailedCooldown = value; }
+
+        /// <summary>
+        /// Gets or sets the duration of the Effect.
         /// </summary>
         public float Duration { get; set; }
 

@@ -1889,7 +1889,7 @@ namespace Exiled.API.Features
         /// <seealso cref="CountItem(ItemType)"/>
         public int CountItem(ItemCategory category) => category switch
         {
-            ItemCategory.Ammo => Inventory.UserInventory.ReserveAmmo.Where(ammo => ammo.Value > 0).Count(),
+            ItemCategory.Ammo => Inventory.UserInventory.ReserveAmmo.Count(ammo => ammo.Value > 0),
             _ => Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.Category == category),
         };
 
@@ -1918,7 +1918,12 @@ namespace Exiled.API.Features
             {
                 item.ChangeOwner(this, Server.Host);
 
-                if (CurrentItem is not null && CurrentItem.Serial == item.Serial)
+                if (CurrentItem == item)
+                {
+                    Inventory.CurInstance = null;
+                }
+
+                if (item.Serial == Inventory.CurItem.SerialNumber)
                     Inventory.NetworkCurItem = ItemIdentifier.None;
 
                 Inventory.UserInventory.Items.Remove(item.Serial);
@@ -1935,7 +1940,12 @@ namespace Exiled.API.Features
         /// <param name="serial">The <see cref="Item"/> serial to remove.</param>
         /// <param name="destroy">Whether or not to destroy the item.</param>
         /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
-        public bool RemoveItem(ushort serial, bool destroy = true) => RemoveItem(Item.Get(serial), destroy);
+        public bool RemoveItem(ushort serial, bool destroy = true)
+        {
+            if (Items.SingleOrDefault(item => item.Serial == serial) is not Item item)
+                return false;
+            return RemoveItem(item, destroy);
+        }
 
         /// <summary>
         /// Removes all <see cref="Item"/>'s that satisfy the condition from the player's inventory.
@@ -2199,6 +2209,28 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Sends a message to the player's Remote Admin Chat.
+        /// </summary>
+        /// <param name="message">The message to be sent.</param>
+        /// <param name="channel">Indicates whether or not the message should be highlighted as success.</param>
+        /// <returns><see langword="true"/> if message was send; otherwise, <see langword="false"/>.</returns>
+        public bool SendStaffMessage(string message, EncryptedChannelManager.EncryptedChannel channel = EncryptedChannelManager.EncryptedChannel.AdminChat)
+        {
+            return ReferenceHub.encryptedChannelManager.TrySendMessageToClient("!0" + message, channel);
+        }
+
+        /// <summary>
+        /// Sends a message to the player's Remote Admin Chat.
+        /// </summary>
+        /// <param name="message">The message to be sent.</param>
+        /// <param name="channel">Indicates whether or not the message should be highlighted as success.</param>
+        /// <returns><see langword="true"/> if message was send; otherwise, <see langword="false"/>.</returns>
+        public bool SendStaffPing(string message, EncryptedChannelManager.EncryptedChannel channel = EncryptedChannelManager.EncryptedChannel.AdminChat)
+        {
+            return ReferenceHub.encryptedChannelManager.TrySendMessageToClient("!0" + message, channel);
+        }
+
+        /// <summary>
         /// Shows a broadcast to the player. Doesn't get logged to the console and can be monospaced.
         /// </summary>
         /// <param name="duration">The broadcast duration.</param>
@@ -2284,17 +2316,37 @@ namespace Exiled.API.Features
         /// Adds an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
+        /// <returns>The <see cref="Item"/> given to the player.</returns>
+        public Item AddItem(ItemType itemType)
+        {
+            return Item.Get(Inventory.ServerAddItem(itemType));
+        }
+
+        /// <summary>
+        /// Adds an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="itemType">The item to be added.</param>
         /// <param name="identifiers">The attachments to be added to the item.</param>
         /// <returns>The <see cref="Item"/> given to the player.</returns>
+        [Obsolete("Use AddItem(ItemType) or AddItem(FirearmType, IEnumerable<AttachmentIdentifier>)", true)]
         public Item AddItem(ItemType itemType, IEnumerable<AttachmentIdentifier> identifiers = null)
+            => itemType.GetFirearmType() is FirearmType.None ? AddItem(itemType) : AddItem(itemType.GetFirearmType(), identifiers);
+
+        /// <summary>
+        /// Adds an firearm of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="firearmType">The firearm to be added.</param>
+        /// <param name="identifiers">The attachments to be added to the item.</param>
+        /// <returns>The <see cref="Item"/> given to the player.</returns>
+        public Item AddItem(FirearmType firearmType, IEnumerable<AttachmentIdentifier> identifiers)
         {
-            Item item = Item.Get(Inventory.ServerAddItem(itemType));
+            Item item = Item.Get(Inventory.ServerAddItem(firearmType.GetItemType()));
 
             if (item is Firearm firearm)
             {
                 if (identifiers is not null)
                     firearm.AddAttachment(identifiers);
-                else if (Preferences is not null && Preferences.TryGetValue(itemType.GetFirearmType(), out AttachmentIdentifier[] attachments))
+                else if (Preferences is not null && Preferences.TryGetValue(firearmType, out AttachmentIdentifier[] attachments))
                     firearm.Base.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
 
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
@@ -2333,7 +2385,18 @@ namespace Exiled.API.Features
         /// <param name="amount">The amount of items to be added.</param>
         /// <param name="identifiers">The attachments to be added to the item.</param>
         /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        [Obsolete("Use AddItem(ItemType, int) or AddItem(FirearmType, int, IEnumerable<AttachmentIdentifier>)", true)]
         public IEnumerable<Item> AddItem(ItemType itemType, int amount, IEnumerable<AttachmentIdentifier> identifiers)
+            => itemType.GetFirearmType() is FirearmType.None ? AddItem(itemType, amount) : AddItem(itemType.GetFirearmType(), amount, identifiers);
+
+        /// <summary>
+        /// Adds the amount of firearms of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="firearmType">The item to be added.</param>
+        /// <param name="amount">The amount of items to be added.</param>
+        /// <param name="identifiers">The attachments to be added to the item.</param>
+        /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        public IEnumerable<Item> AddItem(FirearmType firearmType, int amount, IEnumerable<AttachmentIdentifier> identifiers)
         {
             List<Item> items = new(amount > 0 ? amount : 0);
 
@@ -2342,7 +2405,7 @@ namespace Exiled.API.Features
                 IEnumerable<AttachmentIdentifier> attachmentIdentifiers = identifiers.ToList();
 
                 for (int i = 0; i < amount; i++)
-                    items.Add(AddItem(itemType, attachmentIdentifiers));
+                    items.Add(AddItem(firearmType, attachmentIdentifiers));
             }
 
             return items;
@@ -2370,11 +2433,27 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
         /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        [Obsolete("Use AddItem(Dictionary<FirearmType, IEnumerable<AttachmentIdentifier>>) instead of this", true)]
         public IEnumerable<Item> AddItem(Dictionary<ItemType, IEnumerable<AttachmentIdentifier>> items)
         {
             List<Item> returnedItems = new(items.Count);
 
             foreach (KeyValuePair<ItemType, IEnumerable<AttachmentIdentifier>> item in items)
+                returnedItems.Add(AddItem(item.Key, item.Value));
+
+            return returnedItems;
+        }
+
+        /// <summary>
+        /// Adds the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
+        /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        public IEnumerable<Item> AddItem(Dictionary<FirearmType, IEnumerable<AttachmentIdentifier>> items)
+        {
+            List<Item> returnedItems = new(items.Count);
+
+            foreach (KeyValuePair<FirearmType, IEnumerable<AttachmentIdentifier>> item in items)
                 returnedItems.Add(AddItem(item.Key, item.Value));
 
             return returnedItems;
@@ -2388,9 +2467,6 @@ namespace Exiled.API.Features
         {
             try
             {
-                if (item.Base is null)
-                    item = Item.Create(item.Type);
-
                 AddItem(item.Base, item);
             }
             catch (Exception e)
@@ -2408,9 +2484,6 @@ namespace Exiled.API.Features
         {
             try
             {
-                if (item.Base is null)
-                    item = new Firearm(item.Type);
-
                 if (identifiers is not null)
                     item.AddAttachment(identifiers);
 
@@ -2461,13 +2534,14 @@ namespace Exiled.API.Features
 
                 item.ChangeOwner(item.Owner, this);
 
-                if (Inventory.isLocalPlayer && itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
+                if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
                 {
                     acquisitionConfirmationTrigger.ServerConfirmAcqusition();
                     acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
                 }
 
                 // Dont care, didnt ask, ratio
+                // UPD 12.09.23 - maybe some changes will fix candies desync, and that legacy code can be deleted
                 Timing.CallDelayed(0.02f, () =>
                 {
                     if (item.Type is ItemType.SCP330 && item.Base != null)
@@ -2492,14 +2566,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The item to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
-        public void AddItem(Item item, int amount)
-        {
-            if (amount > 0)
-            {
-                for (int i = 0; i < amount; i++)
-                    AddItem(item);
-            }
-        }
+        [Obsolete("Removed this method can't be functional")]
+        public void AddItem(Item item, int amount) => _ = item;
 
         /// <summary>
         /// Adds the <paramref name="amount"/> of items to the player's inventory.
@@ -2507,14 +2575,8 @@ namespace Exiled.API.Features
         /// <param name="firearm">The firearm to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
         /// <param name="identifiers">The attachments to be added to the item.</param>
-        public void AddItem(Firearm firearm, int amount, IEnumerable<AttachmentIdentifier> identifiers)
-        {
-            if (amount > 0)
-            {
-                for (int i = 0; i < amount; i++)
-                    AddItem(firearm, identifiers);
-            }
-        }
+        [Obsolete("Removed this method can't be functional")]
+        public void AddItem(Firearm firearm, int amount, IEnumerable<AttachmentIdentifier> identifiers) => _ = firearm;
 
         /// <summary>
         /// Adds the list of items to the player's inventory.
@@ -2591,7 +2653,7 @@ namespace Exiled.API.Features
             ClearInventory();
 
             foreach (Item item in newItems)
-                AddItem(item.Base is null ? new Item(item.Type) : item);
+                AddItem(item);
         }
 
         /// <summary>
@@ -2807,7 +2869,18 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
         public bool EnableEffect<T>(float duration = 0f, bool addDurationIfActive = false)
-            where T : StatusEffectBase => ReferenceHub.playerEffectsController.EnableEffect<T>(duration, addDurationIfActive);
+                    where T : StatusEffectBase => EnableEffect<T>(1, duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a <see cref="StatusEffectBase">status effect</see> on the player.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="StatusEffectBase"/> to enable.</typeparam>
+        /// <param name="intensity">The intensity of the effect will be active for.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
+        /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
+        public bool EnableEffect<T>(byte intensity, float duration = 0f, bool addDurationIfActive = false)
+            where T : StatusEffectBase => ReferenceHub.playerEffectsController.ChangeState<T>(intensity, duration, addDurationIfActive);
 
         /// <summary>
         /// Enables a <see cref="StatusEffectBase">status effect</see> on the player.
@@ -2817,12 +2890,24 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
         public bool EnableEffect(StatusEffectBase statusEffect, float duration = 0f, bool addDurationIfActive = false)
+            => EnableEffect(statusEffect, 1, duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a <see cref="StatusEffectBase">status effect</see> on the player.
+        /// </summary>
+        /// <param name="statusEffect">The name of the <see cref="StatusEffectBase"/> to enable.</param>
+        /// <param name="intensity">The intensity of the effect will be active for.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
+        /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
+        public bool EnableEffect(StatusEffectBase statusEffect, byte intensity, float duration = 0f, bool addDurationIfActive = false)
         {
             if (statusEffect is null)
                 return false;
 
-            StatusEffectBase effect = EnableEffect(statusEffect.GetType().Name, duration, addDurationIfActive);
-            return effect is not null && effect.IsEnabled;
+            statusEffect.ServerSetState(intensity, duration, addDurationIfActive);
+
+            return statusEffect is not null && statusEffect.IsEnabled;
         }
 
         /// <summary>
@@ -2833,7 +2918,18 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         /// <returns>The <see cref="StatusEffectBase"/> instance of the activated effect.</returns>
         public StatusEffectBase EnableEffect(string effectName, float duration = 0f, bool addDurationIfActive = false)
-            => ReferenceHub.playerEffectsController.ChangeState(effectName, 1, duration, addDurationIfActive);
+            => EnableEffect(effectName, 1, duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a <see cref="StatusEffectBase">status effect</see> on the player.
+        /// </summary>
+        /// <param name="effectName">The name of the <see cref="StatusEffectBase"/> to enable.</param>
+        /// <param name="intensity">The intensity of the effect will be active for.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
+        /// <returns>The <see cref="StatusEffectBase"/> instance of the activated effect.</returns>
+        public StatusEffectBase EnableEffect(string effectName, byte intensity, float duration = 0f, bool addDurationIfActive = false)
+            => ReferenceHub.playerEffectsController.ChangeState(effectName, intensity, duration, addDurationIfActive);
 
         /// <summary>
         /// Enables a <see cref="EffectType">status effect</see> on the player.
@@ -2842,31 +2938,31 @@ namespace Exiled.API.Features
         /// <param name="duration">The amount of time the effect will be active for.</param>
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         public void EnableEffect(EffectType type, float duration = 0f, bool addDurationIfActive = false)
-        {
-            switch (type)
-            {
-                case EffectType.AmnesiaItems:
-                    EnableEffect<AmnesiaItems>(duration, addDurationIfActive);
-                    break;
-                case EffectType.AmnesiaVision:
-                    EnableEffect<AmnesiaVision>(duration, addDurationIfActive);
-                    break;
-                case EffectType.SoundtrackMute:
-                    EnableEffect<SoundtrackMute>(duration, addDurationIfActive);
-                    break;
-                default:
-                    if (TryGetEffect(type, out StatusEffectBase statusEffect))
-                        EnableEffect(statusEffect, duration, addDurationIfActive);
+            => EnableEffect(type, 1, duration, addDurationIfActive);
 
-                    break;
-            }
-        }
+        /// <summary>
+        /// Enables a <see cref="EffectType">status effect</see> on the player.
+        /// </summary>
+        /// <param name="type">The <see cref="EffectType"/> to enable.</param>
+        /// <param name="intensity">The intensity of the effect will be active for.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
+        /// <returns>return if the effect has been Enable.</returns>
+        public bool EnableEffect(EffectType type, byte intensity, float duration = 0f, bool addDurationIfActive = false)
+            => TryGetEffect(type, out StatusEffectBase statusEffect) && EnableEffect(statusEffect, intensity, duration, addDurationIfActive);
 
         /// <summary>
         /// Enables a <see cref="Effect">status effect</see> on the player.
         /// </summary>
         /// <param name="effect">The <see cref="Effect"/> to enable.</param>
-        public void EnableEffect(Effect effect)
+        [Obsolete("Use SyncEffect(Effect) instead of this")]
+        public void EnableEffect(Effect effect) => SyncEffect(effect);
+
+        /// <summary>
+        /// Syncs the <see cref="Effect">status effect</see> on the player.
+        /// </summary>
+        /// <param name="effect">The <see cref="Effect"/> to sync.</param>
+        public void SyncEffect(Effect effect)
         {
             if (effect.IsEnabled)
             {
@@ -2885,12 +2981,23 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         /// <returns>A <see cref="EffectType"/> that was given to the player.</returns>
         public EffectType ApplyRandomEffect(EffectCategory category = EffectCategory.None, float duration = 0f, bool addDurationIfActive = false)
+            => ApplyRandomEffect(category, 1, duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a random <see cref="EffectType"/> on the player.
+        /// </summary>
+        /// <param name="category">An optional category to filter the applied effect. Set to <see cref="EffectCategory.None"/> for any effect.</param>
+        /// <param name="intensity">The intensity of the effect will be active for.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
+        /// <returns>A <see cref="EffectType"/> that was given to the player.</returns>
+        public EffectType ApplyRandomEffect(EffectCategory category, byte intensity, float duration = 0f, bool addDurationIfActive = false)
         {
             Array effectTypes = Enum.GetValues(typeof(EffectType));
             IEnumerable<EffectType> validEffects = effectTypes.ToArray<EffectType>().Where(effect => effect.GetCategories().HasFlag(category));
             EffectType effectType = validEffects.GetRandomValue();
 
-            EnableEffect(effectType, duration, addDurationIfActive);
+            EnableEffect(effectType, intensity, duration, addDurationIfActive);
 
             return effectType;
         }
@@ -2914,10 +3021,17 @@ namespace Exiled.API.Features
         /// Enables a <see cref="IEnumerable{T}"/> of <see cref="Effect"/> on the player.
         /// </summary>
         /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="Effect"/> to enable.</param>
-        public void EnableEffects(IEnumerable<Effect> effects)
+        [Obsolete("Use SyncEffects(IEnumerable<Effect>) instead of this")]
+        public void EnableEffects(IEnumerable<Effect> effects) => SyncEffects(effects);
+
+        /// <summary>
+        /// Syncs a <see cref="IEnumerable{T}"/> of <see cref="Effect"/> on the player.
+        /// </summary>
+        /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="Effect"/> to enable.</param>
+        public void SyncEffects(IEnumerable<Effect> effects)
         {
             foreach (Effect effect in effects)
-                EnableEffect(effect);
+                SyncEffect(effect);
         }
 
         /// <summary>
