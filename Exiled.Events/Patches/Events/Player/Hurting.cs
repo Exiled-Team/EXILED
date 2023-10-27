@@ -104,7 +104,7 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new[]
                 {
-                    // HurtingEventArgs ev = new(player, handler, handleroutput)
+                    // HurtEventArgs ev = new(player, handler, handleroutput)
                     new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Ldloc_1),
