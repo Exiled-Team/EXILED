@@ -49,12 +49,11 @@ namespace Exiled.Events.EventArgs.Server
         /// <summary>
         ///     Gets or sets a value indicating whether the round is going to finish or not.
         /// </summary>
-        public bool IsRoundEnded { get; set; }
+        public bool IsRoundEnded { get; set; } // TODO: Obsolete this in Exiled 10
 
         /// <summary>
         ///     Gets or sets a value indicating whether the event can be executed or not.
         /// </summary>
-        [Obsolete("Use IsRoundEnded instead", true)]
         public bool IsAllowed
         {
             get => IsRoundEnded;
