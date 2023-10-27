@@ -75,6 +75,8 @@ namespace Exiled.API.Extensions
             EffectType.SugarRush => typeof(SugarRush),
             EffectType.TraumatizedByEvil => typeof(TraumatizedByEvil),
             EffectType.Metal => typeof(Metal),
+            EffectType.Prismatic => typeof(Prismatic),
+            EffectType.SlowMetabolism => typeof(SlowMetabolism),
 
             // This should never happen
             _ => throw new InvalidOperationException("Invalid effect enum provided"),
@@ -132,6 +134,8 @@ namespace Exiled.API.Extensions
             SugarHigh => EffectType.SugarHigh,
             SugarRush => EffectType.SugarRush,
             TraumatizedByEvil => EffectType.TraumatizedByEvil,
+            Prismatic => EffectType.Prismatic,
+            SlowMetabolism => EffectType.SlowMetabolism,
 
             // This should never happen
             _ => throw new InvalidOperationException("Invalid effect status base provided"),
