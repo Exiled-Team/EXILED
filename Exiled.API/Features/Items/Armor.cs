@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.Armor;
