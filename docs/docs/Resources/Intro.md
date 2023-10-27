@@ -61,6 +61,7 @@ sidebar_position: 1
 | 20  | ChaosRepressor | ChaosInsurgency  | ChaosInsurgency  | ChaosInsurgency |
 | 21  | Overwatch      | Dead             | None             | Draw            |
 | 22  | Filmmaker      | Dead             | None             | Draw            |
+| 23  | Scp3114        | Dead             | None             | Draw            |
 ```
 
 </details>
@@ -125,6 +126,8 @@ sidebar_position: 1
 [51] AntiSCP207 
 [52] GunFRMG0 
 [53] GunA7 
+[54] Lantern 
+[55] Marshmallow 
 ```
 
 </details>
@@ -341,6 +344,11 @@ sidebar_position: 1
 [40] Jailbird 
 [41] Frmg0 
 [42] A7 
+[43] Scp3114 
+[44] Strangled 
+[45] MarshmallowMan 
+[46] Silent 
+[47] MetalPipe 
 ```
 
 </details>
@@ -414,6 +422,15 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 [34] AntiScp207 
 [35] Scanned 
 [36] PocketCorroding 
+[37] Ghostly 
+[38] Strangled 
+[39] OrangeCandy 
+[40] Spicy 
+[41] SugarCrave 
+[42] SugarHigh 
+[43] SugarRush 
+[44] TraumatizedByEvil 
+[45] Metal 
 ```
 
 </details>
