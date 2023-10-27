@@ -335,9 +335,6 @@ namespace Exiled.API.Features.Items
         /// <param name="pickup"><see cref="Pickup"/>-related data to give to the <see cref="Item"/>.</param>
         internal virtual void ReadPickupInfo(Pickup pickup)
         {
-            if (!pickup.Base.PreviousOwner.IsSet)
-                pickup.Base.PreviousOwner = new Footprint(Server.Host.ReferenceHub);
-
             if (pickup is not null)
             {
                 Scale = pickup.Scale;

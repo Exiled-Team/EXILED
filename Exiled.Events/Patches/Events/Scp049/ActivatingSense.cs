@@ -80,7 +80,6 @@ namespace Exiled.Events.Patches.Events.Scp049
 
                     // if (ev.Target == null)
                     //    return;
-                    new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingSenseEventArgs), nameof(ActivatingSenseEventArgs.Target))),
                     new(OpCodes.Brfalse_S, failedLabel),

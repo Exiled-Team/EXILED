@@ -11,7 +11,6 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.Armor;
@@ -20,8 +19,6 @@ namespace Exiled.API.Features.Items
 
     using Structs;
     using UnityEngine;
-
-    using BodyArmorPickup = Pickups.BodyArmorPickup;
 
     /// <summary>
     /// A wrapper class for <see cref="BodyArmor"/>.
@@ -127,16 +124,17 @@ namespace Exiled.API.Features.Items
         /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 1 or above 2.</exception>
         public float StaminaUseMultiplier
         {
-            get => Base.StaminaUsageMultiplier;
+            get => Base._staminaUseMultiplier;
             set => Base._staminaUseMultiplier = value;
         }
 
         /// <summary>
         /// Gets or sets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 0 or above 1.</exception>
         public float MovementSpeedMultiplier
         {
-            get => Base.MovementSpeedMultiplier;
+            get => Base._movementSpeedMultiplier;
             [Obsolete("This Setter was causing desync to client", true)]
             set => _ = value;
         }
@@ -161,7 +159,6 @@ namespace Exiled.API.Features.Items
         public IEnumerable<BodyArmor.ArmorCategoryLimitModifier> CategoryLimits
         {
             get => Base.CategoryLimits;
-
             set => Base.CategoryLimits = value.ToArray();
         }
 
