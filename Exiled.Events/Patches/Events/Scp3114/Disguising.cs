@@ -26,29 +26,19 @@ namespace Exiled.Events.Patches.Events.Scp3114
     {
         private static bool Prefix(Scp3114Disguise __instance)
         {
-            __instance.OnProgressSet();
-            Scp3114Identity.StolenIdentity curIdentity = __instance.ScpRole.CurIdentity;
-            if (__instance.IsInProgress)
+            if (__instance.CurRagdoll != null && __instance.CurRagdoll is DynamicRagdoll ragdoll)
             {
-                DisguisingEventArgs ev = new(__instance.Owner);
-                Handlers.Scp3114.OnDisguising(ev);
-                if (!ev.IsAllowed)
+                DisguisingEventArgs disguising = new(__instance.Owner, ragdoll);
+                Handlers.Scp3114.OnDisguising(disguising);
+
+                if (!disguising.IsAllowed)
                     return false;
 
-                __instance._equipSkinSound.Play();
-                curIdentity.Ragdoll = __instance.CurRagdoll;
-                curIdentity.UnitNameId = (byte)(__instance._prevUnitIds.TryGetValue(__instance.CurRagdoll, out byte b) ? b : 0);
-                curIdentity.Status = Scp3114Identity.DisguiseStatus.Equipping;
-                DisguisedEventArgs ev = new(__instance.Owner);
-                Handlers.Scp3114.OnDisguised(ev);
-                return false;
-            }
+                __instance.ScpRole.Disguised = true;
+                Scp3114RagdollToBonesConverter.ServerConvertNew(__instance.ScpRole, ragdoll);
 
-            if (curIdentity.Status == Scp3114Identity.DisguiseStatus.Equipping)
-            {
-                __instance._equipSkinSound.Stop();
-                curIdentity.Status = Scp3114Identity.DisguiseStatus.None;
-                __instance.Cooldown.Trigger((double)__instance.Duration);
+                DisguisedEventArgs disguised = new(__instance.Owner, ragdoll);
+                Handlers.Scp3114.OnDisguised(disguised);
             }
 
             return false;
