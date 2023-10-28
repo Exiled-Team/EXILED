@@ -433,6 +433,11 @@ namespace Exiled.API.Features
         public bool RemoteAdminAccess => ReferenceHub.serverRoles.RemoteAdmin;
 
         /// <summary>
+        /// Gets a value indicating whether or not the player has Admin Chat access.
+        /// </summary>
+        public bool AdminChatAccess => ReferenceHub.serverRoles.AdminChatPerms;
+
+        /// <summary>
         /// Gets a value indicating a player's kick power.
         /// </summary>
         public byte KickPower => ReferenceHub.serverRoles.KickPower;
