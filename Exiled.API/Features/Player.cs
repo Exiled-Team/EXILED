@@ -54,6 +54,7 @@ namespace Exiled.API.Features
     using PluginAPI.Core;
     using RelativePositioning;
     using RemoteAdmin;
+    using Respawning.NamingRules;
     using RoundRestarting;
     using UnityEngine;
     using Utils;
@@ -817,7 +818,16 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's unit name.
         /// </summary>
-        public string UnitName => Role.Base is PlayerRoles.HumanRole humanRole ? humanRole.UnitName : string.Empty;
+        public string UnitName => Role.Base is PlayerRoles.HumanRole humanRole ? UnitNameMessageHandler.GetReceived(humanRole.AssignedSpawnableTeam, humanRole.UnitNameId) : string.Empty;
+
+        /// <summary>
+        /// Gets or sets the player's unit id.
+        /// </summary>
+        public byte UnitId
+        {
+            get => Role.Base is PlayerRoles.HumanRole humanRole ? humanRole.UnitNameId : byte.MinValue;
+            set => _ = Role.Base is PlayerRoles.HumanRole humanRole ? humanRole.UnitNameId = value : _ = value;
+        }
 
         /// <summary>
         /// Gets or sets the player's health.
@@ -2684,7 +2694,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="size">The size of the hitmarker, ranging from <c>0</c> to <c><see cref="Hitmarker.MaxSize"/></c>).</param>
         public void ShowHitMarker(float size = 1f) =>
-            Hitmarker.SendHitmarker(ReferenceHub, size);
+            Hitmarker.SendHitmarkerDirectly(ReferenceHub, size);
 
         /// <summary>
         /// Safely gets an <see cref="object"/> from <see cref="SessionVariables"/>, then casts it to <typeparamref name="T"/>.
