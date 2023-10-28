@@ -62,6 +62,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
         {
             RevealingEventArgs revealing = new(__instance.Owner);
             Handlers.Scp3114.OnRevealing(revealing);
+
             if (!revealing.IsAllowed)
             {
                 return false;
