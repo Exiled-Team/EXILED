@@ -8,12 +8,7 @@
 namespace Exiled.Events.Patches.Events.Scp3114
 {
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
-
-    using Exiled.API.Features.Pools;
-    using Exiled.Events.EventArgs.Scp244;
+#pragma warning disable SA1402 // File may only contain a single type
     using Exiled.Events.EventArgs.Scp3114;
 
     using HarmonyLib;
@@ -21,17 +16,14 @@ namespace Exiled.Events.Patches.Events.Scp3114
     using Mirror;
 
     using PlayerRoles.PlayableScps.Scp3114;
-    using PlayerRoles.PlayableScps.Subroutines;
-    using PlayerRoles.Ragdolls;
 
-    using static HarmonyLib.AccessTools;
     using static PlayerRoles.PlayableScps.Scp3114.Scp3114Identity;
 
     /// <summary>
     ///     Patches <see cref="Scp3114Identity.Update" /> setter.
     ///     Adds the <see cref="Handlers.Scp3114.Revealed" /> and <see cref="Handlers.Scp3114.Revealing" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp3114Identity), nameof(Scp3114Identity.Update), MethodType.Setter)]
+    [HarmonyPatch(typeof(Scp3114Identity), nameof(Scp3114Identity.Update))]
     internal class Revealing
     {
         private static bool Prefix(Scp3114Identity __instance)
@@ -54,6 +46,32 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 RevealedEventArgs revealed = new(__instance.Owner);
                 Handlers.Scp3114.OnRevealed(revealed);
             }
+
+            return false;
+        }
+    }
+
+    /// <summary>
+    ///     Patches <see cref="Scp3114Reveal.ServerProcessCmd" />.
+    ///     Adds the <see cref="Handlers.Scp3114.Revealed" /> and <see cref="Handlers.Scp3114.Revealing" /> event.
+    /// </summary>
+    [HarmonyPatch(typeof(Scp3114Reveal), nameof(Scp3114Reveal.ServerProcessCmd))]
+    internal class RevealingKey
+    {
+        private static bool Prefix(Scp3114Reveal __instance, NetworkReader reader)
+        {
+            RevealingEventArgs revealing = new(__instance.Owner);
+            Handlers.Scp3114.OnRevealing(revealing);
+            if (!revealing.IsAllowed)
+            {
+                return false;
+            }
+
+            __instance.ServerProcessCmd(reader);
+            __instance.ScpRole.Disguised = false;
+
+            RevealedEventArgs revealed = new(__instance.Owner);
+            Handlers.Scp3114.OnRevealed(revealed);
 
             return false;
         }
