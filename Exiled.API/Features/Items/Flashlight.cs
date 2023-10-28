@@ -13,15 +13,15 @@ namespace Exiled.API.Features.Items
     using Utils.Networking;
 
     /// <summary>
-    /// A wrapped class for <see cref="FlashlightItem"/>.
+    /// A wrapped class for <see cref="SwitchableLightSourceItemBase"/>.
     /// </summary>
-    public class Flashlight : Item, IWrapper<FlashlightItem>
+    public class Flashlight : Item, IWrapper<SwitchableLightSourceItemBase>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Flashlight"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="FlashlightItem"/> class.</param>
-        public Flashlight(FlashlightItem itemBase)
+        /// <param name="itemBase">The base <see cref="SwitchableLightSourceItemBase"/> class.</param>
+        public Flashlight(SwitchableLightSourceItemBase itemBase)
             : base(itemBase)
         {
             Base = itemBase;
@@ -30,15 +30,16 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Flashlight"/> class, as well as a new Flashlight item.
         /// </summary>
-        internal Flashlight()
-            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(new(ItemType.Flashlight, 0), false))
+        /// <param name="type">The <see cref="ItemType"/> of the flashlight.</param>
+        internal Flashlight(ItemType type)
+            : this((SwitchableLightSourceItemBase)Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
         {
         }
 
         /// <summary>
         /// Gets the <see cref="FlashlightItem"/> that this class is encapsulating.
         /// </summary>
-        public new FlashlightItem Base { get; }
+        public new SwitchableLightSourceItemBase Base { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the flashlight is turned on.
@@ -57,7 +58,7 @@ namespace Exiled.API.Features.Items
         /// Clones current <see cref="Flashlight"/> object.
         /// </summary>
         /// <returns> New <see cref="Flashlight"/> object. </returns>
-        public override Item Clone() => new Flashlight()
+        public override Item Clone() => new Flashlight(Type)
         {
             Active = Active,
         };

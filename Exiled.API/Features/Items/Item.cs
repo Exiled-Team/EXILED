@@ -23,6 +23,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.MicroHID;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
+    using InventorySystem.Items.SwitchableLightSources;
     using InventorySystem.Items.SwitchableLightSources.Flashlight;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
@@ -195,7 +196,7 @@ namespace Exiled.API.Features.Items
                 MicroHIDItem micro => new MicroHid(micro),
                 BodyArmor armor => new Armor(armor),
                 AmmoItem ammo => new Ammo(ammo),
-                FlashlightItem flashlight => new Flashlight(flashlight),
+                SwitchableLightSourceItemBase flashlight => new Flashlight(flashlight),
                 JailbirdItem jailbird => new Jailbird(jailbird),
                 ThrowableItem throwable => throwable.Projectile switch
                 {
@@ -252,7 +253,7 @@ namespace Exiled.API.Features.Items
             ItemType.Adrenaline or ItemType.Medkit or ItemType.Painkillers or ItemType.SCP500 or ItemType.SCP207 or ItemType.SCP1853 => new Consumable(type),
             ItemType.SCP244a or ItemType.SCP244b => new Scp244(type),
             ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39 => new Ammo(type),
-            ItemType.Flashlight => new Flashlight(),
+            ItemType.Flashlight or ItemType.Lantern => new Flashlight(type),
             ItemType.Radio => new Radio(),
             ItemType.MicroHID => new MicroHid(),
             ItemType.GrenadeFlash => new FlashGrenade(owner),
