@@ -18,8 +18,8 @@ namespace Exiled.Events.Patches.Events.Scp3114
     using PlayerRoles.Ragdolls;
 
     /// <summary>
-    ///     Patches <see cref="Scp3114Disguise.ServerComplete()" /> setter.
-    ///     Adds the <see cref="Handlers.Scp3114.Disguising" /> event.
+    ///     Patches <see cref="Scp3114Disguise.ServerComplete()" />.
+    ///     Adds the <see cref="Handlers.Scp3114.Disguising" /> and <see cref="Handlers.Scp3114.Disguised" /> events.
     /// </summary>
     [HarmonyPatch(typeof(Scp3114Disguise), nameof(Scp3114Disguise.ServerComplete))]
     internal class Disguising

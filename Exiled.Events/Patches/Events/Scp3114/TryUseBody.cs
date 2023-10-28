@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
     using PlayerRoles.PlayableScps.Scp3114;
 
     /// <summary>
-    ///     Patches <see cref="Scp3114Disguise.OnProgressSet()" /> setter.
+    ///     Patches <see cref="Scp3114Disguise.OnProgressSet()" />.
     ///     Adds the <see cref="Handlers.Scp3114.TryUseBody" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp3114Disguise), nameof(Scp3114Disguise.OnProgressSet))]
