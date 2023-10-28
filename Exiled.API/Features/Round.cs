@@ -66,8 +66,8 @@ namespace Exiled.API.Features
         /// </summary>
         public static int ChaosTargetCount
         {
-            get => RoundSummary.singleton.ChaosTargetCount;
-            set => RoundSummary.singleton.ChaosTargetCount = value;
+            get => RoundSummary.singleton.Network_chaosTargetCount;
+            set => RoundSummary.singleton.Network_chaosTargetCount = value;
         }
 
         /// <summary>
