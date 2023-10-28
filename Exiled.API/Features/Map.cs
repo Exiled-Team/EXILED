@@ -69,7 +69,7 @@ namespace Exiled.API.Features
         private static AmbientSoundPlayer ambientSoundPlayer;
 
         /// <summary>
-        /// Gets the tantrum prefab.
+        /// Gets the prismatic prefab.
         /// </summary>
         public static global::Hazards.PrismaticCloud PrismaticCloud
         {
@@ -111,7 +111,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the prismatic cloud prefab.
+        /// Gets the amnestic cloud prefab.
         /// </summary>
         public static Scp939AmnesticCloudInstance AmnesticCloudPrefab
         {
