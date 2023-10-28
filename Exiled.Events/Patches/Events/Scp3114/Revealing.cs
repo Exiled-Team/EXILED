@@ -7,9 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Scp3114
 {
+    using Exiled.Events.Attributes;
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 #pragma warning disable SA1402 // File may only contain a single type
     using Exiled.Events.EventArgs.Scp3114;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -23,6 +25,8 @@ namespace Exiled.Events.Patches.Events.Scp3114
     ///     Patches <see cref="Scp3114Identity.Update" /> setter.
     ///     Adds the <see cref="Handlers.Scp3114.Revealed" /> and <see cref="Handlers.Scp3114.Revealing" /> event.
     /// </summary>
+    [EventPatch(typeof(Scp3114), nameof(Scp3114.Revealed))]
+    [EventPatch(typeof(Scp3114), nameof(Scp3114.Revealing))]
     [HarmonyPatch(typeof(Scp3114Identity), nameof(Scp3114Identity.Update))]
     internal class Revealing
     {
@@ -55,6 +59,8 @@ namespace Exiled.Events.Patches.Events.Scp3114
     ///     Patches <see cref="Scp3114Reveal.ServerProcessCmd" />.
     ///     Adds the <see cref="Handlers.Scp3114.Revealed" /> and <see cref="Handlers.Scp3114.Revealing" /> event.
     /// </summary>
+    [EventPatch(typeof(Scp3114), nameof(Scp3114.Revealed))]
+    [EventPatch(typeof(Scp3114), nameof(Scp3114.Revealing))]
     [HarmonyPatch(typeof(Scp3114Reveal), nameof(Scp3114Reveal.ServerProcessCmd))]
     internal class RevealingKey
     {

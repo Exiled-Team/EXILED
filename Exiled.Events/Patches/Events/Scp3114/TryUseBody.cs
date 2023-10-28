@@ -7,7 +7,9 @@
 
 namespace Exiled.Events.Patches.Events.Scp3114
 {
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp3114;
+    using Exiled.Events.Handlers;
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp3114;
@@ -16,6 +18,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
     ///     Patches <see cref="Scp3114Disguise.OnProgressSet()" />.
     ///     Adds the <see cref="Handlers.Scp3114.TryUseBody" /> event.
     /// </summary>
+    [EventPatch(typeof(Scp3114), nameof(Scp3114.TryUseBody))]
     [HarmonyPatch(typeof(Scp3114Disguise), nameof(Scp3114Disguise.OnProgressSet))]
     internal class TryUseBody
     {

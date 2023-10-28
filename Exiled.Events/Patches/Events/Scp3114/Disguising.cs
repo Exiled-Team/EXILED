@@ -7,7 +7,9 @@
 
 namespace Exiled.Events.Patches.Events.Scp3114
 {
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp3114;
+    using Exiled.Events.Handlers;
 
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
@@ -19,8 +21,10 @@ namespace Exiled.Events.Patches.Events.Scp3114
 
     /// <summary>
     ///     Patches <see cref="Scp3114Disguise.ServerComplete()" />.
-    ///     Adds the <see cref="Handlers.Scp3114.Disguising" /> and <see cref="Handlers.Scp3114.Disguised" /> events.
+    ///     Adds the <see cref="Scp3114.Disguising" /> and <see cref="Scp3114.Disguised" /> events.
     /// </summary>
+    [EventPatch(typeof(Scp3114), nameof(Scp3114.Disguising))]
+    [EventPatch(typeof(Scp3114), nameof(Scp3114.Disguised))]
     [HarmonyPatch(typeof(Scp3114Disguise), nameof(Scp3114Disguise.ServerComplete))]
     internal class Disguising
     {
@@ -29,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
             if (__instance.CurRagdoll != null && __instance.CurRagdoll is DynamicRagdoll ragdoll)
             {
                 DisguisingEventArgs disguising = new(__instance.Owner, ragdoll);
-                Handlers.Scp3114.OnDisguising(disguising);
+                Scp3114.OnDisguising(disguising);
 
                 if (!disguising.IsAllowed)
                     return false;
@@ -38,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 Scp3114RagdollToBonesConverter.ServerConvertNew(__instance.ScpRole, ragdoll);
 
                 DisguisedEventArgs disguised = new(__instance.Owner, ragdoll);
-                Handlers.Scp3114.OnDisguised(disguised);
+                Scp3114.OnDisguised(disguised);
             }
 
             return false;
