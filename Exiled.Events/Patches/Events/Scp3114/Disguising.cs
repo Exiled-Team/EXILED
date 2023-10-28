@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
     ///     Patches <see cref="Scp3114Disguise.ServerComplete()" /> setter.
     ///     Adds the <see cref="Handlers.Scp3114.Disguising" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp3114Role), nameof(Scp3114Disguise.ServerComplete))]
+    [HarmonyPatch(typeof(Scp3114Disguise), nameof(Scp3114Disguise.ServerComplete))]
     internal class Disguising
     {
         private static bool Prefix(Scp3114Disguise __instance)

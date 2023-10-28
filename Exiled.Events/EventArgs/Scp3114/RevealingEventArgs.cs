@@ -22,13 +22,10 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
-        /// <param name="state">
-        ///     The state of the focus.
-        /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public RevealingEventArgs(ReferenceHub player, bool state, bool isAllowed = true)
+        public RevealingEventArgs(ReferenceHub player, bool isAllowed = true)
         {
             Player = Player.Get(player);
             Scp3114 = Player.Role.As<Scp3114Role>();

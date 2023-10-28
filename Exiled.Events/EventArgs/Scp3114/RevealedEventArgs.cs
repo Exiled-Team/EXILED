@@ -25,7 +25,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <param name="state">
         ///     The state of the focus.
         /// </param>
-        public RevealedEventArgs(ReferenceHub player, bool state)
+        public RevealedEventArgs(ReferenceHub player)
         {
             Player = Player.Get(player);
             Scp3114 = Player.Role.As<Scp3114Role>();
