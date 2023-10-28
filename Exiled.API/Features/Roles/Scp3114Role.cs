@@ -11,17 +11,21 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using Exiled.API.Features.Hazards;
+    using Exiled.API.Interfaces;
     using Mirror;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Ragdolls;
     using UnityEngine;
+
+    using static PlayerRoles.PlayableScps.Scp3114.Scp3114Identity;
 
     using Scp3114GameRole = PlayerRoles.PlayableScps.Scp3114.Scp3114Role;
 
     /// <summary>
-    /// Defines a role that represents SCP-173.
+    /// Defines a role that represents SCP-3114.
     /// </summary>
     public class Scp3114Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
     {
@@ -82,37 +86,37 @@ namespace Exiled.API.Features.Roles
         public HumeShieldModuleBase HumeShieldModule { get; }
 
         /// <summary>
-        /// Gets SCP-173's movement module.
+        /// Gets Scp3114's <see cref="Scp3114Slap"/>.
         /// </summary>
         public Scp3114Slap Slap { get; }
 
         /// <summary>
-        /// Gets SCP-173's movement module.
+        /// Gets Scp3114's <see cref="Scp3114Dance"/>.
         /// </summary>
         public Scp3114Dance Dance { get; }
 
         /// <summary>
-        /// Gets SCP-173's movement module.
+        /// Gets Scp3114's <see cref="Scp3114Reveal"/>.
         /// </summary>
         public Scp3114Reveal Reveal { get; }
 
         /// <summary>
-        /// Gets SCP-173's movement module.
+        /// Gets Scp3114's <see cref="Scp3114Identity"/>.
         /// </summary>
         public Scp3114Identity Identity { get; }
 
         /// <summary>
-        /// Gets SCP-173's movement module.
+        /// Gets Scp3114's <see cref="Scp3114History"/>.
         /// </summary>
         public Scp3114History History { get; }
 
         /// <summary>
-        /// Gets SCP-173's movement module.
+        /// Gets Scp3114's <see cref="Scp3114FakeModelManager"/>.
         /// </summary>
         public Scp3114FakeModelManager FakeModelManager { get; }
 
         /// <summary>
-        /// Gets SCP-173's movement module.
+        /// Gets Scp3114's <see cref="Scp3114Disguise"/>.
         /// </summary>
         public Scp3114Disguise Disguise { get; }
 
@@ -122,7 +126,80 @@ namespace Exiled.API.Features.Roles
         public new Scp3114GameRole Base { get; }
 
         /// <summary>
-        /// Gets the Spawn Chance of SCP-173.
+        /// Gets or sets the SCP-3114's Stolen Role.
+        /// </summary>
+        public RoleTypeId StolenRole
+        {
+            get => Identity.CurIdentity.StolenRole;
+            set
+            {
+                if (Ragdoll is null)
+                    return;
+
+                Ragdoll.Role = value;
+                Identity.ServerResendIdentity();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the SCP-3114's Ragdoll used for it's FakeIdentity.
+        /// </summary>
+        public Ragdoll Ragdoll
+        {
+            get => Ragdoll.Get(Identity.CurIdentity.Ragdoll);
+            set
+            {
+                Identity.CurIdentity.Ragdoll = value?.Base;
+                Identity.ServerResendIdentity();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the SCP-3114's UnitId used for it's FakeIdentity.
+        /// </summary>
+        public byte UnitId
+        {
+            get => Identity.CurIdentity.UnitNameId;
+            set
+            {
+                Identity.CurIdentity.UnitNameId = value;
+                Identity.ServerResendIdentity();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the SCP-3114's UnitId used for it's FakeIdentity.
+        /// </summary>
+        public DisguiseStatus DisguiseStatus
+        {
+            get => Identity.CurIdentity.Status;
+            set
+            {
+                Identity.CurIdentity.Status = value;
+                Identity.ServerResendIdentity();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the SCP-3114's Disguise duration.
+        /// </summary>
+        public float DisguiseDuration
+        {
+            get => Identity._disguiseDurationSeconds;
+            set => Identity._disguiseDurationSeconds = value;
+        }
+
+        /// <summary>
+        /// Reset Scp3114 FakeIdentity.
+        /// </summary>
+        public void ResetIdentity()
+        {
+            Identity.CurIdentity.Reset();
+            Identity.ServerResendIdentity();
+        }
+
+        /// <summary>
+        /// Gets the Spawn Chance of SCP-3114.
         /// </summary>
         /// <param name="alreadySpawned">The List of Roles already spawned.</param>
         /// <returns>The Spawn Chance.</returns>
