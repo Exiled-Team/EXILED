@@ -860,8 +860,6 @@ namespace Exiled.API.Features
 
             set
             {
-                HealthStat healthStat = ReferenceHub.playerStats.GetModule<HealthStat>();
-                healthStat._valueDirty = true;
                 OverrideMaxHealth = value;
             }
         }
