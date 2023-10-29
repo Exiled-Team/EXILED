@@ -2921,8 +2921,8 @@ namespace Exiled.API.Features
             if (statusEffect is null)
                 return false;
 
-            statusEffect.ServerSetState(intensity, duration, addDurationIfActive);
-
+            statusEffect.ServerSetState(intensity);
+            statusEffect.ServerChangeDuration(duration, addDurationIfActive);
             return statusEffect is not null && statusEffect.IsEnabled;
         }
 
