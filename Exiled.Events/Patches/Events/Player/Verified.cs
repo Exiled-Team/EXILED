@@ -52,8 +52,8 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void Helper(PlayerAuthenticationManager auth)
         {
-            if (!Player.UnverifiedPlayers.TryGetValue(__instance._hub.gameObject, out Player player))
-                Joined.CallEvent(__instance._hub, out player);
+            if (!Player.UnverifiedPlayers.TryGetValue(auth._hub.gameObject, out Player player))
+                Joined.CallEvent(auth._hub, out player);
 
             Player.Dictionary.Add(auth._hub.gameObject, player);
 
