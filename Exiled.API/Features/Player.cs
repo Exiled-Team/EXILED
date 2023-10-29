@@ -52,6 +52,7 @@ namespace Exiled.API.Features
     using PlayerRoles.Voice;
     using PlayerStatsSystem;
     using PluginAPI.Core;
+
     using RelativePositioning;
     using RemoteAdmin;
     using Respawning.NamingRules;
@@ -2316,7 +2317,11 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="Item"/> given to the player.</returns>
         public Item AddItem(ItemType itemType)
         {
-            return Item.Get(Inventory.ServerAddItem(itemType));
+            Item item = Item.Create(itemType);
+
+            AddItem(item);
+
+            return item;
         }
 
         /// <summary>
@@ -2337,7 +2342,7 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="Item"/> given to the player.</returns>
         public Item AddItem(FirearmType firearmType, IEnumerable<AttachmentIdentifier> identifiers)
         {
-            Item item = Item.Get(Inventory.ServerAddItem(firearmType.GetItemType()));
+            Item item = Item.Create(firearmType.GetItemType());
 
             if (item is Firearm firearm)
             {
@@ -2353,6 +2358,8 @@ namespace Exiled.API.Features
 
                 firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
+
+            AddItem(item);
 
             return item;
         }
