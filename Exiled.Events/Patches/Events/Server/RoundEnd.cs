@@ -57,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction[]
                 {
                     new CodeInstruction(OpCodes.Ldc_I4_0),
-                    new CodeInstruction(OpCodes.Ble_S, label),
+                    new CodeInstruction(OpCodes.Bgt_S, label),
                 });
 
             offset = -1;
