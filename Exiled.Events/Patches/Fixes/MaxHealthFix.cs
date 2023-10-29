@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Fixes
     /// <summary>
     /// Fix for <see cref="Player.MaxHealth"/> for <see cref="HumanRole"/>.
     /// </summary>
-    [HarmonyPatch(typeof(HumanRole), nameof(HumanRole.MaxHealth))]
+    [HarmonyPatch(typeof(HumanRole), nameof(HumanRole.MaxHealth), MethodType.Getter)]
     internal class MaxHealthFixHuman
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Fixes
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(HumanRole), nameof(HumanRole._lastOwner))),
+                new(OpCodes.Ldfld, Field(typeof(HumanRole), nameof(HumanRole._lastOwner))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, player.LocalIndex),
@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, value.LocalIndex),
                 new(OpCodes.Ldc_R4, 0.0f),
-                new(OpCodes.Ceq, @default),
+                new(OpCodes.Beq_S, @default),
 
                 new(OpCodes.Ldloc_S, value.LocalIndex),
                 new(OpCodes.Br_S, end),
@@ -82,7 +82,7 @@ namespace Exiled.Events.Patches.Fixes
     /// <summary>
     /// Fix for <see cref="Player.MaxHealth"/> for <see cref="HumanRole"/>.
     /// </summary>
-    [HarmonyPatch(typeof(FpcStandardScp), nameof(FpcStandardScp.MaxHealth))]
+    [HarmonyPatch(typeof(FpcStandardScp), nameof(FpcStandardScp.MaxHealth), MethodType.Getter)]
     internal class MaxHealthFixScp
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -97,7 +97,7 @@ namespace Exiled.Events.Patches.Fixes
             newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(FpcStandardScp), nameof(FpcStandardScp._lastOwner))),
+                new(OpCodes.Ldfld, Field(typeof(FpcStandardScp), nameof(FpcStandardScp._lastOwner))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, player.LocalIndex),
@@ -108,7 +108,7 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, value.LocalIndex),
                 new(OpCodes.Ldc_R4, 0.0f),
-                new(OpCodes.Ceq, end),
+                new(OpCodes.Beq_S, end),
 
                 new(OpCodes.Ldloc_S, value.LocalIndex),
                 new(OpCodes.Ret),
@@ -126,7 +126,7 @@ namespace Exiled.Events.Patches.Fixes
     /// <summary>
     /// Fix for <see cref="Player.MaxHealth"/> for <see cref="ZombieRole"/>.
     /// </summary>
-    [HarmonyPatch(typeof(ZombieRole), nameof(ZombieRole.MaxHealth))]
+    [HarmonyPatch(typeof(ZombieRole), nameof(ZombieRole.MaxHealth), MethodType.Getter)]
     internal class MaxHealthFixZombie
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -141,7 +141,7 @@ namespace Exiled.Events.Patches.Fixes
             newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(ZombieRole), nameof(ZombieRole._lastOwner))),
+                new(OpCodes.Ldfld, Field(typeof(ZombieRole), nameof(ZombieRole._lastOwner))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, player.LocalIndex),
@@ -152,7 +152,7 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, value.LocalIndex),
                 new(OpCodes.Ldc_R4, 0.0f),
-                new(OpCodes.Ceq, end),
+                new(OpCodes.Beq_S, end),
 
                 new(OpCodes.Ldloc_S, value.LocalIndex),
                 new(OpCodes.Ret),
@@ -182,15 +182,10 @@ namespace Exiled.Events.Patches.Fixes
 
             Label end = generator.DefineLabel();
 
-            int offset = 0;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldc_R4) + offset;
-
-            newInstructions.RemoveAt(index);
-
             newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(HealthStat), nameof(HealthStat.Hub))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(HealthStat), nameof(HealthStat.Hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, player.LocalIndex),
