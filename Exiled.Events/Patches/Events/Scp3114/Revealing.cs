@@ -74,7 +74,6 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 return false;
             }
 
-            __instance.ServerProcessCmd(reader);
             __instance.ScpRole.Disguised = false;
 
             RevealedEventArgs revealed = new(__instance.Owner);
