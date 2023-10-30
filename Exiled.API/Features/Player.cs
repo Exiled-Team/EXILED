@@ -838,7 +838,7 @@ namespace Exiled.API.Features
             get => healthStat.CurValue;
             set
             {
-                healthStat.CurValue = value;
+                ReferenceHub.playerStats.GetModule<HealthStat>().CurValue = value;
 
                 if (value > MaxHealth)
                     MaxHealth = value;
@@ -909,7 +909,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's <see cref="PlayerStatsSystem.HumeShieldStat"/>.
         /// </summary>
-        public HumeShieldStat HumeShieldStat => (HumeShieldStat)ReferenceHub.playerStats.StatModules[4];
+        public HumeShieldStat HumeShieldStat => ReferenceHub.playerStats.GetModule<HumeShieldStat>();
 
         /// <summary>
         /// Gets or sets the item in the player's hand. Value will be <see langword="null"/> if the player is not holding anything.
@@ -941,7 +941,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="StaminaStat"/> class.
         /// </summary>
-        public StaminaStat StaminaStat => (StaminaStat)ReferenceHub.playerStats.StatModules[2];
+        public StaminaStat StaminaStat => ReferenceHub.playerStats.GetModule<StaminaStat>();
 
         /// <summary>
         /// Gets or sets the amount of stamina the player has.
