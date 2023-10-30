@@ -204,5 +204,14 @@ namespace Exiled.API.Features.Roles
         /// <param name="alreadySpawned">The List of Roles already spawned.</param>
         /// <returns>The Spawn Chance.</returns>
         public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => 0;
+
+        /// <summary>
+        /// Gets or sets the warning time seconds
+        /// </summary>
+        public float WarningTime
+        {
+            get => Identity._warningTimeSeconds;
+            set => Identity._warningTimeSeconds = value;
+        }
     }
 }
