@@ -433,6 +433,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 [45] Metal 
 [46] Prismatic 
 [47] SlowMetabolism 
+[48] Marshmallow 
 ```
 
 </details>

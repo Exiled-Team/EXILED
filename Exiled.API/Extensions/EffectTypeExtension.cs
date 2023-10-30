@@ -79,6 +79,7 @@ namespace Exiled.API.Extensions
             EffectType.Metal => typeof(Metal),
             EffectType.Prismatic => typeof(Prismatic),
             EffectType.SlowMetabolism => typeof(SlowMetabolism),
+            EffectType.Marshmallow => typeof(MarshmallowEffect),
 
             // This should never happen
             _ => throw new InvalidOperationException("Invalid effect enum provided"),
