@@ -44,6 +44,11 @@ namespace Exiled.Events.Handlers
         public static Event<RevealingEventArgs> Revealing { get; set; } = new();
 
         /// <summary>
+        ///     Invoked before VoiceLines.
+        /// </summary>
+        public static Event<VoiceLinesEventArgs> VoiceLines { get; set; } = new();
+
+        /// <summary>
         ///     Called before diguising to a new Roles.
         /// </summary>
         /// <param name="ev">The <see cref="DisguisingEventArgs" /> instance.</param>
@@ -72,5 +77,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="RevealingEventArgs" /> instance.</param>
         public static void OnRevealing(RevealingEventArgs ev) => Revealing.InvokeSafely(ev);
+
+        /// <summary>
+        ///     Called before playing any voiceline
+        /// </summary>
+        /// <param name="ev">The <see cref="VoiceLinesEventArgs" /> instance.</param>
+        public static void OnVoiceLines(VoiceLinesEventArgs ev) => VoiceLines.InvokeSafely(ev);
     }
 }
