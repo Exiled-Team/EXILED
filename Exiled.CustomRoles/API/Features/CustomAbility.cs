@@ -240,7 +240,7 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns>True if the player has this ability.</returns>
-        public virtual bool Check(Player player) => Players.Contains(player);
+        public virtual bool Check(Player player) => player is not null && Players.Contains(player);
 
         /// <summary>
         /// Adds this ability to the player.

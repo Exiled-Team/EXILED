@@ -152,6 +152,8 @@ namespace Exiled.CustomRoles.API.Features
         /// <exception cref="ArgumentOutOfRangeException">This should never happen unless Joker fucks up.</exception>
         public virtual bool Check(Player player, CheckType type)
         {
+            if (player is null)
+                return false;
             bool result = type switch
             {
                 CheckType.Active => ActivePlayers.Contains(player),
