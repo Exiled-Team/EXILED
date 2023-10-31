@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     ///     Patches <see cref="Scp079DoorStateChanger.ServerProcessCmd" />.
     ///     Adds the <see cref="Scp079.TriggeringDoor" /> event for  SCP-079.
     /// </summary>
-    [EventPatch(typeof(Scp079), nameof(Scp079.Pinging))]
+    [EventPatch(typeof(Scp079), nameof(Scp079.TriggeringDoor))]
     [HarmonyPatch(typeof(Scp079DoorStateChanger), nameof(Scp079DoorStateChanger.ServerProcessCmd))]
     internal static class TriggeringDoor
     {

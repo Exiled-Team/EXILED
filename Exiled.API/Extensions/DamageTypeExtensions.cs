@@ -12,7 +12,8 @@ namespace Exiled.API.Extensions
     using Enums;
 
     using Features;
-
+    using PlayerRoles.PlayableScps.Scp3114;
+    using PlayerRoles.PlayableScps.Scp939;
     using PlayerStatsSystem;
 
     /// <summary>
@@ -47,6 +48,7 @@ namespace Exiled.API.Extensions
             { DeathTranslations.UsedAs106Bait.Id, DamageType.FemurBreaker },
             { DeathTranslations.MicroHID.Id, DamageType.MicroHid },
             { DeathTranslations.Hypothermia.Id, DamageType.Hypothermia },
+            { DeathTranslations.MarshmallowMan.Id, DamageType.MarshmallowMan },
         };
 
         private static readonly Dictionary<DeathTranslation, DamageType> TranslationConversionInternal = new()
@@ -76,6 +78,7 @@ namespace Exiled.API.Extensions
             { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
             { DeathTranslations.MicroHID, DamageType.MicroHid },
             { DeathTranslations.Hypothermia, DamageType.Hypothermia },
+            { DeathTranslations.MarshmallowMan, DamageType.MarshmallowMan },
         };
 
         private static readonly Dictionary<ItemType, DamageType> ItemConversionInternal = new()
@@ -160,6 +163,10 @@ namespace Exiled.API.Extensions
             {
                 case CustomReasonDamageHandler:
                     return DamageType.Custom;
+                case SilentDamageHandler:
+                    return DamageType.Silent;
+                case MetalPipeDamageHandler:
+                    return DamageType.MetalPipe;
                 case WarheadDamageHandler:
                     return DamageType.Warhead;
                 case ExplosionDamageHandler:
@@ -170,6 +177,14 @@ namespace Exiled.API.Extensions
                     return DamageType.Recontainment;
                 case Scp096DamageHandler:
                     return DamageType.Scp096;
+                case Scp3114DamageHandler scp3114DamageHandler:
+                    return scp3114DamageHandler.Subtype switch
+                    {
+                        Scp3114DamageHandler.HandlerType.Strangulation => DamageType.Strangled,
+                        Scp3114DamageHandler.HandlerType.SkinSteal => DamageType.Scp3114,
+                        Scp3114DamageHandler.HandlerType.Slap => DamageType.Scp3114,
+                        _ => DamageType.Unknown,
+                    };
                 case MicroHidDamageHandler:
                     return DamageType.MicroHid;
                 case DisruptorDamageHandler:

@@ -72,7 +72,7 @@ namespace Exiled.Events.Patches.Events.Map
                 index,
                 new CodeInstruction[]
                 {
-                    // Player.Get(attacker.Hub);
+                    // attacker;
                     new(OpCodes.Ldarg_0),
 
                     // position

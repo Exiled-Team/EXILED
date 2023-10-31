@@ -88,8 +88,13 @@ namespace Exiled.Events.Patches.Events.Item
                     ChargingJailbirdEventArgs ev = new(instance.Owner, instance);
 
                     Item.OnChargingJailbird(ev);
-
-                    return ev.IsAllowed;
+                    if (ev.IsAllowed)
+                            return true;
+                    instance.SendRpc(JailbirdMessageType.ChargeStarted, wr =>
+                    {
+                        wr.WriteDouble(0);
+                    });
+                    return false;
                 }
 
                 default:

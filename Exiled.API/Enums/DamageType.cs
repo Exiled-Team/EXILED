@@ -234,5 +234,23 @@ namespace Exiled.API.Enums
         /// Damage caused by <see cref="ItemType.GunA7"/>.
         /// </summary>
         A7,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleTypeId.Scp3114"/>.
+        /// </summary>
+        Scp3114,
+
+        /// <summary>
+        /// <see cref="EffectType.Strangled"/>.
+        /// </summary>
+        Strangled,
+
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning disable SA1602 // Enumeration items should be documented
+        MarshmallowMan,
+        Silent,
+        MetalPipe,
+#pragma warning restore SA1602 // Enumeration items should be documented
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
     }
 }

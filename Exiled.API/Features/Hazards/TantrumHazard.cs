@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="TantrumHazard.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Hazards
 {
     using global::Hazards;
+    using PlayerRoles;
     using RelativePositioning;
     using UnityEngine;
 
@@ -56,6 +57,15 @@ namespace Exiled.API.Features.Hazards
         {
             get => Base._correctPosition;
             set => Base._correctPosition = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the teams that will be affected by this Tantrum.
+        /// </summary>
+        public Team[] TargetedTeams
+        {
+            get => Base._targetedTeams;
+            set => Base._targetedTeams = value;
         }
     }
 }

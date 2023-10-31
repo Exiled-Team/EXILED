@@ -19,13 +19,13 @@ namespace Exiled.Events.EventArgs.Scp079
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecontainedEventArgs" /> class.
         /// </summary>
-        /// <param name="target">
+        /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
-        public RecontainedEventArgs(Player target)
+        public RecontainedEventArgs(Player player)
         {
-            Player = target;
-            Scp079 = Player.Role.As<Scp079Role>();
+            Player = player;
+            Scp079 = player.Role.As<Scp079Role>();
         }
 
         /// <summary>

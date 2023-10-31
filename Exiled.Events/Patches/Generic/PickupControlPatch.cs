@@ -14,6 +14,8 @@ namespace Exiled.Events.Patches.Generic
     using API.Features.Pickups;
     using API.Features.Pools;
 
+    using Exiled.API.Features.Items;
+
     using HarmonyLib;
 
     using InventorySystem;
@@ -47,14 +49,14 @@ namespace Exiled.Events.Patches.Generic
                 // pickup = Pickup.Get(pickupBase);
                 new(OpCodes.Ldloc_0),
                 new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get), new[] { typeof(ItemPickupBase) })),
+                new(OpCodes.Dup),
 
-                /*
                 // Item.Get(itemBase);
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
 
-                // pickup.GetItemInfo(item);
-                new(OpCodes.Callvirt, Method(typeof(Pickup), nameof(Pickup.GetItemInfo))),*/
+                // pickup.ReadItemInfo(item);
+                new(OpCodes.Callvirt, Method(typeof(Pickup), nameof(Pickup.ReadItemInfo))),
 
                 // pickup.IsSpawned = spawn
                 new(OpCodes.Ldarg_S, 4),

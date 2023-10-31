@@ -31,7 +31,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public StoppingSpeakerEventArgs(Player player, Room room, bool isAllowed = true)
         {
             Player = player;
-            Scp079 = Player.Role.As<Scp079Role>();
+            Scp079 = player.Role.As<Scp079Role>();
             Room = room;
             IsAllowed = isAllowed;
         }

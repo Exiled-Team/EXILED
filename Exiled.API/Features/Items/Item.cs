@@ -13,7 +13,8 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
-
+    using Footprinting;
+    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms.Ammo;
@@ -22,6 +23,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.MicroHID;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
+    using InventorySystem.Items.SwitchableLightSources;
     using InventorySystem.Items.SwitchableLightSources.Flashlight;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
@@ -194,7 +196,7 @@ namespace Exiled.API.Features.Items
                 MicroHIDItem micro => new MicroHid(micro),
                 BodyArmor armor => new Armor(armor),
                 AmmoItem ammo => new Ammo(ammo),
-                FlashlightItem flashlight => new Flashlight(flashlight),
+                SwitchableLightSourceItemBase flashlight => new Flashlight(flashlight),
                 JailbirdItem jailbird => new Jailbird(jailbird),
                 ThrowableItem throwable => throwable.Projectile switch
                 {
@@ -251,7 +253,7 @@ namespace Exiled.API.Features.Items
             ItemType.Adrenaline or ItemType.Medkit or ItemType.Painkillers or ItemType.SCP500 or ItemType.SCP207 or ItemType.SCP1853 => new Consumable(type),
             ItemType.SCP244a or ItemType.SCP244b => new Scp244(type),
             ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39 => new Ammo(type),
-            ItemType.Flashlight => new Flashlight(),
+            ItemType.Flashlight or ItemType.Lantern => new Flashlight(type),
             ItemType.Radio => new Radio(),
             ItemType.MicroHID => new MicroHid(),
             ItemType.GrenadeFlash => new FlashGrenade(owner),
@@ -288,10 +290,11 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public virtual Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
+            PickupSyncInfo info = new(Type, Weight, Serial);
 
-            ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-            ipb.gameObject.transform.localScale = Scale;
+            ItemPickupBase ipb = InventoryExtensions.ServerCreatePickup(Base, info, position, rotation);
+
+            Base.OnRemoved(ipb);
 
             Pickup pickup = Pickup.Get(ipb);
 
@@ -325,6 +328,18 @@ namespace Exiled.API.Features.Items
             Base.Owner = newOwner.ReferenceHub;
 
             Base.OnAdded(null);
+        }
+
+        /// <summary>
+        /// Helper method for saving data between items and pickups.
+        /// </summary>
+        /// <param name="pickup"><see cref="Pickup"/>-related data to give to the <see cref="Item"/>.</param>
+        internal virtual void ReadPickupInfo(Pickup pickup)
+        {
+            if (pickup is not null)
+            {
+                Scale = pickup.Scale;
+            }
         }
     }
 }

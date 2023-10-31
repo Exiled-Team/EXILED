@@ -13,6 +13,8 @@ namespace Exiled.API.Extensions
 
     using Enums;
 
+    using InventorySystem.Items.MarshmallowMan;
+
     using InventorySystem.Items.Usables.Scp244.Hypothermia;
 
     using PlayerRoles.FirstPersonControl;
@@ -66,6 +68,18 @@ namespace Exiled.API.Extensions
             EffectType.Traumatized => typeof(Traumatized),
             EffectType.AntiScp207 => typeof(AntiScp207),
             EffectType.Scanned => typeof(Scanned),
+            EffectType.Ghostly => typeof(Ghostly),
+            EffectType.Strangled => typeof(Strangled),
+            EffectType.OrangeCandy => typeof(OrangeCandy),
+            EffectType.Spicy => typeof(Spicy),
+            EffectType.SugarCrave => typeof(SugarCrave),
+            EffectType.SugarHigh => typeof(SugarHigh),
+            EffectType.SugarRush => typeof(SugarRush),
+            EffectType.TraumatizedByEvil => typeof(TraumatizedByEvil),
+            EffectType.Metal => typeof(Metal),
+            EffectType.Prismatic => typeof(Prismatic),
+            EffectType.SlowMetabolism => typeof(SlowMetabolism),
+            EffectType.Marshmallow => typeof(MarshmallowEffect),
 
             // This should never happen
             _ => throw new InvalidOperationException("Invalid effect enum provided"),
@@ -115,6 +129,17 @@ namespace Exiled.API.Extensions
             Traumatized => EffectType.Traumatized,
             AntiScp207 => EffectType.AntiScp207,
             Scanned => EffectType.Scanned,
+            Ghostly => EffectType.Ghostly,
+            Strangled => EffectType.Strangled,
+            OrangeCandy => EffectType.OrangeCandy,
+            Spicy => EffectType.Spicy,
+            SugarCrave => EffectType.SugarCrave,
+            SugarHigh => EffectType.SugarHigh,
+            SugarRush => EffectType.SugarRush,
+            TraumatizedByEvil => EffectType.TraumatizedByEvil,
+            Prismatic => EffectType.Prismatic,
+            SlowMetabolism => EffectType.SlowMetabolism,
+            MarshmallowEffect => EffectType.Marshmallow,
 
             // This should never happen
             _ => throw new InvalidOperationException("Invalid effect status base provided"),
@@ -128,7 +153,7 @@ namespace Exiled.API.Extensions
         /// <seealso cref="IsHealing(EffectType)"/>
         public static bool IsHarmful(this EffectType effect) => effect is EffectType.Asphyxiated or EffectType.Bleeding
             or EffectType.Corroding or EffectType.Decontaminating or EffectType.Hemorrhage or EffectType.Hypothermia
-            or EffectType.Poisoned or EffectType.Scp207 or EffectType.SeveredHands;
+            or EffectType.Poisoned or EffectType.Scp207 or EffectType.SeveredHands or EffectType.Strangled;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> heals a player.
@@ -157,7 +182,7 @@ namespace Exiled.API.Extensions
         /// <seealso cref="IsHealing(EffectType)"/>
         public static bool IsPositive(this EffectType effect) => effect is EffectType.BodyshotReduction or EffectType.DamageReduction
             or EffectType.Invigorated or EffectType.Invisible or EffectType.MovementBoost or EffectType.RainbowTaste
-            or EffectType.Scp207 or EffectType.Scp1853 or EffectType.Vitality or EffectType.AntiScp207;
+            or EffectType.Scp207 or EffectType.Scp1853 or EffectType.Vitality or EffectType.AntiScp207 or EffectType.Ghostly;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> affects the player's movement speed.

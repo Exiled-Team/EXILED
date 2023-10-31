@@ -199,5 +199,29 @@ namespace Exiled.API.Enums
         /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed.
         /// </summary>
         PocketCorroding,
+
+        /// <summary>
+        /// The effect permit player to go trough door like Scp-106.
+        /// </summary>
+        Ghostly,
+
+        /// <summary>
+        /// Effect given to player when being strangled by SCP-3114.
+        /// </summary>
+        Strangled,
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning disable SA1602 // Enumeration items should be documented
+        OrangeCandy,
+        Spicy,
+        SugarCrave,
+        SugarHigh,
+        SugarRush,
+        TraumatizedByEvil,
+        Metal,
+        Prismatic,
+        SlowMetabolism,
+        Marshmallow,
+#pragma warning restore SA1602 // Enumeration items should be documented
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
     }
 }

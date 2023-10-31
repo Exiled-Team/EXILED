@@ -200,7 +200,8 @@ namespace Exiled.CustomItems.API.Features
             if (!Check(ev.Pickup))
                 return;
 
-            ev.FuseTime = FuseTime;
+            if (ev.Projectile is TimeGrenadeProjectile timedGrenade)
+                timedGrenade.FuseTime = FuseTime;
 
             OnChangedIntoGrenade(ev);
 
