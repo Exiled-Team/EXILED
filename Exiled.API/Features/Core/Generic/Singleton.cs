@@ -62,7 +62,7 @@ namespace Exiled.API.Features.Core.Generic
         public static bool TryGet<TObject>(out TObject instance)
             where TObject : class => (instance = Instance as TObject) is not null;
 
-        /// <inheritdoc cref="Singleton(T)"/>
+        /// <inheritdoc cref="Singleton{T}"/>
         public static void Create(T @object) => new Singleton<T>(@object);
 
         /// <summary>

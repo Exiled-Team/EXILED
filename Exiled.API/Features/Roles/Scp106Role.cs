@@ -80,9 +80,9 @@ namespace Exiled.API.Features.Roles
         public Scp106VigorAbilityBase VigorAbility { get; }
 
         /// <summary>
-        /// Gets the <see cref="Scp106Vigor"/>.
+        /// Gets the <see cref="VigorStat"/>.
         /// </summary>
-        public Scp106Vigor VigorComponent => VigorAbility.Vigor;
+        public VigorStat VigorComponent => VigorAbility.Vigor;
 
         /// <summary>
         /// Gets the <see cref="Scp106Attack"/>.
@@ -261,7 +261,7 @@ namespace Exiled.API.Features.Roles
             Attack.SendCooldown(Attack._hitCooldown);
             VigorAbility.VigorAmount += Scp106Attack.VigorCaptureReward;
             Attack.ReduceSinkholeCooldown();
-            Hitmarker.SendHitmarker(Attack.Owner, 1f);
+            Hitmarker.SendHitmarkerDirectly(Attack.Owner, 1f);
 
             player.EnableEffect(EffectType.Corroding);
             player.EnableEffect(EffectType.SinkHole);
