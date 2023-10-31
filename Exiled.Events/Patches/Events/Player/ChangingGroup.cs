@@ -41,6 +41,9 @@ namespace Exiled.Events.Patches.Events.Player
 
             // ChangingGroupEventArgs ev = new(Player.Get(this.gameObject), group, true);
             //
+            // Handlers.Player.OnChangingGroup(ev);
+            // group = ev.NewGroup;
+            //
             // if (!ev.IsAllowed)
             //     return;
             newInstructions.InsertRange(
@@ -62,8 +65,13 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingGroupEventArgs))[0]),
                     new(OpCodes.Dup),
 
-                    // Handlers.Player.OnChangingGroup(ev)
+                    // Handlers.Player.OnChangingGroup(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingGroup))),
+
+                    // group = ev.NewGroup;
+                    new(OpCodes.Dup),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingGroupEventArgs), nameof(ChangingGroupEventArgs.NewGroup))),
+                    new(OpCodes.Starg_S, 1),
 
                     // if (!ev.IsAllowed)
                     //     return;
