@@ -261,7 +261,7 @@ namespace Exiled.API.Features.Roles
             Attack.SendCooldown(Attack._hitCooldown);
             VigorAbility.VigorAmount += Scp106Attack.VigorCaptureReward;
             Attack.ReduceSinkholeCooldown();
-            Hitmarker.SendHitmarker(Attack.Owner, 1f);
+            Hitmarker.SendHitmarkerDirectly(Attack.Owner, 1f);
 
             player.EnableEffect(EffectType.Corroding);
             player.EnableEffect(EffectType.SinkHole);

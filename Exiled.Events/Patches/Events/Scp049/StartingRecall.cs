@@ -18,6 +18,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     using HarmonyLib;
 
     using PlayerRoles.PlayableScps.Scp049;
+    using PlayerRoles.Ragdolls;
 
     using static HarmonyLib.AccessTools;
 
