@@ -835,13 +835,13 @@ namespace Exiled.API.Features
         /// </summary>
         public float Health
         {
-            get => healthStat.CurValue;
+            get => ReferenceHub.playerStats.GetModule<HealthStat>().CurValue;
             set
             {
-                ReferenceHub.playerStats.GetModule<HealthStat>().CurValue = value;
-
                 if (value > MaxHealth)
                     MaxHealth = value;
+
+                ReferenceHub.playerStats.GetModule<HealthStat>().CurValue = value;
             }
         }
 
