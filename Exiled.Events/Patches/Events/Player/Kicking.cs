@@ -35,6 +35,9 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(KickingEventArgs));
 
             Label returnLabel = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
+
+            newInstructions[0].labels.Add(continueLabel);
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
@@ -72,6 +75,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(BanningEventArgs), nameof(BanningEventArgs.Reason))),
                 new(OpCodes.Starg_S, 2),
+
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(BanningEventArgs), nameof(BanningEventArgs.Target))),
+                new(OpCodes.Brfalse_S, continueLabel),
 
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(BanningEventArgs), nameof(BanningEventArgs.Target))),

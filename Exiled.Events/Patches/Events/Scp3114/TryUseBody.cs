@@ -24,7 +24,6 @@ namespace Exiled.Events.Patches.Events.Scp3114
     {
         private static bool Prefix(Scp3114Disguise __instance)
         {
-            __instance.OnProgressSet();
             Scp3114Identity.StolenIdentity curIdentity = __instance.ScpRole.CurIdentity;
             if (__instance.IsInProgress)
             {
