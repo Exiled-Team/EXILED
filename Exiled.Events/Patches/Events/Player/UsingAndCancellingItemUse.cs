@@ -128,6 +128,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // evCancellingItemUseEventArgs.Item
                     new(OpCodes.Ldloc_S, evCancellingItemUseEventArgs.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(CancellingItemUseEventArgs), nameof(CancellingItemUseEventArgs.Item))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Base))),
 
                     // CancellingItemUseEventArgs ev = new(Player, UsableItem)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(CancelledItemUseEventArgs))[0]),
