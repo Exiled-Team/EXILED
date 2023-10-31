@@ -38,13 +38,13 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                // Player.Get(ICommandSender);
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ICommandSender) })),
-
                 // Player.Get(ReferenceHub);
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                // Player.Get(ICommandSender);
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ICommandSender) })),
 
                 // reason
                 new(OpCodes.Ldarg_2),
