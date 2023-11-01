@@ -163,6 +163,7 @@ namespace Exiled.API.Features.Pickups
                 helmetEfficacy = armoritem.HelmetEfficacy;
                 vestEfficacy = armoritem.VestEfficacy;
                 RemoveExcessOnDrop = !armoritem.DontRemoveExcessOnDrop;
+                StaminaUseMultiplier = armoritem._staminaUseMultiplier;
                 AmmoLimits = armoritem.AmmoLimits.Select(limit => (ArmorAmmoLimit)limit);
                 CategoryLimits = armoritem.CategoryLimits;
             }
