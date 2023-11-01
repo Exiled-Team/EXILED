@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Fixes
                 Quaternion claimedRot = reader.ReadQuaternion();
                 JailbirdHitreg.BacktrackedPlayers.Add(new FpcBacktracker(owner, relativePosition.Position, claimedRot, 0.1f, 0.15f));
                 byte b = reader.ReadByte();
-                for (int i = 0; i < (int)b; i++)
+                for (int i = 0; i < b; i++)
                 {
                     try
                     {
@@ -81,7 +81,7 @@ namespace Exiled.Events.Patches.Fixes
                 }
             }
 
-            JailbirdHitreg.BacktrackedPlayers.ForEach(delegate (FpcBacktracker x)
+            JailbirdHitreg.BacktrackedPlayers.ForEach(x =>
             {
                 x.RestorePosition();
             });
