@@ -44,7 +44,6 @@ namespace Exiled.API.Extensions
         private static readonly ReadOnlyDictionary<string, string> ReadOnlyRpcFullNamesValue = new(RpcFullNamesValue);
         private static MethodInfo setDirtyBitsMethodInfoValue;
         private static MethodInfo sendSpawnMessageMethodInfoValue;
-        private static MethodInfo bufferRpcMethodInfoValue;
 
         /// <summary>
         /// Gets <see cref="MethodInfo"/> corresponding to <see cref="Type"/>.
