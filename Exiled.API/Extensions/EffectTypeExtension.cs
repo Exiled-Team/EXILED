@@ -137,6 +137,7 @@ namespace Exiled.API.Extensions
             SugarHigh => EffectType.SugarHigh,
             SugarRush => EffectType.SugarRush,
             TraumatizedByEvil => EffectType.TraumatizedByEvil,
+            Metal => EffectType.Metal,
             Prismatic => EffectType.Prismatic,
             SlowMetabolism => EffectType.SlowMetabolism,
             MarshmallowEffect => EffectType.Marshmallow,
