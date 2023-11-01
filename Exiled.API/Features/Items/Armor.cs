@@ -122,7 +122,6 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how much faster stamina will drain when wearing this armor.
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 1 or above 2.</exception>
         public float StaminaUseMultiplier
         {
             get => Base._staminaUseMultiplier;
