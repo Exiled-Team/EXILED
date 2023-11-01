@@ -2329,6 +2329,11 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="Item"/> given to the player.</returns>
         public Item AddItem(ItemType itemType)
         {
+            if (itemType.GetFirearmType() is not FirearmType.None)
+            {
+                return AddItem(itemType.GetFirearmType(), null);
+            }
+
             Item item = Item.Create(itemType);
 
             AddItem(item);
