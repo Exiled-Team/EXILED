@@ -903,7 +903,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Components.FakeConnection.html",
-          "hash": "12cKhUKo62JCRyAbw6okopXQh+Pu2jxj8jH3A3O8zx0="
+          "hash": "rdXNVVu/dkLbm/J1Q7zpo/5AzzBRsc+Jtog/jwpzjCo="
         }
       },
       "is_incremental": false,
@@ -1203,7 +1203,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.DamageHandlers.GenericDamageHandler.html",
-          "hash": "izMHaAp5F/4eOR+iE9/jpWBoHvgztR9hFEZk9Vx6GQY="
+          "hash": "OP9oyYO1tHy+V59LwdHiw97OqixNBueCFOfghmSAQF8="
         }
       },
       "is_incremental": false,
@@ -1563,7 +1563,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Flashlight.html",
-          "hash": "DfesLL2Vv/uHDbtXXzuFFPv7yMYnXNI6GbNml07JqYY="
+          "hash": "psIskk45R0gu6DlguZ3+tnMZ/0BxgQowy9X43bRx9cw="
         }
       },
       "is_incremental": false,
@@ -1719,7 +1719,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.html",
-          "hash": "6o6DdTbuSzVul9vsXfd2LACzXXzJz9LjvHBKUISw+CA="
+          "hash": "IERewWwlFq2dk5rJxqQoUVxrEAafjeYXTnhm54DPeXk="
         }
       },
       "is_incremental": false,
@@ -1755,7 +1755,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Map.html",
-          "hash": "gGZLH7plCeFS9c0I5s0e8S7R2OhsOiDNzU1lDzZVCEs="
+          "hash": "CVtdOc6LHC8W28OcArddFU4evxgsxz10rVUOm/pOsLE="
         }
       },
       "is_incremental": false,
@@ -2175,7 +2175,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Ragdoll.html",
-          "hash": "J9GtdMCRtL4qHzjNNw3wVb9PpOWjOef2ej9k2jO7XmI="
+          "hash": "bg4CsCq7cRzRzt22idvXWgtr8/Of1J9v7rz3nAlSbBk="
         }
       },
       "is_incremental": false,
@@ -2355,7 +2355,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Roles.Scp106Role.html",
-          "hash": "+vm57mvp6ZPHnd+dc922l072WDa9+6lMirTOZilLaQs="
+          "hash": "7JJeQ9JoYhDjT/fEDRtUmS7+P7VQQMprRzM0M3gY5j8="
         }
       },
       "is_incremental": false,
@@ -5187,7 +5187,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs.html",
-          "hash": "faSEZjSqQrec1TvOShneeayY3w5dPT6yZ4uAPTWCGfA="
+          "hash": "lVc64m+LatDc3v+z54zOCtGOoTELf0nikXbZ4X1TWFo="
         }
       },
       "is_incremental": false,
@@ -5211,7 +5211,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.Player.SpawningRagdollEventArgs.html",
-          "hash": "rTWZdwERsdQ6LXjcBjJUWkxXDExuQJ0nubjHbz5ShKc="
+          "hash": "UJM9cWxCrdrBYhi9zBES6IrngsdVp57XOgp16S4fgsM="
         }
       },
       "is_incremental": false,
@@ -5271,7 +5271,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.html",
-          "hash": "NJbRWZJrl9YWcSiUeZ1lHDu68d9x7S1HViV5qBdjYss="
+          "hash": "4piavIrmXhFyPQF0F8m97d0M8VAZnX9kFqkQBWMir8o="
         }
       },
       "is_incremental": false,

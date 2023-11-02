@@ -93,7 +93,7 @@
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">BasicRagdoll</span>&gt;</div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">PlayerRoles.Ragdolls.BasicRagdoll</span>&gt;</div>
     <div><a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a></div>
     <div><a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a></div>
     <div><a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a></div>
@@ -167,7 +167,7 @@
   </span>
   <a id="Exiled_API_Features_Ragdoll_Base_" data-uid="Exiled.API.Features.Ragdoll.Base*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Base" data-uid="Exiled.API.Features.Ragdoll.Base">Base</h4>
-  <div class="markdown level1 summary"><p>Gets the <span class="xref">BasicRagdoll</span> instance of the ragdoll.</p>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">PlayerRoles.Ragdolls.BasicRagdoll</span> instance of the ragdoll.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -184,7 +184,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">BasicRagdoll</span></td>
+        <td><span class="xref">PlayerRoles.Ragdolls.BasicRagdoll</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -384,7 +384,7 @@
   </span>
   <a id="Exiled_API_Features_Ragdoll_FreezeTime_" data-uid="Exiled.API.Features.Ragdoll.FreezeTime*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_FreezeTime" data-uid="Exiled.API.Features.Ragdoll.FreezeTime">FreezeTime</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">BasicRagdoll</span>s clean up time.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">PlayerRoles.Ragdolls.BasicRagdoll</span>s clean up time.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -602,7 +602,7 @@
   </span>
   <a id="Exiled_API_Features_Ragdoll_NetworkInfo_" data-uid="Exiled.API.Features.Ragdoll.NetworkInfo*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_NetworkInfo" data-uid="Exiled.API.Features.Ragdoll.NetworkInfo">NetworkInfo</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the ragdoll&apos;s <span class="xref">RagdollData</span>.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the ragdoll&apos;s <span class="xref">PlayerRoles.Ragdolls.RagdollData</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -619,7 +619,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">RagdollData</span></td>
+        <td><span class="xref">PlayerRoles.Ragdolls.RagdollData</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -938,6 +938,56 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_CreateAndSpawn_PlayerRoles_Ragdolls_RagdollData_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.CreateAndSpawn(PlayerRoles.Ragdolls.RagdollData)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L338">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Ragdoll_CreateAndSpawn_" data-uid="Exiled.API.Features.Ragdoll.CreateAndSpawn*"></a>
+  <h4 id="Exiled_API_Features_Ragdoll_CreateAndSpawn_PlayerRoles_Ragdolls_RagdollData_" data-uid="Exiled.API.Features.Ragdoll.CreateAndSpawn(PlayerRoles.Ragdolls.RagdollData)">CreateAndSpawn(RagdollData)</h4>
+  <div class="markdown level1 summary"><p>Creates and spawns a new ragdoll.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ragdoll CreateAndSpawn(RagdollData networkInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.Ragdolls.RagdollData</span></td>
+        <td><span class="parametername">networkInfo</span></td>
+        <td><p>The data associated with the ragdoll.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a></td>
+        <td><p>The ragdoll.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_CreateAndSpawn_PlayerRoles_RoleTypeId_System_String_PlayerStatsSystem_DamageHandlerBase_UnityEngine_Vector3_UnityEngine_Quaternion_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.CreateAndSpawn(PlayerRoles.RoleTypeId%2CSystem.String%2CPlayerStatsSystem.DamageHandlerBase%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CExiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -1098,56 +1148,6 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_CreateAndSpawn_RagdollData_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.CreateAndSpawn(RagdollData)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L338">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Ragdoll_CreateAndSpawn_" data-uid="Exiled.API.Features.Ragdoll.CreateAndSpawn*"></a>
-  <h4 id="Exiled_API_Features_Ragdoll_CreateAndSpawn_RagdollData_" data-uid="Exiled.API.Features.Ragdoll.CreateAndSpawn(RagdollData)">CreateAndSpawn(RagdollData)</h4>
-  <div class="markdown level1 summary"><p>Creates and spawns a new ragdoll.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Ragdoll CreateAndSpawn(RagdollData networkInfo)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">RagdollData</span></td>
-        <td><span class="parametername">networkInfo</span></td>
-        <td><p>The data associated with the ragdoll.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a></td>
-        <td><p>The ragdoll.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Destroy.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Destroy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -1162,56 +1162,6 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Destroy()</code></pre>
   </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Get_BasicRagdoll_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Get(BasicRagdoll)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L379">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Ragdoll_Get_" data-uid="Exiled.API.Features.Ragdoll.Get*"></a>
-  <h4 id="Exiled_API_Features_Ragdoll_Get_BasicRagdoll_" data-uid="Exiled.API.Features.Ragdoll.Get(BasicRagdoll)">Get(BasicRagdoll)</h4>
-  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a> belonging to the <span class="xref">BasicRagdoll</span>, if any.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Ragdoll Get(BasicRagdoll ragdoll)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">BasicRagdoll</span></td>
-        <td><span class="parametername">ragdoll</span></td>
-        <td><p>The <span class="xref">BasicRagdoll</span> to get.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a></td>
-        <td><p>A <a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a> or <span class="xref">null</span> if not found.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Get_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Get(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1258,6 +1208,56 @@
       <tr>
         <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a>&gt;</td>
         <td><p>A <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Get_PlayerRoles_Ragdolls_BasicRagdoll_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Get(PlayerRoles.Ragdolls.BasicRagdoll)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L379">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Ragdoll_Get_" data-uid="Exiled.API.Features.Ragdoll.Get*"></a>
+  <h4 id="Exiled_API_Features_Ragdoll_Get_PlayerRoles_Ragdolls_BasicRagdoll_" data-uid="Exiled.API.Features.Ragdoll.Get(PlayerRoles.Ragdolls.BasicRagdoll)">Get(BasicRagdoll)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a> belonging to the <span class="xref">PlayerRoles.Ragdolls.BasicRagdoll</span>, if any.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ragdoll Get(BasicRagdoll ragdoll)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.Ragdolls.BasicRagdoll</span></td>
+        <td><span class="parametername">ragdoll</span></td>
+        <td><p>The <span class="xref">PlayerRoles.Ragdolls.BasicRagdoll</span> to get.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a></td>
+        <td><p>A <a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a> or <span class="xref">null</span> if not found.</p>
 </td>
       </tr>
     </tbody>
@@ -1414,6 +1414,62 @@
   <div><span class="xref">System.Object.ToString()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_TryCreate_PlayerRoles_Ragdolls_RagdollData_Exiled_API_Features_Ragdoll__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.TryCreate(PlayerRoles.Ragdolls.RagdollData%2CExiled.API.Features.Ragdoll%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L287">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Ragdoll_TryCreate_" data-uid="Exiled.API.Features.Ragdoll.TryCreate*"></a>
+  <h4 id="Exiled_API_Features_Ragdoll_TryCreate_PlayerRoles_Ragdolls_RagdollData_Exiled_API_Features_Ragdoll__" data-uid="Exiled.API.Features.Ragdoll.TryCreate(PlayerRoles.Ragdolls.RagdollData,Exiled.API.Features.Ragdoll@)">TryCreate(RagdollData, out Ragdoll)</h4>
+  <div class="markdown level1 summary"><p>Creates a new ragdoll.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryCreate(RagdollData networkInfo, out Ragdoll ragdoll)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.Ragdolls.RagdollData</span></td>
+        <td><span class="parametername">networkInfo</span></td>
+        <td><p>The data associated with the ragdoll.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a></td>
+        <td><span class="parametername">ragdoll</span></td>
+        <td><p>Created ragdoll. Will be <span class="xref">null</span> if method retunred <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if ragdoll was successfully created. Otherwise, false.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_TryCreate_PlayerRoles_RoleTypeId_System_String_PlayerStatsSystem_DamageHandlerBase_Exiled_API_Features_Ragdoll__Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.TryCreate(PlayerRoles.RoleTypeId%2CSystem.String%2CPlayerStatsSystem.DamageHandlerBase%2CExiled.API.Features.Ragdoll%40%2CExiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -1556,62 +1612,6 @@
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><p>The ragdoll.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_TryCreate_RagdollData_Exiled_API_Features_Ragdoll__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.TryCreate(RagdollData%2CExiled.API.Features.Ragdoll%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L287">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Ragdoll_TryCreate_" data-uid="Exiled.API.Features.Ragdoll.TryCreate*"></a>
-  <h4 id="Exiled_API_Features_Ragdoll_TryCreate_RagdollData_Exiled_API_Features_Ragdoll__" data-uid="Exiled.API.Features.Ragdoll.TryCreate(RagdollData,Exiled.API.Features.Ragdoll@)">TryCreate(RagdollData, out Ragdoll)</h4>
-  <div class="markdown level1 summary"><p>Creates a new ragdoll.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryCreate(RagdollData networkInfo, out Ragdoll ragdoll)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">RagdollData</span></td>
-        <td><span class="parametername">networkInfo</span></td>
-        <td><p>The data associated with the ragdoll.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a></td>
-        <td><span class="parametername">ragdoll</span></td>
-        <td><p>Created ragdoll. Will be <span class="xref">null</span> if method retunred <span class="xref">false</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><p><span class="xref">true</span> if ragdoll was successfully created. Otherwise, false.</p>
 </td>
       </tr>
     </tbody>

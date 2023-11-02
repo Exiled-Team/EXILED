@@ -12998,11 +12998,11 @@ references:
   commentId: T:Exiled.API.Features.Items.Flashlight
   fullName: Exiled.API.Features.Items.Flashlight
   nameWithType: Flashlight
-- uid: Exiled.API.Features.Items.Flashlight.#ctor(InventorySystem.Items.Flashlight.FlashlightItem)
+- uid: Exiled.API.Features.Items.Flashlight.#ctor(FlashlightItem)
   name: Flashlight(FlashlightItem)
-  href: api/Exiled.API.Features.Items.Flashlight.html#Exiled_API_Features_Items_Flashlight__ctor_InventorySystem_Items_Flashlight_FlashlightItem_
-  commentId: M:Exiled.API.Features.Items.Flashlight.#ctor(InventorySystem.Items.Flashlight.FlashlightItem)
-  fullName: Exiled.API.Features.Items.Flashlight.Flashlight(InventorySystem.Items.Flashlight.FlashlightItem)
+  href: api/Exiled.API.Features.Items.Flashlight.html#Exiled_API_Features_Items_Flashlight__ctor_FlashlightItem_
+  commentId: M:Exiled.API.Features.Items.Flashlight.#ctor(FlashlightItem)
+  fullName: Exiled.API.Features.Items.Flashlight.Flashlight(FlashlightItem)
   nameWithType: Flashlight.Flashlight(FlashlightItem)
 - uid: Exiled.API.Features.Items.Flashlight.#ctor*
   name: Flashlight
@@ -22280,6 +22280,12 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Ragdoll.CanBeCleanedUp
   nameWithType: Ragdoll.CanBeCleanedUp
+- uid: Exiled.API.Features.Ragdoll.CreateAndSpawn(PlayerRoles.Ragdolls.RagdollData)
+  name: CreateAndSpawn(RagdollData)
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_CreateAndSpawn_PlayerRoles_Ragdolls_RagdollData_
+  commentId: M:Exiled.API.Features.Ragdoll.CreateAndSpawn(PlayerRoles.Ragdolls.RagdollData)
+  fullName: Exiled.API.Features.Ragdoll.CreateAndSpawn(PlayerRoles.Ragdolls.RagdollData)
+  nameWithType: Ragdoll.CreateAndSpawn(RagdollData)
 - uid: Exiled.API.Features.Ragdoll.CreateAndSpawn(PlayerRoles.RoleTypeId,System.String,PlayerStatsSystem.DamageHandlerBase,UnityEngine.Vector3,UnityEngine.Quaternion,Exiled.API.Features.Player)
   name: CreateAndSpawn(RoleTypeId, String, DamageHandlerBase, Vector3, Quaternion, Player)
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_CreateAndSpawn_PlayerRoles_RoleTypeId_System_String_PlayerStatsSystem_DamageHandlerBase_UnityEngine_Vector3_UnityEngine_Quaternion_Exiled_API_Features_Player_
@@ -22292,12 +22298,6 @@ references:
   commentId: M:Exiled.API.Features.Ragdoll.CreateAndSpawn(PlayerRoles.RoleTypeId,System.String,System.String,UnityEngine.Vector3,UnityEngine.Quaternion,Exiled.API.Features.Player)
   fullName: Exiled.API.Features.Ragdoll.CreateAndSpawn(PlayerRoles.RoleTypeId, System.String, System.String, UnityEngine.Vector3, UnityEngine.Quaternion, Exiled.API.Features.Player)
   nameWithType: Ragdoll.CreateAndSpawn(RoleTypeId, String, String, Vector3, Quaternion, Player)
-- uid: Exiled.API.Features.Ragdoll.CreateAndSpawn(RagdollData)
-  name: CreateAndSpawn(RagdollData)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_CreateAndSpawn_RagdollData_
-  commentId: M:Exiled.API.Features.Ragdoll.CreateAndSpawn(RagdollData)
-  fullName: Exiled.API.Features.Ragdoll.CreateAndSpawn(RagdollData)
-  nameWithType: Ragdoll.CreateAndSpawn(RagdollData)
 - uid: Exiled.API.Features.Ragdoll.CreateAndSpawn*
   name: CreateAndSpawn
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_CreateAndSpawn_
@@ -22409,18 +22409,18 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Ragdoll.GameObject
   nameWithType: Ragdoll.GameObject
-- uid: Exiled.API.Features.Ragdoll.Get(BasicRagdoll)
-  name: Get(BasicRagdoll)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Get_BasicRagdoll_
-  commentId: M:Exiled.API.Features.Ragdoll.Get(BasicRagdoll)
-  fullName: Exiled.API.Features.Ragdoll.Get(BasicRagdoll)
-  nameWithType: Ragdoll.Get(BasicRagdoll)
 - uid: Exiled.API.Features.Ragdoll.Get(Exiled.API.Features.Player)
   name: Get(Player)
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Get_Exiled_API_Features_Player_
   commentId: M:Exiled.API.Features.Ragdoll.Get(Exiled.API.Features.Player)
   fullName: Exiled.API.Features.Ragdoll.Get(Exiled.API.Features.Player)
   nameWithType: Ragdoll.Get(Player)
+- uid: Exiled.API.Features.Ragdoll.Get(PlayerRoles.Ragdolls.BasicRagdoll)
+  name: Get(BasicRagdoll)
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Get_PlayerRoles_Ragdolls_BasicRagdoll_
+  commentId: M:Exiled.API.Features.Ragdoll.Get(PlayerRoles.Ragdolls.BasicRagdoll)
+  fullName: Exiled.API.Features.Ragdoll.Get(PlayerRoles.Ragdolls.BasicRagdoll)
+  nameWithType: Ragdoll.Get(BasicRagdoll)
 - uid: Exiled.API.Features.Ragdoll.Get(System.Collections.Generic.IEnumerable{Exiled.API.Features.Player})
   name: Get(IEnumerable<Player>)
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Get_System_Collections_Generic_IEnumerable_Exiled_API_Features_Player__
@@ -22671,6 +22671,15 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Ragdoll.Transform
   nameWithType: Ragdoll.Transform
+- uid: Exiled.API.Features.Ragdoll.TryCreate(PlayerRoles.Ragdolls.RagdollData,Exiled.API.Features.Ragdoll@)
+  name: TryCreate(RagdollData, out Ragdoll)
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_TryCreate_PlayerRoles_Ragdolls_RagdollData_Exiled_API_Features_Ragdoll__
+  commentId: M:Exiled.API.Features.Ragdoll.TryCreate(PlayerRoles.Ragdolls.RagdollData,Exiled.API.Features.Ragdoll@)
+  name.vb: TryCreate(RagdollData, ByRef Ragdoll)
+  fullName: Exiled.API.Features.Ragdoll.TryCreate(PlayerRoles.Ragdolls.RagdollData, out Exiled.API.Features.Ragdoll)
+  fullName.vb: Exiled.API.Features.Ragdoll.TryCreate(PlayerRoles.Ragdolls.RagdollData, ByRef Exiled.API.Features.Ragdoll)
+  nameWithType: Ragdoll.TryCreate(RagdollData, out Ragdoll)
+  nameWithType.vb: Ragdoll.TryCreate(RagdollData, ByRef Ragdoll)
 - uid: Exiled.API.Features.Ragdoll.TryCreate(PlayerRoles.RoleTypeId,System.String,PlayerStatsSystem.DamageHandlerBase,Exiled.API.Features.Ragdoll@,Exiled.API.Features.Player)
   name: TryCreate(RoleTypeId, String, DamageHandlerBase, out Ragdoll, Player)
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_TryCreate_PlayerRoles_RoleTypeId_System_String_PlayerStatsSystem_DamageHandlerBase_Exiled_API_Features_Ragdoll__Exiled_API_Features_Player_
@@ -22689,15 +22698,6 @@ references:
   fullName.vb: Exiled.API.Features.Ragdoll.TryCreate(PlayerRoles.RoleTypeId, System.String, System.String, ByRef Exiled.API.Features.Ragdoll, Exiled.API.Features.Player)
   nameWithType: Ragdoll.TryCreate(RoleTypeId, String, String, out Ragdoll, Player)
   nameWithType.vb: Ragdoll.TryCreate(RoleTypeId, String, String, ByRef Ragdoll, Player)
-- uid: Exiled.API.Features.Ragdoll.TryCreate(RagdollData,Exiled.API.Features.Ragdoll@)
-  name: TryCreate(RagdollData, out Ragdoll)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_TryCreate_RagdollData_Exiled_API_Features_Ragdoll__
-  commentId: M:Exiled.API.Features.Ragdoll.TryCreate(RagdollData,Exiled.API.Features.Ragdoll@)
-  name.vb: TryCreate(RagdollData, ByRef Ragdoll)
-  fullName: Exiled.API.Features.Ragdoll.TryCreate(RagdollData, out Exiled.API.Features.Ragdoll)
-  fullName.vb: Exiled.API.Features.Ragdoll.TryCreate(RagdollData, ByRef Exiled.API.Features.Ragdoll)
-  nameWithType: Ragdoll.TryCreate(RagdollData, out Ragdoll)
-  nameWithType.vb: Ragdoll.TryCreate(RagdollData, ByRef Ragdoll)
 - uid: Exiled.API.Features.Ragdoll.TryCreate*
   name: TryCreate
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_TryCreate_
@@ -44579,11 +44579,11 @@ references:
   commentId: T:Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs
   fullName: Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs
   nameWithType: TogglingFlashlightEventArgs
-- uid: Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.#ctor(ReferenceHub,InventorySystem.Items.Flashlight.FlashlightItem,System.Boolean)
+- uid: Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.#ctor(ReferenceHub,FlashlightItem,System.Boolean)
   name: TogglingFlashlightEventArgs(ReferenceHub, FlashlightItem, Boolean)
-  href: api/Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.html#Exiled_Events_EventArgs_Player_TogglingFlashlightEventArgs__ctor_ReferenceHub_InventorySystem_Items_Flashlight_FlashlightItem_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.#ctor(ReferenceHub,InventorySystem.Items.Flashlight.FlashlightItem,System.Boolean)
-  fullName: Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.TogglingFlashlightEventArgs(ReferenceHub, InventorySystem.Items.Flashlight.FlashlightItem, System.Boolean)
+  href: api/Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.html#Exiled_Events_EventArgs_Player_TogglingFlashlightEventArgs__ctor_ReferenceHub_FlashlightItem_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.#ctor(ReferenceHub,FlashlightItem,System.Boolean)
+  fullName: Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.TogglingFlashlightEventArgs(ReferenceHub, FlashlightItem, System.Boolean)
   nameWithType: TogglingFlashlightEventArgs.TogglingFlashlightEventArgs(ReferenceHub, FlashlightItem, Boolean)
 - uid: Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.#ctor*
   name: TogglingFlashlightEventArgs
