@@ -31,6 +31,7 @@ namespace Exiled.API.Features
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Scp939;
+    using PlayerRoles.Ragdolls;
     using RelativePositioning;
     using UnityEngine;
     using Utils;
@@ -215,6 +216,25 @@ namespace Exiled.API.Features
         {
             foreach (ZoneType zone in zoneTypes)
                 TurnOffAllLights(duration, zone);
+        }
+
+        /// <summary>
+        /// Changes the <see cref="Color"/> of all lights in the facility.
+        /// </summary>
+        /// <param name="color">The new <see cref="Color"/> of the lights.</param>
+        public static void ChangeLightsColor(Color color)
+        {
+            foreach (RoomLightController light in RoomLightController.Instances)
+                light.NetworkOverrideColor = color;
+        }
+
+        /// <summary>
+        /// Resets the <see cref="Color">color</see> of all lights in the facility.
+        /// </summary>
+        public static void ResetLightsColor()
+        {
+            foreach (RoomLightController light in RoomLightController.Instances)
+                light.NetworkOverrideColor = Color.clear;
         }
 
         /// <summary>

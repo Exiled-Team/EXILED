@@ -17,6 +17,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.FirstPersonControl.NetworkMessages;
     using PlayerRoles.FirstPersonControl.Spawnpoints;
 
     using UnityEngine;
@@ -57,6 +58,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     hub.transform.position = ev.Position;
                     fpcRole.FpcModule.MouseLook.CurrentHorizontal = ev.HorizontalRotation;
+                    hub.connectionToClient.Send(new FpcOverrideMessage(ev.Position, ev.HorizontalRotation), 0);
                 }
                 else
                 {

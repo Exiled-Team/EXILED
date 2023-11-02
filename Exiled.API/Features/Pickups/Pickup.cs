@@ -453,8 +453,8 @@ namespace Exiled.API.Features.Pickups
         /// <br />- The Micro HID can be cast to <see cref="MicroHIDPickup"/>.
         /// <br />- SCP-244 A and B variants can be cast to <see cref="Scp244Pickup"/>.
         /// <br />- SCP-330 can be cast to <see cref="Scp330Pickup"/>.
-        /// <br />- SCP-018 can be cast to <see cref="Scp018Projectile"/>.
-        /// <br />- SCP-2176 can be cast to <see cref="Scp2176Projectile"/>.
+        /// <br />- SCP-018 can be cast to <see cref="Projectiles.Scp018Projectile"/>.
+        /// <br />- SCP-2176 can be cast to <see cref="Projectiles.Scp2176Projectile"/>.
         /// </para>
         /// <para>
         /// Items that are not listed above do not have a subclass, and can only use the base <see cref="Pickup"/> class.
