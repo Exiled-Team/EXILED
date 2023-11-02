@@ -49,7 +49,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets a value that determines if the grenade should explode immediately when contacting any surface.
+        /// Gets or sets a value indicating whether or not the grenade should explode immediately when contacting any surface.
         /// </summary>
         public abstract bool ExplodeOnCollision { get; set; }
 
