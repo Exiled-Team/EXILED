@@ -12,6 +12,8 @@ namespace Exiled.API.Extensions
 
     using LiteNetLib.Utils;
 
+    using YamlDotNet.Serialization;
+
     /// <summary>
     /// A set of extensions for <see cref="Type"/>.
     /// </summary>
@@ -43,7 +45,10 @@ namespace Exiled.API.Extensions
                 throw new InvalidTypeException("Target and source type mismatch!");
 
             foreach (PropertyInfo sourceProperty in type.GetProperties())
-                type.GetProperty(sourceProperty.Name)?.SetValue(target, sourceProperty.GetValue(source, null), null);
+            {
+                if (type.GetProperty(sourceProperty.Name) is { } property && property.GetCustomAttribute<YamlIgnoreAttribute>() is null)
+                    property?.SetValue(target, sourceProperty.GetValue(source, null), null);
+            }
         }
     }
 }
