@@ -130,6 +130,9 @@ namespace Exiled.API.Features
             }
         }
 
+        /// <summary>
+        /// Gets the Hubert Sky prefab.
+        /// </summary>
         public static SkyboxHubert SkyboxHubert
         {
             get
