@@ -2555,18 +2555,13 @@ namespace Exiled.API.Features
 
                 item.ChangeOwner(item.Owner, this);
 
-                if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
-                {
-                    acquisitionConfirmationTrigger.ServerConfirmAcqusition();
-                    acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
-                }
-
-                // Dont care, didnt ask, ratio
-                // UPD 12.09.23 - maybe some changes will fix candies desync, and that legacy code can be deleted
                 Timing.CallDelayed(0.02f, () =>
                 {
-                    if (item.Type is ItemType.SCP330 && item.Base != null)
-                        ((Scp330)item).Base.ServerRefreshBag();
+                    if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
+                    {
+                        acquisitionConfirmationTrigger.ServerConfirmAcqusition();
+                        acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
+                    }
                 });
 
                 ItemsValue.Add(item);
