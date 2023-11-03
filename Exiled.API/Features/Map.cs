@@ -67,6 +67,7 @@ namespace Exiled.API.Features
         private static global::Hazards.PrismaticCloud prismaticCloudPrefab;
 
         private static AmbientSoundPlayer ambientSoundPlayer;
+        private static SkyboxHubert skyboxHubert;
 
         /// <summary>
         /// Gets the prismatic prefab.
@@ -129,6 +130,19 @@ namespace Exiled.API.Features
             }
         }
 
+        public static SkyboxHubert SkyboxHubert
+        {
+            get
+            {
+                if (skyboxHubert == null)
+                {
+                    skyboxHubert = Object.FindObjectOfType<SkyboxHubert>();
+                }
+
+                return skyboxHubert;
+            }
+        }
+
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
@@ -173,6 +187,16 @@ namespace Exiled.API.Features
         /// Gets the <see cref="global::AmbientSoundPlayer"/>.
         /// </summary>
         public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer != null ? ambientSoundPlayer : (ambientSoundPlayer = ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>());
+
+        /// <summary>
+        /// Gets or sets a value indicating whether HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT.
+        /// HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT.
+        /// </summary>
+        public static bool IsHubertSky
+        {
+            get => SkyboxHubert.NetworkHubert;
+            set => SkyboxHubert.NetworkHubert = value;
+        }
 
         /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
