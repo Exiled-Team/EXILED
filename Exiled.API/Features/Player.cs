@@ -1843,6 +1843,23 @@ namespace Exiled.API.Features
         /// Drops an item from the player's inventory.
         /// </summary>
         /// <param name="item">The item to be dropped.</param>
+        public void DropItem(Item item, bool isThrown = false) => Inventory.UserCode_CmdDropItem__UInt16__Boolean(item.Serial, isThrown);
+
+        /// <summary>
+        /// Drops the held item. Will not do anything if the player is not holding an item.
+        /// </summary>
+        /// <seealso cref="CurrentItem"/>
+        public void DropHeldItem(bool isThrown = false)
+        {
+            if (CurrentItem is null) return;
+
+            DropItem(CurrentItem, isThrown);
+        }
+
+        /// <summary>
+        /// Drops an item from the player's inventory.
+        /// </summary>
+        /// <param name="item">The item to be dropped.</param>
         /// <returns>dropped <see cref="Pickup"/>.</returns>
         public Pickup DropItem(Item item) => Pickup.Get(Inventory.ServerDropItem(item.Serial));
 
