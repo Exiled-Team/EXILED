@@ -5,7 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-
 namespace Exiled.Events.EventArgs.Scp3114
 {
     using API.Features;
