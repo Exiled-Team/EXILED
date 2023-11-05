@@ -48,6 +48,11 @@ namespace Exiled.Events.Handlers
         public static Event<StranglingEventArgs> Strangling { get; set; } = new();
 
         /// <summary>
+        ///     Invoked before a player is slapped.
+        /// </summary>
+        public static Event<SlappingPlayerEventArgs> SlappingPlayer { get; set; } = new();
+
+        /// <summary>
         ///     Invoked before triggering the strangle cooldown.
         /// </summary>
         public static Event<StranglingFinishedEventArgs> StranglingFinished { get; set; } = new();
@@ -93,5 +98,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="StranglingFinishedEventArgs" /> instance.</param>
         public static void OnStranglingFinished(StranglingFinishedEventArgs ev) => StranglingFinished.InvokeSafely(ev);
+
+        /// <summary>
+        ///     Called before Scp3114 slaps a player.
+        /// </summary>
+        /// <param name="ev">The <see cref="SlappingPlayerEventArgs" /> instance.</param>
+        public static void OnSlappingPlayer(SlappingPlayerEventArgs ev) => SlappingPlayer.InvokeSafely(ev);
     }
 }
