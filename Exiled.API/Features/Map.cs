@@ -31,6 +31,7 @@ namespace Exiled.API.Features
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Scp939;
+    using PlayerRoles.Ragdolls;
     using RelativePositioning;
     using UnityEngine;
     using Utils;
