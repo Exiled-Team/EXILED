@@ -250,7 +250,7 @@ namespace Exiled.API.Features.Items
         public static Item Create(ItemType type, Player owner = null) => type switch
         {
             ItemType.SCP268 => new Usable(type),
-            ItemType.Adrenaline or ItemType.Medkit or ItemType.Painkillers or ItemType.SCP500 or ItemType.SCP207 or ItemType.SCP1853 => new Consumable(type),
+            ItemType.Adrenaline or ItemType.Medkit or ItemType.Painkillers or ItemType.SCP500 or ItemType.SCP207 or ItemType.SCP1853 or ItemType.AntiSCP207 => new Consumable(type),
             ItemType.SCP244a or ItemType.SCP244b => new Scp244(type),
             ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39 => new Ammo(type),
             ItemType.Flashlight or ItemType.Lantern => new Flashlight(type),
