@@ -9,9 +9,8 @@ namespace Exiled.Events.Handlers
 {
 #pragma warning disable SA1623 // Property summary documentation should match accessors
 
-    using Exiled.Events.EventArgs.Scp244;
     using Exiled.Events.EventArgs.Scp3114;
-    using Exiled.Events.Features;
+    using Features;
 
     /// <summary>
     ///     Scp3114 related events.
@@ -44,33 +43,55 @@ namespace Exiled.Events.Handlers
         public static Event<RevealingEventArgs> Revealing { get; set; } = new();
 
         /// <summary>
-        ///     Called before diguising to a new Roles.
+        ///     Invoked before Strangling.
+        /// </summary>
+        public static Event<StranglingEventArgs> Strangling { get; set; } = new();
+
+        /// <summary>
+        ///     Invoked before triggering the strangle cooldown.
+        /// </summary>
+        public static Event<StranglingFinishedEventArgs> StranglingFinished { get; set; } = new();
+
+        /// <summary>
+        ///     Called before disguising to a new Roles.
         /// </summary>
         /// <param name="ev">The <see cref="DisguisingEventArgs" /> instance.</param>
         public static void OnDisguising(DisguisingEventArgs ev) => Disguising.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before diguising to a new Roles.
+        ///     Called before disguising to a new Roles.
         /// </summary>
         /// <param name="ev">The <see cref="DisguisedEventArgs" /> instance.</param>
         public static void OnDisguised(DisguisedEventArgs ev) => Disguised.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before diguising to a new Roles.
+        ///     Called before disguising to a new Roles.
         /// </summary>
         /// <param name="ev">The <see cref="TryUseBodyEventArgs" /> instance.</param>
         public static void OnTryUseBody(TryUseBodyEventArgs ev) => TryUseBody.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before diguising to a new Roles.
+        ///     Called before disguising to a new Roles.
         /// </summary>
         /// <param name="ev">The <see cref="RevealedEventArgs" /> instance.</param>
         public static void OnRevealed(RevealedEventArgs ev) => Revealed.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before diguising to a new Roles.
+        ///     Called before disguising to a new Roles.
         /// </summary>
         /// <param name="ev">The <see cref="RevealingEventArgs" /> instance.</param>
         public static void OnRevealing(RevealingEventArgs ev) => Revealing.InvokeSafely(ev);
+
+        /// <summary>
+        ///     Called before strangling a player.
+        /// </summary>
+        /// <param name="ev">The <see cref="StranglingEventArgs"/> instance.</param>
+        public static void OnStrangling(StranglingEventArgs ev) => Strangling.InvokeSafely(ev);
+
+        /// <summary>
+        ///     Called after Scp3114 finishes strangling a player.
+        /// </summary>
+        /// <param name="ev">The <see cref="StranglingFinishedEventArgs" /> instance.</param>
+        public static void OnStranglingFinished(StranglingFinishedEventArgs ev) => StranglingFinished.InvokeSafely(ev);
     }
 }
