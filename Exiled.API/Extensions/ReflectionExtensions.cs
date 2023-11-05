@@ -46,7 +46,7 @@ namespace Exiled.API.Extensions
 
             foreach (PropertyInfo sourceProperty in type.GetProperties())
             {
-                if (type.GetProperty(sourceProperty.Name) is { } property && property.GetCustomAttribute<YamlIgnoreAttribute>() is null)
+                if (type.GetProperty(sourceProperty.Name) is { } property && property.GetCustomAttribute<YamlIgnoreAttribute>() is null && property.SetMethod is not null)
                     property?.SetValue(target, sourceProperty.GetValue(source, null), null);
             }
         }
