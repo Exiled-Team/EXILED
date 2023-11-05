@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Interfaces;
     using Mirror;
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.PlayableScps.Subroutines;
@@ -216,14 +217,7 @@ namespace Exiled.API.Features.Roles
             Identity.CurIdentity.Reset();
             Identity.ServerResendIdentity();
         }
-
-        /// <summary>
-        /// Gets the Spawn Chance of SCP-3114.
-        /// </summary>
-        /// <param name="alreadySpawned">The List of Roles already spawned.</param>
-        /// <returns>The Spawn Chance.</returns>
-        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => 0;
-
+        
         /// <summary>
         /// Gets or sets wasDisguised boolean.
         /// </summary>
@@ -232,5 +226,13 @@ namespace Exiled.API.Features.Roles
             get => Identity._wasDisguised;
             set => Identity._wasDisguised = value;
         }
+
+        /// <summary>
+        /// Gets the Spawn Chance of SCP-3114.
+        /// </summary>
+        /// <param name="alreadySpawned">The List of Roles already spawned.</param>
+        /// <returns>The Spawn Chance.</returns>
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base is ISpawnableScp spawnableScp ? spawnableScp.GetSpawnChance(alreadySpawned) : 0;
+        halloween-2023
     }
 }

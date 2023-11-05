@@ -2555,18 +2555,13 @@ namespace Exiled.API.Features
 
                 item.ChangeOwner(item.Owner, this);
 
-                if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
-                {
-                    acquisitionConfirmationTrigger.ServerConfirmAcqusition();
-                    acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
-                }
-
-                // Dont care, didnt ask, ratio
-                // UPD 12.09.23 - maybe some changes will fix candies desync, and that legacy code can be deleted
                 Timing.CallDelayed(0.02f, () =>
                 {
-                    if (item.Type is ItemType.SCP330 && item.Base != null)
-                        ((Scp330)item).Base.ServerRefreshBag();
+                    if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
+                    {
+                        acquisitionConfirmationTrigger.ServerConfirmAcqusition();
+                        acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
+                    }
                 });
 
                 ItemsValue.Add(item);
@@ -2629,26 +2624,29 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if a candy was given.</returns>
         public bool TryAddCandy(CandyKindID candyType)
         {
-            if (Scp330Bag.TryGetBag(ReferenceHub, out Scp330Bag bag))
+            bool flag = false;
+            if (!Scp330Bag.TryGetBag(referenceHub, out Scp330Bag scp330Bag))
             {
-                bool flag = bag.TryAddSpecific(candyType);
+                flag = true;
+                if (Items.Count > 7)
+                    return false;
 
-                if (flag)
-                    bag.ServerRefreshBag();
-
-                return flag;
+                scp330Bag = AddItem(ItemType.SCP330).As<Scp330>().Base;
             }
 
-            if (Items.Count > 7)
-                return false;
-
-            Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
-
-            Timing.CallDelayed(0.02f, () =>
+            if (flag)
             {
-                scp330.Base.Candies.Clear();
-                scp330.AddCandy(candyType);
-            });
+                scp330Bag.Candies = new List<CandyKindID> { candyType };
+                scp330Bag.ServerRefreshBag();
+            }
+            else if (scp330Bag.TryAddSpecific(candyType))
+            {
+                scp330Bag.ServerRefreshBag();
+            }
+            else
+            {
+                return false;
+            }
 
             return true;
         }
