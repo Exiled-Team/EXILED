@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles;
 
     using Respawning;
+    using Respawning.NamingRules;
 
     using HumanGameRole = PlayerRoles.HumanRole;
 
@@ -41,9 +42,9 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets the <see cref="UnitName"/>.
+        /// Gets the player's unit name.
         /// </summary>
-        public string UnitName => Base.UnitName;
+        public string UnitName => UnitNameMessageHandler.GetReceived(Base.AssignedSpawnableTeam, Base.UnitNameId);
 
         /// <summary>
         /// Gets or sets the <see cref="UnitNameId"/>.

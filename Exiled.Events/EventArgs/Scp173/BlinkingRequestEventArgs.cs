@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="BlinkingEventArgs.cs" company="Exiled Team">
+// <copyright file="BlinkingRequestEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -20,12 +20,12 @@ namespace Exiled.Events.EventArgs.Scp173
     using Scp173Role = API.Features.Roles.Scp173Role;
 
     /// <summary>
-    ///     Contains all information before a players blink near SCP-173.
+    ///     Contains all information before server handle SCP-173 blink network message.
     /// </summary>
-    public class BlinkingEventArgs : IScp173Event, IDeniableEvent
+    public class BlinkingRequestEventArgs : IScp173Event, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="BlinkingEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="BlinkingRequestEventArgs" /> class.
         /// </summary>
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
@@ -33,33 +33,17 @@ namespace Exiled.Events.EventArgs.Scp173
         /// <param name="targets">
         ///     <inheritdoc cref="Targets" />
         /// </param>
-        /// <param name="blinkPos">
-        ///     <inheritdoc cref="BlinkPosition" />
-        /// </param>
-        public BlinkingEventArgs(Player player, List<Player> targets, Vector3 blinkPos)
+        public BlinkingRequestEventArgs(Player player, HashSet<Player> targets)
         {
             Player = player;
             Scp173 = player.Role.As<Scp173Role>();
-            BlinkPosition = blinkPos;
             Targets = targets;
-            BlinkCooldown = Scp173BlinkTimer.CooldownBaseline;
         }
 
         /// <summary>
-        ///     Gets or sets the location the player is blinking to.
+        ///     Gets a <see cref="IReadOnlyCollection{T}" /> of players who have triggered SCP-173.
         /// </summary>
-        public Vector3 BlinkPosition { get; set; }
-
-        /// <summary>
-        ///     Gets or sets how long the blink cooldown will last.
-        /// </summary>
-        public float BlinkCooldown { get; set; }
-
-        /// <summary>
-        ///     Gets a <see cref="IEnumerable{T}" /> of players who have triggered SCP-173.
-        /// </summary>
-        // TODO: convert to ReadOnlyCollection
-        public List<Player> Targets { get; }
+        public IReadOnlyCollection<Player> Targets { get; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the player is allowed to blink.

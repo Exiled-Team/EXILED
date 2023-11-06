@@ -8,9 +8,8 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Interfaces;
-
-    using InventorySystem.Items.Flashlight;
-
+    using InventorySystem.Items.SwitchableLightSources;
+    using InventorySystem.Items.SwitchableLightSources.Flashlight;
     using Utils.Networking;
 
     /// <summary>

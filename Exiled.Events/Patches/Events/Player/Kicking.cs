@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // reason
-                new(OpCodes.Ldarg_3),
+                new(OpCodes.Ldarg_2),
 
                 // kick start message
                 new(OpCodes.Ldstr, newInstructions.Find(x => x.opcode == OpCodes.Ldstr).operand),
@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(BanningEventArgs), nameof(BanningEventArgs.Reason))),
-                new(OpCodes.Starg_S, 3),
+                new(OpCodes.Starg_S, 2),
 
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(BanningEventArgs), nameof(BanningEventArgs.Target))),

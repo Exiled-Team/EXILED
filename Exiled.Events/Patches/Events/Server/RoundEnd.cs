@@ -43,6 +43,9 @@ namespace Exiled.Events.Patches.Events.Server
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
+            const string LeadingTeam = "<leadingTeam>5__9";
+            const string NewList = "<newList>5__3";
+
             // Replace ChaosTargetCount == 0 with ChaosTargetCount <= 0
             int offset = 1;
             int index = newInstructions.FindIndex(x => x.Calls(PropertyGetter(typeof(RoundSummary), nameof(RoundSummary.ChaosTargetCount)))) + offset;
@@ -54,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction[]
                 {
                     new CodeInstruction(OpCodes.Ldc_I4_0),
-                    new CodeInstruction(OpCodes.Ble_S, label),
+                    new CodeInstruction(OpCodes.Bgt_S, label),
                 });
 
             offset = -1;
@@ -68,14 +71,14 @@ namespace Exiled.Events.Patches.Events.Server
                 {
                     // this.leadingTeam
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldfld, Field(PrivateType, "<leadingTeam>5__9")),
+                    new(OpCodes.Ldfld, Field(PrivateType, LeadingTeam)),
 
                     // this.newList
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldfld, Field(PrivateType, "<newList>5__3")),
+                    new(OpCodes.Ldfld, Field(PrivateType, NewList)),
 
                     // shouldRoundEnd
-                    new(OpCodes.Ldloc_3),
+                    new(OpCodes.Ldloc_S, 4),
 
                     // EndingRoundEventArgs evEndingRound = new(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EndingRoundEventArgs))[0]),
@@ -89,7 +92,7 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.LeadingTeam))),
-                    new(OpCodes.Stfld, Field(PrivateType, "<leadingTeam>5__9")),
+                    new(OpCodes.Stfld, Field(PrivateType, LeadingTeam)),
 
                     // this._roundEnded = ev.IsAllowed
                     new(OpCodes.Ldloc_1),
@@ -101,22 +104,21 @@ namespace Exiled.Events.Patches.Events.Server
             offset = 7;
             index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldstr && x.operand == (object)"auto_round_restart_time") + offset;
 
-            LocalBuilder evEndedRound = generator.DeclareLocal(typeof(RoundEndedEventArgs));
-
+            LocalBuilder timeToRestartIndex = (LocalBuilder)newInstructions[index - 1].operand;
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
                 {
                     // this.leadingTeam
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldfld, Field(PrivateType, "<leadingTeam>5__9")),
+                    new(OpCodes.Ldfld, Field(PrivateType, LeadingTeam)),
 
                     // this.newList
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldfld, Field(PrivateType, "<newList>5__3")),
+                    new(OpCodes.Ldfld, Field(PrivateType, NewList)),
 
                     // timeToRestart
-                    new(OpCodes.Ldloc_S, 5),
+                    new(OpCodes.Ldloc_S, timeToRestartIndex),
 
                     // RoundEndedEventArgs evEndedRound = new(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RoundEndedEventArgs))[0]),
@@ -124,15 +126,11 @@ namespace Exiled.Events.Patches.Events.Server
 
                     // Handlers.Server.OnRoundEnded(evEndedRound);
                     new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnRoundEnded))),
-                    new(OpCodes.Stloc_S, evEndedRound.LocalIndex),
 
                     // timeToRestart = ev.TimeToRestart
-                    new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RoundEndedEventArgs), nameof(RoundEndedEventArgs.TimeToRestart))),
-                    new(OpCodes.Stloc_S, 5),
+                    new(OpCodes.Stloc_S, timeToRestartIndex),
                 });
-
-            Label continueLabel = generator.DefineLabel();
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
