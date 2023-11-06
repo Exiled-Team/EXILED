@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Interfaces;
     using Mirror;
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.PlayableScps.Subroutines;
@@ -126,6 +127,16 @@ namespace Exiled.API.Features.Roles
         public new Scp3114GameRole Base { get; }
 
         /// <summary>
+        /// Gets the damage amount of SCP-3114's slap ability.
+        /// </summary>
+        public float SlapDamage => Slap.DamageAmount;
+
+        /// <summary>
+        /// Gets the current target of SCP-3114's strangle ability. Can be <see langword="null"/>.
+        /// </summary>
+        public Player StrangleTarget => Player.Get(Slap._strangle.SyncTarget?.Target);
+
+        /// <summary>
         /// Gets or sets the SCP-3114's Stolen Role.
         /// </summary>
         public RoleTypeId StolenRole
@@ -168,7 +179,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets the SCP-3114's UnitId used for it's FakeIdentity.
+        /// Gets or sets current state of SCP-3114's disguise ability.
         /// </summary>
         public DisguiseStatus DisguiseStatus
         {
@@ -190,6 +201,15 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets or sets the warning time seconds.
+        /// </summary>
+        public float WarningTime
+        {
+            get => Identity._warningTimeSeconds;
+            set => Identity._warningTimeSeconds = value;
+        }
+
+        /// <summary>
         /// Reset Scp3114 FakeIdentity.
         /// </summary>
         public void ResetIdentity()
@@ -203,6 +223,6 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="alreadySpawned">The List of Roles already spawned.</param>
         /// <returns>The Spawn Chance.</returns>
-        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => 0;
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base is ISpawnableScp spawnableScp ? spawnableScp.GetSpawnChance(alreadySpawned) : 0;
     }
 }
