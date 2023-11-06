@@ -2272,17 +2272,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Clears player's ammo.
-        /// </summary>
-        public void ClearAmmo()
-        {
-            foreach (var ammoType in AmmoBox.Keys)
-            {
-                SetAmmo(ammoType, 0);
-            }
-        }
-
-        /// <summary>
         /// Drops a specific <see cref="AmmoType"/> out of the player's inventory.
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> that will be dropped.</param>
