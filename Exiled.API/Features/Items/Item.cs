@@ -161,6 +161,16 @@ namespace Exiled.API.Features.Items
         public bool IsWeapon => this is Firearm;
 
         /// <summary>
+        /// Gets a value indicating whether or not this item emits light.
+        /// </summary>
+        public bool IsLightEmitter => this is ILightEmittingItem;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this item can be used to disarm players.
+        /// </summary>
+        public bool IsDisarmer => this is IDisarmingItem;
+
+        /// <summary>
         /// Gets the <see cref="Player"/> who owns the item.
         /// </summary>
         public Player Owner => Player.Get(Base.Owner) ?? Server.Host;
