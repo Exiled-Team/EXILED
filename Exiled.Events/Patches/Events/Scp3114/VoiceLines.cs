@@ -19,10 +19,10 @@ namespace Exiled.Events.Patches.Events.Scp3114
     using UnityEngine;
 
     /// <summary>
-    ///     Patches <see cref="Scp3114Disguise.OnProgressSet()" />.
-    ///     Adds the <see cref="Handlers.Scp3114.TryUseBody" /> event.
+    ///     Patches <see cref="Scp3114VoiceLines.ServerPlayConditionally(VoiceLinesName)()" />.
+    ///     Adds the <see cref="Handlers.Scp3114.VoiceLines" /> event.
     /// </summary>
-    [EventPatch(typeof(Scp3114), nameof(Scp3114.TryUseBody))]
+    [EventPatch(typeof(Scp3114), nameof(Scp3114.VoiceLines))]
     [HarmonyPatch(typeof(Scp3114VoiceLines), nameof(Scp3114VoiceLines.ServerPlayConditionally))]
     internal class VoiceLines
     {

@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Scp3114
     /// <summary>
     ///     Contains all information prior to sending voiceline SCP-3114.
     /// </summary>
-    public class VoiceLinesEventArgs : IScp3114Event
+    public class VoiceLinesEventArgs : IScp3114Event, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="VoiceLinesEventArgs" /> class.
