@@ -1760,6 +1760,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Tries to get an item from a player's inventory.
+        /// </summary>
+        /// <param name="type"><see cref="ItemType"/> which item should have.</param>
+        /// <param name="item">The <see cref="Item"/> of found. Otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if item is found. Otherwise, <see langword="false"/>.</returns>
+        public bool TryGetItem(ItemType type, out Item item)
+        {
+            item = ItemsValue.Exists(x => x.Type == type) ? ItemsValue.Find(x => x.Type == type) : null;
+
+            return item != null;
+        }
+
+        /// <summary>
         /// Sets the player's rank.
         /// </summary>
         /// <param name="name">The rank name to be set.</param>
