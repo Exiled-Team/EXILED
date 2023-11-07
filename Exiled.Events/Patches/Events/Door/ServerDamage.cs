@@ -15,8 +15,8 @@ namespace Exiled.Events.Patches.Events.Door
     {
 
         /// <summary>
-        ///     Patches <see cref="Scp3114Disguise.ServerComplete()" />.
-        ///     Adds the <see cref="Scp3114.Disguising" /> and <see cref="Scp3114.Disguised" /> events.
+        ///     Patches <see cref="BreakableDoor.ServerDamage" />.
+        ///     Adds the <see cref="Handlers.Door.DoorDamaging" />, <see cref="Handlers.Door.DoorDestroying" /> and <see cref="Handlers.Door.DoorDestroyed" /> events.
         /// </summary>
         [EventPatch(typeof(Handlers.Door), nameof(Handlers.Door.DoorDestroyed))]
         [EventPatch(typeof(Handlers.Door), nameof(Handlers.Door.DoorDestroying))]
