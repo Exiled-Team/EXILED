@@ -70,36 +70,14 @@ namespace Exiled.Events.Patches.Events.Scp3114
             CodeInstruction[] injectedInstructions2 = new CodeInstruction[]
             {
                 new(OpCodes.Ldloc_S, local),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(SlappingPlayerEventArgs), nameof(SlappingPlayerEventArgs.HumeShieldToGive))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(SlappingPlayerEventArgs), nameof(SlappingPlayerEventArgs.HumeShieldToReward))),
             };
-
+            newInstructions.InsertRange(index, injectedInstructions);
+            newInstructions.InsertRange(index2 + injectedInstructions.Length, injectedInstructions2);
+            newInstructions.RemoveRange(index2 + injectedInstructions.Length, 1);
             for (int z = 0; z < newInstructions.Count; z++)
             {
-                // inject code at insert location
-                if (z == index)
-                {
-                    // return original then inject for the first index.
-                    yield return newInstructions[z];
-                    for (int i = 0; i < injectedInstructions.Length; i++)
-                    {
-                        var instruction = (i != 10) ? injectedInstructions[i] : injectedInstructions[i].WithLabels(skipLabel);
-                        yield return instruction;
-                    }
-                }
-                else if (z == index2)
-                {
-                    // skip the original instruction
-                    foreach (var t in injectedInstructions2)
-                    {
-                        yield return t;
-                    }
-                }
-
-                // skip the index where we are inserting - we are replacing it anyways.
-                else
-                {
-                    yield return newInstructions[z];
-                }
+                yield return (z == index + 10) ? newInstructions[z] : newInstructions[z].WithLabels(skipLabel);
             }
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
@@ -145,25 +123,12 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 new(OpCodes.Callvirt, PropertyGetter(typeof(StranglingFinishedEventArgs), nameof(StranglingFinishedEventArgs.StrangleCooldown))),
             };
 
+            newInstructions.InsertRange(index - 1, injectedInstructions);
+            newInstructions.RemoveRange(index - 1 + injectedInstructions.Length, 3);
+
             for (int z = 0; z < newInstructions.Count; z++)
             {
-                // inject code at insert location
-                if (z == index)
-                {
-                    foreach (var injectedInstruction in injectedInstructions)
-                    {
-                        yield return injectedInstruction;
-                    }
-
-                    // skip the code + 2.
-                    z += 2;
-                }
-
-                // skip the index where we are inserting - we are replacing it anyways.
-                else
-                {
-                    yield return newInstructions[z];
-                }
+                yield return newInstructions[z];
             }
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);

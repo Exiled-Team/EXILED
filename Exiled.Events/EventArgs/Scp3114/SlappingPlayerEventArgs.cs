@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <param name="targetHub">
         ///     The <see cref="ReferenceHub"/> of the player who was being targeted.
         /// </param>
-        /// <param name="humeShieldToGive">
+        /// <param name="humeShieldToReward">
         ///     The amount of hume shield cooldown that is given to the player.
         /// </param>
         /// <param name="damageAmount">
@@ -38,13 +38,13 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IDeniableEvent.IsAllowed"/>
         /// </param>
-        public SlappingPlayerEventArgs(Scp3114Slap instance, ReferenceHub targetHub, float damageAmount, float humeShieldToGive, bool isAllowed = true)
+        public SlappingPlayerEventArgs(Scp3114Slap instance, ReferenceHub targetHub, float damageAmount, float humeShieldToReward, bool isAllowed = true)
         {
             Player = Player.Get(instance.Owner);
             Target = Player.Get(targetHub);
             DamageAmount = damageAmount;
             Scp3114 = Player.Role.As<Scp3114Role>();
-            HumeShieldToGive = humeShieldToGive;
+            HumeShieldToReward = humeShieldToReward;
             IsAllowed = isAllowed;
         }
 
@@ -65,7 +65,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <summary>
         ///     Gets or sets the hume shield amount that will be regenerated for the Scp 3114 <see cref="Player"/>. This will not have any effect if the event is cancelled.
         /// </summary>
-        public float HumeShieldToGive { get; set; }
+        public float HumeShieldToReward { get; set; }
 
         /// <summary>
         ///     Gets or sets the amount of damage to deal to the <see cref="Target"/>. This will not have any effect if the event is cancelled.

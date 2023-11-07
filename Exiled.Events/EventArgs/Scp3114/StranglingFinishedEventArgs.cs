@@ -37,14 +37,14 @@ namespace Exiled.Events.EventArgs.Scp3114
             Player = Player.Get(instance.Owner);
             Scp3114 = Player.Role.As<Scp3114Role>();
             StrangleInfo = priorTarget;
-            PriorTarget = Player.Get(priorTarget.Target);
+            Target = Player.Get(priorTarget.Target);
             StrangleCooldown = cooldown;
         }
 
         /// <summary>
         ///     Gets or sets the cooldown that will be triggered for the <see cref="Scp3114Strangle"/> instance.
         /// </summary>
-        public float StrangleCooldown { get; set; }
+        public double StrangleCooldown { get; set; }
 
         /// <inheritdoc/>
         /// <summary>
@@ -58,7 +58,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <summary>
         ///     Gets the <see cref="Player"/> who was being strangled.
         /// </summary>
-        public Player PriorTarget { get; }
+        public Player Target { get; }
 
         /// <summary>
         ///     Gets <see cref="Scp3114Strangle.StrangleTarget"/> information for the player who was being strangled.

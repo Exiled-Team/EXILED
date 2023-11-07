@@ -57,25 +57,10 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 new(OpCodes.Ret),
             };
 
+            newInstructions.InsertRange(index - 1, injectedInstructions);
             for (int z = 0; z < newInstructions.Count; z++)
             {
-                // inject code at insert location
-                if (z == index)
-                {
-                    foreach (var injectedInstruction in injectedInstructions)
-                    {
-                        yield return injectedInstruction;
-                    }
-
-                    // Add the skip label.
-                    yield return newInstructions[z].WithLabels(skipLabel);
-                }
-
-                // skip the index where we are inserting - we are replacing it anyways.
-                else
-                {
-                    yield return newInstructions[z];
-                }
+                yield return newInstructions[z];
             }
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
@@ -120,26 +105,11 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(StranglingFinishedEventArgs), nameof(StranglingFinishedEventArgs.StrangleCooldown))),
             };
-
+            newInstructions.InsertRange(index - 1, injectedInstructions);
+            newInstructions.RemoveRange(index + injectedInstructions.Length, 3);
             for (int z = 0; z < newInstructions.Count; z++)
             {
-                // inject code at insert location
-                if (z == index)
-                {
-                    foreach (var injectedInstruction in injectedInstructions)
-                    {
-                        yield return injectedInstruction;
-                    }
-
-                    // skip the code + 2.
-                    z += 2;
-                }
-
-                // skip the index where we are inserting - we are replacing it anyways.
-                else
-                {
-                    yield return newInstructions[z];
-                }
+                yield return newInstructions[z];
             }
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
