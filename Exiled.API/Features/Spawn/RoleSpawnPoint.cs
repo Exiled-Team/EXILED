@@ -28,7 +28,7 @@ namespace Exiled.API.Features.Spawn
         public RoleTypeId Role { get; set; }
 
         /// <inheritdoc/>
-        public override float Chance { get; set; }
+        public override int Chance { get; set; }
 
         /// <inheritdoc/>
         [YamlIgnore]

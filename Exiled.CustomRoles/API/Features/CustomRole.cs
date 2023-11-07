@@ -22,7 +22,6 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs.Player;
-    using Exiled.Loader;
     using InventorySystem.Configs;
 
     using MEC;
@@ -128,7 +127,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets a value indicating the Spawn Chance of the Role.
         /// </summary>
-        public virtual float SpawnChance { get; set; }
+        public virtual int SpawnChance { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the spawn system is ignored for this role or not.
@@ -802,30 +801,27 @@ namespace Exiled.CustomRoles.API.Features
 
             if (SpawnProperties.StaticSpawnPoints.Count > 0)
             {
-                foreach ((float chance, Vector3 pos) in SpawnProperties.StaticSpawnPoints)
+                foreach ((int chance, Vector3 pos) in SpawnProperties.StaticSpawnPoints)
                 {
-                    double r = Loader.Random.NextDouble() * 100;
-                    if (r <= chance)
+                    if (chance.Chance())
                         return pos;
                 }
             }
 
             if (SpawnProperties.DynamicSpawnPoints.Count > 0)
             {
-                foreach ((float chance, Vector3 pos) in SpawnProperties.DynamicSpawnPoints)
+                foreach ((int chance, Vector3 pos) in SpawnProperties.DynamicSpawnPoints)
                 {
-                    double r = Loader.Random.NextDouble() * 100;
-                    if (r <= chance)
+                    if (chance.Chance())
                         return pos;
                 }
             }
 
             if (SpawnProperties.RoleSpawnPoints.Count > 0)
             {
-                foreach ((float chance, Vector3 pos) in SpawnProperties.RoleSpawnPoints)
+                foreach ((int chance, Vector3 pos) in SpawnProperties.RoleSpawnPoints)
                 {
-                    double r = Loader.Random.NextDouble() * 100;
-                    if (r <= chance)
+                    if (chance.Chance())
                         return pos;
                 }
             }
@@ -900,7 +896,7 @@ namespace Exiled.CustomRoles.API.Features
 
         private void OnInternalSpawning(SpawningEventArgs ev)
         {
-            if (!IgnoreSpawnSystem && SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && Loader.Random.NextDouble() * 100 <= SpawnChance)
+            if (!IgnoreSpawnSystem && SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && SpawnChance.Chance())
                 AddRole(ev.Player);
         }
 

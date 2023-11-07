@@ -23,7 +23,7 @@ namespace Exiled.API.Features.Spawn
         /// <summary>
         /// Gets or sets the spawn chance.
         /// </summary>
-        public abstract float Chance { get; set; }
+        public abstract int Chance { get; set; }
 
         /// <summary>
         /// Gets or sets this spawn point position.
@@ -35,7 +35,7 @@ namespace Exiled.API.Features.Spawn
         /// </summary>
         /// <param name="chance"><inheritdoc cref="Chance"/></param>
         /// <param name="position"><inheritdoc cref="Position"/></param>
-        public void Deconstruct(out float chance, out Vector3 position)
+        public void Deconstruct(out int chance, out Vector3 position)
         {
             chance = Chance;
             position = Position;
