@@ -61,5 +61,26 @@ namespace Exiled.API.Extensions
 
             return curve;
         }
+
+        /// <summary>
+        /// Get a chance of a number falling out (as a percentage).
+        /// </summary>
+        /// <param name="chance">The value of chance.</param>
+        /// <returns>Whether the necessary chance has fallen out.</returns>
+        public static bool Chance(this double chance) => Chance(chance);
+
+        /// <summary>
+        /// Get a chance of a number falling out (as a percentage).
+        /// </summary>
+        /// <param name="chance">The value of chance.</param>
+        /// <returns>Whether the necessary chance has fallen out.</returns>
+        public static bool Chance(this int chance) => Chance(chance);
+
+        /// <summary>
+        /// Get a chance of a number falling out (as a percentage).
+        /// </summary>
+        /// <param name="chance">The value of chance.</param>
+        /// <returns>Whether the necessary chance has fallen out.</returns>
+        public static bool Chance(this float chance) => Random.value * 100 <= chance;
     }
 }
