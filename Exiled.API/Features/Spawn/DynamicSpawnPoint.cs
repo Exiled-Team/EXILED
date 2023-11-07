@@ -28,7 +28,7 @@ namespace Exiled.API.Features.Spawn
         public SpawnLocationType Location { get; set; }
 
         /// <inheritdoc/>
-        public override int Chance { get; set; }
+        public override float Chance { get; set; }
 
         /// <inheritdoc/>
         [YamlIgnore]

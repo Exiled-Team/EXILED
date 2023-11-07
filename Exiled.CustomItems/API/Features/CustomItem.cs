@@ -24,6 +24,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.CustomItems.API.EventArgs;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp914;
+    using Exiled.Loader;
 
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Pickups;
@@ -613,7 +614,7 @@ namespace Exiled.CustomItems.API.Features
             {
                 Log.Debug($"Attempting to spawn {Name} at {spawnPoint.Position}.");
 
-                if (!spawnPoint.Chance.Chance() || (limit > 0 && spawned >= limit))
+                if (Loader.Random.NextDouble() * 100 >= spawnPoint.Chance || (limit > 0 && spawned >= limit))
                     continue;
 
                 spawned++;
@@ -628,7 +629,9 @@ namespace Exiled.CustomItems.API.Features
                             continue;
                         }
 
-                        Locker locker = Map.Lockers.GetRandomValue();
+                        Locker locker =
+                            Map.Lockers[
+                                Loader.Random.Next(Map.Lockers.Count)];
 
                         if (locker is null)
                         {
@@ -648,7 +651,7 @@ namespace Exiled.CustomItems.API.Features
                             continue;
                         }
 
-                        LockerChamber chamber = locker.Chambers.GetRandomValue();
+                        LockerChamber chamber = locker.Chambers[Loader.Random.Next(Mathf.Max(0, locker.Chambers.Length - 1))];
 
                         if (chamber is null)
                         {

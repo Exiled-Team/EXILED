@@ -18,7 +18,7 @@ namespace Exiled.API.Features.Spawn
         public override string Name { get; set; }
 
         /// <inheritdoc/>
-        public override int Chance { get; set; }
+        public override float Chance { get; set; }
 
         /// <inheritdoc/>
         public override Vector3 Position { get; set; }
