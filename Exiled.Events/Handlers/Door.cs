@@ -14,15 +14,15 @@ namespace Exiled.Events.Handlers
     public class Door
     {
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Items.Jailbird"/> is charged.
+        /// Called before dealing damage to the door
         /// </summary>
         public static Event<DoorDamagingEventArgs> DoorDamaging { get; set; } = new();
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Items.Jailbird"/> is charged.
+        /// Called before destroying the door
         /// </summary>
         public static Event<DoorDestroyingEventArgs> DoorDestroying { get; set; } = new();
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Items.Jailbird"/> is charged.
+        /// Called before destroyed the door
         /// </summary>
         public static Event<DoorDestroyedEventArgs> DoorDestroyed { get; set; } = new();
         /// <summary>

@@ -1838,24 +1838,6 @@ namespace Exiled.API.Features
             if (broadcast.Show)
                 Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type, shouldClearPrevious);
         }
-
-        /// <summary>
-        /// Drops an item from the player's inventory.
-        /// </summary>
-        /// <param name="item">The item to be dropped.</param>
-        public void DropItem(Item item, bool isThrown = false)
-        {
-            if (item is null)
-                return;
-
-            Inventory.UserCode_CmdDropItem__UInt16__Boolean(item.Serial, isThrown);
-        }
-
-        /// <summary>
-        /// Drops the held item. Will not do anything if the player is not holding an item.
-        /// </summary>
-        /// <seealso cref="CurrentItem"/>
-        public void DropHeldItem(bool isThrown = false) => DropItem(CurrentItem, isThrown);
         
 
         /// <summary>
