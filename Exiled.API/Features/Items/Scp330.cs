@@ -64,6 +64,7 @@ namespace Exiled.API.Features.Items
         internal Scp330()
             : this((Scp330Bag)Server.Host.Inventory.CreateItemInstance(new(ItemType.SCP330, 0), false))
         {
+            Base.Candies.Add(Scp330Candies.GetRandom());
         }
 
         /// <summary>
@@ -282,7 +283,6 @@ namespace Exiled.API.Features.Items
         internal override void ChangeOwner(Player oldOwner, Player newOwner)
         {
             Base.Owner = newOwner.ReferenceHub;
-            Base.ServerRefreshBag();
         }
     }
 }
