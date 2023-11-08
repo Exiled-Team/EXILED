@@ -42,10 +42,12 @@ namespace Exiled.Events.Patches.Events.Scp3114
             var local = generator.DeclareLocal(typeof(SlappingPlayerEventArgs));
             int index = newInstructions.FindIndex(x => x.Calls(PropertyGetter(typeof(ScpAttackAbilityBase<Scp3114Role>), nameof(ScpAttackAbilityBase<Scp3114Role>.DamageAmount))));
             int index2 = newInstructions.FindIndex(x => x.opcode == OpCodes.Ldfld && (FieldInfo)x.operand == Field(typeof(Scp3114Slap), nameof(Scp3114Slap._humeShield))) + 2;
+            int defaultHumeIndex = newInstructions.FindIndex(x => x.opcode == OpCodes.Ldc_R4);
             var injectedInstructions = new CodeInstruction[]
             {
-                // `
-                new(OpCodes.Ldc_R4, 25f),
+                newInstructions[defaultHumeIndex],
+
+                // new(OpCodes.Ldc_R4, 25f), - this will now pull the original NW value instead of using the 25 constant.
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SlappingPlayerEventArgs))[0]),
                 new(OpCodes.Stloc_S, local),
