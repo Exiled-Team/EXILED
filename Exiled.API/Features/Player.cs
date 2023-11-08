@@ -826,7 +826,7 @@ namespace Exiled.API.Features
                 if (value > MaxHealth)
                     MaxHealth = value;
 
-                ReferenceHub.playerStats.GetModule<HealthStat>().CurValue = value;
+                healthStat.CurValue = value;
             }
         }
 
@@ -2045,7 +2045,7 @@ namespace Exiled.API.Features
         public void Heal(float amount, bool overrideMaxHealth = false)
         {
             if (!overrideMaxHealth)
-                ReferenceHub.playerStats.GetModule<HealthStat>().ServerHeal(amount);
+                healthStat.ServerHeal(amount);
             else
                 Health += amount;
         }
