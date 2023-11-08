@@ -8,9 +8,8 @@
 namespace Exiled.Events.EventArgs.Scp330
 {
     using API.Features;
-
+    using Exiled.API.Features.Items;
     using Interfaces;
-
     using InventorySystem.Items.Usables.Scp330;
 
     /// <summary>
@@ -23,12 +22,14 @@ namespace Exiled.Events.EventArgs.Scp330
         /// </summary>
         /// <param name="player"><see cref="Player" />.</param>
         /// <param name="candy"><see cref="ICandy" />.</param>
+        /// <param name="scp330Bag"><see cref="Scp330Bag"/>.</param>
         /// <param name="isAllowed"><see cref="IsAllowed" />.</param>
-        public EatingScp330EventArgs(Player player, ICandy candy, bool isAllowed = true)
+        public EatingScp330EventArgs(Player player, ICandy candy, Scp330Bag scp330Bag, bool isAllowed = true)
         {
             Player = player;
             Candy = candy;
             IsAllowed = isAllowed;
+            Scp330Bag = Item.Get(scp330Bag).As<Scp330>();
         }
 
         /// <summary>
@@ -45,5 +46,10 @@ namespace Exiled.Events.EventArgs.Scp330
         ///     Gets the player who's eating SCP-330.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        /// Gets the beg from which <see cref="Candy"/> is eaten.
+        /// </summary>
+        public Scp330 Scp330Bag { get; }
     }
 }

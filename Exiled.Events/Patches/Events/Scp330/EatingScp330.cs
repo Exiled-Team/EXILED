@@ -54,10 +54,13 @@ namespace Exiled.Events.Patches.Events.Scp330
                     // ICandy
                     new(OpCodes.Ldloc_0),
 
+                    // this
+                    new(OpCodes.Ldarg_0),
+
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // EatingScp330EventArgs ev = new(player, candy, true)
+                    // EatingScp330EventArgs ev = new(player, candy, this, true)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatingScp330EventArgs))[0]),
                     new(OpCodes.Dup),
 
