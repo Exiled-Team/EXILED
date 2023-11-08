@@ -150,7 +150,7 @@ namespace Exiled.API.Features
 
             int conId = id == 0 ? ReferenceHub.AllHubs.Count + 1 : id;
 
-            NetworkServer.AddPlayerForConnection(new(conId), newObject);
+            NetworkServer.AddPlayerForConnection(new FakeConnection(conId), newObject);
 
             try
             {
