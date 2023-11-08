@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
             int index2 = newInstructions.FindIndex(x => x.opcode == OpCodes.Ldfld && (FieldInfo)x.operand == Field(typeof(Scp3114Slap), nameof(Scp3114Slap._humeShield))) + 2;
             var injectedInstructions = new CodeInstruction[]
             {
-                // ev = new SlappingPlayerArgs(this, targetHub, damage amount, hume to regen, true)
+                // `
                 new(OpCodes.Ldc_R4, 25f),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SlappingPlayerEventArgs))[0]),
