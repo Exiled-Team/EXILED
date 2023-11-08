@@ -17,8 +17,6 @@ namespace Exiled.Events.EventArgs.Scp3114
     /// <summary>
     ///     Contains all information before SCP-3114 strangles a player.
     /// </summary>
-    // ReSharper disable UnusedAutoPropertyAccessor.Global
-    // ReSharper disable MemberCanBePrivate.Global
     public sealed class StranglingEventArgs : IScp3114Event, IDeniableEvent
     {
         /// <summary>

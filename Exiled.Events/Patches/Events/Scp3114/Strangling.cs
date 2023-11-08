@@ -27,12 +27,10 @@ namespace Exiled.Events.Patches.Events.Scp3114
     ///     Patches <see cref="Scp3114Strangle.ServerProcessCmd" />.
     ///     Adds the <see cref="Handlers.Scp3114.StranglingFinished" /> and <see cref="Handlers.Scp3114.StranglingFinished" /> event.
     /// </summary>
-    // ReSharper disable UnusedMember.Local
     [EventPatch(typeof(Scp3114), nameof(Scp3114.Strangling))]
     [HarmonyPatch(typeof(Scp3114Strangle), nameof(Scp3114Strangle.ServerProcessCmd))]
     internal sealed class Strangling
     {
-        [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
@@ -59,9 +57,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
 
             newInstructions.InsertRange(index - 1, injectedInstructions);
             for (int z = 0; z < newInstructions.Count; z++)
-            {
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
@@ -75,7 +71,6 @@ namespace Exiled.Events.Patches.Events.Scp3114
     [HarmonyPatch(typeof(Scp3114Strangle), nameof(Scp3114Strangle.ServerProcessCmd))]
     internal sealed class StranglingFinishedTranspiler
     {
-        [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
@@ -108,9 +103,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
             newInstructions.InsertRange(index - 1, injectedInstructions);
             newInstructions.RemoveRange(index + injectedInstructions.Length, 3);
             for (int z = 0; z < newInstructions.Count; z++)
-            {
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }

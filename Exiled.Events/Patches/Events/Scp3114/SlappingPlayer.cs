@@ -29,12 +29,10 @@ namespace Exiled.Events.Patches.Events.Scp3114
     ///     Patches <see cref="Scp3114Strangle.ServerProcessCmd" />.
     ///     Adds the <see cref="Handlers.Scp3114.StranglingFinished" /> and <see cref="Handlers.Scp3114.StranglingFinished" /> event.
     /// </summary>
-    // ReSharper disable UnusedMember.Local
     [EventPatch(typeof(Scp3114), nameof(Scp3114.SlappingPlayer))]
     [HarmonyPatch(typeof(Scp3114Slap), nameof(Scp3114Slap.DamagePlayers))]
     internal sealed class SlappingPlayer
     {
-        [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
@@ -78,9 +76,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
             newInstructions.InsertRange(index2 + injectedInstructions.Length, injectedInstructions2);
             newInstructions.RemoveRange(index2 + injectedInstructions.Length, 1);
             for (int z = 0; z < newInstructions.Count; z++)
-            {
                 yield return (z == index + 10) ? newInstructions[z] : newInstructions[z].WithLabels(skipLabel);
-            }
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
