@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Lockers
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using MapGeneration.Distributors;
@@ -34,7 +35,7 @@ namespace Exiled.API.Features.Lockers
         public Locker(BaseLocker locker)
         {
             Base = locker;
-            Chambers = locker.Chambers.Select(x => new Chamber(x)).ToList();
+            Chambers = locker.Chambers.Select(x => new Chamber(x, this)).ToList();
 
             BaseToExiledLockers.Add(locker, this);
         }
@@ -86,7 +87,12 @@ namespace Exiled.API.Features.Lockers
         /// </summary>
         /// <param name="chamber">Chamber. If <see langword="null"/>, will interact with random.</param>
         /// <param name="player">Player who interacts.</param>
-        public void Interact(Chamber chamber = null, Player player = null) => Base.ServerInteract(player?.ReferenceHub, (byte)(chamber == null ? Random.Range(0, Chambers.Count + 1) : Chambers.ToList().IndexOf(chamber)));
+        public void Interact(Chamber chamber = null, Player player = null)
+        {
+            chamber ??= Chambers.GetRandomValue();
+
+            Base.ServerInteract(player?.ReferenceHub, (byte)Chambers.ToList().IndexOf(chamber));
+        }
 
         /// <summary>
         /// Fills chamber.

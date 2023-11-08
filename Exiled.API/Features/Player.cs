@@ -3171,8 +3171,14 @@ namespace Exiled.API.Features
                 case Lockers.Locker locker:
                     Teleport(locker.Base.transform.position + Vector3.up + offset);
                     break;
-                case Lockers.Chamber chamber:
-                    Teleport(chamber.UseMultipleSpawnpoints ? chamber.Spawnpoints.ElementAt(Random.Range(0, chamber.Spawnpoints.Count() - 1)).transform.position : chamber.Spawnpoint.transform.position + Vector3.up + offset);
+                case Chamber chamber:
+                    Teleport(chamber.UseMultipleSpawnpoints ? chamber.Spawnpoints.GetRandomValue().transform.position : chamber.Spawnpoint.transform.position + Vector3.up + offset);
+                    break;
+                case MapGeneration.Distributors.Locker locker:
+                    Teleport(Lockers.Locker.Get(locker));
+                    break;
+                case LockerChamber chamber:
+                    Teleport(Chamber.Get(chamber));
                     break;
                 case ElevatorChamber elevator:
                     Teleport(elevator.transform.position + Vector3.up + offset);

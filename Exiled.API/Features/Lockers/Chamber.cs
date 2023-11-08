@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Lockers
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -30,9 +31,11 @@ namespace Exiled.API.Features.Lockers
         /// Initializes a new instance of the <see cref="Chamber"/> class.
         /// </summary>
         /// <param name="chamber"><see cref="LockerChamber"/> instance.</param>
-        public Chamber(LockerChamber chamber)
+        /// <param name="locker"><see cref="Lockers.Locker"/> where this chamber is located.</param>
+        public Chamber(LockerChamber chamber, Locker locker)
         {
             Base = chamber;
+            Locker = locker;
 
             Chambers.Add(chamber, this);
         }
@@ -148,6 +151,12 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
+        /// Gets the <see cref="Stopwatch"/> of current cooldown.
+        /// </summary>
+        /// <remarks>Used in <see cref="CanInteract"/> check.</remarks>
+        public Stopwatch CurrentCooldown => Base._stopwatch;
+
+        /// <summary>
         /// Gets a value indicating whether or not the chamber can currently be interacted with.
         /// </summary>
         public bool CanInteract => Base.CanInteract;
@@ -155,7 +164,7 @@ namespace Exiled.API.Features.Lockers
         /// <summary>
         /// Gets the locker where this chamber is located.
         /// </summary>
-        public Locker Locker => Locker.Get(x => x.Chambers.Contains(this)).FirstOrDefault();
+        public Locker Locker { get; }
 
         /// <summary>
         /// Spawns a specified item from <see cref="AcceptableTypes"/>.
@@ -169,6 +178,6 @@ namespace Exiled.API.Features.Lockers
         /// </summary>
         /// <param name="chamber"><see cref="LockerChamber"/>.</param>
         /// <returns><see cref="Chamber"/>.</returns>
-        internal static Chamber Get(LockerChamber chamber) => Chambers.TryGetValue(chamber, out var chmb) ? chmb : new(chamber);
+        internal static Chamber Get(LockerChamber chamber) => Chambers.TryGetValue(chamber, out var chmb) ? chmb : new(chamber, Locker.Get(x => x.Chambers.Any(x => x.Base == chamber)).FirstOrDefault());
     }
 }
