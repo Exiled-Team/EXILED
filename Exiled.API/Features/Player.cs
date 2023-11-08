@@ -2461,18 +2461,10 @@ namespace Exiled.API.Features
 
                 item.ChangeOwner(item.Owner, this);
 
-                if (Inventory.isLocalPlayer && itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
+                if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
                 {
-                    acquisitionConfirmationTrigger.ServerConfirmAcqusition();
-                    acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
+                    acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = false;
                 }
-
-                // Dont care, didnt ask, ratio
-                Timing.CallDelayed(0.02f, () =>
-                {
-                    if (item.Type is ItemType.SCP330 && item.Base != null)
-                        ((Scp330)item).Base.ServerRefreshBag();
-                });
 
                 ItemsValue.Add(item);
 
