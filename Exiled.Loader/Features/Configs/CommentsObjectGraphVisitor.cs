@@ -31,7 +31,10 @@ namespace Exiled.Loader.Features.Configs
         {
             if (value is CommentsObjectDescriptor commentsDescriptor && commentsDescriptor.Comment is not null)
             {
-                context.Emit(new Comment(commentsDescriptor.Comment, false));
+                foreach (string subComment in commentsDescriptor.Comment.Split('\n'))
+                {
+                    context.Emit(new Comment(subComment, false));
+                }
             }
 
             return base.EnterMapping(key, value, context);

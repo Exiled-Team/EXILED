@@ -144,6 +144,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the amount of kills caused by the warhead (shown on the summary screen).
+        /// </summary>
+        public static int Kills
+        {
+            get => Controller.WarheadKills;
+            set => Controller.WarheadKills = value;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether or not the warhead can be started.
         /// </summary>
         public static bool CanBeStarted => !IsInProgress && !IsDetonated && Controller.CooldownEndTime <= NetworkTime.time;

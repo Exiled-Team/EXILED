@@ -31,6 +31,7 @@ namespace Exiled.API.Features
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Scp939;
+    using PlayerRoles.Ragdolls;
     using RelativePositioning;
     using UnityEngine;
     using Utils;
@@ -108,6 +109,13 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
         public static bool IsLczDecontaminated => DecontaminationController.Singleton.IsDecontaminating;
+
+        /// <summary>
+        /// Gets a value indicating whether decontamination phase is in the light containment zone.
+        /// </summary>
+        public static DecontaminationState DecontaminationState =>
+            DecontaminationController.Singleton.NetworkDecontaminationOverride is DecontaminationController.DecontaminationStatus.Disabled ?
+            DecontaminationState.Disabled : (DecontaminationState)DecontaminationController.Singleton._nextPhase;
 
         /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
