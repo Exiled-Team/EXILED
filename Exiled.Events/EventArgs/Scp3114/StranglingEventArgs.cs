@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="StranglingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -8,7 +8,6 @@
 namespace Exiled.Events.EventArgs.Scp3114
 {
     using API.Features;
-    using Exiled.API.Features.Roles;
     using Interfaces;
     using PlayerRoles.PlayableScps.Scp3114;
 
@@ -22,21 +21,21 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <summary>
         ///     Initializes a new instance of the <see cref="StranglingEventArgs" /> class.
         /// </summary>
-        /// <param name="instance">
-        ///     The <see cref="Scp3114Strangle"/> instance which this is being instantiated from.
+        /// <param name="hub">
+        ///     The <see cref="Player"/> instance which this is being instantiated from.
         /// </param>
-        /// <param name="target">
-        ///     The <see cref="Player"/> being targeted.
+        /// <param name="strangleTarget">
+        ///     The <see cref="StrangleInfo"/> being targeted.
         /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IDeniableEvent.IsAllowed" />
         /// </param>
-        public StranglingEventArgs(Scp3114Strangle instance, Scp3114Strangle.StrangleTarget target, bool isAllowed = true)
+        public StranglingEventArgs(ReferenceHub hub, Scp3114Strangle.StrangleTarget? strangleTarget, bool isAllowed = true)
         {
-            Player = Player.Get(instance.Owner);
+            Player = Player.Get(hub);
             Scp3114 = Player.Role.As<Scp3114Role>();
-            StrangleInfo = target;
-            Target = Player.Get(target.Target);
+            StrangleInfo = strangleTarget;
+            Target = Player.Get(strangleTarget?.Target);
             IsAllowed = isAllowed;
         }
 
@@ -52,7 +51,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <summary>
         ///     Gets <see cref="Scp3114Strangle.StrangleTarget"/> information for the player who was being strangled.
         /// </summary>
-        public Scp3114Strangle.StrangleTarget StrangleInfo { get; }
+        public Scp3114Strangle.StrangleTarget? StrangleInfo { get; }
 
         /// <summary>
         ///     Gets the <see cref="Player"/> being strangled.

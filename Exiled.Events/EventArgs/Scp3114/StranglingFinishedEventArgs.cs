@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="StranglingFinishedEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -23,8 +23,8 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <summary>
         ///     Initializes a new instance of the <see cref="StranglingFinishedEventArgs" /> class.
         /// </summary>
-        /// <param name="instance">
-        ///     The <see cref="Scp3114Strangle"/> instance which this is being instantiated from.
+        /// <param name="hub">
+        ///     The <see cref="Player"/> instance which this is being instantiated from.
         /// </param>
         /// <param name="priorTarget">
         ///     The prior <see cref="Scp3114Strangle.StrangleTarget"/> who was being targeted.
@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <param name="cooldown">
         ///     The default cooldown that is used for the <see cref="Scp3114Strangle.Cooldown"/>.
         /// </param>
-        public StranglingFinishedEventArgs(Scp3114Strangle instance, Scp3114Strangle.StrangleTarget priorTarget, float cooldown)
+        public StranglingFinishedEventArgs(ReferenceHub hub, Scp3114Strangle.StrangleTarget? priorTarget, float cooldown)
         {
-            Player = Player.Get(instance.Owner);
+            Player = Player.Get(hub);
             Scp3114 = Player.Role.As<Scp3114Role>();
             StrangleInfo = priorTarget;
-            Target = Player.Get(priorTarget.Target);
+            Target = Player.Get(priorTarget?.Target);
             StrangleCooldown = cooldown;
         }
 
@@ -52,7 +52,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// </summary>
         public Player Player { get; set; }
 
-        /// <inheritdoc cref="IScp3114Event.Scp3114"/>
+        /// <inheritdoc/>
         public Scp3114Role Scp3114 { get; }
 
         /// <summary>
@@ -63,6 +63,6 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <summary>
         ///     Gets <see cref="Scp3114Strangle.StrangleTarget"/> information for the player who was being strangled.
         /// </summary>
-        public Scp3114Strangle.StrangleTarget StrangleInfo { get; }
+        public Scp3114Strangle.StrangleTarget? StrangleInfo { get; }
     }
 }
