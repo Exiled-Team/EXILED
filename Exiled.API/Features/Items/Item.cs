@@ -18,12 +18,12 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms.Ammo;
-    using InventorySystem.Items.Flashlight;
     using InventorySystem.Items.Jailbird;
     using InventorySystem.Items.Keycards;
     using InventorySystem.Items.MicroHID;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
+    using InventorySystem.Items.SwitchableLightSources.Flashlight;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp1576;
@@ -160,6 +160,16 @@ namespace Exiled.API.Features.Items
         /// Gets a value indicating whether or not this item is a weapon.
         /// </summary>
         public bool IsWeapon => this is Firearm;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this item emits light.
+        /// </summary>
+        public bool IsLightEmitter => this is ILightEmittingItem;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this item can be used to disarm players.
+        /// </summary>
+        public bool IsDisarmer => this is IDisarmingItem;
 
         /// <summary>
         /// Gets the <see cref="Player"/> who owns the item.

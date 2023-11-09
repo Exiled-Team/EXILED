@@ -62,6 +62,15 @@ namespace Exiled.API.Features
         public static bool IsLobby => !(IsEnded || IsStarted);
 
         /// <summary>
+        /// Gets or sets a value indicating the amount of Chaos Targets remaining.
+        /// </summary>
+        public static int ChaosTargetCount
+        {
+            get => RoundSummary.singleton.Network_chaosTargetCount;
+            set => RoundSummary.singleton.Network_chaosTargetCount = value;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the round is locked or not.
         /// </summary>
         public static bool IsLocked

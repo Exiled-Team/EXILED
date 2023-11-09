@@ -30,8 +30,8 @@ namespace Exiled.API.Features
         /// </summary>
         public static string DisplayText
         {
-            get => IntercomDisplay._overrideText;
-            set => IntercomDisplay._overrideText = value;
+            get => IntercomDisplay.Network_overrideText;
+            set => IntercomDisplay.Network_overrideText = value;
         }
 
         /// <summary>
