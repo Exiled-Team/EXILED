@@ -820,7 +820,7 @@ namespace Exiled.API.Features
         /// </summary>
         public float Health
         {
-            get => ReferenceHub.playerStats.GetModule<HealthStat>().CurValue;
+            get => healthStat.CurValue;
             set
             {
                 if (value > MaxHealth)
