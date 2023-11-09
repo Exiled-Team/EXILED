@@ -16,7 +16,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
-    using InventorySystem.Items.Flashlight;
+    using InventorySystem.Items.SwitchableLightSources;
 
     using static HarmonyLib.AccessTools;
 
