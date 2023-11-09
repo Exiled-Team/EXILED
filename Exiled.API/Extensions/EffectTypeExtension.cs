@@ -20,14 +20,14 @@ namespace Exiled.API.Extensions
     using PlayerRoles.FirstPersonControl;
 
     /// <summary>
-    /// Contains an extension method to get <see cref="System.Type"/> from <see cref="EffectType"/>.
+    /// A set of extensions for <see cref="EffectType"/>.
     /// </summary>
     public static class EffectTypeExtension
     {
         /// <summary>
-        /// Gets .
+        /// Gets a dictionary that maps each <see cref="EffectType"/> to its corresponding <see cref="System.Type"/>.
         /// </summary>
-        public static Dictionary<EffectType, Type> EffectTypeToType { get; } = new(30)
+        public static Dictionary<EffectType, Type> EffectTypeToType { get; } = new(35)
         {
             { EffectType.AmnesiaItems, typeof(AmnesiaItems) },
             { EffectType.AmnesiaVision, typeof(AmnesiaVision) },
@@ -69,7 +69,7 @@ namespace Exiled.API.Extensions
         };
 
         /// <summary>
-        /// Gets .
+        /// Gets a dictionary that maps each <see cref="System.Type"/> to its corresponding <see cref="EffectType"/>.
         /// </summary>
         public static Dictionary<Type, EffectType> TypeToEffectType { get; } = EffectTypeToType.ToDictionary(x => x.Value, y => y.Key);
 
