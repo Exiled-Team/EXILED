@@ -45,7 +45,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for SCP-330 bags.
     /// </summary>
-    public class Scp330 : Usable, IWrapper<Scp330Bag>
+    public partial class Scp330 : Usable, IWrapper<Scp330Bag>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330"/> class.
