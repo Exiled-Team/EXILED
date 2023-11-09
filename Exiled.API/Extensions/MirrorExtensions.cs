@@ -383,6 +383,8 @@ namespace Exiled.API.Extensions
         /// <param name="values">Values of send to target.</param>
         public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
         {
+            if (!target.IsConnected)
+                return;
             NetworkWriterPooled writer = NetworkWriterPool.Get();
 
             foreach (object value in values)
