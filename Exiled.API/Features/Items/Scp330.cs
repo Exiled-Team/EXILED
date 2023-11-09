@@ -45,7 +45,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for SCP-330 bags.
     /// </summary>
-    public partial class Scp330 : Usable, IWrapper<Scp330Bag>
+    public class Scp330 : Usable, IWrapper<Scp330Bag>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330"/> class.
@@ -65,6 +65,11 @@ namespace Exiled.API.Features.Items
         {
             Base.Candies.Add(Scp330Candies.GetRandom());
         }
+
+        /// <summary>
+        /// Gets the <see cref="Dictionary{TKey,TValue}"/> with all presented in game candies.
+        /// </summary>
+        public static Dictionary<CandyKindID, ICandy> AvailableCandies { get; } = Scp330Candies.CandiesById;
 
         /// <summary>
         /// Gets the <see cref="Scp330Bag"/> that this class is encapsulating.
