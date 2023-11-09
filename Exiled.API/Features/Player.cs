@@ -1838,6 +1838,7 @@ namespace Exiled.API.Features
             if (broadcast.Show)
                 Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type, shouldClearPrevious);
         }
+        
 
         /// <summary>
         /// Drops an item from the player's inventory.
