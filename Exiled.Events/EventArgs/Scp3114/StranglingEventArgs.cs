@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         {
             Player = Player.Get(hub);
             Scp3114 = Player.Role.As<Scp3114Role>();
-            StrangleInfo = strangleTarget;
+            StrangleInfo = strangleTarget ?? default;
             Target = Player.Get(strangleTarget?.Target);
             IsAllowed = isAllowed;
         }
@@ -51,7 +51,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <summary>
         ///     Gets <see cref="Scp3114Strangle.StrangleTarget"/> information for the player who was being strangled.
         /// </summary>
-        public Scp3114Strangle.StrangleTarget? StrangleInfo { get; }
+        public Scp3114Strangle.StrangleTarget StrangleInfo { get; }
 
         /// <summary>
         ///     Gets the <see cref="Player"/> being strangled.
