@@ -52,6 +52,7 @@ namespace Exiled.API.Features
     using PlayerRoles.Voice;
     using PlayerStatsSystem;
     using PluginAPI.Core;
+
     using RelativePositioning;
     using RemoteAdmin;
     using Respawning.NamingRules;
@@ -79,6 +80,11 @@ namespace Exiled.API.Features
         /// A list of the player's items.
         /// </summary>
         internal readonly List<Item> ItemsValue = new(8);
+
+        /// <summary>
+        /// A overriden <see cref="MaxHealth"/> value.
+        /// </summary>
+        internal float OverrideMaxHealth;
 #pragma warning restore SA1401
 
         private readonly HashSet<EActor> componentsInChildren = new();
@@ -164,8 +170,6 @@ namespace Exiled.API.Features
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
-
-                value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[0] = healthStat = new CustomHealthStat { Hub = value };
             }
         }
 
@@ -835,13 +839,13 @@ namespace Exiled.API.Features
         /// </summary>
         public float Health
         {
-            get => healthStat.CurValue;
+            get => ReferenceHub.playerStats.GetModule<HealthStat>().CurValue;
             set
             {
-                healthStat.CurValue = value;
-
                 if (value > MaxHealth)
                     MaxHealth = value;
+
+                ReferenceHub.playerStats.GetModule<HealthStat>().CurValue = value;
             }
         }
 
@@ -850,8 +854,15 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxHealth
         {
-            get => healthStat.MaxValue;
-            set => healthStat.CustomMaxValue = value;
+            get
+            {
+                return ReferenceHub.playerStats.GetModule<HealthStat>().MaxValue;
+            }
+
+            set
+            {
+                OverrideMaxHealth = value;
+            }
         }
 
         /// <summary>
@@ -904,12 +915,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of all active Artificial Health processes on the player.
         /// </summary>
-        public IEnumerable<AhpStat.AhpProcess> ActiveArtificialHealthProcesses => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._activeProcesses;
+        public IEnumerable<AhpStat.AhpProcess> ActiveArtificialHealthProcesses => ReferenceHub.playerStats.GetModule<AhpStat>()._activeProcesses;
 
         /// <summary>
         /// Gets the player's <see cref="PlayerStatsSystem.HumeShieldStat"/>.
         /// </summary>
-        public HumeShieldStat HumeShieldStat => (HumeShieldStat)ReferenceHub.playerStats.StatModules[4];
+        public HumeShieldStat HumeShieldStat => ReferenceHub.playerStats.GetModule<HumeShieldStat>();
 
         /// <summary>
         /// Gets or sets the item in the player's hand. Value will be <see langword="null"/> if the player is not holding anything.
@@ -941,7 +952,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="StaminaStat"/> class.
         /// </summary>
-        public StaminaStat StaminaStat => (StaminaStat)ReferenceHub.playerStats.StatModules[2];
+        public StaminaStat StaminaStat => ReferenceHub.playerStats.GetModule<StaminaStat>();
 
         /// <summary>
         /// Gets or sets the amount of stamina the player has.
@@ -2070,7 +2081,7 @@ namespace Exiled.API.Features
         public void Heal(float amount, bool overrideMaxHealth = false)
         {
             if (!overrideMaxHealth)
-                healthStat.ServerHeal(amount);
+                ReferenceHub.playerStats.GetModule<HealthStat>().ServerHeal(amount);
             else
                 Health += amount;
         }
@@ -2297,7 +2308,16 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="Item"/> given to the player.</returns>
         public Item AddItem(ItemType itemType)
         {
-            return Item.Get(Inventory.ServerAddItem(itemType));
+            if (itemType.GetFirearmType() is not FirearmType.None)
+            {
+                return AddItem(itemType.GetFirearmType(), null);
+            }
+
+            Item item = Item.Create(itemType);
+
+            AddItem(item);
+
+            return item;
         }
 
         /// <summary>
@@ -2318,7 +2338,7 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="Item"/> given to the player.</returns>
         public Item AddItem(FirearmType firearmType, IEnumerable<AttachmentIdentifier> identifiers)
         {
-            Item item = Item.Get(Inventory.ServerAddItem(firearmType.GetItemType()));
+            Item item = Item.Create(firearmType.GetItemType());
 
             if (item is Firearm firearm)
             {
@@ -2334,6 +2354,8 @@ namespace Exiled.API.Features
 
                 firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
+
+            AddItem(item);
 
             return item;
         }

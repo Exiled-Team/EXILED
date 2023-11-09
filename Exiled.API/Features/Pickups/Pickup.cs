@@ -28,6 +28,7 @@ namespace Exiled.API.Features.Pickups
     using BaseAmmoPickup = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
     using BaseBodyArmorPickup = InventorySystem.Items.Armor.BodyArmorPickup;
     using BaseFirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
+    using BaseJailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
     using BaseKeycardPickup = InventorySystem.Items.Keycards.KeycardPickup;
     using BaseMicroHIDPickup = InventorySystem.Items.MicroHID.MicroHIDPickup;
     using BaseRadioPickup = InventorySystem.Items.Radio.RadioPickup;
@@ -35,6 +36,7 @@ namespace Exiled.API.Features.Pickups
     using BaseScp1576Pickup = InventorySystem.Items.Usables.Scp1576.Scp1576Pickup;
     using BaseScp2176Projectile = InventorySystem.Items.ThrowableProjectiles.Scp2176Projectile;
     using BaseScp330Pickup = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
+
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -321,6 +323,7 @@ namespace Exiled.API.Features.Pickups
                 BaseBodyArmorPickup bodyArmorPickup => new BodyArmorPickup(bodyArmorPickup),
                 BaseScp330Pickup scp330Pickup => new Scp330Pickup(scp330Pickup),
                 BaseScp1576Pickup scp1576Pickup => new Scp1576Pickup(scp1576Pickup),
+                BaseJailbirdPickup jailbirdPickup => new JailbirdPickup(jailbirdPickup),
                 ThrownProjectile thrownProjectile => thrownProjectile switch
                 {
                     BaseScp018Projectile scp018 => new Projectiles.Scp018Projectile(scp018),
