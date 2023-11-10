@@ -80,11 +80,6 @@ namespace Exiled.API.Features
         /// A list of the player's items.
         /// </summary>
         internal readonly List<Item> ItemsValue = new(8);
-
-        /// <summary>
-        /// A overriden <see cref="MaxHealth"/> value.
-        /// </summary>
-        internal float OverrideMaxHealth;
 #pragma warning restore SA1401
 
         private readonly HashSet<EActor> componentsInChildren = new();
@@ -170,6 +165,8 @@ namespace Exiled.API.Features
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
+
+                value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[0] = healthStat = new CustomHealthStat { Hub = value };
             }
         }
 
@@ -839,13 +836,13 @@ namespace Exiled.API.Features
         /// </summary>
         public float Health
         {
-            get => ReferenceHub.playerStats.GetModule<HealthStat>().CurValue;
+            get => healthStat.CurValue;
             set
             {
+                healthStat.CurValue = value;
+
                 if (value > MaxHealth)
                     MaxHealth = value;
-
-                ReferenceHub.playerStats.GetModule<HealthStat>().CurValue = value;
             }
         }
 
@@ -854,15 +851,8 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxHealth
         {
-            get
-            {
-                return ReferenceHub.playerStats.GetModule<HealthStat>().MaxValue;
-            }
-
-            set
-            {
-                OverrideMaxHealth = value;
-            }
+            get => healthStat.MaxValue;
+            set => healthStat.CustomMaxValue = value;
         }
 
         /// <summary>
