@@ -32,7 +32,7 @@ namespace Exiled.API.Features
         /// <param name="show">Whether or not the notification should be shown.</param>
         /// <param name="clear">Whether or not the active notifications should be cleared.</param>
         /// <param name="type">The type of the notification.</param>
-        public Notification(string content, ushort duration = 5, bool show = true, bool clear = false, NotificationType type = NotificationType.Broadcast)
+        public Notification(string content, ushort duration = 5, bool show = true, bool clear = false, NotificationType type = NotificationType.Hint)
         {
             Content = content;
             Duration = duration;
