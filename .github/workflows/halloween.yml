@@ -3,10 +3,10 @@ name: Exiled Halloween CI
 on:
   push:
     branches:
-      - halloween-2023
+      - 'halloween-2023'
   pull_request:
     branches:
-      - halloween-2023
+      - 'halloween-2023'
   workflow_dispatch:
 
 env:
