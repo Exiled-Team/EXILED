@@ -30,16 +30,16 @@ namespace Exiled.CustomRoles
         public bool Debug { get; set; } = false;
 
         /// <summary>
-        /// Gets the hint that is shown when someone gets a <see cref="CustomRole"/>.
+        /// Gets the notification that is shown when someone gets a <see cref="CustomRole"/>.
         /// </summary>
-        [Description("The hint that is shown when someone gets a custom role.")]
-        public Broadcast GotRoleHint { get; private set; } = new("You have spawned as a {0}\n{1}", 6);
+        [Description("The notification that is shown when someone gets a custom role.")]
+        public Notification GotRoleNotification { get; private set; } = new("You have spawned as a {0}\n{1}", 6);
 
         /// <summary>
-        /// Gets the hint that is shown when someone used a <see cref="ActiveAbility"/>.
+        /// Gets the notification that is shown when someone used a <see cref="ActiveAbility"/>.
         /// </summary>
-        [Description("The hint that is shown when someone used a custom ability.")]
-        public Broadcast UsedAbilityHint { get; private set; } = new("Ability {0} has been activated.\n{1}", 5);
+        [Description("The notification that is shown when someone used a custom ability.")]
+        public Notification UsedAbilityNotification { get; private set; } = new("Ability {0} has been activated.\n{1}", 5);
 
         /// <summary>
         /// Gets or sets a value indicating whether keypress ability activations can be used on the server.
@@ -54,15 +54,15 @@ namespace Exiled.CustomRoles
         public bool ActivateOnlySelected { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets the hint that is shown when someone fails to use a <see cref="ActiveAbility"/>.
+        /// Gets or sets the notification that is shown when someone fails to use a <see cref="ActiveAbility"/>.
         /// </summary>
-        [Description("The hint showed to players when they fail to preform an action.")]
-        public Broadcast FailedActionHint { get; set; } = new("Failed to preform action: {0}", 5);
+        [Description("The notification showed to players when they fail to preform an action.")]
+        public Notification FailedActionNotification { get; set; } = new("Failed to preform action: {0}", 5);
 
         /// <summary>
-        /// Gets or sets the hint that is shown when someone switches their selected <see cref="ActiveAbility"/>.
+        /// Gets or sets the notification that is shown when someone switches their selected <see cref="ActiveAbility"/>.
         /// </summary>
-        [Description("The hint that is shown to players when they switch abilities.")]
-        public Broadcast SwitchedAbilityHint { get; set; } = new("Selected ability {0}", 5);
+        [Description("The notification that is shown to players when they switch abilities.")]
+        public Notification SwitchedAbilityNotification { get; set; } = new("Selected ability {0}", 5);
     }
 }

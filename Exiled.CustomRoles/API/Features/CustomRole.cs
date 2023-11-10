@@ -866,7 +866,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Shows the spawn message to the player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to show the message to.</param>
-        protected virtual void ShowMessage(Player player) => player.ShowHint(string.Format(CustomRoles.Instance!.Config.GotRoleHint.Content, Name, Description), CustomRoles.Instance.Config.GotRoleHint.Duration);
+        protected virtual void ShowMessage(Player player) => player.Notificate(CustomRoles.Instance!.Config.GotRoleNotification.Format(Name, Description));
 
         /// <summary>
         /// Shows the spawn broadcast to the player.

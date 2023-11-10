@@ -100,24 +100,16 @@ namespace Exiled.CustomRoles.API.Features
             {
                 case true when type == AbilityKeypressTriggerType.Activate:
                     string[] split = response.Split('|');
-                    response = string.Format(CustomRoles.Instance.Config.UsedAbilityHint.Content, split);
+                    player.Notificate(CustomRoles.Instance.Config.UsedAbilityNotification.Format(split));
                     break;
                 case true when type is AbilityKeypressTriggerType.SwitchBackward or AbilityKeypressTriggerType.SwitchForward:
-                    response = string.Format(CustomRoles.Instance.Config.SwitchedAbilityHint.Content, response);
+                    player.Notificate(CustomRoles.Instance.Config.SwitchedAbilityNotification.Format(response));
                     break;
                 case false:
-                    response = string.Format(CustomRoles.Instance.Config.FailedActionHint.Content, response);
+                    player.Notificate(CustomRoles.Instance.Config.FailedActionNotification.Format(response));
                     break;
             }
 
-            float dur = type switch
-            {
-                AbilityKeypressTriggerType.Activate when preformed => CustomRoles.Instance.Config.UsedAbilityHint.Duration,
-                AbilityKeypressTriggerType.SwitchBackward or AbilityKeypressTriggerType.SwitchForward when preformed => CustomRoles.Instance.Config.SwitchedAbilityHint.Duration,
-                _ => CustomRoles.Instance.Config.FailedActionHint.Duration,
-            };
-
-            player.ShowHint(response, dur);
             altTracker[player] = 0;
         }
 

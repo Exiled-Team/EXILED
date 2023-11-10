@@ -26,15 +26,15 @@ namespace Exiled.CustomItems
         public bool Debug { get; set; } = false;
 
         /// <summary>
-        /// Gets the hint that is shown when someone pickups a <see cref="CustomItem"/>.
+        /// Gets the notification that is shown when someone pickups a <see cref="CustomItem"/>.
         /// </summary>
-        [Description("The hint that is shown when someone pickups a custom item.")]
-        public Broadcast PickedUpHint { get; private set; } = new("You have picked up a {0}\n{1}");
+        [Description("The notification that is shown when someone pickups a custom item.")]
+        public Notification PickedUpNotification { get; private set; } = new("You have picked up a {0}\n{1}");
 
         /// <summary>
-        /// Gets the hint that is shown when someone pickups a <see cref="CustomItem"/>.
+        /// Gets the notification that is shown when someone pickups a <see cref="CustomItem"/>.
         /// </summary>
-        [Description("The hint that is shown when someone selects a custom item.")]
-        public Broadcast SelectedHint { get; private set; } = new("You have selected a {0}\n{1}", 5);
+        [Description("The notification that is shown when someone selects a custom item.")]
+        public Notification SelectedNotification { get; private set; } = new("You have selected a {0}\n{1}", 5);
     }
 }

@@ -2219,6 +2219,27 @@ namespace Exiled.API.Features
         public void ClearBroadcasts() => Server.Broadcast.TargetClearElements(Connection);
 
         /// <summary>
+        /// Show player a notification.
+        /// </summary>
+        /// <param name="notification">The <see cref="Notification"/> to be shown.</param>
+        public void Notificate(Notification notification)
+        {
+            if (!notification!.Show)
+                return;
+
+            if (notification.Type == NotificationType.Broadcast)
+            {
+                if (notification.Clear)
+                    ClearBroadcasts();
+                Broadcast(notification.Duration, notification.Content);
+            }
+            else
+            {
+                ShowHint(notification.Content, notification.Duration);
+            }
+        }
+
+        /// <summary>
         /// Adds the amount of a specified <see cref="AmmoType">ammo type</see> to the player's inventory.
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to be added.</param>

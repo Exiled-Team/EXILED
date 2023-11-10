@@ -977,20 +977,14 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowPickedUpMessage(Player player)
-        {
-            if (Instance!.Config.PickedUpHint.Show)
-                player.ShowHint(string.Format(Instance.Config.PickedUpHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
-        }
+            => player.Notificate(Instance!.Config.PickedUpNotification.Format(Name, Description));
 
         /// <summary>
         /// Shows a message to the player upon selecting a custom item.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowSelectedMessage(Player player)
-        {
-            if (Instance!.Config.SelectedHint.Show)
-                player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.SelectedHint.Duration);
-        }
+            => player.Notificate(Instance!.Config.SelectedNotification.Format(Name, Description));
 
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
         {
