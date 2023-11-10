@@ -311,7 +311,7 @@ namespace Exiled.API.Features.Roles
             Attack.SendCooldown(Attack._hitCooldown);
             Vigor += VigorCaptureReward;
             Attack.ReduceSinkholeCooldown();
-            Hitmarker.SendHitmarker(Attack.Owner, 1f);
+            Hitmarker.SendHitmarkerDirectly(Attack.Owner, 1f);
 
             player.EnableEffect(EffectType.PocketCorroding);
         }
