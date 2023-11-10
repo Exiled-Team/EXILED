@@ -17,6 +17,7 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Ragdolls;
     using PlayerStatsSystem;
 
     using UnityEngine;
@@ -303,7 +304,7 @@ namespace Exiled.API.Features.Roles
             SenseAbility.OnServerHit(AttackAbility._target);
 
             AttackAbility.ServerSendRpc(true);
-            Hitmarker.SendHitmarker(AttackAbility.Owner, 1f);
+            Hitmarker.SendHitmarkerDirectly(AttackAbility.Owner, 1f);
         }
 
         /// <summary>
