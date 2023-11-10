@@ -54,12 +54,6 @@ namespace Exiled.API.Features
         public ushort Duration { get; set; }
 
         /// <summary>
-        /// Gets or sets the notification type.
-        /// </summary>
-        [Description("The notification type")]
-        public NotificationType Type { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the notification should be shown or not.
         /// </summary>
         [Description("Indicates whether the notification should be shown or not")]
@@ -72,6 +66,12 @@ namespace Exiled.API.Features
         public bool Clear { get; set; }
 
         /// <summary>
+        /// Gets or sets the notification type.
+        /// </summary>
+        [Description("The notification type")]
+        public NotificationType Type { get; set; }
+
+        /// <summary>
         /// Returns notification with formatted content.
         /// </summary>
         /// <param name="args">The list of formation arguments.</param>
@@ -82,6 +82,6 @@ namespace Exiled.API.Features
         /// Returns the notification in a human-readable format.
         /// </summary>
         /// <returns>A string containing notification-related data.</returns>
-        public override string ToString() => $"({Content}) {Duration} {Type} {Clear}";
+        public override string ToString() => $"({Content}) {Duration} {Clear} {Type}";
     }
 }
