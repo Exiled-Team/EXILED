@@ -18,6 +18,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.Events.EventArgs.Scp330;
     using InventorySystem.Items.Usables.Scp330;
     using MEC;
+    using UnityEngine;
 
     /// <summary>
     /// THe custom candy base class.
@@ -72,29 +73,31 @@ namespace Exiled.CustomItems.API.Features
         public override bool Check(Pickup? pickup) => pickup != null && trackedSerials.ContainsKey(pickup!.Serial);
 
         /// <inheritdoc/>
-        public override void Give(Player player, bool displayMessage = true)
+        public override void Give(Player player, Pickup pickup, bool displayMessage = true)
         {
-            player.TryAddCandy(CandyType);
+            Give(player, displayMessage);
 
-            if (player.TryGetItem(ItemType.SCP330, out Item item) && item.Is(out Scp330 scp330))
+            if (pickup.Is(out Exiled.API.Features.Pickups.Scp330Pickup scp330Pickup))
             {
-                if (!trackedSerials.ContainsKey(scp330.Serial))
-                    trackedSerials.Add(scp330.Serial, new List<int>() { scp330.Candies.Count - 1 });
-                else
-                    trackedSerials[scp330.Serial].Add(scp330.Candies.Count - 1);
+                foreach (var candy in scp330Pickup.Candies)
+                    player.TryAddCandy(candy);
             }
         }
 
         /// <inheritdoc/>
-        public override void Give(Player player, Pickup pickup, bool displayMessage = true)
+        public override Pickup? Spawn(Vector3 position, Item item, Player? previousOwner = null)
         {
-            if (pickup.Is(out Exiled.API.Features.Pickups.Scp330Pickup scp330Pickup))
-            {
-                Give(player, displayMessage);
+            Exiled.API.Features.Pickups.Scp330Pickup scp330Pickup = item.CreatePickup(position, spawn: false).As<Exiled.API.Features.Pickups.Scp330Pickup>();
 
-                foreach (var candy in scp330Pickup.Candies)
-                    player.TryAddCandy(candy);
-            }
+            if (previousOwner != null)
+                scp330Pickup.PreviousOwner = previousOwner;
+
+            trackedSerials.Add(scp330Pickup.Serial, new List<int> { 0 });
+
+            scp330Pickup.Candies.Add(CandyType);
+            scp330Pickup.Spawn();
+
+            return scp330Pickup;
         }
 
         /// <summary>
@@ -132,6 +135,8 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc cref="OnAcquired(Player, Item, bool)"/>
         protected virtual void OnAcquired(Player player, Scp330 scp330, CandyKindID candyKindID, bool displayMessage)
         {
+            if (displayMessage)
+                ShowPickedUpMessage(player);
         }
 
         /// <inheritdoc/>
