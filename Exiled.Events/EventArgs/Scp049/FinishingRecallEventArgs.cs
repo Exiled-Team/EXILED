@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs.Scp049
     using API.Features;
     using Exiled.API.Features.Roles;
     using Interfaces;
+    using PlayerRoles.Ragdolls;
 
     /// <summary>
     ///     Contains all information before SCP-049 finishes recalling a player.
