@@ -33,8 +33,9 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Flashlight"/> class, as well as a new Flashlight item.
         /// </summary>
-        internal Flashlight()
-            : this((ToggleableLightItemBase)Server.Host.Inventory.CreateItemInstance(new(ItemType.Flashlight, 0), false))
+        /// <param name="type"><see cref="ItemType.Flashlight"/> or <see cref="ItemType.Lantern"/>.</param>
+        internal Flashlight(ItemType type)
+            : this((ToggleableLightItemBase)Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
         {
         }
 
@@ -75,7 +76,7 @@ namespace Exiled.API.Features.Items
         }
 
         /// <inheritdoc/>
-        public override Item Clone() => new Flashlight
+        public override Item Clone() => new Flashlight(Type)
         {
             IsEmittingLight = IsEmittingLight,
             NextAllowedTime = NextAllowedTime
