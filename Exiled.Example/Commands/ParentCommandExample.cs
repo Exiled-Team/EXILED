@@ -15,9 +15,7 @@ namespace Exiled.Example.Commands
 
     using Exiled.Permissions.Extensions; // Use this if you want to add perms
 
-    /// <summary>
-    /// Using CommandHandler, used to make a command for the example plugin.
-    /// </summary>
+    /// <inheritdoc/>
     [CommandHandler(typeof(RemoteAdminCommandHandler))] // You can change the command handler
     public class ParentCommandExample : ParentCommand
     {

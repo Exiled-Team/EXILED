@@ -41,6 +41,7 @@ namespace Exiled.CreditTags.Features
         /// True/False if Done was successful.
         /// </summary>
         public bool Done => done;
+
         /// <summary>
         /// Gets the call to the website to obtain users to their roles.
         /// </summary>

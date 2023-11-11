@@ -47,10 +47,5 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets or sets a value indicating whether or not the player can successfully escape the pocket dimension.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
-
-        //To Do
-        /// <summary>
-        /// Add player receiving tramatized after leaving the pocket dimension.
-        /// </summary>
     }
 }
