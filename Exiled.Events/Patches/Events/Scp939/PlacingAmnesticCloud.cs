@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     using HarmonyLib;
     using Mirror;
     using PlayerRoles.PlayableScps.Scp939;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using static HarmonyLib.AccessTools;
 
