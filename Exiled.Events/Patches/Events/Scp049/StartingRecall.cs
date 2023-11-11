@@ -7,72 +7,73 @@
 
 namespace Exiled.Events.Patches.Events.Scp049
 {
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
+	using System.Collections.Generic;
+	using System.Reflection.Emit;
 
-    using API.Features;
-    using API.Features.Pools;
-    using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs.Scp049;
+	using API.Features;
+	using API.Features.Pools;
+	using Exiled.Events.Attributes;
+	using Exiled.Events.EventArgs.Scp049;
 
-    using HarmonyLib;
+	using HarmonyLib;
 
-    using PlayerRoles.PlayableScps.Scp049;
+	using PlayerRoles.PlayableScps.Scp049;
 
-    using static HarmonyLib.AccessTools;
+	using static HarmonyLib.AccessTools;
 
-    /// <summary>
-    ///     Patches <see cref="Scp049ResurrectAbility.ServerValidateBegin" />.
-    ///     Adds the <see cref="Handlers.Scp049.StartingRecall" /> event.
-    /// </summary>
-    [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.StartingRecall))]
-    [HarmonyPatch(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.ServerValidateBegin))]
-    internal static class StartingRecall
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+	/// <summary>
+	///		Patches <see cref="Scp049ResurrectAbility.ServerValidateBegin" />.
+	///		Adds the <see cref="Handlers.Scp049.StartingRecall" /> event.
+	/// </summary>
+	[EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.StartingRecall))]
+	[HarmonyPatch(typeof(RagdollAbilityBase<Scp049Role>), nameof(RagdollAbilityBase<Scp049Role>.ServerProcessCmd))]
+	internal static class StartingRecall
+	{
+		private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+		{
+			List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            Label retLabel = generator.DefineLabel();
+			Label retLabel = generator.DefineLabel();
+			
+			int index = newInstructions.FindIndex(instruction =>
+				instruction.opcode == OpCodes.Callvirt
+				&& (MethodInfo)instruction.operand == Method(typeof(ScpSubroutineBase), nameof(ScpSubroutineBase.ServerProcessCmd)));
+			index += 1;
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                // Player target = Player.Get(ragdoll.Info.OwnerHub);
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldfld, Field(typeof(BasicRagdoll), nameof(BasicRagdoll.Info))),
-                new(OpCodes.Ldfld, Field(typeof(RagdollData), nameof(RagdollData.OwnerHub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // Player player = Player.Get(this.Owner);
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.Owner))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+			newInstructions.InsertRange(index, new CodeInstruction[]
+			{
+				// base.CurRagdoll
+				new(OpCodes.Ldarg_1),
+				new(OpCodes.Callvirt, PropertyGetter(typeof(RagdollAbilityBase<Scp049Role>), nameof(RagdollAbilityBase<Scp049Role>.CurRagdoll))),
+				
+				
+				// Player player = Player.Get(this.Owner);
+				new(OpCodes.Ldarg_0),
+				new(OpCodes.Callvirt, PropertyGetter(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.Owner))),
+				new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+				
+				// true
+				new(OpCodes.Ldc_I4_1),
 
-                // Ragdoll doll = Rangdoll.Get(ragdoll);
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(Ragdoll), nameof(Ragdoll.Get), new[] { typeof(BasicRagdoll) })),
+				// StartingRecallEventArgs ev = new(player, true);
+				new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingRecallEventArgsMod))[0]),
+				new(OpCodes.Dup),
 
-                // true
-                new(OpCodes.Ldc_I4_1),
+				// Handlers.Scp049.OnStartingRecall(ev);
+				new(OpCodes.Call, Method(typeof(LimitZombie.Events.Handlers.Scp049), nameof(LimitZombie.Events.Handlers.Scp049.OnStartingRecallMod))),
 
-                // StartingRecallEventArgs ev = new(target, player, doll, true);
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingRecallEventArgs))[0]),
-                new(OpCodes.Dup),
+				// if (!ev.IsAllowed)
+				//		return;
+				new(OpCodes.Callvirt, PropertyGetter(typeof(StartingRecallEventArgsMod), nameof(StartingRecallEventArgsMod.IsAllowed))),
+				new(OpCodes.Brfalse_S, retLabel),
+			});
+			newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
 
-                // Handlers.Scp049.OnStartingRecall(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp049), nameof(Handlers.Scp049.OnStartingRecall))),
+			foreach (var instruction in newInstructions)
+				yield return instruction;
 
-                // if (!ev.IsAllowed)
-                //      return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(StartingRecallEventArgs), nameof(StartingRecallEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, retLabel),
-            });
-            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Pool.Return(newInstructions);
-        }
-    }
+			ListPool<CodeInstruction>.Pool.Return(newInstructions);
+		}
+	}
 }
