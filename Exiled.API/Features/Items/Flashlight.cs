@@ -79,7 +79,7 @@ namespace Exiled.API.Features.Items
         public override Item Clone() => new Flashlight(Type)
         {
             IsEmittingLight = IsEmittingLight,
-            NextAllowedTime = NextAllowedTime
+            NextAllowedTime = NextAllowedTime,
         };
 
         /// <summary>
