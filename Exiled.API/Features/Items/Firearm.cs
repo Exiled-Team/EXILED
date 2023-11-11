@@ -185,7 +185,7 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets or sets the recoil settings of the firearm, if it's an automatic weapon.
+        /// Gets or sets the recoil settings of the firearm if it's an automatic weapon.
         /// </summary>
         /// <remarks>This property will not do anything if the firearm is not an automatic weapon.</remarks>
         /// <seealso cref="IsAutomatic"/>

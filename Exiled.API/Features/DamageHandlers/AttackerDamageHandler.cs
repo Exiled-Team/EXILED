@@ -17,7 +17,7 @@ namespace Exiled.API.Features.DamageHandlers
     public abstract class AttackerDamageHandler : DamageHandler
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AttackerDamageHandler"/> class.
+        /// Initializes a new instance of <see cref="AttackerDamageHandler"/> class.
         /// </summary>
         /// <param name="target">The target to be set.</param>
         /// <param name="attacker">The attacker to be set.</param>

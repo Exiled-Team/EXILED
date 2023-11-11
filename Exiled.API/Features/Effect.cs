@@ -12,7 +12,7 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
 
     /// <summary>
-    /// Useful class to save hint configs in a cleaner way.
+    /// Useful class to handle effect statuses.
     /// </summary>
     public class Effect
     {

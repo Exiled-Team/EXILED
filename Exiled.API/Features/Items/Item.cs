@@ -151,7 +151,7 @@ namespace Exiled.API.Features.Items
         public bool IsThrowable => this is Throwable;
 
         /// <summary>
-        /// Gets a value indicating whether or not this item can be used by player.
+        /// Gets a value indicating whether or not this item can be used by a player.
         /// </summary>
         public bool IsUsable => this is Usable;
 

@@ -159,7 +159,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the containment sequence is successful done.
+        /// Gets or sets a value indicating whether the containment sequence is successfully done.
         /// </summary>
         public static bool IsContainmentSequenceSuccessful
         {
