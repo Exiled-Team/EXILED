@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
+
     using Exiled.API.Interfaces;
     using InventorySystem.Items.ToggleableLights;
     using InventorySystem.Items.ToggleableLights.Flashlight;
@@ -41,6 +43,14 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <remarks>Can be <see cref="FlashlightItem"/> or <see cref="LanternItem"/>.</remarks>
         public new ToggleableLightItemBase Base { get; }
+
+        /// <inheritdoc cref="IsEmittingLight"/>
+        [Obsolete("Use IsEmittingLight instead.")]
+        public bool Active
+        {
+            get => IsEmittingLight;
+            set => IsEmittingLight = value;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the flashlight is turned on.
