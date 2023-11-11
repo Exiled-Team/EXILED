@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     /// </summary>
     [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.StartingRecall))]
     [HarmonyPatch(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.ServerValidateBegin))]
-    internal static class StartingRecall
+    internal static class Scp049ResurrectAbilityPatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
