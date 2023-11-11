@@ -9,7 +9,10 @@ namespace Exiled.API.Features
 {
     using System.ComponentModel;
 
+    using CustomPlayerEffects;
+
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
 
     /// <summary>
     /// Useful class to handle effect statuses.
@@ -21,6 +24,18 @@ namespace Exiled.API.Features
         /// </summary>
         public Effect()
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Effect"/> class.
+        /// </summary>
+        /// <param name="statusEffectBase">Get all the information of the effect>.</param>
+        public Effect(StatusEffectBase statusEffectBase)
+        {
+            Type = statusEffectBase.GetEffectType();
+            Duration = statusEffectBase.Duration;
+            Intensity = statusEffectBase.Intensity;
+            IsEnabled = statusEffectBase.IsEnabled;
         }
 
         /// <summary>
