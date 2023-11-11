@@ -25,10 +25,6 @@ namespace Exiled.API.Enums
         /// Represents an unknown camera.
         /// </summary>
         Unknown,
-
-        /// <summary>
-        /// Represents the cameras in Enterance Zone.
-        /// </summary>
         #region Ez
         EzChkptHall,
         EzCrossing,
@@ -46,10 +42,6 @@ namespace Exiled.API.Enums
         EzMinorOffice,
         EzTwoStoryOffice,
         #endregion
-
-        /// <summary>
-        /// Represents the cameras in Heavy Containment Zone.
-        /// </summary>
         #region Hcz
         Hcz049ContChamber,
         Hcz049ElevTop,
@@ -88,10 +80,6 @@ namespace Exiled.API.Enums
         HczWarheadHallway,
         HczWarheadTop,
         #endregion
-
-        /// <summary>
-        /// Represents the cameras in Light Containment Zone
-        /// </summary>
         #region Lcz
         Lcz173Bottom,
         Lcz173ContChamber,
@@ -121,10 +109,6 @@ namespace Exiled.API.Enums
         LczTcHallway,
         LczTestChamber,
         #endregion
-
-        /// <summary>
-        /// Represents the cameras in Surface Zone
-        /// </summary>
         #region Surface
         ExitPassage,
         GateASurface,
@@ -134,10 +118,6 @@ namespace Exiled.API.Enums
         SurfaceBridge,
         TunnelEntrance,
         #endregion
-
-        /// <summary>
-        /// Represent new cameras.
-        /// </summary>
         #region new
         Hcz173Outside,
         Hcz173Stairs,

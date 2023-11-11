@@ -15,7 +15,7 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
 
     /// <summary>
-    /// Useful class to handle effect statuses.
+    /// Useful class to save effects in configs in a cleaner way.
     /// </summary>
     public class Effect
     {

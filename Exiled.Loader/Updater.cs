@@ -132,7 +132,7 @@ namespace Exiled.Loader
             return client;
         }
         /// <summary>
-        /// Finds an update using the client.b
+        /// Finds an update using the client.
         /// </summary>
         /// <param name="client"> is the HTTP Client.</param>
         /// <param name="forced"> if the detection was forced.</param>

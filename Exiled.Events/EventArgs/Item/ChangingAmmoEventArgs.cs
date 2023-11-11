@@ -51,12 +51,12 @@ namespace Exiled.Events.EventArgs.Item
         public Item Item => Firearm;
 
         /// <summary>
-        /// Gets the old ammo type.
+        /// Gets the old ammo.
         /// </summary>
         public byte OldAmmo { get; }
 
         /// <summary>
-        /// Gets or sets the new ammo type to be used by the firearm.
+        /// Gets or sets the new ammo to be used by the firearm.
         /// </summary>
         public byte NewAmmo { get; set; }
 

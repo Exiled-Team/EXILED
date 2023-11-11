@@ -49,7 +49,7 @@ namespace Exiled.API.Enums
         Tutorial,
 
         /// <summary>
-        /// No team. Same as <see cref="Team.Dead"/>, <see cref="RoleTypeId.Overwatch"/> and <see cref="RoleTypeId.Filmmaker"/>.
+        /// No team. Same as <see cref="Team.Dead"/>.
         /// </summary>
         None,
     }
