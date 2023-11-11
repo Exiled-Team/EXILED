@@ -15,7 +15,7 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp173;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
     using UnityEngine;
 
     using Scp173GameRole = PlayerRoles.PlayableScps.Scp173.Scp173Role;
