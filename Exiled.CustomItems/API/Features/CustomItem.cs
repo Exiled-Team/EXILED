@@ -975,7 +975,8 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowPickedUpMessage(Player player)
         {
-            player.ShowHint(string.Format(Instance!.Config.PickedUpHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
+            if (Instance!.Config.PickedUpHint.Show)
+                player.ShowHint(string.Format(Instance.Config.PickedUpHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
         }
 
         /// <summary>
@@ -984,7 +985,8 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowSelectedMessage(Player player)
         {
-            player.ShowHint(string.Format(Instance!.Config.SelectedHint.Content, Name, Description), Instance.Config.SelectedHint.Duration);
+            if (Instance!.Config.SelectedHint.Show)
+                player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.SelectedHint.Duration);
         }
 
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
