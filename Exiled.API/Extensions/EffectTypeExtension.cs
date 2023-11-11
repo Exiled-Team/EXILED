@@ -67,7 +67,7 @@ namespace Exiled.API.Extensions
             { EffectType.SilentWalk, typeof(SilentWalk) },
             { EffectType.Marshmallow, typeof(MarshmallowEffect) },
             { EffectType.Strangled, typeof(Strangled) },
-            { EffectType.Ghoslty, typeof(Ghostly) }
+            { EffectType.Ghoslty, typeof(Ghostly) },
         };
 
         /// <summary>
