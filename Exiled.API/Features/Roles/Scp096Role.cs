@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp096;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using Scp096GameRole = PlayerRoles.PlayableScps.Scp096.Scp096Role;
 
@@ -278,7 +278,7 @@ namespace Exiled.API.Features.Roles
         {
             ChargeAbility._hitHandler.Clear();
             ChargeAbility.Duration.Trigger(cooldown);
-            ChargeAbility.ScpRole.StateController.SetAbilityState(Scp096AbilityState.Charging);
+            ChargeAbility.CastRole.StateController.SetAbilityState(Scp096AbilityState.Charging);
             ChargeAbility.ServerSendRpc(true);
         }
 

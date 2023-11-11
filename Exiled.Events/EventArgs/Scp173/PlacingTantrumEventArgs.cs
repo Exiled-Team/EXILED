@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs.Scp173
     using Exiled.Events.EventArgs.Interfaces;
 
     using Hazards;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using Scp173Role = API.Features.Roles.Scp173Role;
 
