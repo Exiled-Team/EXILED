@@ -11,15 +11,13 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using CustomPlayerEffects;
-
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp049;
-    using PlayerRoles.Subroutines;
     using PlayerRoles.Ragdolls;
+    using PlayerRoles.Subroutines;
     using PlayerStatsSystem;
-
     using UnityEngine;
 
     using Scp049GameRole = PlayerRoles.PlayableScps.Scp049.Scp049Role;
