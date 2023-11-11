@@ -35,10 +35,10 @@ namespace Exiled.Events.Patches.Events.Scp049
 
 			Label retLabel = generator.DefineLabel();
 			
-			int index = newInstructions.FindIndex(instruction =>
-				instruction.opcode == OpCodes.Callvirt
-				&& (MethodInfo)instruction.operand == Method(typeof(ScpSubroutineBase), nameof(ScpSubroutineBase.ServerProcessCmd)));
-			index += 1;
+            int index = newInstructions.FindIndex(instruction =>
+                instruction.opcode == OpCodes.Ldnull
+                && (MethodInfo)instruction.operand == Method(typeof(ScpSubroutineBase), nameof(ScpSubroutineBase.ServerProcessCmd)));
+            index += 33;
 
 
 			newInstructions.InsertRange(index, new CodeInstruction[]
