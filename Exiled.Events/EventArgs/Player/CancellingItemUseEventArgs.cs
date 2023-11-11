@@ -20,7 +20,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Initializes a new instance of the <see cref="CancellingItemUseEventArgs" /> class.
         /// </summary>
-        /// <param name="player">The player who's stopping the use of an item.</param>
+        /// The <param name="player"> who's stopping the use of an item.</param>
         /// <param name="item">
         ///     <inheritdoc cref="UsedItemEventArgs.Item" />
         /// </param>
@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => Usable;
 
         /// <summary>
-        ///     Gets the player who cancelling the item.
+        ///     Gets the player who is cancelling the item.
         /// </summary>
         public Player Player { get; }
 

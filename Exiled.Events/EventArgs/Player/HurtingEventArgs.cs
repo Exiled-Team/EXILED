@@ -38,7 +38,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the target player, who is going to be hurt.
+        ///     Gets the player who is getting hurt.
         /// </summary>
         public Player Player { get; }
 

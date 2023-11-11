@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Scp106
     using UnityEngine;
 
     /// <summary>
-    ///     Contains all information before SCP-106 teleports using the hunter atlas.
+    ///     Contains all information before SCP-106 teleports using hunter atlas.
     /// </summary>
     public class TeleportingEventArgs : IScp106Event, IDeniableEvent
     {

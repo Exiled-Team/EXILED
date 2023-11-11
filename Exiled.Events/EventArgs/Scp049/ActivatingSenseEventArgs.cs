@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Scp049
     using Scp049Role = API.Features.Roles.Scp049Role;
 
     /// <summary>
-    ///     Contains all information before SCP-049 sense is activated.
+    ///     Contains all information before SCP-049 good sense of the doctor is activated.
     /// </summary>
     public class ActivatingSenseEventArgs : IScp049Event, IDeniableEvent
     {

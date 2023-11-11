@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs.Item
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="API.Features.Items.Firearm"/> the ammo is being changed to.
+        /// Gets the <see cref="API.Features.Items.Firearm"/> the ammo type is being changed to.
         /// </summary>
         public Firearm Firearm { get; }
 
@@ -51,12 +51,12 @@ namespace Exiled.Events.EventArgs.Item
         public Item Item => Firearm;
 
         /// <summary>
-        /// Gets the old ammo.
+        /// Gets the old ammo type.
         /// </summary>
         public byte OldAmmo { get; }
 
         /// <summary>
-        /// Gets or sets the new ammo to be used by the firearm.
+        /// Gets or sets the new ammo type to be used by the firearm.
         /// </summary>
         public byte NewAmmo { get; set; }
 

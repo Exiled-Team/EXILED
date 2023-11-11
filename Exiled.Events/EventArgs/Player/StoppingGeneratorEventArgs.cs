@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Player
     using MapGeneration.Distributors;
 
     /// <summary>
-    ///     Contains all information before a player flips the switch of the generator.
+    ///     Contains all information before a player turns off the generator.
     /// </summary>
     public class StoppingGeneratorEventArgs : IPlayerEvent, IGeneratorEvent, IDeniableEvent
     {

@@ -30,17 +30,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the generator can be opened.
+        ///     Gets or sets a value indicating whether or not the generator door can be opened.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the generator that is opening.
+        ///     Gets the generator door that is opening.
         /// </summary>
         public Generator Generator { get; }
 
         /// <summary>
-        ///     Gets the player who's opening the generator.
+        ///     Gets the player who's opening the generator door.
         /// </summary>
         public Player Player { get; }
     }

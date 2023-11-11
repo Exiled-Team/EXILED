@@ -109,12 +109,12 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        /// Gets the position where is exploding.
+        /// Gets the position where the grenade is exploding.
         /// </summary>
         public Vector3 Position { get; }
 
         /// <summary>
-        ///     Gets the players who could be affected by the grenade, if any, and the damage that would hurt them.
+        ///     Gets the players who could be affected by the grenade, if any, and the damage that be dealt.
         /// </summary>
         public List<Player> TargetsToAffect { get; }
 

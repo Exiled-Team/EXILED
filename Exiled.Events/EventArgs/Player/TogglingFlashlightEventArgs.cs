@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.SwitchableLightSources.Flashlight;
 
     /// <summary>
-    ///     Contains all information before a player toggles the flashlight.
+    ///     Contains all information before a player toggles a flashlight.
     /// </summary>
     public class TogglingFlashlightEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {

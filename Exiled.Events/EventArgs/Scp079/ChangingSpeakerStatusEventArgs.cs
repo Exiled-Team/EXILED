@@ -49,7 +49,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public Room Room { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether SCP-079 is speaking or not.
+        ///     Gets or sets a value indicating whether SCP-079 is able to speak to players.
         /// </summary>
         public bool IsAllowed { get; set; }
     }
