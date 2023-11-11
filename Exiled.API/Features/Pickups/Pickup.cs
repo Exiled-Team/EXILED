@@ -28,6 +28,7 @@ namespace Exiled.API.Features.Pickups
     using BaseAmmoPickup = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
     using BaseBodyArmorPickup = InventorySystem.Items.Armor.BodyArmorPickup;
     using BaseFirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
+    using BaseJailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
     using BaseKeycardPickup = InventorySystem.Items.Keycards.KeycardPickup;
     using BaseMicroHIDPickup = InventorySystem.Items.MicroHID.MicroHIDPickup;
     using BaseRadioPickup = InventorySystem.Items.Radio.RadioPickup;
@@ -35,6 +36,7 @@ namespace Exiled.API.Features.Pickups
     using BaseScp1576Pickup = InventorySystem.Items.Usables.Scp1576.Scp1576Pickup;
     using BaseScp2176Projectile = InventorySystem.Items.ThrowableProjectiles.Scp2176Projectile;
     using BaseScp330Pickup = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
+
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -289,7 +291,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether this pickup is spawned.
         /// </summary>
-        public bool IsSpawned { get; internal set; }
+        public bool IsSpawned => NetworkServer.spawned.ContainsValue(Base.netIdentity);
 
         /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.
@@ -321,6 +323,7 @@ namespace Exiled.API.Features.Pickups
                 BaseBodyArmorPickup bodyArmorPickup => new BodyArmorPickup(bodyArmorPickup),
                 BaseScp330Pickup scp330Pickup => new Scp330Pickup(scp330Pickup),
                 BaseScp1576Pickup scp1576Pickup => new Scp1576Pickup(scp1576Pickup),
+                BaseJailbirdPickup jailbirdPickup => new JailbirdPickup(jailbirdPickup),
                 ThrownProjectile thrownProjectile => thrownProjectile switch
                 {
                     BaseScp018Projectile scp018 => new Projectiles.Scp018Projectile(scp018),
@@ -476,7 +479,7 @@ namespace Exiled.API.Features.Pickups
             ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardMTFCaptain or ItemType.KeycardMTFOperative or ItemType.KeycardMTFPrivate => new KeycardPickup(type),
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new BodyArmorPickup(type),
             ItemType.SCP330 => new Scp330Pickup(),
-            ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP1853 or ItemType.Painkillers or ItemType.Medkit or ItemType.Adrenaline => new UsablePickup(type),
+            ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP1853 or ItemType.Painkillers or ItemType.Medkit or ItemType.Adrenaline or ItemType.AntiSCP207 => new UsablePickup(type),
             ItemType.Jailbird => new JailbirdPickup(),
             ItemType.SCP1576 => new Scp1576Pickup(),
             ItemType.SCP2176 => new Projectiles.Scp2176Projectile(),
@@ -538,7 +541,6 @@ namespace Exiled.API.Features.Pickups
             if (!IsSpawned)
             {
                 NetworkServer.Spawn(GameObject);
-                IsSpawned = true;
             }
         }
 
@@ -569,7 +571,6 @@ namespace Exiled.API.Features.Pickups
         {
             if (IsSpawned)
             {
-                IsSpawned = false;
                 NetworkServer.UnSpawn(GameObject);
             }
         }

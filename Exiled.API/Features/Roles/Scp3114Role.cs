@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Interfaces;
     using Mirror;
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.PlayableScps.Subroutines;
@@ -74,6 +75,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp3114Disguise not found in Scp3114Role::ctor");
 
             Disguise = scp3114Disguise;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp3114VoiceLines scp3114VoiceLines))
+                Log.Error("Scp3114VoiceLines not found in Scp3114Role::ctor");
+
+            VoiceLines = scp3114VoiceLines;
         }
 
         /// <inheritdoc/>
@@ -119,6 +125,11 @@ namespace Exiled.API.Features.Roles
         /// Gets Scp3114's <see cref="Scp3114Disguise"/>.
         /// </summary>
         public Scp3114Disguise Disguise { get; }
+
+        /// <summary>
+        /// Gets Scp3114's <see cref="Scp3114VoiceLines"/>.
+        /// </summary>
+        public Scp3114VoiceLines VoiceLines { get; }
 
         /// <summary>
         /// Gets the <see cref="Scp3114GameRole"/> instance.
@@ -200,6 +211,15 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets or sets the warning time seconds.
+        /// </summary>
+        public float WarningTime
+        {
+            get => Identity._warningTimeSeconds;
+            set => Identity._warningTimeSeconds = value;
+        }
+
+        /// <summary>
         /// Reset Scp3114 FakeIdentity.
         /// </summary>
         public void ResetIdentity()
@@ -209,10 +229,17 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Plays a random Scp3114 voice line.
+        /// </summary>
+        /// <param name="voiceLine">The type of voice line to play.</param>
+        public void PlaySound(Scp3114VoiceLines.VoiceLinesName voiceLine = Scp3114VoiceLines.VoiceLinesName.RandomIdle)
+            => VoiceLines.ServerPlayConditionally(voiceLine);
+
+        /// <summary>
         /// Gets the Spawn Chance of SCP-3114.
         /// </summary>
         /// <param name="alreadySpawned">The List of Roles already spawned.</param>
         /// <returns>The Spawn Chance.</returns>
-        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => 0;
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base is ISpawnableScp spawnableScp ? spawnableScp.GetSpawnChance(alreadySpawned) : 0;
     }
 }

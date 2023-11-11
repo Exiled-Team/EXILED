@@ -101,6 +101,7 @@ namespace Exiled.API.Features.Pickups
         internal override void ReadItemInfo(Item item)
         {
             base.ReadItemInfo(item);
+
             if (item is Jailbird jailBirditem)
             {
                 MeleeDamage = jailBirditem.MeleeDamage;
