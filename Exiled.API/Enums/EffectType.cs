@@ -201,12 +201,12 @@ namespace Exiled.API.Enums
         PocketCorroding,
 
         /// <summary>
-        /// Makes walking sound volume equal 0.1.
+        /// Reduces walking sound by 10%.
         /// </summary>
         SilentWalk,
 
         /// <summary>
-        /// Makes you a marshmallow guy
+        /// Makes you a marshmallow guy.
         /// </summary>
         Marshmallow,
 
