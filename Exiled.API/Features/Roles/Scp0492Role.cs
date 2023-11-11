@@ -11,7 +11,8 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Ragdolls;
+    using PlayerRoles.Subroutines;
 
     /// <summary>
     /// Defines a role that represents SCP-049-2.

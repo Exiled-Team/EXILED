@@ -12,6 +12,7 @@ namespace Exiled.Events.EventArgs.Scp0492
     using Interfaces;
 
     using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PlayerRoles.Ragdolls;
 
     /// <summary>
     ///     Contains all information before zombie consumes RagDolls.
