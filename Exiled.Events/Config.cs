@@ -14,10 +14,14 @@ namespace Exiled.Events
     /// <inheritdoc cref="IConfig"/>
     public sealed class Config : IConfig
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// Get or sets IsEnabled.
+        /// </summary>
         public bool IsEnabled { get; set; } = true;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets or sets Debugging.
+        /// </summary>
         public bool Debug { get; set; }
 
         /// <summary>

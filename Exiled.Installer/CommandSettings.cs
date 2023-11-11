@@ -16,8 +16,14 @@ namespace Exiled.Installer
 
     internal sealed class CommandSettings
     {
+        /// <summary>
+        /// The RootCommand to the Exiled Installer
+        /// </summary>
         public static readonly RootCommand RootCommand = new()
         {
+            /// <summary>
+            /// Looks for the path of the SL Server install.
+            /// </summary>
             new Option<DirectoryInfo?>(
                 new[] { "-p", "--path" },
                 (parsed) =>
@@ -120,22 +126,49 @@ namespace Exiled.Installer
         };
 
 #nullable disable
+        /// <summary>
+        /// Gets or sets the directory path.
+        /// </summary>
         public DirectoryInfo Path { get; set; }
 
+        /// <summary>
+        /// Gets or sets the AppData directory path.
+        /// </summary>
         public DirectoryInfo AppData { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Exiled directory path.
+        /// </summary>
         public DirectoryInfo Exiled { get; set; }
 #nullable restore
-
+        /// <summary>
+        /// Gets or sets if it is a prerelease.
+        /// </summary>
         public bool PreReleases { get; set; }
+
+        /// <summary>
+        /// Gets or sets the target port.
+        /// </summary>
         public string? TargetPort { get; set; }
 
+        /// <summary>
+        /// Gets or sets the target version.
+        /// </summary>
         public string? TargetVersion { get; set; }
 
+        /// <summary>
+        /// Gets or sets the GitHub token.
+        /// </summary>
         public string? GitHubToken { get; set; }
 
+        /// <summary>
+        /// Gets or sets the version of Exiled available.
+        /// </summary>
         public bool GetVersions { get; set; }
 
+        /// <summary>
+        /// Gets or sets the boolean for exiting.
+        /// </summary>
         public bool Exit { get; set; }
 
         public async static Task Parse(string[] args)

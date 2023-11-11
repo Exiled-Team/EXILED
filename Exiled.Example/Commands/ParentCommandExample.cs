@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ParentCommandExample.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -15,7 +15,9 @@ namespace Exiled.Example.Commands
 
     using Exiled.Permissions.Extensions; // Use this if you want to add perms
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Using CommandHandler, used to make a command for the example plugin.
+    /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))] // You can change the command handler
     public class ParentCommandExample : ParentCommand
     {

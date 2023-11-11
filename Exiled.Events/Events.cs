@@ -35,7 +35,9 @@ namespace Exiled.Events
         /// </summary>
         public static Events Instance => instance;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets the plugin priority.
+        /// </summary>
         public override PluginPriority Priority { get; } = PluginPriority.First;
 
         /// <summary>
@@ -43,7 +45,9 @@ namespace Exiled.Events
         /// </summary>
         public Patcher Patcher { get; private set; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// OnEnabled method.
+        /// </summary>
         public override void OnEnabled()
         {
             instance = this;
@@ -81,7 +85,9 @@ namespace Exiled.Events
             EventManager.RegisterEvents<Handlers.Player>(this);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Handles OnDisabled.
+        /// </summary>
         public override void OnDisabled()
         {
             base.OnDisabled();
