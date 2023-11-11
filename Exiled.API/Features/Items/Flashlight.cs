@@ -74,7 +74,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Returns the Lantern in a human readable format.
         /// </summary>
-        /// <returns>A string containing Lantern-related data.</returns>
+        /// <returns>A string containing item-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{IsEmittingLight}| /{NextAllowedTime}/";
     }
 }
