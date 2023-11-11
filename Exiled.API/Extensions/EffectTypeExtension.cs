@@ -66,6 +66,7 @@ namespace Exiled.API.Extensions
             { EffectType.Traumatized, typeof(Traumatized) },
             { EffectType.AntiScp207, typeof(AntiScp207) },
             { EffectType.Scanned, typeof(Scanned) },
+            { EffectType.SilentWalk, typeof(SilentWalk) },
         };
 
         /// <summary>

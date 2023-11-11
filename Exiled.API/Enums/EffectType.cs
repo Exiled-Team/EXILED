@@ -199,5 +199,10 @@ namespace Exiled.API.Enums
         /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed.
         /// </summary>
         PocketCorroding,
+
+        /// <summary>
+        /// Makes walking sound volume equal 0.1.
+        /// </summary>
+        SilentWalk,
     }
 }
