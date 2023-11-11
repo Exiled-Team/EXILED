@@ -1,3 +1,16 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>	
+<#@ assembly name="System" #>	
+<#@ assembly name="%EXILED_REFERENCES%\System.Core.dll" #>	
+<#@ assembly name="%EXILED_REFERENCES%\Mirror.dll" #>	
+<#@ assembly name="%EXILED_REFERENCES%\UnityEngine.CoreModule.dll" #>	
+<#@ assembly name="%EXILED_REFERENCES%\Assembly-CSharp-Publicized.dll" #>	
+<#@ assembly name="bin\Release\Exiled.API.dll" #>	
+<#@ assembly name="bin\Release\Exiled.Loader.dll" #>	
+<#@ import namespace="Exiled.API.Enums" #>	
+<#@ import namespace="Exiled.API.Extensions" #>	
+<#@ import namespace="System.Linq" #>	
+<#@ import namespace="PlayerRoles" #>	
+<#@ output extension=".md" #>
 ---
 sidebar_position: 1
 ---
