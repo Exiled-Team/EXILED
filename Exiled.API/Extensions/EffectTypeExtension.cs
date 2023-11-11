@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using InventorySystem.Items.MarshmallowMan;
-
 namespace Exiled.API.Extensions
 {
     using System;
@@ -14,11 +12,9 @@ namespace Exiled.API.Extensions
     using System.Linq;
 
     using CustomPlayerEffects;
-
     using Enums;
-
+    using InventorySystem.Items.MarshmallowMan;
     using InventorySystem.Items.Usables.Scp244.Hypothermia;
-
     using PlayerRoles.FirstPersonControl;
 
     /// <summary>
