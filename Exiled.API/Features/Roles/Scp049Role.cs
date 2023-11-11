@@ -11,14 +11,13 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using CustomPlayerEffects;
-
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp049;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Ragdolls;
+    using PlayerRoles.Subroutines;
     using PlayerStatsSystem;
-
     using UnityEngine;
 
     using Scp049GameRole = PlayerRoles.PlayableScps.Scp049.Scp049Role;
@@ -217,9 +216,9 @@ namespace Exiled.API.Features.Roles
         {
             if (player is null)
                 return false;
-            player.ReferenceHub.transform.position = ResurrectAbility.ScpRole.FpcModule.Position;
+            player.ReferenceHub.transform.position = ResurrectAbility.CastRole.FpcModule.Position;
 
-            HumeShieldModuleBase humeShield = ResurrectAbility.ScpRole.HumeShieldModule;
+            HumeShieldModuleBase humeShield = ResurrectAbility.CastRole.HumeShieldModule;
             humeShield.HsCurrent = Mathf.Min(humeShield.HsCurrent + 100f, humeShield.HsMax);
 
             return Resurrect(Ragdoll.GetLast(player));
@@ -269,7 +268,7 @@ namespace Exiled.API.Features.Roles
             SenseAbility.OnServerHit(AttackAbility._target);
 
             AttackAbility.ServerSendRpc(true);
-            Hitmarker.SendHitmarker(AttackAbility.Owner, 1f);
+            Hitmarker.SendHitmarkerDirectly(AttackAbility.Owner, 1f);
         }
 
         /// <summary>

@@ -120,6 +120,8 @@ namespace Exiled.Loader
         /// </summary>
         public static void LoadPlugins()
         {
+            File.Delete(Path.Combine(Paths.Plugins, "Exiled.Updater.dll"));
+
             foreach (string assemblyPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
                 Assembly assembly = LoadAssembly(assemblyPath);

@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp106;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
     using PlayerStatsSystem;
 
     using UnityEngine;
@@ -261,7 +261,7 @@ namespace Exiled.API.Features.Roles
             Attack.SendCooldown(Attack._hitCooldown);
             VigorAbility.VigorAmount += Scp106Attack.VigorCaptureReward;
             Attack.ReduceSinkholeCooldown();
-            Hitmarker.SendHitmarker(Attack.Owner, 1f);
+            Hitmarker.SendHitmarkerDirectly(Attack.Owner, 1f);
 
             player.EnableEffect(EffectType.Corroding);
             player.EnableEffect(EffectType.SinkHole);
