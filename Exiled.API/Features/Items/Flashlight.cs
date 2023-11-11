@@ -43,7 +43,7 @@ namespace Exiled.API.Features.Items
         public new ToggleableLightItemBase Base { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the flashlight is turned on.
+        /// Gets or sets a value indicating whether the item is emitting light.
         /// </summary>
         public bool IsEmittingLight
         {
@@ -72,7 +72,7 @@ namespace Exiled.API.Features.Items
         };
 
         /// <summary>
-        /// Returns the Lantern in a human readable format.
+        /// Returns the item in a human readable format.
         /// </summary>
         /// <returns>A string containing item-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{IsEmittingLight}| /{NextAllowedTime}/";
