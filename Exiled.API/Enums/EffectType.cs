@@ -204,5 +204,20 @@ namespace Exiled.API.Enums
         /// Makes walking sound volume equal 0.1.
         /// </summary>
         SilentWalk,
+
+        /// <summary>
+        /// Makes you a marshmallow guy
+        /// </summary>
+        Marshmallow,
+
+        /// <summary>
+        /// The effect that receive player when he getting attacked by SCP-3114 ability.
+        /// </summary>
+        Strngled,
+
+        /// <summary>
+        /// Allows you to bypass doors.
+        /// </summary>
+        Ghoslty,
     }
 }

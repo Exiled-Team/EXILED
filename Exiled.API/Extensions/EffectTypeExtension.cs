@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using InventorySystem.Items.MarshmallowMan;
+
 namespace Exiled.API.Extensions
 {
     using System;
@@ -67,6 +69,9 @@ namespace Exiled.API.Extensions
             { EffectType.AntiScp207, typeof(AntiScp207) },
             { EffectType.Scanned, typeof(Scanned) },
             { EffectType.SilentWalk, typeof(SilentWalk) },
+            { EffectType.Marshmallow, typeof(MarshmallowEffect) },
+            { EffectType.Strngled, typeof(Strangled) },
+            { EffectType.Ghoslty, typeof(Ghostly) }
         };
 
         /// <summary>
