@@ -59,7 +59,7 @@ namespace Exiled.CustomItems.API.Features
         public abstract float FuseTime { get; set; }
 
         /// <summary>
-        /// Throw the actual CustomGrenade object.
+        /// Throw the CustomGrenade object.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/>position to throw at.</param>
         /// <param name="force">The amount of force to throw with.</param>
@@ -101,7 +101,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Checks to see if the grenade is a tracked custom grenade.
+        /// Checks to see if the grenade is a custom grenade.
         /// </summary>
         /// <param name="grenade">The <see cref="Projectile">grenade</see> to check.</param>
         /// <returns>True if it is a custom grenade.</returns>

@@ -35,7 +35,7 @@ namespace Exiled.API.Extensions
         public static T GetRandomValue<T>(this IEnumerable<T> enumerable, System.Func<T, bool> condition) => enumerable is null || enumerable.Count() == 0 ? default : enumerable.Where(condition).GetRandomValue();
 
         /// <summary>
-        /// Will modify the curve with the amount used.
+        /// Mmodify the curve with the amount used.
         /// </summary>
         /// <param name="curve">The AnimationCurve to mofify.</param>
         /// <param name="amount">The multiplier number.</param>
@@ -49,7 +49,7 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Will modify the curve with the amount used.
+        /// Modify the curve with the amount used.
         /// </summary>
         /// <param name="curve">The AnimationCurve to mofify.</param>
         /// <param name="amount">The add number.</param>

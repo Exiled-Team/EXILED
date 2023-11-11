@@ -81,7 +81,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the Attachement code have this <see cref="FirearmPickup"/>.
+        /// Gets or sets a value indicating whether the attachement code have this <see cref="FirearmPickup"/>.
         /// </summary>
         public uint Attachments
         {

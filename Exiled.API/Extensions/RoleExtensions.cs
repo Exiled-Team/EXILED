@@ -28,21 +28,21 @@ namespace Exiled.API.Extensions
     public static class RoleExtensions
     {
         /// <summary>
-        /// Gets a <see cref="RoleTypeId">role's</see> <see cref="Color"/>.
+        /// Gets <see cref="RoleTypeId">role's</see> <see cref="Color"/>.
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/> to get the color of.</param>
         /// <returns>The <see cref="Color"/> of the role.</returns>
         public static Color GetColor(this RoleTypeId roleType) => roleType == RoleTypeId.None ? Color.white : roleType.GetRoleBase().RoleColor;
 
         /// <summary>
-        /// Gets a <see cref="RoleTypeId">role's</see> <see cref="Side"/>.
+        /// Gets <see cref="RoleTypeId">role's</see> <see cref="Side"/>.
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/> to check the side of.</param>
         /// <returns><see cref="Side"/>.</returns>
         public static Side GetSide(this RoleTypeId roleType) => PlayerRolesUtils.GetTeam(roleType).GetSide();
 
         /// <summary>
-        /// Gets a <see cref="Team">team's</see> <see cref="Side"/>.
+        /// Gets <see cref="Team">team's</see> <see cref="Side"/>.
         /// </summary>
         /// <param name="team">The <see cref="Team"/> to get the <see cref="Side"/> of.</param>
         /// <returns><see cref="Side"/>.</returns>.

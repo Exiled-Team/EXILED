@@ -33,7 +33,7 @@ namespace Exiled.API.Enums
         Ptb,
 
         /// <summary>
-        /// The Production environemnt, for public, with debug.
+        /// The Production environemnt, for the public, with debugging features.
         /// </summary>
         ProductionDebug,
     }
