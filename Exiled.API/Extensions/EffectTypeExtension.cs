@@ -70,7 +70,7 @@ namespace Exiled.API.Extensions
             { EffectType.Scanned, typeof(Scanned) },
             { EffectType.SilentWalk, typeof(SilentWalk) },
             { EffectType.Marshmallow, typeof(MarshmallowEffect) },
-            { EffectType.Strngled, typeof(Strangled) },
+            { EffectType.Strangled, typeof(Strangled) },
             { EffectType.Ghoslty, typeof(Ghostly) }
         };
 

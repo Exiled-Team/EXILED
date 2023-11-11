@@ -213,7 +213,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// The effect that receive player when he getting attacked by SCP-3114 ability.
         /// </summary>
-        Strngled,
+        Strangled,
 
         /// <summary>
         /// Allows you to bypass doors.
