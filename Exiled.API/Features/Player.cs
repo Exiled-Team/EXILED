@@ -2555,14 +2555,10 @@ namespace Exiled.API.Features
 
                 item.ChangeOwner(item.Owner, this);
 
-                Timing.CallDelayed(0.02f, () =>
+                if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
                 {
-                    if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
-                    {
-                        acquisitionConfirmationTrigger.ServerConfirmAcqusition();
-                        acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
-                    }
-                });
+                    acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = false;
+                }
 
                 ItemsValue.Add(item);
 
@@ -2924,8 +2920,8 @@ namespace Exiled.API.Features
             if (statusEffect is null)
                 return false;
 
-            statusEffect.ServerSetState(intensity);
-            statusEffect.ServerChangeDuration(duration, addDurationIfActive);
+            statusEffect.ServerSetState(intensity, duration, addDurationIfActive);
+
             return statusEffect is not null && statusEffect.IsEnabled;
         }
 
