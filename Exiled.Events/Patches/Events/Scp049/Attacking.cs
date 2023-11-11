@@ -16,7 +16,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     using Exiled.Events.EventArgs.Scp049;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp049;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using static HarmonyLib.AccessTools;
 

@@ -59,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Scp106
         private static void ServerProcessStalk(Scp106StalkAbility stalkAbility)
         {
             if (stalkAbility._sinkhole.IsDuringAnimation || !stalkAbility._sinkhole.Cooldown.IsReady ||
-                !stalkAbility.ScpRole.FpcModule.IsGrounded)
+                !stalkAbility.CastRole.FpcModule.IsGrounded)
                 return;
 
             Player scp106 = Player.Get(stalkAbility.Owner);
