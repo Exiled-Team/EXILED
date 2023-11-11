@@ -8,20 +8,21 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Interfaces;
-    using InventorySystem.Items.SwitchableLightSources;
-    using InventorySystem.Items.SwitchableLightSources.Flashlight;
+    using InventorySystem.Items.ToggleableLights;
+    using InventorySystem.Items.ToggleableLights.Flashlight;
+    using InventorySystem.Items.ToggleableLights.Lantern;
     using Utils.Networking;
 
     /// <summary>
-    /// A wrapped class for <see cref="FlashlightItem"/>.
+    /// A wrapped class for <see cref="ToggleableLightItemBase"/>.
     /// </summary>
-    public class Flashlight : Item, IWrapper<FlashlightItem>
+    public class Flashlight : Item, IWrapper<ToggleableLightItemBase>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Flashlight"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="FlashlightItem"/> class.</param>
-        public Flashlight(FlashlightItem itemBase)
+        /// <param name="itemBase">The base <see cref="ToggleableLightItemBase"/> class.</param>
+        public Flashlight(ToggleableLightItemBase itemBase)
             : base(itemBase)
         {
             Base = itemBase;
@@ -31,19 +32,20 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Flashlight"/> class, as well as a new Flashlight item.
         /// </summary>
         internal Flashlight()
-            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(new(ItemType.Flashlight, 0), false))
+            : this((ToggleableLightItemBase)Server.Host.Inventory.CreateItemInstance(new(ItemType.Flashlight, 0), false))
         {
         }
 
         /// <summary>
-        /// Gets the <see cref="FlashlightItem"/> that this class is encapsulating.
+        /// Gets the <see cref="ToggleableLightItemBase"/> that this class is encapsulating.
         /// </summary>
-        public new FlashlightItem Base { get; }
+        /// <remarks>Can be <see cref="FlashlightItem"/> or <see cref="LanternItem"/>.</remarks>
+        public new ToggleableLightItemBase Base { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the flashlight is turned on.
         /// </summary>
-        public bool Active
+        public bool IsEmittingLight
         {
             get => Base.IsEmittingLight;
             set
@@ -54,18 +56,25 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Clones current <see cref="Flashlight"/> object.
+        /// Gets or sets time since level loaded when player will be able to change <see cref="IsEmittingLight"/> again.
         /// </summary>
-        /// <returns> New <see cref="Flashlight"/> object. </returns>
-        public override Item Clone() => new Flashlight()
+        public float NextAllowedTime
         {
-            Active = Active,
+            get => Base.NextAllowedTime;
+            set => Base.NextAllowedTime = value;
+        }
+
+        /// <inheritdoc/>
+        public override Item Clone() => new Flashlight
+        {
+            IsEmittingLight = IsEmittingLight,
+            NextAllowedTime = NextAllowedTime
         };
 
         /// <summary>
-        /// Returns the Flashlight in a human readable format.
+        /// Returns the Lantern in a human readable format.
         /// </summary>
-        /// <returns>A string containing Flashlight-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Active}|";
+        /// <returns>A string containing Lantern-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{IsEmittingLight}| /{NextAllowedTime}/";
     }
 }
