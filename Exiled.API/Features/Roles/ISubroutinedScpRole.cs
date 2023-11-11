@@ -7,7 +7,7 @@
 
 namespace Exiled.API.Features.Roles
 {
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     /// <summary>
     /// Defines a interface that represents a <see cref="SubroutineManagerModule"/> in player's role.
