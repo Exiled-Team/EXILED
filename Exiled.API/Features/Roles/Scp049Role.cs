@@ -16,7 +16,7 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp049;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
     using PlayerRoles.Ragdolls;
     using PlayerStatsSystem;
 
@@ -218,9 +218,9 @@ namespace Exiled.API.Features.Roles
         {
             if (player is null)
                 return false;
-            player.ReferenceHub.transform.position = ResurrectAbility.ScpRole.FpcModule.Position;
+            player.ReferenceHub.transform.position = ResurrectAbility.CastRole.FpcModule.Position;
 
-            HumeShieldModuleBase humeShield = ResurrectAbility.ScpRole.HumeShieldModule;
+            HumeShieldModuleBase humeShield = ResurrectAbility.CastRole.HumeShieldModule;
             humeShield.HsCurrent = Mathf.Min(humeShield.HsCurrent + 100f, humeShield.HsMax);
 
             return Resurrect(Ragdoll.GetLast(player));
