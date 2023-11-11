@@ -42,10 +42,11 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(DecontaminationController), nameof(DecontaminationController._nextPhase))),
 
-                    // hard
-                    new(OpCodes.Ldarg_1),
+                    // this._curFunction
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(DecontaminationController), nameof(DecontaminationController._curFunction))),
 
-                    // AnnouncingDecontaminationEventArgs ev = new(int, bool)
+                    // AnnouncingDecontaminationEventArgs ev = new(int, PhaseFunction)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AnnouncingDecontaminationEventArgs))[0]),
 
                     // Map.OnAnnouncingDecontamination(ev)
