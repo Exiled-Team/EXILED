@@ -131,7 +131,7 @@ namespace Exiled.API.Enums
         MovementBoost,
 
         /// <summary>
-        /// Reduces the sevarity of negative effects.
+        /// Reduces the severity of negative effects.
         /// </summary>
         RainbowTaste,
 
@@ -146,7 +146,7 @@ namespace Exiled.API.Enums
         Stained,
 
         /// <summary>
-        /// Causes the player to become completely immune to certain negative status effects.
+        /// Causes the player to become gain immunity to certain negative status effects.
         /// </summary>
         Vitality,
 
@@ -176,7 +176,7 @@ namespace Exiled.API.Enums
         SoundtrackMute,
 
         /// <summary>
-        /// Protects player's from enemy damage if the config is enabled.
+        /// Protects players from enemy damage if the config is enabled.
         /// </summary>
         SpawnProtected,
 
@@ -196,7 +196,7 @@ namespace Exiled.API.Enums
         Scanned,
 
         /// <summary>
-        /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed, the amount of damage recieved goes up the longer the effect is applied.
+        /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed. The amount of damage recieved goes up the longer the effect is applied.
         /// </summary>
         PocketCorroding,
     }

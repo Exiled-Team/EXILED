@@ -13,7 +13,7 @@ namespace Exiled.CreditTags.Enums
     public enum RankType
     {
         /// <summary>
-        /// No EXILED Roles.
+        /// No EXILED roles.
         /// </summary>
         None,
 

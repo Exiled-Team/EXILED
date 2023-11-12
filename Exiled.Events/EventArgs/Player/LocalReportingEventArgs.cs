@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the reported.
+        ///     Gets the reported player.
         /// </summary>
         public Player Target { get; }
 

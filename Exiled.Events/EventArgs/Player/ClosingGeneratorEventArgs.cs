@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs.Player
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the generator door that is opening.
+        ///     Gets the generator that is opening.
         /// </summary>
         public Generator Generator { get; }
 
