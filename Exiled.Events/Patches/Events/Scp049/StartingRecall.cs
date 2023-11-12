@@ -50,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                 // true
                 new(OpCodes.Ldc_I4_1),
 
-                // StartingRecallEventArgs ev = new StartingRecallEventArgsMod(target, player, doll, true);
+                // StartingRecallEventArgs ev = new StartingRecallEventArgs(player, doll, true);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingRecallEventArgs))[0]),
                 new(OpCodes.Dup),
 
