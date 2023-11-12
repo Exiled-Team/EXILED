@@ -115,6 +115,7 @@ namespace Exiled.API.Features
             DictionaryPool<string, object>.Pool.Return(SessionVariables);
             DictionaryPool<RoleTypeId, float>.Pool.Return(FriendlyFireMultiplier);
             DictionaryPool<string, Dictionary<RoleTypeId, float>>.Pool.Return(CustomRoleFriendlyFireMultiplier);
+            ListPool<string>.Pool.Return(RAEmojies);
         }
 
         /// <summary>
@@ -145,6 +146,11 @@ namespace Exiled.API.Features
         /// </summary>
         /// <remarks> Consider adding this as object, Dict so that CustomRoles, and Strings can be parsed. </remarks>
         public Dictionary<string, Dictionary<RoleTypeId, float>> CustomRoleFriendlyFireMultiplier { get; set; } = DictionaryPool<string, Dictionary<RoleTypeId, float>>.Pool.Get();
+
+        /// <summary>
+        /// Gets or sets Remote Admin emojies.
+        /// </summary>
+        public List<string> RAEmojies { get; set; } = ListPool<string>.Pool.Get();
 
         /// <summary>
         /// Gets or sets a unique custom role that does not adbide to base game for this player. Used in conjunction with <see cref="CustomRoleFriendlyFireMultiplier"/>.
@@ -2705,6 +2711,42 @@ namespace Exiled.API.Features
 
             result = default;
             return false;
+        }
+
+        /// <summary>
+        /// Adds Remote Admin emoji.
+        /// </summary>
+        /// <param name="emoji">Emoji to show.</param>
+        /// <param name="hexColor">Emoji hexemal color.</param>
+        /// <returns>Whether it was successful to convert hex to <see cref="Color"/>.</returns>
+        public bool AddRAEmoji(string emoji, string hexColor)
+        {
+            if (!ColorUtility.TryParseHtmlString(hexColor, out Color color))
+                return false;
+
+            AddRAEmoji(emoji, color);
+            return true;
+        }
+
+        /// <summary>
+        /// Adds Remote Admin emoji.
+        /// </summary>
+        /// <param name="emoji">Emoji to show.</param>
+        /// <param name="color">Emoji color.</param>
+        public void AddRAEmoji(string emoji, Color color) => RAEmojies.Add($"<color={color.ToHex()}>{emoji}</color>");
+
+        /// <summary>
+        /// Removes Remote Admin emoji.
+        /// </summary>
+        /// <param name="emoji">Emoji to remove.</param>
+        /// <returns>Emoji successfully removed or not.</returns>
+        public bool RemoveRAEmoji(string emoji)
+        {
+            if (RAEmojies.Remove(emoji))
+                return true;
+
+            List<string> emojies = RAEmojies.Where(current => current.Contains(emoji)).ToList();
+            return emojies.Count == 1 && RAEmojies.Remove(emojies.FirstOrDefault());
         }
 
         /// <summary>
