@@ -16,7 +16,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Exiled.Events.EventArgs.Scp079;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp079;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using static HarmonyLib.AccessTools;
 
@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 {
                     // this.Owner
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ScpStandardSubroutine<Scp079Role>), nameof(ScpStandardSubroutine<Scp079Role>.Owner))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StandardSubroutine<Scp079Role>), nameof(StandardSubroutine<Scp079Role>.Owner))),
 
                     // this._roomController.Room
                     new(OpCodes.Ldarg_0),
