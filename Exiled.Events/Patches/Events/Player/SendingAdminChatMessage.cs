@@ -66,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (ev.IsAllowed)
                     //    goto allowLabel;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SendingAdminChatMessageEventsArgs), nameof(SendingAdminChatMessageEventsArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, allowLabel),
+                    new(OpCodes.Brtrue, allowLabel),
 
                     // IsNotAllowedMessaqe(ev.Player);
                     // return;
