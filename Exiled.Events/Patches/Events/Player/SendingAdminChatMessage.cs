@@ -54,7 +54,10 @@ namespace Exiled.Events.Patches.Events.Player
                     // message
                     new(OpCodes.Ldarg_0),
 
-                    // SearchingPickupEventArgs ev = new(Player, ItemPickupBase, SearchSession, SearchCompletor, float);
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
+                    // SearchingPickupEventArgs ev = new(Player, string, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SendingAdminChatMessageEventsArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
@@ -66,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (ev.IsAllowed)
                     //    goto allowLabel;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SendingAdminChatMessageEventsArgs), nameof(SendingAdminChatMessageEventsArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, allowLabel),
+                    new(OpCodes.Brtrue_S, allowLabel),
 
                     // IsNotAllowedMessaqe(ev.Player);
                     // return;
