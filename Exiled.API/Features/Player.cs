@@ -560,6 +560,7 @@ namespace Exiled.API.Features
         /// <br /><see cref="RoleTypeId.Scp096"/> = <see cref="Scp096Role"/>.
         /// <br /><see cref="RoleTypeId.Scp106"/> = <see cref="Scp106Role"/>.
         /// <br /><see cref="RoleTypeId.Scp173"/> = <see cref="Scp173Role"/>.
+        /// <br /><see cref="RoleTypeId.Scp3114"/> = <see cref="Scp3114Role"/>.
         /// <br /><see cref="RoleTypeId.Scp939"/> = <see cref="Scp939Role"/>.
         /// <br />If not listed above, the type of Role will be <see cref="HumanRole"/>.
         /// </para>

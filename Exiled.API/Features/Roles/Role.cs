@@ -29,6 +29,7 @@ namespace Exiled.API.Features.Roles
     using Scp096GameRole = PlayerRoles.PlayableScps.Scp096.Scp096Role;
     using Scp106GameRole = PlayerRoles.PlayableScps.Scp106.Scp106Role;
     using Scp173GameRole = PlayerRoles.PlayableScps.Scp173.Scp173Role;
+    using Scp3114GameRole = PlayerRoles.PlayableScps.Scp3114.Scp3114Role;
     using Scp939GameRole = PlayerRoles.PlayableScps.Scp939.Scp939Role;
     using SpectatorGameRole = PlayerRoles.Spectating.SpectatorRole;
 
@@ -222,6 +223,7 @@ namespace Exiled.API.Features.Roles
             Scp096GameRole scp096Role => new Scp096Role(scp096Role),
             Scp106GameRole scp106Role => new Scp106Role(scp106Role),
             Scp173GameRole scp173Role => new Scp173Role(scp173Role),
+            Scp3114GameRole scp3114Role => new Scp3114Role(scp3114Role),
             Scp939GameRole scp939Role => new Scp939Role(scp939Role),
             OverwatchGameRole overwatchRole => new OverwatchRole(overwatchRole),
             SpectatorGameRole spectatorRole => new SpectatorRole(spectatorRole),
