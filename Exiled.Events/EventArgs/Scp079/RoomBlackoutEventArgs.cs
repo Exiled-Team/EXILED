@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public RoomBlackoutEventArgs(ReferenceHub player, RoomIdentifier roomIdentifier, float auxiliaryPowerCost, float blackoutduration, float cooldown, bool isAllowed)
         {
             Player = Player.Get(player);
-            Scp079 = Player.Role.As<Scp079Role>();
+            Scp079 = Player.Role.As<API.Features.Roles.Scp079Role>();
             Room = Room.Get(roomIdentifier);
             AuxiliaryPowerCost = auxiliaryPowerCost;
             BlackoutDuration = blackoutduration;
@@ -56,7 +56,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public Player Player { get; }
 
         /// <inheritdoc/>
-        public Scp079Role Scp079 { get; }
+        public API.Features.Roles.Scp079Role Scp079 { get; }
 
         /// <summary>
         ///     Gets the room that will be locked down.

@@ -20,23 +20,22 @@ namespace Exiled.Events.EventArgs.Scp049
         /// Initializes a new instance of the <see cref="SendingCallEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="duration"><inheritdoc cref="Duration"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public SendingCallEventArgs(Player player, float duration, bool isAllowed = true)
+        public SendingCallEventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
             Scp049 = Player.Role.As<Scp049Role>();
-            Duration = duration;
+            Duration = (float)Scp049.CallAbilityBaseCooldown;
             IsAllowed = isAllowed;
         }
+
+        /// <inheritdoc/>
+        public Scp049Role Scp049 { get; }
 
         /// <summary>
         /// Gets the player who is controlling SCP-049.
         /// </summary>
         public Player Player { get; }
-
-        /// <inheritdoc/>
-        public Scp049Role Scp049 { get; }
 
         /// <summary>
         /// Gets or sets the duration of the Call Ability.
