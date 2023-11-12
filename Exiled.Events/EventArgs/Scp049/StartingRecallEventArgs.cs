@@ -35,10 +35,13 @@ namespace Exiled.Events.EventArgs.Scp049
         {
             Target = target;
             Player = scp049;
-            Scp049 = scp049.Role.As<Scp049Role>();
+            Scp049 = Player.Role.As<Scp049Role>();
             Ragdoll = ragdoll;
             IsAllowed = isAllowed;
         }
+
+        /// <inheritdoc/>
+        public Scp049Role Scp049 { get; }
 
         /// <summary>
         ///     Gets the player who's getting revived.
@@ -54,9 +57,6 @@ namespace Exiled.Events.EventArgs.Scp049
         ///     Gets the player who is controlling SCP-049.
         /// </summary>
         public Player Player { get; }
-
-        /// <inheritdoc/>
-        public Scp049Role Scp049 { get; }
 
         /// <summary>
         ///     Gets the Ragdoll who's getting revived.

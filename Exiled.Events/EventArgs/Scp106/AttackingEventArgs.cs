@@ -25,7 +25,7 @@ namespace Exiled.Events.EventArgs.Scp106
         public AttackingEventArgs(Player player, Player target, bool isAllowed = true)
         {
             Player = player;
-            Scp106 = Player.Role.As<Scp106Role>();
+            Scp106 = player.Role.As<Scp106Role>();
             Target = target;
             IsAllowed = isAllowed;
         }
