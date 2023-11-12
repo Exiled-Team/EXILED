@@ -21,9 +21,6 @@ namespace Exiled.Installer
         /// </summary>
         public static readonly RootCommand RootCommand = new()
         {
-            /// <summary>
-            /// Looks for the path of the SL Server install.
-            /// </summary>
             new Option<DirectoryInfo?>(
                 new[] { "-p", "--path" },
                 (parsed) =>
