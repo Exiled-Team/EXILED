@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="HurtingEventArgs.cs" company="Exiled Team">
+// <copyright file="HurtEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -18,10 +18,10 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player gets damaged.
     /// </summary>
-    public class HurtingEventArgs : IAttackerEvent, IDeniableEvent
+    public class HurtEventArgs : IAttackerEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="HurtingEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="HurtEventArgs" /> class.
         /// </summary>
         /// <param name="target">
         ///     <inheritdoc cref="Player" />
@@ -29,12 +29,15 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="damageHandler">
         ///     <inheritdoc cref="DamageHandler" />
         /// </param>
-        public HurtingEventArgs(Player target, DamageHandlerBase damageHandler)
+        /// <param name="handlerOutput">
+        ///     <inheritdoc cref="HandlerOutput" />
+        /// </param>
+        public HurtEventArgs(Player target, DamageHandlerBase damageHandler, DamageHandlerBase.HandlerOutput handlerOutput)
         {
             DamageHandler = new CustomDamageHandler(target, damageHandler);
-
             Attacker = DamageHandler.BaseIs(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
             Player = target;
+            HandlerOutput = handlerOutput;
         }
 
         /// <inheritdoc/>
@@ -44,18 +47,16 @@ namespace Exiled.Events.EventArgs.Player
         public Player Attacker { get; }
 
         /// <summary>
-        ///     Gets or sets the amount of inflicted damage.
+        ///     Gets the amount of inflicted damage.
         /// </summary>
-        public float Amount
-        {
-            get => DamageHandler.Damage;
-            set => DamageHandler.Damage = value;
-        }
+        public float Amount => DamageHandler.Damage;
+
+        /// <summary>
+        ///     Gets or sets the action than will be made on the player.
+        /// </summary>
+        public DamageHandlerBase.HandlerOutput HandlerOutput { get; set; }
 
         /// <inheritdoc/>
         public CustomDamageHandler DamageHandler { get; set; }
-
-        /// <inheritdoc/>
-        public bool IsAllowed { get; set; } = true;
     }
 }
