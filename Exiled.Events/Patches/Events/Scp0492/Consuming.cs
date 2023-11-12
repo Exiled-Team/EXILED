@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.Events.Scp0492
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using static HarmonyLib.AccessTools;
 
@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Scp0492
             {
                 // this.Owner
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ScpStandardSubroutine<ZombieRole>), nameof(ScpStandardSubroutine<ZombieRole>.Owner))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(StandardSubroutine<ZombieRole>), nameof(StandardSubroutine<ZombieRole>.Owner))),
 
                 // radgoll
                 new(OpCodes.Ldarg_1),
