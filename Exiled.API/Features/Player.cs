@@ -87,6 +87,8 @@ namespace Exiled.API.Features
         private CustomHealthStat healthStat;
         private Role role;
 
+        private bool isUsingStamina = true;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
@@ -954,6 +956,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the stamina usage multiplier.
+        /// </summary>
+        public float StaminaUsageMultiplier { get; set; } = 1f;
+
+        /// <summary>
+        /// Gets or sets the stamina regen multiplier.
+        /// </summary>
+        public float StaminaRegenMultiplier { get; set; } = 1f;
+
+        /// <summary>
         /// Gets a value indicating whether or not the staff bypass is enabled.
         /// </summary>
         public bool IsStaffBypassEnabled => ReferenceHub.authManager.BypassBansFlagSet;
@@ -1068,7 +1080,16 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether or not the player should use stamina system.
         /// </summary>
-        public bool IsUsingStamina { get; set; } = true;
+        public bool IsUsingStamina
+        {
+            get => isUsingStamina;
+            set
+            {
+                if (!value)
+                    ResetStamina();
+                isUsingStamina = value;
+            }
+        }
 
         /// <summary>
         /// Gets the player's ping.
@@ -1982,7 +2003,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Resets the <see cref="Player"/>'s stamina.
         /// </summary>
-        public void ResetStamina() => Stamina = StaminaStat.MaxValue;
+        /// <param name="multipliers">Reset <see cref="StaminaUsageMultiplier"/> and <see cref="StaminaRegenMultiplier"/> also.</param>
+        public void ResetStamina(bool multipliers = false)
+        {
+            Stamina = StaminaStat.MaxValue;
+
+            if (!multipliers)
+                return;
+
+            StaminaUsageMultiplier = 1f;
+            StaminaRegenMultiplier = 1f;
+        }
 
         /// <summary>
         /// Gets a user's SCP preference.
