@@ -87,8 +87,6 @@ namespace Exiled.API.Features
         private CustomHealthStat healthStat;
         private Role role;
 
-        private bool isUsingStamina = true;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
@@ -956,14 +954,30 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the stamina usage multiplier.
+        /// Gets or sets the stamina usage multiplier for current live.
         /// </summary>
-        public float StaminaUsageMultiplier { get; set; } = 1f;
+        public float StaminaUsageMultiplier
+        {
+            get => Role is FpcRole fpcRole ? fpcRole.StaminaUsageMultiplier : 1f;
+            set
+            {
+                if (Role is FpcRole fpcRole)
+                    fpcRole.StaminaUsageMultiplier = value;
+            }
+        }
 
         /// <summary>
-        /// Gets or sets the stamina regen multiplier.
+        /// Gets or sets the stamina regen multiplier for current live.
         /// </summary>
-        public float StaminaRegenMultiplier { get; set; } = 1f;
+        public float StaminaRegenMultiplier
+        {
+            get => Role is FpcRole fpcRole ? fpcRole.StaminaRegenMultiplier : 1f;
+            set
+            {
+                if (Role is FpcRole fpcRole)
+                    fpcRole.StaminaRegenMultiplier = value;
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not the staff bypass is enabled.
@@ -1078,16 +1092,15 @@ namespace Exiled.API.Features
         public bool IsInPocketDimension => CurrentRoom?.Type is RoomType.Pocket;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player should use stamina system.
+        /// Gets or sets a value indicating whether or not the player should use stamina system for current live.
         /// </summary>
         public bool IsUsingStamina
         {
-            get => isUsingStamina;
+            get => Role is FpcRole fpcRole && fpcRole.IsUsingStamina;
             set
             {
-                if (!value)
-                    ResetStamina();
-                isUsingStamina = value;
+                if (Role is FpcRole fpcRole)
+                    fpcRole.IsUsingStamina = value;
             }
         }
 
