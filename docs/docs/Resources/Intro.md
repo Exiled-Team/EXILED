@@ -34,7 +34,7 @@ sidebar_position: 1
 
 <details><summary> <b>Roles</b></summary>
 
-```md title="Latest Updated: 13.3.3.1"
+```md title="Latest Updated: 13.3.0.1"
 | Id  | RoleTypeId     | Team             | Side             | LeadingTeam     |
 |-----|----------------|------------------|------------------|-----------------|
 | -1  | None           | Dead             | None             | Draw            |
@@ -70,7 +70,7 @@ sidebar_position: 1
 
 <details><summary> <b>Items</b></summary>
 
-```md  title="Latest Updated: 13.3.3.1"
+```md  title="Latest Updated: 13.3.0.1"
 [-1] None 
 [0] KeycardJanitor 
 [1] KeycardScientist 
@@ -465,7 +465,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Structures</b></summary>
 
-```md title="Latest Updated: 13.3.3.1"
+```md title="Latest Updated: 13.3.0.1"
 [0] StandardLocker 
 [1] LargeGunLocker 
 [2] ScpPedestal 
@@ -507,7 +507,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Intercom States</b></summary>
 
-```md title="Latest Updated: 13.3.3.1"
+```md title="Latest Updated: 13.3.0.1"
 [0] Ready 
 [1] Starting 
 [2] InUse 
@@ -521,7 +521,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>BroadcastFlags</b></summary>
 
-```md title="Latest Updated: 13.3.3.1"
+```md title="Latest Updated: 13.3.0.1"
 [0] Normal 
 [1] Truncated 
 [2] AdminChat 
