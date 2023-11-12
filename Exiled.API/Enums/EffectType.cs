@@ -216,7 +216,7 @@ namespace Exiled.API.Enums
         Strangled,
 
         /// <summary>
-        /// Allows you to bypass doors.
+        /// Makes the player nearly invisible, and allows them to pass through doors.
         /// </summary>
         Ghostly,
     }
