@@ -196,7 +196,7 @@ namespace Exiled.API.Enums
         Scanned,
 
         /// <summary>
-        /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed. The amount of damage recieved goes up the longer the effect is applied.
+        /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed. The amount of damage recieved increases the longer the effect is applied.
         /// </summary>
         PocketCorroding,
     }
