@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public ChangingSpeakerStatusEventArgs(Player player, bool isAllowed)
         {
             Player = player;
-            Scp079 = Player.Role.As<Scp079Role>();
+            Scp079 = player.Role.As<Scp079Role>();
             Room = Room.Get(Scp079.Speaker.Room);
             IsAllowed = isAllowed;
         }
