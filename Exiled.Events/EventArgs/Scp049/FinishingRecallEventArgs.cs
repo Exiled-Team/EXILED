@@ -34,20 +34,20 @@ namespace Exiled.Events.EventArgs.Scp049
         /// </param>
         public FinishingRecallEventArgs(Player target, Player scp049, BasicRagdoll ragdoll, bool isAllowed = true)
         {
-            Target = target;
             Player = scp049;
             Scp049 = Player.Role.As<Scp049Role>();
+            Target = target;
             Ragdoll = Ragdoll.Get(ragdoll);
             IsAllowed = isAllowed;
         }
+
+        /// <inheritdoc/>
+        public Scp049Role Scp049 { get; }
 
         /// <summary>
         ///     Gets the player who is controlling SCP-049.
         /// </summary>
         public Player Player { get; }
-
-        /// <inheritdoc/>
-        public Scp049Role Scp049 { get; }
 
         /// <summary>
         ///     Gets the player who's getting recalled.
