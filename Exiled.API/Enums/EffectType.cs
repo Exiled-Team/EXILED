@@ -218,6 +218,6 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Allows you to bypass doors.
         /// </summary>
-        Ghoslty,
+        Ghostly,
     }
 }
