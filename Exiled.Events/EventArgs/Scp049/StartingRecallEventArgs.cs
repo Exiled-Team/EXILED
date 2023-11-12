@@ -31,7 +31,7 @@ namespace Exiled.Events.EventArgs.Scp049
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public StartingRecallEventArgsMod(Player player, Ragdoll ragdoll, bool isAllowed = true)
+        public StartingRecallEventArgs(Player player, Ragdoll ragdoll, bool isAllowed = true)
         {
             Ragdoll = ragdoll;
             Target = Ragdoll.Owner;
