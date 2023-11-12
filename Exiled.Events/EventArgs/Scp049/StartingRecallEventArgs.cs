@@ -31,15 +31,15 @@ namespace Exiled.Events.EventArgs.Scp049
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public StartingRecallEventArgs(Player target, Player scp049, Ragdoll ragdoll, bool isAllowed = true)
+        public StartingRecallEventArgs(Player player, Ragdoll ragdoll, bool isAllowed = true)
         {
-            Target = target;
-            Player = scp049;
-            Scp049 = scp049.Role.As<Scp049Role>();
             Ragdoll = ragdoll;
+            Target = Ragdoll.Owner;
+            
+			Scp049 = player.Role.As<Scp049Role>();
+            Player = player;
             IsAllowed = isAllowed;
         }
-
         /// <summary>
         ///     Gets the player who's getting recalled.
         /// </summary>
