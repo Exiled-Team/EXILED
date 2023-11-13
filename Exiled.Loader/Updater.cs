@@ -116,6 +116,7 @@ namespace Exiled.Loader
             if (Busy = FindUpdate(client, !File.Exists(Path.Combine(Paths.Dependencies, "Exiled.API.dll")), out NewVersion newVersion))
                 Update(client, newVersion);
         }
+
         /// <summary>
         /// Creates a HTTP Client, and checks at the Exiled-Team GitHub repository.
         /// </summary>
@@ -131,6 +132,7 @@ namespace Exiled.Loader
 
             return client;
         }
+
         /// <summary>
         /// Finds an update using the client.
         /// </summary>
@@ -280,6 +282,7 @@ namespace Exiled.Loader
 
             return arr;
         }
+
         /// <summary>
         /// Is able to find the release specificed.
         /// </summary>
@@ -308,6 +311,7 @@ namespace Exiled.Loader
             release = default;
             return false;
         }
+
         /// <summary>
         /// Finds the specified asset.
         /// </summary>

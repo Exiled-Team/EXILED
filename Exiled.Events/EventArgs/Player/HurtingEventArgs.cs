@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs.Player
             Attacker = DamageHandler.BaseIs(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
             Player = target;
         }
-        
+
         /// <inheritdoc/>
         public Player Player { get; }
 
