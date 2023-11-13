@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using PlayerRoles.Ragdolls;
+
 namespace Exiled.Events.Patches.Events.Scp049
 {
     using System.Collections.Generic;
