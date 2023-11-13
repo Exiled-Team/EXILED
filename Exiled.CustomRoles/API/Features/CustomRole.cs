@@ -31,6 +31,7 @@ namespace Exiled.CustomRoles.API.Features
     using MEC;
 
     using PlayerRoles;
+    using PlayerRoles.Ragdolls;
 
     using UnityEngine;
 
