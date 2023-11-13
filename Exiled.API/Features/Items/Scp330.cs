@@ -8,15 +8,14 @@
 namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
-
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp330;
-
     using UnityEngine;
 
     using Object = UnityEngine.Object;
@@ -86,6 +85,22 @@ namespace Exiled.API.Features.Items
         /// Gets or sets the exposed type. When set to a candy color, the bag will appear as that candy when dropped with the <see cref="Spawn"/> method. Setting it to <see cref="CandyKindID.None"/> results in it looking like a bag.
         /// </summary>
         public CandyKindID ExposedType { get; set; } = CandyKindID.None;
+
+        /// <summary>
+        /// Gets or sets the Id of current candy.
+        /// </summary>
+        public int SelectedCandyId
+        {
+            get => Base.SelectedCandyId;
+            set => Base.SelectCandy(value);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not any candy is selected.
+        /// </summary>
+        /// <seealso cref="SelectedCandyId"/>
+        /// <seealso cref="SelectCandy"/>
+        public bool IsCandySelected => Base.IsCandySelected;
 
         /// <summary>
         /// Adds a specific candy to the bag.
@@ -231,6 +246,20 @@ namespace Exiled.API.Features.Items
             }
 
             return pickups;
+        }
+
+        /// <summary>
+        /// Selects a candy from a bag.
+        /// </summary>
+        /// <param name="id"><see cref="CandyKindID"/> to select.</param>
+        /// <returns><see langword="true"/> if candy presented in <see cref="Candies"/> and can be selected. Otherwise, <see langword="false"/>.</returns>
+        public bool SelectCandy(CandyKindID id)
+        {
+            if (Candies.All(x => x != id))
+                return false;
+
+            Base.SelectCandy(Candies.ToList().IndexOf(id));
+            return true;
         }
 
         /// <summary>

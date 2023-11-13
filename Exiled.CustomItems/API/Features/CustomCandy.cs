@@ -20,12 +20,14 @@ namespace Exiled.CustomItems.API.Features
     using MEC;
     using UnityEngine;
 
+    using Scp330Pickup = Exiled.API.Features.Pickups.Scp330Pickup;
+
     /// <summary>
     /// THe custom candy base class.
     /// </summary>
     public abstract class CustomCandy : CustomItem
     {
-        private readonly Dictionary<ushort, List<int>> trackedSerials = new();
+        private static new readonly Dictionary<ushort, Dictionary<int, CustomCandy>> TrackedSerials = new();
 
         private float weight = 100;
 
@@ -61,38 +63,55 @@ namespace Exiled.CustomItems.API.Features
             set => throw new NotSupportedException("Cannot set a SpawnProperties of a CustomCandy.");
         }
 
+        /// <inheritdoc/>
+        /// <exception cref="NotSupportedException">Throws when you try to access getter or setter.</exception>
+        public override Vector3 Scale
+        {
+            get => throw new NotSupportedException("Cannot get a Scale of a CustomCandy.");
+            set => throw new NotSupportedException("Cannot set a Scale of a CustomCandy.");
+        }
+
         /// <summary>
         /// Gets or sets <see cref="CandyKindID"/> of custom candy.
         /// </summary>
         public abstract CandyKindID CandyType { get; set; }
 
         /// <inheritdoc/>
-        public override bool Check(Item? item) => item != null && trackedSerials.ContainsKey(item!.Serial);
+        public override bool Check(Item? item) => item != null && TrackedSerials.ContainsKey(item.Serial);
 
         /// <inheritdoc/>
-        public override bool Check(Pickup? pickup) => pickup != null && trackedSerials.ContainsKey(pickup!.Serial);
+        public override bool Check(Pickup? pickup) => pickup != null && TrackedSerials.ContainsKey(pickup.Serial);
 
         /// <inheritdoc/>
-        public override void Give(Player player, Pickup pickup, bool displayMessage = true)
+        public override void Give(Player player, Item item, bool displayMessage = true)
         {
-            Give(player, displayMessage);
-
-            if (pickup.Is(out Exiled.API.Features.Pickups.Scp330Pickup scp330Pickup))
+            try
             {
-                foreach (var candy in scp330Pickup.Candies)
+                if (!item.Is(out Scp330 scp330))
+                    return;
+
+                player.TryAddCandy(CandyType);
+
+                foreach (var candy in scp330.Candies)
                     player.TryAddCandy(candy);
+
+                Timing.CallDelayed(0.05f, () => OnAcquired(player, item, displayMessage));
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{nameof(Give)}: {e}");
             }
         }
 
         /// <inheritdoc/>
-        public override Pickup? Spawn(Vector3 position, Item item, Player? previousOwner = null)
+        public override Pickup Spawn(Vector3 position, Item item, Player? previousOwner = null)
         {
-            Exiled.API.Features.Pickups.Scp330Pickup scp330Pickup = item.CreatePickup(position, spawn: false).As<Exiled.API.Features.Pickups.Scp330Pickup>();
+            Scp330Pickup scp330Pickup = item.CreatePickup(position, spawn: false).As<Scp330Pickup>();
 
             if (previousOwner != null)
                 scp330Pickup.PreviousOwner = previousOwner;
 
-            trackedSerials.Add(scp330Pickup.Serial, new List<int> { 0 });
+            TrackedSerials.Add(scp330Pickup.Serial, new Dictionary<int, CustomCandy> { [0] = this });
 
             scp330Pickup.Candies.Add(CandyType);
             scp330Pickup.Spawn();
@@ -106,7 +125,8 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="scp330">Bag to check.</param>
         /// <param name="candyKindID">Candy type to find.</param>
         /// <returns><see langword="true"/> if any candy from <see cref="Scp330"/> is custom. Otherwise, <see langword="false"/>.</returns>
-        public bool Check(Scp330? scp330, CandyKindID candyKindID) => scp330 != null && trackedSerials.TryGetValue(scp330.Serial, out List<int> candies) && candies.Contains(scp330.Candies.ToList().IndexOf(candyKindID));
+        public bool Check(Scp330? scp330, CandyKindID candyKindID) => scp330 != null && TrackedSerials.TryGetValue(scp330.Serial, out Dictionary<int, CustomCandy> candies)
+                                                                                     && candies.TryGetValue(scp330.Candies.ToList().IndexOf(candyKindID), out CustomCandy candy) && candy == this;
 
         /// <summary>
         /// Applies an effects to player who eaten a <see cref="CustomCandy"/>.
@@ -156,10 +176,10 @@ namespace Exiled.CustomItems.API.Features
                 {
                     if (ev.Player.TryGetItem(ItemType.SCP330, out Item item) && item.Is(out Scp330 scp330))
                     {
-                        if (!trackedSerials.ContainsKey(scp330.Serial))
-                            trackedSerials.Add(scp330.Serial, new List<int>() { scp330.Candies.Count - 1 });
+                        if (!TrackedSerials.ContainsKey(scp330.Serial))
+                            TrackedSerials.Add(scp330.Serial, new Dictionary<int, CustomCandy> { [scp330.Candies.Count - 1] = this });
                         else
-                            trackedSerials[scp330.Serial].Add(scp330.Candies.Count - 1);
+                            TrackedSerials[scp330.Serial].Add(scp330.Candies.Count - 1, this);
 
                         OnAcquired(ev.Player, scp330, ev.Candy, true);
                     }
@@ -169,10 +189,10 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalUsingCandy(EatingScp330EventArgs ev)
         {
-            if (Check(ev.Scp330Bag, ev.Candy.Kind))
+            if (Check(ev.Scp330Bag, ev.Candy.Kind) && TrackedSerials.TryGetValue(ev.Scp330Bag.Serial, out Dictionary<int, CustomCandy> ids) && ids.TryGetValue(ev.Scp330Bag.SelectedCandyId, out CustomCandy candy) && candy == this)
             {
                 ev.IsAllowed = false;
-                trackedSerials[ev.Scp330Bag.Serial].Remove(ev.Scp330Bag.Candies.ToList().IndexOf(ev.Candy.Kind));
+                TrackedSerials[ev.Scp330Bag.Serial].Remove(ev.Scp330Bag.SelectedCandyId);
                 ApplyEffect(ev.Player);
             }
         }
