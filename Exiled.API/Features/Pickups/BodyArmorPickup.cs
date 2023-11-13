@@ -81,16 +81,7 @@ namespace Exiled.API.Features.Pickups
         public int HelmetEfficacy
         {
             get => helmetEfficacy;
-            set
-            {
-                if (value is > 100 or < 0)
-                {
-                    Log.Warn($"{nameof(HelmetEfficacy)} Value of armor efficacy must be between 0 and 100.");
-                    value = Mathf.Clamp(value, 0, 100);
-                }
-
-                helmetEfficacy = value;
-            }
+            set => helmetEfficacy = value;
         }
 
         /// <summary>
@@ -99,29 +90,18 @@ namespace Exiled.API.Features.Pickups
         public int VestEfficacy
         {
             get => vestEfficacy;
-            set
-            {
-                if (value is > 101 or < 0)
-                {
-                    Log.Warn($"{nameof(VestEfficacy)} Value of armor efficacy must be between 0 and 100.");
-                    value = Mathf.Clamp(value, 0, 100);
-                }
-
-                vestEfficacy = value;
-            }
+            set => vestEfficacy = value;
         }
 
         /// <summary>
         /// Gets or sets how much faster stamina will drain when wearing this armor.
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 1 or above 2.</exception>
         public float StaminaUseMultiplier { get; set; }
 
         /// <summary>
         /// Gets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 0 or above 1.</exception>
-        public float MovementSpeedMultiplier { get; }
+        public float MovementSpeedMultiplier { get; private set; }
 
         /// <summary>
         /// Gets or sets the ammo limit of the wearer when using this armor.
@@ -151,6 +131,7 @@ namespace Exiled.API.Features.Pickups
                 StaminaUseMultiplier = armoritem.StaminaUseMultiplier;
                 AmmoLimits = armoritem.AmmoLimits;
                 CategoryLimits = armoritem.CategoryLimits;
+                MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
             }
         }
 
@@ -165,6 +146,7 @@ namespace Exiled.API.Features.Pickups
                 RemoveExcessOnDrop = !armoritem.DontRemoveExcessOnDrop;
                 AmmoLimits = armoritem.AmmoLimits.Select(limit => (ArmorAmmoLimit)limit);
                 CategoryLimits = armoritem.CategoryLimits;
+                MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
             }
         }
     }
