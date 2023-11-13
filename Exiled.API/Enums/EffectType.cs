@@ -212,7 +212,7 @@ namespace Exiled.API.Enums
         Marshmallow,
 
         /// <summary>
-        /// The effect that receive player when he getting attacked by SCP-3114 ability.
+        /// The effect that is given to the player when he getting attacked by SCP-3114's Strangle ability.
         /// </summary>
         Strangled,
 
