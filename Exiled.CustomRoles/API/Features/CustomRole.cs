@@ -546,6 +546,12 @@ namespace Exiled.CustomRoles.API.Features
         /// Handles setup of the role, including spawn location, inventory and registering event handlers and add FF rules.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to add the role to.</param>
+        public virtual void AddRole(Player player) => AddRole(player, false);
+
+        /// <summary>
+        /// Handles setup of the role, including spawn location, inventory and registering event handlers and add FF rules.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to add the role to.</param>
         /// <param name="skipRoleAssignment">Whether or not to skip the role assignment for this custom role.</param>
         public virtual void AddRole(Player player, bool skipRoleAssignment = false)
         {
