@@ -16,7 +16,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
-    using InventorySystem.Items.SwitchableLightSources;
+    using InventorySystem.Items.ToggleableLights;
 
     using static HarmonyLib.AccessTools;
 

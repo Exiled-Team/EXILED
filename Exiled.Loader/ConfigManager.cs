@@ -27,7 +27,7 @@ namespace Exiled.Loader
     public static class ConfigManager
     {
         /// <summary>
-        /// Loads all plugin configs.
+        /// Loads all the plugin configs.
         /// </summary>
         /// <param name="rawConfigs">The raw configs to be loaded.</param>
         /// <returns>Returns a dictionary of loaded configs.</returns>
@@ -66,7 +66,7 @@ namespace Exiled.Loader
         }
 
         /// <summary>
-        /// Loads the config of a plugin using the actual distribution.
+        /// Loads the config of a plugin using the distribution.
         /// </summary>
         /// <param name="plugin">The plugin which config will be loaded.</param>
         /// <param name="rawConfigs">The raw configs to detect if the plugin already has generated configs.</param>
@@ -141,7 +141,7 @@ namespace Exiled.Loader
         }
 
         /// <summary>
-        /// Reads, Loads and Saves plugin configs.
+        /// Reads, loads, and saves plugin configs.
         /// </summary>
         /// <returns>Returns a value indicating if the reloading process has been completed successfully or not.</returns>
         public static bool Reload() => Save(LoadSorted(Read()));

@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Scp173
     using PlayerRoles;
 
     using PlayerRoles.PlayableScps.Scp173;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using UnityEngine;
 
@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Scp173
                 {
                     // Player.Get(base.Role._lastOwner)
                     new CodeInstruction(OpCodes.Ldarg_0),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ScpSubroutineBase), nameof(ScpSubroutineBase.Role))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SubroutineBase), nameof(SubroutineBase.Role))),
                     new(OpCodes.Ldfld, Field(typeof(PlayerRoleBase), nameof(PlayerRoleBase._lastOwner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 

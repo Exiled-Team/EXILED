@@ -21,7 +21,7 @@ namespace Exiled.Events.Commands.PluginManager
     using RemoteAdmin;
 
     /// <summary>
-    /// The command to show all plugins.
+    /// The command to show all the patches done by plugins.
     /// </summary>
     public sealed class Patches : ICommand
     {

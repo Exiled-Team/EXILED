@@ -223,6 +223,7 @@ namespace Exiled.API.Features.Roles
             Scp096GameRole scp096Role => new Scp096Role(scp096Role),
             Scp106GameRole scp106Role => new Scp106Role(scp106Role),
             Scp173GameRole scp173Role => new Scp173Role(scp173Role),
+            Scp3114GameRole scp3114Role => new Scp3114Role(scp3114Role),
             Scp939GameRole scp939Role => new Scp939Role(scp939Role),
             Scp3114GameRole scp3114Role => new Scp3114Role(scp3114Role),
             OverwatchGameRole overwatchRole => new OverwatchRole(overwatchRole),

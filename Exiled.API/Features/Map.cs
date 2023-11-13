@@ -189,7 +189,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="global::AmbientSoundPlayer"/>.
         /// </summary>
-        public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer != null ? ambientSoundPlayer : (ambientSoundPlayer = ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>());
+        public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer ??= ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>();
 
         /// <summary>
         /// Gets or sets a value indicating whether HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT.

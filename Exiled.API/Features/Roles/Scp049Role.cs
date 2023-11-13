@@ -11,15 +11,13 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using CustomPlayerEffects;
-
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp049;
-    using PlayerRoles.PlayableScps.Subroutines;
     using PlayerRoles.Ragdolls;
+    using PlayerRoles.Subroutines;
     using PlayerStatsSystem;
-
     using UnityEngine;
 
     using Scp049GameRole = PlayerRoles.PlayableScps.Scp049.Scp049Role;
@@ -62,7 +60,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets a list of players who will be turned away from SCP-049 Sense Ability.
+        /// Gets a list of players who are turned away from SCP-049 Sense Ability.
         /// </summary>
         public static HashSet<Player> TurnedPlayers { get; } = new(20);
 
@@ -96,7 +94,7 @@ namespace Exiled.API.Features.Roles
         public Scp049SenseAbility SenseAbility { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-049 is currently recalling a player.
+        /// Gets a value indicating whether or not SCP-049 is currently reviving a player.
         /// </summary>
         public bool IsRecalling => ResurrectAbility.IsInProgress;
 
@@ -173,7 +171,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets the amount of time before SCP-049 can use its Good Sense ability again.
+        /// Gets or sets the amount of time before SCP-049 can use its Good Sense of the Doctor ability again.
         /// </summary>
         public float GoodSenseCooldown
         {
@@ -252,9 +250,9 @@ namespace Exiled.API.Features.Roles
         {
             if (player is null)
                 return false;
-            player.ReferenceHub.transform.position = ResurrectAbility.ScpRole.FpcModule.Position;
+            player.ReferenceHub.transform.position = ResurrectAbility.CastRole.FpcModule.Position;
 
-            HumeShieldModuleBase humeShield = ResurrectAbility.ScpRole.HumeShieldModule;
+            HumeShieldModuleBase humeShield = ResurrectAbility.CastRole.HumeShieldModule;
             humeShield.HsCurrent = Mathf.Min(humeShield.HsCurrent + 100f, humeShield.HsMax);
 
             return Resurrect(Ragdoll.GetLast(player));

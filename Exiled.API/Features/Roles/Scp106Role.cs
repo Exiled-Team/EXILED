@@ -14,7 +14,7 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Scp106;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
     using PlayerStatsSystem;
 
     using UnityEngine;
@@ -111,7 +111,7 @@ namespace Exiled.API.Features.Roles
         public Scp106MovementModule MovementModule { get; }
 
         /// <summary>
-        /// Gets or sets SCP-106's Vigor.
+        /// Gets or sets SCP-106's Vigor Level.
         /// </summary>
         public float Vigor
         {
