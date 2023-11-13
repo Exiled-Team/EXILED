@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Enums
 {
+    using System;
+    
     using Exiled.API.Extensions;
 
     /// <summary>
@@ -199,5 +201,26 @@ namespace Exiled.API.Enums
         /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed. The amount of damage recieved increases the longer the effect is applied.
         /// </summary>
         PocketCorroding,
+
+        /// <summary>
+        /// Reduces walking sound by 10%.
+        /// </summary>
+        SilentWalk,
+
+        /// <summary>
+        /// Makes you a marshmallow guy.
+        /// </summary>
+        [Obsolete("Not functional in-game")]
+        Marshmallow,
+
+        /// <summary>
+        /// The effect that is given to the player when getting attacked by SCP-3114's Strangle ability.
+        /// </summary>
+        Strangled,
+
+        /// <summary>
+        /// Makes the player nearly invisible, and allows them to pass through doors.
+        /// </summary>
+        Ghostly,
     }
 }

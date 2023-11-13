@@ -12,11 +12,9 @@ namespace Exiled.API.Extensions
     using System.Linq;
 
     using CustomPlayerEffects;
-
     using Enums;
-
+    using InventorySystem.Items.MarshmallowMan;
     using InventorySystem.Items.Usables.Scp244.Hypothermia;
-
     using PlayerRoles.FirstPersonControl;
 
     /// <summary>
@@ -66,6 +64,10 @@ namespace Exiled.API.Extensions
             { EffectType.Traumatized, typeof(Traumatized) },
             { EffectType.AntiScp207, typeof(AntiScp207) },
             { EffectType.Scanned, typeof(Scanned) },
+            { EffectType.SilentWalk, typeof(SilentWalk) },
+            { EffectType.Marshmallow, typeof(MarshmallowEffect) },
+            { EffectType.Strangled, typeof(Strangled) },
+            { EffectType.Ghostly, typeof(Ghostly) },
         };
 
         /// <summary>
