@@ -17,6 +17,7 @@ namespace Exiled.API.Extensions
 
     using Features;
     using Features.Pools;
+    using Features.Roles;
 
     using InventorySystem.Items.Firearms;
 
@@ -222,6 +223,7 @@ namespace Exiled.API.Extensions
         /// <param name="type">Model type.</param>
         /// <param name="skipJump">Whether or not to skip the little jump that works around an invisibility issue.</param>
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
+        /// <seealso cref="FpcRole.FakeAppearance"/>
         public static void ChangeAppearance(this Player player, RoleTypeId type, bool skipJump = false, byte unitId = 0) => ChangeAppearance(player, type, Player.List.Where(x => x != player), skipJump, unitId);
 
         /// <summary>
@@ -233,6 +235,7 @@ namespace Exiled.API.Extensions
         /// <param name="playersToAffect">The players who should see the changed appearance.</param>
         /// <param name="skipJump">Whether or not to skip the little jump that works around an invisibility issue.</param>
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
+        /// <seealso cref="FpcRole.FakeAppearance"/>
         public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
         {
             if (!player.IsConnected || !RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))

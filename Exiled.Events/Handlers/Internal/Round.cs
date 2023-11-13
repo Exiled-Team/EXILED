@@ -64,6 +64,9 @@ namespace Exiled.Events.Handlers.Internal
         {
             if (!ev.Player.IsHost && ev.NewRole == RoleTypeId.Spectator && ev.Reason != API.Enums.SpawnReason.Destroyed && Events.Instance.Config.ShouldDropInventory)
                 ev.Player.Inventory.ServerDropEverything();
+
+            if (ev.Player.Role is FpcRole fpcRole)
+                fpcRole.FakeAppearance = RoleTypeId.None;
         }
 
         /// <inheritdoc cref="Scp049.OnActivatingSense(ActivatingSenseEventArgs)" />
@@ -81,6 +84,14 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnVerified(VerifiedEventArgs ev)
         {
             RoleAssigner.CheckLateJoin(ev.Player.ReferenceHub, ClientInstanceMode.ReadyClient);
+
+            foreach (API.Features.Player player in API.Features.Player.List)
+            {
+                if (player.Role is FpcRole fpcRole && fpcRole.FakeAppearance != RoleTypeId.None)
+                {
+                    player.ChangeAppearance(fpcRole.FakeAppearance, new[] { ev.Player });
+                }
+            }
         }
     }
 }
