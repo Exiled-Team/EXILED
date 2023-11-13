@@ -36,15 +36,11 @@ namespace Exiled.Events.EventArgs.Player
             Attacker = DamageHandler.BaseIs(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
             Player = target;
         }
-
-        /// <summary>
-        ///     Gets the target player, who is going to be hurt.
-        /// </summary>
+        
+        /// <inheritdoc/>
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets the attacker player.
-        /// </summary>
+        /// <inheritdoc/>
         public Player Attacker { get; }
 
         /// <summary>
@@ -56,14 +52,10 @@ namespace Exiled.Events.EventArgs.Player
             set => DamageHandler.Damage = value;
         }
 
-        /// <summary>
-        ///     Gets or sets the <see cref="CustomDamageHandler" /> for the event.
-        /// </summary>
+        /// <inheritdoc/>
         public CustomDamageHandler DamageHandler { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the player will be dealt damage.
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsAllowed { get; set; } = true;
     }
 }

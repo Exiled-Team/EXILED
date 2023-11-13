@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs.Item
         }
 
         /// <summary>
-        /// Gets the pickup that's interacting with the door.
+        /// Gets the item that's interacting with the door.
         /// </summary>
         public Pickup Pickup { get; }
 

@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs.Player
         public Door Door { get; }
 
         /// <summary>
-        ///     Gets or sets the Damage dealt to the door.
+        ///     Gets or sets the damage dealt to the door.
         /// </summary>
         public float Damage { get; set; }
 

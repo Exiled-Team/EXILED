@@ -35,7 +35,6 @@ namespace Exiled.Events.EventArgs.Scp049
 		{
 			Ragdoll = ragdoll;
 			Target = Ragdoll.Owner;
-			
 			Scp049 = player.Role.As<Scp049Role>();
 			Player = player;
 			IsAllowed = isAllowed;
@@ -63,4 +62,3 @@ namespace Exiled.Events.EventArgs.Scp049
 		/// </summary>
 		public Ragdoll Ragdoll { get; }
 	}
-}

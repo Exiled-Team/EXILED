@@ -21,12 +21,12 @@ namespace Exiled.Events.Handlers
     public static class Map
     {
         /// <summary>
-        /// Invoked before placing decals.
+        /// Invoked before placing bullet holes.
         /// </summary>
         public static Event<PlacingBulletHoleEventArgs> PlacingBulletHole { get; set; } = new();
 
         /// <summary>
-        /// Invoked before placing bloods.
+        /// Invoked before placing blood.
         /// </summary>
         public static Event<PlacingBloodEventArgs> PlacingBlood { get; set; } = new();
 
