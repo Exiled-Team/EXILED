@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public LockingDownEventArgs(Player player, RoomIdentifier roomIdentifier, float auxiliaryPowerCost)
         {
             Player = player;
-            Scp079 = Player.Role.As<Scp079Role>();
+            Scp079 = player.Role.As<Scp079Role>();
             Room = Room.Get(roomIdentifier);
             AuxiliaryPowerCost = auxiliaryPowerCost;
             IsAllowed = auxiliaryPowerCost <= Scp079.Energy;

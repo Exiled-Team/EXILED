@@ -11,15 +11,13 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using CustomPlayerEffects;
-
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp049;
-    using PlayerRoles.PlayableScps.Subroutines;
     using PlayerRoles.Ragdolls;
+    using PlayerRoles.Subroutines;
     using PlayerStatsSystem;
-
     using UnityEngine;
 
     using Scp049GameRole = PlayerRoles.PlayableScps.Scp049.Scp049Role;
@@ -62,7 +60,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets a list of players who will be turned away from SCP-049 Sense Ability.
+        /// Gets a list of players who are turned away from SCP-049 Sense Ability.
         /// </summary>
         public static HashSet<Player> TurnedPlayers { get; } = new(20);
 
@@ -96,7 +94,7 @@ namespace Exiled.API.Features.Roles
         public Scp049SenseAbility SenseAbility { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-049 is currently recalling a player.
+        /// Gets a value indicating whether or not SCP-049 is currently reviving a player.
         /// </summary>
         public bool IsRecalling => ResurrectAbility.IsInProgress;
 
@@ -120,6 +118,40 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public IEnumerable<Player> DeadZombies => Scp049ResurrectAbility.DeadZombies.Select(x => Player.Get(x));
 
+        // TODO: ReAdd Setter but before making an propper way to overwrite NW constant only when the propperty has been used
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+#pragma warning disable SA1202
+        /// <summary>
+        /// Gets or sets how mush time the Call Ability will be effective.
+        /// </summary>
+        internal double CallAbilityDuration { get; } = Scp049CallAbility.EffectDuration;
+
+        /// <summary>
+        /// Gets or sets the Cooldown of the Call Ability.
+        /// </summary>
+        internal double CallAbilityBaseCooldown { get; } = Scp049CallAbility.BaseCooldown;
+
+        /// <summary>
+        /// Gets or sets the Cooldown of the Sense Ability.
+        /// </summary>
+        internal double SenseAbilityBaseCooldown { get; } = Scp049SenseAbility.BaseCooldown;
+
+        /// <summary>
+        /// Gets or sets the Cooldown of the Sense Ability when you lost your target.
+        /// </summary>
+        internal double SenseAbilityReducedCooldown { get; } = Scp049SenseAbility.ReducedCooldown;
+
+        /// <summary>
+        /// Gets or sets the Cooldown of the Sense Ability when it's failed.
+        /// </summary>
+        internal double SenseAbilityDuration { get; } = Scp049SenseAbility.EffectDuration;
+
+        /// <summary>
+        /// Gets or sets how mush time the Sense Ability will be effective.
+        /// </summary>
+        internal double SenseAbilityFailCooldown { get; } = Scp049SenseAbility.AttemptFailCooldown;
+#pragma warning restore SA1623 // Property summary documentation should match accessors
+
         /// <summary>
         /// Gets all the resurrected players.
         /// </summary>
@@ -139,7 +171,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets the amount of time before SCP-049 can use its Good Sense ability again.
+        /// Gets or sets the amount of time before SCP-049 can use its Good Sense of the Doctor ability again.
         /// </summary>
         public float GoodSenseCooldown
         {
@@ -218,9 +250,9 @@ namespace Exiled.API.Features.Roles
         {
             if (player is null)
                 return false;
-            player.ReferenceHub.transform.position = ResurrectAbility.ScpRole.FpcModule.Position;
+            player.ReferenceHub.transform.position = ResurrectAbility.CastRole.FpcModule.Position;
 
-            HumeShieldModuleBase humeShield = ResurrectAbility.ScpRole.HumeShieldModule;
+            HumeShieldModuleBase humeShield = ResurrectAbility.CastRole.HumeShieldModule;
             humeShield.HsCurrent = Mathf.Min(humeShield.HsCurrent + 100f, humeShield.HsMax);
 
             return Resurrect(Ragdoll.GetLast(player));
@@ -287,7 +319,7 @@ namespace Exiled.API.Features.Roles
 
             if (SenseAbility.Target is null)
             {
-                SenseAbility.Cooldown.Trigger(Scp049SenseAbility.AttemptFailCooldown);
+                SenseAbility.Cooldown.Trigger(SenseAbilityFailCooldown);
                 SenseAbility.ServerSendRpc(true);
                 return;
             }
@@ -300,7 +332,7 @@ namespace Exiled.API.Features.Roles
                 if (!VisionInformation.GetVisionInformation(SenseAbility.Owner, SenseAbility.Owner.PlayerCameraReference, humanRole.CameraPosition, radius, SenseAbility._distanceThreshold).IsLooking)
                     return;
 
-                SenseAbility.Duration.Trigger(Scp049SenseAbility.ReducedCooldown);
+                SenseAbility.Duration.Trigger(SenseAbilityDuration);
                 SenseAbility.HasTarget = true;
                 SenseAbility.ServerSendRpc(true);
             }

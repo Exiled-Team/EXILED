@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public GainingExperienceEventArgs(Player player, Scp079HudTranslation gainType, int amount, RoleTypeId roleType, bool isAllowed = true)
         {
             Player = player;
-            Scp079 = Player.Role.As<Scp079Role>();
+            Scp079 = player.Role.As<API.Features.Roles.Scp079Role>();
             GainType = gainType;
             RoleType = roleType;
             Amount = amount;
@@ -74,6 +74,6 @@ namespace Exiled.Events.EventArgs.Scp079
         public Player Player { get; }
 
         /// <inheritdoc/>
-        public Scp079Role Scp079 { get; }
+        public API.Features.Roles.Scp079Role Scp079 { get; }
     }
 }

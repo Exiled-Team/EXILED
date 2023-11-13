@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the target player to be cuffed.
+        ///     Gets the player who is getting cuffed.
         /// </summary>
         public Player Target { get; }
 

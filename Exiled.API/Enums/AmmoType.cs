@@ -45,7 +45,8 @@ namespace Exiled.API.Enums
         Ammo12Gauge,
 
         /// <summary>
-        /// 44 caliber.
+        /// 44 Caliber Revolver Ammo
+        /// Used by <see cref="ItemType.GunRevolver"/>
         /// </summary>
         Ammo44Cal,
     }
