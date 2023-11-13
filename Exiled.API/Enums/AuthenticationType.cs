@@ -24,7 +24,7 @@ namespace Exiled.API.Enums
         Discord,
 
         /// <summary>
-        /// Indicates that the player has been authenticated as a Northwood staffer.
+        /// Indicates that the player has been authenticated as a Northwood staff member.
         /// </summary>
         Northwood,
 

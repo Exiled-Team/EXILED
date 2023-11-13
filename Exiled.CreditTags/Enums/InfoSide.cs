@@ -25,7 +25,7 @@ namespace Exiled.CreditTags.Enums
         FirstAvailable,
 
         /// <summary>
-        /// Includes both of them.
+        /// Includes both options.
         /// </summary>
         Both = Badge,
     }

@@ -24,7 +24,7 @@ namespace Exiled.API.Enums
         LightSource,
 
         /// <summary>
-        /// Primitive Object toy.
+        /// ShootingTarget toy.
         /// </summary>
         ShootingTarget,
     }

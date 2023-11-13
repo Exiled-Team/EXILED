@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Fixes
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.KillPlayer))]
     internal class KillPlayer
     {
-        private static void Prefix(PlayerStats __instance, ref DamageHandlerBase handler) // TODO: Transpiler
+        private static void Prefix(PlayerStats __instance, ref DamageHandlerBase handler)
         {
             if (!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
             {

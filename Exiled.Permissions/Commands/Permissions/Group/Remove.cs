@@ -14,7 +14,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
     using Extensions;
 
     /// <summary>
-    /// Removes a group to permissions.
+    /// Removes a group from a permission.
     /// </summary>
     public class Remove : ICommand
     {
@@ -25,7 +25,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         public string[] Aliases { get; } = new[] { "rmv" };
 
         /// <inheritdoc/>
-        public string Description { get; } = "Removes a group from permissions.";
+        public string Description { get; } = "Removes a group from permission.";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

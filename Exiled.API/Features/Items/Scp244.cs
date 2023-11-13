@@ -10,6 +10,8 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
+    using InventorySystem;
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp244;
 
     using UnityEngine;
@@ -61,11 +63,15 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            Scp244Pickup pickup = (Scp244Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
+            PickupSyncInfo info = new(Type, Weight, Serial);
 
-            pickup.Info = new(Type, pickup.Weight, Serial);
-            pickup.State = Base._primed ? Scp244State.Active : Scp244State.Idle;
-            pickup.Scale = Scale;
+            Scp244DeployablePickup ipb = (Scp244DeployablePickup)InventoryExtensions.ServerCreatePickup(Base, info, position, rotation);
+
+            Base.OnRemoved(ipb);
+
+            ipb.State = Base._primed ? Scp244State.Active : Scp244State.Idle;
+
+            Pickup pickup = Pickup.Get(ipb);
 
             if (spawn)
                 pickup.Spawn();

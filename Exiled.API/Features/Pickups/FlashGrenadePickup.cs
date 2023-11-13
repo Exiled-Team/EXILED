@@ -10,10 +10,12 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups.Projectiles;
+
+    using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
-    /// A wrapper class for dropped Flash Pickup.
+    /// A wrapper class for dropped Flashbang Pickup.
     /// </summary>
     internal class FlashGrenadePickup : GrenadePickup
     {
@@ -50,9 +52,9 @@ namespace Exiled.API.Features.Pickups
         public float SurfaceDistanceIntensifier { get; set; }
 
         /// <inheritdoc/>
-        internal override Pickup GetItemInfo(Item item)
+        internal override void ReadItemInfo(Item item)
         {
-            base.GetItemInfo(item);
+            base.ReadItemInfo(item);
             if (item is FlashGrenade flashGrenadeitem)
             {
                 MinimalDurationEffect = flashGrenadeitem.MinimalDurationEffect;
@@ -60,27 +62,10 @@ namespace Exiled.API.Features.Pickups
                 SurfaceDistanceIntensifier = flashGrenadeitem.SurfaceDistanceIntensifier;
                 FuseTime = flashGrenadeitem.FuseTime;
             }
-
-            return this;
         }
 
         /// <inheritdoc/>
-        internal override Item GetPickupInfo(Item item)
-        {
-            base.GetPickupInfo(item);
-            if (item is FlashGrenade flashGrenadeitem)
-            {
-                flashGrenadeitem.MinimalDurationEffect = MinimalDurationEffect;
-                flashGrenadeitem.AdditionalBlindedEffect = AdditionalBlindedEffect;
-                flashGrenadeitem.SurfaceDistanceIntensifier = SurfaceDistanceIntensifier;
-                flashGrenadeitem.FuseTime = FuseTime;
-            }
-
-            return item;
-        }
-
-        /// <inheritdoc/>
-        internal override Pickup GetPickupInfo(Projectile projectile)
+        internal override void WriteProjectileInfo(Projectile projectile)
         {
             if (projectile is FlashbangProjectile flashbangProjectile)
             {
@@ -89,8 +74,18 @@ namespace Exiled.API.Features.Pickups
                 flashbangProjectile.SurfaceDistanceIntensifier = SurfaceDistanceIntensifier;
                 flashbangProjectile.FuseTime = FuseTime;
             }
+        }
 
-            return projectile;
+        /// <inheritdoc/>
+        protected override void InitializeProperties(ItemBase itemBase)
+        {
+            base.InitializeProperties(itemBase);
+            if (itemBase is ThrowableItem throwable && throwable.Projectile is FlashbangGrenade flashGrenade)
+            {
+                MinimalDurationEffect = flashGrenade._minimalEffectDuration;
+                AdditionalBlindedEffect = flashGrenade._additionalBlurDuration;
+                SurfaceDistanceIntensifier = flashGrenade._surfaceZoneDistanceIntensifier;
+            }
         }
     }
 }
