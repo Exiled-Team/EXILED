@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs.Player
         public Window Window { get; }
 
         /// <summary>
-        ///     Gets or sets the Damage handler for this event.
+        ///     Gets or sets the damage handler for this event.
         /// </summary>
         public DamageHandler Handler { get; set; }
 

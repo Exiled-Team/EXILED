@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information before a player toggles the NoClip mode.
+    ///     Contains all information before a player toggles noclip.
     /// </summary>
     public class TogglingNoClipEventArgs : IPlayerEvent, IDeniableEvent
     {
@@ -36,17 +36,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the player who's toggling the NoClip mode.
+        ///     Gets the player who's toggling noclip.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the NoClip mode will be enabled or not.
+        ///     Gets or sets a value indicating whether or not the noclip mode will be enabled or not.
         /// </summary>
         public bool IsEnabled { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can toggle the NoClip mode.
+        ///     Gets or sets a value indicating whether or not the player can toggle noclip.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

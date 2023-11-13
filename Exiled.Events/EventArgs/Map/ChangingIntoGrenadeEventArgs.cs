@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        /// Gets a value indicating the pickup being changed.
+        /// Gets a value indicating the pickup being changed into a grenade.
         /// </summary>
         public Pickup Pickup { get; }
 
