@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using PlayerRoles.Ragdolls;
-
 namespace Exiled.Events.Patches.Events.Scp049
 {
     using System.Collections.Generic;
@@ -22,6 +20,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     using PlayerRoles.PlayableScps.Scp049;
 
     using static HarmonyLib.AccessTools;
+    using PlayerRoles.Ragdolls;
 
     /// <summary>
     ///     Patches <see cref="Scp049ResurrectAbility.ServerValidateBegin" />.
