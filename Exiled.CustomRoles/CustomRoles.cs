@@ -39,6 +39,7 @@ namespace Exiled.CustomRoles
                 .WithTypeConverter(new AttachmentIdentifiersConverter())
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
                 .WithNodeDeserializer(inner => new AbstractClassNodeTypeResolver(inner, new AggregateExpectationTypeResolver<CustomAbility>(UnderscoredNamingConvention.Instance)), s => s.InsteadOf<ObjectNodeDeserializer>())
+                .WithDuplicateKeyChecking()
                 .IgnoreFields()
                 .IgnoreUnmatchedProperties()
                 .Build();
