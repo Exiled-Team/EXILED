@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Mirror;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Pinging;
-    using PlayerRoles.Subroutines;
+    using PlayerRoles.PlayableScps.Subroutines;
     using RelativePositioning;
     using UnityEngine;
 
@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 {
                     // this.Owner
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(StandardSubroutine<Scp079Role>), nameof(StandardSubroutine<Scp079Role>.Owner))),
+                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp079Role>), nameof(ScpStandardSubroutine<Scp079Role>.Owner))),
 
                     // this._syncPos
                     new(OpCodes.Ldarg_0),

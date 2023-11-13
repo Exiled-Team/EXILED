@@ -210,6 +210,7 @@ namespace Exiled.API.Extensions
         /// <param name="room">Room to modify.</param>
         /// <param name="target">Only this player can see room color.</param>
         /// <param name="multiplier">Light intensity multiplier to set.</param>
+        [Obsolete("This features has been removed by NW", true)]
         public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier)
         {
         }
@@ -382,6 +383,8 @@ namespace Exiled.API.Extensions
         /// <param name="values">Values of send to target.</param>
         public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
         {
+            if (!target.IsConnected)
+                return;
             NetworkWriterPooled writer = NetworkWriterPool.Get();
 
             foreach (object value in values)

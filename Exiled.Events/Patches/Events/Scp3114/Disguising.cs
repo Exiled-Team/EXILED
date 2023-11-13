@@ -38,8 +38,8 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 if (!disguising.IsAllowed)
                     return false;
 
-                __instance.CastRole.Disguised = true;
-                Scp3114RagdollToBonesConverter.ServerConvertNew(__instance.CastRole, ragdoll);
+                __instance.ScpRole.Disguised = true;
+                Scp3114RagdollToBonesConverter.ServerConvertNew(__instance.ScpRole, ragdoll);
 
                 DisguisedEventArgs disguised = new(__instance.Owner, ragdoll);
                 Scp3114.OnDisguised(disguised);

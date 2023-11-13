@@ -100,6 +100,8 @@ namespace Exiled.API.Features.DamageHandlers
                 {
                     case CustomReasonDamageHandler:
                         return DamageType.Custom;
+                    case SilentDamageHandler:
+                        return DamageType.Silent;
                     case WarheadDamageHandler:
                         return DamageType.Warhead;
                     case ExplosionDamageHandler:

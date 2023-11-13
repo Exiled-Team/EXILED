@@ -8,12 +8,18 @@
 namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
+    using System.Linq;
 
+    using Exiled.API.Features.Hazards;
+    using Exiled.API.Interfaces;
+    using Mirror;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp3114;
-    using PlayerRoles.Subroutines;
+    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Ragdolls;
+    using UnityEngine;
 
     using static PlayerRoles.PlayableScps.Scp3114.Scp3114Identity;
 

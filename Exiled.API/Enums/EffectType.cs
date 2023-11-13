@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Enums
 {
-    using System;
-
     using Exiled.API.Extensions;
 
     /// <summary>
@@ -133,12 +131,12 @@ namespace Exiled.API.Enums
         MovementBoost,
 
         /// <summary>
-        /// Reduces the severity of negative effects.
+        /// Severely reduces damage taken.
         /// </summary>
         RainbowTaste,
 
         /// <summary>
-        /// Drops the player's current item, disables interaction with objects, and deals damage while effect is active.
+        /// Drops the player's current item and deals damage while effect is active.
         /// </summary>
         SeveredHands,
 
@@ -148,17 +146,17 @@ namespace Exiled.API.Enums
         Stained,
 
         /// <summary>
-        /// Causes the player to become gain immunity to certain negative status effects.
+        /// Causes the player to slowly regenerate health.
         /// </summary>
         Vitality,
 
         /// <summary>
-        /// Cause the player to slowly take damage, reduces bullet accuracy, and increases item pickup time.
+        /// Cause the player to slowly take damage by Hyporthermia.
         /// </summary>
         Hypothermia,
 
         /// <summary>
-        /// Increases the player's motor function, causing the player to reduce the weapon draw time, reload spead, item pickup speed, and medical item usage.
+        /// Cause the player more effective for fight.
         /// </summary>
         Scp1853,
 
@@ -178,49 +176,52 @@ namespace Exiled.API.Enums
         SoundtrackMute,
 
         /// <summary>
-        /// Protects players from enemy damage if the config is enabled.
+        /// Protect player from enemy if the config is Enable.
         /// </summary>
         SpawnProtected,
 
         /// <summary>
-        /// Make Scp106 able to see you when he is in the ground (stalking), causes the player's screens to become monochromatic when seeing Scp106, and instantly killed if attacked by Scp106.
+        /// Make Scp106 able to see you when he are in the ground (stalking).
         /// </summary>
         Traumatized,
 
         /// <summary>
-        /// It slows down the player, providing a passive health regeneration and saving the player from death once.
+        /// Same effect as Scp207, but Healing instead of Hurting.
         /// </summary>
         AntiScp207,
 
         /// <summary>
-        /// The effect that SCP-079 gives the scanned player with the Breach Scanner.
+        /// The effect that SCP-079 gives the Scanned player with the Breach Scanner.
         /// </summary>
         Scanned,
 
         /// <summary>
-        /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed. The amount of damage recieved increases the longer the effect is applied.
+        /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed.
         /// </summary>
         PocketCorroding,
 
         /// <summary>
-        /// Reduces walking sound by 10%.
-        /// </summary>
-        SilentWalk,
-
-        /// <summary>
-        /// Makes you a marshmallow guy.
-        /// </summary>
-        [Obsolete("Not functional in-game")]
-        Marshmallow,
-
-        /// <summary>
-        /// The effect that is given to the player when getting attacked by SCP-3114's Strangle ability.
-        /// </summary>
-        Strangled,
-
-        /// <summary>
-        /// Makes the player nearly invisible, and allows them to pass through doors.
+        /// The effect permit player to go trough door like Scp-106.
         /// </summary>
         Ghostly,
+
+        /// <summary>
+        /// Effect given to player when being strangled by SCP-3114.
+        /// </summary>
+        Strangled,
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning disable SA1602 // Enumeration items should be documented
+        OrangeCandy,
+        Spicy,
+        SugarCrave,
+        SugarHigh,
+        SugarRush,
+        TraumatizedByEvil,
+        Metal,
+        Prismatic,
+        SlowMetabolism,
+        Marshmallow,
+#pragma warning restore SA1602 // Enumeration items should be documented
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
     }
 }

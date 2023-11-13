@@ -74,7 +74,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 return false;
             }
 
-            __instance.CastRole.Disguised = false;
+            __instance.ScpRole.Disguised = false;
 
             RevealedEventArgs revealed = new(__instance.Owner);
             Handlers.Scp3114.OnRevealed(revealed);

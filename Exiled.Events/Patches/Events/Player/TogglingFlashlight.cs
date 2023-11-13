@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Ldfld, Field(typeof(FlashlightNetworkHandler.FlashlightMessage), nameof(FlashlightNetworkHandler.FlashlightMessage.NewState))),
 
-                    // TogglingFlashlightEventArgs ev = new(Player, FlashlightItem, bool)
+                    // TogglingFlashlightEventArgs ev = new(Player, SwitchableLightSourceItemBase, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingFlashlightEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),

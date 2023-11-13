@@ -57,13 +57,13 @@ namespace Exiled.Events.Patches.Events.Player
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // SendingAdminChatMessageEventsArgs ev = new(Player, string, bool);
+                    // SearchingPickupEventArgs ev = new(Player, string, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SendingAdminChatMessageEventsArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                    // Handlers.Player.OnSendingAdminChatMessage(ev)
+                    // Handlers.Player.OnSearchPickupRequest(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSendingAdminChatMessage))),
 
                     // if (ev.IsAllowed)

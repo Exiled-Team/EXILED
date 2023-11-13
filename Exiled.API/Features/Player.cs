@@ -80,12 +80,16 @@ namespace Exiled.API.Features
         /// A list of the player's items.
         /// </summary>
         internal readonly List<Item> ItemsValue = new(8);
+
+        /// <summary>
+        /// A overriden <see cref="MaxHealth"/> value.
+        /// </summary>
+        internal float OverrideMaxHealth;
 #pragma warning restore SA1401
 
         private readonly HashSet<EActor> componentsInChildren = new();
 
         private ReferenceHub referenceHub;
-        private CustomHealthStat healthStat;
         private Role role;
 
         /// <summary>
@@ -165,8 +169,6 @@ namespace Exiled.API.Features
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
-
-                value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[Array.IndexOf(value.playerStats.StatModules, typeof(HealthStat))] = healthStat = new CustomHealthStat { Hub = value };
             }
         }
 
@@ -561,7 +563,6 @@ namespace Exiled.API.Features
         /// <br /><see cref="RoleTypeId.Scp096"/> = <see cref="Scp096Role"/>.
         /// <br /><see cref="RoleTypeId.Scp106"/> = <see cref="Scp106Role"/>.
         /// <br /><see cref="RoleTypeId.Scp173"/> = <see cref="Scp173Role"/>.
-        /// <br /><see cref="RoleTypeId.Scp3114"/> = <see cref="Scp3114Role"/>.
         /// <br /><see cref="RoleTypeId.Scp939"/> = <see cref="Scp939Role"/>.
         /// <br />If not listed above, the type of Role will be <see cref="HumanRole"/>.
         /// </para>
@@ -837,13 +838,13 @@ namespace Exiled.API.Features
         /// </summary>
         public float Health
         {
-            get => healthStat.CurValue;
+            get => ReferenceHub.playerStats.GetModule<HealthStat>().CurValue;
             set
             {
                 if (value > MaxHealth)
                     MaxHealth = value;
 
-                healthStat.CurValue = value;
+                ReferenceHub.playerStats.GetModule<HealthStat>().CurValue = value;
             }
         }
 
@@ -852,8 +853,15 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxHealth
         {
-            get => healthStat.MaxValue;
-            set => healthStat.CustomMaxValue = value;
+            get
+            {
+                return ReferenceHub.playerStats.GetModule<HealthStat>().MaxValue;
+            }
+
+            set
+            {
+                OverrideMaxHealth = value;
+            }
         }
 
         /// <summary>
@@ -2218,7 +2226,7 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if message was send; otherwise, <see langword="false"/>.</returns>
         public bool SendStaffMessage(string message, EncryptedChannelManager.EncryptedChannel channel = EncryptedChannelManager.EncryptedChannel.AdminChat)
         {
-            return ReferenceHub.encryptedChannelManager.TrySendMessageToClient("!" + NetId + message, channel);
+            return ReferenceHub.encryptedChannelManager.TrySendMessageToClient("!0" + message, channel);
         }
 
         /// <summary>
@@ -2612,26 +2620,29 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if a candy was given.</returns>
         public bool TryAddCandy(CandyKindID candyType)
         {
-            if (Scp330Bag.TryGetBag(ReferenceHub, out Scp330Bag bag))
+            bool flag = false;
+            if (!Scp330Bag.TryGetBag(referenceHub, out Scp330Bag scp330Bag))
             {
-                bool flag = bag.TryAddSpecific(candyType);
+                flag = true;
+                if (Items.Count > 7)
+                    return false;
 
-                if (flag)
-                    bag.ServerRefreshBag();
-
-                return flag;
+                scp330Bag = AddItem(ItemType.SCP330).As<Scp330>().Base;
             }
 
-            if (Items.Count > 7)
-                return false;
-
-            Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
-
-            Timing.CallDelayed(0.02f, () =>
+            if (flag)
             {
-                scp330.Base.Candies.Clear();
-                scp330.AddCandy(candyType);
-            });
+                scp330Bag.Candies = new List<CandyKindID> { candyType };
+                scp330Bag.ServerRefreshBag();
+            }
+            else if (scp330Bag.TryAddSpecific(candyType))
+            {
+                scp330Bag.ServerRefreshBag();
+            }
+            else
+            {
+                return false;
+            }
 
             return true;
         }
@@ -2909,8 +2920,8 @@ namespace Exiled.API.Features
             if (statusEffect is null)
                 return false;
 
-            statusEffect.ServerSetState(intensity, duration, addDurationIfActive);
-
+            statusEffect.ServerSetState(intensity);
+            statusEffect.ServerChangeDuration(duration, addDurationIfActive);
             return statusEffect is not null && statusEffect.IsEnabled;
         }
 

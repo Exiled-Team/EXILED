@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     using HarmonyLib;
 
     using PlayerRoles.PlayableScps.Scp049;
-    using PlayerRoles.Subroutines;
+    using PlayerRoles.PlayableScps.Subroutines;
 
     using static HarmonyLib.AccessTools;
 
@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                 {
                     // Player.Get(ownerHub)
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Call, PropertyGetter(typeof(StandardSubroutine<Scp049Role>), nameof(StandardSubroutine<Scp049Role>.Owner))),
+                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp049Role>), nameof(ScpStandardSubroutine<Scp049Role>.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // true
