@@ -20,13 +20,13 @@ namespace Exiled.Events.EventArgs.Scp049
         /// Initializes a new instance of the <see cref="StartingRecallEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player"/>
         /// </param>
         /// <param name="ragdoll">
-        /// <inheritdoc cref="Ragdoll" />
+        /// <inheritdoc cref="Ragdoll"/>
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed"/>
         /// </param>
         public StartingRecallEventArgs(Player player, Ragdoll ragdoll, bool isAllowed = true)
         {
