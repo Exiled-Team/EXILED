@@ -65,7 +65,9 @@ namespace Exiled.API.Extensions
             { EffectType.AntiScp207, typeof(AntiScp207) },
             { EffectType.Scanned, typeof(Scanned) },
             { EffectType.SilentWalk, typeof(SilentWalk) },
+#pragma warning disable CS0618
             { EffectType.Marshmallow, typeof(MarshmallowEffect) },
+#pragma warning restore CS0618
             { EffectType.Strangled, typeof(Strangled) },
             { EffectType.Ghostly, typeof(Ghostly) },
         };
