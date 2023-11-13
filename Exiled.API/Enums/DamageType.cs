@@ -244,5 +244,10 @@ namespace Exiled.API.Enums
         /// Damage caused by Scp3114's strangling ability.
         /// </summary>
         Strangled,
+
+        /// <summary>
+        /// Damage caused by the marshmallow man.
+        /// </summary>
+        Marshmallow,
     }
 }
