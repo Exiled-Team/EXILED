@@ -28,7 +28,6 @@ namespace Exiled.API.Features
     using MapGeneration;
     using MapGeneration.Distributors;
     using Mirror;
-    using Mirror.LiteNetLib4Mirror;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Scp939;
@@ -64,33 +63,8 @@ namespace Exiled.API.Features
 
         private static TantrumEnvironmentalHazard tantrumPrefab;
         private static Scp939AmnesticCloudInstance amnesticCloudPrefab;
-        private static global::Hazards.PrismaticCloud prismaticCloudPrefab;
 
         private static AmbientSoundPlayer ambientSoundPlayer;
-        private static SkyboxHubert skyboxHubert;
-
-        /// <summary>
-        /// Gets the prismatic prefab.
-        /// </summary>
-        public static global::Hazards.PrismaticCloud PrismaticCloud
-        {
-            get
-            {
-                if (prismaticCloudPrefab == null)
-                {
-                    foreach (GameObject prefab in LiteNetLib4MirrorNetworkManager.singleton.spawnPrefabs)
-                    {
-                        if (prefab.TryGetComponent(out global::Hazards.PrismaticCloud prismaticCloud))
-                        {
-                            prismaticCloudPrefab = prismaticCloud;
-                            break;
-                        }
-                    }
-                }
-
-                return prismaticCloudPrefab;
-            }
-        }
 
         /// <summary>
         /// Gets the tantrum prefab.
@@ -127,22 +101,6 @@ namespace Exiled.API.Features
                 }
 
                 return amnesticCloudPrefab;
-            }
-        }
-
-        /// <summary>
-        /// Gets the Hubert Sky prefab.
-        /// </summary>
-        public static SkyboxHubert SkyboxHubert
-        {
-            get
-            {
-                if (skyboxHubert == null)
-                {
-                    skyboxHubert = Object.FindObjectOfType<SkyboxHubert>();
-                }
-
-                return skyboxHubert;
             }
         }
 
@@ -190,16 +148,6 @@ namespace Exiled.API.Features
         /// Gets the <see cref="global::AmbientSoundPlayer"/>.
         /// </summary>
         public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer ??= ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>();
-
-        /// <summary>
-        /// Gets or sets a value indicating whether HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT.
-        /// HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT HUBERT.
-        /// </summary>
-        public static bool IsHubertSky
-        {
-            get => SkyboxHubert.NetworkHubert;
-            set => SkyboxHubert.NetworkHubert = value;
-        }
 
         /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.

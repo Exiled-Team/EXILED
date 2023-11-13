@@ -291,7 +291,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether this pickup is spawned.
         /// </summary>
-        public bool IsSpawned => NetworkServer.spawned.ContainsValue(Base.netIdentity);
+        public bool IsSpawned { get; internal set; }
 
         /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.
@@ -541,6 +541,7 @@ namespace Exiled.API.Features.Pickups
             if (!IsSpawned)
             {
                 NetworkServer.Spawn(GameObject);
+                IsSpawned = true;
             }
         }
 
@@ -571,6 +572,7 @@ namespace Exiled.API.Features.Pickups
         {
             if (IsSpawned)
             {
+                IsSpawned = false;
                 NetworkServer.UnSpawn(GameObject);
             }
         }
