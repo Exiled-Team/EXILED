@@ -21,7 +21,7 @@ namespace Exiled.API.Features.DamageHandlers
     using UnityEngine;
 
     /// <summary>
-    /// Allows generic damage to player.
+    /// Allows generic damage to a player.
     /// </summary>
     public class GenericDamageHandler : CustomReasonDamageHandler
     {
@@ -203,12 +203,12 @@ namespace Exiled.API.Features.DamageHandlers
         }
 
         /// <summary>
-        /// Gets or sets custom base.
+        /// Gets or sets a custom base.
         /// </summary>
         public PlayerStatsSystem.DamageHandlerBase Base { get; set; }
 
         /// <summary>
-        /// Gets or sets current attacker.
+        /// Gets or sets the current attacker.
         /// </summary>
         public Footprint Attacker { get; set; }
 
