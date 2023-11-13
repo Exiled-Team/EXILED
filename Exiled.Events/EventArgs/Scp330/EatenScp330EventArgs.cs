@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs.Scp330
         public ICandy Candy { get; }
 
         /// <summary>
-        ///     Gets the player who's eaten SCP-330.
+        ///     Gets the player who has eaten SCP-330.
         /// </summary>
         public Player Player { get; }
     }

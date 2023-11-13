@@ -108,7 +108,7 @@ namespace Exiled.Loader
         }
 
         /// <summary>
-        /// Looks for any updates.
+        /// Checks for any updates.
         /// </summary>
         internal void CheckUpdate()
         {
@@ -116,7 +116,10 @@ namespace Exiled.Loader
             if (Busy = FindUpdate(client, !File.Exists(Path.Combine(Paths.Dependencies, "Exiled.API.dll")), out NewVersion newVersion))
                 Update(client, newVersion);
         }
-
+        /// <summary>
+        /// Creates a HTTP Client, and checks at the Exiled-Team GitHub repository.
+        /// </summary>
+        /// <returns>Client determining if it was successful connecting to the Exiled GitHub repository.</returns>
         private HttpClient CreateHttpClient()
         {
             HttpClient client = new()
@@ -128,7 +131,13 @@ namespace Exiled.Loader
 
             return client;
         }
-
+        /// <summary>
+        /// Finds an update using the client.
+        /// </summary>
+        /// <param name="client"> is the HTTP Client.</param>
+        /// <param name="forced"> if the detection was forced.</param>
+        /// <param name="newVersion"> if there is a new version of EXILED.</param>
+        /// <returns>Returns true if there is an update, otherwise false.</returns>
         private bool FindUpdate(HttpClient client, bool forced, out NewVersion newVersion)
         {
             try
@@ -171,6 +180,11 @@ namespace Exiled.Loader
             return false;
         }
 
+        /// <summary>
+        /// Updates the client's version of Exiled.
+        /// </summary>
+        /// <param name="client"> is the HTTP Client.</param>
+        /// <param name="newVersion"> is the updated version of Exiled.</param>
         private void Update(HttpClient client, NewVersion newVersion)
         {
             try
@@ -253,6 +267,11 @@ namespace Exiled.Loader
             }
         }
 
+        /// <summary>
+        /// Gets the releases of Exiled.
+        /// </summary>
+        /// <param name="releases"> gets the array of releases that has been made.</param>
+        /// <returns>The last item in the array, which is the newest version of Exiled.</returns>
         private TaggedRelease[] TagReleases(Release[] releases)
         {
             TaggedRelease[] arr = new TaggedRelease[releases.Length];
@@ -261,7 +280,14 @@ namespace Exiled.Loader
 
             return arr;
         }
-
+        /// <summary>
+        /// Is able to find the release specificed.
+        /// </summary>
+        /// <param name="releases"> is the list of releases (array).</param>
+        /// <param name="release"> is the most recent release of Exiled.</param>
+        /// <param name="smallestVersion"> finds the smallest version of the Exiled Library.</param>
+        /// <param name="forced"> if this update was forced or not.</param>
+        /// <returns>the if the specific release was found or not.</returns>
         private bool FindRelease(TaggedRelease[] releases, out Release release, ExiledLib smallestVersion, bool forced = false)
         {
             bool includePRE = config.ShouldDownloadTestingReleases || ExiledLib.Any(l => l.Version.PreRelease is not null);
@@ -282,7 +308,13 @@ namespace Exiled.Loader
             release = default;
             return false;
         }
-
+        /// <summary>
+        /// Finds the specified asset.
+        /// </summary>
+        /// <param name="assetName"> passes in the specified asset name.</param>
+        /// <param name="release"> passes in the release version.</param>
+        /// <param name="asset"> is the asset that is tied to the release.</param>
+        /// <returns>if it was able to find the asset or not.</returns>
         private bool FindAsset(string assetName, Release release, out ReleaseAsset asset)
         {
             for (int z = 0; z < release.Assets.Length; z++)

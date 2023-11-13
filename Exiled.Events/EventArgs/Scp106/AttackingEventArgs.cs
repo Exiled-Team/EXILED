@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Scp106
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all information before SCP-106 attacks player.
+    /// Contains all information before SCP-106 attacks a player.
     /// </summary>
     public class AttackingEventArgs : IScp106Event, IDeniableEvent
     {
@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs.Scp106
         public Scp106Role Scp106 { get; }
 
         /// <summary>
-        /// Gets the target of attack.
+        /// Gets the target of the attack.
         /// </summary>
         public Player Target { get; }
 

@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        ///     Gets the activated generator.
+        ///     Gets the generator.
         /// </summary>
         public Generator Generator { get; }
 

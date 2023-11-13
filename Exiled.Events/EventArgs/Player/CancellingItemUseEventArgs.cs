@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => Usable;
 
         /// <summary>
-        ///     Gets the player who cancelling the item.
+        ///     Gets the player who is cancelling the item.
         /// </summary>
         public Player Player { get; }
 

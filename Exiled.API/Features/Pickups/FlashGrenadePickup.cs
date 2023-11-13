@@ -15,7 +15,7 @@ namespace Exiled.API.Features.Pickups
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
-    /// A wrapper class for dropped Flash Pickup.
+    /// A wrapper class for dropped Flashbang Pickup.
     /// </summary>
     internal class FlashGrenadePickup : GrenadePickup
     {
