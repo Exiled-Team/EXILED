@@ -15,6 +15,7 @@ namespace Exiled.Events.Patches.Events.Map
     using API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
+    using Exiled.Events.Patches.Generic;
     using HarmonyLib;
     using InventorySystem.Items.ThrowableProjectiles;
     using UnityEngine;
@@ -25,9 +26,8 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     /// Patches <see cref="FlashbangGrenade.ServerFuseEnd()"/>.
-    /// Adds the <see cref="Handlers.Map.ExplodingGrenade"/> event.
+    /// Adds the <see cref="Handlers.Map.ExplodingGrenade"/> event and <see cref="Config.CanFlashbangsAffectThrower"/>.
     /// </summary>
-    [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.ExplodingGrenade))]
     [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ServerFuseEnd))]
     internal static class ExplodingFlashGrenade
     {
@@ -78,7 +78,7 @@ namespace Exiled.Events.Patches.Events.Map
                 if (!ExiledEvents.Instance.Config.CanFlashbangsAffectThrower && explodingGrenadeEvent.Player == player)
                     continue;
 
-                if (HitboxIdentity.CheckFriendlyFire(explodingGrenadeEvent.Player.ReferenceHub, player.ReferenceHub))
+                if (IndividualFriendlyFire.CheckFriendlyFirePlayer(instance.PreviousOwner, player.ReferenceHub))
                 {
                     instance.ProcessPlayer(player.ReferenceHub);
                     size++;

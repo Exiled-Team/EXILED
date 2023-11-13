@@ -15,7 +15,7 @@ namespace Exiled.Loader.Features.Configs
     using YamlDotNet.Serialization.TypeInspectors;
 
     /// <summary>
-    /// Spurce: https://dotnetfiddle.net/8M6iIE.
+    /// Source: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
     public sealed class CommentGatheringTypeInspector : TypeInspectorSkeleton
     {

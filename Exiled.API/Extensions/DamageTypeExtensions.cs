@@ -113,7 +113,7 @@ namespace Exiled.API.Extensions
         public static IReadOnlyDictionary<ItemType, DamageType> ItemConversion => ItemConversionInternal;
 
         /// <summary>
-        /// Check if a <see cref="DamageType">damage type</see> is caused by weapon.
+        /// Check if a <see cref="DamageType">damage type</see> is caused by a weapon.
         /// </summary>
         /// <param name="type">The damage type to be checked.</param>
         /// <param name="checkMicro">Indicates whether or not the MicroHid damage type should be taken into account.</param>
@@ -126,7 +126,7 @@ namespace Exiled.API.Extensions
         };
 
         /// <summary>
-        /// Check if a <see cref="DamageType">damage type</see> is caused by SCP.
+        /// Check if a <see cref="DamageType">damage type</see> is caused by a SCP.
         /// </summary>
         /// <param name="type">The damage type to be checked.</param>
         /// <param name="checkItems">Indicates whether or not the SCP-items damage types should be taken into account.</param>
@@ -139,7 +139,7 @@ namespace Exiled.API.Extensions
         };
 
         /// <summary>
-        /// Check if a <see cref="DamageType">damage type</see> is caused by status effect.
+        /// Check if a <see cref="DamageType">damage type</see> is caused by a status effect.
         /// </summary>
         /// <param name="type">The damage type to be checked.</param>
         /// <returns>Returns whether or not the <see cref="DamageType"/> is caused by status effect.</returns>

@@ -14,7 +14,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
     using Extensions;
 
     /// <summary>
-    /// Adds a group to permissions.
+    /// Adds a group to a permission.
     /// </summary>
     public class Add : ICommand
     {
@@ -25,7 +25,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         public string[] Aliases { get; } = new string[] { };
 
         /// <inheritdoc/>
-        public string Description { get; } = "Adds a group to permissions.";
+        public string Description { get; } = "Adds a group to a permission.";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
