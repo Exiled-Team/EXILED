@@ -48,22 +48,30 @@ namespace Exiled.Events.Patches.Events.Player
                 0,
                 new CodeInstruction[]
                 {
+                    // if (newRole is IFpcRole)
+                    //  goto skipLabel
                     new(OpCodes.Ldarg_3),
                     new(OpCodes.Isinst, typeof(IFpcRole)),
                     new(OpCodes.Brtrue_S, skipLabel),
 
+                    // Player.Get(hub)
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Dup),
 
+                    // Player::Position
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Position))),
 
+                    // 0f
                     new(OpCodes.Ldc_R4, 0f),
 
+                    // oldRole
                     new(OpCodes.Ldarg_2),
 
+                    // SpawningEventArgs(Player, Vector3, 0, PlayerRoleBase)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningEventArgs))[0]),
 
+                    // Handlers.Player.OnSpawning(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawning))),
                 });
 
@@ -71,24 +79,32 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new[]
                 {
+                    // Player.Get(hub)
                     new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                    // position
                     new(OpCodes.Ldloc_1),
 
+                    // rotation
                     new(OpCodes.Ldloc_2),
 
+                    // oldRole
                     new(OpCodes.Ldarg_2),
 
+                    // SpawningEventArgs(Player, Vector3, float, PlayerRoleBase)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
 
+                    // Handlers.Player.OnSpawning(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawning))),
 
+                    // position = SpawningEventArgs::Position
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.Position))),
                     new(OpCodes.Stloc_1),
 
+                    // rotation = SpawningEventArgs::HorizontalRotation
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.HorizontalRotation))),
                     new(OpCodes.Stloc_2),
                 });
