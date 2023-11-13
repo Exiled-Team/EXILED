@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs.Item
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="API.Features.Items.Firearm"/> the ammo is being changed to.
+        /// Gets the <see cref="API.Features.Items.Firearm"/> the ammo type is being changed to.
         /// </summary>
         public Firearm Firearm { get; }
 
