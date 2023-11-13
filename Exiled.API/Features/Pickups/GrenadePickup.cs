@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Pickups
 
     using Footprinting;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -72,18 +73,25 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Returns the Projectile with the according property from the Pickup.
+        /// Helper method for saving data between projectiles and pickups.
         /// </summary>
-        /// <param name="projectile"> Pickup-related data to give to the Projectile.</param>
-        /// <returns>A Projectile containing the Pickup-related data.</returns>
-        internal virtual Pickup GetPickupInfo(Projectile projectile)
+        /// <param name="projectile"><see cref="Projectile"/>-related data to write to.</param>
+        internal virtual void WriteProjectileInfo(Projectile projectile)
         {
             if (projectile is TimeGrenadeProjectile timeGrenadeProjectile)
             {
                 timeGrenadeProjectile.FuseTime = FuseTime;
             }
+        }
 
-            return projectile;
+        /// <inheritdoc/>
+        protected override void InitializeProperties(ItemBase itemBase)
+        {
+            base.InitializeProperties(itemBase);
+            if (itemBase is ThrowableItem throwable && throwable.Projectile is TimeGrenade timeGrenade)
+            {
+                FuseTime = timeGrenade._fuseTime;
+            }
         }
     }
 }
