@@ -955,7 +955,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the stamina usage multiplier for current live.
+        /// Gets or sets the stamina usage multiplier. Resets on death.
         /// </summary>
         public float StaminaUsageMultiplier
         {
@@ -968,7 +968,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the stamina regen multiplier for current live.
+        /// Gets or sets the stamina regen multiplier. Resets on death.
         /// </summary>
         public float StaminaRegenMultiplier
         {
@@ -1093,7 +1093,7 @@ namespace Exiled.API.Features
         public bool IsInPocketDimension => CurrentRoom?.Type is RoomType.Pocket;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player should use stamina system for current live.
+        /// Gets or sets a value indicating whether or not the player should use stamina system. Resets on death.
         /// </summary>
         public bool IsUsingStamina
         {
