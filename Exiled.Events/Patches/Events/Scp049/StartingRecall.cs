@@ -20,10 +20,9 @@ namespace Exiled.Events.Patches.Events.Scp049
 
     using static HarmonyLib.AccessTools;
 
-
     /// <summary>
-    ///     Patches <see cref="Scp049ResurrectAbility.ServerValidateBegin" />.
-    ///     Adds the <see cref="Handlers.Scp049.StartingRecall" /> event.
+    /// Patches <see cref="Scp049ResurrectAbility.ServerValidateBegin" />.
+    /// Adds the <see cref="Handlers.Scp049.StartingRecall" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.StartingRecall))]
     [HarmonyPatch(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.ServerValidateBegin))]
