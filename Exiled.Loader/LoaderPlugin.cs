@@ -19,7 +19,7 @@ namespace Exiled.Loader
     using Paths = API.Features.Paths;
 
     /// <summary>
-    /// The PluginAPI Plugin class for the EXILED Loader.
+    /// The Northwood PluginAPI Plugin class for the EXILED Loader.
     /// </summary>
     public class LoaderPlugin
     {

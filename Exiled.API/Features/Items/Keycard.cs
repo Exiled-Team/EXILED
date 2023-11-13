@@ -8,9 +8,12 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Enums;
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.Keycards;
+
+    using KeycardPickup = Pickups.KeycardPickup;
 
     /// <summary>
     /// A wrapper class for <see cref="KeycardItem"/>.
@@ -64,5 +67,15 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing Keycard-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Permissions}|";
+
+        /// <inheritdoc/>
+        internal override void ReadPickupInfo(Pickup pickup)
+        {
+            base.ReadPickupInfo(pickup);
+            if (pickup is KeycardPickup keycardPickup)
+            {
+                Permissions = keycardPickup.Permissions;
+            }
+        }
     }
 }
