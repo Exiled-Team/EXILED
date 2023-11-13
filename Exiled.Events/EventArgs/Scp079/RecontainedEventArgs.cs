@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Scp079
     using Interfaces;
 
     /// <summary>
-    ///     Contains information after SCP-079 recontainment.
+    ///     Contains information after SCP-079 gets recontained.
     /// </summary>
     public class RecontainedEventArgs : IScp079Event
     {

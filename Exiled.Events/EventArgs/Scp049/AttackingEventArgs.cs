@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Scp049
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all information before SCP-049 attacks player.
+    /// Contains all information before SCP-049 attacks a player.
     /// </summary>
     public class AttackingEventArgs : IScp049Event, IDeniableEvent
     {

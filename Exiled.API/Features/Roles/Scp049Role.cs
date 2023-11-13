@@ -60,7 +60,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets a list of players who will be turned away from SCP-049 Sense Ability.
+        /// Gets a list of players who are turned away from SCP-049 Sense Ability.
         /// </summary>
         public static HashSet<Player> TurnedPlayers { get; } = new(20);
 
@@ -94,7 +94,7 @@ namespace Exiled.API.Features.Roles
         public Scp049SenseAbility SenseAbility { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-049 is currently recalling a player.
+        /// Gets a value indicating whether or not SCP-049 is currently reviving a player.
         /// </summary>
         public bool IsRecalling => ResurrectAbility.IsInProgress;
 
@@ -171,7 +171,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets the amount of time before SCP-049 can use its Good Sense ability again.
+        /// Gets or sets the amount of time before SCP-049 can use its Good Sense of the Doctor ability again.
         /// </summary>
         public float GoodSenseCooldown
         {

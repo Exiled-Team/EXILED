@@ -131,12 +131,12 @@ namespace Exiled.API.Enums
         MovementBoost,
 
         /// <summary>
-        /// Severely reduces damage taken.
+        /// Reduces the severity of negative effects.
         /// </summary>
         RainbowTaste,
 
         /// <summary>
-        /// Drops the player's current item and deals damage while effect is active.
+        /// Drops the player's current item, disables interaction with objects, and deals damage while effect is active.
         /// </summary>
         SeveredHands,
 
@@ -146,17 +146,17 @@ namespace Exiled.API.Enums
         Stained,
 
         /// <summary>
-        /// Causes the player to slowly regenerate health.
+        /// Causes the player to become gain immunity to certain negative status effects.
         /// </summary>
         Vitality,
 
         /// <summary>
-        /// Cause the player to slowly take damage by Hyporthermia.
+        /// Cause the player to slowly take damage, reduces bullet accuracy, and increases item pickup time.
         /// </summary>
         Hypothermia,
 
         /// <summary>
-        /// Cause the player more effective for fight.
+        /// Increases the player's motor function, causing the player to reduce the weapon draw time, reload spead, item pickup speed, and medical item usage.
         /// </summary>
         Scp1853,
 
@@ -176,27 +176,27 @@ namespace Exiled.API.Enums
         SoundtrackMute,
 
         /// <summary>
-        /// Protect player from enemy if the config is Enable.
+        /// Protects players from enemy damage if the config is enabled.
         /// </summary>
         SpawnProtected,
 
         /// <summary>
-        /// Make Scp106 able to see you when he are in the ground (stalking).
+        /// Make Scp106 able to see you when he is in the ground (stalking), causes the player's screens to become monochromatic when seeing Scp106, and instantly killed if attacked by Scp106.
         /// </summary>
         Traumatized,
 
         /// <summary>
-        /// Same effect as Scp207, but Healing instead of Hurting.
+        /// It slows down the player, providing a passive health regeneration and saving the player from death once.
         /// </summary>
         AntiScp207,
 
         /// <summary>
-        /// The effect that SCP-079 gives the Scanned player with the Breach Scanner.
+        /// The effect that SCP-079 gives the scanned player with the Breach Scanner.
         /// </summary>
         Scanned,
 
         /// <summary>
-        /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed.
+        /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed. The amount of damage recieved increases the longer the effect is applied.
         /// </summary>
         PocketCorroding,
 

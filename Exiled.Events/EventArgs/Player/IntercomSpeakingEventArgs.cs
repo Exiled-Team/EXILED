@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the player who's going to speak to the intercom.
+        ///     Gets the player who's going to speak on the intercom.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can speak to the intercom.
+        ///     Gets or sets a value indicating whether or not the player can speak on the intercom.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

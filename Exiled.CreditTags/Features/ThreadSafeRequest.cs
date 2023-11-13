@@ -18,16 +18,38 @@ namespace Exiled.CreditTags.Features
 
     internal sealed class ThreadSafeRequest
     {
+        /// <summary>
+        /// Handles the Safe Thread Request.
+        /// </summary>
         private volatile bool done;
 
+        /// <summary>
+        /// Gets the result.
+        /// </summary>
         public string Result { get; private set; }
 
+        /// <summary>
+        /// Gets a value indicating whether or not it was successful.
+        /// </summary>
         public bool Success { get; private set; }
 
+        /// <summary>
+        /// Gets the HTTP Status Code.
+        /// </summary>
         public HttpStatusCode Code { get; private set; }
 
+        /// <summary>
+        /// Gets a value indicating whether or not the request was successful.
+        /// </summary>
         public bool Done => done;
 
+        /// <summary>
+        /// Gets the call to the website to obtain users to their roles.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="errorHandler">The error handling <see cref="Action{T1}"/>.</param>
+        /// <param name="resultHandler">The result handling <see cref="Action{T1}"/>.</param>
+        /// <param name="issuer">The <see cref="GameObject"/> issuing the request.</param>
         public static void Go(string url, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler, GameObject issuer)
         {
             Timing.RunCoroutine(MakeRequest(url, errorHandler, resultHandler).CancelWith(issuer), Segment.LateUpdate);

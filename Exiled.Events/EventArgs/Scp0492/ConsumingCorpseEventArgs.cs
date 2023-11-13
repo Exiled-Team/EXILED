@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Scp0492
     using PlayerRoles.Ragdolls;
 
     /// <summary>
-    ///     Contains all information before zombie consumes RagDolls.
+    ///     Contains all information before zombie consumes a ragdoll.
     /// </summary>
     public class ConsumingCorpseEventArgs : IScp0492Event, IRagdollEvent, IDeniableEvent
     {
@@ -26,7 +26,7 @@ namespace Exiled.Events.EventArgs.Scp0492
         /// <param name="ragDoll"> <inheritdoc cref="Ragdoll"/> </param>
         /// <param name="error"> <inheritdoc cref="ErrorCode"/> </param>
         /// <param name="isAllowed"> <inheritdoc cref="IsAllowed"/> </param>
-        /// <remarks> See <see cref="ZombieConsumeAbility.ConsumedRagdolls"/> for all RagDolls consumed.</remarks>
+        /// <remarks> See <see cref="ZombieConsumeAbility.ConsumedRagdolls"/> for all ragdolls consumed.</remarks>
         // TODO: remove isAllowed argument
         public ConsumingCorpseEventArgs(ReferenceHub player, BasicRagdoll ragDoll, ZombieConsumeAbility.ConsumeError error, bool isAllowed = true)
         {
@@ -45,7 +45,7 @@ namespace Exiled.Events.EventArgs.Scp0492
         public Scp0492Role Scp0492 { get; }
 
         /// <summary>
-        ///     Gets the RagDoll to be consumed.
+        ///     Gets the ragdoll to be consumed.
         /// </summary>
         public Ragdoll Ragdoll { get; }
 
