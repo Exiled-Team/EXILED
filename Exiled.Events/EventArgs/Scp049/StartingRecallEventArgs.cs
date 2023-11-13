@@ -12,24 +12,21 @@ namespace Exiled.Events.EventArgs.Scp049
     using Interfaces;
 
     /// <summary>
-    ///		Contains all information before SCP-049 begins recalling a player.
+    /// Contains all information before SCP-049 begins recalling a player.
     /// </summary>
     public class StartingRecallEventArgs : IScp049Event, IRagdollEvent, IDeniableEvent
     {
         /// <summary>
-        ///		Initializes a new instance of the <see cref="StartingRecallEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="StartingRecallEventArgs" /> class.
         /// </summary>
-        /// <param name="target">
-        ///		<inheritdoc cref="Target" />
-        /// </param>
-        /// <param name="scp049">
-        ///		<inheritdoc cref="Player" />
+        /// <param name="player">
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="ragdoll">
-        ///		<inheritdoc cref="Ragdoll" />
+        /// <inheritdoc cref="Ragdoll" />
         /// </param>
         /// <param name="isAllowed">
-        ///		<inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public StartingRecallEventArgs(Player player, Ragdoll ragdoll, bool isAllowed = true)
         {
@@ -42,17 +39,17 @@ namespace Exiled.Events.EventArgs.Scp049
         }
 
         /// <summary>
-        ///		Gets the player who's getting recalled.
+        /// Gets the player who's getting recalled.
         /// </summary>
         public Player Target { get; }
 
         /// <summary>
-        ///		Gets or sets a value indicating whether the recall can begin.
+        /// Gets or sets a value indicating whether the recall can begin.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///		Gets the player who is controlling SCP-049.
+        /// Gets the player who is controlling SCP-049.
         /// </summary>
         public Player Player { get; }
 
@@ -60,7 +57,7 @@ namespace Exiled.Events.EventArgs.Scp049
         public Scp049Role Scp049 { get; }
 
         /// <summary>
-        ///		Gets the Ragdoll who's getting recalled.
+        /// Gets the Ragdoll who's getting recalled.
         /// </summary>
         public Ragdoll Ragdoll { get; }
     }
