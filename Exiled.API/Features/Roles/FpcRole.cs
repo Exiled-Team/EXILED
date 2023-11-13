@@ -195,6 +195,6 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets a value indicating the fake appearance of the player.
         /// </summary>
-        public RoleTypeId FakeAppearance { get; set; } = RoleTypeId.None;
+        public RoleTypeId? FakeAppearance { get; set; } = null;
     }
 }

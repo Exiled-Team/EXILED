@@ -8,6 +8,7 @@
 namespace Exiled.Events.Handlers.Internal
 {
     using CentralAuth;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Player;
@@ -66,7 +67,7 @@ namespace Exiled.Events.Handlers.Internal
                 ev.Player.Inventory.ServerDropEverything();
 
             if (ev.Player.Role is FpcRole fpcRole)
-                fpcRole.FakeAppearance = RoleTypeId.None;
+                fpcRole.FakeAppearance = null;
         }
 
         /// <inheritdoc cref="Scp049.OnActivatingSense(ActivatingSenseEventArgs)" />
@@ -85,11 +86,11 @@ namespace Exiled.Events.Handlers.Internal
         {
             RoleAssigner.CheckLateJoin(ev.Player.ReferenceHub, ClientInstanceMode.ReadyClient);
 
-            foreach (API.Features.Player player in API.Features.Player.List)
+            foreach (Player player in Player.List)
             {
-                if (player.Role is FpcRole fpcRole && fpcRole.FakeAppearance != RoleTypeId.None)
+                if (player.Role is FpcRole { FakeAppearance: not null } fpcRole)
                 {
-                    player.ChangeAppearance(fpcRole.FakeAppearance, new[] { ev.Player });
+                    player.ChangeAppearance(fpcRole.FakeAppearance.Value, new[] { ev.Player });
                 }
             }
         }
