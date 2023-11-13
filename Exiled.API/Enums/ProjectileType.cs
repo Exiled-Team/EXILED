@@ -22,7 +22,7 @@ namespace Exiled.API.Enums
         None,
 
         /// <summary>
-        /// Frag grenade.
+        /// High explosive grenade.
         /// Used by <see cref="ItemType.GrenadeHE"/>.
         /// </summary>
         FragGrenade,

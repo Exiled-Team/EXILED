@@ -34,6 +34,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public StartingSpeakerEventArgs(Player player, Room room, float auxiliaryPowerCost, bool isAllowed = true)
         {
             Player = player;
+            Scp079 = player.Role.As<Scp079Role>();
             Room = room;
             AuxiliaryPowerCost = auxiliaryPowerCost;
             IsAllowed = isAllowed;

@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets player that was spectated.
+        ///     Gets player that was being spectated.
         /// </summary>
         public Player OldTarget { get; }
 

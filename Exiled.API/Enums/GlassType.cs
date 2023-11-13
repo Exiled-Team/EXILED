@@ -16,27 +16,27 @@ namespace Exiled.API.Enums
     public enum GlassType
     {
         /// <summary>
-        /// Represents an unknown Window.
+        /// Represents an unknown window.
         /// </summary>
         Unknown,
 
         /// <summary>
-        /// Represents all the Window in <see cref="RoomType.LczGlassBox"/>.
+        /// Represents all the windows in <see cref="RoomType.LczGlassBox"/>.
         /// </summary>
         GR18,
 
         /// <summary>
-        /// Represents all the Window in <see cref="RoomType.Hcz049"/>.
+        /// Represents the window in <see cref="RoomType.Hcz049"/>.
         /// </summary>
         Scp049,
 
         /// <summary>
-        /// Represents all the Window in <see cref="RoomType.HczHid"/>.
+        /// Represents the windows in <see cref="RoomType.HczHid"/>.
         /// </summary>
         MicroHid,
 
         /// <summary>
-        /// Represents all the Window in <see cref="RoomType.Hcz079"/>.
+        /// Represents the window in <see cref="RoomType.Hcz079"/>.
         /// </summary>
         Scp079,
 
@@ -46,27 +46,27 @@ namespace Exiled.API.Enums
         Scp079Trigger,
 
         /// <summary>
-        /// Represents all the Window in <see cref="RoomType.Lcz330"/>.
+        /// Represents the window in <see cref="RoomType.Lcz330"/>.
         /// </summary>
         Scp330,
 
         /// <summary>
-        /// Represents all the Window in <see cref="RoomType.LczPlants"/>.
+        /// Represents all the windows in <see cref="RoomType.LczPlants"/>.
         /// </summary>
         Plants,
 
         /// <summary>
-        /// Represents all the Window in <see cref="RoomType.HczEzCheckpointA"/>.
+        /// Represents all the windows in <see cref="RoomType.HczEzCheckpointA"/>.
         /// </summary>
         HczEzCheckpointA,
 
         /// <summary>
-        /// Represents all the Window in <see cref="RoomType.HczEzCheckpointB"/>.
+        /// Represents all the windows in <see cref="RoomType.HczEzCheckpointB"/>.
         /// </summary>
         HczEzCheckpointB,
 
         /// <summary>
-        /// Represents all the Window in <see cref="RoomType.HczTestRoom"/>.
+        /// Represents the window in <see cref="RoomType.HczTestRoom"/>.
         /// </summary>
         TestRoom,
     }
