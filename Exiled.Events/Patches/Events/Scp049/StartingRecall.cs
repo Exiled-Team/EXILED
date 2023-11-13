@@ -65,7 +65,6 @@ namespace Exiled.Events.Patches.Events.Scp049
                 new(OpCodes.Ret),
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
             });
-
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
