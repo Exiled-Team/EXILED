@@ -208,6 +208,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Makes you a marshmallow guy.
         /// </summary>
+        [Obsolete("Not functional in-game")]
         Marshmallow,
 
         /// <summary>
