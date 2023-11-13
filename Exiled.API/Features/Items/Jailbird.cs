@@ -7,10 +7,13 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
     using InventorySystem.Items.Autosync;
     using InventorySystem.Items.Jailbird;
     using Mirror;
+
+    using JailbirdPickup = Pickups.JailbirdPickup;
 
     /// <summary>
     /// A wrapped class for <see cref="JailbirdItem"/>.
@@ -143,5 +146,18 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing JailBird-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
+
+        /// <inheritdoc/>
+        internal override void ReadPickupInfo(Pickup pickup)
+        {
+            base.ReadPickupInfo(pickup);
+            if (pickup is JailbirdPickup jailbirdPickup)
+            {
+                MeleeDamage = jailbirdPickup.MeleeDamage;
+                ChargeDamage = jailbirdPickup.ChargeDamage;
+                FlashDuration = jailbirdPickup.FlashDuration;
+                Radius = jailbirdPickup.Radius;
+            }
+        }
     }
 }

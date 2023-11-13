@@ -17,7 +17,7 @@ namespace Exiled.API.Features.DamageHandlers
     using BaseHandler = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
-    /// A wrapper to easily manipulate the behavior of <see cref="BaseHandler"/>.
+    /// A wrapper to easily manipulate the behavior of the <see cref="BaseHandler"/>.
     /// </summary>
     public class DamageHandler : DamageHandlerBase
     {

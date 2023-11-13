@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Player
     using MapGeneration.Distributors;
 
     /// <summary>
-    ///     Contains all information before a player filps the switch of the generator.
+    ///     Contains all information before a player filps the switch to a generator.
     /// </summary>
     public class ActivatingGeneratorEventArgs : IPlayerEvent, IGeneratorEvent, IDeniableEvent
     {
@@ -48,7 +48,7 @@ namespace Exiled.Events.EventArgs.Player
         public Generator Generator { get; }
 
         /// <summary>
-        ///     Gets the player who's filpping the switch of the generator.
+        ///     Gets the player who's filpping the switch to the generator.
         /// </summary>
         public Player Player { get; }
     }
