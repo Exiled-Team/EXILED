@@ -14,13 +14,12 @@ namespace Exiled.Events.Patches.Events.Scp049
     using API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp049;
-
     using HarmonyLib;
-
     using PlayerRoles.PlayableScps.Scp049;
+    using PlayerRoles.Ragdolls;
 
     using static HarmonyLib.AccessTools;
-    using PlayerRoles.Ragdolls;
+
 
     /// <summary>
     ///     Patches <see cref="Scp049ResurrectAbility.ServerValidateBegin" />.
@@ -28,7 +27,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     /// </summary>
     [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.StartingRecall))]
     [HarmonyPatch(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.ServerValidateBegin))]
-    internal static class Scp049ResurrectAbilityPatch
+    internal static class StartingRecall
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -66,7 +65,6 @@ namespace Exiled.Events.Patches.Events.Scp049
                 new(OpCodes.Brtrue_S, continueLabel),
                 new(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Ret).WithLabels(retLabel),
-                
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
             });
 
