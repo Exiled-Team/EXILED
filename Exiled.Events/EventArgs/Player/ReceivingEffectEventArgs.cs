@@ -69,7 +69,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the value of the current intensity of this effect on the player.
+        ///     Gets the value of the intensity of this effect on the player.
         /// </summary>
         public byte CurrentIntensity { get; }
 

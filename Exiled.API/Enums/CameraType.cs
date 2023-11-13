@@ -25,7 +25,6 @@ namespace Exiled.API.Enums
         /// Represents an unknown camera.
         /// </summary>
         Unknown,
-
         #region Ez
         EzChkptHall,
         EzCrossing,
@@ -43,7 +42,6 @@ namespace Exiled.API.Enums
         EzMinorOffice,
         EzTwoStoryOffice,
         #endregion
-
         #region Hcz
         Hcz049ContChamber,
         Hcz049ElevTop,
@@ -82,7 +80,6 @@ namespace Exiled.API.Enums
         HczWarheadHallway,
         HczWarheadTop,
         #endregion
-
         #region Lcz
         Lcz173Bottom,
         Lcz173ContChamber,
@@ -112,7 +109,6 @@ namespace Exiled.API.Enums
         LczTcHallway,
         LczTestChamber,
         #endregion
-
         #region Surface
         ExitPassage,
         GateASurface,
@@ -122,7 +118,6 @@ namespace Exiled.API.Enums
         SurfaceBridge,
         TunnelEntrance,
         #endregion
-
         #region new
         Hcz173Outside,
         Hcz173Stairs,

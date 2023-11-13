@@ -10,6 +10,8 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups.Projectiles;
+
+    using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -60,9 +62,9 @@ namespace Exiled.API.Features.Pickups
         public float ConcussDuration { get; set; }
 
         /// <inheritdoc/>
-        internal override Pickup GetItemInfo(Item item)
+        internal override void ReadItemInfo(Item item)
         {
-            base.GetItemInfo(item);
+            base.ReadItemInfo(item);
             if (item is ExplosiveGrenade explosiveGrenadeitem)
             {
                 MaxRadius = explosiveGrenadeitem.MaxRadius;
@@ -72,29 +74,10 @@ namespace Exiled.API.Features.Pickups
                 ConcussDuration = explosiveGrenadeitem.ConcussDuration;
                 FuseTime = explosiveGrenadeitem.FuseTime;
             }
-
-            return this;
         }
 
         /// <inheritdoc/>
-        internal override Item GetPickupInfo(Item item)
-        {
-            base.GetPickupInfo(item);
-            if (item is ExplosiveGrenade explosiveGrenadeitem)
-            {
-                explosiveGrenadeitem.MaxRadius = MaxRadius;
-                explosiveGrenadeitem.ScpDamageMultiplier = ScpDamageMultiplier;
-                explosiveGrenadeitem.BurnDuration = BurnDuration;
-                explosiveGrenadeitem.DeafenDuration = DeafenDuration;
-                explosiveGrenadeitem.ConcussDuration = ConcussDuration;
-                explosiveGrenadeitem.FuseTime = FuseTime;
-            }
-
-            return item;
-        }
-
-        /// <inheritdoc/>
-        internal override Pickup GetPickupInfo(Projectile projectile)
+        internal override void WriteProjectileInfo(Projectile projectile)
         {
             if (projectile is ExplosionGrenadeProjectile explosionGrenadeProjectile)
             {
@@ -105,8 +88,20 @@ namespace Exiled.API.Features.Pickups
                 explosionGrenadeProjectile.ConcussDuration = ConcussDuration;
                 explosionGrenadeProjectile.FuseTime = FuseTime;
             }
+        }
 
-            return projectile;
+        /// <inheritdoc/>
+        protected override void InitializeProperties(ItemBase itemBase)
+        {
+            base.InitializeProperties(itemBase);
+            if (itemBase is ThrowableItem throwable && throwable.Projectile is ExplosionGrenade explosiveGrenade)
+            {
+                MaxRadius = explosiveGrenade._maxRadius;
+                ScpDamageMultiplier = explosiveGrenade._scpDamageMultiplier;
+                BurnDuration = explosiveGrenade._burnedDuration;
+                DeafenDuration = explosiveGrenade._deafenedDuration;
+                ConcussDuration = explosiveGrenade._concussedDuration;
+            }
         }
     }
 }

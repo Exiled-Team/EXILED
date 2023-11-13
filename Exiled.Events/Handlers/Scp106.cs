@@ -33,6 +33,11 @@ namespace Exiled.Events.Handlers
         public static Event<StalkingEventArgs> Stalking { get; set; } = new();
 
         /// <summary>
+        ///     Invoked before SCP-106 exit the stalk ability.
+        /// </summary>
+        public static Event<ExitStalkingEventArgs> ExitStalking { get; set; } = new();
+
+        /// <summary>
         ///     Called before SCP-106 attacks player.
         /// </summary>
         /// <param name="ev">The <see cref="AttackingEventArgs" /> instance.</param>
@@ -49,5 +54,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="StalkingEventArgs"/> instance.</param>
         public static void OnStalking(StalkingEventArgs ev) => Stalking.InvokeSafely(ev);
+
+        /// <summary>
+        ///     Called before SCP-106 exit the stalk ability.
+        /// </summary>
+        /// <param name="ev">The <see cref="ExitStalkingEventArgs"/> instance.</param>
+        public static void OnExitStalking(ExitStalkingEventArgs ev) => ExitStalking.InvokeSafely(ev);
     }
 }

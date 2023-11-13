@@ -69,7 +69,7 @@ namespace Exiled.Events.EventArgs.Scp914
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        ///     Gets the player being upgraded.
+        ///     Gets the player that is being upgraded.
         /// </summary>
         public Player Player { get; }
     }
