@@ -8,7 +8,7 @@
 namespace Exiled.CustomRoles.API.Features.Enums
 {
     /// <summary>
-    /// The Action type that should be triggered from a keypress trigger.
+    /// The action type that should be triggered from a keypress trigger.
     /// </summary>
     public enum AbilityKeypressTriggerType
     {

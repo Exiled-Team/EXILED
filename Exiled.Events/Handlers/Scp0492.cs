@@ -23,6 +23,11 @@ namespace Exiled.Events.Handlers
         public static Event<TriggeringBloodlustEventArgs> TriggeringBloodlust { get; set; } = new ();
 
         /// <summary>
+        /// Called after 049-2 gets his benefits from consumed ability.
+        /// </summary>
+        public static Event<ConsumedCorpseEventArgs> ConsumedCorpse { get; set; } = new();
+
+        /// <summary>
         /// Called before 049-2 gets his benefits from consuming ability.
         /// </summary>
         public static Event<ConsumingCorpseEventArgs> ConsumingCorpse { get; set; } = new();
@@ -32,6 +37,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="TriggeringBloodlustEventArgs"/> instance.</param>
         public static void OnTriggeringBloodlust(TriggeringBloodlustEventArgs ev) => TriggeringBloodlust.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invokes after 049-2 gets his benefits from consumed ability.
+        /// </summary>
+        /// <param name="ev"><inheritdoc cref="ConsumedCorpseEventArgs"/> instance.</param>
+        public static void OnConsumedCorpse(ConsumedCorpseEventArgs ev) => ConsumedCorpse.InvokeSafely(ev);
 
         /// <summary>
         /// Invokes before 049-2 gets his benefits from consuming ability.

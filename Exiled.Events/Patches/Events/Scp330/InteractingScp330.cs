@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             LocalBuilder ev = generator.DeclareLocal(typeof(InteractingScp330EventArgs));
 
             // Remove original "No scp can touch" logic.
-            newInstructions.RemoveRange(0, 4);
+            newInstructions.RemoveRange(0, 3);
 
             // Find ServerProcessPickup, insert before it.
             int offset = -3;

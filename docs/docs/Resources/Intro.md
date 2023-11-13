@@ -34,7 +34,7 @@ sidebar_position: 1
 
 <details><summary> <b>Roles</b></summary>
 
-```md title="Latest Updated: 13.2.0.0"
+```md title="Latest Updated: 13.3.0.1"
 | Id  | RoleTypeId     | Team             | Side             | LeadingTeam     |
 |-----|----------------|------------------|------------------|-----------------|
 | -1  | None           | Dead             | None             | Draw            |
@@ -61,6 +61,7 @@ sidebar_position: 1
 | 20  | ChaosRepressor | ChaosInsurgency  | ChaosInsurgency  | ChaosInsurgency |
 | 21  | Overwatch      | Dead             | None             | Draw            |
 | 22  | Filmmaker      | Dead             | None             | Draw            |
+| 23  | Scp3114        | Dead             | None             | Draw            |
 ```
 
 </details>
@@ -69,7 +70,7 @@ sidebar_position: 1
 
 <details><summary> <b>Items</b></summary>
 
-```md  title="Latest Updated: 13.2.0.0"
+```md  title="Latest Updated: 13.3.0.1"
 [-1] None 
 [0] KeycardJanitor 
 [1] KeycardScientist 
@@ -125,6 +126,7 @@ sidebar_position: 1
 [51] AntiSCP207 
 [52] GunFRMG0 
 [53] GunA7 
+[54] Lantern 
 ```
 
 </details>
@@ -463,7 +465,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Structures</b></summary>
 
-```md title="Latest Updated: 13.2.0.0"
+```md title="Latest Updated: 13.3.0.1"
 [0] StandardLocker 
 [1] LargeGunLocker 
 [2] ScpPedestal 
@@ -505,7 +507,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Intercom States</b></summary>
 
-```md title="Latest Updated: 13.2.0.0"
+```md title="Latest Updated: 13.3.0.1"
 [0] Ready 
 [1] Starting 
 [2] InUse 
@@ -519,7 +521,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>BroadcastFlags</b></summary>
 
-```md title="Latest Updated: 13.2.0.0"
+```md title="Latest Updated: 13.3.0.1"
 [0] Normal 
 [1] Truncated 
 [2] AdminChat 

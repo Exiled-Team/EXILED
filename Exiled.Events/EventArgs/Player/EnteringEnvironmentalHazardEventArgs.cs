@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the player who's entering in the environmental hazard.
+        /// Gets the player who's entering the environmental hazard.
         /// </summary>
         public API.Features.Player Player { get; }
 

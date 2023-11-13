@@ -52,6 +52,7 @@ namespace Exiled.API.Features
     using PlayerRoles.Voice;
     using PlayerStatsSystem;
     using PluginAPI.Core;
+
     using RelativePositioning;
     using RemoteAdmin;
     using Respawning.NamingRules;
@@ -165,7 +166,7 @@ namespace Exiled.API.Features
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
 
-                value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[0] = healthStat = new CustomHealthStat { Hub = value };
+                value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[Array.IndexOf(value.playerStats.StatModules, typeof(HealthStat))] = healthStat = new CustomHealthStat { Hub = value };
             }
         }
 
@@ -560,6 +561,7 @@ namespace Exiled.API.Features
         /// <br /><see cref="RoleTypeId.Scp096"/> = <see cref="Scp096Role"/>.
         /// <br /><see cref="RoleTypeId.Scp106"/> = <see cref="Scp106Role"/>.
         /// <br /><see cref="RoleTypeId.Scp173"/> = <see cref="Scp173Role"/>.
+        /// <br /><see cref="RoleTypeId.Scp3114"/> = <see cref="Scp3114Role"/>.
         /// <br /><see cref="RoleTypeId.Scp939"/> = <see cref="Scp939Role"/>.
         /// <br />If not listed above, the type of Role will be <see cref="HumanRole"/>.
         /// </para>
@@ -838,10 +840,10 @@ namespace Exiled.API.Features
             get => healthStat.CurValue;
             set
             {
-                healthStat.CurValue = value;
-
                 if (value > MaxHealth)
                     MaxHealth = value;
+
+                healthStat.CurValue = value;
             }
         }
 
@@ -904,12 +906,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of all active Artificial Health processes on the player.
         /// </summary>
-        public IEnumerable<AhpStat.AhpProcess> ActiveArtificialHealthProcesses => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._activeProcesses;
+        public IEnumerable<AhpStat.AhpProcess> ActiveArtificialHealthProcesses => ReferenceHub.playerStats.GetModule<AhpStat>()._activeProcesses;
 
         /// <summary>
         /// Gets the player's <see cref="PlayerStatsSystem.HumeShieldStat"/>.
         /// </summary>
-        public HumeShieldStat HumeShieldStat => (HumeShieldStat)ReferenceHub.playerStats.StatModules[4];
+        public HumeShieldStat HumeShieldStat => ReferenceHub.playerStats.GetModule<HumeShieldStat>();
 
         /// <summary>
         /// Gets or sets the item in the player's hand. Value will be <see langword="null"/> if the player is not holding anything.
@@ -941,7 +943,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="StaminaStat"/> class.
         /// </summary>
-        public StaminaStat StaminaStat => (StaminaStat)ReferenceHub.playerStats.StatModules[2];
+        public StaminaStat StaminaStat => ReferenceHub.playerStats.GetModule<StaminaStat>();
 
         /// <summary>
         /// Gets or sets the amount of stamina the player has.
@@ -1902,7 +1904,7 @@ namespace Exiled.API.Features
         /// <seealso cref="CountItem(ItemType)"/>
         public int CountItem(ItemCategory category) => category switch
         {
-            ItemCategory.Ammo => Inventory.UserInventory.ReserveAmmo.Where(ammo => ammo.Value > 0).Count(),
+            ItemCategory.Ammo => Inventory.UserInventory.ReserveAmmo.Count(ammo => ammo.Value > 0),
             _ => Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.Category == category),
         };
 
@@ -1931,7 +1933,12 @@ namespace Exiled.API.Features
             {
                 item.ChangeOwner(this, Server.Host);
 
-                if (CurrentItem is not null && CurrentItem.Serial == item.Serial)
+                if (CurrentItem == item)
+                {
+                    Inventory.CurInstance = null;
+                }
+
+                if (item.Serial == Inventory.CurItem.SerialNumber)
                     Inventory.NetworkCurItem = ItemIdentifier.None;
 
                 Inventory.UserInventory.Items.Remove(item.Serial);
@@ -1948,7 +1955,12 @@ namespace Exiled.API.Features
         /// <param name="serial">The <see cref="Item"/> serial to remove.</param>
         /// <param name="destroy">Whether or not to destroy the item.</param>
         /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
-        public bool RemoveItem(ushort serial, bool destroy = true) => RemoveItem(Item.Get(serial), destroy);
+        public bool RemoveItem(ushort serial, bool destroy = true)
+        {
+            if (Items.SingleOrDefault(item => item.Serial == serial) is not Item item)
+                return false;
+            return RemoveItem(item, destroy);
+        }
 
         /// <summary>
         /// Removes all <see cref="Item"/>'s that satisfy the condition from the player's inventory.
@@ -2073,7 +2085,7 @@ namespace Exiled.API.Features
         public void Heal(float amount, bool overrideMaxHealth = false)
         {
             if (!overrideMaxHealth)
-                healthStat.ServerHeal(amount);
+                ReferenceHub.playerStats.GetModule<HealthStat>().ServerHeal(amount);
             else
                 Health += amount;
         }
@@ -2212,6 +2224,28 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Sends a message to the player's Remote Admin Chat.
+        /// </summary>
+        /// <param name="message">The message to be sent.</param>
+        /// <param name="channel">Indicates whether or not the message should be highlighted as success.</param>
+        /// <returns><see langword="true"/> if message was send; otherwise, <see langword="false"/>.</returns>
+        public bool SendStaffMessage(string message, EncryptedChannelManager.EncryptedChannel channel = EncryptedChannelManager.EncryptedChannel.AdminChat)
+        {
+            return ReferenceHub.encryptedChannelManager.TrySendMessageToClient("!" + NetId + message, channel);
+        }
+
+        /// <summary>
+        /// Sends a message to the player's Remote Admin Chat.
+        /// </summary>
+        /// <param name="message">The message to be sent.</param>
+        /// <param name="channel">Indicates whether or not the message should be highlighted as success.</param>
+        /// <returns><see langword="true"/> if message was send; otherwise, <see langword="false"/>.</returns>
+        public bool SendStaffPing(string message, EncryptedChannelManager.EncryptedChannel channel = EncryptedChannelManager.EncryptedChannel.AdminChat)
+        {
+            return ReferenceHub.encryptedChannelManager.TrySendMessageToClient("!0" + message, channel);
+        }
+
+        /// <summary>
         /// Shows a broadcast to the player. Doesn't get logged to the console and can be monospaced.
         /// </summary>
         /// <param name="duration">The broadcast duration.</param>
@@ -2297,17 +2331,46 @@ namespace Exiled.API.Features
         /// Adds an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
+        /// <returns>The <see cref="Item"/> given to the player.</returns>
+        public Item AddItem(ItemType itemType)
+        {
+            if (itemType.GetFirearmType() is not FirearmType.None)
+            {
+                return AddItem(itemType.GetFirearmType(), null);
+            }
+
+            Item item = Item.Create(itemType);
+
+            AddItem(item);
+
+            return item;
+        }
+
+        /// <summary>
+        /// Adds an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="itemType">The item to be added.</param>
         /// <param name="identifiers">The attachments to be added to the item.</param>
         /// <returns>The <see cref="Item"/> given to the player.</returns>
+        [Obsolete("Use AddItem(ItemType) or AddItem(FirearmType, IEnumerable<AttachmentIdentifier>)", true)]
         public Item AddItem(ItemType itemType, IEnumerable<AttachmentIdentifier> identifiers = null)
+            => itemType.GetFirearmType() is FirearmType.None ? AddItem(itemType) : AddItem(itemType.GetFirearmType(), identifiers);
+
+        /// <summary>
+        /// Adds an firearm of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="firearmType">The firearm to be added.</param>
+        /// <param name="identifiers">The attachments to be added to the item.</param>
+        /// <returns>The <see cref="Item"/> given to the player.</returns>
+        public Item AddItem(FirearmType firearmType, IEnumerable<AttachmentIdentifier> identifiers)
         {
-            Item item = Item.Get(Inventory.ServerAddItem(itemType));
+            Item item = Item.Create(firearmType.GetItemType());
 
             if (item is Firearm firearm)
             {
                 if (identifiers is not null)
                     firearm.AddAttachment(identifiers);
-                else if (Preferences is not null && Preferences.TryGetValue(itemType.GetFirearmType(), out AttachmentIdentifier[] attachments))
+                else if (Preferences is not null && Preferences.TryGetValue(firearmType, out AttachmentIdentifier[] attachments))
                     firearm.Base.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
 
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
@@ -2317,6 +2380,8 @@ namespace Exiled.API.Features
 
                 firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
+
+            AddItem(item);
 
             return item;
         }
@@ -2346,7 +2411,18 @@ namespace Exiled.API.Features
         /// <param name="amount">The amount of items to be added.</param>
         /// <param name="identifiers">The attachments to be added to the item.</param>
         /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        [Obsolete("Use AddItem(ItemType, int) or AddItem(FirearmType, int, IEnumerable<AttachmentIdentifier>)", true)]
         public IEnumerable<Item> AddItem(ItemType itemType, int amount, IEnumerable<AttachmentIdentifier> identifiers)
+            => itemType.GetFirearmType() is FirearmType.None ? AddItem(itemType, amount) : AddItem(itemType.GetFirearmType(), amount, identifiers);
+
+        /// <summary>
+        /// Adds the amount of firearms of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="firearmType">The item to be added.</param>
+        /// <param name="amount">The amount of items to be added.</param>
+        /// <param name="identifiers">The attachments to be added to the item.</param>
+        /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        public IEnumerable<Item> AddItem(FirearmType firearmType, int amount, IEnumerable<AttachmentIdentifier> identifiers)
         {
             List<Item> items = new(amount > 0 ? amount : 0);
 
@@ -2355,7 +2431,7 @@ namespace Exiled.API.Features
                 IEnumerable<AttachmentIdentifier> attachmentIdentifiers = identifiers.ToList();
 
                 for (int i = 0; i < amount; i++)
-                    items.Add(AddItem(itemType, attachmentIdentifiers));
+                    items.Add(AddItem(firearmType, attachmentIdentifiers));
             }
 
             return items;
@@ -2383,11 +2459,27 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
         /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        [Obsolete("Use AddItem(Dictionary<FirearmType, IEnumerable<AttachmentIdentifier>>) instead of this", true)]
         public IEnumerable<Item> AddItem(Dictionary<ItemType, IEnumerable<AttachmentIdentifier>> items)
         {
             List<Item> returnedItems = new(items.Count);
 
             foreach (KeyValuePair<ItemType, IEnumerable<AttachmentIdentifier>> item in items)
+                returnedItems.Add(AddItem(item.Key, item.Value));
+
+            return returnedItems;
+        }
+
+        /// <summary>
+        /// Adds the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
+        /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        public IEnumerable<Item> AddItem(Dictionary<FirearmType, IEnumerable<AttachmentIdentifier>> items)
+        {
+            List<Item> returnedItems = new(items.Count);
+
+            foreach (KeyValuePair<FirearmType, IEnumerable<AttachmentIdentifier>> item in items)
                 returnedItems.Add(AddItem(item.Key, item.Value));
 
             return returnedItems;
@@ -2401,9 +2493,6 @@ namespace Exiled.API.Features
         {
             try
             {
-                if (item.Base is null)
-                    item = Item.Create(item.Type);
-
                 AddItem(item.Base, item);
             }
             catch (Exception e)
@@ -2421,9 +2510,6 @@ namespace Exiled.API.Features
         {
             try
             {
-                if (item.Base is null)
-                    item = new Firearm(item.Type);
-
                 if (identifiers is not null)
                     item.AddAttachment(identifiers);
 
@@ -2497,14 +2583,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The item to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
-        public void AddItem(Item item, int amount)
-        {
-            if (amount > 0)
-            {
-                for (int i = 0; i < amount; i++)
-                    AddItem(item);
-            }
-        }
+        [Obsolete("Removed this method can't be functional")]
+        public void AddItem(Item item, int amount) => _ = item;
 
         /// <summary>
         /// Adds the <paramref name="amount"/> of items to the player's inventory.
@@ -2512,14 +2592,8 @@ namespace Exiled.API.Features
         /// <param name="firearm">The firearm to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
         /// <param name="identifiers">The attachments to be added to the item.</param>
-        public void AddItem(Firearm firearm, int amount, IEnumerable<AttachmentIdentifier> identifiers)
-        {
-            if (amount > 0)
-            {
-                for (int i = 0; i < amount; i++)
-                    AddItem(firearm, identifiers);
-            }
-        }
+        [Obsolete("Removed this method can't be functional")]
+        public void AddItem(Firearm firearm, int amount, IEnumerable<AttachmentIdentifier> identifiers) => _ = firearm;
 
         /// <summary>
         /// Adds the list of items to the player's inventory.
@@ -2596,7 +2670,7 @@ namespace Exiled.API.Features
             ClearInventory();
 
             foreach (Item item in newItems)
-                AddItem(item.Base is null ? new Item(item.Type) : item);
+                AddItem(item);
         }
 
         /// <summary>

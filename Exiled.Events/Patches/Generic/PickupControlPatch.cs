@@ -14,6 +14,8 @@ namespace Exiled.Events.Patches.Generic
     using API.Features.Pickups;
     using API.Features.Pools;
 
+    using Exiled.API.Features.Items;
+
     using HarmonyLib;
 
     using InventorySystem;
@@ -48,17 +50,12 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Ldloc_0),
                 new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get), new[] { typeof(ItemPickupBase) })),
 
-                /*
                 // Item.Get(itemBase);
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
 
-                // pickup.GetItemInfo(item);
-                new(OpCodes.Callvirt, Method(typeof(Pickup), nameof(Pickup.GetItemInfo))),*/
-
-                // pickup.IsSpawned = spawn
-                new(OpCodes.Ldarg_S, 4),
-                new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.IsSpawned))),
+                // pickup.ReadItemInfo(item);
+                new(OpCodes.Callvirt, Method(typeof(Pickup), nameof(Pickup.ReadItemInfo))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -80,11 +77,10 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.InsertRange(newInstructions.Count - 1, new CodeInstruction[]
             {
-                // Pickup.Get(pickupBase).IsSpawned = true
+                // Pickup.Get(pickupBase)
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get), new[] { typeof(ItemPickupBase) })),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.IsSpawned))),
+                new(OpCodes.Pop),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
