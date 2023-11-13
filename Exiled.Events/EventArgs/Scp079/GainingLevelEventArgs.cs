@@ -31,7 +31,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public GainingLevelEventArgs(Player player, int newLevel, bool isAllowed = true)
         {
             Player = player;
-            Scp079 = Player.Role.As<Scp079Role>();
+            Scp079 = player.Role.As<Scp079Role>();
             NewLevel = newLevel;
             IsAllowed = isAllowed;
         }

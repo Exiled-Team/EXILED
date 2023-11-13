@@ -166,7 +166,7 @@ namespace Exiled.API.Features
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
 
-                value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[0] = healthStat = new CustomHealthStat { Hub = value };
+                value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[Array.IndexOf(value.playerStats.StatModules, typeof(HealthStat))] = healthStat = new CustomHealthStat { Hub = value };
             }
         }
 
@@ -839,10 +839,10 @@ namespace Exiled.API.Features
             get => healthStat.CurValue;
             set
             {
-                healthStat.CurValue = value;
-
                 if (value > MaxHealth)
                     MaxHealth = value;
+
+                healthStat.CurValue = value;
             }
         }
 
@@ -2207,6 +2207,28 @@ namespace Exiled.API.Features
         public void RemoteAdminMessage(string message, bool success = true, string pluginName = null)
         {
             Sender.RaReply((pluginName ?? Assembly.GetCallingAssembly().GetName().Name) + "#" + message, success, true, string.Empty);
+        }
+
+        /// <summary>
+        /// Sends a message to the player's Remote Admin Chat.
+        /// </summary>
+        /// <param name="message">The message to be sent.</param>
+        /// <param name="channel">Indicates whether or not the message should be highlighted as success.</param>
+        /// <returns><see langword="true"/> if message was send; otherwise, <see langword="false"/>.</returns>
+        public bool SendStaffMessage(string message, EncryptedChannelManager.EncryptedChannel channel = EncryptedChannelManager.EncryptedChannel.AdminChat)
+        {
+            return ReferenceHub.encryptedChannelManager.TrySendMessageToClient("!" + NetId + message, channel);
+        }
+
+        /// <summary>
+        /// Sends a message to the player's Remote Admin Chat.
+        /// </summary>
+        /// <param name="message">The message to be sent.</param>
+        /// <param name="channel">Indicates whether or not the message should be highlighted as success.</param>
+        /// <returns><see langword="true"/> if message was send; otherwise, <see langword="false"/>.</returns>
+        public bool SendStaffPing(string message, EncryptedChannelManager.EncryptedChannel channel = EncryptedChannelManager.EncryptedChannel.AdminChat)
+        {
+            return ReferenceHub.encryptedChannelManager.TrySendMessageToClient("!0" + message, channel);
         }
 
         /// <summary>
