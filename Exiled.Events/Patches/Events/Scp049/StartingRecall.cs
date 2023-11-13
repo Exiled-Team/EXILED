@@ -4,7 +4,6 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-
 namespace Exiled.Events.Patches.Events.Scp049
 {
     using System.Collections.Generic;
@@ -63,11 +62,11 @@ namespace Exiled.Events.Patches.Events.Scp049
                 new(OpCodes.Callvirt, PropertyGetter(typeof(StartingRecallEventArgs), nameof(StartingRecallEventArgs.IsAllowed))),
                 new(OpCodes.Brtrue_S, continueLabel),
                 new(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Ret).WithLabels(retLabel),
+                new(OpCodes.Ret),
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
             });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
