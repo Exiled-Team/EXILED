@@ -129,7 +129,7 @@ namespace Exiled.API.Features.Roles
         public bool IsInvisible { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player should use stamina system for current live.
+        /// Gets or sets a value indicating whether or not the player should use stamina system. Resets on death.
         /// </summary>
         public bool IsUsingStamina
         {
@@ -143,12 +143,12 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets the stamina usage multiplier for current live.
+        /// Gets or sets the stamina usage multiplier. Resets on death.
         /// </summary>
         public float StaminaUsageMultiplier { get; set; } = 1f;
 
         /// <summary>
-        /// Gets or sets the stamina regen multiplier for current live.
+        /// Gets or sets the stamina regen multiplier. Resets on death.
         /// </summary>
         public float StaminaRegenMultiplier { get; set; } = 1f;
 
