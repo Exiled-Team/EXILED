@@ -32,7 +32,6 @@ namespace Exiled.Events.Patches.Events.Scp049
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label continueLabel = generator.DefineLabel();
-            Label retLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
@@ -65,7 +64,6 @@ namespace Exiled.Events.Patches.Events.Scp049
                 new(OpCodes.Ret),
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
             });
-            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
