@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     using PlayerRoles.PlayableScps.Scp106;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using static HarmonyLib.AccessTools;
 
@@ -58,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // Player.Get(base.Owner)
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp106Role>), nameof(ScpStandardSubroutine<Scp106Role>.Owner))),
+                    new(OpCodes.Call, PropertyGetter(typeof(StandardSubroutine<Scp106Role>), nameof(StandardSubroutine<Scp106Role>.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // true

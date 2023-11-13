@@ -57,7 +57,7 @@ namespace Exiled.Events.EventArgs.Map
                 {
                     case false:
                         {
-                            if (Server.FriendlyFire || IndividualFriendlyFire.CheckFriendlyFirePlayer(player.ReferenceHub, hub))
+                            if (Server.FriendlyFire || IndividualFriendlyFire.CheckFriendlyFirePlayer(thrower, hub))
                             {
                                 if (!TargetsToAffect.Contains(player))
                                     TargetsToAffect.Add(player);
@@ -67,7 +67,7 @@ namespace Exiled.Events.EventArgs.Map
                         break;
                     case true:
                         {
-                            if (Server.FriendlyFire || HitboxIdentity.CheckFriendlyFire(thrower.Role, hub.roleManager.CurrentRole.RoleTypeId))
+                            if (Server.FriendlyFire || thrower.Hub == Server.Host.ReferenceHub || HitboxIdentity.CheckFriendlyFire(thrower.Role, hub.roleManager.CurrentRole.RoleTypeId))
                             {
                                 if (!TargetsToAffect.Contains(player))
                                     TargetsToAffect.Add(player);
@@ -109,12 +109,12 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        /// Gets the position where is exploding.
+        /// Gets the position where the grenade is exploding.
         /// </summary>
         public Vector3 Position { get; }
 
         /// <summary>
-        ///     Gets the players who could be affected by the grenade, if any, and the damage that would hurt them.
+        ///     Gets the players who could be affected by the grenade, if any, and the damage that be dealt.
         /// </summary>
         public List<Player> TargetsToAffect { get; }
 

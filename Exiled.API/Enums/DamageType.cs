@@ -234,5 +234,20 @@ namespace Exiled.API.Enums
         /// Damage caused by <see cref="ItemType.GunA7"/>.
         /// </summary>
         A7,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleTypeId.Scp3114"/>
+        /// </summary>
+        Scp3114,
+
+        /// <summary>
+        /// Damage caused by Scp3114's strangling ability.
+        /// </summary>
+        Strangled,
+
+        /// <summary>
+        /// Damage caused by the marshmallow man.
+        /// </summary>
+        Marshmallow,
     }
 }

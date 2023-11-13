@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs.Player
         public RoleTypeId TargetOldRole { get; }
 
         /// <summary>
-        ///     Gets the killed player.
+        ///     Gets the dead player.
         /// </summary>
         public Player Player { get; }
 
@@ -56,7 +56,7 @@ namespace Exiled.Events.EventArgs.Player
         public CustomDamageHandler DamageHandler { get; set; }
 
         /// <summary>
-        ///     Gets the killer player.
+        ///     Gets the attacker.
         /// </summary>
         public Player Attacker { get; }
     }
