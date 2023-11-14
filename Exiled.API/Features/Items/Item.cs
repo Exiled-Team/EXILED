@@ -345,11 +345,9 @@ namespace Exiled.API.Features.Items
         /// <param name="newOwner">new <see cref="Item"/> owner.</param>
         internal virtual void ChangeOwner(Player oldOwner, Player newOwner)
         {
-                Base.OnRemoved(null);
-
-                Base.Owner = newOwner.ReferenceHub;
-
-                Base.OnAdded(null);
+            Base.OnRemoved(null);
+            Base.Owner = newOwner.ReferenceHub;
+            Base.OnAdded(null);
         }
 
         /// <summary>
