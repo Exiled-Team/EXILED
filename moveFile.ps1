@@ -50,5 +50,5 @@ function Move-File {
 # Usage example for the Move-File function
  
 # Move a file from one location to another
-dir read *.*
+dir *.*
 Move-File -sourcePath ".\EXILED-DLL-Archiver.exe" -destinationPath ".\bin\Release\EXILED-DLL-Archiver.exe"
