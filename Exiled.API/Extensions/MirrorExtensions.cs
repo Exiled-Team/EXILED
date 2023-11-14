@@ -211,7 +211,7 @@ namespace Exiled.API.Extensions
         /// <param name="target">Only this player can see room color.</param>
         /// <param name="multiplier">Light intensity multiplier to set.</param>
 
-        [Obsolete("This features has been removed by NW", true)]
+        [Obsolete("This features has been remove by NW", true)]
         public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier)
         {
         }
