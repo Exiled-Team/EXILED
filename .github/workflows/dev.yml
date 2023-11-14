@@ -65,9 +65,3 @@ jobs:
       with:
         name: Exiled.tar.gz
         path: bin/Release/Exiled.tar.gz
-
-    - name: Upload nuget package
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ env.PackageFile }}
-        path: ${{ env.PackageFile }}
