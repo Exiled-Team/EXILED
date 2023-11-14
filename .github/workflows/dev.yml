@@ -36,10 +36,6 @@ jobs:
       shell: pwsh
       run: |
         Invoke-WebRequest -Uri ${{ env.EXILED_DLL_ARCHIVER_URL }} -OutFile ${{ github.workspace }}/EXILED-DLL-Archiver.exe
-
-    - name: Move Files
-      shell: pwsh
-      run: ./moveFile.ps1
     
     - name: Get references
       shell: pwsh
@@ -55,12 +51,26 @@ jobs:
         ./build.ps1 -BuildNuGet
         $File = (Get-ChildItem -Path . -Include 'EXILED.*.nupkg' -Recurse).Name
         Out-File -FilePath ${{ github.env }} -InputObject "PackageFile=$File" -Encoding utf-8 -Append
+    
+    - name: Move Files
+      shell: pwsh
+      run: ./moveFile.ps1
 
+    - name: Run archiver
+      shell: pwsh
+      run: ./EXILED-DLL-Archiver.ps1
+      
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
         name: Build Results
         path: bin/Release
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Build Results
+        path: bin/Release/Exiled.tar.gz
 
     - name: Upload nuget package
       uses: actions/upload-artifact@v2
