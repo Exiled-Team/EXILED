@@ -90,10 +90,7 @@ namespace Exiled.Events.Patches.Events.Item
                     Item.OnChargingJailbird(ev);
                     if (ev.IsAllowed)
                             return true;
-                    instance.SendRpc(JailbirdMessageType.ChargeStarted, wr =>
-                    {
-                        wr.WriteDouble(0);
-                    });
+                    instance.SendRpc(JailbirdMessageType.Failed, null);
                     return false;
                 }
 
