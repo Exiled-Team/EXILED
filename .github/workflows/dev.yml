@@ -54,7 +54,7 @@ jobs:
     
     - name: Zip results as tar.gz
       shell: pwsh
-      run: ./moveFile.ps1
+      run: ./packaging.ps1
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
