@@ -479,7 +479,7 @@ namespace Exiled.API.Features.Pickups
             ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardMTFCaptain or ItemType.KeycardMTFOperative or ItemType.KeycardMTFPrivate => new KeycardPickup(type),
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new BodyArmorPickup(type),
             ItemType.SCP330 => new Scp330Pickup(),
-            ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP1853 or ItemType.Painkillers or ItemType.Medkit or ItemType.Adrenaline => new UsablePickup(type),
+            ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP1853 or ItemType.Painkillers or ItemType.Medkit or ItemType.Adrenaline or ItemType.AntiSCP207 => new UsablePickup(type),
             ItemType.Jailbird => new JailbirdPickup(),
             ItemType.SCP1576 => new Scp1576Pickup(),
             ItemType.SCP2176 => new Projectiles.Scp2176Projectile(),
