@@ -13,12 +13,12 @@ namespace Exiled.API.Enums
     public enum SpawnLocationType
     {
         /// <summary>
-        /// The inside of 330's room.
+        /// The inside of SCP-330's room.
         /// </summary>
         Inside330,
 
         /// <summary>
-        /// The inside of 330's room test chamber.
+        /// The inside of SCP-330's room test chamber.
         /// </summary>
         Inside330Chamber,
 
@@ -73,7 +73,7 @@ namespace Exiled.API.Enums
         InsideLczArmory,
 
         /// <summary>
-        /// Inside the LCZ office room with computers.
+        /// Inside the LCZ PC-15 room.
         /// </summary>
         InsideLczCafe,
 
@@ -118,7 +118,7 @@ namespace Exiled.API.Enums
         InsideGr18,
 
         /// <summary>
-        /// Inside the T-Junction HCZ Armory.
+        /// Inside the 3-way intersection HCZ Armory.
         /// </summary>
         InsideHczArmory,
 

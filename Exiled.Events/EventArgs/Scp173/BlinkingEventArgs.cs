@@ -58,6 +58,7 @@ namespace Exiled.Events.EventArgs.Scp173
         /// <summary>
         ///     Gets a <see cref="IEnumerable{T}" /> of players who have triggered SCP-173.
         /// </summary>
+        // TODO: convert to ReadOnlyCollection
         public List<Player> Targets { get; }
 
         /// <summary>

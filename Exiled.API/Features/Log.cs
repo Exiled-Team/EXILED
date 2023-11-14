@@ -12,7 +12,7 @@ namespace Exiled.API.Features
     using System.Reflection;
 
     /// <summary>
-    /// A set of tools to print messages on the server console.
+    /// A set of tools to print messages to the server console.
     /// </summary>
     public static class Log
     {

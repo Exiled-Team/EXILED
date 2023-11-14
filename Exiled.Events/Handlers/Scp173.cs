@@ -23,6 +23,11 @@ namespace Exiled.Events.Handlers
         public static Event<BlinkingEventArgs> Blinking { get; set; } = new();
 
         /// <summary>
+        ///     Invoked before server handle SCP-173 blink network message.
+        /// </summary>
+        public static Event<BlinkingRequestEventArgs> BlinkingRequest { get; set; } = new();
+
+        /// <summary>
         ///     Invoked before a tantrum is placed.
         /// </summary>
         public static Event<PlacingTantrumEventArgs> PlacingTantrum { get; set; } = new();
@@ -37,6 +42,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="BlinkingEventArgs" /> instance.</param>
         public static void OnBlinking(BlinkingEventArgs ev) => Blinking.InvokeSafely(ev);
+
+        /// <summary>
+        ///     Called before server handle SCP-173 blink network message.
+        /// </summary>
+        /// <param name="ev">The <see cref="BlinkingRequestEventArgs" /> instance.</param>
+        public static void OnBlinkingRequest(BlinkingRequestEventArgs ev) => BlinkingRequest.InvokeSafely(ev);
 
         /// <summary>
         ///     Called before a tantrum is placed.

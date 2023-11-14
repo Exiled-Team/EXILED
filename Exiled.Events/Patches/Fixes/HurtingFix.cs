@@ -50,6 +50,10 @@ namespace Exiled.Events.Patches.Events.Player
                     //   skip;
                     new(OpCodes.Ldloc_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, player.LocalIndex),
+                    new(OpCodes.Brfalse_S, skip),
+                    new(OpCodes.Ldloc, player.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsAlive))),
                     new(OpCodes.Brfalse_S, skip),
                 });
