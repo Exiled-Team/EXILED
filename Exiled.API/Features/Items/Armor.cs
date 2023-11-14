@@ -89,16 +89,7 @@ namespace Exiled.API.Features.Items
         public int HelmetEfficacy
         {
             get => Base.HelmetEfficacy;
-            set
-            {
-                if (value is > 100 or < 0)
-                {
-                    Log.Warn($"{nameof(HelmetEfficacy)} Value of armor efficacy must be between 0 and 100.");
-                    value = Mathf.Clamp(value, 0, 100);
-                }
-
-                Base.HelmetEfficacy = value;
-            }
+            set => Base.HelmetEfficacy = value;
         }
 
         /// <summary>
@@ -107,22 +98,12 @@ namespace Exiled.API.Features.Items
         public int VestEfficacy
         {
             get => Base.VestEfficacy;
-            set
-            {
-                if (value is > 100 or < 0)
-                {
-                    Log.Warn($"{nameof(VestEfficacy)} Value of armor efficacy must be between 0 and 100.");
-                    value = Mathf.Clamp(value, 0, 100);
-                }
-
-                Base.VestEfficacy = value;
-            }
+            set => Base.VestEfficacy = value;
         }
 
         /// <summary>
         /// Gets or sets how much faster stamina will drain when wearing this armor.
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 1 or above 2.</exception>
         public float StaminaUseMultiplier
         {
             get => Base._staminaUseMultiplier;
@@ -132,7 +113,6 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 0 or above 1.</exception>
         public float MovementSpeedMultiplier
         {
             get => Base._movementSpeedMultiplier;

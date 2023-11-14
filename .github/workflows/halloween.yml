@@ -1,15 +1,16 @@
-name: Exiled Main CI
+name: Exiled Halloween CI
 
 on:
   push:
     branches:
-      - master
+      - 'halloween-2023'
   pull_request:
     branches:
-      - master
+      - 'halloween-2023'
+  workflow_dispatch:
 
 env:
-  EXILED_REFERENCES_URL: https://misaka-zerotwo.github.io/SL-References/Master.zip
+  EXILED_REFERENCES_URL: https://exiled.host/build_deps/Dev.zip
   EXILED_REFERENCES_PATH: ${{ github.workspace }}/References
 
 jobs:
@@ -50,9 +51,3 @@ jobs:
       with:
         name: Build Results
         path: bin/Release
-
-    - name: Upload nuget package
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ env.PackageFile }}
-        path: ${{ env.PackageFile }}
