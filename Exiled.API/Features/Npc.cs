@@ -148,9 +148,17 @@ namespace Exiled.API.Features
                 Log.Debug($"Ignore: {e}");
             }
 
-            int conId = id == 0 ? ReferenceHub.AllHubs.Count + 1 : id;
+            if (RecyclablePlayerId.FreeIds.Contains(id))
+            {
+                RecyclablePlayerId.FreeIds.RemoveFromQueue(id);
+            }
+            else if (RecyclablePlayerId._autoIncrement >= id)
+            {
+                RecyclablePlayerId._autoIncrement = id = RecyclablePlayerId._autoIncrement + 1;
+            }
 
-            NetworkServer.AddPlayerForConnection(new FakeConnection(conId), newObject);
+            FakeConnection fakeConnection = new(id);
+            NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
             try
             {
                 npc.ReferenceHub.authManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy@localhost" : userId;
@@ -181,6 +189,8 @@ namespace Exiled.API.Features
         public void Destroy()
         {
             NetworkConnectionToClient conn = ReferenceHub.connectionToClient;
+            if (ReferenceHub._playerId.Value <= RecyclablePlayerId._autoIncrement)
+                ReferenceHub._playerId.Destroy();
             ReferenceHub.OnDestroy();
             CustomNetworkManager.TypedSingleton.OnServerDisconnect(conn);
             Dictionary.Remove(GameObject);
