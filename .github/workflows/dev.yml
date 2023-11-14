@@ -63,7 +63,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: Build Results
+        name: Exiled.tar.gz
         path: bin/Release/Exiled.tar.gz
 
     - name: Upload nuget package
