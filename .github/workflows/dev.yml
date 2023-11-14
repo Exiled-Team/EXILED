@@ -35,7 +35,11 @@ jobs:
       uses: pozetroninc/github-action-get-latest-release@v0.7.0
       with:
         repository: Exiled-Team/EXILED-DLL-Archiver
-        
+
+    - name: Move Files
+      shell: pwsh
+      run: ./moveFile.ps1
+    
     - name: Get references
       shell: pwsh
       run: |
@@ -50,10 +54,6 @@ jobs:
         ./build.ps1 -BuildNuGet
         $File = (Get-ChildItem -Path . -Include 'EXILED.*.nupkg' -Recurse).Name
         Out-File -FilePath ${{ github.env }} -InputObject "PackageFile=$File" -Encoding utf-8 -Append
-
-    - name: Move Files
-      shell: pwsh
-      run: ./moveFile.ps1
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
