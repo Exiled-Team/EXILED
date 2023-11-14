@@ -55,3 +55,5 @@ Move-File -sourcePath ".\References\0Harmony.dll" -destinationPath ".\bin\Releas
 Move-File -sourcePath ".\References\SemanticVersioning.dll" -destinationPath ".\bin\Release\SemanticVersioning.dll"
 Move-File -sourcePath ".\References\Mono.Posix.dll" -destinationPath ".\bin\Release\Mono.Posix.dll"
 Move-File -sourcePath ".\References\System.ComponentModel.DataAnnotations.dll" -destinationPath ".\bin\Release\System.ComponentModel.DataAnnotations.dll"
+CD .\bin\Release
+.\EXILED-DLL-Archiver.exe
