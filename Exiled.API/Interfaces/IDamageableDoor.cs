@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="IDamageableDoor.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -10,12 +10,12 @@ namespace Exiled.API.Interfaces
     using Interactables.Interobjects.DoorUtils;
 
     /// <summary>
-    /// Interface for doors which can be damaged.
+    /// Interface for doors that can be damaged.
     /// </summary>
     public interface IDamageableDoor
     {
         /// <summary>
-        /// Gets or sets remaining health of the door.
+        /// Gets or sets the health of the door.
         /// </summary>
         public float Health { get; set; }
 

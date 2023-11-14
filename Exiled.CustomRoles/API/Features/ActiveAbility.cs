@@ -69,7 +69,6 @@ namespace Exiled.CustomRoles.API.Features
         {
             ActivePlayers.Add(player);
             LastUsed[player] = DateTime.Now;
-            ShowMessage(player);
             AbilityUsed(player);
             Timing.CallDelayed(Duration, () => EndAbility(player));
         }
@@ -135,6 +134,8 @@ namespace Exiled.CustomRoles.API.Features
         /// <exception cref="ArgumentOutOfRangeException">This should never happen unless Joker fucks up.</exception>
         public virtual bool Check(Player player, CheckType type)
         {
+            if (player is null)
+                return false;
             bool result = type switch
             {
                 CheckType.Active => ActivePlayers.Contains(player),
@@ -230,6 +231,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Called when the ability is successfully used.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> using the ability.</param>
+        [Obsolete("The Keypress Activator will already do this, you do not need to call this unless you are overwriting the keypress activator.", true)]
         protected virtual void ShowMessage(Player player) =>
             player.ShowHint(string.Format(CustomRoles.Instance!.Config.UsedAbilityHint.Content, Name, Description), CustomRoles.Instance.Config.UsedAbilityHint.Duration);
 

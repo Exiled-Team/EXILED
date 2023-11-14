@@ -119,11 +119,16 @@ namespace Exiled.API.Features.Doors
         public float ExactState => Base.GetExactState();
 
         /// <summary>
+        /// Gets a value indicating whether the door is considered open by the game.
+        /// </summary>
+        public bool IsConsideredOpen => Base.IsConsideredOpen();
+
+        /// <summary>
         /// Gets or sets a value indicating whether the door is open.
         /// </summary>
         public bool IsOpen
         {
-            get => Base.IsConsideredOpen();
+            get => Base.NetworkTargetState;
             set => Base.NetworkTargetState = value;
         }
 

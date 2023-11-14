@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the player who's send request.
+        /// Gets the player who's sending the request.
         /// </summary>
         public Player Player { get; }
 

@@ -147,6 +147,11 @@ namespace Exiled.Events.Handlers
         public static Event<HurtingEventArgs> Hurting { get; set; } = new();
 
         /// <summary>
+        /// Invoked after hurting a <see cref="API.Features.Player"/>.
+        /// </summary>
+        public static Event<HurtEventArgs> Hurt { get; set; } = new();
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> dies.
         /// </summary>
         public static Event<DyingEventArgs> Dying { get; set; } = new();
@@ -451,6 +456,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before a <see cref="API.Features.Player"/> searches a Pickup.
         /// </summary>
         public static Event<SearchingPickupEventArgs> SearchingPickup { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> send a message in AdminChat.
+        /// </summary>
+        public static Event<SendingAdminChatMessageEventsArgs> SendingAdminChatMessage { get; set; } = new();
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> damage a Window.
@@ -897,6 +907,12 @@ namespace Exiled.Events.Handlers
         public static void OnSearchPickupRequest(SearchingPickupEventArgs ev) => SearchingPickup.InvokeSafely(ev);
 
         /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> searches a Pickup.
+        /// </summary>
+        /// <param name="ev">The <see cref="SendingAdminChatMessageEventsArgs"/> instance.</param>
+        public static void OnSendingAdminChatMessage(SendingAdminChatMessageEventsArgs ev) => SendingAdminChatMessage.InvokeSafely(ev);
+
+        /// <summary>
         ///  Called before KillPlayer is called.
         /// </summary>
         /// <param name="ev">The <see cref="KillingPlayerEventArgs"/> event handler. </param>
@@ -1012,6 +1028,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="HurtingEventArgs"/> instance. </param>
         public static void OnHurting(HurtingEventArgs ev) => Hurting.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called ater a <see cref="API.Features.Player"/> being hurt.
+        /// </summary>
+        /// <param name="ev">The <see cref="HurtingEventArgs"/> instance. </param>
+        public static void OnHurt(HurtEventArgs ev) => Hurt.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> dies.

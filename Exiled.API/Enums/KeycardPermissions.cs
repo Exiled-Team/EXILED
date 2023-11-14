@@ -42,7 +42,7 @@ namespace Exiled.API.Enums
         Intercom = 4,
 
         /// <summary>
-        /// Opens the Alpha Warhead detonation room on surface.
+        /// Opens the Alpha Warhead detonation button on surface.
         /// </summary>
         AlphaWarhead = 8,
 
