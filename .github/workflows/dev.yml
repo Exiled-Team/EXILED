@@ -58,7 +58,7 @@ jobs:
 
     - name: Run archiver
       shell: pwsh
-      run: ./EXILED-DLL-Archiver.ps1
+      run: ./EXILED-DLL-Archiver.exe
       
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
