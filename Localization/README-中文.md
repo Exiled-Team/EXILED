@@ -47,7 +47,7 @@ EXILED的安装十分简单。因为是用NW插件API来将自身载入，你会
 **备注:** 如果你正在一个远程服务器上安装EXILED，请确保你运行的.exe的用户和你运行SCP:SL服务器的一致
 
   - 下载 [Exiled.Installer-Linux](https://github.com/Exiled-Team/EXILED/releases) (点击 Assets -> 下载安装包)
-  - 输入 **`./Exiled.Installer-Linux --path /path/to/server`** 来安装，或者是直接把它放到服务器文件夹里， 首先在终端中使用 (`cd`)指令移动安装器，之后再输入: **`./Exiled.Installer-Linux`运行安装程序。.
+  - 输入 **`./Exiled.Installer-Linux --path /path/to/server`** 来安装，或者是直接把它放到服务器文件夹里， 首先在控制台（终端）中使用 (`cd`)指令移动安装器，之后再输入: **`./Exiled.Installer-Linux`运行安装程序。.
   - 如果你想要最新的预更新， 只需添加 **`--pre-releases`**. 例子: **`./Exiled.Installer-Linux /home/scp/server --pre-releases`**
   - 另一个例子， 如果你把 `Exiled.Installer-Linux` 放到了你服务器的文件夹中，你还可以这样操作: **`/home/scp/server/Exiled.Installer-Linux --pre-releases`**
   - 获取以及安装插件，请参考下面的[安装插件](#installing-plugins-1)部分。
@@ -64,7 +64,7 @@ EXILED的安装十分简单。因为是用NW插件API来将自身载入，你会
 - 想要安装插件，只需要:
   - 从[**插件仓库**的Releases页面](https://i.imgur.com/u34wgPD.jpg)中下载DLL文件。(**它必须是个`.dll`!**)
 ## Windows
-  - 移动DLL文件到: ``C:\用户\(你的用户)\AppData\Roaming\EXILED\Plugins`` (可以通过按 Win + R键输入`%appdata%快速定位到AppData`)
+  - 移动DLL文件到: ``C:\用户\(你的用户)\AppData\Roaming\EXILED\Plugins`` (可以通过按 Win + R键输入``%appdata%`` 来快速定位到AppData)
 ## Linux
   - 移动DLL文件到: ``~/.config/EXILED/Plugins`` (如果你的SSH用的是root用户，请搜索正确的`.config`文件夹，它会在 `/home/(SCP服务器用户)`下。)
 
@@ -92,7 +92,7 @@ EXILED自身提供一些配置选项。
 MEC协程其实就是计时方法， 它支持在执行一段代码前等待一段时间， 而不会影响/睡眠游戏主线程。
 MEC协程可以用于Unity， 不像传统的线程 ***请勿尝试增加新的线程与Unity交互，它会导致炸服的。***
 
-如需使用 MEC， 你需要从SL的服务端文件夹``SCP Secret Laboratory Dedicated Server\SCPSL_ Data\Manage`` 中引用 ``Assembly-CSharp-firstpass.dll``， 并在插件中使用 ``using MEC;``。
+如需使用 MEC， 你需要从SL的服务端文件夹``SCP Secret Laboratory Dedicated Server\SCPSL_Data\Manage`` 中引用 ``Assembly-CSharp-firstpass.dll``， 并在插件中使用 ``using MEC;``。
 一个简单的协程例子，循环重复之间有一个延迟:
 ```cs
 using MEC;
@@ -113,7 +113,7 @@ public IEnumerator<float> MyCoroutine()
 }
 ```
 
-如果你对MEC仍然不熟悉，或是想要了解更多、得到建议、又或是寻求帮助。***强烈建议***  你去百度或谷歌一下，或在Discord里面提问。无论问题本身有多“蠢”，我们都会尽可能的尝试帮助你解决问题。*好的代码对所有人都有益*。
+如果你对MEC仍然不熟悉，或是想要了解更多、得到建议、又或是寻求帮助。***强烈建议*** 你去百度或谷歌一下，或在Discord里面提问。无论问题本身有多“蠢”，我们都会尽可能的尝试帮助你解决问题。*好的代码对所有人都有益*。
 
 ### 动态更新
 EXILED框架支持在不重启服务器的情况下动态重新载入插件程序集。
@@ -138,7 +138,7 @@ EXILED框架支持在不重启服务器的情况下动态重新载入插件程�
 因此，如果你的插件将会支持动态更新，你必须在生成时使用不一样的程序集名（重命名文件是没有用的）。此外，不需要用的旧程序集并不会被“清除”，如果你没有正确的取消订阅事件，取消Harmony补丁，摧毁协程等。原本的代码将会同新的代码一起运行。 
 让这件事发生绝对不是一个好主意。
 
-所以，支持动态更新的插***必须***遵从以上规则，否则，插件将会因为可能对服主造成威胁而被从Discord服务器中移除。
+所以，支持动态更新的插件***必须***遵从以上规则，否则，插件将会因为可能对服主造成威胁而被从Discord服务器中移除。
 
 不是所有的插件都必须支持动态更新。如果你不打算支持动态更新，这也完全没有问题，只是需要注意不要在更新插件后改变程序集的名字，并让服主知道他会需要重启服务器来更新你的插件。
 
