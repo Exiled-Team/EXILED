@@ -57,9 +57,6 @@ jobs:
       shell: powershell
       run: ./moveFile.ps1
 
-    - name: Run archiver
-      run: ./bin/Release/EXILED-DLL-Archiver.exe
-
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
