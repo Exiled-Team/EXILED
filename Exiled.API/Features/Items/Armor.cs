@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.Armor;
@@ -124,7 +125,7 @@ namespace Exiled.API.Features.Items
         /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 1 or above 2.</exception>
         public float StaminaUseMultiplier
         {
-            get => Base.StaminaUsageMultiplier;
+            get => Base._staminaUseMultiplier;
             set => Base._staminaUseMultiplier = value;
         }
 
@@ -134,8 +135,9 @@ namespace Exiled.API.Features.Items
         /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 0 or above 1.</exception>
         public float MovementSpeedMultiplier
         {
-            get => Base.MovementSpeedMultiplier;
-            set => Base._movementSpeedMultiplier = value;
+            get => Base._movementSpeedMultiplier;
+            [Obsolete("This Setter was causing desync to client", true)]
+            set => _ = value;
         }
 
         /// <summary>
@@ -158,7 +160,6 @@ namespace Exiled.API.Features.Items
         public IEnumerable<BodyArmor.ArmorCategoryLimitModifier> CategoryLimits
         {
             get => Base.CategoryLimits;
-
             set => Base.CategoryLimits = value.ToArray();
         }
 
@@ -176,5 +177,20 @@ namespace Exiled.API.Features.Items
             VestEfficacy = VestEfficacy,
             HelmetEfficacy = HelmetEfficacy,
         };
+
+        /// <inheritdoc/>
+        internal override void ReadPickupInfo(Pickup pickup)
+        {
+            base.ReadPickupInfo(pickup);
+            if (pickup is Pickups.BodyArmorPickup armorPickup)
+            {
+                HelmetEfficacy = armorPickup.HelmetEfficacy;
+                VestEfficacy = armorPickup.VestEfficacy;
+                RemoveExcessOnDrop = armorPickup.RemoveExcessOnDrop;
+                StaminaUseMultiplier = armorPickup.StaminaUseMultiplier;
+                AmmoLimits = armorPickup.AmmoLimits;
+                CategoryLimits = armorPickup.CategoryLimits;
+            }
+        }
     }
 }
