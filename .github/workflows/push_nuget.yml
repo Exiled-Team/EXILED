@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  EXILED_REFERENCES_URL: https://www.exiled.host/build_deps/Master.zip
+  EXILED_REFERENCES_URL: https://misaka-zerotwo.github.io/SL-References/Master.zip
   EXILED_REFERENCES_PATH: ${{ github.workspace }}/References
 
 jobs:
