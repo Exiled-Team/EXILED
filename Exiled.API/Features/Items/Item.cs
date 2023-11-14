@@ -23,9 +23,9 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.MicroHID;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
+    using InventorySystem.Items.SwitchableLightSources;
+    using InventorySystem.Items.SwitchableLightSources.Flashlight;
     using InventorySystem.Items.ThrowableProjectiles;
-    using InventorySystem.Items.ToggleableLights;
-    using InventorySystem.Items.ToggleableLights.Flashlight;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp1576;
     using InventorySystem.Items.Usables.Scp244;
@@ -205,7 +205,7 @@ namespace Exiled.API.Features.Items
                 MicroHIDItem micro => new MicroHid(micro),
                 BodyArmor armor => new Armor(armor),
                 AmmoItem ammo => new Ammo(ammo),
-                ToggleableLightItemBase flashlight => new Flashlight(flashlight),
+                SwitchableLightSourceItemBase flashlight => new Flashlight(flashlight),
                 JailbirdItem jailbird => new Jailbird(jailbird),
                 ThrowableItem throwable => throwable.Projectile switch
                 {
@@ -326,17 +326,30 @@ namespace Exiled.API.Features.Items
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* ={Owner}=";
 
         /// <summary>
+        /// A public method to change the owner of the <see cref="Item"/>.
+        /// </summary>
+        /// <param name="oldOwner">Old <see cref="Item"/> owner.</param>
+        /// <param name="newOwner">New <see cref="Item"/> owner.</param>
+        public void ChangeItemOwner(Player oldOwner, Player newOwner)
+        {
+            if (oldOwner != null && newOwner != null)
+            {
+                ChangeOwner(oldOwner, newOwner);
+            }
+        }
+
+        /// <summary>
         /// Change the owner of the <see cref="Item"/>.
         /// </summary>
         /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
         /// <param name="newOwner">new <see cref="Item"/> owner.</param>
         internal virtual void ChangeOwner(Player oldOwner, Player newOwner)
         {
-            Base.OnRemoved(null);
+                Base.OnRemoved(null);
 
-            Base.Owner = newOwner.ReferenceHub;
+                Base.Owner = newOwner.ReferenceHub;
 
-            Base.OnAdded(null);
+                Base.OnAdded(null);
         }
 
         /// <summary>
