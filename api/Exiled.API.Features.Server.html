@@ -920,6 +920,62 @@ Data saved with session variables is not being saved on server restart. If the d
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Server_ExecuteCommand_System_String_CommandSender_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Server.ExecuteCommand(System.String%2CCommandSender)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Server.cs/#L260">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Server_ExecuteCommand_" data-uid="Exiled.API.Features.Server.ExecuteCommand*"></a>
+  <h4 id="Exiled_API_Features_Server_ExecuteCommand_System_String_CommandSender_" data-uid="Exiled.API.Features.Server.ExecuteCommand(System.String,CommandSender)">ExecuteCommand(String, CommandSender)</h4>
+  <div class="markdown level1 summary"><p>Executes a server command.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string ExecuteCommand(string command, CommandSender sender = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">command</span></td>
+        <td><p>The command to be run.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CommandSender</span></td>
+        <td><span class="parametername">sender</span></td>
+        <td><p>The <span class="xref">CommandSender</span> running the command.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>Command response, if there is one; otherwise, <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Server_Restart.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Server.Restart%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -1005,7 +1061,8 @@ Data saved with session variables is not being saved on server restart. If the d
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void RunCommand(string command, CommandSender sender = null)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Server.ExecuteCommand() instead.&quot;)]
+public static void RunCommand(string command, CommandSender sender = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1109,7 +1166,7 @@ Data saved with session variables is not being saved on server restart. If the d
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Server_TryGetSessionVariable__1_System_String___0__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Server.TryGetSessionVariable%60%601(System.String%2C%60%600%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Server.cs/#L260">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Server.cs/#L269">View Source</a>
   </span>
   <a id="Exiled_API_Features_Server_TryGetSessionVariable_" data-uid="Exiled.API.Features.Server.TryGetSessionVariable*"></a>
   <h4 id="Exiled_API_Features_Server_TryGetSessionVariable__1_System_String___0__" data-uid="Exiled.API.Features.Server.TryGetSessionVariable``1(System.String,``0@)">TryGetSessionVariable&lt;T&gt;(String, out T)</h4>

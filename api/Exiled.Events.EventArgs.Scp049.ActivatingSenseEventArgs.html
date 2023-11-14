@@ -83,7 +83,7 @@
   
   <h1 id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs" class="text-break">Class ActivatingSenseEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Contains all information before SCP-049 sense is activated.</p>
+  <div class="markdown level0 summary"><p>Contains all information before SCP-049 good sense of the doctor is activated.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -135,7 +135,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Player_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.%23ctor(Exiled.API.Features.Player%2CExiled.API.Features.Player%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L28">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L29">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.#ctor*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Player_System_Boolean_" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,System.Boolean)">ActivatingSenseEventArgs(Player, Player, Boolean)</h4>
@@ -180,7 +180,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Cooldown.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Cooldown%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L54">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L60">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Cooldown_" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Cooldown*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Cooldown" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Cooldown">Cooldown</h4>
@@ -189,7 +189,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float Cooldown { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use FailedCooldown instead of this&quot;)]
+public float Cooldown { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -211,11 +212,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Duration.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Duration%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L59">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L66">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Duration_" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Duration*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Duration" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Duration">Duration</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the duration of the ability.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the duration of the Effect.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -239,10 +240,41 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_FailedCooldown.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.FailedCooldown%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L55">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_FailedCooldown_" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.FailedCooldown*"></a>
+  <h4 id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_FailedCooldown" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.FailedCooldown">FailedCooldown</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the cooldown of the ability.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float FailedCooldown { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L64">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L71">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.IsAllowed*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.IsAllowed">IsAllowed</h4>
@@ -273,7 +305,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L41">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L45">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Player" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Player">Player</h4>
@@ -304,7 +336,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Scp049.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Scp049%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L44">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L40">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Scp049_" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Scp049*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Scp049" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Scp049">Scp049</h4>
@@ -334,16 +366,16 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Target.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Target%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L49">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L50">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Target_" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Target*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs_Target" data-uid="Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs.Target">Target</h4>
-  <div class="markdown level1 summary"><p>Gets the Player who the sense ability is affecting.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the Player who the sense ability is affecting.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Player Target { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Player Target { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -388,7 +420,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp049_ActivatingSenseEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp049.ActivatingSenseEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp049/ActivatingSenseEventArgs.cs/#L21" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -1,0 +1,719 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DynamicEventManager
+   | EXILED Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DynamicEventManager
+   | EXILED Docs ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../assets/Exiled_Icon_50x50.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager">
+  
+  
+  <h1 id="Exiled_API_Features_DynamicEvents_DynamicEventManager" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager" class="text-break">Class DynamicEventManager
+  </h1>
+  <div class="markdown level0 summary"><p>The class which handles all the multicast delegates.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html">TypeCastObject</a>&lt;<a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a>&gt;</div>
+    <div class="level2"><a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a></div>
+    <div class="level3"><a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a></div>
+    <div class="level4"><a class="xref" href="Exiled.API.Features.Core.StaticActor.html">StaticActor</a></div>
+    <div class="level5"><span class="xref">DynamicEventManager</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.API.Features.Core.Interfaces.IEntity.html">IEntity</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_IsInitialized">StaticActor.IsInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_IsStarted">StaticActor.IsStarted</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_IsDestroyed">StaticActor.IsDestroyed</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_CreateNewInstance_System_Type_">StaticActor.CreateNewInstance(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_Get__1">StaticActor.Get&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_Get__1_System_Type_">StaticActor.Get&lt;T&gt;(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_Get_System_Type_">StaticActor.Get(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_PostInitialize">StaticActor.PostInitialize()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_OnBeginPlay">StaticActor.OnBeginPlay()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_OnEndPlay">StaticActor.OnEndPlay()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_Flush">StaticActor.Flush()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_PostInitialize_Static">StaticActor.PostInitialize_Static()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_BeginPlay_Static">StaticActor.BeginPlay_Static()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_EndPlay_Static">StaticActor.EndPlay_Static()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.StaticActor.html#Exiled_API_Features_Core_StaticActor_NotifyInstanceRepeated">StaticActor.NotifyInstanceRepeated()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_DefaultFixedTickRate">EActor.DefaultFixedTickRate</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_ComponentsInChildren">EActor.ComponentsInChildren</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Transform">EActor.Transform</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Position">EActor.Position</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Rotation">EActor.Rotation</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Scale">EActor.Scale</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_CanEverTick">EActor.CanEverTick</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_FixedTickRate">EActor.FixedTickRate</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_ComponentsInParent">EActor.ComponentsInParent</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AttachTo_Exiled_API_Features_Core_EActor_UnityEngine_GameObject_">EActor.AttachTo(EActor, GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AttachTo_Exiled_API_Features_Core_EActor_Exiled_API_Features_Core_EActor_">EActor.AttachTo(EActor, EActor)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AddComponent__1_System_String_">EActor.AddComponent&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AddComponent_System_Type_System_String_">EActor.AddComponent(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AddComponent__1_System_Type_System_String_">EActor.AddComponent&lt;T&gt;(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_GetComponent_System_Type_">EActor.GetComponent(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_GetComponent__1">EActor.GetComponent&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_GetComponent__1_System_Type_">EActor.GetComponent&lt;T&gt;(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_TryGetComponent__1_System_Type___0__">EActor.TryGetComponent&lt;T&gt;(Type, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_TryGetComponent__1___0__">EActor.TryGetComponent&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_TryGetComponent_System_Type_Exiled_API_Features_Core_EActor__">EActor.TryGetComponent(Type, EActor)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_HasComponent__1_System_Boolean_">EActor.HasComponent&lt;T&gt;(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_HasComponent_System_Type_System_Boolean_">EActor.HasComponent(Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Tick">EActor.Tick()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_SubscribeEvents">EActor.SubscribeEvents()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_UnsubscribeEvents">EActor.UnsubscribeEvents()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_OnBeginDestroy">EActor.OnBeginDestroy()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_RegisteredTypes">EObject.RegisteredTypes</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Base">EObject.Base</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Name">EObject.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Tag">EObject.Tag</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_IsEditable">EObject.IsEditable</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeByName_System_String_">EObject.GetObjectTypeByName(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_RegisterObjectType__1_System_String_">EObject.RegisterObjectType&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_RegisterObjectType_System_Type_System_String_">EObject.RegisterObjectType(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_UnregisterObjectType_System_Type_">EObject.UnregisterObjectType(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_UnregisterObjectType_System_String_">EObject.UnregisterObjectType(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindObjectDefinedTypeByName_System_String_System_Boolean_">EObject.FindObjectDefinedTypeByName(String, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypes__1">EObject.GetObjectTypeFromRegisteredTypes&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypes__1_System_String_">EObject.GetObjectTypeFromRegisteredTypes&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypes_System_Type_">EObject.GetObjectTypeFromRegisteredTypes(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypes_System_Type_System_String_">EObject.GetObjectTypeFromRegisteredTypes(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypesByName_System_String_">EObject.GetObjectTypeFromRegisteredTypesByName(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_System_Object___">EObject.CreateDefaultSubobject(Type, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_">EObject.CreateDefaultSubobject&lt;T&gt;(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1">EObject.CreateDefaultSubobject&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Object___">EObject.CreateDefaultSubobject&lt;T&gt;(Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_UnityEngine_GameObject_System_String_">EObject.CreateDefaultSubobject&lt;T&gt;(GameObject, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_UnityEngine_GameObject_System_String_System_Object___">EObject.CreateDefaultSubobject&lt;T&gt;(GameObject, String, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_UnityEngine_GameObject_System_String_">EObject.CreateDefaultSubobject&lt;T&gt;(Type, GameObject, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_UnityEngine_GameObject_System_String_System_Object___">EObject.CreateDefaultSubobject&lt;T&gt;(Type, GameObject, String, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_UnityEngine_GameObject_System_String_">EObject.CreateDefaultSubobject(Type, GameObject, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_UnityEngine_GameObject_System_String_System_Object___">EObject.CreateDefaultSubobject(Type, GameObject, String, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyAllObjects">EObject.DestroyAllObjects()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyAllObjectsOfType__1">EObject.DestroyAllObjectsOfType&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectOfType__1_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__">EObject.FindActiveObjectOfType&lt;T&gt;(Func&lt;EObject, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Func&lt;EObject, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1">EObject.FindActiveObjectsOfType&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_String_">EObject.FindActiveObjectsOfType&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Type_">EObject.FindActiveObjectsOfType&lt;T&gt;(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Type_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Type, Func&lt;EObject, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsWithTagOfType__1_System_String_">EObject.FindActiveObjectsWithTagOfType&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func_System_Object_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Func&lt;Object, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func___0_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Func&lt;T, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyActiveObjectsOfType__1">EObject.DestroyActiveObjectsOfType&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyActiveObject__1_UnityEngine_GameObject_">EObject.DestroyActiveObject&lt;T&gt;(GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyActiveObject_System_Type_UnityEngine_GameObject_">EObject.DestroyActiveObject(Type, GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindMostAppropriateEntry__1_System_String_System_Collections_Generic_IEnumerable___0__">EObject.FindMostAppropriateEntry&lt;T&gt;(String, IEnumerable&lt;T&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Destroy">EObject.Destroy()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetHashCode">EObject.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Equals_System_Object_">EObject.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Destroy_System_Boolean_">EObject.Destroy(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_OnDestroyed">EObject.OnDestroyed()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1">TypeCastObject&lt;EObject&gt;.Cast&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1___0__">TypeCastObject&lt;EObject&gt;.Cast&lt;TObject&gt;(TObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_As__1">TypeCastObject&lt;EObject&gt;.As&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Is__1___0__">TypeCastObject&lt;EObject&gt;.Is&lt;TObject&gt;(TObject)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Exiled.API.Features.DynamicEvents.html">Exiled.API.Features.DynamicEvents</a></h6>
+  <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
+  <h5 id="Exiled_API_Features_DynamicEvents_DynamicEventManager_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class DynamicEventManager : StaticActor, IEntity, IWorldSpace, IPosition, IRotation</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DynamicEvents_DynamicEventManager_BindAllFromTypeInstance_System_Object_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DynamicEvents.DynamicEventManager.BindAllFromTypeInstance(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DynamicEvents/DynamicEventManager.cs/#L99">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DynamicEvents_DynamicEventManager_BindAllFromTypeInstance_" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager.BindAllFromTypeInstance*"></a>
+  <h4 id="Exiled_API_Features_DynamicEvents_DynamicEventManager_BindAllFromTypeInstance_System_Object_" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager.BindAllFromTypeInstance(System.Object)">BindAllFromTypeInstance(Object)</h4>
+  <div class="markdown level1 summary"><p>Initializes all the dynamic handlers in the specified type instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BindAllFromTypeInstance(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The type instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DynamicEvents_DynamicEventManager_CreateFromTypeInstance_System_Object_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DynamicEvents.DynamicEventManager.CreateFromTypeInstance(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DynamicEvents/DynamicEventManager.cs/#L35">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DynamicEvents_DynamicEventManager_CreateFromTypeInstance_" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager.CreateFromTypeInstance*"></a>
+  <h4 id="Exiled_API_Features_DynamicEvents_DynamicEventManager_CreateFromTypeInstance_System_Object_" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager.CreateFromTypeInstance(System.Object)">CreateFromTypeInstance(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void CreateFromTypeInstance(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DynamicEvents_DynamicEventManager_DestroyFromTypeInstance_System_Object_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DynamicEvents.DynamicEventManager.DestroyFromTypeInstance(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DynamicEvents/DynamicEventManager.cs/#L38">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DynamicEvents_DynamicEventManager_DestroyFromTypeInstance_" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager.DestroyFromTypeInstance*"></a>
+  <h4 id="Exiled_API_Features_DynamicEvents_DynamicEventManager_DestroyFromTypeInstance_System_Object_" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager.DestroyFromTypeInstance(System.Object)">DestroyFromTypeInstance(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DestroyFromTypeInstance(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DynamicEvents_DynamicEventManager_InvokeSafely_Exiled_API_Features_DynamicEvents_DynamicEventManager_FDelegate_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DynamicEvents.DynamicEventManager.InvokeSafely(Exiled.API.Features.DynamicEvents.DynamicEventManager.FDelegate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DynamicEvents/DynamicEventManager.cs/#L74">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DynamicEvents_DynamicEventManager_InvokeSafely_" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager.InvokeSafely*"></a>
+  <h4 id="Exiled_API_Features_DynamicEvents_DynamicEventManager_InvokeSafely_Exiled_API_Features_DynamicEvents_DynamicEventManager_FDelegate_" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager.InvokeSafely(Exiled.API.Features.DynamicEvents.DynamicEventManager.FDelegate)">InvokeSafely(DynamicEventManager.FDelegate)</h4>
+  <div class="markdown level1 summary"><p>Executes all <a class="xref" href="Exiled.API.Features.DynamicEvents.DynamicEventManager.FDelegate-1.html">DynamicEventManager.FDelegate&lt;T&gt;</a> listeners safely.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvokeSafely(DynamicEventManager.FDelegate ev)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.DynamicEvents.DynamicEventManager.FDelegate.html">DynamicEventManager.FDelegate</a></td>
+        <td><span class="parametername">ev</span></td>
+        <td><p>Source event.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Event is null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DynamicEvents_DynamicEventManager_InvokeSafely__1_Exiled_API_Features_DynamicEvents_DynamicEventManager_FDelegate___0____0_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DynamicEvents.DynamicEventManager.InvokeSafely%60%601(Exiled.API.Features.DynamicEvents.DynamicEventManager.FDelegate%7B%60%600%7D%2C%60%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DynamicEvents/DynamicEventManager.cs/#L47">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DynamicEvents_DynamicEventManager_InvokeSafely_" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager.InvokeSafely*"></a>
+  <h4 id="Exiled_API_Features_DynamicEvents_DynamicEventManager_InvokeSafely__1_Exiled_API_Features_DynamicEvents_DynamicEventManager_FDelegate___0____0_" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager.InvokeSafely``1(Exiled.API.Features.DynamicEvents.DynamicEventManager.FDelegate{``0},``0)">InvokeSafely&lt;T&gt;(DynamicEventManager.FDelegate&lt;T&gt;, T)</h4>
+  <div class="markdown level1 summary"><p>Executes all <a class="xref" href="Exiled.API.Features.DynamicEvents.DynamicEventManager.FDelegate-1.html">DynamicEventManager.FDelegate&lt;T&gt;</a> listeners safely.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvokeSafely&lt;T&gt;(DynamicEventManager.FDelegate&lt;T&gt; ev, T arg)
+
+    where T : EventArgs</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.DynamicEvents.DynamicEventManager.FDelegate-1.html">DynamicEventManager.FDelegate</a>&lt;T&gt;</td>
+        <td><span class="parametername">ev</span></td>
+        <td><p>Source event.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">arg</span></td>
+        <td><p>Event arg.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Event arg type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Event or its arg is null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DynamicEvents_DynamicEventManager_UnbindAllFromTypeInstance_System_Object_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DynamicEvents.DynamicEventManager.UnbindAllFromTypeInstance(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DynamicEvents/DynamicEventManager.cs/#L120">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DynamicEvents_DynamicEventManager_UnbindAllFromTypeInstance_" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager.UnbindAllFromTypeInstance*"></a>
+  <h4 id="Exiled_API_Features_DynamicEvents_DynamicEventManager_UnbindAllFromTypeInstance_System_Object_" data-uid="Exiled.API.Features.DynamicEvents.DynamicEventManager.UnbindAllFromTypeInstance(System.Object)">UnbindAllFromTypeInstance(Object)</h4>
+  <div class="markdown level1 summary"><p>Unbinds all the dynamic handlers in the specified type instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UnbindAllFromTypeInstance(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The type instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Features.Core.Interfaces.IEntity.html">IEntity</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DynamicEvents_DynamicEventManager.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DynamicEvents.DynamicEventManager%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DynamicEvents/DynamicEventManager.cs/#L19" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

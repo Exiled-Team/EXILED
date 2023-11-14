@@ -94,6 +94,7 @@
     <div class="level2"><a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a></div>
     <div class="level3"><a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a></div>
     <div class="level4"><span class="xref">StaticActor</span></div>
+      <div class="level5"><a class="xref" href="Exiled.API.Features.DynamicEvents.DynamicEventManager.html">DynamicEventManager</a></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
@@ -368,41 +369,10 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_Instance.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.Instance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L50">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Core_StaticActor_Instance_" data-uid="Exiled.API.Features.Core.StaticActor.Instance*"></a>
-  <h4 id="Exiled_API_Features_Core_StaticActor_Instance" data-uid="Exiled.API.Features.Core.StaticActor.Instance">Instance</h4>
-  <div class="markdown level1 summary"><p>Gets the global access point to the unique instance of this class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static StaticActor Instance { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Exiled.API.Features.Core.StaticActor.html">StaticActor</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_IsDestroyed.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.IsDestroyed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L45">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L43">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_IsDestroyed_" data-uid="Exiled.API.Features.Core.StaticActor.IsDestroyed*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_IsDestroyed" data-uid="Exiled.API.Features.Core.StaticActor.IsDestroyed">IsDestroyed</h4>
@@ -411,7 +381,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsDestroyed { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsDestroyed { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -433,7 +403,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_IsInitialized.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.IsInitialized%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L35">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L33">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_IsInitialized_" data-uid="Exiled.API.Features.Core.StaticActor.IsInitialized*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_IsInitialized" data-uid="Exiled.API.Features.Core.StaticActor.IsInitialized">IsInitialized</h4>
@@ -442,7 +412,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsInitialized { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsInitialized { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -464,7 +434,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_IsStarted.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.IsStarted%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L40">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L38">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_IsStarted_" data-uid="Exiled.API.Features.Core.StaticActor.IsStarted*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_IsStarted" data-uid="Exiled.API.Features.Core.StaticActor.IsStarted">IsStarted</h4>
@@ -473,7 +443,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsStarted { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsStarted { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -497,7 +467,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_BeginPlay_Static.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.BeginPlay_Static%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L201">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L176">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_BeginPlay_Static_" data-uid="Exiled.API.Features.Core.StaticActor.BeginPlay_Static*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_BeginPlay_Static" data-uid="Exiled.API.Features.Core.StaticActor.BeginPlay_Static">BeginPlay_Static()</h4>
@@ -514,20 +484,38 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_CreateNewInstance.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.CreateNewInstance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_CreateNewInstance_System_Type_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.CreateNewInstance(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L66">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L50">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_CreateNewInstance_" data-uid="Exiled.API.Features.Core.StaticActor.CreateNewInstance*"></a>
-  <h4 id="Exiled_API_Features_Core_StaticActor_CreateNewInstance" data-uid="Exiled.API.Features.Core.StaticActor.CreateNewInstance">CreateNewInstance()</h4>
+  <h4 id="Exiled_API_Features_Core_StaticActor_CreateNewInstance_System_Type_" data-uid="Exiled.API.Features.Core.StaticActor.CreateNewInstance(System.Type)">CreateNewInstance(Type)</h4>
   <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="Exiled.API.Features.Core.StaticActor.html">StaticActor</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static StaticActor CreateNewInstance()</code></pre>
+    <pre><code class="lang-csharp hljs">public static StaticActor CreateNewInstance(Type type)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type of the <a class="xref" href="Exiled.API.Features.Core.StaticActor.html">StaticActor</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -549,7 +537,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_EndPlay_Static.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.EndPlay_Static%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L212">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L187">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_EndPlay_Static_" data-uid="Exiled.API.Features.Core.StaticActor.EndPlay_Static*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_EndPlay_Static" data-uid="Exiled.API.Features.Core.StaticActor.EndPlay_Static">EndPlay_Static()</h4>
@@ -566,42 +554,10 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_FindExistingInstance.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.FindExistingInstance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L56">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Core_StaticActor_FindExistingInstance_" data-uid="Exiled.API.Features.Core.StaticActor.FindExistingInstance*"></a>
-  <h4 id="Exiled_API_Features_Core_StaticActor_FindExistingInstance" data-uid="Exiled.API.Features.Core.StaticActor.FindExistingInstance">FindExistingInstance()</h4>
-  <div class="markdown level1 summary"><p>Looks or an existing instance of the <a class="xref" href="Exiled.API.Features.Core.StaticActor.html">StaticActor</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static StaticActor FindExistingInstance()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Exiled.API.Features.Core.StaticActor.html">StaticActor</a></td>
-        <td><p>The existing <a class="xref" href="Exiled.API.Features.Core.StaticActor.html">StaticActor</a> instance, or <span class="xref">null</span> if not found.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_Flush.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.Flush%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L181">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L156">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_Flush_" data-uid="Exiled.API.Features.Core.StaticActor.Flush*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_Flush" data-uid="Exiled.API.Features.Core.StaticActor.Flush">Flush()</h4>
@@ -617,7 +573,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_Get_System_Type_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.Get(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L117">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L101">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_Get_" data-uid="Exiled.API.Features.Core.StaticActor.Get*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_Get_System_Type_" data-uid="Exiled.API.Features.Core.StaticActor.Get(System.Type)">Get(Type)</h4>
@@ -657,7 +613,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
     <tbody>
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Core.StaticActor.html">StaticActor</a></td>
-        <td><p>The corresponding <a class="xref" href="Exiled.API.Features.Core.StaticActor.html">StaticActor</a>, or <span class="xref">null</span> if not found.</p>
+        <td><p>The corresponding <a class="xref" href="Exiled.API.Features.Core.StaticActor.html">StaticActor</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -667,7 +623,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_Get__1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.Get%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L78">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L62">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_Get_" data-uid="Exiled.API.Features.Core.StaticActor.Get*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_Get__1" data-uid="Exiled.API.Features.Core.StaticActor.Get``1">Get&lt;T&gt;()</h4>
@@ -717,7 +673,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_Get__1_System_Type_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.Get%60%601(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L98">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L82">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_Get_" data-uid="Exiled.API.Features.Core.StaticActor.Get*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_Get__1_System_Type_" data-uid="Exiled.API.Features.Core.StaticActor.Get``1(System.Type)">Get&lt;T&gt;(Type)</h4>
@@ -785,7 +741,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_NotifyInstanceRepeated.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.NotifyInstanceRepeated%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L223">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L198">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_NotifyInstanceRepeated_" data-uid="Exiled.API.Features.Core.StaticActor.NotifyInstanceRepeated*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_NotifyInstanceRepeated" data-uid="Exiled.API.Features.Core.StaticActor.NotifyInstanceRepeated">NotifyInstanceRepeated()</h4>
@@ -805,7 +761,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_OnBeginPlay.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.OnBeginPlay%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L157">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L135">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_OnBeginPlay_" data-uid="Exiled.API.Features.Core.StaticActor.OnBeginPlay*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_OnBeginPlay" data-uid="Exiled.API.Features.Core.StaticActor.OnBeginPlay">OnBeginPlay()</h4>
@@ -822,7 +778,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_OnEndPlay.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.OnEndPlay%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L169">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L147">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_OnEndPlay_" data-uid="Exiled.API.Features.Core.StaticActor.OnEndPlay*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_OnEndPlay" data-uid="Exiled.API.Features.Core.StaticActor.OnEndPlay">OnEndPlay()</h4>
@@ -839,7 +795,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_PostInitialize.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.PostInitialize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L131">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L115">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_PostInitialize_" data-uid="Exiled.API.Features.Core.StaticActor.PostInitialize*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_PostInitialize" data-uid="Exiled.API.Features.Core.StaticActor.PostInitialize">PostInitialize()</h4>
@@ -856,7 +812,7 @@ To perform the initialization and cleanup: those methods are guaranteed to only 
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StaticActor_PostInitialize_Static.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StaticActor.PostInitialize_Static%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L190">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StaticActor.cs/#L165">View Source</a>
   </span>
   <a id="Exiled_API_Features_Core_StaticActor_PostInitialize_Static_" data-uid="Exiled.API.Features.Core.StaticActor.PostInitialize_Static*"></a>
   <h4 id="Exiled_API_Features_Core_StaticActor_PostInitialize_Static" data-uid="Exiled.API.Features.Core.StaticActor.PostInitialize_Static">PostInitialize_Static()</h4>

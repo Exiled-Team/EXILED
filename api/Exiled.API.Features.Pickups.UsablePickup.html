@@ -165,9 +165,6 @@
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_IsSpawned">Pickup.IsSpawned</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_IsLoaded">Pickup.IsLoaded</a>
-    </div>
-    <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Get_InventorySystem_Items_Pickups_ItemPickupBase_">Pickup.Get(ItemPickupBase)</a>
     </div>
     <div>
@@ -208,6 +205,9 @@
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Spawn">Pickup.Spawn()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_Exiled_API_Features_Player_">Pickup.Spawn(Vector3, Quaternion, Player)</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_UnSpawn">Pickup.UnSpawn()</a>
@@ -265,7 +265,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_UsablePickup_MaxCancellableTime.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.UsablePickup.MaxCancellableTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/UsablePickup.cs/#L44">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/UsablePickup.cs/#L47">View Source</a>
   </span>
   <a id="Exiled_API_Features_Pickups_UsablePickup_MaxCancellableTime_" data-uid="Exiled.API.Features.Pickups.UsablePickup.MaxCancellableTime*"></a>
   <h4 id="Exiled_API_Features_Pickups_UsablePickup_MaxCancellableTime" data-uid="Exiled.API.Features.Pickups.UsablePickup.MaxCancellableTime">MaxCancellableTime</h4>
@@ -296,7 +296,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_UsablePickup_UseTime.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.UsablePickup.UseTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/UsablePickup.cs/#L39">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/UsablePickup.cs/#L42">View Source</a>
   </span>
   <a id="Exiled_API_Features_Pickups_UsablePickup_UseTime_" data-uid="Exiled.API.Features.Pickups.UsablePickup.UseTime*"></a>
   <h4 id="Exiled_API_Features_Pickups_UsablePickup_UseTime" data-uid="Exiled.API.Features.Pickups.UsablePickup.UseTime">UseTime</h4>
@@ -322,6 +322,42 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_UsablePickup_InitializeProperties_InventorySystem_Items_ItemBase_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.UsablePickup.InitializeProperties(InventorySystem.Items.ItemBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/UsablePickup.cs/#L61">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Pickups_UsablePickup_InitializeProperties_" data-uid="Exiled.API.Features.Pickups.UsablePickup.InitializeProperties*"></a>
+  <h4 id="Exiled_API_Features_Pickups_UsablePickup_InitializeProperties_InventorySystem_Items_ItemBase_" data-uid="Exiled.API.Features.Pickups.UsablePickup.InitializeProperties(InventorySystem.Items.ItemBase)">InitializeProperties(ItemBase)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void InitializeProperties(ItemBase itemBase)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">InventorySystem.Items.ItemBase</span></td>
+        <td><span class="parametername">itemBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Exiled.API.Features.Pickups.Pickup.html#Exiled_API_Features_Pickups_Pickup_InitializeProperties_InventorySystem_Items_ItemBase_">Pickup.InitializeProperties(ItemBase)</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
@@ -350,7 +386,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Pickups_UsablePickup.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Pickups.UsablePickup%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/UsablePickup.cs/#L16" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Pickups/UsablePickup.cs/#L19" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

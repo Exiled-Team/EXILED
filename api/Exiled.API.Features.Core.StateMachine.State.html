@@ -1,0 +1,1428 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class State
+   | EXILED Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class State
+   | EXILED Docs ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../assets/Exiled_Icon_50x50.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Exiled.API.Features.Core.StateMachine.State">
+  
+  
+  <h1 id="Exiled_API_Features_Core_StateMachine_State" data-uid="Exiled.API.Features.Core.StateMachine.State" class="text-break">Class State
+  </h1>
+  <div class="markdown level0 summary"><p>The base class which handles in-context states.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html">TypeCastObject</a>&lt;<a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a>&gt;</div>
+    <div class="level2"><a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a></div>
+    <div class="level3"><a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a></div>
+    <div class="level4"><span class="xref">State</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.API.Features.Core.Interfaces.IEntity.html">IEntity</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a></div>
+    <div><a class="xref" href="Exiled.API.Features.Core.StateMachine.IState.html">IState</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_DefaultFixedTickRate">EActor.DefaultFixedTickRate</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_ComponentsInChildren">EActor.ComponentsInChildren</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Transform">EActor.Transform</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Position">EActor.Position</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Rotation">EActor.Rotation</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Scale">EActor.Scale</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_CanEverTick">EActor.CanEverTick</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_FixedTickRate">EActor.FixedTickRate</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_ComponentsInParent">EActor.ComponentsInParent</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AttachTo_Exiled_API_Features_Core_EActor_UnityEngine_GameObject_">EActor.AttachTo(EActor, GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AttachTo_Exiled_API_Features_Core_EActor_Exiled_API_Features_Core_EActor_">EActor.AttachTo(EActor, EActor)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AddComponent__1_System_String_">EActor.AddComponent&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AddComponent_System_Type_System_String_">EActor.AddComponent(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_AddComponent__1_System_Type_System_String_">EActor.AddComponent&lt;T&gt;(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_GetComponent_System_Type_">EActor.GetComponent(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_GetComponent__1">EActor.GetComponent&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_GetComponent__1_System_Type_">EActor.GetComponent&lt;T&gt;(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_TryGetComponent__1_System_Type___0__">EActor.TryGetComponent&lt;T&gt;(Type, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_TryGetComponent__1___0__">EActor.TryGetComponent&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_TryGetComponent_System_Type_Exiled_API_Features_Core_EActor__">EActor.TryGetComponent(Type, EActor)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_HasComponent__1_System_Boolean_">EActor.HasComponent&lt;T&gt;(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_HasComponent_System_Type_System_Boolean_">EActor.HasComponent(Type, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_PostInitialize">EActor.PostInitialize()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_OnBeginPlay">EActor.OnBeginPlay()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_OnEndPlay">EActor.OnEndPlay()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_SubscribeEvents">EActor.SubscribeEvents()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_UnsubscribeEvents">EActor.UnsubscribeEvents()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_OnBeginDestroy">EActor.OnBeginDestroy()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_RegisteredTypes">EObject.RegisteredTypes</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Base">EObject.Base</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Tag">EObject.Tag</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_IsEditable">EObject.IsEditable</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeByName_System_String_">EObject.GetObjectTypeByName(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_RegisterObjectType__1_System_String_">EObject.RegisterObjectType&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_RegisterObjectType_System_Type_System_String_">EObject.RegisterObjectType(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_UnregisterObjectType_System_Type_">EObject.UnregisterObjectType(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_UnregisterObjectType_System_String_">EObject.UnregisterObjectType(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindObjectDefinedTypeByName_System_String_System_Boolean_">EObject.FindObjectDefinedTypeByName(String, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypes__1">EObject.GetObjectTypeFromRegisteredTypes&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypes__1_System_String_">EObject.GetObjectTypeFromRegisteredTypes&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypes_System_Type_">EObject.GetObjectTypeFromRegisteredTypes(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypes_System_Type_System_String_">EObject.GetObjectTypeFromRegisteredTypes(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetObjectTypeFromRegisteredTypesByName_System_String_">EObject.GetObjectTypeFromRegisteredTypesByName(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_System_Object___">EObject.CreateDefaultSubobject(Type, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_">EObject.CreateDefaultSubobject&lt;T&gt;(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1">EObject.CreateDefaultSubobject&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Object___">EObject.CreateDefaultSubobject&lt;T&gt;(Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_UnityEngine_GameObject_System_String_">EObject.CreateDefaultSubobject&lt;T&gt;(GameObject, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_UnityEngine_GameObject_System_String_System_Object___">EObject.CreateDefaultSubobject&lt;T&gt;(GameObject, String, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_UnityEngine_GameObject_System_String_">EObject.CreateDefaultSubobject&lt;T&gt;(Type, GameObject, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_UnityEngine_GameObject_System_String_System_Object___">EObject.CreateDefaultSubobject&lt;T&gt;(Type, GameObject, String, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_UnityEngine_GameObject_System_String_">EObject.CreateDefaultSubobject(Type, GameObject, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_UnityEngine_GameObject_System_String_System_Object___">EObject.CreateDefaultSubobject(Type, GameObject, String, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyAllObjects">EObject.DestroyAllObjects()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyAllObjectsOfType__1">EObject.DestroyAllObjectsOfType&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectOfType__1_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__">EObject.FindActiveObjectOfType&lt;T&gt;(Func&lt;EObject, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Func&lt;EObject, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1">EObject.FindActiveObjectsOfType&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_String_">EObject.FindActiveObjectsOfType&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Type_">EObject.FindActiveObjectsOfType&lt;T&gt;(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Type_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Type, Func&lt;EObject, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsWithTagOfType__1_System_String_">EObject.FindActiveObjectsWithTagOfType&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func_System_Object_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Func&lt;Object, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func___0_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Func&lt;T, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyActiveObjectsOfType__1">EObject.DestroyActiveObjectsOfType&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyActiveObject__1_UnityEngine_GameObject_">EObject.DestroyActiveObject&lt;T&gt;(GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyActiveObject_System_Type_UnityEngine_GameObject_">EObject.DestroyActiveObject(Type, GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindMostAppropriateEntry__1_System_String_System_Collections_Generic_IEnumerable___0__">EObject.FindMostAppropriateEntry&lt;T&gt;(String, IEnumerable&lt;T&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Destroy">EObject.Destroy()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetHashCode">EObject.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Equals_System_Object_">EObject.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Destroy_System_Boolean_">EObject.Destroy(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_OnDestroyed">EObject.OnDestroyed()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1">TypeCastObject&lt;EObject&gt;.Cast&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1___0__">TypeCastObject&lt;EObject&gt;.Cast&lt;TObject&gt;(TObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_As__1">TypeCastObject&lt;EObject&gt;.As&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Is__1___0__">TypeCastObject&lt;EObject&gt;.Is&lt;TObject&gt;(TObject)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Exiled.API.Features.Core.StateMachine.html">Exiled.API.Features.Core.StateMachine</a></h6>
+  <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
+  <h5 id="Exiled_API_Features_Core_StateMachine_State_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class State : EActor, IEntity, IWorldSpace, IPosition, IRotation, IState</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_ActiveControllers.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.ActiveControllers%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L52">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_ActiveControllers_" data-uid="Exiled.API.Features.Core.StateMachine.State.ActiveControllers*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_ActiveControllers" data-uid="Exiled.API.Features.Core.StateMachine.State.ActiveControllers">ActiveControllers</h4>
+  <div class="markdown level1 summary"><p>Gets all the <a class="xref" href="Exiled.API.Features.Core.StateMachine.StateController.html">StateController</a>s running on this <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;StateController&gt; ActiveControllers { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Core.StateMachine.StateController.html">StateController</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_Controllers.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.Controllers%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L47">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_Controllers_" data-uid="Exiled.API.Features.Core.StateMachine.State.Controllers*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_Controllers" data-uid="Exiled.API.Features.Core.StateMachine.State.Controllers">Controllers</h4>
+  <div class="markdown level1 summary"><p>Gets all the <a class="xref" href="Exiled.API.Features.Core.StateMachine.StateController.html">StateController</a>s listening to this <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;StateController&gt; Controllers { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Core.StateMachine.StateController.html">StateController</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_Description.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.Description%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L42">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_Description_" data-uid="Exiled.API.Features.Core.StateMachine.State.Description*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_Description" data-uid="Exiled.API.Features.Core.StateMachine.State.Description">Description</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual string Description { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_Id.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.Id%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L36">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_Id_" data-uid="Exiled.API.Features.Core.StateMachine.State.Id*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_Id" data-uid="Exiled.API.Features.Core.StateMachine.State.Id">Id</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract byte Id { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_InactiveControllers.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.InactiveControllers%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L57">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_InactiveControllers_" data-uid="Exiled.API.Features.Core.StateMachine.State.InactiveControllers*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_InactiveControllers" data-uid="Exiled.API.Features.Core.StateMachine.State.InactiveControllers">InactiveControllers</h4>
+  <div class="markdown level1 summary"><p>Gets all the <a class="xref" href="Exiled.API.Features.Core.StateMachine.StateController.html">StateController</a>s running on a <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> other than this.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;StateController&gt; InactiveControllers { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Core.StateMachine.StateController.html">StateController</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_List.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.List%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L33">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_List_" data-uid="Exiled.API.Features.Core.StateMachine.State.List*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_List" data-uid="Exiled.API.Features.Core.StateMachine.State.List">List</h4>
+  <div class="markdown level1 summary"><p>Gets all registered states.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;State&gt; List { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_Name.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L39">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_Name_" data-uid="Exiled.API.Features.Core.StateMachine.State.Name*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_Name" data-uid="Exiled.API.Features.Core.StateMachine.State.Name">Name</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual string Name { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_Get_System_Byte_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.Get(System.Byte)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L99">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_Get_" data-uid="Exiled.API.Features.Core.StateMachine.State.Get*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_Get_System_Byte_" data-uid="Exiled.API.Features.Core.StateMachine.State.Get(System.Byte)">Get(Byte)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> belonging to the specified id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static State Get(byte id)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span></td>
+        <td><span class="parametername">id</span></td>
+        <td><p>The state&apos;s id.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a></td>
+        <td><p>The corresponding <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>, or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_Get_System_Byte_System_Byte_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.Get(System.Byte%2CSystem.Byte)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L121">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_Get_" data-uid="Exiled.API.Features.Core.StateMachine.State.Get*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_Get_System_Byte_System_Byte_" data-uid="Exiled.API.Features.Core.StateMachine.State.Get(System.Byte,System.Byte)">Get(Byte, Byte)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>s belonging to the specified id between the defined range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;State&gt; Get(byte minRange, byte maxRange)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span></td>
+        <td><span class="parametername">minRange</span></td>
+        <td><p>The minimum inclusive range.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span></td>
+        <td><span class="parametername">maxRange</span></td>
+        <td><p>The maximum exclusive range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>&gt;</td>
+        <td><p>All <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>s belonging to the specified id between the specified range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_Get_System_Byte___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.Get(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L136">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_Get_" data-uid="Exiled.API.Features.Core.StateMachine.State.Get*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_Get_System_Byte___" data-uid="Exiled.API.Features.Core.StateMachine.State.Get(System.Byte[])">Get(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>s belonging to the specified id between the defined ids.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;State&gt; Get(params byte[] ids)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">ids</span></td>
+        <td><p>The ids to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>&gt;</td>
+        <td><p>All <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>s belonging to the specified id between the defined ids.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_Get_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.Get(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L106">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_Get_" data-uid="Exiled.API.Features.Core.StateMachine.State.Get*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_Get_System_String_" data-uid="Exiled.API.Features.Core.StateMachine.State.Get(System.String)">Get(String)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> belonging to the specified name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static State Get(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The state&apos;s name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a></td>
+        <td><p>The corresponding <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>, or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_Get_System_String___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.Get(System.String%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L151">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_Get_" data-uid="Exiled.API.Features.Core.StateMachine.State.Get*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_Get_System_String___" data-uid="Exiled.API.Features.Core.StateMachine.State.Get(System.String[])">Get(String[])</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>s belonging to the specified id between the defined names.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;State&gt; Get(params string[] names)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">names</span></td>
+        <td><p>The names to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>&gt;</td>
+        <td><p>All <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>s belonging to the specified id between the defined names.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_Get_System_Type_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.Get(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L113">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_Get_" data-uid="Exiled.API.Features.Core.StateMachine.State.Get*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_Get_System_Type_" data-uid="Exiled.API.Features.Core.StateMachine.State.Get(System.Type)">Get(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> belonging to the specified <span class="xref">System.Type</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static State Get(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The state&apos;s <span class="xref">System.Type</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a></td>
+        <td><p>The corresponding <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>, or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_Get_System_Type___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.Get(System.Type%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L166">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_Get_" data-uid="Exiled.API.Features.Core.StateMachine.State.Get*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_Get_System_Type___" data-uid="Exiled.API.Features.Core.StateMachine.State.Get(System.Type[])">Get(Type[])</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>s belonging to the specified id between the defined types.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;State&gt; Get(params Type[] types)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><span class="parametername">types</span></td>
+        <td><p>The types to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>&gt;</td>
+        <td><p>All <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>s belonging to the specified id between the defined types.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_Get__1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.Get%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L181">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_Get_" data-uid="Exiled.API.Features.Core.StateMachine.State.Get*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_Get__1" data-uid="Exiled.API.Features.Core.StateMachine.State.Get``1">Get&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> belonging to the specified type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T Get&lt;T&gt;()
+
+    where T : State</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The corresponding <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>, or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_InitializeStates_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.InitializeStates(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L63">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_InitializeStates_" data-uid="Exiled.API.Features.Core.StateMachine.State.InitializeStates*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_InitializeStates_System_Boolean_" data-uid="Exiled.API.Features.Core.StateMachine.State.InitializeStates(System.Boolean)">InitializeStates(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Initializes all states defined in the executing <span class="xref">System.Reflection.Assembly</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void InitializeStates(bool useAttribute = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">useAttribute</span></td>
+        <td><p>A value indicating whether attribute should be used.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_OnEnter_Exiled_API_Features_Core_StateMachine_StateController_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.OnEnter(Exiled.API.Features.Core.StateMachine.StateController)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L224">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_OnEnter_" data-uid="Exiled.API.Features.Core.StateMachine.State.OnEnter*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_OnEnter_Exiled_API_Features_Core_StateMachine_StateController_" data-uid="Exiled.API.Features.Core.StateMachine.State.OnEnter(Exiled.API.Features.Core.StateMachine.StateController)">OnEnter(StateController)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnEnter(StateController stateController)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.StateMachine.StateController.html">StateController</a></td>
+        <td><span class="parametername">stateController</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_OnExit_Exiled_API_Features_Core_StateMachine_StateController_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.OnExit(Exiled.API.Features.Core.StateMachine.StateController)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L237">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_OnExit_" data-uid="Exiled.API.Features.Core.StateMachine.State.OnExit*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_OnExit_Exiled_API_Features_Core_StateMachine_StateController_" data-uid="Exiled.API.Features.Core.StateMachine.State.OnExit(Exiled.API.Features.Core.StateMachine.StateController)">OnExit(StateController)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnExit(StateController stateController)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.StateMachine.StateController.html">StateController</a></td>
+        <td><span class="parametername">stateController</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_Tick.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.Tick%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L250">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_Tick_" data-uid="Exiled.API.Features.Core.StateMachine.State.Tick*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_Tick" data-uid="Exiled.API.Features.Core.StateMachine.State.Tick">Tick()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Tick()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Exiled.API.Features.Core.EActor.html#Exiled_API_Features_Core_EActor_Tick">EActor.Tick()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L221">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_ToString_" data-uid="Exiled.API.Features.Core.StateMachine.State.ToString*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_ToString" data-uid="Exiled.API.Features.Core.StateMachine.State.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Converts the <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> to a human readable <span class="xref">System.String</span> representation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>A human readable <span class="xref">System.String</span> representation of the <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.ToString()</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_TryGet_System_Byte_Exiled_API_Features_Core_StateMachine_State__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.TryGet(System.Byte%2CExiled.API.Features.Core.StateMachine.State%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L190">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_TryGet_" data-uid="Exiled.API.Features.Core.StateMachine.State.TryGet*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_TryGet_System_Byte_Exiled_API_Features_Core_StateMachine_State__" data-uid="Exiled.API.Features.Core.StateMachine.State.TryGet(System.Byte,Exiled.API.Features.Core.StateMachine.State@)">TryGet(Byte, out State)</h4>
+  <div class="markdown level1 summary"><p>Tries to get a <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> given the specified id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGet(byte id, out State state)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span></td>
+        <td><span class="parametername">id</span></td>
+        <td><p>The state&apos;s id.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a></td>
+        <td><span class="parametername">state</span></td>
+        <td><p>The corresponding <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>, or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if a <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> was found; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_TryGet_System_String_Exiled_API_Features_Core_StateMachine_State__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.TryGet(System.String%2CExiled.API.Features.Core.StateMachine.State%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L198">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_TryGet_" data-uid="Exiled.API.Features.Core.StateMachine.State.TryGet*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_TryGet_System_String_Exiled_API_Features_Core_StateMachine_State__" data-uid="Exiled.API.Features.Core.StateMachine.State.TryGet(System.String,Exiled.API.Features.Core.StateMachine.State@)">TryGet(String, out State)</h4>
+  <div class="markdown level1 summary"><p>Tries to get a <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> given the specified name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGet(string name, out State state)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The state&apos;s name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a></td>
+        <td><span class="parametername">state</span></td>
+        <td><p>The corresponding <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>, or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if a <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> was found; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_TryGet_System_Type_Exiled_API_Features_Core_StateMachine_State__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.TryGet(System.Type%2CExiled.API.Features.Core.StateMachine.State%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L206">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_TryGet_" data-uid="Exiled.API.Features.Core.StateMachine.State.TryGet*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_TryGet_System_Type_Exiled_API_Features_Core_StateMachine_State__" data-uid="Exiled.API.Features.Core.StateMachine.State.TryGet(System.Type,Exiled.API.Features.Core.StateMachine.State@)">TryGet(Type, out State)</h4>
+  <div class="markdown level1 summary"><p>Tries to get a <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> given the specified <span class="xref">System.Type</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGet(Type type, out State state)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The state&apos;s <span class="xref">System.Type</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a></td>
+        <td><span class="parametername">state</span></td>
+        <td><p>The corresponding <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>, or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if a <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> was found; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State_TryGet__1___0__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State.TryGet%60%601(%60%600%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L214">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_StateMachine_State_TryGet_" data-uid="Exiled.API.Features.Core.StateMachine.State.TryGet*"></a>
+  <h4 id="Exiled_API_Features_Core_StateMachine_State_TryGet__1___0__" data-uid="Exiled.API.Features.Core.StateMachine.State.TryGet``1(``0@)">TryGet&lt;T&gt;(out T)</h4>
+  <div class="markdown level1 summary"><p>Tries to get a <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> given the specified <span class="xref">System.Type</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGet&lt;T&gt;(out T state)
+
+    where T : State</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">state</span></td>
+        <td><p>The corresponding <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a>, or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if a <a class="xref" href="Exiled.API.Features.Core.StateMachine.State.html">State</a> was found; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Features.Core.Interfaces.IEntity.html">IEntity</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Features.Core.StateMachine.IState.html">IState</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Core_StateMachine_State.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.StateMachine.State%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/StateMachine/State.cs/#L22" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

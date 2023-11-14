@@ -83,7 +83,7 @@
   
   <h1 id="Exiled_API_Features_Items_Flashlight" data-uid="Exiled.API.Features.Items.Flashlight" class="text-break">Class Flashlight
   </h1>
-  <div class="markdown level0 summary"><p>A wrapped class for <see cref="!:FlashlightItem"></see>.</p>
+  <div class="markdown level0 summary"><p>A wrapped class for <see cref="!:ToggleableLightItemBase"></see>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -96,7 +96,7 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">InventorySystem.Items.ItemBase</span>&gt;</div>
-    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">FlashlightItem</span>&gt;</div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">ToggleableLightItemBase</span>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -144,6 +144,12 @@
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsWeapon">Item.IsWeapon</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsLightEmitter">Item.IsLightEmitter</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsDisarmer">Item.IsDisarmer</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Owner">Item.Owner</a>
@@ -201,25 +207,25 @@
   <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
   <h5 id="Exiled_API_Features_Items_Flashlight_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Flashlight : Item, IWrapper&lt;ItemBase&gt;, IWrapper&lt;FlashlightItem&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class Flashlight : Item, IWrapper&lt;ItemBase&gt;, IWrapper&lt;ToggleableLightItemBase&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Flashlight__ctor_FlashlightItem_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Flashlight.%23ctor(FlashlightItem)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Flashlight__ctor_ToggleableLightItemBase_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Flashlight.%23ctor(ToggleableLightItemBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L25">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L27">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Flashlight__ctor_" data-uid="Exiled.API.Features.Items.Flashlight.#ctor*"></a>
-  <h4 id="Exiled_API_Features_Items_Flashlight__ctor_FlashlightItem_" data-uid="Exiled.API.Features.Items.Flashlight.#ctor(FlashlightItem)">Flashlight(FlashlightItem)</h4>
+  <h4 id="Exiled_API_Features_Items_Flashlight__ctor_ToggleableLightItemBase_" data-uid="Exiled.API.Features.Items.Flashlight.#ctor(ToggleableLightItemBase)">Flashlight(ToggleableLightItemBase)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.API.Features.Items.Flashlight.html">Flashlight</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Flashlight(FlashlightItem itemBase)</code></pre>
+    <pre><code class="lang-csharp hljs">public Flashlight(ToggleableLightItemBase itemBase)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -232,9 +238,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">FlashlightItem</span></td>
+        <td><span class="xref">ToggleableLightItemBase</span></td>
         <td><span class="parametername">itemBase</span></td>
-        <td><p>The base <see cref="!:FlashlightItem"></see> class.</p>
+        <td><p>The base <see cref="!:ToggleableLightItemBase"></see> class.</p>
 </td>
       </tr>
     </tbody>
@@ -246,16 +252,16 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Flashlight_Active.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Flashlight.Active%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L47">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L49">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Flashlight_Active_" data-uid="Exiled.API.Features.Items.Flashlight.Active*"></a>
   <h4 id="Exiled_API_Features_Items_Flashlight_Active" data-uid="Exiled.API.Features.Items.Flashlight.Active">Active</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the flashlight is turned on.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Active { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use IsEmittingLight instead.&quot;)]
+public bool Active { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -277,16 +283,16 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Flashlight_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Flashlight.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L42">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L46">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Flashlight_Base_" data-uid="Exiled.API.Features.Items.Flashlight.Base*"></a>
   <h4 id="Exiled_API_Features_Items_Flashlight_Base" data-uid="Exiled.API.Features.Items.Flashlight.Base">Base</h4>
-  <div class="markdown level1 summary"><p>Gets the <see cref="!:FlashlightItem"></see> that this class is encapsulating.</p>
+  <div class="markdown level1 summary"><p>Gets the <see cref="!:ToggleableLightItemBase"></see> that this class is encapsulating.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FlashlightItem Base { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ToggleableLightItemBase Base { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -298,7 +304,72 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">FlashlightItem</span></td>
+        <td><span class="xref">ToggleableLightItemBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Exiled_API_Features_Items_Flashlight_Base_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Can be <see cref="!:FlashlightItem"></see> or <see cref="!:LanternItem"></see>.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Flashlight_IsEmittingLight.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Flashlight.IsEmittingLight%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L59">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Items_Flashlight_IsEmittingLight_" data-uid="Exiled.API.Features.Items.Flashlight.IsEmittingLight*"></a>
+  <h4 id="Exiled_API_Features_Items_Flashlight_IsEmittingLight" data-uid="Exiled.API.Features.Items.Flashlight.IsEmittingLight">IsEmittingLight</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the item is emitting light.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsEmittingLight { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Flashlight_NextAllowedTime.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Flashlight.NextAllowedTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L72">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Items_Flashlight_NextAllowedTime_" data-uid="Exiled.API.Features.Items.Flashlight.NextAllowedTime*"></a>
+  <h4 id="Exiled_API_Features_Items_Flashlight_NextAllowedTime" data-uid="Exiled.API.Features.Items.Flashlight.NextAllowedTime">NextAllowedTime</h4>
+  <div class="markdown level1 summary"><p>Gets or sets time since level loaded when player will be able to change <a class="xref" href="Exiled.API.Features.Items.Flashlight.html#Exiled_API_Features_Items_Flashlight_IsEmittingLight">IsEmittingLight</a> again.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float NextAllowedTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -310,12 +381,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Flashlight_Clone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Flashlight.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L61">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L79">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Flashlight_Clone_" data-uid="Exiled.API.Features.Items.Flashlight.Clone*"></a>
   <h4 id="Exiled_API_Features_Items_Flashlight_Clone" data-uid="Exiled.API.Features.Items.Flashlight.Clone">Clone()</h4>
-  <div class="markdown level1 summary"><p>Clones current <a class="xref" href="Exiled.API.Features.Items.Flashlight.html">Flashlight</a> object.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -332,8 +402,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></td>
-        <td><p>New <a class="xref" href="Exiled.API.Features.Items.Flashlight.html">Flashlight</a> object. </p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -344,11 +413,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Flashlight_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Flashlight.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L70">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L89">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Flashlight_ToString_" data-uid="Exiled.API.Features.Items.Flashlight.ToString*"></a>
   <h4 id="Exiled_API_Features_Items_Flashlight_ToString" data-uid="Exiled.API.Features.Items.Flashlight.ToString">ToString()</h4>
-  <div class="markdown level1 summary"><p>Returns the Flashlight in a human readable format.</p>
+  <div class="markdown level1 summary"><p>Returns the item in a human readable format.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -366,7 +435,7 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p>A string containing Flashlight-related data.</p>
+        <td><p>A string containing item-related data.</p>
 </td>
       </tr>
     </tbody>
@@ -395,7 +464,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Flashlight.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Flashlight%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Flashlight.cs/#L21" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
