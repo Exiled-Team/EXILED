@@ -52,7 +52,7 @@ jobs:
         $File = (Get-ChildItem -Path . -Include 'EXILED.*.nupkg' -Recurse).Name
         Out-File -FilePath ${{ github.env }}
     
-    - name: Zip results as tar.gz
+    - name: Packaging results as tar.gz
       shell: pwsh
       run: ./packaging.ps1
 
