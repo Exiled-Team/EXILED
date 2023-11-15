@@ -35,11 +35,6 @@ jobs:
     - name: Get references
       shell: pwsh
       run: |
-        Invoke-WebRequest -Uri ${{ env.EXILED_DLL_ARCHIVER_URL }} -OutFile ${{ github.workspace }}/EXILED-DLL-Archiver.exe
-    
-    - name: Get references
-      shell: pwsh
-      run: |
         Invoke-WebRequest -Uri ${{ env.EXILED_REFERENCES_URL }} -OutFile ${{ github.workspace }}/References.zip
         Expand-Archive -Path References.zip -DestinationPath ${{ env.EXILED_REFERENCES_PATH }}
 
@@ -51,7 +46,18 @@ jobs:
         ./build.ps1 -BuildNuGet
         $File = (Get-ChildItem -Path . -Include 'EXILED.*.nupkg' -Recurse).Name
         Out-File -FilePath ${{ github.env }}
-    
+
+    - name: Upload nuget package
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ env.PackageFile }}
+        path: ${{ env.PackageFile }}
+        
+    - name: Get references
+      shell: pwsh
+      run: |
+        Invoke-WebRequest -Uri ${{ env.EXILED_DLL_ARCHIVER_URL }} -OutFile ${{ github.workspace }}/EXILED-DLL-Archiver.exe
+  
     - name: Packaging results as tar.gz
       shell: pwsh
       run: ./packaging.ps1
@@ -62,8 +68,3 @@ jobs:
         name: Exiled.tar.gz
         path: bin/Release/Exiled.tar.gz
 
-    - name: Upload nuget package
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ env.PackageFile }}
-        path: ${{ env.PackageFile }}
