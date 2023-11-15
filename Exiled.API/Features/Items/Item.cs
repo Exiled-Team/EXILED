@@ -23,9 +23,9 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.MicroHID;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
-    using InventorySystem.Items.SwitchableLightSources;
-    using InventorySystem.Items.SwitchableLightSources.Flashlight;
     using InventorySystem.Items.ThrowableProjectiles;
+    using InventorySystem.Items.ToggleableLights;
+    using InventorySystem.Items.ToggleableLights.Flashlight;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp1576;
     using InventorySystem.Items.Usables.Scp244;
@@ -205,7 +205,7 @@ namespace Exiled.API.Features.Items
                 MicroHIDItem micro => new MicroHid(micro),
                 BodyArmor armor => new Armor(armor),
                 AmmoItem ammo => new Ammo(ammo),
-                SwitchableLightSourceItemBase flashlight => new Flashlight(flashlight),
+                ToggleableLightItemBase flashlight => new Flashlight(flashlight),
                 JailbirdItem jailbird => new Jailbird(jailbird),
                 ThrowableItem throwable => throwable.Projectile switch
                 {
@@ -346,7 +346,9 @@ namespace Exiled.API.Features.Items
         internal virtual void ChangeOwner(Player oldOwner, Player newOwner)
         {
             Base.OnRemoved(null);
+
             Base.Owner = newOwner.ReferenceHub;
+
             Base.OnAdded(null);
         }
 
