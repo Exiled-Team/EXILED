@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.Pickups;
 
     /// <summary>
-    /// Contains all information after adding an item to a player's inventory.
+    /// Contains all information after removing an item to a player's inventory.
     /// </summary>
     public class ItemRemovedEventArgs : IPlayerEvent, IItemEvent, IPickupEvent
     {
