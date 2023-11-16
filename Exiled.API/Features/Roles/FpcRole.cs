@@ -24,6 +24,8 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public abstract class FpcRole : Role
     {
+        private bool isUsingStamina = true;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FpcRole"/> class.
         /// </summary>
@@ -125,6 +127,30 @@ namespace Exiled.API.Features.Roles
         /// Gets or sets a value indicating whether or not the player is invisible.
         /// </summary>
         public bool IsInvisible { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the player should use stamina system. Resets on death.
+        /// </summary>
+        public bool IsUsingStamina
+        {
+            get => isUsingStamina;
+            set
+            {
+                if (!value)
+                    Owner.ResetStamina();
+                isUsingStamina = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the stamina usage multiplier. Resets on death.
+        /// </summary>
+        public float StaminaUsageMultiplier { get; set; } = 1f;
+
+        /// <summary>
+        /// Gets or sets the stamina regen multiplier. Resets on death.
+        /// </summary>
+        public float StaminaRegenMultiplier { get; set; } = 1f;
 
         /// <summary>
         /// Gets a list of players who can't see the player.

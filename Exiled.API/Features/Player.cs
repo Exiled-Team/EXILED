@@ -956,6 +956,32 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the stamina usage multiplier. Resets on death.
+        /// </summary>
+        public float StaminaUsageMultiplier
+        {
+            get => Role is FpcRole fpcRole ? fpcRole.StaminaUsageMultiplier : 1f;
+            set
+            {
+                if (Role is FpcRole fpcRole)
+                    fpcRole.StaminaUsageMultiplier = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the stamina regen multiplier. Resets on death.
+        /// </summary>
+        public float StaminaRegenMultiplier
+        {
+            get => Role is FpcRole fpcRole ? fpcRole.StaminaRegenMultiplier : 1f;
+            set
+            {
+                if (Role is FpcRole fpcRole)
+                    fpcRole.StaminaRegenMultiplier = value;
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether or not the staff bypass is enabled.
         /// </summary>
         public bool IsStaffBypassEnabled => ReferenceHub.authManager.BypassBansFlagSet;
@@ -1068,9 +1094,17 @@ namespace Exiled.API.Features
         public bool IsInPocketDimension => CurrentRoom?.Type is RoomType.Pocket;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player should use stamina system.
+        /// Gets or sets a value indicating whether or not the player should use stamina system. Resets on death.
         /// </summary>
-        public bool IsUsingStamina { get; set; } = true;
+        public bool IsUsingStamina
+        {
+            get => Role is FpcRole fpcRole && fpcRole.IsUsingStamina;
+            set
+            {
+                if (Role is FpcRole fpcRole)
+                    fpcRole.IsUsingStamina = value;
+            }
+        }
 
         /// <summary>
         /// Gets the player's ping.
@@ -1994,7 +2028,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Resets the <see cref="Player"/>'s stamina.
         /// </summary>
-        public void ResetStamina() => Stamina = StaminaStat.MaxValue;
+        /// <param name="multipliers">Resets <see cref="StaminaUsageMultiplier"/> and <see cref="StaminaRegenMultiplier"/>.</param>
+        public void ResetStamina(bool multipliers = false)
+        {
+            Stamina = StaminaStat.MaxValue;
+
+            if (!multipliers)
+                return;
+
+            StaminaUsageMultiplier = 1f;
+            StaminaRegenMultiplier = 1f;
+        }
 
         /// <summary>
         /// Gets a user's SCP preference.
@@ -2551,6 +2595,8 @@ namespace Exiled.API.Features
                 {
                     acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = false;
                 }
+
+                typeof(InventoryExtensions).InvokeStaticEvent(nameof(InventoryExtensions.OnItemAdded), new object[] { ReferenceHub, itemBase, null });
 
                 ItemsValue.Add(item);
 
