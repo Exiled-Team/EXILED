@@ -7,47 +7,77 @@
 
 namespace Exiled.Events.Patches.Events.Scp3114
 {
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
+    using Exiled.API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp3114;
     using Exiled.Events.Handlers;
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+
     using HarmonyLib;
+
     using PlayerRoles.PlayableScps.Scp3114;
+    using PlayerRoles.Ragdolls;
+
+    using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     ///     Patches <see cref="Scp3114Disguise.OnProgressSet()" />.
     ///     Adds the <see cref="Handlers.Scp3114.TryUseBody" /> event.
     /// </summary>
     [EventPatch(typeof(Scp3114), nameof(Scp3114.TryUseBody))]
-    [HarmonyPatch(typeof(Scp3114Disguise), nameof(Scp3114Disguise.OnProgressSet))]
+    [HarmonyPatch(typeof(Scp3114Disguise), nameof(Scp3114Disguise.ServerValidateBegin))]
     internal class TryUseBody
     {
-        private static bool Prefix(Scp3114Disguise __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            Scp3114Identity.StolenIdentity curIdentity = __instance.CastRole.CurIdentity;
-            if (__instance.IsInProgress)
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            Label retLabel = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                TryUseBodyEventArgs ev = new(__instance.Owner, __instance.CurRagdoll, true);
-                Handlers.Scp3114.OnTryUseBody(ev);
+                // Player.Get(this.Owner);
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Scp3114Disguise), nameof(Scp3114Disguise.Owner))),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
-                if (!ev.IsAllowed)
-                    return false;
+                // Ragdoll.Get(this.CurRagdoll);
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Scp3114Disguise), nameof(Scp3114Disguise.CurRagdoll))),
+                new(OpCodes.Call, Method(typeof(API.Features.Ragdoll), nameof(API.Features.Ragdoll.Get), new[] { typeof(BasicRagdoll) })),
 
-                __instance._equipSkinSound.Play();
-                curIdentity.Ragdoll = __instance.CurRagdoll;
-                curIdentity.UnitNameId = __instance._prevUnitIds.TryGetValue(__instance.CurRagdoll, out byte b) ? b : byte.MinValue;
-                curIdentity.Status = Scp3114Identity.DisguiseStatus.Equipping;
-                return false;
-            }
+                // true
+                new(OpCodes.Ldc_I4_1),
 
-            if (curIdentity.Status == Scp3114Identity.DisguiseStatus.Equipping)
-            {
-                __instance._equipSkinSound.Stop();
-                curIdentity.Status = Scp3114Identity.DisguiseStatus.None;
-                __instance.Cooldown.Trigger((double)__instance.Duration);
-            }
+                // TryUseBodyEventArgs ev = new TryUseBodyEventArgs(Player, Ragdoll, bool)
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TryUseBodyEventArgs))[0]),
+                new(OpCodes.Dup),
 
-            return false;
+                // Handlers.Scp3114.OnTryUseBody(ev);
+                new(OpCodes.Call, Method(typeof(Handlers.Scp3114), nameof(Handlers.Scp3114.OnTryUseBody))),
+
+                // if (!ev.IsAllowed)
+                //      return 4;
+                // else
+                //      continue;
+                new(OpCodes.Callvirt, PropertyGetter(typeof(TryUseBodyEventArgs), nameof(TryUseBodyEventArgs.IsAllowed))),
+                new(OpCodes.Brtrue_S, continueLabel),
+                new(OpCodes.Ldc_I4_4),
+                new(OpCodes.Ret),
+                new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
+            });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

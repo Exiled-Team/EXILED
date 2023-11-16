@@ -29,11 +29,11 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public TryUseBodyEventArgs(ReferenceHub player, BasicRagdoll ragdoll, bool isAllowed = true)
+        public TryUseBodyEventArgs(Player player, Ragdoll ragdoll, bool isAllowed = true)
         {
-            Player = Player.Get(player);
+            Player = player;
             Scp3114 = Player.Role.As<Scp3114Role>();
-            Ragdoll = Ragdoll.Get(ragdoll);
+            Ragdoll = ragdoll;
             IsAllowed = isAllowed;
         }
 
