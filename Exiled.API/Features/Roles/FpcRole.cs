@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Pools;
 
     using PlayerRoles;
@@ -25,6 +26,7 @@ namespace Exiled.API.Features.Roles
     public abstract class FpcRole : Role
     {
         private bool isUsingStamina = true;
+        private RoleTypeId? fakeAppearance = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FpcRole"/> class.
@@ -221,6 +223,16 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets a value indicating the fake appearance of the player.
         /// </summary>
-        public RoleTypeId? FakeAppearance { get; set; } = null;
+        public RoleTypeId? FakeAppearance
+        {
+            get => fakeAppearance;
+            set
+            {
+                fakeAppearance = value;
+
+                if (value.HasValue)
+                    Owner.ChangeAppearance(value.Value);
+            }
+        }
     }
 }
