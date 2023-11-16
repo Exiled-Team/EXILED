@@ -2028,7 +2028,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Resets the <see cref="Player"/>'s stamina.
         /// </summary>
-        /// <param name="multipliers">Reset <see cref="StaminaUsageMultiplier"/> and <see cref="StaminaRegenMultiplier"/> also.</param>
+        /// <param name="multipliers">Resets <see cref="StaminaUsageMultiplier"/> and <see cref="StaminaRegenMultiplier"/>.</param>
         public void ResetStamina(bool multipliers = false)
         {
             Stamina = StaminaStat.MaxValue;
