@@ -74,12 +74,18 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawning))),
                 });
 
+            int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldarg_1);
+
+            IEnumerable<Label> labels = newInstructions[index].labels;
+
+            newInstructions.RemoveRange(index, 9);
+
             newInstructions.InsertRange(
-                newInstructions.Count - 1,
-                new CodeInstruction[]
+                index,
+                new[]
                 {
                     // Player.Get(hub)
-                    new(OpCodes.Ldarg_1),
+                    new CodeInstruction(OpCodes.Ldarg_1).WithLabels(labels),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // position
@@ -98,7 +104,6 @@ namespace Exiled.Events.Patches.Events.Player
                     // Handlers.Player.OnSpawning(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawning))),
 
-                    // Send(ev)
                     new(OpCodes.Call, Method(typeof(Spawning), nameof(Send))),
                 });
 
@@ -108,6 +113,6 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
-        private static void Send(SpawningEventArgs ev) => ev.Player.Connection.Send(new FpcOverrideMessage(ev.Position, ev.HorizontalRotation));
+        private static void Send(SpawningEventArgs ev) => ev.Player.ReferenceHub.connectionToClient.Send(new FpcOverrideMessage(ev.Position, ev.HorizontalRotation));
     }
 }
