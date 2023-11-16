@@ -17,6 +17,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs.Player;
     using HarmonyLib;
     using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.FirstPersonControl.NetworkMessages;
     using PlayerRoles.FirstPersonControl.Spawnpoints;
 
     using static HarmonyLib.AccessTools;
@@ -37,8 +38,6 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-
-            int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldarg_1);
 
             Label skipLabel = generator.DefineLabel();
 
@@ -76,11 +75,11 @@ namespace Exiled.Events.Patches.Events.Player
                 });
 
             newInstructions.InsertRange(
-                index,
-                new[]
+                newInstructions.Count - 1,
+                new CodeInstruction[]
                 {
                     // Player.Get(hub)
-                    new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // position
@@ -95,18 +94,12 @@ namespace Exiled.Events.Patches.Events.Player
                     // SpawningEventArgs(Player, Vector3, float, PlayerRoleBase)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningEventArgs))[0]),
                     new(OpCodes.Dup),
-                    new(OpCodes.Dup),
 
                     // Handlers.Player.OnSpawning(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawning))),
 
-                    // position = SpawningEventArgs::Position
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.Position))),
-                    new(OpCodes.Stloc_1),
-
-                    // rotation = SpawningEventArgs::HorizontalRotation
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.HorizontalRotation))),
-                    new(OpCodes.Stloc_2),
+                    // Send(ev)
+                    new(OpCodes.Call, Method(typeof(Spawning), nameof(Send))),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -114,5 +107,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
+
+        private static void Send(SpawningEventArgs ev) => ev.Player.Connection.Send(new FpcOverrideMessage(ev.Position, ev.HorizontalRotation));
     }
 }
