@@ -1,3 +1,10 @@
+// -----------------------------------------------------------------------
+// <copyright file="DoorDamagingEventArgs.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
 using Exiled.Events.EventArgs.Interfaces;
 using Interactables.Interobjects.DoorUtils;
 
