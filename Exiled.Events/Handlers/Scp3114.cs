@@ -72,6 +72,5 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="RevealingEventArgs" /> instance.</param>
         public static void OnRevealing(RevealingEventArgs ev) => Revealing.InvokeSafely(ev);
-
     }
 }
