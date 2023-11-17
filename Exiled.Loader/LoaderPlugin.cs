@@ -19,7 +19,7 @@ namespace Exiled.Loader
     using Paths = API.Features.Paths;
 
     /// <summary>
-    /// The PluginAPI Plugin class for the EXILED Loader.
+    /// The Northwood PluginAPI Plugin class for the EXILED Loader.
     /// </summary>
     public class LoaderPlugin
     {
@@ -35,6 +35,7 @@ namespace Exiled.Loader
         /// Called by PluginAPI when the plugin is enabled.
         /// </summary>
         [PluginEntryPoint("Exiled Loader", null, "Loads the EXILED Plugin Framework.", "Exiled-Team")]
+        [PluginPriority(byte.MinValue)]
         public void Enable()
         {
             if (!Config.IsEnabled)

@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             LocalBuilder ev = generator.DeclareLocal(typeof(InteractingScp330EventArgs));
 
             // Remove original "No scp can touch" logic.
-            newInstructions.RemoveRange(0, 4);
+            newInstructions.RemoveRange(0, 3);
 
             // Find ServerProcessPickup, insert before it.
             int offset = -3;
@@ -130,13 +130,14 @@ namespace Exiled.Events.Patches.Events.Scp330
                     new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
                     new(OpCodes.Brfalse, shouldNotSever),
 
-                    // ev.Player.EnableEffect("SevereHands", 0f, 0)
+                    // ev.Player.EnableEffect("SevereHands", 1, 0f, false)
                     new(OpCodes.Ldloc, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.Player))),
                     new(OpCodes.Ldstr, nameof(SeveredHands)),
+                    new(OpCodes.Ldc_I4_1),
                     new(OpCodes.Ldc_R4, 0f),
                     new(OpCodes.Ldc_I4_0),
-                    new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.EnableEffect), new[] { typeof(string), typeof(float), typeof(bool) })),
+                    new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.EnableEffect), new[] { typeof(string), typeof(byte), typeof(float), typeof(bool) })),
                     new(OpCodes.Pop),
 
                     // return;

@@ -12,7 +12,7 @@ namespace Exiled.Events.Commands.Reload
     using CommandSystem;
 
     /// <summary>
-    /// The reload configs command.
+    /// The reload all command.
     /// </summary>
     public class All : ICommand
     {

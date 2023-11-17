@@ -38,7 +38,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public ElevatorTeleportingEventArgs(Player player, RoomIdentifier room, ElevatorDoor elevatorDoor, float auxiliaryPowerCost)
         {
             Player = player;
-            Scp079 = Player.Role.As<Scp079Role>();
+            Scp079 = player.Role.As<Scp079Role>();
             Room = Room.Get(room);
             Lift = Lift.Get(elevatorDoor.TargetPanel.AssignedChamber);
             AuxiliaryPowerCost = auxiliaryPowerCost;

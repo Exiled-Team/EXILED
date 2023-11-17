@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the report target.
+        ///     Gets the reported player.
         /// </summary>
         public Player Target { get; }
 
@@ -55,7 +55,7 @@ namespace Exiled.Events.EventArgs.Player
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the report issuer.
+        ///     Gets the reporter.
         /// </summary>
         public Player Player { get; }
     }

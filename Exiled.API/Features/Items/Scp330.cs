@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
+    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp330;
@@ -45,7 +46,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for SCP-330 bags.
     /// </summary>
-    public partial class Scp330 : Usable, IWrapper<Scp330Bag>
+    public class Scp330 : Usable, IWrapper<Scp330Bag>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330"/> class.
@@ -63,7 +64,13 @@ namespace Exiled.API.Features.Items
         internal Scp330()
             : this((Scp330Bag)Server.Host.Inventory.CreateItemInstance(new(ItemType.SCP330, 0), false))
         {
+            Base.Candies.Add(Scp330Candies.GetRandom());
         }
+
+        /// <summary>
+        /// Gets the <see cref="Dictionary{TKey,TValue}"/> with all presented in game candies.
+        /// </summary>
+        public static Dictionary<CandyKindID, ICandy> AvailableCandies { get; } = Scp330Candies.CandiesById;
 
         /// <summary>
         /// Gets the <see cref="Scp330Bag"/> that this class is encapsulating.
@@ -235,12 +242,15 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
+            PickupSyncInfo info = new(Type, Weight, Serial);
 
-            pickup.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-            pickup.Candies = new(Base.Candies);
-            pickup.ExposedCandy = ExposedType;
-            pickup.Scale = Scale;
+            InventorySystem.Items.Usables.Scp330.Scp330Pickup ipb = (InventorySystem.Items.Usables.Scp330.Scp330Pickup)InventoryExtensions.ServerCreatePickup(Base, info, position, rotation);
+
+            Base.OnRemoved(ipb);
+
+            ipb.NetworkExposedCandy = ExposedType;
+
+            Pickup pickup = Pickup.Get(ipb);
 
             if (spawn)
                 pickup.Spawn();
@@ -278,7 +288,6 @@ namespace Exiled.API.Features.Items
         internal override void ChangeOwner(Player oldOwner, Player newOwner)
         {
             Base.Owner = newOwner.ReferenceHub;
-            Base.ServerRefreshBag();
         }
     }
 }

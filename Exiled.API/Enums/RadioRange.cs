@@ -16,7 +16,7 @@ namespace Exiled.API.Enums
     public enum RadioRange : byte
     {
         /// <summary>
-        /// The shortest range with the least battery usage.
+        /// The shortest range with the lowest battery usage.
         /// </summary>
         Short,
 

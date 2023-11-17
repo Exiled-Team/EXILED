@@ -7,9 +7,11 @@
 
 namespace Exiled.Events.Handlers.Internal
 {
+    using CentralAuth;
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp049;
     using Exiled.Loader;
     using Exiled.Loader.Features;
 
@@ -62,6 +64,17 @@ namespace Exiled.Events.Handlers.Internal
         {
             if (!ev.Player.IsHost && ev.NewRole == RoleTypeId.Spectator && ev.Reason != API.Enums.SpawnReason.Destroyed && Events.Instance.Config.ShouldDropInventory)
                 ev.Player.Inventory.ServerDropEverything();
+        }
+
+        /// <inheritdoc cref="Scp049.OnActivatingSense(ActivatingSenseEventArgs)" />
+        public static void OnActivatingSense(ActivatingSenseEventArgs ev)
+        {
+            if (!Events.Instance.Config.CanScp049SenseTutorial || ev.Target is null || ev.Target.Role.Type is not RoleTypeId.Tutorial)
+                return;
+            if (ev.Scp049.SenseAbility.CanFindTarget(out ReferenceHub hub))
+                ev.Target = Player.Get(hub);
+            else
+                ev.Target = null;
         }
 
         /// <inheritdoc cref="Handlers.Player.OnVerified(VerifiedEventArgs)" />

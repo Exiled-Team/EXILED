@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     using PlayerRoles;
-
+    using PlayerRoles.Ragdolls;
     using PlayerStatsSystem;
 
     using UnityEngine;

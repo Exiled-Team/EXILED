@@ -8,6 +8,7 @@
 namespace Exiled.Events.Features
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Exiled.API.Features;
@@ -26,6 +27,8 @@ namespace Exiled.Events.Features
     /// <typeparam name="T">The specified <see cref="EventArgs"/> that the event will use.</typeparam>
     public class Event<T> : IExiledEvent
     {
+        private static readonly Dictionary<Type, Event<T>> TypeToEvent = new();
+
         private bool patched;
 
         /// <summary>
@@ -33,9 +36,15 @@ namespace Exiled.Events.Features
         /// </summary>
         public Event()
         {
+            TypeToEvent.Add(typeof(T), this);
         }
 
         private event CustomEventHandler<T> InnerEvent;
+
+        /// <summary>
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Event{T}"/> which contains all the <see cref="Event{T}"/> instances.
+        /// </summary>
+        public static IReadOnlyDictionary<Type, Event<T>> Dictionary => TypeToEvent;
 
         /// <summary>
         /// Subscribes a target <see cref="CustomEventHandler{TEventArgs}"/> to the inner event and checks if patching is possible, if dynamic patching is enabled.
@@ -90,7 +99,7 @@ namespace Exiled.Events.Features
         /// <summary>
         /// Executes all <see cref="CustomEventHandler{TEventArgs}"/> listeners safely.
         /// </summary>
-        /// <param name="arg">The event arg/>.</param>
+        /// <param name="arg">The event argument.</param>
         /// <exception cref="ArgumentNullException">Event or its arg is <see langword="null"/>.</exception>
         public void InvokeSafely(T arg)
         {

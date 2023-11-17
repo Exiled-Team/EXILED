@@ -276,7 +276,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brfalse_S, returnLabel),
                 });
 
-            offset = -9;
+            offset = -5;
             index = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(IDestructible), nameof(IDestructible.Damage)))) + offset;
 
             newInstructions.InsertRange(
