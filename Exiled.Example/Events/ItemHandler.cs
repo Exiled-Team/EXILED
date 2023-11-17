@@ -13,7 +13,7 @@ namespace Exiled.Example.Events
     using Exiled.Events.EventArgs.Item;
 
     /// <summary>
-    /// Handles Map events.
+    /// Handles Item events.
     /// </summary>
     internal sealed class ItemHandler
     {

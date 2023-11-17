@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before a player toggles the overwatch.
+    /// Contains all information before a player toggles overwatch mode.
     /// </summary>
     public class TogglingOverwatchEventArgs : IPlayerEvent, IDeniableEvent
     {

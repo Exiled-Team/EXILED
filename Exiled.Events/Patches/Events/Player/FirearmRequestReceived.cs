@@ -234,7 +234,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldloc_S, firearm.LocalIndex),
 
                     // !flag
-                    new(OpCodes.Ldloc_S, 6),
+                    new(OpCodes.Ldloc_S, 8),
                     new(OpCodes.Ldc_I4_0),
                     new(OpCodes.Ceq),
 
