@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="DoorDamagingEventArgs.cs" company="Exiled Team">
+// <copyright file="DestroyingDoorEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -10,10 +10,10 @@ using Interactables.Interobjects.DoorUtils;
 
 namespace Exiled.Events.EventArgs.Map
 {
-    public class DoorDestroyingEventArgs : IDeniableEvent
+    public class DestroyingDoorEventArgs : IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DoorDestroyingEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="DestroyingDoorEventArgs" /> class.
         /// </summary>
         /// <param name="doorVariant">
         ///     <inheritdoc cref="DoorVariant" />
@@ -21,7 +21,7 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public DoorDestroyingEventArgs(DoorVariant doorVariant, bool isAllowed = true)
+        public DestroyingDoorEventArgs(DoorVariant doorVariant, bool isAllowed = true)
         {
             Door = API.Features.Doors.Door.Get(doorVariant);
             IsAllowed = isAllowed;
