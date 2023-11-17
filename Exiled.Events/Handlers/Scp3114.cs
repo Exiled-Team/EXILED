@@ -79,7 +79,7 @@ namespace Exiled.Events.Handlers
         public static void OnRevealing(RevealingEventArgs ev) => Revealing.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before playing any voiceline
+        ///     Called before playing any voiceline.
         /// </summary>
         /// <param name="ev">The <see cref="VoiceLinesEventArgs" /> instance.</param>
         public static void OnVoiceLines(VoiceLinesEventArgs ev) => VoiceLines.InvokeSafely(ev);

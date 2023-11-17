@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="TryUseBody.cs" company="Exiled Team">
+// <copyright file="VoiceLines.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -10,16 +10,15 @@ namespace Exiled.Events.Patches.Events.Scp3114
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp3114;
     using Exiled.Events.Handlers;
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using HarmonyLib;
     using Mirror;
     using PlayerRoles.PlayableScps.Scp3114;
-    using static NineTailedFoxAnnouncer;
-    using static PlayerRoles.PlayableScps.Scp3114.Scp3114VoiceLines;
     using UnityEngine;
 
+    using static PlayerRoles.PlayableScps.Scp3114.Scp3114VoiceLines;
+
     /// <summary>
-    ///     Patches <see cref="Scp3114VoiceLines.ServerPlayConditionally(VoiceLinesName)()" />.
+    ///     Patches <see cref="Scp3114VoiceLines.ServerPlayConditionally" />.
     ///     Adds the <see cref="Handlers.Scp3114.VoiceLines" /> event.
     /// </summary>
     [EventPatch(typeof(Scp3114), nameof(Scp3114.VoiceLines))]
@@ -44,6 +43,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
                     voiceLinesDefinition = voiceLinesDefinition2;
                 }
             }
+
             VoiceLinesEventArgs ev = new(__instance.Owner, voiceLinesDefinition);
             Handlers.Scp3114.OnVoiceLines(ev);
 

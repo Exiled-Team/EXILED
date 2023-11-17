@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="RevealedEventArgs.cs" company="Exiled Team">
+// <copyright file="VoiceLinesEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <inheritdoc/>
         public Scp3114Role Scp3114 { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="PlayerRoles.PlayableScps.Scp3114.Scp3114VoiceLines.VoiceLinesDefinition" />
         public VoiceLinesDefinition VoiceLine { get; set; }
 
         /// <inheritdoc/>
