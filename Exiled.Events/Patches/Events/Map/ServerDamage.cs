@@ -1,5 +1,6 @@
 using Exiled.Events.Attributes;
 using Exiled.Events.EventArgs.Door;
+using Exiled.Events.EventArgs.Map;
 
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
@@ -19,9 +20,9 @@ namespace Exiled.Events.Patches.Events.Map
         ///     Patches <see cref="BreakableDoor.ServerDamage" />.
         ///     Adds the <see cref="Handlers.Door.DoorDamaging" />, <see cref="Handlers.Door.DoorDestroying" /> and <see cref="Handlers.Door.DoorDestroyed" /> events.
         /// </summary>
-        [EventPatch(typeof(Handlers.Door), nameof(Handlers.Door.DoorDestroyed))]
-        [EventPatch(typeof(Handlers.Door), nameof(Handlers.Door.DoorDestroying))]
-        [EventPatch(typeof(Handlers.Door), nameof(Handlers.Door.DoorDamaging))]
+        [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.DoorDestroyed))]
+        [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.DoorDestroying))]
+        [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.DoorDamaging))]
         [HarmonyPatch(typeof(BreakableDoor), nameof(BreakableDoor.ServerDamage))]
         internal class BreakableDoorServerDamage
         {
@@ -52,14 +53,14 @@ namespace Exiled.Events.Patches.Events.Map
                     return false;
                 }
 
-                DoorDamagingEventArgs doorDamagingEventArgs = new(__instance, Health, type);
+                DamagingDoorEventArgs damagingDoorEventArgs = new(__instance, Health, type);
 
-                Handlers.Door.OnDoorDamaging(doorDamagingEventArgs);
+                Handlers.Map.OnDoorDamaging(damagingDoorEventArgs);
 
-                Health = doorDamagingEventArgs.Health;
-                type = doorDamagingEventArgs.DoorDamageType;
+                Health = damagingDoorEventArgs.Health;
+                type = damagingDoorEventArgs.DoorDamageType;
 
-                if (!doorDamagingEventArgs.IsAllowed)
+                if (!damagingDoorEventArgs.IsAllowed)
                 {
                     __result = false;
                     return false;
@@ -68,11 +69,11 @@ namespace Exiled.Events.Patches.Events.Map
                 __instance.RemainingHealth -= Health;
                 if (__instance.RemainingHealth <= 0f)
                 {
-                    DoorDestroyingEventArgs doorDestroyingEventArgs = new(__instance);
+                    DestroyingDoorEventArgs destroyingDoorEventArgs = new(__instance);
 
-                    Handlers.Door.OnDoorDestroying(doorDestroyingEventArgs);
+                    Handlers.Map.OnDoorDestroying(destroyingDoorEventArgs);
 
-                    if (!doorDestroyingEventArgs.IsAllowed)
+                    if (!destroyingDoorEventArgs.IsAllowed)
                     {
                         __instance.RemainingHealth += Health;
                         __result = false;
@@ -81,9 +82,9 @@ namespace Exiled.Events.Patches.Events.Map
 
                     __instance.Network_destroyed = true;
                     DoorEvents.TriggerAction(__instance, DoorAction.Destroyed, null);
-                    DoorDestroyedEventArgs doorDestroyedEventArgs = new(__instance);
+                    DestroyedDoorEventArgs destroyedDoorEventArgs = new(__instance);
 
-                    Handlers.Door.OnDoorDestroyed(doorDestroyedEventArgs);
+                    Handlers.Map.OnDoorDestroyed(destroyedDoorEventArgs);
                 }
 
                 __result = true;
