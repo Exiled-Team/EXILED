@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp3114;
     using Exiled.Events.Handlers;
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using HarmonyLib;
     using Mirror;
     using PlayerRoles.PlayableScps.Scp3114;
