@@ -7,10 +7,13 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
-    using Exiled.Events.EventArgs.Interfaces;
     using Exiled.API.Features.Doors;
+    using Exiled.Events.EventArgs.Interfaces;
     using Interactables.Interobjects.DoorUtils;
 
+    /// <summary>
+    ///     Contains all information before the door is damaged.
+    /// </summary>
     public class DamagingDoorEventArgs : IDoorEvent, IDeniableEvent
     {
         /// <summary>
@@ -37,12 +40,12 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the door can take damage
+        ///     Gets or sets a value indicating whether or not the door can take damage.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///    Gets or sets a value indicating the type of door damage (DoorDamageType)
+        ///    Gets or sets a value indicating the type of door damage (DoorDamageType).
         /// </summary>
         public DoorDamageType DoorDamageType { get; set; }
 

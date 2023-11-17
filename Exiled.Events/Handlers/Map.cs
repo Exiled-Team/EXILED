@@ -222,17 +222,17 @@ namespace Exiled.Events.Handlers
         public static void OnSpawningTeamVehicle(SpawningTeamVehicleEventArgs ev) => SpawningTeamVehicle.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before destroyed the door
+        /// Called before destroyed the door.
         /// </summary>
         /// <param name="ev">The <see cref="DestroyedDoorEventArgs"/> instance.</param>
         public static void OnDoorDestroyed(DestroyedDoorEventArgs ev) => DoorDestroyed.InvokeSafely(ev);
         /// <summary>
-        /// Called before destroying the door
+        /// Called before destroying the door.
         /// </summary>
         /// <param name="ev">The <see cref="DestroyingDoorEventArgs"/> instance.</param>
         public static void OnDoorDestroying(DestroyingDoorEventArgs ev) => DoorDestroying.InvokeSafely(ev);
         /// <summary>
-        /// Called before dealing damage to the door
+        /// Called before dealing damage to the door.
         /// </summary>
         /// <param name="ev">The <see cref="DamagingDoorEventArgs"/> instance.</param>
         public static void OnDoorDamaging(DamagingDoorEventArgs ev) => DoorDamaging.InvokeSafely(ev);

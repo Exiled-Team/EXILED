@@ -5,10 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Interactables.Interobjects.DoorUtils;
-
 namespace Exiled.Events.EventArgs.Map
 {
+    using Interactables.Interobjects.DoorUtils;
+
+    /// <summary>
+    ///     Contains all the information after the door explodes.
+    /// </summary>
     public class DestroyedDoorEventArgs
     {
         /// <summary>
@@ -23,7 +26,7 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        ///     Gets a value indicating the door that was destroyed
+        ///     Gets a value indicating the door that was destroyed.
         /// </summary>
         public API.Features.Doors.Door Door { get; }
     }
