@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Door
+namespace Exiled.Events.EventArgs.Map
 {
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.API.Features.Doors;
@@ -19,7 +19,7 @@ namespace Exiled.Events.EventArgs.Door
         /// <param name="doorVariant">
         ///     <inheritdoc cref="DoorVariant" />
         /// </param>
-        /// <param name="hp">
+        /// <param name="health">
         ///     <inheritdoc cref="float" />
         /// </param>
         /// <param name="doorDamageType">
@@ -28,10 +28,10 @@ namespace Exiled.Events.EventArgs.Door
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public DoorDamagingEventArgs(DoorVariant doorVariant, float hp, DoorDamageType doorDamageType, bool isAllowed = true)
+        public DoorDamagingEventArgs(DoorVariant doorVariant, float health, DoorDamageType doorDamageType, bool isAllowed = true)
         {
             Door = Door.Get(doorVariant);
-            Hp = hp;
+            Health = health;
             DoorDamageType = doorDamageType;
             IsAllowed = isAllowed;
         }
@@ -47,9 +47,9 @@ namespace Exiled.Events.EventArgs.Door
         public DoorDamageType DoorDamageType { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating the damage received by the door
+        ///     Gets or sets the damage dealt to the door.
         /// </summary>
-        public float Hp { get; set; }
+        public float Health { get; set; }
 
         /// <summary>
         ///     Gets a value indicating the door that takes damage

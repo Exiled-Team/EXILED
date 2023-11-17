@@ -7,9 +7,10 @@ using HarmonyLib;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
 using Mirror;
+using System.Diagnostics;
 using UnityEngine;
 
-namespace Exiled.Events.Patches.Events.Door
+namespace Exiled.Events.Patches.Events.Map
 {
     public class ServerDamage
     {
@@ -24,13 +25,13 @@ namespace Exiled.Events.Patches.Events.Door
         [HarmonyPatch(typeof(BreakableDoor), nameof(BreakableDoor.ServerDamage))]
         internal class BreakableDoorServerDamage
         {
-            private static bool Prefix(BreakableDoor __instance, float hp, DoorDamageType type, bool __result)
+            private static bool Prefix(BreakableDoor __instance, float Health, DoorDamageType type, bool __result)
             {
                 if (!NetworkServer.active)
                 {
                     Debug.LogWarning("[Server] function 'System.Boolean Interactables.Interobjects.BreakableDoor::ServerDamage(System.Single,Interactables.Interobjects.DoorUtils.DoorDamageType)' called when server was not active");
-                    __result = default(bool);
-                    return default(bool);
+                    __result = default;
+                    return default;
                 }
 
                 if (__instance._destroyed || __instance.Network_destroyed)
@@ -51,11 +52,11 @@ namespace Exiled.Events.Patches.Events.Door
                     return false;
                 }
 
-                DoorDamagingEventArgs doorDamagingEventArgs = new(__instance, hp, type);
+                DoorDamagingEventArgs doorDamagingEventArgs = new(__instance, Health, type);
 
                 Handlers.Door.OnDoorDamaging(doorDamagingEventArgs);
 
-                hp = doorDamagingEventArgs.Hp;
+                Health = doorDamagingEventArgs.Health;
                 type = doorDamagingEventArgs.DoorDamageType;
 
                 if (!doorDamagingEventArgs.IsAllowed)
@@ -64,7 +65,7 @@ namespace Exiled.Events.Patches.Events.Door
                     return false;
                 }
 
-                __instance.RemainingHealth -= hp;
+                __instance.RemainingHealth -= Health;
                 if (__instance.RemainingHealth <= 0f)
                 {
                     DoorDestroyingEventArgs doorDestroyingEventArgs = new(__instance);
@@ -73,7 +74,7 @@ namespace Exiled.Events.Patches.Events.Door
 
                     if (!doorDestroyingEventArgs.IsAllowed)
                     {
-                        __instance.RemainingHealth += hp;
+                        __instance.RemainingHealth += Health;
                         __result = false;
                         return false;
                     }

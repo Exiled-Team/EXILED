@@ -1,7 +1,7 @@
 using Exiled.Events.EventArgs.Interfaces;
 using Interactables.Interobjects.DoorUtils;
 
-namespace Exiled.Events.EventArgs.Door
+namespace Exiled.Events.EventArgs.Map
 {
     public class DoorDestroyingEventArgs : IDeniableEvent
     {

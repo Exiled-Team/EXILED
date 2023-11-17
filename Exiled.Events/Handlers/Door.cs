@@ -1,9 +1,8 @@
 namespace Exiled.Events.Handlers
 {
-    using Exiled.Events.EventArgs.Door;
 #pragma warning disable SA1623 // Property summary documentation should match accessors
     using Exiled.Events.EventArgs.Item;
-
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Features;
     using Exiled.Events.Patches.Events.Item;
 
@@ -16,29 +15,29 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before dealing damage to the door
         /// </summary>
-        public static Event<DoorDamagingEventArgs> DoorDamaging { get; set; } = new();
+        public static Event<DamagingDoorEventArgs> DoorDamaging { get; set; } = new();
         /// <summary>
         /// Called before destroying the door
         /// </summary>
-        public static Event<DoorDestroyingEventArgs> DoorDestroying { get; set; } = new();
+        public static Event<DestroyingDoorEventArgs> DoorDestroying { get; set; } = new();
         /// <summary>
         /// Called before destroyed the door
         /// </summary>
-        public static Event<DoorDestroyedEventArgs> DoorDestroyed { get; set; } = new();
+        public static Event<DestroyedDoorEventArgs> DoorDestroyed { get; set; } = new();
         /// <summary>
         /// Called before destroyed the door
         /// </summary>
-        /// <param name="ev">The <see cref="DoorDestroyedEventArgs"/> instance.</param>
-        public static void OnDoorDestroyed(DoorDestroyedEventArgs ev) => DoorDestroyed.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="DestroyedDoorEventArgs"/> instance.</param>
+        public static void OnDoorDestroyed(DestroyedDoorEventArgs ev) => DoorDestroyed.InvokeSafely(ev);
         /// <summary>
         /// Called before destroying the door
         /// </summary>
-        /// <param name="ev">The <see cref="DoorDestroyingEventArgs"/> instance.</param>
-        public static void OnDoorDestroying(DoorDestroyingEventArgs ev) => DoorDestroying.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="DestroyingDoorEventArgs"/> instance.</param>
+        public static void OnDoorDestroying(DestroyingDoorEventArgs ev) => DoorDestroying.InvokeSafely(ev);
         /// <summary>
         /// Called before dealing damage to the door
         /// </summary>
-        /// <param name="ev">The <see cref="DoorDamagingEventArgs"/> instance.</param>
-        public static void OnDoorDamaging(DoorDamagingEventArgs ev) => DoorDamaging.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="DamagingDoorEventArgs"/> instance.</param>
+        public static void OnDoorDamaging(DamagingDoorEventArgs ev) => DoorDamaging.InvokeSafely(ev);
     }
 }
