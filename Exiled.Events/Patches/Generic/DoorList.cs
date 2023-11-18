@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static void Postfix(DoorVariant __instance)
         {
-            if (__instance.Rooms == null)
+            if (__instance.Rooms != null)
                 return;
 
             List<Room> rooms = __instance.Rooms.Select(identifier => Room.RoomIdentifierToRoom[identifier]).ToList();
