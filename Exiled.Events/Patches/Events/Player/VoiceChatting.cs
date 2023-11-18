@@ -21,6 +21,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using PlayerRoles.Voice;
 
+    using VoiceChat;
     using VoiceChat.Networking;
 
     using static HarmonyLib.AccessTools;
@@ -111,7 +112,7 @@ namespace Exiled.Events.Patches.Events.Player
                 //     goto skipLabel;
                 new(OpCodes.Ldloc_S, voiceModule.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(VoiceModuleBase), nameof(VoiceModuleBase.CurrentChannel))),
-                new(OpCodes.Ldc_I4_2),
+                new(OpCodes.Ldc_I4_S, (sbyte)VoiceChatChannel.Radio),
                 new(OpCodes.Ceq),
                 new(OpCodes.Brfalse_S, skipLabel),
 
