@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Map
             if (scp244DeployablePickup != null)
                 scp244DeployablePickup.State = Scp244State.Active;
 
-            Scp244SpawningEventArgs ev = new(Room.Get(Scp244Spawner.CompatibleRooms[index]), Pickup.Get(itemPickupBase), Pickup.Get(itemPickupBase).As<Scp244Pickup>());
+            Scp244SpawningEventArgs ev = new(Room.Get(Scp244Spawner.CompatibleRooms[index]), Pickup.Get(itemPickupBase).As<Scp244Pickup>());
             Handlers.Map.OnScp244Spawning(ev);
 
             if (!ev.IsAllowed)

@@ -22,20 +22,16 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="room">
         ///     <inheritdoc cref="Room" />
         /// </param>
-        /// <param name="pickup">
-        ///     <inheritdoc cref="Pickup" />
-        /// </param>
         /// <param name="scp244Pickup">
         ///     <inheritdoc cref="Scp244Pickup" />
         /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public Scp244SpawningEventArgs(Room room, Pickup pickup, Scp244Pickup scp244Pickup, bool isAllowed = true)
+        public Scp244SpawningEventArgs(Room room, Scp244Pickup scp244Pickup, bool isAllowed = true)
         {
             Room = room;
-            Pickup = pickup;
-            Scp244Pickup = scp244Pickup;
+            Pickup = scp244Pickup;
             IsAllowed = isAllowed;
         }
 
@@ -50,13 +46,8 @@ namespace Exiled.Events.EventArgs.Map
         public Pickup Pickup { get; }
 
         /// <summary>
-        /// Gets the <see cref="API.Features.Pickups.Scp244Pickup"/> object that is spawning.
-        /// </summary>
-        public Scp244Pickup Scp244Pickup { get; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether or not the item can be spawning.
         /// </summary>
-        public bool IsAllowed { get; set; } = true;
+        public bool IsAllowed { get; set; }
     }
 }
