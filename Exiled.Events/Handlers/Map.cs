@@ -106,21 +106,6 @@ namespace Exiled.Events.Handlers
         public static Event<SpawningTeamVehicleEventArgs> SpawningTeamVehicle { get; set; } = new();
 
         /// <summary>
-        /// Called before dealing damage to the door
-        /// </summary>
-        public static Event<DamagingDoorEventArgs> DoorDamaging { get; set; } = new();
-
-        /// <summary>
-        /// Called before destroying the door
-        /// </summary>
-        public static Event<DestroyingDoorEventArgs> DoorDestroying { get; set; } = new();
-
-        /// <summary>
-        /// Called before destroyed the door
-        /// </summary>
-        public static Event<DestroyedDoorEventArgs> DoorDestroyed { get; set; } = new();
-
-        /// <summary>
         /// Called before placing a decal.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingBulletHoleEventArgs"/> instance.</param>
@@ -220,21 +205,5 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SpawningTeamVehicleEventArgs"/> instance.</param>
         public static void OnSpawningTeamVehicle(SpawningTeamVehicleEventArgs ev) => SpawningTeamVehicle.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before destroyed the door.
-        /// </summary>
-        /// <param name="ev">The <see cref="DestroyedDoorEventArgs"/> instance.</param>
-        public static void OnDoorDestroyed(DestroyedDoorEventArgs ev) => DoorDestroyed.InvokeSafely(ev);
-        /// <summary>
-        /// Called before destroying the door.
-        /// </summary>
-        /// <param name="ev">The <see cref="DestroyingDoorEventArgs"/> instance.</param>
-        public static void OnDoorDestroying(DestroyingDoorEventArgs ev) => DoorDestroying.InvokeSafely(ev);
-        /// <summary>
-        /// Called before dealing damage to the door.
-        /// </summary>
-        /// <param name="ev">The <see cref="DamagingDoorEventArgs"/> instance.</param>
-        public static void OnDoorDamaging(DamagingDoorEventArgs ev) => DoorDamaging.InvokeSafely(ev);
     }
 }
