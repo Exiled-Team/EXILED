@@ -106,6 +106,11 @@ namespace Exiled.Events.Handlers
         public static Event<SpawningTeamVehicleEventArgs> SpawningTeamVehicle { get; set; } = new();
 
         /// <summary>
+        /// Invoked before a team vehicle is spawned.
+        /// </summary>
+        public static Event<Scp244SpawnedEventArgs> Scp244Spawned { get; set; } = new();
+
+        /// <summary>
         /// Called before placing a decal.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingBulletHoleEventArgs"/> instance.</param>
@@ -205,5 +210,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SpawningTeamVehicleEventArgs"/> instance.</param>
         public static void OnSpawningTeamVehicle(SpawningTeamVehicleEventArgs ev) => SpawningTeamVehicle.InvokeSafely(ev);
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="ev">The <see cref="Scp244SpawnedEventArgs"/> instance.</param>
+        public static void OnScp244Spawned(Scp244SpawnedEventArgs ev) => Scp244Spawned.InvokeSafely(ev);
     }
 }
