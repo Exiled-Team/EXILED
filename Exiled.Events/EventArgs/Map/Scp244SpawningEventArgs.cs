@@ -23,7 +23,7 @@ namespace Exiled.Events.EventArgs.Map
         ///     <inheritdoc cref="Room" />
         /// </param>
         /// <param name="scp244Pickup">
-        ///     <inheritdoc cref="Scp244Pickup" />
+        ///     <inheritdoc cref="Pickup" />
         /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
