@@ -232,6 +232,8 @@ namespace Exiled.API.Features.Roles
 
                 if (value.HasValue)
                     Owner.ChangeAppearance(value.Value);
+                else
+                    Owner.ChangeAppearance(Owner.Role.Type, skipJump: true);
             }
         }
     }
