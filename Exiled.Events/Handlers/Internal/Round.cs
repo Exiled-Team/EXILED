@@ -71,10 +71,7 @@ namespace Exiled.Events.Handlers.Internal
         {
             if (Events.Instance.Config.CanScp049SenseTutorial || ev.Target is null || ev.Target.Role.Type is not RoleTypeId.Tutorial)
                 return;
-            if (ev.Scp049.SenseAbility.CanFindTarget(out ReferenceHub hub))
-                ev.Target = Player.Get(hub);
-            else
-                ev.Target = null;
+            ev.Target = ev.Scp049.SenseAbility.CanFindTarget(out ReferenceHub hub) ? Player.Get(hub) : null;
         }
 
         /// <inheritdoc cref="Handlers.Player.OnVerified(VerifiedEventArgs)" />
