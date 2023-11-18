@@ -70,7 +70,7 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction[]
                 {
                     // this.leadingTeam
-                    new(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Ldfld, Field(PrivateType, LeadingTeam)),
 
                     // this.newList
