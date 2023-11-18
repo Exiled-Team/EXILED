@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="Scp244Spawned.cs" company="Exiled Team">
+// <copyright file="Scp244Spawning.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,26 +7,26 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
+    using Exiled.API.Features;
+    using Exiled.API.Features.Pickups;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
-    using Exiled.Events.EventArgs.Scp3114;
-    using Handlers;
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using HarmonyLib;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp244;
+    using MapGeneration;
     using Mirror;
     using UnityEngine;
-    using static PlayerList;
 
     /// <summary>
     ///     Patches <see cref="Scp244Spawner.SpawnScp244" />.
-    ///     Adds the <see cref="Map.Scp244Spawned" /> event.
+    ///     Adds the <see cref="Handlers.Map.Scp244Spawning" /> event.
     /// </summary>
-    [EventPatch(typeof(Map), nameof(Map.Scp244Spawned))]
+    [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.Scp244Spawning))]
     [HarmonyPatch(typeof(Scp244Spawner), nameof(Scp244Spawner.SpawnScp244))]
-    internal static class Scp244Spawned
+    internal static class Scp244Spawning
     {
         private static bool Prefix(ItemBase ib)
         {
@@ -46,11 +46,14 @@ namespace Exiled.Events.Patches.Events.Map
             if (scp244DeployablePickup != null)
                 scp244DeployablePickup.State = Scp244State.Active;
 
-            Scp244SpawningEventArgs ev = new(__instance.Owner, __instance.CurRagdoll, true);
-            Handlers.Scp3114.OnTryUseBody(ev);
+            Scp244SpawningEventArgs ev = new(Room.Get(Scp244Spawner.CompatibleRooms[index]), Pickup.Get(itemPickupBase), Pickup.Get(itemPickupBase).As<Scp244Pickup>());
+            Handlers.Map.OnScp244Spawning(ev);
 
             if (!ev.IsAllowed)
+            {
+                NetworkServer.Destroy(itemPickupBase.gameObject);
                 return false;
+            }
 
             NetworkServer.Spawn(itemPickupBase.gameObject);
             Scp244Spawner.CompatibleRooms.RemoveAt(index);

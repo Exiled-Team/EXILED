@@ -40,22 +40,22 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        ///     Gets the room in which the Pickup will be spawned.
+        /// Gets the room in which the Pickup will be spawning.
         /// </summary>
         public Room Room { get; }
 
         /// <summary>
-        /// Gets a value indicating the pickup being spawned.
+        /// Gets a value indicating the pickup being spawning.
         /// </summary>
         public Pickup Pickup { get; }
 
         /// <summary>
-        /// Gets .
+        /// Gets the <see cref="API.Features.Pickups.Scp244Pickup"/> object that is spawning.
         /// </summary>
         public Scp244Pickup Scp244Pickup { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the item can be spawned.
+        /// Gets or sets a value indicating whether or not the item can be spawning.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }
