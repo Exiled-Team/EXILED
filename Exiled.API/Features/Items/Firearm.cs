@@ -121,6 +121,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the max ammo for this firearm.
         /// </summary>
+        /// <remarks>Disruptor can't be used for MaxAmmo.</remarks>
         public byte MaxAmmo
         {
             get => Base.AmmoManagerModule.MaxAmmo;
@@ -137,6 +138,9 @@ namespace Exiled.API.Features.Items
                     case AutomaticAmmoManager automaticAmmoManager:
                         automaticAmmoManager.MaxAmmo = value;
                         break;
+                    default:
+                        Log.Warn($"MaxAmmo can't be used for this Item: {Type} ({Base.AmmoManagerModule})");
+                        return;
                 }
             }
         }
@@ -157,10 +161,19 @@ namespace Exiled.API.Features.Items
         public bool Aiming => Base.AdsModule.ServerAds;
 
         /// <summary>
+        /// Gets a value indicating whether the firearm's flashlight module is enabled.
+        /// </summary>
+        public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
+
+        /// <summary>
         /// Gets a value indicating whether the firearm's flashlight module is enabled or if playing see trough a NightVision.
         /// </summary>
-        public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled) ||
-            (Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.NightVision) && Aiming);
+        public bool NightVisionEnabled => Aiming && Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.NightVision);
+
+        /// <summary>
+        /// Gets a value indicating whether the firearm's flashlight module is enabled or if playing see trough a NightVision.
+        /// </summary>
+        public bool IsEmittingLight => FlashlightEnabled || NightVisionEnabled;
 
         /// <summary>
         /// Gets a value indicating whether or not the firearm is automatic.
