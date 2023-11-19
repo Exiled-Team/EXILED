@@ -65,12 +65,21 @@ namespace Exiled.Events.Patches.Events.Server
 
             LocalBuilder evEndingRound = generator.DeclareLocal(typeof(EndingRoundEventArgs));
 
+            Label skip = generator.DefineLabel();
+            newInstructions[index].WithLabels(skip);
+
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
                 {
+                    // if (RoundSummary._roundEnded)
+                    //     skip ending round event call
+                    new CodeInstruction(OpCodes.Ldloc_1).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Ldfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
+                    new(OpCodes.Brtrue_S, skip),
+
                     // this.leadingTeam
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(PrivateType, LeadingTeam)),
 
                     // this.newList
@@ -99,6 +108,11 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsAllowed))),
                     new(OpCodes.Stfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
+
+                    // flag = ev.IsAllowed
+                    new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsAllowed))),
+                    new(OpCodes.Stloc_S, 4),
                 });
 
             offset = 7;
