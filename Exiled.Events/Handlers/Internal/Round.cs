@@ -12,6 +12,7 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp049;
+    using Exiled.Events.EventArgs.Scp3114;
     using Exiled.Loader;
     using Exiled.Loader.Features;
 
@@ -75,6 +76,16 @@ namespace Exiled.Events.Handlers.Internal
                 ev.Target = Player.Get(hub);
             else
                 ev.Target = null;
+        }
+
+        /// <inheritdoc cref="Scp3114.OnDisguising(DisguisingEventArgs)" />
+        /// <remarks>Fix NW Bug (https://trello.com/c/c8ok7v4x/5743-skeleton-with-a-big-sized-skin).</remarks> // TODO: Remove this when card got Fixed tag
+        public static void OnDisguising(DisguisingEventArgs ev)
+        {
+            if (ev.Scp3114.DisguiseStatus is not PlayerRoles.PlayableScps.Scp3114.Scp3114Identity.DisguiseStatus.None)
+            {
+                ev.IsAllowed = false;
+            }
         }
 
         /// <inheritdoc cref="Handlers.Player.OnVerified(VerifiedEventArgs)" />
