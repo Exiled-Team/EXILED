@@ -61,25 +61,25 @@ namespace Exiled.Events.Patches.Events.Server
                 });
 
             offset = -1;
-            index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ldfld && x.operand == (object)Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))) + offset;
+            index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldfld && x.operand == (object)Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))) + offset;
 
             LocalBuilder evEndingRound = generator.DeclareLocal(typeof(EndingRoundEventArgs));
-
             Label skip = generator.DefineLabel();
-            newInstructions[index].WithLabels(skip);
 
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
                 {
                     // if (RoundSummary._roundEnded)
-                    //     skip ending round event call
+                    //     flag = true;
                     new CodeInstruction(OpCodes.Ldloc_1).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Ldfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
-                    new(OpCodes.Brtrue_S, skip),
+                    new(OpCodes.Brfalse_S, skip),
+                    new(OpCodes.Ldc_I4_1),
+                    new CodeInstruction(OpCodes.Stloc_S, 4),
 
                     // this.leadingTeam
-                    new(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(skip),
                     new(OpCodes.Ldfld, Field(PrivateType, LeadingTeam)),
 
                     // this.newList
@@ -89,7 +89,11 @@ namespace Exiled.Events.Patches.Events.Server
                     // shouldRoundEnd
                     new(OpCodes.Ldloc_S, 4),
 
-                    // EndingRoundEventArgs evEndingRound = new(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, bool);
+                    // isForceEnd
+                    new(OpCodes.Ldloc_1),
+                    new(OpCodes.Ldfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
+
+                    // EndingRoundEventArgs evEndingRound = new(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, bool, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EndingRoundEventArgs))[0]),
                     new(OpCodes.Dup),
 
@@ -108,11 +112,6 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsAllowed))),
                     new(OpCodes.Stfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
-
-                    // flag = ev.IsAllowed
-                    new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsAllowed))),
-                    new(OpCodes.Stloc_S, 4),
                 });
 
             offset = 7;
