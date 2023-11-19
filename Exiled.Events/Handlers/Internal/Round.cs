@@ -19,7 +19,9 @@ namespace Exiled.Events.Handlers.Internal
     using InventorySystem;
 
     using PlayerRoles;
+    using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.RoleAssign;
+    using UnityEngine.Assertions.Must;
 
     /// <summary>
     ///     Handles some round clean-up events and some others related to players.
@@ -78,13 +80,13 @@ namespace Exiled.Events.Handlers.Internal
                 ev.Target = null;
         }
 
-        /// <inheritdoc cref="Scp3114.OnDisguising(DisguisingEventArgs)" />
+        /// <inheritdoc cref="Scp3114.OnDisguised(DisguisedEventArgs)" />
         /// <remarks>Fix NW Bug (https://trello.com/c/c8ok7v4x/5743-skeleton-with-a-big-sized-skin).</remarks> // TODO: Remove this when card got Fixed tag
-        public static void OnDisguising(DisguisingEventArgs ev)
+        public static void OnDisguised(DisguisedEventArgs ev)
         {
-            if (ev.Scp3114.DisguiseStatus is not PlayerRoles.PlayableScps.Scp3114.Scp3114Identity.DisguiseStatus.Equipping)
+            if (ev.Ragdoll.DamageHandler is Scp3114DamageHandler scp3114DamageHandler && scp3114DamageHandler.StartingRagdoll)
             {
-                ev.IsAllowed = false;
+                scp3114DamageHandler.StartingRagdoll = false;
             }
         }
 
