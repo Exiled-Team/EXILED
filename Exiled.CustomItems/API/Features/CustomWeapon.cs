@@ -206,39 +206,7 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: Continuing with internal reload..");
-            ev.IsAllowed = false;
-
-            byte remainingClip = ((Firearm)ev.Player.CurrentItem).Ammo;
-
-            if (remainingClip >= ClipSize)
-                return;
-
-            Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] is reloading a {Name} ({Id}) [{Type} ({remainingClip}/{ClipSize})]!");
-
-            AmmoType ammoType = ev.Firearm.AmmoType;
-
-            if (!ev.Player.Ammo.ContainsKey(ammoType.GetItemType()))
-            {
-                Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: {ev.Player.Nickname} does not have ammo to reload this weapon.");
-                return;
-            }
-
-            ev.Player.Connection.Send(new RequestMessage(ev.Firearm.Serial, RequestType.Reload));
-
-            byte amountToReload = (byte)Math.Min(ClipSize - remainingClip, ev.Player.Ammo[ammoType.GetItemType()]);
-
-            if (amountToReload <= 0)
-                return;
-
-            ev.Player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Invisible>().Intensity = 0;
-
-            ev.Player.Ammo[ammoType.GetItemType()] -= amountToReload;
-            ev.Player.Inventory.SendAmmoNextFrame = true;
-
-            ((Firearm)ev.Player.CurrentItem).Ammo = (byte)(((Firearm)ev.Player.CurrentItem).Ammo + amountToReload);
-
-            Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] reloaded a {Name} ({Id}) [{Type} ({((Firearm)ev.Player.CurrentItem).Ammo}/{ClipSize})]!");
+            ev.Firearm.MaxAmmo = ClipSize;
         }
 
         private void OnInternalShooting(ShootingEventArgs ev)
