@@ -64,7 +64,6 @@ namespace Exiled.Events.Patches.Events.Server
             index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ldfld && x.operand == (object)Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))) + offset;
 
             LocalBuilder evEndingRound = generator.DeclareLocal(typeof(EndingRoundEventArgs));
-            Label skip = generator.DefineLabel();
 
             newInstructions.InsertRange(
                 index,
