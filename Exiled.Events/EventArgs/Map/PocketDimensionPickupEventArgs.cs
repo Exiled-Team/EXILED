@@ -10,9 +10,10 @@ namespace Exiled.Events.EventArgs.Map
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
     using InventorySystem.Items.Pickups;
-    using MapGeneration;
 
     using UnityEngine;
+
+    using static PlayerRoles.PlayableScps.Scp106.Scp106PocketItemManager;
 
     /// <summary>
     /// Contains information about items in the pocket dimension.
@@ -23,47 +24,58 @@ namespace Exiled.Events.EventArgs.Map
         /// Initializes a new instance of the <see cref="PocketDimensionPickupEventArgs"/> class.
         /// </summary>
         /// <param name="pickupBase"><inheritdoc cref="Pickup"/></param>
-        /// <param name="roomName"><inheritdoc cref="RoomIdentifier"/></param>
+        /// <param name="pocketItem"><inheritdoc cref="PocketItem"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        /// <param name="remove">Handles removing pickups from the pocket dimension.</param>
-        /// <param name="warningSent">Handles sending the warning sound before a pickup leaves the pocket dimension.</param>
-        /// <param name="hasFlagFast">Handles the pickup having the item tier flag.</param>
-        /// <param name="position"><inheritdoc/></param>
-        public PocketDimensionPickupEventArgs(ItemPickupBase pickupBase, Vector3 position, RoomName roomName, bool isAllowed = true, bool remove = false, bool warningSent = false, bool hasFlagFast = false)
+        public PocketDimensionPickupEventArgs(ItemPickupBase pickupBase, PocketItem pocketItem, bool isAllowed)
         {
             Pickup = Pickup.Get(pickupBase);
-            if (roomName is not RoomName.Pocket)
-                return;
-
-            HasFlagFast = hasFlagFast;
-            ShouldWarning = warningSent;
-            ShouldRemove = remove;
+            PocketItem = pocketItem;
             IsAllowed = isAllowed;
-            Position = position;
         }
 
         /// <inheritdoc/>
         public Pickup Pickup { get; }
 
         /// <summary>
+        /// Gets the value of the PocketItem.
+        /// </summary>
+        public PocketItem PocketItem { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating when the Pickup will be dropped onto the map.
+        /// </summary>
+        public double DropTime
+        {
+            get => PocketItem.TriggerTime;
+            set => PocketItem.TriggerTime = value;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the pickup should be removed from the Pocket Dimension.
         /// </summary>
-        public bool ShouldRemove { get; set; }
+        public bool ShouldRemove
+        {
+            get => PocketItem.Remove;
+            set => PocketItem.Remove = value;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the warning sound for the pickup should be sent.
         /// </summary>
-        public bool ShouldWarning { get; set; }
+        public bool ShouldWarning
+        {
+            get => !PocketItem.WarningSent;
+            set => PocketItem.WarningSent = !value;
+        }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the pickup has the item tier flag.
+        /// Gets or sets the location where the pickup will drop onto the map.
         /// </summary>
-        public bool HasFlagFast { get; set; }
-
-        /// <summary>
-        /// Gets the location where the pickup will drop onto the map.
-        /// </summary>
-        public Vector3 Position { get; }
+        public Vector3 Position
+        {
+            get => PocketItem.DropPosition.Position;
+            set => PocketItem.DropPosition = new(value);
+        }
 
         /// <inheritdoc/>
         public bool IsAllowed { get; set; }
