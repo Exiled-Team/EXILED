@@ -82,7 +82,7 @@ namespace Exiled.Events.Handlers.Internal
         /// <remarks>Fix NW Bug (https://trello.com/c/c8ok7v4x/5743-skeleton-with-a-big-sized-skin).</remarks> // TODO: Remove this when card got Fixed tag
         public static void OnDisguising(DisguisingEventArgs ev)
         {
-            if (ev.Scp3114.DisguiseStatus is not PlayerRoles.PlayableScps.Scp3114.Scp3114Identity.DisguiseStatus.None)
+            if (ev.Scp3114.DisguiseStatus is not PlayerRoles.PlayableScps.Scp3114.Scp3114Identity.DisguiseStatus.Equipping)
             {
                 ev.IsAllowed = false;
             }
