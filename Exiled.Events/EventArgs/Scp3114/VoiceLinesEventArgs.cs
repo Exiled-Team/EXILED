@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs.Scp3114
     using Exiled.API.Features.Roles;
     using Interfaces;
 
+    using static PlayerRoles.PlayableScps.Scp3114.Scp3114VoiceLines;
+
     /// <summary>
     ///     Contains all information prior to sending voiceline SCP-3114.
     /// </summary>
@@ -28,7 +30,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public VoiceLinesEventArgs(ReferenceHub player, PlayerRoles.PlayableScps.Scp3114.Scp3114VoiceLines.VoiceLinesDefinition voiceLine, bool isAllowed = true)
+        public VoiceLinesEventArgs(ReferenceHub player, VoiceLinesDefinition voiceLine, bool isAllowed = true)
         {
             Player = Player.Get(player);
             Scp3114 = Player.Role.As<Scp3114Role>();
@@ -42,7 +44,9 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <inheritdoc/>
         public Scp3114Role Scp3114 { get; }
 
-        /// <inheritdoc cref="PlayerRoles.PlayableScps.Scp3114.Scp3114VoiceLines.VoiceLinesDefinition" />
+        /// <summary>
+        ///     Gets or sets the <see cref="VoiceLinesDefinition" />.
+        /// </summary>
         public VoiceLinesDefinition VoiceLine { get; set; }
 
         /// <inheritdoc/>

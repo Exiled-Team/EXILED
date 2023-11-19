@@ -7,16 +7,19 @@
 
 namespace Exiled.Events.Patches.Events.Scp3114
 {
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
+    using Exiled.API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp3114;
     using Exiled.Events.Handlers;
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-    using HarmonyLib;
-    using Mirror;
-    using PlayerRoles.PlayableScps.Scp3114;
-    using UnityEngine;
 
-    using static PlayerRoles.PlayableScps.Scp3114.Scp3114VoiceLines;
+    using HarmonyLib;
+
+    using PlayerRoles.PlayableScps.Scp3114;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     ///     Patches <see cref="Scp3114VoiceLines.ServerPlayConditionally" />.
@@ -26,41 +29,55 @@ namespace Exiled.Events.Patches.Events.Scp3114
     [HarmonyPatch(typeof(Scp3114VoiceLines), nameof(Scp3114VoiceLines.ServerPlayConditionally))]
     internal class VoiceLines
     {
-        private static bool Prefix(Scp3114VoiceLines.VoiceLinesName lineToPlay, Scp3114VoiceLines __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (!NetworkServer.active)
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            Label returnLabel = generator.DefineLabel();
+
+            LocalBuilder ev = generator.DeclareLocal(typeof(VoiceLinesEventArgs));
+
+            int offset = 1;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Blt_S) + offset;
+
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                return false;
-            }
+                // this.Owner
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Scp3114VoiceLines), nameof(Scp3114VoiceLines.Owner))),
 
-            VoiceLinesDefinition voiceLinesDefinition = null;
-            float num = float.PositiveInfinity;
-            VoiceLinesDefinition[] voiceLines = __instance._voiceLines;
-            foreach (VoiceLinesDefinition voiceLinesDefinition2 in voiceLines)
-            {
-                num = Mathf.Min(num, voiceLinesDefinition2.LastUseElapsedSeconds);
-                if (voiceLinesDefinition2.Label == lineToPlay)
-                {
-                    voiceLinesDefinition = voiceLinesDefinition2;
-                }
-            }
+                // voiceLinesDefinition
+                new(OpCodes.Ldloc_0),
 
-            VoiceLinesEventArgs ev = new(__instance.Owner, voiceLinesDefinition);
-            Handlers.Scp3114.OnVoiceLines(ev);
+                // true
+                new(OpCodes.Ldc_I4_1),
 
-            voiceLinesDefinition = ev.VoiceLine;
+                // VoiceLinesEventArgs ev = new VoiceLinesEventArgs(ReferenceHub, VoiceLinesDefinition, bool);
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(VoiceLinesEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
 
-            if (!ev.IsAllowed)
-                return false;
+                // Handlers.Scp3114.OnVoiceLines(ev);
+                new(OpCodes.Call, Method(typeof(Handlers.Scp3114), nameof(Handlers.Scp3114.OnVoiceLines))),
 
-            if (voiceLinesDefinition != null && !(voiceLinesDefinition.MinIdleTime > num) && voiceLinesDefinition.TryDrawNext(out var clipId))
-            {
-                __instance._syncName = (byte)lineToPlay;
-                __instance._syncId = (byte)clipId;
-                __instance.ServerSendRpc(toAll: true);
-            }
+                // if(!ev.IsAllowed)
+                //     return;
+                new(OpCodes.Callvirt, PropertyGetter(typeof(VoiceLinesEventArgs), nameof(VoiceLinesEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, returnLabel),
 
-            return false;
+                // voiceLinesDefinition = ev.VoiceLine;
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(VoiceLinesEventArgs), nameof(VoiceLinesEventArgs.VoiceLine))),
+                new(OpCodes.Stloc_S, 0),
+            });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }
