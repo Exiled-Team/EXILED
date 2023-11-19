@@ -13,6 +13,7 @@ namespace Exiled.API.Features
 
     using Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Roles;
     using Exiled.API.Interfaces;
     using MapGeneration;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
@@ -178,6 +179,11 @@ namespace Exiled.API.Features
         /// Gets the camera's id.
         /// </summary>
         public ushort Id => Base.SyncId;
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of SCP-079 <see cref="Player"/> in this <see cref="Camera"/>.
+        /// </summary>
+        public IEnumerable<Player> Scp079s => Player.List.Where(x => x.Role is Scp079Role scp079Role && scp079Role.Camera == this);
 
         /// <summary>
         /// Gets the generator's <see cref="Room"/>.
