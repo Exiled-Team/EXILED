@@ -31,7 +31,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the destoying player.
+        ///     Gets the destroying player.
         /// </summary>
         public Player Player { get; }
     }
