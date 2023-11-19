@@ -70,16 +70,8 @@ namespace Exiled.Events.Patches.Events.Server
                 index,
                 new CodeInstruction[]
                 {
-                    // if (RoundSummary._roundEnded)
-                    //     flag = true;
-                    new CodeInstruction(OpCodes.Ldloc_1).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Ldfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
-                    new(OpCodes.Brfalse_S, skip),
-                    new(OpCodes.Ldc_I4_1),
-                    new CodeInstruction(OpCodes.Stloc_S, 4),
-
                     // this.leadingTeam
-                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(skip),
+                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(skip).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Ldfld, Field(PrivateType, LeadingTeam)),
 
                     // this.newList
@@ -107,10 +99,10 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.LeadingTeam))),
                     new(OpCodes.Stfld, Field(PrivateType, LeadingTeam)),
 
-                    // this._roundEnded = ev.IsAllowed
+                    // this._roundEnded = ev.IsForceEnded
                     new(OpCodes.Ldloc_1),
                     new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsAllowed))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsForceEnded))),
                     new(OpCodes.Stfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
 
                     // flag = ev.IsAllowed
