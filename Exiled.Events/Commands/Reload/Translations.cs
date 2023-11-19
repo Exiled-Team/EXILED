@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Translations.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -18,7 +18,7 @@ namespace Exiled.Events.Commands.Reload
     using Loader;
 
     /// <summary>
-    /// The reload configs command.
+    /// The reload translations command.
     /// </summary>
     public class Translations : ICommand
     {

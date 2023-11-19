@@ -55,7 +55,7 @@ namespace Exiled.API.Features.Core.Generic
         }
 
         /// <summary>
-        /// Fired every tick.
+        /// Ran every tick.
         /// <para>Code affecting the <see cref="EBehaviour"/>'s base implementation should be placed here.</para>
         /// </summary>
         protected virtual void BehaviourUpdate()

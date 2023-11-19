@@ -11,19 +11,19 @@ namespace Exiled.Events.Patches.Generic
 
     using Exiled.API.Features;
     using HarmonyLib;
-    using PlayerRoles.FirstPersonControl;
+    using InventorySystem;
 
     /// <summary>
-    /// Patches <see cref="FpcStateProcessor.UpdateMovementState"/>.
-    /// Implements <see cref="Player.IsUsingStamina"/>.
+    /// Patches <see cref="Inventory.StaminaUsageMultiplier"/>.
+    /// Implements <see cref="Player.IsUsingStamina"/> and <see cref="Player.StaminaUsageMultiplier"/>.
     /// </summary>
-    [HarmonyPatch(typeof(FpcStateProcessor), nameof(FpcStateProcessor.UpdateMovementState))]
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.StaminaUsageMultiplier), MethodType.Getter)]
     internal class StaminaUsage
     {
-        private static void Postfix(FpcStateProcessor __instance, PlayerMovementState state, ref PlayerMovementState __result)
+        private static void Postfix(Inventory __instance, ref float __result)
         {
-            if (Player.TryGet(__instance.Hub, out Player player) && !player.IsUsingStamina)
-                __instance._stat.CurValue = __instance._stat.MaxValue;
+            if (Player.TryGet(__instance._hub, out Player player))
+                __result *= player.IsUsingStamina ? player.StaminaUsageMultiplier : 0;
         }
     }
 }

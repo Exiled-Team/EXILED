@@ -12,11 +12,9 @@ namespace Exiled.API.Extensions
     using System.Linq;
 
     using CustomPlayerEffects;
-
     using Enums;
-
+    using InventorySystem.Items.MarshmallowMan;
     using InventorySystem.Items.Usables.Scp244.Hypothermia;
-
     using PlayerRoles.FirstPersonControl;
 
     /// <summary>
@@ -66,6 +64,12 @@ namespace Exiled.API.Extensions
             { EffectType.Traumatized, typeof(Traumatized) },
             { EffectType.AntiScp207, typeof(AntiScp207) },
             { EffectType.Scanned, typeof(Scanned) },
+            { EffectType.SilentWalk, typeof(SilentWalk) },
+#pragma warning disable CS0618
+            { EffectType.Marshmallow, typeof(MarshmallowEffect) },
+#pragma warning restore CS0618
+            { EffectType.Strangled, typeof(Strangled) },
+            { EffectType.Ghostly, typeof(Ghostly) },
         };
 
         /// <summary>
@@ -97,7 +101,7 @@ namespace Exiled.API.Extensions
         /// <seealso cref="IsHealing(EffectType)"/>
         public static bool IsHarmful(this EffectType effect) => effect is EffectType.Asphyxiated or EffectType.Bleeding
             or EffectType.Corroding or EffectType.Decontaminating or EffectType.Hemorrhage or EffectType.Hypothermia
-            or EffectType.Poisoned or EffectType.Scp207 or EffectType.SeveredHands;
+            or EffectType.Poisoned or EffectType.Scp207 or EffectType.SeveredHands or EffectType.Strangled;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> heals a player.
@@ -126,7 +130,7 @@ namespace Exiled.API.Extensions
         /// <seealso cref="IsHealing(EffectType)"/>
         public static bool IsPositive(this EffectType effect) => effect is EffectType.BodyshotReduction or EffectType.DamageReduction
             or EffectType.Invigorated or EffectType.Invisible or EffectType.MovementBoost or EffectType.RainbowTaste
-            or EffectType.Scp207 or EffectType.Scp1853 or EffectType.Vitality or EffectType.AntiScp207;
+            or EffectType.Scp207 or EffectType.Scp1853 or EffectType.Vitality or EffectType.AntiScp207 or EffectType.Ghostly;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> affects the player's movement speed.

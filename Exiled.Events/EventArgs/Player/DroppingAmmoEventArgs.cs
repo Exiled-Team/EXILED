@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Player
     using PlayerRoles;
 
     /// <summary>
-    ///     Contains all information before a player drops an item.
+    ///     Contains all information before a player drops ammo.
     /// </summary>
     public class DroppingAmmoEventArgs : IPlayerEvent, IDeniableEvent
     {
