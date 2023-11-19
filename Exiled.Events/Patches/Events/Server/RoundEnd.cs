@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Server
                 });
 
             offset = -1;
-            index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldfld && x.operand == (object)Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))) + offset;
+            index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ldfld && x.operand == (object)Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))) + offset;
 
             LocalBuilder evEndingRound = generator.DeclareLocal(typeof(EndingRoundEventArgs));
             Label skip = generator.DefineLabel();
@@ -112,6 +112,11 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsAllowed))),
                     new(OpCodes.Stfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
+
+                    // flag = ev.IsAllowed
+                    new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsAllowed))),
+                    new(OpCodes.Stloc_S, 4),
                 });
 
             offset = 7;
