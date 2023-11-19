@@ -80,9 +80,9 @@ namespace Exiled.Events.Handlers.Internal
                 ev.Target = null;
         }
 
-        /// <inheritdoc cref="Scp3114.OnDisguised(DisguisedEventArgs)" />
+        /// <inheritdoc cref="Scp3114.OnDisguising(DisguisingEventArgs)" />
         /// <remarks>Fix NW Bug (https://trello.com/c/c8ok7v4x/5743-skeleton-with-a-big-sized-skin).</remarks> // TODO: Remove this when card got Fixed tag
-        public static void OnDisguised(DisguisedEventArgs ev)
+        public static void OnDisguising(DisguisingEventArgs ev)
         {
             if (ev.Ragdoll.DamageHandler is Scp3114DamageHandler scp3114DamageHandler && scp3114DamageHandler.StartingRagdoll)
             {
