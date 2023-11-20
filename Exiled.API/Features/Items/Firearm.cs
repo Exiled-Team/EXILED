@@ -144,6 +144,16 @@ namespace Exiled.API.Features.Items
         public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
 
         /// <summary>
+        /// Gets a value indicating whether the firearm's NightVision is being used.
+        /// </summary>
+        public bool NightVisionEnabled => Aiming && Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.NightVision);
+
+        /// <summary>
+        /// Gets a value indicating whether the firearm's flashlight module is enabled or NightVision is being used.
+        /// </summary>
+        public bool CanSeeThroughDark => FlashlightEnabled || NightVisionEnabled;
+
+        /// <summary>
         /// Gets a value indicating whether or not the firearm is automatic.
         /// </summary>
         public bool IsAutomatic => Base is AutomaticFirearm;
