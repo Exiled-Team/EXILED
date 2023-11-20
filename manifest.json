@@ -711,7 +711,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.ReflectionExtensions.html",
-          "hash": "HBnKxqFiRWJHDkBOWy3GpPi2oddKmib3l+cAuYMqV5E="
+          "hash": "/hI11ocyDtltixS/PKK3Bwu2FSF11kXKXFcITtZ4M+M="
         }
       },
       "is_incremental": false,
@@ -1755,7 +1755,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Firearm.html",
-          "hash": "pohR2aaLnR0pxg3kMccHp02j0hVY/dUgy/f2Bg+mLO8="
+          "hash": "v3qhZJIUBe0TIBM2SeNtqwElX/YXRYUnGxqXq1qek40="
         }
       },
       "is_incremental": false,
@@ -2271,7 +2271,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Player.html",
-          "hash": "5y1j5Oih2DEA58/g7K9NiwMoW/WhHjqlv9jHN0kOmHY="
+          "hash": "0S8kZ2uLnHy1Wj1rLh9FBGOZjLR8Lf5gH2ztZB/Bkgk="
         }
       },
       "is_incremental": false,
@@ -2439,7 +2439,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Roles.FpcRole.html",
-          "hash": "B2yr2tNVw815IMLoYAAO+i6aS+ZnrbmfVA9e2jKPcRk="
+          "hash": "lM7MzhiAdP/e1W8GD4HRzrtoIM4p2BxX2cF1zxcnAfw="
         }
       },
       "is_incremental": false,
@@ -2451,7 +2451,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Roles.HumanRole.html",
-          "hash": "s3T9olXyQlLXKH/uGKnc+UQ0qUKxyfN/lKCiUw3szaQ="
+          "hash": "+Tbi0Sf/Xr31aEFlQQsK4eVeiXXNpbBbiXNRtbX2ZsY="
         }
       },
       "is_incremental": false,
@@ -2523,7 +2523,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Roles.Scp0492Role.html",
-          "hash": "EZoHC4X7D6DqmEypdSaRgUhofAAoThnVkYYGQHI4IG8="
+          "hash": "VqYHWFyh+10aq3e0n2Rqp2sOJvXTLc0H15zdjZk7QcM="
         }
       },
       "is_incremental": false,
@@ -2535,7 +2535,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Roles.Scp049Role.html",
-          "hash": "z6d1kYXFl7ag/ZDBhWayO2LAvdVFK87vYYVPjfYRIn4="
+          "hash": "yjO9ZsBELiCvlpBoi3tF3+aUM9FfcKrSs3drgElGUgQ="
         }
       },
       "is_incremental": false,
@@ -2559,7 +2559,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Roles.Scp096Role.html",
-          "hash": "FqpeIg6uU65rHUDl7OaiMZrs7NNhcvFeJWfJEKn5aGo="
+          "hash": "n+jpuS2QKShT+JmCeZJNM7JzTJwcsFDpwxMb4ng4/LM="
         }
       },
       "is_incremental": false,
@@ -2571,7 +2571,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Roles.Scp106Role.html",
-          "hash": "UySjpIcgH6+MRIbsLxpwspCyYiKPckfk4j2G+/m+yYM="
+          "hash": "TwkfXsWFl4xv9I/sGOT6jRXk/GxNltk5ueRyBC6aTiM="
         }
       },
       "is_incremental": false,
@@ -2583,7 +2583,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Roles.Scp173Role.html",
-          "hash": "dHsB6o7Z9yNeoAcWDRLFrhbQYX8/14+FIcfR4JOwRj0="
+          "hash": "ktO8vcacm52hsruGFPNKL7M9O8pzhoXjiXUOLVRi4nI="
         }
       },
       "is_incremental": false,
@@ -2595,7 +2595,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Roles.Scp3114Role.html",
-          "hash": "F7mrfQlWPNJKgtMrkS9hlqs0+pdJJwbde8yG+Nn+ov0="
+          "hash": "pFn1ZC2dehsZnDMLiRpb1RwsFa7KkoLUoBY5fRhhXYU="
         }
       },
       "is_incremental": false,
@@ -2607,7 +2607,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Roles.Scp939Role.html",
-          "hash": "34Up4TIzwG6dPcbbvwzYwT7pfa2KL/izbx1G22/8GcM="
+          "hash": "jBYmZCV+AA8TmB2r881FgcuQM2tMkLoGlLaDhQmREug="
         }
       },
       "is_incremental": false,
@@ -4863,7 +4863,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.Player.DestroyingEventArgs.html",
-          "hash": "UBzNAH9m3osFq8V2ui1Q9obBgoELYaNIWNIMxKrlBB8="
+          "hash": "Tz0yLzmXm2cDdDVCFQqgEPymmiS4iubW0VdLxA5Jzqo="
         }
       },
       "is_incremental": false,
@@ -6627,7 +6627,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.Server.EndingRoundEventArgs.html",
-          "hash": "qin3132WAJxQmPqZUkt9A3cGHw4VBONC2JT6Pw89n9c="
+          "hash": "QEjIRlg/6QJktJcFAh7CRLEwY4c4fsXhQVebWtc7Fsc="
         }
       },
       "is_incremental": false,

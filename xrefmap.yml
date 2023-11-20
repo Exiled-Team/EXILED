@@ -4234,6 +4234,22 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Extensions.ReflectionExtensions.CopyProperties
   nameWithType: ReflectionExtensions.CopyProperties
+- uid: Exiled.API.Extensions.ReflectionExtensions.InvokeStaticEvent(System.Type,System.String,System.Object[])
+  name: InvokeStaticEvent(Type, String, Object[])
+  href: api/Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_InvokeStaticEvent_System_Type_System_String_System_Object___
+  commentId: M:Exiled.API.Extensions.ReflectionExtensions.InvokeStaticEvent(System.Type,System.String,System.Object[])
+  name.vb: InvokeStaticEvent(Type, String, Object())
+  fullName: Exiled.API.Extensions.ReflectionExtensions.InvokeStaticEvent(System.Type, System.String, System.Object[])
+  fullName.vb: Exiled.API.Extensions.ReflectionExtensions.InvokeStaticEvent(System.Type, System.String, System.Object())
+  nameWithType: ReflectionExtensions.InvokeStaticEvent(Type, String, Object[])
+  nameWithType.vb: ReflectionExtensions.InvokeStaticEvent(Type, String, Object())
+- uid: Exiled.API.Extensions.ReflectionExtensions.InvokeStaticEvent*
+  name: InvokeStaticEvent
+  href: api/Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_InvokeStaticEvent_
+  commentId: Overload:Exiled.API.Extensions.ReflectionExtensions.InvokeStaticEvent
+  isSpec: "True"
+  fullName: Exiled.API.Extensions.ReflectionExtensions.InvokeStaticEvent
+  nameWithType: ReflectionExtensions.InvokeStaticEvent
 - uid: Exiled.API.Extensions.ReflectionExtensions.InvokeStaticMethod(System.Type,System.String,System.Object[])
   name: InvokeStaticMethod(Type, String, Object[])
   href: api/Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_InvokeStaticMethod_System_Type_System_String_System_Object___
@@ -13933,6 +13949,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Items.Firearm.BaseCodes
   nameWithType: Firearm.BaseCodes
+- uid: Exiled.API.Features.Items.Firearm.CanSeeThroughDark
+  name: CanSeeThroughDark
+  href: api/Exiled.API.Features.Items.Firearm.html#Exiled_API_Features_Items_Firearm_CanSeeThroughDark
+  commentId: P:Exiled.API.Features.Items.Firearm.CanSeeThroughDark
+  fullName: Exiled.API.Features.Items.Firearm.CanSeeThroughDark
+  nameWithType: Firearm.CanSeeThroughDark
+- uid: Exiled.API.Features.Items.Firearm.CanSeeThroughDark*
+  name: CanSeeThroughDark
+  href: api/Exiled.API.Features.Items.Firearm.html#Exiled_API_Features_Items_Firearm_CanSeeThroughDark_
+  commentId: Overload:Exiled.API.Features.Items.Firearm.CanSeeThroughDark
+  isSpec: "True"
+  fullName: Exiled.API.Features.Items.Firearm.CanSeeThroughDark
+  nameWithType: Firearm.CanSeeThroughDark
 - uid: Exiled.API.Features.Items.Firearm.ClearAttachments
   name: ClearAttachments()
   href: api/Exiled.API.Features.Items.Firearm.html#Exiled_API_Features_Items_Firearm_ClearAttachments
@@ -14091,6 +14120,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Items.Firearm.MaxAmmo
   nameWithType: Firearm.MaxAmmo
+- uid: Exiled.API.Features.Items.Firearm.NightVisionEnabled
+  name: NightVisionEnabled
+  href: api/Exiled.API.Features.Items.Firearm.html#Exiled_API_Features_Items_Firearm_NightVisionEnabled
+  commentId: P:Exiled.API.Features.Items.Firearm.NightVisionEnabled
+  fullName: Exiled.API.Features.Items.Firearm.NightVisionEnabled
+  nameWithType: Firearm.NightVisionEnabled
+- uid: Exiled.API.Features.Items.Firearm.NightVisionEnabled*
+  name: NightVisionEnabled
+  href: api/Exiled.API.Features.Items.Firearm.html#Exiled_API_Features_Items_Firearm_NightVisionEnabled_
+  commentId: Overload:Exiled.API.Features.Items.Firearm.NightVisionEnabled
+  isSpec: "True"
+  fullName: Exiled.API.Features.Items.Firearm.NightVisionEnabled
+  nameWithType: Firearm.NightVisionEnabled
 - uid: Exiled.API.Features.Items.Firearm.PlayerPreferences
   name: PlayerPreferences
   href: api/Exiled.API.Features.Items.Firearm.html#Exiled_API_Features_Items_Firearm_PlayerPreferences
@@ -25504,6 +25546,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Roles.FpcRole.IsNoclipEnabled
   nameWithType: FpcRole.IsNoclipEnabled
+- uid: Exiled.API.Features.Roles.FpcRole.IsUsingStamina
+  name: IsUsingStamina
+  href: api/Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_IsUsingStamina
+  commentId: P:Exiled.API.Features.Roles.FpcRole.IsUsingStamina
+  fullName: Exiled.API.Features.Roles.FpcRole.IsUsingStamina
+  nameWithType: FpcRole.IsUsingStamina
+- uid: Exiled.API.Features.Roles.FpcRole.IsUsingStamina*
+  name: IsUsingStamina
+  href: api/Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_IsUsingStamina_
+  commentId: Overload:Exiled.API.Features.Roles.FpcRole.IsUsingStamina
+  isSpec: "True"
+  fullName: Exiled.API.Features.Roles.FpcRole.IsUsingStamina
+  nameWithType: FpcRole.IsUsingStamina
 - uid: Exiled.API.Features.Roles.FpcRole.JumpingSpeed
   name: JumpingSpeed
   href: api/Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_JumpingSpeed
@@ -25569,6 +25624,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Roles.FpcRole.RelativePosition
   nameWithType: FpcRole.RelativePosition
+- uid: Exiled.API.Features.Roles.FpcRole.ResetStamina(System.Boolean)
+  name: ResetStamina(Boolean)
+  href: api/Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_ResetStamina_System_Boolean_
+  commentId: M:Exiled.API.Features.Roles.FpcRole.ResetStamina(System.Boolean)
+  fullName: Exiled.API.Features.Roles.FpcRole.ResetStamina(System.Boolean)
+  nameWithType: FpcRole.ResetStamina(Boolean)
+- uid: Exiled.API.Features.Roles.FpcRole.ResetStamina*
+  name: ResetStamina
+  href: api/Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_ResetStamina_
+  commentId: Overload:Exiled.API.Features.Roles.FpcRole.ResetStamina
+  isSpec: "True"
+  fullName: Exiled.API.Features.Roles.FpcRole.ResetStamina
+  nameWithType: FpcRole.ResetStamina
 - uid: Exiled.API.Features.Roles.FpcRole.RotationDetected
   name: RotationDetected
   href: api/Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_RotationDetected
@@ -25595,6 +25663,32 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Roles.FpcRole.SprintingSpeed
   nameWithType: FpcRole.SprintingSpeed
+- uid: Exiled.API.Features.Roles.FpcRole.StaminaRegenMultiplier
+  name: StaminaRegenMultiplier
+  href: api/Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_StaminaRegenMultiplier
+  commentId: P:Exiled.API.Features.Roles.FpcRole.StaminaRegenMultiplier
+  fullName: Exiled.API.Features.Roles.FpcRole.StaminaRegenMultiplier
+  nameWithType: FpcRole.StaminaRegenMultiplier
+- uid: Exiled.API.Features.Roles.FpcRole.StaminaRegenMultiplier*
+  name: StaminaRegenMultiplier
+  href: api/Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_StaminaRegenMultiplier_
+  commentId: Overload:Exiled.API.Features.Roles.FpcRole.StaminaRegenMultiplier
+  isSpec: "True"
+  fullName: Exiled.API.Features.Roles.FpcRole.StaminaRegenMultiplier
+  nameWithType: FpcRole.StaminaRegenMultiplier
+- uid: Exiled.API.Features.Roles.FpcRole.StaminaUsageMultiplier
+  name: StaminaUsageMultiplier
+  href: api/Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_StaminaUsageMultiplier
+  commentId: P:Exiled.API.Features.Roles.FpcRole.StaminaUsageMultiplier
+  fullName: Exiled.API.Features.Roles.FpcRole.StaminaUsageMultiplier
+  nameWithType: FpcRole.StaminaUsageMultiplier
+- uid: Exiled.API.Features.Roles.FpcRole.StaminaUsageMultiplier*
+  name: StaminaUsageMultiplier
+  href: api/Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_StaminaUsageMultiplier_
+  commentId: Overload:Exiled.API.Features.Roles.FpcRole.StaminaUsageMultiplier
+  isSpec: "True"
+  fullName: Exiled.API.Features.Roles.FpcRole.StaminaUsageMultiplier
+  nameWithType: FpcRole.StaminaUsageMultiplier
 - uid: Exiled.API.Features.Roles.FpcRole.Velocity
   name: Velocity
   href: api/Exiled.API.Features.Roles.FpcRole.html#Exiled_API_Features_Roles_FpcRole_Velocity
@@ -53034,12 +53128,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.Server.EndingRoundEventArgs
   fullName: Exiled.Events.EventArgs.Server.EndingRoundEventArgs
   nameWithType: EndingRoundEventArgs
-- uid: Exiled.Events.EventArgs.Server.EndingRoundEventArgs.#ctor(RoundSummary.LeadingTeam,RoundSummary.SumInfo_ClassList,System.Boolean)
-  name: EndingRoundEventArgs(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, Boolean)
-  href: api/Exiled.Events.EventArgs.Server.EndingRoundEventArgs.html#Exiled_Events_EventArgs_Server_EndingRoundEventArgs__ctor_RoundSummary_LeadingTeam_RoundSummary_SumInfo_ClassList_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.Server.EndingRoundEventArgs.#ctor(RoundSummary.LeadingTeam,RoundSummary.SumInfo_ClassList,System.Boolean)
-  fullName: Exiled.Events.EventArgs.Server.EndingRoundEventArgs.EndingRoundEventArgs(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, System.Boolean)
-  nameWithType: EndingRoundEventArgs.EndingRoundEventArgs(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, Boolean)
+- uid: Exiled.Events.EventArgs.Server.EndingRoundEventArgs.#ctor(RoundSummary.LeadingTeam,RoundSummary.SumInfo_ClassList,System.Boolean,System.Boolean)
+  name: EndingRoundEventArgs(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, Boolean, Boolean)
+  href: api/Exiled.Events.EventArgs.Server.EndingRoundEventArgs.html#Exiled_Events_EventArgs_Server_EndingRoundEventArgs__ctor_RoundSummary_LeadingTeam_RoundSummary_SumInfo_ClassList_System_Boolean_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.Server.EndingRoundEventArgs.#ctor(RoundSummary.LeadingTeam,RoundSummary.SumInfo_ClassList,System.Boolean,System.Boolean)
+  fullName: Exiled.Events.EventArgs.Server.EndingRoundEventArgs.EndingRoundEventArgs(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, System.Boolean, System.Boolean)
+  nameWithType: EndingRoundEventArgs.EndingRoundEventArgs(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, Boolean, Boolean)
 - uid: Exiled.Events.EventArgs.Server.EndingRoundEventArgs.#ctor*
   name: EndingRoundEventArgs
   href: api/Exiled.Events.EventArgs.Server.EndingRoundEventArgs.html#Exiled_Events_EventArgs_Server_EndingRoundEventArgs__ctor_
@@ -53073,6 +53167,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.Server.EndingRoundEventArgs.IsAllowed
   nameWithType: EndingRoundEventArgs.IsAllowed
+- uid: Exiled.Events.EventArgs.Server.EndingRoundEventArgs.IsForceEnded
+  name: IsForceEnded
+  href: api/Exiled.Events.EventArgs.Server.EndingRoundEventArgs.html#Exiled_Events_EventArgs_Server_EndingRoundEventArgs_IsForceEnded
+  commentId: P:Exiled.Events.EventArgs.Server.EndingRoundEventArgs.IsForceEnded
+  fullName: Exiled.Events.EventArgs.Server.EndingRoundEventArgs.IsForceEnded
+  nameWithType: EndingRoundEventArgs.IsForceEnded
+- uid: Exiled.Events.EventArgs.Server.EndingRoundEventArgs.IsForceEnded*
+  name: IsForceEnded
+  href: api/Exiled.Events.EventArgs.Server.EndingRoundEventArgs.html#Exiled_Events_EventArgs_Server_EndingRoundEventArgs_IsForceEnded_
+  commentId: Overload:Exiled.Events.EventArgs.Server.EndingRoundEventArgs.IsForceEnded
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Server.EndingRoundEventArgs.IsForceEnded
+  nameWithType: EndingRoundEventArgs.IsForceEnded
 - uid: Exiled.Events.EventArgs.Server.EndingRoundEventArgs.IsRoundEnded
   name: IsRoundEnded
   href: api/Exiled.Events.EventArgs.Server.EndingRoundEventArgs.html#Exiled_Events_EventArgs_Server_EndingRoundEventArgs_IsRoundEnded
