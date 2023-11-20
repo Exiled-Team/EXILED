@@ -85,7 +85,7 @@ namespace Exiled.Events.Patches.Generic
         /// <remarks> Friendly fire multiplier is also provided back if needed. </remarks>
         public static bool CheckFriendlyFirePlayerRules(Footprint attackerFootprint, ReferenceHub victimHub, out float ffMultiplier)
         {
-            ffMultiplier = 1f;
+            ffMultiplier = AttackerDamageHandler._ffMultiplier;
 
             // Return false, no custom friendly fire allowed, default to NW logic for FF. No point in processing if FF is enabled across the board.
             if (Server.FriendlyFire)
