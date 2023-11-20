@@ -478,7 +478,7 @@ namespace Exiled.Events.Handlers
         public static Event<ItemAddedEventArgs> ItemAdded { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item removed to their inventory.
+        /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item removed from their inventory.
         /// </summary>
         public static Event<ItemRemovedEventArgs> ItemRemoved { get; set; } = new();
 
