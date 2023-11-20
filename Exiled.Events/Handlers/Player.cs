@@ -933,7 +933,7 @@ namespace Exiled.Events.Handlers
             => ItemAdded.InvokeSafely(new ItemAddedEventArgs(referenceHub, itemBase, pickupBase));
 
         /// <summary>
-        /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item removed to their inventory.
+        /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item removed from their inventory.
         /// </summary>
         /// <param name="referenceHub">The <see cref="ReferenceHub"/> the item was removed to.</param>
         /// <param name="itemBase">The removed <see cref="InventorySystem.Items.ItemBase"/>.</param>
