@@ -149,6 +149,30 @@ namespace Exiled.Events.Patches.Events.Scp330
             int addTakenCandiesIndex = newInstructions.FindLastIndex(
                 instruction => instruction.LoadsField(Field(typeof(Scp330Interobject), nameof(Scp330Interobject._takenCandies)))) + addTakenCandiesOffset;
 
+            newInstructions.InsertRange(
+                newInstructions.Count - 1,
+                new CodeInstruction[]
+                {
+                    // loading ev 2 times to get some data
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Dup),
+
+                    // Player
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.Player))),
+
+                    // Scp330Bag
+                    new(OpCodes.Ldloc_S, 3),
+
+                    // Candy
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.Candy))),
+
+                    // InteractedScp330EventArgs(Player, Scp330Bag, CandyKindId);
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractedScp330EventArgs))[0]),
+
+                    // Handlers.Scp330.OnInteractedScp330(ev);
+                    new(OpCodes.Call, Method(typeof(Scp330), nameof(Scp330.OnInteractedScp330))),
+                });
+
             newInstructions[addTakenCandiesIndex].WithLabels(shouldNotSever);
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 

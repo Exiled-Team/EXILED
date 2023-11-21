@@ -38,6 +38,11 @@ namespace Exiled.Events.Handlers
         public static Event<EatenScp330EventArgs> EatenScp330 { get; set; } = new();
 
         /// <summary>
+        /// Invoked after <see cref="API.Features.Player"/> interacts with SCP-330.
+        /// </summary>
+        public static Event<InteractedScp330EventArgs> InteractedScp330 { get; set; } = new();
+
+        /// <summary>
         ///     Called before a player eats a candy from SCP-330.
         /// </summary>
         /// <param name="ev">The <see cref="EatingScp330EventArgs" /> instance.</param>
@@ -60,5 +65,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DroppingScp330EventArgs" /> instance.</param>
         public static void OnDroppingScp330(DroppingScp330EventArgs ev) => DroppingScp330.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> interacts with SCP-330.
+        /// </summary>
+        /// <param name="ev">The <see cref="InteractedScp330EventArgs"/> instance.</param>
+        public static void OnInteractedScp330(InteractedScp330EventArgs ev) => InteractedScp330.InvokeSafely(ev);
     }
 }
