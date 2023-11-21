@@ -7,13 +7,12 @@
 
 namespace Exiled.Events.EventArgs.Scp914
 {
+    using System;
+
     using API.Features;
     using API.Features.Items;
-
     using global::Scp914;
-
     using Interfaces;
-
     using InventorySystem.Items;
 
     /// <summary>
@@ -38,7 +37,6 @@ namespace Exiled.Events.EventArgs.Scp914
         /// </param>
         public UpgradingInventoryItemEventArgs(Player player, ItemBase item, Scp914KnobSetting knobSetting, bool isAllowed = true)
         {
-            Scp914 = API.Features.Scp914.Scp914Controller;
             Player = player;
             Item = Item.Get(item);
             KnobSetting = knobSetting;
@@ -48,7 +46,8 @@ namespace Exiled.Events.EventArgs.Scp914
         /// <summary>
         ///     Gets the <see cref="Scp914Controller" /> instance.
         /// </summary>
-        public Scp914Controller Scp914 { get; }
+        [Obsolete("Use Scp914::Scp914Controller instead.")]
+        public Scp914Controller Scp914 => API.Features.Scp914.Scp914Controller;
 
         /// <summary>
         ///     Gets or sets SCP-914 working knob setting.

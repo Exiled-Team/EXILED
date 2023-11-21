@@ -7,13 +7,12 @@
 
 namespace Exiled.Events.EventArgs.Scp914
 {
+    using System;
+
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
-
     using global::Scp914;
-
     using InventorySystem.Items.Pickups;
-
     using UnityEngine;
 
     /// <summary>
@@ -35,7 +34,6 @@ namespace Exiled.Events.EventArgs.Scp914
         /// </param>
         public UpgradingPickupEventArgs(ItemPickupBase item, Vector3 newPos, Scp914KnobSetting knobSetting)
         {
-            Scp914 = API.Features.Scp914.Scp914Controller;
             Pickup = Pickup.Get(item);
             OutputPosition = newPos;
             KnobSetting = knobSetting;
@@ -49,7 +47,8 @@ namespace Exiled.Events.EventArgs.Scp914
         /// <summary>
         ///     Gets the <see cref="Scp914Controller" /> instance.
         /// </summary>
-        public Scp914Controller Scp914 { get; }
+        [Obsolete("Use Scp914::Scp914Controller instead.")]
+        public Scp914Controller Scp914 => API.Features.Scp914.Scp914Controller;
 
         /// <summary>
         ///     Gets or sets the position the item will be output to.
