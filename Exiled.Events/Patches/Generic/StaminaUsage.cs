@@ -10,12 +10,13 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1313
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
     using HarmonyLib;
     using InventorySystem;
 
     /// <summary>
     /// Patches <see cref="Inventory.StaminaUsageMultiplier"/>.
-    /// Implements <see cref="Player.IsUsingStamina"/> and <see cref="Player.StaminaUsageMultiplier"/>.
+    /// Implements <see cref="Player.IsUsingStamina"/>, <see cref="FpcRole.IsUsingStamina"/> and <see cref="FpcRole.StaminaUsageMultiplier"/>.
     /// </summary>
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.StaminaUsageMultiplier), MethodType.Getter)]
     internal class StaminaUsage
@@ -23,7 +24,11 @@ namespace Exiled.Events.Patches.Generic
         private static void Postfix(Inventory __instance, ref float __result)
         {
             if (Player.TryGet(__instance._hub, out Player player))
-                __result *= player.IsUsingStamina ? player.StaminaUsageMultiplier : 0;
+            {
+                if (player.Role.Is(out FpcRole fpc))
+                    __result *= fpc.IsUsingStamina ? fpc.StaminaUsageMultiplier : 0;
+                __result *= player.IsUsingStamina ? 1 : 0;
+            }
         }
     }
 }

@@ -217,5 +217,20 @@ namespace Exiled.API.Features.Roles
             get => Owner.ReferenceHub.playerStats.GetModule<AdminFlagsStat>().HasFlag(AdminFlags.Noclip);
             set => Owner.ReferenceHub.playerStats.GetModule<AdminFlagsStat>().SetFlag(AdminFlags.Noclip, value);
         }
+
+        /// <summary>
+        /// Resets the <see cref="Player"/>'s stamina.
+        /// </summary>
+        /// <param name="multipliers">Resets <see cref="StaminaUsageMultiplier"/> and <see cref="StaminaRegenMultiplier"/>.</param>
+        public void ResetStamina(bool multipliers = false)
+        {
+            Owner.Stamina = Owner.StaminaStat.MaxValue;
+
+            if (!multipliers)
+                return;
+
+            StaminaUsageMultiplier = 1f;
+            StaminaRegenMultiplier = 1f;
+        }
     }
 }

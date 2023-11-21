@@ -80,7 +80,11 @@ namespace Exiled.Events.Patches.Events.Server
                     // shouldRoundEnd
                     new(OpCodes.Ldloc_S, 4),
 
-                    // EndingRoundEventArgs evEndingRound = new(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, bool);
+                    // isForceEnd
+                    new(OpCodes.Ldloc_1),
+                    new(OpCodes.Ldfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
+
+                    // EndingRoundEventArgs evEndingRound = new(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, bool, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EndingRoundEventArgs))[0]),
                     new(OpCodes.Dup),
 
@@ -94,11 +98,16 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.LeadingTeam))),
                     new(OpCodes.Stfld, Field(PrivateType, LeadingTeam)),
 
-                    // this._roundEnded = ev.IsAllowed
+                    // this._roundEnded = ev.IsForceEnded
                     new(OpCodes.Ldloc_1),
                     new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsAllowed))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsForceEnded))),
                     new(OpCodes.Stfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
+
+                    // flag = ev.IsAllowed
+                    new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsAllowed))),
+                    new(OpCodes.Stloc_S, 4),
                 });
 
             offset = 7;
