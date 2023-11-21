@@ -10,6 +10,7 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pools;
     using global::Scp914;
@@ -82,6 +83,11 @@ namespace Exiled.API.Features
         ///  Gets the output booth <see cref="UnityEngine.Transform"/>.
         /// </summary>
         public static Transform OutputBooth => Scp914Controller.OutputChamber;
+
+        /// <summary>
+        /// Gets the list with <see cref="Door"/> which SCP-914 has.
+        /// </summary>
+        public static IReadOnlyCollection<Door> Doors => Scp914Controller._doors.Select(Door.Get).ToList();
 
         /// <summary>
         /// Filters all GameObjects inside SCP-914's intake chamber into players and items.
