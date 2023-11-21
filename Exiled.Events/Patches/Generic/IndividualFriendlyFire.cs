@@ -230,8 +230,8 @@ namespace Exiled.Events.Patches.Generic
 
             LocalBuilder ffMulti = generator.DeclareLocal(typeof(float));
 
-            Label uniqueFFMulti = generator.DefineLabel();
-            Label normalProcessing = generator.DefineLabel();
+            Label northwoodFFLogic = generator.DefineLabel();
+            Label skipNWLogic = generator.DefineLabel();
 
             newInstructions.InsertRange(
                 index,
@@ -252,42 +252,27 @@ namespace Exiled.Events.Patches.Generic
                     new(OpCodes.Ldloca, ffMulti.LocalIndex),
 
                     // Pass over Player hubs, and FF multiplier.
-                    // CheckFriendlyFirePlayerRules(this.Attacker, ply, ffMulti)
-                    new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerRules), new[] { typeof(Footprint), typeof(ReferenceHub), typeof(float).MakeByRefType() })),
-
                     // If we have rules, we branch to custom logic, otherwise, default to NW logic.
-                    new(OpCodes.Brtrue_S, uniqueFFMulti),
-                });
-
-            int ffMultiplierIndexOffset = 0;
-
-            // int ffMultiplierIndex = newInstructions.FindLast(index, instruction => instruction.LoadsField(Field(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler._ffMultiplier)))) + ffMultiplierIndexOffset;
-            int ffMultiplierIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(StandardDamageHandler), nameof(StandardDamageHandler.ProcessDamage)))) + ffMultiplierIndexOffset;
-
-            newInstructions[ffMultiplierIndex].WithLabels(normalProcessing);
-
-            // int ffMultiplierIndex = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ret) + ffMultiplierIndexOffset;
-            newInstructions.InsertRange(
-                ffMultiplierIndex,
-                new CodeInstruction[]
-                {
-                    // Do not run our custom logic, skip over.
-                    new(OpCodes.Br, normalProcessing),
+                    // if (CheckFriendlyFirePlayerRules(this.Attacker, ply, out ffMulti))
+                    //  goto northwoodFFLogic;
+                    new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerRules), new[] { typeof(Footprint), typeof(ReferenceHub), typeof(float).MakeByRefType() })),
+                    new(OpCodes.Brfalse_S, northwoodFFLogic),
 
                     // AttackerDamageHandler.Damage = AttackerDamageHandler.Damage * ffMulti
-                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(uniqueFFMulti),
+                    // goto skipNWLogic;
+                    new CodeInstruction(OpCodes.Ldarg_0),
                     new(OpCodes.Ldloc, ffMulti.LocalIndex),
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
                     new(OpCodes.Mul),
                     new(OpCodes.Callvirt, PropertySetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
-
-                    // Game code, the two instructions before ProcessDamage
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldarg_1),
-
-                    // Next line is ProcessDamage, which uses AttackerDamageHandler information.
+                    new(OpCodes.Br, skipNWLogic),
+                    new CodeInstruction(OpCodes.Nop).WithLabels(northwoodFFLogic),
                 });
+
+            int beforeDamageOffset = -2;
+            int beforeDamageIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(StandardDamageHandler), nameof(StandardDamageHandler.ProcessDamage)))) + beforeDamageOffset;
+            newInstructions[beforeDamageIndex].labels.Add(skipNWLogic);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
