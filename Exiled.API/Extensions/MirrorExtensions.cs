@@ -347,6 +347,9 @@ namespace Exiled.API.Extensions
         /// <param name="value">Value of send to target.</param>
         public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
         {
+            if (!target.IsConnected)
+                return;
+
             NetworkWriterPooled writer = NetworkWriterPool.Get();
             NetworkWriterPooled writer2 = NetworkWriterPool.Get();
             MakeCustomSyncWriter(behaviorOwner, targetType, null, CustomSyncVarGenerator, writer, writer2);
@@ -385,6 +388,7 @@ namespace Exiled.API.Extensions
         {
             if (!target.IsConnected)
                 return;
+
             NetworkWriterPooled writer = NetworkWriterPool.Get();
 
             foreach (object value in values)
@@ -424,6 +428,9 @@ namespace Exiled.API.Extensions
         /// </example>
         public static void SendFakeSyncObject(Player target, NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customAction)
         {
+            if (!target.IsConnected)
+                return;
+
             NetworkWriterPooled writer = NetworkWriterPool.Get();
             NetworkWriterPooled writer2 = NetworkWriterPool.Get();
             MakeCustomSyncWriter(behaviorOwner, targetType, customAction, null, writer, writer2);

@@ -81,16 +81,7 @@ namespace Exiled.API.Features.Pickups
         public int HelmetEfficacy
         {
             get => helmetEfficacy;
-            set
-            {
-                if (value is > 100 or < 0)
-                {
-                    Log.Warn($"{nameof(HelmetEfficacy)} Value of armor efficacy must be between 0 and 100.");
-                    value = Mathf.Clamp(value, 0, 100);
-                }
-
-                helmetEfficacy = value;
-            }
+            set => helmetEfficacy = value;
         }
 
         /// <summary>
@@ -99,16 +90,7 @@ namespace Exiled.API.Features.Pickups
         public int VestEfficacy
         {
             get => vestEfficacy;
-            set
-            {
-                if (value is > 101 or < 0)
-                {
-                    Log.Warn($"{nameof(VestEfficacy)} Value of armor efficacy must be between 0 and 100.");
-                    value = Mathf.Clamp(value, 0, 100);
-                }
-
-                vestEfficacy = value;
-            }
+            set => vestEfficacy = value;
         }
 
         /// <summary>
@@ -119,7 +101,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
         /// </summary>
-        public float MovementSpeedMultiplier { get; }
+        public float MovementSpeedMultiplier { get; private set; }
 
         /// <summary>
         /// Gets or sets the ammo limit of the wearer when using this armor.
