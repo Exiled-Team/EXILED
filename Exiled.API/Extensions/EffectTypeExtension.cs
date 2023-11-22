@@ -85,7 +85,6 @@ namespace Exiled.API.Extensions
         public static Type Type(this EffectType effect)
             => EffectTypeToType.TryGetValue(effect, out Type type) ? type : throw new InvalidOperationException("Invalid effect enum provided");
 
-
         /// <summary>
         /// Gets an instance of <see cref="System.Type"/> points to an effect.
         /// </summary>
@@ -107,7 +106,7 @@ namespace Exiled.API.Extensions
         /// Gets the <see cref="EffectType"/> of the specified <see cref="StatusEffectBase"/>.
         /// </summary>
         /// <param name="statusEffectBase">The <see cref="StatusEffectBase"/> enum.</param>
-        /// <param name="effect">The effect found</param>
+        /// <param name="effect">The effect found.</param>
         /// <returns>Whether or not the effect has been found.</returns>
         public static bool TryGetEffectType(this StatusEffectBase statusEffectBase, out EffectType effect)
         {
