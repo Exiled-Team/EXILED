@@ -11,6 +11,7 @@ namespace Exiled.API.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using CommandSystem;
 
@@ -148,9 +149,14 @@ namespace Exiled.API.Features
                 Log.Debug($"Ignore: {e}");
             }
 
-            int conId = id == 0 ? ReferenceHub.AllHubs.Count + 1 : id;
+            if (!RecyclablePlayerId.FreeIds.Contains(id) && RecyclablePlayerId._autoIncrement >= id)
+            {
+                Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} tried to spawn an NPC with a duplicate PlayerID. Using auto-incremented ID instead to avoid issues..");
+                id = new RecyclablePlayerId(false).Value;
+            }
 
-            NetworkServer.AddPlayerForConnection(new FakeConnection(conId), newObject);
+            FakeConnection fakeConnection = new(id);
+            NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
 
             try
             {
