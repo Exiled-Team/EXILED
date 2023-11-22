@@ -3043,12 +3043,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets an instance of <see cref="StatusEffectBase"/> by <see cref="EffectType"/>.
         /// </summary>
-        /// <param name="type">The <see cref="EffectType"/>.</param>
+        /// <param name="effectType">The <see cref="EffectType"/>.</param>
         /// <returns>The <see cref="StatusEffectBase"/>.</returns>
-        public StatusEffectBase GetEffect(EffectType type)
+        public StatusEffectBase GetEffect(EffectType effectType)
         {
-            ReferenceHub.playerEffectsController._effectsByType.TryGetValue(type.Type(), out StatusEffectBase playerEffect);
-
+            if (!effectType.TryGetType(out Type type))
+                return null;
+            ReferenceHub.playerEffectsController._effectsByType.TryGetValue(type, out StatusEffectBase playerEffect);
             return playerEffect;
         }
 
