@@ -11,21 +11,23 @@ namespace Exiled.API.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using CentralAuth;
     using CommandSystem;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Components;
-
     using Footprinting;
-
+    using InventorySystem.Items.Firearms;
+    using InventorySystem.Items.Firearms.BasicMessages;
+    using InventorySystem.Items.Firearms.Modules;
     using MEC;
-
     using Mirror;
 
     using PlayerRoles;
-
+    using PlayerRoles.FirstPersonControl;
+    using PluginAPI.Core;
+    using RelativePositioning;
     using UnityEngine;
 
     using Object = UnityEngine.Object;
@@ -128,7 +130,7 @@ namespace Exiled.API.Features
         /// <param name="name">The name of the NPC.</param>
         /// <param name="role">The RoleTypeId of the NPC.</param>
         /// <param name="id">The player ID of the NPC.</param>
-        /// <param name="userId">The userID of the NPC.</param>
+        /// <param name="userId">The userID of the NPC. Use "ID_Dedicated" for VSR Compliant NPCs.</param>
         /// <param name="position">The position to spawn the NPC.</param>
         /// <returns>The <see cref="Npc"/> spawned.</returns>
         public static Npc Spawn(string name, RoleTypeId role, int id = 0, string userId = "", Vector3? position = null)
@@ -136,7 +138,7 @@ namespace Exiled.API.Features
             GameObject newObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
             Npc npc = new(newObject)
             {
-                IsVerified = true,
+                IsVerified = userId != "ID_Dedicated",
                 IsNPC = true,
             };
             try
@@ -162,6 +164,10 @@ namespace Exiled.API.Features
             try
             {
                 npc.ReferenceHub.authManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy@localhost" : userId;
+                if (userId == "ID_Dedicated")
+                {
+                    npc.ReferenceHub.authManager.InstanceMode = ClientInstanceMode.DedicatedServer;
+                }
             }
             catch (Exception e)
             {
@@ -195,6 +201,126 @@ namespace Exiled.API.Features
             CustomNetworkManager.TypedSingleton.OnServerDisconnect(conn);
             Dictionary.Remove(GameObject);
             Object.Destroy(GameObject);
+        }
+
+        /// <summary>
+        /// Makes the NPC look at the specified position.
+        /// </summary>
+        /// <param name="position">The position to look at.</param>
+        public void LookAt(Vector3 position)
+        {
+            if (RoleManager.CurrentRole is IFpcRole fpc)
+                fpc.LookAtPoint(position);
+        }
+
+        /// <summary>
+        /// Makes the NPC Shoot at the specified location if holding a <see cref="Firearm"></see>.
+        /// </summary>
+        /// <param name="targetPos">The position to shoot towards.</param>
+        public void Shoot(Vector3? targetPos = null)
+        {
+            if (RoleManager.CurrentRole is not IFpcRole fpc)
+                return;
+
+            Firearm? firearm = ReferenceHub.inventory._curInstance as Firearm;
+            if (firearm == null)
+                return;
+
+            if (targetPos != null)
+            {
+                LookAt((Vector3)targetPos);
+            }
+
+            ShotMessage message = new ShotMessage()
+            {
+                ShooterCameraRotation = CameraTransform.rotation,
+                ShooterPosition = new RelativePosition(Transform.position),
+                ShooterWeaponSerial = CurrentItem.Serial,
+                TargetNetId = 0,
+                TargetPosition = default,
+                TargetRotation = Quaternion.identity,
+            };
+
+            Physics.Raycast(CameraTransform.position, CameraTransform.forward, out RaycastHit hit, 100f, StandardHitregBase.HitregMask);
+
+            if (hit.transform && hit.transform.TryGetComponentInParent(out NetworkIdentity networkIdentity) && networkIdentity)
+            {
+                message.TargetNetId = networkIdentity.netId;
+                message.TargetPosition = new RelativePosition(networkIdentity.transform.position);
+                message.TargetRotation = networkIdentity.transform.rotation;
+            }
+            else if (hit.transform)
+            {
+                message.TargetPosition = new RelativePosition(hit.transform.position);
+                message.TargetRotation = hit.transform.rotation;
+            }
+
+            FirearmBasicMessagesHandler.ServerShotReceived(ReferenceHub.connectionToClient, message);
+        }
+
+        /// <summary>
+        /// Makes the NPC Reload its currently held <see cref="Firearm"></see>.
+        /// </summary>
+        public void Reload()
+        {
+            if (RoleManager.CurrentRole is not IFpcRole fpc)
+                return;
+
+            Firearm? firearm = ReferenceHub.inventory._curInstance as Firearm;
+            if (firearm == null)
+                return;
+
+            RequestMessage message = new RequestMessage(firearm.ItemSerial, RequestType.Reload);
+            FirearmBasicMessagesHandler.ServerRequestReceived(ReferenceHub.connectionToClient, message);
+        }
+
+        /// <summary>
+        /// Sets the NPC's current <see cref="Firearm"></see> status for Aiming Down Sights.
+        /// </summary>
+        /// <param name="shouldADS">The rotation to convert.</param>
+        public void SetAimDownSight(bool shouldADS)
+        {
+            if (RoleManager.CurrentRole is not IFpcRole fpc)
+                return;
+
+            Firearm? firearm = ReferenceHub.inventory._curInstance as Firearm;
+            if (firearm == null)
+                return;
+
+            RequestMessage message = new RequestMessage(firearm.ItemSerial, shouldADS ? RequestType.AdsIn : RequestType.AdsOut);
+            FirearmBasicMessagesHandler.ServerRequestReceived(ReferenceHub.connectionToClient, message);
+        }
+
+        /// <summary>
+        /// Makes the NPC Unload its currently held <see cref="Firearm"></see>.
+        /// </summary>
+        public void Unload()
+        {
+            if (RoleManager.CurrentRole is not IFpcRole fpc)
+                return;
+
+            Firearm? firearm = ReferenceHub.inventory._curInstance as Firearm;
+            if (firearm == null)
+                return;
+
+            RequestMessage message = new RequestMessage(firearm.ItemSerial, RequestType.Unload);
+            FirearmBasicMessagesHandler.ServerRequestReceived(ReferenceHub.connectionToClient, message);
+        }
+
+        /// <summary>
+        /// Makes the NPC Toggle the Flashlight on its currently held <see cref="Firearm"></see>.
+        /// </summary>
+        public void ToggleFlashlight()
+        {
+            if (RoleManager.CurrentRole is not IFpcRole fpc)
+                return;
+
+            Firearm? firearm = ReferenceHub.inventory._curInstance as Firearm;
+            if (firearm == null)
+                return;
+
+            RequestMessage message = new RequestMessage(firearm.ItemSerial, RequestType.ToggleFlashlight);
+            FirearmBasicMessagesHandler.ServerRequestReceived(ReferenceHub.connectionToClient, message);
         }
     }
 }
