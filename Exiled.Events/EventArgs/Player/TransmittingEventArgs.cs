@@ -7,15 +7,10 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
-#pragma warning disable CS0618 // Type or member is obsolete
-    using System;
-
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
 
     using PlayerRoles.Voice;
-
-    using VoiceChat;
 
     /// <summary>
     ///     Contains all information regarding the player using the radio.
@@ -38,7 +33,6 @@ namespace Exiled.Events.EventArgs.Player
         {
             Player = player;
             VoiceModule = voiceModule;
-            IsTransmitting = true;
             IsAllowed = isAllowed;
         }
 
@@ -55,8 +49,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets a value indicating whether or not the player is transmitting.
         /// </summary>
-        [Obsolete("This is always true now.")]
-        public bool IsTransmitting { get; }
+        public bool IsTransmitting => true;
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the player can transmit.
