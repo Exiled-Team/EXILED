@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // Player.Get(referenceHub)
                     new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
 
-                    // flashlightItem
+                    // ToggleableLightItemBase
                     new(OpCodes.Ldloc_1),
 
                     // msg.NewState
