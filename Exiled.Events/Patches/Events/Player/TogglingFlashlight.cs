@@ -44,14 +44,14 @@ namespace Exiled.Events.Patches.Events.Player
                     // Player.Get(referenceHub)
                     new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
 
-                    // flashlightItem
+                    // ToggleableLightItemBase
                     new(OpCodes.Ldloc_1),
 
                     // msg.NewState
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Ldfld, Field(typeof(FlashlightNetworkHandler.FlashlightMessage), nameof(FlashlightNetworkHandler.FlashlightMessage.NewState))),
 
-                    // TogglingFlashlightEventArgs ev = new(Player, FlashlightItem, bool)
+                    // TogglingFlashlightEventArgs ev = new(Player, ToggleableLightItemBase, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingFlashlightEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
