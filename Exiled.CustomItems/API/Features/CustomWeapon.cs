@@ -205,7 +205,6 @@ namespace Exiled.CustomItems.API.Features
                 Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: External event turned is allowed to false, returning.");
                 return;
             }
-            
             ev.Firearm.MaxAmmo = ClipSize;
         }
 
