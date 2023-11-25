@@ -130,7 +130,7 @@ namespace Exiled.API.Features
         /// <param name="name">The name of the NPC.</param>
         /// <param name="role">The RoleTypeId of the NPC.</param>
         /// <param name="id">The player ID of the NPC.</param>
-        /// <param name="userId">The userID of the NPC. Use "ID_Dedicated" for VSR Compliant NPCs.</param>
+        /// <param name="userId">The userID of the NPC. Use "ID_Dedicated" or <c>null</c> for VSR Compliant NPCs.</param>
         /// <param name="position">The position to spawn the NPC.</param>
         /// <returns>The <see cref="Npc"/> spawned.</returns>
         public static Npc Spawn(string name, RoleTypeId role, int id = 0, string userId = "", Vector3? position = null)
@@ -138,7 +138,7 @@ namespace Exiled.API.Features
             GameObject newObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
             Npc npc = new(newObject)
             {
-                IsVerified = userId != "ID_Dedicated",
+                IsVerified = userId != PlayerAuthenticationManager.DedicatedId && userId != null,
                 IsNPC = true,
             };
             try
@@ -163,10 +163,21 @@ namespace Exiled.API.Features
             NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
             try
             {
-                npc.ReferenceHub.authManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy@localhost" : userId;
-                if (userId == "ID_Dedicated")
+                if (userId == PlayerAuthenticationManager.DedicatedId)
                 {
-                    npc.ReferenceHub.authManager.InstanceMode = ClientInstanceMode.DedicatedServer;
+                    npc.ReferenceHub.authManager.SyncedUserId = userId;
+                    try
+                    {
+                        npc.ReferenceHub.authManager.InstanceMode = ClientInstanceMode.DedicatedServer;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Debug($"Ignore: {e}");
+                    }
+                }
+                else
+                {
+                    npc.ReferenceHub.authManager.UserId = userId == "" ? $"Dummy@localhost" : userId;
                 }
             }
             catch (Exception e)
