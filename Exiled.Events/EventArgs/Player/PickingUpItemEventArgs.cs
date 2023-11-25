@@ -48,7 +48,7 @@ namespace Exiled.Events.EventArgs.Player
         public Pickup Pickup { get; }
 
         /// <summary>
-        ///     Gets the player who dropped the item.
+        ///     Gets the player who's picking up an item.
         /// </summary>
         public Player Player { get; }
     }
