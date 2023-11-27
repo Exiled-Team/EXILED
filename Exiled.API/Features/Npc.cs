@@ -218,10 +218,22 @@ namespace Exiled.API.Features
         /// Makes the NPC look at the specified position.
         /// </summary>
         /// <param name="position">The position to look at.</param>
-        public void LookAt(Vector3 position)
+        /// <param name="lerp">The amount to lerp between the two positions by.</param>
+        public void LookAt(Vector3 position, float lerp = 1f)
         {
             if (RoleManager.CurrentRole is IFpcRole fpc)
-                fpc.LookAtPoint(position);
+                fpc.LookAtPoint(position, lerp);
+        }
+
+        /// <summary>
+        /// Makes the NPC look at the specified position.
+        /// </summary>
+        /// <param name="rotation">The rotation to look towards.</param>
+        /// <param name="lerp">The amount to lerp between the two positions by.</param>
+        public void LookAt(Quaternion rotation, float lerp = 1f)
+        {
+            if (RoleManager.CurrentRole is IFpcRole fpc)
+                fpc.LookAtDirection(rotation.eulerAngles, lerp);
         }
 
         /// <summary>
@@ -236,7 +248,7 @@ namespace Exiled.API.Features
 
             if (targetPos != null)
             {
-                LookAt((Vector3)targetPos);
+                LookAt((Vector3)targetPos, 1f);
             }
 
             ShotMessage message = new ShotMessage()
