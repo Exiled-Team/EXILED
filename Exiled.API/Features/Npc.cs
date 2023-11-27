@@ -230,11 +230,7 @@ namespace Exiled.API.Features
         /// <param name="targetPos">The position to shoot towards.</param>
         public void Shoot(Vector3? targetPos = null)
         {
-            if (RoleManager.CurrentRole is not IFpcRole fpc)
-                return;
-
-            Firearm? firearm = ReferenceHub.inventory._curInstance as Firearm;
-            if (firearm == null)
+            if (RoleManager.CurrentRole is not IFpcRole fpc || ReferenceHub.inventory._curInstance is not Firearm firearm)
                 return;
 
             if (targetPos != null)
@@ -252,13 +248,13 @@ namespace Exiled.API.Features
                 TargetRotation = Quaternion.identity,
             };
 
-            Physics.Raycast(CameraTransform.position, CameraTransform.forward, out RaycastHit hit, 100f, StandardHitregBase.HitregMask);
+            Physics.Raycast(CameraTransform.position, CameraTransform.forward, out RaycastHit hit, firearm.BaseStats.MaxDistance(), StandardHitregBase.HitregMask);
 
-            if (hit.transform && hit.transform.TryGetComponentInParent(out NetworkIdentity networkIdentity) && networkIdentity)
+            if (hit.transform && hit.collider.TryGetComponent<IDestructible>(out IDestructible destructible) && destructible != null)
             {
-                message.TargetNetId = networkIdentity.netId;
-                message.TargetPosition = new RelativePosition(networkIdentity.transform.position);
-                message.TargetRotation = networkIdentity.transform.rotation;
+                message.TargetNetId = destructible.NetworkId;
+                message.TargetPosition = new RelativePosition(hit.transform.position);
+                message.TargetRotation = hit.transform.rotation;
             }
             else if (hit.transform)
             {
@@ -274,11 +270,7 @@ namespace Exiled.API.Features
         /// </summary>
         public void Reload()
         {
-            if (RoleManager.CurrentRole is not IFpcRole fpc)
-                return;
-
-            Firearm? firearm = ReferenceHub.inventory._curInstance as Firearm;
-            if (firearm == null)
+            if (RoleManager.CurrentRole is not IFpcRole fpc || ReferenceHub.inventory._curInstance is not Firearm firearm)
                 return;
 
             RequestMessage message = new RequestMessage(firearm.ItemSerial, RequestType.Reload);
@@ -291,11 +283,7 @@ namespace Exiled.API.Features
         /// <param name="shouldADS">The rotation to convert.</param>
         public void SetAimDownSight(bool shouldADS)
         {
-            if (RoleManager.CurrentRole is not IFpcRole fpc)
-                return;
-
-            Firearm? firearm = ReferenceHub.inventory._curInstance as Firearm;
-            if (firearm == null)
+            if (RoleManager.CurrentRole is not IFpcRole fpc || ReferenceHub.inventory._curInstance is not Firearm firearm)
                 return;
 
             RequestMessage message = new RequestMessage(firearm.ItemSerial, shouldADS ? RequestType.AdsIn : RequestType.AdsOut);
@@ -307,11 +295,7 @@ namespace Exiled.API.Features
         /// </summary>
         public void Unload()
         {
-            if (RoleManager.CurrentRole is not IFpcRole fpc)
-                return;
-
-            Firearm? firearm = ReferenceHub.inventory._curInstance as Firearm;
-            if (firearm == null)
+            if (RoleManager.CurrentRole is not IFpcRole fpc || ReferenceHub.inventory._curInstance is not Firearm firearm)
                 return;
 
             RequestMessage message = new RequestMessage(firearm.ItemSerial, RequestType.Unload);
@@ -323,11 +307,7 @@ namespace Exiled.API.Features
         /// </summary>
         public void ToggleFlashlight()
         {
-            if (RoleManager.CurrentRole is not IFpcRole fpc)
-                return;
-
-            Firearm? firearm = ReferenceHub.inventory._curInstance as Firearm;
-            if (firearm == null)
+            if (RoleManager.CurrentRole is not IFpcRole fpc || ReferenceHub.inventory._curInstance is not Firearm firearm)
                 return;
 
             RequestMessage message = new RequestMessage(firearm.ItemSerial, RequestType.ToggleFlashlight);
