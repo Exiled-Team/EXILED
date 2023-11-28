@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Scp939
 
     /// <summary>
     ///     Patches <see cref="FootstepRippleTrigger.OnFootstepPlayed" />
-    ///     to add the <see cref="Scp939.FootstepPlayed" /> event.
+    ///     to add the <see cref="Scp939.Footstep" /> event.
     /// </summary>
     [HarmonyPatch(typeof(FootstepRippleTrigger), nameof(FootstepRippleTrigger.OnFootstepPlayed))]
     internal static class Footstep
