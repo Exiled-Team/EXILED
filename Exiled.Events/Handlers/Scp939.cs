@@ -56,13 +56,13 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before footstep showed to SCP-939.
         /// </summary>
-        public static Event<FootstepEventArgs> FootstepPlayed { get; set; } = new();
+        public static Event<FootstepEventArgs> Footstep { get; set; } = new();
 
         /// <summary>
         ///     Called before footstep showed to SCP-939.
         /// </summary>
         /// <param name="ev">The <see cref="FootstepEventArgs" /> instance.</param>
-        public static void OnFootstepPlayed(FootstepEventArgs ev) => FootstepPlayed.InvokeSafely(ev);
+        public static void OnFootstep(FootstepEventArgs ev) => Footstep.InvokeSafely(ev);
 
         /// <summary>
         ///     Called before SCP-939 changes its target focus.
