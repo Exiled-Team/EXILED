@@ -54,6 +54,11 @@ namespace Exiled.Events.Handlers
         public static Event<ClawedEventArgs> Clawed { get; set; } = new();
 
         /// <summary>
+        /// Invoked when checking visibility for players.
+        /// </summary>
+        public static Event<ValidatingVisibilityEventArgs> ValidatedVisibility { get; set; } = new();
+
+        /// <summary>
         ///     Called before SCP-939 changes its target focus.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingFocusEventArgs" /> instance.</param>
@@ -94,5 +99,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ClawedEventArgs"/> instance.</param>
         public static void OnClawed(ClawedEventArgs ev) => Clawed.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after visibility for player has been checked
+        /// </summary>
+        /// <param name="ev">The <see cref="ValidatingVisibilityEventArgs"/> instance.</param>
+        public static void OnValidatedVisibility(ValidatingVisibilityEventArgs ev) => ValidatedVisibility.InvokeSafely(ev);
     }
 }
