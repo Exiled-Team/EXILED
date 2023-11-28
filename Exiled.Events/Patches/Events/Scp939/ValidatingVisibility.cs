@@ -7,14 +7,16 @@
 
 namespace Exiled.Events.Patches.Events.Scp939
 {
+    #pragma warning disable SA1313
+
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp939;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp939;
 
     /// <summary>
-    /// Patches <see cref="Scp939VisibilityController.ValidateVisibility(ReferenceHub hub)"/>
-    /// to add <see cref="ValidatingVisibility"/> event.
+    ///     Patches <see cref="Scp939VisibilityController.ValidateVisibility(ReferenceHub)" />
+    ///     to add the <see cref="Scp939.SavingVoice" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp939), nameof(Handlers.Scp939.ValidatedVisibility))]
     [HarmonyPatch(typeof(Scp939VisibilityController), nameof(Scp939VisibilityController.ValidateVisibility))]
