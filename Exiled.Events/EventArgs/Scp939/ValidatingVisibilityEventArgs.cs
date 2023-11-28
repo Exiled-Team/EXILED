@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="SavingVoiceEventArgs.cs" company="Exiled Team">
+// <copyright file="ValidatingVisibilityEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -26,7 +26,7 @@ namespace Exiled.Events.EventArgs.Scp939
         ///     The target being shown to SCP-939.
         /// </param>
         /// <param name="isAllowed">
-        ///     whether or not SCP-939 is allowed to view the player.
+        ///     Whether or not SCP-939 is allowed to view the player.
         /// </param>
         public ValidatingVisibilityEventArgs(ReferenceHub player, ReferenceHub target, bool isAllowed)
         {
