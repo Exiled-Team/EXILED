@@ -40,11 +40,26 @@ namespace Exiled.Events.Patches.Events.Item
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingAmmoEventArgs));
 
             Label ret = generator.DefineLabel();
+            Label jump = generator.DefineLabel();
 
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
+                    // value.Ammo
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
+
+                    // this._status.Ammo
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm._status))),
+                    new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
+
+                    // if (value.Ammo == this._status.Ammo)
+                    //   goto jump;
+                    new(OpCodes.Ceq),
+                    new(OpCodes.Brtrue_S, jump),
+
                     // this
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Dup),
@@ -76,6 +91,9 @@ namespace Exiled.Events.Patches.Events.Item
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAmmoEventArgs), nameof(ChangingAmmoEventArgs.NewStatus))),
                     new(OpCodes.Starg_S, 1),
+
+                    // jump:
+                    new CodeInstruction(OpCodes.Nop).WithLabels(jump),
                 });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
