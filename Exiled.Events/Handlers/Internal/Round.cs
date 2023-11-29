@@ -69,12 +69,11 @@ namespace Exiled.Events.Handlers.Internal
         /// <inheritdoc cref="Scp049.OnActivatingSense(ActivatingSenseEventArgs)" />
         public static void OnActivatingSense(ActivatingSenseEventArgs ev)
         {
-            if (!Events.Instance.Config.CanScp049SenseTutorial || ev.Target is null || ev.Target.Role.Type is not RoleTypeId.Tutorial)
+            if (ev.Target is null)
                 return;
-            if (ev.Scp049.SenseAbility.CanFindTarget(out ReferenceHub hub))
-                ev.Target = Player.Get(hub);
-            else
-                ev.Target = null;
+            if ((Events.Instance.Config.CanScp049SenseTutorial || ev.Target.Role.Type is not RoleTypeId.Tutorial) && !Scp049Role.TurnedPlayers.Contains(ev.Target))
+                return;
+            ev.Target = ev.Scp049.SenseAbility.CanFindTarget(out ReferenceHub hub) ? Player.Get(hub) : null;
         }
 
         /// <inheritdoc cref="Handlers.Player.OnVerified(VerifiedEventArgs)" />
