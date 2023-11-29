@@ -157,6 +157,12 @@ namespace Exiled.Events.Features
         /// </summary>
         public void InvokeSafely()
         {
+            InvokeNormal();
+            InvokeAsync();
+        }
+
+        internal void InvokeNormal()
+        {
             if (InnerEvent is null)
                 return;
 
@@ -171,7 +177,10 @@ namespace Exiled.Events.Features
                     Log.Error($"Method \"{handler.Method.Name}\" of the class \"{handler.Method.ReflectedType.FullName}\" caused an exception when handling the event \"{GetType().FullName}\"\n{ex}");
                 }
             }
+        }
 
+        internal void InvokeAsync()
+        {
             if (InnerAsyncEvent is null)
                 return;
 
