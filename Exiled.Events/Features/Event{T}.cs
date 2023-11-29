@@ -164,12 +164,6 @@ namespace Exiled.Events.Features
         /// <exception cref="ArgumentNullException">Event or its arg is <see langword="null"/>.</exception>
         public void InvokeSafely(T arg)
         {
-            InvokeNormal(arg);
-            InvokeAsync(arg);
-        }
-
-        internal void InvokeNormal(T arg)
-        {
             if (InnerEvent is null)
                 return;
 
@@ -184,10 +178,7 @@ namespace Exiled.Events.Features
                     Log.Error($"Method \"{handler.Method.Name}\" of the class \"{handler.Method.ReflectedType.FullName}\" caused an exception when handling the event \"{GetType().FullName}\"\n{ex}");
                 }
             }
-        }
 
-        internal void InvokeAsync(T arg)
-        {
             if (InnerAsyncEvent is null)
                 return;
 
