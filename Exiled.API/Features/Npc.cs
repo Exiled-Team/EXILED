@@ -216,7 +216,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Forces the player to look in the specified rotation.
+        /// Forces the NPC to look in the specified rotation.
         /// </summary>
         /// <param name="position">The position to look at.</param>
         public void LookAt(Vector3 position)
@@ -230,7 +230,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Forces the player to look in the specified rotation.
+        /// Forces the NPC to look in the specified rotation.
         /// </summary>
         /// <param name="rotation">The rotation to look towards.</param>
         public void LookAt(Quaternion rotation)
@@ -256,7 +256,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Forces the player to shoot their current <see cref="Firearm"></see>.
+        /// Forces the NPC to shoot their current <see cref="Firearm"></see>.
         /// </summary>
         /// <returns><see langword="true"/> if the weapon shot request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
         public bool ShootWeapon()
@@ -296,7 +296,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Sets the player's current <see cref="Firearm"></see> status for Aiming Down Sights.
+        /// Sets the NPC's current <see cref="Firearm"></see> status for Aiming Down Sights.
         /// </summary>
         /// <param name="shouldADS">Should the player be aiming down sights.</param>
         /// <returns><see langword="true"/> if the weapon Aim Down Sights request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
