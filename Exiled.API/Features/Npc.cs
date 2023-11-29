@@ -249,8 +249,8 @@ namespace Exiled.API.Features
             angles.y = Mathf.Clamp(angles.y, 0f, 360f);
             angles.x = Mathf.Clamp(angles.x, -88f, 88f) + 88f;
 
-            ushort hor = (ushort)Mathf.RoundToInt(angles.y * (65535f / 360f));
-            ushort vert = (ushort)Mathf.RoundToInt(angles.x * (65535f / 176f));
+            ushort hor = (ushort)Mathf.RoundToInt(angles.y * (ushort.MaxValue / 360f));
+            ushort vert = (ushort)Mathf.RoundToInt(angles.x * (ushort.MaxValue / 176f));
 
             fpc.FirstPersonController.FpcModule.MouseLook.ApplySyncValues(hor, vert);
         }
