@@ -236,5 +236,19 @@ namespace Exiled.API.Features.Roles
                     Owner.ChangeAppearance(Owner.Role.Type, skipJump: true);
             }
         }
+        
+        /// Resets the <see cref="Player"/>'s stamina.
+        /// </summary>
+        /// <param name="multipliers">Resets <see cref="StaminaUsageMultiplier"/> and <see cref="StaminaRegenMultiplier"/>.</param>
+        public void ResetStamina(bool multipliers = false)
+        {
+            Owner.Stamina = Owner.StaminaStat.MaxValue;
+
+            if (!multipliers)
+                return;
+
+            StaminaUsageMultiplier = 1f;
+            StaminaRegenMultiplier = 1f;
+        }  
     }
 }
