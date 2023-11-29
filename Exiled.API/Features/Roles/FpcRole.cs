@@ -249,6 +249,6 @@ namespace Exiled.API.Features.Roles
 
             StaminaUsageMultiplier = 1f;
             StaminaRegenMultiplier = 1f;
-        }  
+        }
     }
 }
