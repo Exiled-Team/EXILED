@@ -1733,86 +1733,6 @@ namespace Exiled.API.Features
         public bool TryRemoveCustomeRoleFriendlyFire(string role) => CustomRoleFriendlyFireMultiplier.Remove(role);
 
         /// <summary>
-        /// Forces the player to look in the specified rotation.
-        /// </summary>
-        /// <param name="position">The position to look at.</param>
-        /// <param name="lerp">The amount to lerp between the two positions by.</param>
-        public void LookAt(Vector3 position, float lerp = 1f)
-        {
-            if (RoleManager.CurrentRole is IFpcRole fpc)
-                fpc.LookAtPoint(position, lerp);
-        }
-
-        /// <summary>
-        /// Forces the player to look in the specified rotation.
-        /// </summary>
-        /// <param name="rotation">The rotation to look towards.</param>
-        /// <param name="lerp">The amount to lerp between the two positions by.</param>
-        public void LookAt(Quaternion rotation, float lerp = 1f)
-        {
-            if (RoleManager.CurrentRole is IFpcRole fpc)
-                fpc.LookAtDirection(rotation.eulerAngles, lerp);
-        }
-
-        /// <summary>
-        /// Forces the player to shoot their current <see cref="Firearm"></see>.
-        /// </summary>
-        /// <param name="targetPos">The position to shoot towards.</param>
-        /// <returns><see langword="true"/> if the weapon shot request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
-        public bool ShootWeapon(Vector3? targetPos = null)
-        {
-            if (RoleManager.CurrentRole is not IFpcRole fpc || ReferenceHub.inventory._curInstance is not Firearm firearm)
-                return false;
-
-            if (targetPos != null)
-            {
-                LookAt((Vector3)targetPos, 1f);
-            }
-
-            ShotMessage message = new ShotMessage()
-            {
-                ShooterCameraRotation = CameraTransform.rotation,
-                ShooterPosition = new RelativePosition(Transform.position),
-                ShooterWeaponSerial = CurrentItem.Serial,
-                TargetNetId = 0,
-                TargetPosition = default,
-                TargetRotation = Quaternion.identity,
-            };
-
-            Physics.Raycast(CameraTransform.position, CameraTransform.forward, out RaycastHit hit, firearm.BaseStats.MaxDistance(), StandardHitregBase.HitregMask);
-
-            if (hit.transform && hit.collider.TryGetComponent(out IDestructible destructible) && destructible != null)
-            {
-                message.TargetNetId = destructible.NetworkId;
-                message.TargetPosition = new RelativePosition(hit.transform.position);
-                message.TargetRotation = hit.transform.rotation;
-            }
-            else if (hit.transform)
-            {
-                message.TargetPosition = new RelativePosition(hit.transform.position);
-                message.TargetRotation = hit.transform.rotation;
-            }
-
-            FirearmBasicMessagesHandler.ServerShotReceived(ReferenceHub.connectionToClient, message);
-            return true;
-        }
-
-        /// <summary>
-        /// Sets the player's current <see cref="Firearm"></see> status for Aiming Down Sights.
-        /// </summary>
-        /// <param name="shouldADS">Should the player be aiming down sights.</param>
-        /// <returns><see langword="true"/> if the weapon Aim Down Sights request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
-        public bool SetAimDownSight(bool shouldADS)
-        {
-            if (RoleManager.CurrentRole is not IFpcRole fpc || ReferenceHub.inventory._curInstance is not Firearm firearm)
-                return false;
-
-            RequestMessage message = new RequestMessage(firearm.ItemSerial, shouldADS ? RequestType.AdsIn : RequestType.AdsOut);
-            FirearmBasicMessagesHandler.ServerRequestReceived(ReferenceHub.connectionToClient, message);
-            return true;
-        }
-
-        /// <summary>
         /// Forces the player to reload their current <see cref="Firearm"></see>.
         /// </summary>
         /// <returns><see langword="true"/> if firearm was successfully reloaded. Otherwise, <see langword="false"/>.</returns>
@@ -1821,7 +1741,8 @@ namespace Exiled.API.Features
             if (CurrentItem is Firearm firearm)
             {
                 bool result = firearm.Base.AmmoManagerModule.ServerTryReload();
-                Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
+                if (result)
+                    Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
                 return result;
             }
 
@@ -1834,11 +1755,14 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if the weapon unload request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
         public bool UnloadWeapon()
         {
-            if (RoleManager.CurrentRole is not IFpcRole fpc || ReferenceHub.inventory._curInstance is not Firearm firearm)
-                return false;
+            if (CurrentItem is Firearm firearm)
+            {
+                bool result = firearm.Base.AmmoManagerModule.ServerTryUnload();
+                if (result)
+                    Connection.Send(new RequestMessage(firearm.Serial, RequestType.Unload));
+                return result;
+            }
 
-            RequestMessage message = new RequestMessage(firearm.ItemSerial, RequestType.Unload);
-            FirearmBasicMessagesHandler.ServerRequestReceived(ReferenceHub.connectionToClient, message);
             return true;
         }
 
@@ -1848,12 +1772,12 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if the weapon flashlight toggle request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
         public bool ToggleWeaponFlashlight()
         {
-            if (RoleManager.CurrentRole is not IFpcRole fpc || ReferenceHub.inventory._curInstance is not Firearm firearm)
+            if (RoleManager.CurrentRole is not IFpcRole fpc || CurrentItem is not Firearm firearm)
                 return false;
 
-            RequestMessage message = new RequestMessage(firearm.ItemSerial, RequestType.ToggleFlashlight);
-            FirearmBasicMessagesHandler.ServerRequestReceived(ReferenceHub.connectionToClient, message);
-            return true;
+            bool oldCheck = firearm.FlashlightEnabled; // Temporary Solution
+            FirearmBasicMessagesHandler.ServerRequestReceived(ReferenceHub.connectionToClient, new RequestMessage(firearm.Serial, RequestType.ToggleFlashlight));
+            return oldCheck != firearm.FlashlightEnabled;
         }
 
         /// <summary>

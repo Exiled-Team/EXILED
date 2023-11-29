@@ -18,8 +18,8 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Components;
+    using Exiled.API.Features.Roles;
     using Footprinting;
-    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
     using MEC;
@@ -30,6 +30,7 @@ namespace Exiled.API.Features
     using RelativePositioning;
     using UnityEngine;
 
+    using Firearm = Items.Firearm;
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -212,6 +213,102 @@ namespace Exiled.API.Features
             CustomNetworkManager.TypedSingleton.OnServerDisconnect(conn);
             Dictionary.Remove(GameObject);
             Object.Destroy(GameObject);
+        }
+
+        /// <summary>
+        /// Forces the player to look in the specified rotation.
+        /// </summary>
+        /// <param name="position">The position to look at.</param>
+        public void LookAt(Vector3 position)
+        {
+            if (Role is FpcRole fpc)
+            {
+                Vector3 direction = position - Position;
+                Quaternion quat = Quaternion.LookRotation(direction, Vector3.up);
+                LookAt(quat);
+            }
+        }
+
+        /// <summary>
+        /// Forces the player to look in the specified rotation.
+        /// </summary>
+        /// <param name="rotation">The rotation to look towards.</param>
+        public void LookAt(Quaternion rotation)
+        {
+            if (Role is not FpcRole fpc)
+                return;
+
+            if (rotation.eulerAngles.z != 0f)
+                rotation = Quaternion.LookRotation(rotation * Vector3.forward, Vector3.up);
+
+            Vector2 angles = new Vector2(-rotation.eulerAngles.x, rotation.eulerAngles.y);
+            if (angles.x < -90f)
+                angles.x += 360f;
+            else if (angles.x > 270f)
+                angles.x -= 360f;
+            angles.y = Mathf.Clamp(angles.y, 0f, 360f);
+            angles.x = Mathf.Clamp(angles.x, -88f, 88f) + 88f;
+
+            ushort hor = (ushort)Mathf.RoundToInt(angles.y * (65535f / 360f));
+            ushort vert = (ushort)Mathf.RoundToInt(angles.x * (65535f / 176f));
+
+            fpc.FirstPersonController.FpcModule.MouseLook.ApplySyncValues(hor, vert);
+        }
+
+        /// <summary>
+        /// Forces the player to shoot their current <see cref="Firearm"></see>.
+        /// </summary>
+        /// <returns><see langword="true"/> if the weapon shot request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
+        public bool ShootWeapon()
+        {
+            if (CurrentItem is not Firearm firearm)
+                return false;
+
+            if (!firearm.Base.ActionModule.ServerAuthorizeShot())
+                return false;
+
+            ShotMessage message = new ShotMessage()
+            {
+                ShooterCameraRotation = CameraTransform.rotation,
+                ShooterPosition = new RelativePosition(Transform.position),
+                ShooterWeaponSerial = CurrentItem.Serial,
+                TargetNetId = 0,
+                TargetPosition = default,
+                TargetRotation = Quaternion.identity,
+            };
+
+            Physics.Raycast(CameraTransform.position, CameraTransform.forward, out RaycastHit hit, firearm.Base.BaseStats.MaxDistance(), StandardHitregBase.HitregMask);
+
+            if (hit.transform && hit.collider.TryGetComponent(out IDestructible destructible) && destructible != null)
+            {
+                message.TargetNetId = destructible.NetworkId;
+                message.TargetPosition = new RelativePosition(hit.transform.position);
+                message.TargetRotation = hit.transform.rotation;
+            }
+            else if (hit.transform)
+            {
+                message.TargetPosition = new RelativePosition(hit.transform.position);
+                message.TargetRotation = hit.transform.rotation;
+            }
+
+            FirearmBasicMessagesHandler.ServerShotReceived(ReferenceHub.connectionToClient, message);
+            return true;
+        }
+
+        /// <summary>
+        /// Sets the player's current <see cref="Firearm"></see> status for Aiming Down Sights.
+        /// </summary>
+        /// <param name="shouldADS">Should the player be aiming down sights.</param>
+        /// <returns><see langword="true"/> if the weapon Aim Down Sights request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
+        public bool SetAimDownSight(bool shouldADS)
+        {
+            if (CurrentItem is Firearm firearm)
+            {
+                FirearmBasicMessagesHandler.ServerRequestReceived(ReferenceHub.connectionToClient, new RequestMessage(firearm.Serial, shouldADS ? RequestType.AdsIn : RequestType.AdsOut));
+                return true;
+            }
+
+            return false;
         }
     }
 }
