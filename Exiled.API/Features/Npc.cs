@@ -242,15 +242,9 @@ namespace Exiled.API.Features
                 rotation = Quaternion.LookRotation(rotation * Vector3.forward, Vector3.up);
 
             Vector2 angles = new Vector2(-rotation.eulerAngles.x, rotation.eulerAngles.y);
-            if (angles.x < -90f)
-                angles.x += 360f;
-            else if (angles.x > 270f)
-                angles.x -= 360f;
-            angles.y = Mathf.Clamp(angles.y, 0f, 360f);
-            angles.x = Mathf.Clamp(angles.x, -88f, 88f) + 88f;
 
-            ushort hor = (ushort)Mathf.RoundToInt(angles.y * (ushort.MaxValue / 360f));
-            ushort vert = (ushort)Mathf.RoundToInt(angles.x * (ushort.MaxValue / 176f));
+            ushort hor = (ushort)Mathf.RoundToInt(Mathf.Repeat(angles.y, 360f) * (ushort.MaxValue / 360f));
+            ushort vert = (ushort)Mathf.RoundToInt(Mathf.Clamp(Mathf.Repeat(angles.x + 90f, 360f) - 2f, 0f, 176f) * (ushort.MaxValue / 176f));
 
             fpc.FirstPersonController.FpcModule.MouseLook.ApplySyncValues(hor, vert);
         }
