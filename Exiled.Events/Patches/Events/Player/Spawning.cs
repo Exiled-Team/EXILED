@@ -104,6 +104,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // Handlers.Player.OnSpawning(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawning))),
 
+                    // Set position and horizontal rotation
                     new(OpCodes.Call, Method(typeof(Spawning), nameof(Send))),
                 });
 
