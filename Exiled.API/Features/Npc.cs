@@ -178,7 +178,7 @@ namespace Exiled.API.Features
                 }
                 else
                 {
-                    npc.ReferenceHub.authManager.UserId = userId == "" ? $"Dummy@localhost" : userId;
+                    npc.ReferenceHub.authManager.UserId = userId == string.Empty ? $"Dummy@localhost" : userId;
                 }
             }
             catch (Exception e)
