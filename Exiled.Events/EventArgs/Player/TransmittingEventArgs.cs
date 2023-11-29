@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
 
@@ -49,6 +51,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets a value indicating whether or not the player is transmitting.
         /// </summary>
+        [Obsolete("IsTransmitting is always true.")]
         public bool IsTransmitting => true;
 
         /// <summary>
