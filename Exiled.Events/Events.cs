@@ -5,6 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Exiled.Events.EventArgs.Interfaces;
+using Exiled.Events.EventArgs.Map;
+using Exiled.Events.EventArgs.Player;
+using MEC;
+
 namespace Exiled.Events
 {
     using System;
@@ -69,6 +75,13 @@ namespace Exiled.Events
             Handlers.Player.Verified += Handlers.Internal.Round.OnVerified;
             Handlers.Map.ChangedIntoGrenade += Handlers.Internal.ExplodingGrenade.OnChangedIntoGrenade;
 
+            Handlers.Player.ChangingMoveState += UwU;
+            Handlers.Player.ChangingRole += UwU;
+            Handlers.Map.FillingLocker += UwU;
+
+            Handlers.Server.RoundStarted += UwU;
+            Handlers.Server.WaitingForPlayers += UwU;
+
             CharacterClassManager.OnRoundStarted += Handlers.Server.OnRoundStarted;
 
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
@@ -80,6 +93,42 @@ namespace Exiled.Events
             ServerConsole.ReloadServerName();
 
             EventManager.RegisterEvents<Handlers.Player>(this);
+        }
+
+        private IEnumerator<float> UwU(ChangingRoleEventArgs ev)
+        {
+            Log.Info("ChangingRole");
+
+            yield return Timing.WaitForSeconds(2);
+
+            Log.Info("UwU");
+        }
+
+        private IEnumerator<float> UwU(ChangingMoveStateEventArgs ev)
+        {
+            Log.Info("ChangingMovingState");
+
+            yield return Timing.WaitForSeconds(2);
+
+            Log.Info("UwU");
+        }
+
+        private IEnumerator<float> UwU(FillingLockerEventArgs ev)
+        {
+            Log.Info("FillingLocker");
+
+            yield return Timing.WaitForSeconds(2);
+
+            Log.Info("UwU");
+        }
+
+        private IEnumerator<float> UwU()
+        {
+            Log.Info("Non-event arg ev");
+
+            yield return Timing.WaitForSeconds(2);
+
+            Log.Info("UwU");
         }
 
         /// <inheritdoc/>
