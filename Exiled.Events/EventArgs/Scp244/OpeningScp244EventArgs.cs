@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs.Scp244
     using InventorySystem.Items.Usables.Scp244;
 
     /// <summary>
-    ///     Contains all information before a player picks up an SCP-244.
+    ///     Contains all information before a player opens SCP-244.
     /// </summary>
     public class OpeningScp244EventArgs : IDeniableEvent
     {
@@ -29,12 +29,12 @@ namespace Exiled.Events.EventArgs.Scp244
         }
 
         /// <summary>
-        /// Gets a value representing the <see cref="Scp244Pickup"/> being picked up.
+        /// Gets a value representing the <see cref="Scp244Pickup"/> being opened.
         /// </summary>
         public Scp244Pickup Pickup { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can interact with SCP-330.
+        ///     Gets or sets a value indicating whether or not the player can open SCP-244.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Scp244
     using InventorySystem.Items.Usables.Scp244;
 
     /// <summary>
-    ///     Contains all information before radio battery charge is changed.
+    ///     Contains all information before SCP-244 is used.
     /// </summary>
     public class UsingScp244EventArgs : IPlayerEvent, IDeniableEvent
     {
@@ -44,12 +44,12 @@ namespace Exiled.Events.EventArgs.Scp244
         public Scp244 Scp244 { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the radio battery charge can be changed or not.
+        ///     Gets or sets a value indicating whether the SCP-244 can be used.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the player who's using the radio.
+        ///     Gets the player who's using the SCP-244.
         /// </summary>
         public Player Player { get; }
     }
