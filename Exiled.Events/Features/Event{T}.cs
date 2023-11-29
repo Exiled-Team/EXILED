@@ -13,6 +13,7 @@ namespace Exiled.Events.Features
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
+    using MEC;
 
     /// <summary>
     /// The custom <see cref="EventHandler"/> delegate.
@@ -20,6 +21,14 @@ namespace Exiled.Events.Features
     /// <typeparam name="TEventArgs">The <see cref="EventHandler{TEventArgs}"/> type.</typeparam>
     /// <param name="ev">The <see cref="EventHandler{TEventArgs}"/> instance.</param>
     public delegate void CustomEventHandler<TEventArgs>(TEventArgs ev);
+
+    /// <summary>
+    /// The custom <see cref="EventHandler"/> delegate.
+    /// </summary>
+    /// <typeparam name="TEventArgs">The <see cref="EventHandler{TEventArgs}"/> type.</typeparam>
+    /// <param name="ev">The <see cref="EventHandler{TEventArgs}"/> instance.</param>
+    /// <returns><see cref="IEnumerator{T}"/> of <see cref="float"/>.</returns>
+    public delegate IEnumerator<float> CustomAsyncEventHandler<TEventArgs>(TEventArgs ev);
 
     /// <summary>
     /// An implementation of the <see cref="IExiledEvent"/> interface that encapsulates an event with arguments.
@@ -41,6 +50,8 @@ namespace Exiled.Events.Features
 
         private event CustomEventHandler<T> InnerEvent;
 
+        private event CustomAsyncEventHandler<T> InnerAsyncEvent;
+
         /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Event{T}"/> which contains all the <see cref="Event{T}"/> instances.
         /// </summary>
@@ -59,6 +70,18 @@ namespace Exiled.Events.Features
         }
 
         /// <summary>
+        /// Subscribes a <see cref="CustomAsyncEventHandler"/> to the inner event, and checks patches if dynamic patching is enabled.
+        /// </summary>
+        /// <param name="event">The <see cref="Event{T}"/> to subscribe the <see cref="CustomAsyncEventHandler{T}"/> to.</param>
+        /// <param name="asyncEventHandler">The <see cref="CustomAsyncEventHandler{T}"/> to subscribe to the <see cref="Event{T}"/>.</param>
+        /// <returns>The <see cref="Event{T}"/> with the handler added to it.</returns>
+        public static Event<T> operator +(Event<T> @event, CustomAsyncEventHandler<T> asyncEventHandler)
+        {
+            @event.Subscribe(asyncEventHandler);
+            return @event;
+        }
+
+        /// <summary>
         /// Unsubscribes a target <see cref="CustomEventHandler{TEventArgs}"/> from the inner event and checks if unpatching is possible, if dynamic patching is enabled.
         /// </summary>
         /// <param name="event">The <see cref="Event{T}"/> the <see cref="CustomEventHandler{T}"/> will be unsubscribed from.</param>
@@ -67,6 +90,18 @@ namespace Exiled.Events.Features
         public static Event<T> operator -(Event<T> @event, CustomEventHandler<T> handler)
         {
             @event.Unsubscribe(handler);
+            return @event;
+        }
+
+        /// <summary>
+        /// Unsubscribes a target <see cref="CustomAsyncEventHandler{TEventArgs}"/> from the inner event, and checks if unpatching is possible, if dynamic patching is enabled.
+        /// </summary>
+        /// <param name="event">The <see cref="Event"/> the <see cref="CustomAsyncEventHandler{T}"/> will be unsubscribed from.</param>
+        /// <param name="asyncEventHandler">The <see cref="CustomAsyncEventHandler{T}"/> that will be unsubscribed from the <see cref="Event{T}"/>.</param>
+        /// <returns>The <see cref="Event{T}"/> with the handler unsubscribed from it.</returns>
+        public static Event<T> operator -(Event<T> @event, CustomAsyncEventHandler<T> asyncEventHandler)
+        {
+            @event.Unsubscribe(asyncEventHandler);
             return @event;
         }
 
@@ -88,12 +123,38 @@ namespace Exiled.Events.Features
         }
 
         /// <summary>
+        /// Subscribes a target <see cref="CustomAsyncEventHandler{T}"/> to the inner event if the conditional is true.
+        /// </summary>
+        /// <param name="handler">The handler to add.</param>
+        public void Subscribe(CustomAsyncEventHandler<T> handler)
+        {
+            Log.Assert(Events.Instance is not null, $"{nameof(Events.Instance)} is null, please ensure you have exiled_events enabled!");
+
+            if (Events.Instance.Config.UseDynamicPatching && !patched)
+            {
+                Events.Instance.Patcher.Patch(this);
+                patched = true;
+            }
+
+            InnerAsyncEvent += handler;
+        }
+
+        /// <summary>
         /// Unsubscribes a target <see cref="CustomEventHandler{T}"/> from the inner event if the conditional is true.
         /// </summary>
         /// <param name="handler">The handler to add.</param>
         public void Unsubscribe(CustomEventHandler<T> handler)
         {
             InnerEvent -= handler;
+        }
+
+        /// <summary>
+        /// Unsubscribes a target <see cref="CustomEventHandler{T}"/> from the inner event if the conditional is true.
+        /// </summary>
+        /// <param name="handler">The handler to add.</param>
+        public void Unsubscribe(CustomAsyncEventHandler<T> handler)
+        {
+            InnerAsyncEvent -= handler;
         }
 
         /// <summary>
@@ -111,6 +172,21 @@ namespace Exiled.Events.Features
                 try
                 {
                     handler(arg);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Method \"{handler.Method.Name}\" of the class \"{handler.Method.ReflectedType.FullName}\" caused an exception when handling the event \"{GetType().FullName}\"\n{ex}");
+                }
+            }
+
+            if (InnerAsyncEvent is null)
+                return;
+
+            foreach (CustomAsyncEventHandler<T> handler in InnerEvent.GetInvocationList().Cast<CustomAsyncEventHandler<T>>())
+            {
+                try
+                {
+                    Timing.RunCoroutine(handler(arg));
                 }
                 catch (Exception ex)
                 {
