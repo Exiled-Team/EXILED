@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Item
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int offset = 1;
+            const int offset = 2;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse_S) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingAmmoEventArgs));
