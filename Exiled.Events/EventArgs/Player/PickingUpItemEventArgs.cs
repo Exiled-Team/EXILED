@@ -43,12 +43,12 @@ namespace Exiled.Events.EventArgs.Player
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the dropped pickup.
+        ///     Gets the pickup that's being picked up.
         /// </summary>
         public Pickup Pickup { get; }
 
         /// <summary>
-        ///     Gets the player who dropped the item.
+        ///     Gets the player who's picking up an item.
         /// </summary>
         public Player Player { get; }
     }
