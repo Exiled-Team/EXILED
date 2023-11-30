@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Scp939
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information before SCP-939 plays a stolen player's voice.
+    ///     Contains all information about players before being validated to SCP-939.
     /// </summary>
     public class ValidatingVisibilityEventArgs : IScp939Event, IDeniableEvent
     {

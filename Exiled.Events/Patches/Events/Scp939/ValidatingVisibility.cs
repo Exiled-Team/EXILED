@@ -16,16 +16,16 @@ namespace Exiled.Events.Patches.Events.Scp939
 
     /// <summary>
     ///     Patches <see cref="Scp939VisibilityController.ValidateVisibility(ReferenceHub)" />
-    ///     to add the <see cref="Scp939.SavingVoice" /> event.
+    ///     to add the <see cref="Scp939.ValidatingVisibility" /> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Scp939), nameof(Handlers.Scp939.ValidatedVisibility))]
+    [EventPatch(typeof(Handlers.Scp939), nameof(Handlers.Scp939.ValidatingVisibility))]
     [HarmonyPatch(typeof(Scp939VisibilityController), nameof(Scp939VisibilityController.ValidateVisibility))]
     internal class ValidatingVisibility
     {
         private static void Postfix(Scp939VisibilityController __instance, ReferenceHub hub, ref bool __result)
         {
             ValidatingVisibilityEventArgs ev = new(__instance.Owner, hub, __result);
-            Handlers.Scp939.OnValidatedVisibility(ev);
+            Handlers.Scp939.OnValidatingVisibility(ev);
             __result = ev.IsAllowed;
         }
     }

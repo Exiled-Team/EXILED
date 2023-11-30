@@ -56,7 +56,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked when checking visibility for players.
         /// </summary>
-        public static Event<ValidatingVisibilityEventArgs> ValidatedVisibility { get; set; } = new();
+        public static Event<ValidatingVisibilityEventArgs> ValidatingVisibility { get; set; } = new();
 
         /// <summary>
         ///     Called before SCP-939 changes its target focus.
@@ -101,9 +101,9 @@ namespace Exiled.Events.Handlers
         public static void OnClawed(ClawedEventArgs ev) => Clawed.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after visibility for player has been checked.
+        /// Called when a players visibility is being validated.
         /// </summary>
         /// <param name="ev">The <see cref="ValidatingVisibilityEventArgs"/> instance.</param>
-        public static void OnValidatedVisibility(ValidatingVisibilityEventArgs ev) => ValidatedVisibility.InvokeSafely(ev);
+        public static void OnValidatingVisibility(ValidatingVisibilityEventArgs ev) => ValidatingVisibility.InvokeSafely(ev);
     }
 }
