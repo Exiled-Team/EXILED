@@ -33,29 +33,49 @@ namespace Exiled.Events.Patches.Events.Scp939
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label returnLabel = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-                {
-                    // Player player = Player.Get(hub);
-                    new(OpCodes.Ldarg_1),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(CharacterModel), nameof(CharacterModel.OwnerHub))),
-                    new(OpCodes.Call, Method(typeof(Exiled.API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Callvirt && i.Calls(PropertyGetter(typeof(CharacterModel), nameof(CharacterModel.OwnerHub))));
+            index += -7;
 
-                    // true;
-                    new(OpCodes.Ldc_I4_1),
+            newInstructions.RemoveRange(index, 7);
 
-                    // PlayingFootstepEventArgs ev = (player, true);
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlayingFootstepEventArgs))[0]),
-                    new(OpCodes.Dup),
+            newInstructions.InsertRange(index, new CodeInstruction[]
+            {
+                // if (base.CheckVisibility(model.OwnerHub))
+                //    return;
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(CharacterModel), nameof(CharacterModel.OwnerHub))),
+                new(OpCodes.Call, Method(typeof(RippleTriggerBase), nameof(RippleTriggerBase.CheckVisibility), new[] { typeof(ReferenceHub) })),
 
-                    // Handlers.Scp939.OnPlayingFootstep(ev);
-                    new(OpCodes.Call, Method(typeof(Handlers.Scp939), nameof(Handlers.Scp939.OnPlayingFootstep))),
+                new(OpCodes.Brfalse_S, continueLabel),
+                new(OpCodes.Ret),
+                new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
 
-                    // if (!IsAllowed)
-                    //      return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(PlayingFootstepEventArgs), nameof(PlayingFootstepEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, returnLabel),
-                });
+                // Player player = Player.Get(hub);
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(CharacterModel), nameof(CharacterModel.OwnerHub))),
+                new(OpCodes.Call, Method(typeof(Exiled.API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+
+                // true;
+                new(OpCodes.Ldc_I4_1),
+
+                // PlayingFootstepEventArgs ev = (player, true);
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlayingFootstepEventArgs))[0]),
+                new(OpCodes.Dup),
+
+                // Handlers.Scp939.OnPlayingFootstep(ev);
+                new(OpCodes.Call, Method(typeof(Handlers.Scp939), nameof(Handlers.Scp939.OnPlayingFootstep))),
+
+                // if (!IsAllowed)
+                //      return;
+                new(OpCodes.Callvirt, PropertyGetter(typeof(PlayingFootstepEventArgs), nameof(PlayingFootstepEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, returnLabel),
+
+                // var for _syncPlayer
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldarg_1),
+            });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
