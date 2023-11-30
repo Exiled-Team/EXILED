@@ -168,6 +168,7 @@ namespace Exiled.Events.Features
             InvokeAsync(arg);
         }
 
+        /// <inheritdoc cref="InvokeSafely"/>
         internal void InvokeNormal(T arg)
         {
             if (InnerEvent is null)
@@ -186,6 +187,7 @@ namespace Exiled.Events.Features
             }
         }
 
+        /// <inheritdoc cref="InvokeSafely"/>
         internal void InvokeAsync(T arg)
         {
             if (InnerAsyncEvent is null)
