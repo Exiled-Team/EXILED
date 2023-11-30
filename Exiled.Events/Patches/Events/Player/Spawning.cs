@@ -7,18 +7,20 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-    using System.Collections.Generic;
     using System.Reflection;
-    using System.Reflection.Emit;
 
     using API.Features;
-    using Exiled.API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
+
     using HarmonyLib;
+
+    using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.FirstPersonControl.NetworkMessages;
     using PlayerRoles.FirstPersonControl.Spawnpoints;
+
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -35,85 +37,38 @@ namespace Exiled.Events.Patches.Events.Player
             return Method(TypeByName("PlayerRoles.FirstPersonControl.Spawnpoints.RoleSpawnpointManager").GetNestedTypes(all)[1], "<Init>b__2_0");
         }
 
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(ReferenceHub hub, PlayerRoleBase prevRole, PlayerRoleBase newRole)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            if (newRole.ServerSpawnReason != RoleChangeReason.Destroyed && Player.TryGet(hub, out Player player))
+            {
+                Vector3 oldPosition = hub.transform.position;
+                float oldRotation = (prevRole as IFpcRole)?.FpcModule.MouseLook.CurrentVertical ?? 0;
 
-            Label skipLabel = generator.DefineLabel();
-
-            newInstructions[0].labels.Add(skipLabel);
-
-            newInstructions.InsertRange(
-                0,
-                new CodeInstruction[]
+                if (newRole is IFpcRole fpcRole)
                 {
-                    // if (newRole is IFpcRole)
-                    //  goto skipLabel
-                    new(OpCodes.Ldarg_3),
-                    new(OpCodes.Isinst, typeof(IFpcRole)),
-                    new(OpCodes.Brtrue_S, skipLabel),
+                    if (newRole.ServerSpawnFlags.HasFlag(RoleSpawnFlags.UseSpawnpoint) && fpcRole.SpawnpointHandler != null && fpcRole.SpawnpointHandler.TryGetSpawnpoint(out Vector3 position, out float horizontalRot))
+                    {
+                        oldPosition = position;
+                        oldRotation = horizontalRot;
+                    }
 
-                    // Player.Get(hub)
-                    new(OpCodes.Ldarg_1),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                    new(OpCodes.Dup),
+                    SpawningEventArgs ev = new(player, oldPosition, oldRotation, prevRole);
 
-                    // Player::Position
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Position))),
+                    Handlers.Player.OnSpawning(ev);
 
-                    // 0f
-                    new(OpCodes.Ldc_R4, 0f),
-
-                    // oldRole
-                    new(OpCodes.Ldarg_2),
-
-                    // SpawningEventArgs(Player, Vector3, 0, PlayerRoleBase)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningEventArgs))[0]),
-
-                    // Handlers.Player.OnSpawning(ev)
-                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawning))),
-                });
-
-            int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldarg_1);
-
-            IEnumerable<Label> labels = newInstructions[index].labels;
-
-            newInstructions.RemoveRange(index, 9);
-
-            newInstructions.InsertRange(
-                index,
-                new[]
+                    hub.transform.position = ev.Position;
+                    fpcRole.FpcModule.MouseLook.CurrentHorizontal = ev.HorizontalRotation;
+                    hub.connectionToClient.Send(new FpcOverrideMessage(ev.Position, ev.HorizontalRotation), 0);
+                }
+                else
                 {
-                    // Player.Get(hub)
-                    new CodeInstruction(OpCodes.Ldarg_1).WithLabels(labels),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    Handlers.Player.OnSpawning(new(player, oldPosition, oldRotation, prevRole));
+                }
 
-                    // position
-                    new(OpCodes.Ldloc_1),
+                return false;
+            }
 
-                    // rotation
-                    new(OpCodes.Ldloc_2),
-
-                    // oldRole
-                    new(OpCodes.Ldarg_2),
-
-                    // SpawningEventArgs(Player, Vector3, float, PlayerRoleBase)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningEventArgs))[0]),
-                    new(OpCodes.Dup),
-
-                    // Handlers.Player.OnSpawning(ev)
-                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawning))),
-
-                    // Set position and horizontal rotation
-                    new(OpCodes.Call, Method(typeof(Spawning), nameof(Send))),
-                });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+            return true;
         }
-
-        private static void Send(SpawningEventArgs ev) => ev.Player.ReferenceHub.connectionToClient.Send(new FpcOverrideMessage(ev.Position, ev.HorizontalRotation));
     }
 }
