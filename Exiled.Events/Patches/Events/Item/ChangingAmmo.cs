@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Item
                     new(OpCodes.Brtrue_S, jump),
 
                     // this
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Ldarg_0),
                     new(OpCodes.Dup),
 
                     // this._status (oldStatus)
