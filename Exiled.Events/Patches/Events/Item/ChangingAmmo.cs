@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new[]
                 {
                     // value.Ammo
-                    new(OpCodes.Ldarg_1),
+                    new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
 
                     // this._status.Ammo
@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Item
                     new(OpCodes.Brtrue_S, jump),
 
                     // this
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Ldarg_0),
                     new(OpCodes.Dup),
 
                     // this._status (oldStatus)
