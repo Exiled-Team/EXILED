@@ -172,6 +172,7 @@ namespace Exiled.Events.Features
         {
             if (InnerEvent is null)
                 return;
+
             foreach (CustomEventHandler<T> handler in InnerEvent.GetInvocationList().Cast<CustomEventHandler<T>>())
             {
                 try
