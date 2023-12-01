@@ -20474,6 +20474,12 @@ references:
   commentId: M:Exiled.API.Features.Player.DropHeldItem
   fullName: Exiled.API.Features.Player.DropHeldItem()
   nameWithType: Player.DropHeldItem()
+- uid: Exiled.API.Features.Player.DropHeldItem(System.Boolean)
+  name: DropHeldItem(Boolean)
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_DropHeldItem_System_Boolean_
+  commentId: M:Exiled.API.Features.Player.DropHeldItem(System.Boolean)
+  fullName: Exiled.API.Features.Player.DropHeldItem(System.Boolean)
+  nameWithType: Player.DropHeldItem(Boolean)
 - uid: Exiled.API.Features.Player.DropHeldItem*
   name: DropHeldItem
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_DropHeldItem_
@@ -20487,6 +20493,12 @@ references:
   commentId: M:Exiled.API.Features.Player.DropItem(Exiled.API.Features.Items.Item)
   fullName: Exiled.API.Features.Player.DropItem(Exiled.API.Features.Items.Item)
   nameWithType: Player.DropItem(Item)
+- uid: Exiled.API.Features.Player.DropItem(Exiled.API.Features.Items.Item,System.Boolean)
+  name: DropItem(Item, Boolean)
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_DropItem_Exiled_API_Features_Items_Item_System_Boolean_
+  commentId: M:Exiled.API.Features.Player.DropItem(Exiled.API.Features.Items.Item,System.Boolean)
+  fullName: Exiled.API.Features.Player.DropItem(Exiled.API.Features.Items.Item, System.Boolean)
+  nameWithType: Player.DropItem(Item, Boolean)
 - uid: Exiled.API.Features.Player.DropItem*
   name: DropItem
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_DropItem_
@@ -45149,6 +45161,64 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.Player.ItemAddedEventArgs.Player
   nameWithType: ItemAddedEventArgs.Player
+- uid: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs
+  name: ItemRemovedEventArgs
+  href: api/Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.html
+  commentId: T:Exiled.Events.EventArgs.Player.ItemRemovedEventArgs
+  fullName: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs
+  nameWithType: ItemRemovedEventArgs
+- uid: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.#ctor(ReferenceHub,InventorySystem.Items.ItemBase,InventorySystem.Items.Pickups.ItemPickupBase)
+  name: ItemRemovedEventArgs(ReferenceHub, ItemBase, ItemPickupBase)
+  href: api/Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.html#Exiled_Events_EventArgs_Player_ItemRemovedEventArgs__ctor_ReferenceHub_InventorySystem_Items_ItemBase_InventorySystem_Items_Pickups_ItemPickupBase_
+  commentId: M:Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.#ctor(ReferenceHub,InventorySystem.Items.ItemBase,InventorySystem.Items.Pickups.ItemPickupBase)
+  fullName: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.ItemRemovedEventArgs(ReferenceHub, InventorySystem.Items.ItemBase, InventorySystem.Items.Pickups.ItemPickupBase)
+  nameWithType: ItemRemovedEventArgs.ItemRemovedEventArgs(ReferenceHub, ItemBase, ItemPickupBase)
+- uid: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.#ctor*
+  name: ItemRemovedEventArgs
+  href: api/Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.html#Exiled_Events_EventArgs_Player_ItemRemovedEventArgs__ctor_
+  commentId: Overload:Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.#ctor
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.ItemRemovedEventArgs
+  nameWithType: ItemRemovedEventArgs.ItemRemovedEventArgs
+- uid: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Item
+  name: Item
+  href: api/Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.html#Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Item
+  commentId: P:Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Item
+  fullName: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Item
+  nameWithType: ItemRemovedEventArgs.Item
+- uid: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Item*
+  name: Item
+  href: api/Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.html#Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Item_
+  commentId: Overload:Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Item
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Item
+  nameWithType: ItemRemovedEventArgs.Item
+- uid: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Pickup
+  name: Pickup
+  href: api/Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.html#Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Pickup
+  commentId: P:Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Pickup
+  fullName: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Pickup
+  nameWithType: ItemRemovedEventArgs.Pickup
+- uid: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Pickup*
+  name: Pickup
+  href: api/Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.html#Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Pickup_
+  commentId: Overload:Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Pickup
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Pickup
+  nameWithType: ItemRemovedEventArgs.Pickup
+- uid: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Player
+  name: Player
+  href: api/Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.html#Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Player
+  commentId: P:Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Player
+  fullName: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Player
+  nameWithType: ItemRemovedEventArgs.Player
+- uid: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Player*
+  name: Player
+  href: api/Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.html#Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Player_
+  commentId: Overload:Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Player
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Player
+  nameWithType: ItemRemovedEventArgs.Player
 - uid: Exiled.Events.EventArgs.Player.JoinedEventArgs
   name: JoinedEventArgs
   href: api/Exiled.Events.EventArgs.Player.JoinedEventArgs.html
@@ -47349,12 +47419,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs
   fullName: Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs
   nameWithType: TogglingFlashlightEventArgs
-- uid: Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.#ctor(ReferenceHub,FlashlightItem,System.Boolean)
-  name: TogglingFlashlightEventArgs(ReferenceHub, FlashlightItem, Boolean)
-  href: api/Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.html#Exiled_Events_EventArgs_Player_TogglingFlashlightEventArgs__ctor_ReferenceHub_FlashlightItem_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.#ctor(ReferenceHub,FlashlightItem,System.Boolean)
-  fullName: Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.TogglingFlashlightEventArgs(ReferenceHub, FlashlightItem, System.Boolean)
-  nameWithType: TogglingFlashlightEventArgs.TogglingFlashlightEventArgs(ReferenceHub, FlashlightItem, Boolean)
+- uid: Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.#ctor(ReferenceHub,ToggleableLightItemBase,System.Boolean)
+  name: TogglingFlashlightEventArgs(ReferenceHub, ToggleableLightItemBase, Boolean)
+  href: api/Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.html#Exiled_Events_EventArgs_Player_TogglingFlashlightEventArgs__ctor_ReferenceHub_ToggleableLightItemBase_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.#ctor(ReferenceHub,ToggleableLightItemBase,System.Boolean)
+  fullName: Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.TogglingFlashlightEventArgs(ReferenceHub, ToggleableLightItemBase, System.Boolean)
+  nameWithType: TogglingFlashlightEventArgs.TogglingFlashlightEventArgs(ReferenceHub, ToggleableLightItemBase, Boolean)
 - uid: Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.#ctor*
   name: TogglingFlashlightEventArgs
   href: api/Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs.html#Exiled_Events_EventArgs_Player_TogglingFlashlightEventArgs__ctor_
@@ -55359,6 +55429,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.Handlers.Player.ItemAdded
   nameWithType: Player.ItemAdded
+- uid: Exiled.Events.Handlers.Player.ItemRemoved
+  name: ItemRemoved
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_ItemRemoved
+  commentId: P:Exiled.Events.Handlers.Player.ItemRemoved
+  fullName: Exiled.Events.Handlers.Player.ItemRemoved
+  nameWithType: Player.ItemRemoved
+- uid: Exiled.Events.Handlers.Player.ItemRemoved*
+  name: ItemRemoved
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_ItemRemoved_
+  commentId: Overload:Exiled.Events.Handlers.Player.ItemRemoved
+  isSpec: "True"
+  fullName: Exiled.Events.Handlers.Player.ItemRemoved
+  nameWithType: Player.ItemRemoved
 - uid: Exiled.Events.Handlers.Player.Joined
   name: Joined
   href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_Joined
@@ -56113,6 +56196,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.Handlers.Player.OnItemAdded
   nameWithType: Player.OnItemAdded
+- uid: Exiled.Events.Handlers.Player.OnItemRemoved(ReferenceHub,InventorySystem.Items.ItemBase,InventorySystem.Items.Pickups.ItemPickupBase)
+  name: OnItemRemoved(ReferenceHub, ItemBase, ItemPickupBase)
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnItemRemoved_ReferenceHub_InventorySystem_Items_ItemBase_InventorySystem_Items_Pickups_ItemPickupBase_
+  commentId: M:Exiled.Events.Handlers.Player.OnItemRemoved(ReferenceHub,InventorySystem.Items.ItemBase,InventorySystem.Items.Pickups.ItemPickupBase)
+  fullName: Exiled.Events.Handlers.Player.OnItemRemoved(ReferenceHub, InventorySystem.Items.ItemBase, InventorySystem.Items.Pickups.ItemPickupBase)
+  nameWithType: Player.OnItemRemoved(ReferenceHub, ItemBase, ItemPickupBase)
+- uid: Exiled.Events.Handlers.Player.OnItemRemoved*
+  name: OnItemRemoved
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnItemRemoved_
+  commentId: Overload:Exiled.Events.Handlers.Player.OnItemRemoved
+  isSpec: "True"
+  fullName: Exiled.Events.Handlers.Player.OnItemRemoved
+  nameWithType: Player.OnItemRemoved
 - uid: Exiled.Events.Handlers.Player.OnJoined(Exiled.Events.EventArgs.Player.JoinedEventArgs)
   name: OnJoined(JoinedEventArgs)
   href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnJoined_Exiled_Events_EventArgs_Player_JoinedEventArgs_

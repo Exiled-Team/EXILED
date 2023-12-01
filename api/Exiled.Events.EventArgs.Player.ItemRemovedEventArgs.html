@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class PickingUpItemEventArgs
+    <title>Class ItemRemovedEventArgs
    | EXILED Docs </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class PickingUpItemEventArgs
+    <meta name="title" content="Class ItemRemovedEventArgs
    | EXILED Docs ">
     <meta name="generator" content="docfx 2.59.4.0">
     
@@ -78,24 +78,24 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Exiled.Events.EventArgs.Player.PickingUpItemEventArgs">
+            <article class="content wrap" id="_content" data-uid="Exiled.Events.EventArgs.Player.ItemRemovedEventArgs">
   
   
-  <h1 id="Exiled_Events_EventArgs_Player_PickingUpItemEventArgs" data-uid="Exiled.Events.EventArgs.Player.PickingUpItemEventArgs" class="text-break">Class PickingUpItemEventArgs
+  <h1 id="Exiled_Events_EventArgs_Player_ItemRemovedEventArgs" data-uid="Exiled.Events.EventArgs.Player.ItemRemovedEventArgs" class="text-break">Class ItemRemovedEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Contains all information before a player picks up an item.</p>
+  <div class="markdown level0 summary"><p>Contains all information after removing an item from a player&apos;s inventory.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">PickingUpItemEventArgs</span></div>
+    <div class="level1"><span class="xref">ItemRemovedEventArgs</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPickupEvent.html">IPickupEvent</a></div>
-    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a></div>
     <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a></div>
   </div>
   <div class="inheritedMembers">
@@ -124,27 +124,27 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Exiled.Events.EventArgs.Player.html">Exiled.Events.EventArgs.Player</a></h6>
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
-  <h5 id="Exiled_Events_EventArgs_Player_PickingUpItemEventArgs_syntax">Syntax</h5>
+  <h5 id="Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PickingUpItemEventArgs : IPlayerEvent, IPickupEvent, IDeniableEvent, IExiledEvent</code></pre>
+    <pre><code class="lang-csharp hljs">public class ItemRemovedEventArgs : IPlayerEvent, IItemEvent, IPickupEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_PickingUpItemEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_Pickups_ItemPickupBase_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.%23ctor(Exiled.API.Features.Player%2CInventorySystem.Items.Pickups.ItemPickupBase%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ItemRemovedEventArgs__ctor_ReferenceHub_InventorySystem_Items_ItemBase_InventorySystem_Items_Pickups_ItemPickupBase_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.%23ctor(ReferenceHub%2CInventorySystem.Items.ItemBase%2CInventorySystem.Items.Pickups.ItemPickupBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/PickingUpItemEventArgs.cs/#L33">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ItemRemovedEventArgs.cs/#L28">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_Player_PickingUpItemEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_PickingUpItemEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_Pickups_ItemPickupBase_System_Boolean_" data-uid="Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.Pickups.ItemPickupBase,System.Boolean)">PickingUpItemEventArgs(Player, ItemPickupBase, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.html">PickingUpItemEventArgs</a> class.</p>
+  <a id="Exiled_Events_EventArgs_Player_ItemRemovedEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.#ctor*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_ItemRemovedEventArgs__ctor_ReferenceHub_InventorySystem_Items_ItemBase_InventorySystem_Items_Pickups_ItemPickupBase_" data-uid="Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.#ctor(ReferenceHub,InventorySystem.Items.ItemBase,InventorySystem.Items.Pickups.ItemPickupBase)">ItemRemovedEventArgs(ReferenceHub, ItemBase, ItemPickupBase)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.html">ItemRemovedEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PickingUpItemEventArgs(Player player, ItemPickupBase pickup, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public ItemRemovedEventArgs(ReferenceHub referenceHub, ItemBase itemBase, ItemPickupBase pickupBase)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -157,21 +157,21 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
-        <td><span class="parametername">player</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.Player"></inheritdoc>
+        <td><span class="xref">ReferenceHub</span></td>
+        <td><span class="parametername">referenceHub</span></td>
+        <td><p>The <span class="xref">ReferenceHub</span> the item was removed to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">InventorySystem.Items.ItemBase</span></td>
+        <td><span class="parametername">itemBase</span></td>
+        <td><p>The removed <span class="xref">InventorySystem.Items.ItemBase</span>.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">InventorySystem.Items.Pickups.ItemPickupBase</span></td>
-        <td><span class="parametername">pickup</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.Pickup"></inheritdoc>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">isAllowed</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.IsAllowed"></inheritdoc>
+        <td><span class="parametername">pickupBase</span></td>
+        <td><p>The <span class="xref">InventorySystem.Items.Pickups.ItemPickupBase</span> the <span class="xref">InventorySystem.Items.ItemBase</span> originated from, or <span class="xref">null</span> if the item was not picked up.</p>
 </td>
       </tr>
     </tbody>
@@ -180,19 +180,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_PickingUpItemEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Item.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/PickingUpItemEventArgs.cs/#L43">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ItemRemovedEventArgs.cs/#L43">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_Player_PickingUpItemEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.IsAllowed*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_PickingUpItemEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.IsAllowed">IsAllowed</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the item can be picked up.</p>
+  <a id="Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Item_" data-uid="Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Item*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Item" data-uid="Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Item">Item</h4>
+  <div class="markdown level1 summary"><p>Gets the item that was removed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsAllowed { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Item Item { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -204,21 +204,21 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
+        <td><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_PickingUpItemEventArgs_Pickup.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.Pickup%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Pickup.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Pickup%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/PickingUpItemEventArgs.cs/#L48">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ItemRemovedEventArgs.cs/#L48">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_Player_PickingUpItemEventArgs_Pickup_" data-uid="Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.Pickup*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_PickingUpItemEventArgs_Pickup" data-uid="Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.Pickup">Pickup</h4>
-  <div class="markdown level1 summary"><p>Gets the pickup that&apos;s being picked up.</p>
+  <a id="Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Pickup_" data-uid="Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Pickup*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Pickup" data-uid="Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Pickup">Pickup</h4>
+  <div class="markdown level1 summary"><p>Gets the pickup that the item originated from or <span class="xref">null</span> if the item was not picked up.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -242,14 +242,14 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_PickingUpItemEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/PickingUpItemEventArgs.cs/#L53">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ItemRemovedEventArgs.cs/#L38">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_Player_PickingUpItemEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.Player*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_PickingUpItemEventArgs_Player" data-uid="Exiled.Events.EventArgs.Player.PickingUpItemEventArgs.Player">Player</h4>
-  <div class="markdown level1 summary"><p>Gets the player who&apos;s picking up an item.</p>
+  <a id="Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Player*"></a>
+  <h4 id="Exiled_Events_EventArgs_Player_ItemRemovedEventArgs_Player" data-uid="Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.Player">Player</h4>
+  <div class="markdown level1 summary"><p>Gets the player that had the item removed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -276,10 +276,10 @@
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a>
   </div>
   <div>
-      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPickupEvent.html">IPickupEvent</a>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a>
   </div>
   <div>
-      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPickupEvent.html">IPickupEvent</a>
   </div>
   <div>
       <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a>
@@ -296,10 +296,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_PickingUpItemEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.PickingUpItemEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_ItemRemovedEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.ItemRemovedEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/PickingUpItemEventArgs.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/ItemRemovedEventArgs.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

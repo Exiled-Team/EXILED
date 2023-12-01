@@ -531,7 +531,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_ChangingNickname.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.ChangingNickname%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L503">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L508">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_ChangingNickname_" data-uid="Exiled.Events.Handlers.Player.ChangingNickname*"></a>
   <h4 id="Exiled_Events_Handlers_Player_ChangingNickname" data-uid="Exiled.Events.Handlers.Player.ChangingNickname">ChangingNickname</h4>
@@ -1095,7 +1095,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_EnteringEnvironmentalHazard.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.EnteringEnvironmentalHazard%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L488">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L493">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_EnteringEnvironmentalHazard_" data-uid="Exiled.Events.Handlers.Player.EnteringEnvironmentalHazard*"></a>
   <h4 id="Exiled_Events_Handlers_Player_EnteringEnvironmentalHazard" data-uid="Exiled.Events.Handlers.Player.EnteringEnvironmentalHazard">EnteringEnvironmentalHazard</h4>
@@ -1250,7 +1250,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_ExitingEnvironmentalHazard.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.ExitingEnvironmentalHazard%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L498">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L503">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_ExitingEnvironmentalHazard_" data-uid="Exiled.Events.Handlers.Player.ExitingEnvironmentalHazard*"></a>
   <h4 id="Exiled_Events_Handlers_Player_ExitingEnvironmentalHazard" data-uid="Exiled.Events.Handlers.Player.ExitingEnvironmentalHazard">ExitingEnvironmentalHazard</h4>
@@ -1681,6 +1681,37 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_ItemRemoved.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.ItemRemoved%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L483">View Source</a>
+  </span>
+  <a id="Exiled_Events_Handlers_Player_ItemRemoved_" data-uid="Exiled.Events.Handlers.Player.ItemRemoved*"></a>
+  <h4 id="Exiled_Events_Handlers_Player_ItemRemoved" data-uid="Exiled.Events.Handlers.Player.ItemRemoved">ItemRemoved</h4>
+  <div class="markdown level1 summary"><p>Invoked after a <a class="xref" href="Exiled.API.Features.Player.html">Player</a> has an item removed from their inventory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Event&lt;ItemRemovedEventArgs&gt; ItemRemoved { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.Events.Features.Event-1.html">Event</a>&lt;<a class="xref" href="Exiled.Events.EventArgs.Player.ItemRemovedEventArgs.html">ItemRemovedEventArgs</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_Joined.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.Joined%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -1808,7 +1839,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_KillingPlayer.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.KillingPlayer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L483">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L488">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_KillingPlayer_" data-uid="Exiled.Events.Handlers.Player.KillingPlayer*"></a>
   <h4 id="Exiled_Events_Handlers_Player_KillingPlayer" data-uid="Exiled.Events.Handlers.Player.KillingPlayer">KillingPlayer</h4>
@@ -2459,7 +2490,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_StayingOnEnvironmentalHazard.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.StayingOnEnvironmentalHazard%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L493">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L498">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_StayingOnEnvironmentalHazard_" data-uid="Exiled.Events.Handlers.Player.StayingOnEnvironmentalHazard*"></a>
   <h4 id="Exiled_Events_Handlers_Player_StayingOnEnvironmentalHazard" data-uid="Exiled.Events.Handlers.Player.StayingOnEnvironmentalHazard">StayingOnEnvironmentalHazard</h4>
@@ -3054,7 +3085,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnActivatingGenerator_Exiled_Events_EventArgs_Player_ActivatingGeneratorEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnActivatingGenerator(Exiled.Events.EventArgs.Player.ActivatingGeneratorEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L982">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L996">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnActivatingGenerator_" data-uid="Exiled.Events.Handlers.Player.OnActivatingGenerator*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnActivatingGenerator_Exiled_Events_EventArgs_Player_ActivatingGeneratorEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnActivatingGenerator(Exiled.Events.EventArgs.Player.ActivatingGeneratorEventArgs)">OnActivatingGenerator(ActivatingGeneratorEventArgs)</h4>
@@ -3088,7 +3119,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnActivatingWarheadPanel_Exiled_Events_EventArgs_Player_ActivatingWarheadPanelEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnActivatingWarheadPanel(Exiled.Events.EventArgs.Player.ActivatingWarheadPanelEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L593">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L598">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnActivatingWarheadPanel_" data-uid="Exiled.Events.Handlers.Player.OnActivatingWarheadPanel*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnActivatingWarheadPanel_Exiled_Events_EventArgs_Player_ActivatingWarheadPanelEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnActivatingWarheadPanel(Exiled.Events.EventArgs.Player.ActivatingWarheadPanelEventArgs)">OnActivatingWarheadPanel(ActivatingWarheadPanelEventArgs)</h4>
@@ -3122,7 +3153,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnActivatingWorkstation_Exiled_Events_EventArgs_Player_ActivatingWorkstationEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnActivatingWorkstation(Exiled.Events.EventArgs.Player.ActivatingWorkstationEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L599">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L604">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnActivatingWorkstation_" data-uid="Exiled.Events.Handlers.Player.OnActivatingWorkstation*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnActivatingWorkstation_Exiled_Events_EventArgs_Player_ActivatingWorkstationEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnActivatingWorkstation(Exiled.Events.EventArgs.Player.ActivatingWorkstationEventArgs)">OnActivatingWorkstation(ActivatingWorkstationEventArgs)</h4>
@@ -3156,7 +3187,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnAimingDownSight_Exiled_Events_EventArgs_Player_AimingDownSightEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnAimingDownSight(Exiled.Events.EventArgs.Player.AimingDownSightEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L835">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L840">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnAimingDownSight_" data-uid="Exiled.Events.Handlers.Player.OnAimingDownSight*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnAimingDownSight_Exiled_Events_EventArgs_Player_AimingDownSightEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnAimingDownSight(Exiled.Events.EventArgs.Player.AimingDownSightEventArgs)">OnAimingDownSight(AimingDownSightEventArgs)</h4>
@@ -3190,7 +3221,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnBanned_Exiled_Events_EventArgs_Player_BannedEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnBanned(Exiled.Events.EventArgs.Player.BannedEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L533">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L538">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnBanned_" data-uid="Exiled.Events.Handlers.Player.OnBanned*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnBanned_Exiled_Events_EventArgs_Player_BannedEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnBanned(Exiled.Events.EventArgs.Player.BannedEventArgs)">OnBanned(BannedEventArgs)</h4>
@@ -3224,7 +3255,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnBanning_Exiled_Events_EventArgs_Player_BanningEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnBanning(Exiled.Events.EventArgs.Player.BanningEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L527">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L532">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnBanning_" data-uid="Exiled.Events.Handlers.Player.OnBanning*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnBanning_Exiled_Events_EventArgs_Player_BanningEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnBanning(Exiled.Events.EventArgs.Player.BanningEventArgs)">OnBanning(BanningEventArgs)</h4>
@@ -3258,7 +3289,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnCancelledItemUse_Exiled_Events_EventArgs_Player_CancelledItemUseEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnCancelledItemUse(Exiled.Events.EventArgs.Player.CancelledItemUseEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L569">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L574">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnCancelledItemUse_" data-uid="Exiled.Events.Handlers.Player.OnCancelledItemUse*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnCancelledItemUse_Exiled_Events_EventArgs_Player_CancelledItemUseEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnCancelledItemUse(Exiled.Events.EventArgs.Player.CancelledItemUseEventArgs)">OnCancelledItemUse(CancelledItemUseEventArgs)</h4>
@@ -3292,7 +3323,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnCancellingItemUse_Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnCancellingItemUse(Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L563">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L568">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnCancellingItemUse_" data-uid="Exiled.Events.Handlers.Player.OnCancellingItemUse*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnCancellingItemUse_Exiled_Events_EventArgs_Player_CancellingItemUseEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnCancellingItemUse(Exiled.Events.EventArgs.Player.CancellingItemUseEventArgs)">OnCancellingItemUse(CancellingItemUseEventArgs)</h4>
@@ -3326,7 +3357,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnChangedItem_Exiled_Events_EventArgs_Player_ChangedItemEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnChangedItem(Exiled.Events.EventArgs.Player.ChangedItemEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L745">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L750">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnChangedItem_" data-uid="Exiled.Events.Handlers.Player.OnChangedItem*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnChangedItem_Exiled_Events_EventArgs_Player_ChangedItemEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnChangedItem(Exiled.Events.EventArgs.Player.ChangedItemEventArgs)">OnChangedItem(ChangedItemEventArgs)</h4>
@@ -3360,7 +3391,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnChangingGroup_Exiled_Events_EventArgs_Player_ChangingGroupEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnChangingGroup(Exiled.Events.EventArgs.Player.ChangingGroupEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L757">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L762">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnChangingGroup_" data-uid="Exiled.Events.Handlers.Player.OnChangingGroup*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnChangingGroup_Exiled_Events_EventArgs_Player_ChangingGroupEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnChangingGroup(Exiled.Events.EventArgs.Player.ChangingGroupEventArgs)">OnChangingGroup(ChangingGroupEventArgs)</h4>
@@ -3394,7 +3425,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnChangingItem_Exiled_Events_EventArgs_Player_ChangingItemEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnChangingItem(Exiled.Events.EventArgs.Player.ChangingItemEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L751">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L756">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnChangingItem_" data-uid="Exiled.Events.Handlers.Player.OnChangingItem*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnChangingItem_Exiled_Events_EventArgs_Player_ChangingItemEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnChangingItem(Exiled.Events.EventArgs.Player.ChangingItemEventArgs)">OnChangingItem(ChangingItemEventArgs)</h4>
@@ -3428,7 +3459,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnChangingMicroHIDState_Exiled_Events_EventArgs_Player_ChangingMicroHIDStateEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnChangingMicroHIDState(Exiled.Events.EventArgs.Player.ChangingMicroHIDStateEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L793">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L798">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnChangingMicroHIDState_" data-uid="Exiled.Events.Handlers.Player.OnChangingMicroHIDState*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnChangingMicroHIDState_Exiled_Events_EventArgs_Player_ChangingMicroHIDStateEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnChangingMicroHIDState(Exiled.Events.EventArgs.Player.ChangingMicroHIDStateEventArgs)">OnChangingMicroHIDState(ChangingMicroHIDStateEventArgs)</h4>
@@ -3462,7 +3493,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnChangingMoveState_Exiled_Events_EventArgs_Player_ChangingMoveStateEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnChangingMoveState(Exiled.Events.EventArgs.Player.ChangingMoveStateEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L883">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L888">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnChangingMoveState_" data-uid="Exiled.Events.Handlers.Player.OnChangingMoveState*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnChangingMoveState_Exiled_Events_EventArgs_Player_ChangingMoveStateEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnChangingMoveState(Exiled.Events.EventArgs.Player.ChangingMoveStateEventArgs)">OnChangingMoveState(ChangingMoveStateEventArgs)</h4>
@@ -3496,7 +3527,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnChangingNickname_Exiled_Events_EventArgs_Player_ChangingNicknameEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnChangingNickname(Exiled.Events.EventArgs.Player.ChangingNicknameEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1066">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1080">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnChangingNickname_" data-uid="Exiled.Events.Handlers.Player.OnChangingNickname*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnChangingNickname_Exiled_Events_EventArgs_Player_ChangingNicknameEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnChangingNickname(Exiled.Events.EventArgs.Player.ChangingNicknameEventArgs)">OnChangingNickname(ChangingNicknameEventArgs)</h4>
@@ -3530,7 +3561,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnChangingRadioPreset_Exiled_Events_EventArgs_Player_ChangingRadioPresetEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnChangingRadioPreset(Exiled.Events.EventArgs.Player.ChangingRadioPresetEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1024">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1038">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnChangingRadioPreset_" data-uid="Exiled.Events.Handlers.Player.OnChangingRadioPreset*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnChangingRadioPreset_Exiled_Events_EventArgs_Player_ChangingRadioPresetEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnChangingRadioPreset(Exiled.Events.EventArgs.Player.ChangingRadioPresetEventArgs)">OnChangingRadioPreset(ChangingRadioPresetEventArgs)</h4>
@@ -3564,7 +3595,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnChangingRole_Exiled_Events_EventArgs_Player_ChangingRoleEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnChangingRole(Exiled.Events.EventArgs.Player.ChangingRoleEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L624">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L629">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnChangingRole_" data-uid="Exiled.Events.Handlers.Player.OnChangingRole*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnChangingRole_Exiled_Events_EventArgs_Player_ChangingRoleEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnChangingRole(Exiled.Events.EventArgs.Player.ChangingRoleEventArgs)">OnChangingRole(ChangingRoleEventArgs)</h4>
@@ -3601,7 +3632,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnChangingSpectatedPlayer_Exiled_Events_EventArgs_Player_ChangingSpectatedPlayerEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnChangingSpectatedPlayer(Exiled.Events.EventArgs.Player.ChangingSpectatedPlayerEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L889">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L894">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnChangingSpectatedPlayer_" data-uid="Exiled.Events.Handlers.Player.OnChangingSpectatedPlayer*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnChangingSpectatedPlayer_Exiled_Events_EventArgs_Player_ChangingSpectatedPlayerEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnChangingSpectatedPlayer(Exiled.Events.EventArgs.Player.ChangingSpectatedPlayerEventArgs)">OnChangingSpectatedPlayer(ChangingSpectatedPlayerEventArgs)</h4>
@@ -3635,7 +3666,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnClosingGenerator_Exiled_Events_EventArgs_Player_ClosingGeneratorEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnClosingGenerator(Exiled.Events.EventArgs.Player.ClosingGeneratorEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L976">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L990">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnClosingGenerator_" data-uid="Exiled.Events.Handlers.Player.OnClosingGenerator*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnClosingGenerator_Exiled_Events_EventArgs_Player_ClosingGeneratorEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnClosingGenerator(Exiled.Events.EventArgs.Player.ClosingGeneratorEventArgs)">OnClosingGenerator(ClosingGeneratorEventArgs)</h4>
@@ -3669,7 +3700,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnDamagingDoor_Exiled_Events_EventArgs_Player_DamagingDoorEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnDamagingDoor(Exiled.Events.EventArgs.Player.DamagingDoorEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L958">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L972">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnDamagingDoor_" data-uid="Exiled.Events.Handlers.Player.OnDamagingDoor*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnDamagingDoor_Exiled_Events_EventArgs_Player_DamagingDoorEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnDamagingDoor(Exiled.Events.EventArgs.Player.DamagingDoorEventArgs)">OnDamagingDoor(DamagingDoorEventArgs)</h4>
@@ -3703,7 +3734,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnDamagingShootingTarget_Exiled_Events_EventArgs_Player_DamagingShootingTargetEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnDamagingShootingTarget(Exiled.Events.EventArgs.Player.DamagingShootingTargetEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L811">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L816">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnDamagingShootingTarget_" data-uid="Exiled.Events.Handlers.Player.OnDamagingShootingTarget*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnDamagingShootingTarget_Exiled_Events_EventArgs_Player_DamagingShootingTargetEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnDamagingShootingTarget(Exiled.Events.EventArgs.Player.DamagingShootingTargetEventArgs)">OnDamagingShootingTarget(DamagingShootingTargetEventArgs)</h4>
@@ -3737,7 +3768,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnDeactivatingWorkstation_Exiled_Events_EventArgs_Player_DeactivatingWorkstationEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnDeactivatingWorkstation(Exiled.Events.EventArgs.Player.DeactivatingWorkstationEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L605">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L610">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnDeactivatingWorkstation_" data-uid="Exiled.Events.Handlers.Player.OnDeactivatingWorkstation*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnDeactivatingWorkstation_Exiled_Events_EventArgs_Player_DeactivatingWorkstationEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnDeactivatingWorkstation(Exiled.Events.EventArgs.Player.DeactivatingWorkstationEventArgs)">OnDeactivatingWorkstation(DeactivatingWorkstationEventArgs)</h4>
@@ -3771,7 +3802,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnDestroying_Exiled_Events_EventArgs_Player_DestroyingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnDestroying(Exiled.Events.EventArgs.Player.DestroyingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1060">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1074">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnDestroying_" data-uid="Exiled.Events.Handlers.Player.OnDestroying*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnDestroying_Exiled_Events_EventArgs_Player_DestroyingEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnDestroying(Exiled.Events.EventArgs.Player.DestroyingEventArgs)">OnDestroying(DestroyingEventArgs)</h4>
@@ -3805,7 +3836,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnDied_Exiled_Events_EventArgs_Player_DiedEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnDied(Exiled.Events.EventArgs.Player.DiedEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L617">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L622">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnDied_" data-uid="Exiled.Events.Handlers.Player.OnDied*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnDied_Exiled_Events_EventArgs_Player_DiedEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnDied(Exiled.Events.EventArgs.Player.DiedEventArgs)">OnDied(DiedEventArgs)</h4>
@@ -3839,7 +3870,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnDroppedAmmo_Exiled_Events_EventArgs_Player_DroppedAmmoEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnDroppedAmmo(Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1006">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1020">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnDroppedAmmo_" data-uid="Exiled.Events.Handlers.Player.OnDroppedAmmo*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnDroppedAmmo_Exiled_Events_EventArgs_Player_DroppedAmmoEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnDroppedAmmo(Exiled.Events.EventArgs.Player.DroppedAmmoEventArgs)">OnDroppedAmmo(DroppedAmmoEventArgs)</h4>
@@ -3873,7 +3904,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnDroppedItem_Exiled_Events_EventArgs_Player_DroppedItemEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnDroppedItem(Exiled.Events.EventArgs.Player.DroppedItemEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L649">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L654">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnDroppedItem_" data-uid="Exiled.Events.Handlers.Player.OnDroppedItem*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnDroppedItem_Exiled_Events_EventArgs_Player_DroppedItemEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnDroppedItem(Exiled.Events.EventArgs.Player.DroppedItemEventArgs)">OnDroppedItem(DroppedItemEventArgs)</h4>
@@ -3907,7 +3938,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnDroppingAmmo_Exiled_Events_EventArgs_Player_DroppingAmmoEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnDroppingAmmo(Exiled.Events.EventArgs.Player.DroppingAmmoEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1000">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1014">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnDroppingAmmo_" data-uid="Exiled.Events.Handlers.Player.OnDroppingAmmo*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnDroppingAmmo_Exiled_Events_EventArgs_Player_DroppingAmmoEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnDroppingAmmo(Exiled.Events.EventArgs.Player.DroppingAmmoEventArgs)">OnDroppingAmmo(DroppingAmmoEventArgs)</h4>
@@ -3941,7 +3972,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnDroppingItem_Exiled_Events_EventArgs_Player_DroppingItemEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnDroppingItem(Exiled.Events.EventArgs.Player.DroppingItemEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L643">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L648">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnDroppingItem_" data-uid="Exiled.Events.Handlers.Player.OnDroppingItem*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnDroppingItem_Exiled_Events_EventArgs_Player_DroppingItemEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnDroppingItem(Exiled.Events.EventArgs.Player.DroppingItemEventArgs)">OnDroppingItem(DroppingItemEventArgs)</h4>
@@ -3975,7 +4006,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnDroppingNothing_Exiled_Events_EventArgs_Player_DroppingNothingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnDroppingNothing(Exiled.Events.EventArgs.Player.DroppingNothingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L655">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L660">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnDroppingNothing_" data-uid="Exiled.Events.Handlers.Player.OnDroppingNothing*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnDroppingNothing_Exiled_Events_EventArgs_Player_DroppingNothingEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnDroppingNothing(Exiled.Events.EventArgs.Player.DroppingNothingEventArgs)">OnDroppingNothing(DroppingNothingEventArgs)</h4>
@@ -4009,7 +4040,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnDryfiringWeapon_Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnDryfiringWeapon(Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L847">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L852">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnDryfiringWeapon_" data-uid="Exiled.Events.Handlers.Player.OnDryfiringWeapon*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnDryfiringWeapon_Exiled_Events_EventArgs_Player_DryfiringWeaponEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnDryfiringWeapon(Exiled.Events.EventArgs.Player.DryfiringWeaponEventArgs)">OnDryfiringWeapon(DryfiringWeaponEventArgs)</h4>
@@ -4043,7 +4074,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnDying_Exiled_Events_EventArgs_Player_DyingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnDying(Exiled.Events.EventArgs.Player.DyingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1042">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1056">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnDying_" data-uid="Exiled.Events.Handlers.Player.OnDying*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnDying_Exiled_Events_EventArgs_Player_DyingEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnDying(Exiled.Events.EventArgs.Player.DyingEventArgs)">OnDying(DyingEventArgs)</h4>
@@ -4077,7 +4108,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnEarningAchievement_Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnEarningAchievement(Exiled.Events.EventArgs.Player.EarningAchievementEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L539">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L544">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnEarningAchievement_" data-uid="Exiled.Events.Handlers.Player.OnEarningAchievement*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnEarningAchievement_Exiled_Events_EventArgs_Player_EarningAchievementEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnEarningAchievement(Exiled.Events.EventArgs.Player.EarningAchievementEventArgs)">OnEarningAchievement(EarningAchievementEventArgs)</h4>
@@ -4111,7 +4142,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnEnteringEnvironmentalHazard_Exiled_Events_EventArgs_Player_EnteringEnvironmentalHazardEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnEnteringEnvironmentalHazard(Exiled.Events.EventArgs.Player.EnteringEnvironmentalHazardEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L934">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L948">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnEnteringEnvironmentalHazard_" data-uid="Exiled.Events.Handlers.Player.OnEnteringEnvironmentalHazard*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnEnteringEnvironmentalHazard_Exiled_Events_EventArgs_Player_EnteringEnvironmentalHazardEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnEnteringEnvironmentalHazard(Exiled.Events.EventArgs.Player.EnteringEnvironmentalHazardEventArgs)">OnEnteringEnvironmentalHazard(EnteringEnvironmentalHazardEventArgs)</h4>
@@ -4145,7 +4176,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnEnteringKillerCollision_Exiled_Events_EventArgs_Player_EnteringKillerCollisionEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnEnteringKillerCollision(Exiled.Events.EventArgs.Player.EnteringKillerCollisionEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L721">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L726">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnEnteringKillerCollision_" data-uid="Exiled.Events.Handlers.Player.OnEnteringKillerCollision*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnEnteringKillerCollision_Exiled_Events_EventArgs_Player_EnteringKillerCollisionEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnEnteringKillerCollision(Exiled.Events.EventArgs.Player.EnteringKillerCollisionEventArgs)">OnEnteringKillerCollision(EnteringKillerCollisionEventArgs)</h4>
@@ -4179,7 +4210,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnEnteringPocketDimension_Exiled_Events_EventArgs_Player_EnteringPocketDimensionEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnEnteringPocketDimension(Exiled.Events.EventArgs.Player.EnteringPocketDimensionEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L703">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L708">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnEnteringPocketDimension_" data-uid="Exiled.Events.Handlers.Player.OnEnteringPocketDimension*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnEnteringPocketDimension_Exiled_Events_EventArgs_Player_EnteringPocketDimensionEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnEnteringPocketDimension(Exiled.Events.EventArgs.Player.EnteringPocketDimensionEventArgs)">OnEnteringPocketDimension(EnteringPocketDimensionEventArgs)</h4>
@@ -4213,7 +4244,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnEscaping_Exiled_Events_EventArgs_Player_EscapingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L679">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L684">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnEscaping_" data-uid="Exiled.Events.Handlers.Player.OnEscaping*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnEscaping_Exiled_Events_EventArgs_Player_EscapingEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs)">OnEscaping(EscapingEventArgs)</h4>
@@ -4247,7 +4278,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnEscapingPocketDimension_Exiled_Events_EventArgs_Player_EscapingPocketDimensionEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnEscapingPocketDimension(Exiled.Events.EventArgs.Player.EscapingPocketDimensionEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L709">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L714">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnEscapingPocketDimension_" data-uid="Exiled.Events.Handlers.Player.OnEscapingPocketDimension*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnEscapingPocketDimension_Exiled_Events_EventArgs_Player_EscapingPocketDimensionEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnEscapingPocketDimension(Exiled.Events.EventArgs.Player.EscapingPocketDimensionEventArgs)">OnEscapingPocketDimension(EscapingPocketDimensionEventArgs)</h4>
@@ -4281,7 +4312,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnExitingEnvironmentalHazard_Exiled_Events_EventArgs_Player_ExitingEnvironmentalHazardEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnExitingEnvironmentalHazard(Exiled.Events.EventArgs.Player.ExitingEnvironmentalHazardEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L946">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L960">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnExitingEnvironmentalHazard_" data-uid="Exiled.Events.Handlers.Player.OnExitingEnvironmentalHazard*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnExitingEnvironmentalHazard_Exiled_Events_EventArgs_Player_ExitingEnvironmentalHazardEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnExitingEnvironmentalHazard(Exiled.Events.EventArgs.Player.ExitingEnvironmentalHazardEventArgs)">OnExitingEnvironmentalHazard(ExitingEnvironmentalHazardEventArgs)</h4>
@@ -4315,7 +4346,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnFailingEscapePocketDimension_Exiled_Events_EventArgs_Player_FailingEscapePocketDimensionEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnFailingEscapePocketDimension(Exiled.Events.EventArgs.Player.FailingEscapePocketDimensionEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L715">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L720">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnFailingEscapePocketDimension_" data-uid="Exiled.Events.Handlers.Player.OnFailingEscapePocketDimension*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnFailingEscapePocketDimension_Exiled_Events_EventArgs_Player_FailingEscapePocketDimensionEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnFailingEscapePocketDimension(Exiled.Events.EventArgs.Player.FailingEscapePocketDimensionEventArgs)">OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs)</h4>
@@ -4349,7 +4380,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnFlippingCoin_Exiled_Events_EventArgs_Player_FlippingCoinEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnFlippingCoin(Exiled.Events.EventArgs.Player.FlippingCoinEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L817">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L822">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnFlippingCoin_" data-uid="Exiled.Events.Handlers.Player.OnFlippingCoin*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnFlippingCoin_Exiled_Events_EventArgs_Player_FlippingCoinEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnFlippingCoin(Exiled.Events.EventArgs.Player.FlippingCoinEventArgs)">OnFlippingCoin(FlippingCoinEventArgs)</h4>
@@ -4383,7 +4414,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnHandcuffing_Exiled_Events_EventArgs_Player_HandcuffingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnHandcuffing(Exiled.Events.EventArgs.Player.HandcuffingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L667">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L672">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnHandcuffing_" data-uid="Exiled.Events.Handlers.Player.OnHandcuffing*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnHandcuffing_Exiled_Events_EventArgs_Player_HandcuffingEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnHandcuffing(Exiled.Events.EventArgs.Player.HandcuffingEventArgs)">OnHandcuffing(HandcuffingEventArgs)</h4>
@@ -4417,7 +4448,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnHurt_Exiled_Events_EventArgs_Player_HurtEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnHurt(Exiled.Events.EventArgs.Player.HurtEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1036">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1050">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnHurt_" data-uid="Exiled.Events.Handlers.Player.OnHurt*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnHurt_Exiled_Events_EventArgs_Player_HurtEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnHurt(Exiled.Events.EventArgs.Player.HurtEventArgs)">OnHurt(HurtEventArgs)</h4>
@@ -4451,7 +4482,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnHurting_Exiled_Events_EventArgs_Player_HurtingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnHurting(Exiled.Events.EventArgs.Player.HurtingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1030">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1044">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnHurting_" data-uid="Exiled.Events.Handlers.Player.OnHurting*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnHurting_Exiled_Events_EventArgs_Player_HurtingEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnHurting(Exiled.Events.EventArgs.Player.HurtingEventArgs)">OnHurting(HurtingEventArgs)</h4>
@@ -4485,7 +4516,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnInteracted_Exiled_Events_EventArgs_Player_InteractedEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnInteracted(Exiled.Events.EventArgs.Player.InteractedEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L575">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L580">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnInteracted_" data-uid="Exiled.Events.Handlers.Player.OnInteracted*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnInteracted_Exiled_Events_EventArgs_Player_InteractedEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnInteracted(Exiled.Events.EventArgs.Player.InteractedEventArgs)">OnInteracted(InteractedEventArgs)</h4>
@@ -4519,7 +4550,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnInteractingDoor_Exiled_Events_EventArgs_Player_InteractingDoorEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnInteractingDoor(Exiled.Events.EventArgs.Player.InteractingDoorEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L994">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1008">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnInteractingDoor_" data-uid="Exiled.Events.Handlers.Player.OnInteractingDoor*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnInteractingDoor_Exiled_Events_EventArgs_Player_InteractingDoorEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnInteractingDoor(Exiled.Events.EventArgs.Player.InteractingDoorEventArgs)">OnInteractingDoor(InteractingDoorEventArgs)</h4>
@@ -4553,7 +4584,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnInteractingElevator_Exiled_Events_EventArgs_Player_InteractingElevatorEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnInteractingElevator(Exiled.Events.EventArgs.Player.InteractingElevatorEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L763">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L768">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnInteractingElevator_" data-uid="Exiled.Events.Handlers.Player.OnInteractingElevator*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnInteractingElevator_Exiled_Events_EventArgs_Player_InteractingElevatorEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnInteractingElevator(Exiled.Events.EventArgs.Player.InteractingElevatorEventArgs)">OnInteractingElevator(InteractingElevatorEventArgs)</h4>
@@ -4587,7 +4618,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnInteractingLocker_Exiled_Events_EventArgs_Player_InteractingLockerEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnInteractingLocker(Exiled.Events.EventArgs.Player.InteractingLockerEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L769">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L774">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnInteractingLocker_" data-uid="Exiled.Events.Handlers.Player.OnInteractingLocker*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnInteractingLocker_Exiled_Events_EventArgs_Player_InteractingLockerEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnInteractingLocker(Exiled.Events.EventArgs.Player.InteractingLockerEventArgs)">OnInteractingLocker(InteractingLockerEventArgs)</h4>
@@ -4621,7 +4652,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnInteractingShootingTarget_Exiled_Events_EventArgs_Player_InteractingShootingTargetEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnInteractingShootingTarget(Exiled.Events.EventArgs.Player.InteractingShootingTargetEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L805">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L810">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnInteractingShootingTarget_" data-uid="Exiled.Events.Handlers.Player.OnInteractingShootingTarget*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnInteractingShootingTarget_Exiled_Events_EventArgs_Player_InteractingShootingTargetEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnInteractingShootingTarget(Exiled.Events.EventArgs.Player.InteractingShootingTargetEventArgs)">OnInteractingShootingTarget(InteractingShootingTargetEventArgs)</h4>
@@ -4655,7 +4686,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnIntercomSpeaking_Exiled_Events_EventArgs_Player_IntercomSpeakingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnIntercomSpeaking(Exiled.Events.EventArgs.Player.IntercomSpeakingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L685">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L690">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnIntercomSpeaking_" data-uid="Exiled.Events.Handlers.Player.OnIntercomSpeaking*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnIntercomSpeaking_Exiled_Events_EventArgs_Player_IntercomSpeakingEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnIntercomSpeaking(Exiled.Events.EventArgs.Player.IntercomSpeakingEventArgs)">OnIntercomSpeaking(IntercomSpeakingEventArgs)</h4>
@@ -4689,7 +4720,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnIssuingMute_Exiled_Events_EventArgs_Player_IssuingMuteEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnIssuingMute(Exiled.Events.EventArgs.Player.IssuingMuteEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1012">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1026">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnIssuingMute_" data-uid="Exiled.Events.Handlers.Player.OnIssuingMute*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnIssuingMute_Exiled_Events_EventArgs_Player_IssuingMuteEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnIssuingMute(Exiled.Events.EventArgs.Player.IssuingMuteEventArgs)">OnIssuingMute(IssuingMuteEventArgs)</h4>
@@ -4723,7 +4754,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnItemAdded_ReferenceHub_InventorySystem_Items_ItemBase_InventorySystem_Items_Pickups_ItemPickupBase_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnItemAdded(ReferenceHub%2CInventorySystem.Items.ItemBase%2CInventorySystem.Items.Pickups.ItemPickupBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L927">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L932">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnItemAdded_" data-uid="Exiled.Events.Handlers.Player.OnItemAdded*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnItemAdded_ReferenceHub_InventorySystem_Items_ItemBase_InventorySystem_Items_Pickups_ItemPickupBase_" data-uid="Exiled.Events.Handlers.Player.OnItemAdded(ReferenceHub,InventorySystem.Items.ItemBase,InventorySystem.Items.Pickups.ItemPickupBase)">OnItemAdded(ReferenceHub, ItemBase, ItemPickupBase)</h4>
@@ -4766,10 +4797,56 @@ changed during their health increase, won&apos;t fire.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnItemRemoved_ReferenceHub_InventorySystem_Items_ItemBase_InventorySystem_Items_Pickups_ItemPickupBase_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnItemRemoved(ReferenceHub%2CInventorySystem.Items.ItemBase%2CInventorySystem.Items.Pickups.ItemPickupBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L941">View Source</a>
+  </span>
+  <a id="Exiled_Events_Handlers_Player_OnItemRemoved_" data-uid="Exiled.Events.Handlers.Player.OnItemRemoved*"></a>
+  <h4 id="Exiled_Events_Handlers_Player_OnItemRemoved_ReferenceHub_InventorySystem_Items_ItemBase_InventorySystem_Items_Pickups_ItemPickupBase_" data-uid="Exiled.Events.Handlers.Player.OnItemRemoved(ReferenceHub,InventorySystem.Items.ItemBase,InventorySystem.Items.Pickups.ItemPickupBase)">OnItemRemoved(ReferenceHub, ItemBase, ItemPickupBase)</h4>
+  <div class="markdown level1 summary"><p>Called after a <a class="xref" href="Exiled.API.Features.Player.html">Player</a> has an item removed from their inventory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void OnItemRemoved(ReferenceHub referenceHub, ItemBase itemBase, ItemPickupBase pickupBase)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReferenceHub</span></td>
+        <td><span class="parametername">referenceHub</span></td>
+        <td><p>The <span class="xref">ReferenceHub</span> the item was removed from.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">InventorySystem.Items.ItemBase</span></td>
+        <td><span class="parametername">itemBase</span></td>
+        <td><p>The removed <span class="xref">InventorySystem.Items.ItemBase</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">InventorySystem.Items.Pickups.ItemPickupBase</span></td>
+        <td><span class="parametername">pickupBase</span></td>
+        <td><p>The <span class="xref">InventorySystem.Items.Pickups.ItemPickupBase</span> the <span class="xref">InventorySystem.Items.ItemBase</span> originated from, or <span class="xref">null</span> if the item was not picked up.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnJoined_Exiled_Events_EventArgs_Player_JoinedEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnJoined(Exiled.Events.EventArgs.Player.JoinedEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1048">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1062">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnJoined_" data-uid="Exiled.Events.Handlers.Player.OnJoined*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnJoined_Exiled_Events_EventArgs_Player_JoinedEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnJoined(Exiled.Events.EventArgs.Player.JoinedEventArgs)">OnJoined(JoinedEventArgs)</h4>
@@ -4803,7 +4880,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnJumping_Exiled_Events_EventArgs_Player_JumpingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnJumping(Exiled.Events.EventArgs.Player.JumpingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L865">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L870">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnJumping_" data-uid="Exiled.Events.Handlers.Player.OnJumping*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnJumping_Exiled_Events_EventArgs_Player_JumpingEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnJumping(Exiled.Events.EventArgs.Player.JumpingEventArgs)">OnJumping(JumpingEventArgs)</h4>
@@ -4837,7 +4914,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnKicked_Exiled_Events_EventArgs_Player_KickedEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnKicked(Exiled.Events.EventArgs.Player.KickedEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L521">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L526">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnKicked_" data-uid="Exiled.Events.Handlers.Player.OnKicked*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnKicked_Exiled_Events_EventArgs_Player_KickedEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnKicked(Exiled.Events.EventArgs.Player.KickedEventArgs)">OnKicked(KickedEventArgs)</h4>
@@ -4871,7 +4948,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnKicking_Exiled_Events_EventArgs_Player_KickingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnKicking(Exiled.Events.EventArgs.Player.KickingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L515">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L520">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnKicking_" data-uid="Exiled.Events.Handlers.Player.OnKicking*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnKicking_Exiled_Events_EventArgs_Player_KickingEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnKicking(Exiled.Events.EventArgs.Player.KickingEventArgs)">OnKicking(KickingEventArgs)</h4>
@@ -4905,7 +4982,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnKillPlayer_Exiled_Events_EventArgs_Player_KillingPlayerEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnKillPlayer(Exiled.Events.EventArgs.Player.KillingPlayerEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L919">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L924">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnKillPlayer_" data-uid="Exiled.Events.Handlers.Player.OnKillPlayer*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnKillPlayer_Exiled_Events_EventArgs_Player_KillingPlayerEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnKillPlayer(Exiled.Events.EventArgs.Player.KillingPlayerEventArgs)">OnKillPlayer(KillingPlayerEventArgs)</h4>
@@ -4939,7 +5016,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnLanding_Exiled_Events_EventArgs_Player_LandingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnLanding(Exiled.Events.EventArgs.Player.LandingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L871">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L876">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnLanding_" data-uid="Exiled.Events.Handlers.Player.OnLanding*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnLanding_Exiled_Events_EventArgs_Player_LandingEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnLanding(Exiled.Events.EventArgs.Player.LandingEventArgs)">OnLanding(LandingEventArgs)</h4>
@@ -4973,7 +5050,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnLeft_Exiled_Events_EventArgs_Player_LeftEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnLeft(Exiled.Events.EventArgs.Player.LeftEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L611">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L616">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnLeft_" data-uid="Exiled.Events.Handlers.Player.OnLeft*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnLeft_Exiled_Events_EventArgs_Player_LeftEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnLeft(Exiled.Events.EventArgs.Player.LeftEventArgs)">OnLeft(LeftEventArgs)</h4>
@@ -5007,7 +5084,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnMakingNoise_Exiled_Events_EventArgs_Player_MakingNoiseEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnMakingNoise(Exiled.Events.EventArgs.Player.MakingNoiseEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L859">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L864">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnMakingNoise_" data-uid="Exiled.Events.Handlers.Player.OnMakingNoise*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnMakingNoise_Exiled_Events_EventArgs_Player_MakingNoiseEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnMakingNoise(Exiled.Events.EventArgs.Player.MakingNoiseEventArgs)">OnMakingNoise(MakingNoiseEventArgs)</h4>
@@ -5041,7 +5118,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnOpeningGenerator_Exiled_Events_EventArgs_Player_OpeningGeneratorEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnOpeningGenerator(Exiled.Events.EventArgs.Player.OpeningGeneratorEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L970">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L984">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnOpeningGenerator_" data-uid="Exiled.Events.Handlers.Player.OnOpeningGenerator*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnOpeningGenerator_Exiled_Events_EventArgs_Player_OpeningGeneratorEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnOpeningGenerator(Exiled.Events.EventArgs.Player.OpeningGeneratorEventArgs)">OnOpeningGenerator(OpeningGeneratorEventArgs)</h4>
@@ -5075,7 +5152,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnPickingUpItem_Exiled_Events_EventArgs_Player_PickingUpItemEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnPickingUpItem(Exiled.Events.EventArgs.Player.PickingUpItemEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L661">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L666">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnPickingUpItem_" data-uid="Exiled.Events.Handlers.Player.OnPickingUpItem*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnPickingUpItem_Exiled_Events_EventArgs_Player_PickingUpItemEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnPickingUpItem(Exiled.Events.EventArgs.Player.PickingUpItemEventArgs)">OnPickingUpItem(PickingUpItemEventArgs)</h4>
@@ -5109,7 +5186,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnPlayerDamageWindow_Exiled_Events_EventArgs_Player_DamagingWindowEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnPlayerDamageWindow(Exiled.Events.EventArgs.Player.DamagingWindowEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L952">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L966">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnPlayerDamageWindow_" data-uid="Exiled.Events.Handlers.Player.OnPlayerDamageWindow*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnPlayerDamageWindow_Exiled_Events_EventArgs_Player_DamagingWindowEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnPlayerDamageWindow(Exiled.Events.EventArgs.Player.DamagingWindowEventArgs)">OnPlayerDamageWindow(DamagingWindowEventArgs)</h4>
@@ -5143,7 +5220,7 @@ changed during their health increase, won&apos;t fire.</p>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnPreAuthenticating_System_String_System_String_System_Int64_CentralAuthPreauthFlags_System_String_System_Byte___LiteNetLib_ConnectionRequest_System_Int32_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnPreAuthenticating(System.String%2CSystem.String%2CSystem.Int64%2CCentralAuthPreauthFlags%2CSystem.String%2CSystem.Byte%5B%5D%2CLiteNetLib.ConnectionRequest%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1080">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1094">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnPreAuthenticating_" data-uid="Exiled.Events.Handlers.Player.OnPreAuthenticating*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnPreAuthenticating_System_String_System_String_System_Int64_CentralAuthPreauthFlags_System_String_System_Byte___LiteNetLib_ConnectionRequest_System_Int32_" data-uid="Exiled.Events.Handlers.Player.OnPreAuthenticating(System.String,System.String,System.Int64,CentralAuthPreauthFlags,System.String,System.Byte[],LiteNetLib.ConnectionRequest,System.Int32)">OnPreAuthenticating(String, String, Int64, CentralAuthPreauthFlags, String, Byte[], ConnectionRequest, Int32)</h4>
@@ -5228,7 +5305,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnReceivingEffect_Exiled_Events_EventArgs_Player_ReceivingEffectEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnReceivingEffect(Exiled.Events.EventArgs.Player.ReceivingEffectEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L781">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L786">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnReceivingEffect_" data-uid="Exiled.Events.Handlers.Player.OnReceivingEffect*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnReceivingEffect_Exiled_Events_EventArgs_Player_ReceivingEffectEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnReceivingEffect(Exiled.Events.EventArgs.Player.ReceivingEffectEventArgs)">OnReceivingEffect(ReceivingEffectEventArgs)</h4>
@@ -5262,7 +5339,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnReloadingWeapon_Exiled_Events_EventArgs_Player_ReloadingWeaponEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnReloadingWeapon(Exiled.Events.EventArgs.Player.ReloadingWeaponEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L727">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L732">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnReloadingWeapon_" data-uid="Exiled.Events.Handlers.Player.OnReloadingWeapon*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnReloadingWeapon_Exiled_Events_EventArgs_Player_ReloadingWeaponEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnReloadingWeapon(Exiled.Events.EventArgs.Player.ReloadingWeaponEventArgs)">OnReloadingWeapon(ReloadingWeaponEventArgs)</h4>
@@ -5296,7 +5373,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnRemovingHandcuffs_Exiled_Events_EventArgs_Player_RemovingHandcuffsEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnRemovingHandcuffs(Exiled.Events.EventArgs.Player.RemovingHandcuffsEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L673">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L678">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnRemovingHandcuffs_" data-uid="Exiled.Events.Handlers.Player.OnRemovingHandcuffs*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnRemovingHandcuffs_Exiled_Events_EventArgs_Player_RemovingHandcuffsEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnRemovingHandcuffs(Exiled.Events.EventArgs.Player.RemovingHandcuffsEventArgs)">OnRemovingHandcuffs(RemovingHandcuffsEventArgs)</h4>
@@ -5330,7 +5407,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnReservedSlot_Exiled_Events_EventArgs_Player_ReservedSlotsCheckEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnReservedSlot(Exiled.Events.EventArgs.Player.ReservedSlotsCheckEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L509">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L514">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnReservedSlot_" data-uid="Exiled.Events.Handlers.Player.OnReservedSlot*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnReservedSlot_Exiled_Events_EventArgs_Player_ReservedSlotsCheckEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnReservedSlot(Exiled.Events.EventArgs.Player.ReservedSlotsCheckEventArgs)">OnReservedSlot(ReservedSlotsCheckEventArgs)</h4>
@@ -5364,7 +5441,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnRevokingMute_Exiled_Events_EventArgs_Player_RevokingMuteEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnRevokingMute(Exiled.Events.EventArgs.Player.RevokingMuteEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1018">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1032">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnRevokingMute_" data-uid="Exiled.Events.Handlers.Player.OnRevokingMute*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnRevokingMute_Exiled_Events_EventArgs_Player_RevokingMuteEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnRevokingMute(Exiled.Events.EventArgs.Player.RevokingMuteEventArgs)">OnRevokingMute(RevokingMuteEventArgs)</h4>
@@ -5398,7 +5475,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnSearchPickupRequest_Exiled_Events_EventArgs_Player_SearchingPickupEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnSearchPickupRequest(Exiled.Events.EventArgs.Player.SearchingPickupEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L907">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L912">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnSearchPickupRequest_" data-uid="Exiled.Events.Handlers.Player.OnSearchPickupRequest*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnSearchPickupRequest_Exiled_Events_EventArgs_Player_SearchingPickupEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnSearchPickupRequest(Exiled.Events.EventArgs.Player.SearchingPickupEventArgs)">OnSearchPickupRequest(SearchingPickupEventArgs)</h4>
@@ -5432,7 +5509,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnSendingAdminChatMessage_Exiled_Events_EventArgs_Player_SendingAdminChatMessageEventsArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnSendingAdminChatMessage(Exiled.Events.EventArgs.Player.SendingAdminChatMessageEventsArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L913">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L918">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnSendingAdminChatMessage_" data-uid="Exiled.Events.Handlers.Player.OnSendingAdminChatMessage*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnSendingAdminChatMessage_Exiled_Events_EventArgs_Player_SendingAdminChatMessageEventsArgs_" data-uid="Exiled.Events.Handlers.Player.OnSendingAdminChatMessage(Exiled.Events.EventArgs.Player.SendingAdminChatMessageEventsArgs)">OnSendingAdminChatMessage(SendingAdminChatMessageEventsArgs)</h4>
@@ -5466,7 +5543,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnShooting_Exiled_Events_EventArgs_Player_ShootingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnShooting(Exiled.Events.EventArgs.Player.ShootingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L697">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L702">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnShooting_" data-uid="Exiled.Events.Handlers.Player.OnShooting*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnShooting_Exiled_Events_EventArgs_Player_ShootingEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnShooting(Exiled.Events.EventArgs.Player.ShootingEventArgs)">OnShooting(ShootingEventArgs)</h4>
@@ -5500,7 +5577,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnShot_Exiled_Events_EventArgs_Player_ShotEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnShot(Exiled.Events.EventArgs.Player.ShotEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L691">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L696">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnShot_" data-uid="Exiled.Events.Handlers.Player.OnShot*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnShot_Exiled_Events_EventArgs_Player_ShotEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnShot(Exiled.Events.EventArgs.Player.ShotEventArgs)">OnShot(ShotEventArgs)</h4>
@@ -5534,7 +5611,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnSpawned_Exiled_Events_EventArgs_Player_SpawnedEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnSpawned(Exiled.Events.EventArgs.Player.SpawnedEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L739">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L744">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnSpawned_" data-uid="Exiled.Events.Handlers.Player.OnSpawned*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnSpawned_Exiled_Events_EventArgs_Player_SpawnedEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnSpawned(Exiled.Events.EventArgs.Player.SpawnedEventArgs)">OnSpawned(SpawnedEventArgs)</h4>
@@ -5568,7 +5645,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnSpawnedRagdoll_Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnSpawnedRagdoll(Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L587">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L592">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnSpawnedRagdoll_" data-uid="Exiled.Events.Handlers.Player.OnSpawnedRagdoll*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnSpawnedRagdoll_Exiled_Events_EventArgs_Player_SpawnedRagdollEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnSpawnedRagdoll(Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs)">OnSpawnedRagdoll(SpawnedRagdollEventArgs)</h4>
@@ -5602,7 +5679,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnSpawning_Exiled_Events_EventArgs_Player_SpawningEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnSpawning(Exiled.Events.EventArgs.Player.SpawningEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L733">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L738">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnSpawning_" data-uid="Exiled.Events.Handlers.Player.OnSpawning*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnSpawning_Exiled_Events_EventArgs_Player_SpawningEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnSpawning(Exiled.Events.EventArgs.Player.SpawningEventArgs)">OnSpawning(SpawningEventArgs)</h4>
@@ -5636,7 +5713,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnSpawningRagdoll_Exiled_Events_EventArgs_Player_SpawningRagdollEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnSpawningRagdoll(Exiled.Events.EventArgs.Player.SpawningRagdollEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L581">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L586">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnSpawningRagdoll_" data-uid="Exiled.Events.Handlers.Player.OnSpawningRagdoll*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnSpawningRagdoll_Exiled_Events_EventArgs_Player_SpawningRagdollEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnSpawningRagdoll(Exiled.Events.EventArgs.Player.SpawningRagdollEventArgs)">OnSpawningRagdoll(SpawningRagdollEventArgs)</h4>
@@ -5670,7 +5747,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnStayingOnEnvironmentalHazard_Exiled_Events_EventArgs_Player_StayingOnEnvironmentalHazardEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnStayingOnEnvironmentalHazard(Exiled.Events.EventArgs.Player.StayingOnEnvironmentalHazardEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L940">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L954">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnStayingOnEnvironmentalHazard_" data-uid="Exiled.Events.Handlers.Player.OnStayingOnEnvironmentalHazard*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnStayingOnEnvironmentalHazard_Exiled_Events_EventArgs_Player_StayingOnEnvironmentalHazardEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnStayingOnEnvironmentalHazard(Exiled.Events.EventArgs.Player.StayingOnEnvironmentalHazardEventArgs)">OnStayingOnEnvironmentalHazard(StayingOnEnvironmentalHazardEventArgs)</h4>
@@ -5704,7 +5781,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnStoppingGenerator_Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnStoppingGenerator(Exiled.Events.EventArgs.Player.StoppingGeneratorEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L988">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1002">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnStoppingGenerator_" data-uid="Exiled.Events.Handlers.Player.OnStoppingGenerator*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnStoppingGenerator_Exiled_Events_EventArgs_Player_StoppingGeneratorEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnStoppingGenerator(Exiled.Events.EventArgs.Player.StoppingGeneratorEventArgs)">OnStoppingGenerator(StoppingGeneratorEventArgs)</h4>
@@ -5738,7 +5815,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnThrowingProjectile_Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnThrowingProjectile(Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L631">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L636">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnThrowingProjectile_" data-uid="Exiled.Events.Handlers.Player.OnThrowingProjectile*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnThrowingProjectile_Exiled_Events_EventArgs_Player_ThrownProjectileEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnThrowingProjectile(Exiled.Events.EventArgs.Player.ThrownProjectileEventArgs)">OnThrowingProjectile(ThrownProjectileEventArgs)</h4>
@@ -5772,7 +5849,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnThrowingRequest_Exiled_Events_EventArgs_Player_ThrowingRequestEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnThrowingRequest(Exiled.Events.EventArgs.Player.ThrowingRequestEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L637">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L642">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnThrowingRequest_" data-uid="Exiled.Events.Handlers.Player.OnThrowingRequest*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnThrowingRequest_Exiled_Events_EventArgs_Player_ThrowingRequestEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnThrowingRequest(Exiled.Events.EventArgs.Player.ThrowingRequestEventArgs)">OnThrowingRequest(ThrowingRequestEventArgs)</h4>
@@ -5806,7 +5883,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnTogglingFlashlight_Exiled_Events_EventArgs_Player_TogglingFlashlightEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnTogglingFlashlight(Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L823">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L828">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnTogglingFlashlight_" data-uid="Exiled.Events.Handlers.Player.OnTogglingFlashlight*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnTogglingFlashlight_Exiled_Events_EventArgs_Player_TogglingFlashlightEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnTogglingFlashlight(Exiled.Events.EventArgs.Player.TogglingFlashlightEventArgs)">OnTogglingFlashlight(TogglingFlashlightEventArgs)</h4>
@@ -5840,7 +5917,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnTogglingNoClip_Exiled_Events_EventArgs_Player_TogglingNoClipEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnTogglingNoClip(Exiled.Events.EventArgs.Player.TogglingNoClipEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L895">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L900">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnTogglingNoClip_" data-uid="Exiled.Events.Handlers.Player.OnTogglingNoClip*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnTogglingNoClip_Exiled_Events_EventArgs_Player_TogglingNoClipEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnTogglingNoClip(Exiled.Events.EventArgs.Player.TogglingNoClipEventArgs)">OnTogglingNoClip(TogglingNoClipEventArgs)</h4>
@@ -5874,7 +5951,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnTogglingOverwatch_Exiled_Events_EventArgs_Player_TogglingOverwatchEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnTogglingOverwatch(Exiled.Events.EventArgs.Player.TogglingOverwatchEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L901">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L906">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnTogglingOverwatch_" data-uid="Exiled.Events.Handlers.Player.OnTogglingOverwatch*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnTogglingOverwatch_Exiled_Events_EventArgs_Player_TogglingOverwatchEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnTogglingOverwatch(Exiled.Events.EventArgs.Player.TogglingOverwatchEventArgs)">OnTogglingOverwatch(TogglingOverwatchEventArgs)</h4>
@@ -5908,7 +5985,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnTogglingWeaponFlashlight_Exiled_Events_EventArgs_Player_TogglingWeaponFlashlightEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnTogglingWeaponFlashlight(Exiled.Events.EventArgs.Player.TogglingWeaponFlashlightEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L841">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L846">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnTogglingWeaponFlashlight_" data-uid="Exiled.Events.Handlers.Player.OnTogglingWeaponFlashlight*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnTogglingWeaponFlashlight_Exiled_Events_EventArgs_Player_TogglingWeaponFlashlightEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnTogglingWeaponFlashlight(Exiled.Events.EventArgs.Player.TogglingWeaponFlashlightEventArgs)">OnTogglingWeaponFlashlight(TogglingWeaponFlashlightEventArgs)</h4>
@@ -5942,7 +6019,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnTransmitting_Exiled_Events_EventArgs_Player_TransmittingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnTransmitting(Exiled.Events.EventArgs.Player.TransmittingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L877">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L882">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnTransmitting_" data-uid="Exiled.Events.Handlers.Player.OnTransmitting*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnTransmitting_Exiled_Events_EventArgs_Player_TransmittingEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnTransmitting(Exiled.Events.EventArgs.Player.TransmittingEventArgs)">OnTransmitting(TransmittingEventArgs)</h4>
@@ -5976,7 +6053,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnTriggeringTesla_Exiled_Events_EventArgs_Player_TriggeringTeslaEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnTriggeringTesla(Exiled.Events.EventArgs.Player.TriggeringTeslaEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L775">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L780">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnTriggeringTesla_" data-uid="Exiled.Events.Handlers.Player.OnTriggeringTesla*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnTriggeringTesla_Exiled_Events_EventArgs_Player_TriggeringTeslaEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnTriggeringTesla(Exiled.Events.EventArgs.Player.TriggeringTeslaEventArgs)">OnTriggeringTesla(TriggeringTeslaEventArgs)</h4>
@@ -6010,7 +6087,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnUnloadingWeapon_Exiled_Events_EventArgs_Player_UnloadingWeaponEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnUnloadingWeapon(Exiled.Events.EventArgs.Player.UnloadingWeaponEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L829">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L834">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnUnloadingWeapon_" data-uid="Exiled.Events.Handlers.Player.OnUnloadingWeapon*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnUnloadingWeapon_Exiled_Events_EventArgs_Player_UnloadingWeaponEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnUnloadingWeapon(Exiled.Events.EventArgs.Player.UnloadingWeaponEventArgs)">OnUnloadingWeapon(UnloadingWeaponEventArgs)</h4>
@@ -6044,7 +6121,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnUnlockingGenerator_Exiled_Events_EventArgs_Player_UnlockingGeneratorEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnUnlockingGenerator(Exiled.Events.EventArgs.Player.UnlockingGeneratorEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L964">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L978">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnUnlockingGenerator_" data-uid="Exiled.Events.Handlers.Player.OnUnlockingGenerator*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnUnlockingGenerator_Exiled_Events_EventArgs_Player_UnlockingGeneratorEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnUnlockingGenerator(Exiled.Events.EventArgs.Player.UnlockingGeneratorEventArgs)">OnUnlockingGenerator(UnlockingGeneratorEventArgs)</h4>
@@ -6078,7 +6155,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnUsedItem_Exiled_Events_EventArgs_Player_UsedItemEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnUsedItem(Exiled.Events.EventArgs.Player.UsedItemEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L557">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L562">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnUsedItem_" data-uid="Exiled.Events.Handlers.Player.OnUsedItem*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnUsedItem_Exiled_Events_EventArgs_Player_UsedItemEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnUsedItem(Exiled.Events.EventArgs.Player.UsedItemEventArgs)">OnUsedItem(UsedItemEventArgs)</h4>
@@ -6112,7 +6189,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnUsingItem_Exiled_Events_EventArgs_Player_UsingItemEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnUsingItem(Exiled.Events.EventArgs.Player.UsingItemEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L545">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L550">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnUsingItem_" data-uid="Exiled.Events.Handlers.Player.OnUsingItem*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnUsingItem_Exiled_Events_EventArgs_Player_UsingItemEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnUsingItem(Exiled.Events.EventArgs.Player.UsingItemEventArgs)">OnUsingItem(UsingItemEventArgs)</h4>
@@ -6146,7 +6223,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnUsingItemCompleted_Exiled_Events_EventArgs_Player_UsingItemCompletedEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnUsingItemCompleted(Exiled.Events.EventArgs.Player.UsingItemCompletedEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L551">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L556">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnUsingItemCompleted_" data-uid="Exiled.Events.Handlers.Player.OnUsingItemCompleted*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnUsingItemCompleted_Exiled_Events_EventArgs_Player_UsingItemCompletedEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnUsingItemCompleted(Exiled.Events.EventArgs.Player.UsingItemCompletedEventArgs)">OnUsingItemCompleted(UsingItemCompletedEventArgs)</h4>
@@ -6180,7 +6257,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnUsingMicroHIDEnergy_Exiled_Events_EventArgs_Player_UsingMicroHIDEnergyEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnUsingMicroHIDEnergy(Exiled.Events.EventArgs.Player.UsingMicroHIDEnergyEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L799">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L804">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnUsingMicroHIDEnergy_" data-uid="Exiled.Events.Handlers.Player.OnUsingMicroHIDEnergy*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnUsingMicroHIDEnergy_Exiled_Events_EventArgs_Player_UsingMicroHIDEnergyEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnUsingMicroHIDEnergy(Exiled.Events.EventArgs.Player.UsingMicroHIDEnergyEventArgs)">OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs)</h4>
@@ -6214,7 +6291,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnUsingRadioBattery_Exiled_Events_EventArgs_Player_UsingRadioBatteryEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnUsingRadioBattery(Exiled.Events.EventArgs.Player.UsingRadioBatteryEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L787">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L792">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnUsingRadioBattery_" data-uid="Exiled.Events.Handlers.Player.OnUsingRadioBattery*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnUsingRadioBattery_Exiled_Events_EventArgs_Player_UsingRadioBatteryEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnUsingRadioBattery(Exiled.Events.EventArgs.Player.UsingRadioBatteryEventArgs)">OnUsingRadioBattery(UsingRadioBatteryEventArgs)</h4>
@@ -6248,7 +6325,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnVerified_Exiled_Events_EventArgs_Player_VerifiedEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnVerified(Exiled.Events.EventArgs.Player.VerifiedEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1054">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L1068">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnVerified_" data-uid="Exiled.Events.Handlers.Player.OnVerified*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnVerified_Exiled_Events_EventArgs_Player_VerifiedEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnVerified(Exiled.Events.EventArgs.Player.VerifiedEventArgs)">OnVerified(VerifiedEventArgs)</h4>
@@ -6282,7 +6359,7 @@ public PreauthCancellationData OnPreAuthenticating(string userId, string ipAddre
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Player_OnVoiceChatting_Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Player.OnVoiceChatting(Exiled.Events.EventArgs.Player.VoiceChattingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L853">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Player.cs/#L858">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Player_OnVoiceChatting_" data-uid="Exiled.Events.Handlers.Player.OnVoiceChatting*"></a>
   <h4 id="Exiled_Events_Handlers_Player_OnVoiceChatting_Exiled_Events_EventArgs_Player_VoiceChattingEventArgs_" data-uid="Exiled.Events.Handlers.Player.OnVoiceChatting(Exiled.Events.EventArgs.Player.VoiceChattingEventArgs)">OnVoiceChatting(VoiceChattingEventArgs)</h4>
