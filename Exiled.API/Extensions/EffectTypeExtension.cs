@@ -110,13 +110,13 @@ namespace Exiled.API.Extensions
         /// <returns>Whether or not the effect has been found.</returns>
         public static bool TryGetEffectType(this StatusEffectBase statusEffectBase, out EffectType effect)
         {
-            if (statusEffectBase == null)
+            if (statusEffectBase == null || !TypeToEffectType.TryGetValue(statusEffectBase.GetType(), out effect))
             {
                 effect = EffectType.None;
                 return false;
             }
 
-            return TypeToEffectType.TryGetValue(statusEffectBase.GetType(), out effect);
+            return true;
         }
 
         /// <summary>
