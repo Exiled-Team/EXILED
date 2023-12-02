@@ -508,6 +508,18 @@ namespace Exiled.Events.Handlers
         public static Event<ChangingNicknameEventArgs> ChangingNickname { get; set; } = new();
 
         /// <summary>
+        /// Invoked before item is added from player's inventory.
+        /// </summary>
+        /// <remarks>Exiled methods to add item won't trigger this event.</remarks>
+        public static Event<AddingItemEventArgs> AddingItem { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before item is removed from player's inventory.
+        /// </summary>
+        /// <remarks>Exiled method will trigger this event only if destroy is <see langword="true"/>.</remarks>
+        public static Event<RemovingItemEventArgs> RemovingItem { get; set; } = new();
+
+        /// <summary>
         /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="ReservedSlotsCheckEventArgs"/> instance.</param>
@@ -1078,6 +1090,18 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingNicknameEventArgs"/> instance.</param>
         public static void OnChangingNickname(ChangingNicknameEventArgs ev) => ChangingNickname.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before item is added to player's inventory.
+        /// </summary>
+        /// <param name="ev">The <see cref="AddingItemEventArgs"/> instance.</param>
+        public static void OnAddingItem(AddingItemEventArgs ev) => AddingItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before item is removed from player's inventory.
+        /// </summary>
+        /// <param name="ev">The <see cref="RemovingHandcuffsEventArgs"/> instance.</param>
+        public static void OnRemovingItem(RemovingItemEventArgs ev) => RemovingItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
