@@ -48,15 +48,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // LandingEventArgs ev = new(Player)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LandingEventArgs))[0]),
-                    new(OpCodes.Dup),
 
                     // Player.OnLanding(ev)
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnLanding))),
-
-                    // player.IsJumping = false
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(LandingEventArgs), nameof(LandingEventArgs.Player))),
-                    new(OpCodes.Ldc_I4_0),
-                    new(OpCodes.Callvirt, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.IsJumping))),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
