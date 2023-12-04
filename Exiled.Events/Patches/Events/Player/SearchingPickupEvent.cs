@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(SearchingPickupEventArgs));
 
             int offset = 1;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stind_Ref) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Stind_Ref) + offset;
 
             newInstructions.InsertRange(
                 index,
