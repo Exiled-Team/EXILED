@@ -38,11 +38,7 @@ namespace Exiled.Events.EventArgs.Item
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public ChangingAttachmentsEventArgs(
-            Player player,
-            Firearm firearm,
-            uint code,
-            bool isAllowed = true)
+        public ChangingAttachmentsEventArgs(Player player, Firearm firearm, uint code, bool isAllowed = true)
         {
             Player = player;
             Firearm = firearm;

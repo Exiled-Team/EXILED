@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Item
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int offset = -3;
+            int offset = -3;
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_1) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingAttachmentsEventArgs));
@@ -49,50 +49,50 @@ namespace Exiled.Events.Patches.Events.Item
                 index,
                 new CodeInstruction[]
                 {
-                    // curCode = Firearm::GetCurrentAttachmentsCode
+                    // curCode = Firearm.GetCurrentAttachmentsCode
                     new(OpCodes.Ldloc_1),
                     new(OpCodes.Call, Method(typeof(AttachmentsUtils), nameof(AttachmentsUtils.GetCurrentAttachmentsCode))),
                     new(OpCodes.Stloc_S, curCode.LocalIndex),
 
-                    // If the Firearm::GetCurrentAttachmentsCode isn't changed, prevents the method from being executed
+                    // If the Firearm.GetCurrentAttachmentsCode isn't changed, prevents the method from being executed
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Ldfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
                     new(OpCodes.Ldloc_S, curCode.LocalIndex),
                     new(OpCodes.Ceq),
                     new(OpCodes.Brtrue_S, ret),
 
-                    // API::Features::Player::Get(NetworkConnection::identity::netId)
+                    // API.Features.Player.Get(NetworkConnection.identity.netId)
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(uint) })),
 
-                    // Item::Get(firearm)
+                    // Item.Get(firearm)
                     new(OpCodes.Ldloc_1),
                     new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(InventorySystem.Items.ItemBase) })),
                     new(OpCodes.Castclass, typeof(Firearm)),
 
-                    // AttachmentsChangeRequest::AttachmentsCode
+                    // AttachmentsChangeRequest.AttachmentsCode
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Ldfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
 
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // ChangingAttachmentsEventArgs ev = new ChangingAttachmentsEventArgs(__ARGS__)
+                    // ChangingAttachmentsEventArgs ev = new ChangingAttachmentsEventArgs(Player, Firearm, uint, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingAttachmentsEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                    // Handlers::Item::OnChangingAttachments(ev)
+                    // Handlers.Item.OnChangingAttachments(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingAttachments))),
 
                     // ev.IsAllowed
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, ret),
 
-                    // **AttachmentsChangeRequest = ev::NewCode + curCode - ev::CurrentCode
+                    // **AttachmentsChangeRequest = ev.NewCode + curCode - ev.CurrentCode
                     new(OpCodes.Ldarga_S, 1),
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.NewCode))),
@@ -102,6 +102,51 @@ namespace Exiled.Events.Patches.Events.Item
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.CurrentCode))),
                     new(OpCodes.Sub),
                     new(OpCodes.Stfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
+                });
+
+            index = newInstructions.Count - 1;
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // curCode = Firearm.GetCurrentAttachmentsCode
+                    new(OpCodes.Ldloc_1),
+                    new(OpCodes.Call, Method(typeof(AttachmentsUtils), nameof(AttachmentsUtils.GetCurrentAttachmentsCode))),
+                    new(OpCodes.Stloc_S, curCode.LocalIndex),
+
+                    // If the Firearm.GetCurrentAttachmentsCode isn't changed, prevents the method from being executed
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
+                    new(OpCodes.Ldloc_S, curCode.LocalIndex),
+                    new(OpCodes.Ceq),
+                    new(OpCodes.Brtrue_S, ret),
+
+                    // API.Features.Player.Get(NetworkConnection.identity.netId)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(uint) })),
+
+                    // Item.Get(firearm)
+                    new(OpCodes.Ldloc_1),
+                    new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(InventorySystem.Items.ItemBase) })),
+                    new(OpCodes.Castclass, typeof(Firearm)),
+
+                    // ev.CurrentCode
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.CurrentCode))),
+
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
+                    // ChangedAttachmentsEventArgs ev = new ChangedAttachmentsEventArgs(Firearm firearm, uint code, bool isAllowed = true))
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangedAttachmentsEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+
+                    // Handlers.Item.OnChangedAttachments(ev)
+                    new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangedAttachments))),
                 });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);

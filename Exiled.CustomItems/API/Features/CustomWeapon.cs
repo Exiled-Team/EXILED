@@ -143,7 +143,7 @@ namespace Exiled.CustomItems.API.Features
         protected override void SubscribeEvents()
         {
             Exiled.Events.Handlers.Player.ReloadingWeapon += OnInternalReloading;
-            Exiled.Events.Handlers.Item.ChangingAttachments += OnChangingAttachments;
+            Exiled.Events.Handlers.Item.ChangedAttachments += OnChangedAttachments;
             Exiled.Events.Handlers.Player.Shooting += OnInternalShooting;
             Exiled.Events.Handlers.Player.Shot += OnInternalShot;
             Exiled.Events.Handlers.Player.Hurting += OnInternalHurting;
@@ -155,6 +155,7 @@ namespace Exiled.CustomItems.API.Features
         protected override void UnsubscribeEvents()
         {
             Exiled.Events.Handlers.Player.ReloadingWeapon -= OnInternalReloading;
+            Exiled.Events.Handlers.Item.ChangedAttachments -= OnChangedAttachments;
             Exiled.Events.Handlers.Player.Shooting -= OnInternalShooting;
             Exiled.Events.Handlers.Player.Shot -= OnInternalShot;
             Exiled.Events.Handlers.Player.Hurting -= OnInternalHurting;
@@ -214,7 +215,7 @@ namespace Exiled.CustomItems.API.Features
             ev.Firearm.MaxAmmo = ClipSize;
         }
 
-        private void OnChangingAttachments(ChangingAttachmentsEventArgs ev)
+        private void OnChangedAttachments(ChangedAttachmentsEventArgs ev)
         {
             if (!Check(ev.Player.CurrentItem))
                 return;
