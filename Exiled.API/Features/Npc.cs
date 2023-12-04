@@ -128,7 +128,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="name">The name of the NPC.</param>
         /// <param name="role">The RoleTypeId of the NPC.</param>
-        /// <param name="id">The Network ID of the NPC. If 0, one is made.</param>
+        /// <param name="id">The player ID of the NPC.</param>
         /// <param name="userId">The userID of the NPC.</param>
         /// <param name="position">The position to spawn the NPC.</param>
         /// <returns>The <see cref="Npc"/> spawned.</returns>
@@ -149,15 +149,17 @@ namespace Exiled.API.Features
                 Log.Debug($"Ignore: {e}");
             }
 
-            if (!RecyclablePlayerId.FreeIds.Contains(id) && RecyclablePlayerId._autoIncrement >= id)
+            if (RecyclablePlayerId.FreeIds.Contains(id))
             {
-                Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} tried to spawn an NPC with a duplicate PlayerID. Using auto-incremented ID instead to avoid issues..");
-                id = new RecyclablePlayerId(false).Value;
+                RecyclablePlayerId.FreeIds.RemoveFromQueue(id);
+            }
+            else if (RecyclablePlayerId._autoIncrement >= id)
+            {
+                RecyclablePlayerId._autoIncrement = id = RecyclablePlayerId._autoIncrement + 1;
             }
 
             FakeConnection fakeConnection = new(id);
             NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
-
             try
             {
                 npc.ReferenceHub.authManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy@localhost" : userId;
