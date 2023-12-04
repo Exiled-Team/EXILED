@@ -41,6 +41,8 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brtrue) + offset;
 
+            newInstructions[index].labels.Add(retLabel);
+
             offset = 1;
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloca_S) + offset;
 
