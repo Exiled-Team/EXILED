@@ -28,9 +28,6 @@ namespace Exiled.Events.EventArgs.Item
         /// <summary>
         ///     Initializes a new instance of the <see cref="ChangingAttachmentsEventArgs" /> class.
         /// </summary>
-        /// <param name="player">
-        ///     <inheritdoc cref="Player" />
-        /// </param>
         /// <param name="firearm">
         ///     <inheritdoc cref="Firearm" />
         /// </param>
@@ -38,10 +35,10 @@ namespace Exiled.Events.EventArgs.Item
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public ChangingAttachmentsEventArgs(Player player, Firearm firearm, uint code, bool isAllowed = true)
+        public ChangingAttachmentsEventArgs(Firearm firearm, uint code, bool isAllowed = true)
         {
-            Player = player;
             Firearm = firearm;
+            Player = Firearm.Owner;
             CurrentAttachmentIdentifiers = firearm.AttachmentIdentifiers;
             NewAttachmentIdentifiers = firearm.FirearmType.GetAttachmentIdentifiers(code).ToList();
             CurrentCode = firearm.Base.GetCurrentAttachmentsCode();

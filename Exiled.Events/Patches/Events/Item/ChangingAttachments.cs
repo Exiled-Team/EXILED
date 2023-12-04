@@ -61,12 +61,6 @@ namespace Exiled.Events.Patches.Events.Item
                     new(OpCodes.Ceq),
                     new(OpCodes.Brtrue_S, ret),
 
-                    // API.Features.Player.Get(NetworkConnection.identity.netId)
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(uint) })),
-
                     // Item.Get(firearm)
                     new(OpCodes.Ldloc_1),
                     new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(InventorySystem.Items.ItemBase) })),
@@ -121,12 +115,6 @@ namespace Exiled.Events.Patches.Events.Item
                     new(OpCodes.Ceq),
                     new(OpCodes.Brtrue_S, ret),
 
-                    // API.Features.Player.Get(NetworkConnection.identity.netId)
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(uint) })),
-
                     // Item.Get(firearm)
                     new(OpCodes.Ldloc_1),
                     new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(InventorySystem.Items.ItemBase) })),
@@ -136,10 +124,7 @@ namespace Exiled.Events.Patches.Events.Item
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.CurrentCode))),
 
-                    // true
-                    new(OpCodes.Ldc_I4_1),
-
-                    // ChangedAttachmentsEventArgs ev = new ChangedAttachmentsEventArgs(Firearm firearm, uint code, bool isAllowed = true))
+                    // ChangedAttachmentsEventArgs ev = new ChangedAttachmentsEventArgs(Firearm, uint))
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangedAttachmentsEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
