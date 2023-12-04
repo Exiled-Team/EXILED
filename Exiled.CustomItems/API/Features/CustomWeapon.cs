@@ -14,6 +14,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
+    using Exiled.Events.EventArgs.Item;
     using Exiled.Events.EventArgs.Player;
 
     using InventorySystem.Items.Firearms.Attachments;
@@ -142,6 +143,7 @@ namespace Exiled.CustomItems.API.Features
         protected override void SubscribeEvents()
         {
             Exiled.Events.Handlers.Player.ReloadingWeapon += OnInternalReloading;
+            Exiled.Events.Handlers.Item.ChangingAttachments += OnChangingAttachments;
             Exiled.Events.Handlers.Player.Shooting += OnInternalShooting;
             Exiled.Events.Handlers.Player.Shot += OnInternalShot;
             Exiled.Events.Handlers.Player.Hurting += OnInternalHurting;
@@ -209,6 +211,13 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
+            ev.Firearm.MaxAmmo = ClipSize;
+        }
+
+        private void OnChangingAttachments(ChangingAttachmentsEventArgs ev)
+        {
+            if (!Check(ev.Player.CurrentItem))
+                return;
             ev.Firearm.MaxAmmo = ClipSize;
         }
 
