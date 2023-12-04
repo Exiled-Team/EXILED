@@ -38,6 +38,6 @@ namespace Exiled.Events.EventArgs.Map
         /// <summary>
         ///     Gets or sets a value indicating whether or not the vehicle can be spawned.
         /// </summary>
-        public bool IsAllowed { get; set; } = true;
+        public bool IsAllowed { get; set; }
     }
 }
