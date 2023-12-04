@@ -34,19 +34,22 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            Label allowLabel = generator.DefineLabel();
+            Label retLabel = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(SearchingPickupEventArgs));
 
             int offset = 1;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Stind_Ref) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brtrue) + offset;
+
+            offset = 1;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloca_S) + offset;
 
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
                     // Player.Get(Hub)
-                    new(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SearchCoordinator), nameof(SearchCoordinator.Hub))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
@@ -79,27 +82,12 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSearchPickupRequest))),
 
                     // if (ev.IsAllowed)
-                    //    goto allowLabel;
+                    //    goto retLabel;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SearchingPickupEventArgs), nameof(SearchingPickupEventArgs.IsAllowed))),
-                    new(OpCodes.Brtrue_S, allowLabel),
+                    new(OpCodes.Brtrue_S, retLabel),
 
-                    // session = default;
-                    new(OpCodes.Ldarg_1),
-                    new(OpCodes.Initobj, typeof(SearchSession)),
-
-                    // completor = null
-                    new(OpCodes.Ldarg_2),
-                    new(OpCodes.Ldnull),
-                    new(OpCodes.Stind_Ref),
-
-                    // return true
-                    new(OpCodes.Ldc_I4_1),
-                    new(OpCodes.Ret),
-
-                    // allowLabel:
-                    //
                     // completor = ev.SearchCompletor
-                    new CodeInstruction(OpCodes.Ldarg_2).WithLabels(allowLabel),
+                    new(OpCodes.Ldarg_2),
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SearchingPickupEventArgs), nameof(SearchingPickupEventArgs.SearchCompletor))),
                     new(OpCodes.Stind_Ref),
