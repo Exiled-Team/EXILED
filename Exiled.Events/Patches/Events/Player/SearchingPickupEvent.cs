@@ -41,9 +41,6 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stind_Ref) + offset;
 
-            // remove base-game check and `SearchSession body` setter
-            newInstructions.RemoveRange(index, 14);
-
             newInstructions.InsertRange(
                 index,
                 new[]
@@ -116,6 +113,7 @@ namespace Exiled.Events.Patches.Events.Player
             offset = -5;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_S && i.operand is LocalBuilder { LocalIndex: 4 }) + offset;
 
+            // replace "request.Target.SearchTimeForPlayer(this.Hub);" with ev.SearchTime
             // remove base-game SearchTime setter
             newInstructions.RemoveRange(index, 5);
 
