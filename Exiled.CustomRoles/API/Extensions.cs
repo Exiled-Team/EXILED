@@ -104,5 +104,32 @@ namespace Exiled.CustomRoles.API
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns>The <see cref="ActiveAbility"/> the <see cref="Player"/> has selected, or <see langword="null"/>.</returns>
         public static ActiveAbility? GetSelectedAbility(this Player player) => !ActiveAbility.AllActiveAbilities.TryGetValue(player, out HashSet<ActiveAbility> abilities) ? null : abilities.FirstOrDefault(a => a.Check(player, CheckType.Selected));
+
+        /// <summary>
+        /// Gets all <see cref="PassiveAbility"/>'s the <see cref="Player"/> currently has.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to get abilities for.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="PassiveAbility"/>s the player has.</returns>
+        public static IEnumerable<PassiveAbility> GetPassiveAbilities(this Player player)
+        {
+            foreach (CustomAbility ability in CustomAbility.Registered)
+            {
+                if (ability is PassiveAbility passive && ability.Check(player))
+                    yield return passive;
+            }
+        }
+
+        /// <summary>
+        /// Checks to see if a <see cref="Player"/> has a specific <see cref="CustomAbility"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check for the ability.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the ability to look for.</typeparam>
+        /// <returns><see langword="true"/> if the player has the ability, otherwise <see langword="false"/>.</returns>
+        public static bool HasAbility<T>(Player player)
+            where T : CustomAbility
+        {
+            CustomAbility? ability = CustomAbility.Get(typeof(T));
+            return ability is ActiveAbility active ? active.Check(player, CheckType.Available) : ability?.Check(player) ?? false;
+        }
     }
 }

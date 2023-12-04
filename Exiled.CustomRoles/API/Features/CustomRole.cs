@@ -17,17 +17,21 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pools;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
+
+    using InventorySystem;
     using InventorySystem.Configs;
 
     using MEC;
 
     using PlayerRoles;
+    using PlayerRoles.Ragdolls;
 
     using UnityEngine;
 
@@ -276,14 +280,6 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
         /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
-        public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object? overrideClass = null) => RegisterRoles(skipReflection, overrideClass, true, Assembly.GetCallingAssembly());
-
-        /// <summary>
-        /// Registers all the <see cref="CustomRole"/>'s present in the current assembly.
-        /// </summary>
-        /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
-        /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
         /// <param name="inheritAttributes">Whether or not inherited attributes should be taken into account for registration.</param>
         /// <param name="assembly">Assembly which is calling this method.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
@@ -435,6 +431,60 @@ namespace Exiled.CustomRoles.API.Features
         public static IEnumerable<CustomRole> UnregisterRoles(IEnumerable<CustomRole> targetRoles, bool isIgnored = false) => UnregisterRoles(targetRoles.Select(x => x.GetType()), isIgnored);
 
         /// <summary>
+        /// Unregisters all the <see cref="CustomRole"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
+        /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
+        /// <param name="inheritAttributes">Whether or not inherited attributes should be taken into account for registration.</param>
+        /// <param name="assembly">Assembly which is calling this method.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all unregistered <see cref="CustomRole"/>'s.</returns>
+        public static IEnumerable<CustomRole> UnregisterRoles(bool skipReflection = false, object? overrideClass = null, bool inheritAttributes = true, Assembly? assembly = null)
+        {
+            List<CustomRole> roles = new();
+
+            Log.Warn("Registering roles...");
+
+            assembly ??= Assembly.GetCallingAssembly();
+
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (type.BaseType != typeof(CustomRole) && type.GetCustomAttribute(typeof(CustomRoleAttribute), inheritAttributes) is null)
+                {
+                    Log.Debug($"{type} base: {type.BaseType} -- {type.GetCustomAttribute(typeof(CustomRoleAttribute), inheritAttributes) is null}");
+                    continue;
+                }
+
+                Log.Debug($"Getting attributed for {type}");
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), inheritAttributes).Cast<Attribute>())
+                {
+                    CustomRole? customRole = null;
+
+                    if (!skipReflection && Server.PluginAssemblies.TryGetValue(assembly, out IPlugin<IConfig> plugin))
+                    {
+                        foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ?? plugin.Config.GetType().GetProperties())
+                        {
+                            if (property.PropertyType != type)
+                                continue;
+
+                            customRole = property.GetValue(overrideClass ?? plugin.Config) as CustomRole;
+                            break;
+                        }
+                    }
+
+                    customRole ??= (CustomRole)Activator.CreateInstance(type);
+
+                    if (customRole.Role == RoleTypeId.None)
+                        customRole.Role = ((CustomRoleAttribute)attribute).RoleTypeId;
+
+                    if (customRole.TryUnregister())
+                        roles.Add(customRole);
+                }
+            }
+
+            return roles;
+        }
+
+        /// <summary>
         /// ResyncCustomRole Friendly Fire with Player (Append, or Overwrite).
         /// </summary>
         /// <param name="roleToSync"> <see cref="CustomRole"/> to sync with player. </param>
@@ -496,12 +546,19 @@ namespace Exiled.CustomRoles.API.Features
         /// Handles setup of the role, including spawn location, inventory and registering event handlers and add FF rules.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to add the role to.</param>
-        public virtual void AddRole(Player player)
+        public virtual void AddRole(Player player) => AddRole(player, false);
+
+        /// <summary>
+        /// Handles setup of the role, including spawn location, inventory and registering event handlers and add FF rules.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to add the role to.</param>
+        /// <param name="skipRoleAssignment">Whether or not to skip the role assignment for this custom role.</param>
+        public virtual void AddRole(Player player, bool skipRoleAssignment = false)
         {
             Log.Debug($"{Name}: Adding role to {player.Nickname}.");
             TrackedPlayers.Add(player);
 
-            if (Role != RoleTypeId.None)
+            if (Role != RoleTypeId.None && !skipRoleAssignment)
             {
                 switch (KeepPositionOnSpawn)
                 {
@@ -512,13 +569,8 @@ namespace Exiled.CustomRoles.API.Features
                         player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.AssignInventory);
                         break;
                     default:
-                        {
-                            if (KeepInventoryOnSpawn && player.IsAlive)
-                                player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.UseSpawnpoint);
-                            else
-                                player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
-                            break;
-                        }
+                        player.Role.Set(Role, SpawnReason.ForceClass, KeepInventoryOnSpawn && player.IsAlive ? RoleSpawnFlags.UseSpawnpoint : RoleSpawnFlags.All);
+                        break;
                 }
             }
 
@@ -526,7 +578,7 @@ namespace Exiled.CustomRoles.API.Features
                 0.25f,
                 () =>
                 {
-                    if (!KeepInventoryOnSpawn)
+                    if (!KeepInventoryOnSpawn && !skipRoleAssignment)
                     {
                         Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.");
                         player.ClearInventory();
@@ -537,12 +589,43 @@ namespace Exiled.CustomRoles.API.Features
                         Log.Debug($"{Name}: Adding {itemName} to inventory.");
                         TryAddItem(player, itemName);
                     }
-                });
 
-            Log.Debug($"{Name}: Setting health values.");
-            player.Health = MaxHealth;
-            player.MaxHealth = MaxHealth;
-            player.Scale = Scale;
+                    if (skipRoleAssignment && KeepInventoryOnSpawn)
+                    {
+                        StartingInventories.DefinedInventories.TryGetValue(Role is RoleTypeId.None ? player.Role : Role, out InventoryRoleInfo info);
+                        foreach (ItemType type in info.Items)
+                            TryAddItem(player, type.ToString());
+                        player.Ammo.Clear();
+                        foreach (KeyValuePair<ItemType, ushort> ammo in info.Ammo)
+                            player.SetAmmo(ammo.Key.GetAmmoType(), ammo.Value);
+                    }
+
+                    Log.Debug($"{Name}: Setting health values.");
+                    player.Health = MaxHealth;
+                    player.MaxHealth = MaxHealth;
+                    player.Scale = Scale;
+
+                    Log.Debug($"{Name}: Checking ammo stuff {Ammo.Count}");
+                    if (Ammo.Count > 0)
+                    {
+                        Log.Debug($"{Name}: Clearing ammo");
+                        if (!KeepInventoryOnSpawn)
+                            player.Ammo.Clear();
+                        Timing.CallDelayed(
+                            0.5f,
+                            () =>
+                            {
+                                foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
+                                {
+                                    if (type == AmmoType.None)
+                                        continue;
+
+                                    ushort amount = Ammo.ContainsKey(type) ? Ammo[type] == ushort.MaxValue ? InventoryLimits.GetAmmoLimit(type.GetItemType(), player.ReferenceHub) : Ammo[type] : (ushort)0;
+                                    player.SetAmmo(type, amount);
+                                }
+                            });
+                    }
+                });
 
             Vector3 position = GetSpawnPosition();
             if (position != Vector3.zero)
@@ -771,7 +854,10 @@ namespace Exiled.CustomRoles.API.Features
         {
             if (CustomItem.TryGet(itemName, out CustomItem? customItem))
             {
-                customItem?.Give(player, DisplayCustomItemMessages);
+                if (player.Items.Count > 7)
+                    customItem?.Spawn(player.Position, player);
+                else
+                    customItem?.Give(player, DisplayCustomItemMessages);
 
                 return true;
             }
@@ -779,9 +865,16 @@ namespace Exiled.CustomRoles.API.Features
             if (Enum.TryParse(itemName, out ItemType type))
             {
                 if (type.IsAmmo())
+                {
                     player.Ammo[type] = 100;
+                }
                 else
-                    player.AddItem(type);
+                {
+                    if (player.Items.Count > 7)
+                        Pickup.CreateAndSpawn(type, player.Position, default, player);
+                    else
+                        player.AddItem(type);
+                }
 
                 return true;
             }
@@ -851,7 +944,7 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         protected virtual void UnsubscribeEvents()
         {
-            foreach (Player player in TrackedPlayers)
+            foreach (Player player in TrackedPlayers.ToList())
                 RemoveRole(player);
 
             Log.Debug($"{Name}: Unloading events.");
@@ -910,30 +1003,11 @@ namespace Exiled.CustomRoles.API.Features
             {
                 RemoveRole(ev.Player);
             }
-            else if (Check(ev.Player))
-            {
-                Log.Debug($"{Name}: Checking ammo stuff {Ammo.Count}");
-                if (Ammo.Count > 0)
-                {
-                    Log.Debug($"{Name}: Clearing ammo");
-                    ev.Ammo.Clear();
-                    Timing.CallDelayed(
-                        0.5f,
-                        () =>
-                        {
-                            foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
-                            {
-                                if (type != AmmoType.None)
-                                    ev.Player.SetAmmo(type, Ammo.ContainsKey(type) ? Ammo[type] == ushort.MaxValue ? InventoryLimits.GetAmmoLimit(type.GetItemType(), ev.Player.ReferenceHub) : Ammo[type] : (ushort)0);
-                            }
-                        });
-                }
-            }
         }
 
         private void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
         {
-            if (Check(ev.Player))
+            if (Check(ev.Player) && Role.GetRoleBase() is IRagdollRole)
                 ev.Role = Role;
         }
 

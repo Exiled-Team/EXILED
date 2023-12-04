@@ -7,6 +7,7 @@
 
 namespace Exiled.CustomRoles.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Text;
@@ -25,7 +26,7 @@ namespace Exiled.CustomRoles.API.Features
     /// <summary>
     /// Control class for keypress ability actions.
     /// </summary>
-    internal class KeypressActivator
+    public class KeypressActivator : IDisposable
     {
         private readonly Dictionary<Player, int> altTracker = DictionaryPool<Player, int>.Pool.Get();
         private readonly Dictionary<Player, CoroutineHandle> coroutineTracker = DictionaryPool<Player, CoroutineHandle>.Pool.Get();
@@ -42,12 +43,64 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Finalizes an instance of the <see cref="KeypressActivator"/> class.
         /// </summary>
-        ~KeypressActivator()
+        public void Dispose()
         {
             Exiled.Events.Handlers.Player.TogglingNoClip -= OnTogglingNoClip;
             Exiled.Events.Handlers.Server.EndingRound -= OnEndingRound;
             DictionaryPool<Player, int>.Pool.Return(altTracker);
             DictionaryPool<Player, CoroutineHandle>.Pool.Return(coroutineTracker);
+        }
+
+        /// <summary>
+        /// Processes the hotkey presses for abilities.
+        /// </summary>
+        /// <param name="player">The player being processed.</param>
+        /// <returns><see cref="IEnumerator{T}"/>.</returns>
+        protected virtual IEnumerator<float> ProcessAltKey(Player player)
+        {
+            yield return Timing.WaitForSeconds(0.25f);
+
+            if (!altTracker.TryGetValue(player, out int pressCount))
+                yield break;
+
+            Log.Debug($"{player.Nickname}: {pressCount} {(player.Role is FpcRole fpc ? fpc.MoveState : false)}");
+            AbilityKeypressTriggerType type = pressCount switch
+            {
+                1 when player.Role is FpcRole { MoveState: PlayerMovementState.Sneaking } => AbilityKeypressTriggerType.DisplayInfo,
+                1 => AbilityKeypressTriggerType.Activate,
+                2 when player.Role is FpcRole { MoveState: PlayerMovementState.Sneaking } => AbilityKeypressTriggerType.SwitchBackward,
+                2 => AbilityKeypressTriggerType.SwitchForward,
+                _ => AbilityKeypressTriggerType.None,
+            };
+
+            bool preformed = PreformAction(player, type, out string response);
+            switch (preformed)
+            {
+                case true when type == AbilityKeypressTriggerType.Activate:
+                    if (response.Contains("|"))
+                    {
+                        string[] split = response.Split('|');
+                        response = string.Format(CustomRoles.Instance.Config.UsedAbilityHint.Content, split);
+                    }
+
+                    break;
+                case true when type is AbilityKeypressTriggerType.SwitchBackward or AbilityKeypressTriggerType.SwitchForward:
+                    response = string.Format(CustomRoles.Instance.Config.SwitchedAbilityHint.Content, response);
+                    break;
+                case false:
+                    response = string.Format(CustomRoles.Instance.Config.FailedActionHint.Content, response);
+                    break;
+            }
+
+            float dur = type switch
+            {
+                AbilityKeypressTriggerType.Activate when preformed => CustomRoles.Instance.Config.UsedAbilityHint.Duration,
+                AbilityKeypressTriggerType.SwitchBackward or AbilityKeypressTriggerType.SwitchForward when preformed => CustomRoles.Instance.Config.SwitchedAbilityHint.Duration,
+                _ => CustomRoles.Instance.Config.FailedActionHint.Duration,
+            };
+
+            player.ShowHint(response, dur);
+            altTracker[player] = 0;
         }
 
         private void OnTogglingNoClip(TogglingNoClipEventArgs ev)
@@ -78,49 +131,6 @@ namespace Exiled.CustomRoles.API.Features
             coroutineTracker.Clear();
         }
 
-        private IEnumerator<float> ProcessAltKey(Player player)
-        {
-            yield return Timing.WaitForSeconds(0.25f);
-
-            if (!altTracker.TryGetValue(player, out int pressCount))
-                yield break;
-
-            Log.Debug($"{player.Nickname}: {pressCount} {(player.Role is FpcRole fpc ? fpc.MoveState : false)}");
-            AbilityKeypressTriggerType type = pressCount switch
-            {
-                1 when player.Role is FpcRole { MoveState: PlayerMovementState.Sneaking } => AbilityKeypressTriggerType.DisplayInfo,
-                1 => AbilityKeypressTriggerType.Activate,
-                2 when player.Role is FpcRole { MoveState: PlayerMovementState.Sneaking } => AbilityKeypressTriggerType.SwitchBackward,
-                2 => AbilityKeypressTriggerType.SwitchForward,
-                _ => AbilityKeypressTriggerType.None,
-            };
-
-            bool preformed = PreformAction(player, type, out string response);
-            switch (preformed)
-            {
-                case true when type == AbilityKeypressTriggerType.Activate:
-                    string[] split = response.Split('|');
-                    response = string.Format(CustomRoles.Instance.Config.UsedAbilityHint.Content, split);
-                    break;
-                case true when type is AbilityKeypressTriggerType.SwitchBackward or AbilityKeypressTriggerType.SwitchForward:
-                    response = string.Format(CustomRoles.Instance.Config.SwitchedAbilityHint.Content, response);
-                    break;
-                case false:
-                    response = string.Format(CustomRoles.Instance.Config.FailedActionHint.Content, response);
-                    break;
-            }
-
-            float dur = type switch
-            {
-                AbilityKeypressTriggerType.Activate when preformed => CustomRoles.Instance.Config.UsedAbilityHint.Duration,
-                AbilityKeypressTriggerType.SwitchBackward or AbilityKeypressTriggerType.SwitchForward when preformed => CustomRoles.Instance.Config.SwitchedAbilityHint.Duration,
-                _ => CustomRoles.Instance.Config.FailedActionHint.Duration,
-            };
-
-            player.ShowHint(response, dur);
-            altTracker[player] = 0;
-        }
-
         private bool PreformAction(Player player, AbilityKeypressTriggerType type, out string response)
         {
             ActiveAbility? selected = player.GetSelectedAbility();
@@ -134,7 +144,7 @@ namespace Exiled.CustomRoles.API.Features
 
                 if (!selected.CanUseAbility(player, out response, CustomRoles.Instance.Config.ActivateOnlySelected))
                     return false;
-                response = $"{selected.Name}|{selected.Description}";
+                response = selected.ActivationMessage ?? $"{selected.Name}|{selected.Description}";
                 selected.UseAbility(player);
                 return true;
             }

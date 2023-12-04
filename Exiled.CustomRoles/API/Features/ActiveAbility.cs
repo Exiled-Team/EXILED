@@ -62,6 +62,11 @@ namespace Exiled.CustomRoles.API.Features
         public HashSet<Player> SelectedPlayers { get; } = new();
 
         /// <summary>
+        /// Gets or sets the ability activation message.
+        /// </summary>
+        public virtual string? ActivationMessage { get; set; }
+
+        /// <summary>
         /// Uses the ability.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> using the ability.</param>
@@ -70,6 +75,19 @@ namespace Exiled.CustomRoles.API.Features
             ActivePlayers.Add(player);
             LastUsed[player] = DateTime.Now;
             AbilityUsed(player);
+            Timing.CallDelayed(Duration, () => EndAbility(player));
+        }
+
+        /// <summary>
+        /// Uses the ability.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> using the ability.</param>
+        /// <param name="args">An array of additional arguments.</param>
+        public void UseAbility(Player player, params object[] args)
+        {
+            ActivePlayers.Add(player);
+            LastUsed[player] = DateTime.Now;
+            AbilityUsed(player, args);
             Timing.CallDelayed(Duration, () => EndAbility(player));
         }
 
@@ -183,7 +201,7 @@ namespace Exiled.CustomRoles.API.Features
             }
 
             response =
-                $"You must wait another {Math.Round((usableTime - DateTime.Now).TotalSeconds, 2)} seconds to use {Name}";
+                $"You must wait another {Math.Round((usableTime - DateTime.Now).TotalSeconds, MidpointRounding.AwayFromZero)} seconds to use {Name}";
 
             return false;
         }
@@ -191,6 +209,9 @@ namespace Exiled.CustomRoles.API.Features
         /// <inheritdoc />
         protected override void AbilityAdded(Player player)
         {
+            if (LastUsed.ContainsKey(player))
+                LastUsed.Remove(player);
+
             if (!AllActiveAbilities.ContainsKey(player))
                 AllActiveAbilities.Add(player, new());
 
@@ -216,6 +237,15 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> using the ability.</param>
         protected virtual void AbilityUsed(Player player)
+        {
+        }
+
+        /// <summary>
+        /// Called when the ability is used.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> using the ability.</param>
+        /// <param name="args">The additional arguments.</param>
+        protected virtual void AbilityUsed(Player player, params object[] args)
         {
         }
 
