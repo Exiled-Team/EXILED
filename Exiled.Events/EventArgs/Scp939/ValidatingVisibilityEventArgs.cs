@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs.Scp939
         }
 
         /// <summary>
-        ///     Gets the player being shown to SCP-939.
+        ///     Gets the player who's being shown to SCP-939.
         /// </summary>
         public Player Target { get; }
 
