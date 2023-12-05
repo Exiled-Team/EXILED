@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                 // dominatingTeam = ev.ChosenTeam;
                 new(OpCodes.Ldloc, ev),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SelectingRespawnTeamEventArgs), nameof(SelectingRespawnTeamEventArgs.ChosenTeam))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SelectingRespawnTeamEventArgs), nameof(SelectingRespawnTeamEventArgs.Team))),
                 new(OpCodes.Stloc_1),
             });
 
