@@ -54,7 +54,7 @@ namespace Exiled.Events.Handlers
         public static Event<ClawedEventArgs> Clawed { get; set; } = new();
 
         /// <summary>
-        /// Invoked when checking visibility for players.
+        /// Invoked before validating visibility.
         /// </summary>
         public static Event<ValidatingVisibilityEventArgs> ValidatingVisibility { get; set; } = new();
 
