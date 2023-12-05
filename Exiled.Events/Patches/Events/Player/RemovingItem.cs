@@ -17,6 +17,7 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
     using InventorySystem;
     using InventorySystem.Items;
+    using MEC;
 
     using static HarmonyLib.AccessTools;
 
@@ -27,6 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
             LocalBuilder item = generator.DeclareLocal(typeof(ItemBase));
             LocalBuilder ev = generator.DeclareLocal(typeof(RemovingItemEventArgs));
 
@@ -37,11 +39,22 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(
                 index,
-                new CodeInstruction[]
+                new[]
                 {
-                    new(OpCodes.Ldarg_0),
+                    // Player.Get(inv._hub)
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, player.LocalIndex),
+
+                    // itemSerial
+                    new(OpCodes.Ldarg_1),
+
+                    // RemoveItem(Player.Get(inv._hub), itemSerial)
+                    new(OpCodes.Call, Method(typeof(RemovingItem), nameof(RemoveItem))),
+
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Dup),
 
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Inventory))),
@@ -55,7 +68,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     new(OpCodes.Ldc_I4_1),
 
-                    new(OpCodes.Call, GetDeclaredConstructors(typeof(RemovingItemEventArgs))[0]),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RemovingItemEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
@@ -67,26 +80,69 @@ namespace Exiled.Events.Patches.Events.Player
 
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RemovingItemEventArgs), nameof(RemovingItemEventArgs.Item))),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Base))),
-                    new(OpCodes.Stloc_S, item.LocalIndex),
-
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Serial))),
                     new(OpCodes.Starg_S, 1),
                 });
 
-            index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ret) + offset;
+            /*index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ret) + offset;
 
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
                 {
-                    new(OpCodes.Ldloc_S, item.LocalIndex),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(RemovingItemEventArgs), nameof(RemovingItemEventArgs.Item))),
                     new(OpCodes.Stloc_1)
-                });
+                });*/
+
+            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
+        }
+
+        private static void RemoveItem(Player player, ushort serial)
+        {
+#if DEBUG
+            Log.Debug($"Removing item ({serial}) from a player (before null check)");
+#endif
+            if (player is null)
+            {
+#if DEBUG
+                Log.Debug("Attempted to remove item from null player, returning.");
+#endif
+                return;
+            }
+
+            if (!player.Inventory.UserInventory.Items.ContainsKey(serial))
+            {
+#if DEBUG
+                Log.Debug("Attempted to remove an item the player doesn't own, returning.");
+#endif
+                return;
+            }
+#if DEBUG
+            Log.Debug(
+                $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+            foreach (Item item in player.Items)
+                Log.Debug($"{item})");
+#endif
+            ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
+
+            player.ItemsValue.Remove(Item.Get(itemBase));
+
+            Item.BaseToItem.Remove(itemBase);
+
+            Timing.CallDelayed(0.15f, () =>
+            {
+#if DEBUG
+                Log.Debug($"Item ({serial}) removed from {player.Nickname}");
+                Log.Debug($"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+
+                foreach (Item item in player.Items)
+                    Log.Debug($"{item})");
+#endif
+            });
         }
     }
 }

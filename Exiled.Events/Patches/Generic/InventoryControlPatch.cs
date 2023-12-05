@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches <see cref="InventoryExtensions.ServerAddItem"/> to help manage <see cref="Player.Items"/>.
     /// </summary>
-    [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerAddItem))]
+    //[HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerAddItem))]
     internal static class InventoryControlAddPatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(
@@ -87,7 +87,7 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches <see cref="InventoryExtensions.ServerDropItem"/> to help manage <see cref="Player.Items"/>.
     /// </summary>
-    [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerRemoveItem))]
+    //[HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerRemoveItem))]
     internal static class InventoryControlRemovePatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(

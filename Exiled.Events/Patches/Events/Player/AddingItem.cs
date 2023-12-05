@@ -11,10 +11,13 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Player;
     using HarmonyLib;
     using InventorySystem;
+    using InventorySystem.Items;
+    using InventorySystem.Items.Pickups;
 
     using static HarmonyLib.AccessTools;
 
@@ -64,10 +67,43 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Starg_S, 2)
                 });
 
+            offset = -2;
+            index = newInstructions.FindIndex(x => x.Is(OpCodes.Callvirt, Method(typeof(ItemBase), nameof(ItemBase.OnAdded)))) + offset;
+
+            // AddItem(Player.Get(inv._hub), itemInstance)
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(inv._hub)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    // itemInstance
+                    new(OpCodes.Ldloc_1),
+
+                    // pickup
+                    new(OpCodes.Ldarg_3),
+
+                    // AddItem(player, itemInstance, pickup)
+                    new(OpCodes.Call, Method(typeof(AddingItem), nameof(AddItem))),
+                });
+
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+
+        private static void AddItem(Player player, ItemBase itemBase, ItemPickupBase itemPickupBase)
+        {
+            API.Features.Items.Item item = API.Features.Items.Item.Get(itemBase);
+            Pickup pickup = Pickup.Get(itemPickupBase);
+
+            item.ReadPickupInfo(pickup);
+
+            player?.ItemsValue.Add(item);
         }
     }
 }
