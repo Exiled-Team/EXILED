@@ -326,7 +326,7 @@ namespace Exiled.API.Features.Items
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* ={Owner}=";
 
         /// <summary>
-        /// A public method to change the owner of the <see cref="Item"/>.
+        /// Changes the owner of the <see cref="Item"/>.
         /// </summary>
         /// <param name="oldOwner">Old <see cref="Item"/> owner.</param>
         /// <param name="newOwner">New <see cref="Item"/> owner.</param>
