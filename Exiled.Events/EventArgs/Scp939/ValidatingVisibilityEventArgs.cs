@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Scp939
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information about players before being validated to SCP-939.
+    ///     Contains all information before SCP-939 sees the player.
     /// </summary>
     public class ValidatingVisibilityEventArgs : IScp939Event, IDeniableEvent
     {
