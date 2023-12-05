@@ -50,7 +50,7 @@ namespace Exiled.Events.EventArgs.Scp939
         public Scp939Role Scp939 { get; }
 
         /// <summary>
-        ///    Gets or sets a value indicating whether or not SCP-939 is allowed to view the player.
+        ///    Gets or sets a value indicating whether visibility can be validated.
         /// </summary>
         public bool IsAllowed { get; set;  }
     }
