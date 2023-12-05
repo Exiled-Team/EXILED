@@ -19,6 +19,8 @@ namespace Exiled.Events.EventArgs.Player
 
     using UnityEngine;
 
+    using BaseFirearm = InventorySystem.Items.Firearms.Firearm;
+
     /// <summary>
     ///     Contains all information before a player fires a weapon.
     /// </summary>
@@ -36,10 +38,10 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="msg">
         ///     <inheritdoc cref="ShotMessage" />
         /// </param>
-        public ShootingEventArgs(Player shooter, Firearm firearm, ShotMessage msg)
+        public ShootingEventArgs(Player shooter, BaseFirearm firearm, ShotMessage msg)
         {
             Player = shooter;
-            Firearm = firearm;
+            Firearm = Item.Get(firearm).As<Firearm>();
             ShotMessage = msg;
         }
 
