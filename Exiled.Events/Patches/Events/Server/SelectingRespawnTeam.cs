@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Server
                 // Handlers.Server.OnSelectingRespawnTeam(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnSelectingRespawnTeam))),
 
-                // dominatingTeam = ev.ChosenTeam;
+                // dominatingTeam = ev.Team;
                 new(OpCodes.Ldloc, ev),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SelectingRespawnTeamEventArgs), nameof(SelectingRespawnTeamEventArgs.Team))),
                 new(OpCodes.Stloc_1),
