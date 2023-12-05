@@ -44,7 +44,7 @@ namespace Exiled.Events.Handlers
         public static Event<RevealingEventArgs> Revealing { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before VoiceLines.
+        ///    Invoked before sending any SCP-3114 voicelines.
         /// </summary>
         public static Event<VoiceLinesEventArgs> VoiceLines { get; set; } = new();
 
