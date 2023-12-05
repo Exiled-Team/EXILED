@@ -101,7 +101,7 @@ namespace Exiled.Events.Handlers
         public static void OnClawed(ClawedEventArgs ev) => Clawed.InvokeSafely(ev);
 
         /// <summary>
-        /// Called when a players visibility is being validated.
+        /// Called before validating visibility.
         /// </summary>
         /// <param name="ev">The <see cref="ValidatingVisibilityEventArgs"/> instance.</param>
         public static void OnValidatingVisibility(ValidatingVisibilityEventArgs ev) => ValidatingVisibility.InvokeSafely(ev);
