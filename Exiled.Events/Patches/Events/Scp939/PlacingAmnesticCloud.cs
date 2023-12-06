@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp939
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp939AmnesticCloudAbility.ServerProcessCmd(NetworkReader)" />
-    ///     to add the <see cref="Scp939.PlacingAmnesticCloud" /> event.
+    /// Patches <see cref="Scp939AmnesticCloudAbility.ServerProcessCmd(NetworkReader)" />
+    /// to add the <see cref="Scp939.PlacingAmnesticCloud" /> event.
     /// </summary>
     [EventPatch(typeof(Scp939), nameof(Scp939.PlacingAmnesticCloud))]
     [HarmonyPatch(typeof(Scp939AmnesticCloudAbility), nameof(Scp939AmnesticCloudAbility.ServerProcessCmd))]

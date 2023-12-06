@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="AnimatedCharacterModel.OnGrounded" />
-    ///     Adds the <see cref="Player.Landing" /> event.
+    /// Patches <see cref="AnimatedCharacterModel.OnGrounded" />
+    /// Adds the <see cref="Player.Landing" /> event.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.Landing))]
     [HarmonyPatch(typeof(AnimatedCharacterModel), nameof(AnimatedCharacterModel.OnGrounded))]

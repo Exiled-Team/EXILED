@@ -15,26 +15,26 @@ namespace Exiled.Events.EventArgs.Player
     using PlayerRoles;
 
     /// <summary>
-    ///     Contains all information before a player drops ammo.
+    /// Contains all information before a player drops ammo.
     /// </summary>
     public class DroppingAmmoEventArgs : IPlayerEvent, IDeniableEvent
     {
         private bool isAllowed = true;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DroppingAmmoEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="DroppingAmmoEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="ammoType">
-        ///     <inheritdoc cref="AmmoType" />
+        /// <inheritdoc cref="AmmoType" />
         /// </param>
         /// <param name="amount">
-        ///     <inheritdoc cref="int" />
+        /// <inheritdoc cref="int" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public DroppingAmmoEventArgs(Player player, AmmoType ammoType, ushort amount, bool isAllowed = true)
         {
@@ -45,17 +45,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the type of ammo being dropped.
+        /// Gets the type of ammo being dropped.
         /// </summary>
         public AmmoType AmmoType { get; }
 
         /// <summary>
-        ///     Gets or sets the amount of ammo being dropped.
+        /// Gets or sets the amount of ammo being dropped.
         /// </summary>
         public ushort Amount { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the ammo can be dropped.
+        /// Gets or sets a value indicating whether or not the ammo can be dropped.
         /// </summary>
         public bool IsAllowed
         {
@@ -75,7 +75,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the player who's dropping the ammo.
+        /// Gets the player who's dropping the ammo.
         /// </summary>
         public Player Player { get; }
     }

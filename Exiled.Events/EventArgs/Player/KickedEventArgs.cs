@@ -12,18 +12,18 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information after kicking a player from the server.
+    /// Contains all information after kicking a player from the server.
     /// </summary>
     public class KickedEventArgs : IPlayerEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="KickedEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="KickedEventArgs" /> class.
         /// </summary>
         /// <param name="target">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="reason">
-        ///     <inheritdoc cref="Reason" />
+        /// <inheritdoc cref="Reason" />
         /// </param>
         public KickedEventArgs(Player target, string reason)
         {
@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the kick reason.
+        /// Gets the kick reason.
         /// </summary>
         public string Reason { get; }
 
         /// <summary>
-        ///     Gets the kicked player.
+        /// Gets the kicked player.
         /// </summary>
         public Player Player { get; }
     }

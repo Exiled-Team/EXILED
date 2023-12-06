@@ -22,7 +22,7 @@ namespace Exiled.Events.Handlers.Internal
     using PlayerRoles.RoleAssign;
 
     /// <summary>
-    ///     Handles some round clean-up events and some others related to players.
+    /// Handles some round clean-up events and some others related to players.
     /// </summary>
     internal static class Round
     {
