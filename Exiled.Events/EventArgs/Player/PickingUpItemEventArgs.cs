@@ -14,21 +14,21 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.Pickups;
 
     /// <summary>
-    ///     Contains all information before a player picks up an item.
+    /// Contains all information before a player picks up an item.
     /// </summary>
     public class PickingUpItemEventArgs : IPlayerEvent, IPickupEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PickingUpItemEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="PickingUpItemEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="pickup">
-        ///     <inheritdoc cref="Pickup" />
+        /// <inheritdoc cref="Pickup" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public PickingUpItemEventArgs(Player player, ItemPickupBase pickup, bool isAllowed = true)
         {
@@ -38,17 +38,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the item can be picked up.
+        /// Gets or sets a value indicating whether the item can be picked up.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the pickup that's being picked up.
+        /// Gets the pickup that's being picked up.
         /// </summary>
         public Pickup Pickup { get; }
 
         /// <summary>
-        ///     Gets the player who's picking up an item.
+        /// Gets the player who's picking up an item.
         /// </summary>
         public Player Player { get; }
     }

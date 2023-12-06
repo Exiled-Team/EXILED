@@ -14,22 +14,22 @@ namespace Exiled.Events.Handlers
     using Exiled.Events.Features;
 
     /// <summary>
-    ///     Item related events.
+    /// Item related events.
     /// </summary>
     public static class Item
     {
         /// <summary>
-        ///     Invoked before the ammo of an firearm are changed.
+        /// Invoked before the ammo of an firearm are changed.
         /// </summary>
         public static Event<ChangingAmmoEventArgs> ChangingAmmo { get; set; } = new ();
 
         /// <summary>
-        ///     Invoked before item attachments are changed.
+        /// Invoked before item attachments are changed.
         /// </summary>
         public static Event<ChangingAttachmentsEventArgs> ChangingAttachments { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before receiving a preference.
+        /// Invoked before receiving a preference.
         /// </summary>
         public static Event<ReceivingPreferenceEventArgs> ReceivingPreference { get; set; } = new();
 
@@ -60,13 +60,13 @@ namespace Exiled.Events.Handlers
         public static void OnChangingAmmo(ChangingAmmoEventArgs ev) => ChangingAmmo.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before item attachments are changed.
+        /// Called before item attachments are changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs" /> instance.</param>
         public static void OnChangingAttachments(ChangingAttachmentsEventArgs ev) => ChangingAttachments.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before receiving a preference.
+        /// Called before receiving a preference.
         /// </summary>
         /// <param name="ev">The <see cref="ReceivingPreferenceEventArgs" /> instance.</param>
         public static void OnReceivingPreference(ReceivingPreferenceEventArgs ev) => ReceivingPreference.InvokeSafely(ev);

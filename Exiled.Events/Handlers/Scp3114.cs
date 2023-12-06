@@ -14,66 +14,66 @@ namespace Exiled.Events.Handlers
     using Exiled.Events.Features;
 
     /// <summary>
-    ///     Scp3114 related events.
+    /// Scp3114 related events.
     /// </summary>
     public static class Scp3114
     {
         /// <summary>
-        ///     Invoked before Disguising.
+        /// Invoked before disguising.
         /// </summary>
         public static Event<DisguisingEventArgs> Disguising { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before Disguising.
+        /// Invoked when disguised.
         /// </summary>
         public static Event<DisguisedEventArgs> Disguised { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before Disguising.
+        /// Invoked before trying to use a body.
         /// </summary>
         public static Event<TryUseBodyEventArgs> TryUseBody { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before Disguising.
+        /// Invoked when reveals.
         /// </summary>
         public static Event<RevealedEventArgs> Revealed { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before Disguising.
+        /// Invoked before reveals.
         /// </summary>
         public static Event<RevealingEventArgs> Revealing { get; set; } = new();
 
         /// <summary>
-        ///    Invoked before sending any SCP-3114 voicelines.
+        /// Invoked before sending any SCP-3114 voicelines.
         /// </summary>
         public static Event<VoiceLinesEventArgs> VoiceLines { get; set; } = new();
 
         /// <summary>
-        ///     Called before diguising to a new Roles.
+        /// Called before diguising.
         /// </summary>
         /// <param name="ev">The <see cref="DisguisingEventArgs" /> instance.</param>
         public static void OnDisguising(DisguisingEventArgs ev) => Disguising.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before diguising to a new Roles.
+        /// Called after diguising.
         /// </summary>
         /// <param name="ev">The <see cref="DisguisedEventArgs" /> instance.</param>
         public static void OnDisguised(DisguisedEventArgs ev) => Disguised.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before diguising to a new Roles.
+        /// Called before trying to use a body.
         /// </summary>
         /// <param name="ev">The <see cref="TryUseBodyEventArgs" /> instance.</param>
         public static void OnTryUseBody(TryUseBodyEventArgs ev) => TryUseBody.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before diguising to a new Roles.
+        /// Called after reveals.
         /// </summary>
         /// <param name="ev">The <see cref="RevealedEventArgs" /> instance.</param>
         public static void OnRevealed(RevealedEventArgs ev) => Revealed.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before diguising to a new Roles.
+        /// Called before revealing.
         /// </summary>
         /// <param name="ev">The <see cref="RevealingEventArgs" /> instance.</param>
         public static void OnRevealing(RevealingEventArgs ev) => Revealing.InvokeSafely(ev);
