@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="RadioItem.Update" />.
-    ///     Adds the <see cref="Handlers.Player.UsingRadioBattery" /> event.
+    /// Patches <see cref="RadioItem.Update" />.
+    /// Adds the <see cref="Handlers.Player.UsingRadioBattery" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsingRadioBattery))]
     [HarmonyPatch(typeof(RadioItem), nameof(RadioItem.Update))]

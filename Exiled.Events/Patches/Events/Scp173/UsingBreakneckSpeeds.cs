@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp173
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp173BreakneckSpeedsAbility.IsActive" />.
-    ///     Adds the <see cref="Handlers.Scp173.UsingBreakneckSpeeds" /> event.
+    /// Patches <see cref="Scp173BreakneckSpeedsAbility.IsActive" />.
+    /// Adds the <see cref="Handlers.Scp173.UsingBreakneckSpeeds" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp173.UsingBreakneckSpeeds))]
     [HarmonyPatch(typeof(Scp173BreakneckSpeedsAbility), nameof(Scp173BreakneckSpeedsAbility.IsActive), MethodType.Setter)]

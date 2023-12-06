@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp096
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp096TargetsTracker.AddTarget(ReferenceHub, bool)" />.
-    ///     Adds the <see cref="Handlers.Scp096.AddingTarget" /> event.
+    /// Patches <see cref="Scp096TargetsTracker.AddTarget(ReferenceHub, bool)" />.
+    /// Adds the <see cref="Handlers.Scp096.AddingTarget" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.AddingTarget))]
     [HarmonyPatch(typeof(Scp096TargetsTracker), nameof(Scp096TargetsTracker.AddTarget))]

@@ -14,23 +14,23 @@ namespace Exiled.Events.EventArgs.Scp914
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information before a player changes the SCP-914 knob setting.
+    /// Contains all information before a player changes the SCP-914 knob setting.
     /// </summary>
     public class ChangingKnobSettingEventArgs : IPlayerEvent, IDeniableEvent
     {
         private Scp914KnobSetting knobSetting;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ChangingKnobSettingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ChangingKnobSettingEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="knobSetting">
-        ///     <inheritdoc cref="KnobSetting" />
+        /// <inheritdoc cref="KnobSetting" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public ChangingKnobSettingEventArgs(Player player, Scp914KnobSetting knobSetting, bool isAllowed = true)
         {
@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs.Scp914
         }
 
         /// <summary>
-        ///     Gets or sets the SCP-914 knob setting.
+        /// Gets or sets the SCP-914 knob setting.
         /// </summary>
         public Scp914KnobSetting KnobSetting
         {
@@ -49,12 +49,12 @@ namespace Exiled.Events.EventArgs.Scp914
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-914's knob setting can be changed.
+        /// Gets or sets a value indicating whether or not SCP-914's knob setting can be changed.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the player who's changing the SCP-914 knob setting.
+        /// Gets the player who's changing the SCP-914 knob setting.
         /// </summary>
         public Player Player { get; }
     }

@@ -20,7 +20,7 @@ namespace Exiled.Events.EventArgs.Player
     using UnityEngine;
 
     /// <summary>
-    ///     Contains all information before a player interacts with a shooting target.
+    /// Contains all information before a player interacts with a shooting target.
     /// </summary>
     public class InteractingShootingTargetEventArgs : IPlayerEvent, IDeniableEvent
     {
@@ -28,25 +28,25 @@ namespace Exiled.Events.EventArgs.Player
         private int maxHp;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="InteractingShootingTargetEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="InteractingShootingTargetEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="shootingTarget">
-        ///     <inheritdoc cref="ShootingTarget" />
+        /// <inheritdoc cref="ShootingTarget" />
         /// </param>
         /// <param name="targetButton">
-        ///     <inheritdoc cref="TargetButton" />
+        /// <inheritdoc cref="TargetButton" />
         /// </param>
         /// <param name="maxHp">
-        ///     <inheritdoc cref="NewMaxHp" />
+        /// <inheritdoc cref="NewMaxHp" />
         /// </param>
         /// <param name="autoResetTime">
-        ///     <inheritdoc cref="NewAutoResetTime" />
+        /// <inheritdoc cref="NewAutoResetTime" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public InteractingShootingTargetEventArgs(Player player, ShootingTarget shootingTarget, ShootingTargetButton targetButton, int maxHp, int autoResetTime, bool isAllowed = true)
         {
@@ -59,17 +59,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the shooting target being interacted with.
+        /// Gets the shooting target being interacted with.
         /// </summary>
         public ShootingTargetToy ShootingTarget { get; }
 
         /// <summary>
-        ///     Gets the button the player interacted with.
+        /// Gets the button the player interacted with.
         /// </summary>
         public ShootingTargetButton TargetButton { get; }
 
         /// <summary>
-        ///     Gets or sets the new max HP of the target.
+        /// Gets or sets the new max HP of the target.
         /// </summary>
         public int NewMaxHp
         {
@@ -83,7 +83,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets the new auto reset time of the target.
+        /// Gets or sets the new auto reset time of the target.
         /// </summary>
         public int NewAutoResetTime
         {
@@ -97,12 +97,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the interaction is allowed.
+        /// Gets or sets a value indicating whether or not the interaction is allowed.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the player interacting with the shooting target.
+        /// Gets the player interacting with the shooting target.
         /// </summary>
         public Player Player { get; }
     }

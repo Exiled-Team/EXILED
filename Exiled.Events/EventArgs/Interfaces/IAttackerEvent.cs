@@ -11,17 +11,17 @@ namespace Exiled.Events.EventArgs.Interfaces
     using API.Features.DamageHandlers;
 
     /// <summary>
-    ///     Event args for when a player is taking damage.
+    /// Event args for when a player is taking damage.
     /// </summary>
     public interface IAttackerEvent : IPlayerEvent
     {
         /// <summary>
-        ///     Gets the attacker <see cref="Player" />.
+        /// Gets the attacker <see cref="Player" />.
         /// </summary>
         public Player Attacker { get; }
 
         /// <summary>
-        ///     Gets or sets the <see cref="DamageHandlerBase" /> managing the damage to the target.
+        /// Gets or sets the <see cref="DamageHandlerBase" /> managing the damage to the target.
         /// </summary>
         public CustomDamageHandler DamageHandler { get; set; }
     }
