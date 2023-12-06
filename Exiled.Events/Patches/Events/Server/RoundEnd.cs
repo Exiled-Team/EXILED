@@ -22,9 +22,9 @@ namespace Exiled.Events.Patches.Events.Server
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="RoundSummary._ProcessServerSideCode()" />.
-    ///     Adds the <see cref="Handlers.Server.EndingRound" /> and <see cref="Handlers.Server.RoundEnded" /> event.
-    ///     Adds the <see cref="Round.IgnoredPlayers" /> Propperty.
+    /// Patches <see cref="RoundSummary._ProcessServerSideCode()" />.
+    /// Adds the <see cref="Handlers.Server.EndingRound" /> and <see cref="Handlers.Server.RoundEnded" /> event.
+    /// Adds the <see cref="Round.IgnoredPlayers" /> Propperty.
     /// </summary>
     [HarmonyPatch]
     internal static class RoundEnd

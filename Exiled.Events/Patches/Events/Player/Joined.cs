@@ -19,8 +19,8 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     /// <summary>
-    ///     Patches <see cref="ReferenceHub.Start" />.
-    ///     Adds the <see cref="Handlers.Player.Joined" /> event.
+    /// Patches <see cref="ReferenceHub.Start" />.
+    /// Adds the <see cref="Handlers.Player.Joined" /> event.
     /// </summary>
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.Start))]
     internal static class Joined

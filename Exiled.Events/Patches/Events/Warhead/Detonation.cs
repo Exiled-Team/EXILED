@@ -19,8 +19,8 @@ namespace Exiled.Events.Patches.Events.Warhead
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="AlphaWarheadController.Detonate" />
-    ///     to add <see cref="Warhead.Detonating"/> and <see cref="Warhead.Detonated"/> events.
+    /// Patches <see cref="AlphaWarheadController.Detonate" />
+    /// to add <see cref="Warhead.Detonating"/> and <see cref="Warhead.Detonated"/> events.
     /// </summary>
     [EventPatch(typeof(Warhead), nameof(Warhead.Detonated))]
     [EventPatch(typeof(Warhead), nameof(Warhead.Detonating))]

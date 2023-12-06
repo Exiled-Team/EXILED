@@ -14,21 +14,21 @@ namespace Exiled.Events.EventArgs.Player
     using UnityEngine;
 
     /// <summary>
-    ///     Contains all information before a player jumps.
+    /// Contains all information before a player jumps.
     /// </summary>
     public class JumpingEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="JumpingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="JumpingEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="direction">
-        ///     <inheritdoc cref="Direction" />
+        /// <inheritdoc cref="Direction" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public JumpingEventArgs(Player player, Vector3 direction, bool isAllowed = true)
         {
@@ -38,17 +38,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the player who's jumping.
+        /// Gets the player who's jumping.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets or sets the jump direction.
+        /// Gets or sets the jump direction.
         /// </summary>
         public Vector3 Direction { get; set; }
 
         /// <summary>
-        ///     Gets or sets the jump speed.
+        /// Gets or sets the jump speed.
         /// </summary>
         public float Speed
         {
@@ -57,7 +57,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the client data can be synchronized with the server.
+        /// Gets or sets a value indicating whether the client data can be synchronized with the server.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

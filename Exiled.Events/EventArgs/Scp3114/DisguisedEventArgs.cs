@@ -14,18 +14,18 @@ namespace Exiled.Events.EventArgs.Scp3114
     using PlayerRoles.Ragdolls;
 
     /// <summary>
-    ///     Contains all information before SCP-3114 changes its target focus.
+    /// Contains all information after SCP-3114 disguised.
     /// </summary>
     public class DisguisedEventArgs : IScp3114Event, IRagdollEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DisguisedEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="DisguisedEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="ragdoll">
-        ///     <inheritdoc cref="Ragdoll" />
+        /// <inheritdoc cref="Ragdoll" />
         /// </param>
         public DisguisedEventArgs(ReferenceHub player, DynamicRagdoll ragdoll)
         {
