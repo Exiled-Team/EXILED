@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Commands
+namespace Exiled.CustomModules.Commands
 {
     using System;
     using System.Text;
@@ -13,7 +13,7 @@ namespace Exiled.CustomRoles.Commands
     using CommandSystem;
 
     using Exiled.API.Features.Pools;
-    using Exiled.CustomRoles.API.Features;
+    using Exiled.CustomModules.API.Features;
     using Exiled.Permissions.Extensions;
 
     /// <summary>
@@ -54,7 +54,8 @@ namespace Exiled.CustomRoles.Commands
                 return false;
             }
 
-            if ((!(uint.TryParse(arguments.At(0), out uint id) && CustomRole.TryGet(id, out CustomRole? role)) && !CustomRole.TryGet(arguments.At(0), out role)) || role is null)
+            if ((!(uint.TryParse(arguments.At(0), out uint id) && CustomRole.TryGet(id, out CustomRole? role)) &&
+                !CustomRole.TryGet(arguments.At(0), out role)) || role is null)
             {
                 response = $"{arguments.At(0)} is not a valid custom role.";
                 return false;
@@ -66,7 +67,7 @@ namespace Exiled.CustomRoles.Commands
                 .Append("</color> <color=#05C4E8>(").Append(role.Id).Append(")</color>")
                 .Append("- ").AppendLine(role.Description)
                 .AppendLine(role.Role.ToString())
-                .Append("- Health: ").AppendLine(role.MaxHealth.ToString()).AppendLine();
+                .Append("- Health: ").AppendLine(role.Settings.MaxHealth.ToString()).AppendLine();
 
             response = StringBuilderPool.Pool.ToStringReturn(builder);
             return true;

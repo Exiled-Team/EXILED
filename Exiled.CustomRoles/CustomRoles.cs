@@ -5,14 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles
+namespace Exiled.CustomModules
 {
     using System.Collections.Generic;
 
     using Exiled.API.Features;
-    using Exiled.CustomRoles.API.Features;
-    using Exiled.CustomRoles.API.Features.Parsers;
-    using Exiled.CustomRoles.Events;
+    using Exiled.CustomModules.API.Features;
+    using Exiled.CustomModules.API.Features.Parsers;
+    using Exiled.CustomModules.Events;
     using Exiled.Loader;
     using Exiled.Loader.Features.Configs.CustomConverters;
 
@@ -33,15 +33,15 @@ namespace Exiled.CustomRoles
         /// </summary>
         public CustomRoles()
         {
-            Loader.Deserializer = new DeserializerBuilder()
-                .WithTypeConverter(new VectorsConverter())
-                .WithTypeConverter(new ColorConverter())
-                .WithTypeConverter(new AttachmentIdentifiersConverter())
-                .WithNamingConvention(UnderscoredNamingConvention.Instance)
-                .WithNodeDeserializer(inner => new AbstractClassNodeTypeResolver(inner, new AggregateExpectationTypeResolver<CustomAbility>(UnderscoredNamingConvention.Instance)), s => s.InsteadOf<ObjectNodeDeserializer>())
-                .IgnoreFields()
-                .IgnoreUnmatchedProperties()
-                .Build();
+            //Loader.Deserializer = new DeserializerBuilder()
+            //    .WithTypeConverter(new VectorsConverter())
+            //    .WithTypeConverter(new ColorConverter())
+            //    .WithTypeConverter(new AttachmentIdentifiersConverter())
+            //    .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            //    .WithNodeDeserializer(inner => new AbstractClassNodeTypeResolver(inner, new AggregateExpectationTypeResolver<CustomAbility>(UnderscoredNamingConvention.Instance)), s => s.InsteadOf<ObjectNodeDeserializer>())
+            //    .IgnoreFields()
+            //    .IgnoreUnmatchedProperties()
+            //    .Build();
         }
 
         /// <summary>

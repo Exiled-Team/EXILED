@@ -5,13 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles
+namespace Exiled.CustomModules
 {
     using System.ComponentModel;
 
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
-    using Exiled.CustomRoles.API.Features;
+    using Exiled.CustomModules.API.Features;
 
     /// <summary>
     /// The plugin's config.
@@ -30,7 +30,7 @@ namespace Exiled.CustomRoles
         public bool Debug { get; set; } = false;
 
         /// <summary>
-        /// Gets the hint that is shown when someone gets a <see cref="CustomRole"/>.
+        /// Gets the hint that is shown when someone gets a <see cref="Old_CustomRole"/>.
         /// </summary>
         [Description("The hint that is shown when someone gets a custom role.")]
         public Broadcast GotRoleHint { get; private set; } = new("You have spawned as a {0}\n{1}", 6);

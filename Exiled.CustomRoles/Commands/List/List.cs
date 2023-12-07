@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Commands.List
+namespace Exiled.CustomModules.Commands.List
 {
     using System;
 
@@ -39,7 +39,6 @@ namespace Exiled.CustomRoles.Commands.List
         public override void LoadGeneratedCommands()
         {
             RegisterCommand(Registered.Instance);
-            RegisterCommand(new Abilities());
         }
 
         /// <inheritdoc/>

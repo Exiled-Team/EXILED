@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldc_I4_1),
 
                     // PingingEventArgs ev = new(ReferenceHub, RelativePosition, int, byte, Vector3, bool)
-                    new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(PingingEventArgs))[0]),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PingingEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),

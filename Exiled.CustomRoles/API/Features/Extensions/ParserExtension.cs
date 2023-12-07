@@ -5,11 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.API.Features.Extensions
+namespace Exiled.CustomModules.API.Features.Extensions
 {
     using System;
 
-    using Exiled.CustomRoles.API.Features.Parsers;
+    using Exiled.CustomModules.API.Features.Parsers;
 
     using YamlDotNet.Core;
     using YamlDotNet.Core.Events;

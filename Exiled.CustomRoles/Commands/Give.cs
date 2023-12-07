@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Commands
+namespace Exiled.CustomModules.Commands
 {
     using System;
     using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace Exiled.CustomRoles.Commands
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-    using Exiled.CustomRoles.API.Features;
+    using Exiled.CustomModules.API.Features;
     using Exiled.Permissions.Extensions;
 
     using RemoteAdmin;
@@ -70,9 +70,9 @@ namespace Exiled.CustomRoles.Commands
                 {
                     if (sender is PlayerCommandSender playerCommandSender)
                     {
-                        Player player = Player.Get(playerCommandSender);
+                        Pawn player = Player.Get(playerCommandSender).Cast<Pawn>();
 
-                        role.AddRole(player);
+                        role.ForceSpawn(player);
                         response = $"{role.Name} given to {player.Nickname}.";
                         return true;
                     }
@@ -90,7 +90,7 @@ namespace Exiled.CustomRoles.Commands
                         List<Player> players = ListPool<Player>.Pool.Get(Player.List);
 
                         foreach (Player player in players)
-                            role.AddRole(player);
+                            role.ForceSpawn(player.Cast<Pawn>());
 
                         response = $"Custom role {role.Name} given to all players.";
                         ListPool<Player>.Pool.Return(players);
@@ -102,7 +102,7 @@ namespace Exiled.CustomRoles.Commands
                             return false;
                         }
 
-                        role.AddRole(ply);
+                        role.ForceSpawn(ply.Cast<Pawn>());
                         response = $"{role.Name} given to {ply.Nickname}.";
                         return true;
                 }

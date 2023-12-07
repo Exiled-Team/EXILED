@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.API.Features.Enums
+namespace Exiled.CustomModules.API.Enums
 {
     /// <summary>
     /// The action type that should be triggered from a keypress trigger.

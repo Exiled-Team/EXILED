@@ -5,7 +5,7 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <AssemblyName>Exiled.CustomRoles</AssemblyName>
+        <AssemblyName>Exiled.CustomModules</AssemblyName>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Configurations>Debug;Release;Installer</Configurations>
         <Platforms>AnyCPU</Platforms>

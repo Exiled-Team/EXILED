@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.API.Features.Parsers
+namespace Exiled.CustomModules.API.Features.Parsers
 {
     using System;
     using System.Collections.Generic;
@@ -13,9 +13,9 @@ namespace Exiled.CustomRoles.API.Features.Parsers
     using System.Reflection;
 
     using Exiled.API.Features;
-    using Exiled.CustomRoles.API.Features;
-    using Exiled.CustomRoles.API.Features.Extensions;
-    using Exiled.CustomRoles.API.Features.Interfaces;
+    using Exiled.CustomModules.API.Features;
+    using Exiled.CustomModules.API.Features.Extensions;
+    using Exiled.CustomModules.API.Features.Interfaces;
 
     using YamlDotNet.Core.Events;
     using YamlDotNet.Serialization;
@@ -24,7 +24,7 @@ namespace Exiled.CustomRoles.API.Features.Parsers
     public class AggregateExpectationTypeResolver<T> : ITypeDiscriminator
         where T : class
     {
-        private const string TargetKey = nameof(CustomAbility.AbilityType);
+        private const string TargetKey = ""; /*nameof(CustomAbility.AbilityType);*/
         private readonly string targetKey;
         private readonly Dictionary<string, Type?> typeLookup;
 
@@ -52,7 +52,7 @@ namespace Exiled.CustomRoles.API.Features.Parsers
         }
 
         /// <inheritdoc />
-        public Type BaseType => typeof(CustomAbility);
+        public Type BaseType => typeof(Type); /*typeof(CustomAbility);*/
 
         /// <inheritdoc />
         public bool TryResolve(ParsingEventBuffer buffer, out Type? suggestedType)

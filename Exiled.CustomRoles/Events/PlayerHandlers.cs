@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Events
+namespace Exiled.CustomModules.Events
 {
     using Exiled.Events.EventArgs.Player;
 

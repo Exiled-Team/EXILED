@@ -5,11 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.API.Features.Interfaces
+namespace Exiled.CustomModules.API.Features.Interfaces
 {
     using System;
 
-    using Exiled.CustomRoles.API.Features.Parsers;
+    using Exiled.CustomModules.API.Features.Parsers;
 
     /// <summary>
     /// A <see cref="Type"/> discriminator.

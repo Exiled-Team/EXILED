@@ -1140,6 +1140,12 @@ namespace Exiled.API.Features
         public static implicit operator Player(PluginAPI.Core.Player player) => Get(player);
 
         /// <summary>
+        /// Defines an implicit conversion that evaluates if the provided <see cref="Player"/> is not null.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> object to be evaluated.</param>
+        public static implicit operator bool(Player player) => player != null;
+
+        /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side. Can be empty.
         /// </summary>
         /// <param name="side">The players' side.</param>
@@ -3458,6 +3464,17 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="projectileType">The projectile that will create the effect.</param>
         public void ExplodeEffect(ProjectileType projectileType) => Map.ExplodeEffect(Position, projectileType);
+
+        /// <summary>
+        /// Sets a new rank given the specified values.
+        /// </summary>
+        /// <param name="rankName">The name of the rank to be set.</param>
+        /// <param name="rankColor">The color of the rank.</param>
+        public void SetRank(string rankName, string rankColor)
+        {
+            RankName = rankName;
+            RankColor = rankColor;
+        }
 
         /// <summary>
         /// Converts the player in a human-readable format.

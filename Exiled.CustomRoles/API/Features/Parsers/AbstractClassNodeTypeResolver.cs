@@ -5,14 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.API.Features.Parsers
+namespace Exiled.CustomModules.API.Features.Parsers
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
 
-    using Exiled.CustomRoles.API.Features.Interfaces;
+    using Exiled.CustomModules.API.Features.Interfaces;
 
     using YamlDotNet.Core;
     using YamlDotNet.Core.Events;

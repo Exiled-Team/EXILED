@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Core
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.DynamicEvents;
 
     /// <summary>
     /// <see cref="EBehaviour"/> is a versatile component designed to enhance the functionality of playable characters.
@@ -26,7 +27,7 @@ namespace Exiled.API.Features.Core
             base.PostInitialize();
 
             Owner = Player.Get(Base);
-            if (Owner is null)
+            if (!Owner)
             {
                 Destroy();
                 return;
@@ -46,8 +47,24 @@ namespace Exiled.API.Features.Core
         {
             base.OnEndPlay();
 
-            if (Owner is null)
+            if (!Owner)
                 return;
+        }
+
+        /// <inheritdoc/>
+        protected override void SubscribeEvents()
+        {
+            base.SubscribeEvents();
+
+            DynamicEventManager.CreateFromTypeInstance(this);
+        }
+
+        /// <inheritdoc/>
+        protected override void UnsubscribeEvents()
+        {
+            base.UnsubscribeEvents();
+
+            DynamicEventManager.DestroyFromTypeInstance(this);
         }
 
         /// <summary>
@@ -58,10 +75,17 @@ namespace Exiled.API.Features.Core
         {
         }
 
+        /// <summary>
+        /// Checks whether the given <see cref="Player"/> is the <see cref="Owner"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns><see langword="true"/> if the <see cref="Player"/> is the <see cref="Owner"/>; otherwise, <see langword="false"/>.</returns>
+        protected virtual bool Check(Player player) => player is not null && Owner == player;
+
         /// <inheritdoc cref="BehaviourUpdate"/>
         private protected virtual void BehaviourUpdate_Implementation()
         {
-            if (Owner is null)
+            if (!Owner)
             {
                 Destroy();
                 return;

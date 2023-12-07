@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Commands.List
+namespace Exiled.CustomModules.Commands.List
 {
     using System;
     using System.Linq;
@@ -14,7 +14,7 @@ namespace Exiled.CustomRoles.Commands.List
     using CommandSystem;
 
     using Exiled.API.Features.Pools;
-    using Exiled.CustomRoles.API.Features;
+    using Exiled.CustomModules.API.Features;
     using Exiled.Permissions.Extensions;
 
     /// <inheritdoc />
@@ -47,7 +47,7 @@ namespace Exiled.CustomRoles.Commands.List
                 return false;
             }
 
-            if (CustomRole.Registered.Count == 0)
+            if (!CustomRole.List.Any())
             {
                 response = "There are no custom roles currently on this server.";
                 return false;
@@ -55,9 +55,9 @@ namespace Exiled.CustomRoles.Commands.List
 
             StringBuilder builder = StringBuilderPool.Pool.Get().AppendLine();
 
-            builder.Append("[Registered custom roles (").Append(CustomRole.Registered.Count).AppendLine(")]");
+            builder.Append("[Registered custom roles (").Append(CustomRole.List.Count()).AppendLine(")]");
 
-            foreach (CustomRole role in CustomRole.Registered.OrderBy(r => r.Id))
+            foreach (CustomRole role in CustomRole.List.OrderBy(r => r.Id))
                 builder.Append('[').Append(role.Id).Append(". ").Append(role.Name).Append(" (").Append(role.Role).Append(')').AppendLine("]");
 
             response = StringBuilderPool.Pool.ToStringReturn(builder);
