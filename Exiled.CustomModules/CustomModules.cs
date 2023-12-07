@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="CustomRoles.cs" company="Exiled Team">
+// <copyright file="CustomModules.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -23,15 +23,15 @@ namespace Exiled.CustomModules
     /// <summary>
     /// Handles all custom role API functions.
     /// </summary>
-    public class CustomRoles : Plugin<Config>
+    public class CustomModules : Plugin<Config>
     {
         private PlayerHandlers? playerHandlers;
         private KeypressActivator? keypressActivator;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomRoles"/> class.
+        /// Initializes a new instance of the <see cref="CustomModules"/> class.
         /// </summary>
-        public CustomRoles()
+        public CustomModules()
         {
             //Loader.Deserializer = new DeserializerBuilder()
             //    .WithTypeConverter(new VectorsConverter())
@@ -47,7 +47,7 @@ namespace Exiled.CustomModules
         /// <summary>
         /// Gets a static reference to the plugin's instance.
         /// </summary>
-        public static CustomRoles Instance { get; private set; } = null!;
+        public static CustomModules Instance { get; private set; } = null!;
 
         /// <summary>
         /// Gets a list of players to stop spawning ragdolls for.

@@ -14,13 +14,13 @@ namespace Exiled.CustomModules.Events
     /// </summary>
     public class PlayerHandlers
     {
-        private readonly CustomRoles plugin;
+        private readonly CustomModules plugin;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerHandlers"/> class.
         /// </summary>
-        /// <param name="plugin">The <see cref="CustomRoles"/> plugin instance.</param>
-        public PlayerHandlers(CustomRoles plugin)
+        /// <param name="plugin">The <see cref="CustomModules"/> plugin instance.</param>
+        public PlayerHandlers(CustomModules plugin)
         {
             this.plugin = plugin;
         }
