@@ -236,7 +236,8 @@ namespace Exiled.API.Features.Roles
                     Owner.ChangeAppearance(Owner.Role.Type, skipJump: true);
             }
         }
-        
+
+        /// <summary>
         /// Resets the <see cref="Player"/>'s stamina.
         /// </summary>
         /// <param name="multipliers">Resets <see cref="StaminaUsageMultiplier"/> and <see cref="StaminaRegenMultiplier"/>.</param>
