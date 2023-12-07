@@ -20,8 +20,8 @@ namespace Exiled.Events.Patches.Events.Server
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="RoundSummary.Start" />.
-    ///     Adds the <see cref="Handlers.Server.EndingRound" /> and <see cref="Handlers.Server.RoundEnded" /> event.
+    /// Patches <see cref="RoundSummary.Start" />.
+    /// Adds the <see cref="Handlers.Server.EndingRound" /> and <see cref="Handlers.Server.RoundEnded" /> event.
     /// </summary>
     /* TODO: Removed this when NW will have changed ChaosTargetCount == 0 with ChaosTargetCount <= 0
     [EventPatch(typeof(Handlers.Server), nameof(Handlers.Server.EndingRound))]

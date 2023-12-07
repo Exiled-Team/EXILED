@@ -10,12 +10,12 @@ namespace Exiled.Events.EventArgs.Interfaces
     using API.Features.Items;
 
     /// <summary>
-    ///     Event args used for all <see cref="API.Features.Items.Item" /> related events.
+    /// Event args used for all <see cref="API.Features.Items.Item" /> related events.
     /// </summary>
     public interface IItemEvent : IExiledEvent
     {
         /// <summary>
-        ///     Gets the <see cref="API.Features.Items.Item" /> triggering the event.
+        /// Gets the <see cref="API.Features.Items.Item" /> triggering the event.
         /// </summary>
         public Item Item { get; }
     }

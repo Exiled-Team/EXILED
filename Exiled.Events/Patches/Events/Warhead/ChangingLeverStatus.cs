@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Warhead
     using Warhead = Handlers.Warhead;
 
     /// <summary>
-    ///     Patches <see cref="PlayerInteract.UserCode_CmdUsePanel__AlphaPanelOperations" />.
-    ///     Adds the <see cref="Warhead.ChangingLeverStatus" /> event.
+    /// Patches <see cref="PlayerInteract.UserCode_CmdUsePanel__AlphaPanelOperations" />.
+    /// Adds the <see cref="Warhead.ChangingLeverStatus" /> event.
     /// </summary>
     [EventPatch(typeof(Warhead), nameof(Warhead.ChangingLeverStatus))]
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUsePanel__AlphaPanelOperations))]

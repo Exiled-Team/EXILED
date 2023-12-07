@@ -14,27 +14,27 @@ namespace Exiled.Events.EventArgs.Player
     using MapGeneration.Distributors;
 
     /// <summary>
-    ///     Contains all information before a player interacts with a locker.
+    /// Contains all information before a player interacts with a locker.
     /// </summary>
     public class InteractingLockerEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="InteractingLockerEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="InteractingLockerEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="locker">
-        ///     <inheritdoc cref="Locker" />
+        /// <inheritdoc cref="Locker" />
         /// </param>
         /// <param name="lockerChamber">
-        ///     <inheritdoc cref="Chamber" />
+        /// <inheritdoc cref="Chamber" />
         /// </param>
         /// <param name="chamberId">
-        ///     <inheritdoc cref="ChamberId" />
+        /// <inheritdoc cref="ChamberId" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public InteractingLockerEventArgs(Player player, Locker locker, LockerChamber lockerChamber, byte chamberId, bool isAllowed)
         {
@@ -46,27 +46,27 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the <see cref="MapGeneration.Distributors.Locker" /> instance.
+        /// Gets the <see cref="MapGeneration.Distributors.Locker" /> instance.
         /// </summary>
         public Locker Locker { get; }
 
         /// <summary>
-        ///     Gets the interacting chamber.
+        /// Gets the interacting chamber.
         /// </summary>
         public LockerChamber Chamber { get; }
 
         /// <summary>
-        ///     Gets the chamber id.
+        /// Gets the chamber id.
         /// </summary>
         public byte ChamberId { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can interact with the locker.
+        /// Gets or sets a value indicating whether or not the player can interact with the locker.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the player who's interacting with the locker.
+        /// Gets the player who's interacting with the locker.
         /// </summary>
         public Player Player { get; }
     }
