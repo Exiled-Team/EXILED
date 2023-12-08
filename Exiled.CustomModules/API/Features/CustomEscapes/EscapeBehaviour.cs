@@ -7,8 +7,6 @@
 
 namespace Exiled.CustomModules.API.Features
 {
-#nullable disable
-
     using System.Collections.Generic;
 
     using Exiled.API.Features;

@@ -9,7 +9,6 @@ namespace Exiled.CustomModules.API.Features
 {
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
-#nullable disable
 
     using PlayerRoles;
     using UnityEngine;

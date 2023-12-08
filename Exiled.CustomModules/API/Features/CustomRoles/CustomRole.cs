@@ -7,8 +7,6 @@
 
 namespace Exiled.CustomModules.API.Features
 {
-#nullable disable
-
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -25,6 +23,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
+    using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Inventory;
     using Exiled.CustomModules.Commands.List;
     using Exiled.Events.EventArgs.Player;
