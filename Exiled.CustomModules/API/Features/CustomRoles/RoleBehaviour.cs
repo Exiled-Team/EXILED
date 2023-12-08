@@ -11,7 +11,6 @@ namespace Exiled.CustomModules.API.Features
 
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Text;
@@ -20,28 +19,26 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.API.Features.Spawn;
-    using Exiled.API.Interfaces;
-    using Exiled.CustomItems.API.Features;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Inventory;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
-    using Exiled.Events.EventArgs.Server;
-    using MEC;
+
     using PlayerRoles;
-    using PlayerRoles.FirstPersonControl;
+
     using UnityEngine;
 
     using static Exiled.API.Extensions.MirrorExtensions;
-    using static MapGeneration.ImageGenerator;
 
-    using Room = Exiled.API.Features.Room;
-
-    public abstract class RoleBehaviour : EBehaviour
+    /// <summary>
+    /// A tool to easily handle the custom role's logic.
+    /// </summary>
+    public abstract class RoleBehaviour : EBehaviour, IAdditiveSettings<RoleSettings>
     {
         private Vector3 lastPosition;
         private RoleTypeId fakeAppearance;
@@ -184,6 +181,9 @@ namespace Exiled.CustomModules.API.Features
         /// <returns><see langword="true"/> if the specified <see cref="DamageType"/> is ignored; otherwise, <see langword="false"/>.</returns>
         public bool IsDamageIgnored(DamageType damageType) => Settings.IgnoredDamageTypes.Contains(damageType);
 
+        /// <inheritdoc/>
+        public abstract void AdjustAddittiveProperty();
+
         /// <summary>
         /// Loads the given config.
         /// </summary>
@@ -224,6 +224,8 @@ namespace Exiled.CustomModules.API.Features
                     useCustomEscape = true;
                 }
             }
+
+            AdjustAddittiveProperty();
 
             wasNoClipPermitted = Owner.IsNoclipPermitted;
             isHuman = !CustomRole.IsScp;

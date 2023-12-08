@@ -17,6 +17,7 @@ namespace Exiled.CustomModules.API.Features
 
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Interfaces;
     using Exiled.CustomModules.API.Enums;
 
     using MonoMod.Utils;
@@ -26,7 +27,7 @@ namespace Exiled.CustomModules.API.Features
     /// <summary>
     /// A class to easily manage escaping behavior.
     /// </summary>
-    public abstract class CustomEscape : TypeCastObject<CustomEscape>
+    public abstract class CustomEscape : TypeCastObject<CustomEscape>, IAdditiveBehaviour
     {
         private static readonly List<CustomEscape> Registered = new();
         private static readonly Dictionary<UUEscapeScenarioType, Hint> AllScenariosInternal = new();

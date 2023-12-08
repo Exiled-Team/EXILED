@@ -14,6 +14,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Enums;
     using PlayerRoles;
@@ -24,7 +25,7 @@ namespace Exiled.CustomModules.API.Features
     /// <summary>
     /// A class to easily manage escaping behavior.
     /// </summary>
-    public abstract class EscapeBehaviour : EBehaviour
+    public abstract class EscapeBehaviour : EBehaviour, IAdditiveSettingsCollection<EscapeSettings>
     {
         /// <summary>
         /// Gets or sets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape settings.
@@ -49,12 +50,17 @@ namespace Exiled.CustomModules.API.Features
         protected TDynamicEventDispatcher<Player> EscapedEventDispatcher { get; private set; }
 
         /// <inheritdoc/>
+        public abstract void AdjustAddittiveProperty();
+
+        /// <inheritdoc/>
         protected override void PostInitialize()
         {
             base.PostInitialize();
 
             if (Owner.Cast<Pawn>().TryGetCustomRole(out CustomRole customRole) && !customRole.EscapeSettings.IsEmpty())
                 Settings = customRole.EscapeSettings;
+
+            AdjustAddittiveProperty();
 
             FixedTickRate = 0.5f;
         }

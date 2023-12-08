@@ -7,6 +7,8 @@
 
 namespace Exiled.CustomModules.API.Features
 {
+    using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Interfaces;
 #nullable disable
 
     using PlayerRoles;
@@ -15,7 +17,7 @@ namespace Exiled.CustomModules.API.Features
     /// <summary>
     /// A tool to easily setup escapes.
     /// </summary>
-    public struct EscapeSettings
+    public struct EscapeSettings : IAdditiveProperty
     {
         /// <summary>
         /// The default distance tolerance value.

@@ -14,6 +14,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Roles;
     using Exiled.API.Features.Spawn;
     using PlayerRoles;
@@ -21,7 +22,7 @@ namespace Exiled.CustomModules.API.Features
     /// <summary>
     /// A tool to easily setup roles.
     /// </summary>
-    public class RoleSettings : TypeCastObject<RoleSettings>
+    public class RoleSettings : TypeCastObject<RoleSettings>, IAdditiveProperty
     {
         /// <summary>
         /// Gets the default <see cref="RoleSettings"/> values.

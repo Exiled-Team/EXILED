@@ -20,6 +20,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Pools;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
@@ -40,7 +41,7 @@ namespace Exiled.CustomModules.API.Features
     /// <summary>
     /// The custom role base class.
     /// </summary>
-    public abstract class CustomRole : TypeCastObject<CustomRole>
+    public abstract class CustomRole : TypeCastObject<CustomRole>, IAdditiveBehaviour
     {
         /// <inheritdoc cref="Manager"/>
         internal static readonly Dictionary<Pawn, CustomRole> PlayersValueInternal = new();
