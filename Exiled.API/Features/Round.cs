@@ -194,7 +194,10 @@ namespace Exiled.API.Features
             set
             {
                 targetOffset = value;
-                UpdateTargetCounter();
+            foreach (Player player in Player.List)
+            {
+                player.SendFakeSyncVar(RoundSummary.singleton.netIdentity, typeof(RoundSummary), nameof(RoundSummary.Network_chaosTargetCount), RoundSummary.singleton._chaosTargetCount + TargetOffset);
+            }
             }
         }
 
@@ -263,16 +266,5 @@ namespace Exiled.API.Features
         /// Start the round.
         /// </summary>
         public static void Start() => CharacterClassManager.ForceRoundStart();
-
-        /// <summary>
-        /// Updates the target counter for SCPs.
-        /// </summary>
-        private static void UpdateTargetCounter()
-        {
-            foreach (Player player in Player.List)
-            {
-                player.SendFakeSyncVar(RoundSummary.singleton.netIdentity, typeof(RoundSummary), nameof(RoundSummary.Network_chaosTargetCount), RoundSummary.singleton._chaosTargetCount + TargetOffset);
-            }
-        }
     }
 }
