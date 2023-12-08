@@ -182,7 +182,7 @@ namespace Exiled.CustomModules.API.Features
         public bool IsDamageIgnored(DamageType damageType) => Settings.IgnoredDamageTypes.Contains(damageType);
 
         /// <inheritdoc/>
-        public abstract void AdjustAddittiveProperty();
+        public abstract void AdjustAddittivePipe();
 
         /// <summary>
         /// Loads the given config.
@@ -225,7 +225,7 @@ namespace Exiled.CustomModules.API.Features
                 }
             }
 
-            AdjustAddittiveProperty();
+            AdjustAddittivePipe();
 
             wasNoClipPermitted = Owner.IsNoclipPermitted;
             isHuman = !CustomRole.IsScp;

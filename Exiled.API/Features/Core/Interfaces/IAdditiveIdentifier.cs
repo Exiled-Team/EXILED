@@ -8,7 +8,7 @@
 namespace Exiled.API.Features.Core.Interfaces
 {
     /// <summary>
-    /// Defines an addittive user-defined identifier.
+    /// Defines an additive user-defined identifier.
     /// </summary>
     public interface IAdditiveIdentifier
     {

@@ -50,7 +50,7 @@ namespace Exiled.CustomModules.API.Features
         protected TDynamicEventDispatcher<Player> EscapedEventDispatcher { get; private set; }
 
         /// <inheritdoc/>
-        public abstract void AdjustAddittiveProperty();
+        public abstract void AdjustAddittivePipe();
 
         /// <inheritdoc/>
         protected override void PostInitialize()
@@ -60,7 +60,7 @@ namespace Exiled.CustomModules.API.Features
             if (Owner.Cast<Pawn>().TryGetCustomRole(out CustomRole customRole) && !customRole.EscapeSettings.IsEmpty())
                 Settings = customRole.EscapeSettings;
 
-            AdjustAddittiveProperty();
+            AdjustAddittivePipe();
 
             FixedTickRate = 0.5f;
         }

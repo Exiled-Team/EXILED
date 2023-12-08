@@ -8,13 +8,13 @@
 namespace Exiled.API.Features.Core.Interfaces
 {
     /// <summary>
-    /// Defines an addittive user-defined pipe.
+    /// Defines an additive user-defined pipe.
     /// </summary>
     public interface IAdditivePipe : IAdditiveIdentifier
     {
         /// <summary>
-        /// Addittive property should be adjusted here.
+        /// Additive property should be adjusted here.
         /// </summary>
-        public abstract void AdjustAddittiveProperty();
+        public abstract void AdjustAddittivePipe();
     }
 }

@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Core.Interfaces
     using System.Collections.Generic;
 
     /// <summary>
-    /// Defines a <see cref="EBehaviour"/> which is being set up through user-defined settings.
+    /// Defines a collection of additive settings set up through user-defined properties.
     /// </summary>
     /// <typeparam name="T">The <see cref="EBehaviour"/> type.</typeparam>
     public interface IAdditiveSettingsCollection<T> : IAdditivePipe
