@@ -26,8 +26,8 @@ namespace Exiled.Events.Patches.Events.Player
     using Player = Handlers.Player;
 
     /// <summary>
-    ///     Patches <see cref="Inventory.UserCode_CmdDropItem__UInt16__Boolean" />.
-    ///     <br>Adds the <see cref="Player.DroppingItem" />, <see cref="Player.DroppingNothing" /> and <see cref="Player.DroppedItem"/> events.</br>
+    /// Patches <see cref="Inventory.UserCode_CmdDropItem__UInt16__Boolean" />.
+    /// <br>Adds the <see cref="Player.DroppingItem" />, <see cref="Player.DroppingNothing" /> and <see cref="Player.DroppedItem"/> events.</br>
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.DroppingItem))]
     [EventPatch(typeof(Player), nameof(Player.DroppingNothing))]

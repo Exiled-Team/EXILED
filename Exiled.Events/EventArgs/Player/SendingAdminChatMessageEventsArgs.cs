@@ -15,21 +15,21 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Searching;
 
     /// <summary>
-    ///     Contains all information before a player sends a message in AdminChat.
+    /// Contains all information before a player sends a message in AdminChat.
     /// </summary>
     public class SendingAdminChatMessageEventsArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SendingAdminChatMessageEventsArgs" /> class.
+        /// Initializes a new instance of the <see cref="SendingAdminChatMessageEventsArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="message">
-        ///     <inheritdoc cref="Message" />
+        /// <inheritdoc cref="Message" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public SendingAdminChatMessageEventsArgs(Player player, string message, bool isAllowed)
         {
@@ -39,17 +39,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the pickup can be searched.
+        /// Gets or sets a value indicating whether the pickup can be searched.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets or sets the message which is being sent.
+        /// Gets or sets the message which is being sent.
         /// </summary>
         public string Message { get; set; }
 
         /// <summary>
-        ///     Gets the player who's sending the message.
+        /// Gets the player who's sending the message.
         /// </summary>
         public Player Player { get; }
     }

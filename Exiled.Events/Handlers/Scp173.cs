@@ -13,50 +13,50 @@ namespace Exiled.Events.Handlers
     using Exiled.Events.Features;
 
     /// <summary>
-    ///     SCP-173 related events.
+    /// SCP-173 related events.
     /// </summary>
     public static class Scp173
     {
         /// <summary>
-        ///     Invoked before players near SCP-173 blink.
+        /// Invoked before players near SCP-173 blink.
         /// </summary>
         public static Event<BlinkingEventArgs> Blinking { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before server handle SCP-173 blink network message.
+        /// Invoked before server handle SCP-173 blink network message.
         /// </summary>
         public static Event<BlinkingRequestEventArgs> BlinkingRequest { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before a tantrum is placed.
+        /// Invoked before a tantrum is placed.
         /// </summary>
         public static Event<PlacingTantrumEventArgs> PlacingTantrum { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before using breakneck speeds.
+        /// Invoked before using breakneck speeds.
         /// </summary>
         public static Event<UsingBreakneckSpeedsEventArgs> UsingBreakneckSpeeds { get; set; } = new();
 
         /// <summary>
-        ///     Called before players near SCP-173 blink.
+        /// Called before players near SCP-173 blink.
         /// </summary>
         /// <param name="ev">The <see cref="BlinkingEventArgs" /> instance.</param>
         public static void OnBlinking(BlinkingEventArgs ev) => Blinking.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before server handle SCP-173 blink network message.
+        /// Called before server handle SCP-173 blink network message.
         /// </summary>
         /// <param name="ev">The <see cref="BlinkingRequestEventArgs" /> instance.</param>
         public static void OnBlinkingRequest(BlinkingRequestEventArgs ev) => BlinkingRequest.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before a tantrum is placed.
+        /// Called before a tantrum is placed.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingTantrumEventArgs" /> instance.</param>
         public static void OnPlacingTantrum(PlacingTantrumEventArgs ev) => PlacingTantrum.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before a using breakneck speeds.
+        /// Called before a using breakneck speeds.
         /// </summary>
         /// <param name="ev">The <see cref="UsingBreakneckSpeedsEventArgs" /> instance.</param>
         public static void OnUsingBreakneckSpeeds(UsingBreakneckSpeedsEventArgs ev) => UsingBreakneckSpeeds.InvokeSafely(ev);

@@ -20,8 +20,8 @@ namespace Exiled.Events.Patches.Events.Server
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="RoundSummary.Start" />.
-    ///     Adds the <see cref="Handlers.Server.EndingRound" /> and <see cref="Handlers.Server.RoundEnded" /> event.
+    /// Patches <see cref="RoundSummary.Start" />.
+    /// Adds the <see cref="Handlers.Server.EndingRound" /> and <see cref="Handlers.Server.RoundEnded" /> event.
     /// </summary>
     /* TODO: Removed this when NW will have changed ChaosTargetCount == 0 with ChaosTargetCount <= 0
     [EventPatch(typeof(Handlers.Server), nameof(Handlers.Server.EndingRound))]
@@ -70,7 +70,7 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction[]
                 {
                     // this.leadingTeam
-                    new(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Ldfld, Field(PrivateType, LeadingTeam)),
 
                     // this.newList
@@ -80,7 +80,11 @@ namespace Exiled.Events.Patches.Events.Server
                     // shouldRoundEnd
                     new(OpCodes.Ldloc_S, 4),
 
-                    // EndingRoundEventArgs evEndingRound = new(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, bool);
+                    // isForceEnd
+                    new(OpCodes.Ldloc_1),
+                    new(OpCodes.Ldfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
+
+                    // EndingRoundEventArgs evEndingRound = new(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, bool, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EndingRoundEventArgs))[0]),
                     new(OpCodes.Dup),
 
@@ -94,11 +98,16 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.LeadingTeam))),
                     new(OpCodes.Stfld, Field(PrivateType, LeadingTeam)),
 
-                    // this._roundEnded = ev.IsAllowed
+                    // this._roundEnded = ev.IsForceEnded
                     new(OpCodes.Ldloc_1),
                     new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsAllowed))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsForceEnded))),
                     new(OpCodes.Stfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
+
+                    // flag = ev.IsAllowed
+                    new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsAllowed))),
+                    new(OpCodes.Stloc_S, 4),
                 });
 
             offset = 7;

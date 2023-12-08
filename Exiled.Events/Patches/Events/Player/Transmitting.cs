@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="PersonalRadioPlayback.Update()" />.
-    ///     Adds the <see cref="Handlers.Player.Transmitting" /> event.
+    /// Patches <see cref="PersonalRadioPlayback.Update()" />.
+    /// Adds the <see cref="Handlers.Player.Transmitting" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Transmitting))]
     [HarmonyPatch(typeof(PersonalRadioPlayback), nameof(PersonalRadioPlayback.Update))]
