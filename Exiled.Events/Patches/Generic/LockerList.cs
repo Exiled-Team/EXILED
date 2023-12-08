@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Generic
 
                     // API.Features.Lockers.Locker.Get(this)
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, Method(typeof(API.Features.Lockers.Locker), nameof(API.Features.Lockers.Locker.Get))),
+                    new(OpCodes.Call, Method(typeof(API.Features.Lockers.Locker), nameof(API.Features.Lockers.Locker.Get), new[] { typeof(Locker) })),
                     new(OpCodes.Pop),
                 });
 
