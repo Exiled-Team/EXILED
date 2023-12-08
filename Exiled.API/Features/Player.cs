@@ -167,7 +167,7 @@ namespace Exiled.API.Features
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
 
-                value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[Array.IndexOf(value.playerStats.StatModules, typeof(HealthStat))] = healthStat = new CustomHealthStat { Hub = value };
+                value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[Array.IndexOf(PlayerStats.DefinedModules, typeof(HealthStat))] = healthStat = new CustomHealthStat { Hub = value };
             }
         }
 
@@ -917,7 +917,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the item in the player's hand. Value will be <see langword="null"/> if the player is not holding anything.
         /// </summary>
-        /// <seealso cref="DropHeldItem"/>
+        /// <seealso cref="DropHeldItem()"/>
         public Item CurrentItem
         {
             get => Item.Get(Inventory.CurInstance);
@@ -1835,9 +1835,27 @@ namespace Exiled.API.Features
         /// <summary>
         /// Drops an item from the player's inventory.
         /// </summary>
-        /// <param name="item">The item to be dropped.</param>
+        /// <param name="item">The <see cref="Item"/> to be dropped.</param>
+        /// <param name="isThrown">Is the item Thrown?.</param>
+        public void DropItem(Item item, bool isThrown = false)
+        {
+            if (item is null)
+                return;
+            Inventory.UserCode_CmdDropItem__UInt16__Boolean(item.Serial, isThrown);
+        }
+
+        /// <summary>
+        /// Drops an item from the player's inventory.
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/> to be dropped.</param>
         /// <returns>dropped <see cref="Pickup"/>.</returns>
-        public Pickup DropItem(Item item) => Pickup.Get(Inventory.ServerDropItem(item.Serial));
+        public Pickup DropItem(Item item) => item is not null ? Pickup.Get(Inventory.ServerDropItem(item.Serial)) : null;
+
+        /// <summary>
+        /// Drops the held item. Will not do anything if the player is not holding an item.
+        /// </summary>
+        /// <param name="isThrown">Is the item Thrown?.</param>
+        public void DropHeldItem(bool isThrown = false) => DropItem(CurrentItem, isThrown);
 
         /// <summary>
         /// Drops the held item. Will not do anything if the player is not holding an item.
@@ -2553,6 +2571,8 @@ namespace Exiled.API.Features
                     acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = false;
                 }
 
+                typeof(InventoryExtensions).InvokeStaticEvent(nameof(InventoryExtensions.OnItemAdded), new object[] { ReferenceHub, itemBase, null });
+
                 ItemsValue.Add(item);
 
                 Inventory.SendItemsNextFrame = true;
@@ -3042,12 +3062,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets an instance of <see cref="StatusEffectBase"/> by <see cref="EffectType"/>.
         /// </summary>
-        /// <param name="type">The <see cref="EffectType"/>.</param>
+        /// <param name="effectType">The <see cref="EffectType"/>.</param>
         /// <returns>The <see cref="StatusEffectBase"/>.</returns>
-        public StatusEffectBase GetEffect(EffectType type)
+        public StatusEffectBase GetEffect(EffectType effectType)
         {
-            ReferenceHub.playerEffectsController._effectsByType.TryGetValue(type.Type(), out StatusEffectBase playerEffect);
-
+            if (!effectType.TryGetType(out Type type))
+                return null;
+            ReferenceHub.playerEffectsController._effectsByType.TryGetValue(type, out StatusEffectBase playerEffect);
             return playerEffect;
         }
 

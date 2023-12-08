@@ -10,12 +10,12 @@ namespace Exiled.Events.EventArgs.Interfaces
     using API.Features.Items;
 
     /// <summary>
-    ///     Event args used for all <see cref="API.Features.Items.Firearm" /> related events.
+    /// Event args used for all <see cref="API.Features.Items.Firearm" /> related events.
     /// </summary>
     public interface IFirearmEvent : IItemEvent
     {
         /// <summary>
-        ///     Gets the <see cref="API.Features.Items.Firearm" /> triggering the event.
+        /// Gets the <see cref="API.Features.Items.Firearm" /> triggering the event.
         /// </summary>
         public Firearm Firearm { get; }
     }

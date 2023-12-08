@@ -30,12 +30,12 @@ namespace Exiled.Installer
         Undefined,
 
         /// <summary>
-        ///     Absolute path that is routed to AppData.
+        /// Absolute path that is routed to AppData.
         /// </summary>
         Absolute,
 
         /// <summary>
-        ///     Exiled path that is routed to exiled root path.
+        /// Exiled path that is routed to exiled root path.
         /// </summary>
         Exiled,
     }

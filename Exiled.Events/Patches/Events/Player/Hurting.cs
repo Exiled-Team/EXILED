@@ -26,8 +26,8 @@ namespace Exiled.Events.Patches.Events.Player
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="PlayerStats.DealDamage(DamageHandlerBase)" />.
-    ///     Adds the <see cref="Handlers.Player.Hurting" /> event and <see cref="Handlers.Player.Hurt" /> event.
+    /// Patches <see cref="PlayerStats.DealDamage(DamageHandlerBase)" />.
+    /// Adds the <see cref="Handlers.Player.Hurting" /> event and <see cref="Handlers.Player.Hurt" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Hurting))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Hurt))]
