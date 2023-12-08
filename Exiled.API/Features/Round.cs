@@ -194,10 +194,10 @@ namespace Exiled.API.Features
             set
             {
                 targetOffset = value;
-            foreach (Player player in Player.List)
-            {
-                player.SendFakeSyncVar(RoundSummary.singleton.netIdentity, typeof(RoundSummary), nameof(RoundSummary.Network_chaosTargetCount), RoundSummary.singleton._chaosTargetCount + TargetOffset);
-            }
+                foreach (Player player in Player.List)
+                {
+                    player.SendFakeSyncVar(RoundSummary.singleton.netIdentity, typeof(RoundSummary), nameof(RoundSummary.Network_chaosTargetCount), RoundSummary.singleton._chaosTargetCount + TargetOffset);
+                }
             }
         }
 
