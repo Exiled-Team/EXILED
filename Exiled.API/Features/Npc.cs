@@ -130,8 +130,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="name">The name of the NPC.</param>
         /// <param name="role">The RoleTypeId of the NPC.</param>
-        /// <param name="id">The player ID of the NPC.</param>
-        /// <param name="userId">The userID of the NPC. Use "ID_Dedicated" or <c>null</c> for VSR Compliant NPCs.</param>
+        /// <param name="id">The ID of the NPC.</param>
+        /// <param name="userId">The userID of the NPC.</param>
         /// <param name="position">The position to spawn the NPC.</param>
         /// <returns>The <see cref="Npc"/> spawned.</returns>
         public static Npc Spawn(string name, RoleTypeId role, int id = 0, string userId = "", Vector3? position = null)
