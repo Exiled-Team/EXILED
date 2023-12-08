@@ -8,7 +8,7 @@
 namespace Exiled.API.Features.Core.Interfaces
 {
     /// <summary>
-    /// Defines a <see cref="EBehaviour"/> which is being set up through user-defined settings.
+    /// Defines additive settings set up through user-defined properties.
     /// </summary>
     /// <typeparam name="T">The <see cref="EBehaviour"/> type.</typeparam>
     public interface IAdditiveSettings<T> : IAdditivePipe
