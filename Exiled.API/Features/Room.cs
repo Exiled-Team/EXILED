@@ -311,7 +311,7 @@ namespace Exiled.API.Features
         /// Flickers the room's lights off for a duration.
         /// </summary>
         /// <param name="duration">Duration in seconds, or -1 for an indefinite duration.</param>
-        public void TurnOffLights(float duration)
+        public void TurnOffLights(float duration = -1)
         {
             if (duration == -1)
             {
