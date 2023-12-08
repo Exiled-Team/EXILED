@@ -313,16 +313,19 @@ namespace Exiled.API.Features
         /// <param name="duration">Duration in seconds, or -1 for an indefinite duration.</param>
         public void TurnOffLights(float duration)
         {
+            if (duration == -1)
+            {
+                 foreach (RoomLightController light in RoomLightControllers)
+                 {
+                     light.SetLights(false);
+                 }
+
+                return;
+            }
+
             foreach (RoomLightController light in RoomLightControllers)
             {
-                if (duration == -1)
-                {
-                    light.SetLights(false);
-                }
-                else
-                {
-                    light.ServerFlickerLights(duration);
-                }
+                light.ServerFlickerLights(duration);
             }
         }
 
