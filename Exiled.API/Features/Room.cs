@@ -315,10 +315,10 @@ namespace Exiled.API.Features
         {
             if (duration == -1)
             {
-                 foreach (RoomLightController light in RoomLightControllers)
-                 {
-                     light.SetLights(false);
-                 }
+                foreach (RoomLightController light in RoomLightControllers)
+                {
+                    light.SetLights(false);
+                }
 
                 return;
             }
