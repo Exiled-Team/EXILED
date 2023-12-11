@@ -66,7 +66,7 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Lift"/>.
         /// </summary>
         /// <returns><see cref="Lift"/> object.</returns>
-        public static Lift Random => List.GetRandomValue();
+        public static Lift Random => List.Random();
 
         /// <summary>
         /// Gets the base <see cref="ElevatorChamber"/>.

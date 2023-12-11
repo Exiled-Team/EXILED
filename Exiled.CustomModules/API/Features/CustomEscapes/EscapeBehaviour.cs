@@ -33,7 +33,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets the current escape scenario.
         /// </summary>
-        protected virtual UUEscapeScenarioType CurrentScenario => CalculateEscapeScenario();
+        protected virtual byte CurrentScenario => CalculateEscapeScenario();
 
         /// <summary>
         /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.

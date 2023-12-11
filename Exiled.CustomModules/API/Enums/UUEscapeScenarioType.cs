@@ -12,7 +12,7 @@ namespace Exiled.CustomModules.API.Enums
     /// <summary>
     /// Represents the base enum class for all available escape scenarios.
     /// </summary>
-    public class UUEscapeScenarioType : UnmanagedEnumClass<sbyte, UUEscapeScenarioType>
+    public class UUEscapeScenarioType : UnmanagedEnumClass<byte, UUEscapeScenarioType>
     {
         /// <summary>
         /// Represents an invalid scenario.
@@ -22,8 +22,8 @@ namespace Exiled.CustomModules.API.Enums
         /// <summary>
         /// Initializes a new instance of the <see cref="UUEscapeScenarioType"/> class.
         /// </summary>
-        /// <param name="value">The <see cref="sbyte"/> value.</param>
-        protected UUEscapeScenarioType(sbyte value)
+        /// <param name="value">The <see cref="byte"/> value.</param>
+        protected UUEscapeScenarioType(byte value)
             : base(value)
         {
         }

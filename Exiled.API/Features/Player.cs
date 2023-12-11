@@ -3025,7 +3025,7 @@ namespace Exiled.API.Features
         {
             Array effectTypes = Enum.GetValues(typeof(EffectType));
             IEnumerable<EffectType> validEffects = effectTypes.ToArray<EffectType>().Where(effect => effect.GetCategories().HasFlag(category));
-            EffectType effectType = validEffects.GetRandomValue();
+            EffectType effectType = validEffects.Random();
 
             EnableEffect(effectType, intensity, duration, addDurationIfActive);
 
@@ -3309,18 +3309,18 @@ namespace Exiled.API.Features
         {
             object randomObject = type.Name switch
             {
-                nameof(Camera) => Camera.List.GetRandomValue(),
+                nameof(Camera) => Camera.List.Random(),
                 nameof(Door) => Door.Random(),
-                nameof(Room) => Room.List.GetRandomValue(),
-                nameof(TeslaGate) => TeslaGate.List.GetRandomValue(),
-                nameof(Player) => Dictionary.Values.GetRandomValue(),
-                nameof(Pickup) => Pickup.BaseToPickup.GetRandomValue().Value,
-                nameof(Ragdoll) => Ragdoll.List.GetRandomValue(),
+                nameof(Room) => Room.List.Random(),
+                nameof(TeslaGate) => TeslaGate.List.Random(),
+                nameof(Player) => Dictionary.Values.Random(),
+                nameof(Pickup) => Pickup.BaseToPickup.Random().Value,
+                nameof(Ragdoll) => Ragdoll.List.Random(),
                 nameof(Locker) => Map.GetRandomLocker(),
-                nameof(Generator) => Generator.List.GetRandomValue(),
-                nameof(Window) => Window.List.GetRandomValue(),
+                nameof(Generator) => Generator.List.Random(),
+                nameof(Window) => Window.List.Random(),
                 nameof(Scp914) => Scp914.Scp914Controller,
-                nameof(LockerChamber) => Map.GetRandomLocker().Chambers.GetRandomValue(),
+                nameof(LockerChamber) => Map.GetRandomLocker().Chambers.Random(),
                 _ => null,
             };
 
@@ -3338,7 +3338,7 @@ namespace Exiled.API.Features
             if (array.Length == 0)
                 return;
 
-            RandomTeleport(array.GetRandomValue());
+            RandomTeleport(array.Random());
         }
 
         /// <summary>

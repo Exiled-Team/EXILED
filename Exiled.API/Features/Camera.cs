@@ -152,7 +152,7 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Camera"/>.
         /// </summary>
         /// <returns><see cref="Camera"/> object.</returns>
-        public static Camera Random => List.GetRandomValue();
+        public static Camera Random => List.Random();
 
         /// <summary>
         /// Gets the base <see cref="Scp079Camera"/>.

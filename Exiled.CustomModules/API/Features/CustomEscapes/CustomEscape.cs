@@ -28,7 +28,7 @@ namespace Exiled.CustomModules.API.Features
     public abstract class CustomEscape : TypeCastObject<CustomEscape>, IAdditiveBehaviour
     {
         private static readonly List<CustomEscape> Registered = new();
-        private static readonly Dictionary<UUEscapeScenarioType, Hint> AllScenariosInternal = new();
+        private static readonly Dictionary<byte, Hint> AllScenariosInternal = new();
         private static readonly Dictionary<Player, CustomEscape> PlayerValuesInternal = new();
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets all existing <see cref="Hint"/>'s to be displayed based on the relative <see cref="UUEscapeScenarioType"/>.
         /// </summary>
-        public static IReadOnlyDictionary<UUEscapeScenarioType, Hint> AllScenarios => AllScenariosInternal;
+        public static IReadOnlyDictionary<byte, Hint> AllScenarios => AllScenariosInternal;
 
         /// <summary>
         /// Gets all players and their respective <see cref="CustomEscape"/>.
@@ -69,7 +69,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets all <see cref="Hint"/>'s to be displayed based on the relative <see cref="UUEscapeScenarioType"/>.
         /// </summary>
-        protected virtual Dictionary<UUEscapeScenarioType, Hint> Scenarios { get; } = new();
+        protected virtual Dictionary<byte, Hint> Scenarios { get; } = new();
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape settings.

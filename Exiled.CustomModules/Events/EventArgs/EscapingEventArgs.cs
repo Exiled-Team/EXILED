@@ -33,7 +33,7 @@ namespace Exiled.CustomModules.Events
             Pawn player,
             RoleTypeId newRole,
             CustomRole newCustomRole,
-            UUEscapeScenarioType scenarioType,
+            byte scenarioType,
             Hint hint,
             bool isAllowed = true)
         {
@@ -63,7 +63,7 @@ namespace Exiled.CustomModules.Events
         /// <summary>
         /// Gets or sets the <see cref="UUEscapeScenarioType"/>.
         /// </summary>
-        public UUEscapeScenarioType ScenarioType { get; set; }
+        public byte ScenarioType { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Exiled.API.Features.Hint"/> to be displayed.
