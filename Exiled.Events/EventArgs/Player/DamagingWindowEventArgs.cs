@@ -16,19 +16,19 @@ namespace Exiled.Events.EventArgs.Player
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
-    ///     Contains all information before damage is dealt to a <see cref="BreakableWindow" />.
+    /// Contains all information before damage is dealt to a <see cref="BreakableWindow" />.
     /// </summary>
     public class DamagingWindowEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DamagingWindowEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="DamagingWindowEventArgs" /> class.
         /// </summary>
         /// <param name="window">
-        ///     <inheritdoc cref="Window" />
+        /// <inheritdoc cref="Window" />
         /// </param>
         /// <param name="damage">The damage being dealt.</param>
         /// <param name="handler">
-        ///     <inheritdoc cref="Handler" />
+        /// <inheritdoc cref="Handler" />
         /// </param>
         public DamagingWindowEventArgs(BreakableWindow window, float damage, DamageHandlerBase handler)
         {
@@ -39,22 +39,22 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the <see cref="Window" /> object that is damaged.
+        /// Gets the <see cref="Window" /> object that is damaged.
         /// </summary>
         public Window Window { get; }
 
         /// <summary>
-        ///     Gets or sets the damage handler for this event.
+        /// Gets or sets the damage handler for this event.
         /// </summary>
         public DamageHandler Handler { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the window can be broken.
+        /// Gets or sets a value indicating whether the window can be broken.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        ///     Gets the <see cref="API.Features.Player" /> causing the damage.
+        /// Gets the <see cref="API.Features.Player" /> causing the damage.
         /// </summary>
         public Player Player { get; }
     }

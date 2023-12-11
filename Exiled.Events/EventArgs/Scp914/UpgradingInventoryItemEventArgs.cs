@@ -16,24 +16,24 @@ namespace Exiled.Events.EventArgs.Scp914
     using InventorySystem.Items;
 
     /// <summary>
-    ///     Contains all information before SCP-914 upgrades an item.
+    /// Contains all information before SCP-914 upgrades an item.
     /// </summary>
     public class UpgradingInventoryItemEventArgs : IPlayerEvent, IItemEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="UpgradingInventoryItemEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="UpgradingInventoryItemEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="item">
-        ///     <inheritdoc cref="Item" />
+        /// <inheritdoc cref="Item" />
         /// </param>
         /// <param name="knobSetting">
-        ///     <inheritdoc cref="KnobSetting" />
+        /// <inheritdoc cref="KnobSetting" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public UpgradingInventoryItemEventArgs(Player player, ItemBase item, Scp914KnobSetting knobSetting, bool isAllowed = true)
         {
@@ -44,28 +44,28 @@ namespace Exiled.Events.EventArgs.Scp914
         }
 
         /// <summary>
-        ///     Gets the <see cref="Scp914Controller" /> instance.
+        /// Gets the <see cref="Scp914Controller" /> instance.
         /// </summary>
         [Obsolete("Use Scp914::Scp914Controller instead.")]
         public Scp914Controller Scp914 => API.Features.Scp914.Scp914Controller;
 
         /// <summary>
-        ///     Gets or sets SCP-914 working knob setting.
+        /// Gets or sets SCP-914 working knob setting.
         /// </summary>
         public Scp914KnobSetting KnobSetting { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the upgrade is successful.
+        /// Gets or sets a value indicating whether or not the upgrade is successful.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets a list of items to be upgraded inside SCP-914.
+        /// Gets a list of items to be upgraded inside SCP-914.
         /// </summary>
         public Item Item { get; }
 
         /// <summary>
-        ///     Gets the <see cref="Player" /> who owns the item to be upgraded.
+        /// Gets the <see cref="Player" /> who owns the item to be upgraded.
         /// </summary>
         public Player Player { get; }
     }

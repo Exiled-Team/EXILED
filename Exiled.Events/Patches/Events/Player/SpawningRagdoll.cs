@@ -27,8 +27,8 @@ namespace Exiled.Events.Patches.Events.Player
     using Player = Handlers.Player;
 
     /// <summary>
-    ///     Patches <see cref="RagdollManager.ServerSpawnRagdoll(ReferenceHub, DamageHandlerBase)" />.
-    ///     <br>Adds the <see cref="Player.SpawningRagdoll" /> and <see cref="Player.SpawnedRagdoll"/> events.</br>
+    /// Patches <see cref="RagdollManager.ServerSpawnRagdoll(ReferenceHub, DamageHandlerBase)" />.
+    /// <br>Adds the <see cref="Player.SpawningRagdoll" /> and <see cref="Player.SpawnedRagdoll"/> events.</br>
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.SpawningRagdoll))]
     [EventPatch(typeof(Player), nameof(Player.SpawnedRagdoll))]

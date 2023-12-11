@@ -25,10 +25,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="UsableItemsController.ServerReceivedStatus" />.
-    ///     Adds the <see cref="Handlers.Player.UsingItem" /> event,
-    ///     <see cref="Handlers.Player.CancellingItemUse" /> event and
-    ///     <see cref="Handlers.Player.CancelledItemUse" /> event.
+    /// Patches <see cref="UsableItemsController.ServerReceivedStatus" />.
+    /// Adds the <see cref="Handlers.Player.UsingItem" /> event,
+    /// <see cref="Handlers.Player.CancellingItemUse" /> event and
+    /// <see cref="Handlers.Player.CancelledItemUse" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.CancellingItemUse))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsingItem))]

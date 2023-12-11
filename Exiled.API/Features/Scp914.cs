@@ -65,6 +65,11 @@ namespace Exiled.API.Features
         public static Vector3 OutputPosition => Scp914Controller.OutputChamber.localPosition;
 
         /// <summary>
+        /// Gets the position offset in which item is moving.
+        /// </summary>
+        public static Vector3 MovingVector => OutputPosition - IntakePosition;
+
+        /// <summary>
         /// Gets a value indicating whether SCP-914 is active and currently processing items.
         /// </summary>
         public static bool IsWorking => Scp914Controller._isUpgrading;
