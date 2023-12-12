@@ -453,6 +453,11 @@ namespace Exiled.Events.Handlers
         public static Event<TogglingOverwatchEventArgs> TogglingOverwatch { get; set; } = new();
 
         /// <summary>
+        /// Invoked before turning the <see cref="API.Features.Items.Radio" /> on/off.
+        /// </summary>
+        public static Event<TogglingRadioEventArgs> TogglingRadio { get; set; } = new();
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> searches a Pickup.
         /// </summary>
         public static Event<SearchingPickupEventArgs> SearchingPickup { get; set; } = new();
@@ -899,6 +904,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="TogglingOverwatchEventArgs"/> instance.</param>
         public static void OnTogglingOverwatch(TogglingOverwatchEventArgs ev) => TogglingOverwatch.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before turning the radio on/off.
+        /// </summary>
+        /// <param name="ev">The <see cref="TogglingRadioEventArgs"/> instance.</param>
+        public static void OnTogglingRadio(TogglingRadioEventArgs ev) => TogglingRadio.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> searches a Pickup.
