@@ -77,9 +77,9 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets the max size of the Scp244's Hypothermia effect is dealt.
+        /// Gets or sets the maximum diameter within which SCP-244's hypothermia effect is dealt.
         /// </summary>
-        /// <remarks>This do not prevent visual effect.</remarks>
+        /// <remarks>This does not prevent visual effects.</remarks>
         public float MaxDiameter
         {
             get => Base.MaxDiameter;
