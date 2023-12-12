@@ -12,24 +12,24 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    ///     Contains information before a report is sent to local administrators.
+    /// Contains information before a report is sent to local administrators.
     /// </summary>
     public class LocalReportingEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="LocalReportingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="LocalReportingEventArgs" /> class.
         /// </summary>
         /// <param name="issuer">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="target">
-        ///     <inheritdoc cref="Target" />
+        /// <inheritdoc cref="Target" />
         /// </param>
         /// <param name="reason">
-        ///     <inheritdoc cref="Reason" />
+        /// <inheritdoc cref="Reason" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public LocalReportingEventArgs(Player issuer, Player target, string reason, bool isAllowed = true)
         {
@@ -40,22 +40,22 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the reported player.
+        /// Gets the reported player.
         /// </summary>
         public Player Target { get; }
 
         /// <summary>
-        ///     Gets or sets the report reason.
+        /// Gets or sets the report reason.
         /// </summary>
         public string Reason { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the report can be processed or not.
+        /// Gets or sets a value indicating whether the report can be processed or not.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the reporter.
+        /// Gets the reporter.
         /// </summary>
         public Player Player { get; }
     }

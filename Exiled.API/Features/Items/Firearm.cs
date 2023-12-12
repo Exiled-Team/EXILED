@@ -130,13 +130,13 @@ namespace Exiled.API.Features.Items
                 switch (Base.AmmoManagerModule)
                 {
                     case TubularMagazineAmmoManager tubularMagazineAmmoManager:
-                        tubularMagazineAmmoManager.MaxAmmo = value;
+                        tubularMagazineAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier) - (Base.Status.Flags.HasFlagFast(FirearmStatusFlags.Cocked) ? tubularMagazineAmmoManager.ChamberedRounds : 0));
                         break;
                     case ClipLoadedInternalMagAmmoManager clipLoadedInternalMagAmmoManager:
-                        clipLoadedInternalMagAmmoManager.MaxAmmo = value;
+                        clipLoadedInternalMagAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier));
                         break;
                     case AutomaticAmmoManager automaticAmmoManager:
-                        automaticAmmoManager.MaxAmmo = value;
+                        automaticAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier) - automaticAmmoManager.ChamberedAmount);
                         break;
                     default:
                         Log.Warn($"MaxAmmo can't be used for this Item: {Type} ({Base.AmmoManagerModule})");

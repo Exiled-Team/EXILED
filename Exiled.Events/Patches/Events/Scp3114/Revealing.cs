@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Scp3114
     using static PlayerRoles.PlayableScps.Scp3114.Scp3114Identity;
 
     /// <summary>
-    ///     Patches <see cref="Scp3114Identity.Update" /> setter.
-    ///     Adds the <see cref="Handlers.Scp3114.Revealed" /> and <see cref="Handlers.Scp3114.Revealing" /> event.
+    /// Patches <see cref="Scp3114Identity.Update" /> setter.
+    /// Adds the <see cref="Handlers.Scp3114.Revealed" /> and <see cref="Handlers.Scp3114.Revealing" /> event.
     /// </summary>
     [EventPatch(typeof(Scp3114), nameof(Scp3114.Revealed))]
     [EventPatch(typeof(Scp3114), nameof(Scp3114.Revealing))]
@@ -56,8 +56,8 @@ namespace Exiled.Events.Patches.Events.Scp3114
     }
 
     /// <summary>
-    ///     Patches <see cref="Scp3114Reveal.ServerProcessCmd" />.
-    ///     Adds the <see cref="Handlers.Scp3114.Revealed" /> and <see cref="Handlers.Scp3114.Revealing" /> event.
+    /// Patches <see cref="Scp3114Reveal.ServerProcessCmd" />.
+    /// Adds the <see cref="Handlers.Scp3114.Revealed" /> and <see cref="Handlers.Scp3114.Revealing" /> event.
     /// </summary>
     [EventPatch(typeof(Scp3114), nameof(Scp3114.Revealed))]
     [EventPatch(typeof(Scp3114), nameof(Scp3114.Revealing))]

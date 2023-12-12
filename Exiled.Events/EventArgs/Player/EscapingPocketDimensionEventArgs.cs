@@ -14,18 +14,18 @@ namespace Exiled.Events.EventArgs.Player
     using UnityEngine;
 
     /// <summary>
-    ///     Contains all information before a player escapes the pocket dimension.
+    /// Contains all information before a player escapes the pocket dimension.
     /// </summary>
     public class EscapingPocketDimensionEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="EscapingPocketDimensionEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="EscapingPocketDimensionEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="position">
-        ///     <inheritdoc cref="TeleportPosition" />
+        /// <inheritdoc cref="TeleportPosition" />
         /// </param>
         public EscapingPocketDimensionEventArgs(Player player, Vector3 position)
         {
@@ -34,17 +34,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the player who's escaping the pocket dimension.
+        /// Gets the player who's escaping the pocket dimension.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets or sets the position in which the player is going to be teleported to.
+        /// Gets or sets the position in which the player is going to be teleported to.
         /// </summary>
         public Vector3 TeleportPosition { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can successfully escape the pocket dimension.
+        /// Gets or sets a value indicating whether or not the player can successfully escape the pocket dimension.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }
