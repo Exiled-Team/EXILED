@@ -12,18 +12,18 @@ namespace Exiled.Events.EventArgs.Warhead
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information before stopping the warhead.
+    /// Contains all information before stopping the warhead.
     /// </summary>
     public class StoppingEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="StoppingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="StoppingEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public StoppingEventArgs(Player player, bool isAllowed = true)
         {
@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs.Warhead
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the warhead can be stopped.
+        /// Gets or sets a value indicating whether or not the warhead can be stopped.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the player who's going to stop the warhead.
+        /// Gets the player who's going to stop the warhead.
         /// </summary>
         public Player Player { get; }
     }

@@ -483,6 +483,11 @@ namespace Exiled.Events.Handlers
         public static Event<ItemAddedEventArgs> ItemAdded { get; set; } = new();
 
         /// <summary>
+        /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item removed from their inventory.
+        /// </summary>
+        public static Event<ItemRemovedEventArgs> ItemRemoved { get; set; } = new();
+
+        /// <summary>
         /// Invoked before KillPlayer is called.
         /// </summary>
         public static Event<KillingPlayerEventArgs> KillingPlayer { get; set; } = new();
@@ -937,6 +942,15 @@ namespace Exiled.Events.Handlers
         /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
         public static void OnItemAdded(ReferenceHub referenceHub, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase)
             => ItemAdded.InvokeSafely(new ItemAddedEventArgs(referenceHub, itemBase, pickupBase));
+
+        /// <summary>
+        /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item removed from their inventory.
+        /// </summary>
+        /// <param name="referenceHub">The <see cref="ReferenceHub"/> the item was removed from.</param>
+        /// <param name="itemBase">The removed <see cref="InventorySystem.Items.ItemBase"/>.</param>
+        /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
+        public static void OnItemRemoved(ReferenceHub referenceHub, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase)
+            => ItemRemoved.InvokeSafely(new ItemRemovedEventArgs(referenceHub, itemBase, pickupBase));
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> enters in an environmental hazard.

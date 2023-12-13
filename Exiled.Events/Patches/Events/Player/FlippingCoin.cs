@@ -22,9 +22,9 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches
-    ///     <see cref="Coin.ServerProcessCmd(NetworkReader)" />.
-    ///     Adds the <see cref="Handlers.Player.FlippingCoin" /> event.
+    /// Patches
+    /// <see cref="Coin.ServerProcessCmd(NetworkReader)" />.
+    /// Adds the <see cref="Handlers.Player.FlippingCoin" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.FlippingCoin))]
     [HarmonyPatch(typeof(Coin), nameof(Coin.ServerProcessCmd))]
