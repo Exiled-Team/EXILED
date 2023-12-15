@@ -63,6 +63,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets or sets the Pickup search duration.
         /// </summary>
+        /// <remarks>Setter is deprecated.</remarks>
         public float SearchTime
         {
             get;
