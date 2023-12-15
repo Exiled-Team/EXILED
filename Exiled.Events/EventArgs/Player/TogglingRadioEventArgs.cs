@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.Radio;
 
     /// <summary>
-    ///     Contains all information before radio preset is changed.
+    ///     Contains all information before toggling a radio.
     /// </summary>
     public class TogglingRadioEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {
@@ -50,12 +50,12 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => Radio;
 
         /// <summary>
-        ///     Gets or sets a value indicating whether new state of the radio.
+        ///     Gets a value indicating whether the radio is being turned on or off.
         /// </summary>
-        public bool NewState { get; set; }
+        public bool NewState { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the radio preset can be changed or not.
+        ///     Gets or sets a value indicating whether the radio can be turned on or off.
         /// </summary>
         public bool IsAllowed { get; set; }
 
