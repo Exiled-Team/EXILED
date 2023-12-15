@@ -49,6 +49,11 @@ namespace Exiled.Events.Handlers
         public static Event<VoiceLinesEventArgs> VoiceLines { get; set; } = new();
 
         /// <summary>
+        /// Invoked before SCP-3314 starts or stops dancing.
+        /// </summary>
+        public static Event<DancingEventArgs> Dancing { get; set; } = new();
+
+        /// <summary>
         /// Called before diguising.
         /// </summary>
         /// <param name="ev">The <see cref="DisguisingEventArgs" /> instance.</param>
@@ -83,5 +88,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="VoiceLinesEventArgs" /> instance.</param>
         public static void OnVoiceLines(VoiceLinesEventArgs ev) => VoiceLines.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-3314 starts or stops dancing.
+        /// </summary>
+        /// <param name="ev">The <see cref="DancingEventArgs"/> instance.</param>
+        public static void OnDancing(DancingEventArgs ev) => Dancing.InvokeSafely(ev);
     }
 }
