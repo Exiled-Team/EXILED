@@ -40,8 +40,6 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label retLabel = generator.DefineLabel();
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(TogglingRadioEventArgs));
-
             Predicate<CodeInstruction> match = instruction => instruction.opcode == OpCodes.Newobj && (ConstructorInfo)instruction.operand == GetDeclaredConstructors(typeof(PlayerRadioToggleEvent))[0];
             int offset = -4;
             int index = newInstructions.FindIndex(match) + offset;
