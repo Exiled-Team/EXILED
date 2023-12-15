@@ -113,21 +113,6 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Stloc_1),
                 });
 
-            offset = -5;
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_S && i.operand is LocalBuilder { LocalIndex: 4 }) + offset;
-
-            // remove base-game SearchTime setter
-            newInstructions.RemoveRange(index, 5);
-
-            newInstructions.InsertRange(
-                index,
-                new[]
-                {
-                    // num3 = ev.SearchTime
-                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(SearchingPickupEventArgs), nameof(SearchingPickupEventArgs.SearchTime))),
-                });
-
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 

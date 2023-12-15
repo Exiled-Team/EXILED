@@ -7,10 +7,11 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
-
     using InventorySystem.Items.Pickups;
     using InventorySystem.Searching;
 
@@ -43,7 +44,9 @@ namespace Exiled.Events.EventArgs.Player
             Pickup = Pickup.Get(pickup);
             SearchSession = searchSession;
             SearchCompletor = searchCompletor;
+#pragma warning disable CS0618 // Type or member is obsolete
             SearchTime = searchTime;
+#pragma warning restore CS0618 // Type or member is obsolete
             IsAllowed = searchCompletor.ValidateStart();
         }
 
@@ -60,7 +63,12 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets or sets the Pickup search duration.
         /// </summary>
-        public float SearchTime { get; set; }
+        public float SearchTime
+        {
+            get;
+            [Obsolete("Setter is deprecated and doing nothing.")]
+            set;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the Pickup can be searched.
