@@ -91,7 +91,7 @@ However, some plugins might get their config settings from other locations on th
 
 # For Developers
 
-If you wish to make a plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
+If you wish to make a plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
 
 For more comprehensive and actively updated tutorials, see [the EXILED website]((https://exiled-team.github.io/Web/docs/Plugins/Plugin%20Structure)).
 
