@@ -65,7 +65,8 @@ public void OnEnraging(EnragingEventArgs ev) // ev is the arguments for the even
 
 ## Async events
 
-Async events allows you to integrate coroutines and events functionalities.
+_Async events allow you to seamlessly integrate coroutines and event functionalities.
+You can find more information about MEC coroutines [here](https://github.com/Exiled-Team/EXILED#mec-coroutines)._
 More info about MEC coroutines can be found [here](https://github.com/Exiled-Team/EXILED#mec-coroutines).
 ```cs
 // Base plugin class
