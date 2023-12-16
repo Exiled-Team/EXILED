@@ -48,7 +48,7 @@ namespace Exiled.Events.Patches.Events.Server
             int offset = -1;
             int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(PlayerRolesUtils), nameof(PlayerRolesUtils.GetTeam), new Type[] { typeof(ReferenceHub), }))) + offset;
 
-            Label labelcontinu = generator.DefineLabel();
+            Label jmp = generator.DefineLabel();
 
             // if (Round.IgnoredPlayers.Contains(referencehub)
             //  goto labelcontinu;
