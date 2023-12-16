@@ -32,7 +32,6 @@ namespace Exiled.Events.Patches.Fixes
             Label ret = generator.DefineLabel();
             int offset = 1;
             int index = newInstructions.FindLastIndex(x => x.operand == (object)Method(typeof(ScpAttackAbilityBase<Scp3114Role>), nameof(ScpAttackAbilityBase<Scp3114Role>.HasAttackResultFlag))) + offset;
-            
             newInstructions[index].operand = ret;
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
