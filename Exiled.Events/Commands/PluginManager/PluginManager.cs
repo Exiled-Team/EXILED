@@ -47,7 +47,7 @@ namespace Exiled.Events.Commands.PluginManager
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Please, specify a valid subcommand! Available ones: enable, disable, show";
+            response = "Please, specify a valid subcommand! Available ones: enable, disable, show, patches";
             return false;
         }
     }
