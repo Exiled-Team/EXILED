@@ -786,7 +786,7 @@ namespace Exiled.CustomRoles.API.Features
             if (Enum.TryParse(itemName, out ItemType type))
             {
                 if (type.IsAmmo())
-                    player.SetAmmo(type.GetAmmoType(), InventoryItemLoader.TryGetItem(type, out ItemBase iBase) && iBase.PickupDropModel is AmmoPickup pickup ? (ushort)pickup.MaxAmmo : (ushort)100);
+                    player.AddAmmo(type.GetAmmoType(), InventoryItemLoader.TryGetItem(type, out ItemBase iBase) && iBase.PickupDropModel is AmmoPickup pickup ? (ushort)pickup.MaxAmmo : (ushort)100);
                 else
                     player.AddItem(type);
 
