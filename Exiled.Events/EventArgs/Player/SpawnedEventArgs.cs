@@ -16,12 +16,12 @@ namespace Exiled.Events.EventArgs.Player
     using PlayerRoles;
 
     /// <summary>
-    ///     Contains all information after spawning a player.
+    /// Contains all information after spawning a player.
     /// </summary>
     public class SpawnedEventArgs : IPlayerEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SpawnedEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="SpawnedEventArgs" /> class.
         /// </summary>
         /// <param name="player">the spawned player.</param>
         /// <param name="oldRole">the spawned player's old <see cref="PlayerRoleBase">role</see>.</param>
@@ -34,22 +34,22 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the <see cref="API.Features.Player" /> who spawned.
+        /// Gets the <see cref="API.Features.Player" /> who spawned.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets the player's old <see cref="PlayerRoleBase">role</see>.
+        /// Gets the player's old <see cref="PlayerRoleBase">role</see>.
         /// </summary>
         public Role OldRole { get; }
 
         /// <summary>
-        ///     Gets the reason for their class change.
+        /// Gets the reason for their class change.
         /// </summary>
         public SpawnReason Reason { get; }
 
         /// <summary>
-        ///     Gets the spawn flags for their class change.
+        /// Gets the spawn flags for their class change.
         /// </summary>
         public RoleSpawnFlags SpawnFlags { get; }
     }

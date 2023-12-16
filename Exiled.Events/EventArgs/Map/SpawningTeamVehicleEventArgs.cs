@@ -11,18 +11,18 @@ namespace Exiled.Events.EventArgs.Map
     using Respawning;
 
     /// <summary>
-    ///     Contains all information before the server spawns a team's respawn vehicle.
+    /// Contains all information before the server spawns a team's respawn vehicle.
     /// </summary>
     public class SpawningTeamVehicleEventArgs : IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SpawningTeamVehicleEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="SpawningTeamVehicleEventArgs" /> class.
         /// </summary>
         /// <param name="team">
-        ///     The team who the vehicle belongs to.
+        /// The team who the vehicle belongs to.
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public SpawningTeamVehicleEventArgs(SpawnableTeamType team, bool isAllowed = true)
         {
@@ -31,13 +31,13 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        ///     Gets or sets which vehicle should spawn.
+        /// Gets or sets which vehicle should spawn.
         /// </summary>
         public SpawnableTeamType Team { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the vehicle can be spawned.
+        /// Gets or sets a value indicating whether or not the vehicle can be spawned.
         /// </summary>
-        public bool IsAllowed { get; set; } = true;
+        public bool IsAllowed { get; set; }
     }
 }

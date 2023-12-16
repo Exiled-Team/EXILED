@@ -119,9 +119,31 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets the max ammo for this firearm.
+        /// Gets or sets the max ammo for this firearm.
         /// </summary>
-        public byte MaxAmmo => Base.AmmoManagerModule.MaxAmmo;
+        /// <remarks>Disruptor can't be used for MaxAmmo.</remarks>
+        public byte MaxAmmo
+        {
+            get => Base.AmmoManagerModule.MaxAmmo;
+            set
+            {
+                switch (Base.AmmoManagerModule)
+                {
+                    case TubularMagazineAmmoManager tubularMagazineAmmoManager:
+                        tubularMagazineAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier) - (Base.Status.Flags.HasFlagFast(FirearmStatusFlags.Cocked) ? tubularMagazineAmmoManager.ChamberedRounds : 0));
+                        break;
+                    case ClipLoadedInternalMagAmmoManager clipLoadedInternalMagAmmoManager:
+                        clipLoadedInternalMagAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier));
+                        break;
+                    case AutomaticAmmoManager automaticAmmoManager:
+                        automaticAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier) - automaticAmmoManager.ChamberedAmount);
+                        break;
+                    default:
+                        Log.Warn($"MaxAmmo can't be used for this Item: {Type} ({Base.AmmoManagerModule})");
+                        return;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="Enums.FirearmType"/> of the firearm.
@@ -142,6 +164,16 @@ namespace Exiled.API.Features.Items
         /// Gets a value indicating whether the firearm's flashlight module is enabled.
         /// </summary>
         public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
+
+        /// <summary>
+        /// Gets a value indicating whether the firearm's NightVision is being used.
+        /// </summary>
+        public bool NightVisionEnabled => Aiming && Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.NightVision);
+
+        /// <summary>
+        /// Gets a value indicating whether the firearm's flashlight module is enabled or NightVision is being used.
+        /// </summary>
+        public bool CanSeeThroughDark => FlashlightEnabled || NightVisionEnabled;
 
         /// <summary>
         /// Gets a value indicating whether or not the firearm is automatic.

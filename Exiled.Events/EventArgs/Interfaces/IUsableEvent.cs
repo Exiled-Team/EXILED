@@ -10,12 +10,12 @@ namespace Exiled.Events.EventArgs.Interfaces
     using Exiled.API.Features.Items;
 
     /// <summary>
-    ///     Event args used for all <see cref="Usable" /> related events.
+    /// Event args used for all <see cref="Usable" /> related events.
     /// </summary>
     public interface IUsableEvent : IItemEvent
     {
         /// <summary>
-        ///     Gets the <see cref="Usable" /> triggering the event.
+        /// Gets the <see cref="Usable" /> triggering the event.
         /// </summary>
         public Usable Usable { get; }
     }

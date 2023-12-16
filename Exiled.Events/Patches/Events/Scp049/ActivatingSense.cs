@@ -26,8 +26,8 @@ namespace Exiled.Events.Patches.Events.Scp049
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp049SenseAbility.ServerProcessCmd" />.
-    ///     Adds the <see cref="Handlers.Scp049.ActivatingSense" /> event.
+    /// Patches <see cref="Scp049SenseAbility.ServerProcessCmd" />.
+    /// Adds the <see cref="Handlers.Scp049.ActivatingSense" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.ServerProcessCmd))]
     public class ActivatingSense
