@@ -25,7 +25,7 @@ namespace Exiled.API.Features.Core
 
         /// <inheritdoc/>
         public TObject Cast<TObject>()
-            where TObject : class, T => this as T as TObject;
+            where TObject : class, T => this as TObject;
 
         /// <inheritdoc/>
         public bool Cast<TObject>(out TObject param)
@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Core
         {
             param = default;
 
-            if (this as TObject is not TObject cast)
+            if (this is not TObject cast)
                 return false;
 
             param = cast;

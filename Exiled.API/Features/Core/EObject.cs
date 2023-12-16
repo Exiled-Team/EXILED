@@ -322,7 +322,7 @@ namespace Exiled.API.Features.Core
         public static EObject CreateDefaultSubobject(Type type, params object[] parameters)
         {
             BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-            EObject @object = Activator.CreateInstance(type, flags, null, parameters, null) is not EObject outer ? null : outer;
+            EObject @object = Activator.CreateInstance(type, flags, null, parameters, null) as EObject;
 
             // Do not use implicit bool conversion as @object may be null
             if (@object != null)
