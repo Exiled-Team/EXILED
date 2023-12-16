@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Server
             Label jmp = generator.DefineLabel();
 
             // if (Round.IgnoredPlayers.Contains(referencehub)
-            //  goto labelcontinu;
+            //  goto jmp;
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
