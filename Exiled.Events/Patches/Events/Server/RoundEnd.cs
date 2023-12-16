@@ -65,7 +65,7 @@ namespace Exiled.Events.Patches.Events.Server
             offset = 4;
             index = newInstructions.FindIndex(x => x.Calls(Method(typeof(PlayerRolesUtils), nameof(PlayerRolesUtils.GetTeam), new Type[] { typeof(ReferenceHub), }))) + offset;
 
-            newInstructions[index].labels.Add(labelcontinu);
+            newInstructions[index].labels.Add(jmp);
 
             // Replace ChaosTargetCount == 0 with ChaosTargetCount <= 0
             offset = 1;
