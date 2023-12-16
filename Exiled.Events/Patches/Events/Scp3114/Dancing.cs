@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Dancing.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -35,11 +35,11 @@ namespace Exiled.Events.Patches.Events.Scp3114
 
             LocalBuilder ev = generator.DeclareLocal(typeof(DancingEventArgs));
 
+            // reader.ReadBool()
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
-                    // reader.ReadBool();
                     // Player.Get(this.Owner);
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp3114Dance), nameof(Scp3114Dance.Owner))),
