@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <inheritdoc cref="VoiceModule" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public TransmittingEventArgs(Player player, VoiceModuleBase voiceModule, bool isAllowed = true)
         {

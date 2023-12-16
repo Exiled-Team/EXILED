@@ -27,9 +27,9 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="VoiceTransceiver.ServerReceiveMessage(NetworkConnection, VoiceMessage)"/>.
-    ///     Adds the <see cref="Handlers.Player.VoiceChatting"/> event.
-    ///     Adds the <see cref="Handlers.Player.Transmitting"/> event.
+    /// Patches <see cref="VoiceTransceiver.ServerReceiveMessage(NetworkConnection, VoiceMessage)"/>.
+    /// Adds the <see cref="Handlers.Player.VoiceChatting"/> event.
+    /// Adds the <see cref="Handlers.Player.Transmitting"/> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.VoiceChatting))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Transmitting))]
