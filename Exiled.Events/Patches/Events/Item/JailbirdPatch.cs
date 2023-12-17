@@ -21,9 +21,9 @@ namespace Exiled.Events.Patches.Events.Item
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches
-    ///     <see cref="JailbirdItem.ServerProcessCmd(NetworkReader)" />.
-    ///     Adds the <see cref="Item.Swinging" /> event and <see cref="Item.ChargingJailbird" />.
+    /// Patches
+    /// <see cref="JailbirdItem.ServerProcessCmd(NetworkReader)" />.
+    /// Adds the <see cref="Item.Swinging" /> event and <see cref="Item.ChargingJailbird" />.
     /// </summary>
     [EventPatch(typeof(Item), nameof(Item.Swinging))]
     [EventPatch(typeof(Item), nameof(Item.ChargingJailbird))]
@@ -88,8 +88,10 @@ namespace Exiled.Events.Patches.Events.Item
                     ChargingJailbirdEventArgs ev = new(instance.Owner, instance);
 
                     Item.OnChargingJailbird(ev);
-
-                    return ev.IsAllowed;
+                    if (ev.IsAllowed)
+                            return true;
+                    instance.SendRpc(JailbirdMessageType.ChargeFailed, null);
+                    return false;
                 }
 
                 default:

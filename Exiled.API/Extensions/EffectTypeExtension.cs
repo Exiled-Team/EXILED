@@ -12,11 +12,9 @@ namespace Exiled.API.Extensions
     using System.Linq;
 
     using CustomPlayerEffects;
-
     using Enums;
-
+    using InventorySystem.Items.MarshmallowMan;
     using InventorySystem.Items.Usables.Scp244.Hypothermia;
-
     using PlayerRoles.FirstPersonControl;
 
     /// <summary>
@@ -66,6 +64,12 @@ namespace Exiled.API.Extensions
             { EffectType.Traumatized, typeof(Traumatized) },
             { EffectType.AntiScp207, typeof(AntiScp207) },
             { EffectType.Scanned, typeof(Scanned) },
+            { EffectType.SilentWalk, typeof(SilentWalk) },
+#pragma warning disable CS0618
+            { EffectType.Marshmallow, typeof(MarshmallowEffect) },
+#pragma warning restore CS0618
+            { EffectType.Strangled, typeof(Strangled) },
+            { EffectType.Ghostly, typeof(Ghostly) },
         };
 
         /// <summary>
@@ -82,12 +86,38 @@ namespace Exiled.API.Extensions
             => EffectTypeToType.TryGetValue(effect, out Type type) ? type : throw new InvalidOperationException("Invalid effect enum provided");
 
         /// <summary>
+        /// Gets an instance of <see cref="System.Type"/> points to an effect.
+        /// </summary>
+        /// <param name="effect">The <see cref="EffectType"/> enum.</param>
+        /// <param name="type">The type found with the corresponding EffecType.</param>
+        /// <returns>Whether or not the effectType has been found.</returns>
+        public static bool TryGetType(this EffectType effect, out Type type)
+            => EffectTypeToType.TryGetValue(effect, out type);
+
+        /// <summary>
         /// Gets the <see cref="EffectType"/> of the specified <see cref="StatusEffectBase"/>.
         /// </summary>
         /// <param name="statusEffectBase">The <see cref="StatusEffectBase"/> enum.</param>
         /// <returns>The <see cref="EffectType"/>.</returns>
         public static EffectType GetEffectType(this StatusEffectBase statusEffectBase)
             => TypeToEffectType.TryGetValue(statusEffectBase.GetType(), out EffectType effect) ? effect : throw new InvalidOperationException("Invalid effect status base provided");
+
+        /// <summary>
+        /// Gets the <see cref="EffectType"/> of the specified <see cref="StatusEffectBase"/>.
+        /// </summary>
+        /// <param name="statusEffectBase">The <see cref="StatusEffectBase"/> enum.</param>
+        /// <param name="effect">The effect found.</param>
+        /// <returns>Whether or not the effect has been found.</returns>
+        public static bool TryGetEffectType(this StatusEffectBase statusEffectBase, out EffectType effect)
+        {
+            if (statusEffectBase == null || !TypeToEffectType.TryGetValue(statusEffectBase.GetType(), out effect))
+            {
+                effect = EffectType.None;
+                return false;
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> drains health over time.
@@ -97,7 +127,7 @@ namespace Exiled.API.Extensions
         /// <seealso cref="IsHealing(EffectType)"/>
         public static bool IsHarmful(this EffectType effect) => effect is EffectType.Asphyxiated or EffectType.Bleeding
             or EffectType.Corroding or EffectType.Decontaminating or EffectType.Hemorrhage or EffectType.Hypothermia
-            or EffectType.Poisoned or EffectType.Scp207 or EffectType.SeveredHands;
+            or EffectType.Poisoned or EffectType.Scp207 or EffectType.SeveredHands or EffectType.Strangled;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> heals a player.
@@ -105,7 +135,7 @@ namespace Exiled.API.Extensions
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect heals.</returns>
         /// <seealso cref="IsHarmful(EffectType)"/>
-        public static bool IsHealing(this EffectType effect) => typeof(IHealablePlayerEffect).IsAssignableFrom(effect.Type());
+        public static bool IsHealing(this EffectType effect) => effect.TryGetType(out Type type) && typeof(IHealablePlayerEffect).IsAssignableFrom(type);
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> is a negative effect.
@@ -126,21 +156,21 @@ namespace Exiled.API.Extensions
         /// <seealso cref="IsHealing(EffectType)"/>
         public static bool IsPositive(this EffectType effect) => effect is EffectType.BodyshotReduction or EffectType.DamageReduction
             or EffectType.Invigorated or EffectType.Invisible or EffectType.MovementBoost or EffectType.RainbowTaste
-            or EffectType.Scp207 or EffectType.Scp1853 or EffectType.Vitality or EffectType.AntiScp207;
+            or EffectType.Scp207 or EffectType.Scp1853 or EffectType.Vitality or EffectType.AntiScp207 or EffectType.Ghostly;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> affects the player's movement speed.
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect modifies the player's movement speed.</returns>
-        public static bool IsMovement(this EffectType effect) => typeof(IMovementSpeedModifier).IsAssignableFrom(effect.Type());
+        public static bool IsMovement(this EffectType effect) => effect.TryGetType(out Type type) && typeof(IMovementSpeedModifier).IsAssignableFrom(type);
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> is displayed to spectators as text.
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect is displayed to spectators as text.</returns>
-        public static bool IsDisplayed(this EffectType effect) => typeof(ISpectatorDataPlayerEffect).IsAssignableFrom(effect.Type());
+        public static bool IsDisplayed(this EffectType effect) => effect.TryGetType(out Type type) && typeof(ISpectatorDataPlayerEffect).IsAssignableFrom(type);
 
         /// <summary>
         /// Returns the <see cref="EffectCategory"/> of the given <paramref name="effect"/>.

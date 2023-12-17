@@ -12,12 +12,12 @@ namespace Exiled.Events.EventArgs.Player
     using MapGeneration.Distributors;
 
     /// <summary>
-    ///     Contains all information before a player flips the switch of the generator.
+    /// Contains all information before a player turns off a generator.
     /// </summary>
     public class StoppingGeneratorEventArgs : IPlayerEvent, IGeneratorEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="StoppingGeneratorEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="StoppingGeneratorEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player who's flipping the switch.</param>
         /// <param name="generator">The <see cref="Scp079Generator" /> instance.</param>
@@ -30,17 +30,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the switch can be flipped.
+        /// Gets or sets a value indicating whether or not the switch can be flipped.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the <see cref="Generator" /> instance.
+        /// Gets the <see cref="Generator" /> instance.
         /// </summary>
         public Generator Generator { get; }
 
         /// <summary>
-        ///     Gets the player who's filpping the switch of the generator.
+        /// Gets the player who's filpping the switch of the generator.
         /// </summary>
         public Player Player { get; }
     }

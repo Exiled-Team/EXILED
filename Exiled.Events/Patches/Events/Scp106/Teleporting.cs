@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp106
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Scp106HuntersAtlasAbility.GetSafePosition" />.
-    ///     Adds the <see cref="Scp106.Teleporting" /> event.
+    /// Patches <see cref="Scp106HuntersAtlasAbility.GetSafePosition" />.
+    /// Adds the <see cref="Scp106.Teleporting" /> event.
     /// </summary>
     [EventPatch(typeof(Scp106), nameof(Scp106.Teleporting))]
     [HarmonyPatch(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.GetSafePosition))]
@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                 index,
                 new[]
                 {
-                    // Player player = Player.Get(this.Owner);
+                    // Player.Get(this.Owner);
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),

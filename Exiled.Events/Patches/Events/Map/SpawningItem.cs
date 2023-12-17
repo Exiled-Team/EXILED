@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="ItemDistributor.SpawnPickup" />.
-    ///     Adds the <see cref="Map.SpawningItem" /> event.
+    /// Patches <see cref="ItemDistributor.SpawnPickup" />.
+    /// Adds the <see cref="Map.SpawningItem" /> event.
     /// </summary>
     [EventPatch(typeof(Map), nameof(Map.SpawningItem))]
     [HarmonyPatch(typeof(ItemDistributor), nameof(ItemDistributor.CreatePickup))]
@@ -109,12 +109,6 @@ namespace Exiled.Events.Patches.Events.Map
 
                     new(OpCodes.And),
                     new(OpCodes.Brtrue_S, doorSpawn),
-
-                    // pickup.Spawned = true
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.Pickup))),
-                    new(OpCodes.Ldc_I4_1),
-                    new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.IsSpawned))),
                 });
 
             lastIndex = newInstructions.FindLastIndex(instruction => instruction.IsLdarg(0));

@@ -14,12 +14,12 @@ namespace Exiled.Events.EventArgs.Map
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
-    ///     Contains all information for when the server is turning a pickup into a live grenade.
+    /// Contains all information for when the server is turning a pickup into a live grenade.
     /// </summary>
     public class ChangingIntoGrenadeEventArgs : IDeniableEvent, IPickupEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ChangingIntoGrenadeEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ChangingIntoGrenadeEventArgs" /> class.
         /// </summary>
         /// <param name="pickup">The <see cref="API.Features.Pickups.Pickup"/> being changed.</param>
         public ChangingIntoGrenadeEventArgs(TimedGrenadePickup pickup)
@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        /// Gets a value indicating the pickup being changed.
+        /// Gets a value indicating the pickup being changed into a grenade.
         /// </summary>
         public Pickup Pickup { get; }
 
@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs.Map
         public ItemType Type { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the pickup will be changed.
+        /// Gets or sets a value indicating whether the pickup will be changed.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

@@ -18,21 +18,21 @@ namespace Exiled.Events.EventArgs.Player
     using UnityEngine;
 
     /// <summary>
-    ///     Contains all information before spawning a player ragdoll.
+    /// Contains all information before spawning a player ragdoll.
     /// </summary>
     public class SpawningRagdollEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SpawningRagdollEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="SpawningRagdollEventArgs" /> class.
         /// </summary>
         /// <param name="info">
-        ///     <inheritdoc cref="Info" />
+        /// <inheritdoc cref="Info" />
         /// </param>
         /// <param name="damageHandlerBase">
-        ///     <inheritdoc cref="DamageHandlerBase" />
+        /// <inheritdoc cref="DamageHandlerBase" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public SpawningRagdollEventArgs(RagdollData info, DamageHandlerBase damageHandlerBase, bool isAllowed = true)
         {
@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets the spawning position of the ragdoll.
+        /// Gets or sets the spawning position of the ragdoll.
         /// </summary>
         public Vector3 Position
         {
@@ -53,7 +53,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets the ragdoll's rotation.
+        /// Gets or sets the ragdoll's rotation.
         /// </summary>
         public Quaternion Rotation
         {
@@ -62,12 +62,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets the ragdoll's scale.
+        /// Gets or sets the ragdoll's scale.
         /// </summary>
         public Vector3 Scale { get; set; }
 
         /// <summary>
-        ///     Gets or sets the ragdoll's <see cref="RoleTypeId" />.
+        /// Gets or sets the ragdoll's <see cref="RoleTypeId" />.
         /// </summary>
         public RoleTypeId Role
         {
@@ -76,12 +76,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the ragdoll's creation time.
+        /// Gets the ragdoll's creation time.
         /// </summary>
         public double CreationTime => Info.CreationTime;
 
         /// <summary>
-        ///     Gets or sets the ragdoll's nickname.
+        /// Gets or sets the ragdoll's nickname.
         /// </summary>
         public string Nickname
         {
@@ -90,22 +90,22 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets the ragdoll's <see cref="RagdollData" />.
+        /// Gets or sets the ragdoll's <see cref="RagdollData" />.
         /// </summary>
         public RagdollData Info { get; set; }
 
         /// <summary>
-        ///     Gets or sets the ragdoll's <see cref="PlayerStatsSystem.DamageHandlerBase" />.
+        /// Gets or sets the ragdoll's <see cref="PlayerStatsSystem.DamageHandlerBase" />.
         /// </summary>
         public DamageHandlerBase DamageHandlerBase { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the ragdoll can be spawned.
+        /// Gets or sets a value indicating whether or not the ragdoll can be spawned.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the <see cref="Player">Owner</see> of the ragdoll.
+        /// Gets the <see cref="Player">Owner</see> of the ragdoll.
         /// </summary>
         public Player Player { get; }
     }

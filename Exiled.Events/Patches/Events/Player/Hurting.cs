@@ -26,10 +26,11 @@ namespace Exiled.Events.Patches.Events.Player
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="PlayerStats.DealDamage(DamageHandlerBase)" />.
-    ///     Adds the <see cref="Handlers.Player.Hurting" /> event.
+    /// Patches <see cref="PlayerStats.DealDamage(DamageHandlerBase)" />.
+    /// Adds the <see cref="Handlers.Player.Hurting" /> event and <see cref="Handlers.Player.Hurt" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Hurting))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Hurt))]
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.DealDamage))]
     internal static class Hurting
     {
@@ -43,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label notRecontainment = generator.DefineLabel();
             Label ret = generator.DefineLabel();
 
-            const int offset = 1;
+            int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
             newInstructions.InsertRange(
@@ -96,6 +97,27 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brfalse, ret),
                 });
 
+            offset = 2;
+            index = newInstructions.FindIndex(instruction => instruction.operand == (object)Method(typeof(DamageHandlerBase), nameof(DamageHandlerBase.ApplyDamage))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // HurtEventArgs ev = new(player, handler, handleroutput)
+                    new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldloc_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(HurtEventArgs))[0]),
+                    new(OpCodes.Dup),
+
+                    // Handlers.Player.OnHurt(ev);
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHurt))),
+
+                    // handlerOutput = ev.HandlerOutput;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(HurtEventArgs), nameof(HurtEventArgs.HandlerOutput))),
+                    new(OpCodes.Stloc_1),
+                });
             newInstructions[newInstructions.Count - 1].WithLabels(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)

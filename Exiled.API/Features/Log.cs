@@ -12,7 +12,7 @@ namespace Exiled.API.Features
     using System.Reflection;
 
     /// <summary>
-    /// A set of tools to print messages on the server console.
+    /// A set of tools to print messages to the server console.
     /// </summary>
     public static class Log
     {
@@ -156,8 +156,8 @@ namespace Exiled.API.Features
         /// Sends an <see cref="Error(object)"/> with the provided message if the condition is false and stops the execution.
         /// <example> For example:
         /// <code>
-        ///     Player ply = Player.Get(2);
-        ///     Log.Assert(ply is not null, "The player with the id 2 is null");
+        /// Player ply = Player.Get(2);
+        /// Log.Assert(ply is not null, "The player with the id 2 is null");
         /// </code>
         /// results in it logging an error if the player is null and not continuing.
         /// </example>

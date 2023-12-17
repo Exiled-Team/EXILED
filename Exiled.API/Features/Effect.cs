@@ -15,7 +15,7 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
 
     /// <summary>
-    /// Useful class to save effect configs in a cleaner way.
+    /// Useful class to save effect-related configs cleanly.
     /// </summary>
     public class Effect
     {
@@ -32,7 +32,9 @@ namespace Exiled.API.Features
         /// <param name="statusEffectBase">Get all the information of the effect>.</param>
         public Effect(StatusEffectBase statusEffectBase)
         {
-            Type = statusEffectBase.GetEffectType();
+            if (statusEffectBase.TryGetEffectType(out EffectType effect))
+                Log.Error($"EffectType not found please report to Exiled BugReport : {statusEffectBase}");
+            Type = effect;
             Duration = statusEffectBase.Duration;
             Intensity = statusEffectBase.Intensity;
             IsEnabled = statusEffectBase.IsEnabled;

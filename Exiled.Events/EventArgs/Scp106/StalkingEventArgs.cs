@@ -7,16 +7,16 @@
 
 namespace Exiled.Events.EventArgs.Scp106
 {
+    using System;
+
     using API.Features;
-
     using Interfaces;
-
     using PlayerRoles.PlayableScps.Scp106;
 
     using Scp106Role = API.Features.Roles.Scp106Role;
 
     /// <summary>
-    ///     Contains all information before SCP-106 use the stalk ability.
+    /// Contains all information before SCP-106 uses the stalk ability.
     /// </summary>
     public class StalkingEventArgs : IScp106Event, IDeniableEvent
     {
@@ -24,27 +24,31 @@ namespace Exiled.Events.EventArgs.Scp106
         /// Initializes a new instance of the <see cref="StalkingEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="scp106StalkAbility"><inheritdoc cref="Scp106StalkAbility"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public StalkingEventArgs(Player player, Scp106StalkAbility scp106StalkAbility, bool isAllowed = true)
+        public StalkingEventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
-            Scp106 = Player.Role.As<Scp106Role>();
-            Scp106StalkAbility = scp106StalkAbility;
+            Scp106 = player.Role.As<Scp106Role>();
             IsAllowed = isAllowed;
-            Vigor = scp106StalkAbility.Vigor.CurValue;
             MinimumVigor = Scp106StalkAbility.MinVigorToSubmerge;
         }
 
         /// <summary>
         /// Gets the <see cref="Scp106StalkAbility"/>.
         /// </summary>
-        public Scp106StalkAbility Scp106StalkAbility { get; }
+        [Obsolete("Use Scp106.StalkAbility instead of this")]
+        public Scp106StalkAbility Scp106StalkAbility => Scp106.StalkAbility;
 
         /// <summary>
         /// Gets or sets the current vigor when SCP-106 starts to stalk.
         /// </summary>
-        public float Vigor { get; set; }
+        public float Vigor
+        {
+            [Obsolete("Use Scp106.Vigor instead of this")]
+            get => Scp106.Vigor;
+            [Obsolete("Use Scp106.Vigor instead of this")]
+            set => Scp106.Vigor = value;
+        }
 
         /// <summary>
         /// Gets or sets the required minimum vigor to stalk.

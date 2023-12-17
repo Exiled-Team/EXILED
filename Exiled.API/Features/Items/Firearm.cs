@@ -21,6 +21,7 @@ namespace Exiled.API.Features.Items
 
     using Extensions;
 
+    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
@@ -118,9 +119,31 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets the max ammo for this firearm.
+        /// Gets or sets the max ammo for this firearm.
         /// </summary>
-        public byte MaxAmmo => Base.AmmoManagerModule.MaxAmmo;
+        /// <remarks>Disruptor can't be used for MaxAmmo.</remarks>
+        public byte MaxAmmo
+        {
+            get => Base.AmmoManagerModule.MaxAmmo;
+            set
+            {
+                switch (Base.AmmoManagerModule)
+                {
+                    case TubularMagazineAmmoManager tubularMagazineAmmoManager:
+                        tubularMagazineAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier) - (Base.Status.Flags.HasFlagFast(FirearmStatusFlags.Cocked) ? tubularMagazineAmmoManager.ChamberedRounds : 0));
+                        break;
+                    case ClipLoadedInternalMagAmmoManager clipLoadedInternalMagAmmoManager:
+                        clipLoadedInternalMagAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier));
+                        break;
+                    case AutomaticAmmoManager automaticAmmoManager:
+                        automaticAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier) - automaticAmmoManager.ChamberedAmount);
+                        break;
+                    default:
+                        Log.Warn($"MaxAmmo can't be used for this Item: {Type} ({Base.AmmoManagerModule})");
+                        return;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="Enums.FirearmType"/> of the firearm.
@@ -141,6 +164,16 @@ namespace Exiled.API.Features.Items
         /// Gets a value indicating whether the firearm's flashlight module is enabled.
         /// </summary>
         public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
+
+        /// <summary>
+        /// Gets a value indicating whether the firearm's NightVision is being used.
+        /// </summary>
+        public bool NightVisionEnabled => Aiming && Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.NightVision);
+
+        /// <summary>
+        /// Gets a value indicating whether the firearm's flashlight module is enabled or NightVision is being used.
+        /// </summary>
+        public bool CanSeeThroughDark => FlashlightEnabled || NightVisionEnabled;
 
         /// <summary>
         /// Gets a value indicating whether or not the firearm is automatic.
@@ -365,6 +398,16 @@ namespace Exiled.API.Features.Items
         public void ClearAttachments() => Base.ApplyAttachmentsCode(BaseCode, true);
 
         /// <summary>
+        /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
+        /// </summary>
+        /// <param name="position">The location to spawn the item.</param>
+        /// <param name="rotation">The rotation of the item.</param>
+        /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
+        /// <returns>The created <see cref="Pickup"/>.</returns>
+        public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
+            => base.CreatePickup(position, rotation, spawn); // TODO: Deleted this overide
+
+        /// <summary>
         /// Gets a <see cref="Attachment"/> of the specified <see cref="AttachmentIdentifier"/>.
         /// </summary>
         /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to check.</param>
@@ -557,30 +600,6 @@ namespace Exiled.API.Features.Items
         {
             foreach (Player player in Player.List)
                 ClearPreferences(player);
-        }
-
-        /// <summary>
-        /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
-        /// </summary>
-        /// <param name="position">The location to spawn the item.</param>
-        /// <param name="rotation">The rotation of the item.</param>
-        /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
-        /// <returns>The created <see cref="Pickup"/>.</returns>
-        public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
-        {
-            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
-
-            ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-            ipb.gameObject.transform.localScale = Scale;
-
-            FirearmPickup pickup = Pickup.Get(ipb).As<FirearmPickup>();
-
-            pickup.Status = Base.Status;
-
-            if (spawn)
-                pickup.Spawn();
-
-            return pickup;
         }
 
         /// <summary>

@@ -16,18 +16,18 @@ namespace Exiled.Events.EventArgs.Player
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
-    ///     Contains all information before a player gets damaged.
+    /// Contains all information before a player gets damaged.
     /// </summary>
     public class HurtingEventArgs : IAttackerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="HurtingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="HurtingEventArgs" /> class.
         /// </summary>
         /// <param name="target">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="damageHandler">
-        ///     <inheritdoc cref="DamageHandler" />
+        /// <inheritdoc cref="DamageHandler" />
         /// </param>
         public HurtingEventArgs(Player target, DamageHandlerBase damageHandler)
         {
@@ -37,18 +37,14 @@ namespace Exiled.Events.EventArgs.Player
             Player = target;
         }
 
-        /// <summary>
-        ///     Gets the target player, who is going to be hurt.
-        /// </summary>
+        /// <inheritdoc/>
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets the attacker player.
-        /// </summary>
+        /// <inheritdoc/>
         public Player Attacker { get; }
 
         /// <summary>
-        ///     Gets or sets the amount of inflicted damage.
+        /// Gets or sets the amount of inflicted damage.
         /// </summary>
         public float Amount
         {
@@ -56,14 +52,10 @@ namespace Exiled.Events.EventArgs.Player
             set => DamageHandler.Damage = value;
         }
 
-        /// <summary>
-        ///     Gets or sets the <see cref="CustomDamageHandler" /> for the event.
-        /// </summary>
+        /// <inheritdoc/>
         public CustomDamageHandler DamageHandler { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the player will be dealt damage.
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsAllowed { get; set; } = true;
     }
 }

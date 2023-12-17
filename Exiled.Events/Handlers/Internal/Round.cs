@@ -11,6 +11,7 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp049;
     using Exiled.Loader;
     using Exiled.Loader.Features;
 
@@ -20,7 +21,7 @@ namespace Exiled.Events.Handlers.Internal
     using PlayerRoles.RoleAssign;
 
     /// <summary>
-    ///     Handles some round clean-up events and some others related to players.
+    /// Handles some round clean-up events and some others related to players.
     /// </summary>
     internal static class Round
     {
@@ -63,6 +64,16 @@ namespace Exiled.Events.Handlers.Internal
         {
             if (!ev.Player.IsHost && ev.NewRole == RoleTypeId.Spectator && ev.Reason != API.Enums.SpawnReason.Destroyed && Events.Instance.Config.ShouldDropInventory)
                 ev.Player.Inventory.ServerDropEverything();
+        }
+
+        /// <inheritdoc cref="Scp049.OnActivatingSense(ActivatingSenseEventArgs)" />
+        public static void OnActivatingSense(ActivatingSenseEventArgs ev)
+        {
+            if (ev.Target is null)
+                return;
+            if ((Events.Instance.Config.CanScp049SenseTutorial || ev.Target.Role.Type is not RoleTypeId.Tutorial) && !Scp049Role.TurnedPlayers.Contains(ev.Target))
+                return;
+            ev.Target = ev.Scp049.SenseAbility.CanFindTarget(out ReferenceHub hub) ? Player.Get(hub) : null;
         }
 
         /// <inheritdoc cref="Handlers.Player.OnVerified(VerifiedEventArgs)" />

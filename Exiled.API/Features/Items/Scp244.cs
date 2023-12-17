@@ -10,6 +10,8 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
+    using InventorySystem;
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp244;
 
     using UnityEngine;
@@ -53,6 +55,22 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets or sets the Scp244's remaining health.
+        /// </summary>
+        public float Health { get; set; }
+
+        /// <summary>
+        /// Gets or sets the activation angle, where 1 is the minimum and -1 is the maximum activation angle.
+        /// </summary>
+        public float ActivationDot { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum diameter within which SCP-244's hypothermia effect is dealt.
+        /// </summary>
+        /// <remarks>This does not prevent visual effects.</remarks>
+        public float MaxDiameter { get; set; }
+
+        /// <summary>
         /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
         /// </summary>
         /// <param name="position">The location to spawn the item.</param>
@@ -61,11 +79,15 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            Scp244Pickup pickup = (Scp244Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
+            PickupSyncInfo info = new(Type, Weight, Serial);
 
-            pickup.Info = new(Type, pickup.Weight, Serial);
-            pickup.State = Base._primed ? Scp244State.Active : Scp244State.Idle;
-            pickup.Scale = Scale;
+            Scp244DeployablePickup ipb = (Scp244DeployablePickup)InventoryExtensions.ServerCreatePickup(Base, info, position, rotation);
+
+            Base.OnRemoved(ipb);
+
+            ipb.State = Base._primed ? Scp244State.Active : Scp244State.Idle;
+
+            Pickup pickup = Pickup.Get(ipb);
 
             if (spawn)
                 pickup.Spawn();
@@ -80,6 +102,9 @@ namespace Exiled.API.Features.Items
         public override Item Clone() => new Scp244(Type)
         {
             Primed = Primed,
+            MaxDiameter = MaxDiameter,
+            Health = Health,
+            ActivationDot = ActivationDot,
         };
 
         /// <summary>
@@ -87,5 +112,17 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing SCP-244 related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* -{Primed}-";
+
+        /// <inheritdoc/>
+        internal override void ReadPickupInfo(Pickup pickup)
+        {
+            base.ReadPickupInfo(pickup);
+            if (pickup is Scp244Pickup scp244)
+            {
+                Health = scp244.Health;
+                ActivationDot = scp244.ActivationDot;
+                MaxDiameter = scp244.MaxDiameter;
+            }
+        }
     }
 }

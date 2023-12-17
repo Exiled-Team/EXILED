@@ -29,8 +29,8 @@ namespace Exiled.Events.Patches.Events.Scp330
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches the <see cref="Scp330Interobject.ServerInteract(ReferenceHub, byte)" /> method to add the
-    ///     <see cref="Scp330.InteractingScp330" /> event.
+    /// Patches the <see cref="Scp330Interobject.ServerInteract(ReferenceHub, byte)" /> method to add the
+    /// <see cref="Scp330.InteractingScp330" /> event.
     /// </summary>
     [EventPatch(typeof(Scp330), nameof(Scp330.InteractingScp330))]
     [HarmonyPatch(typeof(Scp330Interobject), nameof(Scp330Interobject.ServerInteract))]
@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             LocalBuilder ev = generator.DeclareLocal(typeof(InteractingScp330EventArgs));
 
             // Remove original "No scp can touch" logic.
-            newInstructions.RemoveRange(0, 4);
+            newInstructions.RemoveRange(0, 3);
 
             // Find ServerProcessPickup, insert before it.
             int offset = -3;
