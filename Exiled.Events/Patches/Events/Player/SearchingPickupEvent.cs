@@ -84,7 +84,11 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSearchPickupRequest))),
 
                     // if (ev.IsAllowed)
-                    //    goto retLabel;
+                    // {
+                    //      session = null;
+                    //      completor = null;
+                    //      return true;
+                    // };
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SearchingPickupEventArgs), nameof(SearchingPickupEventArgs.IsAllowed))),
                     new(OpCodes.Brtrue_S, retLabel),
 
