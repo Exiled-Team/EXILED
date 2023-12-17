@@ -15,18 +15,18 @@ namespace Exiled.Events.EventArgs.Player
     using VoiceChat;
 
     /// <summary>
-    ///     Contains all information regarding the player using the radio.
+    /// Contains all information regarding the player using the radio.
     /// </summary>
     public class TransmittingEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="TransmittingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="TransmittingEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="voiceModule">
-        ///     <inheritdoc cref="VoiceModule" />
+        /// <inheritdoc cref="VoiceModule" />
         /// </param>
         public TransmittingEventArgs(Player player, VoiceModuleBase voiceModule)
         {
@@ -36,22 +36,22 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the player who's transmitting.
+        /// Gets the player who's transmitting.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets the <see cref="Player"/>'s <see cref="VoiceModuleBase" />.
+        /// Gets the <see cref="Player"/>'s <see cref="VoiceModuleBase" />.
         /// </summary>
         public VoiceModuleBase VoiceModule { get; }
 
         /// <summary>
-        ///     Gets a value indicating whether or not the player is transmitting.
+        /// Gets a value indicating whether or not the player is transmitting.
         /// </summary>
         public bool IsTransmitting { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can transmit.
+        /// Gets or sets a value indicating whether or not the player can transmit.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

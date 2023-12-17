@@ -10,12 +10,12 @@ namespace Exiled.Events.EventArgs.Player
     using API.Features;
 
     /// <summary>
-    ///     Contains all information before unmuting a player.
+    /// Contains all information before unmuting a player.
     /// </summary>
     public class RevokingMuteEventArgs : IssuingMuteEventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RevokingMuteEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="RevokingMuteEventArgs" /> class.
         /// </summary>
         /// <param name="player">
         ///    The player who's being unmuted.
