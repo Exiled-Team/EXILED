@@ -12,21 +12,21 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information before muting a player.
+    /// Contains all information before muting a player.
     /// </summary>
     public class IssuingMuteEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="IssuingMuteEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="IssuingMuteEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="isIntercom">
-        ///     <inheritdoc cref="IsIntercom" />
+        /// <inheritdoc cref="IsIntercom" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public IssuingMuteEventArgs(Player player, bool isIntercom, bool isAllowed = true)
         {
@@ -36,17 +36,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the player who's being muted.
+        /// Gets the player who's being muted.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the player is being intercom muted or not.
+        /// Gets or sets a value indicating whether the player is being intercom muted or not.
         /// </summary>
         public bool IsIntercom { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can be muted.
+        /// Gets or sets a value indicating whether or not the player can be muted.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

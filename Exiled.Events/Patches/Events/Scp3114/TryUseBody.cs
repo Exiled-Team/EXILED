@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Scp3114
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp3114Disguise.OnProgressSet()" />.
-    ///     Adds the <see cref="Handlers.Scp3114.TryUseBody" /> event.
+    /// Patches <see cref="Scp3114Disguise.OnProgressSet()" />.
+    /// Adds the <see cref="Handlers.Scp3114.TryUseBody" /> event.
     /// </summary>
     [EventPatch(typeof(Scp3114), nameof(Scp3114.TryUseBody))]
     [HarmonyPatch(typeof(Scp3114Disguise), nameof(Scp3114Disguise.ServerValidateBegin))]

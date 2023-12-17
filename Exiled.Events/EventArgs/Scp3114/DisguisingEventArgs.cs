@@ -14,18 +14,18 @@ namespace Exiled.Events.EventArgs.Scp3114
     using PlayerRoles.Ragdolls;
 
     /// <summary>
-    ///     Contains all information before SCP-3114 it's disguised to a new role.
+    /// Contains all information before SCP-3114 disguises to a new role.
     /// </summary>
     public class DisguisingEventArgs : IScp3114Event, IDeniableEvent, IRagdollEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DisguisingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="DisguisingEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="ragdoll">
-        ///     <inheritdoc cref="Ragdoll" />
+        /// <inheritdoc cref="Ragdoll" />
         /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />

@@ -28,8 +28,8 @@ namespace Exiled.Events.Patches.Events.Scp330
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived(NetworkConnection, SelectScp330Message)" /> method to add the
-    ///     <see cref="Scp330.DroppingScp330" /> event.
+    /// Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived(NetworkConnection, SelectScp330Message)" /> method to add the
+    /// <see cref="Scp330.DroppingScp330" /> event.
     /// </summary>
     [EventPatch(typeof(Scp330), nameof(Scp330.DroppingScp330))]
     [HarmonyPatch(typeof(Scp330NetworkHandler), nameof(Scp330NetworkHandler.ServerSelectMessageReceived))]

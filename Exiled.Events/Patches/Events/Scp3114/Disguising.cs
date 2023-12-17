@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp3114
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp3114Disguise.ServerComplete()" />.
-    ///     Adds the <see cref="Scp3114.Disguising" /> and <see cref="Scp3114.Disguised" /> events.
+    /// Patches <see cref="Scp3114Disguise.ServerComplete()" />.
+    /// Adds the <see cref="Scp3114.Disguising" /> and <see cref="Scp3114.Disguised" /> events.
     /// </summary>
     [EventPatch(typeof(Scp3114), nameof(Scp3114.Disguising))]
     [EventPatch(typeof(Scp3114), nameof(Scp3114.Disguised))]
