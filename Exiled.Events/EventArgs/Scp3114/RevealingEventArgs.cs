@@ -23,7 +23,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="isManualReveal">
-        ///     <inheritdoc cref="IsManualReveal" />
+        /// <inheritdoc cref="IsManualReveal" />
         /// </param>
         /// <param name="isAllowed">
         /// <inheritdoc cref="IsAllowed" />
@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         public Scp3114Role Scp3114 { get; }
 
         /// <summary>
-        ///     Gets a value indicating whether the reveal is manual or not.
+        /// Gets a value indicating whether the reveal is manual or not.
         /// </summary>
         public bool IsManualReveal { get; }
     }

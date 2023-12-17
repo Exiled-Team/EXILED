@@ -10,7 +10,6 @@ namespace Exiled.Events.EventArgs.Scp3114
     using API.Features;
     using Exiled.API.Features.Roles;
     using Interfaces;
-    using PlayerRoles.Ragdolls;
 
     /// <summary>
     /// Contains all information before SCP-3114 tries to use a body.

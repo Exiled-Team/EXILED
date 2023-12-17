@@ -20,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Scp3114
     using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.Ragdolls;
 
-    using UnityEngine;
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>
@@ -67,7 +65,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 //      continue;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(TryUseBodyEventArgs), nameof(TryUseBodyEventArgs.IsAllowed))),
                 new(OpCodes.Brtrue_S, continueLabel),
-                new(OpCodes.Ldc_I4_4),
+                new(OpCodes.Ldc_I4_S, (sbyte)Scp3114HudTranslation.RagdollErrorPreviouslyUsed),
                 new(OpCodes.Ret),
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
             });

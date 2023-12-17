@@ -11,8 +11,6 @@ namespace Exiled.Events.EventArgs.Scp3114
     using Exiled.API.Features.Roles;
     using Interfaces;
 
-    using PlayerRoles.Ragdolls;
-
     /// <summary>
     /// Contains all information after SCP-3114 disguised.
     /// </summary>

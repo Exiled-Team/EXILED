@@ -11,8 +11,6 @@ namespace Exiled.Events.EventArgs.Scp3114
     using Exiled.API.Features.Roles;
     using Interfaces;
 
-    using PlayerRoles.Ragdolls;
-
     /// <summary>
     /// Contains all information before SCP-3114 disguises to a new role.
     /// </summary>
@@ -28,7 +26,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <inheritdoc cref="Ragdoll" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public DisguisingEventArgs(Player player, Ragdoll ragdoll, bool isAllowed = true)
         {
