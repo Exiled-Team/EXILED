@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Fixes
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             int offset = 0;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldsflda) + offset;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldsfld) + offset;
 
             Label ret = generator.DefineLabel();
 
@@ -69,7 +69,7 @@ namespace Exiled.Events.Patches.Fixes
             //  return;
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Ldloc_1).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsNPC))),
                 new(OpCodes.Brtrue_S, ret),
