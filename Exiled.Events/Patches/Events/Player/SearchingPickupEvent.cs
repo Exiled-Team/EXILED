@@ -88,7 +88,7 @@ namespace Exiled.Events.Patches.Events.Player
                     //      session = null;
                     //      completor = null;
                     //      return true;
-                    // };
+                    // }
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SearchingPickupEventArgs), nameof(SearchingPickupEventArgs.IsAllowed))),
                     new(OpCodes.Brtrue_S, retLabel),
 
