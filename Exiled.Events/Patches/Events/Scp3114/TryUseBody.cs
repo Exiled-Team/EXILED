@@ -60,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 new(OpCodes.Call, Method(typeof(Handlers.Scp3114), nameof(Handlers.Scp3114.OnTryUseBody))),
 
                 // if (!ev.IsAllowed)
-                //      return 4;
+                //      return (sbyte) Scp3114HudTranslation.RagdollErrorPreviouslyUsed;
                 // else
                 //      continue;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(TryUseBodyEventArgs), nameof(TryUseBodyEventArgs.IsAllowed))),
