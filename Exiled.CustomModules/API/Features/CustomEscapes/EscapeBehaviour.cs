@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features
+namespace Exiled.CustomModules.API.Features.CustomEscapes
 {
     using System.Collections.Generic;
 
@@ -15,6 +15,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.CustomRoles;
     using PlayerRoles;
     using UnityEngine;
 

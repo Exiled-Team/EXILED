@@ -12,7 +12,7 @@ namespace Exiled.CustomModules.Events
     using Exiled.API.Features;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features;
-
+    using Exiled.CustomModules.API.Features.CustomRoles;
     using PlayerRoles;
 
     /// <summary>

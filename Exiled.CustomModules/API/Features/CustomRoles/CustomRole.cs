@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features
+namespace Exiled.CustomModules.API.Features.CustomRoles
 {
     using System;
     using System.Collections.Generic;
@@ -24,6 +24,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
     using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.Inventory;
     using Exiled.CustomModules.Commands.List;
     using Exiled.Events.EventArgs.Player;
@@ -108,7 +109,7 @@ namespace Exiled.CustomModules.API.Features
         public virtual RoleSettings Settings { get; } = RoleSettings.Default;
 
         /// <summary>
-        /// Gets the <see cref="Features.EscapeSettings"/>.
+        /// Gets the <see cref="CustomEscapes.EscapeSettings"/>.
         /// </summary>
         public virtual List<EscapeSettings> EscapeSettings { get; } = new();
 

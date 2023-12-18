@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features
+namespace Exiled.CustomModules.API.Features.CustomRoles
 {
     using System;
     using System.Collections.Generic;
@@ -23,6 +23,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features.Roles;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.Inventory;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -136,7 +137,7 @@ namespace Exiled.CustomModules.API.Features
         protected RoleTypeId Role { get; set; }
 
         /// <summary>
-        /// Gets the relative <see cref="Features.CustomRole"/>.
+        /// Gets the relative <see cref="CustomRoles.CustomRole"/>.
         /// </summary>
         protected CustomRole CustomRole { get; private set; }
 
@@ -498,7 +499,7 @@ namespace Exiled.CustomModules.API.Features
         /// <param name="distance">The maximum distance to reach.</param>
         /// <param name="target">The valid target.</param>
         /// <returns><see langword="true"/> if the target was found; otherwise, <see langword="false"/>.</returns>
-        private protected virtual bool TryGetValidTarget(Func<Player, bool> predicate, float distance, out Player target)
+        protected virtual bool TryGetValidTarget(Func<Player, bool> predicate, float distance, out Player target)
         {
             List<Player> targets = new();
             foreach (Player pl in Player.Get(predicate))
@@ -518,7 +519,7 @@ namespace Exiled.CustomModules.API.Features
         /// <param name="distance">The maximum distance to reach.</param>
         /// <param name="players">The valid targets.</param>
         /// <returns><see langword="true"/> if targets were found; otherwise, <see langword="false"/>.</returns>
-        private protected virtual bool TryGetValidTargets(Func<Player, bool> predicate, float distance, out List<Player> players)
+        protected virtual bool TryGetValidTargets(Func<Player, bool> predicate, float distance, out List<Player> players)
         {
             players = new();
             foreach (Player pl in Player.Get(predicate))
@@ -531,7 +532,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnHurting(HurtingEventArgs)"/>
-        private protected virtual void PreventTakingDamageFromScps(HurtingEventArgs ev)
+        protected virtual void PreventTakingDamageFromScps(HurtingEventArgs ev)
         {
             if (!Check(ev.Player) || ev.Attacker is null ||
                 !ev.Attacker.IsScp || Settings.CanBeHurtByScps)
@@ -541,7 +542,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnHurting(HurtingEventArgs)"/>
-        private protected virtual void IgnoreDamage(HurtingEventArgs ev)
+        protected virtual void IgnoreDamage(HurtingEventArgs ev)
         {
             if (!Check(ev.Player) || !Settings.AllowedDamageTypes.IsEmpty() ||
                 !Settings.IgnoredDamageTypes.Contains(ev.DamageHandler.Type))
@@ -552,7 +553,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingItem(ChangingItemEventArgs)"/>
-        private protected virtual void ChangingItemBehaviour(ChangingItemEventArgs ev)
+        protected virtual void ChangingItemBehaviour(ChangingItemEventArgs ev)
         {
             if (!Check(ev.Player) || Settings.CanSelectItems)
                 return;
@@ -561,7 +562,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnHurting(HurtingEventArgs)"/>
-        private protected virtual void AllowDamage(HurtingEventArgs ev)
+        protected virtual void AllowDamage(HurtingEventArgs ev)
         {
             if (!Check(ev.Player) || !Settings.IgnoredDamageTypes.IsEmpty() ||
                 !Settings.AllowedDamageTypes.Contains(ev.DamageHandler.Type))
@@ -571,7 +572,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnHurting(HurtingEventArgs)"/>
-        private protected virtual void PreventDealingDamageToScps(HurtingEventArgs ev)
+        protected virtual void PreventDealingDamageToScps(HurtingEventArgs ev)
         {
             if (!Check(ev.Attacker) || Settings.CanHurtScps)
                 return;
@@ -580,7 +581,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDestroying(DestroyingEventArgs)"/>
-        private protected virtual void DestroyOnLeave(DestroyingEventArgs ev)
+        protected virtual void DestroyOnLeave(DestroyingEventArgs ev)
         {
             if (!Check(ev.Player))
                 return;
@@ -589,7 +590,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnHandcuffing(HandcuffingEventArgs)"/>
-        private protected virtual void HandcuffingBehavior(HandcuffingEventArgs ev)
+        protected virtual void HandcuffingBehavior(HandcuffingEventArgs ev)
         {
             if (!Check(ev.Target) || Settings.CanBeHandcuffed)
                 return;
@@ -598,7 +599,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingGroup(ChangingGroupEventArgs)"/>
-        private protected virtual void DestroyOnChangingRole(ChangingRoleEventArgs ev)
+        protected virtual void DestroyOnChangingRole(ChangingRoleEventArgs ev)
         {
             if (!Check(ev.Player) || (Settings.UniqueRole is not RoleTypeId.None && ev.NewRole == Settings.UniqueRole) ||
                 (Settings.IsRoleDynamic && Settings.DynamicRoles.Contains(ev.NewRole)))
@@ -608,7 +609,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnSpawning(SpawningEventArgs)"/>
-        private protected virtual void OverrideSpawnPoint(SpawningEventArgs ev)
+        protected virtual void OverrideSpawnPoint(SpawningEventArgs ev)
         {
             if (!Check(ev.Player) || !UseCustomSpawnpoint)
                 return;
@@ -617,7 +618,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnSearchPickupRequest(SearchingPickupEventArgs)"/>
-        private protected virtual void PickingUpItemBehavior(SearchingPickupEventArgs ev)
+        protected virtual void PickingUpItemBehavior(SearchingPickupEventArgs ev)
         {
             if (!Check(ev.Player) || Settings.CanPickupItems)
                 return;
@@ -625,8 +626,8 @@ namespace Exiled.CustomModules.API.Features
             ev.IsAllowed = false;
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs)"/>
-        private protected virtual void PreventPlayerFromEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs ev)
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscaping(EscapingEventArgs)"/>
+        protected virtual void PreventPlayerFromEscaping(EscapingEventArgs ev)
         {
             if (!Check(ev.Player) || useCustomEscape || wasEscaped || !EscapeSettings.IsEmpty())
                 return;
@@ -635,40 +636,53 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDied(DiedEventArgs)"/>
-        private protected virtual void AnnounceOwnerDeath(DiedEventArgs ev)
+        protected virtual void AnnounceOwnerDeath(DiedEventArgs ev)
         {
             if (!Check(ev.Player) || Check(ev.Attacker) || Check(Server.Host) || !Settings.IsDeathAnnouncementEnabled)
                 return;
 
+            void DoAnnounce(string announcement)
+            {
+                if (string.IsNullOrEmpty(announcement))
+                    announcement = Settings.UnknownTerminationCauseAnnouncement;
+
+                if (!string.IsNullOrEmpty(announcement))
+                    Cassie.Message(announcement);
+            }
+
             string announcement = string.Empty;
             if (ev.Attacker is null)
-                goto Announce;
+            {
+                DoAnnounce(announcement);
+                return;
+            }
 
             if (CustomRole.TryGet(ev.Attacker, out CustomRole customRole))
             {
-                //if (CustomTeam.TryGet<CustomTeam>(customRole, out CustomTeam customTeam) &&
-                //    Settings.KilledByCustomTeamAnnouncements.TryGetValue(customTeam.Id, out announcement))
-                //    goto Announce;
-                //else if (Settings.KilledByCustomRoleAnnouncements.TryGetValue(customRole.Id, out announcement))
-                //    goto Announce;
+                if (CustomTeam.TryGet<CustomTeam>(customRole, out CustomTeam customTeam) &&
+                    Settings.KilledByCustomTeamAnnouncements.TryGetValue(customTeam.Id, out announcement))
+                {
+                    DoAnnounce(announcement);
+                    return;
+                }
+                else if (Settings.KilledByCustomRoleAnnouncements.TryGetValue(customRole.Id, out announcement))
+                {
+                    DoAnnounce(announcement);
+                    return;
+                }
             }
             else
             {
                 if (Settings.KilledByRoleAnnouncements.TryGetValue(ev.Attacker.Role, out announcement))
-                    goto Announce;
+                {
+                    DoAnnounce(announcement);
+                    return;
+                }
             }
-
-            return;
-        Announce:
-            if (string.IsNullOrEmpty(announcement))
-                announcement = Settings.UnknownTerminationCauseAnnouncement;
-
-            if (!string.IsNullOrEmpty(announcement))
-                Cassie.Message(announcement);
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnIntercomSpeaking(IntercomSpeakingEventArgs)"/>
-        private protected virtual void IntercomSpeakingBehavior(IntercomSpeakingEventArgs ev)
+        protected virtual void IntercomSpeakingBehavior(IntercomSpeakingEventArgs ev)
         {
             if (!Check(ev.Player) || Settings.CanUseIntercom)
                 return;
@@ -677,7 +691,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEnteringPocketDimension(EnteringPocketDimensionEventArgs)"/>
-        private protected virtual void EnteringPocketDimensionBehavior(EnteringPocketDimensionEventArgs ev)
+        protected virtual void EnteringPocketDimensionBehavior(EnteringPocketDimensionEventArgs ev)
         {
             if (!Check(ev.Player) || Settings.CanEnterPocketDimension)
                 return;
@@ -686,7 +700,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnVoiceChatting(VoiceChattingEventArgs)"/>
-        private protected virtual void VoiceChattingBehavior(VoiceChattingEventArgs ev)
+        protected virtual void VoiceChattingBehavior(VoiceChattingEventArgs ev)
         {
             if (!Check(ev.Player) || Settings.CanUseVoiceChat)
                 return;
@@ -695,7 +709,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Map.OnPlacingBlood(PlacingBloodEventArgs)"/>
-        private protected virtual void PlacingBloodBehavior(PlacingBloodEventArgs ev)
+        protected virtual void PlacingBloodBehavior(PlacingBloodEventArgs ev)
         {
             if (!Check(ev.Player) || Settings.CanPlaceBlood)
                 return;
@@ -704,7 +718,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEnteringPocketDimension(EnteringPocketDimensionEventArgs)"/>
-        private protected virtual void DroppingItemBehavior(DroppingItemEventArgs ev)
+        protected virtual void DroppingItemBehavior(DroppingItemEventArgs ev)
         {
             if (!Check(ev.Player) || Settings.CanDropItems)
                 return;
@@ -713,7 +727,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnActivatingWarheadPanel(ActivatingWarheadPanelEventArgs)"/>
-        private protected virtual void ActivatingWarheadBehavior(ActivatingWarheadPanelEventArgs ev)
+        protected virtual void ActivatingWarheadBehavior(ActivatingWarheadPanelEventArgs ev)
         {
             if (!Check(ev.Player) || Settings.CanActivateWarhead)
                 return;
@@ -722,7 +736,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnActivatingGenerator(ActivatingGeneratorEventArgs)"/>
-        private protected virtual void ActivatingGeneratorBehavior(ActivatingGeneratorEventArgs ev)
+        protected virtual void ActivatingGeneratorBehavior(ActivatingGeneratorEventArgs ev)
         {
             if (!Check(ev.Player) || Settings.CanActivateGenerators)
                 return;
@@ -731,7 +745,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnActivatingWorkstation(ActivatingWorkstationEventArgs)"/>
-        private protected virtual void ActivatingWorkstationBehavior(ActivatingWorkstationEventArgs ev)
+        protected virtual void ActivatingWorkstationBehavior(ActivatingWorkstationEventArgs ev)
         {
             if (!Check(ev.Player) || Settings.CanActivateWorkstations)
                 return;
@@ -740,7 +754,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnInteractingElevator(InteractingElevatorEventArgs)"/>
-        private protected virtual void InteractingElevatorBehavior(InteractingElevatorEventArgs ev)
+        protected virtual void InteractingElevatorBehavior(InteractingElevatorEventArgs ev)
         {
             if (!Check(ev.Player) || Settings.CanUseElevators)
                 return;
@@ -749,7 +763,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnInteractingDoor(InteractingDoorEventArgs)"/>
-        private protected virtual void CheckpointsBehavior(InteractingDoorEventArgs ev)
+        protected virtual void CheckpointsBehavior(InteractingDoorEventArgs ev)
         {
             if (!Check(ev.Player) || !Settings.CanBypassCheckpoints || !ev.Door.IsCheckpoint)
                 return;
@@ -758,7 +772,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnInteractingDoor(InteractingDoorEventArgs)"/>
-        private protected virtual void InteractingDoorBehavior(InteractingDoorEventArgs ev)
+        protected virtual void InteractingDoorBehavior(InteractingDoorEventArgs ev)
         {
             if (!Check(ev.Player) || !Settings.BypassableDoors.Contains(ev.Door.Type))
                 return;
@@ -767,7 +781,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingNickname(ChangingNicknameEventArgs)"/>
-        private protected void OnInternalChangingNickname(ChangingNicknameEventArgs ev)
+        protected void OnInternalChangingNickname(ChangingNicknameEventArgs ev)
         {
             if (!Check(ev.Player))
                 return;
@@ -776,7 +790,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnSpawningRagdoll(SpawningRagdollEventArgs)"/>
-        private protected void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
+        protected void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
         {
             if (!Check(ev.Player))
                 return;

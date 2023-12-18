@@ -78,12 +78,6 @@ namespace Exiled.API.Features.Core
         internal static List<EObject> InternalObjects { get; } = new();
 
         /// <summary>
-        /// Implicitly converts the given <see cref="EObject"/> instance to a <see cref="bool"/>.
-        /// </summary>
-        /// <param name="object">Whether the <see cref="EObject"/> instance exists.</param>
-        public static implicit operator bool(EObject @object) => @object != null;
-
-        /// <summary>
         /// Implicitly converts the given <see cref="EObject"/> instance to a <see cref="string"/>.
         /// </summary>
         /// <param name="object">The <see cref="EObject"/> instance's name.</param>

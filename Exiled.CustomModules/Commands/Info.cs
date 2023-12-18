@@ -14,6 +14,7 @@ namespace Exiled.CustomModules.Commands
 
     using Exiled.API.Features.Pools;
     using Exiled.CustomModules.API.Features;
+    using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.Permissions.Extensions;
 
     /// <summary>

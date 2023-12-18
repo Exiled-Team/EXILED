@@ -16,10 +16,9 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
-    using Exiled.API.Interfaces;
-    using Exiled.CustomItems;
     using Exiled.CustomItems.API.Features;
-
+    using Exiled.CustomModules.API.Features.CustomEscapes;
+    using Exiled.CustomModules.API.Features.CustomRoles;
     using PlayerRoles;
     using UnityEngine;
 
@@ -33,11 +32,11 @@ namespace Exiled.CustomModules.API.Features
     /// </summary>
     public class Pawn : Player
     {
-        private RoleBehaviour? roleBehaviour;
-        private EscapeBehaviour? escapeBehaviour;
-        private CustomRole? customRole;
-        //private CustomTeam? _customTeam;
-        private CustomEscape? customEscape;
+        private RoleBehaviour roleBehaviour;
+        private EscapeBehaviour escapeBehaviour;
+        private CustomRole customRole;
+        private CustomTeam customTeam;
+        private CustomEscape customEscape;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pawn"/> class.
@@ -84,27 +83,27 @@ namespace Exiled.CustomModules.API.Features
         public IEnumerable<EBehaviour> Behaviours => ComponentsInChildren.Where(cmp => cmp is EBehaviour).Cast<EBehaviour>();
 
         /// <summary>
-        /// Gets the pawn's <see cref="Features.CustomRole"/>.
+        /// Gets the pawn's <see cref="CustomRoles.CustomRole"/>.
         /// </summary>
-        public CustomRole? CustomRole => customRole ??= CustomRole.Get(this);
+        public CustomRole CustomRole => customRole ??= CustomRole.Get(this);
 
         /// <summary>
-        /// Gets the pawn's <see cref="Features.CustomTeam"/>.
+        /// Gets the pawn's <see cref="CustomRoles.CustomTeam"/>.
         /// </summary>
-        // public CustomTeam? CustomTeam => _customTeam ??= CustomTeam.Get(this);
+        public CustomTeam CustomTeam => customTeam ??= CustomTeam.Get(this);
 
         /// <summary>
-        /// Gets the pawn's <see cref="Features.CustomEscape"/>.
+        /// Gets the pawn's <see cref="CustomEscapes.CustomEscape"/>.
         /// </summary>
-        public CustomEscape? CustomEscape => customEscape ??= CustomEscape.Get(this);
+        public CustomEscape CustomEscape => customEscape ??= CustomEscape.Get(this);
 
         /// <summary>
-        /// Gets the pawn's <see cref="Features.RoleBehaviour"/>.
+        /// Gets the pawn's <see cref="CustomRoles.RoleBehaviour"/>.
         /// </summary>
         public RoleBehaviour RoleBehaviour => roleBehaviour ??= GetComponent<RoleBehaviour>();
 
         /// <summary>
-        /// Gets the pawn's <see cref="Features.EscapeBehaviour"/>.
+        /// Gets the pawn's <see cref="CustomEscapes.EscapeBehaviour"/>.
         /// </summary>
         public EscapeBehaviour EscapeBehaviour => escapeBehaviour ??= GetComponent<EscapeBehaviour>();
 
@@ -119,7 +118,7 @@ namespace Exiled.CustomModules.API.Features
         // public IEnumerable<AbilityBehaviour> AbilityBehaviours => AbilityManager.Values;
 
         /// <summary>
-        /// Gets a value indicating whether the pawn has a <see cref="Features.CustomRole"/>.
+        /// Gets a value indicating whether the pawn has a <see cref="CustomRoles.CustomRole"/>.
         /// </summary>
         public bool HasCustomRole => CustomRole.Players.Contains(this);
 
@@ -153,7 +152,7 @@ namespace Exiled.CustomModules.API.Features
             {
                 foreach (Item item in Items)
                 {
-                    if (!CustomItem.TryGet(item, out CustomItem? customItem) || customItem is null)
+                    if (!CustomItem.TryGet(item, out CustomItem customItem) || customItem is null)
                         continue;
 
                     yield return customItem;
@@ -223,13 +222,13 @@ namespace Exiled.CustomModules.API.Features
         /// <typeparam name="T">The type of the <see cref="CustomItem"/> to look for.</typeparam>
         /// <param name="customItem">The <see cref="CustomItem"/> result.</param>
         /// <returns><see langword="true"/> if pawn owns the specified <see cref="CustomItem"/>; otherwise, <see langword="false"/>.</returns>
-        public bool TryGetCustomItem<T>(out T? customItem)
+        public bool TryGetCustomItem<T>(out T customItem)
             where T : CustomItem
         {
             customItem = null;
             foreach (Item item in Items)
             {
-                if (!CustomItem.TryGet(item, out CustomItem? tmp) || tmp is null || tmp.GetType() != typeof(T))
+                if (!CustomItem.TryGet(item, out CustomItem tmp) || tmp is null || tmp.GetType() != typeof(T))
                     continue;
 
                 customItem = (T)tmp;
@@ -239,17 +238,17 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Gets the pawn's <see cref="Features.CustomRole"/>.
+        /// Gets the pawn's <see cref="CustomRoles.CustomRole"/>.
         /// </summary>
-        /// <param name="customRole">The <see cref="Features.CustomRole"/> result.</param>
-        /// <returns>The found <see cref="Features.CustomRole"/>, or <see langword="null"/> if not found.</returns>
-        public bool TryGetCustomRole(out CustomRole? customRole) => (customRole = CustomRole) is not null;
+        /// <param name="customRole">The <see cref="CustomRoles.CustomRole"/> result.</param>
+        /// <returns>The found <see cref="CustomRoles.CustomRole"/>, or <see langword="null"/> if not found.</returns>
+        public bool TryGetCustomRole(out CustomRole customRole) => (customRole = CustomRole) is not null;
 
         /// <summary>
         /// Sets the pawn's role.
         /// </summary>
         /// <param name="role">The role to be set.</param>
-        /// <param name="preservePlayerPosition"><inheritdoc cref="CustomRole.PreservePosition"/></param>
+        /// <param name="preservePlayerPosition">A value indicating whether the <see cref="Pawn"/> should be spawned in the same position.</param>
         public void SetRole(object role, bool preservePlayerPosition = false)
         {
             if (role is RoleTypeId id)
@@ -267,7 +266,7 @@ namespace Exiled.CustomModules.API.Features
         /// <param name="item">The item to be dropped.</param>
         public void SafeDropItem(Item item)
         {
-            if (TryGetCustomItem(out CustomItem? customItem))
+            if (TryGetCustomItem(out CustomItem customItem))
             {
                 RemoveItem(item, false);
                 customItem?.Spawn(Position, this);

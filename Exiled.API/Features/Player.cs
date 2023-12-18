@@ -1140,12 +1140,6 @@ namespace Exiled.API.Features
         public static implicit operator Player(PluginAPI.Core.Player player) => Get(player);
 
         /// <summary>
-        /// Defines an implicit conversion that evaluates if the provided <see cref="Player"/> is not null.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> object to be evaluated.</param>
-        public static implicit operator bool(Player player) => player != null;
-
-        /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side. Can be empty.
         /// </summary>
         /// <param name="side">The players' side.</param>

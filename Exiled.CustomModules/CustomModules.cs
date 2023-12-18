@@ -11,22 +11,15 @@ namespace Exiled.CustomModules
 
     using Exiled.API.Features;
     using Exiled.CustomModules.API.Features;
-    using Exiled.CustomModules.API.Features.Parsers;
     using Exiled.CustomModules.Events;
-    using Exiled.Loader;
-    using Exiled.Loader.Features.Configs.CustomConverters;
-
-    using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.NamingConventions;
-    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Handles all custom role API functions.
     /// </summary>
     public class CustomModules : Plugin<Config>
     {
-        private PlayerHandlers? playerHandlers;
-        private KeypressActivator? keypressActivator;
+        private PlayerHandlers playerHandlers;
+        private KeypressActivator keypressActivator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomModules"/> class.

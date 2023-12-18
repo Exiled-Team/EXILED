@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="TypeCastObject.cs" company="Exiled Team">
+// <copyright file="TypeCastMono.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -8,18 +8,19 @@
 namespace Exiled.API.Features.Core
 {
     using Exiled.API.Features.Core.Interfaces;
+    using UnityEngine;
 
     /// <summary>
-    /// The interface which allows defined objects to be cast to each other.
+    /// The interface which allows defined mono behaviours to be cast to each other.
     /// </summary>
-    /// <typeparam name="T">The type of the object to cast.</typeparam>
-    public abstract class TypeCastObject<T> : NullableObject, ITypeCast<T>
+    /// <typeparam name="T">The type of the mono behaviour to cast.</typeparam>
+    public abstract class TypeCastMono<T> : MonoBehaviour, ITypeCast<T>
         where T : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TypeCastObject{T1}"/> class.
+        /// Initializes a new instance of the <see cref="TypeCastMono{T}"/> class.
         /// </summary>
-        protected TypeCastObject()
+        protected TypeCastMono()
         {
         }
 
