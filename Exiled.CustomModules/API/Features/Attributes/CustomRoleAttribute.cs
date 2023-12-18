@@ -7,6 +7,7 @@
 
 namespace Exiled.CustomModules.API.Features
 {
+    using Exiled.CustomModules.API.Features.CustomRoles;
     using System;
 
     /// <summary>

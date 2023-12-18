@@ -73,7 +73,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
-    public class Player : TypeCastObject<Player>, IEntity, IWorldSpace
+    public class Player : GameEntity, IWorldSpace
     {
 #pragma warning disable SA1401
         /// <summary>
@@ -81,8 +81,6 @@ namespace Exiled.API.Features
         /// </summary>
         internal readonly List<Item> ItemsValue = new(8);
 #pragma warning restore SA1401
-
-        private readonly HashSet<EActor> componentsInChildren = new();
 
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
@@ -133,9 +131,6 @@ namespace Exiled.API.Features
         /// </summary>
         public static Dictionary<string, Player> UserIdsCache { get; } = new(20);
 
-        /// <inheritdoc/>
-        public IReadOnlyCollection<EActor> ComponentsInChildren => componentsInChildren;
-
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="RoleTypeId"/> and their FF multiplier. This is for non-unique roles.
         /// </summary>
@@ -151,6 +146,9 @@ namespace Exiled.API.Features
         /// Gets or sets a unique custom role that does not adbide to base game for this player. Used in conjunction with <see cref="CustomRoleFriendlyFireMultiplier"/>.
         /// </summary>
         public string UniqueRole { get; set; } = string.Empty;
+
+        /// <inheritdoc/>
+        public override GameObject EntityBase => GameObject;
 
         /// <summary>
         /// Gets the encapsulated <see cref="global::ReferenceHub"/>.
@@ -3340,90 +3338,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <typeparam name="T">Object for teleport.</typeparam>
         public void RandomTeleport<T>() => RandomTeleport(typeof(T));
-
-        /// <inheritdoc/>
-        public T AddComponent<T>(string name = "")
-            where T : EActor
-        {
-            T component = EObject.CreateDefaultSubobject<T>(GameObject);
-
-            if (component is null)
-                return null;
-
-            componentsInChildren.Add(component);
-            return component;
-        }
-
-        /// <inheritdoc/>
-        public EActor AddComponent(Type type, string name = "")
-        {
-            EActor component = EObject.CreateDefaultSubobject(type, GameObject).Cast<EActor>();
-
-            if (component is null)
-                return null;
-
-            componentsInChildren.Add(component);
-            return component;
-        }
-
-        /// <inheritdoc/>
-        public T AddComponent<T>(Type type, string name = "")
-            where T : EActor
-        {
-            T component = EObject.CreateDefaultSubobject<T>(type, GameObject);
-            if (component is null)
-                return null;
-
-            componentsInChildren.Add(component);
-            return component;
-        }
-
-        /// <inheritdoc/>
-        public T GetComponent<T>()
-            where T : EActor => componentsInChildren.FirstOrDefault(comp => typeof(T) == comp.GetType()).Cast<T>();
-
-        /// <inheritdoc/>
-        public T GetComponent<T>(Type type)
-            where T : EActor => componentsInChildren.FirstOrDefault(comp => type == comp.GetType()).Cast<T>();
-
-        /// <inheritdoc/>
-        public EActor GetComponent(Type type) => componentsInChildren.FirstOrDefault(comp => type == comp.GetType());
-
-        /// <inheritdoc/>
-        public bool TryGetComponent<T>(out T component)
-            where T : EActor
-        {
-            component = GetComponent<T>();
-
-            return component is not null;
-        }
-
-        /// <inheritdoc/>
-        public bool TryGetComponent(Type type, out EActor component)
-        {
-            component = GetComponent(type);
-
-            return component is not null;
-        }
-
-        /// <inheritdoc/>
-        public bool TryGetComponent<T>(Type type, out T component)
-            where T : EActor
-        {
-            component = GetComponent<T>(type);
-
-            return component is not null;
-        }
-
-        /// <inheritdoc/>
-        public bool HasComponent<T>(bool depthInheritance = false) => depthInheritance
-            ? componentsInChildren.Any(comp => typeof(T).IsSubclassOf(comp.GetType()))
-            : componentsInChildren.Any(comp => typeof(T) == comp.GetType());
-
-        /// <inheritdoc/>
-        public bool HasComponent(Type type, bool depthInheritance = false) => depthInheritance
-            ? componentsInChildren.Any(comp => type.IsSubclassOf(comp.GetType()))
-            : componentsInChildren.Any(comp => type == comp.GetType());
 
         /// <summary>
         /// Get the time cooldown on this ItemType.

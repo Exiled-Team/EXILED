@@ -42,7 +42,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for <see cref="ItemPickupBase"/>.
     /// </summary>
-    public class Pickup : TypeCastObject<Pickup>, IWrapper<ItemPickupBase>, IWorldSpace
+    public class Pickup : GameEntity, IWrapper<ItemPickupBase>, IWorldSpace
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Items.Item"/>.
@@ -105,6 +105,9 @@ namespace Exiled.API.Features.Pickups
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> which contains all the <see cref="Pickup"/> instances.
         /// </summary>
         public static IEnumerable<Pickup> List => BaseToPickup.Values;
+
+        /// <inheritdoc/>
+        public override GameObject EntityBase => GameObject;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.

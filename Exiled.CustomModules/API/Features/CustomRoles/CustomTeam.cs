@@ -25,7 +25,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// </summary>
     public abstract class CustomTeam : TypeCastObject<CustomTeam>
     {
-        private static readonly Dictionary<Player, CustomTeam> PlayerValuesInternal = new();
+        private static readonly Dictionary<Player, CustomTeam> PlayersValue = new();
         private static readonly List<CustomTeam> Registered = new();
         private uint tickets;
 
@@ -37,7 +37,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets all players and their respective <see cref="CustomTeam"/>.
         /// </summary>
-        public static IReadOnlyDictionary<Player, CustomTeam> Manager => PlayerValuesInternal;
+        public static IReadOnlyDictionary<Player, CustomTeam> Manager => PlayersValue;
 
         /// <summary>
         /// Gets all players belonging to a <see cref="CustomTeam"/>.
@@ -219,7 +219,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             customTeam = null;
 
-            if (!PlayerValuesInternal.ContainsKey(player))
+            if (!PlayersValue.ContainsKey(player))
                 return false;
 
             customTeam = Get(player);
@@ -454,8 +454,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (player is null)
                 return;
 
-            CustomRole.UnsafeSpawn(player.Cast<Pawn>(), RandomUnit);
-            PlayerValuesInternal.Add(player, this);
+            CustomRole.Spawn(player.Cast<Pawn>(), RandomUnit);
+            PlayersValue.Add(player, this);
         }
 
         /// <summary>

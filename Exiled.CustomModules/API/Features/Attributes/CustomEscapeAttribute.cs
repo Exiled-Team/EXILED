@@ -10,6 +10,7 @@ namespace Exiled.CustomModules.API.Features
     using System;
 
     using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.CustomEscapes;
 
     /// <summary>
     /// This attribute determines whether the class which is being applied to should be treated as <see cref="CustomEscape"/>.

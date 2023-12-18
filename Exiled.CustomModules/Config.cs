@@ -12,6 +12,8 @@ namespace Exiled.CustomModules
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using Exiled.CustomModules.API.Features;
+    using Exiled.CustomModules.API.Features.CustomEscapes;
+    using Exiled.CustomModules.API.Features.CustomRoles;
 
     /// <summary>
     /// The plugin's config.
@@ -30,13 +32,13 @@ namespace Exiled.CustomModules
         public bool Debug { get; set; } = false;
 
         /// <summary>
-        /// Gets the hint that is shown when someone gets a <see cref="Old_CustomRole"/>.
+        /// Gets the hint that is shown when someone gets a <see cref="CustomRole"/>.
         /// </summary>
         [Description("The hint that is shown when someone gets a custom role.")]
         public Broadcast GotRoleHint { get; private set; } = new("You have spawned as a {0}\n{1}", 6);
 
         /// <summary>
-        /// Gets the hint that is shown when someone used an <see cref="ActiveAbility"/>.
+        /// Gets the hint that is shown when someone used an <see cref="CustomAbility{T}"/>.
         /// </summary>
         [Description("The hint that is shown when someone used a custom ability.")]
         public Broadcast UsedAbilityHint { get; private set; } = new("Ability {0} has been activated.\n{1}", 5);

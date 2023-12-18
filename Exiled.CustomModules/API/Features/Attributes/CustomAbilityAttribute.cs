@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="CustomTeamAttribute.cs" company="Exiled Team">
+// <copyright file="CustomAbilityAttribute.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,30 +7,31 @@
 
 namespace Exiled.CustomModules.API.Features
 {
-    using Exiled.CustomModules.API.Features.CustomRoles;
     using System;
 
+    using Exiled.CustomModules.API.Features.CustomEscapes;
+
     /// <summary>
-    /// This attribute determines whether the class which is being applied to should be treated as <see cref="CustomTeam"/>.
+    /// This attribute determines whether the class which is being applied to should be treated as <see cref="CustomAbility{T}"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class CustomTeamAttribute : Attribute
+    public class CustomAbilityAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomTeamAttribute"/> class.
+        /// Initializes a new instance of the <see cref="CustomAbilityAttribute"/> class.
         /// </summary>
-        public CustomTeamAttribute()
+        public CustomAbilityAttribute()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomTeamAttribute"/> class.
+        /// Initializes a new instance of the <see cref="CustomAbilityAttribute"/> class.
         /// </summary>
         /// <param name="id"><inheritdoc cref="Id"/></param>
-        public CustomTeamAttribute(uint id) => Id = id;
+        public CustomAbilityAttribute(uint id) => Id = id;
 
         /// <summary>
-        /// Gets the custom team's id.
+        /// Gets the custom ability's id.
         /// </summary>
         internal uint Id { get; }
     }

@@ -11,32 +11,18 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
-    using Exiled.API.Features.Pools;
-    using Exiled.API.Features.Spawn;
-    using Exiled.API.Interfaces;
-    using Exiled.CustomItems.API.Features;
-    using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomEscapes;
-    using Exiled.CustomModules.API.Features.Inventory;
-    using Exiled.CustomModules.Commands.List;
-    using Exiled.Events.EventArgs.Player;
-    using Exiled.Loader;
-    using InventorySystem.Configs;
 
     using MEC;
 
     using PlayerRoles;
     using Respawning;
-    using UnityEngine;
-    using YamlDotNet.Serialization;
 
     /// <summary>
     /// The custom role base class.
@@ -44,7 +30,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     public abstract class CustomRole : TypeCastObject<CustomRole>, IAdditiveBehaviour
     {
         /// <inheritdoc cref="Manager"/>
-        internal static readonly Dictionary<Pawn, CustomRole> PlayersValueInternal = new();
+        internal static readonly Dictionary<Pawn, CustomRole> PlayersValue = new();
 
         private static readonly List<CustomRole> Registered = new();
 
@@ -56,7 +42,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets all players and their respective <see cref="CustomRole"/>.
         /// </summary>
-        public static IReadOnlyDictionary<Pawn, CustomRole> Manager => PlayersValueInternal;
+        public static IReadOnlyDictionary<Pawn, CustomRole> Manager => PlayersValue;
 
         /// <summary>
         /// Gets all players belonging to a <see cref="CustomRole"/>.
@@ -72,6 +58,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Gets the <see cref="CustomRole"/>'s name.
         /// </summary>
         public abstract string Name { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether a player can spawn as this <see cref="CustomRole"/> based on its assigned probability.
+        /// </summary>
+        /// <returns><see langword="true"/> if the probability condition was satified; otherwise, <see langword="false"/>.</returns>
+        public bool CanSpawnByProbability => UnityEngine.Random.Range(0, 101) <= Chance;
 
         /// <summary>
         /// Gets the <see cref="CustomRole"/>'s description.
@@ -272,7 +264,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="customRoleType">The <see cref="object"/> to look for.</param>
         /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomRole"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object customRoleType, out CustomRole customRole) => (customRole = Get(customRoleType)) is not null;
+        public static bool TryGet(object customRoleType, out CustomRole customRole) => customRole = Get(customRoleType);
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> given a specified name.
@@ -280,7 +272,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="name">The <see cref="CustomRole"/> name to look for.</param>
         /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomRole"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out CustomRole customRole) => (customRole = Registered.FirstOrDefault(cRole => cRole.Name == name)) is not null;
+        public static bool TryGet(string name, out CustomRole customRole) => customRole = Registered.FirstOrDefault(cRole => cRole.Name == name);
 
         /// <summary>
         /// Tries to get the player's current <see cref="CustomRole"/>.
@@ -288,7 +280,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="player">The <see cref="Pawn"/> to search on.</param>
         /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomRole"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Pawn player, out CustomRole customRole) => (customRole = Get(player)) is not null;
+        public static bool TryGet(Pawn player, out CustomRole customRole) => customRole = Get(player);
 
         /// <summary>
         /// Tries to get the player's current <see cref="CustomRole"/>.
@@ -296,7 +288,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="roleBuilder">The <see cref="RoleBehaviour"/> to search for.</param>
         /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomRole"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(RoleBehaviour roleBuilder, out CustomRole customRole) => (customRole = Get(roleBuilder.GetType())) is not null;
+        public static bool TryGet(RoleBehaviour roleBuilder, out CustomRole customRole) => customRole = Get(roleBuilder.GetType());
 
         /// <summary>
         /// Tries to get the player's current <see cref="CustomRole"/>.
@@ -304,17 +296,23 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="type">The <see cref="Type"/> to search for.</param>
         /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomRole"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out CustomRole customRole) => (customRole = Get(type.GetType())) is not null;
+        public static bool TryGet(Type type, out CustomRole customRole) => customRole = Get(type.GetType());
 
         /// <summary>
-        /// Tries to spawn the player as a specific <see cref="CustomRole"/>.
+        /// Attempts to spawn the specified player with the provided custom role.
         /// </summary>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
-        /// <param name="customRole">The <see cref="CustomRole"/> to be set.</param>
-        /// <returns><see langword="true"/> if the player was spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool SafeSpawn(Pawn player, CustomRole customRole)
+        /// <param name="customRole">The custom role to be assigned to the player.</param>
+        /// <returns>
+        /// <see langword="true"/> if the player was spawned with the custom role successfully; otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <remarks>
+        /// This method attempts to spawn the specified player with the given custom role. If the custom role is not provided
+        /// or is invalid, the method returns <see langword="false"/>.
+        /// </remarks>
+        public static bool TrySpawn(Pawn player, CustomRole customRole)
         {
-            if (customRole is null)
+            if (!customRole)
                 return false;
 
             customRole.Spawn(player);
@@ -323,47 +321,67 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Tries to spawn the player as a specific <see cref="CustomRole"/>.
+        /// Attempts to spawn the specified player with the custom role identified by the provided type or type name.
         /// </summary>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
-        /// <param name="customRoleType">The <see cref="object"/> to be set.</param>
-        /// <returns><see langword="true"/> if the player was spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool SafeSpawn(Pawn player, object customRoleType)
+        /// <param name="customRoleType">The type or type name of the custom role to be assigned to the player.</param>
+        /// <returns>
+        /// <see langword="true"/> if the player was spawned with the custom role successfully; otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <remarks>
+        /// This method allows attempting to spawn the specified player with a custom role identified by its type or type name.
+        /// If the custom role type or name is not provided, or if the identification process fails, the method returns <see langword="false"/>.
+        /// </remarks>
+        public static bool TrySpawn(Pawn player, object customRoleType)
         {
             if (!TryGet(customRoleType, out CustomRole customRole))
                 return false;
 
-            SafeSpawn(player, customRole);
+            TrySpawn(player, customRole);
 
             return true;
         }
 
         /// <summary>
-        /// Tries to spawn the player as a specific <see cref="CustomRole"/> by name.
+        /// Attempts to spawn the specified player with the custom role identified by the provided name.
         /// </summary>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
-        /// <param name="name">The <see cref="CustomRole"/> name to be set.</param>
-        /// <returns>Returns a value indicating whether the <see cref="Pawn"/> was spawned or not.</returns>
-        public static bool SafeSpawn(Pawn player, string name)
+        /// <param name="name">The name of the custom role to be assigned to the player.</param>
+        /// <returns>
+        /// <see langword="true"/> if the player was spawned with the custom role successfully; otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <remarks>
+        /// This method allows attempting to spawn the specified player with a custom role identified by its name.
+        /// If the custom role name is not provided, or if the identification process fails, the method returns <see langword="false"/>.
+        /// </remarks>
+        public static bool TrySpawn(Pawn player, string name)
         {
             if (!TryGet(name, out CustomRole customRole))
                 return false;
 
-            SafeSpawn(player, customRole);
+            TrySpawn(player, customRole);
 
             return true;
         }
 
         /// <summary>
-        /// Tries to force spawn the player as a specific <see cref="CustomRole"/>.
+        /// Spawns the specified player with the provided custom role.
         /// </summary>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
-        /// <param name="customRole">The <see cref="CustomRole"/> to be set.</param>
-        /// <param name="shouldKeepPosition">A value indicating whether the <see cref="Pawn"/> should be spawned in the same position.</param>
-        /// <returns><see langword="true"/> if the player was spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool UnsafeSpawn(Pawn player, CustomRole customRole, bool shouldKeepPosition = false)
+        /// <param name="customRole">The custom role to be assigned to the player.</param>
+        /// <param name="shouldKeepPosition">
+        /// A value indicating whether the custom role assignment should maintain the player's current position.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if the player was spawned with the custom role successfully; otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <remarks>
+        /// This method forces the specified player to respawn with the given custom role. If the custom role is
+        /// not provided or is invalid, the method returns <see langword="false"/>.
+        /// </remarks>
+        public static bool Spawn(Pawn player, CustomRole customRole, bool shouldKeepPosition = false)
         {
-            if (customRole is null)
+            if (!customRole)
                 return false;
 
             customRole.ForceSpawn(player, shouldKeepPosition);
@@ -372,43 +390,131 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Tries to force spawn the player as a specific <see cref="CustomRole"/>.
+        /// Spawns the specified player with the custom role identified by the provided type or type name.
         /// </summary>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
-        /// <param name="customRoleType">The <see cref="object"/> to be set.</param>
-        /// <param name="shouldKeepPosition">A value indicating whether the <see cref="Pawn"/> should be spawned in the same position.</param>
-        /// <returns><see langword="true"/> if the player was spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool UnsafeSpawn(Pawn player, object customRoleType, bool shouldKeepPosition = false)
+        /// <param name="customRoleType">The type or type name of the custom role to be assigned to the player.</param>
+        /// <param name="shouldKeepPosition">
+        /// A value indicating whether the custom role assignment should maintain the player's current position.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if the player was spawned with the custom role successfully; otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <remarks>
+        /// This method allows the spawning of the specified player with a custom role identified by its type or type name.
+        /// If the custom role type or name is not provided, or if the identification process fails, the method returns <see langword="false"/>.
+        /// </remarks>
+        public static bool Spawn(Pawn player, object customRoleType, bool shouldKeepPosition = false)
         {
             if (!TryGet(customRoleType, out CustomRole customRole))
                 return false;
 
-            UnsafeSpawn(player, customRole, shouldKeepPosition);
+            Spawn(player, customRole, shouldKeepPosition);
 
             return true;
         }
 
         /// <summary>
-        /// Tries to force spawn the player as a specific <see cref="CustomRole"/> by name.
+        /// Spawns the specified player with the custom role identified by the provided name.
         /// </summary>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
-        /// <param name="name">The <see cref="CustomRole"/> name to be set.</param>
-        /// <param name="shouldKeepPosition">A value indicating whether the <see cref="Pawn"/> should be spawned in the same position.</param>
-        /// <returns><see langword="true"/> if the player was spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool UnsafeSpawn(Pawn player, string name, bool shouldKeepPosition = false)
+        /// <param name="name">The name of the custom role to be assigned to the player.</param>
+        /// <param name="shouldKeepPosition">
+        /// A value indicating whether the custom role assignment should maintain the player's current position.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if the player was spawned with the custom role successfully; otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <remarks>
+        /// This method allows the spawning of the specified player with a custom role identified by its name.
+        /// If the custom role name is not provided, or if the identification process fails, the method returns <see langword="false"/>.
+        /// </remarks>
+        public static bool Spawn(Pawn player, string name, bool shouldKeepPosition = false)
         {
             if (!TryGet(name, out CustomRole customRole))
                 return false;
 
-            UnsafeSpawn(player, customRole, shouldKeepPosition);
+            Spawn(player, customRole, shouldKeepPosition);
 
             return true;
         }
 
         /// <summary>
+        /// Removes the custom role from the specified player.
+        /// </summary>
+        /// <param name="player">The owner of the custom role.</param>
+        /// <returns>
+        /// <see langword="true"/> if the custom role was removed successfully; otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <remarks>
+        /// This method removes the custom role assigned to the specified player. If the player does not
+        /// have a custom role or if the removal operation fails, the method returns <see langword="false"/>.
+        /// </remarks>
+        public static bool Remove(Pawn player)
+        {
+            if (!TryGet(player, out CustomRole customRole))
+                return false;
+
+            customRole.Eject(player);
+            return true;
+        }
+
+        /// <summary>
+        /// Removes the custom role of type <typeparamref name="T"/> from the specified player.
+        /// </summary>
+        /// <typeparam name="T">The type of custom role to be removed.</typeparam>
+        /// <param name="player">The owner of the custom role.</param>
+        /// <returns>
+        /// <see langword="true"/> if the custom role was removed successfully; otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <remarks>
+        /// This method removes the custom role of type <typeparamref name="T"/> assigned to the specified player.
+        /// If the player does not have the specified custom role or if the removal operation fails,
+        /// the method returns <see langword="false"/>.
+        /// </remarks>
+        public static bool Remove<T>(Pawn player)
+            where T : CustomRole
+        {
+            if (!TryGet(typeof(T), out CustomRole customRole) || !player.TryGetComponent(customRole.BehaviourComponent, out _))
+                return false;
+
+            customRole.Eject(player);
+            return true;
+        }
+
+        /// <summary>
+        /// Removes the custom role from each player in the specified collection.
+        /// </summary>
+        /// <param name="players">The collection of players whose custom roles will be removed.</param>
+        /// <remarks>
+        /// This method removes the custom role from each player in the provided collection. Players without
+        /// a custom role or for whom the removal operation fails will be excluded from the removal process.
+        /// </remarks>
+        public static void Remove(IEnumerable<Pawn> players) => players.ForEach(player => Remove(player));
+
+        /// <summary>
+        /// Removes the custom role of type <typeparamref name="T"/> from each player in the specified collection.
+        /// </summary>
+        /// <typeparam name="T">The type of custom role to be removed.</typeparam>
+        /// <param name="players">The collection of players whose custom roles will be removed.</param>
+        /// <remarks>
+        /// This method removes the custom role of type <typeparamref name="T"/> from each player in the provided collection.
+        /// Players without the specified custom role or for whom the removal operation fails will be excluded from the removal process.
+        /// </remarks>
+        public static void Remove<T>(IEnumerable<Pawn> players)
+            where T : CustomRole => players.ForEach(player => Remove<T>(player));
+
+        /// <summary>
         /// Enables all the custom roles present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all the enabled custom roles.</returns>
+        /// <returns>
+        /// A <see cref="List{T}"/> of <see cref="CustomRole"/> containing all the enabled custom roles.
+        /// </returns>
+        /// <remarks>
+        /// This method dynamically enables all custom roles found in the calling assembly. Custom roles
+        /// must be marked with the <see cref="CustomRoleAttribute"/> to be considered for enabling. If
+        /// a custom role is enabled successfully, it is added to the returned list.
+        /// </remarks>
         public static List<CustomRole> EnableAll()
         {
             List<CustomRole> customRoles = new();
@@ -427,8 +533,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     customRoles.Add(customRole);
             }
 
-            if (customRoles.Count() != Registered.Count())
-                Log.Info($"{customRoles.Count()} custom roles have been successfully registered!");
+            if (customRoles.Count != Registered.Count())
+                Log.Info($"{customRoles.Count} custom roles have been successfully registered!");
 
             return customRoles;
         }
@@ -436,13 +542,19 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Disables all the custom roles present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all the disabled custom roles.</returns>
+        /// <returns>
+        /// A <see cref="List{T}"/> of <see cref="CustomRole"/> containing all the disabled custom roles.
+        /// </returns>
+        /// <remarks>
+        /// This method dynamically disables all custom roles found in the calling assembly that were
+        /// previously registered. If a custom role is disabled successfully, it is added to the returned list.
+        /// </remarks>
         public static List<CustomRole> DisableAll()
         {
             List<CustomRole> customRoles = new();
             customRoles.AddRange(Registered.Where(customRole => customRole.TryUnregister()));
 
-            Log.Info($"{customRoles.Count()} custom roles have been successfully unregistered!");
+            Log.Info($"{customRoles.Count} custom roles have been successfully unregistered!");
 
             return customRoles;
         }
@@ -464,27 +576,51 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Spawns the player as a specific <see cref="CustomRole"/>.
         /// </summary>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
-        /// <returns><see langword="true"/> if the player was spawned; otherwise, <see langword="false"/>.</returns>
+        /// <returns>
+        /// <see langword="true"/> if the player was spawned; otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <remarks>
+        /// This method spawns the specified player as the current  <see cref="CustomRole"/>, adding the
+        /// required behavior component. If the player is already alive, the spawn operation
+        /// fails and returns <see langword="false"/>.
+        /// </remarks>
         public bool Spawn(Pawn player)
         {
-            if (player.Role.Team is not Team.Dead)
+            if (player.IsAlive)
                 return false;
 
             player.AddComponent(BehaviourComponent);
-            PlayersValueInternal.Remove(player);
-            PlayersValueInternal.Add(player, this);
+            PlayersValue.Remove(player);
+            PlayersValue.Add(player, this);
 
             return true;
         }
 
         /// <summary>
-        /// Force spawns the player as a specific <see cref="CustomRole"/>.
+        /// Spawns each player in the specified collection as a specific <see cref="CustomRole"/>.
         /// </summary>
-        /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
+        /// <param name="players">The collection of <see cref="Pawn"/> instances to be spawned.</param>
+        /// <remarks>
+        /// This method spawns each player in the provided collection as the current  <see cref="CustomRole"/>,
+        /// adding the required behavior component. Players that are already alive will not be
+        /// affected by the spawn operation. The method is designed for spawning multiple players
+        /// with a single call.
+        /// </remarks>
+        public void Spawn(IEnumerable<Pawn> players) => players.ForEach(player => Spawn(player));
+
+        /// <summary>
+        /// Force spawns the specified player as a specific <see cref="CustomRole"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Pawn"/> to be force spawned.</param>
+        /// <remarks>
+        /// This method forcefully spawns the player as the current <see cref="CustomRole"/>, regardless of
+        /// the player's current state. If the player is not alive, it is immediately spawned;
+        /// otherwise, the player's role is temporarily set to Spectator before being force spawned.
+        /// </remarks>
         public void ForceSpawn(Pawn player)
         {
-            PlayersValueInternal.Remove(player);
-            PlayersValueInternal.Add(player, this);
+            Remove(player);
+            PlayersValue.Add(player, this);
 
             if (!player.IsAlive)
             {
@@ -497,14 +633,19 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Force spawns the player as a specific <see cref="CustomRole"/>.
+        /// Force spawns the specified player as a specific <see cref="CustomRole"/>.
         /// </summary>
-        /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
+        /// <param name="player">The <see cref="Pawn"/> to be force spawned.</param>
         /// <param name="preservePosition">A value indicating whether the <see cref="CustomRole"/> assignment should maintain the player's current position.</param>
+        /// <remarks>
+        /// This method forcefully spawns the player as the current  <see cref="CustomRole"/>, regardless of
+        /// the player's current state. If the player is not alive, it is immediately spawned;
+        /// otherwise, the player's role is temporarily set to Spectator before being force spawned.
+        /// </remarks>
         public void ForceSpawn(Pawn player, bool preservePosition)
         {
-            PlayersValueInternal.Remove(player);
-            PlayersValueInternal.Add(player, this);
+            PlayersValue.Remove(player);
+            PlayersValue.Add(player, this);
 
             if (!player.IsAlive)
             {
@@ -517,10 +658,58 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Gets a value indicating whether a player can spawn as this <see cref="CustomRole"/> based on its assigned probability.
+        /// Force spawns each player in the specified collection as a specific <see cref="CustomRole"/>.
         /// </summary>
-        /// <returns><see langword="true"/> if the probability condition was satified; otherwise, <see langword="false"/>.</returns>
-        public bool CanSpawnByProbability() => UnityEngine.Random.Range(0, 101) <= Chance;
+        /// <param name="players">The collection of <see cref="Pawn"/> instances to be force spawned.</param>
+        /// <remarks>
+        /// This method forcefully spawns each player in the provided collection as the current CustomRole,
+        /// regardless of their current state. Players that are not alive will be immediately spawned;
+        /// otherwise, their roles are temporarily set to Spectator before being force spawned.
+        /// </remarks>
+        public void ForceSpawn(IEnumerable<Pawn> players) => players.ForEach(player => ForceSpawn(player));
+
+        /// <summary>
+        /// Force spawns each player in the specified collection as a specific <see cref="CustomRole"/>.
+        /// </summary>
+        /// <param name="players">The collection of <see cref="Pawn"/> instances to be force spawned.</param>
+        /// <param name="preservePosition">A value indicating whether the <see cref="CustomRole"/> assignment should maintain the players' current positions.</param>
+        /// <remarks>
+        /// This method forcefully spawns each player in the provided collection as the current CustomRole,
+        /// regardless of their current state. Players that are not alive will be immediately spawned;
+        /// otherwise, their roles are temporarily set to Spectator before being force spawned.
+        /// </remarks>
+        public void ForceSpawn(IEnumerable<Pawn> players, bool preservePosition) => players.ForEach(player => ForceSpawn(player, preservePosition));
+
+        /// <summary>
+        /// Removes the custom role from the specified player.
+        /// </summary>
+        /// <param name="player">The owner of the custom role.</param>
+        /// <returns>
+        /// <see langword="true"/> if the custom role was removed successfully; otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <remarks>
+        /// This method removes the custom role assigned to the specified player. If the player does not
+        /// have a custom role or if the removal operation fails, the method returns <see langword="false"/>.
+        /// </remarks>
+        public bool Eject(Pawn player)
+        {
+            if (!TryGet(player, out CustomRole customRole) || !player.TryGetComponent(customRole.BehaviourComponent, out RoleBehaviour rb))
+                return false;
+
+            PlayersValue.Remove(player);
+            rb.DestroyNextTick = true;
+            return true;
+        }
+
+        /// <summary>
+        /// Removes the custom role from each player in the specified collection.
+        /// </summary>
+        /// <param name="players">The collection of players whose custom roles will be removed.</param>
+        /// <remarks>
+        /// This method removes the custom role from each player in the provided collection. Players without
+        /// a custom role or for whom the removal operation fails will be excluded from the removal process.
+        /// </remarks>
+        public void Eject(IEnumerable<Pawn> players) => players.ForEach(player => Remove(player));
 
         /// <summary>
         /// Tries to register a <see cref="CustomRole"/>.

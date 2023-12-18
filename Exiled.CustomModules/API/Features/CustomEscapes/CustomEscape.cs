@@ -17,7 +17,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.CustomModules.API.Enums;
-
+    using Exiled.CustomModules.API.Features.CustomRoles;
     using MonoMod.Utils;
 
     using Utils.NonAllocLINQ;
@@ -29,7 +29,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     {
         private static readonly List<CustomEscape> Registered = new();
         private static readonly Dictionary<byte, Hint> AllScenariosInternal = new();
-        private static readonly Dictionary<Player, CustomEscape> PlayerValuesInternal = new();
+        private static readonly Dictionary<Player, CustomEscape> PlayersValue = new();
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomEscape"/>'s.
@@ -44,7 +44,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Gets all players and their respective <see cref="CustomEscape"/>.
         /// </summary>
-        public static IReadOnlyDictionary<Player, CustomEscape> Manager => PlayerValuesInternal;
+        public static IReadOnlyDictionary<Player, CustomEscape> Manager => PlayersValue;
 
         /// <summary>
         /// Gets the <see cref="CustomEscape"/>'s name.
@@ -295,8 +295,8 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="player">The <see cref="Player"/> to attach the escape rules to.</param>
         public void Attach(Player player)
         {
-            PlayerValuesInternal.Remove(player);
-            PlayerValuesInternal.Add(player, this);
+            PlayersValue.Remove(player);
+            PlayersValue.Add(player, this);
             player.AddComponent(BehaviourComponent, $"ECS-{Name}");
         }
 
@@ -306,7 +306,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="player">The <see cref="Player"/> to detach the escape rules from.</param>
         public void Detach(Player player)
         {
-            PlayerValuesInternal.Remove(player);
+            PlayersValue.Remove(player);
             player.GetComponent(BehaviourComponent).Destroy();
         }
 
@@ -325,7 +325,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                 if (List.Any(x => x.Id == Id))
                 {
                     Log.Debug(
-                        $"[CustomEscapes] Couldn't register {Name}. " +
+                        $"Couldn't register {Name}. " +
                         $"Another custom escape has been registered with the same Id:" +
                         $" {List.FirstOrDefault(x => x.Id == Id)}");
 
@@ -338,7 +338,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                 return true;
             }
 
-            Log.Debug($"[CustomRoles] Couldn't register {Name}. This custom escape has been already registered.");
+            Log.Debug($"Couldn't register {Name}. This custom escape has been already registered.");
 
             return false;
         }
@@ -351,7 +351,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         {
             if (!List.Contains(this))
             {
-                Log.Debug($"[CustomEscapes] Couldn't unregister {Name}. This custom escape hasn't been registered yet.");
+                Log.Debug($"Couldn't unregister {Name}. This custom escape hasn't been registered yet.");
 
                 return false;
             }

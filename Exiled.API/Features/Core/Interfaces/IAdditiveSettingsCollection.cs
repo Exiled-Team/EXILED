@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Core.Interfaces
     /// <summary>
     /// Defines a collection of additive settings set up through user-defined properties.
     /// </summary>
-    /// <typeparam name="T">The <see cref="EBehaviour"/> type.</typeparam>
+    /// <typeparam name="T">The <see cref="EPlayerBehaviour"/> type.</typeparam>
     public interface IAdditiveSettingsCollection<T> : IAdditivePipe
         where T : IAdditiveProperty
     {

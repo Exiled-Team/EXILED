@@ -37,7 +37,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// <summary>
     /// A tool to easily handle the custom role's logic.
     /// </summary>
-    public abstract class RoleBehaviour : EBehaviour, IAdditiveSettings<RoleSettings>
+    public abstract class RoleBehaviour : EPlayerBehaviour, IAdditiveSettings<RoleSettings>
     {
         private Vector3 lastPosition;
         private RoleTypeId fakeAppearance;
@@ -142,7 +142,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         protected CustomRole CustomRole { get; private set; }
 
         /// <summary>
-        /// Gets the current speed of the  <see cref="EBehaviour.Owner"/>.
+        /// Gets the current speed of the  <see cref="EPlayerBehaviour.Owner"/>.
         /// </summary>
         protected float CurrentSpeed { get; private set; }
 
@@ -345,9 +345,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             base.Tick();
 
             // Must be refactored (performance issues)
-            if (!Owner || (Settings.UseDefaultRoleOnly && (Owner.Role != Role)) ||
-                (!Settings.DynamicRoles.IsEmpty() && !Settings.DynamicRoles.Contains(Owner.Role)) ||
-                !CustomRole.Players.Contains(Owner))
+            if ((Settings.UseDefaultRoleOnly && (Owner.Role != Role)) || (!Settings.DynamicRoles.IsEmpty() && !Settings.DynamicRoles.Contains(Owner.Role)))
             {
                 Destroy();
                 return;
@@ -394,7 +392,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             base.OnEndPlay();
 
-            CustomRole.PlayersValueInternal.Remove(Owner.Cast<Pawn>());
+            CustomRole.PlayersValue.Remove(Owner.Cast<Pawn>());
 
             if (!Settings.DoesLookingAffectScp173)
                 Scp173Role.TurnedPlayers.Remove(Owner);

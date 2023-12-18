@@ -16,6 +16,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomRoles;
+
     using PlayerRoles;
     using UnityEngine;
 
@@ -24,7 +25,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     /// <summary>
     /// A class to easily manage escaping behavior.
     /// </summary>
-    public abstract class EscapeBehaviour : EBehaviour, IAdditiveSettingsCollection<EscapeSettings>
+    public abstract class EscapeBehaviour : EPlayerBehaviour, IAdditiveSettingsCollection<EscapeSettings>
     {
         /// <summary>
         /// Gets or sets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape settings.

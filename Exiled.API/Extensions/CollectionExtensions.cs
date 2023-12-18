@@ -9,6 +9,7 @@ namespace Exiled.API.Extensions
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
 
     /// <summary>
@@ -85,6 +86,27 @@ namespace Exiled.API.Extensions
             T[] array = enumerable.ToArray();
             array.Shuffle(iterations);
             return array;
+        }
+
+        /// <summary>
+        /// Performs the specified action on each element of the <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the <see cref="IEnumerable{T}"/>.</typeparam>
+        /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to iterate over.</param>
+        /// <param name="action">The <see cref="Action{T}"/> delegate to apply to each element.</param>
+        /// <returns>The original <see cref="IEnumerable{T}"/>.</returns>
+        /// <remarks>
+        /// This extension method is designed for performing side effects on each element
+        /// of the collection without creating a new collection. It does not modify the
+        /// collection itself and is typically used for its side effects, such as logging,
+        /// printing, or updating state.
+        /// </remarks>
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            foreach (T item in enumerable)
+                action(item);
+
+            return enumerable;
         }
     }
 }

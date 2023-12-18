@@ -45,14 +45,14 @@ namespace Exiled.CustomModules.API.Features
         public Pawn(ReferenceHub referenceHub)
             : base(referenceHub)
         {
-            //foreach (KeyValuePair<Player, HashSet<CustomAbility>> kvp in CustomAbility.Manager)
-            //{
-            //    if (kvp.Key != this)
-            //        continue;
+            foreach (KeyValuePair<Player, HashSet<CustomAbility<Player>>> kvp in CustomAbility<Player>.Manager)
+            {
+                if (kvp.Key != this)
+                    continue;
 
-            //    foreach (CustomAbility ability in kvp.Value)
-            //        AbilityManager.Add(ability, GetComponent(ability.BehaviourComponent).Cast<AbilityBehaviour>());
-            //}
+                foreach (CustomAbility<Player> ability in kvp.Value)
+                    AbilityManager.Add(ability, GetComponent(ability.BehaviourComponent).Cast<PlayerAbilityBehaviour>());
+            }
         }
 
         /// <summary>
@@ -62,25 +62,25 @@ namespace Exiled.CustomModules.API.Features
         public Pawn(GameObject gameObject)
             : base(gameObject)
         {
-            //foreach (KeyValuePair<Player, HashSet<CustomAbility>> kvp in CustomAbility.Manager)
-            //{
-            //    if (kvp.Key != this)
-            //        continue;
+            foreach (KeyValuePair<Player, HashSet<CustomAbility<Player>>> kvp in CustomAbility<Player>.Manager)
+            {
+                if (kvp.Key != this)
+                    continue;
 
-            //    foreach (CustomAbility ability in kvp.Value)
-            //        AbilityManager.Add(ability, GetComponent(ability.BehaviourComponent).Cast<AbilityBehaviour>());
-            //}
+                foreach (CustomAbility<Player> ability in kvp.Value)
+                    AbilityManager.Add(ability, GetComponent(ability.BehaviourComponent).Cast<PlayerAbilityBehaviour>());
+            }
         }
 
         /// <summary>
         /// Gets the pawn's ability manager.
         /// </summary>
-        // Dictionary<CustomAbility, AbilityBehaviour> AbilityManager { get; private set; } = new();
+        public Dictionary<CustomAbility<Player>, PlayerAbilityBehaviour> AbilityManager { get; private set; } = new();
 
         /// <summary>
-        /// Gets all pawn's <see cref="EBehaviour"/>'s.
+        /// Gets all pawn's <see cref="EPlayerBehaviour"/>'s.
         /// </summary>
-        public IEnumerable<EBehaviour> Behaviours => ComponentsInChildren.Where(cmp => cmp is EBehaviour).Cast<EBehaviour>();
+        public IEnumerable<EPlayerBehaviour> Behaviours => ComponentsInChildren.Where(cmp => cmp is EPlayerBehaviour).Cast<EPlayerBehaviour>();
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.CustomRole"/>.
@@ -110,12 +110,12 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets the pawn's custom abilities.
         /// </summary>
-        // public IEnumerable<CustomAbility> CustomAbilities => AbilityManager.Keys;
+        public IEnumerable<CustomAbility<Player>> CustomAbilities => AbilityManager.Keys;
 
         /// <summary>
-        /// Gets the pawn's <see cref="AbilityBehaviour"/>.
+        /// Gets the pawn's <see cref="PlayerAbilityBehaviour"/>.
         /// </summary>
-        // public IEnumerable<AbilityBehaviour> AbilityBehaviours => AbilityManager.Values;
+        public IEnumerable<PlayerAbilityBehaviour> AbilityBehaviours => AbilityManager.Values;
 
         /// <summary>
         /// Gets a value indicating whether the pawn has a <see cref="CustomRoles.CustomRole"/>.
@@ -257,7 +257,7 @@ namespace Exiled.CustomModules.API.Features
                 return;
             }
 
-            CustomRole.UnsafeSpawn(this, role, preservePlayerPosition);
+            CustomRole.Spawn(this, role, preservePlayerPosition);
         }
 
         /// <summary>
