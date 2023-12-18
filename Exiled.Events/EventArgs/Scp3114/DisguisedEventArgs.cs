@@ -11,8 +11,6 @@ namespace Exiled.Events.EventArgs.Scp3114
     using Exiled.API.Features.Roles;
     using Interfaces;
 
-    using PlayerRoles.Ragdolls;
-
     /// <summary>
     /// Contains all information after SCP-3114 disguised.
     /// </summary>
@@ -27,11 +25,11 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <param name="ragdoll">
         /// <inheritdoc cref="Ragdoll" />
         /// </param>
-        public DisguisedEventArgs(ReferenceHub player, DynamicRagdoll ragdoll)
+        public DisguisedEventArgs(Player player, Ragdoll ragdoll)
         {
-            Player = Player.Get(player);
+            Player = player;
             Scp3114 = Player.Role.As<Scp3114Role>();
-            Ragdoll = Ragdoll.Get(ragdoll);
+            Ragdoll = ragdoll;
         }
 
         /// <inheritdoc/>

@@ -11,8 +11,6 @@ namespace Exiled.Events.EventArgs.Scp3114
     using Exiled.API.Features.Roles;
     using Interfaces;
 
-    using PlayerRoles.Ragdolls;
-
     /// <summary>
     /// Contains all information before SCP-3114 disguises to a new role.
     /// </summary>
@@ -27,15 +25,19 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <param name="ragdoll">
         /// <inheritdoc cref="Ragdoll" />
         /// </param>
-        public DisguisingEventArgs(ReferenceHub player, DynamicRagdoll ragdoll)
+        /// <param name="isAllowed">
+        /// <inheritdoc cref="IsAllowed" />
+        /// </param>
+        public DisguisingEventArgs(Player player, Ragdoll ragdoll, bool isAllowed = true)
         {
-            Player = Player.Get(player);
+            Player = player;
             Scp3114 = Player.Role.As<Scp3114Role>();
-            Ragdoll = Ragdoll.Get(ragdoll);
+            Ragdoll = ragdoll;
+            IsAllowed = isAllowed;
         }
 
         /// <inheritdoc/>
-        public bool IsAllowed { get; set; } = true;
+        public bool IsAllowed { get; set; }
 
         /// <inheritdoc/>
         public Player Player { get; }
