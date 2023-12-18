@@ -60,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Player
                 // true
                 new(OpCodes.Ldc_I4_1),
 
-                // TogglingRadioEventArgs ev = new TogglingRadioEventArgs(Player, Radio, bool);
+                // TogglingRadioEventArgs ev = new TogglingRadioEventArgs(Player, RadioItem, bool, bool);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingRadioEventArgs))[0]),
                 new(OpCodes.Dup),
 
