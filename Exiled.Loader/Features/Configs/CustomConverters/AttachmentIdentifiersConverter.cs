@@ -33,7 +33,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
             if (!parser.TryConsume(out Scalar scalar) || !AttachmentIdentifier.TryParse(scalar.Value, out AttachmentName name))
                 throw new InvalidDataException($"Invalid AttachmentNameTranslation value: {scalar?.Value}.");
 
-            return Enum.Parse(type, name.ToString());
+            return name;
         }
 
         /// <inheritdoc cref="IYamlTypeConverter" />

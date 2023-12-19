@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using System.Diagnostics;
+
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
 
@@ -18,6 +20,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a jailbird pickup.
     /// </summary>
+    [DebuggerDisplay("Jailbird")]
     public class JailbirdPickup : Pickup, IWrapper<BaseJailbirdPickup>
     {
         /// <summary>

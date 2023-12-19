@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using System.Diagnostics;
+
     using Exiled.API.Interfaces;
 
     using BaseScp1576 = InventorySystem.Items.Usables.Scp1576.Scp1576Pickup;
@@ -14,6 +16,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for dropped SCP-330 bags.
     /// </summary>
+    [DebuggerDisplay("Scp-1576")]
     public class Scp1576Pickup : Pickup, IWrapper<BaseScp1576>
     {
         /// <summary>

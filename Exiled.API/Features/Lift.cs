@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -28,8 +29,10 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game lift.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Lift : IWrapper<ElevatorChamber>, IWorldSpace
     {
+
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="ElevatorChamber"/>s and their corresponding <see cref="Lift"/>.
         /// </summary>
@@ -202,6 +205,9 @@ namespace Exiled.API.Features
         /// Gets the <see cref="CurrentDestination"/>.
         /// </summary>
         public Doors.ElevatorDoor CurrentDestination => Door.Get(Base.CurrentDestination).As<Doors.ElevatorDoor>();
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay => $"Type = {Type} Status = {Status} Level = {CurrentLevel} Lock = {IsLocked}";
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances from the specified <see cref="Status"/>.

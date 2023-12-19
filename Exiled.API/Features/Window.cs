@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using DamageHandlers;
@@ -20,6 +21,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A wrapper class for <see cref="BreakableWindow"/>.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Window : IWrapper<BreakableWindow>, IWorldSpace
     {
         /// <summary>
@@ -146,6 +148,9 @@ namespace Exiled.API.Features
             get => Player.Get(Base.LastAttacker.Hub);
             set => Base.LastAttacker = value.Footprint;
         }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay => $"Type = {Type} Health = {Health} Broken = {IsBroken}";
 
         /// <summary>
         /// Gets the window object associated with a specific <see cref="Window"/>, or creates a new one if there isn't one.

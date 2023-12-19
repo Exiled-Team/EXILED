@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System.Diagnostics;
+
     using Enums;
     using Exiled.API.Interfaces;
 
@@ -17,6 +19,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="RadioItem"/>.
     /// </summary>
+    [DebuggerDisplay("Radio")]
     public class Radio : Item, IWrapper<RadioItem>
     {
         /// <summary>

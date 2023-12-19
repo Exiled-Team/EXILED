@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System.Diagnostics;
+
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
     using InventorySystem.Items.Autosync;
@@ -18,6 +20,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapped class for <see cref="JailbirdItem"/>.
     /// </summary>
+    [DebuggerDisplay("Jailbird")]
     public class Jailbird : Item, IWrapper<JailbirdItem>
     {
         /// <summary>

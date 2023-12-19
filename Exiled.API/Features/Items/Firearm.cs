@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Items
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using CameraShaking;
@@ -39,6 +40,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.Firearms.Firearm"/>.
     /// </summary>
+    [DebuggerDisplay("Firearm")]
     public class Firearm : Item, IWrapper<BaseFirearm>
     {
         /// <summary>

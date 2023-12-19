@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System.Diagnostics;
+
     using Exiled.API.Enums;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
@@ -22,6 +24,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="FlashbangGrenade"/>.
     /// </summary>
+    [DebuggerDisplay("FlashGrenade")]
     public class FlashGrenade : Throwable
     {
         /// <summary>

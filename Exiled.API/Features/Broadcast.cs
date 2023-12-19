@@ -8,10 +8,13 @@
 namespace Exiled.API.Features
 {
     using System.ComponentModel;
+    using System.Diagnostics;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Useful class to save broadcast configs in a cleaner way.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Broadcast
     {
         /// <summary>
@@ -60,6 +63,10 @@ namespace Exiled.API.Features
         /// </summary>
         [Description("Indicates whether the broadcast should be shown or not")]
         public bool Show { get; set; }
+
+        [YamlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay => $"Type = {Type} Duration = {Duration}s Content = \"{Content}\"";
 
         /// <summary>
         /// Returns the Broadcast in a human-readable format.

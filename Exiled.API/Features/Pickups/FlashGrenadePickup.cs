@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using System.Diagnostics;
+
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups.Projectiles;
@@ -17,6 +19,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for dropped Flashbang Pickup.
     /// </summary>
+    [DebuggerDisplay("FlashGrenade")]
     internal class FlashGrenadePickup : GrenadePickup
     {
         /// <summary>

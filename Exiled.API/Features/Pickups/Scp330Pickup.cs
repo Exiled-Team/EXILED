@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Pickups
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using Exiled.API.Interfaces;
 
@@ -18,6 +19,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for dropped SCP-330 bags.
     /// </summary>
+    [DebuggerDisplay("Scp-330 Candies.Count = {Candies.Count}")]
     public class Scp330Pickup : UsablePickup, IWrapper<BaseScp330>
     {
         /// <summary>

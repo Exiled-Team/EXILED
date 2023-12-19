@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using DeathAnimations;
@@ -33,6 +34,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to handle the ragdolls more easily.
     /// </summary>
+    [DebuggerDisplay("Owner = {Owner.Name,nq} Name = {Name} Role = {Role}")]
     public class Ragdoll : IWrapper<BasicRagdoll>, IWorldSpace
     {
         /// <summary>

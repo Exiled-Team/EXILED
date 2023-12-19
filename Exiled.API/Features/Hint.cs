@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Hint.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -8,10 +8,12 @@
 namespace Exiled.API.Features
 {
     using System.ComponentModel;
+    using System.Diagnostics;
 
     /// <summary>
     /// Useful class to save hint configs in a cleaner way.
     /// </summary>
+    [DebuggerDisplay("Show = {Show} Duration = {Duration}s Content = {Content}")]
     public class Hint
     {
         /// <summary>

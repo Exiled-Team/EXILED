@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Enums;
@@ -27,6 +28,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game room.
     /// </summary>
+    [DebuggerDisplay("Type = {Type} Name = {Name}")]
     public class Room : MonoBehaviour, IWorldSpace
     {
         /// <summary>

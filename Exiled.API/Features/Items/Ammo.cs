@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System.Diagnostics;
+
     using Enums;
     using Exiled.API.Interfaces;
 
@@ -15,6 +17,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="AmmoItem"/>.
     /// </summary>
+    [DebuggerDisplay("Ammo Type = {Type}")]
     public class Ammo : Item, IWrapper<AmmoItem>
     {
         /// <summary>

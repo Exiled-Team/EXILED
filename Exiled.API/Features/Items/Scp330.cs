@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
@@ -46,6 +47,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for SCP-330 bags.
     /// </summary>
+    [DebuggerDisplay("Scp-330 Candies.Count = {Candies.Count}")]
     public class Scp330 : Usable, IWrapper<Scp330Bag>
     {
         /// <summary>

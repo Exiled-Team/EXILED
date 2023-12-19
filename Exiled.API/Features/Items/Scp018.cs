@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System.Diagnostics;
+
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
 
@@ -25,6 +27,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="BaseScp018Projectile"/> item.
     /// </summary>
+    [DebuggerDisplay("Scp-018")]
     public class Scp018 : Throwable
     {
         /// <summary>

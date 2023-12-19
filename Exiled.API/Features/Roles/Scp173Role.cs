@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Exiled.API.Features.Hazards;
@@ -23,6 +24,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-173.
     /// </summary>
+    [DebuggerDisplay("Scp-173")]
     public class Scp173Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
     {
         /// <summary>

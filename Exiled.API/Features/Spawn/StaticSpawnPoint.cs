@@ -7,11 +7,14 @@
 
 namespace Exiled.API.Features.Spawn
 {
+    using System.Diagnostics;
+
     using UnityEngine;
 
     /// <summary>
     /// Handles static spawn locations.
     /// </summary>
+    [DebuggerDisplay("StaticSpawn Name = {Name} Chance = {Chance} Position = {Position}")]
     public class StaticSpawnPoint : SpawnPoint
     {
         /// <inheritdoc/>

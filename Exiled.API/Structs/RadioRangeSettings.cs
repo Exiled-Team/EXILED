@@ -7,9 +7,12 @@
 
 namespace Exiled.API.Structs
 {
+    using System.Diagnostics;
+
     /// <summary>
     /// Settings for specific radio ranges.
     /// </summary>
+    [DebuggerDisplay("IdleUsage = {IdleUsage} TalkingUsage = {TalkingUsage} MaxRange = {MaxRange}")]
     public struct RadioRangeSettings
     {
         /// <summary>

@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Spawn
 {
+    using System.Diagnostics;
+
     using Exiled.API.Interfaces;
     using PlayerRoles;
 
@@ -15,6 +17,7 @@ namespace Exiled.API.Features.Spawn
     /// <summary>
     /// Represents a spawn location for a <see cref="Roles.Role"/>.
     /// </summary>
+    [DebuggerDisplay("RoleType = {RoleType} Position = {Position}")]
     public class SpawnLocation : IPosition
     {
         /// <summary>

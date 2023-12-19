@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using System.Diagnostics;
+
     using PlayerRoles;
 
     using NoneGameRole = PlayerRoles.NoneRole;
@@ -14,6 +16,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents players with no role.
     /// </summary>
+    [DebuggerDisplay("None")]
     public class NoneRole : Role
     {
         /// <summary>

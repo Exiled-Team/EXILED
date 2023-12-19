@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System.Diagnostics;
+
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
@@ -19,6 +21,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for SCP-244.
     /// </summary>
+    [DebuggerDisplay("Scp-244")]
     public class Scp244 : Usable, IWrapper<Scp244Item>
     {
         /// <summary>

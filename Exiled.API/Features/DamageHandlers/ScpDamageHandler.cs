@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.DamageHandlers
 {
+    using System.Diagnostics;
+
     using Enums;
 
     using Extensions;
@@ -19,6 +21,7 @@ namespace Exiled.API.Features.DamageHandlers
     /// <summary>
     /// A wrapper to easily manipulate the behavior of <see cref="BaseHandler"/>.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public sealed class ScpDamageHandler : DamageHandler
     {
         /// <summary>
@@ -57,6 +60,20 @@ namespace Exiled.API.Features.DamageHandlers
                     default:
                         return base.Type;
                 }
+            }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get
+            {
+                string debugView = $"ScpDamageHandler Damage = {Damage}";
+                if (Attacker is not null)
+                    debugView += $" Attacker = {Attacker.Nickname}";
+                if (Target is not null)
+                    debugView += $" Target = {Target.Nickname}";
+                return debugView;
             }
         }
     }

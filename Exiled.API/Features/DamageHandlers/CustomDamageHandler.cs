@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.DamageHandlers
 {
+    using System.Diagnostics;
+
     using CustomPlayerEffects;
 
     using Enums;
@@ -26,6 +28,7 @@ namespace Exiled.API.Features.DamageHandlers
     /// <summary>
     /// A wrapper to easily manipulate the behavior of <see cref="BaseHandler"/>.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public sealed class CustomDamageHandler : AttackerDamageHandler
     {
         /// <summary>
@@ -106,6 +109,20 @@ namespace Exiled.API.Features.DamageHandlers
         /// Gets the base <see cref="DamageHandlerBase"/>.
         /// </summary>
         public DamageHandlerBase CustomBase { get; }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get
+            {
+                string debugView = $"CustomDamageHandler Damage = {Damage}";
+                if (Attacker is not null)
+                    debugView += $" Attacker = {Attacker.Nickname}";
+                if (Target is not null)
+                    debugView += $" Target = {Target.Nickname}";
+                return debugView;
+            }
+        }
 
         /// <inheritdoc/>
         public override Action ApplyDamage(Player player)
