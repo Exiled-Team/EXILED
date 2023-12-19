@@ -31,10 +31,11 @@ namespace Exiled.API.Features.Core
         public bool Cast<TObject>(out TObject param)
             where TObject : class, T
         {
-            param = default;
-
             if (this is not TObject cast)
+            {
+                param = default;
                 return false;
+            }
 
             param = cast;
             return true;
