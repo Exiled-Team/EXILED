@@ -204,7 +204,7 @@ namespace Exiled.API.Features.Core.Generic
         /// Converts the <see cref="UnmanagedEnumClass{TSource, TObject}"/> instance to a human-readable <see cref="string"/> representation.
         /// </summary>
         /// <returns>A human-readable <see cref="string"/> representation of the <see cref="UnmanagedEnumClass{TSource, TObject}"/> instance.</returns>
-        public override string ToString() => name;
+        public override string ToString() => Name;
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
