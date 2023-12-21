@@ -228,5 +228,15 @@ namespace Exiled.API.Enums
         /// Makes the player nearly invisible, and allows them to pass through doors.
         /// </summary>
         Ghostly,
+
+        /// <summary>
+        /// Makes you a flamingo.
+        /// </summary>
+        BecomingFlamingo,
+
+        /// <summary>
+        /// Cake.
+        /// </summary>
+        Scp559,
     }
 }
