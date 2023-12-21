@@ -32,7 +32,7 @@ namespace Exiled.API.Features.Roles
         public override RoleTypeId Type => RoleTypeId.Flamingo;
 
         /// <inheritdoc/>
-        public BaseRole Base { get; }
+        public new BaseRole Base { get; }
 
         /// <summary>
         /// Gets or sets sync spawn reason for role.

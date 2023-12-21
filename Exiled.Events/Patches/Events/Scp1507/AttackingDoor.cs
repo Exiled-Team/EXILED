@@ -42,23 +42,30 @@ namespace Exiled.Events.Patches.Events.Scp1507
                 index,
                 new CodeInstruction[]
                 {
+                    // Player.Get(this.Owner);
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp1507AttackAbility), nameof(Scp1507AttackAbility.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                    new(OpCodes.Ldarg_3),
+                    // Door.Get(target1);
+                    new(OpCodes.Ldloc_3),
                     new(OpCodes.Call, Method(typeof(Door), nameof(Door.Get), new[] { typeof(DoorVariant) })),
 
+                    // true
                     new(OpCodes.Ldc_I4_1),
 
+                    // AttackingDoorEventArgs ev = new(Player, Door, true);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AttackingDoorEventArgs))[0]),
                     new(OpCodes.Dup),
 
+                    // Handlers.Scp1507.OnAttackingDoor(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Scp1507), nameof(Handlers.Scp1507.OnAttackingDoor))),
 
+                    // if (!ev.IsAllowed)
                     new(OpCodes.Callvirt, PropertyGetter(typeof(AttackingDoorEventArgs), nameof(AttackingDoorEventArgs.IsAllowed))),
                     new(OpCodes.Brtrue_S, continueLabel),
 
+                    // return false;
                     new(OpCodes.Ldc_I4_0),
                     new(OpCodes.Ret),
                 });
