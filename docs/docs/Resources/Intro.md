@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 sidebar_position: 1
 ---
@@ -62,6 +75,9 @@ sidebar_position: 1
 | 21  | Overwatch      | Dead             | None             | Draw            |
 | 22  | Filmmaker      | Dead             | None             | Draw            |
 | 23  | Scp3114        | SCPs             | Scp              | Anomalies       |
+| 24  | Flamingo       | Dead             | None             | Draw            |
+| 25  | AlphaFlamingo  | Dead             | None             | Draw            |
+| 26  | ZombieFlamingo | Dead             | None             | Draw            |
 ```
 
 </details>
@@ -127,6 +143,10 @@ sidebar_position: 1
 [52] GunFRMG0 
 [53] GunA7 
 [54] Lantern 
+[55] Snowball 
+[56] Coal 
+[57] SpecialCoal 
+[58] Tape 
 ```
 
 </details>
