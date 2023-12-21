@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp1507
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp1507;
     using HarmonyLib;
     using Interactables.Interobjects.DoorUtils;
@@ -24,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Scp1507
     /// Patches <see cref="Scp1507AttackAbility.TryAttackDoor"/>
     /// to add <see cref="Handlers.Scp1507.AttackingDoor"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp1507), nameof(Handlers.Scp1507.AttackingDoor))]
     [HarmonyPatch(typeof(Scp1507AttackAbility), nameof(Scp1507AttackAbility.TryAttackDoor))]
     internal class AttackingDoor
     {

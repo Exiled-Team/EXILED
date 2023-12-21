@@ -10,13 +10,15 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Enums;
     using Exiled.API.Interfaces;
     using PlayerRoles;
+    using PlayerRoles.PlayableScps.Scp1507;
+    using PlayerRoles.Subroutines;
 
     using BaseRole = PlayerRoles.PlayableScps.Scp1507.Scp1507Role;
 
     /// <summary>
     /// A wrapper for <see cref="BaseRole"/>.
     /// </summary>
-    public class Scp1507Role : Role, IWrapper<BaseRole>
+    public class Scp1507Role : Role, IWrapper<BaseRole>, ISubroutinedScpRole
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp1507Role"/> class.
@@ -26,21 +28,61 @@ namespace Exiled.API.Features.Roles
             : base(baseRole)
         {
             Base = baseRole;
+
+            SubroutineModule = baseRole.SubroutineModule;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp1507AttackAbility attackAbility))
+                Log.Error($"Attack ability is not a subroutine for {nameof(Scp1507Role)}");
+
+            AttackAbility = attackAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp1507SwarmAbility swarmAbility))
+                Log.Error($"Swarm ability is not a subroutine for {nameof(Scp1507Role)}");
+
+            SwarmAbility = swarmAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp1507VocalizeAbility vocalizeAbility))
+                Log.Error($"Vocalize ability is not a subroutine for {nameof(Scp1507Role)}");
+
+            VocalizeAbility = vocalizeAbility;
         }
 
         /// <inheritdoc/>
-        public override RoleTypeId Type => RoleTypeId.Flamingo;
+        public override RoleTypeId Type => Base._roleTypeId;
 
         /// <inheritdoc/>
         public new BaseRole Base { get; }
 
+        /// <inheritdoc/>
+        public SubroutineManagerModule SubroutineModule { get; }
+
         /// <summary>
-        /// Gets or sets sync spawn reason for role.
+        /// Gets the <see cref="Scp1507AttackAbility"/> for this role.
         /// </summary>
-        public SpawnReason SyncSpawnReason
+        public Scp1507AttackAbility AttackAbility { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Scp1507SwarmAbility"/> for this role.
+        /// </summary>
+        public Scp1507SwarmAbility SwarmAbility { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Scp1507VocalizeAbility"/> for this role.
+        /// </summary>
+        public Scp1507VocalizeAbility VocalizeAbility { get; }
+
+        /// <summary>
+        /// Gets or sets how much damage should deal SCP-1507.
+        /// </summary>
+        public float Damage
         {
-            get => (SpawnReason)Base._syncSpawnReason;
-            set => Base._syncSpawnReason = (RoleChangeReason)value;
+            get => AttackAbility._damage;
+            set => AttackAbility._damage = value;
         }
+
+        /// <summary>
+        /// Gets the delay between attacks.
+        /// </summary>
+        public float AttackDelay => AttackAbility.AttackDelay;
     }
 }
