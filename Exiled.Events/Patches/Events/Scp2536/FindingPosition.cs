@@ -42,7 +42,6 @@
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(FindingPositionEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
-                    new(OpCodes.Dup),
 
                     new(OpCodes.Call, Method(typeof(Handlers.Scp2536), nameof(Handlers.Scp2536.OnFindingPosition))),
 
