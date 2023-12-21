@@ -7,15 +7,15 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-    using System.Collections.Generic;
-
     using Exiled.API.Features;
-    using Exiled.API.Features.Pools;
     using HarmonyLib;
-    using UnityEngine;
 
-    using static HarmonyLib.AccessTools;
+#pragma warning disable SA1313
 
+    /// <summary>
+    /// Patches <see cref="Scp956Pinata.UpdateAi"/>
+    /// to implement better pinata capybara.
+    /// </summary>
     [HarmonyPatch(typeof(Scp956Pinata), nameof(Scp956Pinata.UpdateAi))]
     internal class Scp956Capybara
     {
