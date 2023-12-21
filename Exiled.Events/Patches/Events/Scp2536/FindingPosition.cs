@@ -1,0 +1,62 @@
+﻿namespace Exiled.Events.Patches.Events.Scp2536
+{
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
+    using Christmas.Scp2536;
+    using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
+    using Exiled.Events.EventArgs.Scp2536;
+    using HarmonyLib;
+
+    using static HarmonyLib.AccessTools;
+
+    /// <summary>
+    /// Patches <see cref="Scp2536Controller.CanFindPosition"/>
+    /// to add <see cref="Handlers.Scp2536.FindingPosition"/> event.
+    /// </summary>
+    [HarmonyPatch(typeof(Scp2536Controller), nameof(Scp2536Controller.CanFindPosition))]
+    internal class FindingPosition
+    {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldloc_1);
+
+            IEnumerable<Label> labels = newInstructions[index].labels;
+
+            newInstructions.RemoveRange(index, 4);
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new CodeInstruction(OpCodes.Ldarg_1).WithLabels(labels),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    new(OpCodes.Ldarg_2),
+
+                    new(OpCodes.Ldc_I4_1),
+
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(FindingPositionEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+
+                    new(OpCodes.Call, Method(typeof(Handlers.Scp2536), nameof(Handlers.Scp2536.OnFindingPosition))),
+
+                    new(OpCodes.Ldarg_2),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(FindingPositionEventArgs), nameof(FindingPositionEventArgs.Spawnpoint))),
+                    new(OpCodes.Stind_Ref),
+
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(FindingPositionEventArgs), nameof(FindingPositionEventArgs.IsAllowed))),
+                });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+    }
+}
