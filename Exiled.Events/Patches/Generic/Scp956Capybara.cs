@@ -19,20 +19,7 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(Scp956Pinata), nameof(Scp956Pinata.UpdateAi))]
     internal class Scp956Capybara
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-
-            int offset = -3;
-            int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(Random), nameof(Random.Range)))) + offset;
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Pool.Return(newInstructions);
-        }
-
-        private static void SetCapybara(Scp956Pinata __instance)
+        private static void Postfix(Scp956Pinata __instance)
         {
             if (Exiled.Events.Events.Instance.Config.Is956Capybara || Scp956.IsCapybara)
                 __instance.Network_carpincho = 69;
