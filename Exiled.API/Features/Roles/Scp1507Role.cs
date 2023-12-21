@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Enums;
     using Exiled.API.Interfaces;
     using PlayerRoles;
+    using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp1507;
     using PlayerRoles.Subroutines;
 
@@ -18,7 +19,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// A wrapper for <see cref="BaseRole"/>.
     /// </summary>
-    public class Scp1507Role : Role, IWrapper<BaseRole>, ISubroutinedScpRole
+    public class Scp1507Role : Role, IWrapper<BaseRole>, ISubroutinedScpRole, IHumeShieldRole
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp1507Role"/> class.
@@ -30,6 +31,7 @@ namespace Exiled.API.Features.Roles
             Base = baseRole;
 
             SubroutineModule = baseRole.SubroutineModule;
+            HumeShieldModule = baseRole.HumeShieldModule;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp1507AttackAbility attackAbility))
                 Log.Error($"Attack ability is not a subroutine for {nameof(Scp1507Role)}");
@@ -84,5 +86,8 @@ namespace Exiled.API.Features.Roles
         /// Gets the delay between attacks.
         /// </summary>
         public float AttackDelay => AttackAbility.AttackDelay;
+
+        /// <inheritdoc/>
+        public HumeShieldModuleBase HumeShieldModule { get; }
     }
 }
