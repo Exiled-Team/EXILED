@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="PlayerStats.KillPlayer(DamageHandlerBase)" />.
-    ///     Adds the <see cref="Handlers.Player.Dying" /> and <see cref="Handlers.Player.Died" /> event.
+    /// Patches <see cref="PlayerStats.KillPlayer(DamageHandlerBase)" />.
+    /// Adds the <see cref="Handlers.Player.Dying" /> and <see cref="Handlers.Player.Died" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Dying))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Died))]

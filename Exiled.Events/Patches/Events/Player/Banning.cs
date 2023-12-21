@@ -21,8 +21,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="BanPlayer.BanUser(Footprint, ICommandSender, string, long)" />.
-    ///     Adds the <see cref="Handlers.Player.Banning" /> event.
+    /// Patches <see cref="BanPlayer.BanUser(Footprint, ICommandSender, string, long)" />.
+    /// Adds the <see cref="Handlers.Player.Banning" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Banning))]
     [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), typeof(Footprint), typeof(ICommandSender), typeof(string), typeof(long))]

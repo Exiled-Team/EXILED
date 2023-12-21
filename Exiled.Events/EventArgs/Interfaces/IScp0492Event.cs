@@ -10,12 +10,12 @@ namespace Exiled.Events.EventArgs.Interfaces
     using Exiled.API.Features.Roles;
 
     /// <summary>
-    ///     Event args used for all <see cref="Scp0492Role" /> related events.
+    /// Event args used for all <see cref="Scp0492Role" /> related events.
     /// </summary>
     public interface IScp0492Event : IPlayerEvent
     {
         /// <summary>
-        ///     Gets the <see cref="Scp0492Role" /> triggering the event.
+        /// Gets the <see cref="Scp0492Role" /> triggering the event.
         /// </summary>
         public Scp0492Role Scp0492 { get; }
     }

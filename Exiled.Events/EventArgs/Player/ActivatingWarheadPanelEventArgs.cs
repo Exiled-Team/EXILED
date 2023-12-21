@@ -12,18 +12,18 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information before a player activates the warhead panel.
+    /// Contains all information before a player activates the warhead panel.
     /// </summary>
     public class ActivatingWarheadPanelEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ActivatingWarheadPanelEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ActivatingWarheadPanelEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public ActivatingWarheadPanelEventArgs(Player player, bool isAllowed = true)
         {
@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the warhead can be activated.
+        /// Gets or sets a value indicating whether or not the warhead can be activated.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the player who's trying to activate the warhead panel.
+        /// Gets the player who's trying to activate the warhead panel.
         /// </summary>
         public Player Player { get; }
     }

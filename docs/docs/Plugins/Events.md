@@ -62,3 +62,31 @@ public void OnEnraging(EnragingEventArgs ev) // ev is the arguments for the even
     Log.Info(ev.Player.Nickname + " has just been enraged!");
 }
 ```
+
+## Async events
+
+_Async events allow you to seamlessly integrate coroutines and event functionalities.
+You can find more information about MEC coroutines [here](https://github.com/Exiled-Team/EXILED#mec-coroutines)._
+```cs
+// Base plugin class
+// This example assumes a method called "OnEnraging" exists in this class. For best practice, you should create a new class to handle events.
+using Exiled.Events;
+public override void OnEnabled()
+{
+    Scp096.Enraging += OnEnraging; // Scp096 is the event handler, while Enraging is the name of the event. The += operator connects this event to the provided method.
+}
+public override void OnDisabled()
+{
+    Scp096.Enraging -= OnEnraging; // The -= operator disconnects this event from the provided method.
+}
+// Some other class
+using Sustem.Collections.Generic;
+
+using Exiled.Events.EventArgs;
+using MEC;
+public IEnumerator<float> OnEnraging(EnragingEventArgs ev) // ev is the arguments for the event. Every event has a different argument class with different parameters, so make sure to check its documentation.
+{
+    yield return Timing.WaitForSeconds(1f);
+    Log.Info(ev.Player.Nickname + " has just been enraged!");
+}
+```

@@ -12,21 +12,21 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information before a player earns an achievement.
+    /// Contains all information before a player earns an achievement.
     /// </summary>
     public class EarningAchievementEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="EarningAchievementEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="EarningAchievementEventArgs"/> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="achievementName">
-        ///     <inheritdoc cref="AchievementName" />
+        /// <inheritdoc cref="AchievementName" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public EarningAchievementEventArgs(Player player, AchievementName achievementName, bool isAllowed = true)
         {
@@ -36,17 +36,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the achievement that will be earned.
+        /// Gets the achievement that will be earned.
         /// </summary>
         public AchievementName AchievementName { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the achievement will be awarded to the player.
+        /// Gets or sets a value indicating whether the achievement will be awarded to the player.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the player who earned the achievement.
+        /// Gets the player who earned the achievement.
         /// </summary>
         public Player Player { get; }
     }
