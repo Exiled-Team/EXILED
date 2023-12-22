@@ -27,19 +27,26 @@ namespace Exiled.Events.Patches.Events.Scp559
                 index,
                 new[]
                 {
+                    // Scp559.Get(this);
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, Method(typeof(Scp559), nameof(Scp559.Get), new[] { typeof(Scp559Cake) })),
 
+                    // Player.Get(hub);
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                    // true
                     new(OpCodes.Ldc_I4_1),
 
+                    // InteractingScp559EventArgs ev = new(Scp559, Player, true);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingScp559EventArgs))[0]),
                     new(OpCodes.Dup),
 
-                    new(OpCodes.Call, Method(typeof(Handlers.Scp559), nameof(Handlers.Scp559.Interacting))),
+                    // Handlers.Scp559.OnInteracting(ev);
+                    new(OpCodes.Call, Method(typeof(Handlers.Scp559), nameof(Handlers.Scp559.OnInteracting))),
 
+                    // if (!ev.IsAllowed)
+                    //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp559EventArgs), nameof(InteractingScp559EventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, retLabel),
                 });
