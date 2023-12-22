@@ -226,6 +226,9 @@ namespace Exiled.API.Extensions
             ItemType.GrenadeHE => ProjectileType.FragGrenade,
             ItemType.SCP018 => ProjectileType.Scp018,
             ItemType.SCP2176 => ProjectileType.Scp2176,
+            ItemType.Coal => ProjectileType.Coal,
+            ItemType.SpecialCoal => ProjectileType.SpecialCoal,
+            ItemType.Snowball => ProjectileType.Snowball,
             _ => ProjectileType.None,
         };
 
@@ -240,6 +243,9 @@ namespace Exiled.API.Extensions
             ProjectileType.Scp018 => ItemType.SCP018,
             ProjectileType.FragGrenade => ItemType.GrenadeHE,
             ProjectileType.Scp2176 => ItemType.SCP2176,
+            ProjectileType.Coal => ItemType.Coal,
+            ProjectileType.SpecialCoal => ItemType.SpecialCoal,
+            ProjectileType.Snowball => ItemType.Snowball,
             _ => ItemType.None,
         };
 
