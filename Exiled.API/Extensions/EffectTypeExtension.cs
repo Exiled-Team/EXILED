@@ -72,6 +72,7 @@ namespace Exiled.API.Extensions
             { EffectType.Ghostly, typeof(Ghostly) },
             { EffectType.BecomingFlamingo, typeof(BecomingFlamingo) },
             { EffectType.Scp559, typeof(Scp559Effect) },
+            { EffectType.Scp956Target, typeof(Scp956Target) },
         };
 
         /// <summary>

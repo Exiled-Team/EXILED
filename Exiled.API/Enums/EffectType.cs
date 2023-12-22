@@ -238,5 +238,10 @@ namespace Exiled.API.Enums
         /// Cake.
         /// </summary>
         Scp559,
+
+        /// <summary>
+        /// Scp956 found you.
+        /// </summary>
+        Scp956Target,
     }
 }
