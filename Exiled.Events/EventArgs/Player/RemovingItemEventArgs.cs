@@ -42,6 +42,18 @@ namespace Exiled.Events.EventArgs.Player
         public bool IsAllowed { get; set; }
 
         /// <inheritdoc/>
-        public Item Item { get; } // TODO setter
+        public Item Item
+        {
+            get => item;
+            set
+            {
+                if (!Player.Items.Contains(value))
+                {
+                    throw new NotSupportedException("Cannot remove item that player doesn't have in his inventory.");
+                }
+
+                item = value;
+            }
+        }
     }
 }

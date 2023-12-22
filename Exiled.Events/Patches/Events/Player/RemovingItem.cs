@@ -99,6 +99,15 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RemovingItemEventArgs), nameof(RemovingItemEventArgs.Item))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Serial))),
                     new(OpCodes.Starg_S, 1),
+
+                    // player
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+
+                    // itemSerial
+                    new(OpCodes.Ldarg_1),
+
+                    // RemoveItem(Player.Get(inv._hub), itemSerial)
+                    new(OpCodes.Call, Method(typeof(RemovingItem), nameof(RemoveItem))),
                 });
 
             /*index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ret) + offset;

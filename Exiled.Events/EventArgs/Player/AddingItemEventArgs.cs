@@ -25,8 +25,6 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public AddingItemEventArgs(Player player, ItemBase itemBase, bool isAllowed = true)
         {
-            Log.Info(itemBase is null);
-
             Player = player;
             Item = Item.Get(itemBase);
             IsAllowed = isAllowed;
