@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using HarmonyLib;
     using InventorySystem;
@@ -21,6 +22,11 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
+    /// <summary>
+    /// Patches <see cref="InventoryExtensions.ServerRemoveItem"/>
+    /// to add <see cref="Handlers.Player.RemovingItem"/> event.
+    /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.RemovingItem))]
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerRemoveItem))]
     public class RemovingItem
     {
@@ -54,30 +60,41 @@ namespace Exiled.Events.Patches.Events.Player
                     // RemoveItem(Player.Get(inv._hub), itemSerial)
                     new(OpCodes.Call, Method(typeof(RemovingItem), nameof(RemoveItem))),
 
+                    // if (!Player::Inventory.UserInventory.TryGetValue(serial, out ItemBase item)
+                    //    return;
                     new(OpCodes.Ldloc_S, player.LocalIndex),
-                    new(OpCodes.Dup),
-
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Inventory))),
                     new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory.UserInventory))),
+                    new(OpCodes.Ldfld, Field(typeof(InventoryInfo), nameof(InventoryInfo.Items))),
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Ldloca_S, item.LocalIndex),
                     new(OpCodes.Call, Method(typeof(Dictionary<ushort, ItemBase>), nameof(Dictionary<ushort, ItemBase>.TryGetValue))),
                     new(OpCodes.Brfalse_S, retLabel),
 
+                    // Player
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+
+                    // ItemBase
                     new(OpCodes.Ldloc_S, item.LocalIndex),
 
+                    // true
                     new(OpCodes.Ldc_I4_1),
 
+                    // RemovingItemEventArgs ev = new(Player, ItemBase, true);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RemovingItemEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
 
+                    // Handlers.Player.OnRemovingItem(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnRemovingItem))),
 
+                    // if (!ev.IsAllowed)
+                    //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RemovingItemEventArgs), nameof(RemovingItemEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, retLabel),
 
+                    // serial = ev.Item.Serial;
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RemovingItemEventArgs), nameof(RemovingItemEventArgs.Item))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Serial))),

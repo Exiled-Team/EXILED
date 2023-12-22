@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using HarmonyLib;
     using InventorySystem;
@@ -21,6 +22,11 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
+    /// <summary>
+    /// Patches <see cref="InventoryExtensions.ServerAddItem"/>
+    /// to add <see cref="Handlers.Player.AddingItem"/> event.
+    /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.AddingItem))]
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerAddItem))]
     internal class AddingItem
     {
@@ -33,77 +39,56 @@ namespace Exiled.Events.Patches.Events.Player
             Label continueLabel = generator.DefineLabel();
 
             int offset = -1;
-            int index = newInstructions.FindIndex(x => x.Is(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory.UserInventory)))) + offset;
+            int index = newInstructions.FindLastIndex(x => x.Is(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory.UserInventory)))) + offset;
 
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
-                    new(OpCodes.Ldarg_0),
+                    // Player.Get(this._hub);
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                    // itemBase
                     new(OpCodes.Ldloc_1),
 
+                    // true
                     new(OpCodes.Ldc_I4_1),
 
+                    // AddingItemEventArgs ev = new(Player, ItemBase, true);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AddingItemEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
 
+                    // Handlers.Player.OnAddingItem(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnAddingItem))),
 
+                    // if (!ev.IsAllowed)
+                    //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(AddingItemEventArgs), nameof(AddingItemEventArgs.IsAllowed))),
                     new(OpCodes.Brtrue_S, continueLabel),
 
                     new(OpCodes.Ret),
 
+                    // item = ev.Item.Base;
+                    // serial = ev.Item.Serial;
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(AddingItemEventArgs), nameof(AddingItemEventArgs.Item))),
-                    new(OpCodes.Dup),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Base))),
                     new(OpCodes.Stloc_1),
+
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(AddingItemEventArgs), nameof(AddingItemEventArgs.Item))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Serial))),
-                    new(OpCodes.Starg_S, 2)
-                });
-
-            offset = -2;
-            index = newInstructions.FindIndex(x => x.Is(OpCodes.Callvirt, Method(typeof(ItemBase), nameof(ItemBase.OnAdded)))) + offset;
-
-            // AddItem(Player.Get(inv._hub), itemInstance)
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
-                {
-                    // Player.Get(inv._hub)
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-
-                    // itemInstance
-                    new(OpCodes.Ldloc_1),
-
-                    // pickup
-                    new(OpCodes.Ldarg_3),
-
-                    // AddItem(player, itemInstance, pickup)
-                    new(OpCodes.Call, Method(typeof(AddingItem), nameof(AddItem))),
+                    new(OpCodes.Starg_S, 2),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
-        }
-
-        private static void AddItem(Player player, ItemBase itemBase, ItemPickupBase itemPickupBase)
-        {
-            API.Features.Items.Item item = API.Features.Items.Item.Get(itemBase);
-            Pickup pickup = Pickup.Get(itemPickupBase);
-
-            item.ReadPickupInfo(pickup);
-
-            player?.ItemsValue.Add(item);
         }
     }
 }

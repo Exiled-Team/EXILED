@@ -74,6 +74,15 @@ namespace Exiled.Events
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
             InventorySystem.InventoryExtensions.OnItemRemoved += Handlers.Player.OnItemRemoved;
 
+            Handlers.Player.AddingItem += ev =>
+            {
+                Log.Info(ev.Player + " adding");
+                Log.Warn((ev.Player is null) + " " + (ev.Item is null));
+            };
+            Handlers.Player.ItemAdded += ev => Log.Info(ev.Player + " added");
+            Handlers.Player.RemovingItem += ev => Log.Info(ev.Player + " removing");
+            Handlers.Player.ItemRemoved += ev => Log.Info(ev.Player + " removed");
+
             RagdollManager.OnRagdollSpawned += Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
             ItemPickupBase.OnPickupAdded += Handlers.Internal.PickupEvent.OnSpawnedPickup;

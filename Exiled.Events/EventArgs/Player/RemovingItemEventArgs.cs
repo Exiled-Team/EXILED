@@ -1,4 +1,11 @@
-﻿namespace Exiled.Events.EventArgs.Player
+﻿// -----------------------------------------------------------------------
+// <copyright file="RemovingItemEventArgs.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Exiled.Events.EventArgs.Player
 {
     using System;
     using System.Linq;
@@ -35,16 +42,6 @@
         public bool IsAllowed { get; set; }
 
         /// <inheritdoc/>
-        public Item Item
-        {
-            get => item;
-            set
-            {
-                if (!Player.Items.Contains(value))
-                    throw new InvalidOperationException("ev.Item cannot be set to item which player don't have in his inventory.");
-
-                item = value;
-            }
-        }
+        public Item Item { get; } // TODO setter
     }
 }
