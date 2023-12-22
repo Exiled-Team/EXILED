@@ -235,7 +235,7 @@ namespace Exiled.API.Enums
         BecomingFlamingo,
 
         /// <summary>
-        /// Cake.
+        /// Makes you a Child after eating Cake.
         /// </summary>
         Scp559,
 
