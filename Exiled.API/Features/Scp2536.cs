@@ -45,7 +45,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets array of WhitelistedTeam. They can't interact with SCP-2536.
+        /// Gets array of <see cref="Team"/> that are able to interact with SCP-2536.
         /// </summary>
         public static Team[] WhitelistedTeams => Scp2536Controller.WhitelistedTeams;
 
