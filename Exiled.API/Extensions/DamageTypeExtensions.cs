@@ -12,6 +12,7 @@ namespace Exiled.API.Extensions
     using Enums;
 
     using Features;
+    using PlayerRoles.PlayableScps.Scp1507;
     using PlayerRoles.PlayableScps.Scp3114;
     using PlayerStatsSystem;
 
@@ -49,6 +50,7 @@ namespace Exiled.API.Extensions
             { DeathTranslations.MicroHID.Id, DamageType.MicroHid },
             { DeathTranslations.Hypothermia.Id, DamageType.Hypothermia },
             { DeathTranslations.MarshmallowMan.Id, DamageType.Marshmallow },
+            { DeathTranslations.Scp1507Peck.Id, DamageType.Scp1507 },
         };
 
         private static readonly Dictionary<DeathTranslation, DamageType> TranslationConversionInternal = new()
@@ -80,6 +82,7 @@ namespace Exiled.API.Extensions
             { DeathTranslations.MicroHID, DamageType.MicroHid },
             { DeathTranslations.Hypothermia, DamageType.Hypothermia },
             { DeathTranslations.MarshmallowMan, DamageType.Marshmallow },
+            { DeathTranslations.Scp1507Peck, DamageType.Scp1507 },
         };
 
         private static readonly Dictionary<ItemType, DamageType> ItemConversionInternal = new()
@@ -178,6 +181,12 @@ namespace Exiled.API.Extensions
                     return DamageType.MicroHid;
                 case DisruptorDamageHandler:
                     return DamageType.ParticleDisruptor;
+                case Scp1507DamageHandler:
+                    return DamageType.Scp1507;
+                case Scp956DamageHandler:
+                    return DamageType.Scp956;
+                case SnowballDamageHandler:
+                    return DamageType.Snowball;
                 case Scp049DamageHandler scp049DamageHandler:
                     return scp049DamageHandler.DamageSubType switch
                     {
