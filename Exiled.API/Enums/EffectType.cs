@@ -243,5 +243,10 @@ namespace Exiled.API.Enums
         /// Scp956 found you.
         /// </summary>
         Scp956Target,
+
+        /// <summary>
+        /// you are snowed.
+        /// </summary>
+        Snowed,
     }
 }
