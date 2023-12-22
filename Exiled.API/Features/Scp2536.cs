@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Scp2536.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -12,6 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Christmas.Scp2536;
+    using PlayerRoles;
 
     /// <summary>
     /// A wrapper for <see cref="Scp2536Controller"/>.
@@ -42,6 +43,11 @@ namespace Exiled.API.Features
                     Controller._ignoredPlayers.Add(player.NetId);
             }
         }
+
+        /// <summary>
+        /// Gets array of WhitelistedTeam. They can't interact with SCP-2536.
+        /// </summary>
+        public static Team[] WhitelistedTeams => Scp2536Controller.WhitelistedTeams;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-2536 is hidden or not.
