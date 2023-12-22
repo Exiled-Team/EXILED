@@ -484,6 +484,7 @@ namespace Exiled.API.Features.Pickups
             ItemType.SCP1576 => new Scp1576Pickup(),
             ItemType.SCP2176 => new Projectiles.Scp2176Projectile(),
             ItemType.SCP018 => new Projectiles.Scp018Projectile(),
+            ItemType.Snowball or ItemType.Coal or ItemType.SpecialCoal => new Projectiles.Projectile(type),
             _ => new Pickup(type),
         };
 
