@@ -7,7 +7,9 @@
 
 namespace Exiled.API.Features.Roles
 {
-    using Exiled.API.Enums;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Exiled.API.Interfaces;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
@@ -87,7 +89,60 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float AttackDelay => AttackAbility.AttackDelay;
 
+        /// <summary>
+        /// Gets or sets a list with flamingos, which are close to owner.
+        /// </summary>
+        public IEnumerable<Player> NearbyFlamingos
+        {
+            get => SwarmAbility._nearbyFlamingos.Select(x => Player.Get(x._lastOwner));
+            set
+            {
+                SwarmAbility._nearbyFlamingos.Clear();
+
+                foreach (var player in value.Where(x => x.Role.Is<Scp1507Role>(out _)))
+                    SwarmAbility._nearbyFlamingos.Add(player.Role.As<Scp1507Role>().Base);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a list with all flamingos.
+        /// </summary>
+        public IEnumerable<Player> AllFlamingos
+        {
+            get => SwarmAbility._entireFlock.Select(x => Player.Get(x._lastOwner));
+            set
+            {
+                SwarmAbility._entireFlock.Clear();
+
+                foreach (var player in value.Where(x => x.Role.Is<Scp1507Role>(out _)))
+                    SwarmAbility._entireFlock.Add(player.Role.As<Scp1507Role>().Base);
+
+                SwarmAbility._flockSize = (byte)(SwarmAbility._entireFlock.Count - 1);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a multiplier for healing.
+        /// </summary>
+        public float Multiplier
+        {
+            get => SwarmAbility.Multiplier;
+            set => SwarmAbility.Multiplier = value;
+        }
+
         /// <inheritdoc/>
         public HumeShieldModuleBase HumeShieldModule { get; }
+
+        /// <summary>
+        /// Tries to attack door.
+        /// </summary>
+        /// <returns><see langword="true"/> if successfully. Otherwise, <see langword="false"/>.</returns>
+        /// <remarks>This method does not modify game logic, so if you want this method to work correctly, make sure that player is staying in front of the door.</remarks>
+        public bool TryAttackDoor() => AttackAbility.TryAttackDoor();
+
+        /// <summary>
+        /// Forces a SCP-1507 to scream.
+        /// </summary>
+        public void Scream() => VocalizeAbility.ServerScream();
     }
 }
