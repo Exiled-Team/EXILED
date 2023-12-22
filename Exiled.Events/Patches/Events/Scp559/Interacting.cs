@@ -1,15 +1,27 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Emit;
-using Exiled.API.Features.Pools;
-using Exiled.Events.Attributes;
-using Exiled.Events.EventArgs.Scp559;
-using HarmonyLib;
-using static HarmonyLib.AccessTools;
+﻿// -----------------------------------------------------------------------
+// <copyright file="Interacting.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Scp559
 {
-    using Exiled.API.Features;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
+    using Exiled.Events.Attributes;
+    using Exiled.Events.EventArgs.Scp559;
+    using HarmonyLib;
+
+    using static HarmonyLib.AccessTools;
+
+    /// <summary>
+    /// Patches <see cref="Scp559Cake.ServerInteract"/>
+    /// to add <see cref="Handlers.Scp559.Interacting"/> event.
+    /// </summary>
     [EventPatch(typeof(Handlers.Scp559), nameof(Handlers.Scp559.Interacting))]
     [HarmonyPatch(typeof(Scp559Cake), nameof(Scp559Cake.ServerInteract))]
     internal class Interacting

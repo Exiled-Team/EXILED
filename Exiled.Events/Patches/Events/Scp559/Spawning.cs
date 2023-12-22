@@ -1,4 +1,11 @@
-﻿namespace Exiled.Events.Patches.Events.Scp559
+﻿// -----------------------------------------------------------------------
+// <copyright file="Spawning.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Exiled.Events.Patches.Events.Scp559
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -61,7 +68,7 @@
                     // cur = ev.NewPosition;
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.NewPosition))),
-                    new(OpCodes.Starg_S, 2)
+                    new(OpCodes.Starg_S, 2),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
