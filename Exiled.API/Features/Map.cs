@@ -402,6 +402,8 @@ namespace Exiled.API.Features
             Firearm.ItemTypeToFirearmInstance.Clear();
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
+
+            Scp559.CakeToWrapper.Clear();
         }
     }
 }
