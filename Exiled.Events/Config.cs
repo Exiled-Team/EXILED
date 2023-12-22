@@ -103,11 +103,5 @@ namespace Exiled.Events
         /// </summary>
         [Description("Whether or not to log RA commands.")]
         public bool LogRaCommands { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the SCP-956 should be a capibara.
-        /// </summary>
-        [Description("Whether the SCP-956 should be a capibara.")]
-        public bool Is956Capybara { get; set; } = false;
     }
 }

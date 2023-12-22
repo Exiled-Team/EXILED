@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static void Postfix(Scp956Pinata __instance)
         {
-            if (Exiled.Events.Events.Instance.Config.Is956Capybara || Scp956.IsCapybara)
+            if (Scp956.IsCapybara)
                 __instance.Network_carpincho = 69;
         }
     }
