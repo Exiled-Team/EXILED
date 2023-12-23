@@ -22,13 +22,17 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <param name="player">
         /// <inheritdoc cref="Player" />
         /// </param>
+        /// <param name="isManualReveal">
+        /// <inheritdoc cref="IsManualReveal" />
+        /// </param>
         /// <param name="isAllowed">
         /// <inheritdoc cref="IsAllowed" />
         /// </param>
-        public RevealingEventArgs(ReferenceHub player, bool isAllowed = true)
+        public RevealingEventArgs(Player player, bool isManualReveal, bool isAllowed = true)
         {
-            Player = Player.Get(player);
+            Player = player;
             Scp3114 = Player.Role.As<Scp3114Role>();
+            IsManualReveal = isManualReveal;
             IsAllowed = isAllowed;
         }
 
@@ -40,5 +44,10 @@ namespace Exiled.Events.EventArgs.Scp3114
 
         /// <inheritdoc/>
         public Scp3114Role Scp3114 { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the reveal is manual or not.
+        /// </summary>
+        public bool IsManualReveal { get; }
     }
 }

@@ -7,12 +7,12 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
 
     using PlayerRoles.Voice;
-
-    using VoiceChat;
 
     /// <summary>
     /// Contains all information regarding the player using the radio.
@@ -28,11 +28,14 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="voiceModule">
         /// <inheritdoc cref="VoiceModule" />
         /// </param>
-        public TransmittingEventArgs(Player player, VoiceModuleBase voiceModule)
+        /// <param name="isAllowed">
+        /// <inheritdoc cref="IsAllowed" />
+        /// </param>
+        public TransmittingEventArgs(Player player, VoiceModuleBase voiceModule, bool isAllowed = true)
         {
             Player = player;
             VoiceModule = voiceModule;
-            IsTransmitting = voiceModule == null ? false : voiceModule.ServerIsSending && voiceModule.CurrentChannel == VoiceChatChannel.Radio;
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
@@ -48,11 +51,12 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets a value indicating whether or not the player is transmitting.
         /// </summary>
-        public bool IsTransmitting { get; }
+        [Obsolete("IsTransmitting is always true.")]
+        public bool IsTransmitting => true;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can transmit.
         /// </summary>
-        public bool IsAllowed { get; set; } = true;
+        public bool IsAllowed { get; set; }
     }
 }
