@@ -182,9 +182,9 @@ namespace Exiled.API.Features.Toys
                     }
             }
 
-            shootingTargetToy.AdminToyBase.transform.position = position ?? Vector3.zero;
-            shootingTargetToy.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
-            shootingTargetToy.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+            shootingTargetToy.Base.transform.position = position ?? Vector3.zero;
+            shootingTargetToy.Base.transform.eulerAngles = rotation ?? Vector3.zero;
+            shootingTargetToy.Base.transform.localScale = scale ?? Vector3.one;
 
             if (spawn)
                 shootingTargetToy.Spawn();

@@ -106,13 +106,10 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public static IEnumerable<Pickup> List => BaseToPickup.Values;
 
-        /// <inheritdoc/>
-        public override GameObject EntityBase => GameObject;
-
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public override GameObject GameObject => GameObject;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Transform"/> of the Pickup.

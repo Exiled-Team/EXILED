@@ -280,7 +280,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// </remarks>
         public static bool Remove<TAbility>(T entity)
             where TAbility : CustomAbility<T> =>
-            TryGet(typeof(T), out CustomAbility<T> customAbility) && EObject.DestroyActiveObject(customAbility.BehaviourComponent, entity.EntityBase);
+            TryGet(typeof(T), out CustomAbility<T> customAbility) && EObject.DestroyActiveObject(customAbility.BehaviourComponent, entity.GameObject);
 
         /// <summary>
         /// Removes the custom ability of the specified type from the specified entity.
@@ -293,7 +293,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// the method returns <see langword="false"/>. The removal process involves destroying the active object associated with the custom ability.
         /// </remarks>
         public static bool Remove(T entity, Type type) =>
-            TryGet(type, out CustomAbility<T> customAbility) && EObject.DestroyActiveObject(customAbility.BehaviourComponent, entity.EntityBase);
+            TryGet(type, out CustomAbility<T> customAbility) && EObject.DestroyActiveObject(customAbility.BehaviourComponent, entity.GameObject);
 
         /// <summary>
         /// Removes the custom ability of the specified type from the specified entity.
@@ -306,7 +306,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// the method returns <see langword="false"/>. The removal process involves destroying the active object associated with the custom ability.
         /// </remarks>
         public static bool Remove(T entity, string type) =>
-            TryGet(type, out CustomAbility<T> customAbility) && EObject.DestroyActiveObject(customAbility.BehaviourComponent, entity.EntityBase);
+            TryGet(type, out CustomAbility<T> customAbility) && EObject.DestroyActiveObject(customAbility.BehaviourComponent, entity.GameObject);
 
         /// <summary>
         /// Removes the custom ability with the specified ID from the specified entity.
@@ -319,7 +319,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// the method returns <see langword="false"/>. The removal process involves destroying the active object associated with the custom ability.
         /// </remarks>
         public static bool Remove(T entity, uint id) =>
-            TryGet(id, out CustomAbility<T> customAbility) && EObject.DestroyActiveObject(customAbility.BehaviourComponent, entity.EntityBase);
+            TryGet(id, out CustomAbility<T> customAbility) && EObject.DestroyActiveObject(customAbility.BehaviourComponent, entity.GameObject);
 
         /// <summary>
         /// Removes all custom abilities associated with the specified entity.

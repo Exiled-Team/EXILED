@@ -80,9 +80,6 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public static IEnumerable<Item> List => BaseToItem.Values;
 
-        /// <inheritdoc/>
-        public override GameObject EntityBase => Base.gameObject;
-
         /// <summary>
         /// Gets or sets the unique serial number for the item.
         /// </summary>
@@ -110,7 +107,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the item.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.

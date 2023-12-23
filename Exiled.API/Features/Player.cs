@@ -147,9 +147,6 @@ namespace Exiled.API.Features
         /// </summary>
         public string UniqueRole { get; set; } = string.Empty;
 
-        /// <inheritdoc/>
-        public override GameObject EntityBase => GameObject;
-
         /// <summary>
         /// Gets the encapsulated <see cref="global::ReferenceHub"/>.
         /// </summary>
@@ -177,11 +174,6 @@ namespace Exiled.API.Features
         /// Gets the player's ammo.
         /// </summary>
         public Dictionary<ItemType, ushort> Ammo => Inventory.UserInventory.ReserveAmmo;
-
-        /// <summary>
-        /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
-        /// </summary>
-        public GameObject GameObject { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="ReferenceHub"/>'s <see cref="UnityEngine.Transform"/>.

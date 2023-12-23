@@ -26,15 +26,15 @@ namespace Exiled.API.Features.Core
         public IReadOnlyCollection<EActor> ComponentsInChildren => componentsInChildren;
 
         /// <summary>
-        /// Gets the <see cref="GameEntity"/>'s <see cref="UnityEngine.GameObject"/>.
+        /// Gets or sets the <see cref="GameEntity"/>'s <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public abstract GameObject EntityBase { get; }
+        public virtual GameObject GameObject { get; protected set; }
 
         /// <inheritdoc/>
         public T AddComponent<T>(string name = "")
             where T : EActor
         {
-            T component = EObject.CreateDefaultSubobject<T>(EntityBase);
+            T component = EObject.CreateDefaultSubobject<T>(GameObject);
 
             if (!component)
                 return null;
@@ -46,7 +46,7 @@ namespace Exiled.API.Features.Core
         /// <inheritdoc/>
         public EActor AddComponent(Type type, string name = "")
         {
-            EActor component = EObject.CreateDefaultSubobject(type, EntityBase).Cast<EActor>();
+            EActor component = EObject.CreateDefaultSubobject(type, GameObject).Cast<EActor>();
 
             if (!component)
                 return null;
@@ -59,7 +59,7 @@ namespace Exiled.API.Features.Core
         public T AddComponent<T>(Type type, string name = "")
             where T : EActor
         {
-            T component = EObject.CreateDefaultSubobject<T>(type, EntityBase);
+            T component = EObject.CreateDefaultSubobject<T>(type, GameObject);
             if (!component)
                 return null;
 
