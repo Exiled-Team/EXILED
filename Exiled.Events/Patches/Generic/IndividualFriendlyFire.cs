@@ -175,7 +175,7 @@ namespace Exiled.Events.Patches.Generic
     }
 
     /// <summary>
-    /// Patches <see cref="HitboxIdentity.IsEnemy(ReferenceHub, ReferenceHub)"/>.
+    /// Patches <see cref="HitboxIdentity.IsDamageable(ReferenceHub, ReferenceHub)"/>.
     /// </summary>
     [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.IsDamageable), typeof(ReferenceHub), typeof(ReferenceHub))]
     internal static class HitboxIdentityCheckFriendlyFire
