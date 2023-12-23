@@ -66,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Scp2536
                     // gift = ev.Gift;
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(GrantingGiftEventArgs), nameof(GrantingGiftEventArgs.Gift))),
-                    new(OpCodes.Starg_S, 2),
+                    new(OpCodes.Starg_S, 1),
                 });
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
