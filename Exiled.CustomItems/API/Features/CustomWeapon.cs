@@ -9,6 +9,7 @@ namespace Exiled.CustomItems.API.Features
 {
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
@@ -18,6 +19,7 @@ namespace Exiled.CustomItems.API.Features
 
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
+    using InventorySystem.Items.Firearms.BasicMessages;
     using UnityEngine;
 
     using Firearm = Exiled.API.Features.Items.Firearm;
