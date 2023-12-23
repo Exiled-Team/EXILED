@@ -23,9 +23,20 @@ namespace Exiled.Events.Handlers
         public static Event<AttackingDoorEventArgs> AttackingDoor { get; set; } = new();
 
         /// <summary>
+        /// Invoked before SCP-1507 screams.
+        /// </summary>
+        public static Event<ScreamingEventArgs> Screaming { get; set; } = new();
+
+        /// <summary>
         /// Called before SCP-1507 attacks door.
         /// </summary>
         /// <param name="ev">The <see cref="AttackingDoorEventArgs"/> instance.</param>
         public static void OnAttackingDoor(AttackingDoorEventArgs ev) => AttackingDoor.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-1507 screams.
+        /// </summary>
+        /// <param name="ev">The <see cref="ScreamingEventArgs"/> instance.</param>
+        public static void OnScreaming(ScreamingEventArgs ev) => Screaming.InvokeSafely(ev);
     }
 }
