@@ -18,7 +18,6 @@ namespace Exiled.CustomItems.API.Features
 
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
-
     using UnityEngine;
 
     using Firearm = Exiled.API.Features.Items.Firearm;
@@ -196,20 +195,39 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalReloading(ReloadingWeaponEventArgs ev)
         {
-            if (!Check(ev.Firearm))
+            Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: Continuing with internal reload..");
+            ev.IsAllowed = false;
+
+            byte remainingClip = ((Firearm)ev.Player.CurrentItem).Ammo;
+
+            if (remainingClip >= ClipSize)
                 return;
 
-            Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: Reloading weapon. Calling external reload event..");
-            OnReloading(ev);
+            Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] is reloading a {Name} ({Id}) [{Type} ({remainingClip}/{ClipSize})]!");
 
-            Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: External event ended. {ev.IsAllowed}");
-            if (!ev.IsAllowed)
+            AmmoType ammoType = ev.Firearm.AmmoType;
+
+            if (!ev.Player.Ammo.ContainsKey(ammoType.GetItemType()))
             {
-                Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: External event turned is allowed to false, returning.");
+                Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: {ev.Player.Nickname} does not have ammo to reload this weapon.");
                 return;
             }
 
-            ev.Firearm.MaxAmmo = ClipSize;
+            ev.Player.Connection.Send(new RequestMessage(ev.Firearm.Serial, RequestType.Reload));
+
+            byte amountToReload = (byte)Math.Min(ClipSize - remainingClip, ev.Player.Ammo[ammoType.GetItemType()]);
+
+            if (amountToReload <= 0)
+                return;
+
+            ev.Player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Invisible>().Intensity = 0;
+
+            ev.Player.Ammo[ammoType.GetItemType()] -= amountToReload;
+            ev.Player.Inventory.SendAmmoNextFrame = true;
+
+            ((Firearm)ev.Player.CurrentItem).Ammo = (byte)(((Firearm)ev.Player.CurrentItem).Ammo + amountToReload);
+
+            Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] reloaded a {Name} ({Id}) [{Type} ({((Firearm)ev.Player.CurrentItem).Ammo}/{ClipSize})]!");
         }
 
         private void OnInternalShooting(ShootingEventArgs ev)
