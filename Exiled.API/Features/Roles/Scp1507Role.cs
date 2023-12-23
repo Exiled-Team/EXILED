@@ -133,7 +133,7 @@ namespace Exiled.API.Features.Roles
             get => SwarmAbility.Multiplier;
             set => SwarmAbility.Multiplier = value;
         }
-        
+
         /// <summary>
         /// Tries to attack door.
         /// </summary>
