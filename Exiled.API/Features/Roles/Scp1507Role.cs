@@ -133,10 +133,7 @@ namespace Exiled.API.Features.Roles
             get => SwarmAbility.Multiplier;
             set => SwarmAbility.Multiplier = value;
         }
-
-        /// <inheritdoc/>
-        public HumeShieldModuleBase HumeShieldModule { get; }
-
+        
         /// <summary>
         /// Tries to attack door.
         /// </summary>
