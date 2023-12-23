@@ -513,6 +513,11 @@ namespace Exiled.Events.Handlers
         public static Event<ChangingNicknameEventArgs> ChangingNickname { get; set; } = new();
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> is interacting with snowpile.
+        /// </summary>
+        public static Event<InteractingSnowpileEventArgs> InteractingSnowpile { get; set; } = new();
+
+        /// <summary>
         /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="ReservedSlotsCheckEventArgs"/> instance.</param>
@@ -1089,6 +1094,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingNicknameEventArgs"/> instance.</param>
         public static void OnChangingNickname(ChangingNicknameEventArgs ev) => ChangingNickname.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> is interacting with snowpile.
+        /// </summary>
+        /// <param name="ev">The <see cref="InteractingSnowpileEventArgs"/> instance.</param>
+        public static void OnInteractingSnowpile(InteractingSnowpileEventArgs ev) => InteractingSnowpile.InvokeSafely(ev);
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
