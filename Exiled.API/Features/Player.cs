@@ -17,7 +17,6 @@ namespace Exiled.API.Features
     using CustomPlayerEffects;
     using DamageHandlers;
     using Enums;
-    using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Items;
@@ -73,7 +72,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
-    public class Player : TypeCastObject<Player>, IEntity, IWorldSpace
+    public class Player : GameEntity, IWorldSpace
     {
 #pragma warning disable SA1401
         /// <summary>
@@ -81,8 +80,6 @@ namespace Exiled.API.Features
         /// </summary>
         internal readonly List<Item> ItemsValue = new(8);
 #pragma warning restore SA1401
-
-        private readonly HashSet<EActor> componentsInChildren = new();
 
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
@@ -133,9 +130,6 @@ namespace Exiled.API.Features
         /// </summary>
         public static Dictionary<string, Player> UserIdsCache { get; } = new(20);
 
-        /// <inheritdoc/>
-        public IReadOnlyCollection<EActor> ComponentsInChildren => componentsInChildren;
-
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="RoleTypeId"/> and their FF multiplier. This is for non-unique roles.
         /// </summary>
@@ -179,11 +173,6 @@ namespace Exiled.API.Features
         /// Gets the player's ammo.
         /// </summary>
         public Dictionary<ItemType, ushort> Ammo => Inventory.UserInventory.ReserveAmmo;
-
-        /// <summary>
-        /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
-        /// </summary>
-        public GameObject GameObject { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="ReferenceHub"/>'s <see cref="UnityEngine.Transform"/>.
@@ -3019,7 +3008,7 @@ namespace Exiled.API.Features
         {
             Array effectTypes = Enum.GetValues(typeof(EffectType));
             IEnumerable<EffectType> validEffects = effectTypes.ToArray<EffectType>().Where(effect => effect.GetCategories().HasFlag(category));
-            EffectType effectType = validEffects.GetRandomValue();
+            EffectType effectType = validEffects.Random();
 
             EnableEffect(effectType, intensity, duration, addDurationIfActive);
 
@@ -3303,18 +3292,18 @@ namespace Exiled.API.Features
         {
             object randomObject = type.Name switch
             {
-                nameof(Camera) => Camera.List.GetRandomValue(),
+                nameof(Camera) => Camera.List.Random(),
                 nameof(Door) => Door.Random(),
-                nameof(Room) => Room.List.GetRandomValue(),
-                nameof(TeslaGate) => TeslaGate.List.GetRandomValue(),
-                nameof(Player) => Dictionary.Values.GetRandomValue(),
-                nameof(Pickup) => Pickup.BaseToPickup.GetRandomValue().Value,
-                nameof(Ragdoll) => Ragdoll.List.GetRandomValue(),
+                nameof(Room) => Room.List.Random(),
+                nameof(TeslaGate) => TeslaGate.List.Random(),
+                nameof(Player) => Dictionary.Values.Random(),
+                nameof(Pickup) => Pickup.BaseToPickup.Random().Value,
+                nameof(Ragdoll) => Ragdoll.List.Random(),
                 nameof(Locker) => Map.GetRandomLocker(),
-                nameof(Generator) => Generator.List.GetRandomValue(),
-                nameof(Window) => Window.List.GetRandomValue(),
+                nameof(Generator) => Generator.List.Random(),
+                nameof(Window) => Window.List.Random(),
                 nameof(Scp914) => Scp914.Scp914Controller,
-                nameof(LockerChamber) => Map.GetRandomLocker().Chambers.GetRandomValue(),
+                nameof(LockerChamber) => Map.GetRandomLocker().Chambers.Random(),
                 _ => null,
             };
 
@@ -3332,7 +3321,7 @@ namespace Exiled.API.Features
             if (array.Length == 0)
                 return;
 
-            RandomTeleport(array.GetRandomValue());
+            RandomTeleport(array.Random());
         }
 
         /// <summary>
@@ -3340,90 +3329,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <typeparam name="T">Object for teleport.</typeparam>
         public void RandomTeleport<T>() => RandomTeleport(typeof(T));
-
-        /// <inheritdoc/>
-        public T AddComponent<T>(string name = "")
-            where T : EActor
-        {
-            T component = EObject.CreateDefaultSubobject<T>(GameObject);
-
-            if (component is null)
-                return null;
-
-            componentsInChildren.Add(component);
-            return component;
-        }
-
-        /// <inheritdoc/>
-        public EActor AddComponent(Type type, string name = "")
-        {
-            EActor component = EObject.CreateDefaultSubobject(type, GameObject).Cast<EActor>();
-
-            if (component is null)
-                return null;
-
-            componentsInChildren.Add(component);
-            return component;
-        }
-
-        /// <inheritdoc/>
-        public T AddComponent<T>(Type type, string name = "")
-            where T : EActor
-        {
-            T component = EObject.CreateDefaultSubobject<T>(type, GameObject);
-            if (component is null)
-                return null;
-
-            componentsInChildren.Add(component);
-            return component;
-        }
-
-        /// <inheritdoc/>
-        public T GetComponent<T>()
-            where T : EActor => componentsInChildren.FirstOrDefault(comp => typeof(T) == comp.GetType()).Cast<T>();
-
-        /// <inheritdoc/>
-        public T GetComponent<T>(Type type)
-            where T : EActor => componentsInChildren.FirstOrDefault(comp => type == comp.GetType()).Cast<T>();
-
-        /// <inheritdoc/>
-        public EActor GetComponent(Type type) => componentsInChildren.FirstOrDefault(comp => type == comp.GetType());
-
-        /// <inheritdoc/>
-        public bool TryGetComponent<T>(out T component)
-            where T : EActor
-        {
-            component = GetComponent<T>();
-
-            return component is not null;
-        }
-
-        /// <inheritdoc/>
-        public bool TryGetComponent(Type type, out EActor component)
-        {
-            component = GetComponent(type);
-
-            return component is not null;
-        }
-
-        /// <inheritdoc/>
-        public bool TryGetComponent<T>(Type type, out T component)
-            where T : EActor
-        {
-            component = GetComponent<T>(type);
-
-            return component is not null;
-        }
-
-        /// <inheritdoc/>
-        public bool HasComponent<T>(bool depthInheritance = false) => depthInheritance
-            ? componentsInChildren.Any(comp => typeof(T).IsSubclassOf(comp.GetType()))
-            : componentsInChildren.Any(comp => typeof(T) == comp.GetType());
-
-        /// <inheritdoc/>
-        public bool HasComponent(Type type, bool depthInheritance = false) => depthInheritance
-            ? componentsInChildren.Any(comp => type.IsSubclassOf(comp.GetType()))
-            : componentsInChildren.Any(comp => type == comp.GetType());
 
         /// <summary>
         /// Get the time cooldown on this ItemType.
@@ -3458,6 +3363,17 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="projectileType">The projectile that will create the effect.</param>
         public void ExplodeEffect(ProjectileType projectileType) => Map.ExplodeEffect(Position, projectileType);
+
+        /// <summary>
+        /// Sets a new rank given the specified values.
+        /// </summary>
+        /// <param name="rankName">The name of the rank to be set.</param>
+        /// <param name="rankColor">The color of the rank.</param>
+        public void SetRank(string rankName, string rankColor)
+        {
+            RankName = rankName;
+            RankColor = rankColor;
+        }
 
         /// <summary>
         /// Converts the player in a human-readable format.

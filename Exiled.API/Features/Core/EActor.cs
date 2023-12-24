@@ -59,6 +59,11 @@ namespace Exiled.API.Features.Core
                 Base = gameObject;
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="EActor"/> should be destroyed the next tick.
+        /// </summary>
+        public bool DestroyNextTick { get; set; }
+
         /// <inheritdoc/>
         public IReadOnlyCollection<EActor> ComponentsInChildren => componentsInChildren;
 
@@ -254,6 +259,11 @@ namespace Exiled.API.Features.Core
         /// </summary>
         protected virtual void Tick()
         {
+            if (DestroyNextTick)
+            {
+                Destroy();
+                return;
+            }
         }
 
         /// <summary>

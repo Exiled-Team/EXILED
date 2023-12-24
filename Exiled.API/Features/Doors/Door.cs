@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Doors
     /// <summary>
     /// A wrapper class for <see cref="DoorVariant"/>.
     /// </summary>
-    public class Door : TypeCastObject<Door>, IWrapper<DoorVariant>, IWorldSpace
+    public class Door : GameEntity, IWrapper<DoorVariant>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>'s and their corresponding <see cref="Door"/>.
@@ -76,7 +76,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets the door's <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the door's <see cref="UnityEngine.Transform"/>.

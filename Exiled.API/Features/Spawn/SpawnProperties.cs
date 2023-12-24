@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Spawn
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -35,9 +36,18 @@ namespace Exiled.API.Features.Spawn
         public List<RoleSpawnPoint> RoleSpawnPoints { get; set; } = new();
 
         /// <summary>
-        /// Counts how many spawn points are in this instance.
+        /// Gets a value indicating whether spawn points count is zero.
         /// </summary>
-        /// <returns>How many spawn points there are.</returns>
-        public int Count() => DynamicSpawnPoints.Count + StaticSpawnPoints.Count + RoleSpawnPoints.Count;
+        public bool IsEmpty => Length == 0;
+
+        /// <summary>
+        /// Gets the amount of spawn points in this instance.
+        /// </summary>
+        /// <returns>The amount of existing spawn points.</returns>
+        public int Length => DynamicSpawnPoints.Count + StaticSpawnPoints.Count + RoleSpawnPoints.Count;
+
+        /// <inheritdoc cref="Length"/>
+        [Obsolete("Use SpawnProperties::Length property instead.", true)]
+        public int Count() => Length;
     }
 }

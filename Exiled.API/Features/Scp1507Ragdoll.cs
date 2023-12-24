@@ -1,4 +1,5 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Scp1507Ragdoll.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -69,6 +70,6 @@ namespace Exiled.API.Features
         /// Vocalizes ragdoll.
         /// </summary>
         /// <param name="player">Player who vocalizes. If <see langword="null"/>, will be chosen random.</param>
-        public void Vocalize(Player player = null) => Base.OnVocalize((player ?? Player.Get(x => x.Role.Is(out Scp1507Role _)).GetRandomValue()).ReferenceHub);
+        public void Vocalize(Player player = null) => Base.OnVocalize((player ?? Player.Get(x => x.Role.Is(out Scp1507Role _)).Random()).ReferenceHub);
     }
 }
