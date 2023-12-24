@@ -56,5 +56,10 @@ namespace Exiled.API.Enums
         /// The user will be destroyed.
         /// </summary>
         Destroyed,
+
+        /// <summary>
+        /// The player used item that changes his role.
+        /// </summary>
+        ItemUsage,
     }
 }
