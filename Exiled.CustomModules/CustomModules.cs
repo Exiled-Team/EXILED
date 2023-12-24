@@ -7,11 +7,8 @@
 
 namespace Exiled.CustomModules
 {
-    using System.Collections.Generic;
-
     using Exiled.API.Features;
     using Exiled.CustomModules.API.Features;
-    using Exiled.CustomModules.Events;
 
     /// <summary>
     /// Handles all custom role API functions.

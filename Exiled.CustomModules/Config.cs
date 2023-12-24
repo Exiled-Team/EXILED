@@ -11,9 +11,7 @@ namespace Exiled.CustomModules
 
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
-    using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.API.Features.CustomAbilities;
-    using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.CustomRoles;
 
     /// <summary>

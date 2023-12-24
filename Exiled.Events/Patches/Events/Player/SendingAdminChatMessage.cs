@@ -16,9 +16,6 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
-
-    using InventorySystem.Items.Pickups;
-    using InventorySystem.Searching;
     using RemoteAdmin;
 
     using static HarmonyLib.AccessTools;

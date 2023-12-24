@@ -8,19 +8,11 @@
 namespace Exiled.CustomModules.API.Features
 {
     using System.Collections.Generic;
-    using System.Globalization;
-    using System.Text;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-    using Exiled.API.Features.Roles;
-    using Exiled.CustomModules.API.Enums;
-    using Exiled.Events.EventArgs.Player;
-    using Exiled.Events.EventArgs.Server;
 
     using MEC;
-
-    using PlayerRoles.FirstPersonControl;
 
     /// <summary>
     /// Control class for keypress ability actions.

@@ -13,7 +13,6 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Core;
 
     /// <summary>
     /// Useful class to save effect-related configs cleanly.

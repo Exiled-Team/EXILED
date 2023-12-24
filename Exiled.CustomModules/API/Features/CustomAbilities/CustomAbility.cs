@@ -16,10 +16,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
-    using Exiled.CustomModules.API.Enums;
-    using Exiled.CustomModules.Commands.List;
     using HarmonyLib;
-    using MonoMod.Utils;
 
     using Utils.NonAllocLINQ;
 
