@@ -18,9 +18,8 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     /// </summary>
     /// <typeparam name="TEntity">The type of entity associated with the ability behavior.</typeparam>
     /// <typeparam name="TSettings">The type of settings associated with the ability behavior.</typeparam>
-    public abstract class UnlockableAbilityBehaviour<TEntity, TSettings> : LevelAbilityBehaviour<TEntity, TSettings>
+    public abstract class UnlockableAbilityBehaviour<TEntity> : LevelAbilityBehaviour<TEntity>
         where TEntity : GameEntity
-        where TSettings : AbilitySettings
     {
         private CoroutineHandle processUnlockHandle;
 

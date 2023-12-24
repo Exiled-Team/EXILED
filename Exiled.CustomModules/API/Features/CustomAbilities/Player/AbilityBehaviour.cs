@@ -13,9 +13,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
     /// <summary>
     /// Represents the base class for player-specific ability behaviors.
     /// </summary>
-    /// <typeparam name="TSettings">The type of settings associated with the player-specific ability behavior.</typeparam>
-    public abstract class AbilityBehaviour<TSettings> : AbilityBehaviourBase<Player, TSettings>
-        where TSettings : AbilitySettings
+    public abstract class AbilityBehaviour : AbilityBehaviourBase<Player>
     {
     }
 }

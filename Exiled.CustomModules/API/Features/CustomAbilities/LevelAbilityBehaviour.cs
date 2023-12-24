@@ -15,10 +15,8 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     /// Represents the base class for ability behaviors associated with a specific entity type, providing support for levels the ability.
     /// </summary>
     /// <typeparam name="TEntity">The type of entity associated with the ability behavior.</typeparam>
-    /// <typeparam name="TSettings">The type of settings associated with the ability behavior.</typeparam>
-    public abstract class LevelAbilityBehaviour<TEntity, TSettings> : AbilityBehaviourBase<TEntity, TSettings>
+    public abstract class LevelAbilityBehaviour<TEntity> : AbilityBehaviourBase<TEntity>
         where TEntity : GameEntity
-        where TSettings : AbilitySettings
     {
         private byte level;
 

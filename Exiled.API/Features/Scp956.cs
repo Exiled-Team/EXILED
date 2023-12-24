@@ -105,6 +105,6 @@ namespace Exiled.API.Features
         /// Spawns behind the specified target.
         /// </summary>
         /// <param name="target">Player to spawn. If <paramref name="target"/> is <see langword="null"/>, will be chosen random.</param>
-        public static void SpawnBehindTarget(Player target = null) => Singleton.SpawnBehindTarget((target ?? Player.List.GetRandomValue()).ReferenceHub);
+        public static void SpawnBehindTarget(Player target = null) => Singleton.SpawnBehindTarget((target ?? Player.List.Random()).ReferenceHub);
     }
 }

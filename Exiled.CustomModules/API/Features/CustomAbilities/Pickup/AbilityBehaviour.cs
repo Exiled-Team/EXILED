@@ -13,9 +13,7 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
     /// <summary>
     /// Represents the base class for pickup-specific ability behaviors.
     /// </summary>
-    /// <typeparam name="TSettings">The type of settings associated with the pickup-specific ability behavior.</typeparam>
-    public abstract class AbilityBehaviour<TSettings> : AbilityBehaviourBase<Pickup, TSettings>
-        where TSettings : AbilitySettings
+    public abstract class AbilityBehaviour : AbilityBehaviourBase<Pickup>
     {
     }
 }

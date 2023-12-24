@@ -21,10 +21,8 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     /// Represents the base class for ability behaviors associated with a specific entity type.
     /// </summary>
     /// <typeparam name="TEntity">The type of entity associated with the ability behavior.</typeparam>
-    /// <typeparam name="TSettings">The type of settings associated with the ability behavior.</typeparam>
-    public abstract class AbilityBehaviourBase<TEntity, TSettings> : EBehaviour<TEntity>, IAbilityBehaviour, IAdditiveSettings<TSettings>
+    public abstract class AbilityBehaviourBase<TEntity> : EBehaviour<TEntity>, IAbilityBehaviour, IAdditiveSettings<AbilitySettings>
         where TEntity : GameEntity
-        where TSettings : AbilitySettings
     {
         private bool isDurationBased;
 
@@ -57,7 +55,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <summary>
         /// Gets or sets the ability settings.
         /// </summary>
-        public TSettings Settings { get; set; }
+        public AbilitySettings Settings { get; set; }
 
         /// <summary>
         /// Gets or sets the last time the ability was used.

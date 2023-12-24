@@ -13,9 +13,7 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
     /// <summary>
     /// Represents the base class for item-specific ability behaviors.
     /// </summary>
-    /// <typeparam name="TSettings">The type of settings associated with the item-specific ability behavior.</typeparam>
-    public abstract class AbilityBehaviour<TSettings> : AbilityBehaviourBase<Item, TSettings>
-        where TSettings : AbilitySettings
+    public abstract class AbilityBehaviour : AbilityBehaviourBase<Item>
     {
     }
 }
