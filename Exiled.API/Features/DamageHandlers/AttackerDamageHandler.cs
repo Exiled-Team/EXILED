@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.DamageHandlers
 {
     using CustomPlayerEffects;
+    using PlayerRoles;
 
     using BaseHandler = PlayerStatsSystem.DamageHandlerBase;
 
