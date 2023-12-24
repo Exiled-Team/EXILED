@@ -20,14 +20,14 @@ namespace Exiled.Events.EventArgs.Scp559
         /// Initializes a new instance of the <see cref="SpawningEventArgs"/> class.
         /// </summary>
         /// <param name="scp559"><inheritdoc cref="Scp559"/></param>
-        /// <param name="oldPosition"><inheritdoc cref="OldPosition"/></param>
-        /// <param name="newPosition"><inheritdoc cref="NewPosition"/></param>
+        /// <param name="oldPosition"><inheritdoc cref="PreviousPosition"/></param>
+        /// <param name="newPosition"><inheritdoc cref="NextPosition"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public SpawningEventArgs(Scp559 scp559, Vector3 oldPosition, Vector3 newPosition, bool isAllowed = true)
         {
             Scp559 = scp559;
-            NewPosition = newPosition;
-            OldPosition = oldPosition;
+            NextPosition = newPosition;
+            PreviousPosition = oldPosition;
             IsAllowed = isAllowed;
         }
 
@@ -40,11 +40,11 @@ namespace Exiled.Events.EventArgs.Scp559
         /// <summary>
         /// Gets or sets new position for <see cref="Scp559"/>.
         /// </summary>
-        public Vector3 NewPosition { get; set; }
+        public Vector3 NextPosition { get; set; }
 
         /// <summary>
         /// Gets the previous position for <see cref="Scp559"/>.
         /// </summary>
-        public Vector3 OldPosition { get; }
+        public Vector3 PreviousPosition { get; }
     }
 }

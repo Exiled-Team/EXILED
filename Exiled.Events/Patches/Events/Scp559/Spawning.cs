@@ -67,11 +67,11 @@ namespace Exiled.Events.Patches.Events.Scp559
 
                     // cur = ev.NewPosition;
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.NewPosition))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.NextPosition))),
                     new(OpCodes.Starg_S, 2),
                 });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
