@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------
-// <copyright file="CustomPlayerAbility.cs" company="Exiled Team">
+// <copyright file="PlayerAbility.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features.CustomAbilities
+namespace Exiled.CustomModules.API.Features.PlayerAbilities
 {
     using System;
 
@@ -13,105 +13,106 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using System.Linq;
 
     using Exiled.API.Features;
+    using Exiled.CustomModules.API.Features.CustomAbilities;
 
     using Utils.NonAllocLINQ;
 
     /// <summary>
     /// Represents a base class for custom abilities associated with a specific <see cref="Player"/>.
     /// </summary>
-    public abstract class CustomPlayerAbility : CustomAbility<Player>
+    public abstract class PlayerAbility : CustomAbility<Player>
     {
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> containing all registered custom abilities.
         /// </summary>
-        public static new IEnumerable<CustomPlayerAbility> List => Registered[typeof(Player)].Cast<CustomPlayerAbility>();
+        public static new IEnumerable<PlayerAbility> List => Registered[typeof(Player)].Cast<PlayerAbility>();
 
         /// <summary>
-        /// Gets all owners and all their respective <see cref="CustomPlayerAbility"/>'s.
+        /// Gets all owners and all their respective <see cref="PlayerAbility"/>'s.
         /// </summary>
-        public static new Dictionary<Player, HashSet<CustomPlayerAbility>> Manager =>
+        public static new Dictionary<Player, HashSet<PlayerAbility>> Manager =>
             CustomAbility<Player>.Manager.Where(kvp => kvp.Key is Player)
-            .ToDictionary(kvp => (Player)kvp.Key, kvp => kvp.Value.Cast<CustomPlayerAbility>().ToHashSet());
+            .ToDictionary(kvp => (Player)kvp.Key, kvp => kvp.Value.Cast<PlayerAbility>().ToHashSet());
 
         /// <summary>
-        /// Gets all owners belonging to a <see cref="CustomPlayerAbility"/>.
+        /// Gets all owners belonging to a <see cref="PlayerAbility"/>.
         /// </summary>
         public static IEnumerable<Player> Owners => Manager.Keys.ToHashSet();
 
         /// <summary>
-        /// Gets a <see cref="CustomPlayerAbility"/> given the specified <paramref name="customAbilityType"/>.
+        /// Gets a <see cref="PlayerAbility"/> given the specified <paramref name="customAbilityType"/>.
         /// </summary>
         /// <param name="customAbilityType">The specified ability type.</param>
-        /// <returns>The <see cref="CustomPlayerAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new CustomPlayerAbility Get(object customAbilityType) =>
+        /// <returns>The <see cref="PlayerAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
+        public static new PlayerAbility Get(object customAbilityType) =>
             List.FirstOrDefault(customAbility => customAbility == customAbilityType && customAbility.IsEnabled);
 
         /// <summary>
-        /// Gets a <see cref="CustomPlayerAbility"/> given the specified name.
+        /// Gets a <see cref="PlayerAbility"/> given the specified name.
         /// </summary>
         /// <param name="name">The specified name.</param>
-        /// <returns>The <see cref="CustomPlayerAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new CustomPlayerAbility Get(string name) => List.FirstOrDefault(customAbility => customAbility.Name == name);
+        /// <returns>The <see cref="PlayerAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
+        public static new PlayerAbility Get(string name) => List.FirstOrDefault(customAbility => customAbility.Name == name);
 
         /// <summary>
-        /// Gets a <see cref="CustomPlayerAbility"/> given the specified <see cref="Type"/>.
+        /// Gets a <see cref="PlayerAbility"/> given the specified <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The specified <see cref="Type"/>.</param>
-        /// <returns>The <see cref="CustomPlayerAbility"/> matching the search or <see langword="null"/> if not found.</returns>
-        public static new CustomPlayerAbility Get(Type type) =>
-            (type.BaseType != typeof(IAbilityBehaviour) && !type.IsSubclassOf(typeof(IAbilityBehaviour))) ? null :
+        /// <returns>The <see cref="PlayerAbility"/> matching the search or <see langword="null"/> if not found.</returns>
+        public static new PlayerAbility Get(Type type) =>
+            type.BaseType != typeof(IAbilityBehaviour) && !type.IsSubclassOf(typeof(IAbilityBehaviour)) ? null :
             List.FirstOrDefault(customAbility => customAbility.BehaviourComponent == type);
 
         /// <summary>
-        /// Gets all <see cref="CustomPlayerAbility"/>'s from a <see cref="Player"/>.
+        /// Gets all <see cref="PlayerAbility"/>'s from a <see cref="Player"/>.
         /// </summary>
-        /// <param name="entity">The <see cref="CustomPlayerAbility"/>'s owner.</param>
-        /// <returns>The <see cref="CustomPlayerAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new IEnumerable<CustomPlayerAbility> Get(Player entity) => Manager.FirstOrDefault(kvp => kvp.Key == entity).Value;
+        /// <param name="entity">The <see cref="PlayerAbility"/>'s owner.</param>
+        /// <returns>The <see cref="PlayerAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
+        public static new IEnumerable<PlayerAbility> Get(Player entity) => Manager.FirstOrDefault(kvp => kvp.Key == entity).Value;
 
         /// <summary>
-        /// Tries to get a <see cref="CustomPlayerAbility"/> given the specified <paramref name="customAbility"/>.
+        /// Tries to get a <see cref="PlayerAbility"/> given the specified <paramref name="customAbility"/>.
         /// </summary>
         /// <param name="customAbilityType">The <see cref="object"/> to look for.</param>
         /// <param name="customAbility">The found <paramref name="customAbility"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <paramref name="customAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object customAbilityType, out CustomPlayerAbility customAbility) => customAbility = Get(customAbilityType);
+        public static bool TryGet(object customAbilityType, out PlayerAbility customAbility) => customAbility = Get(customAbilityType);
 
         /// <summary>
         /// Tries to get a <paramref name="customAbility"/> given a specified name.
         /// </summary>
-        /// <param name="name">The <see cref="CustomPlayerAbility"/> name to look for.</param>
-        /// <param name="customAbility">The found <see cref="CustomPlayerAbility"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomPlayerAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out CustomPlayerAbility customAbility) => customAbility = List.FirstOrDefault(cAbility => cAbility.Name == name);
+        /// <param name="name">The <see cref="PlayerAbility"/> name to look for.</param>
+        /// <param name="customAbility">The found <see cref="PlayerAbility"/>, <see langword="null"/> if not registered.</param>
+        /// <returns><see langword="true"/> if a <see cref="PlayerAbility"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(string name, out PlayerAbility customAbility) => customAbility = List.FirstOrDefault(cAbility => cAbility.Name == name);
 
         /// <summary>
-        /// Tries to get the player's current <see cref="CustomPlayerAbility"/>'s.
+        /// Tries to get the player's current <see cref="PlayerAbility"/>'s.
         /// </summary>
         /// <param name="entity">The entity to search on.</param>
-        /// <param name="customAbility">The found <see cref="CustomPlayerAbility"/>'s, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomPlayerAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Player entity, out IEnumerable<CustomPlayerAbility> customAbility) => (customAbility = Get(entity)) is not null;
+        /// <param name="customAbility">The found <see cref="PlayerAbility"/>'s, <see langword="null"/> if not registered.</param>
+        /// <returns><see langword="true"/> if a <see cref="PlayerAbility"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(Player entity, out IEnumerable<PlayerAbility> customAbility) => (customAbility = Get(entity)) is not null;
 
         /// <summary>
-        /// Tries to get the player's current <see cref="CustomPlayerAbility"/>.
+        /// Tries to get the player's current <see cref="PlayerAbility"/>.
         /// </summary>
         /// <param name="abilityBehaviour">The <see cref="IAbilityBehaviour"/> to search for.</param>
-        /// <param name="customAbility">The found <see cref="CustomPlayerAbility"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomPlayerAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(IAbilityBehaviour abilityBehaviour, out CustomPlayerAbility customAbility) => customAbility = Get(abilityBehaviour.GetType());
+        /// <param name="customAbility">The found <see cref="PlayerAbility"/>, <see langword="null"/> if not registered.</param>
+        /// <returns><see langword="true"/> if a <see cref="PlayerAbility"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(IAbilityBehaviour abilityBehaviour, out PlayerAbility customAbility) => customAbility = Get(abilityBehaviour.GetType());
 
         /// <summary>
-        /// Tries to get the player's current <see cref="CustomPlayerAbility"/>.
+        /// Tries to get the player's current <see cref="PlayerAbility"/>.
         /// </summary>
         /// <param name="type">The type to search for.</param>
-        /// <param name="customAbility">The found <see cref="CustomPlayerAbility"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomPlayerAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out CustomPlayerAbility customAbility) => customAbility = Get(type.GetType());
+        /// <param name="customAbility">The found <see cref="PlayerAbility"/>, <see langword="null"/> if not registered.</param>
+        /// <returns><see langword="true"/> if a <see cref="PlayerAbility"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(Type type, out PlayerAbility customAbility) => customAbility = Get(type.GetType());
 
         /// <inheritdoc cref="CustomAbility{T}.Add{TAbility}(T, out TAbility)"/>
         public static new bool Add<TAbility>(Player entity, out TAbility param)
-            where TAbility : CustomPlayerAbility => CustomAbility<Player>.Add(entity, out param);
+            where TAbility : PlayerAbility => CustomAbility<Player>.Add(entity, out param);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, Type)"/>
         public static new bool Add(Player entity, Type type) => CustomAbility<Player>.Add(entity, type);
@@ -130,7 +131,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
 
         /// <inheritdoc cref="CustomAbility{T}.Remove{TAbility}(T)"/>
         public static new bool Remove<TAbility>(Player entity)
-            where TAbility : CustomPlayerAbility => CustomAbility<Player>.Remove<TAbility>(entity);
+            where TAbility : PlayerAbility => CustomAbility<Player>.Remove<TAbility>(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Remove(T, Type)"/>
         public static new bool Remove(Player entity, Type type) => CustomAbility<Player>.Remove(entity, type);

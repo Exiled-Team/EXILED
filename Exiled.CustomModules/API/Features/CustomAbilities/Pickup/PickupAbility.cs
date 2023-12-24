@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------
-// <copyright file="CustomPickupAbility.cs" company="Exiled Team">
+// <copyright file="PickupAbility.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features.CustomAbilities
+namespace Exiled.CustomModules.API.Features.PickupAbilities
 {
     using System;
 
@@ -13,104 +13,105 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using System.Linq;
 
     using Exiled.API.Features.Pickups;
+    using Exiled.CustomModules.API.Features.CustomAbilities;
     using Utils.NonAllocLINQ;
 
     /// <summary>
     /// Represents a base class for custom abilities associated with a specific <see cref="Pickup"/>.
     /// </summary>
-    public abstract class CustomPickupAbility : CustomAbility<Pickup>
+    public abstract class PickupAbility : CustomAbility<Pickup>
     {
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> containing all registered custom abilities.
         /// </summary>
-        public static new IEnumerable<CustomPickupAbility> List => Registered[typeof(Pickup)].Cast<CustomPickupAbility>();
+        public static new IEnumerable<PickupAbility> List => Registered[typeof(Pickup)].Cast<PickupAbility>();
 
         /// <summary>
-        /// Gets all owners and all their respective <see cref="CustomPickupAbility"/>'s.
+        /// Gets all owners and all their respective <see cref="PickupAbility"/>'s.
         /// </summary>
-        public static new Dictionary<Pickup, HashSet<CustomPickupAbility>> Manager =>
+        public static new Dictionary<Pickup, HashSet<PickupAbility>> Manager =>
             CustomAbility<Pickup>.Manager.Where(kvp => kvp.Key is Pickup)
-            .ToDictionary(kvp => (Pickup)kvp.Key, kvp => kvp.Value.Cast<CustomPickupAbility>().ToHashSet());
+            .ToDictionary(kvp => (Pickup)kvp.Key, kvp => kvp.Value.Cast<PickupAbility>().ToHashSet());
 
         /// <summary>
-        /// Gets all owners belonging to a <see cref="CustomPickupAbility"/>.
+        /// Gets all owners belonging to a <see cref="PickupAbility"/>.
         /// </summary>
         public static IEnumerable<Pickup> Owners => Manager.Keys.ToHashSet();
 
         /// <summary>
-        /// Gets a <see cref="CustomPickupAbility"/> given the specified <paramref name="customAbilityType"/>.
+        /// Gets a <see cref="PickupAbility"/> given the specified <paramref name="customAbilityType"/>.
         /// </summary>
         /// <param name="customAbilityType">The specified ability type.</param>
-        /// <returns>The <see cref="CustomPickupAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new CustomPickupAbility Get(object customAbilityType) =>
+        /// <returns>The <see cref="PickupAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
+        public static new PickupAbility Get(object customAbilityType) =>
             List.FirstOrDefault(customAbility => customAbility == customAbilityType && customAbility.IsEnabled);
 
         /// <summary>
-        /// Gets a <see cref="CustomPickupAbility"/> given the specified name.
+        /// Gets a <see cref="PickupAbility"/> given the specified name.
         /// </summary>
         /// <param name="name">The specified name.</param>
-        /// <returns>The <see cref="CustomPickupAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new CustomPickupAbility Get(string name) => List.FirstOrDefault(customAbility => customAbility.Name == name);
+        /// <returns>The <see cref="PickupAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
+        public static new PickupAbility Get(string name) => List.FirstOrDefault(customAbility => customAbility.Name == name);
 
         /// <summary>
-        /// Gets a <see cref="CustomPickupAbility"/> given the specified <see cref="Type"/>.
+        /// Gets a <see cref="PickupAbility"/> given the specified <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The specified <see cref="Type"/>.</param>
-        /// <returns>The <see cref="CustomPickupAbility"/> matching the search or <see langword="null"/> if not found.</returns>
-        public static new CustomPickupAbility Get(Type type) =>
-            (type.BaseType != typeof(IAbilityBehaviour) && !type.IsSubclassOf(typeof(IAbilityBehaviour))) ? null :
+        /// <returns>The <see cref="PickupAbility"/> matching the search or <see langword="null"/> if not found.</returns>
+        public static new PickupAbility Get(Type type) =>
+            type.BaseType != typeof(IAbilityBehaviour) && !type.IsSubclassOf(typeof(IAbilityBehaviour)) ? null :
             List.FirstOrDefault(customAbility => customAbility.BehaviourComponent == type);
 
         /// <summary>
-        /// Gets all <see cref="CustomPickupAbility"/>'s from a <see cref="Pickup"/>.
+        /// Gets all <see cref="PickupAbility"/>'s from a <see cref="Pickup"/>.
         /// </summary>
-        /// <param name="entity">The <see cref="CustomPickupAbility"/>'s owner.</param>
-        /// <returns>The <see cref="CustomPickupAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new IEnumerable<CustomPickupAbility> Get(Pickup entity) => Manager.FirstOrDefault(kvp => kvp.Key == entity).Value;
+        /// <param name="entity">The <see cref="PickupAbility"/>'s owner.</param>
+        /// <returns>The <see cref="PickupAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
+        public static new IEnumerable<PickupAbility> Get(Pickup entity) => Manager.FirstOrDefault(kvp => kvp.Key == entity).Value;
 
         /// <summary>
-        /// Tries to get a <see cref="CustomPickupAbility"/> given the specified <paramref name="customAbility"/>.
+        /// Tries to get a <see cref="PickupAbility"/> given the specified <paramref name="customAbility"/>.
         /// </summary>
         /// <param name="customAbilityType">The <see cref="object"/> to look for.</param>
         /// <param name="customAbility">The found <paramref name="customAbility"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <paramref name="customAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object customAbilityType, out CustomPickupAbility customAbility) => customAbility = Get(customAbilityType);
+        public static bool TryGet(object customAbilityType, out PickupAbility customAbility) => customAbility = Get(customAbilityType);
 
         /// <summary>
         /// Tries to get a <paramref name="customAbility"/> given a specified name.
         /// </summary>
-        /// <param name="name">The <see cref="CustomPickupAbility"/> name to look for.</param>
-        /// <param name="customAbility">The found <see cref="CustomPickupAbility"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomPickupAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out CustomPickupAbility customAbility) => customAbility = List.FirstOrDefault(cAbility => cAbility.Name == name);
+        /// <param name="name">The <see cref="PickupAbility"/> name to look for.</param>
+        /// <param name="customAbility">The found <see cref="PickupAbility"/>, <see langword="null"/> if not registered.</param>
+        /// <returns><see langword="true"/> if a <see cref="PickupAbility"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(string name, out PickupAbility customAbility) => customAbility = List.FirstOrDefault(cAbility => cAbility.Name == name);
 
         /// <summary>
-        /// Tries to get the pickup's current <see cref="CustomPickupAbility"/>'s.
+        /// Tries to get the pickup's current <see cref="PickupAbility"/>'s.
         /// </summary>
         /// <param name="entity">The entity to search on.</param>
-        /// <param name="customAbility">The found <see cref="CustomPickupAbility"/>'s, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomPickupAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Pickup entity, out IEnumerable<CustomPickupAbility> customAbility) => (customAbility = Get(entity)) is not null;
+        /// <param name="customAbility">The found <see cref="PickupAbility"/>'s, <see langword="null"/> if not registered.</param>
+        /// <returns><see langword="true"/> if a <see cref="PickupAbility"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(Pickup entity, out IEnumerable<PickupAbility> customAbility) => (customAbility = Get(entity)) is not null;
 
         /// <summary>
-        /// Tries to get the pickup's current <see cref="CustomPickupAbility"/>.
+        /// Tries to get the pickup's current <see cref="PickupAbility"/>.
         /// </summary>
         /// <param name="abilityBehaviour">The <see cref="IAbilityBehaviour"/> to search for.</param>
-        /// <param name="customAbility">The found <see cref="CustomPickupAbility"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomPickupAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(IAbilityBehaviour abilityBehaviour, out CustomPickupAbility customAbility) => customAbility = Get(abilityBehaviour.GetType());
+        /// <param name="customAbility">The found <see cref="PickupAbility"/>, <see langword="null"/> if not registered.</param>
+        /// <returns><see langword="true"/> if a <see cref="PickupAbility"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(IAbilityBehaviour abilityBehaviour, out PickupAbility customAbility) => customAbility = Get(abilityBehaviour.GetType());
 
         /// <summary>
-        /// Tries to get the pickup's current <see cref="CustomPickupAbility"/>.
+        /// Tries to get the pickup's current <see cref="PickupAbility"/>.
         /// </summary>
         /// <param name="type">The type to search for.</param>
-        /// <param name="customAbility">The found <see cref="CustomPickupAbility"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomPickupAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out CustomPickupAbility customAbility) => customAbility = Get(type.GetType());
+        /// <param name="customAbility">The found <see cref="PickupAbility"/>, <see langword="null"/> if not registered.</param>
+        /// <returns><see langword="true"/> if a <see cref="PickupAbility"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(Type type, out PickupAbility customAbility) => customAbility = Get(type.GetType());
 
         /// <inheritdoc cref="CustomAbility{T}.Add{TAbility}(T, out TAbility)"/>
         public static new bool Add<TAbility>(Pickup entity, out TAbility param)
-            where TAbility : CustomPickupAbility => CustomAbility<Pickup>.Add(entity, out param);
+            where TAbility : PickupAbility => CustomAbility<Pickup>.Add(entity, out param);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, Type)"/>
         public static new bool Add(Pickup entity, Type type) => CustomAbility<Pickup>.Add(entity, type);
@@ -129,7 +130,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
 
         /// <inheritdoc cref="CustomAbility{T}.Remove{TAbility}(T)"/>
         public static new bool Remove<TAbility>(Pickup entity)
-            where TAbility : CustomPickupAbility => CustomAbility<Pickup>.Remove<TAbility>(entity);
+            where TAbility : PickupAbility => CustomAbility<Pickup>.Remove<TAbility>(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Remove(T, Type)"/>
         public static new bool Remove(Pickup entity, Type type) => CustomAbility<Pickup>.Remove(entity, type);

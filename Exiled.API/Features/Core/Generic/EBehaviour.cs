@@ -20,7 +20,7 @@ namespace Exiled.API.Features.Core.Generic
     /// to extend and customize their functionality. It provides a modular and extensible architecture for enhancing gameplay elements.
     /// </remarks>
     public abstract class EBehaviour<T> : EActor
-        where T : class
+        where T : GameEntity
     {
         /// <summary>
         /// Gets or sets the owner of the <see cref="EBehaviour{T}"/>.
@@ -42,7 +42,7 @@ namespace Exiled.API.Features.Core.Generic
             base.PostInitialize();
 
             FindOwner();
-            if (Owner is null)
+            if (!Owner)
             {
                 Destroy();
                 return;
@@ -54,7 +54,7 @@ namespace Exiled.API.Features.Core.Generic
         {
             base.Tick();
 
-            if (Owner is null)
+            if (!Owner)
             {
                 Destroy();
                 return;
@@ -66,7 +66,7 @@ namespace Exiled.API.Features.Core.Generic
         {
             base.OnEndPlay();
 
-            if (Owner is null)
+            if (!Owner)
                 return;
         }
 
@@ -95,6 +95,6 @@ namespace Exiled.API.Features.Core.Generic
         /// This method verifies if the provided owner is not null and matches the stored owner. It is typically used
         /// to ensure that the owner being checked is valid and corresponds to the expected owner for the current context.
         /// </remarks>
-        protected virtual bool Check(T owner) => owner is not null && Owner == owner;
+        protected virtual bool Check(T owner) => owner && Owner == owner;
     }
 }
