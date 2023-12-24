@@ -65,6 +65,6 @@ namespace Exiled.API.Enums
         /// <summary>
         /// The player was revived by SCP-1507.
         /// </summary>
-        Vocalie,
+        Vocalize,
     }
 }
