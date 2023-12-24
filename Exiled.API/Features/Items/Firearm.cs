@@ -20,16 +20,21 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Structs;
 
     using Extensions;
+
+    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
+    using InventorySystem.Items.Pickups;
 
     using UnityEngine;
 
     using BaseFirearm = InventorySystem.Items.Firearms.Firearm;
+    using FirearmPickup = Pickups.FirearmPickup;
+    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.Firearms.Firearm"/>.

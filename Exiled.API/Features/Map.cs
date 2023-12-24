@@ -248,7 +248,7 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Locker"/>.
         /// </summary>
         /// <returns><see cref="Locker"/> object.</returns>
-        public static Locker GetRandomLocker() => Lockers.Random();
+        public static Locker GetRandomLocker() => Lockers.GetRandomValue();
 
         /// <summary>
         /// Gets a random <see cref="Pickup"/>.
@@ -258,7 +258,7 @@ namespace Exiled.API.Features
         public static Pickup GetRandomPickup(ItemType type = ItemType.None)
         {
             List<Pickup> pickups = (type != ItemType.None ? Pickup.List.Where(p => p.Type == type) : Pickup.List).ToList();
-            return pickups.Random();
+            return pickups.GetRandomValue();
         }
 
         /// <summary>

@@ -13,7 +13,6 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pools;
     using Exiled.API.Interfaces;
@@ -29,7 +28,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game lift.
     /// </summary>
-    public class Lift : GameEntity, IWrapper<ElevatorChamber>, IWorldSpace
+    public class Lift : IWrapper<ElevatorChamber>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="ElevatorChamber"/>s and their corresponding <see cref="Lift"/>.
@@ -67,7 +66,7 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Lift"/>.
         /// </summary>
         /// <returns><see cref="Lift"/> object.</returns>
-        public static Lift Random => List.Random();
+        public static Lift Random => List.GetRandomValue();
 
         /// <summary>
         /// Gets the base <see cref="ElevatorChamber"/>.
@@ -92,7 +91,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the lift.
         /// </summary>
-        public override GameObject GameObject => Base.gameObject;
+        public GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the lift's <see cref="UnityEngine.Transform"/>.

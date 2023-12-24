@@ -78,6 +78,12 @@ namespace Exiled.API.Features.Core
         internal static List<EObject> InternalObjects { get; } = new();
 
         /// <summary>
+        /// Implicitly converts the given <see cref="EObject"/> instance to a <see cref="bool"/>.
+        /// </summary>
+        /// <param name="object">Whether the <see cref="EObject"/> instance exists.</param>
+        public static implicit operator bool(EObject @object) => @object != null;
+
+        /// <summary>
         /// Implicitly converts the given <see cref="EObject"/> instance to a <see cref="string"/>.
         /// </summary>
         /// <param name="object">The <see cref="EObject"/> instance's name.</param>
@@ -322,7 +328,7 @@ namespace Exiled.API.Features.Core
         public static EObject CreateDefaultSubobject(Type type, params object[] parameters)
         {
             BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-            EObject @object = Activator.CreateInstance(type, flags, null, parameters, null) as EObject;
+            EObject @object = Activator.CreateInstance(type, flags, null, parameters, null) is not EObject outer ? null : outer;
 
             // Do not use implicit bool conversion as @object may be null
             if (@object != null)

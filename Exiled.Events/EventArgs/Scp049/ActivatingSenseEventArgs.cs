@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs.Scp049
     using System;
 
     using API.Features;
+    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
     using Scp049Role = API.Features.Roles.Scp049Role;

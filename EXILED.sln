@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.CustomItems", "Exile
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.CreditTags", "Exiled.CreditTags\Exiled.CreditTags.csproj", "{9FEBCAEA-EB51-46D0-BC04-F74789A40079}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.CustomModules", "Exiled.CustomModules\Exiled.CustomModules.csproj", "{417C3309-8B93-4218-A1D1-D4BB7B09BE0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.CustomRoles", "Exiled.CustomRoles\Exiled.CustomRoles.csproj", "{417C3309-8B93-4218-A1D1-D4BB7B09BE0F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "docs", "docs\docs.csproj", "{33EEFAC8-F5A7-4E51-8FD1-C45D25268B4A}"
 	ProjectSection(ProjectDependencies) = postProject

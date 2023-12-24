@@ -34,7 +34,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines the class for role-related classes.
     /// </summary>
-    public abstract class Role : GameEntity, IWrapper<PlayerRoleBase>
+    public abstract class Role : TypeCastObject<Role>, IWrapper<PlayerRoleBase>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Role"/> class.
@@ -47,9 +47,6 @@ namespace Exiled.API.Features.Roles
 
             Base = baseRole;
         }
-
-        /// <inheritdoc/>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="Player"/> this role is referring to.

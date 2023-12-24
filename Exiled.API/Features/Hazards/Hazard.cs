@@ -20,7 +20,7 @@ namespace Exiled.API.Features.Hazards
     /// <summary>
     /// A wrapper for <see cref="EnvironmentalHazard"/>.
     /// </summary>
-    public class Hazard : GameEntity, IWrapper<EnvironmentalHazard>
+    public class Hazard : TypeCastObject<Hazard>, IWrapper<EnvironmentalHazard>
     {
         /// <summary>
         /// <see cref="Dictionary{TKey,TValue}"/> with <see cref="EnvironmentalHazard"/> to it's <see cref="Hazard"/>.
@@ -47,9 +47,6 @@ namespace Exiled.API.Features.Hazards
         /// Gets the <see cref="EnvironmentalHazard"/>.
         /// </summary>
         public EnvironmentalHazard Base { get; }
-
-        /// <inheritdoc/>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets or sets the list with all affected by this hazard players.

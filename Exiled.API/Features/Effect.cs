@@ -34,7 +34,6 @@ namespace Exiled.API.Features
         {
             if (statusEffectBase.TryGetEffectType(out EffectType effect))
                 Log.Error($"EffectType not found please report to Exiled BugReport : {statusEffectBase}");
-
             Type = effect;
             Duration = statusEffectBase.Duration;
             Intensity = statusEffectBase.Intensity;
