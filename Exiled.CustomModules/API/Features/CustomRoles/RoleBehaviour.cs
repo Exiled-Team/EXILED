@@ -17,6 +17,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Pools;
@@ -142,7 +143,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         protected CustomRole CustomRole { get; private set; }
 
         /// <summary>
-        /// Gets the current speed of the  <see cref="EPlayerBehaviour.Owner"/>.
+        /// Gets the current speed of the  <see cref="EBehaviour{T}.Owner"/>.
         /// </summary>
         protected float CurrentSpeed { get; private set; }
 

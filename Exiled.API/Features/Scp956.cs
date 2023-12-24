@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Scp956.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -105,6 +105,6 @@ namespace Exiled.API.Features
         /// Spawns behind the specified target.
         /// </summary>
         /// <param name="target">Player to spawn. If <paramref name="target"/> is <see langword="null"/>, will be chosen random.</param>
-        public static void SpawnBehindTarget(Player target = null) => Singleton.SpawnBehindTarget((target ?? Player.List.GetRandomValue()).ReferenceHub);
+        public static void SpawnBehindTarget(Player target = null) => Singleton.SpawnBehindTarget((target ?? Player.List.Random()).ReferenceHub);
     }
 }

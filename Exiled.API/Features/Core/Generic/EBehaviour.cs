@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="EEntityBehaviour.cs" company="Exiled Team">
+// <copyright file="EBehaviour.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -11,7 +11,7 @@ namespace Exiled.API.Features.Core.Generic
     using Exiled.API.Features.DynamicEvents;
 
     /// <summary>
-    /// <see cref="EBehaviour"/> is a versatile component designed to enhance the functionality of various entities.
+    /// <see cref="EBehaviour{T}"/> is a versatile component designed to enhance the functionality of various entities.
     /// <br>It can be easily integrated with various types of entities, making it a valuable tool for user-defined entity behaviours.</br>
     /// </summary>
     /// /// <typeparam name="T">The type of the entity to which the behaviour is applied.</typeparam>

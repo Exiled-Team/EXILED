@@ -12,6 +12,7 @@ namespace Exiled.CustomModules
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using Exiled.CustomModules.API.Features;
+    using Exiled.CustomModules.API.Features.CustomAbilities;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.CustomRoles;
 
@@ -56,13 +57,13 @@ namespace Exiled.CustomModules
         public bool ActivateOnlySelected { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets the hint that is shown when someone fails to use a <see cref="ActiveAbility"/>.
+        /// Gets or sets the hint that is shown when someone fails to use a <see cref="CustomAbility{T}"/>.
         /// </summary>
         [Description("The hint showed to players when they fail to preform an action.")]
         public Broadcast FailedActionHint { get; set; } = new("Failed to preform action: {0}", 5);
 
         /// <summary>
-        /// Gets or sets the hint that is shown when someone switches their selected <see cref="ActiveAbility"/>.
+        /// Gets or sets the hint that is shown when someone switches their selected <see cref="CustomAbility{T}"/>.
         /// </summary>
         [Description("The hint that is shown to players when they switch abilities.")]
         public Broadcast SwitchedAbilityHint { get; set; } = new("Selected ability {0}", 5);

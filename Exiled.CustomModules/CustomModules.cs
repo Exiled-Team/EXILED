@@ -39,7 +39,6 @@ namespace Exiled.CustomModules
         /// <inheritdoc/>
         public override void OnDisabled()
         {
-
             keypressActivator = null;
             base.OnDisabled();
         }

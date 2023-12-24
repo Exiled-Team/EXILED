@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features.CustomEscapes
+namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
     using System;
 
@@ -24,31 +24,48 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Utils.NonAllocLINQ;
 
     /// <summary>
-    /// A class to easily manage escaping behavior.
+    /// Represents a base class for custom abilities associated with a specific <see cref="GameEntity"/>.
     /// </summary>
-    /// <typeparam name="T">The type of the entity supporting the ability.</typeparam>
+    /// <typeparam name="T">The type of <see cref="GameEntity"/> associated with the custom ability.</typeparam>
     public abstract class CustomAbility<T> : TypeCastObject<CustomAbility<T>>, IAdditiveBehaviour
         where T : GameEntity
     {
-        /// <inheritdoc cref="Manager"/>
-        internal static readonly Dictionary<T, HashSet<CustomAbility<T>>> EntitiesValue = new();
+        private Type reflectedGenericType;
 
-        private static readonly List<CustomAbility<T>> Registered = new();
+        /// <inheritdoc cref="Manager"/>
+#pragma warning disable SA1202 // Elements should be ordered by access
+        internal static readonly Dictionary<object, HashSet<CustomAbility<T>>> EntitiesValue = new();
+#pragma warning restore SA1202 // Elements should be ordered by access
+
+        /// <summary>
+        /// A <see cref="List{T}"/> of <see cref="CustomAbility{T}"/> containing all the registered custom abilites.
+        /// </summary>
+        protected static readonly List<CustomAbility<T>> UnorderedRegistered = new();
+
+        /// <summary>
+        /// A <see cref="Dictionary{TKey, TValue}"/> containing all the registered custom abilites ordered by their <see cref="GameEntity"/> type.
+        /// </summary>
+        protected static readonly Dictionary<Type, HashSet<CustomAbility<T>>> Registered = new();
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="CustomAbility{T}"/> containing all the registered custom abilites.
         /// </summary>
-        public static IEnumerable<CustomAbility<T>> List => Registered;
+        public static IReadOnlyDictionary<Type, HashSet<CustomAbility<T>>> List => Registered;
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> containing all the registered custom abilites.
+        /// </summary>
+        public static IEnumerable<CustomAbility<T>> UnorderedList => UnorderedRegistered;
 
         /// <summary>
         /// Gets all entities and all their respective <see cref="CustomAbility{T}"/>'s.
         /// </summary>
-        public static IReadOnlyDictionary<T, HashSet<CustomAbility<T>>> Manager => EntitiesValue;
+        public static IReadOnlyDictionary<object, HashSet<CustomAbility<T>>> Manager => EntitiesValue;
 
         /// <summary>
         /// Gets all entities belonging to a <see cref="CustomAbility{T}"/>.
         /// </summary>
-        public static IEnumerable<T> Entities => EntitiesValue.Keys.ToHashSet();
+        public static HashSet<object> Entities => EntitiesValue.Keys.ToHashSet();
 
         /// <inheritdoc/>
         public Type BehaviourComponent { get; protected set; }
@@ -69,25 +86,40 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public virtual bool IsEnabled => true;
 
         /// <summary>
+        /// Gets the reflected generic type.
+        /// </summary>
+        protected Type ReflectedGenericType => reflectedGenericType ??= GetType().GetGenericArguments()[0];
+
+        /// <summary>
         /// Gets a <see cref="CustomAbility{T}"/> given the specified <paramref name="customAbilityType"/>.
         /// </summary>
         /// <param name="customAbilityType">The specified ability type.</param>
         /// <returns>The <see cref="CustomAbility{T}"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomAbility<T> Get(object customAbilityType) => Registered.FirstOrDefault(customAbility => customAbility == customAbilityType && customAbility.IsEnabled);
+        public static CustomAbility<T> Get(object customAbilityType) =>
+            UnorderedList.FirstOrDefault(customAbility => customAbility == customAbilityType && customAbility.IsEnabled);
 
         /// <summary>
         /// Gets a <see cref="CustomAbility{T}"/> given the specified name.
         /// </summary>
         /// <param name="name">The specified name.</param>
         /// <returns>The <see cref="CustomAbility{T}"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomAbility<T> Get(string name) => Registered.FirstOrDefault(customAbility => customAbility.Name == name);
+        public static CustomAbility<T> Get(string name) => UnorderedList.FirstOrDefault(customAbility => customAbility.Name == name);
 
         /// <summary>
-        /// Gets a <see cref="CustomAbility{T}"/> given the specified <see cref="Name"/>.
+        /// Gets a <see cref="CustomAbility{T}"/> given the specified <see cref="Type"/> of an <see cref="IAbilityBehaviour"/>.
         /// </summary>
-        /// <param name="type">The specified <see cref="Name"/>.</param>
+        /// <param name="type">The specified <see cref="Type"/>.</param>
         /// <returns>The <see cref="CustomAbility{T}"/> matching the search or <see langword="null"/> if not found.</returns>
-        public static CustomAbility<T> Get(Type type) => (type.BaseType != typeof(IAbilityBehaviour) && !type.IsSubclassOf(typeof(IAbilityBehaviour))) ? null : Registered.FirstOrDefault(customAbility => customAbility.BehaviourComponent == type);
+        public static CustomAbility<T> Get(Type type) => (type.BaseType != typeof(IAbilityBehaviour) && !type.IsSubclassOf(typeof(IAbilityBehaviour))) ? null :
+            UnorderedList.FirstOrDefault(customAbility => customAbility.BehaviourComponent == type);
+
+        /// <summary>
+        /// Gets a <see cref="CustomAbility{T}"/> given the specified <see cref="Type"/> of <see cref="CustomAbility{T}"/>.
+        /// </summary>
+        /// <typeparam name="TAbility">The specified <see cref="Type"/>.</typeparam>
+        /// <returns>The <see cref="CustomAbility{T}"/> matching the search or <see langword="null"/> if not found.</returns>
+        public static TAbility Get<TAbility>()
+            where TAbility : CustomAbility<T> => UnorderedList.FirstOrDefault(customAbility => customAbility.GetType() == typeof(TAbility)).Cast<TAbility>();
 
         /// <summary>
         /// Gets a <see cref="CustomAbility{T}"/> given the specified <see cref="IAbilityBehaviour"/>.
@@ -109,7 +141,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="customAbilityType">The <see cref="object"/> to look for.</param>
         /// <param name="customAbility">The found <paramref name="customAbility"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <paramref name="customAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object customAbilityType, out CustomAbility<T> customAbility) => (customAbility = Get(customAbilityType)) is not null;
+        public static bool TryGet(object customAbilityType, out CustomAbility<T> customAbility) => customAbility = Get(customAbilityType);
 
         /// <summary>
         /// Tries to get a <paramref name="customAbility"/> given a specified name.
@@ -117,7 +149,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="name">The <see cref="CustomAbility{T}"/> name to look for.</param>
         /// <param name="customAbility">The found <see cref="CustomAbility{T}"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomAbility{T}"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out CustomAbility<T> customAbility) => (customAbility = Registered.FirstOrDefault(cAbility => cAbility.Name == name)) is not null;
+        public static bool TryGet(string name, out CustomAbility<T> customAbility) => customAbility = UnorderedList.FirstOrDefault(cAbility => cAbility.Name == name);
 
         /// <summary>
         /// Tries to get the player's current <see cref="CustomAbility{T}"/>'s.
@@ -133,15 +165,24 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="abilityBehaviour">The <see cref="IAbilityBehaviour"/> to search for.</param>
         /// <param name="customAbility">The found <see cref="CustomAbility{T}"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomAbility{T}"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(IAbilityBehaviour abilityBehaviour, out CustomAbility<T> customAbility) => (customAbility = Get(abilityBehaviour.GetType())) is not null;
+        public static bool TryGet(IAbilityBehaviour abilityBehaviour, out CustomAbility<T> customAbility) => customAbility = Get(abilityBehaviour.GetType());
 
         /// <summary>
-        /// Tries to get the player's current <see cref="CustomAbility{T}"/>.
+        /// Tries to get a <see cref="CustomAbility{T}"/> given the specified type of <see cref="IAbilityBehaviour"/>.
         /// </summary>
-        /// <param name="type">The <see cref="Name"/> to search for.</param>
+        /// <param name="type">The type to search for.</param>
         /// <param name="customAbility">The found <see cref="CustomAbility{T}"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomAbility{T}"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out CustomAbility<T> customAbility) => (customAbility = Get(type.GetType())) is not null;
+        public static bool TryGet(Type type, out CustomAbility<T> customAbility) => customAbility = Get(type.GetType());
+
+        /// <summary>
+        /// Tries to get a <see cref="CustomAbility{T}"/> given the specified type of <see cref="CustomAbility{T}"/>.
+        /// </summary>
+        /// <typeparam name="TAbility">The type to search for.</typeparam>
+        /// <param name="customAbility">The found <see cref="CustomAbility{T}"/>, <see langword="null"/> if not registered.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomAbility{T}"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet<TAbility>(out TAbility customAbility)
+            where TAbility : CustomAbility<T> => (customAbility = Get<TAbility>()) is not null;
 
         /// <summary>
         /// Gets the <see cref="EActor"/> associated with the specified custom ability type for the given entity.
@@ -154,11 +195,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// It is typically used to access the behavior component associated with a specific custom ability for an entity.
         /// </remarks>
         public static EActor Get<TAbility>(T entity)
-            where TAbility : CustomAbility<T>
-        {
-            CustomAbility<T> customAbility = Get(typeof(T));
-            return entity.GetComponent(customAbility.BehaviourComponent);
-        }
+            where TAbility : CustomAbility<T> => entity.GetComponent(Get<TAbility>().BehaviourComponent);
 
         /// <summary>
         /// Adds the specified custom ability to the given entity and returns it.
@@ -176,7 +213,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         {
             param = null;
 
-            if (!TryGet(typeof(T), out CustomAbility<T> ability))
+            if (!TryGet(out TAbility ability))
                 return false;
 
             (param = ability.Cast<TAbility>()).Add(entity);
@@ -279,8 +316,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// the method returns <see langword="false"/>. The removal process involves destroying the active object associated with the custom ability.
         /// </remarks>
         public static bool Remove<TAbility>(T entity)
-            where TAbility : CustomAbility<T> =>
-            TryGet(typeof(T), out CustomAbility<T> customAbility) && EObject.DestroyActiveObject(customAbility.BehaviourComponent, entity.GameObject);
+            where TAbility : CustomAbility<T> => TryGet(out TAbility customAbility) && EObject.DestroyActiveObject(customAbility.BehaviourComponent, entity.GameObject);
 
         /// <summary>
         /// Removes the custom ability of the specified type from the specified entity.
@@ -296,17 +332,17 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
             TryGet(type, out CustomAbility<T> customAbility) && EObject.DestroyActiveObject(customAbility.BehaviourComponent, entity.GameObject);
 
         /// <summary>
-        /// Removes the custom ability of the specified type from the specified entity.
+        /// Removes the custom ability of the specified name from the specified entity.
         /// </summary>
         /// <param name="entity">The entity from which the custom ability will be removed.</param>
-        /// <param name="type">The name of the custom ability type to be removed.</param>
+        /// <param name="name">The name of the custom ability type to be removed.</param>
         /// <returns><see langword="true"/> if the custom ability was removed successfully; otherwise, <see langword="false"/>.</returns>
         /// <remarks>
         /// This method removes the custom ability of the specified type from the specified entity. If the removal operation fails,
         /// the method returns <see langword="false"/>. The removal process involves destroying the active object associated with the custom ability.
         /// </remarks>
-        public static bool Remove(T entity, string type) =>
-            TryGet(type, out CustomAbility<T> customAbility) && EObject.DestroyActiveObject(customAbility.BehaviourComponent, entity.GameObject);
+        public static bool Remove(T entity, string name) =>
+            TryGet(name, out CustomAbility<T> customAbility) && EObject.DestroyActiveObject(customAbility.BehaviourComponent, entity.GameObject);
 
         /// <summary>
         /// Removes the custom ability with the specified ID from the specified entity.
@@ -329,8 +365,11 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// This method removes all custom abilities associated with the specified entity. The removal process involves destroying the active objects
         /// associated with each custom ability. If the entity has no custom abilities, the method has no effect.
         /// </remarks>
-        public static void RemoveAll(T entity) =>
-            EntitiesValue.DoIf(kvp => kvp.Key == entity, (kvp) => kvp.Value.Do((ability) => ability.Remove(entity)));
+        public static void RemoveAll(T entity)
+        {
+            if (Manager.TryGetValue(entity, out HashSet<CustomAbility<T>> abilities))
+                abilities.ForEach(customAbility => customAbility.Remove(entity));
+        }
 
         /// <summary>
         /// Removes custom abilities of the specified types from the specified entity.
@@ -341,20 +380,26 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// This method removes custom abilities of the specified types from the specified entity. The removal process involves destroying the active objects
         /// associated with each custom ability. If the entity has no custom abilities of the specified types, the method has no effect.
         /// </remarks>
-        public static void RemoveRange(T entity, IEnumerable<Type> types) =>
-            EntitiesValue.DoIf(kvp => kvp.Key == entity, (kvp) => kvp.Value.DoIf(ability => types.Contains(ability.GetType()), (ability) => ability.Remove(entity)));
+        public static void RemoveRange(T entity, IEnumerable<Type> types)
+        {
+            if (Manager.TryGetValue(entity, out HashSet<CustomAbility<T>> abilities))
+                abilities.DoIf(ability => types.Contains(ability.GetType()), ability => ability.Remove(entity));
+        }
 
         /// <summary>
         /// Removes custom abilities with the specified names from the specified entity.
         /// </summary>
         /// <param name="entity">The entity from which custom abilities will be removed.</param>
-        /// <param name="types">The names of custom abilities to be removed.</param>
+        /// <param name="names">The names of custom abilities to be removed.</param>
         /// <remarks>
         /// This method removes custom abilities with the specified names from the specified entity. The removal process involves destroying the active objects
         /// associated with each custom ability. If the entity has no custom abilities with the specified names, the method has no effect.
         /// </remarks>
-        public static void RemoveRange(T entity, IEnumerable<string> types) =>
-            EntitiesValue.DoIf(kvp => kvp.Key == entity, (kvp) => kvp.Value.DoIf(ability => types.Contains(ability.Name), (ability) => ability.Remove(entity)));
+        public static void RemoveRange(T entity, IEnumerable<string> names)
+        {
+            if (Manager.TryGetValue(entity, out HashSet<CustomAbility<T>> abilities))
+                abilities.DoIf(ability => names.Contains(ability.Name), ability => ability.Remove(entity));
+        }
 
         /// <summary>
         /// Enables all the custom abilities present in the assembly.
@@ -390,7 +435,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public static IEnumerable<CustomAbility<T>> DisableAll()
         {
             List<CustomAbility<T>> customAbilities = new();
-            customAbilities.AddRange(Registered.Where(ability => ability.TryUnregister()));
+            customAbilities.AddRange(UnorderedRegistered.Where(ability => ability.TryUnregister()));
 
             Log.SendRaw($"{customAbilities.Count()} custom abilities have been successfully unregistered!", ConsoleColor.DarkGreen);
 
@@ -411,12 +456,10 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
 
             try
             {
-                // Try to add the custom ability to the existing entity entry
                 EntitiesValue[entity].Add(this);
             }
             catch
             {
-                // If the entity entry does not exist, create a new entry for the entity and the custom ability
                 EntitiesValue.Add(entity, new HashSet<CustomAbility<T>>() { this });
             }
         }
@@ -455,22 +498,27 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <returns><see langword="true"/> if the <see cref="CustomAbility{T}"/> was registered; otherwise, <see langword="false"/>.</returns>
         internal bool TryRegister(CustomAbilityAttribute attribute = null)
         {
-            if (!Registered.Contains(this))
+            if (!UnorderedRegistered.Contains(this))
             {
                 if (attribute is not null && Id == 0)
                     Id = attribute.Id;
 
-                if (Registered.Any(x => x.Name == Name))
+                if (UnorderedRegistered.Any(customAbility => customAbility.Name == Name))
                 {
                     Log.Debug(
                         $"Couldn't register {Name}. Another custom ability has been registered with the same Type: " +
-                        $" {Registered.FirstOrDefault(x => x.Name == Name)}");
+                        $" {UnorderedRegistered.FirstOrDefault(customAbility => customAbility.Name == Name)}");
 
                     return false;
                 }
 
                 EObject.RegisterObjectType(BehaviourComponent, Name);
-                Registered.Add(this);
+                UnorderedRegistered.Add(this);
+
+                if (!Registered.ContainsKey(ReflectedGenericType))
+                    Registered[ReflectedGenericType] = new();
+
+                Registered[ReflectedGenericType].Add(this);
 
                 return true;
             }
@@ -488,7 +536,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <returns><see langword="true"/> if the <see cref="CustomAbility{T}"/> was unregistered; otherwise, <see langword="false"/>.</returns>
         internal bool TryUnregister()
         {
-            if (!Registered.Contains(this))
+            if (!UnorderedList.Contains(this))
             {
                 Log.Debug(
                     $"[Couldn't unregister {Name}." +
@@ -498,7 +546,8 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
             }
 
             EObject.UnregisterObjectType(Name);
-            Registered.Remove(this);
+            UnorderedRegistered.Remove(this);
+            Registered[ReflectedGenericType].Remove(this);
 
             return true;
         }

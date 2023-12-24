@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features.CustomEscapes
+namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
     using Exiled.API.Features.Core;
 

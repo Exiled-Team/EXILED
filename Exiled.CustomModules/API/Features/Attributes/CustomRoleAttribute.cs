@@ -7,8 +7,9 @@
 
 namespace Exiled.CustomModules.API.Features
 {
-    using Exiled.CustomModules.API.Features.CustomRoles;
     using System;
+
+    using Exiled.CustomModules.API.Features.CustomRoles;
 
     /// <summary>
     /// This attribute determines whether the class which is being applied to should be treated as <see cref="CustomRole"/>.

@@ -17,6 +17,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
     using Exiled.CustomItems.API.Features;
+    using Exiled.CustomModules.API.Features.CustomAbilities;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using PlayerRoles;
@@ -45,12 +46,12 @@ namespace Exiled.CustomModules.API.Features
         public Pawn(ReferenceHub referenceHub)
             : base(referenceHub)
         {
-            foreach (KeyValuePair<Player, HashSet<CustomAbility<Player>>> kvp in CustomAbility<Player>.Manager)
+            foreach (KeyValuePair<Player, HashSet<CustomPlayerAbility>> kvp in CustomPlayerAbility.Manager)
             {
                 if (kvp.Key != this)
                     continue;
 
-                foreach (CustomAbility<Player> ability in kvp.Value)
+                foreach (CustomPlayerAbility ability in kvp.Value)
                     AbilityManager.Add(ability, GetComponent(ability.BehaviourComponent).Cast<PlayerAbilityBehaviour>());
             }
         }
@@ -62,12 +63,12 @@ namespace Exiled.CustomModules.API.Features
         public Pawn(GameObject gameObject)
             : base(gameObject)
         {
-            foreach (KeyValuePair<Player, HashSet<CustomAbility<Player>>> kvp in CustomAbility<Player>.Manager)
+            foreach (KeyValuePair<Player, HashSet<CustomPlayerAbility>> kvp in CustomPlayerAbility.Manager)
             {
                 if (kvp.Key != this)
                     continue;
 
-                foreach (CustomAbility<Player> ability in kvp.Value)
+                foreach (CustomPlayerAbility ability in kvp.Value)
                     AbilityManager.Add(ability, GetComponent(ability.BehaviourComponent).Cast<PlayerAbilityBehaviour>());
             }
         }
@@ -75,7 +76,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets the pawn's ability manager.
         /// </summary>
-        public Dictionary<CustomAbility<Player>, PlayerAbilityBehaviour> AbilityManager { get; private set; } = new();
+        public Dictionary<CustomPlayerAbility, PlayerAbilityBehaviour> AbilityManager { get; private set; } = new();
 
         /// <summary>
         /// Gets all pawn's <see cref="EPlayerBehaviour"/>'s.
