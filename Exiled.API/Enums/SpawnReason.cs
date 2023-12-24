@@ -61,5 +61,10 @@ namespace Exiled.API.Enums
         /// The user has been spawn by the usage of an Item.
         /// </summary>
         ItemUsage,
+
+        /// <summary>
+        /// The player was revived by SCP-1507.
+        /// </summary>
+        Vocalie,
     }
 }
