@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs.Scp559
         public Vector3 NewPosition { get; set; }
 
         /// <summary>
-        /// Gets the previous position for <see cref="Scp559"/>.
+        /// Gets or sets the previous spawn position.
         /// </summary>
         public Vector3 OldPosition { get; }
     }
