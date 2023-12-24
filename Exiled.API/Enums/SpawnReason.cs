@@ -56,5 +56,10 @@ namespace Exiled.API.Enums
         /// The user will be destroyed.
         /// </summary>
         Destroyed,
+
+        /// <summary>
+        /// The user has been spawn by the usage of an Item.
+        /// </summary>
+        ItemUsage,
     }
 }
