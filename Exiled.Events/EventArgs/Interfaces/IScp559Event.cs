@@ -8,7 +8,7 @@
 namespace Exiled.Events.EventArgs.Interfaces
 {
     /// <summary>
-    /// Interface for all events related to <see cref="Scp559Cake"/>.
+    /// Defines the base contract for all <see cref="Scp559Cake"/> related events.
     /// </summary>
     public interface IScp559Event : IExiledEvent
     {
