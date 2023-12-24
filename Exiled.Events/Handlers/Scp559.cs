@@ -12,7 +12,7 @@ namespace Exiled.Events.Handlers
 #pragma warning disable SA1623
 
     /// <summary>
-    /// A SCP-559 related events.
+    /// All SCP-559 related events.
     /// </summary>
     public static class Scp559
     {

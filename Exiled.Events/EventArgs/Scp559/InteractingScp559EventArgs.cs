@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs.Scp559
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all information before player interacts with SCP-559.
+    /// Contains all information before a player interacts with SCP-559.
     /// </summary>
     public class InteractingScp559EventArgs : IScp559Event, IDeniableEvent, IPlayerEvent
     {

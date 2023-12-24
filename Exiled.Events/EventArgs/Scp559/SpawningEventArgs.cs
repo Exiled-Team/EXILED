@@ -38,12 +38,12 @@ namespace Exiled.Events.EventArgs.Scp559
         public Scp559 Scp559 { get; }
 
         /// <summary>
-        /// Gets or sets new position for <see cref="Scp559"/>.
+        /// Gets or sets the next spawn position.
         /// </summary>
         public Vector3 NextPosition { get; set; }
 
         /// <summary>
-        /// Gets the previous position for <see cref="Scp559"/>.
+        /// Gets or sets the previous spawn position.
         /// </summary>
         public Vector3 PreviousPosition { get; }
     }
