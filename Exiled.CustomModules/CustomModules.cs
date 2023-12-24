@@ -27,9 +27,6 @@ namespace Exiled.CustomModules
         {
             Instance = this;
 
-            if (Config.UseKeypressActivation)
-                keypressActivator = new();
-
             base.OnEnabled();
         }
 
