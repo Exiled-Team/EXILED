@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.DamageHandlers
 {
     using CustomPlayerEffects;
+    using PlayerRoles;
 
     using BaseHandler = PlayerStatsSystem.DamageHandlerBase;
 
@@ -99,7 +100,7 @@ namespace Exiled.API.Features.DamageHandlers
 
             if ((player != Attacker) && !ForceFullFriendlyFire)
             {
-                if (HitboxIdentity.CheckFriendlyFire(AttackerFootprint.Role, player.Role, true))
+                if (HitboxIdentity.IsEnemy(AttackerFootprint.Role, player.Role))
                     return;
 
                 Damage *= PlayerStatsSystem.AttackerDamageHandler._ffMultiplier;

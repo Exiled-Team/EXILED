@@ -34,10 +34,12 @@ namespace Exiled.Events.Patches.Events.Scp049
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int offset = -5;
+            int offset = -5;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
 
             Label returnLabel = generator.DefineLabel();
+
+            LocalBuilder ev = generator.DeclareLocal(typeof(FinishingRecallEventArgs));
 
             newInstructions.InsertRange(
                 index,
@@ -62,6 +64,8 @@ namespace Exiled.Events.Patches.Events.Scp049
                     // FinishingRecallEventArgs ev = new(target, scp049, BasicRagdoll, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(FinishingRecallEventArgs))[0]),
                     new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Handlers.Scp049.OnFinishingRecall(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Scp049), nameof(Handlers.Scp049.OnFinishingRecall))),
@@ -70,6 +74,20 @@ namespace Exiled.Events.Patches.Events.Scp049
                     //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(FinishingRecallEventArgs), nameof(FinishingRecallEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, returnLabel),
+                });
+
+            offset = -2;
+            index = newInstructions.FindIndex(x => x.opcode == OpCodes.Isinst) + offset;
+
+            newInstructions.RemoveRange(index, 3);
+
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // ev.IsFlamingo
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(FinishingRecallEventArgs), nameof(FinishingRecallEventArgs.IsFlamingo))),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);

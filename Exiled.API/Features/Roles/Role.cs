@@ -10,15 +10,12 @@ namespace Exiled.API.Features.Roles
     using System;
 
     using Enums;
-
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Extensions;
-
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
-
     using UnityEngine;
 
     using FilmmakerGameRole = PlayerRoles.Filmmaker.FilmmakerRole;
@@ -28,6 +25,7 @@ namespace Exiled.API.Features.Roles
     using Scp079GameRole = PlayerRoles.PlayableScps.Scp079.Scp079Role;
     using Scp096GameRole = PlayerRoles.PlayableScps.Scp096.Scp096Role;
     using Scp106GameRole = PlayerRoles.PlayableScps.Scp106.Scp106Role;
+    using Scp1507GameRole = PlayerRoles.PlayableScps.Scp1507.Scp1507Role;
     using Scp173GameRole = PlayerRoles.PlayableScps.Scp173.Scp173Role;
     using Scp3114GameRole = PlayerRoles.PlayableScps.Scp3114.Scp3114Role;
     using Scp939GameRole = PlayerRoles.PlayableScps.Scp939.Scp939Role;
@@ -232,6 +230,7 @@ namespace Exiled.API.Features.Roles
             SpectatorGameRole spectatorRole => new SpectatorRole(spectatorRole),
             HumanGameRole humanRole => new HumanRole(humanRole),
             FilmmakerGameRole filmmakerRole => new FilmMakerRole(filmmakerRole),
+            Scp1507GameRole scp1507Role => new Scp1507Role(scp1507Role),
             _ => new NoneRole(role),
         };
     }

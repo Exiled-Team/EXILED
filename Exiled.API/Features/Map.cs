@@ -399,9 +399,13 @@ namespace Exiled.API.Features
 
             Ragdoll.BasicRagdollToRagdoll.Clear();
 
+            Snowpile.BaseToWrapper.Clear();
+
             Firearm.ItemTypeToFirearmInstance.Clear();
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
+
+            Scp559.CakeToWrapper.Clear();
         }
     }
 }
