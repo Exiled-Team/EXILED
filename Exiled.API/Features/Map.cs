@@ -406,6 +406,8 @@ namespace Exiled.API.Features
             Firearm.AvailableAttachmentsValue.Clear();
 
             Scp559.CakeToWrapper.Clear();
+
+            Coffee.BaseToWrapper.Clear();
         }
     }
 }

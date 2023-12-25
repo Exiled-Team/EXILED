@@ -518,6 +518,11 @@ namespace Exiled.Events.Handlers
         public static Event<InteractingSnowpileEventArgs> InteractingSnowpile { get; set; } = new();
 
         /// <summary>
+        /// Invoked before player interacts with coffee cup.
+        /// </summary>
+        public static Event<DrinkingCoffeeEventArgs> DrinkingCoffee { get; set; } = new();
+
+        /// <summary>
         /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="ReservedSlotsCheckEventArgs"/> instance.</param>
@@ -1100,6 +1105,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="InteractingSnowpileEventArgs"/> instance.</param>
         public static void OnInteractingSnowpile(InteractingSnowpileEventArgs ev) => InteractingSnowpile.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before player interacts with coffee cup.
+        /// </summary>
+        /// <param name="ev">The <see cref="DrinkingCoffeeEventArgs"/> instance.</param>
+        public static void OnDrinkingCoffee(DrinkingCoffeeEventArgs ev) => DrinkingCoffee.InvokeSafely(ev);
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
