@@ -1,4 +1,11 @@
-﻿namespace Exiled.API.Features.Items
+﻿// -----------------------------------------------------------------------
+// <copyright file="TapeItem.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Exiled.API.Features.Items
 {
     using Exiled.API.Interfaces;
 
@@ -19,6 +26,10 @@
             Base = itemBase;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TapeItem"/> class.
+        /// </summary>
+        /// <param name="type"><see cref="ItemType.Tape"/>.</param>
         internal TapeItem(ItemType type)
             : base(type)
         {
@@ -53,5 +64,15 @@
             get => Base._remainingDestroy;
             set => Base._remainingDestroy = value;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or nor item can be holstered.
+        /// </summary>
+        public bool AllowHolster => Base.AllowHolster;
+
+        /// <summary>
+        /// Gets a value indicating whether or not item can be equipped.
+        /// </summary>
+        public bool AllowEquip => Base.AllowEquip;
     }
 }

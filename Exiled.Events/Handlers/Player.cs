@@ -518,6 +518,16 @@ namespace Exiled.Events.Handlers
         public static Event<InteractingSnowpileEventArgs> InteractingSnowpile { get; set; } = new();
 
         /// <summary>
+        /// Invoked before player uses a Tape Item.
+        /// </summary>
+        public static Event<UsingTapeItemEventArgs> UsingTapeItem { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after player uses Tape Item.
+        /// </summary>
+        public static Event<SuccessfullyUsedTapeItemEventArgs> SuccessfullyUsedTapeItem { get; set; } = new();
+
+        /// <summary>
         /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="ReservedSlotsCheckEventArgs"/> instance.</param>
@@ -1100,6 +1110,18 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="InteractingSnowpileEventArgs"/> instance.</param>
         public static void OnInteractingSnowpile(InteractingSnowpileEventArgs ev) => InteractingSnowpile.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before player uses a Tape Item.
+        /// </summary>
+        /// <param name="ev">The <see cref="UsingTapeItemEventArgs"/> instance.</param>
+        public static void OnUsingTapeItem(UsingTapeItemEventArgs ev) => UsingTapeItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after player uses Tape Item.
+        /// </summary>
+        /// <param name="ev">The <see cref="SuccessfullyUsedTapeItemEventArgs"/> instance.</param>
+        public static void OnSuccessfullyUsedTapeItem(SuccessfullyUsedTapeItemEventArgs ev) => SuccessfullyUsedTapeItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
