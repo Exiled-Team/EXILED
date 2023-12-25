@@ -27,21 +27,6 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         private bool isDurationBased;
 
         /// <summary>
-        /// Gets or sets the <see cref="TDynamicDelegate{T}"/> bound to a delegate fired when the ability expires.
-        /// </summary>
-        public TDynamicDelegate<IAbilityBehaviour> OnActivatingMulticast { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="TDynamicDelegate{T}"/> bound to a delegate fired when the ability expires.
-        /// </summary>
-        public TDynamicDelegate<IAbilityBehaviour> OnActivatedMulticast { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="TDynamicDelegate{T}"/> bound to a delegate fired when the ability expires.
-        /// </summary>
-        public TDynamicDelegate<IAbilityBehaviour> OnExpiredMulticast { get; protected set; }
-
-        /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before a
         /// <typeparamref name="TEntity"/> <see cref="GameEntity"/> activates the ability.
         /// </summary>
