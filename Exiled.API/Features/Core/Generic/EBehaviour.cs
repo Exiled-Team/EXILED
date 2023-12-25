@@ -70,22 +70,6 @@ namespace Exiled.API.Features.Core.Generic
                 return;
         }
 
-        /// <inheritdoc/>
-        protected override void SubscribeEvents()
-        {
-            base.SubscribeEvents();
-
-            DynamicEventManager.CreateFromTypeInstance(this);
-        }
-
-        /// <inheritdoc/>
-        protected override void UnsubscribeEvents()
-        {
-            base.UnsubscribeEvents();
-
-            DynamicEventManager.DestroyFromTypeInstance(this);
-        }
-
         /// <summary>
         /// Checks if the specified owner is not null and matches the stored owner.
         /// </summary>

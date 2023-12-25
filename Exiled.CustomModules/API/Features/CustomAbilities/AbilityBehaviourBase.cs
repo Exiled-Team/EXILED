@@ -27,6 +27,21 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         private bool isDurationBased;
 
         /// <summary>
+        /// Gets or sets the <see cref="TDynamicDelegate{T}"/> bound to a delegate fired when the ability expires.
+        /// </summary>
+        public TDynamicDelegate<IAbilityBehaviour> OnActivatingMulticast { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TDynamicDelegate{T}"/> bound to a delegate fired when the ability expires.
+        /// </summary>
+        public TDynamicDelegate<IAbilityBehaviour> OnActivatedMulticast { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TDynamicDelegate{T}"/> bound to a delegate fired when the ability expires.
+        /// </summary>
+        public TDynamicDelegate<IAbilityBehaviour> OnExpiredMulticast { get; protected set; }
+
+        /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before a
         /// <typeparamref name="TEntity"/> <see cref="GameEntity"/> activates the ability.
         /// </summary>
@@ -110,12 +125,28 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         }
 
         /// <inheritdoc/>
+        protected override void OnBeginPlay()
+        {
+            base.OnBeginPlay();
+
+            SubscribeEvents_Static();
+        }
+
+        /// <inheritdoc/>
         protected override void Tick()
         {
             base.Tick();
 
             if (IsActive)
                 OnUsing();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnEndPlay()
+        {
+            base.OnEndPlay();
+
+            UnsubscribeEvents_Static();
         }
 
         /// <summary>
@@ -170,5 +201,25 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <para>This method will be fired as soon as the ability is activated.</para>
         /// </summary>
         protected abstract void Execute();
+
+        /// <inheritdoc/>
+        protected override void SubscribeEvents()
+        {
+        }
+
+        /// <inheritdoc/>
+        protected override void UnsubscribeEvents()
+        {
+        }
+
+        /// <summary>
+        /// Subscribes all the events statically.
+        /// </summary>
+        protected virtual void SubscribeEvents_Static() => StaticActor.Get<DynamicEventManager>().BindAllFromTypeInstance(this);
+
+        /// <summary>
+        /// Unsubscribes all the events statically.
+        /// </summary>
+        protected virtual void UnsubscribeEvents_Static() => StaticActor.Get<DynamicEventManager>().UnbindAllFromTypeInstance(this);
     }
 }

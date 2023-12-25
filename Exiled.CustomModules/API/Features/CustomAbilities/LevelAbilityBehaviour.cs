@@ -12,7 +12,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using Exiled.API.Features.DynamicEvents;
 
     /// <summary>
-    /// Represents the base class for ability behaviors associated with a specific entity type, providing support for levels the ability.
+    /// Represents the base class for ability behaviors associated with a specific entity type, providing support for levels.
     /// </summary>
     /// <typeparam name="TEntity">The type of entity associated with the ability behavior.</typeparam>
     public abstract class LevelAbilityBehaviour<TEntity> : AbilityBehaviourBase<TEntity>
@@ -37,6 +37,12 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// </summary>
         [DynamicEventDispatcher]
         public TDynamicEventDispatcher<IAbilityBehaviour> OnLevelRemovedDispatcher { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after the ability's max level has been reached.
+        /// </summary>
+        [DynamicEventDispatcher]
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnMaxLevelReachedDispatcher { get; protected set; }
 
         /// <summary>
         /// Gets or sets the level of the ability.
@@ -90,6 +96,11 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Fired when the ability loses a level.
         /// </summary>
         protected virtual void OnLevelRemoved() => OnLevelRemovedDispatcher.InvokeAll(this);
+
+        /// <summary>
+        /// Fired when the ability's max level has been reached.
+        /// </summary>
+        protected virtual void OnMaxLevelReached() => OnMaxLevelReachedDispatcher.InvokeAll(this);
 
         /// <summary>
         /// Fired before granting access to a new level.

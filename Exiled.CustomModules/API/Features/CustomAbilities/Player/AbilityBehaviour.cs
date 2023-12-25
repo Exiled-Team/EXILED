@@ -15,5 +15,23 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
     /// </summary>
     public abstract class AbilityBehaviour : AbilityBehaviourBase<Player>
     {
+        /// <inheritdoc/>
+        protected override void FindOwner() => Owner = Player.Get(Base);
+
+        /// <inheritdoc/>
+        protected override void OnActivated()
+        {
+            base.OnActivated();
+
+            Owner.ShowHint(Settings.Activated);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnExpired()
+        {
+            base.OnActivated();
+
+            Owner.ShowHint(Settings.Expired);
+        }
     }
 }
