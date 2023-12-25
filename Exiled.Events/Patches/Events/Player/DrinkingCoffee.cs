@@ -41,19 +41,26 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new[]
                 {
+                    // Player.Get(hub);
                     new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                    // Coffee.Get(this)
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Call, Method(typeof(Coffee), nameof(Coffee.Get), new[] { typeof(global::Coffee) })),
 
+                    // true
                     new(OpCodes.Ldc_I4_1),
 
+                    // DrinkingCoffeeEventArgs ev = new(Player, Coffee, true);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DrinkingCoffeeEventArgs))[0]),
                     new(OpCodes.Dup),
 
+                    // Handlers.Player.OnDrinkingCoffee(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDrinkingCoffee))),
 
+                    // if (!ev.IsAllowed)
+                    //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DrinkingCoffeeEventArgs), nameof(DrinkingCoffeeEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, retLabel),
                 });
