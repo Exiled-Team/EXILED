@@ -146,6 +146,16 @@ namespace Exiled.CustomRoles.API.Features
         public virtual Broadcast Broadcast { get; set; } = new Broadcast();
 
         /// <summary>
+        /// Gets or sets a value indicating Cassie message that will be played when the Custom Role spawns
+        /// </summary>
+        public abstract string SpawnCassie { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating Cassie message that will be played when the Custom Role spawns
+        /// </summary>
+        public abstract string DeathCassie { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether players will receive a message for getting a custom item, when gaining it through the inventory config for this role.
         /// </summary>
         public virtual bool DisplayCustomItemMessages { get; set; } = true;
@@ -901,7 +911,12 @@ namespace Exiled.CustomRoles.API.Features
         private void OnInternalSpawning(SpawningEventArgs ev)
         {
             if (!IgnoreSpawnSystem && SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && Loader.Random.NextDouble() * 100 <= SpawnChance)
+            {
                 AddRole(ev.Player);
+
+                if (SpawnCassie != null)
+                    Cassie.Message(SpawnCassie);
+            }
         }
 
         private void OnInternalChangingRole(ChangingRoleEventArgs ev)
@@ -938,5 +953,11 @@ namespace Exiled.CustomRoles.API.Features
         }
 
         private void OnDestroying(DestroyingEventArgs ev) => RemoveRole(ev.Player);
+
+        private void OnDying(DyingEventArgs ev)
+        {
+            if(DeathCassie != null)
+                Cassie.Message(DeathCassie);
+        }
     }
 }
