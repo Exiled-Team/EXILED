@@ -19,16 +19,6 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         protected override void FindOwner() => Owner = Player.Get(Base);
 
         /// <inheritdoc/>
-        protected override void SubscribeEvents_Static()
-        {
-            base.SubscribeEvents_Static();
-
-            OnActivatingDispatcher.Bind(this, Cast<AbilityBehaviour>().OnExpiredMulticast);
-            OnActivatedDispatcher.Bind(this, Cast<AbilityBehaviour>().OnExpiredMulticast);
-            OnExpiredDispatcher.Bind(this, Cast<AbilityBehaviour>().OnExpiredMulticast);
-        }
-
-        /// <inheritdoc/>
         protected override void OnActivated()
         {
             base.OnActivated();
