@@ -75,7 +75,7 @@ namespace Exiled.Events.Patches.Events.Scp1507
 
             newInstructions.RemoveAt(index);
 
-            // replacing ReferenceHub.AllHubs to SpawningFlamingosEventArgs::PlayersToSpawn
+            // replacing ReferenceHub.AllHubs to SpawningFlamingosEventArgs::SpawnablePlayers
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]

@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs.Scp1507
     /// <summary>
     /// Contains all information before flamingos get spawned.
     /// </summary>
-    public class SpawningFlamingosEventArgs : IDeniableEvent
+    public class SpawningFlamingosEventArgs : IDeniableEvent, IPlayerEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SpawningFlamingosEventArgs"/> class.
@@ -26,8 +26,8 @@ namespace Exiled.Events.EventArgs.Scp1507
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public SpawningFlamingosEventArgs(Player newAlpha, bool isAllowed = true)
         {
-            NewAlpha = newAlpha;
-            PlayersToSpawn = Player.Get(x => Scp1507Spawner.ValidatePlayer(x.ReferenceHub)).ToHashSet();
+            Player = newAlpha;
+            SpawnablePlayers = Player.Get(x => Scp1507Spawner.ValidatePlayer(x.ReferenceHub)).ToHashSet();
             IsAllowed = isAllowed;
         }
 
