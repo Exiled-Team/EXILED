@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs.Scp1507
         }
 
         /// <summary>
-        /// Gets or sets a new alpha which is now spawning.
+        /// Gets or sets the player which is being spawned as a new alpha flamingo.
         /// </summary>
         public Player Player { get; set; }
 
