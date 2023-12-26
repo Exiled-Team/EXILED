@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs.Scp1507
         /// <summary>
         /// Gets or sets a new alpha which is now spawning.
         /// </summary>
-        public Player NewAlpha { get; set; }
+        public Player Player { get; set; }
 
         /// <summary>
         /// Gets or sets a list of players that will be spawned as a flamingo.
