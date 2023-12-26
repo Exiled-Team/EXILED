@@ -13,7 +13,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
     /// <summary>
     /// Represents the base class for player-specific ability behaviors.
     /// </summary>
-    public abstract class AbilityBehaviour : AbilityBehaviourBase<Player>
+    public abstract class AbilityBehaviour : ActiveAbility<Player>
     {
         /// <inheritdoc/>
         protected override void FindOwner() => Owner = Player.Get(Base);
