@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs.Scp1507
         public Player Player { get; set; }
 
         /// <summary>
-        /// Gets or sets a list of players that will be spawned as a flamingo.
+        /// Gets or sets all enqueued spawnable players.
         /// </summary>
         public HashSet<Player> SpawnablePlayers { get; set; }
 
