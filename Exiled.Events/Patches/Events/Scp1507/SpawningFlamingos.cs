@@ -67,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Scp1507
 
                     // Scp1507Spawner._alpha = ev.NewAlpha;
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningFlamingosEventArgs), nameof(SpawningFlamingosEventArgs.NewAlpha))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningFlamingosEventArgs), nameof(SpawningFlamingosEventArgs.Player))),
                     new(OpCodes.Stsfld, Field(typeof(Scp1507Spawner), nameof(Scp1507Spawner._alpha))),
                 });
 
