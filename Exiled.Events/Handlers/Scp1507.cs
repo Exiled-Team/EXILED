@@ -45,7 +45,7 @@ namespace Exiled.Events.Handlers
         public static void OnScreaming(ScreamingEventArgs ev) => Screaming.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before flamingo team is start to spawn.
+        /// Called before flamingos get spawned.
         /// </summary>
         /// <param name="ev">The <see cref="SpawningFlamingosEventArgs"/> instance.</param>
         public static void OnSpawningFlamingos(SpawningFlamingosEventArgs ev) => SpawningFlamingos.InvokeSafely(ev);
