@@ -81,7 +81,7 @@ namespace Exiled.Events.Patches.Events.Scp1507
                 new CodeInstruction[]
                 {
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningFlamingosEventArgs), nameof(SpawningFlamingosEventArgs.PlayersToSpawn))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningFlamingosEventArgs), nameof(SpawningFlamingosEventArgs.SpawnablePlayers))),
                     new(OpCodes.Call, Method(typeof(SpawningFlamingos), nameof(ReturnEnumerator))),
                 });
 
