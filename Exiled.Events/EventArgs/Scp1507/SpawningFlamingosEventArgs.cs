@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Scp1507
     using PlayerRoles.PlayableScps.Scp1507;
 
     /// <summary>
-    /// Contains all information before flamingo team is start to spawn.
+    /// Contains all information before flamingos get spawned.
     /// </summary>
     public class SpawningFlamingosEventArgs : IDeniableEvent
     {
