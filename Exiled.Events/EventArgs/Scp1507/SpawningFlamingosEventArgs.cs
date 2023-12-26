@@ -22,7 +22,7 @@ namespace Exiled.Events.EventArgs.Scp1507
         /// <summary>
         /// Initializes a new instance of the <see cref="SpawningFlamingosEventArgs"/> class.
         /// </summary>
-        /// <param name="newAlpha"><inheritdoc cref="NewAlpha"/></param>
+        /// <param name="newAlpha"><inheritdoc cref="Player"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public SpawningFlamingosEventArgs(Player newAlpha, bool isAllowed = true)
         {
