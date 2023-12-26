@@ -28,7 +28,7 @@ namespace Exiled.Events.Handlers
         public static Event<ScreamingEventArgs> Screaming { get; set; } = new();
 
         /// <summary>
-        /// Invoked before flamingo team is start to spawn.
+        /// Invoked before flamingos get spawned.
         /// </summary>
         public static Event<SpawningFlamingosEventArgs> SpawningFlamingos { get; set; } = new();
 
