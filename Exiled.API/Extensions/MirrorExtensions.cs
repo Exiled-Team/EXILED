@@ -25,6 +25,7 @@ namespace Exiled.API.Extensions
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PlayerRoles.PlayableScps.Scp1507;
     using RelativePositioning;
 
     using Respawning;
@@ -263,6 +264,14 @@ namespace Exiled.API.Extensions
                 fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort value, out ushort _);
                 writer.WriteRelativePosition(player.RelativePosition);
                 writer.WriteUShort(value);
+            }
+
+            if (roleBase is Scp1507Role)
+            {
+                if (player.Role.Base is not Scp1507Role)
+                    isRisky = true;
+
+                writer.WriteByte((byte)player.Role.SpawnReason);
             }
 
             if (roleBase is ZombieRole)
