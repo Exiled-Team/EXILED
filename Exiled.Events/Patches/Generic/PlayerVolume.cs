@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            List<CodeInstruction> newInstructions = Exiled.API.Features.Pools.ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label skip = generator.DefineLabel();
             Label loopcheck = generator.DefineLabel();
@@ -45,10 +45,8 @@ namespace Exiled.Events.Patches.Generic
             LocalBuilder decoded = generator.DeclareLocal(typeof(float[]));
             LocalBuilder pos = generator.DeclareLocal(typeof(int));
 
-            const int offset = 4;
+            const int offset = 8;
             int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(VoiceModuleBase), nameof(VoiceModuleBase.ValidateSend), new[] { typeof(VoiceChatChannel) }))) + offset;
-
-            newInstructions[index].labels.Add(skip);
 
             newInstructions.InsertRange(index, new List<CodeInstruction>()
             {
@@ -90,7 +88,8 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Br_S, loopcheck),
 
                 // loop start
-                new CodeInstruction(OpCodes.Ldloc_S, decoded).WithLabels(loopstart),
+                new CodeInstruction(OpCodes.Nop).WithLabels(loopstart),
+                new(OpCodes.Ldloc_S, decoded),
                 new(OpCodes.Ldloc_S, pos),
                 new(OpCodes.Ldloc_S, decoded),
                 new(OpCodes.Ldloc_S, pos),
@@ -105,7 +104,8 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Stloc_S, pos),
 
                 // i < array.Length
-                new CodeInstruction(OpCodes.Ldloc_S, pos).WithLabels(loopcheck),
+                new CodeInstruction(OpCodes.Nop).WithLabels(loopcheck),
+                new(OpCodes.Ldloc_S, pos),
                 new(OpCodes.Ldloc_S, decoded),
                 new(OpCodes.Ldlen),
                 new(OpCodes.Conv_I4),
@@ -123,10 +123,13 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Conv_R4),
                 new(OpCodes.Div),
                 new(OpCodes.Callvirt, PropertySetter(typeof(VoiceChatPlaybackBase), nameof(VoiceChatPlaybackBase.Loudness))),
+
+                // skip
+                new CodeInstruction(OpCodes.Nop).WithLabels(skip),
             });
 
-            foreach (CodeInstruction instruction in newInstructions)
-                yield return instruction;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
