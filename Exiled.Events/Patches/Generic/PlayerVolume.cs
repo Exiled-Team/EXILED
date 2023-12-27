@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="StaminaUsage.cs" company="Exiled Team">
+// <copyright file="PlayerVolume.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1313
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection.Emit;
@@ -33,7 +32,6 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(VoiceTransceiver), nameof(VoiceTransceiver.ServerReceiveMessage))]
     internal static class PlayerVolume
     {
-        [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
@@ -50,7 +48,7 @@ namespace Exiled.Events.Patches.Generic
             const int offset = 4;
             int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(VoiceModuleBase), nameof(VoiceModuleBase.ValidateSend), new[] { typeof(VoiceChatChannel) }))) + offset;
 
-            newInstructions[index].WithLabels(skip);
+            newInstructions[index].labels.Add(skip);
 
             newInstructions.InsertRange(index, new List<CodeInstruction>()
             {
@@ -92,7 +90,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Br_S, loopcheck),
 
                 // loop start
-                new(OpCodes.Ldloc_S, decoded),
+                new CodeInstruction(OpCodes.Ldloc_S, decoded).WithLabels(loopstart),
                 new(OpCodes.Ldloc_S, pos),
                 new(OpCodes.Ldloc_S, decoded),
                 new(OpCodes.Ldloc_S, pos),
@@ -107,7 +105,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Stloc_S, pos),
 
                 // i < array.Length
-                new(OpCodes.Ldloc_S, pos),
+                new CodeInstruction(OpCodes.Ldloc_S, pos).WithLabels(loopcheck),
                 new(OpCodes.Ldloc_S, decoded),
                 new(OpCodes.Ldlen),
                 new(OpCodes.Conv_I4),
