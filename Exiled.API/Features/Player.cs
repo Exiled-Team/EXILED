@@ -784,7 +784,7 @@ namespace Exiled.API.Features
         public bool IsSpeaking => VoiceModule != null && VoiceModule.IsSpeaking;
 
         /// <summary>
-        /// Gets a loudness of a player when speaking.
+        /// Gets the loudness of a player when speaking.
         /// </summary>
         public float Loudness
         {
