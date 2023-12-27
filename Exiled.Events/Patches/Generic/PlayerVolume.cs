@@ -125,9 +125,6 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Callvirt, PropertySetter(typeof(VoiceChatPlaybackBase), nameof(VoiceChatPlaybackBase.Loudness))),
             });
 
-            newInstructions[index + 26].WithLabels(loopstart);
-            newInstructions[index + 37].WithLabels(loopcheck);
-
             foreach (CodeInstruction instruction in newInstructions)
                 yield return instruction;
 
