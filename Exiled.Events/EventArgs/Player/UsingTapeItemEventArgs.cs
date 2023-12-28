@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items;
 
     /// <summary>
-    /// Contains all information before player uses a Tape Item.
+    /// Contains all information before player uses a tape.
     /// </summary>
     public class UsingTapeItemEventArgs : IItemEvent, IDeniableEvent, IPlayerEvent
     {
