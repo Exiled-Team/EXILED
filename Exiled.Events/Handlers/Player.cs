@@ -1112,7 +1112,7 @@ namespace Exiled.Events.Handlers
         public static void OnInteractingSnowpile(InteractingSnowpileEventArgs ev) => InteractingSnowpile.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before player uses a Tape Item.
+        /// Called before player uses a tape.
         /// </summary>
         /// <param name="ev">The <see cref="UsingTapeItemEventArgs"/> instance.</param>
         public static void OnUsingTapeItem(UsingTapeItemEventArgs ev) => UsingTapeItem.InvokeSafely(ev);
