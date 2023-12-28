@@ -77,6 +77,14 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
             OnGainingExperience();
         }
 
+        /// <inheritdoc/>
+        protected override void OnReady()
+        {
+            base.OnReady();
+
+            Owner.ShowHint(Settings.OnReady);
+        }
+
         /// <summary>
         /// Fired when the owner gains experience due to the activation of the ability.
         /// </summary>

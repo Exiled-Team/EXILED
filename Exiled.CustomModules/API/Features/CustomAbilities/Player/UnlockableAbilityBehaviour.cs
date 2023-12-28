@@ -51,6 +51,14 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         }
 
         /// <inheritdoc/>
+        protected override void OnReady()
+        {
+            base.OnReady();
+
+            Owner.ShowHint(Settings.OnReady);
+        }
+
+        /// <inheritdoc/>
         protected override void OnLevelAdded()
         {
             base.OnLevelAdded();

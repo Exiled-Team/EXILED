@@ -320,14 +320,17 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
             if (!List.Contains(this))
             {
                 if (attribute is not null && Id == 0)
-                    Id = attribute.Id;
+                {
+                    if (attribute.Id != 0)
+                        Id = attribute.Id;
+                    else
+                        throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
+                }
+                d;
 
                 if (List.Any(x => x.Id == Id))
                 {
-                    Log.Debug(
-                        $"Couldn't register {Name}. " +
-                        $"Another custom escape has been registered with the same Id:" +
-                        $" {List.FirstOrDefault(x => x.Id == Id)}");
+                    Log.Debug($"Unable to register {Name}. Another escape has been registered with the same Id: {List.FirstOrDefault(x => x.Id == Id)}");
 
                     return false;
                 }
@@ -338,7 +341,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                 return true;
             }
 
-            Log.Debug($"Couldn't register {Name}. This custom escape has been already registered.");
+            Log.Debug($"Unable to register {Name}. Another identical escape already exists.");
 
             return false;
         }
@@ -351,7 +354,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         {
             if (!List.Contains(this))
             {
-                Log.Debug($"Couldn't unregister {Name}. This custom escape hasn't been registered yet.");
+                Log.Debug($"Unable to unregister {Name}. Escape is not yet registered.");
 
                 return false;
             }

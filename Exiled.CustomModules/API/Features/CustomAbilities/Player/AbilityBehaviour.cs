@@ -33,5 +33,13 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
 
             Owner.ShowHint(Settings.Expired);
         }
+
+        /// <inheritdoc/>
+        protected override void OnReady()
+        {
+            base.OnReady();
+
+            Owner.ShowHint(Settings.OnReady);
+        }
     }
 }

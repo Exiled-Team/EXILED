@@ -66,6 +66,11 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         public Hint Expired { get; set; }
 
         /// <summary>
+        /// Gets or sets the message to display when the ability is ready.
+        /// </summary>
+        public Hint OnReady { get; set; }
+
+        /// <summary>
         /// Gets or sets the message to display when the ability is unlocked.
         /// </summary>
         public Hint Unlocked { get; set; }
