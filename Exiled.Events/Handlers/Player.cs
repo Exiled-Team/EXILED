@@ -523,7 +523,7 @@ namespace Exiled.Events.Handlers
         public static Event<UsingTapeItemEventArgs> UsingTapeItem { get; set; } = new();
 
         /// <summary>
-        /// Invoked after player uses Tape Item.
+        /// Invoked after player uses tape.
         /// </summary>
         public static Event<SuccessfullyUsedTapeItemEventArgs> SuccessfullyUsedTapeItem { get; set; } = new();
 
