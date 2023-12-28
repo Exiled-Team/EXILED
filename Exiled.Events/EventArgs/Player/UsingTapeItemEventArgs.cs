@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => TapeItem;
 
         /// <summary>
-        /// Gets a <see cref="API.Features.Items.TapeItem"/> which is being used.
+        /// Gets the <see cref="API.Features.Items.TapeItem"/> which is being used.
         /// </summary>
         public TapeItem TapeItem { get; }
 
