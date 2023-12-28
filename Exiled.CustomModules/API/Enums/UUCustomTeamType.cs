@@ -10,12 +10,12 @@ namespace Exiled.CustomModules.API.Enums
     using Exiled.API.Features.Core.Generic;
 
     /// <summary>
-    /// Represents the base enum class for all available custom roles.
+    /// Represents the base enum class for all available custom team.
     /// </summary>
     public class UUCustomTeamType : UniqueUnmanagedEnumClass<uint, UUCustomTeamType>
     {
         /// <summary>
-        /// Represents an invalid custom role.
+        /// Represents an invalid custom team.
         /// </summary>
         public static readonly UUCustomTeamType None = new();
     }

@@ -130,7 +130,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// </summary>
         /// <param name="entity">The <see cref="CustomAbility{T}"/>'s owner.</param>
         /// <returns>The <see cref="CustomAbility{T}"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static IEnumerable<CustomAbility<T>> Get(T entity) => Manager.FirstOrDefault(kvp => kvp.Key == entity).Value;
+        public static IEnumerable<CustomAbility<T>> Get(T entity) => EntitiesValue.FirstOrDefault(kvp => kvp.Key == entity).Value;
 
         /// <summary>
         /// Tries to get a <see cref="CustomAbility{T}"/> given the specified <paramref name="customAbility"/>.
@@ -364,7 +364,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// </remarks>
         public static void RemoveAll(T entity)
         {
-            if (Manager.TryGetValue(entity, out HashSet<CustomAbility<T>> abilities))
+            if (EntitiesValue.TryGetValue(entity, out HashSet<CustomAbility<T>> abilities))
                 abilities.ForEach(customAbility => customAbility.Remove(entity));
         }
 
@@ -379,7 +379,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// </remarks>
         public static void RemoveRange(T entity, IEnumerable<Type> types)
         {
-            if (Manager.TryGetValue(entity, out HashSet<CustomAbility<T>> abilities))
+            if (EntitiesValue.TryGetValue(entity, out HashSet<CustomAbility<T>> abilities))
                 abilities.DoIf(ability => types.Contains(ability.GetType()), ability => ability.Remove(entity));
         }
 
@@ -394,7 +394,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// </remarks>
         public static void RemoveRange(T entity, IEnumerable<string> names)
         {
-            if (Manager.TryGetValue(entity, out HashSet<CustomAbility<T>> abilities))
+            if (EntitiesValue.TryGetValue(entity, out HashSet<CustomAbility<T>> abilities))
                 abilities.DoIf(ability => names.Contains(ability.Name), ability => ability.Remove(entity));
         }
 

@@ -23,7 +23,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using EscapingEventArgs = Events.EscapingEventArgs;
 
     /// <summary>
-    /// A class to easily manage escaping behavior.
+    /// A tool to easily manage custom escaping's logic.
     /// </summary>
     public abstract class EscapeBehaviour : EPlayerBehaviour, IAdditiveSettingsCollection<EscapeSettings>
     {
