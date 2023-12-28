@@ -326,7 +326,6 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                     else
                         throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
                 }
-                d;
 
                 if (List.Any(x => x.Id == Id))
                 {

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="AbilityBehaviour.cs" company="Exiled Team">
+// <copyright file="UnlockableAbilityBehaviour.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -12,9 +12,9 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
     using Exiled.CustomModules.API.Features.CustomAbilities;
 
     /// <summary>
-    /// Represents the base class for item-specific ability behaviors.
+    /// Represents the base class for ability behaviors associated with an item, providing support for levels and unlocking the ability.
     /// </summary>
-    public abstract class AbilityBehaviour : ActiveAbilityBehaviour<Item>
+    public abstract class UnlockableAbilityBehaviour : UnlockableAbilityBehaviour<Item>
     {
         /// <inheritdoc/>
         public override bool DisposeOnNullOwner { get; protected set; } = false;
@@ -29,6 +29,22 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
 
         /// <inheritdoc/>
         protected override void FindOwner() => Owner = Item.Get(Base);
+
+        /// <inheritdoc/>
+        protected override void OnUnlocked()
+        {
+            base.OnUnlocked();
+
+            ItemOwner?.ShowHint(Settings.Unlocked);
+        }
+
+        /// <inheritdoc/>
+        protected override void DenyActivation()
+        {
+            base.DenyActivation();
+
+            ItemOwner?.ShowHint(Settings.CannotBeUsed);
+        }
 
         /// <inheritdoc/>
         protected override void OnActivated()
@@ -52,6 +68,30 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
             base.OnReady();
 
             ItemOwner?.ShowHint(Settings.OnReady);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnLevelAdded()
+        {
+            base.OnLevelAdded();
+
+            ItemOwner?.ShowHint(Settings.NextLevel);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnLevelRemoved()
+        {
+            base.OnLevelRemoved();
+
+            ItemOwner?.ShowHint(Settings.PreviousLevel);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnMaxLevelReached()
+        {
+            base.OnMaxLevelReached();
+
+            ItemOwner?.ShowHint(Settings.MaxLevelReached);
         }
     }
 }

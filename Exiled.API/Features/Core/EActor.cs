@@ -195,6 +195,15 @@ namespace Exiled.API.Features.Core
             where T : EActor => ComponentsInChildren.FirstOrDefault(comp => type == comp.GetType()).Cast<T>();
 
         /// <inheritdoc/>
+        public IEnumerable<T> GetComponents<T>() => ComponentsInChildren.Where(comp => typeof(T) == comp.GetType() || comp.GetType().IsSubclassOf(typeof(T)) || comp.GetType().BaseType == typeof(T)).Cast<T>();
+
+        /// <inheritdoc/>
+        public IEnumerable<T> GetComponents<T>(Type type) => ComponentsInChildren.Where(comp => type == comp.GetType() || comp.GetType().IsSubclassOf(type) || comp.GetType().BaseType == type).Cast<T>();
+
+        /// <inheritdoc/>
+        public IEnumerable<EActor> GetComponents(Type type) => ComponentsInChildren.Where(comp => type == comp.GetType() || comp.GetType().IsSubclassOf(type) || comp.GetType().BaseType == type);
+
+        /// <inheritdoc/>
         public bool TryGetComponent<T>(Type type, out T component)
             where T : EActor
         {

@@ -11,7 +11,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
     using Exiled.CustomModules.API.Features.CustomAbilities;
 
     /// <summary>
-    /// Represents the base class for player-specific ability behaviors.
+    /// Represents the base class for ability behaviors associated with a player, providing support for passive usage.
     /// </summary>
     public abstract class PassiveAbilityBehaviour : PassiveAbilityBehaviour<Player>
     {

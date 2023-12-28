@@ -72,6 +72,28 @@ namespace Exiled.API.Features.Core.Interfaces
         public abstract EActor GetComponent(Type type);
 
         /// <summary>
+        /// Gets all components of type <typeparamref name="T"/> from the <see cref="IEntity"/>.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to look for.</typeparam>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="EActor"/> components.</returns>
+        public abstract IEnumerable<T> GetComponents<T>();
+
+        /// <summary>
+        /// Gets all components of type <typeparamref name="T"/> from the <see cref="IEntity"/>.
+        /// </summary>
+        /// <typeparam name="T">The cast <typeparamref name="T"/> <see cref="EActor"/>.</typeparam>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to look for.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="EActor"/> components.</returns>
+        public abstract IEnumerable<T> GetComponents<T>(Type type);
+
+        /// <summary>
+        /// Gets all components of type <paramref name="type"/> from the <see cref="IEntity"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to look for.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="EActor"/> components.</returns>
+        public abstract IEnumerable<EActor> GetComponents(Type type);
+
+        /// <summary>
         /// Tries to get a component from the <see cref="IEntity"/>.
         /// </summary>
         /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to look for.</typeparam>

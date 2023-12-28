@@ -11,6 +11,8 @@ namespace Exiled.API.Extensions
     using System.Collections.Generic;
     using System.Linq;
 
+    using HarmonyLib;
+
     /// <summary>
     /// A set of extensions for easily interact with collections.
     /// </summary>
@@ -106,6 +108,23 @@ namespace Exiled.API.Extensions
                 action(item);
 
             return enumerable;
+        }
+
+        /// <summary>
+        /// Adds a collection of items to an existing <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the collection.</typeparam>
+        /// <param name="enumerable">The original <see cref="IEnumerable{T}"/> to which items will be added.</param>
+        /// <param name="collection">The collection of items to add.</param>
+        /// <returns>The modified <see cref="IEnumerable{T}"/> after adding the items.</returns>
+        public static IEnumerable<T> AddRange<T>(this IEnumerable<T> enumerable, IEnumerable<T> collection)
+        {
+            IEnumerable<T> result = enumerable;
+
+            foreach (T item in collection)
+                result.AddItem(item);
+
+            return result;
         }
     }
 }
