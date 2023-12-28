@@ -518,7 +518,7 @@ namespace Exiled.Events.Handlers
         public static Event<InteractingSnowpileEventArgs> InteractingSnowpile { get; set; } = new();
 
         /// <summary>
-        /// Invoked before player uses a Tape Item.
+        /// Invoked before player uses a tape.
         /// </summary>
         public static Event<UsingTapeItemEventArgs> UsingTapeItem { get; set; } = new();
 
