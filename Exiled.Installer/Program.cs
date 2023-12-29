@@ -281,13 +281,13 @@ namespace Exiled.Installer
             Console.WriteLine(Resources.Program_TryFindRelease_Trying_to_find_release__);
             Version? targetVersion = args.TargetVersion is not null ? new Version(args.TargetVersion) : null;
 
-            var enumerable = releases.ToList();
+            List<Release> enumerable = releases.ToList();
 
-            foreach (var release in enumerable)
+            foreach (Release release in enumerable)
             {
                 if (targetVersion != null)
                 {
-                    if(targetVersion == new Version(release.TagName))
+                    if (targetVersion == new Version(release.TagName))
                         return release;
                 }
                 else
