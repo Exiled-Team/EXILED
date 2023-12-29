@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Pools;
@@ -28,6 +29,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-939.
     /// </summary>
+    [DebuggerDisplay("Scp-939")]
     public class Scp939Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
     {
         /// <summary>

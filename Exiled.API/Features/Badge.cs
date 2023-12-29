@@ -9,10 +9,12 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     /// <summary>
     /// Represents an in-game badge.
     /// </summary>
+    [DebuggerDisplay("Color = {Color} Text = {Text}")]
     public struct Badge
     {
         /// <summary>

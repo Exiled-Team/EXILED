@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Enums;
@@ -23,6 +24,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game Scp079Camera.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Camera : IWrapper<Scp079Camera>, IWorldSpace
     {
         /// <summary>
@@ -127,6 +129,9 @@ namespace Exiled.API.Features
         };
 
         private Room room;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay => $"Room = {Room?.RoomName.ToString() ?? "Unknow"} Name = {Name} Id = {Id} Used = {IsBeingUsed}";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Camera"/> class.

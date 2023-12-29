@@ -49,5 +49,8 @@
         <PostBuildEvent>if [[ ! -z "$EXILED_DEV_PLUGINAPI_REFERENCE" ]]; then cp "$(OutputPath)$(AssemblyName).dll" "$EXILED_DEV_PLUGINAPI_REFERENCE/dependencies/"; fi</PostBuildEvent>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
 
 </Project>

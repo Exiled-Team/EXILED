@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.DamageHandlers
 {
+    using System.Diagnostics;
+
     using CustomPlayerEffects;
 
     using BaseHandler = PlayerStatsSystem.DamageHandlerBase;
@@ -14,6 +16,7 @@ namespace Exiled.API.Features.DamageHandlers
     /// <summary>
     /// A wrapper to easily manipulate the behavior of <see cref="BaseHandler"/>.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public abstract class AttackerDamageHandler : DamageHandler
     {
         /// <summary>
@@ -77,6 +80,20 @@ namespace Exiled.API.Features.DamageHandlers
             {
                 if (Is(out PlayerStatsSystem.AttackerDamageHandler handler))
                     handler.IsFriendlyFire = value;
+            }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get
+            {
+                string debugView = $"DamageHandler Damage = {Damage}";
+                if (Attacker is not null)
+                    debugView += $" Attacker = {Attacker.Nickname}";
+                if (Target is not null)
+                    debugView += $" Target = {Target.Nickname}";
+                return debugView;
             }
         }
 

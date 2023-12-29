@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using System.Diagnostics;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups.Projectiles;
@@ -20,6 +22,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a high explosive grenade pickup.
     /// </summary>
+    [DebuggerDisplay("Grenade")]
     public class GrenadePickup : Pickup, IWrapper<TimedGrenadePickup>
     {
         /// <summary>

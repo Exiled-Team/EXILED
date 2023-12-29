@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="FilmMakerRole.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using System.Diagnostics;
+
     using PlayerRoles;
     using UnityEngine;
 
@@ -15,6 +17,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Represents the base-game FilmMaker role.
     /// </summary>
+    [DebuggerDisplay("FilmMaker")]
     public class FilmMakerRole : Role
     {
         /// <summary>

@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Spawn
 {
     using System;
+    using System.Diagnostics;
 
     using Extensions;
 
@@ -20,6 +21,7 @@ namespace Exiled.API.Features.Spawn
     /// <summary>
     /// Defines a spawn point that follows a base-game role spawn point.
     /// </summary>
+    [DebuggerDisplay("RoleSpawn Name = {Name} Chance = {Chance} Position = {Position}")]
     public class RoleSpawnPoint : SpawnPoint
     {
         /// <summary>

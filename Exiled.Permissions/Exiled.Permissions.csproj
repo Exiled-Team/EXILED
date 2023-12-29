@@ -53,4 +53,8 @@
         <PostBuildEvent>if [[ ! -z "$EXILED_DEV_REFERENCES" ]]; then cp "$(OutputPath)$(AssemblyName).dll" "$EXILED_DEV_REFERENCES/Plugins/"; fi</PostBuildEvent>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
+    
 </Project>

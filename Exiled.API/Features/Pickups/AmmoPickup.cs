@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using System.Diagnostics;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
@@ -16,6 +18,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for an Ammo pickup.
     /// </summary>
+    [DebuggerDisplay("Ammo Type = {AmmoType} Count = {Ammo}")]
     public class AmmoPickup : Pickup, IWrapper<BaseAmmo>
     {
         /// <summary>

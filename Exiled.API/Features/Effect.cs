@@ -8,15 +8,18 @@
 namespace Exiled.API.Features
 {
     using System.ComponentModel;
+    using System.Diagnostics;
 
     using CustomPlayerEffects;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Useful class to save effect-related configs cleanly.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Effect
     {
         /// <summary>
@@ -86,6 +89,10 @@ namespace Exiled.API.Features
         /// </summary>
         [Description("Indicates whether the effect should be enabled or not")]
         public bool IsEnabled { get; set; }
+
+        [YamlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay => $"Time = {(AddDurationIfActive ? "Additive " : string.Empty)}{Duration}s Type = {Type}";
 
         /// <summary>
         /// Returns the effect in a human-readable format.

@@ -7,8 +7,8 @@
 
 namespace Exiled.API.Features.Pickups
 {
-    using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Exiled.API.Features.Items;
@@ -18,13 +18,12 @@ namespace Exiled.API.Features.Pickups
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
 
-    using UnityEngine;
-
     using BaseBodyArmor = InventorySystem.Items.Armor.BodyArmorPickup;
 
     /// <summary>
     /// A wrapper class for a Body Armor pickup.
     /// </summary>
+    [DebuggerDisplay("Armor Type = {Type}")]
     public class BodyArmorPickup : Pickup, IWrapper<BaseBodyArmor>
     {
         private int helmetEfficacy;

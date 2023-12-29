@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.DamageHandlers
 {
+    using System.Diagnostics;
+
     using Enums;
 
     using Extensions;
@@ -21,6 +23,7 @@ namespace Exiled.API.Features.DamageHandlers
     /// <summary>
     /// A wrapper to easily manipulate the behavior of <see cref="BaseHandler"/>.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public sealed class FirearmDamageHandler : AttackerDamageHandler
     {
         /// <summary>
@@ -66,6 +69,20 @@ namespace Exiled.API.Features.DamageHandlers
         /// Gets a value indicating whether the human hitboxes should be used.
         /// </summary>
         public bool UseHumanHitboxes => As<BaseFirearmHandler>()._useHumanHitboxes;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get
+            {
+                string debugView = $"FirearmDamageHandler Damage = {Damage}";
+                if (Attacker is not null)
+                    debugView += $" Attacker = {Attacker.Nickname}";
+                if (Target is not null)
+                    debugView += $" Target = {Target.Nickname}";
+                return debugView;
+            }
+        }
 
         /// <inheritdoc/>
         public override void ProcessDamage(Player player)

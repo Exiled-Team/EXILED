@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System.Diagnostics;
+
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.Usables;
@@ -15,6 +17,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="Scp1576Item"/>.
     /// </summary>
+    [DebuggerDisplay("Scp-1576")]
     public class Scp1576 : Usable, IWrapper<Scp1576Item>
     {
         /// <summary>

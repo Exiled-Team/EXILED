@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using PlayerRoles;
@@ -20,6 +21,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-096.
     /// </summary>
+    [DebuggerDisplay("Scp-096")]
     public class Scp096Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
     {
         /// <summary>

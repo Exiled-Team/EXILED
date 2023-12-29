@@ -7,11 +7,14 @@
 
 namespace Exiled.API.Features
 {
+    using System.Diagnostics;
+
     using PlayerStatsSystem;
 
     /// <summary>
     /// A custom version of <see cref="HealthStat"/> which allows the player's max amount of health to be changed.
     /// </summary>
+    [DebuggerDisplay("Value = {CustomMaxValue}, Max = {MaxValue}")]
     public class CustomHealthStat : HealthStat
     {
         /// <inheritdoc/>

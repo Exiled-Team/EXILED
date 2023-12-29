@@ -9,6 +9,7 @@ namespace Exiled.API.Structs
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -19,6 +20,7 @@ namespace Exiled.API.Structs
     /// <summary>
     /// A tool to identify attachments.
     /// </summary>
+    [DebuggerDisplay("AmmoType = {AmmoType} Limit = {Limit}")]
     public readonly struct AttachmentIdentifier
     {
         /// <summary>
@@ -139,13 +141,13 @@ namespace Exiled.API.Structs
         public static bool TryParse(string s, out AttachmentIdentifier identifier)
         {
             identifier = default;
-
             foreach (AttachmentIdentifier attId in Features.Items.Firearm.AvailableAttachments.Values.SelectMany(kvp => kvp.Where(kvp2 => kvp2.Name.ToString() == s)))
             {
                 identifier = attId;
                 return true;
             }
 
+            identifier = default;
             return false;
         }
 
@@ -176,16 +178,10 @@ namespace Exiled.API.Structs
         {
             name = default;
 
-            foreach (AttachmentName attachmentNameTranslation in Enum.GetValues(typeof(AttachmentName)))
-            {
-                if (attachmentNameTranslation.ToString() != s)
-                    continue;
+            if (string.IsNullOrEmpty(s))
+                return false;
 
-                name = attachmentNameTranslation;
-                return true;
-            }
-
-            return false;
+            return Enum.TryParse(s, true, out name);
         }
 
         /// <inheritdoc/>

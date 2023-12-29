@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Spawn
 {
     using System;
+    using System.Diagnostics;
 
     using Exiled.API.Enums;
 
@@ -20,6 +21,7 @@ namespace Exiled.API.Features.Spawn
     /// <summary>
     /// Handles dynamic spawn locations.
     /// </summary>
+    [DebuggerDisplay("DynamicSpawn Name = {Name} Chance = {Chance} Position = {Position}")]
     public class DynamicSpawnPoint : SpawnPoint
     {
         /// <summary>
