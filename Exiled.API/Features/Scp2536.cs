@@ -39,7 +39,7 @@ namespace Exiled.API.Features
             {
                 Controller._ignoredPlayers.Clear();
 
-                foreach (var player in value)
+                foreach (Player player in value)
                     Controller._ignoredPlayers.Add(player.NetId);
             }
         }
@@ -69,7 +69,7 @@ namespace Exiled.API.Features
             {
                 GiftController._cooldowns.Clear();
 
-                foreach (var kvp in value)
+                foreach (KeyValuePair<Player, Stopwatch> kvp in value)
                     GiftController._cooldowns.Add(kvp.Key.NetId, kvp.Value);
             }
         }
