@@ -20,9 +20,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp3114Ragdoll"/> class.
         /// </summary>
-        /// <param name="ragdoll"><inheritdoc cref="Base"/></param>
-        internal Scp3114Ragdoll(BaseRagdoll ragdoll)
-            : base(ragdoll)
+        /// <param name="ragdoll">The base ragdoll to wrap. <inheritdoc cref="Base"/></param>
+        internal Scp3114Ragdoll(BaseRagdoll ragdoll) : base(ragdoll)
         {
             Base = ragdoll;
         }
@@ -31,7 +30,7 @@ namespace Exiled.API.Features
         public new BaseRagdoll Base { get; }
 
         /// <summary>
-        /// Gets or sets current disguise role.
+        /// Gets or sets the role that the corpse is disguised as.
         /// </summary>
         public RoleTypeId DisguiseRole
         {
@@ -40,7 +39,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets delay between SCP-3114 can disguise this corpse.
+        /// Gets or sets the delay between when SCP-3114 can disguise this corpse.
         /// </summary>
         public float RevealDelay
         {
@@ -49,7 +48,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets time that is required to reveal this corpse.
+        /// Gets or sets the time required to reveal this corpse.
         /// </summary>
         public float RevealDuration
         {
@@ -58,7 +57,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets current time of revealing this corpse.
+        /// Gets or sets the current time of revealing this corpse.
         /// </summary>
         public float RevealElapsed
         {
@@ -74,5 +73,4 @@ namespace Exiled.API.Features
             get => Base._playingAnimation;
             set => Base._playingAnimation = value;
         }
-    }
 }
