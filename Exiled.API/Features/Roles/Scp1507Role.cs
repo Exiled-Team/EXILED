@@ -103,7 +103,7 @@ namespace Exiled.API.Features.Roles
             {
                 SwarmAbility._nearbyFlamingos.Clear();
 
-                foreach (var player in value.Where(x => x.Role.Is<Scp1507Role>(out _)))
+                foreach (Player player in value.Where(x => x.Role.Is<Scp1507Role>(out _)))
                     SwarmAbility._nearbyFlamingos.Add(player.Role.As<Scp1507Role>().Base);
             }
         }
@@ -118,7 +118,7 @@ namespace Exiled.API.Features.Roles
             {
                 SwarmAbility._entireFlock.Clear();
 
-                foreach (var player in value.Where(x => x.Role.Is<Scp1507Role>(out _)))
+                foreach (Player player in value.Where(x => x.Role.Is<Scp1507Role>(out _)))
                     SwarmAbility._entireFlock.Add(player.Role.As<Scp1507Role>().Base);
 
                 SwarmAbility._flockSize = (byte)(SwarmAbility._entireFlock.Count - 1);
