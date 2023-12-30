@@ -1,4 +1,11 @@
-﻿namespace Exiled.API.Features
+﻿// -----------------------------------------------------------------------
+// <copyright file="Scp3114Ragdoll.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Exiled.API.Features
 {
     using Exiled.API.Interfaces;
     using PlayerRoles;
@@ -10,6 +17,10 @@
     /// </summary>
     public class Scp3114Ragdoll : Ragdoll, IWrapper<BaseRagdoll>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Scp3114Ragdoll"/> class.
+        /// </summary>
+        /// <param name="ragdoll"><inheritdoc cref="Base"/></param>
         internal Scp3114Ragdoll(BaseRagdoll ragdoll)
             : base(ragdoll)
         {
