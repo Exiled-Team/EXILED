@@ -21,7 +21,8 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Scp3114Ragdoll"/> class.
         /// </summary>
         /// <param name="ragdoll">The base ragdoll to wrap. <inheritdoc cref="Base"/></param>
-        internal Scp3114Ragdoll(BaseRagdoll ragdoll) : base(ragdoll)
+        internal Scp3114Ragdoll(BaseRagdoll ragdoll)
+            : base(ragdoll)
         {
             Base = ragdoll;
         }
@@ -73,4 +74,5 @@ namespace Exiled.API.Features
             get => Base._playingAnimation;
             set => Base._playingAnimation = value;
         }
+    }
 }
