@@ -18,7 +18,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents a cake.
     /// </summary>
-    public class Scp559 : IWrapper<Scp559Cake>
+    public class Scp559 : IWrapper<Scp559Cake>, IPosition
     {
         /// <summary>
         /// <see cref="Dictionary{TKey,TValue}"/> <see cref="Scp559Cake"/> to <see cref="Scp559"/>.
@@ -104,9 +104,7 @@ namespace Exiled.API.Features
             set => Base._respawnTime = value;
         }
 
-        /// <summary>
-        /// Gets or sets current position of cake.
-        /// </summary>
+        /// <inheritdoc/>
         public Vector3 Position
         {
             get => Base._position;

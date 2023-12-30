@@ -28,6 +28,11 @@ namespace Exiled.Events.Handlers
         public static Event<ScreamingEventArgs> Screaming { get; set; } = new();
 
         /// <summary>
+        /// Invoked before flamingos get spawned.
+        /// </summary>
+        public static Event<SpawningFlamingosEventArgs> SpawningFlamingos { get; set; } = new();
+
+        /// <summary>
         /// Called before SCP-1507 attacks door.
         /// </summary>
         /// <param name="ev">The <see cref="AttackingDoorEventArgs"/> instance.</param>
@@ -38,5 +43,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ScreamingEventArgs"/> instance.</param>
         public static void OnScreaming(ScreamingEventArgs ev) => Screaming.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before flamingos get spawned.
+        /// </summary>
+        /// <param name="ev">The <see cref="SpawningFlamingosEventArgs"/> instance.</param>
+        public static void OnSpawningFlamingos(SpawningFlamingosEventArgs ev) => SpawningFlamingos.InvokeSafely(ev);
     }
 }
