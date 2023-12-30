@@ -520,12 +520,12 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before player uses a tape.
         /// </summary>
-        public static Event<UsingTapeItemEventArgs> UsingTapeItem { get; set; } = new();
+        public static Event<UsingTapeEventArgs> UsingTapeItem { get; set; } = new();
 
         /// <summary>
         /// Invoked after player uses tape.
         /// </summary>
-        public static Event<SuccessfullyUsedTapeItemEventArgs> SuccessfullyUsedTapeItem { get; set; } = new();
+        public static Event<UsedTapeItemEventArgs> SuccessfullyUsedTapeItem { get; set; } = new();
 
         /// <summary>
         /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
@@ -1114,14 +1114,14 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before player uses a tape.
         /// </summary>
-        /// <param name="ev">The <see cref="UsingTapeItemEventArgs"/> instance.</param>
-        public static void OnUsingTapeItem(UsingTapeItemEventArgs ev) => UsingTapeItem.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="UsingTapeEventArgs"/> instance.</param>
+        public static void OnUsingTapeItem(UsingTapeEventArgs ev) => UsingTapeItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called after player uses tape.
         /// </summary>
-        /// <param name="ev">The <see cref="SuccessfullyUsedTapeItemEventArgs"/> instance.</param>
-        public static void OnSuccessfullyUsedTapeItem(SuccessfullyUsedTapeItemEventArgs ev) => SuccessfullyUsedTapeItem.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="UsedTapeItemEventArgs"/> instance.</param>
+        public static void OnSuccessfullyUsedTapeItem(UsedTapeItemEventArgs ev) => SuccessfullyUsedTapeItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.

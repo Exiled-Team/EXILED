@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
             FieldInfo fieldInfo = newInstructions[index - 1].operand as FieldInfo;
 
             Label retLabel = generator.DefineLabel();
-            LocalBuilder ev = generator.DeclareLocal(typeof(UsingTapeItemEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(UsingTapeEventArgs));
 
             newInstructions.InsertRange(
                 index,
@@ -59,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldc_I4_1),
 
                     // UsingTapeItemEventArgs ev = new(Player, ItemBase, bool, true);
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingTapeItemEventArgs))[0]),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingTapeEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
@@ -69,13 +69,13 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // if (!ev.IsAllowed)
                     //    return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(UsingTapeItemEventArgs), nameof(UsingTapeItemEventArgs.IsAllowed))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(UsingTapeEventArgs), nameof(UsingTapeEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, retLabel),
 
                     // success = ev.Success
                     new(OpCodes.Ldloc_0),
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(UsingTapeItemEventArgs), nameof(UsingTapeItemEventArgs.Success))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(UsingTapeEventArgs), nameof(UsingTapeEventArgs.Success))),
                     new(OpCodes.Stfld, fieldInfo),
                 });
 
