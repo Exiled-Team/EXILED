@@ -126,5 +126,35 @@ namespace Exiled.API.Extensions
 
             return result;
         }
+
+        /// <summary>
+        /// Adds a collection of items to an existing array of <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the collection.</typeparam>
+        /// <param name="array">The original array of <typeparamref name="T"/> to which items will be added.</param>
+        /// <param name="collection">The collection of items to add.</param>
+        /// <returns>The modified array of <typeparamref name="T"/> after adding the items.</returns>
+        public static T[] AddRange<T>(this T[] array, IEnumerable<T> collection)
+        {
+            foreach (T item in collection)
+                array.AddItem(item);
+
+            return array;
+        }
+
+        /// <summary>
+        /// Adds a collection of items to an existing <see cref="HashSet{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the collection.</typeparam>
+        /// <param name="hashset">The original <see cref="HashSet{T}"/> to which items will be added.</param>
+        /// <param name="collection">The collection of items to add.</param>
+        /// <returns>The modified <see cref="HashSet{T}"/> after adding the items.</returns>
+        public static HashSet<T> AddRange<T>(this HashSet<T> hashset, IEnumerable<T> collection)
+        {
+            foreach (T item in collection)
+                hashset.Add(item);
+
+            return hashset;
+        }
     }
 }

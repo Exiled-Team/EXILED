@@ -32,19 +32,69 @@ namespace Exiled.API.Features.Core.Interfaces
         /// <summary>
         /// Adds a component to the <see cref="IEntity"/>.
         /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> cast <see cref="EActor"/> type.</typeparam>
+        /// <param name="actor">The <see cref="EActor"/> to be added.</param>
+        /// <param name="name">The name of the component.</param>
+        /// <returns>The added <see cref="EActor"/> component.</returns>
+        public abstract T AddComponent<T>(EActor actor, string name = "")
+            where T : EActor;
+
+        /// <summary>
+        /// Adds a component to the <see cref="IEntity"/>.
+        /// </summary>
         /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to be added.</param>
         /// <param name="name">The name of the component.</param>
         /// <returns>The added <see cref="EActor"/> component.</returns>
         public abstract EActor AddComponent(Type type, string name = "");
 
         /// <summary>
-        /// Adds a component from the <see cref="IEntity"/>.
+        /// Adds a component to the <see cref="IEntity"/>.
+        /// </summary>
+        /// <param name="actor">The <see cref="EActor"/> to be added.</param>
+        /// <param name="name">The name of the component.</param>
+        /// <returns>The added <see cref="EActor"/> component.</returns>
+        public abstract EActor AddComponent(EActor actor, string name = "");
+
+        /// <summary>
+        /// Adds a component to the <see cref="IEntity"/>.
         /// </summary>
         /// <typeparam name="T">The <typeparamref name="T"/> cast <see cref="EActor"/> type.</typeparam>
         /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to be added.</param>
         /// <param name="name">The name of the component.</param>
         /// <returns>The added <see cref="EActor"/> component.</returns>
         public abstract T AddComponent<T>(Type type, string name = "")
+            where T : EActor;
+
+        /// <summary>
+        /// Adds multiple components to the <see cref="IEntity"/>.
+        /// </summary>
+        /// <param name="types">The collection of <see cref="Type"/> representing the components to be added.</param>
+        /// <returns>The added <see cref="EActor"/> components.</returns>
+        public abstract IEnumerable<EActor> AddComponents(IEnumerable<Type> types);
+
+        /// <summary>
+        /// Adds multiple components from the <see cref="IEntity"/>.
+        /// </summary>
+        /// <param name="actors">The collection of <see cref="EActor"/> instances to be added.</param>
+        /// <returns>The added <see cref="EActor"/> components.</returns>
+        public abstract IEnumerable<EActor> AddComponents(IEnumerable<EActor> actors);
+
+        /// <summary>
+        /// Adds multiple components from the <see cref="IEntity"/>.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> type to be added.</typeparam>
+        /// <param name="actors">The collection of <typeparamref name="T"/> <see cref="EActor"/> instances to be added.</param>
+        /// <returns>The added <typeparamref name="T"/> <see cref="EActor"/> components.</returns>
+        public abstract IEnumerable<T> AddComponents<T>(IEnumerable<T> actors)
+            where T : EActor;
+
+        /// <summary>
+        /// Adds multiple components to the <see cref="IEntity"/>.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> type to be added.</typeparam>
+        /// <param name="types">The collection of <see cref="Type"/> representing the components to be added.</param>
+        /// <returns>The added <typeparamref name="T"/> <see cref="EActor"/> components.</returns>
+        public abstract IEnumerable<T> AddComponents<T>(IEnumerable<EActor> types)
             where T : EActor;
 
         /// <summary>
