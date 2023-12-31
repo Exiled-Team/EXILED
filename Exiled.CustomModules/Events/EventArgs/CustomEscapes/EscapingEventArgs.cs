@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.Events
+namespace Exiled.CustomModules.Events.EventArgs.CustomEscapes
 {
     using System;
 
@@ -18,7 +18,7 @@ namespace Exiled.CustomModules.Events
     /// <summary>
     /// Contains all informations before escaping.
     /// </summary>
-    public sealed class EscapingEventArgs : EventArgs
+    public class EscapingEventArgs : EventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EscapingEventArgs"/> class.
