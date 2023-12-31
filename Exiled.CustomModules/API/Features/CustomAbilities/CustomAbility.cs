@@ -399,6 +399,21 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         }
 
         /// <summary>
+        /// Removes custom abilities with the specified ids from the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity from which custom abilities will be removed.</param>
+        /// <param name="ids">The ids of custom abilities to be removed.</param>
+        /// <remarks>
+        /// This method removes custom abilities with the specified ids from the specified entity. The removal process involves destroying the active objects
+        /// associated with each custom ability. If the entity has no custom abilities with the specified ids, the method has no effect.
+        /// </remarks>
+        public static void RemoveRange(T entity, IEnumerable<uint> ids)
+        {
+            if (Manager.TryGetValue(entity, out HashSet<CustomAbility<T>> abilities))
+                abilities.DoIf(ability => ids.Contains(ability.Id), ability => ability.Remove(entity));
+        }
+
+        /// <summary>
         /// Enables all the custom abilities present in the assembly.
         /// </summary>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> which contains all the enabled custom abilities.</returns>

@@ -13,6 +13,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features.Pools;
 
     using MEC;
+#pragma warning disable SA1005 // Single line comments should begin with single space
 
     /// <summary>
     /// Control class for keypress ability actions.

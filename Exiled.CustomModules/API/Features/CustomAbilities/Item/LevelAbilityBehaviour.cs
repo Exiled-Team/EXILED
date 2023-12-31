@@ -5,25 +5,37 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features.PlayerAbilities
+namespace Exiled.CustomModules.API.Features.ItemAbilities
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
     using Exiled.CustomModules.API.Features.CustomAbilities;
 
     /// <summary>
-    /// Represents the base class for ability behaviors associated with a player, providing support for levels.
+    /// Represents the base class for ability behaviors associated with an item, providing support for levels.
     /// </summary>
-    public abstract class LevelAbilityBehaviour : LevelAbilityBehaviour<Player>
+    public abstract class LevelAbilityBehaviour : LevelAbilityBehaviour<Item>
     {
         /// <inheritdoc/>
-        protected override void FindOwner() => Owner = Player.Get(Base);
+        public override bool DisposeOnNullOwner { get; protected set; } = false;
+
+        /// <inheritdoc/>
+        public override bool IsReady => base.IsReady && ItemOwner && ItemOwner.CurrentItem == Owner;
+
+        /// <summary>
+        /// Gets the item's owner.
+        /// </summary>
+        public Player ItemOwner => Owner.Owner;
+
+        /// <inheritdoc/>
+        protected override void FindOwner() => Owner = Item.Get(Base);
 
         /// <inheritdoc/>
         protected override void OnActivated()
         {
             base.OnActivated();
 
-            Owner.ShowHint(Settings.Activated);
+            ItemOwner?.ShowHint(Settings.Activated);
         }
 
         /// <inheritdoc/>
@@ -31,7 +43,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnActivated();
 
-            Owner.ShowHint(Settings.Expired);
+            ItemOwner?.ShowHint(Settings.Expired);
         }
 
         /// <inheritdoc/>
@@ -39,7 +51,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnReady();
 
-            Owner.ShowHint(Settings.OnReady);
+            ItemOwner?.ShowHint(Settings.OnReady);
         }
 
         /// <inheritdoc/>
@@ -47,7 +59,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnLevelAdded();
 
-            Owner.ShowHint(Settings.NextLevel);
+            ItemOwner?.ShowHint(Settings.NextLevel);
         }
 
         /// <inheritdoc/>
@@ -55,7 +67,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnLevelRemoved();
 
-            Owner.ShowHint(Settings.PreviousLevel);
+            ItemOwner?.ShowHint(Settings.PreviousLevel);
         }
 
         /// <inheritdoc/>
@@ -63,7 +75,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnMaxLevelReached();
 
-            Owner.ShowHint(Settings.MaxLevelReached);
+            ItemOwner?.ShowHint(Settings.MaxLevelReached);
         }
     }
 }

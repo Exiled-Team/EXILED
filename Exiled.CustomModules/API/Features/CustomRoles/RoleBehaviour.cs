@@ -26,6 +26,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.Inventory;
+    using Exiled.CustomModules.Events.EventArgs.CustomEscapes;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
 
@@ -160,7 +161,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
         /// </summary>
-        protected TDynamicEventDispatcher<Events.EscapingEventArgs> EscapingEventDispatcher { get; private set; }
+        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingEventDispatcher { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
@@ -368,7 +369,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     if (!settings.IsAllowed || Vector3.Distance(Owner.Position, settings.Position) > settings.DistanceThreshold)
                         continue;
 
-                    Events.EscapingEventArgs ev = new(Owner.Cast<Pawn>(), settings.Role, settings.CustomRole, UUEscapeScenarioType.None, default);
+                    Events.EventArgs.CustomEscapes.EscapingEventArgs ev = new(Owner.Cast<Pawn>(), settings.Role, settings.CustomRole, UUEscapeScenarioType.None, default);
                     EscapingEventDispatcher.InvokeAll(ev);
 
                     if (!ev.IsAllowed)
@@ -478,8 +479,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Fired before the player escapes.
         /// </summary>
-        /// <param name="ev">The <see cref="Events.EscapingEventArgs"/> instance.</param>
-        protected virtual void OnEscaping(Events.EscapingEventArgs ev)
+        /// <param name="ev">The <see cref="Events.EventArgs.CustomEscapes.EscapingEventArgs"/> instance.</param>
+        protected virtual void OnEscaping(Events.EventArgs.CustomEscapes.EscapingEventArgs ev)
         {
         }
 
@@ -625,8 +626,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             ev.IsAllowed = false;
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscaping(EscapingEventArgs)"/>
-        protected virtual void PreventPlayerFromEscaping(EscapingEventArgs ev)
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs)"/>
+        protected virtual void PreventPlayerFromEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs ev)
         {
             if (!Check(ev.Player) || useCustomEscape || wasEscaped || !EscapeSettings.IsEmpty())
                 return;

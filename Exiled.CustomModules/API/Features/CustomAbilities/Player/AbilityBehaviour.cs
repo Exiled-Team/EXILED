@@ -13,7 +13,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
     /// <summary>
     /// Represents the base class for player-specific ability behaviors.
     /// </summary>
-    public abstract class AbilityBehaviour : ActiveAbility<Player>
+    public abstract class AbilityBehaviour : ActiveAbilityBehaviour<Player>
     {
         /// <inheritdoc/>
         protected override void FindOwner() => Owner = Player.Get(Base);
@@ -32,6 +32,14 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
             base.OnActivated();
 
             Owner.ShowHint(Settings.Expired);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnReady()
+        {
+            base.OnReady();
+
+            Owner.ShowHint(Settings.OnReady);
         }
     }
 }

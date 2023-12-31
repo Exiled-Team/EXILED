@@ -12,8 +12,10 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
     using Exiled.CustomModules.API.Features.CustomAbilities;
+
     using Utils.NonAllocLINQ;
 
     /// <summary>
@@ -114,46 +116,121 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
             where TAbility : PickupAbility => CustomAbility<Pickup>.Add(entity, out param);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, Type)"/>
-        public static new bool Add(Pickup entity, Type type) => CustomAbility<Pickup>.Add(entity, type);
+        public static new bool Add(Pickup entity, Type type) => CustomAbility<Pickup>.Add(entity, type) && StaticActor.Get<ItemTracker>().AddOrTrack(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, string)"/>
-        public static new bool Add(Pickup entity, string name) => CustomAbility<Pickup>.Add(entity, name);
+        public static new bool Add(Pickup entity, string name) => CustomAbility<Pickup>.Add(entity, name) && StaticActor.Get<ItemTracker>().AddOrTrack(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, uint)"/>
-        public static new bool Add(Pickup entity, uint id) => CustomAbility<Pickup>.Add(entity, id);
+        public static new bool Add(Pickup entity, uint id) => CustomAbility<Pickup>.Add(entity, id) && StaticActor.Get<ItemTracker>().AddOrTrack(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, IEnumerable{Type})"/>
-        public static new void Add(Pickup entity, IEnumerable<Type> types) => CustomAbility<Pickup>.Add(entity, types);
+        public static new void Add(Pickup entity, IEnumerable<Type> types)
+        {
+            CustomAbility<Pickup>.Add(entity, types);
+            StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+        }
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, IEnumerable{string})"/>
-        public static new void Add(Pickup entity, IEnumerable<string> names) => CustomAbility<Pickup>.Add(entity, names);
+        public static new void Add(Pickup entity, IEnumerable<string> names)
+        {
+            CustomAbility<Pickup>.Add(entity, names);
+            StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+        }
 
         /// <inheritdoc cref="CustomAbility{T}.Remove{TAbility}(T)"/>
         public static new bool Remove<TAbility>(Pickup entity)
-            where TAbility : PickupAbility => CustomAbility<Pickup>.Remove<TAbility>(entity);
+            where TAbility : PickupAbility => Remove(entity, typeof(TAbility));
 
         /// <inheritdoc cref="CustomAbility{T}.Remove(T, Type)"/>
-        public static new bool Remove(Pickup entity, Type type) => CustomAbility<Pickup>.Remove(entity, type);
+        public static new bool Remove(Pickup entity, Type type)
+        {
+            if (!TryGet(entity, out IEnumerable<PickupAbility> customAbilities))
+                return false;
+
+            PickupAbility pickupAbility = customAbilities.FirstOrDefault(ability => ability.GetType() == type);
+            if (!entity.TryGetComponent(pickupAbility.BehaviourComponent, out EActor component) || component is not IAbilityBehaviour behaviour)
+                return false;
+
+            StaticActor.Get<ItemTracker>().Remove(entity, behaviour);
+            return CustomAbility<Pickup>.Remove(entity, type);
+        }
 
         /// <inheritdoc cref="CustomAbility{T}.Remove(T, string)"/>
-        public static new bool Remove(Pickup entity, string name) => CustomAbility<Pickup>.Remove(entity, name);
+        public static new bool Remove(Pickup entity, string name)
+        {
+            if (!TryGet(name, out PickupAbility pickupAbility) ||
+                !entity.TryGetComponent(pickupAbility.BehaviourComponent, out EActor component) ||
+                component is not IAbilityBehaviour behaviour)
+                return false;
 
-        /// <inheritdoc cref="CustomAbility{T}.Remove(T, string)"/>
-        public static new bool Remove(Pickup entity, uint id) => CustomAbility<Pickup>.Remove(entity, id);
+            StaticActor.Get<ItemTracker>().Remove(entity, behaviour);
+            return CustomAbility<Pickup>.Remove(entity, name);
+        }
+
+        /// <inheritdoc cref="CustomAbility{T}.Remove(T, uint)"/>
+        public static new bool Remove(Pickup entity, uint id)
+        {
+            if (!TryGet(id, out PickupAbility pickupAbility) ||
+                !entity.TryGetComponent(pickupAbility.BehaviourComponent, out EActor component) ||
+                component is not IAbilityBehaviour behaviour)
+                return false;
+
+            StaticActor.Get<ItemTracker>().Remove(entity, behaviour);
+            return CustomAbility<Pickup>.Remove(entity, id);
+        }
 
         /// <inheritdoc cref="CustomAbility{T}.RemoveAll(T)"/>
-        public static new void RemoveAll(Pickup entity) => CustomAbility<Pickup>.RemoveAll(entity);
+        public static new void RemoveAll(Pickup entity)
+        {
+            StaticActor.Get<ItemTracker>().Remove(entity);
+            CustomAbility<Pickup>.RemoveAll(entity);
+        }
 
         /// <inheritdoc cref="CustomAbility{T}.RemoveRange(T, IEnumerable{Type})"/>
-        public static new void RemoveRange(Pickup entity, IEnumerable<Type> types) => CustomAbility<Pickup>.RemoveRange(entity, types);
+        public static new void RemoveRange(Pickup entity, IEnumerable<Type> types)
+        {
+            foreach (Type t in types)
+                Remove(entity, t);
+
+            CustomAbility<Pickup>.RemoveRange(entity, types);
+        }
 
         /// <inheritdoc cref="CustomAbility{T}.RemoveRange(T, IEnumerable{string})"/>
-        public static new void RemoveRange(Pickup entity, IEnumerable<string> names) => CustomAbility<Pickup>.RemoveRange(entity, names);
+        public static new void RemoveRange(Pickup entity, IEnumerable<string> names)
+        {
+            foreach (string name in names)
+                Remove(entity, name);
+
+            CustomAbility<Pickup>.RemoveRange(entity, names);
+        }
+
+        /// <inheritdoc cref="CustomAbility{T}.RemoveRange(T, IEnumerable{uint})"/>
+        public static new void RemoveRange(Pickup entity, IEnumerable<uint> ids)
+        {
+            foreach (uint id in ids)
+                Remove(entity, id);
+
+            CustomAbility<Pickup>.RemoveRange(entity, ids);
+        }
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T)"/>
-        public new void Add(Pickup entity) => base.Add(entity);
+        public new void Add(Pickup entity)
+        {
+            base.Add(entity);
+
+            StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+        }
 
         /// <inheritdoc cref="CustomAbility{T}.Remove(T)"/>
-        public new bool Remove(Pickup entity) => base.Remove(entity);
+        public new bool Remove(Pickup entity)
+        {
+            if (!entity.TryGetComponent(BehaviourComponent, out EActor component) || component is not IAbilityBehaviour behaviour)
+                return false;
+
+            StaticActor.Get<ItemTracker>().Remove(entity, behaviour);
+
+            return base.Remove(entity);
+        }
     }
 }

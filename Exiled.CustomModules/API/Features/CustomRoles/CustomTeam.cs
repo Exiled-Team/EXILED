@@ -590,13 +590,16 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (!Registered.Contains(this))
             {
                 if (attribute is not null && Id == 0)
-                    Id = attribute.Id;
+                {
+                    if (attribute.Id != 0)
+                        Id = attribute.Id;
+                    else
+                        throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
+                }
 
                 if (Registered.Any(x => x.Id == Id))
                 {
-                    Log.Debug($"Couldn't register {Name}." +
-                        $"Another custom team has been registered with the same id:" +
-                        $"{Registered.FirstOrDefault(x => x.Id == Id)}");
+                    Log.Warn($"Unable to register {Name}. Another team with the same ID already exists: {Registered.FirstOrDefault(x => x.Id == Id)}");
 
                     return false;
                 }
@@ -606,7 +609,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return true;
             }
 
-            Log.Debug($"Couldn't register {Name}. This custom team has been already registered.");
+            Log.Warn($"Unable to register {Name}. Team already exists.");
 
             return false;
         }
@@ -619,7 +622,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             if (!Registered.Contains(this))
             {
-                Log.Debug($"Couldn't unregister {Name}. This custom team hasn't been registered yet.");
+                Log.Debug($"Unable to unregister {Name}. Team is not yet registered.");
 
                 return false;
             }

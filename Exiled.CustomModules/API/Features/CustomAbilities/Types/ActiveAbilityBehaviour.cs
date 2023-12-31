@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ActiveAbility.cs" company="Exiled Team">
+// <copyright file="ActiveAbilityBehaviour.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -19,10 +19,11 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     /// Represents the base class for active ability behaviors associated with a specific entity type.
     /// </summary>
     /// <typeparam name="TEntity">The type of entity associated with the ability behavior.</typeparam>
-    public abstract class ActiveAbility<TEntity> : AbilityBehaviourBase<TEntity>
+    public abstract class ActiveAbilityBehaviour<TEntity> : AbilityBehaviourBase<TEntity>
         where TEntity : GameEntity
     {
         private bool isDurationBased;
+        private CoroutineHandle onReadyHandle;
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before a
@@ -45,6 +46,12 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         public TDynamicEventDispatcher<IAbilityBehaviour> OnExpiredDispatcher { get; protected set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after the ability is ready.
+        /// </summary>
+        [DynamicEventDispatcher]
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnReadyDispatcher { get; protected set; }
+
+        /// <summary>
         /// Gets or sets the last time the ability was used.
         /// </summary>
         public DateTime LastUsed { get; protected set; }
@@ -58,7 +65,12 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Forces the cooldown making the ability usable.
         /// </summary>
         /// <returns>The new <see cref="LastUsed"/> value, representing the updated cooldown timestamp.</returns>
-        public virtual DateTime ForceCooldown() => LastUsed = DateTime.Now - TimeSpan.FromSeconds(Settings.Cooldown + 1);
+        public virtual DateTime ForceCooldown()
+        {
+            OnReady();
+            LastUsed = DateTime.Now - TimeSpan.FromSeconds(Settings.Cooldown + 1);
+            return LastUsed;
+        }
 
         /// <summary>
         /// Resets the cooldown making the ability not usable.
@@ -69,6 +81,15 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         {
             if (forceExpiration)
                 IsActive = false;
+
+            if (onReadyHandle.IsRunning)
+                Timing.KillCoroutines(onReadyHandle);
+
+            onReadyHandle = Timing.CallDelayed((DateTime.Now + TimeSpan.FromSeconds(Settings.Cooldown)).Second + 1, () =>
+            {
+                if (IsReady)
+                    OnReady();
+            });
 
             return LastUsed = DateTime.Now;
         }
@@ -145,6 +166,10 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
                 SubscribeEvents();
                 Timing.CallDelayed(Settings.Duration, OnExpired);
             }
+            else
+            {
+                ResetCooldown();
+            }
 
             OnActivatedDispatcher.InvokeAll(this);
         }
@@ -161,6 +186,14 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
             ResetCooldown();
 
             OnExpiredDispatcher.InvokeAll(this);
+        }
+
+        /// <summary>
+        /// Fired when the ability is ready.
+        /// </summary>
+        protected virtual void OnReady()
+        {
+            OnReadyDispatcher.InvokeAll(this);
         }
 
         /// <summary>
