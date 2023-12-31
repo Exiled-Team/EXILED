@@ -10,13 +10,13 @@ namespace Exiled.CustomModules.API.Enums
     using Exiled.API.Features.Core.Generic;
 
     /// <summary>
-    /// Represents the base enum class for all available custom item.
+    /// Represents the base enum class for all available custom items.
     /// </summary>
     public class UUCustomItem : UniqueUnmanagedEnumClass<uint, UUCustomItem>
     {
         /// <summary>
         /// Represents an invalid custom item.
         /// </summary>
-        public static readonly UUCustomEscapeType None = new();
+        public static readonly UUCustomItem None = new();
     }
 }

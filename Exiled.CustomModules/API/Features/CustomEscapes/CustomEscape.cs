@@ -103,7 +103,6 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <returns><see langword="true"/> if the values are not equal.</returns>
         public static bool operator ==(object left, CustomEscape right) => right == left;
 
-
         /// <summary>
         /// Compares two operands: <see cref="CustomEscape"/> and <see cref="object"/>.
         /// </summary>
@@ -270,36 +269,19 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(Type type, out CustomEscape customEscape) => (customEscape = Get(type.GetType())) is not null;
 
-
         /// <summary>
         /// Determines whether id is equal to the current object.
         /// </summary>
         /// <param name="id">The id to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(uint id)
-        {
-            return Id == id;
-        }
+        public bool Equals(uint id) => Id == id;
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
         /// <param name="cr">The custom role to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(CustomEscape cr)
-        {
-            if (cr is null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, cr))
-            {
-                return true;
-            }
-
-            return Id == cr.Id;
-        }
+        public bool Equals(CustomEscape cr) => cr && (ReferenceEquals(this, cr) || Id == cr.Id);
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.

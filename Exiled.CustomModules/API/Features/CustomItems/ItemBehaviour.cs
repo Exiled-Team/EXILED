@@ -11,10 +11,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
-    using Exiled.Events.EventArgs.Player;
 
     /// <summary>
-    /// A tool to easily handle the custom item's logic.
+    /// Represents the base class for implementing custom item behavior.
     /// </summary>
     public abstract class ItemBehaviour : EItemBehaviour, IAdditiveSettings<ItemSettings>
     {

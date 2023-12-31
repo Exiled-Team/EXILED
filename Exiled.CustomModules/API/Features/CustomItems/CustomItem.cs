@@ -162,18 +162,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <param name="left">The left <see cref="CustomItem"/> to compare.</param>
         /// <param name="right">The right <see cref="CustomItem"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomItem left, CustomItem right)
-        {
-            if (left is null)
-            {
-                if (right is null)
-                    return true;
-
-                return false;
-            }
-
-            return left.Equals(right);
-        }
+        public static bool operator ==(CustomItem left, CustomItem right) => left is null ? right is null : left.Equals(right);
 
         /// <summary>
         /// Compares two operands: <see cref="CustomItem"/> and <see cref="CustomItem"/>.
@@ -184,38 +173,38 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public static bool operator !=(CustomItem left, CustomItem right) => !(left.Id == right.Id);
 
         /// <summary>
-        /// Gets a <see cref="CustomItem"/> given the specified <paramref name="customItemType"/>.
+        /// Retrieves a <see cref="CustomItem"/> instance based on the specified custom item type.
         /// </summary>
-        /// <param name="customItemType">The specified <see cref="Id"/>.</param>
-        /// <returns>The <see cref="CustomItem"/> matching the search or <see langword="null"/> if not registered.</returns>
+        /// <param name="customItemType">The custom item type to retrieve.</param>
+        /// <returns>The retrieved <see cref="CustomItem"/> instance if found and enabled; otherwise, <see langword="null"/>.</returns>
         public static CustomItem Get(object customItemType) => Registered.FirstOrDefault(customItem => customItem == customItemType && customItem.IsEnabled);
 
         /// <summary>
-        /// Gets a <see cref="CustomItem"/> given the specified name.
+        /// Retrieves a <see cref="CustomItem"/> instance based on the specified item name.
         /// </summary>
-        /// <param name="name">The specified name.</param>
-        /// <returns>The <see cref="CustomItem"/> matching the search or <see langword="null"/> if not registered.</returns>
+        /// <param name="name">The name of the custom item to retrieve.</param>
+        /// <returns>The retrieved <see cref="CustomItem"/> instance if found; otherwise, <see langword="null"/>.</returns>
         public static CustomItem Get(string name) => Registered.FirstOrDefault(customItem => customItem.Name == name);
 
         /// <summary>
-        /// Gets a <see cref="CustomItem"/> given the specified <see cref="Type"/>.
+        /// Retrieves a <see cref="CustomItem"/> instance based on the specified type.
         /// </summary>
-        /// <param name="type">The specified <see cref="Type"/>.</param>
-        /// <returns>The <see cref="CustomItem"/> matching the search or <see langword="null"/> if not found.</returns>
+        /// <param name="type">The type to retrieve the custom item for.</param>
+        /// <returns>The retrieved <see cref="CustomItem"/> instance if found and enabled; otherwise, <see langword="null"/>.</returns>
         public static CustomItem Get(Type type) => type.BaseType != typeof(ItemBehaviour) ? null : Registered.FirstOrDefault(customItem => customItem.BehaviourComponent == type);
 
         /// <summary>
-        /// Gets a <see cref="CustomItem"/> given the specified <see cref="ItemBehaviour"/>.
+        /// Retrieves a <see cref="CustomItem"/> instance based on the specified <see cref="ItemBehaviour"/> instance.
         /// </summary>
-        /// <param name="itemBuilder">The specified <see cref="ItemBehaviour"/>.</param>
-        /// <returns>The <see cref="CustomItem"/> matching the search or <see langword="null"/> if not found.</returns>
+        /// <param name="itemBuilder">The <see cref="ItemBehaviour"/> instance to retrieve the custom item for.</param>
+        /// <returns>The retrieved <see cref="CustomItem"/> instance if found and enabled; otherwise, <see langword="null"/>.</returns>
         public static CustomItem Get(ItemBehaviour itemBuilder) => Get(itemBuilder.GetType());
 
         /// <summary>
-        /// Gets a <see cref="CustomItem"/> from a <see cref="Item"/>.
+        /// Retrieves a <see cref="CustomItem"/> instance based on the specified <see cref="Item"/> instance.
         /// </summary>
-        /// <param name="item">The <see cref="CustomItem"/> owner.</param>
-        /// <returns>The <see cref="CustomItem"/> matching the search or <see langword="null"/> if not registered.</returns>
+        /// <param name="item">The <see cref="Item"/> instance to retrieve the custom item for.</param>
+        /// <returns>The retrieved <see cref="CustomItem"/> instance if found; otherwise, <see langword="null"/>.</returns>
         public static CustomItem Get(Item item)
         {
             CustomItem customItem = default;
@@ -232,155 +221,117 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         }
 
         /// <summary>
-        /// Gets a <see cref="CustomItem"/> from a <see cref="Pickup"/>.
+        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified custom item type.
         /// </summary>
-        /// <param name="pickup">The <see cref="Pickup"/> owner.</param>
-        /// <returns>The <see cref="CustomItem"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomItem Get(Pickup pickup)
-        {
-            CustomItem customItem = default;
-
-            foreach (KeyValuePair<Pickup, CustomItem> kvp in PickupManager)
-            {
-                if (kvp.Key != pickup)
-                    continue;
-
-                customItem = Get(kvp.Value.Id);
-            }
-
-            return customItem;
-        }
-
-        /// <summary>
-        /// Tries to get a <see cref="CustomItem"/> given the specified <see cref="CustomItem"/>.
-        /// </summary>
-        /// <param name="customItemType">The <see cref="object"/> to look for.</param>
-        /// <param name="customItem">The found <see cref="CustomItem"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> was found; otherwise, <see langword="false"/>.</returns>
+        /// <param name="customItemType">The custom item type to retrieve.</param>
+        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(object customItemType, out CustomItem customItem) => customItem = Get(customItemType);
 
         /// <summary>
-        /// Tries to get a <see cref="CustomItem"/> given a specified name.
+        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified item name.
         /// </summary>
-        /// <param name="name">The <see cref="CustomItem"/> name to look for.</param>
-        /// <param name="customItem">The found <see cref="CustomItem"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> was found; otherwise, <see langword="false"/>.</returns>
+        /// <param name="name">The name of the custom item to retrieve.</param>
+        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(string name, out CustomItem customItem) => customItem = Registered.FirstOrDefault(cItem => cItem.Name == name);
 
         /// <summary>
-        /// Tries to get the item's current <see cref="CustomItem"/>.
+        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified <see cref="Item"/> instance.
         /// </summary>
-        /// <param name="item">The <see cref="Item"/> to search on.</param>
-        /// <param name="customItem">The found <see cref="CustomItem"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> was found; otherwise, <see langword="false"/>.</returns>
+        /// <param name="item">The <see cref="Item"/> instance to retrieve the custom item for.</param>
+        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(Item item, out CustomItem customItem) => customItem = Get(item);
 
         /// <summary>
-        /// Tries to get the item's current <see cref="CustomItem"/>.
+        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified <see cref="Pickup"/> instance.
         /// </summary>
-        /// <param name="pickup">The <see cref="Pickup"/> to search on.</param>
-        /// <param name="customItem">The found <see cref="CustomItem"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> was found; otherwise, <see langword="false"/>.</returns>
+        /// <param name="pickup">The <see cref="Pickup"/> instance to retrieve the custom item for.</param>
+        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(Pickup pickup, out CustomItem customItem) => customItem = Get(pickup);
 
         /// <summary>
-        /// Tries to get a <see cref="CustomItem"/> given the specified <see cref="ItemBehaviour"/>.
+        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified <see cref="ItemBehaviour"/> instance.
         /// </summary>
-        /// <param name="itemBuilder">The <see cref="ItemBehaviour"/> to search for.</param>
-        /// <param name="customItem">The found <see cref="CustomItem"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> was found; otherwise, <see langword="false"/>.</returns>
+        /// <param name="itemBuilder">The <see cref="ItemBehaviour"/> instance to retrieve the custom item for.</param>
+        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(ItemBehaviour itemBuilder, out CustomItem customItem) => customItem = Get(itemBuilder.GetType());
 
         /// <summary>
-        /// Tries to get a <see cref="CustomItem"/> given the specified <see cref="Type"/>.
+        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified type.
         /// </summary>
-        /// <param name="type">The <see cref="Type"/> to search for.</param>
-        /// <param name="customItem">The found <see cref="CustomItem"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> was found; otherwise, <see langword="false"/>.</returns>
+        /// <param name="type">The type to retrieve the custom item for.</param>
+        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(Type type, out CustomItem customItem) => customItem = Get(type.GetType());
 
         /// <summary>
-        /// Attempts to spawn the specified custom item.
+        /// Tries to spawn a custom item at the specified position.
         /// </summary>
-        /// <param name="postion">The location where the custom item spawn.</param>
-        /// <param name="customItem">The custom item.</param>
-        /// <param name="pickup">The <see cref="Pickup"/> instance of the <see cref="CustomItem"/>.</param>
-        /// <returns>
-        /// <see langword="true"/> if the custeom item successfully; otherwise, <see langword="false"/>.
-        /// </returns>
-        /// <remarks>
-        /// This method attempts to spawn the specified player with the given custom item. If the custom item is not provided
-        /// or is invalid, the method returns <see langword="false"/>.
-        /// </remarks>
-        public static bool TrySpawn(Vector3 postion, CustomItem customItem, out Pickup pickup)
+        /// <param name="position">The position where the item should be spawned.</param>
+        /// <param name="customItem">The custom item to spawn.</param>
+        /// <param name="pickup">The spawned pickup, if successful; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the spawn is successful; otherwise, <see langword="false"/>.</returns>
+        public static bool TrySpawn(Vector3 position, CustomItem customItem, out Pickup pickup)
         {
             pickup = default;
 
             if (!customItem)
                 return false;
 
-            pickup = customItem.Spawn(postion);
+            pickup = customItem.Spawn(position);
 
             return true;
         }
 
         /// <summary>
-        /// Attempts to spawn the specified custom item item identified by the provided type or type name.
+        /// Tries to spawn a custom item at the specified position using the specified custom item type.
         /// </summary>
-        /// <param name="postion">The location where the custom item spawn.</param>
-        /// <param name="customItemType">The type or type name of the custom item.</param>
-        /// <param name="pickup">The <see cref="Pickup"/> instance of the <see cref="CustomItem"/>.</param>
-        /// <returns>
-        /// <see langword="true"/> if the custom item was spawned successfully; otherwise, <see langword="false"/>.
-        /// </returns>
-        /// <remarks>
-        /// This method allows attempting to spawn the specified custom item identified by its type or type name.
-        /// If the custom item type or name is not provided, or if the identification process fails, the method returns <see langword="false"/>.
-        /// </remarks>
-        public static bool TrySpawn(Vector3 postion, object customItemType, out Pickup pickup)
+        /// <param name="position">The position where the item should be spawned.</param>
+        /// <param name="customItemType">The custom item type to spawn.</param>
+        /// <param name="pickup">The spawned pickup, if successful; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the spawn is successful; otherwise, <see langword="false"/>.</returns>
+        public static bool TrySpawn(Vector3 position, object customItemType, out Pickup pickup)
         {
             pickup = default;
 
             if (!TryGet(customItemType, out CustomItem customItem))
                 return false;
 
-            TrySpawn(postion, customItem, out pickup);
+            TrySpawn(position, customItem, out pickup);
 
             return true;
         }
 
         /// <summary>
-        /// Attempts to spawn the specified custom item by the provided name.
+        /// Tries to spawn a custom item at the specified position using the specified item name.
         /// </summary>
-        /// <param name="postion">The location where the custom item spawn.</param>
-        /// <param name="name">The name of the custom item.</param>
-        /// <param name="pickup">The <see cref="Pickup"/> instance of the <see cref="CustomItem"/>.</param>
-        /// <returns>
-        /// <see langword="true"/> if the custom item was spawned successfully; otherwise, <see langword="false"/>.
-        /// </returns>
-        /// <remarks>
-        /// This method allows attempting to spawn the specified custom item identified by its name.
-        /// If the custom item name is not provided, or if the identification process fails, the method returns <see langword="false"/>.
-        /// </remarks>
-        public static bool TrySpawn(Vector3 postion, string name, out Pickup pickup)
+        /// <param name="position">The position where the item should be spawned.</param>
+        /// <param name="name">The name of the custom item to spawn.</param>
+        /// <param name="pickup">The spawned pickup, if successful; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the spawn is successful; otherwise, <see langword="false"/>.</returns>
+        public static bool TrySpawn(Vector3 position, string name, out Pickup pickup)
         {
             pickup = default;
 
             if (!TryGet(name, out CustomItem customItem))
                 return false;
 
-            TrySpawn(postion, customItem, out pickup);
+            TrySpawn(position, customItem, out pickup);
 
             return true;
         }
 
         /// <summary>
-        /// Gives to a specific <see cref="Player"/> a specic <see cref="CustomItem"/>.
+        /// Tries to give a custom item to a player using the specified item name.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> to give the item to.</param>
-        /// <param name="name">The name of the <see cref="CustomItem"/> to give.</param>
-        /// <param name="displayMessage">Indicates a value whether <see cref="ItemSettings.PickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
-        /// <returns>Returns a value indicating if the player was given the <see cref="CustomItem"/> or not.</returns>
+        /// <param name="player">The player to give the item to.</param>
+        /// <param name="name">The name of the custom item to give.</param>
+        /// <param name="displayMessage">Determines whether to display a message to the player.</param>
+        /// <returns><see langword="true"/> if the give is successful; otherwise, <see langword="false"/>.</returns>
         public static bool TryGive(Player player, string name, bool displayMessage = true)
         {
             if (!TryGet(name, out CustomItem item))
@@ -392,12 +343,12 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         }
 
         /// <summary>
-        /// Gives to a specific <see cref="Player"/> a specic <see cref="CustomItem"/>.
+        /// Tries to give a custom item to a player using the specified item ID.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> to give the item to.</param>
-        /// <param name="id">The IDs of the <see cref="CustomItem"/> to give.</param>
-        /// <param name="displayMessage">Indicates a value whether <see cref="ItemSettings.PickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
-        /// <returns>Returns a value indicating if the player was given the <see cref="CustomItem"/> or not.</returns>
+        /// <param name="player">The player to give the item to.</param>
+        /// <param name="id">The ID of the custom item to give.</param>
+        /// <param name="displayMessage">Determines whether to display a message to the player.</param>
+        /// <returns><see langword="true"/> if the give is successful; otherwise, <see langword="false"/>.</returns>
         public static bool TryGive(Player player, uint id, bool displayMessage = true)
         {
             if (!TryGet(id, out CustomItem item))
@@ -409,15 +360,15 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         }
 
         /// <summary>
-        /// Gives to a specific <see cref="Player"/> a specic <see cref="CustomItem"/>.
+        /// Tries to give a custom item to a player using the specified item type.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> to give the item to.</param>
-        /// <param name="t">The <see cref="System.Type"/> of the item to give.</param>
-        /// <param name="displayMessage">Indicates a value whether <see cref="ItemSettings.PickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
-        /// <returns>Returns a value indicating if the player was given the <see cref="CustomItem"/> or not.</returns>
-        public static bool TryGive(Player player, Type t, bool displayMessage = true)
+        /// <param name="player">The player to give the item to.</param>
+        /// <param name="type">The type of the custom item to give.</param>
+        /// <param name="displayMessage">Determines whether to display a message to the player.</param>
+        /// <returns><see langword="true"/> if the give is successful; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGive(Player player, Type type, bool displayMessage = true)
         {
-            if (!TryGet(t, out CustomItem item))
+            if (!TryGet(type, out CustomItem item))
                 return false;
 
             item?.Give(player, displayMessage);
@@ -547,11 +498,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         }
 
         /// <summary>
-        /// Gives an <see cref="ItemType"/> as a <see cref="CustomItem"/> to a <see cref="Player"/>.
+        /// Gives a specific <see cref="Item"/> to the specified <see cref="Player"/>.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
-        /// <param name="item">The <see cref="ItemType"/> to be given.</param>
-        /// <param name="displayMessage">Indicates whether or not <see cref="ItemSettings.PickedUpMessage"/> will be called when the player receives the item.</param>
+        /// <param name="player">The <see cref="Player"/> to receive the item.</param>
+        /// <param name="item">The <see cref="Item"/> to be given to the player.</param>
+        /// <param name="displayMessage">Determines whether to display a message for the action (default is true).</param>
         public virtual void Give(Player player, Item item, bool displayMessage = true)
         {
             try
@@ -571,18 +522,18 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         }
 
         /// <summary>
-        /// Gives a <see cref="Pickup"/> as a <see cref="CustomItem"/> to a <see cref="Player"/>.
+        /// Gives the specified <see cref="Pickup"/> to the specified <see cref="Player"/>.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
-        /// <param name="pickup">The <see cref="Pickup"/> to be given.</param>
-        /// <param name="displayMessage">Indicates whether or not <see cref="ItemSettings.PickedUpMessage"/> will be called when the player receives the item.</param>
+        /// <param name="player">The <see cref="Player"/> to receive the pickup.</param>
+        /// <param name="pickup">The <see cref="Pickup"/> to be given to the player.</param>
+        /// <param name="displayMessage">Determines whether to display a message for the action (default is true).</param>
         public virtual void Give(Player player, Pickup pickup, bool displayMessage = true) => Give(player, player.AddItem(pickup), displayMessage);
 
         /// <summary>
-        /// Gives the <see cref="CustomItem"/> to a player.
+        /// Gives a new instance of the custom item to the specified <see cref="Player"/>.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
-        /// <param name="displayMessage">Indicates whether or not <see cref="ItemSettings.PickedUpMessage"/> will be called when the player receives the item.</param>
+        /// <param name="player">The <see cref="Player"/> to receive the item.</param>
+        /// <param name="displayMessage">Determines whether to display a message for the action (default is true).</param>
         public virtual void Give(Player player, bool displayMessage = true) => Give(player, Item.Create(ItemType), displayMessage);
 
         /// <summary>
@@ -590,30 +541,14 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// </summary>
         /// <param name="id">The id to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(uint id)
-        {
-            return Id == id;
-        }
+        public bool Equals(uint id) => Id == id;
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
         /// <param name="cr">The custom role to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(CustomItem cr)
-        {
-            if (cr is null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, cr))
-            {
-                return true;
-            }
-
-            return Id == cr.Id;
-        }
+        public bool Equals(CustomItem cr) => cr && (ReferenceEquals(this, cr) || Id == cr.Id);
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
@@ -651,14 +586,16 @@ namespace Exiled.CustomModules.API.Features.CustomItems
             if (!Registered.Contains(this))
             {
                 if (attribute is not null && Id == 0)
-                    Id = attribute.Id;
+                {
+                    if (attribute.Id != 0)
+                        Id = attribute.Id;
+                    else
+                        throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
+                }
 
                 if (Registered.Any(x => x.Id == Id))
                 {
-                    Log.Warn(
-                        $"Couldn't register {Name}. " +
-                        $"Another custom item has been registered with the same id:" +
-                        $" {Registered.FirstOrDefault(x => x.Id == Id)}");
+                    Log.Warn($"Unable to register {Name}. Another item with the same ID already exists: {Registered.FirstOrDefault(x => x.Id == Id)}");
 
                     return false;
                 }
@@ -668,7 +605,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                 return true;
             }
 
-            Log.Warn($"Couldn't register {Name}. This custom item has been already registered.");
+            Log.Warn($"Unable to register {Name}. Item already exists.");
 
             return false;
         }
@@ -681,7 +618,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         {
             if (!Registered.Contains(this))
             {
-                Log.Debug($"Couldn't unregister {Name}. This custom item hasn't been registered yet.");
+                Log.Debug($"Unable to unregister {Name}. Item is not yet registered.");
 
                 return false;
             }

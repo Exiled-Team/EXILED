@@ -557,30 +557,14 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </summary>
         /// <param name="id">The id to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(uint id)
-        {
-            return Id == id;
-        }
+        public bool Equals(uint id) => Id == id;
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
         /// <param name="cr">The custom role to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(CustomRole cr)
-        {
-            if (cr is null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, cr))
-            {
-                return true;
-            }
-
-            return Id == cr.Id;
-        }
+        public bool Equals(CustomRole cr) => cr && (ReferenceEquals(this, cr) || Id == cr.Id);
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.

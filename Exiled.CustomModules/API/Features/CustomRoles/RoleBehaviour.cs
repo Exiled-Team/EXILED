@@ -37,7 +37,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using static Exiled.API.Extensions.MirrorExtensions;
 
     /// <summary>
-    /// A tool to easily handle the custom role's logic.
+    /// Represents the base class for implementing custom role behavior.
     /// </summary>
     public abstract class RoleBehaviour : EPlayerBehaviour, IAdditiveSettings<RoleSettings>
     {

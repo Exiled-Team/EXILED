@@ -21,7 +21,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using UnityEngine;
 
     /// <summary>
-    /// A tool to easily manage custom escaping's logic.
+    /// Represents the base class for implementing custom escape behavior.
     /// </summary>
     public abstract class EscapeBehaviour : EPlayerBehaviour, IAdditiveSettingsCollection<EscapeSettings>
     {

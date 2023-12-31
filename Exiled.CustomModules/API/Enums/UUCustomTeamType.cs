@@ -10,7 +10,7 @@ namespace Exiled.CustomModules.API.Enums
     using Exiled.API.Features.Core.Generic;
 
     /// <summary>
-    /// Represents the base enum class for all available custom team.
+    /// Represents the base enum class for all available custom teams.
     /// </summary>
     public class UUCustomTeamType : UniqueUnmanagedEnumClass<uint, UUCustomTeamType>
     {

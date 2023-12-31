@@ -15,7 +15,6 @@ namespace Exiled.API.Features.Core.Generic
     using Exiled.API.Features.Pools;
 
     using LiteNetLib.Utils;
-    using static UnityEngine.ParticleSystem;
 
     /// <summary>
     /// A class which allows <see langword="unmanaged"/> data implicit conversions and ensures unique values.

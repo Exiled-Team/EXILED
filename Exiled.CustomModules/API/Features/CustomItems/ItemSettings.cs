@@ -7,6 +7,7 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems
 {
+    using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
 
@@ -26,7 +27,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <summary>
         /// Gets or sets the weight of the item.
         /// </summary>
-        public virtual float Weight { get; set; } = -1;
+        public virtual float Weight { get; set; } = -1f;
 
         /// <summary>
         /// Gets or sets the scale of the item.
@@ -34,8 +35,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public virtual Vector3 Scale { get; set; } = Vector3.one;
 
         /// <summary>
-        /// Gets or sets a <see cref="string"/> for the hint message given to players when they pickup the item.
+        /// Gets or sets the <see cref="Hint"/> to be displayed when the item has been picked up.
         /// </summary>
-        public virtual string PickedUpMessage { get; set; } = "You pickup a {item}!";
+        public virtual Hint PickedUpHint { get; set; }
     }
 }
