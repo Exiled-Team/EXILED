@@ -886,7 +886,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Called 1 frame before the role is removed from the player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> the role was removed from.</param>
-        protected virtual void RoleRemoved(Player player) 
+        protected virtual void RoleRemoved(Player player)
         {
         }
 
