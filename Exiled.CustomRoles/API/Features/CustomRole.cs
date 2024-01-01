@@ -146,16 +146,6 @@ namespace Exiled.CustomRoles.API.Features
         public virtual Broadcast Broadcast { get; set; } = new Broadcast();
 
         /// <summary>
-        /// Gets or sets a value indicating Cassie message that will be played when the Custom Role death.
-        /// </summary>
-        public virtual string SpawnCassie { get; set; } = "";
-
-        /// <summary>
-        /// Gets or sets a value indicating Cassie message that will be played when the Custom Role spawns.
-        /// </summary>
-        public virtual string DeathCassie { get; set; } = "";
-
-        /// <summary>
         /// Gets or sets a value indicating whether players will receive a message for getting a custom item, when gaining it through the inventory config for this role.
         /// </summary>
         public virtual bool DisplayCustomItemMessages { get; set; } = true;
@@ -854,7 +844,6 @@ namespace Exiled.CustomRoles.API.Features
             Exiled.Events.Handlers.Player.Spawning += OnInternalSpawning;
             Exiled.Events.Handlers.Player.SpawningRagdoll += OnSpawningRagdoll;
             Exiled.Events.Handlers.Player.Destroying += OnDestroying;
-            Exiled.Events.Handlers.Player.Died += OnDied;
         }
 
         /// <summary>
@@ -871,7 +860,6 @@ namespace Exiled.CustomRoles.API.Features
             Exiled.Events.Handlers.Player.Spawning -= OnInternalSpawning;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= OnSpawningRagdoll;
             Exiled.Events.Handlers.Player.Destroying += OnDestroying;
-            Exiled.Events.Handlers.Player.Died -= OnDied;
         }
 
         /// <summary>
@@ -913,19 +901,7 @@ namespace Exiled.CustomRoles.API.Features
         private void OnInternalSpawning(SpawningEventArgs ev)
         {
             if (!IgnoreSpawnSystem && SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && Loader.Random.NextDouble() * 100 <= SpawnChance)
-            {
                 AddRole(ev.Player);
-                if (SpawnCassie != "")
-                    Cassie.Message(SpawnCassie);
-            }
-        }
-
-        private void OnDied(DiedEventArgs ev)
-        {
-            RemoveRole(ev.Player);
-            if (DeathCassie != "" && Check(ev.Player))
-                Cassie.Message(DeathCassie);
-
         }
 
         private void OnInternalChangingRole(ChangingRoleEventArgs ev)
