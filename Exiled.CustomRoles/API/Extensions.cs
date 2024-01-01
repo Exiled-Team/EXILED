@@ -61,6 +61,27 @@ namespace Exiled.CustomRoles.API
         public static void Register(this CustomRole role) => role.TryRegister();
 
         /// <summary>
+        /// Checks if a player has a specific custom role.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check for the custom role.</param>
+        /// <param name="roleName">The name of the custom role to check for.</param>
+        /// <returns><see langword="true"/> if the player has the custom role; otherwise, <see langword="false"/>.</returns>
+        public static bool HasCustomRole(this Player player, string roleName)
+        {
+            if (player is null)
+                throw new ArgumentNullException(nameof(player));
+
+            if (string.IsNullOrEmpty(roleName))
+                throw new ArgumentException("Role name cannot be null or empty.", nameof(roleName));
+
+            // Trova il custom role con il nome specificato
+            CustomRole customRole = CustomRole.Registered.FirstOrDefault(role => role.Name.Equals(roleName, StringComparison.OrdinalIgnoreCase));
+
+            // Se il custom role è trovato, verifica se il giocatore ha quel ruolo
+            return customRole != null && customRole.Check(player);
+        }
+
+        /// <summary>
         /// Registers a <see cref="CustomAbility"/>.
         /// </summary>
         /// <param name="ability">The <see cref="CustomAbility"/> to be registered.</param>
