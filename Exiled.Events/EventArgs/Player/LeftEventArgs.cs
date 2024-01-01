@@ -8,19 +8,22 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// Contains all information after a <see cref="Player"/> disconnects from the server.
     /// </summary>
-    public class LeftEventArgs : JoinedEventArgs
+    public class LeftEventArgs : IPlayerEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LeftEventArgs"/> class.
         /// </summary>
         /// <param name="player">The player who left the server.</param>
-        public LeftEventArgs(Player player)
-            : base(player)
-        {
-        }
+        public LeftEventArgs(Player player) => Player = player;
+
+        /// <summary>
+        /// Gets the player who left.
+        /// </summary>
+        public Player Player { get; }
     }
 }
