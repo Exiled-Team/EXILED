@@ -74,10 +74,8 @@ namespace Exiled.CustomRoles.API
             if (string.IsNullOrEmpty(roleName))
                 throw new ArgumentException("Role name cannot be null or empty.", nameof(roleName));
 
-            // Trova il custom role con il nome specificato
             CustomRole customRole = CustomRole.Registered.FirstOrDefault(role => role.Name.Equals(roleName, StringComparison.OrdinalIgnoreCase));
 
-            // Se il custom role è trovato, verifica se il giocatore ha quel ruolo
             return customRole != null && customRole.Check(player);
         }
 
