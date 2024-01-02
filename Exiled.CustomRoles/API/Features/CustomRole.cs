@@ -151,7 +151,7 @@ namespace Exiled.CustomRoles.API.Features
         public virtual string SpawnCassie { get; set; } = "";
 
         /// <summary>
-        /// Gets or sets a value indicating Cassie message that will be played when the Custom Role spawns.
+        /// Gets or sets a Cassie message that will be played when the Custom Role owner dies.
         /// </summary>
         public virtual string DeathCassie { get; set; } = "";
 
