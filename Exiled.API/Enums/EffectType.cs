@@ -228,5 +228,25 @@ namespace Exiled.API.Enums
         /// Makes the player nearly invisible, and allows them to pass through doors.
         /// </summary>
         Ghostly,
+
+        /// <summary>
+        /// Makes you a flamingo.
+        /// </summary>
+        BecomingFlamingo,
+
+        /// <summary>
+        /// Makes you a Child after eating Cake.
+        /// </summary>
+        Scp559,
+
+        /// <summary>
+        /// Scp956 found you.
+        /// </summary>
+        Scp956Target,
+
+        /// <summary>
+        /// you are snowed.
+        /// </summary>
+        Snowed,
     }
 }
