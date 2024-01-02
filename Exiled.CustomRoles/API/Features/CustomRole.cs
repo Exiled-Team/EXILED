@@ -146,7 +146,7 @@ namespace Exiled.CustomRoles.API.Features
         public virtual Broadcast Broadcast { get; set; } = new Broadcast();
 
         /// <summary>
-        /// Gets or sets a value indicating Cassie message that will be played when the Custom Role death.
+        /// Gets or sets a Cassie message that will be played when the Custom Role spawns.
         /// </summary>
         public virtual string SpawnCassie { get; set; } = "";
 
