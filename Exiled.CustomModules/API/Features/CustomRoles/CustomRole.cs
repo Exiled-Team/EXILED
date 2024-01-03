@@ -160,26 +160,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Determines whether the specified player has a custom role assigned.
-        /// </summary>
-        /// <param name="player">The <see cref="Pawn"/> to check for a custom role.</param>
-        /// <returns>
-        /// <see langword="true"/> if the player has a custom role assigned; otherwise, <see langword="false"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="player"/> is <see langword="null"/>.</exception>
-        /// <remarks>
-        /// This method checks if the specified player has a custom role assigned using <see cref="CustomRole"/>.
-        /// </remarks>
-        public static bool HasCustomRole(Pawn player)
-        {
-            if (player == null)
-                throw new ArgumentNullException(nameof(player));
-
-            return TryGet(player, out _);
-        }
-
-
-        /// <summary>
         /// Compares two operands: <see cref="CustomRole"/> and <see cref="object"/>.
         /// </summary>
         /// <param name="left">The <see cref="CustomRole"/> to compare.</param>
@@ -407,6 +387,25 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             customRole.ForceSpawn(player, shouldKeepPosition);
 
             return true;
+        }
+
+        /// <summary>
+        /// Determines whether the specified player has a custom role assigned.
+        /// </summary>
+        /// <param name="player">The <see cref="Pawn"/> to check for a custom role.</param>
+        /// <returns>
+        /// <see langword="true"/> if the player has a custom role assigned; otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="player"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// This method checks if the specified player has a custom role assigned using <see cref="CustomRole"/>.
+        /// </remarks>
+        public static bool HasCustomRole(Pawn player)
+        {
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
+
+            return TryGet(player, out _);
         }
 
         /// <summary>
