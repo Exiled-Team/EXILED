@@ -20,6 +20,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Features.CustomAbilities;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.CustomRoles;
+    using Exiled.CustomModules.API.Features.PlayerAbilities;
     using PlayerRoles;
     using UnityEngine;
 
@@ -46,13 +47,17 @@ namespace Exiled.CustomModules.API.Features
         public Pawn(ReferenceHub referenceHub)
             : base(referenceHub)
         {
-            foreach (KeyValuePair<Player, HashSet<CustomPlayerAbility>> kvp in CustomPlayerAbility.Manager)
+            foreach (KeyValuePair<Player, HashSet<PlayerAbility>> kvp in PlayerAbility.Manager)
             {
                 if (kvp.Key != this)
                     continue;
 
-                foreach (CustomPlayerAbility ability in kvp.Value)
-                    AbilityManager.Add(ability, GetComponent(ability.BehaviourComponent).Cast<PlayerAbilityBehaviour>());
+                foreach (PlayerAbility ability in kvp.Value)
+                {
+                    AbilityBehaviour behaviour = GetComponent(ability.BehaviourComponent).Cast<AbilityBehaviour>();
+                    AbilityBehaviours.Add(behaviour);
+                    CustomAbilities.Add(PlayerAbility.Get(behaviour));
+                }
             }
         }
 
@@ -63,20 +68,19 @@ namespace Exiled.CustomModules.API.Features
         public Pawn(GameObject gameObject)
             : base(gameObject)
         {
-            foreach (KeyValuePair<Player, HashSet<CustomPlayerAbility>> kvp in CustomPlayerAbility.Manager)
+            foreach (KeyValuePair<Player, HashSet<PlayerAbility>> kvp in PlayerAbility.Manager)
             {
                 if (kvp.Key != this)
                     continue;
 
-                foreach (CustomPlayerAbility ability in kvp.Value)
-                    AbilityManager.Add(ability, GetComponent(ability.BehaviourComponent).Cast<PlayerAbilityBehaviour>());
+                foreach (PlayerAbility ability in kvp.Value)
+                {
+                    AbilityBehaviour behaviour = GetComponent(ability.BehaviourComponent).Cast<AbilityBehaviour>();
+                    AbilityBehaviours.Add(behaviour);
+                    CustomAbilities.Add(PlayerAbility.Get(behaviour));
+                }
             }
         }
-
-        /// <summary>
-        /// Gets the pawn's ability manager.
-        /// </summary>
-        public Dictionary<CustomPlayerAbility, PlayerAbilityBehaviour> AbilityManager { get; private set; } = new();
 
         /// <summary>
         /// Gets all pawn's <see cref="EPlayerBehaviour"/>'s.
@@ -99,6 +103,11 @@ namespace Exiled.CustomModules.API.Features
         public CustomEscape CustomEscape => customEscape ??= CustomEscape.Get(this);
 
         /// <summary>
+        /// Gets the pawn's custom abilities.
+        /// </summary>
+        public List<PlayerAbility> CustomAbilities { get; } = new();
+
+        /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.RoleBehaviour"/>.
         /// </summary>
         public RoleBehaviour RoleBehaviour => roleBehaviour ??= GetComponent<RoleBehaviour>();
@@ -109,14 +118,9 @@ namespace Exiled.CustomModules.API.Features
         public EscapeBehaviour EscapeBehaviour => escapeBehaviour ??= GetComponent<EscapeBehaviour>();
 
         /// <summary>
-        /// Gets the pawn's custom abilities.
+        /// Gets the pawn's ability behaviours.
         /// </summary>
-        public IEnumerable<CustomAbility<Player>> CustomAbilities => AbilityManager.Keys;
-
-        /// <summary>
-        /// Gets the pawn's <see cref="PlayerAbilityBehaviour"/>.
-        /// </summary>
-        public IEnumerable<PlayerAbilityBehaviour> AbilityBehaviours => AbilityManager.Values;
+        public List<AbilityBehaviour> AbilityBehaviours { get; } = new();
 
         /// <summary>
         /// Gets a value indicating whether the pawn has a <see cref="CustomRoles.CustomRole"/>.

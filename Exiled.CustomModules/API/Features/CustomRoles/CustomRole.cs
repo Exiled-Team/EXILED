@@ -27,7 +27,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// <summary>
     /// The custom role base class.
     /// </summary>
-    public abstract class CustomRole : TypeCastObject<CustomRole>, IAdditiveBehaviour
+    public abstract class CustomRole : TypeCastObject<CustomRole>, IAdditiveBehaviour, IEquatable<CustomRole>, IEquatable<uint>
     {
         /// <inheritdoc cref="Manager"/>
         internal static readonly Dictionary<Pawn, CustomRole> PlayersValue = new();
@@ -47,7 +47,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets all players belonging to a <see cref="CustomRole"/>.
         /// </summary>
-        public static IEnumerable<Pawn> Players => Manager.Keys.ToHashSet();
+        public static IEnumerable<Pawn> Players => PlayersValue.Keys.ToHashSet();
 
         /// <summary>
         /// Gets the <see cref="CustomRole"/>'s <see cref="Type"/>.
@@ -148,67 +148,67 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <returns><see langword="true"/> if the values are equal.</returns>
         public static bool operator ==(CustomRole left, object right)
         {
-            try
+            if (left is null)
             {
-                uint value = (uint)right;
-                return left.Id == value;
-            }
-            catch
-            {
+                if (right is null)
+                    return true;
+
                 return false;
             }
+
+            return left.Equals(right);
         }
+
+        /// <summary>
+        /// Compares two operands: <see cref="object"/> and <see cref="CustomRole"/>.
+        /// </summary>
+        /// <param name="left">The <see cref="object"/> to compare.</param>
+        /// <param name="right">The <see cref="CustomRole"/> to compare.</param>
+        /// <returns><see langword="true"/> if the values are not equal.</returns>
+        public static bool operator ==(object left, CustomRole right) => right == left;
 
         /// <summary>
         /// Compares two operands: <see cref="CustomRole"/> and <see cref="object"/>.
         /// </summary>
-        /// <param name="left">The <see cref="CustomRole"/> to compare.</param>
-        /// <param name="right">The <see cref="object"/> to compare.</param>
+        /// <param name="left">The <see cref="object"/> to compare.</param>
+        /// <param name="right">The <see cref="CustomRole"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomRole left, object right)
+        public static bool operator !=(CustomRole left, object right) => !(left == right);
+
+        /// <summary>
+        /// Compares two operands: <see cref="object"/> and <see cref="CustomRole"/>.
+        /// </summary>
+        /// <param name="left">The left <see cref="object"/> to compare.</param>
+        /// <param name="right">The right <see cref="CustomRole"/> to compare.</param>
+        /// <returns><see langword="true"/> if the values are not equal.</returns>
+        public static bool operator !=(object left, CustomRole right) => !(left == right);
+
+        /// <summary>
+        /// Compares two operands: <see cref="CustomRole"/> and <see cref="CustomRole"/>.
+        /// </summary>
+        /// <param name="left">The left <see cref="CustomRole"/> to compare.</param>
+        /// <param name="right">The right <see cref="CustomRole"/> to compare.</param>
+        /// <returns><see langword="true"/> if the values are equal.</returns>
+        public static bool operator ==(CustomRole left, CustomRole right)
         {
-            try
+            if (left is null)
             {
-                uint value = (uint)right;
-                return left.Id != value;
-            }
-            catch
-            {
+                if (right is null)
+                     return true;
+
                 return false;
             }
+
+            return left.Equals(right);
         }
 
         /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomRole"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomRole"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(object left, CustomRole right) => right == left;
-
-        /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomRole"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomRole"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(object left, CustomRole right) => right != left;
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomRole"/> and <see cref="CustomRole"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="CustomRole"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomRole"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomRole left, CustomRole right) => left.Id == right.Id;
-
-        /// <summary>
         /// Compares two operands: <see cref="CustomRole"/> and <see cref="CustomRole"/>.
         /// </summary>
         /// <param name="left">The left <see cref="CustomRole"/> to compare.</param>
         /// <param name="right">The right <see cref="CustomRole"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomRole left, CustomRole right) => left.Id != right.Id;
+        public static bool operator !=(CustomRole left, CustomRole right) => !(left.Id == right.Id);
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> given the specified <paramref name="customRoleType"/>.
@@ -245,15 +245,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <returns>The <see cref="CustomRole"/> matching the search or <see langword="null"/> if not registered.</returns>
         public static CustomRole Get(Pawn player)
         {
-            CustomRole customRole = default;
-
-            foreach (KeyValuePair<Pawn, CustomRole> kvp in Manager)
-            {
-                if (kvp.Key != player)
-                    continue;
-
-                customRole = Get(kvp.Value.Id);
-            }
+            if (!PlayersValue.TryGetValue(player, out CustomRole customRole))
+                return default;
 
             return customRole;
         }
@@ -283,7 +276,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public static bool TryGet(Pawn player, out CustomRole customRole) => customRole = Get(player);
 
         /// <summary>
-        /// Tries to get the player's current <see cref="CustomRole"/>.
+        /// Tries to get a <see cref="CustomRole"/> given the specified <see cref="RoleBehaviour"/>.
         /// </summary>
         /// <param name="roleBuilder">The <see cref="RoleBehaviour"/> to search for.</param>
         /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
@@ -291,7 +284,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public static bool TryGet(RoleBehaviour roleBuilder, out CustomRole customRole) => customRole = Get(roleBuilder.GetType());
 
         /// <summary>
-        /// Tries to get the player's current <see cref="CustomRole"/>.
+        /// Tries to get a <see cref="CustomRole"/> given the specified <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The <see cref="Type"/> to search for.</param>
         /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
@@ -579,11 +572,38 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
+        /// Determines whether id is equal to the current object.
+        /// </summary>
+        /// <param name="id">The id to compare.</param>
+        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
+        public bool Equals(uint id) => Id == id;
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object.
+        /// </summary>
+        /// <param name="cr">The custom role to compare.</param>
+        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
+        public bool Equals(CustomRole cr) => cr && (ReferenceEquals(this, cr) || Id == cr.Id);
+
+        /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
         /// <param name="obj">The object to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public override bool Equals(object obj) => obj is CustomRole customRole && customRole == this;
+        public override bool Equals(object obj)
+        {
+            if (Equals(obj as CustomRole))
+                return true;
+
+            try
+            {
+                return Equals((uint)obj);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         /// <summary>
         /// Returns a the 32-bit signed hash code of the current object instance.
@@ -740,14 +760,16 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (!Registered.Contains(this))
             {
                 if (attribute is not null && Id == 0)
-                    Id = attribute.Id;
+                {
+                    if (attribute.Id != 0)
+                        Id = attribute.Id;
+                    else
+                        throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
+                }
 
                 if (Registered.Any(x => x.Id == Id))
                 {
-                    Log.Warn(
-                        $"Couldn't register {Name}. " +
-                        $"Another custom role has been registered with the same id:" +
-                        $" {Registered.FirstOrDefault(x => x.Id == Id)}");
+                    Log.Warn($"Unable to register {Name}. Another role with the same ID already exists: {Registered.FirstOrDefault(x => x.Id == Id)}");
 
                     return false;
                 }
@@ -757,7 +779,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return true;
             }
 
-            Log.Warn($"Couldn't register {Name}. This custom role has been already registered.");
+            Log.Warn($"Unable to register {Name}. Role already exists.");
 
             return false;
         }
@@ -770,7 +792,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             if (!Registered.Contains(this))
             {
-                Log.Debug($"Couldn't unregister {Name}. This custom role hasn't been registered yet.");
+                Log.Debug($"Unable to unregister {Name}. Role is not yet registered.");
 
                 return false;
             }

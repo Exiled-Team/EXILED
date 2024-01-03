@@ -23,7 +23,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// <summary>
     /// The custom team base class.
     /// </summary>
-    public abstract class CustomTeam : TypeCastObject<CustomTeam>
+    public abstract class CustomTeam : TypeCastObject<CustomTeam>, IEquatable<CustomTeam>, IEquatable<int>
     {
         private static readonly Dictionary<Player, CustomTeam> PlayersValue = new();
         private static readonly List<CustomTeam> Registered = new();
@@ -42,7 +42,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets all players belonging to a <see cref="CustomTeam"/>.
         /// </summary>
-        public static IEnumerable<Player> Players => Manager.Keys.ToHashSet();
+        public static IEnumerable<Player> Players => PlayersValue.Keys.ToHashSet();
 
         /// <summary>
         /// Gets the <see cref="IEnumerable{T}"/> of <see cref="Type"/> which contains all types to be used as unit.
@@ -127,7 +127,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> which contains all players belonging to this <see cref="CustomTeam"/>.
         /// </summary>
-        public IEnumerable<Player> Owners => Manager.Where(x => x.Value == this).Select(j => j.Key);
+        public IEnumerable<Player> Owners => PlayersValue.Where(x => x.Value == this).Select(x => x.Key);
 
         /// <summary>
         /// Gets a random <see cref="CustomRole"/>.
@@ -140,31 +140,42 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="left">The <see cref="CustomTeam"/> to compare.</param>
         /// <param name="right">The <see cref="object"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomTeam left, object right) => right is uint value && left.Id == value;
+        public static bool operator ==(CustomTeam left, object right)
+        {
+            if (left is null)
+            {
+                if (right is null)
+                    return true;
+
+                return false;
+            }
+
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Compares two operands: <see cref="object"/> and <see cref="CustomTeam"/>.
+        /// </summary>
+        /// <param name="left">The <see cref="object"/> to compare.</param>
+        /// <param name="right">The <see cref="CustomTeam"/> to compare.</param>
+        /// <returns><see langword="true"/> if the values are not equal.</returns>
+        public static bool operator ==(object left, CustomTeam right) => right == left;
 
         /// <summary>
         /// Compares two operands: <see cref="CustomTeam"/> and <see cref="object"/>.
         /// </summary>
-        /// <param name="left">The <see cref="CustomTeam"/> to compare.</param>
-        /// <param name="right">The <see cref="object"/> to compare.</param>
+        /// <param name="left">The <see cref="object"/> to compare.</param>
+        /// <param name="right">The <see cref="CustomTeam"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomTeam left, object right) => right is uint value && left.Id != value;
+        public static bool operator !=(CustomTeam left, object right) => !(left == right);
 
         /// <summary>
         /// Compares two operands: <see cref="object"/> and <see cref="CustomTeam"/>.
         /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomTeam"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(object left, CustomTeam right) => right == left;
-
-        /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomTeam"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomTeam"/> to compare.</param>
+        /// <param name="left">The left <see cref="object"/> to compare.</param>
+        /// <param name="right">The right <see cref="CustomTeam"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(object left, CustomTeam right) => right != left;
+        public static bool operator !=(object left, CustomTeam right) => !(left == right);
 
         /// <summary>
         /// Compares two operands: <see cref="CustomTeam"/> and <see cref="CustomTeam"/>.
@@ -172,7 +183,18 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="left">The left <see cref="CustomTeam"/> to compare.</param>
         /// <param name="right">The right <see cref="CustomTeam"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomTeam left, CustomTeam right) => left.Id == right.Id;
+        public static bool operator ==(CustomTeam left, CustomTeam right)
+        {
+            if (left is null)
+            {
+                if (right is null)
+                    return true;
+
+                return false;
+            }
+
+            return left.Equals(right);
+        }
 
         /// <summary>
         /// Compares two operands: <see cref="CustomTeam"/> and <see cref="CustomTeam"/>.
@@ -180,7 +202,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="left">The left <see cref="CustomTeam"/> to compare.</param>
         /// <param name="right">The right <see cref="CustomTeam"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomTeam left, CustomTeam right) => left.Id != right.Id;
+        public static bool operator !=(CustomTeam left, CustomTeam right) => !(left.Id == right.Id);
 
         /// <summary>
         /// Tries to get a <see cref="CustomTeam"/> given the specified <see cref="object"/>.
@@ -216,16 +238,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="customTeam">The found <see cref="CustomTeam"/>, null if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomTeam"/> is found; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(Player player, out CustomTeam customTeam)
-        {
-            customTeam = null;
-
-            if (!PlayersValue.ContainsKey(player))
-                return false;
-
-            customTeam = Get(player);
-
-            return true;
-        }
+            => PlayersValue.TryGetValue(player, out customTeam);
 
         /// <summary>
         /// Tries to spawn the specified <see cref="CustomTeam"/>.
@@ -419,17 +432,40 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <returns>The <see cref="CustomTeam"/> matching the search or <see langword="null"/> if not registered.</returns>
         public static CustomTeam Get(Player player)
         {
-            CustomTeam customTeam = default;
-
-            foreach (KeyValuePair<Player, CustomTeam> kvp in Manager)
-            {
-                if (kvp.Key != player)
-                    continue;
-
-                customTeam = Get<CustomTeam>(kvp.Value.Id);
-            }
+            if (!PlayersValue.TryGetValue(player, out CustomTeam customTeam))
+                return default;
 
             return customTeam;
+        }
+
+        /// <summary>
+        /// Determines whether id is equal to the current object.
+        /// </summary>
+        /// <param name="id">The id to compare.</param>
+        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
+        public bool Equals(int id)
+        {
+            return Id == id;
+        }
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object.
+        /// </summary>
+        /// <param name="cr">The custom role to compare.</param>
+        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
+        public bool Equals(CustomTeam cr)
+        {
+            if (cr is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, cr))
+            {
+                return true;
+            }
+
+            return Id == cr.Id;
         }
 
         /// <summary>
@@ -437,7 +473,20 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </summary>
         /// <param name="obj">The object to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public override bool Equals(object obj) => obj is CustomTeam customTeam && customTeam == this;
+        public override bool Equals(object obj)
+        {
+            if (Equals(obj as CustomTeam))
+                return true;
+
+            try
+            {
+                return Equals((int)obj);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         /// <summary>
         /// Returns a the 32-bit signed hash code of the current object instance.
@@ -541,13 +590,16 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (!Registered.Contains(this))
             {
                 if (attribute is not null && Id == 0)
-                    Id = attribute.Id;
+                {
+                    if (attribute.Id != 0)
+                        Id = attribute.Id;
+                    else
+                        throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
+                }
 
                 if (Registered.Any(x => x.Id == Id))
                 {
-                    Log.Debug($"Couldn't register {Name}." +
-                        $"Another custom team has been registered with the same id:" +
-                        $"{Registered.FirstOrDefault(x => x.Id == Id)}");
+                    Log.Warn($"Unable to register {Name}. Another team with the same ID already exists: {Registered.FirstOrDefault(x => x.Id == Id)}");
 
                     return false;
                 }
@@ -557,7 +609,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return true;
             }
 
-            Log.Debug($"Couldn't register {Name}. This custom team has been already registered.");
+            Log.Warn($"Unable to register {Name}. Team already exists.");
 
             return false;
         }
@@ -570,7 +622,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             if (!Registered.Contains(this))
             {
-                Log.Debug($"Couldn't unregister {Name}. This custom team hasn't been registered yet.");
+                Log.Debug($"Unable to unregister {Name}. Team is not yet registered.");
 
                 return false;
             }

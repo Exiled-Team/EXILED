@@ -16,6 +16,7 @@ namespace Exiled.Events.Patches.Events.Scp2536
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp2536;
     using HarmonyLib;
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
