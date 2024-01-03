@@ -20,10 +20,8 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using PlayerRoles;
     using UnityEngine;
 
-    using EscapingEventArgs = Events.EscapingEventArgs;
-
     /// <summary>
-    /// A class to easily manage escaping behavior.
+    /// Represents the base class for implementing custom escape behavior.
     /// </summary>
     public abstract class EscapeBehaviour : EPlayerBehaviour, IAdditiveSettingsCollection<EscapeSettings>
     {
@@ -41,7 +39,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
         /// </summary>
         [DynamicEventDispatcher]
-        protected TDynamicEventDispatcher<EscapingEventArgs> EscapingEventDispatcher { get; private set; }
+        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingEventDispatcher { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
@@ -75,7 +73,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                 if (!settings.IsAllowed || Vector3.Distance(Owner.Position, settings.Position) > settings.DistanceThreshold)
                     continue;
 
-                EscapingEventArgs ev = new(Owner.Cast<Pawn>(), settings.Role, settings.CustomRole, CurrentScenario, CustomEscape.AllScenarios[CurrentScenario]);
+                Events.EventArgs.CustomEscapes.EscapingEventArgs ev = new(Owner.Cast<Pawn>(), settings.Role, settings.CustomRole, CurrentScenario, CustomEscape.AllScenarios[CurrentScenario]);
                 EscapingEventDispatcher.InvokeAll(ev);
 
                 if (!ev.IsAllowed)
@@ -112,8 +110,8 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Fired before the player escapes.
         /// </summary>
-        /// <param name="ev">The <see cref="EscapingEventArgs"/> instance.</param>
-        protected virtual void OnEscaping(EscapingEventArgs ev)
+        /// <param name="ev">The <see cref="Events.EventArgs.CustomEscapes.EscapingEventArgs"/> instance.</param>
+        protected virtual void OnEscaping(Events.EventArgs.CustomEscapes.EscapingEventArgs ev)
         {
         }
 

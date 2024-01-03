@@ -15,7 +15,7 @@ namespace Exiled.CustomModules.API.Enums
     public class UUCustomEscapeType : UniqueUnmanagedEnumClass<uint, UUCustomEscapeType>
     {
         /// <summary>
-        /// Represents an invalid custom role.
+        /// Represents an invalid custom escapes.
         /// </summary>
         public static readonly UUCustomEscapeType None = new();
     }

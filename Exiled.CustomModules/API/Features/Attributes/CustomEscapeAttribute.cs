@@ -8,6 +8,7 @@
 namespace Exiled.CustomModules.API.Features
 {
     using System;
+
     using Exiled.CustomModules.API.Features.CustomEscapes;
 
     /// <summary>
