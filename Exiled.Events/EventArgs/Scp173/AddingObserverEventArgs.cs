@@ -8,44 +8,49 @@
 namespace Exiled.Events.EventArgs.Scp173
 {
     using API.Features;
+    using Exiled.API.Features.Roles;
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before a players just saw scp 173 (useful for an UTR for example).
+    /// Contains all information before a player sees scp 173.
     /// </summary>
-    public class AddingObserverEventArgs : IExiledEvent, IDeniableEvent
+    public class AddingObserverEventArgs : IScp173Event, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AddingObserverEventArgs"/> class.
         /// </summary>
-        /// <param name="scp173">
+        /// <param name="player">
         /// <inheritdoc cref="Scp173" />
         /// </param>
         /// <param name="target">
-        /// <inheritdoc cref="Target" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="isAllowed">
         /// <inheritdoc cref="IsAllowed" />
         /// </param>
-        public AddingObserverEventArgs(Player scp173, Player target, bool isAllowed = true)
+        public AddingObserverEventArgs(Player player, Player target, bool isAllowed = true)
         {
-            Scp173 = scp173;
+            Scp173 = player.Role.As<Scp173Role>();
+            Player = player;
             Target = target;
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        /// Gets the scp 173 as a <see cref="Player"/>.
-        /// </summary>
-        public Player Scp173 { get; }
+        /// <inheritdoc />
+        public Scp173Role Scp173 { get; }
 
         /// <summary>
-        /// Gets the target who saw the scp 173, as a <see cref="Player"/>.
+        /// Gets the target who saw the scp 173.
         /// </summary>
         public Player Target { get; }
 
         /// <summary>
-        /// Gets or Sets a value indicating whether or not the player trigger scp 173 (for exemple, if scp173 is alone with the Target, it's can keep moving).
+        /// Gets the player who controlling scp 173.
+        /// </summary>
+        public Player Player { get; }
+
+        /// <summary>
+        /// Gets or Sets a value indicating whether or not the player trigger scp 173.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

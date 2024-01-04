@@ -8,35 +8,40 @@
 namespace Exiled.Events.EventArgs.Scp173
 {
     using API.Features;
+    using Exiled.API.Features.Roles;
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before a players just saw scp 173 (useful for an UTR for example).
+    /// Contains all information before a player no longer see scp 173.
     /// </summary>
-    public class RemovingObserverEventArgs : IExiledEvent
+    public class RemovingObserverEventArgs : IScp173Event
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RemovingObserverEventArgs"/> class.
         /// </summary>
-        /// <param name="scp173">
+        /// <param name="player">
         /// <inheritdoc cref="Scp173" />
         /// </param>
         /// <param name="target">
         /// <inheritdoc cref="Target" />
         /// </param>
-        public RemovingObserverEventArgs(Player scp173, Player target)
+        public RemovingObserverEventArgs(Player player, Player target)
         {
-            Scp173 = scp173;
+            Scp173 = player.Role.As<Scp173Role>();
+            Player = player;
             Target = target;
         }
 
-        /// <summary>
-        /// Gets the scp 173 as a <see cref="Player"/>.
-        /// </summary>
-        public Player Scp173 { get; }
+        /// <inheritdoc />
+        public Scp173Role Scp173 { get; }
 
         /// <summary>
-        /// Gets the target who no longer see the scp 173, as a <see cref="Player"/>.
+        /// Gets the player who controlling scp 173.
+        /// </summary>
+        public Player Player { get; }
+
+        /// <summary>
+        /// Gets the target who no longer see the scp 173.
         /// </summary>
         public Player Target { get; }
     }
