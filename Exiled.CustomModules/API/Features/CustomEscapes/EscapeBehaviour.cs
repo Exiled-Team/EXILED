@@ -87,7 +87,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                 if (!ev.IsAllowed)
                     continue;
 
-                ev.Player.SetRole(ev.NewRole != RoleTypeId.None ? ev.NewRole : ev.NewCustomRole);
+                ev.Player.Cast<Pawn>().SetRole(ev.NewRole != RoleTypeId.None ? ev.NewRole : ev.NewCustomRole);
                 ev.Player.ShowHint(ev.Hint);
 
                 EscapedEventDispatcher.InvokeAll(ev.Player);

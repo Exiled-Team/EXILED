@@ -15,9 +15,11 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
-
+    using Exiled.API.Features.DynamicEvents;
+    using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
     using HarmonyLib;
 
     using Utils.NonAllocLINQ;
@@ -33,7 +35,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     /// <br/>It is designed to be utilized in conjunction with the <see cref="IAdditiveBehaviour"/> interface, enabling seamless integration into existing systems for extending and enhancing ability-related functionalities.
     /// </para>
     /// </remarks>
-    public abstract class CustomAbility<T> : TypeCastObject<CustomAbility<T>>, IAdditiveBehaviour
+    public abstract class CustomAbility<T> : TypeCastObject<CustomAbility<T>>, ICustomAbility
         where T : GameEntity
     {
         private static readonly Dictionary<Type, CustomAbility<T>> TypeLookupTable = new();
@@ -77,6 +79,30 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Gets all entities belonging to a <see cref="CustomAbility{T}"/>.
         /// </summary>
         public static HashSet<object> Entities => EntitiesValue.Keys.ToHashSet();
+
+        /// <summary>
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before adding an ability.
+        /// </summary>
+        [DynamicEventDispatcher]
+        public static TDynamicEventDispatcher<AddingAbilityEventArgs<T>> AddingAbilityDispatcher { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after adding an ability.
+        /// </summary>
+        [DynamicEventDispatcher]
+        public static TDynamicEventDispatcher<AddedAbilityEventArgs<T>> AddedAbilityDispatcher { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before removing an ability.
+        /// </summary>
+        [DynamicEventDispatcher]
+        public static TDynamicEventDispatcher<RemovingAbilityEventArgs<T>> RemovingAbilityDispatcher { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after removing an ability.
+        /// </summary>
+        [DynamicEventDispatcher]
+        public static TDynamicEventDispatcher<RemovedAbilityEventArgs<T>> RemovedAbilityDispatcher { get; protected set; }
 
         /// <inheritdoc/>
         public Type BehaviourComponent { get; protected set; }
@@ -518,10 +544,19 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// </remarks>
         public void Add(T entity)
         {
+            AddingAbilityEventArgs<T> inEv = new(entity, this);
+            AddingAbilityDispatcher.InvokeAll(inEv);
+
+            if (!inEv.IsAllowed)
+                return;
+
             entity.AddComponent(BehaviourComponent);
 
             if (!EntitiesValue.TryAdd(entity, new HashSet<CustomAbility<T>> { this }))
                 EntitiesValue[entity].Add(this);
+
+            AddedAbilityEventArgs<T> outEv = new(entity, this);
+            AddedAbilityDispatcher.InvokeAll(outEv);
         }
 
         /// <summary>
@@ -538,6 +573,12 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         {
             try
             {
+                RemovingAbilityEventArgs<T> inEv = new(entity, this);
+                RemovingAbilityDispatcher.InvokeAll(inEv);
+
+                if (!inEv.IsAllowed)
+                    return false;
+
                 if (Get(entity).Count() == 1)
                     EntitiesValue.Remove(entity);
                 else
@@ -545,6 +586,9 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
 
                 if (entity.TryGetComponent(BehaviourComponent, out EActor component) && !component.IsDestroying)
                     component.Destroy();
+
+                RemovedAbilityEventArgs<T> outEv = new(entity, this);
+                RemovedAbilityDispatcher.InvokeAll(outEv);
 
                 return true;
             }

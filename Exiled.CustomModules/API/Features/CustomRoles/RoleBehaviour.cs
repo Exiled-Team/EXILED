@@ -59,6 +59,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public CustomRole CustomRole { get; private set; }
 
         /// <summary>
+        /// Gets the relative <see cref="CustomRoles.CustomTeam"/>.
+        /// </summary>
+        public CustomTeam CustomTeam { get; private set; }
+
+        /// <summary>
         /// Gets or sets the <see cref="RoleSettings"/>.
         /// </summary>
         public virtual RoleSettings Settings { get; set; }
@@ -210,6 +215,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             base.PostInitialize();
 
             LoadConfigs(ConfigRaw);
+
+            if (CustomTeam.TryGet(Owner.Cast<Pawn>(), out CustomTeam customTeam))
+                CustomTeam = customTeam;
 
             if (CustomRole.TryGet(GetType(), out CustomRole customRole))
             {
@@ -375,7 +383,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     if (!ev.IsAllowed)
                         continue;
 
-                    ev.Player.SetRole(ev.NewRole != RoleTypeId.None ? ev.NewRole : ev.NewCustomRole);
+                    ev.Player.Cast<Pawn>().SetRole(ev.NewRole != RoleTypeId.None ? ev.NewRole : ev.NewCustomRole);
                     ev.Player.ShowHint(ev.Hint);
 
                     EscapedEventDispatcher.InvokeAll(ev.Player);

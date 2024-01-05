@@ -21,6 +21,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Features.PlayerAbilities;
+    using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
     using Exiled.Events.EventArgs.Player;
     using PlayerRoles;
     using UnityEngine;
@@ -39,11 +40,11 @@ namespace Exiled.CustomModules.API.Features
     /// </summary>
     public class Pawn : Player
     {
+        private readonly List<AbilityBehaviour> abilityBehaviours = new();
+        private readonly List<PlayerAbility> customAbilities = new();
+
         private RoleBehaviour roleBehaviour;
         private EscapeBehaviour escapeBehaviour;
-        private CustomRole customRole;
-        private CustomTeam customTeam;
-        private CustomEscape customEscape;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pawn"/> class.
@@ -52,18 +53,8 @@ namespace Exiled.CustomModules.API.Features
         public Pawn(ReferenceHub referenceHub)
             : base(referenceHub)
         {
-            foreach (KeyValuePair<Player, HashSet<PlayerAbility>> kvp in PlayerAbility.Manager)
-            {
-                if (kvp.Key != this)
-                    continue;
-
-                foreach (PlayerAbility ability in kvp.Value)
-                {
-                    AbilityBehaviour behaviour = GetComponent(ability.BehaviourComponent).Cast<AbilityBehaviour>();
-                    AbilityBehaviours.Add(behaviour);
-                    CustomAbilities.Add(PlayerAbility.Get(behaviour));
-                }
-            }
+            PlayerAbility.AddedAbilityDispatcher.Bind(this, OnAddedAbility);
+            PlayerAbility.RemovingAbilityDispatcher.Bind(this, OnRemovingAbility);
         }
 
         /// <summary>
@@ -73,44 +64,39 @@ namespace Exiled.CustomModules.API.Features
         public Pawn(GameObject gameObject)
             : base(gameObject)
         {
-            foreach (KeyValuePair<Player, HashSet<PlayerAbility>> kvp in PlayerAbility.Manager)
-            {
-                if (kvp.Key != this)
-                    continue;
-
-                foreach (PlayerAbility ability in kvp.Value)
-                {
-                    AbilityBehaviour behaviour = GetComponent(ability.BehaviourComponent).Cast<AbilityBehaviour>();
-                    AbilityBehaviours.Add(behaviour);
-                    CustomAbilities.Add(PlayerAbility.Get(behaviour));
-                }
-            }
+            PlayerAbility.AddedAbilityDispatcher.Bind(this, OnAddedAbility);
+            PlayerAbility.RemovingAbilityDispatcher.Bind(this, OnRemovingAbility);
         }
 
         /// <summary>
         /// Gets all pawn's <see cref="EPlayerBehaviour"/>'s.
         /// </summary>
-        public IEnumerable<EPlayerBehaviour> Behaviours => ComponentsInChildren.Where(cmp => cmp is EPlayerBehaviour).Cast<EPlayerBehaviour>();
+        public IEnumerable<EPlayerBehaviour> Behaviours => GetComponents<EPlayerBehaviour>();
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.CustomRole"/>.
         /// </summary>
-        public CustomRole CustomRole => customRole ??= CustomRole.Get(this);
+        public CustomRole CustomRole => roleBehaviour.CustomRole;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.CustomTeam"/>.
         /// </summary>
-        public CustomTeam CustomTeam => customTeam ??= CustomTeam.Get(this);
+        public CustomTeam CustomTeam => roleBehaviour.CustomTeam;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomEscapes.CustomEscape"/>.
         /// </summary>
-        public CustomEscape CustomEscape => customEscape ??= CustomEscape.Get(this);
+        public CustomEscape CustomEscape => escapeBehaviour.CustomEscape;
 
         /// <summary>
         /// Gets the pawn's custom abilities.
         /// </summary>
-        public List<PlayerAbility> CustomAbilities { get; } = new();
+        public IEnumerable<PlayerAbility> CustomAbilities => customAbilities;
+
+        /// <summary>
+        /// Gets the pawn's ability behaviours.
+        /// </summary>
+        public IEnumerable<AbilityBehaviour> AbilityBehaviours => abilityBehaviours;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.RoleBehaviour"/>.
@@ -123,14 +109,9 @@ namespace Exiled.CustomModules.API.Features
         public EscapeBehaviour EscapeBehaviour => escapeBehaviour ??= GetComponent<EscapeBehaviour>();
 
         /// <summary>
-        /// Gets the pawn's ability behaviours.
-        /// </summary>
-        public List<AbilityBehaviour> AbilityBehaviours { get; } = new();
-
-        /// <summary>
         /// Gets a value indicating whether the pawn has a <see cref="CustomRoles.CustomRole"/>.
         /// </summary>
-        public bool HasCustomRole => CustomRole.Players.Contains(this);
+        public bool HasCustomRole => CustomRole;
 
         /// <summary>
         /// Gets a value indicating whether the pawn is any SCP, including custom ones.
@@ -283,6 +264,18 @@ namespace Exiled.CustomModules.API.Features
             }
 
             DropItem(item);
+        }
+
+        private void OnAddedAbility(AddedAbilityEventArgs<Player> ev)
+        {
+            abilityBehaviours.Add(GetComponent(ev.Ability.BehaviourComponent).Cast<AbilityBehaviour>());
+            customAbilities.Add(ev.Ability.Cast<PlayerAbility>());
+        }
+
+        private void OnRemovingAbility(RemovingAbilityEventArgs<Player> ev)
+        {
+            abilityBehaviours.Remove(GetComponent(ev.Ability.BehaviourComponent).Cast<AbilityBehaviour>());
+            customAbilities.Remove(ev.Ability.Cast<PlayerAbility>());
         }
     }
 }
