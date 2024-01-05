@@ -18,7 +18,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.CustomModules.API.Features.CustomEscapes;
-
     using MEC;
 
     using PlayerRoles;
@@ -242,13 +241,21 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Gets a <see cref="CustomRole"/> from a <see cref="Pawn"/>.
         /// </summary>
         /// <param name="player">The <see cref="CustomRole"/> owner.</param>
+        /// <param name="roleName">The name of the role.</param>
         /// <returns>The <see cref="CustomRole"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomRole Get(Pawn player)
+        public static CustomRole Get(Pawn player, string roleName = null)
         {
-            if (!PlayersValue.TryGetValue(player, out CustomRole customRole))
-                return default;
+            if (roleName == null)
+            {
+                if (!PlayersValue.TryGetValue(player, out CustomRole customRole))
+                    return default;
 
-            return customRole;
+                return customRole;
+            }
+            else
+            {
+                return PlayersValue.TryGetValue(player, out CustomRole customRole) && customRole.Name == roleName ? customRole : null;
+            }
         }
 
         /// <summary>
@@ -257,7 +264,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="customRoleType">The <see cref="object"/> to look for.</param>
         /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomRole"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object customRoleType, out CustomRole customRole) => customRole = Get(customRoleType);
+        public static bool TryGet(object customRoleType, out CustomRole customRole)
+        {
+            customRole = Get(customRoleType);
+            return customRole != null;
+        }
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> given a specified name.
@@ -265,15 +276,30 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="name">The <see cref="CustomRole"/> name to look for.</param>
         /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomRole"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out CustomRole customRole) => customRole = Registered.FirstOrDefault(cRole => cRole.Name == name);
+        public static bool TryGet(string name, out CustomRole customRole)
+        {
+            customRole = Registered.FirstOrDefault(cRole => cRole.Name == name);
+            return customRole != null;
+        }
 
         /// <summary>
-        /// Tries to get the player's current <see cref="CustomRole"/>.
+        /// Tries to retrieve the custom role for the specified player, optionally filtering by a specific role name.
         /// </summary>
-        /// <param name="player">The <see cref="Pawn"/> to search on.</param>
-        /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomRole"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Pawn player, out CustomRole customRole) => customRole = Get(player);
+        /// <param name="player">The player object for which to find the custom role.</param>
+        /// <param name="customRole">The found custom role, or <see langword="null"/> if not found.</param>
+        /// <param name="roleName">The optional name of the specific custom role to search for.</param>
+        /// <returns>
+        /// <see langword="true"/> if a custom role was found for the player, or if a specific role name is provided,
+        /// returns <see langword="true"/> if the player has the specified custom role; 
+        /// otherwise, returns <see langword="false"/>.
+        /// </returns>
+
+        public static bool TryGet(Pawn player, out CustomRole customRole, string roleName = null)
+        {
+            // Implements logic to find the specified role for the player
+            customRole = Get(player, roleName);
+            return customRole != null;
+        }
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> given the specified <see cref="RoleBehaviour"/>.
@@ -382,24 +408,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             return true;
         }
 
-        /// <summary>
-        /// Determines whether the specified player has a custom role assigned.
-        /// </summary>
-        /// <param name="player">The <see cref="Pawn"/> to check for a custom role.</param>
-        /// <returns>
-        /// <see langword="true"/> if the player has a custom role assigned; otherwise, <see langword="false"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="player"/> is <see langword="null"/>.</exception>
-        /// <remarks>
-        /// This method checks if the specified player has a custom role assigned using <see cref="CustomRole"/>.
-        /// </remarks>
-        public static bool HasCustomRole(Pawn player)
-        {
-            if (player == null)
-                throw new ArgumentNullException(nameof(player));
-
-            return TryGet(player, out _);
-        }
 
         /// <summary>
         /// Spawns the specified player with the custom role identified by the provided type or type name.

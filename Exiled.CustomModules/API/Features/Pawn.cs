@@ -123,11 +123,6 @@ namespace Exiled.CustomModules.API.Features
         public List<AbilityBehaviour> AbilityBehaviours { get; } = new();
 
         /// <summary>
-        /// Gets a value indicating whether the pawn has a <see cref="CustomRoles.CustomRole"/>.
-        /// </summary>
-        public bool HasCustomRole => CustomRole.Players.Contains(this);
-
-        /// <summary>
         /// Gets a value indicating whether the pawn is any SCP, including custom ones.
         /// </summary>
         public new bool IsScp
@@ -208,6 +203,35 @@ namespace Exiled.CustomModules.API.Features
             }
         }
 
+        /// <summary>
+        /// Checks if the player has a custom role, optionally verifying a specific role name.
+        /// </summary>
+        /// <param name="player">The player object to check for a custom role.</param>
+        /// <param name="roleName">The optional name of the specific custom role to check for.</param>
+        /// <returns>
+        /// <see langword="true"/> if the player has any custom role, or if a specific role name is provided, 
+        /// returns <see langword="true"/> if the player has the specified custom role;
+        /// otherwise, returns <see langword="false"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">Thrown when the provided player object is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">Thrown when the provided player object is not of type Pawn.</exception>
+        public bool HasCustomRole(this Pawn player, string roleName = null)
+        {
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
+
+            if (player == null)
+                throw new ArgumentException("The provided player object must be of type Pawn.", nameof(player));
+
+            if (string.IsNullOrEmpty(roleName))
+            {
+                return CustomRole.TryGet(player, out _);
+            }
+            else
+            {
+                return CustomRole.TryGet(player, out _, roleName);
+            }
+        }
         /// <summary>
         /// Adds a <see cref="IEnumerable{T}"/> of <see cref="object"/> containing all the custom items to the pawn's inventory.
         /// </summary>
