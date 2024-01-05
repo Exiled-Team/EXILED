@@ -45,7 +45,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // this
                     new(OpCodes.Ldarg_0),
 
-                    // SuccessfullyUsedTapeItemEventArgs ev = new(Player, ItemBase);
+                    // UsedTapeEventArgs ev = new(Player, ItemBase);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsedTapeItemEventArgs))[0]),
 
                     // Handlers.Player.OnUsedTape(ev);
