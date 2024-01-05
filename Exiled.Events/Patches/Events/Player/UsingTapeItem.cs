@@ -64,7 +64,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                    // Handlers.Player.OnUsingTapeItem(ev);
+                    // Handlers.Player.OnUsingTape(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingTapeItem))),
 
                     // if (!ev.IsAllowed)
