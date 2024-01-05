@@ -40,6 +40,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         internal static readonly Dictionary<Pawn, CustomRole> PlayersValue = new();
 
         private static readonly List<CustomRole> Registered = new();
+        private static readonly Dictionary<Type, CustomRole> TypeLookupTable = new();
+        private static readonly Dictionary<Type, CustomRole> BehaviourLookupTable = new();
+        private static readonly Dictionary<uint, CustomRole> IdLookupTable = new();
+        private static readonly Dictionary<string, CustomRole> NameLookupTable = new();
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomRole"/>'s.
@@ -196,18 +200,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="left">The left <see cref="CustomRole"/> to compare.</param>
         /// <param name="right">The right <see cref="CustomRole"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomRole left, CustomRole right)
-        {
-            if (left is null)
-            {
-                if (right is null)
-                     return true;
-
-                return false;
-            }
-
-            return left.Equals(right);
-        }
+        public static bool operator ==(CustomRole left, CustomRole right) => left is null ? right is null : left.Equals(right);
 
         /// <summary>
         /// Compares two operands: <see cref="CustomRole"/> and <see cref="CustomRole"/>.
@@ -222,41 +215,38 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </summary>
         /// <param name="id">The specified id.</param>
         /// <returns>The <see cref="CustomRole"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomRole Get(uint id) => Registered.FirstOrDefault(customRole => customRole == id && customRole.IsEnabled);
+        public static CustomRole Get(uint id) => IdLookupTable[id];
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> given the specified name.
         /// </summary>
         /// <param name="name">The specified name.</param>
         /// <returns>The <see cref="CustomRole"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomRole Get(string name) => Registered.FirstOrDefault(customRole => customRole.Name == name);
+        public static CustomRole Get(string name) => NameLookupTable[name];
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> given the specified <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The specified <see cref="Type"/>.</param>
         /// <returns>The <see cref="CustomRole"/> matching the search or <see langword="null"/> if not found.</returns>
-        public static CustomRole Get(Type type) => type.BaseType != typeof(RoleBehaviour) ? null : Registered.FirstOrDefault(customRole => customRole.BehaviourComponent == type);
+        public static CustomRole Get(Type type) =>
+            type.IsSubclassOf(typeof(CustomRole)) ? TypeLookupTable[type] :
+            type.IsSubclassOf(typeof(RoleBehaviour)) ? BehaviourLookupTable[type] : null;
 
         /// <summary>
-        /// Gets a <see cref="CustomRole"/> given the specified <see cref="RoleBehaviour"/>.
+        /// Gets a <see cref="CustomRole"/> given the specified <see cref="Type"/>.
         /// </summary>
-        /// <param name="roleBuilder">The specified <see cref="RoleBehaviour"/>.</param>
+        /// <typeparam name="T">The specified <see cref="Type"/>.</typeparam>
         /// <returns>The <see cref="CustomRole"/> matching the search or <see langword="null"/> if not found.</returns>
-        public static CustomRole Get(RoleBehaviour roleBuilder) => Get(roleBuilder.GetType());
+        public static CustomRole Get<T>()
+            where T : CustomRole => Get(typeof(T));
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> from a <see cref="Pawn"/>.
         /// </summary>
         /// <param name="player">The <see cref="CustomRole"/> owner.</param>
         /// <returns>The <see cref="CustomRole"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomRole Get(Pawn player)
-        {
-            if (!PlayersValue.TryGetValue(player, out CustomRole customRole))
-                return default;
-
-            return customRole;
-        }
+        public static CustomRole Get(Pawn player) => PlayersValue.TryGetValue(player, out CustomRole customRole) ? customRole : default;
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> given the specified id.
@@ -272,7 +262,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="name">The <see cref="CustomRole"/> name to look for.</param>
         /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomRole"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out CustomRole customRole) => customRole = Registered.FirstOrDefault(cRole => cRole.Name == name);
+        public static bool TryGet(string name, out CustomRole customRole) => customRole = Get(name);
 
         /// <summary>
         /// Tries to get the player's current <see cref="CustomRole"/>.
@@ -283,20 +273,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public static bool TryGet(Pawn player, out CustomRole customRole) => customRole = Get(player);
 
         /// <summary>
-        /// Tries to get a <see cref="CustomRole"/> given the specified <see cref="RoleBehaviour"/>.
-        /// </summary>
-        /// <param name="roleBuilder">The <see cref="RoleBehaviour"/> to search for.</param>
-        /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomRole"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(RoleBehaviour roleBuilder, out CustomRole customRole) => customRole = Get(roleBuilder.GetType());
-
-        /// <summary>
         /// Tries to get a <see cref="CustomRole"/> given the specified <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The <see cref="Type"/> to search for.</param>
         /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomRole"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out CustomRole customRole) => customRole = Get(type.GetType());
+        public static bool TryGet(Type type, out CustomRole customRole) => customRole = Get(type);
 
         /// <summary>
         /// Attempts to spawn the specified player with the provided custom role.
@@ -435,7 +417,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             Spawn(player, customRole, shouldKeepPosition);
-
             return true;
         }
 
@@ -473,14 +454,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// the method returns <see langword="false"/>.
         /// </remarks>
         public static bool Remove<T>(Pawn player)
-            where T : CustomRole
-        {
-            if (!TryGet(typeof(T), out CustomRole customRole) || !player.TryGetComponent(customRole.BehaviourComponent, out _))
-                return false;
-
-            customRole.Eject(player);
-            return true;
-        }
+            where T : CustomRole => TryGet(typeof(T), out CustomRole customRole) && customRole.Eject(player);
 
         /// <summary>
         /// Removes the custom role from each player in the specified collection.
@@ -763,6 +737,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 }
 
                 Registered.Add(this);
+                TypeLookupTable.Add(GetType(), this);
+                BehaviourLookupTable.Add(BehaviourComponent, this);
+                IdLookupTable.Add(Id, this);
+                NameLookupTable.Add(Name, this);
 
                 return true;
             }
@@ -786,6 +764,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             }
 
             Registered.Remove(this);
+            TypeLookupTable.Remove(GetType());
+            BehaviourLookupTable.Remove(BehaviourComponent);
+            IdLookupTable.Remove(Id);
+            NameLookupTable.Remove(Name);
 
             return true;
         }

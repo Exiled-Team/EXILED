@@ -65,7 +65,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public EscapeSettings(
             bool isAllowed = false,
             RoleTypeId role = RoleTypeId.None,
-            object customRole = null,
+            uint customRole = 0,
             Vector3 position = default,
             float distanceThreshold = DefaultMaxDistanceTolerance)
         {

@@ -218,11 +218,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Tries to get a <see cref="CustomTeam"/> given the specified id.
         /// </summary>
-        /// <typeparam name="T">The <see cref="CustomTeam"/> type.</typeparam>
         /// <param name="id">The id to look for.</param>
         /// <param name="customTeam">The found <see cref="CustomTeam"/>, null if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomTeam"/> is found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet<T>(uint id, out CustomTeam customTeam) => customTeam = Get(id);
+        public static bool TryGet(uint id, out CustomTeam customTeam) => customTeam = Get(id);
 
         /// <summary>
         /// Tries to get a <see cref="CustomTeam"/> given the specified name.
@@ -235,10 +234,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Tries to get a <see cref="CustomTeam"/> belonging to the specified <see cref="Player"/>.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> to look for.</param>
+        /// <param name="player">The <see cref="Pawn"/> to look for.</param>
         /// <param name="customTeam">The found <see cref="CustomTeam"/>, null if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomTeam"/> is found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Player player, out CustomTeam customTeam) => PlayersValue.TryGetValue(player, out customTeam);
+        public static bool TryGet(Pawn player, out CustomTeam customTeam) => PlayersValue.TryGetValue(player, out customTeam);
 
         /// <summary>
         /// Tries to spawn the specified <see cref="CustomTeam"/>.
@@ -262,7 +261,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was spawned; otherwise, <see langword="false"/>.</returns>
         public static bool TrySpawn(uint id)
         {
-            if (!Player.Get(p => p.IsDead).Any() || TryGet<CustomTeam>(id, out CustomTeam customTeam))
+            if (!Player.Get(p => p.IsDead).Any() || TryGet(id, out CustomTeam customTeam))
                 return false;
 
             customTeam.Respawn();
@@ -294,7 +293,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <returns><see langword="true"/> if the player was spawned; otherwise, <see langword="false"/>.</returns>
         public static bool TrySpawn(Player player, uint id)
         {
-            if (!TryGet<CustomTeam>(id, out CustomTeam customTeam))
+            if (!TryGet(id, out CustomTeam customTeam))
                 return false;
 
             customTeam.Spawn(player);
@@ -326,7 +325,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <returns><see langword="true"/> if the players were spawned; otherwise, <see langword="false"/>.</returns>
         public static bool TrySpawn(IEnumerable<Player> players, uint id)
         {
-            if (!TryGet<CustomTeam>(id, out CustomTeam customTeam))
+            if (!TryGet(id, out CustomTeam customTeam))
                 return false;
 
             customTeam.Respawn(players);
@@ -358,7 +357,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was spawned; otherwise, <see langword="false"/>.</returns>
         public static bool TrySpawn(uint amount, uint id)
         {
-            if (TryGet<CustomTeam>(id, out CustomTeam customTeam))
+            if (TryGet(id, out CustomTeam customTeam))
                 return false;
 
             customTeam.Respawn(amount);
