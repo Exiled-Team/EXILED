@@ -525,7 +525,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked after player uses tape.
         /// </summary>
-        public static Event<UsedTapeItemEventArgs> SuccessfullyUsedTapeItem { get; set; } = new();
+        public static Event<UsedTapeItemEventArgs> UsedTape { get; set; } = new();
 
         /// <summary>
         /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
