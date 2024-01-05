@@ -215,7 +215,7 @@ namespace Exiled.CustomModules.API.Features
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown when the provided player object is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when the provided player object is not of type Pawn.</exception>
-        public bool HasCustomRole(this Pawn player, string roleName = null)
+        public bool HasCustomRole(Pawn player, string roleName = null)
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
@@ -232,6 +232,7 @@ namespace Exiled.CustomModules.API.Features
                 return CustomRole.TryGet(player, out _, roleName);
             }
         }
+
         /// <summary>
         /// Adds a <see cref="IEnumerable{T}"/> of <see cref="object"/> containing all the custom items to the pawn's inventory.
         /// </summary>
