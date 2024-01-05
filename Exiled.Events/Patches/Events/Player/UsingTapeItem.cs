@@ -75,7 +75,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // success = ev.Success
                     new(OpCodes.Ldloc_0),
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(UsingTapeEventArgs), nameof(UsingTapeEventArgs.Success))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(UsingTapeEventArgs), nameof(UsingTapeEventArgs.WasSuccessful))),
                     new(OpCodes.Stfld, fieldInfo),
                 });
 
