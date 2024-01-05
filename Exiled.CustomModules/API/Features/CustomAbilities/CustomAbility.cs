@@ -22,9 +22,16 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using Utils.NonAllocLINQ;
 
     /// <summary>
-    /// Represents a base class for custom abilities associated with a specific <see cref="GameEntity"/>.
+    /// Abstract base class serving as a foundation for custom abilities associated with a specific <see cref="GameEntity"/>.
     /// </summary>
     /// <typeparam name="T">The type of <see cref="GameEntity"/> associated with the custom ability.</typeparam>
+    /// <remarks>
+    /// The <see cref="CustomAbility{T}"/> class establishes a flexible structure for creating and managing custom abilities tied to a particular <see cref="GameEntity"/>.
+    /// <para>
+    /// This class is parameterized by the type <typeparamref name="T"/> to denote the specific <see cref="GameEntity"/> associated with the custom ability.
+    /// <br/>It is designed to be utilized in conjunction with the <see cref="IAdditiveBehaviour"/> interface, enabling seamless integration into existing systems for extending and enhancing ability-related functionalities.
+    /// </para>
+    /// </remarks>
     public abstract class CustomAbility<T> : TypeCastObject<CustomAbility<T>>, IAdditiveBehaviour
         where T : GameEntity
     {
@@ -159,12 +166,12 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         public static bool operator !=(CustomAbility<T> left, CustomAbility<T> right) => !(left.Id == right.Id);
 
         /// <summary>
-        /// Gets a <see cref="CustomAbility{T}"/> given the specified <paramref name="customAbilityType"/>.
+        /// Gets a <see cref="CustomAbility{T}"/> given the specified id.
         /// </summary>
-        /// <param name="customAbilityType">The specified ability type.</param>
+        /// <param name="id">The specified id.</param>
         /// <returns>The <see cref="CustomAbility{T}"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomAbility<T> Get(uint customAbilityType) =>
-            UnorderedList.FirstOrDefault(customAbility => customAbility == customAbilityType && customAbility.IsEnabled);
+        public static CustomAbility<T> Get(uint id) =>
+            UnorderedList.FirstOrDefault(customAbility => customAbility == id && customAbility.IsEnabled);
 
         /// <summary>
         /// Gets a <see cref="CustomAbility{T}"/> given the specified name.
@@ -204,12 +211,12 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         public static IEnumerable<CustomAbility<T>> Get(T entity) => EntitiesValue.FirstOrDefault(kvp => kvp.Key == entity).Value;
 
         /// <summary>
-        /// Tries to get a <see cref="CustomAbility{T}"/> given the specified <paramref name="customAbility"/>.
+        /// Tries to get a <see cref="CustomAbility{T}"/> given the specified id.
         /// </summary>
-        /// <param name="customAbilityType">The <see cref="object"/> to look for.</param>
+        /// <param name="id">The id to look for.</param>
         /// <param name="customAbility">The found <paramref name="customAbility"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <paramref name="customAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(uint customAbilityType, out CustomAbility<T> customAbility) => customAbility = Get(customAbilityType);
+        public static bool TryGet(uint id, out CustomAbility<T> customAbility) => customAbility = Get(id);
 
         /// <summary>
         /// Tries to get a <paramref name="customAbility"/> given a specified name.

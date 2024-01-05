@@ -23,8 +23,15 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Utils.NonAllocLINQ;
 
     /// <summary>
-    /// A class to easily manage escaping behavior.
+    /// Abstract class facilitating the seamless management of escaping behavior within the game environment.
     /// </summary>
+    /// <remarks>
+    /// The <see cref="CustomEscape"/> class serves as a foundational framework for implementing and controlling various escaping mechanisms.
+    /// <para>
+    /// As an implementation of <see cref="IAdditiveBehaviour"/>, <see cref="CustomEscape"/> seamlessly integrates into existing systems, allowing developers to extend and enhance escape-related functionalities.
+    /// <br/>The class also implements <see cref="IEquatable{CustomEscape}"/> and <see cref="IEquatable{T}"/>, enabling straightforward comparisons for equality checks.
+    /// </para>
+    /// </remarks>
     public abstract class CustomEscape : TypeCastObject<CustomEscape>, IAdditiveBehaviour, IEquatable<CustomEscape>, IEquatable<uint>
     {
         private static readonly List<CustomEscape> Registered = new();
@@ -191,9 +198,9 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Gets a <see cref="CustomEscape"/> given the specified <see cref="Id"/>.
         /// </summary>
-        /// <param name="customEscapeType">The specified <see cref="Id"/>.</param>
+        /// <param name="id">The specified id.</param>
         /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomEscape Get(object customEscapeType) => List.FirstOrDefault(customEscape => customEscape == customEscapeType && customEscape.IsEnabled);
+        public static CustomEscape Get(uint id) => List.FirstOrDefault(customEscape => customEscape == id && customEscape.IsEnabled);
 
         /// <summary>
         /// Gets a <see cref="CustomEscape"/> given the specified name.
@@ -232,10 +239,10 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Tries to get a <see cref="CustomEscape"/> given the specified <see cref="CustomEscape"/>.
         /// </summary>
-        /// <param name="customEscapeType">The <see cref="object"/> to look for.</param>
+        /// <param name="id">The id to look for.</param>
         /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object customEscapeType, out CustomEscape customEscape) => (customEscape = Get(customEscapeType)) is not null;
+        public static bool TryGet(uint id, out CustomEscape customEscape) => (customEscape = Get(id)) is not null;
 
         /// <summary>
         /// Tries to get a <see cref="CustomEscape"/> given a specified name.

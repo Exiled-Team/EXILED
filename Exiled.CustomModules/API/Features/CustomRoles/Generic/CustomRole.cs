@@ -10,6 +10,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using System;
 
     /// <inheritdoc/>
+    /// <typeparam name="T">The <see cref="RoleBehaviour"/> type.</typeparam>
     public abstract class CustomRole<T> : CustomRole
         where T : RoleBehaviour
     {

@@ -21,8 +21,15 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Respawning.NamingRules;
 
     /// <summary>
-    /// The custom team base class.
+    /// Abstract base class representing a custom team, providing a foundational structure for custom team management.
     /// </summary>
+    /// <remarks>
+    /// The <see cref="CustomTeam"/> class forms the basis for creating and managing custom teams within the game architecture.
+    /// <para>
+    /// This class implements the <see cref="IEquatable{CustomTeam}"/> interface, facilitating straightforward equality comparisons, and also implements <see cref="IEquatable{UInt16}"/> for integer-based comparisons.
+    /// <br/>It serves as a versatile framework for handling custom team-related functionalities and interactions.
+    /// </para>
+    /// </remarks>
     public abstract class CustomTeam : TypeCastObject<CustomTeam>, IEquatable<CustomTeam>, IEquatable<int>
     {
         private static readonly Dictionary<Player, CustomTeam> PlayersValue = new();
@@ -45,9 +52,13 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public static IEnumerable<Player> Players => PlayersValue.Keys.ToHashSet();
 
         /// <summary>
-        /// Gets the <see cref="IEnumerable{T}"/> of <see cref="Type"/> which contains all types to be used as unit.
+        /// Gets or sets a collection of <see cref="Type"/> instances representing all custom role types offered as units.
         /// </summary>
-        public virtual IEnumerable<object> Units => new object[] { };
+        /// <remarks>
+        /// This property provides access to a curated collection of <see cref="Type"/> objects, encapsulating all available custom role types within the context of units.
+        /// <br/>The collection is designed to be both queried and modified as needed to accommodate dynamic scenarios within the game architecture.
+        /// </remarks>
+        public virtual IEnumerable<Type> Units { get; protected set; } = new Type[] { };
 
         /// <summary>
         /// Gets or sets the <see cref="CustomTeam"/>'s id.
@@ -130,7 +141,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public IEnumerable<Player> Owners => PlayersValue.Where(x => x.Value == this).Select(x => x.Key);
 
         /// <summary>
-        /// Gets a random <see cref="CustomRole"/>.
+        /// Gets a random <see cref="CustomRole"/> from the <see cref="Units"/>.
         /// </summary>
         public CustomRole RandomUnit => CustomRole.Get(Units.Random());
 
@@ -205,18 +216,13 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public static bool operator !=(CustomTeam left, CustomTeam right) => !(left.Id == right.Id);
 
         /// <summary>
-        /// Tries to get a <see cref="CustomTeam"/> given the specified <see cref="object"/>.
+        /// Tries to get a <see cref="CustomTeam"/> given the specified id.
         /// </summary>
         /// <typeparam name="T">The <see cref="CustomTeam"/> type.</typeparam>
-        /// <param name="customRoleType">The <see cref="object"/> to look for.</param>
+        /// <param name="id">The id to look for.</param>
         /// <param name="customTeam">The found <see cref="CustomTeam"/>, null if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomTeam"/> is found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet<T>(object customRoleType, out CustomTeam customTeam)
-        {
-            customTeam = Get<T>(customRoleType);
-
-            return customTeam is not null;
-        }
+        public static bool TryGet<T>(uint id, out CustomTeam customTeam) => customTeam = Get(id);
 
         /// <summary>
         /// Tries to get a <see cref="CustomTeam"/> given the specified name.
@@ -224,12 +230,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="name">The name to look for.</param>
         /// <param name="customTeam">The found <see cref="CustomTeam"/>, null if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomTeam"/> is found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out CustomTeam customTeam)
-        {
-            customTeam = Registered.FirstOrDefault(x => x.Name == name);
-
-            return customTeam is not null;
-        }
+        public static bool TryGet(string name, out CustomTeam customTeam) => customTeam = Registered.FirstOrDefault(x => x.Name == name);
 
         /// <summary>
         /// Tries to get a <see cref="CustomTeam"/> belonging to the specified <see cref="Player"/>.
@@ -237,8 +238,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="player">The <see cref="Player"/> to look for.</param>
         /// <param name="customTeam">The found <see cref="CustomTeam"/>, null if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomTeam"/> is found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Player player, out CustomTeam customTeam)
-            => PlayersValue.TryGetValue(player, out customTeam);
+        public static bool TryGet(Player player, out CustomTeam customTeam) => PlayersValue.TryGetValue(player, out customTeam);
 
         /// <summary>
         /// Tries to spawn the specified <see cref="CustomTeam"/>.
@@ -256,13 +256,13 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Tries to spawn a <see cref="CustomTeam"/> given the specified <see cref="object"/>.
+        /// Tries to spawn a <see cref="CustomTeam"/> given the specified id.
         /// </summary>
-        /// <param name="customTeamType">The specified <see cref="object"/>.</param>
+        /// <param name="id">The specified id.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(object customTeamType)
+        public static bool TrySpawn(uint id)
         {
-            if (!Player.Get(p => p.IsDead).Any() || TryGet<CustomTeam>(customTeamType, out CustomTeam customTeam))
+            if (!Player.Get(p => p.IsDead).Any() || TryGet<CustomTeam>(id, out CustomTeam customTeam))
                 return false;
 
             customTeam.Respawn();
@@ -287,14 +287,14 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Tries to spawn a player as a <see cref="CustomTeam"/> unit given the specified <see cref="object"/>.
+        /// Tries to spawn a player as a <see cref="CustomTeam"/> unit given the specified id.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to be spawned.</param>
-        /// <param name="customTeamType">The specified <see cref="object"/>.</param>
+        /// <param name="id">The specified id.</param>
         /// <returns><see langword="true"/> if the player was spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(Player player, object customTeamType)
+        public static bool TrySpawn(Player player, uint id)
         {
-            if (!TryGet<CustomTeam>(customTeamType, out CustomTeam customTeam))
+            if (!TryGet<CustomTeam>(id, out CustomTeam customTeam))
                 return false;
 
             customTeam.Spawn(player);
@@ -319,14 +319,14 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Tries to spawn a <see cref="IEnumerable{T}"/> of <see cref="Player"/> as a <see cref="CustomTeam"/> unit given the specified <see cref="object"/>.
+        /// Tries to spawn a <see cref="IEnumerable{T}"/> of <see cref="Player"/> as a <see cref="CustomTeam"/> unit given the specified id.
         /// </summary>
         /// <param name="players">The players to be spawned.</param>
-        /// <param name="customTeamType">The specified <see cref="object"/>.</param>
+        /// <param name="id">The specified id.</param>
         /// <returns><see langword="true"/> if the players were spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(IEnumerable<Player> players, object customTeamType)
+        public static bool TrySpawn(IEnumerable<Player> players, uint id)
         {
-            if (!TryGet<CustomTeam>(customTeamType, out CustomTeam customTeam))
+            if (!TryGet<CustomTeam>(id, out CustomTeam customTeam))
                 return false;
 
             customTeam.Respawn(players);
@@ -351,14 +351,14 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Tries to spawn a <see cref="CustomTeam"/> given the specified <see cref="object"/>.
+        /// Tries to spawn a <see cref="CustomTeam"/> given the specified id.
         /// </summary>
         /// <param name="amount">The amount of units to be spawned.</param>
-        /// <param name="customTeamType">The specified <see cref="object"/>.</param>
+        /// <param name="id">The specified id.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(uint amount, object customTeamType)
+        public static bool TrySpawn(uint amount, uint id)
         {
-            if (TryGet<CustomTeam>(customTeamType, out CustomTeam customTeam))
+            if (TryGet<CustomTeam>(id, out CustomTeam customTeam))
                 return false;
 
             customTeam.Respawn(amount);
@@ -409,14 +409,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Gets a <see cref="CustomTeam"/> given the specified <see cref="object"/>.
+        /// Gets a <see cref="CustomTeam"/> given the specified id.
         /// </summary>
-        /// <typeparam name="T">The <see cref="CustomTeam"/> type.</typeparam>
-        /// <param name="value">The <see cref="object"/> to check.</param>
+        /// <param name="id">The id to check.</param>
         /// <returns>The <see cref="CustomTeam"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomTeam Get<T>(object value) =>
-            typeof(T) == typeof(CustomRole) ? Registered.FirstOrDefault(x => x.Units.Contains(value)) :
-            typeof(T) == typeof(CustomTeam) ? Registered.FirstOrDefault(x => x == value) : null;
+        public static CustomTeam Get(uint id) => Registered.FirstOrDefault(x => x == id);
 
         /// <summary>
         /// Gets a <see cref="CustomTeam"/> given the specified name.
@@ -439,34 +436,18 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Determines whether id is equal to the current object.
+        /// Determines whether the provided id is equal to the current object.
         /// </summary>
         /// <param name="id">The id to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(int id)
-        {
-            return Id == id;
-        }
+        public bool Equals(int id) => Id == id;
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
         /// <param name="cr">The custom role to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(CustomTeam cr)
-        {
-            if (cr is null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, cr))
-            {
-                return true;
-            }
-
-            return Id == cr.Id;
-        }
+        public bool Equals(CustomTeam cr) => cr is not null && (ReferenceEquals(this, cr) || Id == cr.Id);
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
@@ -591,10 +572,16 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             {
                 if (attribute is not null && Id == 0)
                 {
-                    if (attribute.Id != 0)
-                        Id = attribute.Id;
-                    else
-                        throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
+                    if (Id == 0)
+                    {
+                        if (attribute.Id != 0)
+                            Id = attribute.Id;
+                        else
+                            throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
+                    }
+
+                    if (attribute.Types is not null && !attribute.Types.IsEmpty())
+                        Units = Units.Concat(attribute.Types);
                 }
 
                 if (Registered.Any(x => x.Id == Id))

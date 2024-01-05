@@ -25,8 +25,15 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Respawning;
 
     /// <summary>
-    /// The custom role base class.
+    /// Abstract base class providing a foundation for custom role management, integrating seamlessly with various game behaviors.
     /// </summary>
+    /// <remarks>
+    /// The <see cref="CustomRole"/> class establishes a robust framework for creating and managing custom roles within the game architecture.
+    /// <para>
+    /// This class is designed to be utilized in conjunction with the <see cref="IAdditiveBehaviour"/> interface, ensuring easy integration into existing systems for extending and enhancing role-related functionalities.
+    /// <br/>Additionally, <see cref="CustomRole"/> implements <see cref="IEquatable{CustomRole}"/> and <see cref="IEquatable{UInt16}"/>, enabling straightforward equality comparisons.
+    /// </para>
+    /// </remarks>
     public abstract class CustomRole : TypeCastObject<CustomRole>, IAdditiveBehaviour, IEquatable<CustomRole>, IEquatable<uint>
     {
         /// <inheritdoc cref="Manager"/>
@@ -138,7 +145,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pawn"/> containing all players owning this <see cref="CustomRole"/>.
         /// </summary>
-        public IEnumerable<Pawn> Owners => Player.Get(x => TryGet(x, out CustomRole customRole) && customRole.Id == Id).Cast<Pawn>();
+        public IEnumerable<Pawn> Owners => Player.Get(x => TryGet(x.Cast<Pawn>(), out CustomRole customRole) && customRole.Id == Id).Cast<Pawn>();
 
         /// <summary>
         /// Compares two operands: <see cref="CustomRole"/> and <see cref="object"/>.
@@ -211,11 +218,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public static bool operator !=(CustomRole left, CustomRole right) => !(left.Id == right.Id);
 
         /// <summary>
-        /// Gets a <see cref="CustomRole"/> given the specified <paramref name="customRoleType"/>.
+        /// Gets a <see cref="CustomRole"/> given the specified id.
         /// </summary>
-        /// <param name="customRoleType">The specified <see cref="Id"/>.</param>
+        /// <param name="id">The specified id.</param>
         /// <returns>The <see cref="CustomRole"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomRole Get(object customRoleType) => Registered.FirstOrDefault(customRole => customRole == customRoleType && customRole.IsEnabled);
+        public static CustomRole Get(uint id) => Registered.FirstOrDefault(customRole => customRole == id && customRole.IsEnabled);
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> given the specified name.
@@ -252,12 +259,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Tries to get a <see cref="CustomRole"/> given the specified <see cref="CustomRole"/>.
+        /// Tries to get a <see cref="CustomRole"/> given the specified id.
         /// </summary>
-        /// <param name="customRoleType">The <see cref="object"/> to look for.</param>
+        /// <param name="id">The id to look for.</param>
         /// <param name="customRole">The found <see cref="CustomRole"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomRole"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object customRoleType, out CustomRole customRole) => customRole = Get(customRoleType);
+        public static bool TryGet(uint id, out CustomRole customRole) => customRole = Get(id);
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> given a specified name.
@@ -317,7 +324,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Attempts to spawn the specified player with the custom role identified by the provided type or type name.
         /// </summary>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
-        /// <param name="customRoleType">The type or type name of the custom role to be assigned to the player.</param>
+        /// <param name="id">The id of the custom role to be assigned to the player.</param>
         /// <returns>
         /// <see langword="true"/> if the player was spawned with the custom role successfully; otherwise, <see langword="false"/>.
         /// </returns>
@@ -325,9 +332,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// This method allows attempting to spawn the specified player with a custom role identified by its type or type name.
         /// If the custom role type or name is not provided, or if the identification process fails, the method returns <see langword="false"/>.
         /// </remarks>
-        public static bool TrySpawn(Pawn player, object customRoleType)
+        public static bool TrySpawn(Pawn player, uint id)
         {
-            if (!TryGet(customRoleType, out CustomRole customRole))
+            if (!TryGet(id, out CustomRole customRole))
                 return false;
 
             TrySpawn(player, customRole);
@@ -386,7 +393,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Spawns the specified player with the custom role identified by the provided type or type name.
         /// </summary>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
-        /// <param name="customRoleType">The type or type name of the custom role to be assigned to the player.</param>
+        /// <param name="id">The id of the custom role to be assigned to the player.</param>
         /// <param name="shouldKeepPosition">
         /// A value indicating whether the custom role assignment should maintain the player's current position.
         /// </param>
@@ -397,9 +404,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// This method allows the spawning of the specified player with a custom role identified by its type or type name.
         /// If the custom role type or name is not provided, or if the identification process fails, the method returns <see langword="false"/>.
         /// </remarks>
-        public static bool Spawn(Pawn player, object customRoleType, bool shouldKeepPosition = false)
+        public static bool Spawn(Pawn player, uint id, bool shouldKeepPosition = false)
         {
-            if (!TryGet(customRoleType, out CustomRole customRole))
+            if (!TryGet(id, out CustomRole customRole))
                 return false;
 
             Spawn(player, customRole, shouldKeepPosition);

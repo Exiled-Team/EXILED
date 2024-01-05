@@ -9,9 +9,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
 {
     using System;
 
-    /// <summary>
-    /// A class to easily manage escaping behavior.
-    /// </summary>
+    /// <inheritdoc/>
     /// <typeparam name="T">The <see cref="EscapeBehaviour"/> type.</typeparam>
     public abstract class CustomEscape<T> : CustomEscape
         where T : EscapeBehaviour

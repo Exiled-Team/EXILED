@@ -21,7 +21,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Features.PlayerAbilities;
-
+    using Exiled.Events.EventArgs.Player;
     using PlayerRoles;
     using UnityEngine;
 
@@ -257,13 +257,16 @@ namespace Exiled.CustomModules.API.Features
         /// <param name="preservePlayerPosition">A value indicating whether the <see cref="Pawn"/> should be spawned in the same position.</param>
         public void SetRole(object role, bool preservePlayerPosition = false)
         {
-            if (role is RoleTypeId id)
+            if (role is RoleTypeId roleType)
             {
-                Role.Set(id);
+                Role.Set(roleType);
                 return;
             }
 
-            CustomRole.Spawn(this, role, preservePlayerPosition);
+            if (role is uint id)
+                CustomRole.Spawn(this, id, preservePlayerPosition);
+
+            throw new ArgumentException("The type of the role instance is not compatible with RoleTypeId or uint.");
         }
 
         /// <summary>
