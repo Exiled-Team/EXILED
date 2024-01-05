@@ -49,6 +49,6 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets or sets a value indicating whether the item has been successfully used.
         /// </summary>
-        public bool Success { get; set; }
+        public bool WasSuccessful { get; set; }
     }
 }
