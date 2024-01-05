@@ -109,11 +109,6 @@ namespace Exiled.CustomModules.API.Features
         public EscapeBehaviour EscapeBehaviour => escapeBehaviour ??= GetComponent<EscapeBehaviour>();
 
         /// <summary>
-        /// Gets the pawn's ability behaviours.
-        /// </summary>
-        public List<AbilityBehaviour> AbilityBehaviours { get; } = new();
-
-        /// <summary>
         /// Gets a value indicating whether the pawn is any SCP, including custom ones.
         /// </summary>
         public new bool IsScp
