@@ -73,6 +73,11 @@ namespace Exiled.API.Features.Core
         public bool IsEditable { get; set; }
 
         /// <summary>
+        /// Gets a value indicating whether the <see cref="EObject"/> is being destroyed.
+        /// </summary>
+        public bool IsDestroying { get; private set; }
+
+        /// <summary>
         /// Gets all the active <see cref="EObject"/> instances.
         /// </summary>
         internal static List<EObject> InternalObjects { get; } = new();
@@ -322,7 +327,9 @@ namespace Exiled.API.Features.Core
         public static EObject CreateDefaultSubobject(Type type, params object[] parameters)
         {
             BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+#pragma warning disable IDE0019 // Use pattern matching
             EObject @object = Activator.CreateInstance(type, flags, null, parameters, null) as EObject;
+#pragma warning restore IDE0019 // Use pattern matching
 
             // Do not use implicit bool conversion as @object may be null
             if (@object != null)
@@ -779,10 +786,11 @@ namespace Exiled.API.Features.Core
         /// <inheritdoc cref="Destroy()"/>
         protected virtual void Destroy(bool destroying)
         {
-            if (!destroyedValue)
+            if (!destroyedValue && !IsDestroying)
             {
                 if (destroying)
                 {
+                    IsDestroying = true;
                     OnBeginDestroy();
                     InternalObjects.Remove(this);
                 }

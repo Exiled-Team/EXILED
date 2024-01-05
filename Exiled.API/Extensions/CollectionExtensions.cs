@@ -156,5 +156,33 @@ namespace Exiled.API.Extensions
 
             return hashset;
         }
+
+        /// <summary>
+        /// Tries to add the specified key-value pair to the dictionary. Returns <see langword="false"/> if the key already exists.
+        /// </summary>
+        /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+        /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+        /// <param name="dictionary">The dictionary to which the key-value pair is to be added.</param>
+        /// <param name="kvp">The key-value pair to add to the dictionary.</param>
+        /// <returns><see langword="true"/> if the key-value pair was successfully added; otherwise, <see langword="false"/> if the key already exists in the dictionary.</returns>
+        public static bool TryAdd<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, KeyValuePair<TKey, TValue> kvp)
+        {
+            if (dictionary.ContainsKey(kvp.Key))
+                return false;
+
+            dictionary.Add(kvp.Key, kvp.Value);
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to add the specified key and value to the dictionary. Returns <see langword="false"/> if the key already exists.
+        /// </summary>
+        /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+        /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+        /// <param name="dictionary">The dictionary to which the key-value pair is to be added.</param>
+        /// <param name="key">The key to add to the dictionary.</param>
+        /// <param name="value">The value associated with the key.</param>
+        /// <returns><see langword="true"/> if the key-value pair was successfully added; otherwise, <see langword="false"/> if the key already exists in the dictionary.</returns>
+        public static bool TryAdd<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue value) => TryAdd(dictionary, new KeyValuePair<TKey, TValue>(key, value));
     }
 }

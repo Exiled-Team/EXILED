@@ -41,12 +41,12 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
         public static IEnumerable<Pickup> Owners => Manager.Keys.ToHashSet();
 
         /// <summary>
-        /// Gets a <see cref="PickupAbility"/> given the specified <paramref name="customAbilityType"/>.
+        /// Gets a <see cref="PickupAbility"/> given the specified id.
         /// </summary>
-        /// <param name="customAbilityType">The specified ability type.</param>
+        /// <param name="id">The specified id.</param>
         /// <returns>The <see cref="PickupAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new PickupAbility Get(object customAbilityType) =>
-            List.FirstOrDefault(customAbility => customAbility == customAbilityType && customAbility.IsEnabled);
+        public static new PickupAbility Get(uint id) =>
+            List.FirstOrDefault(customAbility => customAbility == id && customAbility.IsEnabled);
 
         /// <summary>
         /// Gets a <see cref="PickupAbility"/> given the specified name.
@@ -72,12 +72,12 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
         public static new IEnumerable<PickupAbility> Get(Pickup entity) => Manager.FirstOrDefault(kvp => kvp.Key == entity).Value;
 
         /// <summary>
-        /// Tries to get a <see cref="PickupAbility"/> given the specified <paramref name="customAbility"/>.
+        /// Tries to get a <see cref="PickupAbility"/> given the specified id.
         /// </summary>
-        /// <param name="customAbilityType">The <see cref="object"/> to look for.</param>
+        /// <param name="id">The id to look for.</param>
         /// <param name="customAbility">The found <paramref name="customAbility"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <paramref name="customAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object customAbilityType, out PickupAbility customAbility) => customAbility = Get(customAbilityType);
+        public static bool TryGet(uint id, out PickupAbility customAbility) => customAbility = Get(id);
 
         /// <summary>
         /// Tries to get a <paramref name="customAbility"/> given a specified name.

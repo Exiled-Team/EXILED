@@ -54,6 +54,16 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public static List<Player> StaticPlayers { get; } = new();
 
         /// <summary>
+        /// Gets the relative <see cref="CustomRoles.CustomRole"/>.
+        /// </summary>
+        public CustomRole CustomRole { get; private set; }
+
+        /// <summary>
+        /// Gets the relative <see cref="CustomRoles.CustomTeam"/>.
+        /// </summary>
+        public CustomTeam CustomTeam { get; private set; }
+
+        /// <summary>
         /// Gets or sets the <see cref="RoleSettings"/>.
         /// </summary>
         public virtual RoleSettings Settings { get; set; }
@@ -139,11 +149,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         protected RoleTypeId Role { get; set; }
 
         /// <summary>
-        /// Gets the relative <see cref="CustomRoles.CustomRole"/>.
-        /// </summary>
-        protected CustomRole CustomRole { get; private set; }
-
-        /// <summary>
         /// Gets the current speed of the  <see cref="EBehaviour{T}.Owner"/>.
         /// </summary>
         protected float CurrentSpeed { get; private set; }
@@ -211,7 +216,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             LoadConfigs(ConfigRaw);
 
-            if (CustomRole.TryGet(this, out CustomRole customRole))
+            if (CustomTeam.TryGet(Owner.Cast<Pawn>(), out CustomTeam customTeam))
+                CustomTeam = customTeam;
+
+            if (CustomRole.TryGet(GetType(), out CustomRole customRole))
             {
                 CustomRole = customRole;
                 Settings = CustomRole.Settings;
@@ -375,7 +383,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     if (!ev.IsAllowed)
                         continue;
 
-                    ev.Player.SetRole(ev.NewRole != RoleTypeId.None ? ev.NewRole : ev.NewCustomRole);
+                    ev.Player.Cast<Pawn>().SetRole(ev.NewRole != RoleTypeId.None ? ev.NewRole : ev.NewCustomRole);
                     ev.Player.ShowHint(ev.Hint);
 
                     EscapedEventDispatcher.InvokeAll(ev.Player);
@@ -394,7 +402,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             base.OnEndPlay();
 
-            CustomRole.PlayersValue.Remove(Owner.Cast<Pawn>());
+            CustomRole.Eject(Owner.Cast<Pawn>());
 
             if (!Settings.DoesLookingAffectScp173)
                 Scp173Role.TurnedPlayers.Remove(Owner);
@@ -657,9 +665,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return;
             }
 
-            if (CustomRole.TryGet(ev.Attacker, out CustomRole customRole))
+            if (CustomRole.TryGet(ev.Attacker.Cast<Pawn>(), out CustomRole customRole))
             {
-                if (CustomTeam.TryGet<CustomTeam>(customRole, out CustomTeam customTeam) &&
+                if (CustomTeam.TryGet(ev.Attacker.Cast<Pawn>(), out CustomTeam customTeam) &&
                     Settings.KilledByCustomTeamAnnouncements.TryGetValue(customTeam.Id, out announcement))
                 {
                     DoAnnounce(announcement);

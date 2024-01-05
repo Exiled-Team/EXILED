@@ -7,18 +7,16 @@
 
 namespace Exiled.CustomModules.Events.EventArgs.CustomEscapes
 {
-    using System;
-
     using Exiled.API.Features;
     using Exiled.CustomModules.API.Enums;
-    using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.API.Features.CustomRoles;
+    using Exiled.Events.EventArgs.Interfaces;
     using PlayerRoles;
 
     /// <summary>
     /// Contains all informations before escaping.
     /// </summary>
-    public class EscapingEventArgs : EventArgs
+    public class EscapingEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EscapingEventArgs"/> class.
@@ -30,7 +28,7 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomEscapes
         /// <param name="hint"><inheritdoc cref="Hint"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public EscapingEventArgs(
-            Pawn player,
+            Player player,
             RoleTypeId newRole,
             CustomRole newCustomRole,
             byte scenarioType,
@@ -45,10 +43,11 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomEscapes
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        /// Gets the player who's escaping.
-        /// </summary>
-        public Pawn Player { get; }
+        /// <inheritdoc/>
+        public Player Player { get; }
+
+        /// <inheritdoc/>
+        public bool IsAllowed { get; set; }
 
         /// <summary>
         /// Gets or sets the new <see cref="RoleTypeId"/>.
@@ -69,10 +68,5 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomEscapes
         /// Gets or sets the <see cref="Exiled.API.Features.Hint"/> to be displayed.
         /// </summary>
         public Hint Hint { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the player can escape.
-        /// </summary>
-        public bool IsAllowed { get; set; }
     }
 }

@@ -40,12 +40,12 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         public static IEnumerable<Item> Owners => Manager.Keys.ToHashSet();
 
         /// <summary>
-        /// Gets a <see cref="ItemAbility"/> given the specified <paramref name="customAbilityType"/>.
+        /// Gets a <see cref="ItemAbility"/> given the specified id.
         /// </summary>
-        /// <param name="customAbilityType">The specified ability type.</param>
+        /// <param name="id">The specified id.</param>
         /// <returns>The <see cref="ItemAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new ItemAbility Get(object customAbilityType) =>
-            List.FirstOrDefault(customAbility => customAbility == customAbilityType && customAbility.IsEnabled);
+        public static new ItemAbility Get(uint id) =>
+            List.FirstOrDefault(customAbility => customAbility == id && customAbility.IsEnabled);
 
         /// <summary>
         /// Gets a <see cref="ItemAbility"/> given the specified name.
@@ -73,10 +73,10 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         /// <summary>
         /// Tries to get a <see cref="ItemAbility"/> given the specified <paramref name="customAbility"/>.
         /// </summary>
-        /// <param name="customAbilityType">The <see cref="object"/> to look for.</param>
+        /// <param name="id">Theid to look for.</param>
         /// <param name="customAbility">The found <paramref name="customAbility"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <paramref name="customAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object customAbilityType, out ItemAbility customAbility) => customAbility = Get(customAbilityType);
+        public static bool TryGet(uint id, out ItemAbility customAbility) => customAbility = Get(id);
 
         /// <summary>
         /// Tries to get a <paramref name="customAbility"/> given a specified name.
