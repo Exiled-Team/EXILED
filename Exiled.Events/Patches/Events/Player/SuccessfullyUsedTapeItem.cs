@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsedTapeEventArgs))[0]),
 
                     // Handlers.Player.OnUsedTape(ev);
-                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSuccessfullyUsedTapeItem))),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsedTape))),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
