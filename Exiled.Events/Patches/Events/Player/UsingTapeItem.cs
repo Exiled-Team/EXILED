@@ -58,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // UsingTapeItemEventArgs ev = new(Player, ItemBase, bool, true);
+                    // UsingTapeEventArgs ev = new(Player, ItemBase, bool, true);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingTapeEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
