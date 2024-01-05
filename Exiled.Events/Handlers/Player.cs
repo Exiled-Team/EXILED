@@ -1121,7 +1121,7 @@ namespace Exiled.Events.Handlers
         /// Called after player uses tape.
         /// </summary>
         /// <param name="ev">The <see cref="UsedTapeItemEventArgs"/> instance.</param>
-        public static void OnSuccessfullyUsedTapeItem(UsedTapeItemEventArgs ev) => SuccessfullyUsedTapeItem.InvokeSafely(ev);
+        public static void OnUsedItem(UsedTapeEventArgs ev) => UsedTape.InvokeSafely(ev);
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
