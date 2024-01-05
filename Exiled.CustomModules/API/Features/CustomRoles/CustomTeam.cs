@@ -151,18 +151,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="left">The <see cref="CustomTeam"/> to compare.</param>
         /// <param name="right">The <see cref="object"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomTeam left, object right)
-        {
-            if (left is null)
-            {
-                if (right is null)
-                    return true;
-
-                return false;
-            }
-
-            return left.Equals(right);
-        }
+        public static bool operator ==(CustomTeam left, object right) => left is null ? right is null : left.Equals(right);
 
         /// <summary>
         /// Compares two operands: <see cref="object"/> and <see cref="CustomTeam"/>.
@@ -194,18 +183,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="left">The left <see cref="CustomTeam"/> to compare.</param>
         /// <param name="right">The right <see cref="CustomTeam"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomTeam left, CustomTeam right)
-        {
-            if (left is null)
-            {
-                if (right is null)
-                    return true;
-
-                return false;
-            }
-
-            return left.Equals(right);
-        }
+        public static bool operator ==(CustomTeam left, CustomTeam right) => left is null ? right is null : left.Equals(right);
 
         /// <summary>
         /// Compares two operands: <see cref="CustomTeam"/> and <see cref="CustomTeam"/>.
@@ -250,7 +228,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             customTeam.Respawn();
-
             return true;
         }
 
@@ -265,7 +242,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             customTeam.Respawn();
-
             return true;
         }
 
@@ -281,7 +257,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             customTeam.Spawn(player);
-
             return true;
         }
 
@@ -297,7 +272,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             customTeam.Spawn(player);
-
             return true;
         }
 
@@ -313,7 +287,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             customTeam.Respawn(players);
-
             return true;
         }
 
@@ -329,7 +302,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             customTeam.Respawn(players);
-
             return true;
         }
 
@@ -345,7 +317,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             customTeam.Respawn(amount);
-
             return true;
         }
 
@@ -361,7 +332,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             customTeam.Respawn(amount);
-
             return true;
         }
 

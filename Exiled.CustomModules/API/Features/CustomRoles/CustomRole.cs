@@ -157,18 +157,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="left">The <see cref="CustomRole"/> to compare.</param>
         /// <param name="right">The <see cref="object"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomRole left, object right)
-        {
-            if (left is null)
-            {
-                if (right is null)
-                    return true;
-
-                return false;
-            }
-
-            return left.Equals(right);
-        }
+        public static bool operator ==(CustomRole left, object right) => left is null ? right is null : left.Equals(right);
 
         /// <summary>
         /// Compares two operands: <see cref="object"/> and <see cref="CustomRole"/>.
@@ -230,8 +219,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="type">The specified <see cref="Type"/>.</param>
         /// <returns>The <see cref="CustomRole"/> matching the search or <see langword="null"/> if not found.</returns>
         public static CustomRole Get(Type type) =>
-            type.IsSubclassOf(typeof(CustomRole)) ? TypeLookupTable[type] :
-            type.IsSubclassOf(typeof(RoleBehaviour)) ? BehaviourLookupTable[type] : null;
+            typeof(CustomRole).IsAssignableFrom(type) ? TypeLookupTable[type] :
+            typeof(RoleBehaviour).IsAssignableFrom(type) ? BehaviourLookupTable[type] : null;
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> given the specified <see cref="Type"/>.
@@ -298,7 +287,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             customRole.Spawn(player);
-
             return true;
         }
 
@@ -320,7 +308,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             TrySpawn(player, customRole);
-
             return true;
         }
 
@@ -342,7 +329,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             TrySpawn(player, customRole);
-
             return true;
         }
 
@@ -367,7 +353,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             customRole.ForceSpawn(player, shouldKeepPosition);
-
             return true;
         }
 
@@ -392,7 +377,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
 
             Spawn(player, customRole, shouldKeepPosition);
-
             return true;
         }
 
@@ -737,10 +721,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 }
 
                 Registered.Add(this);
-                TypeLookupTable.Add(GetType(), this);
-                BehaviourLookupTable.Add(BehaviourComponent, this);
-                IdLookupTable.Add(Id, this);
-                NameLookupTable.Add(Name, this);
+                TypeLookupTable.TryAdd(GetType(), this);
+                BehaviourLookupTable.TryAdd(BehaviourComponent, this);
+                IdLookupTable.TryAdd(Id, this);
+                NameLookupTable.TryAdd(Name, this);
 
                 return true;
             }

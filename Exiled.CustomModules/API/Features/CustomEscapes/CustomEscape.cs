@@ -13,6 +13,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using System.Linq;
     using System.Reflection;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
@@ -34,9 +35,13 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     /// </remarks>
     public abstract class CustomEscape : TypeCastObject<CustomEscape>, IAdditiveBehaviour, IEquatable<CustomEscape>, IEquatable<uint>
     {
+        private static readonly Dictionary<Player, CustomEscape> PlayersValue = new();
         private static readonly List<CustomEscape> Registered = new();
         private static readonly Dictionary<byte, Hint> AllScenariosInternal = new();
-        private static readonly Dictionary<Player, CustomEscape> PlayersValue = new();
+        private static readonly Dictionary<Type, CustomEscape> TypeLookupTable = new();
+        private static readonly Dictionary<Type, CustomEscape> BehaviourLookupTable = new();
+        private static readonly Dictionary<uint, CustomEscape> IdLookupTable = new();
+        private static readonly Dictionary<string, CustomEscape> NameLookupTable = new();
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomEscape"/>'s.
@@ -76,12 +81,12 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Gets all <see cref="Hint"/>'s to be displayed based on the relative <see cref="UUEscapeScenarioType"/>.
         /// </summary>
-        protected virtual Dictionary<byte, Hint> Scenarios { get; } = new();
+        public virtual Dictionary<byte, Hint> Scenarios { get; } = new();
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape settings.
         /// </summary>
-        protected virtual List<EscapeSettings> Settings { get; }
+        public virtual List<EscapeSettings> Settings { get; }
 
         /// <summary>
         /// Compares two operands: <see cref="CustomEscape"/> and <see cref="object"/>.
@@ -89,18 +94,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="left">The <see cref="CustomEscape"/> to compare.</param>
         /// <param name="right">The <see cref="object"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomEscape left, object right)
-        {
-            if (left is null)
-            {
-                if (right is null)
-                    return true;
-
-                return false;
-            }
-
-            return left.Equals(right);
-        }
+        public static bool operator ==(CustomEscape left, object right) => left is null ? right is null : left.Equals(right);
 
         /// <summary>
         /// Compares two operands: <see cref="object"/> and <see cref="CustomEscape"/>.
@@ -132,18 +126,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="left">The left <see cref="CustomEscape"/> to compare.</param>
         /// <param name="right">The right <see cref="CustomEscape"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomEscape left, CustomEscape right)
-        {
-            if (left is null)
-            {
-                if (right is null)
-                    return true;
-
-                return false;
-            }
-
-            return left.Equals(right);
-        }
+        public static bool operator ==(CustomEscape left, CustomEscape right) => left is null ? right is null : left.Equals(right);
 
         /// <summary>
         /// Compares two operands: <see cref="CustomEscape"/> and <see cref="CustomEscape"/>.
@@ -200,21 +183,23 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// </summary>
         /// <param name="id">The specified id.</param>
         /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomEscape Get(uint id) => List.FirstOrDefault(customEscape => customEscape == id && customEscape.IsEnabled);
+        public static CustomEscape Get(uint id) => IdLookupTable[id];
 
         /// <summary>
         /// Gets a <see cref="CustomEscape"/> given the specified name.
         /// </summary>
         /// <param name="name">The specified name.</param>
         /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomEscape Get(string name) => List.FirstOrDefault(customEscape => customEscape.Name == name);
+        public static CustomEscape Get(string name) => NameLookupTable[name];
 
         /// <summary>
         /// Gets a <see cref="CustomEscape"/> given the specified <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The specified <see cref="Type"/>.</param>
         /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not found.</returns>
-        public static CustomEscape Get(Type type) => typeof(EscapeBehaviour).IsAssignableFrom(type) ? List.FirstOrDefault(customEscape => customEscape.GetType() == type) : null;
+        public static CustomEscape Get(Type type) =>
+            typeof(EscapeBehaviour).IsAssignableFrom(type) ? BehaviourLookupTable[type] :
+            typeof(CustomEscape).IsAssignableFrom(type) ? TypeLookupTable[type] : null;
 
         /// <summary>
         /// Gets a <see cref="CustomEscape"/> given the specified <see cref="EscapeBehaviour"/>.
@@ -228,13 +213,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// </summary>
         /// <param name="player">The <see cref="CustomEscape"/> owner.</param>
         /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomEscape Get(Player player)
-        {
-            if (!PlayersValue.TryGetValue(player, out CustomEscape customEscape))
-                return default;
-
-            return customEscape;
-        }
+        public static CustomEscape Get(Player player) => PlayersValue.TryGetValue(player, out CustomEscape customEscape) ? customEscape : default;
 
         /// <summary>
         /// Tries to get a <see cref="CustomEscape"/> given the specified <see cref="CustomEscape"/>.
@@ -242,7 +221,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="id">The id to look for.</param>
         /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(uint id, out CustomEscape customEscape) => (customEscape = Get(id)) is not null;
+        public static bool TryGet(uint id, out CustomEscape customEscape) => customEscape = Get(id);
 
         /// <summary>
         /// Tries to get a <see cref="CustomEscape"/> given a specified name.
@@ -250,7 +229,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="name">The <see cref="CustomEscape"/> name to look for.</param>
         /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out CustomEscape customEscape) => (customEscape = List.FirstOrDefault(cRole => cRole.Name == name)) is not null;
+        public static bool TryGet(string name, out CustomEscape customEscape) => customEscape = List.FirstOrDefault(cRole => cRole.Name == name);
 
         /// <summary>
         /// Tries to get the player's current <see cref="CustomEscape"/>.
@@ -258,15 +237,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="player">The <see cref="Player"/> to search on.</param>
         /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Player player, out CustomEscape customEscape) => (customEscape = Get(player)) is not null;
-
-        /// <summary>
-        /// Tries to get the player's current <see cref="CustomEscape"/>.
-        /// </summary>
-        /// <param name="escapeBuilder">The <see cref="EscapeBehaviour"/> to search for.</param>
-        /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(EscapeBehaviour escapeBuilder, out CustomEscape customEscape) => (customEscape = Get(escapeBuilder.GetType())) is not null;
+        public static bool TryGet(Player player, out CustomEscape customEscape) => customEscape = Get(player);
 
         /// <summary>
         /// Tries to get the player's current <see cref="CustomEscape"/>.
@@ -274,7 +245,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="type">The <see cref="Type"/> to search for.</param>
         /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out CustomEscape customEscape) => (customEscape = Get(type.GetType())) is not null;
+        public static bool TryGet(Type type, out CustomEscape customEscape) => customEscape = Get(type.GetType());
 
         /// <summary>
         /// Determines whether the provided id is equal to the current object.
@@ -286,9 +257,9 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
-        /// <param name="cr">The custom role to compare.</param>
+        /// <param name="ce">The custom escape to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(CustomEscape cr) => cr && (ReferenceEquals(this, cr) || Id == cr.Id);
+        public bool Equals(CustomEscape ce) => ce && (ReferenceEquals(this, ce) || Id == ce.Id);
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
@@ -363,6 +334,10 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
 
                 AllScenariosInternal.AddRange(Scenarios);
                 Registered.Add(this);
+                TypeLookupTable.TryAdd(GetType(), this);
+                BehaviourLookupTable.TryAdd(BehaviourComponent, this);
+                IdLookupTable.TryAdd(Id, this);
+                NameLookupTable.TryAdd(Name, this);
 
                 return true;
             }
@@ -389,6 +364,10 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                 AllScenariosInternal.Remove(scenario);
 
             Registered.Remove(this);
+            TypeLookupTable.Remove(GetType());
+            BehaviourLookupTable.Remove(BehaviourComponent);
+            IdLookupTable.Remove(Id);
+            NameLookupTable.Remove(Name);
 
             return true;
         }

@@ -26,6 +26,11 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     public abstract class EscapeBehaviour : EPlayerBehaviour, IAdditiveSettingsCollection<EscapeSettings>
     {
         /// <summary>
+        /// Gets the relative <see cref="CustomEscapes.CustomEscape"/>.
+        /// </summary>
+        public CustomEscape CustomEscape { get; private set; }
+
+        /// <summary>
         /// Gets or sets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape settings.
         /// </summary>
         public virtual List<EscapeSettings> Settings { get; set; }
@@ -55,9 +60,11 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         {
             base.PostInitialize();
 
+            if (CustomEscape.TryGet(GetType(), out CustomEscape customEscape))
+                CustomEscape = customEscape;
+
             CustomRole customRole = Owner.Cast<Pawn>().CustomRole;
-            if (customRole && !customRole.EscapeSettings.IsEmpty())
-                Settings = customRole.EscapeSettings;
+            Settings = customRole && !customRole.EscapeSettings.IsEmpty() ? customRole.EscapeSettings : CustomEscape.Settings;
 
             AdjustAddittivePipe();
 
