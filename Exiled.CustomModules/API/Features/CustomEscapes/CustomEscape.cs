@@ -270,7 +270,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public static bool TryGet(Type type, out CustomEscape customEscape) => (customEscape = Get(type.GetType())) is not null;
 
         /// <summary>
-        /// Determines whether id is equal to the current object.
+        /// Determines whether the provided id is equal to the current object.
         /// </summary>
         /// <param name="id">The id to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>

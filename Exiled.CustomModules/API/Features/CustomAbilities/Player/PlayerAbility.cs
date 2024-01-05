@@ -76,7 +76,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         /// <param name="customAbilityType">The <see cref="object"/> to look for.</param>
         /// <param name="customAbility">The found <paramref name="customAbility"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <paramref name="customAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object customAbilityType, out PlayerAbility customAbility) => customAbility = Get(customAbilityType);
+        public static bool TryGet(uint customAbilityType, out PlayerAbility customAbility) => customAbility = Get(customAbilityType);
 
         /// <summary>
         /// Tries to get a <paramref name="customAbility"/> given a specified name.

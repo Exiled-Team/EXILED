@@ -16,21 +16,26 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
-    using Exiled.CustomItems.API.Features;
     using Exiled.CustomModules.API.Features.CustomAbilities;
     using Exiled.CustomModules.API.Features.CustomEscapes;
+    using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Features.PlayerAbilities;
+
     using PlayerRoles;
     using UnityEngine;
 
     /// <summary>
-    /// Represents the in-game player, by encapsulating a ReferenceHub.
+    /// Represents an in-game player by encapsulating a <see cref="ReferenceHub"/>, providing an extended feature set through the <see cref="Pawn"/> class.
     /// <para>
-    /// <see cref="Pawn"/> implements more features in addition to <see cref="Player"/>'s existing ones.
-    /// <br>This is treated as a <see cref="Player"/>, which means it can be used along with existing methods asking for a <see cref="Player"/> as parameter.</br>
-    /// <para>Nullable context is enabled in order to prevent users to pass or interact with <see langword="null"/> references.</para>
+    /// The <see cref="Pawn"/> class enhances the functionality of the base <see cref="Player"/> class, introducing additional features and capabilities.
+    /// <br>This class is designed to be used seamlessly alongside existing methods that expect a <see cref="Player"/> as a parameter, allowing for compatibility with the existing codebase.</br>
+    /// <para>The use of nullable context is enabled to prevent users from inadvertently passing or interacting with <see langword="null"/> references.</para>
     /// </para>
+    /// <remarks>
+    /// Developers can leverage the enhanced functionality provided by the <see cref="Pawn"/> class while benefiting from the familiar interface of the <see cref="Player"/> class.
+    /// <br>It serves as a comprehensive representation of an in-game entity, encapsulating the associated <see cref="ReferenceHub"/> with an expanded set of features.</br>
+    /// </remarks>
     /// </summary>
     public class Pawn : Player
     {
@@ -184,6 +189,33 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
+        /// Tries to get the first <see cref="CustomItem"/> of the specified type from the collection of custom items.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="CustomItem"/> to retrieve.</typeparam>
+        /// <param name="customItem">The output parameter that will contain the retrieved <see cref="CustomItem"/>, if found.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetCustomItem<T>(out T customItem)
+            where T : CustomItem => customItem = CustomItems.FirstOrDefault(item => item.GetType() == typeof(T)).Cast<T>();
+
+        /// <summary>
+        /// Tries to get the <see cref="CustomRoles.CustomRole"/> of the specified type from the <see cref="Pawn"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="CustomRoles.CustomRole"/> to retrieve.</typeparam>
+        /// <param name="customRole">The output parameter that will contain the retrieved <see cref="CustomRoles.CustomRole"/>, if found.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomRoles.CustomRole"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetCustomRole<T>(out T customRole)
+            where T : CustomRole => CustomRole.Is(out customRole);
+
+        /// <summary>
+        /// Tries to get the <see cref="CustomAbility{T}"/> of the specified type from the player's abilities.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="CustomAbility{T}"/> to retrieve.</typeparam>
+        /// <param name="customAbility">The output parameter that will contain the retrieved <see cref="CustomAbility{T}"/>, if found.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomAbility{T}"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetCustomAbility<T>(out T customAbility)
+            where T : PlayerAbility => CustomAbilities.FirstOrDefault(ability => ability.GetType() == typeof(T)).Is(out customAbility);
+
+        /// <summary>
         /// Add a <see cref="CustomItem"/> of the specified type to the pawn's inventory.
         /// </summary>
         /// <param name="customItem">The item to be added.</param>
@@ -201,10 +233,7 @@ namespace Exiled.CustomModules.API.Features
             }
             catch
             {
-                if (customItem is CustomItem instance)
-                    return CustomItem.TryGive(this, instance.Id);
-
-                return false;
+                return customItem is CustomItem instance && CustomItem.TryGive(this, instance.Id);
             }
         }
 
@@ -220,34 +249,6 @@ namespace Exiled.CustomModules.API.Features
                     break;
             }
         }
-
-        /// <summary>
-        /// Tries to get a <see cref="CustomItem"/> from the given <see cref="Item"/> instance.
-        /// </summary>
-        /// <typeparam name="T">The type of the <see cref="CustomItem"/> to look for.</typeparam>
-        /// <param name="customItem">The <see cref="CustomItem"/> result.</param>
-        /// <returns><see langword="true"/> if pawn owns the specified <see cref="CustomItem"/>; otherwise, <see langword="false"/>.</returns>
-        public bool TryGetCustomItem<T>(out T customItem)
-            where T : CustomItem
-        {
-            customItem = null;
-            foreach (Item item in Items)
-            {
-                if (!CustomItem.TryGet(item, out CustomItem tmp) || tmp is null || tmp.GetType() != typeof(T))
-                    continue;
-
-                customItem = (T)tmp;
-            }
-
-            return customItem is not null;
-        }
-
-        /// <summary>
-        /// Gets the pawn's <see cref="CustomRoles.CustomRole"/>.
-        /// </summary>
-        /// <param name="customRole">The <see cref="CustomRoles.CustomRole"/> result.</param>
-        /// <returns>The found <see cref="CustomRoles.CustomRole"/>, or <see langword="null"/> if not found.</returns>
-        public bool TryGetCustomRole(out CustomRole customRole) => (customRole = CustomRole) is not null;
 
         /// <summary>
         /// Sets the pawn's role.

@@ -55,7 +55,8 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         {
             base.PostInitialize();
 
-            if (Owner.Cast<Pawn>().TryGetCustomRole(out CustomRole customRole) && !customRole.EscapeSettings.IsEmpty())
+            CustomRole customRole = Owner.Cast<Pawn>().CustomRole;
+            if (customRole && !customRole.EscapeSettings.IsEmpty())
                 Settings = customRole.EscapeSettings;
 
             AdjustAddittivePipe();
