@@ -22,7 +22,7 @@ namespace Exiled.Events.EventArgs.Player
         public LeftEventArgs(Player player) => Player = player;
 
         /// <summary>
-        /// Gets the player who left.
+        /// Gets the player who left the server.
         /// </summary>
         public Player Player { get; }
     }
