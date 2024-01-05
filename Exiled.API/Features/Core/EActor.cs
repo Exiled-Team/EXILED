@@ -266,13 +266,13 @@ namespace Exiled.API.Features.Core
             where T : EActor => ComponentsInChildren.FirstOrDefault(comp => type == comp.GetType()).Cast<T>();
 
         /// <inheritdoc/>
-        public IEnumerable<T> GetComponents<T>() => ComponentsInChildren.Where(comp => typeof(T) == comp.GetType() || comp.GetType().IsSubclassOf(typeof(T)) || comp.GetType().BaseType == typeof(T)).Cast<T>();
+        public IEnumerable<T> GetComponents<T>() => ComponentsInChildren.Where(comp => typeof(T).IsAssignableFrom(comp.GetType())).Cast<T>();
 
         /// <inheritdoc/>
-        public IEnumerable<T> GetComponents<T>(Type type) => ComponentsInChildren.Where(comp => type == comp.GetType() || comp.GetType().IsSubclassOf(type) || comp.GetType().BaseType == type).Cast<T>();
+        public IEnumerable<T> GetComponents<T>(Type type) => ComponentsInChildren.Where(comp => typeof(T).IsAssignableFrom(comp.GetType())).Cast<T>();
 
         /// <inheritdoc/>
-        public IEnumerable<EActor> GetComponents(Type type) => ComponentsInChildren.Where(comp => type == comp.GetType() || comp.GetType().IsSubclassOf(type) || comp.GetType().BaseType == type);
+        public IEnumerable<EActor> GetComponents(Type type) => ComponentsInChildren.Where(comp => type.IsAssignableFrom(comp.GetType()));
 
         /// <inheritdoc/>
         public bool TryGetComponent<T>(Type type, out T component)
@@ -311,12 +311,12 @@ namespace Exiled.API.Features.Core
 
         /// <inheritdoc/>
         public bool HasComponent<T>(bool depthInheritance = false) => depthInheritance
-            ? ComponentsInChildren.Any(comp => typeof(T).IsSubclassOf(comp.GetType()))
+            ? ComponentsInChildren.Any(comp => typeof(T).IsAssignableFrom(comp.GetType()))
             : ComponentsInChildren.Any(comp => typeof(T) == comp.GetType());
 
         /// <inheritdoc/>
         public bool HasComponent(Type type, bool depthInheritance = false) => depthInheritance
-            ? ComponentsInChildren.Any(comp => type.IsSubclassOf(comp.GetType()))
+            ? ComponentsInChildren.Any(comp => type.IsAssignableFrom(comp.GetType()))
             : ComponentsInChildren.Any(comp => type == comp.GetType());
 
         /// <summary>

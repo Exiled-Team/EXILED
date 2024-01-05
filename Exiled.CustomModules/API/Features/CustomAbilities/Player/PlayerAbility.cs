@@ -40,12 +40,12 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         public static IEnumerable<Player> Owners => Manager.Keys.ToHashSet();
 
         /// <summary>
-        /// Gets a <see cref="PlayerAbility"/> given the specified <paramref name="customAbilityType"/>.
+        /// Gets a <see cref="PlayerAbility"/> given the specified id.
         /// </summary>
-        /// <param name="customAbilityType">The specified ability type.</param>
+        /// <param name="id">The specified id.</param>
         /// <returns>The <see cref="PlayerAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new PlayerAbility Get(object customAbilityType) =>
-            List.FirstOrDefault(customAbility => customAbility == customAbilityType && customAbility.IsEnabled);
+        public static new PlayerAbility Get(uint id) =>
+            List.FirstOrDefault(customAbility => customAbility == id && customAbility.IsEnabled);
 
         /// <summary>
         /// Gets a <see cref="PlayerAbility"/> given the specified name.
@@ -76,7 +76,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         /// <param name="customAbilityType">The <see cref="object"/> to look for.</param>
         /// <param name="customAbility">The found <paramref name="customAbility"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <paramref name="customAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object customAbilityType, out PlayerAbility customAbility) => customAbility = Get(customAbilityType);
+        public static bool TryGet(uint customAbilityType, out PlayerAbility customAbility) => customAbility = Get(customAbilityType);
 
         /// <summary>
         /// Tries to get a <paramref name="customAbility"/> given a specified name.
