@@ -38,14 +38,14 @@ namespace Exiled.Events.Handlers
         public static Event<UsingBreakneckSpeedsEventArgs> UsingBreakneckSpeeds { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a user saw scp 173.
+        /// Invoked before a player starts looking at SCP-173.
         /// </summary>
         public static Event<AddingObserverEventArgs> AddingObserver { get; set; } = new();
 
         /// <summary>
-        /// Invoked when a user no longer saw scp 173.
+        /// Invoked after a player stops looking at SCP-173.
         /// </summary>
-        public static Event<RemovingObserverEventArgs> RemovingObserver { get; set; } = new();
+        public static Event<RemoveObserverEventArgs> RemoveObserver { get; set; } = new();
 
         /// <summary>
         /// Called before players near SCP-173 blink.
@@ -72,15 +72,15 @@ namespace Exiled.Events.Handlers
         public static void OnUsingBreakneckSpeeds(UsingBreakneckSpeedsEventArgs ev) => UsingBreakneckSpeeds.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a user is saw scp 173.
+        /// Called before player starts looking at SCP-173.
         /// </summary>
         /// <param name="ev">The <see cref="AddingObserverEventArgs" /> instance.</param>
         public static void OnAddingObserver(AddingObserverEventArgs ev) => AddingObserver.InvokeSafely(ev);
 
         /// <summary>
-        /// Called when a user no longer saw scp 173.
+        /// Called after a player stops looking at SCP-173.
         /// </summary>
         /// <param name="ev">The <see cref="AddingObserverEventArgs" /> instance.</param>
-        public static void OnRemovingObserver(RemovingObserverEventArgs ev) => RemovingObserver.InvokeSafely(ev);
+        public static void OnRemoveObserver(RemoveObserverEventArgs ev) => RemoveObserver.InvokeSafely(ev);
     }
 }

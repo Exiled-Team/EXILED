@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Scp173
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before a player sees scp 173.
+    /// Contains all information before a player sees SCP-173.
     /// </summary>
     public class AddingObserverEventArgs : IScp173Event, IDeniableEvent
     {
@@ -40,17 +40,17 @@ namespace Exiled.Events.EventArgs.Scp173
         public Scp173Role Scp173 { get; }
 
         /// <summary>
-        /// Gets the target who saw the scp 173.
+        /// Gets the target who have just seen SCP-173.
         /// </summary>
         public Player Target { get; }
 
         /// <summary>
-        /// Gets the player who controlling scp 173.
+        /// Gets the player who's controlling scp 173.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or Sets a value indicating whether or not the player trigger scp 173.
+        /// Gets or sets a value indicating whether the player can be added as an observer.
         /// </summary>
         public bool IsAllowed { get; set; }
     }
