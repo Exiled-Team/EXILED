@@ -20,6 +20,11 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         where TEntity : GameEntity
     {
         /// <summary>
+        /// Gets the relative <see cref="CustomAbility{T}"/>.
+        /// </summary>
+        public CustomAbility<TEntity> CustomAbility { get; private set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the ability is active.
         /// <para>This value is just affected by duration-based abilities.</para>
         /// </summary>
@@ -33,6 +38,15 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <inheritdoc/>
         public virtual void AdjustAddittivePipe()
         {
+        }
+
+        /// <inheritdoc/>
+        protected override void PostInitialize()
+        {
+            base.PostInitialize();
+
+            if (CustomAbility<TEntity>.TryGet(GetType(), out CustomAbility<TEntity> customAbility))
+                CustomAbility = customAbility;
         }
 
         /// <inheritdoc/>
@@ -56,6 +70,8 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         protected override void OnEndPlay()
         {
             base.OnEndPlay();
+
+            CustomAbility.Remove(Owner);
 
             UnsubscribeEvents_Static();
         }

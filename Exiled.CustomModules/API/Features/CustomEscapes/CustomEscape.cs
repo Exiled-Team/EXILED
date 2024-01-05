@@ -248,6 +248,112 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public static bool TryGet(Type type, out CustomEscape customEscape) => customEscape = Get(type.GetType());
 
         /// <summary>
+        /// Attaches a <see cref="CustomEscape"/> with the specified <paramref name="id"/> to the specified <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to attach the escape rules to.</param>
+        /// <param name="id">The unique identifier of the <see cref="CustomEscape"/> to attach.</param>
+        /// <remarks>
+        /// This method attempts to attach a <see cref="CustomEscape"/> to the provided <paramref name="player"/> based on the specified <paramref name="id"/>.
+        /// </remarks>
+        public static void Attach(Player player, uint id)
+        {
+            if (TryGet(id, out CustomEscape customEscape))
+                customEscape.Attach(player);
+        }
+
+        /// <summary>
+        /// Attaches a <see cref="CustomEscape"/> with the specified <paramref name="name"/> to the specified <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to attach the escape rules to.</param>
+        /// <param name="name">The name of the <see cref="CustomEscape"/> to attach.</param>
+        /// <remarks>
+        /// This method attempts to attach a <see cref="CustomEscape"/> to the provided <paramref name="player"/> based on the specified <paramref name="name"/>.
+        /// </remarks>
+        public static void Attach(Player player, string name)
+        {
+            if (TryGet(name, out CustomEscape customEscape))
+                customEscape.Attach(player);
+        }
+
+        /// <summary>
+        /// Attaches a <see cref="CustomEscape"/> with the specified <paramref name="type"/> to the specified <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to attach the escape rules to.</param>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="CustomEscape"/> to attach.</param>
+        /// <remarks>
+        /// This method attempts to attach a <see cref="CustomEscape"/> to the provided <paramref name="player"/> based on the specified <paramref name="type"/>.
+        /// </remarks>
+        public static void Attach(Player player, Type type)
+        {
+            if (TryGet(type, out CustomEscape customEscape))
+                customEscape.Attach(player);
+        }
+
+        /// <summary>
+        /// Attaches a <typeparamref name="T"/>-derived <see cref="CustomEscape"/> to the specified <see cref="Player"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="CustomEscape"/> to attach.</typeparam>
+        /// <param name="player">The <see cref="Player"/> to attach the escape rules to.</param>
+        /// <remarks>
+        /// This method attempts to attach a <typeparamref name="T"/>-derived <see cref="CustomEscape"/> to the provided <paramref name="player"/>.
+        /// </remarks>
+        public static void Attach<T>(Player player)
+            where T : CustomEscape => Attach(player, typeof(T));
+
+        /// <summary>
+        /// Detaches a <see cref="CustomEscape"/> with the specified <paramref name="id"/> from the specified <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to detach the escape rules from.</param>
+        /// <param name="id">The unique identifier of the <see cref="CustomEscape"/> to detach.</param>
+        /// <remarks>
+        /// This method attempts to detach a <see cref="CustomEscape"/> with the provided <paramref name="id"/> from the specified <paramref name="player"/>.
+        /// </remarks>
+        public static void Detach(Player player, uint id)
+        {
+            if (TryGet(id, out CustomEscape customEscape))
+                customEscape.Detach(player);
+        }
+
+        /// <summary>
+        /// Detaches a <see cref="CustomEscape"/> with the specified <paramref name="name"/> from the specified <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to detach the escape rules from.</param>
+        /// <param name="name">The name of the <see cref="CustomEscape"/> to detach.</param>
+        /// <remarks>
+        /// This method attempts to detach a <see cref="CustomEscape"/> with the provided <paramref name="name"/> from the specified <paramref name="player"/>.
+        /// </remarks>
+        public static void Detach(Player player, string name)
+        {
+            if (TryGet(name, out CustomEscape customEscape))
+                customEscape.Detach(player);
+        }
+
+        /// <summary>
+        /// Detaches a <see cref="CustomEscape"/> with the specified <paramref name="type"/> from the specified <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to detach the escape rules from.</param>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="CustomEscape"/> to detach.</param>
+        /// <remarks>
+        /// This method attempts to detach a <see cref="CustomEscape"/> with the provided <paramref name="type"/> from the specified <paramref name="player"/>.
+        /// </remarks>
+        public static void Detach(Player player, Type type)
+        {
+            if (TryGet(type, out CustomEscape customEscape))
+                customEscape.Detach(player);
+        }
+
+        /// <summary>
+        /// Detaches a <typeparamref name="T"/>-derived <see cref="CustomEscape"/> from the specified <see cref="Player"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="CustomEscape"/> to detach.</typeparam>
+        /// <param name="player">The <see cref="Player"/> to detach the escape rules from.</param>
+        /// <remarks>
+        /// This method attempts to detach a <typeparamref name="T"/>-derived <see cref="CustomEscape"/> from the specified <paramref name="player"/>.
+        /// </remarks>
+        public static void Detach<T>(Player player)
+            where T : CustomEscape => Detach(player, typeof(T));
+
+        /// <summary>
         /// Determines whether the provided id is equal to the current object.
         /// </summary>
         /// <param name="id">The id to compare.</param>
@@ -305,7 +411,9 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public void Detach(Player player)
         {
             PlayersValue.Remove(player);
-            player.GetComponent(BehaviourComponent).Destroy();
+
+            if (player.TryGetComponent(BehaviourComponent, out EscapeBehaviour eb) && !eb.IsDestroying)
+                eb.Destroy();
         }
 
         /// <summary>
@@ -315,7 +423,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <returns><see langword="true"/> if the <see cref="CustomEscape"/> was registered; otherwise, <see langword="false"/>.</returns>
         internal bool TryRegister(CustomEscapeAttribute attribute = null)
         {
-            if (!List.Contains(this))
+            if (!Registered.Contains(this))
             {
                 if (attribute is not null && Id == 0)
                 {
@@ -325,15 +433,19 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                         throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
                 }
 
-                if (List.Any(x => x.Id == Id))
+                CustomEscape duplicate = Registered.FirstOrDefault(x => x.Id == Id || x.Name == Name || x.BehaviourComponent == BehaviourComponent);
+                if (duplicate)
                 {
-                    Log.Debug($"Unable to register {Name}. Another escape has been registered with the same Id: {List.FirstOrDefault(x => x.Id == Id)}");
+                    Log.Debug($"Unable to register {Name}. Another escape has been registered with the same ID, Name or Behaviour Component: {duplicate.Name}");
 
                     return false;
                 }
 
                 AllScenariosInternal.AddRange(Scenarios);
+
+                EObject.RegisterObjectType(BehaviourComponent, Name);
                 Registered.Add(this);
+
                 TypeLookupTable.TryAdd(GetType(), this);
                 BehaviourLookupTable.TryAdd(BehaviourComponent, this);
                 IdLookupTable.TryAdd(Id, this);
@@ -353,7 +465,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <returns><see langword="true"/> if the <see cref="CustomRole"/> was unregistered; otherwise, <see langword="false"/>.</returns>
         internal bool TryUnregister()
         {
-            if (!List.Contains(this))
+            if (!Registered.Contains(this))
             {
                 Log.Debug($"Unable to unregister {Name}. Escape is not yet registered.");
 
@@ -363,7 +475,9 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
             foreach (UUEscapeScenarioType scenario in Scenarios.Keys)
                 AllScenariosInternal.Remove(scenario);
 
+            EObject.UnregisterObjectType(BehaviourComponent);
             Registered.Remove(this);
+
             TypeLookupTable.Remove(GetType());
             BehaviourLookupTable.Remove(BehaviourComponent);
             IdLookupTable.Remove(Id);

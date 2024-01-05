@@ -36,9 +36,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// </remarks>
     public abstract class CustomRole : TypeCastObject<CustomRole>, IAdditiveBehaviour, IEquatable<CustomRole>, IEquatable<uint>
     {
-        /// <inheritdoc cref="Manager"/>
-        internal static readonly Dictionary<Pawn, CustomRole> PlayersValue = new();
-
+        private static readonly Dictionary<Pawn, CustomRole> PlayersValue = new();
         private static readonly List<CustomRole> Registered = new();
         private static readonly Dictionary<Type, CustomRole> TypeLookupTable = new();
         private static readonly Dictionary<Type, CustomRole> BehaviourLookupTable = new();
@@ -678,11 +676,18 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </remarks>
         public bool Eject(Pawn player)
         {
-            if (!TryGet(player, out CustomRole customRole) || !player.TryGetComponent(customRole.BehaviourComponent, out RoleBehaviour rb))
+            PlayersValue.Remove(player);
+
+            if (CustomTeam.TryGet(player, out CustomTeam customTeam))
+            {
+                customTeam.Eject(player);
+                return true;
+            }
+
+            if (!player.TryGetComponent(BehaviourComponent, out RoleBehaviour rb) || rb.IsDestroying)
                 return false;
 
-            PlayersValue.Remove(player);
-            rb.DestroyNextTick = true;
+            rb.Destroy();
             return true;
         }
 
@@ -713,14 +718,17 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                         throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
                 }
 
-                if (Registered.Any(x => x.Id == Id))
+                CustomRole duplicate = Registered.FirstOrDefault(x => x.Id == Id || x.Name == Name || x.BehaviourComponent == BehaviourComponent);
+                if (duplicate)
                 {
-                    Log.Warn($"Unable to register {Name}. Another role with the same ID already exists: {Registered.FirstOrDefault(x => x.Id == Id)}");
+                    Log.Warn($"Unable to register {Name}. Another role with the same ID, Name or Behaviour Component already exists: {duplicate.Name}");
 
                     return false;
                 }
 
+                EObject.RegisterObjectType(BehaviourComponent, Name);
                 Registered.Add(this);
+
                 TypeLookupTable.TryAdd(GetType(), this);
                 BehaviourLookupTable.TryAdd(BehaviourComponent, this);
                 IdLookupTable.TryAdd(Id, this);
@@ -742,12 +750,14 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             if (!Registered.Contains(this))
             {
-                Log.Debug($"Unable to unregister {Name}. Role is not yet registered.");
+                Log.Warn($"Unable to unregister {Name}. Role is not yet registered.");
 
                 return false;
             }
 
+            EObject.UnregisterObjectType(BehaviourComponent);
             Registered.Remove(this);
+
             TypeLookupTable.Remove(GetType());
             BehaviourLookupTable.Remove(BehaviourComponent);
             IdLookupTable.Remove(Id);

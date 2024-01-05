@@ -394,7 +394,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             base.OnEndPlay();
 
-            CustomRole.PlayersValue.Remove(Owner.Cast<Pawn>());
+            CustomRole.Eject(Owner.Cast<Pawn>());
 
             if (!Settings.DoesLookingAffectScp173)
                 Scp173Role.TurnedPlayers.Remove(Owner);

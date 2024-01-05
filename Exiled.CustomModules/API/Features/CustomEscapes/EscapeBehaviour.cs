@@ -100,6 +100,14 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         }
 
         /// <inheritdoc/>
+        protected override void OnEndPlay()
+        {
+            base.OnEndPlay();
+
+            CustomEscape.Detach(Owner);
+        }
+
+        /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
             base.SubscribeEvents();
