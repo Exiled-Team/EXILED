@@ -17,36 +17,39 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     /// </summary>
     public abstract class ItemBehaviour : EItemBehaviour, IAdditiveSettings<ItemSettings>
     {
+        /// <summary>
+        /// Gets the relative <see cref="CustomItems.CustomItem"/>.
+        /// </summary>
+        public CustomItem CustomItem { get; private set; }
+
         /// <inheritdoc/>
         public ItemSettings Settings { get; set; }
 
         /// <summary>
-        /// Gets the item's configs.
+        /// Gets or sets the item's configs.
         /// </summary>
-        protected virtual object ConfigRaw { get; private set; }
+        public virtual object Config { get; set; }
 
         /// <inheritdoc/>
-        public abstract void AdjustAddittivePipe();
-
-        /// <summary>
-        /// Loads the given config.
-        /// </summary>
-        /// <param name="config">The config load.</param>
-        protected virtual void LoadConfigs(object config)
+        public virtual void AdjustAdditivePipe()
         {
-            if (config is null)
+            if (CustomItem.TryGet(GetType(), out CustomItem customItem))
+            {
+                CustomItem = customItem;
+                Settings = CustomItem.Settings;
+            }
+
+            if (Config is null)
                 return;
 
-            foreach (PropertyInfo propertyInfo in config.GetType().GetProperties())
+            foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
             {
-                PropertyInfo targetInfo = typeof(ItemSettings).GetProperty(propertyInfo.Name);
+                PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
                 if (targetInfo is null)
                     continue;
 
-                targetInfo.SetValue(Settings, propertyInfo.GetValue(config, null));
+                targetInfo.SetValue(Settings, propertyInfo.GetValue(Config, null));
             }
-
-            AdjustAddittivePipe();
         }
 
         /// <inheritdoc/>
@@ -54,21 +57,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         {
             base.PostInitialize();
 
-            LoadConfigs(ConfigRaw);
-
-            SubscribeEvents();
-        }
-
-        /// <inheritdoc/>
-        protected override void SubscribeEvents()
-        {
-            base.SubscribeEvents();
-        }
-
-        /// <inheritdoc/>
-        protected override void UnsubscribeEvents()
-        {
-            base.UnsubscribeEvents();
+            AdjustAdditivePipe();
         }
     }
 }

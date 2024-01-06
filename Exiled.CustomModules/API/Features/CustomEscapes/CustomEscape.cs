@@ -86,7 +86,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Gets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape settings.
         /// </summary>
-        public virtual List<EscapeSettings> Settings { get; }
+        public virtual List<EscapeSettings> Settings { get; } = new() { EscapeSettings.Default, };
 
         /// <summary>
         /// Compares two operands: <see cref="CustomEscape"/> and <see cref="object"/>.

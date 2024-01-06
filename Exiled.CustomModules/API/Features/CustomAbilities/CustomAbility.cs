@@ -35,7 +35,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     /// <br/>It is designed to be utilized in conjunction with the <see cref="IAdditiveBehaviour"/> interface, enabling seamless integration into existing systems for extending and enhancing ability-related functionalities.
     /// </para>
     /// </remarks>
-    public abstract class CustomAbility<T> : TypeCastObject<CustomAbility<T>>, ICustomAbility
+    public abstract class CustomAbility<T> : TypeCastObject<CustomAbility<T>>, ICustomAbility, IEquatable<CustomAbility<T>>, IEquatable<uint>
         where T : GameEntity
     {
         private static readonly Dictionary<Type, CustomAbility<T>> TypeLookupTable = new();
@@ -106,6 +106,11 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
 
         /// <inheritdoc/>
         public Type BehaviourComponent { get; protected set; }
+
+        /// <summary>
+        /// Gets the ability's settings.
+        /// </summary>
+        public virtual AbilitySettings Settings { get; } = AbilitySettings.Default;
 
         /// <summary>
         /// Gets the <see cref="CustomAbility{T}"/>'s name.

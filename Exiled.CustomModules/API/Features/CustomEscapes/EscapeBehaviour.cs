@@ -8,6 +8,7 @@
 namespace Exiled.CustomModules.API.Features.CustomEscapes
 {
     using System.Collections.Generic;
+    using System.Reflection;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
@@ -15,6 +16,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.CustomModules.API.Features.CustomRoles;
 
     using PlayerRoles;
@@ -31,9 +33,14 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public CustomEscape CustomEscape { get; private set; }
 
         /// <summary>
-        /// Gets or sets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape settings.
+        /// Gets or sets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape's settings.
         /// </summary>
         public virtual List<EscapeSettings> Settings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the escape's configs.
+        /// </summary>
+        public virtual object Config { get; set; }
 
         /// <summary>
         /// Gets the current escape scenario.
@@ -53,20 +60,33 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         protected TDynamicEventDispatcher<Player> EscapedEventDispatcher { get; private set; }
 
         /// <inheritdoc/>
-        public abstract void AdjustAddittivePipe();
-
-        /// <inheritdoc/>
-        protected override void PostInitialize()
+        public virtual void AdjustAdditivePipe()
         {
-            base.PostInitialize();
-
             if (CustomEscape.TryGet(GetType(), out CustomEscape customEscape))
                 CustomEscape = customEscape;
 
             CustomRole customRole = Owner.Cast<Pawn>().CustomRole;
             Settings = customRole && !customRole.EscapeSettings.IsEmpty() ? customRole.EscapeSettings : CustomEscape.Settings;
 
-            AdjustAddittivePipe();
+            if (Config is null)
+                return;
+
+            foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
+            {
+                PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
+                if (targetInfo is null)
+                    continue;
+
+                targetInfo.SetValue(Settings, propertyInfo.GetValue(Config, null));
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void PostInitialize()
+        {
+            base.PostInitialize();
+
+            AdjustAdditivePipe();
 
             FixedTickRate = 0.5f;
         }

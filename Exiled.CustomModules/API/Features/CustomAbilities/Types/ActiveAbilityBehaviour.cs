@@ -95,8 +95,10 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         }
 
         /// <inheritdoc/>
-        public override void AdjustAddittivePipe()
+        public override void AdjustAdditivePipe()
         {
+            base.AdjustAdditivePipe();
+
             LastUsed = Settings.ForceCooldownOnAdded ? ForceCooldown() : ResetCooldown();
             isDurationBased = Settings.Duration > 0f;
         }

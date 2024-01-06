@@ -54,9 +54,9 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         }
 
         /// <inheritdoc/>
-        public override void AdjustAddittivePipe()
+        public override void AdjustAdditivePipe()
         {
-            base.AdjustAddittivePipe();
+            base.AdjustAdditivePipe();
 
             Level = Settings.DefaultLevel;
         }

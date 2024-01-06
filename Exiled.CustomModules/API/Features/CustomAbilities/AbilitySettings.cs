@@ -8,13 +8,20 @@
 namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.CustomModules.API.Features.CustomRoles;
 
     /// <summary>
     /// Represents the base class for player-specific ability behaviors.
     /// </summary>
-    public class AbilitySettings : IAdditiveProperty
+    public class AbilitySettings : TypeCastObject<AbilitySettings>, IAdditiveProperty
     {
+        /// <summary>
+        /// Gets the default <see cref="AbilitySettings"/> values.
+        /// </summary>
+        public static AbilitySettings Default { get; } = new();
+
         /// <summary>
         /// Gets or sets the required cooldown before using the ability again.
         /// </summary>

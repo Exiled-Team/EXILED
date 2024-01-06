@@ -26,7 +26,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.Inventory;
-    using Exiled.CustomModules.Events.EventArgs.CustomEscapes;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
 
@@ -69,6 +68,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public virtual RoleSettings Settings { get; set; }
 
         /// <summary>
+        /// Gets or sets the role's configs.
+        /// </summary>
+        public virtual object Config { get; set; }
+
+        /// <summary>
         /// Gets a random spawn point based on existing settings.
         /// </summary>
         public Vector3 SpawnPoint
@@ -94,14 +98,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     return false;
                 }
 
-                if (Settings.SpawnProperties.StaticSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.StaticSpawnPoints, out Vector3 staticPos))
-                    return staticPos;
-                else if (Settings.SpawnProperties.DynamicSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.DynamicSpawnPoints, out Vector3 dynamicPos))
-                    return dynamicPos;
-                else if (Settings.SpawnProperties.RoleSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.RoleSpawnPoints, out Vector3 rolePos))
-                    return rolePos;
-
-                return Vector3.zero;
+                return Settings.SpawnProperties.StaticSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.StaticSpawnPoints, out Vector3 staticPos) ? staticPos :
+                    Settings.SpawnProperties.DynamicSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.DynamicSpawnPoints, out Vector3 dynamicPos) ? dynamicPos :
+                    Settings.SpawnProperties.RoleSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.RoleSpawnPoints, out Vector3 rolePos) ? rolePos : Vector3.zero;
             }
         }
 
@@ -154,11 +153,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         protected float CurrentSpeed { get; private set; }
 
         /// <summary>
-        /// Gets the role's configs.
-        /// </summary>
-        protected virtual object ConfigRaw { get; private set; }
-
-        /// <summary>
         /// Gets or sets the the escape settings.
         /// </summary>
         protected virtual List<EscapeSettings> EscapeSettings { get; set; } = new();
@@ -188,34 +182,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public bool IsDamageIgnored(DamageType damageType) => Settings.IgnoredDamageTypes.Contains(damageType);
 
         /// <inheritdoc/>
-        public abstract void AdjustAddittivePipe();
-
-        /// <summary>
-        /// Loads the given config.
-        /// </summary>
-        /// <param name="config">The config load.</param>
-        protected virtual void LoadConfigs(object config)
+        public virtual void AdjustAdditivePipe()
         {
-            if (config is null)
-                return;
-
-            foreach (PropertyInfo propertyInfo in config.GetType().GetProperties())
-            {
-                PropertyInfo targetInfo = typeof(RoleSettings).GetProperty(propertyInfo.Name) ?? typeof(InventoryManager).GetProperty(propertyInfo.Name);
-                if (targetInfo is null)
-                    continue;
-
-                targetInfo.SetValue(targetInfo.DeclaringType == typeof(RoleSettings) ? Settings : Inventory, propertyInfo.GetValue(config, null));
-            }
-        }
-
-        /// <inheritdoc/>
-        protected override void PostInitialize()
-        {
-            base.PostInitialize();
-
-            LoadConfigs(ConfigRaw);
-
             if (CustomTeam.TryGet(Owner.Cast<Pawn>(), out CustomTeam customTeam))
                 CustomTeam = customTeam;
 
@@ -234,7 +202,29 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 }
             }
 
-            AdjustAddittivePipe();
+            if (Config is null)
+                return;
+
+            foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
+            {
+                PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
+                if (targetInfo is null)
+                    continue;
+
+                targetInfo.SetValue(
+                    typeof(RoleSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings :
+                    typeof(InventoryManager).IsAssignableFrom(targetInfo.DeclaringType) ? Inventory :
+                    throw new TypeLoadException(),
+                    propertyInfo.GetValue(Config, null));
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void PostInitialize()
+        {
+            base.PostInitialize();
+
+            AdjustAdditivePipe();
 
             wasNoClipPermitted = Owner.IsNoclipPermitted;
             isHuman = !CustomRole.IsScp;

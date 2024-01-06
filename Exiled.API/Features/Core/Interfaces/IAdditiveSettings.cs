@@ -18,5 +18,10 @@ namespace Exiled.API.Features.Core.Interfaces
         /// Gets or sets the <typeparamref name="T"/> settings.
         /// </summary>
         public T Settings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the configs.
+        /// </summary>
+        public object Config { get; set; }
     }
 }
