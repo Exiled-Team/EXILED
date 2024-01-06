@@ -12,6 +12,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     using System.Linq;
     using System.Reflection;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
@@ -25,13 +26,13 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     /// </summary>
     public abstract class CustomItem : TypeCastObject<CustomItem>, IAdditiveBehaviour, IEquatable<CustomItem>, IEquatable<uint>
     {
-        /// <inheritdoc cref="ItemManager"/>
-        internal static readonly Dictionary<Item, CustomItem> ItemsValue = new();
-
-        /// <inheritdoc cref="PickupManager"/>
-        internal static readonly Dictionary<Pickup, CustomItem> PickupValue = new();
-
         private static readonly List<CustomItem> Registered = new();
+        private static readonly Dictionary<Item, CustomItem> ItemsValue = new();
+        private static readonly Dictionary<Pickup, CustomItem> PickupValue = new();
+        private static readonly Dictionary<Type, CustomItem> TypeLookupTable = new();
+        private static readonly Dictionary<Type, CustomItem> BehaviourLookupTable = new();
+        private static readonly Dictionary<uint, CustomItem> IdLookupTable = new();
+        private static readonly Dictionary<string, CustomItem> NameLookupTable = new();
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomItem"/>'s.
@@ -119,18 +120,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <param name="left">The <see cref="CustomItem"/> to compare.</param>
         /// <param name="right">The <see cref="object"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomItem left, object right)
-        {
-            if (left is null)
-            {
-                if (right is null)
-                    return true;
-
-                return false;
-            }
-
-            return left.Equals(right);
-        }
+        public static bool operator ==(CustomItem left, object right) => left is null ? right is null : left.Equals(right);
 
         /// <summary>
         /// Compares two operands: <see cref="object"/> and <see cref="CustomItem"/>.
@@ -173,37 +163,32 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public static bool operator !=(CustomItem left, CustomItem right) => !(left.Id == right.Id);
 
         /// <summary>
-        /// Retrieves a <see cref="CustomItem"/> instance based on the specified custom item type.
+        /// Retrieves a <see cref="CustomItem"/> instance based on the specified custom item id.
         /// </summary>
-        /// <param name="customItemType">The custom item type to retrieve.</param>
+        /// <param name="id">The custom item id to retrieve.</param>
         /// <returns>The retrieved <see cref="CustomItem"/> instance if found and enabled; otherwise, <see langword="null"/>.</returns>
-        public static CustomItem Get(object customItemType) => Registered.FirstOrDefault(customItem => customItem == customItemType && customItem.IsEnabled);
+        public static CustomItem Get(uint id) => IdLookupTable[id];
 
         /// <summary>
         /// Retrieves a <see cref="CustomItem"/> instance based on the specified item name.
         /// </summary>
         /// <param name="name">The name of the custom item to retrieve.</param>
         /// <returns>The retrieved <see cref="CustomItem"/> instance if found; otherwise, <see langword="null"/>.</returns>
-        public static CustomItem Get(string name) => Registered.FirstOrDefault(customItem => customItem.Name == name);
+        public static CustomItem Get(string name) => NameLookupTable[name];
 
         /// <summary>
         /// Retrieves a <see cref="CustomItem"/> instance based on the specified type.
         /// </summary>
         /// <param name="type">The type to retrieve the custom item for.</param>
         /// <returns>The retrieved <see cref="CustomItem"/> instance if found and enabled; otherwise, <see langword="null"/>.</returns>
-        public static CustomItem Get(Type type) => type.BaseType != typeof(ItemBehaviour) ? null : Registered.FirstOrDefault(customItem => customItem.BehaviourComponent == type);
-
-        /// <summary>
-        /// Retrieves a <see cref="CustomItem"/> instance based on the specified <see cref="ItemBehaviour"/> instance.
-        /// </summary>
-        /// <param name="itemBuilder">The <see cref="ItemBehaviour"/> instance to retrieve the custom item for.</param>
-        /// <returns>The retrieved <see cref="CustomItem"/> instance if found and enabled; otherwise, <see langword="null"/>.</returns>
-        public static CustomItem Get(ItemBehaviour itemBuilder) => Get(itemBuilder.GetType());
+        public static CustomItem Get(Type type) =>
+            typeof(CustomItem).IsAssignableFrom(type) ? TypeLookupTable[type] :
+            typeof(ItemBehaviour).IsAssignableFrom(type) ? BehaviourLookupTable[type] : null;
 
         /// <summary>
         /// Retrieves a <see cref="CustomItem"/> instance based on the specified <see cref="Item"/> instance.
         /// </summary>
-        /// <param name="item">The <see cref="Item"/> instance to retrieve the custom item for.</param>
+        /// <param name="item">The <see cref="Item"/> instance to retrieve the custom item from.</param>
         /// <returns>The retrieved <see cref="CustomItem"/> instance if found; otherwise, <see langword="null"/>.</returns>
         public static CustomItem Get(Item item)
         {
@@ -214,19 +199,39 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                 if (kvp.Key != item)
                     continue;
 
-                customItem = Get(kvp.Value.Id);
+                customItem = kvp.Value;
             }
 
             return customItem;
         }
 
         /// <summary>
-        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified custom item type.
+        /// Retrieves a <see cref="CustomItem"/> instance based on the specified <see cref="Pickup"/> instance.
         /// </summary>
-        /// <param name="customItemType">The custom item type to retrieve.</param>
+        /// <param name="item">The <see cref="Pickup"/> instance to retrieve the custom item from.</param>
+        /// <returns>The retrieved <see cref="CustomItem"/> instance if found; otherwise, <see langword="null"/>.</returns>
+        public static CustomItem Get(Pickup item)
+        {
+            CustomItem customItem = default;
+
+            foreach (KeyValuePair<Pickup, CustomItem> kvp in PickupManager)
+            {
+                if (kvp.Key != item)
+                    continue;
+
+                customItem = kvp.Value;
+            }
+
+            return customItem;
+        }
+
+        /// <summary>
+        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified custom item id.
+        /// </summary>
+        /// <param name="id">The custom item id to retrieve.</param>
         /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object customItemType, out CustomItem customItem) => customItem = Get(customItemType);
+        public static bool TryGet(uint id, out CustomItem customItem) => customItem = Get(id);
 
         /// <summary>
         /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified item name.
@@ -234,7 +239,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <param name="name">The name of the custom item to retrieve.</param>
         /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out CustomItem customItem) => customItem = Registered.FirstOrDefault(cItem => cItem.Name == name);
+        public static bool TryGet(string name, out CustomItem customItem) => customItem = Get(name);
 
         /// <summary>
         /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified <see cref="Item"/> instance.
@@ -253,20 +258,12 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public static bool TryGet(Pickup pickup, out CustomItem customItem) => customItem = Get(pickup);
 
         /// <summary>
-        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified <see cref="ItemBehaviour"/> instance.
-        /// </summary>
-        /// <param name="itemBuilder">The <see cref="ItemBehaviour"/> instance to retrieve the custom item for.</param>
-        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
-        /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(ItemBehaviour itemBuilder, out CustomItem customItem) => customItem = Get(itemBuilder.GetType());
-
-        /// <summary>
         /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified type.
         /// </summary>
         /// <param name="type">The type to retrieve the custom item for.</param>
         /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out CustomItem customItem) => customItem = Get(type.GetType());
+        public static bool TryGet(Type type, out CustomItem customItem) => customItem = Get(type);
 
         /// <summary>
         /// Tries to spawn a custom item at the specified position.
@@ -288,17 +285,17 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         }
 
         /// <summary>
-        /// Tries to spawn a custom item at the specified position using the specified custom item type.
+        /// Tries to spawn a custom item at the specified position using the specified custom item id.
         /// </summary>
         /// <param name="position">The position where the item should be spawned.</param>
-        /// <param name="customItemType">The custom item type to spawn.</param>
+        /// <param name="id">The custom item id to spawn.</param>
         /// <param name="pickup">The spawned pickup, if successful; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if the spawn is successful; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(Vector3 position, object customItemType, out Pickup pickup)
+        public static bool TrySpawn(Vector3 position, uint id, out Pickup pickup)
         {
             pickup = default;
 
-            if (!TryGet(customItemType, out CustomItem customItem))
+            if (!TryGet(id, out CustomItem customItem))
                 return false;
 
             TrySpawn(position, customItem, out pickup);
@@ -600,7 +597,13 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                     return false;
                 }
 
+                EObject.RegisterObjectType(BehaviourComponent, Name);
                 Registered.Add(this);
+
+                TypeLookupTable.TryAdd(GetType(), this);
+                BehaviourLookupTable.TryAdd(BehaviourComponent, this);
+                IdLookupTable.TryAdd(Id, this);
+                NameLookupTable.TryAdd(Name, this);
 
                 return true;
             }
@@ -623,7 +626,13 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                 return false;
             }
 
+            EObject.UnregisterObjectType(BehaviourComponent);
             Registered.Remove(this);
+
+            TypeLookupTable.Remove(GetType());
+            BehaviourLookupTable.Remove(BehaviourComponent);
+            IdLookupTable.Remove(Id);
+            NameLookupTable.Remove(Name);
 
             return true;
         }
