@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     /// Contains all information after player uses tape.
     /// </summary>
-    public class UsedTapeItemEventArgs : IItemEvent, IPlayerEvent
+    public class UsedTapeEventArgs : IItemEvent, IPlayerEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UsedTapeItemEventArgs"/> class.
