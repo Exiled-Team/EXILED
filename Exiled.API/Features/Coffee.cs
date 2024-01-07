@@ -23,7 +23,7 @@ namespace Exiled.API.Features
     public class Coffee : IWrapper<BaseCoffee>
     {
         /// <summary>
-        /// Gets the <see cref="Dictionary{TKey,TValue}"/> with <see cref="BaseCoffee"/> to <see cref="Coffee"/>.
+        /// Gets the <see cref="Dictionary{TKey,TValue}"/> containing <see cref="BaseCoffee"/> to <see cref="Coffee"/>.
         /// </summary>
         internal static readonly Dictionary<BaseCoffee, Coffee> BaseToWrapper = new();
 
@@ -39,7 +39,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets an <see cref="IEnumerable{T}"/> of players who cannot interact with coffees cups.
+        /// Gets or sets an <see cref="IEnumerable{T}"/> of players who cannot interact with coffee cups.
         /// </summary>
         public static IEnumerable<Player> BlacklistedPlayers
         {
@@ -59,12 +59,12 @@ namespace Exiled.API.Features
         public static IReadOnlyCollection<Coffee> List => BaseToWrapper.Values;
 
         /// <summary>
-        /// Gets the base coffee class instance.
+        /// Gets the base coffee instance.
         /// </summary>
         public BaseCoffee Base { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not coffee had been drunk.
+        /// Gets or sets a value indicating whether or not coffee has been drunk.
         /// </summary>
         public bool IsConsumed
         {
@@ -82,7 +82,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets an author of current <see cref="CoffeeTranslation"/>.
+        /// Gets or sets the author of current <see cref="CoffeeTranslation"/>.
         /// </summary>
         public string TranslationAuthor
         {
@@ -91,32 +91,28 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a color of a drink in a cup.
+        /// Gets the color of a drink in a cup.
         /// </summary>
-        public Color DrinkColor
-        {
-            get => Base._drinkColor;
-            set => Base._drinkColor = value;
-        }
+        public Color DrinkColor => Base._drinkColor;
 
         /// <summary>
-        /// Gets a coffee by it's base class.
+        /// Gets a <see cref="Coffee"/> given a <see cref="BaseCoffee"/> instance.
         /// </summary>
-        /// <param name="baseCoffee">Base class.</param>
-        /// <returns><see cref="Coffee"/> instance.</returns>
+        /// <param name="baseCoffee">The <see cref="BaseCoffee"/> instance.</param>
+        /// <returns>The <see cref="Coffee"/> instance.</returns>
         public static Coffee Get(BaseCoffee baseCoffee) => BaseToWrapper.TryGetValue(baseCoffee, out Coffee coffee) ? coffee : new(baseCoffee);
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of coffee which matches condition.
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Coffee"/> matching the condition.
         /// </summary>
-        /// <param name="predicate">Condition to satisfy.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of coffee which matches condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Coffee"/> matching the condition.</returns>
         public static IEnumerable<Coffee> Get(Func<Coffee, bool> predicate) => List.Where(predicate);
 
         /// <summary>
-        /// Interacts with coffee.
+        /// Interacts with <see cref="Coffee"/>.
         /// </summary>
-        /// <param name="player">Player who interact. If <see langword="null"/>, will be chosen random.</param>
+        /// <param name="player">The player who interacts. If <see langword="null"/>, it will be chosen randomly.</param>
         public void Interact(Player player = null) => Base.ServerInteract((player ?? Player.Get(x => x.IsHuman).GetRandomValue()).ReferenceHub, byte.MaxValue);
     }
 }
