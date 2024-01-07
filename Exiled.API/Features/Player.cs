@@ -790,7 +790,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (!IsSpeaking || VoiceModule == null || VoiceModule is not StandardVoiceModule standardModule)
+                if (!IsSpeaking || VoiceModule is not StandardVoiceModule standardModule)
                     return 0f;
 
                 return standardModule.GlobalPlayback.Loudness;
