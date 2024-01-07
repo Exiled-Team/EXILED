@@ -403,6 +403,21 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
+        /// Spawns the specified player with the custom role identified by the provided name.
+        /// </summary>
+        /// <typeparam name="T">The type of custom role to be added.</typeparam>
+        /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
+        /// <returns>
+        /// <see langword="true"/> if the player was spawned with the custom role successfully; otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <remarks>
+        /// This method add the custom role of type <typeparamref name="T"/> assigned to the specified player.
+        /// If the addition operation fails, the method returns <see langword="false"/>.
+        /// </remarks>
+        public static bool Spawn<T>(Pawn player)
+            where T : CustomRole => TryGet(typeof(T), out CustomRole customRole) && customRole.Spawn(player);
+
+        /// <summary>
         /// Removes the custom role from the specified player.
         /// </summary>
         /// <param name="player">The owner of the custom role.</param>
