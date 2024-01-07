@@ -65,7 +65,7 @@ namespace Exiled.Events.Patches.Events.Scp0492
                 new(OpCodes.Ret),
             });
 
-            foreach (var instruction in newInstructions)
+            foreach (CodeInstruction instruction in newInstructions)
                 yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
