@@ -403,7 +403,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Spawns the specified player with the custom role identified by the provided name.
+        /// Spawns the specified player with the custom role identified by the provided type.
         /// </summary>
         /// <typeparam name="T">The type of custom role to be added.</typeparam>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
