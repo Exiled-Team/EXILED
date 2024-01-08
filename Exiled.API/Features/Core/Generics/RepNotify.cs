@@ -29,6 +29,8 @@ namespace Exiled.API.Features.Core.Generics
         {
             if (GetType().GetCustomAttribute<ManagedObjectTypeAttribute>() is not null && GetObjectTypeFromRegisteredTypes(GetType()) is null)
                 RegisterObjectType(GetType(), GetType().Name);
+
+            DynamicEventManager.CreateFromTypeInstance(this);
         }
 
         /// <summary>
@@ -76,6 +78,14 @@ namespace Exiled.API.Features.Core.Generics
                 return;
 
             ReplicatedValue = value;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnBeginDestroy()
+        {
+            base.OnBeginDestroy();
+
+            DynamicEventManager.DestroyFromTypeInstance(this);
         }
 
         /// <summary>
