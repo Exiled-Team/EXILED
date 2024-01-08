@@ -90,10 +90,10 @@ namespace Exiled.API.Features.Core
         {
             InputBinding input = declaredInputs.FirstOrDefault(predicate);
 
-            if (input != null)
-            {
-                declaredInputs.Remove(input);
-            }
+            if (!input)
+                return;
+
+            declaredInputs.Remove(input);
         }
 
         /// <summary>
