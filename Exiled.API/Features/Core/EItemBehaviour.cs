@@ -7,7 +7,7 @@
 
 namespace Exiled.API.Features.Core
 {
-    using Exiled.API.Features.Core.Generic;
+    using Exiled.API.Features.Core.Generics;
     using Exiled.API.Features.Items;
 
     /// <summary>

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ItemTracker.cs" company="Exiled Team">
+// <copyright file="TrackerBase.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,7 +7,9 @@
 
 namespace Exiled.CustomModules.API.Features
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Attributes;
@@ -15,7 +17,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
-    using Exiled.CustomModules.API.Features.CustomAbilities;
+    using Exiled.CustomModules.API.Interfaces;
     using Exiled.CustomModules.Events.EventArgs.Tracking;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -23,7 +25,9 @@ namespace Exiled.CustomModules.API.Features
     /// <summary>
     /// The actor which handles all tracking-related tasks for items.
     /// </summary>
-    public class ItemTracker : StaticActor
+    /// <typeparam name="T">The type of the <see cref="ITrackable"/>.</typeparam>
+    public class TrackerBase<T> : StaticActor
+        where T : ITrackable
     {
         /// <summary>
         /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when an item is added.
@@ -74,41 +78,41 @@ namespace Exiled.CustomModules.API.Features
         public TDynamicEventDispatcher<PickupTrackingModifiedEventArgs> PickupTrackingModifiedDispatcher { get; private set; }
 
         /// <summary>
-        /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all serials and their corresponding abilities.
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all serials and their corresponding <typeparamref name="T"/> items.
         /// </summary>
-        internal Dictionary<ushort, HashSet<IAbilityBehaviour>> TrackedItemSerials { get; } = new();
+        private Dictionary<ushort, HashSet<T>> TrackedItemSerials { get; } = new();
 
         /// <summary>
-        /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all serials and their corresponding abilities.
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all serials and their corresponding <typeparamref name="T"/> items.
         /// </summary>
-        internal Dictionary<ushort, HashSet<IAbilityBehaviour>> TrackedPickupSerials { get; } = new();
+        private Dictionary<ushort, HashSet<T>> TrackedPickupSerials { get; } = new();
 
         /// <summary>
-        /// Adds or tracks the abilities of an item based on its serial.
+        /// Adds or tracks the trackables of an item based on its serial.
         /// </summary>
-        /// <param name="item">The <see cref="Item"/> whose abilities are to be added or tracked.</param>
+        /// <param name="item">The <see cref="Item"/> whose trackables are to be added or tracked.</param>
         /// <returns><see langword="true"/> if the item was added or tracked successfully; otherwise, <see langword="false"/>.</returns>
-        public bool AddOrTrack(Item item)
+        public virtual bool AddOrTrack(Item item)
         {
             if (!item)
                 return false;
 
-            IEnumerable<IAbilityBehaviour> abilityBehaviours = item.GetComponents<IAbilityBehaviour>();
-            if (abilityBehaviours.IsEmpty())
+            IEnumerable<T> trackableBehaviours = item.GetComponents<T>();
+            if (trackableBehaviours.IsEmpty())
                 return false;
 
             if (TrackedItemSerials.ContainsKey(item.Serial))
             {
-                IEnumerable<IAbilityBehaviour> previousAbilities = TrackedItemSerials[item.Serial];
-                TrackedItemSerials[item.Serial].AddRange(abilityBehaviours);
-                ItemTrackingModifiedEventArgs ev = new(item, previousAbilities, TrackedItemSerials[item.Serial]);
+                IEnumerable<T> previousTrackableItems = TrackedItemSerials[item.Serial];
+                TrackedItemSerials[item.Serial].AddRange(trackableBehaviours.Cast<T>());
+                ItemTrackingModifiedEventArgs ev = new(item, previousTrackableItems.Cast<ITrackable>(), TrackedItemSerials[item.Serial].Cast<ITrackable>());
                 ItemTrackingModifiedDispatcher.InvokeAll(ev);
 
                 return true;
             }
 
-            TrackedItemSerials.Add(item.Serial, new HashSet<IAbilityBehaviour>());
-            TrackedItemSerials[item.Serial].AddRange(abilityBehaviours);
+            TrackedItemSerials.Add(item.Serial, new HashSet<T>());
+            TrackedItemSerials[item.Serial].AddRange(trackableBehaviours.Cast<T>());
 
             ItemAddedDispatcher.InvokeAll(item);
 
@@ -116,31 +120,31 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Adds or tracks the abilities of a pickup based on its serial.
+        /// Adds or tracks the trackables of a pickup based on its serial.
         /// </summary>
-        /// <param name="pickup">The <see cref="Pickup"/> whose abilities are to be added or tracked.</param>
+        /// <param name="pickup">The <see cref="Pickup"/> whose trackables are to be added or tracked.</param>
         /// <returns><see langword="true"/> if the pickup was added or tracked successfully; otherwise, <see langword="false"/>.</returns>
-        public bool AddOrTrack(Pickup pickup)
+        public virtual bool AddOrTrack(Pickup pickup)
         {
             if (!pickup)
                 return false;
 
-            IEnumerable<IAbilityBehaviour> abilityBehaviours = pickup.GetComponents<IAbilityBehaviour>();
-            if (abilityBehaviours.IsEmpty())
+            IEnumerable<ITrackable> trackableBehaviours = pickup.GetComponents<ITrackable>();
+            if (trackableBehaviours.IsEmpty())
                 return false;
 
             if (TrackedItemSerials.ContainsKey(pickup.Serial))
             {
-                IEnumerable<IAbilityBehaviour> previousAbilities = TrackedPickupSerials[pickup.Serial];
-                TrackedPickupSerials[pickup.Serial].AddRange(abilityBehaviours);
-                PickupTrackingModifiedEventArgs ev = new(pickup, previousAbilities, TrackedPickupSerials[pickup.Serial]);
+                IEnumerable<T> previousTrackableItems = TrackedPickupSerials[pickup.Serial];
+                TrackedPickupSerials[pickup.Serial].AddRange(trackableBehaviours.Cast<T>());
+                PickupTrackingModifiedEventArgs ev = new(pickup, previousTrackableItems.Cast<ITrackable>(), TrackedPickupSerials[pickup.Serial].Cast<ITrackable>());
                 PickupTrackingModifiedDispatcher.InvokeAll(ev);
 
                 return true;
             }
 
-            TrackedPickupSerials.Add(pickup.Serial, new HashSet<IAbilityBehaviour>());
-            TrackedPickupSerials[pickup.Serial].AddRange(abilityBehaviours);
+            TrackedPickupSerials.Add(pickup.Serial, new HashSet<T>());
+            TrackedPickupSerials[pickup.Serial].AddRange(trackableBehaviours.Cast<T>());
 
             PickupAddedDispatcher.InvokeAll(pickup);
 
@@ -148,17 +152,36 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Restores all abilities from a pickup which is being tracked.
+        /// Adds or tracks the trackables of both pickups and items based on their serial.
         /// </summary>
-        /// <param name="pickup">The pickup to restore all abilities from.</param>
-        /// <param name="item">The item to reapply the abilities to.</param>
-        /// <returns><see langword="true"/> if the pickup was restored successfully; otherwise, <see langword="false"/>.</returns>
-        public bool Restore(Pickup pickup, Item item)
+        /// <param name="objects">The objects whose trackables are to be added or tracked.</param>
+        public virtual void AddOrTrack(params object[] objects)
         {
-            if (!pickup || !item || !TrackedItemSerials.ContainsKey(pickup.Serial))
+            foreach (object @object in objects)
+            {
+                if (@object is Pickup pickup)
+                {
+                    AddOrTrack(pickup);
+                    continue;
+                }
+
+                if (@object is Item item)
+                    AddOrTrack(item);
+            }
+        }
+
+        /// <summary>
+        /// Restores all trackables from a pickup which is being tracked.
+        /// </summary>
+        /// <param name="serial">The serial to restore all trackables from.</param>
+        /// <param name="item">The item to reapply the trackables to.</param>
+        /// <returns><see langword="true"/> if the pickup was restored successfully; otherwise, <see langword="false"/>.</returns>
+        public virtual bool Restore(ushort serial, Item item)
+        {
+            if (!item || !TrackedItemSerials.ContainsKey(serial))
                 return false;
 
-            foreach (IAbilityBehaviour behaviour in TrackedItemSerials[pickup.Serial])
+            foreach (T behaviour in TrackedItemSerials[serial])
             {
                 if (behaviour is not EActor component)
                     continue;
@@ -172,16 +195,16 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Restores all abilities from a pickup which is being tracked.
+        /// Restores all trackables from a pickup which is being tracked.
         /// </summary>
-        /// <param name="pickup">The <see cref="Pickup"/> whose abilities are to be restored.</param>
+        /// <param name="pickup">The <see cref="Pickup"/> whose trackables are to be restored.</param>
         /// <returns><see langword="true"/> if the pickup was restored successfully; otherwise, <see langword="false"/>.</returns>
-        public bool Restore(Pickup pickup)
+        public virtual bool Restore(Pickup pickup)
         {
             if (!pickup || !TrackedPickupSerials.ContainsKey(pickup.Serial))
                 return false;
 
-            foreach (IAbilityBehaviour behaviour in TrackedPickupSerials[pickup.Serial])
+            foreach (T behaviour in TrackedPickupSerials[pickup.Serial])
             {
                 if (behaviour is not EActor component)
                     continue;
@@ -195,14 +218,69 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Removes an item and all its abilities from the tracking.
+        /// Restores all trackables from a pickup which is being tracked.
+        /// </summary>
+        /// <param name="pickup">The <see cref="Pickup"/> whose trackables are to be restored.</param>
+        /// <param name="item">The <see cref="Item"/> whose trackables are to be transfered.</param>
+        /// <returns><see langword="true"/> if the pickup was restored successfully; otherwise, <see langword="false"/>.</returns>
+        public virtual bool Restore(Pickup pickup, Item item)
+        {
+            if (!pickup || !item || !TrackedPickupSerials.ContainsKey(pickup.Serial) || !TrackedItemSerials.ContainsKey(item.Serial))
+                return false;
+
+            foreach (T behaviour in TrackedItemSerials[item.Serial])
+            {
+                if (behaviour is not EActor component)
+                    continue;
+
+                pickup.AddComponent(component);
+            }
+
+            PickupRestoredDispatcher.InvokeAll(pickup);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Restores all trackables from a item which is being tracked.
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/> whose trackables are to be restored.</param>
+        /// <param name="pickup">The <see cref="Pickup"/> whose trackables are to be transfered.</param>
+        /// <returns><see langword="true"/> if the item was restored successfully; otherwise, <see langword="false"/>.</returns>
+        public virtual bool Restore(Item item, Pickup pickup)
+        {
+            if (!pickup || !item || !TrackedPickupSerials.ContainsKey(pickup.Serial) || !TrackedItemSerials.ContainsKey(item.Serial))
+                return false;
+
+            foreach (T behaviour in TrackedPickupSerials[pickup.Serial])
+            {
+                if (behaviour is not EActor component)
+                    continue;
+
+                pickup.AddComponent(component);
+            }
+
+            PickupRestoredDispatcher.InvokeAll(pickup);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Removes an item and all its trackables from the tracking.
         /// </summary>
         /// <param name="item">The item to be removed.</param>
-        public void Remove(Item item)
+        public virtual void Remove(Item item)
         {
             if (TrackedItemSerials.ContainsKey(item.Serial))
             {
                 TrackedItemSerials.Remove(item.Serial);
+
+                item.GetComponents<T>().ForEach(c =>
+                {
+                    if (c is EActor actor)
+                        actor.Destroy();
+                });
+
                 ItemRemovedDispatcher.InvokeAll(item.Serial);
             }
         }
@@ -211,27 +289,35 @@ namespace Exiled.CustomModules.API.Features
         /// Removes an ability from the tracking.
         /// </summary>
         /// <param name="item">The item owning the ability.</param>
-        /// <param name="behaviour">The <see cref="IAbilityBehaviour"/> to be removed.</param>
-        public void Remove(Item item, IAbilityBehaviour behaviour)
+        /// <param name="behaviour">The <see cref="ITrackable"/> to be removed.</param>
+        public virtual void Remove(Item item, T behaviour)
         {
             if (TrackedItemSerials.ContainsKey(item.Serial))
             {
-                IEnumerable<IAbilityBehaviour> previousAbilities = TrackedItemSerials[item.Serial];
+                IEnumerable<T> previousTrackedItems = TrackedItemSerials[item.Serial];
                 TrackedItemSerials[item.Serial].Remove(behaviour);
-                ItemTrackingModifiedEventArgs ev = new(item, previousAbilities, TrackedItemSerials[item.Serial]);
+                item.GetComponent(behaviour.GetType()).Destroy();
+                ItemTrackingModifiedEventArgs ev = new(item, previousTrackedItems.Cast<ITrackable>(), TrackedItemSerials[item.Serial].Cast<ITrackable>());
                 ItemTrackingModifiedDispatcher.InvokeAll(ev);
             }
         }
 
         /// <summary>
-        /// Removes a pickup and all its abilities from the tracking.
+        /// Removes a pickup and all its trackables from the tracking.
         /// </summary>
         /// <param name="pickup">The pickup to be removed.</param>
-        public void Remove(Pickup pickup)
+        public virtual void Remove(Pickup pickup)
         {
             if (TrackedPickupSerials.ContainsKey(pickup.Serial))
             {
                 TrackedPickupSerials.Remove(pickup.Serial);
+
+                pickup.GetComponents<T>().ForEach(c =>
+                {
+                    if (c is EActor actor)
+                        actor.Destroy();
+                });
+
                 PickupRemovedDispatcher.InvokeAll(pickup.Serial);
             }
         }
@@ -240,14 +326,15 @@ namespace Exiled.CustomModules.API.Features
         /// Removes an ability from the tracking.
         /// </summary>
         /// <param name="pickup">The pickup owning the ability.</param>
-        /// <param name="behaviour">The <see cref="IAbilityBehaviour"/> to be removed.</param>
-        public void Remove(Pickup pickup, IAbilityBehaviour behaviour)
+        /// <param name="behaviour">The <typeparamref name="T"/> to be removed.</param>
+        public virtual void Remove(Pickup pickup, T behaviour)
         {
             if (TrackedPickupSerials.ContainsKey(pickup.Serial))
             {
-                IEnumerable<IAbilityBehaviour> previousAbilities = TrackedPickupSerials[pickup.Serial];
+                IEnumerable<T> previousTrackableItems = TrackedPickupSerials[pickup.Serial].Cast<T>();
                 TrackedPickupSerials[pickup.Serial].Remove(behaviour);
-                PickupTrackingModifiedEventArgs ev = new(pickup, previousAbilities, TrackedPickupSerials[pickup.Serial]);
+                pickup.GetComponent(behaviour.GetType()).Destroy();
+                PickupTrackingModifiedEventArgs ev = new(pickup, previousTrackableItems.Cast<ITrackable>(), TrackedPickupSerials[pickup.Serial].Cast<ITrackable>());
                 PickupTrackingModifiedDispatcher.InvokeAll(ev);
             }
         }
@@ -256,28 +343,28 @@ namespace Exiled.CustomModules.API.Features
         /// Removes an item or pickup with the specified serial number from the tracking.
         /// </summary>
         /// <param name="serial">The serial number of the item or pickup to be removed.</param>
-        /// <param name="behaviours">The <see cref="IEnumerable{T}"/> of <see cref="IAbilityBehaviour"/> containing all abilities to be removed.</param>
-        public void Remove(ushort serial, IEnumerable<IAbilityBehaviour> behaviours)
+        /// <param name="behaviours">The <see cref="IEnumerable{T}"/> of <typeparamref name="T"/> containing all <see cref="ITrackable"/> items to be removed.</param>
+        public virtual void Remove(ushort serial, IEnumerable<T> behaviours)
         {
             if (TrackedItemSerials.ContainsKey(serial))
             {
-                IEnumerable<IAbilityBehaviour> previousAbilities = TrackedItemSerials[serial];
+                IEnumerable<T> previousTrackableItems = TrackedItemSerials[serial].Cast<T>();
 
-                foreach (IAbilityBehaviour behaviour in behaviours)
+                foreach (T behaviour in behaviours)
                     TrackedItemSerials[serial].Remove(behaviour);
 
-                ItemTrackingModifiedEventArgs ev = new(Item.Get(serial), previousAbilities, TrackedItemSerials[serial]);
+                ItemTrackingModifiedEventArgs ev = new(Item.Get(serial), previousTrackableItems.Cast<ITrackable>(), TrackedItemSerials[serial].Cast<ITrackable>());
                 ItemTrackingModifiedDispatcher.InvokeAll(ev);
             }
 
             if (TrackedPickupSerials.ContainsKey(serial))
             {
-                IEnumerable<IAbilityBehaviour> previousAbilities = TrackedPickupSerials[serial];
+                IEnumerable<T> previousTrackableItems = TrackedPickupSerials[serial].Cast<T>();
 
-                foreach (IAbilityBehaviour behaviour in behaviours)
+                foreach (T behaviour in behaviours)
                     TrackedPickupSerials[serial].Remove(behaviour);
 
-                PickupTrackingModifiedEventArgs ev = new(Pickup.Get(serial), previousAbilities, TrackedPickupSerials[serial]);
+                PickupTrackingModifiedEventArgs ev = new(Pickup.Get(serial), previousTrackableItems.Cast<ITrackable>(), TrackedPickupSerials[serial].Cast<ITrackable>());
                 PickupTrackingModifiedDispatcher.InvokeAll(ev);
             }
         }
@@ -286,15 +373,35 @@ namespace Exiled.CustomModules.API.Features
         /// Checks if an item is being tracked.
         /// </summary>
         /// <param name="item">The <see cref="Item"/> to check.</param>
-        /// <returns>Returns <see langword="true"/> if the item is being tracked; otherwise, <see langword="false"/>.</returns>
-        public bool IsTracked(Item item) => TrackedItemSerials.ContainsKey(item.Serial);
+        /// <returns><see langword="true"/> if the item is being tracked; otherwise, <see langword="false"/>.</returns>
+        public virtual bool IsTracked(Item item) => TrackedItemSerials.ContainsKey(item.Serial);
 
         /// <summary>
         /// Checks if a pickup is being tracked.
         /// </summary>
         /// <param name="pickup">The <see cref="Pickup"/> to check.</param>
-        /// <returns>Returns <see langword="true"/> if the pickup is being tracked; otherwise, <see langword="false"/>.</returns>
-        public bool IsTracked(Pickup pickup) => TrackedPickupSerials.ContainsKey(pickup.Serial);
+        /// <returns><see langword="true"/> if the pickup is being tracked; otherwise, <see langword="false"/>.</returns>
+        public virtual bool IsTracked(Pickup pickup) => TrackedPickupSerials.ContainsKey(pickup.Serial);
+
+        /// <summary>
+        /// Gets the tracked values associated with the specified item.
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/> to retrieve tracked values for.</param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}"/> containing the tracked values associated with the item.
+        /// If the item is not tracked, returns an empty collection.
+        /// </returns>
+        public virtual IEnumerable<T> GetTrackedValues(Item item) => !IsTracked(item) ? Enumerable.Empty<T>() : TrackedItemSerials[item.Serial];
+
+        /// <summary>
+        /// Gets the tracked values associated with the specified pickup.
+        /// </summary>
+        /// <param name="pickup">The <see cref="Pickup"/> to retrieve tracked values for.</param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}"/> containing the tracked values associated with the pickup.
+        /// If the pickup is not tracked, returns an empty collection.
+        /// </returns>
+        public virtual IEnumerable<T> GetTrackedValues(Pickup pickup) => !IsTracked(pickup) ? Enumerable.Empty<T>() : TrackedPickupSerials[pickup.Serial];
 
         /// <summary>
         /// Handles the event when a player is dropping an item.
@@ -312,7 +419,7 @@ namespace Exiled.CustomModules.API.Features
         /// Handles the event when an item is added.
         /// </summary>
         /// <param name="ev">The <see cref="ItemAddedEventArgs"/> containing information about the added item.</param>
-        internal void OnItemAdded(ItemAddedEventArgs ev) => Restore(ev.Pickup, ev.Item);
+        internal void OnItemAdded(ItemAddedEventArgs ev) => Restore(ev.Pickup.Serial, ev.Item);
 
         /// <summary>
         /// Handles the event when a tracked item or pickup is removed from a player's inventory.

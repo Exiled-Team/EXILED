@@ -9,17 +9,26 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
+    using System.Data;
     using System.Linq;
     using System.Reflection;
 
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
-
+    using Exiled.API.Features.Spawn;
+    using Exiled.CustomModules.API.Features.CustomItems.Firearms;
+    using InventorySystem.Items.Firearms;
+    using MapGeneration.Distributors;
     using UnityEngine;
+
+    using BaseFirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
+    using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
     /// A class to easily manage item behavior.
@@ -33,6 +42,13 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         private static readonly Dictionary<Type, CustomItem> BehaviourLookupTable = new();
         private static readonly Dictionary<uint, CustomItem> IdLookupTable = new();
         private static readonly Dictionary<string, CustomItem> NameLookupTable = new();
+
+        /// <summary>
+        /// Gets all tracked behaviours.
+        /// </summary>
+#pragma warning disable SA1202 // Elements should be ordered by access
+        internal static readonly Dictionary<Pickup, ItemBehaviour> TrackedBehaviours = new();
+#pragma warning restore SA1202 // Elements should be ordered by access
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomItem"/>'s.
@@ -334,7 +350,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
             if (!TryGet(name, out CustomItem item))
                 return false;
 
-            item?.Give(player, displayMessage);
+            item.Give(player, displayMessage);
 
             return true;
         }
@@ -351,7 +367,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
             if (!TryGet(id, out CustomItem item))
                 return false;
 
-            item?.Give(player, displayMessage);
+            item.Give(player, displayMessage);
 
             return true;
         }
@@ -368,7 +384,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
             if (!TryGet(type, out CustomItem item))
                 return false;
 
-            item?.Give(player, displayMessage);
+            item.Give(player, displayMessage);
 
             return true;
         }
@@ -438,7 +454,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public virtual Pickup Spawn(float x, float y, float z) => Spawn(new Vector3(x, y, z));
 
         /// <summary>
-        /// Spawns a <see cref="ItemType"/> as a <see cref="CustomItem"/> in a specific location.
+        /// Spawns a <see cref="Item"/> as a <see cref="CustomItem"/> in a specific location.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
@@ -456,7 +472,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public virtual Pickup Spawn(Player player, Player previousOwner = null) => Spawn(player.Position, previousOwner);
 
         /// <summary>
-        /// Spawns a <see cref="ItemType"/> as a <see cref="CustomItem"/> where a specific <see cref="Player"/> is, and optionally sets the previous owner.
+        /// Spawns an <see cref="Item"/> as a <see cref="CustomItem"/> where a specific <see cref="Player"/> is, and optionally sets the previous owner.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="item">The <see cref="ItemType"/> to be spawned as a <see cref="CustomItem"/>.</param>
@@ -473,7 +489,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public virtual Pickup Spawn(Vector3 position, Player previousOwner = null) => Spawn(position, Item.Create(ItemType), previousOwner);
 
         /// <summary>
-        /// Spawns the <see cref="CustomItem"/> in a specific position.
+        /// Spawns an <see cref="Item"/> as <see cref="CustomItem"/> in a specific position.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="item">The <see cref="ItemType"/> to be spawned as a <see cref="CustomItem"/>.</param>
@@ -481,17 +497,102 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <returns>The <see cref="Pickup"/> of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(Vector3 position, Item item, Player previousOwner = null)
         {
+            item.AddComponent(BehaviourComponent);
             Pickup pickup = item.CreatePickup(position);
+
+            ItemTracker tracker = StaticActor.Get<ItemTracker>();
+            tracker.AddOrTrack(item, pickup);
+            tracker.Restore(pickup, item);
+
             pickup.Scale = Settings.Scale;
+
             if (Settings.Weight != -1)
                 pickup.Weight = Settings.Weight;
 
-            if (previousOwner is not null)
+            if (previousOwner)
                 pickup.PreviousOwner = previousOwner;
 
             PickupValue.Add(pickup, this);
 
             return pickup;
+        }
+
+        /// <summary>
+        /// Spawns the specified number of items at given spawn points.
+        /// </summary>
+        /// <param name="spawnPoints">The collection of spawn points to use.</param>
+        /// <param name="limit">The maximum number of items to spawn.</param>
+        /// <returns>The total number of items spawned.</returns>
+        public virtual uint Spawn(IEnumerable<SpawnPoint> spawnPoints, uint limit)
+        {
+            uint spawned = 0;
+
+            foreach (SpawnPoint spawnPoint in spawnPoints)
+            {
+                Log.Debug($"Attempting to spawn {Name} at {spawnPoint.Position}.", true);
+
+                if (Loader.Loader.Random.NextDouble() * 100 >= spawnPoint.Chance || (limit > 0 && spawned >= limit))
+                    continue;
+
+                spawned++;
+
+                if (spawnPoint is DynamicSpawnPoint dynamicSpawnPoint && dynamicSpawnPoint.Location == SpawnLocationType.InsideLocker)
+                {
+                    for (int i = 0; i < 50; i++)
+                    {
+                        if (Map.Lockers is null)
+                            continue;
+
+                        Locker locker = Map.Lockers[Loader.Loader.Random.Next(Map.Lockers.Count)];
+
+                        if (locker is null || locker.Loot is null || locker.Chambers is null)
+                            continue;
+
+                        LockerChamber chamber = locker.Chambers[Loader.Loader.Random.Next(Mathf.Max(0, locker.Chambers.Length - 1))];
+                        Vector3 position = chamber._spawnpoint.transform.position;
+                        Spawn(position, null);
+
+                        Log.Debug($"Spawned {Name} at {position} ({spawnPoint.Name})", true);
+
+                        break;
+                    }
+                }
+                else if (spawnPoint is RoleSpawnPoint roleSpawnPoint)
+                {
+                    Spawn(roleSpawnPoint.Role.GetRandomSpawnLocation().Position, null);
+                }
+                else
+                {
+                    Spawn(spawnPoint.Position, null);
+
+                    Log.Debug($"Spawned {Name} at {spawnPoint.Position} ({spawnPoint.Name})", true);
+                }
+            }
+
+            return spawned;
+        }
+
+        /// <summary>
+        /// Spawns all items at their dynamic and static positions.
+        /// </summary>
+        public virtual void SpawnAll()
+        {
+            if (Settings is null || Settings.SpawnProperties is not SpawnProperties spawnProperties)
+                return;
+
+            // This will go over each spawn property type (static, dynamic and role) to try and spawn the item.
+            // It will attempt to spawn in role-based locations, and then dynamic ones, and finally static.
+            // Math.Min is used here to ensure that our recursive Spawn() calls do not result in exceeding the spawn limit config.
+            // This is the same as:
+            // int spawned = 0;
+            // spawned += Spawn(SpawnProperties.RoleSpawnPoints, SpawnProperties.Limit);
+            // if (spawned < SpawnProperties.Limit)
+            //    spawned += Spawn(SpawnProperties.DynamicSpawnPoints, SpawnProperties.Limit - spawned);
+            // if (spawned < SpawnProperties.Limit)
+            //    Spawn(SpawnProperties.StaticSpawnPoints, SpawnProperties.Limit - spawned);
+            Spawn(
+                spawnProperties.StaticSpawnPoints,
+                Math.Min(0, spawnProperties.Limit - Math.Min(0, Spawn(spawnProperties.DynamicSpawnPoints, spawnProperties.Limit) - Spawn(spawnProperties.RoleSpawnPoints, spawnProperties.Limit))));
         }
 
         /// <summary>
@@ -504,12 +605,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         {
             try
             {
-                Log.Debug($"{Name}.{nameof(Give)}: Item Serial: {item.Serial} Ammo: {(item is Firearm firearm ? firearm.Ammo : -1)}");
-
+                item.AddComponent(BehaviourComponent);
+                StaticActor.Get<ItemTracker>().AddOrTrack(item);
                 player.AddItem(item);
-
-                Log.Debug($"{nameof(Give)}: Adding {item.Serial} to tracker.");
-
                 ItemsValue.Add(item, this);
             }
             catch (Exception e)
@@ -590,9 +688,10 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                         throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
                 }
 
-                if (Registered.Any(x => x.Id == Id))
+                CustomItem duplicate = Registered.FirstOrDefault(x => x.Id == Id || x.Name == Name || x.BehaviourComponent == BehaviourComponent);
+                if (duplicate)
                 {
-                    Log.Warn($"Unable to register {Name}. Another item with the same ID already exists: {Registered.FirstOrDefault(x => x.Id == Id)}");
+                    Log.Warn($"Unable to register {Name}. Another item with the same ID, Name or Behaviour Component already exists: {duplicate.Name}");
 
                     return false;
                 }

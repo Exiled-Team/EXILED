@@ -75,18 +75,31 @@ namespace Exiled.CustomModules.API.Features
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.CustomRole"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
         public CustomRole CustomRole => roleBehaviour.CustomRole;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.CustomTeam"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
         public CustomTeam CustomTeam => roleBehaviour.CustomTeam;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomEscapes.CustomEscape"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
         public CustomEscape CustomEscape => escapeBehaviour.CustomEscape;
+
+        /// <summary>
+        /// Gets the pawn's current <see cref="CustomItem"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
+        /// </summary>
+        public CustomItem CurrentCustomItem => CustomItem.TryGet(CurrentItem, out CustomItem customItem) ? customItem : null;
 
         /// <summary>
         /// Gets the pawn's custom abilities.
@@ -100,11 +113,15 @@ namespace Exiled.CustomModules.API.Features
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.RoleBehaviour"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
         public RoleBehaviour RoleBehaviour => roleBehaviour ??= GetComponent<RoleBehaviour>();
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomEscapes.EscapeBehaviour"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
         public EscapeBehaviour EscapeBehaviour => escapeBehaviour ??= GetComponent<EscapeBehaviour>();
 
@@ -168,6 +185,22 @@ namespace Exiled.CustomModules.API.Features
                 }
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the pawn has the <see cref="CustomItem"/> of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="CustomItem"/>.</typeparam>
+        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
+        public bool HasCustomItem<T>()
+            where T : CustomItem => CustomItems.Any(item => item.GetType() == typeof(T));
+
+        /// <summary>
+        /// Gets a value indicating whether the pawn has the <see cref="PlayerAbility"/> of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="PlayerAbility"/>.</typeparam>
+        /// <returns><see langword="true"/> if a <see cref="PlayerAbility"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
+        public bool HasCustomAbilty<T>()
+            where T : PlayerAbility => CustomItems.Any(item => item.GetType() == typeof(T));
 
         /// <summary>
         /// Tries to get the first <see cref="CustomItem"/> of the specified type from the collection of custom items.

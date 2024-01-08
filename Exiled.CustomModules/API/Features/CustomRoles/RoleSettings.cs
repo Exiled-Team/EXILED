@@ -96,7 +96,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets or sets the <see cref="Exiled.API.Features.Spawn.SpawnProperties"/>.
         /// </summary>
-        public virtual SpawnProperties SpawnProperties { get; set; }
+        public virtual SpawnProperties SpawnProperties { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the unique <see cref="RoleTypeId"/> defining the role to be assigned.

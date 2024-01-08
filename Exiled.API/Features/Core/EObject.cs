@@ -414,26 +414,6 @@ namespace Exiled.API.Features.Core
         /// <param name="type">The <see cref="EObject"/> type.</param>
         /// <param name="gameObject"><inheritdoc cref="Base"/></param>
         /// <param name="name">The name to be given to the new <see cref="EObject"/> instance.</param>
-        /// <returns>The new <see cref="EObject"/> instance.</returns>
-        public static T CreateDefaultSubobject<T>(Type type, GameObject gameObject, string name)
-            where T : EObject
-        {
-            object newObj = CreateDefaultSubobject<T>(type);
-            if (newObj is not T outer)
-                return null;
-
-            outer.Base = gameObject;
-            outer.Name = name;
-            return outer;
-        }
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="EObject"/> class.
-        /// </summary>
-        /// <typeparam name="T">The cast <see cref="EObject"/> type.</typeparam>
-        /// <param name="type">The <see cref="EObject"/> type.</param>
-        /// <param name="gameObject"><inheritdoc cref="Base"/></param>
-        /// <param name="name">The name to be given to the new <see cref="EObject"/> instance.</param>
         /// <param name="parameters">The parameters to initialize the object.</param>
         /// <returns>The new <see cref="EObject"/> instance.</returns>
         public static T CreateDefaultSubobject<T>(Type type, GameObject gameObject, string name, params object[] parameters)

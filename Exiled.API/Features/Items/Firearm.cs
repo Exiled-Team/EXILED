@@ -198,19 +198,10 @@ namespace Exiled.API.Features.Items
         public uint BaseCode => BaseCodesValue[FirearmType];
 
         /// <summary>
-        /// Gets or sets the fire rate of the firearm, if it is an automatic weapon.
+        /// Gets the fire rate of the firearm, if it is an automatic weapon.
         /// </summary>
-        /// <remarks>This property will not do anything if the firearm is not an automatic weapon.</remarks>
         /// <seealso cref="IsAutomatic"/>
-        public float FireRate
-        {
-            get => Base is AutomaticFirearm auto ? auto._fireRate : 1f;
-            set
-            {
-                if (Base is AutomaticFirearm auto)
-                    auto._fireRate = value;
-            }
-        }
+        public float FireRate => Base is AutomaticFirearm auto ? auto._fireRate : 1f;
 
         /// <summary>
         /// Gets or sets the recoil settings of the firearm, if it's an automatic weapon.
@@ -222,8 +213,21 @@ namespace Exiled.API.Features.Items
             get => Base is AutomaticFirearm auto ? auto._recoil : default;
             set
             {
-                if (Base is AutomaticFirearm auto)
-                    auto.ActionModule = new AutomaticAction(Base, auto._semiAutomatic, auto._boltTravelTime, 1f / auto._fireRate, auto._dryfireClipId, auto._triggerClipId, auto._gunshotPitchRandomization, value, auto._recoilPattern, false, Mathf.Max(1, auto._chamberSize));
+                if (Base is not AutomaticFirearm auto)
+                    return;
+
+                auto.ActionModule = new AutomaticAction(
+                    Base,
+                    auto._semiAutomatic,
+                    auto._boltTravelTime,
+                    1f / auto._fireRate,
+                    auto._dryfireClipId,
+                    auto._triggerClipId,
+                    auto._gunshotPitchRandomization,
+                    value,
+                    auto._recoilPattern,
+                    false,
+                    Mathf.Max(1, auto._chamberSize));
             }
         }
 
@@ -242,8 +246,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The type of firearm to create.</param>
         /// <returns>The newly created firearm.</returns>
-        public static Firearm Create(FirearmType type)
-            => type is not FirearmType.None ? (Firearm)Create(type.GetItemType()) : null;
+        public static Firearm Create(FirearmType type) => type is not FirearmType.None ? (Firearm)Create(type.GetItemType()) : null;
 
         /// <summary>
         /// Adds a <see cref="AttachmentIdentifier"/> to the firearm.
@@ -391,16 +394,6 @@ namespace Exiled.API.Features.Items
         /// Removes all attachments from the firearm.
         /// </summary>
         public void ClearAttachments() => Base.ApplyAttachmentsCode(BaseCode, true);
-
-        /// <summary>
-        /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
-        /// </summary>
-        /// <param name="position">The location to spawn the item.</param>
-        /// <param name="rotation">The rotation of the item.</param>
-        /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
-        /// <returns>The created <see cref="Pickup"/>.</returns>
-        public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
-            => base.CreatePickup(position, rotation, spawn); // TODO: Deleted this overide
 
         /// <summary>
         /// Gets a <see cref="Attachment"/> of the specified <see cref="AttachmentIdentifier"/>.
@@ -609,10 +602,7 @@ namespace Exiled.API.Features.Items
             };
 
             if (cloneableItem.Base is AutomaticFirearm)
-            {
-                cloneableItem.FireRate = FireRate;
                 cloneableItem.Recoil = Recoil;
-            }
 
             cloneableItem.AddAttachment(AttachmentIdentifiers);
 

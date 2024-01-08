@@ -5,42 +5,41 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API.EventArgs
+namespace Exiled.CustomModules.Events.EventArgs.CustomItems
 {
-    using Exiled.API.Features;
-    using Exiled.CustomItems.API.Features;
-    using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.Events.EventArgs.Player;
 
     using Item = Exiled.API.Features.Items.Item;
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/> dies.
+    /// Contains all information of a <see cref="API.Features.CustomItems.CustomItem"/> before a <see cref="Player"/> dies.
     /// </summary>
-    public class OwnerDyingEventArgs : DyingEventArgs, IItemEvent
+    public class OwnerDyingEventArgs : DyingEventArgs, ICustomItemEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OwnerDyingEventArgs"/> class.
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
+        /// <param name="customItem"><inheritdoc cref="CustomItem"/></param>
+        /// <param name="itemBehaviour"><inheritdoc cref="ItemBehaviour"/></param>
         /// <param name="ev">The <see cref="HandcuffingEventArgs"/> instance.</param>
-        public OwnerDyingEventArgs(Item? item, DyingEventArgs ev)
+        public OwnerDyingEventArgs(Item item, CustomItem customItem, ItemBehaviour itemBehaviour, DyingEventArgs ev)
             : base(ev.Player, ev.DamageHandler.Base)
         {
-            if (item is null)
-                Log.Warn("Item is null");
-            if (ev.Player is null)
-                Log.Warn("Target is null");
-            if (ev.DamageHandler.Base is null)
-                Log.Warn("handler base is null");
-
             Item = item;
+            CustomItem = customItem;
+            ItemBehaviour = itemBehaviour;
         }
 
-        /// <summary>
-        /// Gets the item in the player's inventory.
-        /// </summary>
-        public Item? Item { get; }
+        /// <inheritdoc/>
+        public Item Item { get; }
+
+        /// <inheritdoc/>
+        public CustomItem CustomItem { get; }
+
+        /// <inheritdoc/>
+        public ItemBehaviour ItemBehaviour { get; }
     }
 }

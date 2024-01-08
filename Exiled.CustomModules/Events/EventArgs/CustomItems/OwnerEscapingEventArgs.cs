@@ -5,14 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API.EventArgs
+namespace Exiled.CustomModules.Events.EventArgs.CustomItems
 {
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Exiled.CustomItems.API.Features;
+    using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.Events.EventArgs.Player;
 
     using PlayerRoles;
@@ -20,17 +20,19 @@ namespace Exiled.CustomItems.API.EventArgs
     using Respawning;
 
     /// <summary>
-    /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/> escapes.
+    /// Contains all information of a <see cref="API.Features.CustomItems.CustomItem"/>  before a <see cref="Player"/> escapes.
     /// </summary>
-    public class OwnerEscapingEventArgs : EscapingEventArgs
+    public class OwnerEscapingEventArgs : EscapingEventArgs, ICustomItemEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OwnerEscapingEventArgs"/> class.
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
+        /// <param name="customItem"><inheritdoc cref="CustomItem"/></param>
+        /// <param name="itemBehaviour"><inheritdoc cref="ItemBehaviour"/></param>
         /// <param name="ev">The <see cref="EscapingEventArgs"/> instance.</param>
-        public OwnerEscapingEventArgs(Item item, EscapingEventArgs ev)
-            : this(item, ev.Player, ev.NewRole, ev.EscapeScenario, ev.RespawnTickets)
+        public OwnerEscapingEventArgs(Item item, CustomItem customItem, ItemBehaviour itemBehaviour, EscapingEventArgs ev)
+            : this(item, customItem, itemBehaviour, ev.Player, ev.NewRole, ev.EscapeScenario, ev.RespawnTickets)
         {
         }
 
@@ -38,19 +40,27 @@ namespace Exiled.CustomItems.API.EventArgs
         /// Initializes a new instance of the <see cref="OwnerEscapingEventArgs"/> class.
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
+        /// <param name="customItem"><inheritdoc cref="CustomItem"/></param>
+        /// <param name="itemBehaviour"><inheritdoc cref="ItemBehaviour"/></param>
         /// <param name="player"><inheritdoc cref="EscapingEventArgs.Player"/></param>
         /// <param name="newRole"><inheritdoc cref="EscapingEventArgs.NewRole"/></param>
         /// <param name="escapeScenario"><inheritdoc cref="EscapingEventArgs.EscapeScenario"/></param>
         /// <param name="respawnTickets"><inheritdoc cref="EscapingEventArgs.RespawnTickets"/></param>
-        public OwnerEscapingEventArgs(Item item, Player player, RoleTypeId newRole, EscapeScenario escapeScenario, KeyValuePair<SpawnableTeamType, float> respawnTickets = default)
+        public OwnerEscapingEventArgs(Item item, CustomItem customItem, ItemBehaviour itemBehaviour, Player player, RoleTypeId newRole, EscapeScenario escapeScenario, KeyValuePair<SpawnableTeamType, float> respawnTickets = default)
             : base(player, newRole, escapeScenario, respawnTickets)
         {
             Item = item;
+            CustomItem = customItem;
+            ItemBehaviour = itemBehaviour;
         }
 
-        /// <summary>
-        /// Gets the item in the player's inventory.
-        /// </summary>
+        /// <inheritdoc/>
         public Item Item { get; }
+
+        /// <inheritdoc/>
+        public CustomItem CustomItem { get; }
+
+        /// <inheritdoc/>
+        public ItemBehaviour ItemBehaviour { get; }
     }
 }

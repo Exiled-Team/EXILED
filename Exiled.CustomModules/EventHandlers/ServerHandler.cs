@@ -1,24 +1,25 @@
 // -----------------------------------------------------------------------
-// <copyright file="RoundHandler.cs" company="Exiled Team">
+// <copyright file="ServerHandler.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.Events
+namespace Exiled.CustomModules.EventHandlers
 {
-    using Exiled.CustomItems.API.Features;
+    using Exiled.API.Features;
+    using Exiled.CustomModules.API.Features.CustomItems;
 
     /// <summary>
-    /// Event Handlers for the CustomItem API.
+    /// Handles <see cref="Server"/> events.
     /// </summary>
-    internal sealed class RoundHandler
+    internal sealed class ServerHandler
     {
         /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnRoundStarted"/>
         public void OnRoundStarted()
         {
-            foreach (CustomItem customItem in CustomItem.Registered)
-                customItem?.SpawnAll();
+            foreach (CustomItem customItem in CustomItem.List)
+                customItem.SpawnAll();
         }
     }
 }

@@ -9,6 +9,7 @@ namespace Exiled.CustomModules
 {
     using Exiled.API.Features;
     using Exiled.CustomModules.API.Features;
+    using Exiled.CustomModules.EventHandlers;
 
     /// <summary>
     /// Handles all custom role API functions.
@@ -22,10 +23,22 @@ namespace Exiled.CustomModules
         /// </summary>
         public static CustomModules Instance { get; private set; } = null!;
 
+        /// <summary>
+        /// Gets the <see cref="EventHandlers.PlayerHandler"/>.
+        /// </summary>
+        internal PlayerHandler PlayerHandler { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="EventHandlers.ServerHandler"/>.
+        /// </summary>
+        internal ServerHandler ServerHandler { get; private set; }
+
         /// <inheritdoc/>
         public override void OnEnabled()
         {
             Instance = this;
+
+            SubscribeEvents();
 
             base.OnEnabled();
         }
@@ -34,7 +47,28 @@ namespace Exiled.CustomModules
         public override void OnDisabled()
         {
             keypressActivator = null;
+
+            UnsubscribeEvents();
+
             base.OnDisabled();
+        }
+
+        private void SubscribeEvents()
+        {
+            PlayerHandler = new();
+            ServerHandler = new();
+
+            Exiled.Events.Handlers.Player.ChangingItem += PlayerHandler.OnChangingItem;
+            Exiled.Events.Handlers.Server.RoundStarted += ServerHandler.OnRoundStarted;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            Exiled.Events.Handlers.Player.ChangingItem -= PlayerHandler.OnChangingItem;
+            Exiled.Events.Handlers.Server.RoundStarted -= ServerHandler.OnRoundStarted;
+
+            PlayerHandler = null;
+            ServerHandler = null;
         }
     }
 }

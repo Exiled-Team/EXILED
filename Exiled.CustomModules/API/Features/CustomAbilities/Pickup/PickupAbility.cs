@@ -116,26 +116,26 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
             where TAbility : PickupAbility => CustomAbility<Pickup>.Add(entity, out param);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, Type)"/>
-        public static new bool Add(Pickup entity, Type type) => CustomAbility<Pickup>.Add(entity, type) && StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+        public static new bool Add(Pickup entity, Type type) => CustomAbility<Pickup>.Add(entity, type) && StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, string)"/>
-        public static new bool Add(Pickup entity, string name) => CustomAbility<Pickup>.Add(entity, name) && StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+        public static new bool Add(Pickup entity, string name) => CustomAbility<Pickup>.Add(entity, name) && StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, uint)"/>
-        public static new bool Add(Pickup entity, uint id) => CustomAbility<Pickup>.Add(entity, id) && StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+        public static new bool Add(Pickup entity, uint id) => CustomAbility<Pickup>.Add(entity, id) && StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, IEnumerable{Type})"/>
         public static new void Add(Pickup entity, IEnumerable<Type> types)
         {
             CustomAbility<Pickup>.Add(entity, types);
-            StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+            StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
         }
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, IEnumerable{string})"/>
         public static new void Add(Pickup entity, IEnumerable<string> names)
         {
             CustomAbility<Pickup>.Add(entity, names);
-            StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+            StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
         }
 
         /// <inheritdoc cref="CustomAbility{T}.Remove{TAbility}(T)"/>
@@ -152,7 +152,7 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
             if (!entity.TryGetComponent(pickupAbility.BehaviourComponent, out EActor component) || component is not IAbilityBehaviour behaviour)
                 return false;
 
-            StaticActor.Get<ItemTracker>().Remove(entity, behaviour);
+            StaticActor.Get<AbilityTracker>().Remove(entity, behaviour);
             return CustomAbility<Pickup>.Remove(entity, type);
         }
 
@@ -164,7 +164,7 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
                 component is not IAbilityBehaviour behaviour)
                 return false;
 
-            StaticActor.Get<ItemTracker>().Remove(entity, behaviour);
+            StaticActor.Get<AbilityTracker>().Remove(entity, behaviour);
             return CustomAbility<Pickup>.Remove(entity, name);
         }
 
@@ -176,14 +176,14 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
                 component is not IAbilityBehaviour behaviour)
                 return false;
 
-            StaticActor.Get<ItemTracker>().Remove(entity, behaviour);
+            StaticActor.Get<AbilityTracker>().Remove(entity, behaviour);
             return CustomAbility<Pickup>.Remove(entity, id);
         }
 
         /// <inheritdoc cref="CustomAbility{T}.RemoveAll(T)"/>
         public static new void RemoveAll(Pickup entity)
         {
-            StaticActor.Get<ItemTracker>().Remove(entity);
+            StaticActor.Get<AbilityTracker>().Remove(entity);
             CustomAbility<Pickup>.RemoveAll(entity);
         }
 
@@ -219,7 +219,7 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
         {
             base.Add(entity);
 
-            StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+            StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
         }
 
         /// <inheritdoc cref="CustomAbility{T}.Remove(T)"/>
@@ -228,7 +228,7 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
             if (!entity.TryGetComponent(BehaviourComponent, out EActor component) || component is not IAbilityBehaviour behaviour)
                 return false;
 
-            StaticActor.Get<ItemTracker>().Remove(entity, behaviour);
+            StaticActor.Get<AbilityTracker>().Remove(entity, behaviour);
 
             return base.Remove(entity);
         }

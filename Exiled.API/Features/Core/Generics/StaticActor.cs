@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Core.Generic
+namespace Exiled.API.Features.Core.Generics
 {
     using Exiled.API.Features;
     using Exiled.API.Features.Core;

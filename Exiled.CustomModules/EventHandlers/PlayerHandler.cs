@@ -5,15 +5,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.Events
+namespace Exiled.CustomModules.EventHandlers
 {
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.CustomItems.API.Features;
+    using Exiled.CustomModules.API.Features;
+    using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.Events.EventArgs.Player;
 
     /// <summary>
-    /// Handles Player events for the CustomItem API.
+    /// Handles <see cref="Player"/> events.
     /// </summary>
     internal sealed class PlayerHandler
     {
@@ -22,20 +23,17 @@ namespace Exiled.CustomItems.Events
         {
             if (!ev.IsAllowed)
                 return;
-            if (CustomItem.TryGet(ev.Item, out CustomItem? newItem) && (newItem?.ShouldMessageOnGban ?? false))
-            {
-                SpectatorCustomNickname(ev.Player, $"{ev.Player.CustomName} (CustomItem: {newItem.Name})");
-            }
-            else if (ev.Player != null && CustomItem.TryGet(ev.Player.CurrentItem, out _))
-            {
+
+            if (CustomItem.TryGet(ev.Item, out CustomItem customItem) && customItem.Settings.ShouldMessageOnGban)
+                SpectatorCustomNickname(ev.Player, $"{ev.Player.CustomName} (CustomItem: {customItem.Name})");
+            else if (ev.Player && ev.Player.Cast<Pawn>().CurrentCustomItem)
                 SpectatorCustomNickname(ev.Player, ev.Player.HasCustomName ? ev.Player.CustomName : string.Empty);
-            }
         }
 
         private void SpectatorCustomNickname(Player player, string itemName)
         {
-            foreach (Player spectator in Player.List)
-                spectator.SendFakeSyncVar(player.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), itemName);
+            foreach (Player target in Player.List)
+                target.SendFakeSyncVar(player.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), itemName);
         }
     }
 }

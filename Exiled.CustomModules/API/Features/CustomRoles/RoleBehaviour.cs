@@ -17,7 +17,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Generic;
+    using Exiled.API.Features.Core.Generics;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Pools;
@@ -36,8 +36,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using static Exiled.API.Extensions.MirrorExtensions;
 
     /// <summary>
-    /// Represents the base class for implementing custom role behavior.
+    /// Represents the base class for custom role behaviors.
     /// </summary>
+    /// <remarks>
+    /// This class extends <see cref="EPlayerBehaviour"/> and implements <see cref="IAdditiveSettings{T}"/>.
+    /// <br/>It provides a foundation for creating custom behaviors associated with in-game player roles.
+    /// </remarks>
     public abstract class RoleBehaviour : EPlayerBehaviour, IAdditiveSettings<RoleSettings>
     {
         private Vector3 lastPosition;
