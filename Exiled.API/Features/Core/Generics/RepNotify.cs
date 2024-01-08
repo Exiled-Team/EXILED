@@ -91,10 +91,10 @@ namespace Exiled.API.Features.Core.Generics
         /// <summary>
         /// Provides pre-replication logic to be used along with <see cref="Value"/> setter.
         /// </summary>
-        /// <param name="val">The value to replicate.</param>
-        protected virtual void PreReplication(TRep val)
+        /// <param name="value">The value to replicate.</param>
+        protected virtual void PreReplication(TRep value)
         {
-            ReplicatingReferenceEventArgs<TRep> ev = new(this, val, true);
+            ReplicatingReferenceEventArgs<TRep> ev = new(this, value, true);
             ReplicatingReferenceDispatcher.InvokeAll(ev);
 
             if (!ev.IsAllowed)
