@@ -8,7 +8,6 @@
 namespace Exiled.CustomModules
 {
     using Exiled.API.Features;
-    using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.EventHandlers;
 
     /// <summary>
@@ -16,8 +15,6 @@ namespace Exiled.CustomModules
     /// </summary>
     public class CustomModules : Plugin<Config>
     {
-        private KeypressActivator keypressActivator;
-
         /// <summary>
         /// Gets a static reference to the plugin's instance.
         /// </summary>
@@ -46,8 +43,6 @@ namespace Exiled.CustomModules
         /// <inheritdoc/>
         public override void OnDisabled()
         {
-            keypressActivator = null;
-
             UnsubscribeEvents();
 
             base.OnDisabled();
