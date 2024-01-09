@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Core.Events
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Core.Input;
 
     /// <summary>
     /// Contains all informations before processing an action.

@@ -5,18 +5,28 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Core
+namespace Exiled.API.Features.Core.Input
 {
     using System;
+    using System.Collections.Generic;
 
     using Exiled.API.Enums;
-    using Exiled.API.Features.DynamicEvents;
+    using Exiled.API.Features.Core;
 
     /// <summary>
     /// Represents an input binding.
     /// </summary>
     public sealed class InputBinding : NullableObject
     {
+        private static readonly HashSet<InputBinding> InputBindings = new();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InputBinding"/> class.
+        /// </summary>
+        private InputBinding()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="InputBinding"/> class.
         /// </summary>
@@ -24,13 +34,21 @@ namespace Exiled.API.Features.Core
         /// <param name="condition"><inheritdoc cref="Condition"/></param>
         /// <param name="action"><inheritdoc cref="Action"/></param>
         /// <param name="ktt"><inheritdoc cref="Keypress"/></param>
-        public InputBinding(string name, Func<bool> condition, DynamicDelegate action, UUKeypressTriggerType ktt)
+        private InputBinding(string name, Func<bool> condition, Action action, UUKeypressTriggerType ktt)
         {
             Name = name;
             Condition = condition;
             Action = action;
             Keypress = ktt;
+
+            if (!InputBindings.Add(this))
+                throw new Exception($"Unable to add the same input binding twice: ({Name}).");
         }
+
+        /// <summary>
+        /// Gets a <see cref="IReadOnlyList{T}"/> containing all existing input bindings.
+        /// </summary>
+        public static IEnumerable<InputBinding> List => InputBindings;
 
         /// <summary>
         /// Gets the name of the binding.
@@ -45,7 +63,7 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Gets the action.
         /// </summary>
-        public DynamicDelegate Action { get; private set; }
+        public Action Action { get; private set; }
 
         /// <summary>
         /// Gets the keypress.
@@ -60,6 +78,6 @@ namespace Exiled.API.Features.Core
         /// <param name="action"><inheritdoc cref="Action"/></param>
         /// <param name="ktt"><inheritdoc cref="Keypress"/></param>
         /// <returns>The new <see cref="InputBinding"/>.</returns>
-        public static InputBinding Create(string name, Func<bool> condition, DynamicDelegate action, UUKeypressTriggerType ktt) => new(name, condition, action, ktt);
+        public static InputBinding Create(string name, Func<bool> condition, Action action, UUKeypressTriggerType ktt) => new(name, condition, action, ktt);
     }
 }
