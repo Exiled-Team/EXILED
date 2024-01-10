@@ -9,8 +9,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
-    using System.Data;
     using System.Linq;
     using System.Reflection;
 
@@ -22,13 +20,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Spawn;
-    using Exiled.CustomModules.API.Features.CustomItems.Firearms;
-    using InventorySystem.Items.Firearms;
     using MapGeneration.Distributors;
     using UnityEngine;
-
-    using BaseFirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
-    using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
     /// A class to easily manage item behavior.

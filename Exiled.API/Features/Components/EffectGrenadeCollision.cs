@@ -1,5 +1,5 @@
-// -----------------------------------------------------------------------
-// <copyright file="CollisionHandler.cs" company="Exiled Team">
+﻿// -----------------------------------------------------------------------
+// <copyright file="EffectGrenadeCollision.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -16,9 +16,9 @@ namespace Exiled.API.Features.Components
     using UnityEngine;
 
     /// <summary>
-    /// Collision Handler for grenades.
+    /// Collision component for grenades.
     /// </summary>
-    public class CollisionHandler : MonoBehaviour
+    public class EffectGrenadeCollision : MonoBehaviour
     {
         private bool initialized;
 
@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Components
         public EffectGrenade Grenade { get; private set; }
 
         /// <summary>
-        /// Inits the <see cref="CollisionHandler"/> object.
+        /// Inits the <see cref="EffectGrenadeCollision"/> object.
         /// </summary>
         /// <param name="owner">The grenade owner.</param>
         /// <param name="grenade">The grenade component.</param>
@@ -49,16 +49,6 @@ namespace Exiled.API.Features.Components
             try
             {
                 if (!initialized)
-                    return;
-                if (Owner == null)
-                    Log.Error($"Owner is null!");
-                if (Grenade == null)
-                    Log.Error("Grenade is null!");
-                if (collision is null)
-                    Log.Error("wat");
-                if (collision.gameObject == null)
-                    Log.Error("pepehm");
-                if (collision.gameObject == Owner || collision.gameObject.TryGetComponent<EffectGrenade>(out _))
                     return;
 
                 Grenade.TargetTime = 0.1f;
