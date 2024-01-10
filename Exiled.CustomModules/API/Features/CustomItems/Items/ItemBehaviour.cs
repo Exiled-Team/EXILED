@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features.CustomItems
+namespace Exiled.CustomModules.API.Features.CustomItems.Items
 {
     using System.Linq;
     using System.Reflection;
@@ -114,10 +114,16 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            if (CustomItem.TryGet(GetType(), out CustomItem customItem))
+            if (CustomItem.TryGet(GetType(), out CustomItem customItem) && customItem.Settings is ItemSettings itemSettings)
             {
                 CustomItem = customItem;
-                Settings = CustomItem.Settings;
+                Settings = itemSettings;
+            }
+
+            if (CustomItem is null || Settings is null)
+            {
+                Log.Error($"Custom item ({GetType().Name}) has invalid configuration.");
+                Destroy();
             }
 
             if (Config is null)
@@ -270,7 +276,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// </summary>
         /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
         /// <param name="item">The <see cref="Item"/> being acquired.</param>
-        /// <param name="displayMessage">Whether or not the Pickup hint should be displayed.</param>
+        /// <param name="displayMessage">Whether the pickup hint should be displayed.</param>
         protected virtual void OnAcquired(Player player, Item item, bool displayMessage = true)
         {
             if (displayMessage)

@@ -386,7 +386,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets the tracked values associated with the specified item.
         /// </summary>
-        /// <param name="item">The <see cref="Item"/> to retrieve tracked values for.</param>
+        /// <param name="item">The <see cref="Item"/> to retrieve tracked values from.</param>
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> containing the tracked values associated with the item.
         /// If the item is not tracked, returns an empty collection.
@@ -396,7 +396,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets the tracked values associated with the specified pickup.
         /// </summary>
-        /// <param name="pickup">The <see cref="Pickup"/> to retrieve tracked values for.</param>
+        /// <param name="pickup">The <see cref="Pickup"/> to retrieve tracked values from.</param>
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> containing the tracked values associated with the pickup.
         /// If the pickup is not tracked, returns an empty collection.

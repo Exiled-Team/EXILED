@@ -11,6 +11,7 @@ namespace Exiled.CustomModules.EventHandlers
     using Exiled.API.Features;
     using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.API.Features.CustomItems;
+    using Exiled.CustomModules.API.Features.CustomItems.Items;
     using Exiled.Events.EventArgs.Player;
 
     /// <summary>
@@ -24,7 +25,7 @@ namespace Exiled.CustomModules.EventHandlers
             if (!ev.IsAllowed)
                 return;
 
-            if (CustomItem.TryGet(ev.Item, out CustomItem customItem) && customItem.Settings.ShouldMessageOnGban)
+            if (CustomItem.TryGet(ev.Item, out CustomItem customItem) && customItem.Settings.Cast<ItemSettings>().ShouldMessageOnGban)
                 SpectatorCustomNickname(ev.Player, $"{ev.Player.CustomName} (CustomItem: {customItem.Name})");
             else if (ev.Player && ev.Player.Cast<Pawn>().CurrentCustomItem)
                 SpectatorCustomNickname(ev.Player, ev.Player.HasCustomName ? ev.Player.CustomName : string.Empty);

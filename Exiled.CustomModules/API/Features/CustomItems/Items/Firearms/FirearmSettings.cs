@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features.CustomItems.Firearms
+namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 {
     using System;
 
@@ -13,7 +13,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Firearms
 
     using Exiled.API.Extensions;
     using Exiled.CustomModules.API.Enums;
-
+    using Exiled.CustomModules.API.Features.CustomItems.Items;
     using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
@@ -37,27 +37,27 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Firearms
         /// <summary>
         /// Gets or sets the firearm's ammo type.
         /// </summary>
-        public ItemType AmmoType { get; set; }
+        public virtual ItemType AmmoType { get; set; }
 
         /// <summary>
         /// Gets or sets the firearm's attachments.
         /// </summary>
-        public AttachmentName[] Attachments { get; set; } = { };
+        public virtual AttachmentName[] Attachments { get; set; } = { };
 
         /// <summary>
         /// Gets or sets the <see cref="Enums.FiringMode"/>.
         /// </summary>
-        public FiringMode FiringMode { get; set; }
+        public virtual FiringMode FiringMode { get; set; }
 
         /// <summary>
         /// Gets or sets the firearm's damage.
         /// </summary>
-        public float Damage { get; set; }
+        public virtual float Damage { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the firearm's clip.
         /// </summary>
-        public byte ClipSize { get; set; }
+        public virtual byte ClipSize { get; set; }
 
         /// <summary>
         /// Gets or sets the firearm's fire rate.
@@ -66,23 +66,23 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Firearms
         /// <br/>
         /// Automatic firearms are not supported.
         /// </summary>
-        public byte FireRate { get; set; }
+        public virtual byte FireRate { get; set; }
 
         /// <summary>
         /// Gets or sets the burst length.
         /// <para/>
         /// Only firearms with <see cref="FiringMode.Burst"/> will be affected.
         /// </summary>
-        public byte BurstLength { get; set; }
+        public virtual byte BurstLength { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CameraShaking.RecoilSettings"/>.
         /// </summary>
-        public RecoilSettings RecoilSettings { get; set; }
+        public virtual RecoilSettings RecoilSettings { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether friendly fire is allowed with this firearm on FF-enabled servers.
         /// </summary>
-        public bool AllowFriendlyFire { get; set; }
+        public virtual bool AllowFriendlyFire { get; set; }
     }
 }

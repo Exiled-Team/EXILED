@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features.CustomItems
+namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 {
     using System.Collections.Generic;
 
@@ -13,7 +13,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     using Exiled.API.Features.Core.Generics;
     using Exiled.API.Features.Items;
     using Exiled.CustomModules.API.Enums;
-    using Exiled.CustomModules.API.Features.CustomItems.Firearms;
     using Exiled.Events.EventArgs.Player;
 
     using MEC;

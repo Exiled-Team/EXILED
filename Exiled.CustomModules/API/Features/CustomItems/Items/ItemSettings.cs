@@ -5,20 +5,18 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features.CustomItems
+namespace Exiled.CustomModules.API.Features.CustomItems.Items
 {
-    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Spawn;
+
     using UnityEngine;
-    using YamlDotNet.Serialization;
 
     /// <summary>
-    /// A tool to easily setup Items.
+    /// A tool to easily setup items.
     /// </summary>
-    public class ItemSettings : TypeCastObject<ItemSettings>, IAdditiveProperty
+    public class ItemSettings : Settings
     {
         /// <summary>
         /// Gets the default <see cref="ItemSettings"/> values.
@@ -29,22 +27,22 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <summary>
         /// Gets or sets the custom item's <see cref="global::ItemType"/>.
         /// </summary>
-        public virtual ItemType ItemType { get; set; }
+        public override ItemType ItemType { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Exiled.API.Features.Spawn.SpawnProperties"/>.
         /// </summary>
-        public SpawnProperties SpawnProperties { get; set; } = new();
+        public override SpawnProperties SpawnProperties { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the weight of the item.
         /// </summary>
-        public virtual float Weight { get; set; } = -1f;
+        public override float Weight { get; set; } = -1f;
 
         /// <summary>
         /// Gets or sets the scale of the item.
         /// </summary>
-        public virtual Vector3 Scale { get; set; } = Vector3.one;
+        public override Vector3 Scale { get; set; } = Vector3.one;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not this item causes things to happen that may be considered hacks, and thus be shown to global moderators as being present in a player's inventory when they gban them.
@@ -54,7 +52,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <summary>
         /// Gets or sets the <see cref="TextDisplay"/> to be displayed when the item has been picked up.
         /// </summary>
-        public virtual TextDisplay PickedUpText { get; set; }
+        public override TextDisplay PickedUpText { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TextDisplay"/> to be displayed when the item has been selected.

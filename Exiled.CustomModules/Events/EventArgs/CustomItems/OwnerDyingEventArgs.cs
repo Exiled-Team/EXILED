@@ -8,6 +8,7 @@
 namespace Exiled.CustomModules.Events.EventArgs.CustomItems
 {
     using Exiled.CustomModules.API.Features.CustomItems;
+    using Exiled.CustomModules.API.Features.CustomItems.Items;
     using Exiled.Events.EventArgs.Player;
 
     using Item = Exiled.API.Features.Items.Item;

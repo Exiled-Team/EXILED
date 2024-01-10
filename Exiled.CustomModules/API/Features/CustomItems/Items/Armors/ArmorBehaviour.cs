@@ -5,12 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features.CustomItems.Armors
+namespace Exiled.CustomModules.API.Features.CustomItems.Items.Armors
 {
     using Exiled.API.Features;
     using Exiled.API.Features.Core.Generics;
     using Exiled.API.Features.Items;
-    using Exiled.CustomModules.API.Features.CustomItems.Firearms;
+    using Exiled.CustomModules.API.Features.CustomItems.Items;
 
     /// <summary>
     /// Represents the base class for custom armor behaviors.

@@ -12,6 +12,7 @@ namespace Exiled.CustomModules.API.Features
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Items;
@@ -19,6 +20,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Features.CustomAbilities;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.CustomItems;
+    using Exiled.CustomModules.API.Features.CustomItems.Pickups.Ammos;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Features.PlayerAbilities;
     using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
@@ -42,6 +44,7 @@ namespace Exiled.CustomModules.API.Features
     {
         private readonly List<AbilityBehaviour> abilityBehaviours = new();
         private readonly List<PlayerAbility> customAbilities = new();
+        private readonly Dictionary<uint, ushort> customAmmoBox = new();
 
         private RoleBehaviour roleBehaviour;
         private EscapeBehaviour escapeBehaviour;
@@ -124,6 +127,11 @@ namespace Exiled.CustomModules.API.Features
         /// Can be <see langword="null"/>.
         /// </summary>
         public EscapeBehaviour EscapeBehaviour => escapeBehaviour ??= GetComponent<EscapeBehaviour>();
+
+        /// <summary>
+        /// Gets the pawn's custom ammo box containing.
+        /// </summary>
+        public IReadOnlyDictionary<uint, ushort> CustomAmmoBox => customAmmoBox;
 
         /// <summary>
         /// Gets a value indicating whether the pawn has a <see cref="CustomRoles.CustomRole"/>.
@@ -297,6 +305,43 @@ namespace Exiled.CustomModules.API.Features
             }
 
             DropItem(item);
+        }
+
+        /// <summary>
+        /// Adds an amount of custom ammos to the pawn's ammo box.
+        /// </summary>
+        /// <param name="id">The type of the custom ammo.</param>
+        /// <param name="amount">The amount to be added.</param>
+        /// <returns><see langword="true"/> if the specified amount of ammo was given entirely or partially; otherwise, <see langword="false"/>.</returns>
+        public bool AddAmmo(uint id, ushort amount)
+        {
+            if (!CustomItem.TryGet(id, out CustomItem customItem) || !customItem.Settings.Is(out AmmoSettings settings))
+                return false;
+
+            if (customAmmoBox.TryAdd(id, amount))
+                return true;
+
+            if (customAmmoBox[id] >= settings.MaxUnits)
+                return false;
+
+            ushort amt;
+            try
+            {
+                checked
+                {
+                    amt = (ushort)(customAmmoBox[id] + amount);
+                }
+            }
+            catch (OverflowException)
+            {
+                amt = ushort.MaxValue;
+            }
+
+            if (amt >= settings.MaxUnits)
+                amt = settings.MaxUnits;
+
+            customAmmoBox[id] = amt;
+            return true;
         }
 
         private void OnAddedAbility(AddedAbilityEventArgs<Player> ev)

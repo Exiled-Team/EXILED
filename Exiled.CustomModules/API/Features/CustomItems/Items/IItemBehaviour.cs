@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features.CustomItems
+namespace Exiled.CustomModules.API.Features.CustomItems.Items
 {
     using Exiled.CustomModules.API.Interfaces;
 

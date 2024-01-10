@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features.CustomItems.Explosives
+namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
 {
     using Exiled.API.Features;
     using Exiled.API.Features.Components;
@@ -14,6 +14,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Explosives
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.API.Features.Roles;
+    using Exiled.CustomModules.API.Features.CustomItems.Items;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
 

@@ -20,7 +20,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Spawn;
+    using Exiled.CustomModules.API.Features.CustomItems.Items;
     using MapGeneration.Distributors;
+
     using UnityEngine;
 
     /// <summary>
@@ -104,9 +106,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public virtual ItemCategory ItemCategory { get; }
 
         /// <summary>
-        /// Gets the <see cref="ItemSettings"/>.
+        /// Gets the <see cref="Settings"/>.
         /// </summary>
-        public virtual ItemSettings Settings { get; } = ItemSettings.Default;
+        public virtual Settings Settings { get; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="CustomItem"/> is registered.

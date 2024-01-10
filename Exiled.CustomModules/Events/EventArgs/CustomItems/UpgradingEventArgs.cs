@@ -9,6 +9,7 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomItems
 {
     using Exiled.API.Features.Pickups;
     using Exiled.CustomModules.API.Features.CustomItems;
+    using Exiled.CustomModules.API.Features.CustomItems.Items;
     using Exiled.Events.EventArgs.Scp914;
 
     using Scp914;
