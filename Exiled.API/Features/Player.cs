@@ -1429,11 +1429,11 @@ namespace Exiled.API.Features
         /// Gets an <see cref="IEnumerable{Player}"/> containing all players processed based on the arguments specified.
         /// </summary>
         /// <param name="args">The array segment of strings representing the input arguments to be processed.</param>
-        /// <param name="startindex">The starting index within the array segment.</param>
+        /// <param name="startIndex">The starting index within the array segment.</param>
         /// <param name="newargs">Contains the updated arguments after processing.</param>
         /// <param name="keepEmptyEntries">Determines whether empty entries should be kept in the result.</param>
         /// <returns>An <see cref="IEnumerable{Player}"/> representing the processed players.</returns>
-        public static IEnumerable<Player> GetProcessed(ArraySegment<string> args, int startindex, out string[] newargs, bool keepEmptyEntries = false) => RAUtils.ProcessPlayerIdOrNamesList(args, startindex, out newargs, keepEmptyEntries).Select(hub => Get(hub));
+        public static IEnumerable<Player> GetProcessed(ArraySegment<string> args, int startIndex, out string[] newargs, bool keepEmptyEntries = false) => RAUtils.ProcessPlayerIdOrNamesList(args, startIndex, out newargs, keepEmptyEntries).Select(hub => Get(hub));
 
         /// <summary>
         /// Adds a player's UserId to the list of reserved slots.
