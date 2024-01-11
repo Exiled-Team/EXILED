@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="InventoryExtensions.ServerAddItem(Inventory, ItemType, ushort, ItemPickupBase)"/>.
-    /// Adds the <see cref="Handlers.Player.AddingItem"/> event.
+    /// Patches <see cref="InventoryExtensions.ServerRemoveItem(Inventory, ushort, ItemPickupBase)"/>.
+    /// Adds the <see cref="Handlers.Player.RemovingItem"/> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.RemovingItem))]
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerRemoveItem))]
