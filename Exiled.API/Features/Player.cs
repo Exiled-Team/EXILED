@@ -1426,6 +1426,16 @@ namespace Exiled.API.Features
         public static bool TryGet(Collider collider, out Player player) => (player = Get(collider)) is not null;
 
         /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> containing all players that were processed.
+        /// </summary>
+        /// <param name="args">The arguments to be processed.</param>
+        /// <param name="startindex">The index to start at.</param>
+        /// <param name="newargs">The new args.</param>
+        /// <param name="keepEmptyEntries">Whether or not to keep empty entries.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of players.</returns>
+        public static IEnumerable<Player> GetProcessed(ArraySegment<string> args, int startindex, out string[] newargs, bool keepEmptyEntries = false) => RAUtils.ProcessPlayerIdOrNamesList(args, startindex, out newargs, keepEmptyEntries).Select(hub => Get(hub));
+
+        /// <summary>
         /// Adds a player's UserId to the list of reserved slots.
         /// </summary>
         /// <remarks>This method does not permanently give a user a reserved slot. The slot will be removed if the reserved slots are reloaded.</remarks>
