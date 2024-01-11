@@ -1435,8 +1435,6 @@ namespace Exiled.API.Features
         /// <returns>An <see cref="IEnumerable{Player}"/> representing the processed players.</returns>
         public static IEnumerable<Player> GetProcessed(ArraySegment<string> args, int startindex, out string[] newargs, bool keepEmptyEntries = false) => RAUtils.ProcessPlayerIdOrNamesList(args, startindex, out newargs, keepEmptyEntries).Select(hub => Get(hub));
 
-        public static IEnumerable<Player> GetProcessed(string arg) => RAUtils.
-
         /// <summary>
         /// Adds a player's UserId to the list of reserved slots.
         /// </summary>
