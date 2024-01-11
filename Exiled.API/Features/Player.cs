@@ -1426,14 +1426,16 @@ namespace Exiled.API.Features
         public static bool TryGet(Collider collider, out Player player) => (player = Get(collider)) is not null;
 
         /// <summary>
-        /// Gets an <see cref="IEnumerable{T}"/> containing all players that were processed.
+        /// Gets an <see cref="IEnumerable{Player}"/> containing all players processed based on the arguments specified.
         /// </summary>
-        /// <param name="args">The arguments to be processed.</param>
-        /// <param name="startindex">The index to start at.</param>
-        /// <param name="newargs">The new args.</param>
-        /// <param name="keepEmptyEntries">Whether or not to keep empty entries.</param>
-        /// <returns>An <see cref="IEnumerable{T}"/> of players.</returns>
+        /// <param name="args">The array segment of strings representing the input arguments to be processed.</param>
+        /// <param name="startindex">The starting index within the array segment.</param>
+        /// <param name="newargs">Contains the updated arguments after processing.</param>
+        /// <param name="keepEmptyEntries">Determines whether empty entries should be kept in the result.</param>
+        /// <returns>An <see cref="IEnumerable{Player}"/> representing the processed players.</returns>
         public static IEnumerable<Player> GetProcessed(ArraySegment<string> args, int startindex, out string[] newargs, bool keepEmptyEntries = false) => RAUtils.ProcessPlayerIdOrNamesList(args, startindex, out newargs, keepEmptyEntries).Select(hub => Get(hub));
+
+        public static IEnumerable<Player> GetProcessed(string arg) => RAUtils.
 
         /// <summary>
         /// Adds a player's UserId to the list of reserved slots.
