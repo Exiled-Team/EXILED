@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Loader.Features.Configs.CustomConverters
+namespace Exiled.API.Features.Serialization.CustomConverters
 {
     using System;
     using System.Collections.Generic;

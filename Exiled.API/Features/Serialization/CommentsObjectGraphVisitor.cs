@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Loader.Features.Configs
+namespace Exiled.API.Features.Serialization
 {
     using YamlDotNet.Core;
     using YamlDotNet.Core.Events;

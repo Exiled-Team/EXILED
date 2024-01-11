@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Loader.Features.Configs
+namespace Exiled.API.Features.Serialization
 {
     using System;
 
@@ -30,12 +30,7 @@ namespace Exiled.Loader.Features.Configs
         public override void Emit(ScalarEventInfo eventInfo, IEmitter emitter)
         {
             if (eventInfo.Source.StaticType != typeof(object) && Type.GetTypeCode(eventInfo.Source.StaticType) == TypeCode.String && !UnderscoredNamingConvention.Instance.Properties.Contains(eventInfo.Source.Value))
-            {
-                if (eventInfo.Source.Value == null || eventInfo.Source.Value.ToString().IndexOfAny(multiline) is -1)
-                    eventInfo.Style = LoaderPlugin.Config.ScalarStyle;
-                else
-                    eventInfo.Style = LoaderPlugin.Config.MultiLineScalarStyle;
-            }
+                eventInfo.Style = eventInfo.Source.Value == null || eventInfo.Source.Value.ToString().IndexOfAny(multiline) is -1 ? ScalarStyle.SingleQuoted : ScalarStyle.Literal;
 
             base.Emit(eventInfo, emitter);
         }
