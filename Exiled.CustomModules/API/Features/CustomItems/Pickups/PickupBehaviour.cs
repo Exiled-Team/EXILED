@@ -109,7 +109,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
             base.SubscribeEvents();
 
             Exiled.Events.Handlers.Player.PickingUpItem += OnInternalPickingUp;
-            Exiled.Events.Handlers.Player.ItemAdded += OnInternalItemAdded;
+            Exiled.Events.Handlers.Player.AddingItem += OnInternalAddingItem;
             Exiled.Events.Handlers.Scp914.UpgradingPickup += OnInternalUpgradingPickup;
         }
 
@@ -119,7 +119,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
             base.UnsubscribeEvents();
 
             Exiled.Events.Handlers.Player.PickingUpItem -= OnInternalPickingUp;
-            Exiled.Events.Handlers.Player.ItemAdded -= OnInternalItemAdded;
+            Exiled.Events.Handlers.Player.AddingItem -= OnInternalAddingItem;
             Exiled.Events.Handlers.Scp914.UpgradingPickup -= OnInternalUpgradingPickup;
         }
 
@@ -157,12 +157,12 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
                 return;
         }
 
-        private void OnInternalItemAdded(ItemAddedEventArgs ev)
+        private void OnInternalAddingItem(AddingItemEventArgs ev)
         {
             if (!Check(ev.Pickup))
                 return;
 
-            ev.Item.Destroy();
+            ev.IsAllowed = false;
             OnAcquired(ev.Player, true);
         }
 
