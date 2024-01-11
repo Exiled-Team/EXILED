@@ -9,7 +9,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 {
     using System.Collections.Generic;
 
-    using Exiled.API.Extensions;
+    using Exiled.API.Enums;
     using Exiled.API.Features.Core.Generics;
     using Exiled.API.Features.Items;
     using Exiled.CustomModules.API.Enums;
@@ -92,7 +92,28 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
         private protected virtual void OnInternalUnloading(UnloadingWeaponEventArgs ev)
         {
             ReplicatedClip.Replicate(1);
-            ItemOwner.AddAmmo(FirearmSettings.AmmoType.GetAmmoType(), (byte)(ReplicatedClip.ReplicatedValue - 1));
+
+            if (ammoType is not AmmoType.None)
+            {
+                ItemOwner.AddAmmo(ammoType, (byte)(ReplicatedClip.ReplicatedValue - 1));
+            }
+            else if (itemType is not ItemType.None)
+            {
+                for (int i = 0; i < ReplicatedClip.ReplicatedValue - 1; i++)
+                {
+                    Item item = Item.Create(itemType);
+
+                    if (ItemOwner.Items.Count >= 8)
+                        item.CreatePickup(ItemOwner.Position);
+                    else
+                        item.Give(ItemOwner);
+                }
+            }
+            else if (customAmmoType > 0)
+            {
+                ev.Player.Cast<Pawn>().AddAmmo(customAmmoType, (byte)(ReplicatedClip.ReplicatedValue - 1));
+            }
+
             ReplicatedClip.Send(0);
         }
 

@@ -1947,6 +1947,31 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Removes an <see cref="Item"/> from the player's inventory.
+        /// </summary>
+        /// <param name="itemType">The <see cref="ItemType"/> of the <see cref="Item"/>.</param>
+        /// <param name="destroy">Whether or not to destroy the item.</param>
+        /// <param name="removeAll">Whether or not to remove all items of the specified <see cref="ItemType"/>.</param>
+        public void RemoveItem(ItemType itemType, bool destroy = true, bool removeAll = false)
+        {
+            bool RemoveIfExisting(Item item) => item.Type == itemType && RemoveItem(item, destroy);
+
+            if (removeAll)
+            {
+                Items.ToList().ForEach(item => RemoveIfExisting(item));
+                return;
+            }
+
+            foreach (Item item in Items.ToList())
+            {
+                if (!RemoveIfExisting(item))
+                    continue;
+
+                break;
+            }
+        }
+
+        /// <summary>
         /// Removes all <see cref="Item"/>'s that satisfy the condition from the player's inventory.
         /// </summary>
         /// <param name="predicate">The condition to satisfy.</param>
@@ -2268,6 +2293,33 @@ namespace Exiled.API.Features
         /// <param name="weaponType">The <see cref="ItemType"/> of the weapon.</param>
         /// <param name="amount">The amount of ammo to be added.</param>
         public void AddAmmo(FirearmType weaponType, ushort amount) => AddAmmo(weaponType.GetWeaponAmmoType(), amount);
+
+        /// <summary>
+        /// Removes an amount of <see cref="AmmoType"/> from the player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to be removed.</param>
+        /// <param name="amount">The amount to be removed.</param>
+        /// <returns><see langword="true"/> if the specified amount of ammo was removed entirely or partially; otherwise, <see langword="false"/>.</returns>
+        public bool RemoveAmmo(AmmoType ammoType, ushort amount)
+        {
+            if (!Ammo.TryGetValue(ammoType.GetItemType(), out ushort value))
+                return false;
+
+            try
+            {
+                checked
+                {
+                    value -= amount;
+                }
+            }
+            catch (OverflowException)
+            {
+                value = ushort.MinValue;
+            }
+
+            SetAmmo(ammoType, value);
+            return true;
+        }
 
         /// <summary>
         /// Sets the amount of a specified <see cref="AmmoType">ammo type</see> to the player's inventory.

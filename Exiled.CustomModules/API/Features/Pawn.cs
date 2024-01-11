@@ -24,7 +24,6 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Features.PlayerAbilities;
     using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
-    using Exiled.Events.EventArgs.Player;
     using PlayerRoles;
     using UnityEngine;
 
@@ -308,6 +307,13 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
+        /// Gets the ammo count of a specified custom ammo in a pawn's inventory.
+        /// </summary>
+        /// <param name="customAmmoType">The custom ammo to be searched for in the pawn's inventory.</param>
+        /// <returns>The specified custom ammo count.</returns>
+        public ushort GetAmmo(uint customAmmoType) => (ushort)(customAmmoBox.TryGetValue(customAmmoType, out ushort amount) ? amount : 0);
+
+        /// <summary>
         /// Adds an amount of custom ammos to the pawn's ammo box.
         /// </summary>
         /// <param name="id">The type of the custom ammo.</param>
@@ -342,6 +348,46 @@ namespace Exiled.CustomModules.API.Features
 
             customAmmoBox[id] = amt;
             return true;
+        }
+
+        /// <summary>
+        /// Removes an amount of custom ammos from the pawn's ammo box.
+        /// </summary>
+        /// <param name="id">The type of the custom ammo.</param>
+        /// <param name="amount">The amount to be removed.</param>
+        /// <returns><see langword="true"/> if the specified amount of ammo was removed entirely or partially; otherwise, <see langword="false"/>.</returns>
+        public bool RemoveAmmo(uint id, ushort amount)
+        {
+            if (!customAmmoBox.TryGetValue(id, out ushort amt))
+                return false;
+
+            try
+            {
+                checked
+                {
+                    amt -= amount;
+                }
+            }
+            catch (OverflowException)
+            {
+                amt = ushort.MinValue;
+            }
+
+            customAmmoBox[id] = amt;
+            return true;
+        }
+
+        /// <summary>
+        /// Sets the amount of a specified custom ammo to the pawn's inventory.
+        /// </summary>
+        /// <param name="id">The type of the custom ammo.</param>
+        /// <param name="amount">The amount of ammo to be set.</param>
+        public void SetAmmo(uint id, ushort amount)
+        {
+            if (customAmmoBox.TryAdd(id, amount))
+                return;
+
+            customAmmoBox[id] = amount;
         }
 
         private void OnAddedAbility(AddedAbilityEventArgs<Player> ev)

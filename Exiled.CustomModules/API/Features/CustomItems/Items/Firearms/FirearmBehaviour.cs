@@ -8,6 +8,7 @@
 namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 {
     using System;
+    using System.Linq;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
@@ -27,6 +28,16 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
     /// </remarks>
     public abstract class FirearmBehaviour : ItemBehaviour
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable SA1401 // Fields should be private
+#pragma warning disable SA1600 // Elements should be documented
+        protected ItemType itemType;
+        protected AmmoType ammoType;
+        protected uint customAmmoType;
+#pragma warning restore SA1600 // Elements should be documented
+#pragma warning restore SA1401 // Fields should be private
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
         /// <inheritdoc cref="ItemBehaviour.Settings"/>.
         public FirearmSettings FirearmSettings => Settings.Cast<FirearmSettings>();
 
@@ -55,6 +66,22 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 
             Firearm.Ammo = FirearmSettings.ClipSize;
             Firearm.Recoil = FirearmSettings.RecoilSettings;
+
+            ItemType ammoItemType = FirearmSettings.AmmoType;
+            uint customAmmoId = FirearmSettings.CustomAmmoType;
+
+            if (itemType is ItemType.None)
+            {
+                if (customAmmoId > 0 && CustomItem.TryGet(customAmmoId, out CustomItem _))
+                    customAmmoType = customAmmoId;
+            }
+            else
+            {
+                if (ammoItemType.IsAmmo())
+                    ammoType = ammoItemType.GetAmmoType();
+                else
+                    itemType = ammoItemType;
+            }
         }
 
         /// <inheritdoc/>
@@ -130,22 +157,33 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
             if (remainingClip >= clipSize)
                 return;
 
-            AmmoType ammoType = FirearmSettings.AmmoType.GetAmmoType();
-            ushort ammoAmount = ev.Player.GetAmmo(ammoType);
+            ushort unscaledAmmoAmount = 0;
 
-            if (ammoAmount == 0)
+            if (ammoType is not AmmoType.None)
+                unscaledAmmoAmount = (ushort)ev.Player.Items.Where(i => !Check(i) && i.Type == itemType).Count();
+            else if (itemType is not ItemType.None)
+                unscaledAmmoAmount = ev.Player.GetAmmo(ammoType);
+            else if (customAmmoType > 0)
+                unscaledAmmoAmount = ev.Player.Cast<Pawn>().GetAmmo(customAmmoType);
+
+            if (unscaledAmmoAmount == 0)
                 return;
 
             ev.Player.Connection.Send(new RequestMessage(ev.Firearm.Serial, RequestType.Reload));
 
-            byte amountToReload = (byte)Math.Min(clipSize - remainingClip, ammoAmount);
+            byte amountToReload = (byte)Math.Min(clipSize - remainingClip, unscaledAmmoAmount);
 
             if (amountToReload <= 0)
                 return;
 
             ev.Player.GetEffect(EffectType.Invisible).Intensity = 0;
 
-            ev.Player.SetAmmo(ammoType, (ushort)(ammoAmount - amountToReload));
+            if (ammoType is not AmmoType.None)
+                ev.Player.RemoveAmmo(ammoType, amountToReload);
+            else if (itemType is not ItemType.None)
+                ev.Player.RemoveItem(itemType);
+            else if (customAmmoType > 0)
+                ev.Player.Cast<Pawn>().RemoveAmmo(customAmmoType, amountToReload);
 
             Firearm.Ammo = (byte)(Firearm.Ammo + amountToReload);
         }

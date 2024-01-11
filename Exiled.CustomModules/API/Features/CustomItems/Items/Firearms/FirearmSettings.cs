@@ -36,8 +36,17 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 
         /// <summary>
         /// Gets or sets the firearm's ammo type.
+        /// <para/>
+        /// This property cannot be used along with <see cref="CustomAmmoType"/>.
         /// </summary>
         public virtual ItemType AmmoType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the firearm's custom ammo type.
+        /// <para/>
+        /// This property cannot be used along with <see cref="AmmoType"/>.
+        /// </summary>
+        public virtual uint CustomAmmoType { get; set; }
 
         /// <summary>
         /// Gets or sets the firearm's attachments.

@@ -163,7 +163,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
         {
         }
 
-        private void OnInternalThrowingRequest(ThrowingRequestEventArgs ev)
+        /// <inheritdoc cref="OnThrowingRequest(ThrowingRequestEventArgs)"/>
+        private protected void OnInternalThrowingRequest(ThrowingRequestEventArgs ev)
         {
             if (!Check(ev.Player.CurrentItem))
                 return;
@@ -171,7 +172,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
             OnThrowingRequest(ev);
         }
 
-        private void OnInternalThrownProjectile(ThrownProjectileEventArgs ev)
+        /// <inheritdoc cref="OnThrownProjectile(ThrownProjectileEventArgs)"/>
+        private protected void OnInternalThrownProjectile(ThrownProjectileEventArgs ev)
         {
             if (!Check(ev.Throwable))
                 return;
@@ -185,7 +187,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
                 ev.Projectile.GameObject.AddComponent<EffectGrenadeCollision>().Init((ev.Player ?? Server.Host).GameObject, ev.Projectile.Base);
         }
 
-        private void OnInternalExplodingGrenade(ExplodingGrenadeEventArgs ev)
+        /// <inheritdoc cref="OnExploding(ExplodingGrenadeEventArgs)"/>
+        private protected void OnInternalExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
             if (!Check(ev.Projectile))
                 return;
@@ -193,7 +196,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
             OnExploding(ev);
         }
 
-        private void OnInternalChangedIntoGrenade(ChangedIntoGrenadeEventArgs ev)
+        /// <inheritdoc cref="OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs)"/>
+        private protected void OnInternalChangedIntoGrenade(ChangedIntoGrenadeEventArgs ev)
         {
             if (!Check(ev.Pickup))
                 return;
