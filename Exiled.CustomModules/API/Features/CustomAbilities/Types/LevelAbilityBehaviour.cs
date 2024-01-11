@@ -7,9 +7,11 @@
 
 namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
+    using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.DynamicEvents;
+    using Exiled.CustomModules.API.Features.CustomAbilities.Settings;
 
     /// <summary>
     /// Represents the base class for ability behaviors associated with a specific entity type, providing support for levels.
@@ -45,6 +47,11 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         public TDynamicEventDispatcher<IAbilityBehaviour> OnMaxLevelReachedDispatcher { get; protected set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="Settings.LevelAbilitySettings"/>.
+        /// </summary>
+        public LevelAbilitySettings LevelAbilitySettings { get; set; }
+
+        /// <summary>
         /// Gets or sets the level of the ability.
         /// </summary>
         public virtual byte Level
@@ -58,7 +65,14 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         {
             base.AdjustAdditivePipe();
 
-            Level = Settings.DefaultLevel;
+            if (!Settings.Cast(out LevelAbilitySettings settings))
+            {
+                Log.Debug($"{CustomAbility.Name}'s settings are not suitable for a Level Ability", true);
+                Destroy();
+            }
+
+            LevelAbilitySettings = settings;
+            Level = LevelAbilitySettings.DefaultLevel;
         }
 
         /// <inheritdoc/>

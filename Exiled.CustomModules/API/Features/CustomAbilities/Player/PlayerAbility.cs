@@ -44,31 +44,28 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         /// </summary>
         /// <param name="id">The specified id.</param>
         /// <returns>The <see cref="PlayerAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new PlayerAbility Get(uint id) =>
-            List.FirstOrDefault(customAbility => customAbility == id && customAbility.IsEnabled);
+        public static new PlayerAbility Get(uint id) => CustomAbility<Player>.Get(id).Cast<PlayerAbility>();
 
         /// <summary>
         /// Gets a <see cref="PlayerAbility"/> given the specified name.
         /// </summary>
         /// <param name="name">The specified name.</param>
         /// <returns>The <see cref="PlayerAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new PlayerAbility Get(string name) => List.FirstOrDefault(customAbility => customAbility.Name == name);
+        public static new PlayerAbility Get(string name) => CustomAbility<Player>.Get(name).Cast<PlayerAbility>();
 
         /// <summary>
         /// Gets a <see cref="PlayerAbility"/> given the specified <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The specified <see cref="Type"/>.</param>
         /// <returns>The <see cref="PlayerAbility"/> matching the search or <see langword="null"/> if not found.</returns>
-        public static new PlayerAbility Get(Type type) =>
-            type.BaseType != typeof(IAbilityBehaviour) && !type.IsSubclassOf(typeof(IAbilityBehaviour)) ? null :
-            List.FirstOrDefault(customAbility => customAbility.BehaviourComponent == type);
+        public static new PlayerAbility Get(Type type) => CustomAbility<Player>.Get(type).Cast<PlayerAbility>();
 
         /// <summary>
         /// Gets all <see cref="PlayerAbility"/>'s from a <see cref="Player"/>.
         /// </summary>
         /// <param name="entity">The <see cref="PlayerAbility"/>'s owner.</param>
         /// <returns>The <see cref="PlayerAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new IEnumerable<PlayerAbility> Get(Player entity) => Manager.FirstOrDefault(kvp => kvp.Key == entity).Value;
+        public static new IEnumerable<PlayerAbility> Get(Player entity) => CustomAbility<Player>.Get(entity).Cast<PlayerAbility>();
 
         /// <summary>
         /// Tries to get a <see cref="PlayerAbility"/> given the specified <paramref name="customAbility"/>.
@@ -84,7 +81,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         /// <param name="name">The <see cref="PlayerAbility"/> name to look for.</param>
         /// <param name="customAbility">The found <see cref="PlayerAbility"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="PlayerAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out PlayerAbility customAbility) => customAbility = List.FirstOrDefault(cAbility => cAbility.Name == name);
+        public static bool TryGet(string name, out PlayerAbility customAbility) => customAbility = Get(name);
 
         /// <summary>
         /// Tries to get the player's current <see cref="PlayerAbility"/>'s.

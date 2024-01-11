@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Core.Input
+namespace Exiled.API.Features.Input
 {
     using Exiled.API.Enums;
 

@@ -15,11 +15,12 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Roles;
+    using Exiled.CustomModules.API.Features.CustomAbilities;
 
     /// <summary>
     /// Represents the base class for SCP-079 specific ability behaviors.
     /// </summary>
-    public abstract class Scp079AbilityBehaviour : UnlockableAbilityBehaviour
+    public abstract class Scp079AbilityBehaviour : UnlockableAbilityBehaviour, ISelectableAbility
     {
         /// <summary>
         /// Gets or sets the <see cref="Scp079Role"/> of the owner.
@@ -82,7 +83,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnReady();
 
-            Owner.ShowHint(Settings.OnReady);
+            Owner.ShowTextDisplay(UnlockableAbilitySettings.OnReady);
         }
 
         /// <summary>

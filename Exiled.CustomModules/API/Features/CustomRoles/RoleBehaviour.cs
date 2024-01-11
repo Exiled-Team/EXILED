@@ -303,8 +303,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 }
             }
 
-            if (Settings.InitialBroadcast is not null)
-                Owner.Broadcast(Settings.InitialBroadcast, true);
+            if (Settings.SpawnedText)
+                Owner.ShowTextDisplay(Settings.SpawnedText, true);
 
             if (!string.IsNullOrEmpty(Settings.ConsoleMessage.Replace("{role}", CustomRole.Name)))
             {

@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Core.Input
+namespace Exiled.API.Features.Input
 {
     using System;
     using System.Collections.Generic;
@@ -13,9 +13,9 @@ namespace Exiled.API.Features.Core.Input
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Core.Events;
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.DynamicEvents;
-    using UnityEngine.Windows;
+    using Exiled.API.Features.Input.EventArgs;
 
     /// <summary>
     /// Manages actions for a player.
@@ -38,7 +38,7 @@ namespace Exiled.API.Features.Core.Input
         /// <summary>
         /// Gets an active binding, or <see langword="default"/> if not found.
         /// </summary>
-        public virtual InputBinding ActiveBinding => declaredInputs.FirstOrDefault(di => di.Condition());
+        public virtual InputBinding ActiveBinding => declaredInputs.FirstOrDefault(di => di.Condition.Invoke());
 
         /// <summary>
         /// Binds an <see cref="InputBinding"/>.

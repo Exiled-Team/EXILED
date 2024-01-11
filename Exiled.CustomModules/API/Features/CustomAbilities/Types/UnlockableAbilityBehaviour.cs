@@ -9,7 +9,9 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Features;
     using Exiled.API.Features.Core;
+    using Exiled.CustomModules.API.Features.CustomAbilities.Settings;
 
     using MEC;
 
@@ -23,9 +25,28 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         private CoroutineHandle processUnlockHandle;
 
         /// <summary>
+        /// Gets or sets the <see cref="Settings.UnlockableAbilitySettings"/>.
+        /// </summary>
+        public UnlockableAbilitySettings UnlockableAbilitySettings { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the ability can be used regardless any conditions.
         /// </summary>
         public virtual bool IsUnlocked { get; protected set; }
+
+        /// <inheritdoc/>
+        public override void AdjustAdditivePipe()
+        {
+            base.AdjustAdditivePipe();
+
+            if (!Settings.Cast(out UnlockableAbilitySettings settings))
+            {
+                Log.Debug($"{CustomAbility.Name}'s settings are not suitable for a Level Ability", true);
+                Destroy();
+            }
+
+            UnlockableAbilitySettings = settings;
+        }
 
         /// <inheritdoc/>
         protected override void OnBeginPlay()

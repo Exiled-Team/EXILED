@@ -5,12 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Core.Events
+namespace Exiled.API.Features.Input.EventArgs
 {
     using System;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Core.Input;
+    using Exiled.API.Features.Input;
 
     /// <summary>
     /// Contains all informations before processing an action.

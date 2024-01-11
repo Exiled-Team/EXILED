@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Core.Generics
 {
     using Exiled.API.Features.Core.Attributes;
+    using Exiled.API.Features.Core.EventArgs;
 
     /// <summary>
     /// Represents a class for managing the replication of a reference.

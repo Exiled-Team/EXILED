@@ -41,7 +41,7 @@ namespace Exiled.CustomModules.API.Features
     /// </summary>
     public class Pawn : Player
     {
-        private readonly List<AbilityBehaviour> abilityBehaviours = new();
+        private readonly List<ActiveAbilityBehaviour> abilityBehaviours = new();
         private readonly List<PlayerAbility> customAbilities = new();
         private readonly Dictionary<uint, ushort> customAmmoBox = new();
 
@@ -111,7 +111,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets the pawn's ability behaviours.
         /// </summary>
-        public IEnumerable<AbilityBehaviour> AbilityBehaviours => abilityBehaviours;
+        public IEnumerable<ActiveAbilityBehaviour> AbilityBehaviours => abilityBehaviours;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.RoleBehaviour"/>.
@@ -131,6 +131,16 @@ namespace Exiled.CustomModules.API.Features
         /// Gets the pawn's custom ammo box containing.
         /// </summary>
         public IReadOnlyDictionary<uint, ushort> CustomAmmoBox => customAmmoBox;
+
+        /// <summary>
+        /// Gets the selected <see cref="PlayerAbility"/>.
+        /// </summary>
+        public PlayerAbility SelectedAbility => SelectedAbilityBehaviour.CustomAbility.Cast<PlayerAbility>();
+
+        /// <summary>
+        /// Gets or sets the selected <see cref="AbilityBehaviourBase{T}"/>.
+        /// </summary>
+        public AbilityBehaviourBase<Player> SelectedAbilityBehaviour { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the pawn has a <see cref="CustomRoles.CustomRole"/>.
@@ -392,13 +402,13 @@ namespace Exiled.CustomModules.API.Features
 
         private void OnAddedAbility(AddedAbilityEventArgs<Player> ev)
         {
-            abilityBehaviours.Add(GetComponent(ev.Ability.BehaviourComponent).Cast<AbilityBehaviour>());
+            abilityBehaviours.Add(GetComponent(ev.Ability.BehaviourComponent).Cast<ActiveAbilityBehaviour>());
             customAbilities.Add(ev.Ability.Cast<PlayerAbility>());
         }
 
         private void OnRemovingAbility(RemovingAbilityEventArgs<Player> ev)
         {
-            abilityBehaviours.Remove(GetComponent(ev.Ability.BehaviourComponent).Cast<AbilityBehaviour>());
+            abilityBehaviours.Remove(GetComponent(ev.Ability.BehaviourComponent).Cast<ActiveAbilityBehaviour>());
             customAbilities.Remove(ev.Ability.Cast<PlayerAbility>());
         }
     }

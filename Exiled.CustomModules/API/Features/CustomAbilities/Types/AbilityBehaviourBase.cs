@@ -13,6 +13,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using Exiled.API.Features.Core.Generics;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
+    using Exiled.CustomModules.API.Features.CustomAbilities.Settings;
 
     /// <summary>
     /// Represents the base class for ability behaviors associated with a specific entity type.

@@ -89,9 +89,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public virtual float MaxArtificialHealth { get; set; } = 100f;
 
         /// <summary>
-        /// Gets or sets the broadcast to be displayed as soon as the role is assigned.
+        /// Gets or sets the text to be displayed as soon as the role is assigned.
         /// </summary>
-        public virtual Broadcast InitialBroadcast { get; set; }
+        public virtual TextDisplay SpawnedText { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Exiled.API.Features.Spawn.SpawnProperties"/>.

@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Core.Generics
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Attributes;
+    using Exiled.API.Features.Core.EventArgs;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Interfaces;
 

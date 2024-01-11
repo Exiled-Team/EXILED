@@ -19,6 +19,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
+    using Exiled.CustomModules.API.Features.CustomAbilities.Settings;
     using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
     using HarmonyLib;
 
@@ -38,10 +39,14 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     public abstract class CustomAbility<T> : TypeCastObject<CustomAbility<T>>, ICustomAbility, IEquatable<CustomAbility<T>>, IEquatable<uint>
         where T : GameEntity
     {
-        private static readonly Dictionary<Type, CustomAbility<T>> TypeLookupTable = new();
-        private static readonly Dictionary<Type, CustomAbility<T>> BehaviourLookupTable = new();
-        private static readonly Dictionary<uint, CustomAbility<T>> IdLookupTable = new();
-        private static readonly Dictionary<string, CustomAbility<T>> NameLookupTable = new();
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable SA1600 // Elements should be documented
+        protected static readonly Dictionary<Type, CustomAbility<T>> TypeLookupTable = new();
+        protected static readonly Dictionary<Type, CustomAbility<T>> BehaviourLookupTable = new();
+        protected static readonly Dictionary<uint, CustomAbility<T>> IdLookupTable = new();
+        protected static readonly Dictionary<string, CustomAbility<T>> NameLookupTable = new();
+#pragma warning restore SA1600 // Elements should be documented
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         private Type reflectedGenericType;
 
@@ -116,6 +121,11 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Gets the <see cref="CustomAbility{T}"/>'s name.
         /// </summary>
         public abstract string Name { get; }
+
+        /// <summary>
+        /// Gets the description of the ability.
+        /// </summary>
+        public virtual string Description { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomAbility{T}"/>'s id.

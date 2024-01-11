@@ -45,31 +45,28 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
         /// </summary>
         /// <param name="id">The specified id.</param>
         /// <returns>The <see cref="PickupAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new PickupAbility Get(uint id) =>
-            List.FirstOrDefault(customAbility => customAbility == id && customAbility.IsEnabled);
+        public static new PickupAbility Get(uint id) => CustomAbility<Pickup>.Get(id).Cast<PickupAbility>();
 
         /// <summary>
         /// Gets a <see cref="PickupAbility"/> given the specified name.
         /// </summary>
         /// <param name="name">The specified name.</param>
         /// <returns>The <see cref="PickupAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new PickupAbility Get(string name) => List.FirstOrDefault(customAbility => customAbility.Name == name);
+        public static new PickupAbility Get(string name) => CustomAbility<Pickup>.Get(name).Cast<PickupAbility>();
 
         /// <summary>
         /// Gets a <see cref="PickupAbility"/> given the specified <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The specified <see cref="Type"/>.</param>
         /// <returns>The <see cref="PickupAbility"/> matching the search or <see langword="null"/> if not found.</returns>
-        public static new PickupAbility Get(Type type) =>
-            type.BaseType != typeof(IAbilityBehaviour) && !type.IsSubclassOf(typeof(IAbilityBehaviour)) ? null :
-            List.FirstOrDefault(customAbility => customAbility.BehaviourComponent == type);
+        public static new PickupAbility Get(Type type) => CustomAbility<Pickup>.Get(type).Cast<PickupAbility>();
 
         /// <summary>
         /// Gets all <see cref="PickupAbility"/>'s from a <see cref="Pickup"/>.
         /// </summary>
         /// <param name="entity">The <see cref="PickupAbility"/>'s owner.</param>
         /// <returns>The <see cref="PickupAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new IEnumerable<PickupAbility> Get(Pickup entity) => Manager.FirstOrDefault(kvp => kvp.Key == entity).Value;
+        public static new IEnumerable<PickupAbility> Get(Pickup entity) => CustomAbility<Pickup>.Get(entity).Cast<PickupAbility>();
 
         /// <summary>
         /// Tries to get a <see cref="PickupAbility"/> given the specified id.
@@ -85,7 +82,7 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
         /// <param name="name">The <see cref="PickupAbility"/> name to look for.</param>
         /// <param name="customAbility">The found <see cref="PickupAbility"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="PickupAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out PickupAbility customAbility) => customAbility = List.FirstOrDefault(cAbility => cAbility.Name == name);
+        public static bool TryGet(string name, out PickupAbility customAbility) => customAbility = Get(name);
 
         /// <summary>
         /// Tries to get the pickup's current <see cref="PickupAbility"/>'s.

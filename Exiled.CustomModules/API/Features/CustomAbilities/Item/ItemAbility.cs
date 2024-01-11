@@ -44,31 +44,28 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         /// </summary>
         /// <param name="id">The specified id.</param>
         /// <returns>The <see cref="ItemAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new ItemAbility Get(uint id) =>
-            List.FirstOrDefault(customAbility => customAbility == id && customAbility.IsEnabled);
+        public static new ItemAbility Get(uint id) => CustomAbility<Item>.Get(id).Cast<ItemAbility>();
 
         /// <summary>
         /// Gets a <see cref="ItemAbility"/> given the specified name.
         /// </summary>
         /// <param name="name">The specified name.</param>
         /// <returns>The <see cref="ItemAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new ItemAbility Get(string name) => List.FirstOrDefault(customAbility => customAbility.Name == name);
+        public static new ItemAbility Get(string name) => CustomAbility<Item>.Get(name).Cast<ItemAbility>();
 
         /// <summary>
         /// Gets a <see cref="ItemAbility"/> given the specified <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The specified <see cref="Type"/>.</param>
         /// <returns>The <see cref="ItemAbility"/> matching the search or <see langword="null"/> if not found.</returns>
-        public static new ItemAbility Get(Type type) =>
-            type.BaseType != typeof(IAbilityBehaviour) && !type.IsSubclassOf(typeof(IAbilityBehaviour)) ? null :
-            List.FirstOrDefault(customAbility => customAbility.BehaviourComponent == type);
+        public static new ItemAbility Get(Type type) => CustomAbility<Item>.Get(type).Cast<ItemAbility>();
 
         /// <summary>
         /// Gets all <see cref="ItemAbility"/>'s from a <see cref="Item"/>.
         /// </summary>
         /// <param name="entity">The <see cref="ItemAbility"/>'s owner.</param>
         /// <returns>The <see cref="ItemAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new IEnumerable<ItemAbility> Get(Item entity) => Manager.FirstOrDefault(kvp => kvp.Key == entity).Value;
+        public static new IEnumerable<ItemAbility> Get(Item entity) => CustomAbility<Item>.Get(entity).Cast<ItemAbility>();
 
         /// <summary>
         /// Tries to get a <see cref="ItemAbility"/> given the specified <paramref name="customAbility"/>.

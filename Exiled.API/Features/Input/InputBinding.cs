@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Core.Input
+namespace Exiled.API.Features.Input
 {
     using System;
     using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace Exiled.API.Features.Core.Input
     /// </summary>
     public sealed class InputBinding : NullableObject
     {
-        private static readonly HashSet<InputBinding> InputBindings = new();
+        private static readonly List<InputBinding> InputBindings = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InputBinding"/> class.
@@ -40,9 +40,6 @@ namespace Exiled.API.Features.Core.Input
             Condition = condition;
             Action = action;
             Keypress = ktt;
-
-            if (!InputBindings.Add(this))
-                throw new Exception($"Unable to add the same input binding twice: ({Name}).");
         }
 
         /// <summary>

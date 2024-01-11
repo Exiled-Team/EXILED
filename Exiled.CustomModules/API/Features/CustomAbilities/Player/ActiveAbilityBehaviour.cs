@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="LevelAbilityBehaviour.cs" company="Exiled Team">
+// <copyright file="ActiveAbilityBehaviour.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -11,9 +11,9 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
     using Exiled.CustomModules.API.Features.CustomAbilities;
 
     /// <summary>
-    /// Represents the base class for ability behaviors associated with a player, providing support for levels.
+    /// Represents the base class for player-specific ability behaviors.
     /// </summary>
-    public abstract class LevelAbilityBehaviour : LevelAbilityBehaviour<Player>, ISelectableAbility
+    public abstract class ActiveAbilityBehaviour : ActiveAbilityBehaviour<Player>, ISelectableAbility
     {
         /// <inheritdoc/>
         public virtual bool IsSelectable => true;
@@ -37,11 +37,17 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         protected override void FindOwner() => Owner = Player.Get(Base);
 
         /// <inheritdoc/>
+        protected override void PostInitialize()
+        {
+            base.PostInitialize();
+        }
+
+        /// <inheritdoc/>
         protected override void OnActivated()
         {
             base.OnActivated();
 
-            Owner.ShowTextDisplay(LevelAbilitySettings.Activated);
+            Owner.ShowTextDisplay(ActiveAbilitySettings.Activated);
         }
 
         /// <inheritdoc/>
@@ -49,7 +55,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnActivated();
 
-            Owner.ShowTextDisplay(LevelAbilitySettings.Expired);
+            Owner.ShowTextDisplay(ActiveAbilitySettings.Expired);
         }
 
         /// <inheritdoc/>
@@ -57,31 +63,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnReady();
 
-            Owner.ShowTextDisplay(LevelAbilitySettings.OnReady);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnLevelAdded()
-        {
-            base.OnLevelAdded();
-
-            Owner.ShowTextDisplay(LevelAbilitySettings.NextLevel);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnLevelRemoved()
-        {
-            base.OnLevelRemoved();
-
-            Owner.ShowTextDisplay(LevelAbilitySettings.PreviousLevel);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnMaxLevelReached()
-        {
-            base.OnMaxLevelReached();
-
-            Owner.ShowTextDisplay(LevelAbilitySettings.MaxLevelReached);
+            Owner.ShowTextDisplay(ActiveAbilitySettings.OnReady);
         }
     }
 }

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="AbilityBehaviour.cs" company="Exiled Team">
+// <copyright file="ActiveAbilityBehaviour.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -14,7 +14,7 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
     /// <summary>
     /// Represents the base class for item-specific ability behaviors.
     /// </summary>
-    public abstract class AbilityBehaviour : ActiveAbilityBehaviour<Item>
+    public abstract class ActiveAbilityBehaviour : ActiveAbilityBehaviour<Item>
     {
         /// <inheritdoc/>
         public override bool DisposeOnNullOwner { get; protected set; } = false;
@@ -35,7 +35,8 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         {
             base.OnActivated();
 
-            ItemOwner?.ShowHint(Settings.Activated);
+            if (ItemOwner)
+                ItemOwner.ShowTextDisplay(ActiveAbilitySettings.Activated);
         }
 
         /// <inheritdoc/>
@@ -43,7 +44,8 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         {
             base.OnActivated();
 
-            ItemOwner?.ShowHint(Settings.Expired);
+            if (ItemOwner)
+                ItemOwner.ShowTextDisplay(ActiveAbilitySettings.Expired);
         }
 
         /// <inheritdoc/>
@@ -51,7 +53,8 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         {
             base.OnReady();
 
-            ItemOwner?.ShowHint(Settings.OnReady);
+            if (ItemOwner)
+                ItemOwner.ShowTextDisplay(ActiveAbilitySettings.OnReady);
         }
     }
 }
