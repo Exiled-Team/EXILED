@@ -22,7 +22,7 @@ namespace Exiled.Loader
     using Exiled.API.Features.Pools;
     using YamlDotNet.Core;
 
-    using Serialization = API.Features.Config;
+    using Serialization = API.Features.EConfig;
 
     /// <summary>
     /// Used to handle plugin configs.

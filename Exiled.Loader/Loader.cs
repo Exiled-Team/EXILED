@@ -369,9 +369,6 @@ namespace Exiled.Loader
                 Dependencies.AddRange(dependencies);
 
             LoadDependencies();
-
-            API.Features.Config.Load(typeof(Config));
-
             LoadPlugins();
 
             ConfigManager.Reload();

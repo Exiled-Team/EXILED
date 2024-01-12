@@ -20,6 +20,7 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Serialization;
     using Exiled.API.Features.Serialization.CustomConverters;
     using Exiled.API.Interfaces;
+    using LiteNetLib.Utils;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NodeDeserializers;
 
@@ -112,7 +113,7 @@ namespace Exiled.API.Features
         public static EConfig? Get<T>(bool generateNew = false)
             where T : class
         {
-            EConfig? config = ConfigsValue.FirstOrDefault(config => config?.Base?.GetType().FullName == typeof(T).FullName);
+            EConfig? config = ConfigsValue.FirstOrDefault(config => config?.Base?.GetType() == typeof(T));
 
             if (!config && generateNew)
                 config = GenerateNew<T>();
@@ -135,9 +136,6 @@ namespace Exiled.API.Features
         public static EConfig? GenerateNew<T>()
             where T : class
         {
-            if (!typeof(T).GetInterfaces().Contains(typeof(IConfig)))
-                throw new ArgumentException("Type must inherit from IConfig.");
-
             EConfig? config = Get<T>();
             if (config is not null)
                 return config;
@@ -202,7 +200,7 @@ namespace Exiled.API.Features
                 {
                     if (string.IsNullOrEmpty(attribute.Folder))
                     {
-                        Log.Warn($"[The folder of the object of type {config!.GetType()} ({wrapper.Name}) has not been set. It's not possible to determine the parent config which it belongs to, hence it won't be read.");
+                        Log.Warn($"The folder of the object of type {config!.GetType()} ({wrapper.Name}) has not been set. It's not possible to determine the parent config which it belongs to, hence it won't be read.");
 
                         return null;
                     }
@@ -217,7 +215,7 @@ namespace Exiled.API.Features
                     if (string.IsNullOrEmpty(attribute.Name))
                     {
                         wrapper!.Name = config.GetType().Name;
-                        Log.Warn($"[The config's name of the object of type {config.GetType()} has not been set. The object's type name ({config.GetType().Name}) will be used instead.");
+                        Log.Warn($"The config's name of the object of type {config.GetType()} has not been set. The object's type name ({config.GetType().Name}) will be used instead.");
                     }
                     else
                     {
@@ -330,8 +328,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <typeparam name="T">The type of the data to be read.</typeparam>
         /// <returns>The corresponding <typeparamref name="T"/> instance or <see langword="null"/> if not found.</returns>
-        public T? Read<T>()
-            where T : class => data.FirstOrDefault(data => data.Base!.GetType() == typeof(T)).Cast<T>();
+        public EConfig? Read<T>()
+            where T : class => data.FirstOrDefault(data => data.Base!.GetType() == typeof(T));
 
         /// <summary>
         /// Writes a new value contained in the specified config of type <typeparamref name="T"/>.
@@ -342,12 +340,12 @@ namespace Exiled.API.Features
         public void Write<T>(string name, object value)
             where T : class
         {
-            T? param = Read<T>();
+            EConfig? param = Read<T>();
             if (param is null)
                 return;
 
             string? path = GetPath<T>();
-            PropertyInfo propertyInfo = param.GetType().GetProperty(name);
+            PropertyInfo propertyInfo = param.Base!.GetType().GetProperty(name);
             if (propertyInfo is not null)
             {
                 propertyInfo.SetValue(param, value);

@@ -14,13 +14,10 @@ namespace Exiled.Loader
     using API.Enums;
     using API.Interfaces;
     using Exiled.API.Features;
-    using Exiled.API.Features.Attributes;
-    using YamlDotNet.Core;
 
     /// <summary>
     /// The configs of the loader.
     /// </summary>
-    [Config("EXILED", "Loader.Config")]
     public sealed class Config : IConfig
     {
         /// <inheritdoc />
