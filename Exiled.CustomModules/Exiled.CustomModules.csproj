@@ -14,7 +14,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Exiled.API\Exiled.API.csproj" />
-        <ProjectReference Include="..\Exiled.CustomItems\Exiled.CustomItems.csproj" />
         <ProjectReference Include="..\Exiled.Events\Exiled.Events.csproj" />
         <ProjectReference Include="..\Exiled.Loader\Exiled.Loader.csproj" />
         <ProjectReference Include="..\Exiled.Permissions\Exiled.Permissions.csproj" />

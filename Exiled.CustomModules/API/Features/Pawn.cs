@@ -12,6 +12,7 @@ namespace Exiled.CustomModules.API.Features
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Items;
@@ -19,10 +20,10 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Features.CustomAbilities;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.CustomItems;
+    using Exiled.CustomModules.API.Features.CustomItems.Pickups.Ammos;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Features.PlayerAbilities;
     using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
-    using Exiled.Events.EventArgs.Player;
     using PlayerRoles;
     using UnityEngine;
 
@@ -40,8 +41,9 @@ namespace Exiled.CustomModules.API.Features
     /// </summary>
     public class Pawn : Player
     {
-        private readonly List<AbilityBehaviour> abilityBehaviours = new();
+        private readonly List<ActiveAbilityBehaviour> abilityBehaviours = new();
         private readonly List<PlayerAbility> customAbilities = new();
+        private readonly Dictionary<uint, ushort> customAmmoBox = new();
 
         private RoleBehaviour roleBehaviour;
         private EscapeBehaviour escapeBehaviour;
@@ -75,18 +77,31 @@ namespace Exiled.CustomModules.API.Features
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.CustomRole"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
         public CustomRole CustomRole => roleBehaviour.CustomRole;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.CustomTeam"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
         public CustomTeam CustomTeam => roleBehaviour.CustomTeam;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomEscapes.CustomEscape"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
         public CustomEscape CustomEscape => escapeBehaviour.CustomEscape;
+
+        /// <summary>
+        /// Gets the pawn's current <see cref="CustomItem"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
+        /// </summary>
+        public CustomItem CurrentCustomItem => CustomItem.TryGet(CurrentItem, out CustomItem customItem) ? customItem : null;
 
         /// <summary>
         /// Gets the pawn's custom abilities.
@@ -96,17 +111,36 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets the pawn's ability behaviours.
         /// </summary>
-        public IEnumerable<AbilityBehaviour> AbilityBehaviours => abilityBehaviours;
+        public IEnumerable<ActiveAbilityBehaviour> AbilityBehaviours => abilityBehaviours;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.RoleBehaviour"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
         public RoleBehaviour RoleBehaviour => roleBehaviour ??= GetComponent<RoleBehaviour>();
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomEscapes.EscapeBehaviour"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
         public EscapeBehaviour EscapeBehaviour => escapeBehaviour ??= GetComponent<EscapeBehaviour>();
+
+        /// <summary>
+        /// Gets the pawn's custom ammo box containing.
+        /// </summary>
+        public IReadOnlyDictionary<uint, ushort> CustomAmmoBox => customAmmoBox;
+
+        /// <summary>
+        /// Gets the selected <see cref="PlayerAbility"/>.
+        /// </summary>
+        public PlayerAbility SelectedAbility => SelectedAbilityBehaviour.CustomAbility.Cast<PlayerAbility>();
+
+        /// <summary>
+        /// Gets or sets the selected <see cref="AbilityBehaviourBase{T}"/>.
+        /// </summary>
+        public AbilityBehaviourBase<Player> SelectedAbilityBehaviour { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the pawn has a <see cref="CustomRoles.CustomRole"/>.
@@ -168,6 +202,22 @@ namespace Exiled.CustomModules.API.Features
                 }
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the pawn has the <see cref="CustomItem"/> of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="CustomItem"/>.</typeparam>
+        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
+        public bool HasCustomItem<T>()
+            where T : CustomItem => CustomItems.Any(item => item.GetType() == typeof(T));
+
+        /// <summary>
+        /// Gets a value indicating whether the pawn has the <see cref="PlayerAbility"/> of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="PlayerAbility"/>.</typeparam>
+        /// <returns><see langword="true"/> if a <see cref="PlayerAbility"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
+        public bool HasCustomAbilty<T>()
+            where T : PlayerAbility => CustomItems.Any(item => item.GetType() == typeof(T));
 
         /// <summary>
         /// Tries to get the first <see cref="CustomItem"/> of the specified type from the collection of custom items.
@@ -266,15 +316,99 @@ namespace Exiled.CustomModules.API.Features
             DropItem(item);
         }
 
+        /// <summary>
+        /// Gets the ammo count of a specified custom ammo in a pawn's inventory.
+        /// </summary>
+        /// <param name="customAmmoType">The custom ammo to be searched for in the pawn's inventory.</param>
+        /// <returns>The specified custom ammo count.</returns>
+        public ushort GetAmmo(uint customAmmoType) => (ushort)(customAmmoBox.TryGetValue(customAmmoType, out ushort amount) ? amount : 0);
+
+        /// <summary>
+        /// Adds an amount of custom ammos to the pawn's ammo box.
+        /// </summary>
+        /// <param name="id">The type of the custom ammo.</param>
+        /// <param name="amount">The amount to be added.</param>
+        /// <returns><see langword="true"/> if the specified amount of ammo was given entirely or partially; otherwise, <see langword="false"/>.</returns>
+        public bool AddAmmo(uint id, ushort amount)
+        {
+            if (!CustomItem.TryGet(id, out CustomItem customItem) || !customItem.Settings.Is(out AmmoSettings settings))
+                return false;
+
+            if (customAmmoBox.TryAdd(id, amount))
+                return true;
+
+            if (customAmmoBox[id] >= settings.MaxUnits)
+                return false;
+
+            ushort amt;
+            try
+            {
+                checked
+                {
+                    amt = (ushort)(customAmmoBox[id] + amount);
+                }
+            }
+            catch (OverflowException)
+            {
+                amt = ushort.MaxValue;
+            }
+
+            if (amt >= settings.MaxUnits)
+                amt = settings.MaxUnits;
+
+            customAmmoBox[id] = amt;
+            return true;
+        }
+
+        /// <summary>
+        /// Removes an amount of custom ammos from the pawn's ammo box.
+        /// </summary>
+        /// <param name="id">The type of the custom ammo.</param>
+        /// <param name="amount">The amount to be removed.</param>
+        /// <returns><see langword="true"/> if the specified amount of ammo was removed entirely or partially; otherwise, <see langword="false"/>.</returns>
+        public bool RemoveAmmo(uint id, ushort amount)
+        {
+            if (!customAmmoBox.TryGetValue(id, out ushort amt))
+                return false;
+
+            try
+            {
+                checked
+                {
+                    amt -= amount;
+                }
+            }
+            catch (OverflowException)
+            {
+                amt = ushort.MinValue;
+            }
+
+            customAmmoBox[id] = amt;
+            return true;
+        }
+
+        /// <summary>
+        /// Sets the amount of a specified custom ammo to the pawn's inventory.
+        /// </summary>
+        /// <param name="id">The type of the custom ammo.</param>
+        /// <param name="amount">The amount of ammo to be set.</param>
+        public void SetAmmo(uint id, ushort amount)
+        {
+            if (customAmmoBox.TryAdd(id, amount))
+                return;
+
+            customAmmoBox[id] = amount;
+        }
+
         private void OnAddedAbility(AddedAbilityEventArgs<Player> ev)
         {
-            abilityBehaviours.Add(GetComponent(ev.Ability.BehaviourComponent).Cast<AbilityBehaviour>());
+            abilityBehaviours.Add(GetComponent(ev.Ability.BehaviourComponent).Cast<ActiveAbilityBehaviour>());
             customAbilities.Add(ev.Ability.Cast<PlayerAbility>());
         }
 
         private void OnRemovingAbility(RemovingAbilityEventArgs<Player> ev)
         {
-            abilityBehaviours.Remove(GetComponent(ev.Ability.BehaviourComponent).Cast<AbilityBehaviour>());
+            abilityBehaviours.Remove(GetComponent(ev.Ability.BehaviourComponent).Cast<ActiveAbilityBehaviour>());
             customAbilities.Remove(ev.Ability.Cast<PlayerAbility>());
         }
     }

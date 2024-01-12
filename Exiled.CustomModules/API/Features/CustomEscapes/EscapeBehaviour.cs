@@ -23,8 +23,12 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using UnityEngine;
 
     /// <summary>
-    /// Represents the base class for implementing custom escape behavior.
+    /// Represents the base class for custom escape behaviors.
     /// </summary>
+    /// <remarks>
+    /// This class extends <see cref="EPlayerBehaviour"/> and implements <see cref="IAdditiveSettingsCollection{T}"/>.
+    /// <br/>It serves as the foundation for creating custom escape behaviors associated with in-game player actions.
+    /// </remarks>
     public abstract class EscapeBehaviour : EPlayerBehaviour, IAdditiveSettingsCollection<EscapeSettings>
     {
         /// <summary>

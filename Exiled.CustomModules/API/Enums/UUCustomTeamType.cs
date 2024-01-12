@@ -7,7 +7,7 @@
 
 namespace Exiled.CustomModules.API.Enums
 {
-    using Exiled.API.Features.Core.Generic;
+    using Exiled.API.Features.Core.Generics;
 
     /// <summary>
     /// Represents the base enum class for all available custom teams.

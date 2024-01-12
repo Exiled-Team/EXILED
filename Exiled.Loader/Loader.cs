@@ -24,10 +24,6 @@ namespace Exiled.Loader
 
     using Exiled.API.Features;
     using Features;
-    using Features.Configs;
-    using Features.Configs.CustomConverters;
-    using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Used to handle plugins.
@@ -85,34 +81,6 @@ namespace Exiled.Loader
         /// Gets plugin dependencies.
         /// </summary>
         public static List<Assembly> Dependencies { get; } = new();
-
-        /// <summary>
-        /// Gets or sets the serializer for configs and translations.
-        /// </summary>
-        public static ISerializer Serializer { get; set; } = new SerializerBuilder()
-            .WithTypeConverter(new VectorsConverter())
-            .WithTypeConverter(new ColorConverter())
-            .WithTypeConverter(new AttachmentIdentifiersConverter())
-            .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
-            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
-            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .IgnoreFields()
-            .DisableAliases()
-            .Build();
-
-        /// <summary>
-        /// Gets or sets the deserializer for configs and translations.
-        /// </summary>
-        public static IDeserializer Deserializer { get; set; } = new DeserializerBuilder()
-            .WithTypeConverter(new VectorsConverter())
-            .WithTypeConverter(new ColorConverter())
-            .WithTypeConverter(new AttachmentIdentifiersConverter())
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
-            .IgnoreFields()
-            .IgnoreUnmatchedProperties()
-            .Build();
 
         /// <summary>
         /// Loads all plugins.

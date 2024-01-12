@@ -13,8 +13,26 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
     /// <summary>
     /// Represents the base class for ability behaviors associated with a player, providing support for levels.
     /// </summary>
-    public abstract class LevelAbilityBehaviour : LevelAbilityBehaviour<Player>
+    public abstract class LevelAbilityBehaviour : LevelAbilityBehaviour<Player>, ISelectableAbility
     {
+        /// <inheritdoc/>
+        public virtual bool IsSelectable => true;
+
+        /// <inheritdoc/>
+        public virtual bool IsSelected => Owner is Pawn pawn && pawn.SelectedAbilityBehaviour && pawn.SelectedAbilityBehaviour == this;
+
+        /// <inheritdoc/>
+        public virtual void Select() => Owner.Cast<Pawn>().SelectedAbilityBehaviour = this;
+
+        /// <inheritdoc/>
+        public virtual void Unselect()
+        {
+            if (!IsSelected)
+                return;
+
+            Owner.Cast<Pawn>().SelectedAbilityBehaviour = null;
+        }
+
         /// <inheritdoc/>
         protected override void FindOwner() => Owner = Player.Get(Base);
 
@@ -23,7 +41,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnActivated();
 
-            Owner.ShowHint(Settings.Activated);
+            Owner.ShowTextDisplay(LevelAbilitySettings.Activated);
         }
 
         /// <inheritdoc/>
@@ -31,7 +49,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnActivated();
 
-            Owner.ShowHint(Settings.Expired);
+            Owner.ShowTextDisplay(LevelAbilitySettings.Expired);
         }
 
         /// <inheritdoc/>
@@ -39,7 +57,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnReady();
 
-            Owner.ShowHint(Settings.OnReady);
+            Owner.ShowTextDisplay(LevelAbilitySettings.OnReady);
         }
 
         /// <inheritdoc/>
@@ -47,7 +65,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnLevelAdded();
 
-            Owner.ShowHint(Settings.NextLevel);
+            Owner.ShowTextDisplay(LevelAbilitySettings.NextLevel);
         }
 
         /// <inheritdoc/>
@@ -55,7 +73,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnLevelRemoved();
 
-            Owner.ShowHint(Settings.PreviousLevel);
+            Owner.ShowTextDisplay(LevelAbilitySettings.PreviousLevel);
         }
 
         /// <inheritdoc/>
@@ -63,7 +81,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnMaxLevelReached();
 
-            Owner.ShowHint(Settings.MaxLevelReached);
+            Owner.ShowTextDisplay(LevelAbilitySettings.MaxLevelReached);
         }
     }
 }
