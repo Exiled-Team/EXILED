@@ -2662,7 +2662,7 @@ namespace Exiled.API.Features
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
         public void ResetInventory(IEnumerable<ItemType> newItems)
         {
-            ClearInventory();
+            ClearItems();
 
             foreach (ItemType item in newItems)
                 AddItem(item);
@@ -2674,7 +2674,7 @@ namespace Exiled.API.Features
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
         public void ResetInventory(IEnumerable<Item> newItems)
         {
-            ClearInventory();
+            ClearItems();
 
             foreach (Item item in newItems)
                 AddItem(item);
@@ -2689,8 +2689,8 @@ namespace Exiled.API.Features
         /// <seealso cref="DropItems()"/>
         public void ClearInventory(bool destroy = true)
         {
-            ClearItems(destroy);
             ClearAmmo();
+            ClearItems(destroy);
         }
 
         /// <summary>
@@ -2702,6 +2702,9 @@ namespace Exiled.API.Features
         /// <seealso cref="DropItems()"/>
         public void ClearItems(bool destroy = true)
         {
+            if (CurrentArmor is not null)
+                CurrentArmor.RemoveExcessOnDrop = true;
+
             while (Items.Count > 0)
                 RemoveItem(Items.ElementAt(0), destroy);
         }
