@@ -238,7 +238,7 @@ namespace Exiled.API.Features.Items
         public FirearmRecoilPattern RecoilPattern => Base is AutomaticFirearm auto ? auto._recoilPattern : null;
 
         /// <summary>
-        /// Gets the <see cref="FirearmBaseStats"/> for this firearm.
+        /// Gets the <see cref="FirearmBaseStats"/>.
         /// </summary>
         public FirearmBaseStats Stats => Base.BaseStats;
 
