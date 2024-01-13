@@ -63,6 +63,15 @@ namespace Exiled.API.Features.Lockers
         public IReadOnlyCollection<Chamber> Chambers { get; }
 
         /// <summary>
+        /// Gets or sets a ids if opened chambers.
+        /// </summary>
+        public ushort OpenedChambers
+        {
+            get => Base.OpenedChambers;
+            set => Base.NetworkOpenedChambers = value;
+        }
+
+        /// <summary>
         /// Gets the <see cref="Locker"/> by it's basegame analog.
         /// </summary>
         /// <param name="locker"><see cref="BaseLocker"/> instance.</param>
