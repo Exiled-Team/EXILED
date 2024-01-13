@@ -99,7 +99,7 @@ namespace Exiled.API.Features.DamageHandlers
 
             if ((player != Attacker) && !ForceFullFriendlyFire)
             {
-                if (HitboxIdentity.IsEnemy(AttackerFootprint.Role, player.Role))
+                if (HitboxIdentity.CheckFriendlyFire(AttackerFootprint.Role, player.Role, true))
                     return;
 
                 Damage *= PlayerStatsSystem.AttackerDamageHandler._ffMultiplier;
