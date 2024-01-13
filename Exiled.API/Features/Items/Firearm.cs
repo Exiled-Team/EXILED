@@ -622,7 +622,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="distance">Distance to target.</param>
         /// <returns>Damage that target will deal.</returns>
-        public float DamageAtDistance(float distance) => Stats.DamageAtDistance(Base, distance);
+        public float GetDamageAtDistance(float distance) => Stats.DamageAtDistance(Base, distance);
 
         /// <summary>
         /// Clones current <see cref="Firearm"/> object.
