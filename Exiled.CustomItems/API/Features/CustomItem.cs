@@ -117,17 +117,6 @@ namespace Exiled.CustomItems.API.Features
         public virtual bool ShouldMessageOnGban { get; } = false;
 
         /// <summary>
-        /// Gets or sets custom console message text which will be shown when player receives item.
-        /// </summary>
-        public virtual string ConsoleMessage { get; set; } = $"You have received a custom item!";
-
-        /// <summary>
-        /// Gets or sets a custom color for <see cref="ConsoleMessage"/>.
-        /// </summary>
-        /// <remarks>You can use <see cref="Color"/> instance in <c>nameof</c>.</remarks>
-        public virtual string ConsoleMessageColor { get; set; } = nameof(Color.green);
-
-        /// <summary>
         /// Gets a <see cref="CustomItem"/> with a specific ID.
         /// </summary>
         /// <param name="id">The <see cref="CustomItem"/> ID.</param>
@@ -717,18 +706,6 @@ namespace Exiled.CustomItems.API.Features
                 Log.Debug($"{nameof(Give)}: Adding {item.Serial} to tracker.");
                 if (!TrackedSerials.Contains(item.Serial))
                     TrackedSerials.Add(item.Serial);
-
-                if (!string.IsNullOrEmpty(ConsoleMessage))
-                {
-                    StringBuilder builder = StringBuilderPool.Pool.Get();
-
-                    builder.AppendLine(Name);
-                    builder.AppendLine(Description);
-                    builder.AppendLine();
-                    builder.AppendLine(ConsoleMessage);
-
-                    player.SendConsoleMessage(StringBuilderPool.Pool.ToStringReturn(builder), ConsoleMessageColor);
-                }
 
                 Timing.CallDelayed(0.05f, () => OnAcquired(player, item, displayMessage));
             }
