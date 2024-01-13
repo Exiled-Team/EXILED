@@ -74,7 +74,7 @@ namespace Exiled.CustomItems.API.Features
                 player = Server.Host;
 
             player.Role.Is(out FpcRole fpcRole);
-            var velocity = fpcRole.FirstPersonController.FpcModule.Motor.Velocity;
+            Vector3 velocity = fpcRole.FirstPersonController.FpcModule.Motor.Velocity;
 
             Throwable throwable = (Throwable)Item.Create(grenadeType, player);
 
@@ -94,7 +94,11 @@ namespace Exiled.CustomItems.API.Features
             NetworkServer.Spawn(thrownProjectile.gameObject);
             thrownProjectile.InfoReceivedHook(default, newInfo);
             if (thrownProjectile.TryGetComponent(out Rigidbody component))
-                throwable.Base.PropelBody(component, throwable.Base.FullThrowSettings.StartTorque, ThrowableNetworkHandler.GetLimitedVelocity(velocity), force, throwable.Base.FullThrowSettings.UpwardsFactor);
+            {
+                Vector3 vector = (throwable.Base.GetCameraVector(throwable.Base.FullThrowSettings.UpwardsFactor) * force) + ThrowableNetworkHandler.GetLimitedVelocity(velocity);
+                throwable.Base.PropelBody(component, throwable.Base.FullThrowSettings.StartTorque, vector);
+            }
+
             thrownProjectile.ServerActivate();
 
             return Pickup.Get(thrownProjectile);
