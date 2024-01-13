@@ -2317,7 +2317,7 @@ namespace Exiled.API.Features
         {
             ClearAmmo();
 
-            foreach (var pair in newAmmo)
+            foreach (KeyValuePair<AmmoType, ushort> pair in newAmmo)
             {
                 SetAmmo(pair.Key, pair.Value);
             }

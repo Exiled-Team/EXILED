@@ -17,6 +17,7 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.Loader;
     using Exiled.Loader.Features;
     using InventorySystem;
+    using InventorySystem.Items.Usables;
     using PlayerRoles;
     using PlayerRoles.RoleAssign;
     using Respawning;
