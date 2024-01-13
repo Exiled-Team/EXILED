@@ -8,6 +8,7 @@
 namespace Exiled.CustomModules
 {
     using Exiled.API.Features;
+    using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.EventHandlers;
 
     /// <summary>
@@ -18,7 +19,7 @@ namespace Exiled.CustomModules
         /// <summary>
         /// Gets a static reference to the plugin's instance.
         /// </summary>
-        public static CustomModules Instance { get; private set; } = null!;
+        public static CustomModules Instance { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="EventHandlers.PlayerHandler"/>.
@@ -35,6 +36,8 @@ namespace Exiled.CustomModules
         {
             Instance = this;
 
+            Exiled.Events.Patches.Events.Player.Joined.BasePlayerType = typeof(Pawn);
+
             SubscribeEvents();
 
             base.OnEnabled();
@@ -44,6 +47,8 @@ namespace Exiled.CustomModules
         public override void OnDisabled()
         {
             UnsubscribeEvents();
+
+            Exiled.Events.Patches.Events.Player.Joined.BasePlayerType = typeof(Player);
 
             base.OnDisabled();
         }

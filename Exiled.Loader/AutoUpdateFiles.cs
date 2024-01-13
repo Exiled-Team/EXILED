@@ -17,6 +17,6 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets which SCP: SL version generated Exiled.
         /// </summary>
-        public static readonly Version RequiredSCPSLVersion = new(13, 4, 0, 0);
+        public static readonly Version RequiredSCPSLVersion = new(13, 3, 0, 1);
     }
 }

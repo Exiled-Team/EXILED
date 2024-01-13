@@ -16,8 +16,15 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
     using Exiled.API.Features.Core.Generics;
     using Exiled.API.Features.Items;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
+    using Exiled.Events.EventArgs.Item;
     using Exiled.Events.EventArgs.Player;
+
+    using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.BasicMessages;
+    using InventorySystem.Items.Firearms.Modules;
+    using MEC;
+
+    using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
     /// Represents the base class for custom firearm behaviors.
@@ -34,6 +41,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
         protected ItemType itemType;
         protected AmmoType ammoType;
         protected uint customAmmoType;
+        protected bool overrideReload;
+        protected int chamberSize;
 #pragma warning restore SA1600 // Elements should be documented
 #pragma warning restore SA1401 // Fields should be private
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
@@ -43,6 +52,16 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 
         /// <inheritdoc cref="EBehaviour{T}.Owner"/>
         public Firearm Firearm => Owner.Cast<Firearm>();
+
+        /// <summary>
+        /// Gets or sets the replicated clip.
+        /// </summary>
+        public ReplicatedProperty<Firearm, byte> ReplicatedClip { get; set; }
+
+        /// <summary>
+        /// Gets or sets the replicated max ammo.
+        /// </summary>
+        public ReplicatedProperty<Firearm, byte> ReplicatedMaxAmmo { get; set; }
 
         /// <inheritdoc/>
         protected override void PostInitialize()
@@ -61,26 +80,68 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
                 Destroy();
             }
 
-            if (!FirearmSettings.Attachments.IsEmpty())
-                Firearm.AddAttachment(FirearmSettings.Attachments);
-
-            Firearm.Ammo = FirearmSettings.ClipSize;
-            Firearm.Recoil = FirearmSettings.RecoilSettings;
+            overrideReload = FirearmSettings.OverrideReload;
 
             ItemType ammoItemType = FirearmSettings.AmmoType;
             uint customAmmoId = FirearmSettings.CustomAmmoType;
 
-            if (itemType is ItemType.None)
+            if (!overrideReload)
             {
-                if (customAmmoId > 0 && CustomItem.TryGet(customAmmoId, out CustomItem _))
-                    customAmmoType = customAmmoId;
+                chamberSize = Firearm.Base.AmmoManagerModule switch
+                {
+                    AutomaticAmmoManager aam => aam.ChamberedAmount,
+                    TubularMagazineAmmoManager tmam => tmam.ChamberedRounds,
+                    PumpAction pa => pa.ChamberedRounds,
+                    _ => 0,
+                };
+
+                ammoType = ammoItemType.IsAmmo() ? ammoItemType.GetAmmoType() : Firearm.AmmoType;
             }
             else
             {
-                if (ammoItemType.IsAmmo())
+                chamberSize = FirearmSettings.ChamberSize;
+
+                if (itemType is ItemType.None)
+                {
+                    if (customAmmoId > 0 && CustomItem.TryGet(customAmmoId, out CustomItem _))
+                        customAmmoType = customAmmoId;
+                }
+                else if (ammoItemType.IsAmmo())
+                {
                     ammoType = ammoItemType.GetAmmoType();
+                }
                 else
+                {
                     itemType = ammoItemType;
+                }
+            }
+
+            if (!FirearmSettings.Attachments.IsEmpty())
+                Firearm.AddAttachment(FirearmSettings.Attachments);
+
+            Firearm.Recoil = FirearmSettings.RecoilSettings;
+
+            ReplicatedMaxAmmo = new ReplicatedProperty<Firearm, byte>(
+                firearm => firearm.MaxAmmo,
+                (firearm, value) => firearm.MaxAmmo = value,
+                Firearm);
+
+            ReplicatedMaxAmmo.Send(FirearmSettings.MaxAmmo);
+            ReplicatedMaxAmmo.Replicate();
+
+            if (overrideReload)
+            {
+                ReplicatedClip = new ReplicatedProperty<Firearm, byte>(
+                    firearm => firearm.Ammo,
+                    (firearm, value) => firearm.Ammo = value,
+                    Firearm);
+
+                ReplicatedClip.Send(FirearmSettings.ClipSize);
+
+                if (ReplicatedClip.ReplicatedValue > ReplicatedMaxAmmo.ReplicatedValue)
+                    ReplicatedClip.Send(ReplicatedMaxAmmo.ReplicatedValue);
+
+                ReplicatedClip.Replicate();
             }
         }
 
@@ -93,6 +154,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
             Exiled.Events.Handlers.Player.Shooting += OnInternalShooting;
             Exiled.Events.Handlers.Player.Shot += OnInternalShot;
             Exiled.Events.Handlers.Player.Hurting += OnInternalHurting;
+            Exiled.Events.Handlers.Player.UnloadingWeapon += OnInternalUnloading;
+            Exiled.Events.Handlers.Item.ChangingAttachments += OnInternalChangingAttachments;
         }
 
         /// <inheritdoc/>
@@ -104,6 +167,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
             Exiled.Events.Handlers.Player.Shooting -= OnInternalShooting;
             Exiled.Events.Handlers.Player.Shot -= OnInternalShot;
             Exiled.Events.Handlers.Player.Hurting -= OnInternalHurting;
+            Exiled.Events.Handlers.Player.UnloadingWeapon -= OnInternalUnloading;
+            Exiled.Events.Handlers.Item.ChangingAttachments -= OnInternalChangingAttachments;
         }
 
         /// <summary>
@@ -138,6 +203,22 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
         {
         }
 
+        /// <summary>
+        /// Handles unloading events for custom firearms.
+        /// </summary>
+        /// <param name="ev">The <see cref="UnloadingWeaponEventArgs"/> containing information about the unloading event.</param>
+        protected virtual void OnUnloading(UnloadingWeaponEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles attachments events for custom firearms.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs"/> containing information about the attachments event.</param>
+        protected virtual void OnChangingAttachments(ChangingAttachmentsEventArgs ev)
+        {
+        }
+
         /// <inheritdoc cref="OnReloading(ReloadingWeaponEventArgs)"/>
         private protected virtual void OnInternalReloading(ReloadingWeaponEventArgs ev)
         {
@@ -146,23 +227,24 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 
             OnReloading(ev);
 
-            if (!ev.IsAllowed)
+            if (!ev.IsAllowed || (ev.IsAllowed = overrideReload))
                 return;
 
-            ev.IsAllowed = false;
-
             byte clipSize = FirearmSettings.ClipSize;
-            byte remainingClip = Firearm.Ammo;
+            byte remainingClip = ReplicatedClip.ReplicatedValue;
 
             if (remainingClip >= clipSize)
                 return;
 
+            if (remainingClip > ReplicatedMaxAmmo.ReplicatedValue)
+                remainingClip = ReplicatedMaxAmmo.ReplicatedValue;
+
             ushort unscaledAmmoAmount = 0;
 
             if (ammoType is not AmmoType.None)
-                unscaledAmmoAmount = (ushort)ev.Player.Items.Where(i => !Check(i) && i.Type == itemType).Count();
-            else if (itemType is not ItemType.None)
                 unscaledAmmoAmount = ev.Player.GetAmmo(ammoType);
+            else if (itemType is not ItemType.None)
+                unscaledAmmoAmount = (ushort)ev.Player.Items.Where(i => !Check(i) && i.Type == itemType).Count();
             else if (customAmmoType > 0)
                 unscaledAmmoAmount = ev.Player.Cast<Pawn>().GetAmmo(customAmmoType);
 
@@ -185,7 +267,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
             else if (customAmmoType > 0)
                 ev.Player.Cast<Pawn>().RemoveAmmo(customAmmoType, amountToReload);
 
-            Firearm.Ammo = (byte)(Firearm.Ammo + amountToReload);
+            ReplicatedClip.Send((byte)(ReplicatedClip.ReplicatedValue + amountToReload));
+            ReplicatedClip.Replicate();
         }
 
         /// <inheritdoc cref="OnShooting(ShootingEventArgs)"/>
@@ -194,7 +277,58 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
             if (!Check(ev.Player.CurrentItem))
                 return;
 
+            if (overrideReload)
+            {
+                if (ReplicatedClip.ReplicatedValue <= 0)
+                {
+                    ReplicatedClip.Send(0);
+                    ReplicatedClip.Replicate();
+                    ev.IsAllowed = false;
+                    return;
+                }
+
+                ReplicatedClip.Replicate();
+                ReplicatedClip.Send((byte)(ReplicatedClip.ReplicatedValue - chamberSize));
+            }
+
             OnShooting(ev);
+        }
+
+        /// <inheritdoc cref="OnUnloading(UnloadingWeaponEventArgs)"/>
+        private protected virtual void OnInternalUnloading(UnloadingWeaponEventArgs ev)
+        {
+            if (!Check(ev.Item) || !overrideReload)
+                return;
+
+            OnUnloading(ev);
+
+            if (!ev.IsAllowed)
+                return;
+
+            ReplicatedClip.Replicate((byte)chamberSize);
+
+            if (ammoType is not AmmoType.None)
+            {
+                ItemOwner.AddAmmo(ammoType, (byte)(ReplicatedClip.ReplicatedValue - chamberSize));
+            }
+            else if (itemType is not ItemType.None)
+            {
+                for (int i = 0; i < ReplicatedClip.ReplicatedValue - chamberSize; i++)
+                {
+                    Item item = Item.Create(itemType);
+
+                    if (ItemOwner.Items.Count >= 8)
+                        item.CreatePickup(ItemOwner.Position);
+                    else
+                        item.Give(ItemOwner);
+                }
+            }
+            else if (customAmmoType > 0)
+            {
+                ev.Player.Cast<Pawn>().AddAmmo(customAmmoType, (byte)(ReplicatedClip.ReplicatedValue - chamberSize));
+            }
+
+            ReplicatedClip.Send(0);
         }
 
         /// <inheritdoc cref="OnShot(ShotEventArgs)"/>
@@ -204,6 +338,28 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
                 return;
 
             OnShot(ev);
+        }
+
+        /// <inheritdoc cref="OnChangingAttachments(ChangingAttachmentsEventArgs)"/>
+        private protected virtual void OnInternalChangingAttachments(ChangingAttachmentsEventArgs ev)
+        {
+            if (!Check(ev.Item) || !overrideReload)
+                return;
+
+            OnChangingAttachments(ev);
+
+            if (ev.IsAllowed)
+                return;
+
+            int magModifier = (int)Firearm.Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier);
+
+            Timing.CallDelayed(0.5f, () =>
+            {
+                int curModifier = (int)Firearm.Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier);
+                int amount = curModifier == magModifier ? 0 : curModifier > magModifier ? curModifier - magModifier : magModifier - curModifier;
+                ReplicatedMaxAmmo.Send((byte)(ReplicatedMaxAmmo.ReplicatedValue + amount));
+                ReplicatedMaxAmmo.Replicate();
+            });
         }
 
         /// <inheritdoc cref="OnHurting(HurtingEventArgs)"/>

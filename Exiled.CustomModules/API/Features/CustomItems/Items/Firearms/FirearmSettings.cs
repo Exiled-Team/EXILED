@@ -35,9 +35,18 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the custom reload logic should be used.
+        /// <para/>
+        /// It adds support for non-<see cref="Exiled.API.Enums.AmmoType"/> items.
+        /// </summary>
+        public virtual bool OverrideReload { get; set; }
+
+        /// <summary>
         /// Gets or sets the firearm's ammo type.
         /// <para/>
         /// This property cannot be used along with <see cref="CustomAmmoType"/>.
+        /// <br/>
+        /// <see cref="OverrideReload"/> is required to be set to <see langword="true"/> in case of non-<see cref="Exiled.API.Enums.AmmoType"/> items.
         /// </summary>
         public virtual ItemType AmmoType { get; set; }
 
@@ -45,6 +54,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
         /// Gets or sets the firearm's custom ammo type.
         /// <para/>
         /// This property cannot be used along with <see cref="AmmoType"/>.
+        /// <br/>
+        /// <see cref="OverrideReload"/> is required to be set to <see langword="true"/>.
         /// </summary>
         public virtual uint CustomAmmoType { get; set; }
 
@@ -64,9 +75,21 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
         public virtual float Damage { get; set; }
 
         /// <summary>
+        /// Gets or sets the firearm's max ammo.
+        /// </summary>
+        public virtual byte MaxAmmo { get; set; }
+
+        /// <summary>
         /// Gets or sets the size of the firearm's clip.
         /// </summary>
         public virtual byte ClipSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the firearm's chamber.
+        /// <para/>
+        /// <see cref="OverrideReload"/> is required to be set to <see langword="true"/>.
+        /// </summary>
+        public virtual int ChamberSize { get; set; }
 
         /// <summary>
         /// Gets or sets the firearm's fire rate.
