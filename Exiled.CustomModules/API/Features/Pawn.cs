@@ -24,7 +24,9 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Features.PlayerAbilities;
     using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
+
     using PlayerRoles;
+
     using UnityEngine;
 
     /// <summary>

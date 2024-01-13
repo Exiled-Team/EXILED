@@ -81,10 +81,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
             thrownProjectile.InfoReceivedHook(default, newInfo);
 
             if (thrownProjectile.TryGetComponent(out Rigidbody component))
-            {
-                Vector3 vector = (throwable.Base.GetCameraVector(throwable.Base.FullThrowSettings.UpwardsFactor) * force) + ThrowableNetworkHandler.GetLimitedVelocity(velocity);
-                throwable.Base.PropelBody(component, throwable.Base.FullThrowSettings.StartTorque, vector);
-            }
+                throwable.Base.PropelBody(component, throwable.Base.FullThrowSettings.StartTorque, ThrowableNetworkHandler.GetLimitedVelocity(velocity), force, throwable.Base.FullThrowSettings.UpwardsFactor);
 
             thrownProjectile.ServerActivate();
 

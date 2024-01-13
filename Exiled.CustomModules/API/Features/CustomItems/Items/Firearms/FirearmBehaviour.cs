@@ -23,7 +23,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
     using MEC;
-    using Utf8Json.Resolvers.Internal;
+
     using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
