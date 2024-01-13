@@ -17,10 +17,10 @@ namespace Exiled.Events
     using HarmonyLib;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables;
-
     using PlayerRoles.Ragdolls;
     using PlayerRoles.RoleAssign;
     using PluginAPI.Events;
+    using Respawning;
     using UnityEngine.SceneManagement;
 
     /// <summary>
@@ -74,6 +74,8 @@ namespace Exiled.Events
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
             InventorySystem.InventoryExtensions.OnItemRemoved += Handlers.Player.OnItemRemoved;
 
+            RespawnManager.ServerOnRespawned += Handlers.Server.OnRespawnedTeam;
+
             RagdollManager.OnRagdollSpawned += Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
             ItemPickupBase.OnPickupAdded += Handlers.Internal.PickupEvent.OnSpawnedPickup;
@@ -104,6 +106,8 @@ namespace Exiled.Events
             CharacterClassManager.OnRoundStarted -= Handlers.Server.OnRoundStarted;
 
             InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
+
+            RespawnManager.ServerOnRespawned -= Handlers.Server.OnRespawnedTeam;
 
             RagdollManager.OnRagdollSpawned -= Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved -= Handlers.Internal.RagdollList.OnRemovedRagdoll;

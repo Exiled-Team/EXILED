@@ -7,6 +7,10 @@
 
 namespace Exiled.Events.Handlers
 {
+    using System.Collections.Generic;
+
+    using Respawning;
+
 #pragma warning disable SA1623 // Property summary documentation should match accessors
 
     using Exiled.Events.EventArgs.Player;
@@ -104,6 +108,11 @@ namespace Exiled.Events.Handlers
         public static Event ReloadedPermissions { get; set; } = new();
 
         /// <summary>
+        /// Invoked after team spawns.
+        /// </summary>
+        public static Event<RespawnedTeamEventArgs> RespawnedTeam { get; set; } = new();
+
+        /// <summary>
         /// Called before waiting for players.
         /// </summary>
         public static void OnWaitingForPlayers() => WaitingForPlayers.InvokeSafely();
@@ -195,5 +204,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SelectingRespawnTeamEventArgs"/> instance.</param>
         public static void OnSelectingRespawnTeam(SelectingRespawnTeamEventArgs ev) => SelectingRespawnTeam.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after team spawns.
+        /// </summary>
+        /// <param name="teamType"><inheritdoc cref="RespawnedTeamEventArgs.Team"/></param>
+        /// <param name="hubs"><inheritdoc cref="RespawnedTeamEventArgs.Players"/></param>
+        public static void OnRespawnedTeam(SpawnableTeamType teamType, List<ReferenceHub> hubs) => RespawnedTeam.InvokeSafely(new RespawnedTeamEventArgs(teamType, hubs));
     }
 }
