@@ -49,7 +49,12 @@ namespace Exiled.Events.Handlers
         public static Event<StranglingEventArgs> Strangling { get; set; } = new();
 
         /// <summary>
-        ///     Called before diguising to a new Roles.
+        /// Invoked before sending any SCP-3114 voicelines.
+        /// </summary>
+        public static Event<VoiceLinesEventArgs> VoiceLines { get; set; } = new();
+
+        /// <summary>
+        /// Called before diguising.
         /// </summary>
         /// <param name="ev">The <see cref="DisguisingEventArgs" /> instance.</param>
         public static void OnDisguising(DisguisingEventArgs ev) => Disguising.InvokeSafely(ev);
@@ -83,5 +88,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="StranglingEventArgs"/> instance.</param>
         public static void OnStrangling(StranglingEventArgs ev) => Strangling.InvokeSafely(ev);
+
+        /// <summary>
+        ///    Called before sending any SCP-3114 voicelines.
+        /// </summary>
+        /// <param name="ev">The <see cref="VoiceLinesEventArgs" /> instance.</param>
+        public static void OnVoiceLines(VoiceLinesEventArgs ev) => VoiceLines.InvokeSafely(ev);
     }
 }

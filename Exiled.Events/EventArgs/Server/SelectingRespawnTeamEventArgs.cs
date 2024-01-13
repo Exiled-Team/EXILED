@@ -24,12 +24,12 @@ namespace Exiled.Events.EventArgs.Server
         /// <param name="type">The <see cref="SpawnableTeamType"/> used as the starting value for this event.</param>
         public SelectingRespawnTeamEventArgs(SpawnableTeamType type)
         {
-            ChosenTeam = type;
+            Team = type;
         }
 
         /// <summary>
         /// Gets or sets <see cref="SpawnableTeamType"/> that represents the team chosen to spawn.
         /// </summary>
-        public SpawnableTeamType ChosenTeam { get; set; }
+        public SpawnableTeamType Team { get; set; }
     }
 }

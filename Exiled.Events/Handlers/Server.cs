@@ -69,7 +69,7 @@ namespace Exiled.Events.Handlers
         public static Event<ChoosingStartTeamQueueEventArgs> ChoosingStartTeamQueue { get; set; } = new();
 
         /// <summary>
-        /// Invoked before choosing the team that will respawn.
+        /// Invoked before selecting the team that will respawn.
         /// </summary>
         public static Event<SelectingRespawnTeamEventArgs> SelectingRespawnTeam { get; set; } = new();
 

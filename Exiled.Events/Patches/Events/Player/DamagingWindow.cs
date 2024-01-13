@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patch the <see cref="BreakableWindow.Damage(float, PlayerStatsSystem.DamageHandlerBase, Vector3)" />.
-    ///     Adds the <see cref="Player.PlayerDamageWindow" /> event.
+    /// Patch the <see cref="BreakableWindow.Damage(float, PlayerStatsSystem.DamageHandlerBase, Vector3)" />.
+    /// Adds the <see cref="Player.PlayerDamageWindow" /> event.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.PlayerDamageWindow))]
     [HarmonyPatch(typeof(BreakableWindow), nameof(BreakableWindow.Damage))]

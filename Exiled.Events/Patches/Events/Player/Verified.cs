@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="PlayerAuthenticationManager.FinalizeAuthentication" />.
-    ///     Adds the <see cref="Handlers.Player.Verified" /> event.
+    /// Patches <see cref="PlayerAuthenticationManager.FinalizeAuthentication" />.
+    /// Adds the <see cref="Handlers.Player.Verified" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerAuthenticationManager), nameof(PlayerAuthenticationManager.FinalizeAuthentication))]
     internal static class Verified
