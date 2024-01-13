@@ -23,7 +23,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
     using MEC;
-
+    using Utf8Json.Resolvers.Internal;
     using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
@@ -203,6 +203,22 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
         {
         }
 
+        /// <summary>
+        /// Handles unloading events for custom firearms.
+        /// </summary>
+        /// <param name="ev">The <see cref="UnloadingWeaponEventArgs"/> containing information about the unloading event.</param>
+        protected virtual void OnUnloading(UnloadingWeaponEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles attachments events for custom firearms.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs"/> containing information about the attachment event.</param>
+        protected virtual void OnChangingAttachments(ChangingAttachmentsEventArgs ev)
+        {
+        }
+
         /// <inheritdoc cref="OnReloading(ReloadingWeaponEventArgs)"/>
         private protected virtual void OnInternalReloading(ReloadingWeaponEventArgs ev)
         {
@@ -278,13 +294,15 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
             OnShooting(ev);
         }
 
-        /// <summary>
-        /// Handles unloading events for custom firearms.
-        /// </summary>
-        /// <param name="ev">The <see cref="UnloadingWeaponEventArgs"/> containing information about the unloading event.</param>
+        /// <inheritdoc cref="OnUnloading(UnloadingWeaponEventArgs)"/>
         private protected virtual void OnInternalUnloading(UnloadingWeaponEventArgs ev)
         {
             if (!Check(ev.Item) || !overrideReload)
+                return;
+
+            OnUnloading(ev);
+
+            if (!ev.IsAllowed)
                 return;
 
             ReplicatedClip.Replicate((byte)chamberSize);
@@ -322,13 +340,15 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
             OnShot(ev);
         }
 
-        /// <summary>
-        /// Handles attachments events for custom firearms.
-        /// </summary>
-        /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs"/> containing information about the attachment event.</param>
+        /// <inheritdoc cref="OnChangingAttachments(ChangingAttachmentsEventArgs)"/>
         private protected virtual void OnInternalChangingAttachments(ChangingAttachmentsEventArgs ev)
         {
             if (!Check(ev.Item) || !overrideReload)
+                return;
+
+            OnChangingAttachments(ev);
+
+            if (ev.IsAllowed)
                 return;
 
             int magModifier = (int)Firearm.Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier);
