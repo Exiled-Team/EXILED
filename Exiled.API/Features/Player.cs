@@ -619,7 +619,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is jumping.
         /// </summary>
-        public bool IsJumping { get; internal set; }
+        public bool IsJumping => Role is FpcRole fpc && fpc.FirstPersonController.FpcModule.Motor.IsJumping;
 
         /// <summary>
         /// Gets the player's IP address.
@@ -1164,7 +1164,7 @@ namespace Exiled.API.Features
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> filtered based on a predicate.
         /// </summary>
         /// <param name="predicate">The condition to satisfy.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Player"/> which contains elements that satify the condition.</returns>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Player"/> which contains elements that satisfy the condition.</returns>
         public static IEnumerable<Player> Get(Func<Player, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -3136,7 +3136,7 @@ namespace Exiled.API.Features
             if (TryGetEffect(type, out StatusEffectBase statusEffect))
             {
                 statusEffect.Intensity = intensity;
-                statusEffect.ServerChangeDuration(duration, true);
+                statusEffect.ServerChangeDuration(duration, false);
             }
         }
 

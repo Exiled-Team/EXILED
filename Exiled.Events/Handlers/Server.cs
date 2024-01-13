@@ -69,6 +69,11 @@ namespace Exiled.Events.Handlers
         public static Event<ChoosingStartTeamQueueEventArgs> ChoosingStartTeamQueue { get; set; } = new();
 
         /// <summary>
+        /// Invoked before selecting the team that will respawn.
+        /// </summary>
+        public static Event<SelectingRespawnTeamEventArgs> SelectingRespawnTeam { get; set; } = new();
+
+        /// <summary>
         /// Invoked after the "reload configs" command is ran.
         /// </summary>
         public static Event ReloadedConfigs { get; set; } = new();
@@ -184,5 +189,11 @@ namespace Exiled.Events.Handlers
         /// Called after the "reload permissions" command is ran.
         /// </summary>
         public static void OnReloadedPermissions() => ReloadedPermissions.InvokeSafely();
+
+        /// <summary>
+        /// Called before selecting the team that will respawn next.
+        /// </summary>
+        /// <param name="ev">The <see cref="SelectingRespawnTeamEventArgs"/> instance.</param>
+        public static void OnSelectingRespawnTeam(SelectingRespawnTeamEventArgs ev) => SelectingRespawnTeam.InvokeSafely(ev);
     }
 }
