@@ -250,7 +250,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the maximum value of the firearm's range.
         /// </summary>
-        public float MaxDistance => Stats.MaxDistance();
+        public float MaxRange => Stats.MaxDistance();
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] which contains all available attachments for all firearms.
