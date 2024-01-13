@@ -248,7 +248,7 @@ namespace Exiled.API.Features.Items
         public float BaseDamage => Stats.BaseDamage;
 
         /// <summary>
-        /// Gets the max distance.
+        /// Gets the maximum value of the firearm's range.
         /// </summary>
         public float MaxDistance => Stats.MaxDistance();
 
