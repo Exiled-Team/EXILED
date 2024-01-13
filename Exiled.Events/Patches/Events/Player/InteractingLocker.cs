@@ -21,8 +21,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Locker.ServerInteract(ReferenceHub, byte)" />.
-    ///     Adds the <see cref="Handlers.Player.InteractingLocker" /> event.
+    /// Patches <see cref="Locker.ServerInteract(ReferenceHub, byte)" />.
+    /// Adds the <see cref="Handlers.Player.InteractingLocker" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.InteractingLocker))]
     [HarmonyPatch(typeof(Locker), nameof(Locker.ServerInteract))]
