@@ -84,6 +84,7 @@ namespace Exiled.Events.Patches.Generic
                 // for (int i = 0; i < array.Length; i++)
                 new(OpCodes.Ldc_I4_0),
                 new(OpCodes.Stloc_S, pos),
+                
                 // decoded[i] = Mathf.Abs(decoded[i])
                 new(OpCodes.Br_S, loopcheck),
 
@@ -111,9 +112,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Conv_I4),
                 new(OpCodes.Blt_S, loopstart),
 
-                // end loop
-
-                // standardVoiceModule.GlobalPlayback.Loudness = array.Sum() / (float)msg.DataLength;
+                // end loop -> standardVoiceModule.GlobalPlayback.Loudness = array.Sum() / (float)msg.DataLength;
                 new(OpCodes.Ldloc_S, svm),
                 new(OpCodes.Ldfld, Field(typeof(StandardVoiceModule), nameof(StandardVoiceModule.GlobalPlayback))),
                 new(OpCodes.Ldloc_S, decoded),
