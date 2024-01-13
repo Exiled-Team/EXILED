@@ -618,7 +618,7 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets the damage of this firearm at specified distance.
+        /// Gets the damage based on the specified distance.
         /// </summary>
         /// <param name="distance">The distance to evaluate.</param>
         /// <returns>The corresponding damage based on the specified distance.</returns>
