@@ -378,11 +378,7 @@ namespace Exiled.API.Features
         /// <param name="ragdoll">The <see cref="BasicRagdoll"/> to get.</param>
         /// <returns>A <see cref="Ragdoll"/> or <see langword="null"/> if not found.</returns>
         public static Ragdoll Get(BasicRagdoll ragdoll) => ragdoll == null ? null :
-            BasicRagdollToRagdoll.TryGetValue(ragdoll, out Ragdoll doll) ? doll : ragdoll switch
-            {
-                PlayerRoles.PlayableScps.Scp1507.Scp1507Ragdoll scp1507Ragdoll => new Scp1507Ragdoll(scp1507Ragdoll),
-                _ => new Ragdoll(ragdoll)
-            };
+            BasicRagdollToRagdoll.TryGetValue(ragdoll, out Ragdoll doll) ? doll : new Ragdoll(ragdoll);
 
         /// <summary>
         /// Gets the <see cref="IEnumerable{T}"/> of <see cref="Ragdoll"/> belonging to the <see cref="Player"/>, if any.

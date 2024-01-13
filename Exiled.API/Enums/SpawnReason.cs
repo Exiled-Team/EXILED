@@ -53,13 +53,8 @@ namespace Exiled.API.Enums
         ForceClass,
 
         /// <summary>
-        /// The player will be destroyed.
+        /// The user will be destroyed.
         /// </summary>
         Destroyed,
-
-        /// <summary>
-        /// The player was spawned due to the usage of an item.
-        /// </summary>
-        ItemUsage,
     }
 }

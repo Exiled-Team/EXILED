@@ -26,7 +26,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// SCP team. Same as <see cref="Team.SCPs"/>.
         /// Contains all SCP-related roles: <see cref="RoleTypeId.Scp049"/>, <see cref="RoleTypeId.Scp0492"/>, <see cref="RoleTypeId.Scp079"/>, <see cref="RoleTypeId.Scp096"/>,
-        /// <see cref="RoleTypeId.Scp106"/>, <see cref="RoleTypeId.Scp173"/>, <see cref="RoleTypeId.Scp939"/>, and <see cref="RoleTypeId.Scp3114"/> and <see cref="RoleTypeId.ZombieFlamingo"/>.
+        /// <see cref="RoleTypeId.Scp106"/>, <see cref="RoleTypeId.Scp173"/>, <see cref="RoleTypeId.Scp939"/>, and <see cref="RoleTypeId.Scp3114"/>.
         /// </summary>
         Scp,
 
@@ -52,10 +52,5 @@ namespace Exiled.API.Enums
         /// No team. Same as <see cref="Team.Dead"/>.
         /// </summary>
         None,
-
-        /// <summary>
-        /// Tutorial team. Contains <see cref="RoleTypeId.Flamingo"/> and <see cref="RoleTypeId.AlphaFlamingo"/>. Same as <see cref="Team.Flamingos"/>.
-        /// </summary>
-        Flamingo,
     }
 }
