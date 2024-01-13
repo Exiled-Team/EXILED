@@ -9,7 +9,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 {
     using System.Collections.Generic;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features.Core.Generics;
     using Exiled.API.Features.Items;
     using Exiled.CustomModules.API.Enums;
@@ -26,11 +25,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
     /// </remarks>
     public abstract class SemiAutomaticFirearmBehaviour : FirearmBehaviour
     {
-        /// <summary>
-        /// Gets or sets the replicated clip.
-        /// </summary>
-        public ReplicatedProperty<Firearm, byte> ReplicatedClip { get; set; }
-
         /// <summary>
         /// Gets or sets the firearm's fire rate.
         /// <para/>
@@ -67,54 +61,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
             base.OnEndPlay();
 
             ReplicatedClip.Destroy();
-        }
-
-        /// <inheritdoc/>
-        protected override void SubscribeEvents()
-        {
-            base.SubscribeEvents();
-
-            Exiled.Events.Handlers.Player.UnloadingWeapon += OnInternalUnloading;
-        }
-
-        /// <inheritdoc/>
-        protected override void UnsubscribeEvents()
-        {
-            base.UnsubscribeEvents();
-
-            Exiled.Events.Handlers.Player.UnloadingWeapon -= OnInternalUnloading;
-        }
-
-        /// <summary>
-        /// Handles unloading events for semi automatic firearms.
-        /// </summary>
-        /// <param name="ev">The <see cref="UnloadingWeaponEventArgs"/> containing information about the unloading event.</param>
-        private protected virtual void OnInternalUnloading(UnloadingWeaponEventArgs ev)
-        {
-            ReplicatedClip.Replicate(1);
-
-            if (ammoType is not AmmoType.None)
-            {
-                ItemOwner.AddAmmo(ammoType, (byte)(ReplicatedClip.ReplicatedValue - 1));
-            }
-            else if (itemType is not ItemType.None)
-            {
-                for (int i = 0; i < ReplicatedClip.ReplicatedValue - 1; i++)
-                {
-                    Item item = Item.Create(itemType);
-
-                    if (ItemOwner.Items.Count >= 8)
-                        item.CreatePickup(ItemOwner.Position);
-                    else
-                        item.Give(ItemOwner);
-                }
-            }
-            else if (customAmmoType > 0)
-            {
-                ev.Player.Cast<Pawn>().AddAmmo(customAmmoType, (byte)(ReplicatedClip.ReplicatedValue - 1));
-            }
-
-            ReplicatedClip.Send(0);
         }
 
         /// <inheritdoc/>

@@ -7,8 +7,9 @@
 
 namespace Exiled.API.Features.Attributes
 {
-    using Exiled.API.Features.VirtualAssemblies;
     using System;
+
+    using Exiled.API.Features.VirtualAssemblies;
 
     /// <summary>
     /// This attribute determines whether the class which is being applied to should be treated as <see cref="VirtualPlugin"/>.
