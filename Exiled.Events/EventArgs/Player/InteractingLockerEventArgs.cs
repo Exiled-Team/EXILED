@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+
     using API.Features;
     using Exiled.API.Features.Lockers;
     using Interfaces;
@@ -23,9 +25,6 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player">
         /// <inheritdoc cref="Player" />
         /// </param>
-        /// <param name="locker">
-        /// <inheritdoc cref="Locker" />
-        /// </param>
         /// <param name="lockerChamber">
         /// <inheritdoc cref="Chamber" />
         /// </param>
@@ -35,7 +34,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="isAllowed">
         /// <inheritdoc cref="IsAllowed" />
         /// </param>
-        public InteractingLockerEventArgs(Player player, MapGeneration.Distributors.Locker locker, LockerChamber lockerChamber, byte chamberId, bool isAllowed)
+        public InteractingLockerEventArgs(Player player, LockerChamber lockerChamber, byte chamberId, bool isAllowed)
         {
             Player = player;
             LockerChamber = Chamber.Get(lockerChamber);
