@@ -3317,11 +3317,11 @@ namespace Exiled.API.Features
                 nameof(Player) => Dictionary.Values.GetRandomValue(),
                 nameof(Pickup) => Pickup.BaseToPickup.GetRandomValue().Value,
                 nameof(Ragdoll) => Ragdoll.List.GetRandomValue(),
-                nameof(MapGeneration.Distributors.Locker) or nameof(Lockers.Locker) => Map.GetRandomExiledLocker(),
+                nameof(MapGeneration.Distributors.Locker) or nameof(Lockers.Locker) => Map.GetRandomLocker(),
                 nameof(Generator) => Generator.List.GetRandomValue(),
                 nameof(Window) => Window.List.GetRandomValue(),
                 nameof(Scp914) => Scp914.Scp914Controller,
-                nameof(LockerChamber) or nameof(Chamber) => Map.GetRandomExiledLocker().Chambers.GetRandomValue(),
+                nameof(LockerChamber) or nameof(Chamber) => Map.GetRandomLocker().Chambers.GetRandomValue(),
                 _ => null,
             };
 
