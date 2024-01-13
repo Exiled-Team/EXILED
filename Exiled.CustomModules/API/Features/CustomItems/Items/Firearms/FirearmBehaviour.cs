@@ -214,7 +214,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
         /// <summary>
         /// Handles attachments events for custom firearms.
         /// </summary>
-        /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs"/> containing information about the attachment event.</param>
+        /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs"/> containing information about the attachments event.</param>
         protected virtual void OnChangingAttachments(ChangingAttachmentsEventArgs ev)
         {
         }
