@@ -620,7 +620,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the damage of this firearm at specified distance.
         /// </summary>
-        /// <param name="distance">Distance to target.</param>
+        /// <param name="distance">The distance to evaluate.</param>
         /// <returns>The corresponding damage based on the specified distance.</returns>
         public float GetDamageAtDistance(float distance) => Stats.DamageAtDistance(Base, distance);
 
