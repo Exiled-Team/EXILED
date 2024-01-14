@@ -117,7 +117,7 @@ namespace Exiled.API.Features
         public bool IsOpen
         {
             get => Base.HasFlag(Base.Network_flags, Scp079Generator.GeneratorFlags.Open);
-            set => Base.ServerSetFlag(Scp079Generator.GeneratorFlags.Unlocked, value);
+            set => Base.ServerSetFlag(Scp079Generator.GeneratorFlags.Open, value);
         }
 
         /// <summary>
