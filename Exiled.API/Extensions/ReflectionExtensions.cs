@@ -40,10 +40,10 @@ namespace Exiled.API.Extensions
         /// <param name="param">The event arguments.</param>
         public static void InvokeStaticEvent(this Type type, string eventName, object[] param)
         {
-            var eventDelegate = (MulticastDelegate)type.GetField(eventName, AccessTools.all).GetValue(null);
+            MulticastDelegate eventDelegate = (MulticastDelegate)type.GetField(eventName, AccessTools.all).GetValue(null);
             if (eventDelegate != null)
             {
-                foreach (var handler in eventDelegate.GetInvocationList())
+                foreach (Delegate handler in eventDelegate.GetInvocationList())
                 {
                     handler.Method.Invoke(handler.Target, param);
                 }
