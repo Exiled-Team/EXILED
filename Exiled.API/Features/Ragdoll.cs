@@ -16,24 +16,28 @@ namespace Exiled.API.Features
     using Enums;
 
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
 
     using Mirror;
 
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.Ragdolls;
 
     using PlayerStatsSystem;
 
     using UnityEngine;
 
+    using BaseScp3114Ragdoll = PlayerRoles.PlayableScps.Scp3114.Scp3114Ragdoll;
+
     using Object = UnityEngine.Object;
 
     /// <summary>
     /// A set of tools to handle the ragdolls more easily.
     /// </summary>
-    public class Ragdoll : IWrapper<BasicRagdoll>, IWorldSpace
+    public class Ragdoll : GameEntity, IWrapper<BasicRagdoll>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BasicRagdoll"/>s and their corresponding <see cref="Ragdoll"/>.
@@ -77,7 +81,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the ragdoll.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Transform"/> of the ragdoll.
@@ -298,7 +302,7 @@ namespace Exiled.API.Features
 
             basicRagdoll.NetworkInfo = networkInfo;
 
-            ragdoll = new(basicRagdoll)
+            ragdoll = basicRagdoll is BaseScp3114Ragdoll scp3114Ragdoll ? new Scp3114Ragdoll(scp3114Ragdoll) : new Ragdoll(basicRagdoll)
             {
                 Position = networkInfo.StartPosition,
                 Rotation = networkInfo.StartRotation,
@@ -377,7 +381,7 @@ namespace Exiled.API.Features
         /// <param name="ragdoll">The <see cref="BasicRagdoll"/> to get.</param>
         /// <returns>A <see cref="Ragdoll"/> or <see langword="null"/> if not found.</returns>
         public static Ragdoll Get(BasicRagdoll ragdoll) => ragdoll == null ? null :
-            BasicRagdollToRagdoll.TryGetValue(ragdoll, out Ragdoll doll) ? doll : new Ragdoll(ragdoll);
+            BasicRagdollToRagdoll.TryGetValue(ragdoll, out Ragdoll doll) ? doll : ragdoll is BaseScp3114Ragdoll scp3114Ragdoll ? new Scp3114Ragdoll(scp3114Ragdoll) : new Ragdoll(ragdoll);
 
         /// <summary>
         /// Gets the <see cref="IEnumerable{T}"/> of <see cref="Ragdoll"/> belonging to the <see cref="Player"/>, if any.
