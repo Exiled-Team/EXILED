@@ -82,7 +82,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                     new(OpCodes.Stloc_0),
                 });
 
-            foreach (var instruction in newInstructions)
+            foreach (CodeInstruction instruction in newInstructions)
                 yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);

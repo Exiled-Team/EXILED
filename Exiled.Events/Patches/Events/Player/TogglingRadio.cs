@@ -103,7 +103,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
-            foreach (var instruction in newInstructions)
+            foreach (CodeInstruction instruction in newInstructions)
                 yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);

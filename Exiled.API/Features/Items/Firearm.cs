@@ -237,6 +237,21 @@ namespace Exiled.API.Features.Items
         public FirearmRecoilPattern RecoilPattern => Base is AutomaticFirearm auto ? auto._recoilPattern : null;
 
         /// <summary>
+        /// Gets the <see cref="FirearmBaseStats"/>.
+        /// </summary>
+        public FirearmBaseStats Stats => Base.BaseStats;
+
+        /// <summary>
+        /// Gets the base damage.
+        /// </summary>
+        public float BaseDamage => Stats.BaseDamage;
+
+        /// <summary>
+        /// Gets the maximum value of the firearm's range.
+        /// </summary>
+        public float MaxRange => Stats.MaxDistance();
+
+        /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] which contains all available attachments for all firearms.
         /// </summary>
         internal static Dictionary<FirearmType, AttachmentIdentifier[]> AvailableAttachmentsValue { get; } = new();
@@ -589,6 +604,13 @@ namespace Exiled.API.Features.Items
             foreach (Player player in Player.List)
                 ClearPreferences(player);
         }
+
+        /// <summary>
+        /// Gets the damage based on the specified distance.
+        /// </summary>
+        /// <param name="distance">The distance to evaluate.</param>
+        /// <returns>The corresponding damage based on the specified distance.</returns>
+        public float GetDamageAtDistance(float distance) => Stats.DamageAtDistance(Base, distance);
 
         /// <summary>
         /// Clones current <see cref="Firearm"/> object.
