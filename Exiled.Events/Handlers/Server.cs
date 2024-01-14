@@ -108,7 +108,7 @@ namespace Exiled.Events.Handlers
         public static Event ReloadedPermissions { get; set; } = new();
 
         /// <summary>
-        /// Invoked after team spawns.
+        /// Invoked after a team has spawned.
         /// </summary>
         public static Event<RespawnedTeamEventArgs> RespawnedTeam { get; set; } = new();
 
