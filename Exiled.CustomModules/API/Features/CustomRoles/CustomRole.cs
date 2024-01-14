@@ -34,7 +34,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// <br/>Additionally, <see cref="CustomRole"/> implements <see cref="IEquatable{CustomRole}"/> and <see cref="IEquatable{UInt16}"/>, enabling straightforward equality comparisons.
     /// </para>
     /// </remarks>
-    public abstract class CustomRole : TypeCastObject<CustomRole>, IAdditiveBehaviour, IEquatable<CustomRole>, IEquatable<uint>
+    public abstract class CustomRole : CustomModule, IAdditiveBehaviour
     {
         private static readonly Dictionary<Pawn, CustomRole> PlayersValue = new();
         private static readonly List<CustomRole> Registered = new();
@@ -66,7 +66,17 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets the <see cref="CustomRole"/>'s name.
         /// </summary>
-        public abstract string Name { get; }
+        public override string Name { get; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="CustomRole"/>'s id.
+        /// </summary>
+        public override uint Id { get; protected set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="CustomRole"/> is enabled.
+        /// </summary>
+        public override bool IsEnabled { get; }
 
         /// <summary>
         /// Gets a value indicating whether a player can spawn as this <see cref="CustomRole"/> based on its assigned probability.
@@ -78,16 +88,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Gets the <see cref="CustomRole"/>'s description.
         /// </summary>
         public virtual string Description { get; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="CustomRole"/>'s id.
-        /// </summary>
-        public virtual uint Id { get; protected set; }
-
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomRole"/> is enabled.
-        /// </summary>
-        public virtual bool IsEnabled { get; }
 
         /// <summary>
         /// Gets the <see cref="CustomRole"/>'s <see cref="RoleTypeId"/>.
@@ -148,54 +148,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pawn"/> containing all players owning this <see cref="CustomRole"/>.
         /// </summary>
         public IEnumerable<Pawn> Owners => Player.Get(x => TryGet(x.Cast<Pawn>(), out CustomRole customRole) && customRole.Id == Id).Cast<Pawn>();
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomRole"/> and <see cref="object"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="CustomRole"/> to compare.</param>
-        /// <param name="right">The <see cref="object"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomRole left, object right) => left is null ? right is null : left.Equals(right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomRole"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomRole"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator ==(object left, CustomRole right) => right == left;
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomRole"/> and <see cref="object"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomRole"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomRole left, object right) => !(left == right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomRole"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="object"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomRole"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(object left, CustomRole right) => !(left == right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomRole"/> and <see cref="CustomRole"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="CustomRole"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomRole"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomRole left, CustomRole right) => left is null ? right is null : left.Equals(right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomRole"/> and <see cref="CustomRole"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="CustomRole"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomRole"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomRole left, CustomRole right) => !(left.Id == right.Id);
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> given the specified id.
@@ -477,7 +429,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
             {
                 CustomRoleAttribute attribute = type.GetCustomAttribute<CustomRoleAttribute>();
-                if ((type.BaseType != typeof(CustomRole) && !type.IsSubclassOf(typeof(CustomRole))) || attribute is null)
+                if (!typeof(CustomRole).IsAssignableFrom(type) || attribute is null)
                     continue;
 
                 CustomRole customRole = Activator.CreateInstance(type) as CustomRole;
@@ -489,7 +441,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     customRoles.Add(customRole);
             }
 
-            if (customRoles.Count != Registered.Count())
+            if (customRoles.Count != Registered.Count)
                 Log.Info($"{customRoles.Count} custom roles have been successfully registered!");
 
             return customRoles;
@@ -514,46 +466,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             return customRoles;
         }
-
-        /// <summary>
-        /// Determines whether the provided id is equal to the current object.
-        /// </summary>
-        /// <param name="id">The id to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(uint id) => Id == id;
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="cr">The custom role to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(CustomRole cr) => cr && (ReferenceEquals(this, cr) || Id == cr.Id);
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="obj">The object to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public override bool Equals(object obj)
-        {
-            if (Equals(obj as CustomRole))
-                return true;
-
-            try
-            {
-                return Equals((uint)obj);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns a the 32-bit signed hash code of the current object instance.
-        /// </summary>
-        /// <returns>The 32-bit signed hash code of the current object instance.</returns>
-        public override int GetHashCode() => base.GetHashCode();
 
         /// <summary>
         /// Spawns the player as a specific <see cref="CustomRole"/>.
