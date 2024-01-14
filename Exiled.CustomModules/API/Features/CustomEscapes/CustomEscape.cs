@@ -18,7 +18,6 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.CustomModules.API.Enums;
-    using Exiled.CustomModules.API.Features.CustomRoles;
     using MonoMod.Utils;
 
     using Utils.NonAllocLINQ;
@@ -33,7 +32,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     /// <br/>The class also implements <see cref="IEquatable{CustomEscape}"/> and <see cref="IEquatable{T}"/>, enabling straightforward comparisons for equality checks.
     /// </para>
     /// </remarks>
-    public abstract class CustomEscape : TypeCastObject<CustomEscape>, IAdditiveBehaviour, IEquatable<CustomEscape>, IEquatable<uint>
+    public abstract class CustomEscape : CustomModule, IAdditiveBehaviour
     {
         private static readonly Dictionary<Player, CustomEscape> PlayersValue = new();
         private static readonly List<CustomEscape> Registered = new();
@@ -61,22 +60,22 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Gets the <see cref="CustomEscape"/>'s name.
         /// </summary>
-        public abstract string Name { get; }
+        public override string Name { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomEscape"/>'s id.
         /// </summary>
-        public virtual uint Id { get; protected set; }
+        public override uint Id { get; protected set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="CustomEscape"/> is enabled.
+        /// </summary>
+        public override bool IsEnabled { get; }
 
         /// <summary>
         /// Gets the <see cref="CustomEscape"/>'s <see cref="Type"/>.
         /// </summary>
         public virtual Type BehaviourComponent { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomEscape"/> is enabled.
-        /// </summary>
-        public virtual bool IsEnabled { get; }
 
         /// <summary>
         /// Gets all <see cref="Hint"/>'s to be displayed based on the relative <see cref="UUEscapeScenarioType"/>.
@@ -89,64 +88,16 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public virtual List<EscapeSettings> Settings { get; } = new() { EscapeSettings.Default, };
 
         /// <summary>
-        /// Compares two operands: <see cref="CustomEscape"/> and <see cref="object"/>.
+        /// Enables all the custom escapes present in the assembly.
         /// </summary>
-        /// <param name="left">The <see cref="CustomEscape"/> to compare.</param>
-        /// <param name="right">The <see cref="object"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomEscape left, object right) => left is null ? right is null : left.Equals(right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomEscape"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomEscape"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator ==(object left, CustomEscape right) => right == left;
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomEscape"/> and <see cref="object"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomEscape"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomEscape left, object right) => !(left == right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomRole"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="object"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomRole"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(object left, CustomEscape right) => !(left == right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomEscape"/> and <see cref="CustomEscape"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="CustomEscape"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomEscape"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomEscape left, CustomEscape right) => left is null ? right is null : left.Equals(right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomEscape"/> and <see cref="CustomEscape"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="CustomEscape"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomEscape"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomEscape left, CustomEscape right) => !(left.Id == right.Id);
-
-        /// <summary>
-        /// Enables all the custom roles present in the assembly.
-        /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> which contains all the enabled custom roles.</returns>
-        public static List<CustomEscape> RegisterAll()
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all enabled custom escapes.</returns>
+        public static List<CustomEscape> EnableAll()
         {
             List<CustomEscape> customEscapes = new();
             foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
             {
                 CustomEscapeAttribute attribute = type.GetCustomAttribute<CustomEscapeAttribute>();
-                if ((type.BaseType != typeof(CustomEscape) && !type.IsSubclassOf(typeof(CustomEscape))) || attribute is null)
+                if (!typeof(CustomEscape).IsAssignableFrom(type) || attribute is null)
                     continue;
 
                 CustomEscape customEscape = Activator.CreateInstance(type) as CustomEscape;
@@ -165,9 +116,9 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         }
 
         /// <summary>
-        /// Disables all the custom roles present in the assembly.
+        /// Disables all the custom escapes present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> which contains all the disabled custom roles.</returns>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all disabled custom escapes.</returns>
         public static List<CustomEscape> DisableAll()
         {
             List<CustomEscape> customEscapes = new();
@@ -354,46 +305,6 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
             where T : CustomEscape => Detach(player, typeof(T));
 
         /// <summary>
-        /// Determines whether the provided id is equal to the current object.
-        /// </summary>
-        /// <param name="id">The id to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(uint id) => Id == id;
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="ce">The custom escape to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(CustomEscape ce) => ce && (ReferenceEquals(this, ce) || Id == ce.Id);
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="obj">The object to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public override bool Equals(object obj)
-        {
-            if (Equals(obj as CustomEscape))
-                return true;
-
-            try
-            {
-                return Equals((uint)obj);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns a the 32-bit signed hash code of the current object instance.
-        /// </summary>
-        /// <returns>The 32-bit signed hash code of the current object instance.</returns>
-        public override int GetHashCode() => base.GetHashCode();
-
-        /// <summary>
         /// Attaches a <see cref="CustomEscape"/> to the specified <see cref="Player"/>.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to attach the escape rules to.</param>
@@ -460,9 +371,9 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         }
 
         /// <summary>
-        /// Tries to unregister a <see cref="CustomRole"/>.
+        /// Tries to unregister a <see cref="CustomEscape"/>.
         /// </summary>
-        /// <returns><see langword="true"/> if the <see cref="CustomRole"/> was unregistered; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the <see cref="CustomEscape"/> was unregistered; otherwise, <see langword="false"/>.</returns>
         internal bool TryUnregister()
         {
             if (!Registered.Contains(this))
