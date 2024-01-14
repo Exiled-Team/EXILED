@@ -1752,6 +1752,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Tries to get an items from a player's inventory.
+        /// </summary>
+        /// <param name="predicate">The predicate to satisfy.</param>
+        /// <param name="items">The <see cref="IEnumerable{T}"/> found.</param>
+        /// <returns><see langword="true"/> if the item is found, <see langword="false"/> otherwise.</returns>
+        public bool TryGetItems(Func<Item, bool> predicate, out IEnumerable<Item> items)
+        {
+            items = Items.Where(predicate);
+
+            return items.Count() != 0;
+        }
+
+        /// <summary>
         /// Sets the player's rank.
         /// </summary>
         /// <param name="name">The rank name to be set.</param>
