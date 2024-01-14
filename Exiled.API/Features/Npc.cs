@@ -12,10 +12,10 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using CommandSystem;
 
     using Exiled.API.Enums;
-    using Exiled.API.Extensions;
     using Exiled.API.Features.Components;
 
     using Footprinting;
@@ -126,8 +126,8 @@ namespace Exiled.API.Features
         /// Spawns an NPC based on the given parameters.
         /// </summary>
         /// <param name="name">The name of the NPC.</param>
-        /// <param name="role">The RoleTypeId of the NPC.</param>
-        /// <param name="id">The player ID of the NPC.</param>
+        /// <param name="role">The <see cref="RoleTypeId"/> of the NPC.</param>
+        /// <param name="id">The Network ID of the NPC. If 0, one is made.</param>
         /// <param name="userId">The userID of the NPC.</param>
         /// <param name="position">The position to spawn the NPC.</param>
         /// <returns>The <see cref="Npc"/> spawned.</returns>
@@ -171,7 +171,7 @@ namespace Exiled.API.Features
             npc.ReferenceHub.nicknameSync.Network_myNickSync = name;
             Dictionary.Add(newObject, npc);
 
-            Timing.CallDelayed(0.3f, () =>
+            Timing.CallDelayed(0.5f, () =>
             {
                 npc.Role.Set(role, SpawnReason.RoundStart, position is null ? RoleSpawnFlags.All : RoleSpawnFlags.AssignInventory);
             });
@@ -188,8 +188,6 @@ namespace Exiled.API.Features
         public void Destroy()
         {
             NetworkConnectionToClient conn = ReferenceHub.connectionToClient;
-            if (ReferenceHub._playerId.Value <= RecyclablePlayerId._autoIncrement)
-                ReferenceHub._playerId.Destroy();
             ReferenceHub.OnDestroy();
             CustomNetworkManager.TypedSingleton.OnServerDisconnect(conn);
             Dictionary.Remove(GameObject);
