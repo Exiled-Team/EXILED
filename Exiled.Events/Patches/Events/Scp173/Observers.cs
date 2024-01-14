@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Scp173
             LocalBuilder ev = generator.DeclareLocal(typeof(AddingObserverEventArgs));
 
             int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Add)))) + 2;
-            newInstructions[index].WithLabels(returnLabel);
+            newInstructions[index].labels.Add(returnLabel);
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {

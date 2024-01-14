@@ -19,15 +19,9 @@ namespace Exiled.Events.EventArgs.Scp173
         /// <summary>
         /// Initializes a new instance of the <see cref="AddingObserverEventArgs"/> class.
         /// </summary>
-        /// <param name="player">
-        /// <inheritdoc cref="Scp173" />
-        /// </param>
-        /// <param name="target">
-        /// <inheritdoc cref="Player" />
-        /// </param>
-        /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
-        /// </param>
+        /// <param name="player"><inheritdoc cref="Scp173" /></param>
+        /// <param name="target"><inheritdoc cref="Player" /></param>
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed" /></param>
         public AddingObserverEventArgs(Player player, Player target, bool isAllowed = true)
         {
             Scp173 = player.Role.As<Scp173Role>();
@@ -40,12 +34,12 @@ namespace Exiled.Events.EventArgs.Scp173
         public Scp173Role Scp173 { get; }
 
         /// <summary>
-        /// Gets the target who have just seen SCP-173.
+        /// Gets the target who has looked at SCP-173.
         /// </summary>
         public Player Target { get; }
 
         /// <summary>
-        /// Gets the player who's controlling scp 173.
+        /// Gets the player who's controlling SCP-173.
         /// </summary>
         public Player Player { get; }
 

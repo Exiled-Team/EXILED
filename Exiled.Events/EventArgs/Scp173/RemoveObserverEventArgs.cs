@@ -19,12 +19,8 @@ namespace Exiled.Events.EventArgs.Scp173
         /// <summary>
         /// Initializes a new instance of the <see cref="RemoveObserverEventArgs"/> class.
         /// </summary>
-        /// <param name="player">
-        /// <inheritdoc cref="Scp173" />
-        /// </param>
-        /// <param name="target">
-        /// <inheritdoc cref="Target" />
-        /// </param>
+        /// <param name="player"><inheritdoc cref="Scp173" /></param>
+        /// <param name="target"><inheritdoc cref="Player" /></param>
         public RemoveObserverEventArgs(Player player, Player target)
         {
             Scp173 = player.Role.As<Scp173Role>();
@@ -36,12 +32,12 @@ namespace Exiled.Events.EventArgs.Scp173
         public Scp173Role Scp173 { get; }
 
         /// <summary>
-        /// Gets the player who controlling scp 173.
+        /// Gets the player who's controlling SCP-173.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the target who no longer see the scp 173.
+        /// Gets the target who no longer sees SCP-173.
         /// </summary>
         public Player Target { get; }
     }
