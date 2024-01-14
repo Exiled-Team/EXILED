@@ -7,8 +7,8 @@
 
 namespace Exiled.API.Extensions
 {
+    using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using UnityEngine;
 
@@ -23,7 +23,8 @@ namespace Exiled.API.Extensions
         /// <param name="enumerable"><see cref="IEnumerable{T}"/> to be used to get a random value.</param>
         /// <typeparam name="T">Type of <see cref="IEnumerable{T}"/> elements.</typeparam>
         /// <returns>Returns a random value from <see cref="IEnumerable{T}"/>.</returns>
-        public static T GetRandomValue<T>(this IEnumerable<T> enumerable) => enumerable is null || enumerable.Count() == 0 ? default : enumerable.ElementAt(Random.Range(0, enumerable.Count()));
+        [Obsolete("Use CollectionExtensions::Random<T>(IEnumerable<T>, Func<T, bool>) instead.", true)]
+        public static T GetRandomValue<T>(this IEnumerable<T> enumerable) => CollectionExtensions.Random(enumerable);
 
         /// <summary>
         /// Gets a random value from an <see cref="IEnumerable{T}"/> that matches the provided condition.
@@ -32,7 +33,8 @@ namespace Exiled.API.Extensions
         /// <typeparam name="T">Type of <see cref="IEnumerable{T}"/> elements.</typeparam>
         /// <param name="condition">The condition to require.</param>
         /// <returns>Returns a random value from <see cref="IEnumerable{T}"/>.</returns>
-        public static T GetRandomValue<T>(this IEnumerable<T> enumerable, System.Func<T, bool> condition) => enumerable is null || enumerable.Count() == 0 ? default : enumerable.Where(condition).GetRandomValue();
+        [Obsolete("Use CollectionExtensions::Random<T>(IEnumerable<T>, Func<T, bool>) instead.", true)]
+        public static T GetRandomValue<T>(this IEnumerable<T> enumerable, Func<T, bool> condition) => CollectionExtensions.Random(enumerable, condition);
 
         /// <summary>
         /// Modify the curve with the amount used.
@@ -42,7 +44,7 @@ namespace Exiled.API.Extensions
         /// <returns>The new modfied curve.</returns>
         public static AnimationCurve Multiply(this AnimationCurve curve, float amount)
         {
-            for (var i = 0; i < curve.length; i++)
+            for (int i = 0; i < curve.length; i++)
                 curve.keys[i].value *= amount;
 
             return curve;
@@ -56,7 +58,7 @@ namespace Exiled.API.Extensions
         /// <returns>The new modfied curve.</returns>
         public static AnimationCurve Add(this AnimationCurve curve, float amount)
         {
-            for (var i = 0; i < curve.length; i++)
+            for (int i = 0; i < curve.length; i++)
                 curve.keys[i].value += amount;
 
             return curve;
