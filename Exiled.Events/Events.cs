@@ -60,7 +60,7 @@ namespace Exiled.Events
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
-            UsableItemsController.ServerOnUsingCompleted += (hub, usable) => Handlers.Player.OnUsedItem(new(hub, usable));
+            UsableItemsController.ServerOnUsingCompleted += Handlers.Internal.Round.OnServerOnUsingCompleted;
             Handlers.Server.WaitingForPlayers += Handlers.Internal.Round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
@@ -91,7 +91,8 @@ namespace Exiled.Events
             Unpatch();
 
             SceneManager.sceneUnloaded -= Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
-            MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;
+            MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Internal.MapGenerated.OnMapGenerated;
+            UsableItemsController.ServerOnUsingCompleted -= Handlers.Internal.Round.OnServerOnUsingCompleted;
 
             Handlers.Server.WaitingForPlayers -= Handlers.Internal.Round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound -= Handlers.Internal.Round.OnRestartingRound;
