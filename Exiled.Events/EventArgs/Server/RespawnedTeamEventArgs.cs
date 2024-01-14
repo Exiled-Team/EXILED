@@ -31,7 +31,7 @@ namespace Exiled.Events.EventArgs.Server
         }
 
         /// <summary>
-        /// Gets the list of spawned players.
+        /// Gets all spawned players.
         /// </summary>
         public IEnumerable<Player> Players { get; }
 
