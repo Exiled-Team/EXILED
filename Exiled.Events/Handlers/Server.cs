@@ -206,7 +206,7 @@ namespace Exiled.Events.Handlers
         public static void OnSelectingRespawnTeam(SelectingRespawnTeamEventArgs ev) => SelectingRespawnTeam.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after team spawns.
+        /// Called after a team has spawned.
         /// </summary>
         /// <param name="teamType"><inheritdoc cref="RespawnedTeamEventArgs.Team"/></param>
         /// <param name="hubs"><inheritdoc cref="RespawnedTeamEventArgs.Players"/></param>
