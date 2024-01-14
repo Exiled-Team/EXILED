@@ -339,7 +339,7 @@ namespace Exiled.API.Features
                 // NW Client check.
                 if (value.Contains('<'))
                 {
-                    foreach (var token in value.Split('<'))
+                    foreach (string token in value.Split('<'))
                     {
                         if (token.StartsWith("/", StringComparison.Ordinal) ||
                             token.StartsWith("b>", StringComparison.Ordinal) ||
