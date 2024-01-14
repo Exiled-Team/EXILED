@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Server
     using Respawning;
 
     /// <summary>
-    /// Contains all information after team spawns.
+    /// Contains all information after a team has spawned.
     /// </summary>
     public class RespawnedTeamEventArgs : IExiledEvent
     {
