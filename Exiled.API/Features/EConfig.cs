@@ -70,6 +70,7 @@ namespace Exiled.API.Features
             .WithTypeConverter(new AttachmentIdentifiersConverter())
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .WithDuplicateKeyChecking()
             .IgnoreFields()
             .IgnoreUnmatchedProperties()
             .Build();

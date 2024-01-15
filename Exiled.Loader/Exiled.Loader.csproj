@@ -19,7 +19,6 @@
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
         <PackageReference Include="SemanticVersioning" Version="$(SemanticVersioningVersion)" />
-        <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)"/>
     </ItemGroup>
 
     <ItemGroup>
