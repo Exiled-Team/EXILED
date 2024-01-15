@@ -92,13 +92,15 @@ Ama pluginlerini halka açık yaparken bu kuralları takip etmen lazım:
  - Eğer eklentiniz yüklendiğinde henüz başlatılmamış olan şeylere erişim sağlamanız gerekiyorsa, bunu yapmak için önerilen yol, bu işlemi gerçekleştirmek için ```WaitingForPlayers`` eventini(etkinliğini) beklemektir. Eğer daha erken bazı işlemler yapmanız gerekiyorsa, kodunuzu devam etmeden önce gerekli değişkenin/nesnenin null olmadığını kontrol eden bir ``while(!x)`` döngüsü içine almanız önerilir.
  - EXILED, yürütme sırasında eklenti derlemelerini dinamik olarak yeniden yükleme işlemini destekler. Bu, bir eklentiyi güncellemeniz gerektiğinde sunucuyu yeniden başlatmadan yapılabilir. Ancak, yürütme sırasında bir eklentiyi güncelliyorsanız, eklentinin bunu desteklemesi gerekmektedir; aksi halde sorunlarla karşılaşabilirsiniz. Daha fazla bilgi ve takip edilmesi gereken kurallar için ``Dinamik Güncelleme`` bölümüne başvurun.
  - EXILED'da OnUpdate, OnFixedUpdate veya OnLateUpdate eventi(etkinliği) ***Bulunmamaktadır!***, Eğer sık sık çalışan bir kod calıştırmanız gerekiyor ise bir MEC coroutine Kullanabilirsiniz ki bu bir frame, 0.01f bekler ya da Timing.FixedUpdate gibi bir Timing katmanı kullanabilirsiniz.
- ### MEC Coroutines
-If you are unfamiliar with MEC, this will be a very brief and simple primer to get you started.
-MEC Coroutines are basically timed methods, that support waiting periods of time before continuing execution, without interrupting/sleeping the main game thread.
-MEC coroutines are safe to use with Unity, unlike traditional threading. ***DO NOT try and make new threads to interact with Unity on, they WILL crash the server.***
+ ### MEC (More Effective Coroutines) Coroutines (Eş zamanlı iş parçacığı)
+Hiç MEC (More Effective Coroutines) kullanmadı iseniz işte size MEC kullanmanız için bir rehber!
+MEC Coroutine'leri zamanlanmış yöntemlerdir. ve çalışan bir MEC kodunun kesilmeden / devre dışı bırakmadan önce belirli bir süre beklemenizi destekler
+MEC Coroutine'leri Unity ile kullanılmak üzere güvenlidir AMA ***Unity ile etkileşimde bulunmak için yeni Threadler(iş parçacıkları) oluşturmayın!! sunucuyu çökertir.***
 
-To use MEC, you will need to reference ``Assembly-CSharp-firstpass.dll`` from the server files and include ``using MEC;``.
-Example of calling a simple coroutine, that repeats itself with a delay between each loop:
+MEC Kullanmak için ``Assembly-CSharp-firstpass.dll``'yi referans etmeniz ve ``Using MEC;``'yi eklemeniz gerekir.
+
+HER DÖNGÜ ARASINDA 5 SANİYE BEKLEYEN BİR COROUTINE YAPIMI:
+
 ```cs
 using MEC;
 using Exiled.API.Features;
