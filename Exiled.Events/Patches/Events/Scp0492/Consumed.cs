@@ -11,9 +11,6 @@ namespace Exiled.Events.Patches.Events.Scp0492
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
-    using Exiled.API.Extensions;
-    using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp0492;
     using HarmonyLib;
@@ -25,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Scp0492
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="ZombieConsumeAbility.ServerComplete"/>
-    ///     to add <see cref="Handlers.Scp0492.ConsumedCorpse" /> event.
+    /// Patches <see cref="ZombieConsumeAbility.ServerComplete"/>
+    /// to add <see cref="Handlers.Scp0492.ConsumedCorpse" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.ConsumedCorpse))]
     [HarmonyPatch(typeof(ZombieConsumeAbility), nameof(ZombieConsumeAbility.ServerComplete))]

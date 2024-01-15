@@ -13,25 +13,25 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information when a player aims.
+    /// Contains all information when a player aims.
     /// </summary>
     // TODO: remove stupid AdsIn/AdsOut propetry, and let exists only one
     public class AimingDownSightEventArgs : IPlayerEvent, IFirearmEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="AimingDownSightEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="AimingDownSightEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="firearm">
-        ///     <inheritdoc cref="Firearm" />
+        /// <inheritdoc cref="Firearm" />
         /// </param>
         /// <param name="adsIn">
-        ///     <inheritdoc cref="AdsIn" />
+        /// <inheritdoc cref="AdsIn" />
         /// </param>
         /// <param name="adsOut">
-        ///     <inheritdoc cref="AdsOut" />
+        /// <inheritdoc cref="AdsOut" />
         /// </param>
         public AimingDownSightEventArgs(Player player, Firearm firearm, bool adsIn, bool adsOut)
         {
@@ -42,17 +42,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets a value indicating whether or not the player is aiming down sight in.
+        /// Gets a value indicating whether or not the player is aiming down sight in.
         /// </summary>
         public bool AdsIn { get; }
 
         /// <summary>
-        ///     Gets a value indicating whether or not the player is aiming down sight out.
+        /// Gets a value indicating whether or not the player is aiming down sight out.
         /// </summary>
         public bool AdsOut { get; }
 
         /// <summary>
-        ///     Gets the <see cref="API.Features.Items.Firearm" /> used to trigger the aim action.
+        /// Gets the <see cref="API.Features.Items.Firearm" /> used to trigger the aim action.
         /// </summary>
         public Firearm Firearm { get; }
 
@@ -60,7 +60,7 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => Firearm;
 
         /// <summary>
-        ///     Gets the player who's triggering the aim action.
+        /// Gets the player who's triggering the aim action.
         /// </summary>
         public Player Player { get; }
     }

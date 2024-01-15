@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Toys
     using AdminToys;
 
     using Enums;
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using Mirror;
 
@@ -20,7 +21,7 @@ namespace Exiled.API.Features.Toys
     /// <summary>
     /// A wrapper class for <see cref="AdminToys.AdminToyBase"/>.
     /// </summary>
-    public abstract class AdminToy : IWorldSpace
+    public abstract class AdminToy : GameEntity, IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminToy"/> class.
@@ -34,6 +35,9 @@ namespace Exiled.API.Features.Toys
 
             Map.ToysValue.Add(this);
         }
+
+        /// <inheritdoc/>
+        public override GameObject GameObject => AdminToyBase.gameObject;
 
         /// <summary>
         /// Gets the original <see cref="AdminToys.AdminToyBase"/>.

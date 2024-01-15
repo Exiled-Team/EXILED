@@ -28,8 +28,8 @@ namespace Exiled.Events.Patches.Events.Scp330
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived(NetworkConnection, SelectScp330Message)" /> method to add the
-    ///     <see cref="Scp330.DroppingScp330" /> event.
+    /// Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived(NetworkConnection, SelectScp330Message)" /> method to add the
+    /// <see cref="Scp330.DroppingScp330" /> event.
     /// </summary>
     [EventPatch(typeof(Scp330), nameof(Scp330.DroppingScp330))]
     [HarmonyPatch(typeof(Scp330NetworkHandler), nameof(Scp330NetworkHandler.ServerSelectMessageReceived))]
@@ -43,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             LocalBuilder ev = generator.DeclareLocal(typeof(DroppingScp330EventArgs));
 
-            const int offset = -1;
+            int offset = -1;
             int index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(ReferenceHub), nameof(ReferenceHub.inventory)))) + offset;
 
             newInstructions.InsertRange(
@@ -79,17 +79,17 @@ namespace Exiled.Events.Patches.Events.Scp330
                 });
 
             // Set our location of previous owner
-            int jumpOverOffset = 1;
-            int jumpOverIndex = newInstructions.FindLastIndex(
-                instruction => instruction.StoresField(Field(typeof(ItemPickupBase), nameof(ItemPickupBase.PreviousOwner)))) + jumpOverOffset;
+            offset = 1;
+            index = newInstructions.FindLastIndex(
+                instruction => instruction.StoresField(Field(typeof(ItemPickupBase), nameof(ItemPickupBase.PreviousOwner)))) + offset;
 
             // Remove TryRemove candy logic since we did it earlier from current location
-            newInstructions.RemoveRange(jumpOverIndex, 6);
+            newInstructions.RemoveRange(index, 6);
 
             int candyKindIdIndex = 4;
 
             newInstructions.InsertRange(
-                jumpOverIndex,
+                index,
                 new[]
                 {
                     // candyKindID = ev.Candy
@@ -101,7 +101,8 @@ namespace Exiled.Events.Patches.Events.Scp330
                     new(OpCodes.Ldloc, candyKindIdIndex),
                 });
 
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+            // before msg.SendToAuthenticated(0);
+            newInstructions[newInstructions.Count - 5].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

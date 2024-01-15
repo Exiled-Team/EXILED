@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Toys
 {
-    using System;
     using System.Linq;
 
     using AdminToys;
@@ -97,9 +96,9 @@ namespace Exiled.API.Features.Toys
         {
             Light light = new(UnityEngine.Object.Instantiate(ToysHelper.LightBaseObject));
 
-            light.AdminToyBase.transform.position = position ?? Vector3.zero;
-            light.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
-            light.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+            light.Base.transform.position = position ?? Vector3.zero;
+            light.Base.transform.eulerAngles = rotation ?? Vector3.zero;
+            light.Base.transform.localScale = scale ?? Vector3.one;
 
             if (spawn)
                 light.Spawn();
