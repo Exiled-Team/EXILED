@@ -47,9 +47,17 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="TextDisplay"/> that will be displayed when player's candy will turn into custom.
+        /// Gets or sets the <see cref="TextDisplay"/> that will be displayed when player ate custom candy..
         /// </summary>
-        public virtual TextDisplay Message { get; set; } = new("Your candy became custom. Let's see what effect you will get...", 5, true, TextChannelType.Hint);
+        public virtual TextDisplay EatenCustomCandyMessage { get; set; } = new("You have eaten a custom candy. Let's see what effect you will get...", 5, true, TextChannelType.Hint);
+
+        /// <summary>
+        /// Gets or sets a <see cref="TextDisplay"/> that will be displayed when player has received custom candy.
+        /// </summary>
+        public virtual TextDisplay ReceiveCustomCandyMessage { get; set; } = new("You have received a custom candy!", 5, true, TextChannelType.Hint);
+
+        /// <inheritdoc/>
+        public override TextDisplay SelectedText { get; set; }
 
         /// <summary>
         /// Applies effect to player.

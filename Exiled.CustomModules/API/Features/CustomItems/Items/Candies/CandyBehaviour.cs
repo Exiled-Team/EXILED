@@ -7,7 +7,11 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Exiled.API.Features;
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Generics;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Scp330;
@@ -44,7 +48,12 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
                 Log.Debug($"{CustomItem.Name} settings is not suitable for candies!", true);
                 Destroy();
             }
+
+            CandySettings.SelectedText = new($"Custom candies in this bag:\n{string.Join("\n", StaticActor.Get<CandyItemTracker>().TrackedIndexes[Scp330.Serial].Select(x => x++))}");
         }
+
+        /// <inheritdoc/>
+        protected override bool Check(Item owner) => base.Check(owner) && owner.Is(out Scp330 scp330) && StaticActor.Get<CandyItemTracker>() is CandyItemTracker candyItemTracker && candyItemTracker.IsTracked(scp330, scp330.SelectedCandyId);
 
         /// <inheritdoc/>
         protected override void SubscribeEvents()
@@ -52,6 +61,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
             base.SubscribeEvents();
 
             Exiled.Events.Handlers.Scp330.EatingScp330 += OnInternalEatingCandy;
+            Exiled.Events.Handlers.Scp330.InteractingScp330 += OnInternalInteracting;
         }
 
         /// <inheritdoc/>
@@ -60,6 +70,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
             base.UnsubscribeEvents();
 
             Exiled.Events.Handlers.Scp330.EatingScp330 -= OnInternalEatingCandy;
+            Exiled.Events.Handlers.Scp330.InteractingScp330 -= OnInternalInteracting;
         }
 
         /// <summary>
@@ -70,15 +81,36 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
         {
         }
 
+        /// <summary>
+        /// Fired when player interacts with SCP-330 and gets a custom candy.
+        /// </summary>
+        /// <param name="ev">The <see cref="EatingScp330EventArgs"/> event instance.</param>
+        protected virtual void OnInteracting(InteractingScp330EventArgs ev)
+        {
+        }
+
         /// <inheritdoc cref="OnEatingCandy"/>
         private protected void OnInternalEatingCandy(EatingScp330EventArgs ev)
         {
-            if (ev.Candy.Kind == CandySettings.CandyType && Random.Range(0, 100) >= CandySettings.Weight)
-            {
-                ev.Candy = new BaseCandy(CandySettings);
-                ev.Player.ShowTextDisplay(CandySettings.Message);
-                OnEatingCandy(ev);
-            }
+            if (!ev.Player.TryGetItems(x => x.Type == ItemType.SCP330, out IEnumerable<Item> items) || !items.Single().Is(out Scp330 scp330) || !Check(scp330))
+                return;
+
+            ev.Candy = new BaseCandy(CandySettings);
+            ev.Player.ShowTextDisplay(CandySettings.EatenCustomCandyMessage);
+
+            OnEatingCandy(ev);
+        }
+
+        /// <inheritdoc cref="OnInteracting"/>
+        private protected void OnInternalInteracting(InteractingScp330EventArgs ev)
+        {
+            if (ev.Candy != CandySettings.CandyType || Random.value * 100 >= CandySettings.Weight || !ev.Player.TryGetItems(x => x.Type == ItemType.SCP330, out IEnumerable<Item> items) || !items.Single().Is(out Scp330 scp330))
+                return;
+
+            StaticActor.Get<CandyItemTracker>().AddOrTrack(scp330, scp330.SelectedCandyId);
+            ev.Player.ShowTextDisplay(CandySettings.ReceiveCustomCandyMessage);
+
+            OnInteracting(ev);
         }
     }
 }

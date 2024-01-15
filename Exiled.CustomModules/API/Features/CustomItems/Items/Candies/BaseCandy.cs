@@ -30,7 +30,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
         public CandyKindID Kind => settings.CandyType;
 
         /// <inheritdoc/>
-        public float SpawnChanceWeight => settings.Weight;
+        public float SpawnChanceWeight => settings.Weight / 100;
 
         /// <inheritdoc/>
         public void ServerApplyEffects(ReferenceHub hub) => settings.ApplyEffects(Player.Get(hub).Cast<Pawn>());
