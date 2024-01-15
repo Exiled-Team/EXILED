@@ -80,7 +80,12 @@ namespace Exiled.CustomModules.API.Features
         public override bool IsEnabled { get; }
 
         /// <inheritdoc/>
-        public Type[] BehaviourComponents { get; }
+        public virtual Type[] BehaviourComponents { get; }
+
+        /// <summary>
+        /// Gets the <see cref="GameModeSettings"/>.
+        /// </summary>
+        public virtual GameModeSettings Settings { get; }
 
         /// <summary>
         /// Gets a <see cref="CustomGameMode"/> given the specified <see cref="Id"/>.
