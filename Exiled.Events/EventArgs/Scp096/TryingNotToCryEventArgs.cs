@@ -15,18 +15,18 @@ namespace Exiled.Events.EventArgs.Scp096
     using Scp096Role = API.Features.Roles.Scp096Role;
 
     /// <summary>
-    ///     Contains all information before SCP-096 tries not to cry.
+    /// Contains all information before SCP-096 tries not to cry.
     /// </summary>
     public class TryingNotToCryEventArgs : IScp096Event, IDoorEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="TryingNotToCryEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="TryingNotToCryEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public TryingNotToCryEventArgs(Player player, bool isAllowed = true)
         {
@@ -42,23 +42,23 @@ namespace Exiled.Events.EventArgs.Scp096
         public Scp096Role Scp096 { get; }
 
         /// <summary>
-        ///     Gets the player who is controlling SCP-096.
+        /// Gets the player who is controlling SCP-096.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets the <see cref="API.Features.Doors.Door" /> to be cried on.
-        ///     <remarks>the value can be null</remarks>
+        /// Gets the <see cref="API.Features.Doors.Door" /> to be cried on.
+        /// <remarks>the value can be null</remarks>
         /// </summary>
         public Door Door { get; }
 
         /// <summary>
-        ///     Gets the <see cref="UnityEngine.GameObject" /> to be cried on.
+        /// Gets the <see cref="UnityEngine.GameObject" /> to be cried on.
         /// </summary>
         public GameObject GameObject { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-096 can try not to cry.
+        /// Gets or sets a value indicating whether or not SCP-096 can try not to cry.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

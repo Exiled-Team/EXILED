@@ -14,14 +14,14 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information before a player receives a <see cref="StatusEffectBase" />.
+    /// Contains all information before a player receives a <see cref="StatusEffectBase" />.
     /// </summary>
     public class ReceivingEffectEventArgs : IPlayerEvent, IDeniableEvent
     {
         private byte intensity;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ReceivingEffectEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ReceivingEffectEventArgs" /> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="effect"><inheritdoc cref="Effect"/></param>
@@ -38,23 +38,23 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the <see cref="Player" /> receiving the effect.
+        /// Gets the <see cref="Player" /> receiving the effect.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets the <see cref="StatusEffectBase" /> being received.
+        /// Gets the <see cref="StatusEffectBase" /> being received.
         /// </summary>
         public StatusEffectBase Effect { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating how long the effect will last. If its value is 0, then it doesn't always reflect the real effect duration.
+        /// Gets or sets a value indicating how long the effect will last. If its value is 0, then it doesn't always reflect the real effect duration.
         /// </summary>
         public float Duration { get; set; } = 0;
 
         /// <summary>
-        ///     Gets or sets the value of the new intensity of the effect. Setting this to <c>0</c> is the same as setting IsAllowed to
-        ///     <see langword="false" />.
+        /// Gets or sets the value of the new intensity of the effect. Setting this to <c>0</c> is the same as setting IsAllowed to
+        /// <see langword="false" />.
         /// </summary>
         public byte Intensity
         {
@@ -69,12 +69,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the value of the intensity of this effect on the player.
+        /// Gets the value of the intensity of this effect on the player.
         /// </summary>
         public byte CurrentIntensity { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the effect will be applied.
+        /// Gets or sets a value indicating whether or not the effect will be applied.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

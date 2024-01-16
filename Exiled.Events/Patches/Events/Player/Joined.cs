@@ -19,12 +19,29 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     /// <summary>
-    ///     Patches <see cref="ReferenceHub.Start" />.
-    ///     Adds the <see cref="Handlers.Player.Joined" /> event.
+    /// Patches <see cref="ReferenceHub.Start" />.
+    /// Adds the <see cref="Handlers.Player.Joined" /> event.
     /// </summary>
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.Start))]
-    internal static class Joined
+    public static class Joined
     {
+        private static Type basePlayerType = typeof(Player);
+
+        /// <summary>
+        /// Gets or sets the base <see cref="Player"/> type.
+        /// </summary>
+        public static Type BasePlayerType
+        {
+            get => basePlayerType;
+            set
+            {
+                if (!typeof(Player).IsAssignableFrom(value))
+                    return;
+
+                basePlayerType = value;
+            }
+        }
+
         internal static void CallEvent(ReferenceHub hub, out Player player)
         {
             try
@@ -32,19 +49,19 @@ namespace Exiled.Events.Patches.Events.Player
 #if DEBUG
                 Log.Debug("Creating new player object");
 #endif
-                player = new Player(hub);
+                player = Activator.CreateInstance(BasePlayerType, false, hub) as Player;
 #if DEBUG
                 Log.Debug($"Object exists {player is not null}");
                 Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}");
 #endif
+                Player.UnverifiedPlayers.Add(hub.gameObject, player);
+
                 if (ReferenceHub.HostHub == null)
                 {
                     Server.Host = player;
                 }
                 else
                 {
-                    Player.UnverifiedPlayers.Add(hub.gameObject, player);
-
                     Handlers.Player.OnJoined(new JoinedEventArgs(player));
                 }
             }

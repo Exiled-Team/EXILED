@@ -16,15 +16,15 @@ namespace Exiled.Events.EventArgs.Server
     using PlayerRoles;
 
     /// <summary>
-    ///     Contains all information before a spectator changes the spectated player.
+    /// Contains all information before a spectator changes the spectated player.
     /// </summary>
     public class ChoosingStartTeamQueueEventArgs : IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ChoosingStartTeamQueueEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ChoosingStartTeamQueueEventArgs" /> class.
         /// </summary>
         /// <param name="teamRespawnQueue">
-        ///     <inheritdoc cref="TeamRespawnQueue" />
+        /// <inheritdoc cref="TeamRespawnQueue" />
         /// </param>
         public ChoosingStartTeamQueueEventArgs(string teamRespawnQueue)
         {
@@ -38,17 +38,17 @@ namespace Exiled.Events.EventArgs.Server
         }
 
         /// <summary>
-        ///     Gets the TeamRespawnQueue.
+        /// Gets the TeamRespawnQueue.
         /// </summary>
         public List<Team> TeamRespawnQueue { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the event can continue.
+        /// Gets or sets a value indicating whether the event can continue.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        ///     Gets the TeamRespawnQueue in a string value.
+        /// Gets the TeamRespawnQueue in a string value.
         /// </summary>
         /// <returns>The actual modified TeamRespawnQueue.</returns>
         internal string GetTeamRespawnQueue()

@@ -21,15 +21,14 @@ namespace Exiled.Events.Patches.Events.Scp079
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
     using PlayerRoles.Subroutines;
-    using PluginAPI.Events;
 
     using static HarmonyLib.AccessTools;
 
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Scp079CurrentCameraSync.ServerProcessCmd(NetworkReader)" />.
-    ///     Adds the <see cref="Scp079.ChangingCamera" /> event.
+    /// Patches <see cref="Scp079CurrentCameraSync.ServerProcessCmd(NetworkReader)" />.
+    /// Adds the <see cref="Scp079.ChangingCamera" /> event.
     /// </summary>
     [EventPatch(typeof(Scp079), nameof(Scp079.ChangingCamera))]
     [HarmonyPatch(typeof(Scp079CurrentCameraSync), nameof(Scp079CurrentCameraSync.ServerProcessCmd))]
@@ -56,14 +55,14 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // this._switchTarget
-                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(Scp079CurrentCameraSync), nameof(Scp079CurrentCameraSync._switchTarget))),
 
                     // num (cost)
                     new(OpCodes.Ldloc_0),
 
                     // ChangingCameraEventArgs ev = new(Player, Scp079Camera, float)
-                    new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingCameraEventArgs))[0]),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingCameraEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),

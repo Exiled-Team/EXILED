@@ -11,7 +11,7 @@ namespace Exiled.Events.Handlers
     using Exiled.Events.Features;
 
     /// <summary>
-    ///     Cassie related events.
+    /// Cassie related events.
     /// </summary>
     public static class Cassie
     {
@@ -23,7 +23,7 @@ namespace Exiled.Events.Handlers
         public static Event<SendingCassieMessageEventArgs> SendingCassieMessage { get; set; } = new();
 
         /// <summary>
-        ///     Called before sending a cassie message.
+        /// Called before sending a cassie message.
         /// </summary>
         /// <param name="ev">The <see cref="SendingCassieMessageEventArgs" /> instance.</param>
         public static void OnSendingCassieMessage(SendingCassieMessageEventArgs ev) => SendingCassieMessage.InvokeSafely(ev);

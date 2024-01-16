@@ -8,36 +8,35 @@
 namespace Exiled.Events.EventArgs.Scp079
 {
     using Exiled.API.Features;
-    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
     using MapGeneration;
 
     /// <summary>
-    ///     Contains all information before SCP-079 turns off the lights in a room.
+    /// Contains all information before SCP-079 turns off the lights in a room.
     /// </summary>
     public class RoomBlackoutEventArgs : IScp079Event, IRoomEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RoomBlackoutEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="RoomBlackoutEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="roomIdentifier">
-        ///     <inheritdoc cref="Room" />
+        /// <inheritdoc cref="Room" />
         /// </param>
         /// <param name="blackoutduration">
-        ///     <inheritdoc cref="BlackoutDuration" />
+        /// <inheritdoc cref="BlackoutDuration" />
         /// </param>
         /// <param name="auxiliaryPowerCost">
-        ///     <inheritdoc cref="AuxiliaryPowerCost" />
+        /// <inheritdoc cref="AuxiliaryPowerCost" />
         /// </param>
         /// <param name="cooldown">
-        ///     <inheritdoc cref="Cooldown" />
+        /// <inheritdoc cref="Cooldown" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public RoomBlackoutEventArgs(ReferenceHub player, RoomIdentifier roomIdentifier, float auxiliaryPowerCost, float blackoutduration, float cooldown, bool isAllowed)
         {
@@ -51,7 +50,7 @@ namespace Exiled.Events.EventArgs.Scp079
         }
 
         /// <summary>
-        ///     Gets the player who's controlling SCP-079.
+        /// Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
 
@@ -59,27 +58,27 @@ namespace Exiled.Events.EventArgs.Scp079
         public API.Features.Roles.Scp079Role Scp079 { get; }
 
         /// <summary>
-        ///     Gets the room that will be locked down.
+        /// Gets the room that will be locked down.
         /// </summary>
         public Room Room { get; }
 
         /// <summary>
-        ///     Gets or sets the duration of the blackout.
+        /// Gets or sets the duration of the blackout.
         /// </summary>
         public float BlackoutDuration { get; set; }
 
         /// <summary>
-        ///     Gets or sets the amount of auxiliary power required to black out the room.
+        /// Gets or sets the amount of auxiliary power required to black out the room.
         /// </summary>
         public float AuxiliaryPowerCost { get; set; }
 
         /// <summary>
-        ///     Gets or sets the blackout cooldown duration.
+        /// Gets or sets the blackout cooldown duration.
         /// </summary>
         public double Cooldown { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-079 can black out the room.
+        /// Gets or sets a value indicating whether or not SCP-079 can black out the room.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

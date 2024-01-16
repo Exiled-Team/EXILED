@@ -8,14 +8,12 @@
 namespace Exiled.Events.Patches.Events.Scp079
 {
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
     using HarmonyLib;
-    using Mirror;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Pinging;
     using PlayerRoles.Subroutines;
@@ -25,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp079PingAbility.ServerProcessCmd" />.
-    ///     Adds the <see cref="Handlers.Scp079.Pinging" /> event for  SCP-079.
+    /// Patches <see cref="Scp079PingAbility.ServerProcessCmd" />.
+    /// Adds the <see cref="Handlers.Scp079.Pinging" /> event for  SCP-079.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp079), nameof(Handlers.Scp079.Pinging))]
     [HarmonyPatch(typeof(Scp079PingAbility), nameof(Scp079PingAbility.ServerProcessCmd))]
@@ -71,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldc_I4_1),
 
                     // PingingEventArgs ev = new(ReferenceHub, RelativePosition, int, byte, Vector3, bool)
-                    new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(PingingEventArgs))[0]),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PingingEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
