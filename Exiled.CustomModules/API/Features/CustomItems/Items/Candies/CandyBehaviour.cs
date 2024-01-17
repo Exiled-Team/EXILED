@@ -26,6 +26,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
     /// </remarks>
     public abstract class CandyBehaviour : ItemBehaviour
     {
+        /// <summary>
+        /// Gets or sets a hash set with all tracked indexes in <see cref="Scp330"/>.
+        /// </summary>
+        public HashSet<int> TrackedCandies { get; protected set; }
+
         /// <inheritdoc cref="ItemBehaviour.Settings"/>
         public CandySettings CandySettings => Settings.Cast<CandySettings>();
 
@@ -49,11 +54,20 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
                 Destroy();
             }
 
-            CandySettings.SelectedText = new($"Custom candies in this bag:\n{string.Join("\n", StaticActor.Get<CandyItemTracker>().TrackedIndexes[Scp330.Serial].Select(x => x++))}");
+            CandySettings.SelectedText = new($"Custom candies in this bag:\n{string.Join("\n", TrackedCandies.Select(x => x++))}");
+            TrackedCandies = new();
         }
 
         /// <inheritdoc/>
-        protected override bool Check(Item owner) => base.Check(owner) && owner.Is(out Scp330 scp330) && StaticActor.Get<CandyItemTracker>() is CandyItemTracker candyItemTracker && candyItemTracker.IsTracked(scp330, scp330.SelectedCandyId);
+        protected override void OnDestroyed()
+        {
+            base.OnDestroyed();
+
+            TrackedCandies.Clear();
+        }
+
+        /// <inheritdoc/>
+        protected override bool Check(Item owner) => base.Check(owner) && owner.Is(out Scp330 scp330) && TrackedCandies.Contains(scp330.SelectedCandyId);
 
         /// <inheritdoc/>
         protected override void SubscribeEvents()
@@ -71,6 +85,22 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
 
             Exiled.Events.Handlers.Scp330.EatingScp330 -= OnInternalEatingCandy;
             Exiled.Events.Handlers.Scp330.InteractingScp330 -= OnInternalInteracting;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnAcquired(Player player, Item item, bool displayMessage = true)
+        {
+            base.OnAcquired(player, item, displayMessage);
+
+            if (Scp330.Candies.Count == 0)
+            {
+                TrackedCandies.Add(Scp330.Candies.Count);
+                Scp330.AddCandy(CandySettings.CandyType);
+            }
+            else
+            {
+                TrackedCandies.Add(Scp330.Candies.Count - 1);
+            }
         }
 
         /// <summary>
@@ -107,7 +137,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
             if (ev.Candy != CandySettings.CandyType || Random.value * 100 >= CandySettings.Weight || !ev.Player.TryGetItems(x => x.Type == ItemType.SCP330, out IEnumerable<Item> items) || !items.Single().Is(out Scp330 scp330))
                 return;
 
-            StaticActor.Get<CandyItemTracker>().AddOrTrack(scp330, scp330.SelectedCandyId);
+            TrackedCandies.Add(scp330.SelectedCandyId);
+            StaticActor.Get<ItemTracker>().AddOrTrack(scp330);
+            scp330.AddComponent<CandyBehaviour>();
             ev.Player.ShowTextDisplay(CandySettings.ReceiveCustomCandyMessage);
 
             OnInteracting(ev);
