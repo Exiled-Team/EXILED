@@ -478,6 +478,24 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
+        /// Replaces the door lock with the given lock type.
+        /// </summary>
+        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
+        public void ReplaceLock(DoorLockType lockType)
+        {
+            if (lockType is DoorLockType.None)
+            {
+                Base.NetworkActiveLocks = 0;
+            }
+            else
+            {
+                Base.NetworkActiveLocks = (ushort)lockType;
+            }
+
+            DoorEvents.TriggerAction(Base, IsLocked ? DoorAction.Locked : DoorAction.Unlocked, null);
+        }
+
+        /// <summary>
         /// Locks all active locks on the door, and then reverts back any changes after a specified length of time.
         /// </summary>
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
