@@ -220,7 +220,11 @@ namespace Exiled.API.Features.Doors
         public DoorLockType DoorLockType
         {
             get => (DoorLockType)Base.NetworkActiveLocks;
-            set => ChangeLock(value);
+            set
+            {
+                Base.NetworkActiveLocks = (ushort)value;
+                DoorEvents.TriggerAction(Base, IsLocked ? DoorAction.Locked : DoorAction.Unlocked, null);
+            }
         }
 
         /// <summary>
@@ -472,24 +476,6 @@ namespace Exiled.API.Features.Doors
                     locks |= lockType;
 
                 Base.NetworkActiveLocks = (ushort)locks;
-            }
-
-            DoorEvents.TriggerAction(Base, IsLocked ? DoorAction.Locked : DoorAction.Unlocked, null);
-        }
-
-        /// <summary>
-        /// Replaces the door lock with the given lock type.
-        /// </summary>
-        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
-        public void ReplaceLock(DoorLockType lockType)
-        {
-            if (lockType is DoorLockType.None)
-            {
-                Base.NetworkActiveLocks = 0;
-            }
-            else
-            {
-                Base.NetworkActiveLocks = (ushort)lockType;
             }
 
             DoorEvents.TriggerAction(Base, IsLocked ? DoorAction.Locked : DoorAction.Unlocked, null);
