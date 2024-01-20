@@ -1433,7 +1433,7 @@ namespace Exiled.API.Features
         /// <param name="newargs">Contains the updated arguments after processing.</param>
         /// <param name="keepEmptyEntries">Determines whether empty entries should be kept in the result.</param>
         /// <returns>An <see cref="IEnumerable{Player}"/> representing the processed players.</returns>
-        public static IEnumerable<Player> GetProcessed(ArraySegment<string> args, int startIndex, out string[] newargs, bool keepEmptyEntries = false) => RAUtils.ProcessPlayerIdOrNamesList(args, startIndex, out newargs, keepEmptyEntries).Select(hub => Get(hub));
+        public static IEnumerable<Player> GetProcessedData(ArraySegment<string> args, int startIndex, out string[] newargs, bool keepEmptyEntries = false) => RAUtils.ProcessPlayerIdOrNamesList(args, startIndex, out newargs, keepEmptyEntries).Select(hub => Get(hub));
 
         /// <summary>
         /// Gets an <see cref="IEnumerable{Player}"/> containing all players processed based on the arguments specified.
