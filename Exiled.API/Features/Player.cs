@@ -1441,7 +1441,7 @@ namespace Exiled.API.Features
         /// <param name="args">The array segment of strings representing the input arguments to be processed.</param>
         /// <param name="startIndex">The starting index within the array segment.</param>
         /// <returns>An <see cref="IEnumerable{Player}"/> representing the processed players.</returns>
-        public static IEnumerable<Player> GetProcessed(ArraySegment<string> args, int startIndex = 0) => GetProcessed(args, startIndex, out string[] _);
+        public static IEnumerable<Player> GetProcessedData(ArraySegment<string> args, int startIndex = 0) => GetProcessedDataargs, startIndex, out string[] _);
 
         /// <summary>
         /// Adds a player's UserId to the list of reserved slots.
