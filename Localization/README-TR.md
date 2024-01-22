@@ -35,7 +35,7 @@ Eğer kurulum programını kullanmayı seçerseniz ve doğru bir şekilde çalı
 ### Manuel indirme
   -  **`Exiled.tar.gz` ['yi buradan indir](https://github.com/Exiled-Team/EXILED/releases)**
   - İçeriğini [7Zip](https://www.7-zip.org/) veya [WinRar](https://www.win-rar.com/download.html?&L=6) ile çıkartın.
-  - **``EXILED``** Klasörünü **`%appdata%`** ya taşıyın *Not: Bu klasör  ``C:\Users\(Kullanıcı_ismi)\AppData\Roaming``, ve ``C:\Users\(Kullanıcı_ismi)\AppData\Roaming\SCP Secret Laboratory``**'nin içinde değil!**, ve (...)\AppData\Roaming'**de olması zorunludur**. (...)\AppData*'YA DEĞİL!
+  - **``EXILED``** Klasörünü **`%appdata%`** ya taşıyın *Not: Bu klasör  ``C:\Users\%UserName%\AppData\Roaming``, ve ``C:\Users\%UserName%\AppData\Roaming\SCP Secret Laboratory``**'nin içinde değil!**, ve (...)\AppData\Roaming'**de olması zorunludur**. (...)\AppData*'YA DEĞİL!
   - **``SCP Secret Laboratory``**Klasörünü **`%appdata%`**'ya taşı.
     - Windows 10 ve 11:
       Cortanaya / Arama simgesine veya Windows Explorer çubuğuna `%appdata%` yazın.
@@ -46,7 +46,7 @@ Eğer kurulum programını kullanmayı seçerseniz ve doğru bir şekilde çalı
 Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığında aktif olmalıdır. Unutmayın ki EXILED kendi başına neredeyse hiçbir şey yapmaz, bu yüzden yeni eklentileri **[Discord](https://discord.gg/PyUkWTg)** sunucumuzdan almayı unutmayın.
 - Bir Eklenti indirmek için aşağıdaki talimatları okuyun:
   - Bir eklentiyi indirmek için [*Onun* releases (yayınlanma) sayfasına gidin](https://i.imgur.com/u34wgPD.jpg) (**`.dll` UZANTILI OLMALIDIR**)
-  - İndirdiğiniz eklentiyi: ``C:\Users\(Kullanıcı_ismi)\AppData\Roaming\EXILED\Plugins``'dizinine taşıyın (Win + R Tuşlarına basarak `%appdata%` yazarak buraya taşıyabilirsiniz)
+  - İndirdiğiniz eklentiyi: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins``'dizinine taşıyın (Win + R Tuşlarına basarak `%appdata%` yazarak buraya taşıyabilirsiniz)
 
 # Linux
 ### Otomatik indirme ([daha fazla bilgi](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))
@@ -79,7 +79,7 @@ Bunların hepsi sunucu açıldığı zaman otomatik olarak yapılır, Bunlar şu
 Eklenti Configleri(Yapılandırma seçenekleri) ``config_gameplay.txt`` Dosyasında **değildir** Onun yerine eklenti seçeneklieri Linuxda: ``~/.config/EXILED/Configs/(serverportu)-config.yml`` Windows için: (``%AppData%\EXILED\(serverportu)-config.yml``).
 Ancak, bazı eklentiler kendi başlarına diğer yerlerden yapılandırma/ayarları alabilir. Bu klasör genellikle eklenti ayarlarının/bağlantılarının bulunduğu yerdir. Hatalar varsa lütfen ilgili eklenti geliştiricisine başvurun.
 
-# Geliştiriciler içib
+# Geliştiriciler için
 
 Eğer EXILED için bir eklenti yapmak istiyorsanız, bunu yapmak oldukça basittir [Daha fazla bilgi için bana tıkla!](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
 
