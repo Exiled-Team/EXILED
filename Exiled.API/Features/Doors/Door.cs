@@ -220,7 +220,11 @@ namespace Exiled.API.Features.Doors
         public DoorLockType DoorLockType
         {
             get => (DoorLockType)Base.NetworkActiveLocks;
-            set => ChangeLock(value);
+            set
+            {
+                Base.NetworkActiveLocks = (ushort)value;
+                DoorEvents.TriggerAction(Base, IsLocked ? DoorAction.Locked : DoorAction.Unlocked, null);
+            }
         }
 
         /// <summary>

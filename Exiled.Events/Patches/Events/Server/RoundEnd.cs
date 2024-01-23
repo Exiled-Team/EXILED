@@ -58,7 +58,8 @@ namespace Exiled.Events.Patches.Events.Server
                 {
                     new(OpCodes.Call, PropertyGetter(typeof(Round), nameof(Round.IgnoredPlayers))),
                     new(OpCodes.Ldloc_S, 10),
-                    new(OpCodes.Call, Method(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Contains))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Call, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
                     new(OpCodes.Brtrue_S, jmp),
                 });
 
