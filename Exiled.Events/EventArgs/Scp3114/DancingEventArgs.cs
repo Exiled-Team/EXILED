@@ -34,9 +34,9 @@ namespace Exiled.Events.EventArgs.Scp3114
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-3114 will dance.
+        /// Gets a value indicating whether or not SCP-3114 will dance.
         /// </summary>
-        public bool NewState { get; set; }
+        public bool NewState { get; }
 
         /// <inheritdoc/>
         public Player Player { get; }
