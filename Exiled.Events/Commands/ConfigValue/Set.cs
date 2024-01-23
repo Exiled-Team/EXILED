@@ -13,6 +13,7 @@ namespace Exiled.Events.Commands.ConfigValue
 
     using CommandSystem;
     using Exiled.API.Extensions;
+    using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using Exiled.Loader;
     using Exiled.Permissions.Extensions;
@@ -79,7 +80,19 @@ namespace Exiled.Events.Commands.ConfigValue
                 return false;
             }
 
-            object newValue = Convert.ChangeType(arguments.At(1), property.PropertyType);
+            object newValue;
+
+            try
+            {
+                 newValue = Convert.ChangeType(arguments.At(1), property.PropertyType);
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception);
+
+                response = $"Provided value is not a type of {property.PropertyType.Name}";
+                return false;
+            }
 
             if (newValue == null)
             {
