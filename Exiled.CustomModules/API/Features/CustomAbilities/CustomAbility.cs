@@ -20,6 +20,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Features.CustomAbilities.Settings;
+    using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
     using HarmonyLib;
 
@@ -36,7 +37,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     /// <br/>It is designed to be utilized in conjunction with the <see cref="IAdditiveBehaviour"/> interface, enabling seamless integration into existing systems for extending and enhancing ability-related functionalities.
     /// </para>
     /// </remarks>
-    public abstract class CustomAbility<T> : TypeCastObject<CustomAbility<T>>, ICustomAbility, IEquatable<CustomAbility<T>>, IEquatable<uint>
+    public abstract class CustomAbility<T> : CustomModule, ICustomAbility
         where T : GameEntity
     {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -120,7 +121,17 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <summary>
         /// Gets the <see cref="CustomAbility{T}"/>'s name.
         /// </summary>
-        public abstract string Name { get; }
+        public override string Name { get; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="CustomAbility{T}"/>'s id.
+        /// </summary>
+        public override uint Id { get; protected set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the ability is enabled.
+        /// </summary>
+        public override bool IsEnabled { get; }
 
         /// <summary>
         /// Gets the description of the ability.
@@ -128,67 +139,9 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         public virtual string Description { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="CustomAbility{T}"/>'s id.
-        /// </summary>
-        public virtual uint Id { get; protected set; }
-
-        /// <summary>
-        /// Gets a value indicating whether the ability is enabled.
-        /// </summary>
-        public virtual bool IsEnabled => true;
-
-        /// <summary>
         /// Gets the reflected generic type.
         /// </summary>
         protected Type ReflectedGenericType => reflectedGenericType ??= GetType().GetGenericArguments()[0];
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomAbility{T}"/> and <see cref="object"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <param name="right">The <see cref="object"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomAbility<T> left, object right) => left is null ? right is null : left.Equals(right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomAbility{T}"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator ==(object left, CustomAbility<T> right) => right == left;
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomAbility{T}"/> and <see cref="object"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomAbility<T> left, object right) => !(left == right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomAbility{T}"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="object"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(object left, CustomAbility<T> right) => !(left == right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomAbility{T}"/> and <see cref="CustomAbility{T}"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomAbility<T> left, CustomAbility<T> right) => left is null ? right is null : left.Equals(right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomAbility{T}"/> and <see cref="CustomAbility{T}"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomAbility<T> left, CustomAbility<T> right) => !(left.Id == right.Id);
 
         /// <summary>
         /// Gets a <see cref="CustomAbility{T}"/> given the specified id.
@@ -518,7 +471,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
                 CustomAbilityAttribute attribute = type.GetCustomAttribute<CustomAbilityAttribute>();
-                if (!type.IsSubclassOf(typeof(CustomAbility<T>)) || attribute is null)
+                if (!typeof(CustomAbility<T>).IsAssignableFrom(type) || attribute is null)
                     continue;
 
                 CustomAbility<T> customAbility = Activator.CreateInstance(type) as CustomAbility<T>;
@@ -530,7 +483,8 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
                     customAbilities.Add(customAbility);
             }
 
-            Log.SendRaw($"{customAbilities.Count()} custom abilities have been successfully registered!", ConsoleColor.DarkGreen);
+            if (customAbilities.Count != Registered.Count)
+                Log.Info($"{customAbilities.Count()} custom abilities have been successfully registered!");
 
             return customAbilities;
         }
@@ -544,7 +498,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
             List<CustomAbility<T>> customAbilities = new();
             customAbilities.AddRange(UnorderedRegistered.Where(ability => ability.TryUnregister()));
 
-            Log.SendRaw($"{customAbilities.Count()} custom abilities have been successfully unregistered!", ConsoleColor.DarkGreen);
+            Log.Info($"{customAbilities.Count()} custom abilities have been successfully unregistered!");
 
             return customAbilities;
         }
@@ -612,46 +566,6 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
                 return false;
             }
         }
-
-        /// <summary>
-        /// Determines whether the provided id is equal to the current object.
-        /// </summary>
-        /// <param name="id">The id to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(uint id) => Id == id;
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="ca">The custom ability to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(CustomAbility<T> ca) => ca && (ReferenceEquals(this, ca) || Id == ca.Id);
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="obj">The object to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public override bool Equals(object obj)
-        {
-            if (Equals(obj as CustomAbility<T>))
-                return true;
-
-            try
-            {
-                return Equals((uint)obj);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns a the 32-bit signed hash code of the current object instance.
-        /// </summary>
-        /// <returns>The 32-bit signed hash code of the current object instance.</returns>
-        public override int GetHashCode() => base.GetHashCode();
 
         /// <summary>
         /// Tries to register a <see cref="CustomAbility{T}"/>.
