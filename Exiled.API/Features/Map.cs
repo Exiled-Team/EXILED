@@ -17,6 +17,7 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Scp914Processors;
     using Exiled.API.Features.Toys;
     using global::Hazards;
     using InventorySystem;
@@ -402,6 +403,8 @@ namespace Exiled.API.Features
             Firearm.ItemTypeToFirearmInstance.Clear();
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
+
+            Scp914Processor.ProcessorToWrapper.Clear();
         }
     }
 }
