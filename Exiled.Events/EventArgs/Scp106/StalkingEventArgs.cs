@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Scp106
     using Scp106Role = API.Features.Roles.Scp106Role;
 
     /// <summary>
-    ///     Contains all information before SCP-106 uses the stalk ability.
+    /// Contains all information before SCP-106 uses the stalk ability.
     /// </summary>
     public class StalkingEventArgs : IScp106Event, IDeniableEvent
     {

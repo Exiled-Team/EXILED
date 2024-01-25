@@ -11,9 +11,6 @@ namespace Exiled.Events.Patches.Events.Scp0492
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
-    using Exiled.API.Extensions;
-    using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp0492;
     using HarmonyLib;
@@ -24,8 +21,8 @@ namespace Exiled.Events.Patches.Events.Scp0492
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="RagdollAbilityBase{T}.ServerProcessCmd"/>
-    ///     to add <see cref="Handlers.Scp0492.ConsumingCorpse" /> event.
+    /// Patches <see cref="RagdollAbilityBase{T}.ServerProcessCmd"/>
+    /// to add <see cref="Handlers.Scp0492.ConsumingCorpse" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.ConsumingCorpse))]
     [HarmonyPatch(typeof(ZombieConsumeAbility), nameof(ZombieConsumeAbility.ServerValidateBegin))]
@@ -65,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Scp0492
                 new(OpCodes.Ret),
             });
 
-            foreach (var instruction in newInstructions)
+            foreach (CodeInstruction instruction in newInstructions)
                 yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);

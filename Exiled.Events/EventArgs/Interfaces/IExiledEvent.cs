@@ -8,7 +8,7 @@
 namespace Exiled.Events.EventArgs.Interfaces
 {
     /// <summary>
-    ///     The base Exiled Event Args interface to be used by all other event arg interfaces/classes.
+    /// The base Exiled Event Args interface to be used by all other event arg interfaces/classes.
     /// </summary>
     public interface IExiledEvent
     {

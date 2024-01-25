@@ -14,16 +14,16 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.Usables;
 
     /// <summary>
-    ///     Contains all information before a player uses an item.
+    /// Contains all information before a player uses an item.
     /// </summary>
     public class UsingItemCompletedEventArgs : IPlayerEvent, IDeniableEvent, IUsableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="UsingItemCompletedEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="UsingItemCompletedEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player who's going to use the item.</param>
         /// <param name="item">
-        ///     <inheritdoc cref="UsedItemEventArgs.Item" />
+        /// <inheritdoc cref="UsedItemEventArgs.Item" />
         /// </param>
         public UsingItemCompletedEventArgs(Player player, UsableItem item)
         {
@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the item that the player using.
+        /// Gets the item that the player using.
         /// </summary>
         public Usable Usable { get; }
 
@@ -40,12 +40,12 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => Usable;
 
         /// <summary>
-        ///     Gets the player who using the item.
+        /// Gets the player who using the item.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can use the item.
+        /// Gets or sets a value indicating whether or not the player can use the item.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

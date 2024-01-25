@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using API.Features.Pools;
     using Exiled.API.Extensions;
-    using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
 
@@ -24,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp079BlackoutZoneAbility.ServerProcessCmd" />.
-    ///     Adds the <see cref="Handlers.Scp079.ZoneBlackout" /> event for  SCP-079.
+    /// Patches <see cref="Scp079BlackoutZoneAbility.ServerProcessCmd" />.
+    /// Adds the <see cref="Handlers.Scp079.ZoneBlackout" /> event for  SCP-079.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp079), nameof(Handlers.Scp079.ZoneBlackout))]
     [HarmonyPatch(typeof(Scp079BlackoutZoneAbility), nameof(Scp079BlackoutZoneAbility.ServerProcessCmd))]

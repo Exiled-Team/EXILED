@@ -7,6 +7,10 @@
 
 namespace Exiled.Events.Handlers
 {
+    using System.Collections.Generic;
+
+    using Respawning;
+
 #pragma warning disable SA1623 // Property summary documentation should match accessors
 
     using Exiled.Events.EventArgs.Player;
@@ -69,6 +73,11 @@ namespace Exiled.Events.Handlers
         public static Event<ChoosingStartTeamQueueEventArgs> ChoosingStartTeamQueue { get; set; } = new();
 
         /// <summary>
+        /// Invoked before selecting the team that will respawn.
+        /// </summary>
+        public static Event<SelectingRespawnTeamEventArgs> SelectingRespawnTeam { get; set; } = new();
+
+        /// <summary>
         /// Invoked after the "reload configs" command is ran.
         /// </summary>
         public static Event ReloadedConfigs { get; set; } = new();
@@ -97,6 +106,11 @@ namespace Exiled.Events.Handlers
         /// Invoked after the "reload permissions" command is ran.
         /// </summary>
         public static Event ReloadedPermissions { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after a team has spawned.
+        /// </summary>
+        public static Event<RespawnedTeamEventArgs> RespawnedTeam { get; set; } = new();
 
         /// <summary>
         /// Called before waiting for players.
@@ -184,5 +198,18 @@ namespace Exiled.Events.Handlers
         /// Called after the "reload permissions" command is ran.
         /// </summary>
         public static void OnReloadedPermissions() => ReloadedPermissions.InvokeSafely();
+
+        /// <summary>
+        /// Called before selecting the team that will respawn next.
+        /// </summary>
+        /// <param name="ev">The <see cref="SelectingRespawnTeamEventArgs"/> instance.</param>
+        public static void OnSelectingRespawnTeam(SelectingRespawnTeamEventArgs ev) => SelectingRespawnTeam.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a team has spawned.
+        /// </summary>
+        /// <param name="teamType"><inheritdoc cref="RespawnedTeamEventArgs.Team"/></param>
+        /// <param name="hubs"><inheritdoc cref="RespawnedTeamEventArgs.Players"/></param>
+        public static void OnRespawnedTeam(SpawnableTeamType teamType, List<ReferenceHub> hubs) => RespawnedTeam.InvokeSafely(new RespawnedTeamEventArgs(teamType, hubs));
     }
 }
