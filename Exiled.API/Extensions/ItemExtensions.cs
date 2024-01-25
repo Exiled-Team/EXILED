@@ -97,6 +97,13 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
+        /// Given an <see cref="ItemType"/>, returns the matching <see cref="ItemPickupBase"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/>.</param>
+        /// <returns>The <see cref="ItemPickupBase"/>, or <see langword="null"/> if not found.</returns>
+        public static ItemPickupBase GetPickupBase(this ItemType type) => GetItemBase(type)?.PickupDropModel;
+
+        /// <summary>
         /// Given an <see cref="ItemType"/>, returns the matching <see cref="ItemBase"/>, casted to <typeparamref name="T"/>.
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/>.</param>
