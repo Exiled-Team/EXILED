@@ -16,7 +16,7 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.Loader.Features;
 
     using InventorySystem;
-
+    using InventorySystem.Items.Usables;
     using PlayerRoles;
     using PlayerRoles.RoleAssign;
 
@@ -25,6 +25,9 @@ namespace Exiled.Events.Handlers.Internal
     /// </summary>
     internal static class Round
     {
+        /// <inheritdoc cref="Handlers.Player.OnUsedItem" />
+        public static void OnServerOnUsingCompleted(ReferenceHub hub, UsableItem usable) => Handlers.Player.OnUsedItem(new (hub, usable));
+
         /// <inheritdoc cref="Handlers.Server.OnWaitingForPlayers" />
         public static void OnWaitingForPlayers()
         {

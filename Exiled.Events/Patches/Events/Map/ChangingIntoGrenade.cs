@@ -118,7 +118,7 @@ namespace Exiled.Events.Patches.Events.Map
                 // thrownProjectile
                 new(OpCodes.Ldloc_S, thrownProjectile.LocalIndex),
 
-                // var ev = new ChangedIntoGrenadeEventArgs(timedGrenadePickup, thrownProjectile);
+                // ChangedIntoGrenadeEventArgs ev = new(timedGrenadePickup, thrownProjectile);
                 // Map.OnChangingIntoGrenade(ev);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangedIntoGrenadeEventArgs))[0]),
                 new(OpCodes.Dup),
