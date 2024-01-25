@@ -11,26 +11,26 @@
 
 </div>
 
-EXILED, SCP: Secret Laboratory sunucuları için yüksek düzeyde bir Framework yani bir eklenti çerçevesidir. Geliştiricilere oyun kodunu değiştirmek veya kendi fonksiyonlarını eklemek için kullanabilecekleri bir olay sistemi sunar. Tüm EXILED eventleri(olayları) Harmony kullanılarak oluşturulmuştur, bu da demek oluyor ki eventlerin(olayların) işlevsel olabilmesi için doğrudan sunucu kodunu değiştirmenize gerek yoktur ve bu durum 2 avantaj sağlar:
+EXILED, SCP: Secret Laboratory sunucuları için yüksek düzeyde bir Framework yani bir Yazılım iskeleti'dir. Geliştiricilere oyun kodunu değiştirmek veya kendi fonksiyonlarını eklemek için kullanabilecekleri bir olay sistemi sunar. Tüm EXILED eventleri(olayları) Harmony kullanılarak oluşturulmuştur, bu da demek oluyor ki eventlerin(olayların) işlevsel olabilmesi için doğrudan sunucu kodunu değiştirmenize gerek yoktur ve bu durum 2 avantaj sağlar:
 
- - İlk olarak. Framework (Yazılım iskeleti)'nin özgürce yayımlanabilir ve dağıtalabilir, buda geliştiricilere nasıl çalıştığını daha iyi anlama imkanını sunar ve ek olarak fonksiyonları ekleme, değiştirme yapmalarına olanak tanır.
+ - İlk olarak. Framework (Yazılım iskeleti)'nin özgürce yayımlanabilir ve dağıtılabilir olmasıdır, buda geliştiricilere nasıl çalıştığını daha iyi anlama imkanını sunar ve ek olarak fonksiyonları ekleme, değiştirme yapmalarına olanak tanır.
  - İkinci olarak, Framework (Yazılım iskeleti) tüm kodun, sunucu kodunun dışına çıktığı için küçük oyun güncellemeleri Framework (Yazılım iskeleti)'ne çok az etki yapar, ve eğer gerek varsa güncelleme yapılması kolaylaşır.
 
 
 # İndirme
-EXILED'i indirmek oldukça kolaydır. EXILED kendini Northwood'un Plugin API'si üzerinden yükler, bu nedenle ``Exiled.tar.gz`` dosyasının içinde iki klasör bulunmaktadır. ``SCP Secret Laboratory`` dosyasının içinde, ``EXILED`` klasöründeki eklentileri yüklemek için gerekli dosyalar bulunur. Yapmanız gereken tek şey bu iki dosyayı doğru konuma yerleştirmektir. Bu nasıl yapılacağı aşağıda belirtilmiştir.
+EXILED'ı indirmek oldukça kolaydır. EXILED kendini Northwood'un Plugin API'si üzerinden yükler, bu nedenle ``Exiled.tar.gz`` dosyasının içinde iki klasör bulunmaktadır. ``SCP Secret Laboratory`` dosyasının içinde, ``EXILED`` klasöründeki eklentileri yüklemek için gerekli dosyalar bulunur. Yapmanız gereken tek şey bu iki dosyayı doğru konuma yerleştirmektir. Bu nasıl yapılacağı aşağıda belirtilmiştir.
 
 Eğer kurulum programını kullanmayı seçerseniz ve doğru bir şekilde çalıştırırsanız, bütün EXILED özelliklerini yüklemekle ilgili işlemleri otomatik olarak gerçekleştirir.
 
 # Windows
-### Otomatik indirme ([Daha fazla bilgi için bana tıkla](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))
+### Otomatik indirme ([Daha fazla bilgi için tıkla](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))
 **Not**: Sunucuyu indirdiğin kullanıcıda olduğundan emin ol veya yönetici olduğundan emin ol.
 
   - **`Exiled.Installer-Win.exe`'i [Buradan indir](https://github.com/Exiled-Team/EXILED/releases)** (Assets'e tıkla -> Installer'ı indir)
   - İndirdiğinizde sunucu klasörünüze yerleştirin. (Eğer indirmediyseniz, sunucuyu indirin.)
-  - **`Exiled.Installer.exe`**'e iki kere tıkla ve aç veya **[bana tıklayarak .bat'ı indir](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1)** En son ön yayınını yüklemek için sunucu klasörünün içine koy.
-  - Eklenti indirmek için [Installing plugins](#Eklenti-İndirme) Kısmına göz gezdir.
-**Not:** eğer EXILED'i uzaktan bağlantılı olan bir sunucuya indiriyor iseniz .exeyi Sunucu açtığınız kullanıcı ile aynı olduğundan emin oluyon veya Yönetici izinleri verin.
+  - **`Exiled.Installer.exe`**'e iki kere tıkla ve aç veya **[tıklayarak .bat'ı indir](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1)** En son ön yayınını yüklemek için sunucu klasörünün içine koy.
+  - Eklenti indirmek için [Eklenti indirme](#Eklenti-İndirme) Kısmına göz gezdir.
+**Not:** eğer EXILED'ı uzaktan bağlantılı olan bir sunucuya indiriyor iseniz .exe'yi Sunucu açtığınız kullanıcı ile aynı olduğundan emin oluyon veya Yönetici izinleri verin.
 
 ### Manuel indirme
   -  **`Exiled.tar.gz` ['yi buradan indir](https://github.com/Exiled-Team/EXILED/releases)**
@@ -49,15 +49,15 @@ Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığın
   - İndirdiğiniz eklentiyi: ``C:\Users\(Kullanıcı_ismi)\AppData\Roaming\EXILED\Plugins``'dizinine taşıyın (Win + R Tuşlarına basarak `%appdata%` yazarak buraya taşıyabilirsiniz)
 
 # Linux
-### Otomatik indirme ([daha fazla bilgi](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))
+### Otomatik indirme ([Daha fazla bilgi için tıkla](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))
 
-**Not:** EXILED'i uzaktan bağlanılan bir sunucuya indiriyor iseniz, indirme programını sunucuyu kurduğunuz kullanıcı ile açın veya (root) yetkiniz olması gerekir.
+**Not:** EXILED'ı uzaktan bağlanılan bir sunucuya indiriyor iseniz, indirme programını sunucuyu kurduğunuz kullanıcı ile açın veya (root) yetkiniz olması gerekir.
 
-  - **`Exiled.Installer-Linux`'i [Buradan indir](https://github.com/Exiled-Team/EXILED/releases)** (Assets'e tıkla -> Installer'ı indir)
-  - Ya **`./Exiled.Installer-Linux --path /sunucuya/giden/klasor`** Yazarak ya da doğrudan sunucu klasörüne taşıyarak ve ardından terminalde (`cd` kullanarak) şu komutu yazarak yükleyin: **`./Exiled.Installer-Linux`**.
-  - eğer en yeni ön yayını istiyor iseniz **`--pre-releases`** ekle. Örnek: **`./Exiled.Installer-Linux /sunucuya/giden/klasor --pre-releases`**
-  - Başka bir örnek: `eğer Exiled.Installer-Linux` dosyası sunucu klasörüne yerleştirdiyseniz `/sunucuya/giden/klasor/Exiled.Installer-Linux --pre-releases`
-  - Eklenti indirmek için [Bana tıkla ve göz gezdir!](#Eklenti-Indirme)
+  - **`Exiled.Installer-Linux`'u [Buradan indir](https://github.com/Exiled-Team/EXILED/releases)** (Assets'e tıkla -> Installer'ı indir)
+  - Ya **`./Exiled.Installer-Linux --path /sunucuya/giden/klasör`** Yazarak ya da doğrudan sunucu klasörüne taşıyarak ve ardından terminalde (`cd` kullanarak) şu komutu yazarak yükleyin: **`./Exiled.Installer-Linux`**.
+  - eğer en yeni ön yayını istiyor iseniz **`--pre-releases`** ekle. Örnek: **`./Exiled.Installer-Linux /sunucuya/giden/klasör --pre-releases`**
+  - Başka bir örnek: `eğer Exiled.Installer-Linux` dosyası sunucu klasörüne yerleştirdiyseniz `/sunucuya/giden/klasör/Exiled.Installer-Linux --pre-releases`
+  - Eklenti indirmek için [Tıkla ve göz gezdir!](#Eklenti-Indirme)
 
 ### Manuel indirme
   - SCP sunucusunu açan kullanıcı olduğundan **Emin** ol
@@ -67,10 +67,10 @@ Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığın
   - **`SCP Secret Laboratory`** Klasörünü **``~/.config``**'e taşı. *Not: Bu klasör ``~/.config``'nin içine gitmelidir,  ``~/.config/SCP Secret Laboratory``**'nin içine değil!** (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Eklenti Indirme
-Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığında aktif olmalıdır. Unutmayın ki EXILED kendi başına neredeyse hiçbir şey yapmaz, bu yüzden yeni eklentileri **[Discord](https://discord.gg/PyUkWTg)** sunucumuzdan almayı unutmayın.
+Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığında aktif olmalıdır. Unutmayın ki EXILED kendi başına neredeyse hiçbir şey yapamaz, bu yüzden yeni eklentileri **[Discord](https://discord.gg/PyUkWTg)** sunucumuzdan almayı unutmayın.
 - Bir Eklenti indirmek için aşağıdaki talimatları okuyun:
   - Bir eklentiyi indirmek için [*Onun* releases (yayınlanma) sayfasına gidin](https://i.imgur.com/u34wgPD.jpg) (**`.dll` UZANTILI OLMALIDIR**)
-  - İndirdiğiniz Eklentiyi: ``~/.config/EXILED/Plugins``'dizininine taşıyın (eğer SSH'yi root olarak kullanıyor iseniz, o zaman doğru `.config`'i `/home/(SCP Server User)` dizininin içinde arayın.)
+  - İndirdiğiniz Eklentiyi: ``~/.config/EXILED/Plugins``'dizininine taşıyın (eğer SSH'i root olarak kullanıyor iseniz, o zaman doğru `.config`'i `/home/(SCP Server kullanıcısı)` dizininin içinde arayın.)
 
 # Config
 EXILED kendi başına bazı yapılandırma seçenekleri sunar.
@@ -79,20 +79,20 @@ Bunların hepsi sunucu açıldığı zaman otomatik olarak yapılır, Bunlar şu
 Eklenti Configleri(Yapılandırma seçenekleri) ``config_gameplay.txt`` Dosyasında **değildir** Onun yerine eklenti seçeneklieri Linuxda: ``~/.config/EXILED/Configs/(serverportu)-config.yml`` Windows için: (``%AppData%\EXILED\(serverportu)-config.yml``).
 Ancak, bazı eklentiler kendi başlarına diğer yerlerden yapılandırma/ayarları alabilir. Bu klasör genellikle eklenti ayarlarının/bağlantılarının bulunduğu yerdir. Hatalar varsa lütfen ilgili eklenti geliştiricisine başvurun.
 
-# Geliştiriciler içib
+# Geliştiriciler için
 
-Eğer EXILED için bir eklenti yapmak istiyorsanız, bunu yapmak oldukça basittir [Daha fazla bilgi için bana tıkla!](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
+Eğer EXILED için bir eklenti yapmak istiyorsanız, bunu yapmak oldukça basittir [Daha fazla bilgi için tıkla!](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
 
 Daha kapsamlı ve sürekli güncellenen öğreticiler için [EXILED websitesine](https://exiled-team.github.io/EXILED/articles/install.html) göz atın.
 
-Ama pluginlerini halka açık yaparken bu kuralları takip etmen lazım:
+Ama pluginlerini herkese açık yaparken bu kuralları takip etmekte fayda var:
 
  - Eklentiniz ``Exiled.API.Features.Plugin<>`` sınıfından türetilmiş bir sınıf içermelidir; aksi halde EXILED sunucu başladığında eklentinizi yüklemeyecektir.
- - Bir eklenti yüklendiğinde, yukarıda bahsedilen sınıfın ``OnEnabled()`` yöntemindeki kod hemen yürütülür; diğer eklentilerin yüklenmesini beklemez. Sunucu başlatma sürecinin tamamlanmasını beklemez. Hiçbir şeyi beklemez. ``OnEnabled()`` yönteminizi yaparken, sunucu henüz başlatılmamış olabilecek şeylere erişim sağlamadığınızdan emin olun, ÖRNEK: ServerConsole.Port veya PlayerManager.localPlayer vb...
- - Eğer eklentiniz yüklendiğinde henüz başlatılmamış olan şeylere erişim sağlamanız gerekiyorsa, bunu yapmak için önerilen yol, bu işlemi gerçekleştirmek için ```WaitingForPlayers`` eventini(etkinliğini) beklemektir. Eğer daha erken bazı işlemler yapmanız gerekiyorsa, kodunuzu devam etmeden önce gerekli değişkenin/nesnenin null olmadığını kontrol eden bir ``while(!x)`` döngüsü içine almanız önerilir.
+ - Bir eklenti yüklendiğinde, yukarıda bahsedilen sınıfın ``OnEnabled()`` yöntemindeki kod hemen yürütülür; diğer eklentilerin yüklenmesini beklemez. Sunucu başlatma sürecinin tamamlanmasını beklemez. Hiçbir şeyi beklemez. ``OnEnabled()`` yönteminizi yaparken, sunucu henüz başlatılmamış olabilecek şeylere erişim sağlamadığınızdan emin olun, ÖRNEK: ServerConsole.Port veya PlayerManager.localPlayer vs...
+ - Eğer eklentiniz yüklendiğinde henüz başlatılmamış olan şeylere erişim sağlamanız gerekiyorsa, bunu yapmak için önerilen yol, bu işlemi gerçekleştirmek için ```WaitingForPlayers`` eventini(olayını) beklemektir. Eğer daha erken bazı işlemler yapmanız gerekiyorsa, kodunuzu devam etmeden önce gerekli değişkenin/nesnenin null olmadığını kontrol eden bir ``while(!x)`` döngüsü içine almanız önerilir.
  - EXILED, yürütme sırasında eklenti derlemelerini dinamik olarak yeniden yükleme işlemini destekler. Bu, bir eklentiyi güncellemeniz gerektiğinde sunucuyu yeniden başlatmadan yapılabilir. Ancak, yürütme sırasında bir eklentiyi güncelliyorsanız, eklentinin bunu desteklemesi gerekmektedir; aksi halde sorunlarla karşılaşabilirsiniz. Daha fazla bilgi ve takip edilmesi gereken kurallar için ``Dinamik Güncelleme`` bölümüne başvurun.
- - EXILED'da OnUpdate, OnFixedUpdate veya OnLateUpdate eventi(etkinliği) ***Bulunmamaktadır!***, Eğer sık sık çalışan bir kod calıştırmanız gerekiyor ise bir MEC coroutine Kullanabilirsiniz ki bu bir frame, 0.01f bekler ya da Timing.FixedUpdate gibi bir Timing katmanı kullanabilirsiniz.
- ### MEC (More Effective Coroutines) Coroutines (Eş zamanlı iş parçacığı)
+ - EXILED'da OnUpdate, OnFixedUpdate veya OnLateUpdate eventi(olayı) ***Bulunmamaktadır!***, Eğer sık sık çalışan bir kod calıştırmanız gerekiyor ise bir MEC coroutine Kullanabilirsiniz ki bu bir frame, 0.01f bekler ya da Timing.FixedUpdate gibi bir Timing katmanı kullanabilirsiniz.
+ ### MEC (More Effective Coroutines) (Eş zamanlı iş parçacığı)
 Hiç MEC (More Effective Coroutines) kullanmadı iseniz işte size MEC kullanmanız için bir rehber!
 MEC Coroutine'leri zamanlanmış yöntemlerdir. ve çalışan bir MEC kodunun kesilmeden / devre dışı bırakmadan önce belirli bir süre beklemenizi destekler
 MEC Coroutine'leri Unity ile kullanılmak üzere güvenlidir AMA ***Unity ile etkileşimde bulunmak için yeni Threadler(iş parçacıkları) oluşturmayın!! sunucuyu çökertir.***
@@ -112,7 +112,7 @@ public void SomeMethod()
 
 public IEnumerator<float> MyCoroutine()
 {
-    for (;;) //aşağıdaki kodu sonsuza kadar çalıştır
+    for (;;) //aşağıdaki kodu sonsuza kadar çalıştırır.
     {
         Log.Info("ben bir döngüyüm!"); //Log.Info yu sunucu konsolunda bir satır yazmak için çağırıldı.
         yield return Timing.WaitForSeconds(5f); //Bu coroutine'a 5 saniye beklemesini söyler, çünkü bu döngünün sonunda olduğu için, döngünün tekrarlanmasını etkili bir şekilde 5 saniye boyunca duraklatır.
@@ -124,7 +124,7 @@ Eğer MEC hakkında bilgi sahibi değilseniz ve daha fazla öğrenmek, tavsiye a
 
 ### Dinamik Güncelleme
 EXILED, bir sunucu yeniden başlatma işlemine gerek olmadan eklenti derlemelerini dinamik olarak yeniden yükleme işlemini destekleyen bir Framework(Yazılım iskeleti)'dir.
-Örneğin, sunucuyu sadece `Exiled.Events` eklentisiyle başlatırsanız ve yeni bir eklenti eklemek istiyorsanız, bu görevi tamamlamak için sunucuyu yeniden başlatmanıza gerek yoktur. Basitçe Remote Admin veya Sunucu Konsolu komutu olan ``reload plugins` komutunu kullanarak, önce yüklenmemiş olan yeni eklentiler dahil olmak üzere tüm EXILED eklentilerini yeniden yükleyebilirsiniz.
+Örneğin, sunucuyu sadece `Exiled.Events` eklentisiyle başlatırsanız ve yeni bir eklenti eklemek istiyorsanız, bu görevi tamamlamak için sunucuyu yeniden başlatmanıza gerek yoktur. Basitçe Remote Admin veya Sunucu Konsolu komutu olan ``reload plugins`` komutunu kullanarak, önce yüklenmemiş olan yeni eklentiler dahil olmak üzere tüm EXILED eklentilerini yeniden yükleyebilirsiniz.
 
 Bu aynı zamanda eklentileri tamamen yeniden başlatmadan *güncelleme* yapmanıza da olanak tanır. Ancak, bunun düzgün bir şekilde gerçekleşmesi için eklenti geliştiricisi tarafından takip edilmesi gereken birkaç kılavuz bulunmaktadır:
 
@@ -136,7 +136,7 @@ Bu aynı zamanda eklentileri tamamen yeniden başlatmadan *güncelleme* yapmanı
  ***Geliştiriciler için***
 
  - Dinamik güncellemeleri desteklemek isteyen eklentiler, devre dışı bırakıldıklarında veya yeniden yüklendiklerinde bağlı oldukları tüm olaylardan aboneliklerini(Subscribe) iptal etmeye dikkat etmelidir.
- - Özel Harmony yamaları(patch)'leri bulunan eklentiler, Harmony örneğinin adında bir değişken kullanmalı ve eklenti devre dışı bırakıldığında veya yeniden yüklendiğinde Harmony örneğini ``UnPatchAll()`` kullanarak iptal etmelidir.
+ - Özel Harmony yamaları(patch) bulunan eklentiler, Harmony örneğinin adında bir değişken kullanmalı ve eklenti devre dışı bırakıldığında veya yeniden yüklendiğinde Harmony örneğini ``UnPatchAll()`` kullanarak iptal etmelidir.
  - ``OnEnabled()`` içinde başlatılan herhangi bir coroutine, eklenti devre dışı bırakıldığında veya yeniden yüklendiğinde sonlandırılmalıdır / Bitirilmelidir.
 
 Bu işlemlerin hepsi, eklenti sınıfındaki ``OnReloaded()`` veya ``OnDisabled()`` yöntemlerinde gerçekleştirilebilir. EXILED eklentileri yeniden yüklediğinde, İlk olarak ``OnDisabled()``, ardından ``OnReloaded()``, daha sonra yeni derlemeleri yükler ve en son olarak ``OnEnabled()`` yöntemini çalıştırır.
@@ -144,10 +144,10 @@ Bu işlemlerin hepsi, eklenti sınıfındaki ``OnReloaded()`` veya ``OnDisabled(
 
 Unutmayın ki: bu yeni derlemelerin olduğu anlamına gelir. Eğer aynı isimdeki bir derlemeyi başka bir Derleme ile değiştirir iseniz o derleme ***GÜNCELLENMEZ***. Bu, Global Assembly Cache (GAC) nedeniyledir. Eğer Önbellekte zaten var olan bir derlemeyi 'yüklemeye' çalışır iseniz her zaman önbellekteki derlemeyi kullanır
 
-Bu nedenle, eğer eklentiniz dinamik güncellemeleri destekliyorsa, her sürümü farklı bir derleme adıyla derlemelisiniz (dosyanın adını değiştirmek işe yaramaz). Ayrıca, eski derleme artık gerekli olmadığında "Silinmediği" için, olaylardan abonelik(Subscribe) iptal etmeyi, Harmony örneğinizi iptal etmeyi, coroutine'leri sonlandırmayı vb... unutmazsanız, bu kodun eski sürümü de yeni sürüm koduyla birlikte çalışmaya devam eder. Bu, gerçekleşmesine izin vermek için çok kötü bir fikirdir.
+Bu nedenle, eğer eklentiniz dinamik güncellemeleri destekliyorsa, her sürümü farklı bir derleme adıyla derlemelisiniz (dosyanın adını değiştirmek işe yaramaz). Ayrıca, eski derleme artık gerekli olmadığında "Silinmediği" için, olaylardan abonelik(Subscribe) iptal etmeyi, Harmony örneğinizi iptal etmeyi, coroutine'leri sonlandırmayı vs... unutmazsanız, bu kodun eski sürümü de yeni sürüm koduyla birlikte çalışmaya devam eder. Bu, gerçekleşmesine izin vermek için çok kötü bir fikirdir.
 
 Bu nedenle, dinamik güncellemeleri destekleyen eklentilerin bu yönergeleri takip etmeleri ***ZORUNLUDUR***; aksi halde potansiyel risk nedeniyle Discord sunucudan kaldırılabilirler.
 
 Her eklentinin dinamik güncellemeleri desteklemesi gerekmez. Eğer dinamik güncellemeleri desteklemeyi planlamıyorsanız, bu tamamen uygun bir durumdur. Sadece yeni bir sürüm oluştururken eklentinizin derleme adını değiştirmekten kaçının. Bu tür durumlarda, sunucu sahiplerinin eklentinizi güncellemek için sunucularını tamamen yeniden başlatmaları gerektiğini bildirin.
 
-çeviri: Enes Batur (_funnyman_xdxdxd.rofl.)
+çeviri: Enes Batur (@_funnyman_xdxdxd.rofl.) & Dogy (@.dogy69)
