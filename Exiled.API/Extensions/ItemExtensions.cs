@@ -323,12 +323,5 @@ namespace Exiled.API.Extensions
         /// <param name="type">The <see cref="ItemType"/> to check.</param>
         /// <returns><see cref="ItemCategory"/> of the specified <see cref="ItemType"/>.</returns>
         public static ItemCategory GetCategory(this ItemType type) => GetItemBase(type).Category;
-
-        /// <summary>
-        /// Given an <see cref="ItemType"/>, returns the matching <see cref="ItemPickupBase"/>.
-        /// </summary>
-        /// <param name="type">The <see cref="ItemType"/>.</param>
-        /// <returns>The <see cref="ItemPickupBase"/>, or <see langword="null"/> if not found.</returns>
-        public static ItemPickupBase GetPickupBase(this ItemType type) => GetItemBase(type)?.PickupDropModel;
     }
 }
