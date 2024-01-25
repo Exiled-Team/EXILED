@@ -19,7 +19,6 @@ namespace Exiled.API.Features.Items
     using PlayerRoles;
 
     using Structs;
-    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="BodyArmor"/>.

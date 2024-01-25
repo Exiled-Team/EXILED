@@ -12,6 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
 
     using MapGeneration.Distributors;
@@ -21,7 +22,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Wrapper class for <see cref="Scp079Generator"/>.
     /// </summary>
-    public class Generator : IWrapper<Scp079Generator>, IWorldSpace
+    public class Generator : GameEntity, IWrapper<Scp079Generator>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.
@@ -52,7 +53,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the generator.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Transform"/> of the generator.

@@ -13,7 +13,6 @@ namespace Exiled.Events.Patches.Events.Map
 
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Patches.Generic;
     using HarmonyLib;
@@ -65,7 +64,7 @@ namespace Exiled.Events.Patches.Events.Map
 
         private static int ProcessEvent(FlashbangGrenade instance)
         {
-            ExplodingGrenadeEventArgs explodingGrenadeEvent = new ExplodingGrenadeEventArgs(Player.Get(instance.PreviousOwner.Hub), instance);
+            ExplodingGrenadeEventArgs explodingGrenadeEvent = new(Player.Get(instance.PreviousOwner.Hub), instance);
 
             Handlers.Map.OnExplodingGrenade(explodingGrenadeEvent);
 
