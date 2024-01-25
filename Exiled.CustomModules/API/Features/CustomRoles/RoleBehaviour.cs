@@ -33,8 +33,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
     using UnityEngine;
 
-    using static Exiled.API.Extensions.MirrorExtensions;
-
     /// <summary>
     /// Represents the base class for custom role behaviors.
     /// </summary>
@@ -86,6 +84,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 if (Settings.SpawnProperties is null || Settings.SpawnProperties.IsEmpty)
                     return RoleExtensions.GetRandomSpawnLocation(Role).Position;
 
+                return Settings.SpawnProperties.StaticSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.StaticSpawnPoints, out Vector3 staticPos) ? staticPos :
+                    Settings.SpawnProperties.DynamicSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.DynamicSpawnPoints, out Vector3 dynamicPos) ? dynamicPos :
+                    Settings.SpawnProperties.RoleSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.RoleSpawnPoints, out Vector3 rolePos) ? rolePos : Vector3.zero;
+
                 static bool EvalSpawnPoint(IEnumerable<SpawnPoint> spawnpoints, out Vector3 outPos)
                 {
                     outPos = default;
@@ -101,10 +103,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
                     return false;
                 }
-
-                return Settings.SpawnProperties.StaticSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.StaticSpawnPoints, out Vector3 staticPos) ? staticPos :
-                    Settings.SpawnProperties.DynamicSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.DynamicSpawnPoints, out Vector3 dynamicPos) ? dynamicPos :
-                    Settings.SpawnProperties.RoleSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.RoleSpawnPoints, out Vector3 rolePos) ? rolePos : Vector3.zero;
             }
         }
 

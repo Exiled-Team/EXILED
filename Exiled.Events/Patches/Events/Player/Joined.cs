@@ -25,23 +25,6 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.Start))]
     public static class Joined
     {
-        private static Type basePlayerType = typeof(Player);
-
-        /// <summary>
-        /// Gets or sets the base <see cref="Player"/> type.
-        /// </summary>
-        public static Type BasePlayerType
-        {
-            get => basePlayerType;
-            set
-            {
-                if (!typeof(Player).IsAssignableFrom(value))
-                    return;
-
-                basePlayerType = value;
-            }
-        }
-
         internal static void CallEvent(ReferenceHub hub, out Player player)
         {
             try
@@ -49,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Player
 #if DEBUG
                 Log.Debug("Creating new player object");
 #endif
-                player = Activator.CreateInstance(BasePlayerType, false, hub) as Player;
+                player = Activator.CreateInstance(Player.DEFAULT_PLAYER_CLASS, false, hub) as Player;
 #if DEBUG
                 Log.Debug($"Object exists {player is not null}");
                 Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}");
