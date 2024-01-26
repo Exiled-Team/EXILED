@@ -13,7 +13,9 @@
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>Exiled.Events</_Parameter1>
-            <_Parameter2>Exiled.Loader</_Parameter2>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Exiled.Loader</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
 
