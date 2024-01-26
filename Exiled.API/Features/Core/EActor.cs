@@ -5,7 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-
 namespace Exiled.API.Features.Core
 {
     using System;

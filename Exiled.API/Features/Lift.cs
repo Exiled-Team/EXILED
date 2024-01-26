@@ -14,8 +14,8 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Doors;
     using Exiled.API.Interfaces;
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
