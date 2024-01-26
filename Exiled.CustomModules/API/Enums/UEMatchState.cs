@@ -7,7 +7,7 @@
 
 namespace Exiled.CustomModules.API.Enums
 {
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
 
     /// <summary>
     /// All available match states.

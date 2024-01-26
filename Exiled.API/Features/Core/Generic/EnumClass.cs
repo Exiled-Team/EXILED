@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------
-// <copyright file="UnmanagedEnumClass.cs" company="Exiled Team">
+// <copyright file="EnumClass.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Core.Generics
+namespace Exiled.API.Features.Core.Generic
 {
     using System;
     using System.Collections.Generic;
@@ -17,14 +17,14 @@ namespace Exiled.API.Features.Core.Generics
     using LiteNetLib.Utils;
 
     /// <summary>
-    /// A class which allows <see langword="unmanaged"/> data implicit conversions.
-    /// <para>Can be used along with <see langword="unmanaged"/>, means it doesn't require another <see cref="UnmanagedEnumClass{TSource, TObject}"/> instance to be comparable or usable.</para>
+    /// A class which allows <see cref="Enum"/> implicit conversions.
+    /// <para>Can be used along with <see cref="Enum"/>, means it doesn't require another <see cref="EnumClass{TSource, TObject}"/> instance to be comparable or usable.</para>
     /// </summary>
-    /// <typeparam name="TSource">The type of the <see langword="unmanaged"/> source object to handle the instance of.</typeparam>
+    /// <typeparam name="TSource">The type of the source object to handle the instance of.</typeparam>
     /// <typeparam name="TObject">The type of the child object to handle the instance of.</typeparam>
-    public abstract class UnmanagedEnumClass<TSource, TObject> : IComparable, IEquatable<TObject>, IComparable<TObject>, IComparer<TObject>, IConvertible
-        where TSource : unmanaged, IComparable, IFormattable, IConvertible, IComparable<TSource>, IEquatable<TSource>
-        where TObject : UnmanagedEnumClass<TSource, TObject>
+    public abstract class EnumClass<TSource, TObject> : IComparable, IEquatable<TObject>, IComparable<TObject>, IComparer<TObject>
+        where TSource : Enum
+        where TObject : EnumClass<TSource, TObject>
     {
         private static SortedList<TSource, TObject> values;
         private static bool isDefined;
@@ -32,10 +32,10 @@ namespace Exiled.API.Features.Core.Generics
         private string name;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnmanagedEnumClass{TSource, TObject}"/> class.
+        /// Initializes a new instance of the <see cref="EnumClass{TSource, TObject}"/> class.
         /// </summary>
-        /// <param name="value">The value of the unmanaged item.</param>
-        protected UnmanagedEnumClass(TSource value)
+        /// <param name="value">The value of the enum item.</param>
+        protected EnumClass(TSource value)
         {
             values ??= new();
 
@@ -79,22 +79,22 @@ namespace Exiled.API.Features.Core.Generics
         }
 
         /// <summary>
-        /// Implicitly converts the <see cref="UnmanagedEnumClass{TSource, TObject}"/> to <typeparamref name="TSource"/>.
+        /// Implicitly converts the <see cref="EnumClass{TSource, TObject}"/> to <typeparamref name="TSource"/>.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        public static implicit operator TSource(UnmanagedEnumClass<TSource, TObject> value) => value.Value;
+        public static implicit operator TSource(EnumClass<TSource, TObject> value) => value.Value;
 
         /// <summary>
         /// Implicitly converts the <typeparamref name="TSource"/> to <see cref="EnumClass{TSource, TObject}"/>.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        public static implicit operator UnmanagedEnumClass<TSource, TObject>(TSource value) => values[value];
+        public static implicit operator EnumClass<TSource, TObject>(TSource value) => values[value];
 
         /// <summary>
-        /// Implicitly converts the <see cref="UnmanagedEnumClass{TSource, TObject}"/> to <typeparamref name="TObject"/>.
+        /// Implicitly converts the <see cref="EnumClass{TSource, TObject}"/> to <typeparamref name="TObject"/>.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        public static implicit operator TObject(UnmanagedEnumClass<TSource, TObject> value) => value;
+        public static implicit operator TObject(EnumClass<TSource, TObject> value) => value;
 
         /// <summary>
         /// Casts the specified <paramref name="value"/> to the corresponding type.
@@ -111,30 +111,28 @@ namespace Exiled.API.Features.Core.Generics
         public static IEnumerable<TObject> Cast(IEnumerable<TSource> values)
         {
             foreach (TSource value in values)
-                yield return UnmanagedEnumClass<TSource, TObject>.values[value];
+                yield return EnumClass<TSource, TObject>.values[value];
         }
 
         /// <summary>
-        /// Casts the specified <paramref name="values"/> to the corresponding type.
+        /// Retrieves an array of the values of the constants in a specified <see cref="EnumClass{TSource, TObject}"/>.
         /// </summary>
-        /// <typeparam name="T">The type to cast the enum to.</typeparam>
-        /// <param name="values">The enum values to be cast.</param>
-        /// <returns>The cast <typeparamref name="T"/> object.</returns>
-        public static IEnumerable<T> Cast<T>(IEnumerable<TSource> values)
-            where T : TObject
+        /// <param name="type">The <see cref="EnumClass{TSource, TObject}"/> type.</param>
+        /// <returns>An array of the values of the constants in a specified <see cref="EnumClass{TSource, TObject}"/>.</returns>
+        public static TSource[] GetValues(Type type)
         {
-            foreach (TSource value in values)
-                yield return Cast<T>(value);
-        }
+            if (type is null)
+                throw new NullReferenceException("The specified type parameter is null");
 
-        /// <summary>
-        /// Casts the specified <paramref name="value"/> to the corresponding type.
-        /// </summary>
-        /// <typeparam name="T">The type to cast the enum to.</typeparam>
-        /// <param name="value">The enum value to be cast.</param>
-        /// <returns>The cast <typeparamref name="T"/> object.</returns>
-        public static T Cast<T>(TSource value)
-            where T : TObject => (T)values[value];
+            if (!type.IsSubclassOf(typeof(EnumClass<TSource, TObject>)) && type.BaseType != typeof(EnumClass<TSource, TObject>))
+                throw new InvalidTypeException("The specified type parameter is not a EnumClass<TSource, TObject> type.");
+
+            return typeof(TSource)
+                .GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.GetField)
+                .Where(field => field.FieldType == typeof(TSource))
+                .Select(field => (TSource)field.GetValue(null))
+                .ToArray();
+        }
 
         /// <summary>
         /// Safely casts the specified <paramref name="value"/> to the corresponding type.
@@ -157,7 +155,7 @@ namespace Exiled.API.Features.Core.Generics
             List<TObject> tmpValues = ListPool<TObject>.Pool.Get();
             foreach (TSource value in values)
             {
-                if (!UnmanagedEnumClass<TSource, TObject>.values.TryGetValue(value, out TObject result))
+                if (!EnumClass<TSource, TObject>.values.TryGetValue(value, out TObject result))
                     return false;
 
                 tmpValues.Add(result);
@@ -165,26 +163,6 @@ namespace Exiled.API.Features.Core.Generics
 
             results = tmpValues;
             return true;
-        }
-
-        /// <summary>
-        /// Retrieves an array of the values of the constants in a specified <see cref="UnmanagedEnumClass{TSource, TObject}"/>.
-        /// </summary>
-        /// <param name="type">The <see cref="UnmanagedEnumClass{TSource, TObject}"/> type.</param>
-        /// <returns>An array of the values of the constants in a specified <see cref="UnmanagedEnumClass{TSource, TObject}"/>.</returns>
-        public static TSource[] GetValues(Type type)
-        {
-            if (type is null)
-                throw new NullReferenceException("The specified type parameter is null");
-
-            if (!type.IsSubclassOf(typeof(UnmanagedEnumClass<TSource, TObject>)) && type.BaseType != typeof(UnmanagedEnumClass<TSource, TObject>))
-                throw new InvalidTypeException("The specified type parameter is not a UnmanagedEnumClass<TSource, TObject> type.");
-
-            return typeof(TSource)
-                .GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.GetField)
-                .Where(field => field.FieldType == typeof(TSource))
-                .Select(field => (TSource)field.GetValue(null))
-                .ToArray();
         }
 
         /// <summary>
@@ -201,9 +179,9 @@ namespace Exiled.API.Features.Core.Generics
         }
 
         /// <summary>
-        /// Converts the <see cref="UnmanagedEnumClass{TSource, TObject}"/> instance to a human-readable <see cref="string"/> representation.
+        /// Converts the <see cref="EnumClass{TSource, TObject}"/> instance to a human-readable <see cref="string"/> representation.
         /// </summary>
-        /// <returns>A human-readable <see cref="string"/> representation of the <see cref="UnmanagedEnumClass{TSource, TObject}"/> instance.</returns>
+        /// <returns>A human-readable <see cref="string"/> representation of the <see cref="EnumClass{TSource, TObject}"/> instance.</returns>
         public override string ToString() => Name;
 
         /// <summary>
@@ -270,56 +248,5 @@ namespace Exiled.API.Features.Core.Generics
         /// Greater than zero This instance follows other in the sort order.
         /// </returns>
         public int Compare(TObject x, TObject y) => x == null ? -1 : y == null ? 1 : x.Value.CompareTo(y.Value);
-
-        /// <inheritdoc/>
-        TypeCode IConvertible.GetTypeCode() => Value.GetTypeCode();
-
-        /// <inheritdoc/>
-        bool IConvertible.ToBoolean(IFormatProvider provider) => Value.ToBoolean(provider);
-
-        /// <inheritdoc/>
-        char IConvertible.ToChar(IFormatProvider provider) => Value.ToChar(provider);
-
-        /// <inheritdoc/>
-        sbyte IConvertible.ToSByte(IFormatProvider provider) => Value.ToSByte(provider);
-
-        /// <inheritdoc/>
-        byte IConvertible.ToByte(IFormatProvider provider) => Value.ToByte(provider);
-
-        /// <inheritdoc/>
-        short IConvertible.ToInt16(IFormatProvider provider) => Value.ToInt16(provider);
-
-        /// <inheritdoc/>
-        ushort IConvertible.ToUInt16(IFormatProvider provider) => Value.ToUInt16(provider);
-
-        /// <inheritdoc/>
-        int IConvertible.ToInt32(IFormatProvider provider) => Value.ToInt32(provider);
-
-        /// <inheritdoc/>
-        uint IConvertible.ToUInt32(IFormatProvider provider) => Value.ToUInt32(provider);
-
-        /// <inheritdoc/>
-        long IConvertible.ToInt64(IFormatProvider provider) => Value.ToInt64(provider);
-
-        /// <inheritdoc/>
-        ulong IConvertible.ToUInt64(IFormatProvider provider) => Value.ToUInt64(provider);
-
-        /// <inheritdoc/>
-        float IConvertible.ToSingle(IFormatProvider provider) => Value.ToSingle(provider);
-
-        /// <inheritdoc/>
-        double IConvertible.ToDouble(IFormatProvider provider) => Value.ToDouble(provider);
-
-        /// <inheritdoc/>
-        decimal IConvertible.ToDecimal(IFormatProvider provider) => Value.ToDecimal(provider);
-
-        /// <inheritdoc/>
-        DateTime IConvertible.ToDateTime(IFormatProvider provider) => Value.ToDateTime(provider);
-
-        /// <inheritdoc/>
-        string IConvertible.ToString(IFormatProvider provider) => ToString();
-
-        /// <inheritdoc/>
-        object IConvertible.ToType(Type conversionType, IFormatProvider provider) => Value.ToType(conversionType, provider);
     }
 }

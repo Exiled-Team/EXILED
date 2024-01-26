@@ -9,7 +9,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 {
     using System.Collections.Generic;
 
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Items;
     using Exiled.CustomModules.API.Enums;
     using Exiled.Events.EventArgs.Player;

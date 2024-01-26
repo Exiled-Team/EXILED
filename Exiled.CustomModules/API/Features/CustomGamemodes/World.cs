@@ -7,7 +7,7 @@
 
 namespace Exiled.CustomModules.API.Features
 {
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
 
     /// <summary>
     /// The world base.

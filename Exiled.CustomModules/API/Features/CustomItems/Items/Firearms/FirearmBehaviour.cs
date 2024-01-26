@@ -13,7 +13,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Items;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
     using Exiled.Events.EventArgs.Item;

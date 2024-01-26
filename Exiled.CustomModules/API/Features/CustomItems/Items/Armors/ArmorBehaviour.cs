@@ -8,7 +8,7 @@
 namespace Exiled.CustomModules.API.Features.CustomItems.Items.Armors
 {
     using Exiled.API.Features;
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Items;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
 

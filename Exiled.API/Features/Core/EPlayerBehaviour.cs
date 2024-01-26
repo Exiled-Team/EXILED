@@ -8,7 +8,7 @@
 namespace Exiled.API.Features.Core
 {
     using Exiled.API.Features;
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
 
     /// <summary>
     /// <see cref="EPlayerBehaviour"/> is a versatile component designed to enhance the functionality of playable characters.
