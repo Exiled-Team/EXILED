@@ -90,7 +90,7 @@ namespace Exiled.Events.Patches.Events.Player
                     //      return true;
                     // }
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SearchingPickupEventArgs), nameof(SearchingPickupEventArgs.IsAllowed))),
-                    new(OpCodes.Brtrue_S, retLabel),
+                    new(OpCodes.Brfalse_S, retLabel),
 
                     // completor = ev.SearchCompletor
                     new(OpCodes.Ldarg_2),
