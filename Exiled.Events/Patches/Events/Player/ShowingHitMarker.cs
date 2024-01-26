@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label continueLabel = generator.DefineLabel();
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(ShowingHitMarkerEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(DisplayingHitmarkerEventArgs));
 
             newInstructions.InsertRange(
                 index,
@@ -50,8 +50,8 @@ namespace Exiled.Events.Patches.Events.Player
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // ShowingHitMarkerEventArgs ev = new(Player, float, true);
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ShowingHitMarkerEventArgs))[0]),
+                    // DisplayingHitmarkerEventArgs ev = new(Player, float, true);
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DisplayingHitmarkerEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
@@ -61,14 +61,14 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // if (!ev.IsAllowed)
                     //    return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ShowingHitMarkerEventArgs), nameof(ShowingHitMarkerEventArgs.IsAllowed))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DisplayingHitmarkerEventArgs), nameof(DisplayingHitmarkerEventArgs.IsAllowed))),
                     new(OpCodes.Brtrue_S, continueLabel),
 
                     new(OpCodes.Ret),
 
                     // size = ev.Size;
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ShowingHitMarkerEventArgs), nameof(ShowingHitMarkerEventArgs.Size))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DisplayingHitmarkerEventArgs), nameof(DisplayingHitmarkerEventArgs.Size))),
                     new(OpCodes.Starg_S, 1),
                 });
 
