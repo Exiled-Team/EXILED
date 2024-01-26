@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs.Player
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a hit marker size.
+        /// Gets or sets the hitmarker's size.
         /// </summary>
         public float Size { get; set; }
     }
