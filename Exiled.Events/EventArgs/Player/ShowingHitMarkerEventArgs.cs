@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all information before hit marker is showing.
+    /// Contains all information before displaying the hitmarker to the player.
     /// </summary>
     public class ShowingHitMarkerEventArgs : IDeniableEvent, IPlayerEvent
     {
