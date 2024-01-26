@@ -523,7 +523,7 @@ namespace Exiled.Events.Handlers
         public static Event<ChangingNicknameEventArgs> ChangingNickname { get; set; } = new();
 
         /// <summary>
-        /// Invoked before hit marker is showing.
+        /// Invoked before displaying the hitmarker to the player
         /// </summary>
         public static Event<ShowingHitMarkerEventArgs> ShowingHitMarker { get; set; } = new();
 
