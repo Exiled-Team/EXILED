@@ -13,7 +13,7 @@ namespace Exiled.Events.Handlers.Internal
 
     using API.Features;
     using API.Features.Items;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using API.Structs;
 
     using Exiled.API.Enums;

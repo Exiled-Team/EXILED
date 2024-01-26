@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Core
 
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Interfaces;
     using MEC;
 

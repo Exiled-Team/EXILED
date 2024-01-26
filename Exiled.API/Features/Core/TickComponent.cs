@@ -11,7 +11,7 @@ namespace Exiled.API.Features.Core
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
 
     using MEC;
 

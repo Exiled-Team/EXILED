@@ -12,7 +12,7 @@ namespace Exiled.API.Features
 
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using global::Scp914;
     using UnityEngine;
 

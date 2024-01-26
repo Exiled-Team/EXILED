@@ -14,7 +14,7 @@ namespace Exiled.API.Features.Core
 
     using Exiled.API.Features.Core.Attributes;
 
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
 
     using UnityEngine;
 

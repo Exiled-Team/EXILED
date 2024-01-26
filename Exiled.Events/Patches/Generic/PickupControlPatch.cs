@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Generic
     using System.Reflection.Emit;
 
     using API.Features.Pickups;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
 
     using Exiled.API.Features.Items;
 

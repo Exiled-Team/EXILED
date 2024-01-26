@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs.Server
     using System.Collections.Generic;
     using System.Text;
 
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Interfaces;
     using PlayerRoles;
 
