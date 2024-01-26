@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features
+namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
     using Exiled.API.Features.Core.Generic;
 
@@ -17,7 +17,7 @@ namespace Exiled.CustomModules.API.Features
         private GameState gameState;
 
         /// <summary>
-        /// Gets the <see cref="Features.GameState"/>.
+        /// Gets the <see cref="CustomGameModes.GameState"/>.
         /// </summary>
         public GameState GameState => gameState ??= GetComponent<GameState>();
     }

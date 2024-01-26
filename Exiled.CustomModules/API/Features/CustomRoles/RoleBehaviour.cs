@@ -17,6 +17,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Core.Interfaces;

@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features
+namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
     using System;
     using System.Collections.Generic;
@@ -35,7 +35,7 @@ namespace Exiled.CustomModules.API.Features
         private Type cachedPlayerStateType;
 
         /// <summary>
-        /// Gets the relative <see cref="Features.CustomGameMode"/>.
+        /// Gets the relative <see cref="CustomGameModes.CustomGameMode"/>.
         /// </summary>
         public CustomGameMode CustomGameMode { get; private set; }
 

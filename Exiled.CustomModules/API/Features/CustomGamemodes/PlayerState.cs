@@ -5,13 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features
+namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
     using System;
     using System.Diagnostics;
 
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.DynamicEvents;
 
     /// <summary>

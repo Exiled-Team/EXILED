@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features
+namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
