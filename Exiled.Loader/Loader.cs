@@ -74,7 +74,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the initialized global random class.
         /// </summary>
-        public static Random Random { get; } = CommonExtensions.Random;
+        public static Random Random => CommonExtensions.Random;
 
         /// <summary>
         /// Gets the version of the assembly.
