@@ -1118,7 +1118,7 @@ namespace Exiled.Events.Handlers
         public static void OnChangingNickname(ChangingNicknameEventArgs ev) => ChangingNickname.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before displaying the hitmarker to the player
+        /// Called before displaying the hitmarker to the player.
         /// </summary>
         /// <param name="ev">The <see cref="DisplayingHitmarkerEventArgs"/> instance.</param>
         public static void OnShowingHitMarker(DisplayingHitmarkerEventArgs ev) => ShowingHitMarker.InvokeSafely(ev);
