@@ -16,12 +16,14 @@ namespace Exiled.API.Features
     using Enums;
 
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
 
     using Mirror;
 
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.Ragdolls;
 
     using PlayerStatsSystem;
@@ -35,7 +37,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to handle the ragdolls more easily.
     /// </summary>
-    public class Ragdoll : IWrapper<BasicRagdoll>, IWorldSpace
+    public class Ragdoll : GameEntity, IWrapper<BasicRagdoll>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BasicRagdoll"/>s and their corresponding <see cref="Ragdoll"/>.
@@ -79,7 +81,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the ragdoll.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Transform"/> of the ragdoll.
