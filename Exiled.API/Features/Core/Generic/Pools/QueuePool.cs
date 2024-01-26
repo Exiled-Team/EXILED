@@ -71,9 +71,7 @@ namespace Exiled.API.Features.Core.Generic.Pools
         public T[] ToArrayReturn(Queue<T> obj)
         {
             T[] array = obj.ToArray();
-
             Return(obj);
-
             return array;
         }
     }

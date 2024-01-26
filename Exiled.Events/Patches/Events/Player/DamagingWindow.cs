@@ -10,8 +10,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.DamageHandlers;
     using API.Features.Core.Generic.Pools;
+    using API.Features.DamageHandlers;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 

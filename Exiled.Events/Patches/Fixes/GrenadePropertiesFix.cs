@@ -10,9 +10,9 @@ namespace Exiled.Events.Patches.Fixes
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using API.Features.Core.Generic.Pools;
     using API.Features.Items;
     using API.Features.Pickups.Projectiles;
-    using API.Features.Core.Generic.Pools;
 
     using HarmonyLib;
 

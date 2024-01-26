@@ -12,8 +12,8 @@ namespace Exiled.Events.Handlers.Internal
     using System.Linq;
 
     using API.Features;
-    using API.Features.Items;
     using API.Features.Core.Generic.Pools;
+    using API.Features.Items;
     using API.Structs;
 
     using Exiled.API.Enums;
