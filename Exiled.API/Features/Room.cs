@@ -246,8 +246,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains elements that satisfy the condition.</returns>
         public static IEnumerable<Room> Get(Func<Room, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -334,8 +334,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">Duration in seconds, or <c>-1</c> for permanent lockdown.</param>
         /// <param name="lockType">DoorLockType of the lockdown.</param>
-        /// <seealso cref="Door.LockAll(float, ZoneType, DoorLockType)"/>
-        /// <seealso cref="Door.LockAll(float, IEnumerable{ZoneType}, DoorLockType)"/>
         public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (Door door in Doors)
