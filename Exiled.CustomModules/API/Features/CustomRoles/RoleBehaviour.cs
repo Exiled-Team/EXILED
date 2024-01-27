@@ -17,10 +17,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Behaviours;
+    using Exiled.API.Features.Core.Generic;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
-    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomModules.API.Enums;
@@ -28,9 +29,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.CustomModules.API.Features.Inventory;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
-
     using PlayerRoles;
-
     using UnityEngine;
 
     /// <summary>

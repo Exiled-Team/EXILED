@@ -239,8 +239,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satisfy the condition.</returns>
         public static IEnumerable<Generator> Get(Func<Generator, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -270,8 +270,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Try-get a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <param name="generators">A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satify the condition.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <param name="generators">A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satisfy the condition.</param>
         /// <returns>Whether or not at least one generator was found.</returns>
         public static bool TryGet(Func<Generator, bool> predicate, out IEnumerable<Generator> generators)
         {

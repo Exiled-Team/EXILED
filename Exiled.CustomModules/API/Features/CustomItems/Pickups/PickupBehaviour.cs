@@ -14,6 +14,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Pickups;

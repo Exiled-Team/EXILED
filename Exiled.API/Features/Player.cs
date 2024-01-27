@@ -18,11 +18,11 @@ namespace Exiled.API.Features
     using DamageHandlers;
     using Enums;
     using Exiled.API.Features.Attributes;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;

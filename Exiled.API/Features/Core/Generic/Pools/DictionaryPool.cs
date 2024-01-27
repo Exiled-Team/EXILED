@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Pools
+namespace Exiled.API.Features.Core.Generic.Pools
 {
     using System.Collections.Concurrent;
     using System.Collections.Generic;
@@ -37,10 +37,17 @@ namespace Exiled.API.Features.Pools
         /// <returns>The <see cref="Dictionary{TKey, TValue}"/>.</returns>
         public Dictionary<TKey, TValue> Get()
         {
-            /*if (pool.TryDequeue(out Dictionary<TKey, TValue> result))
-                return result;*/
+            if (pool.TryDequeue(out Dictionary<TKey, TValue> result))
+            {
+                pool.Enqueue(new Dictionary<TKey, TValue>());
+                result.Clear();
+            }
+            else
+            {
+                result = new Dictionary<TKey, TValue>();
+            }
 
-            return new();
+            return result;
         }
 
         /// <summary>
@@ -50,8 +57,7 @@ namespace Exiled.API.Features.Pools
         /// <returns>The <see cref="Dictionary{TKey, TValue}"/>.</returns>
         public Dictionary<TKey, TValue> Get(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
         {
-            // if (!pool.TryDequeue(out Dictionary<TKey, TValue> dict))
-            Dictionary<TKey, TValue> dict = new();
+            Dictionary<TKey, TValue> dict = Get();
 
             foreach (KeyValuePair<TKey, TValue> pair in pairs)
                 dict.Add(pair.Key, pair.Value);
@@ -65,8 +71,8 @@ namespace Exiled.API.Features.Pools
         /// <param name="obj">The <see cref="Dictionary{TKey, TValue}"/> to return.</param>
         public void Return(Dictionary<TKey, TValue> obj)
         {
-            // obj.Clear();
-            // pool.Enqueue(obj);
+            obj.Clear();
+            pool.Enqueue(obj);
         }
 
         /// <summary>
@@ -77,9 +83,7 @@ namespace Exiled.API.Features.Pools
         public KeyValuePair<TKey, TValue>[] ToArrayReturn(Dictionary<TKey, TValue> obj)
         {
             KeyValuePair<TKey, TValue>[] array = obj.ToArray();
-
             Return(obj);
-
             return array;
         }
     }

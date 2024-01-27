@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Pools
+namespace Exiled.API.Features.Core.Generic.Pools
 {
     using System.Collections.Generic;
 
@@ -56,9 +56,7 @@ namespace Exiled.API.Features.Pools
         public T[] ToArrayReturn(List<T> obj)
         {
             T[] array = obj.ToArray();
-
             Return(obj);
-
             return array;
         }
     }

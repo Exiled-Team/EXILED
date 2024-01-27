@@ -68,7 +68,7 @@ namespace Exiled.Events.Handlers
         public static Event<LocalReportingEventArgs> LocalReporting { get; set; } = new();
 
         /// <summary>
-        /// Invoked before choosing the Team than player will get.
+        /// Invoked before choosing the team to be assigned to a player.
         /// </summary>
         public static Event<ChoosingStartTeamQueueEventArgs> ChoosingStartTeamQueue { get; set; } = new();
 
@@ -164,7 +164,7 @@ namespace Exiled.Events.Handlers
         public static void OnLocalReporting(LocalReportingEventArgs ev) => LocalReporting.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="Player"/>'s custom display name is changed.
+        /// Called before choosing the team to be assigned to a player.
         /// </summary>
         /// <param name="ev">The <see cref="ChoosingStartTeamQueueEventArgs"/> instance.</param>
         public static void OnChoosingStartTeam(ChoosingStartTeamQueueEventArgs ev) => ChoosingStartTeamQueue.InvokeSafely(ev);
