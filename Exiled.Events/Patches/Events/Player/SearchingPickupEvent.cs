@@ -39,12 +39,12 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(SearchingPickupEventArgs));
 
             int offset = 1;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brtrue) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + offset;
 
             newInstructions[index].labels.Add(retLabel);
 
             offset = 1;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloca_S) + offset;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
             newInstructions.InsertRange(
                 index,
