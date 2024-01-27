@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Generic.Scp106API
 
     using API.Features.Core.Generic.Pools;
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.Subroutines;
@@ -25,7 +26,9 @@ namespace Exiled.Events.Patches.Generic.Scp106API
     /// Patches <see cref="Scp106StalkAbility.UpdateServerside"/>.
     /// Adds the <see cref="Scp106Role.VigorStalkCostMoving" /> and <see cref="Scp106Role.VigorStalkCostStationary" /> property.
     /// </summary>
-    // [HarmonyPatch(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.UpdateServerside))]
+    [PropertyPatch(typeof(Scp106Role), nameof(Scp106Role.VigorStalkCostMoving))]
+    [PropertyPatch(typeof(Scp106Role), nameof(Scp106Role.VigorStalkCostStationary))]
+    [HarmonyPatch(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.UpdateServerside))]
     internal class StalkVigorUse
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

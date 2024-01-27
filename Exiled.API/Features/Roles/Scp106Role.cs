@@ -10,6 +10,8 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
+    using Exiled.API.Interfaces;
+    using Exiled.Events;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp106;
@@ -181,13 +183,10 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float SinkholeSpeedMultiplier => SinkholeController.SpeedMultiplier;
 
-        // TODO: ReAdd Setter but before making an propper way to overwrite NW constant only when the propperty has been used
-#pragma warning disable SA1623 // Property summary documentation should match accessors
-#pragma warning disable SA1202
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when being stationary.
         /// </summary>
-        internal float VigorStalkCostStationary { get; } = Scp106StalkAbility.VigorStalkCostStationary;
+        public Property<float> VigorStalkCostStationary { get; } = new(Scp106StalkAbility.VigorStalkCostStationary);
 
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when moving.
