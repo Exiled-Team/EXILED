@@ -518,7 +518,7 @@ namespace Exiled.API.Features.Core
         /// Finds the active <see cref="EObject"/> instances of type <typeparamref name="T"/> filtered based on a predicate.
         /// </summary>
         /// <typeparam name="T">The <typeparamref name="T"/> type to look for.</typeparam>
-        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
         /// <returns>The corresponding active <typeparamref name="T"/> <see cref="EObject"/>.</returns>
         public static T FindActiveObjectOfType<T>(Func<EObject, bool> predicate)
             where T : EObject
@@ -536,7 +536,7 @@ namespace Exiled.API.Features.Core
         /// Finds all the active <see cref="EObject"/> instances of type <typeparamref name="T"/> filtered based on a predicate.
         /// </summary>
         /// <typeparam name="T">The <typeparamref name="T"/> type to look for.</typeparam>
-        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
         /// <returns>A <typeparamref name="T"/>[] containing all the matching results.</returns>
         public static T[] FindActiveObjectsOfType<T>(Func<EObject, bool> predicate)
             where T : EObject
@@ -612,7 +612,7 @@ namespace Exiled.API.Features.Core
         /// </summary>
         /// <typeparam name="T">The <typeparamref name="T"/> type to look for.</typeparam>
         /// <param name="type">The <see cref="EObject"/> type.</param>
-        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
         /// <returns>A <typeparamref name="T"/>[] containing all the matching results.</returns>
         public static T[] FindActiveObjectsOfType<T>(Type type, Func<EObject, bool> predicate)
             where T : EObject
@@ -652,8 +652,8 @@ namespace Exiled.API.Features.Core
         /// Finds all the active <see cref="EObject"/> instances of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type to look for.</typeparam>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <typeparamref name="T"/>[] containing all the elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <typeparamref name="T"/>[] containing all the elements that satisfy the condition.</returns>
         public static T[] FindActiveObjectsOfType<T>(Func<object, bool> predicate)
             where T : EObject
         {
@@ -671,8 +671,8 @@ namespace Exiled.API.Features.Core
         /// Finds all the active <see cref="EObject"/> instances of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type to look for.</typeparam>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <typeparamref name="T"/>[] containing all the elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <typeparamref name="T"/>[] containing all the elements that satisfy the condition.</returns>
         public static T[] FindActiveObjectsOfType<T>(Func<T, bool> predicate)
             where T : EObject
         {
