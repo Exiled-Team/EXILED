@@ -12,11 +12,21 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using System.Linq;
     using System.Reflection;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.API.Features.Doors;
     using Exiled.CustomModules.API.Enums;
     using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Server;
+
+    using GameCore;
+    using Interactables.Interobjects.DoorUtils;
+    using LightContainmentZoneDecontamination;
+    using Respawning;
+    using UnityStandardAssets.CinematicEffects;
+    using Utils.Networking;
 
     /// <summary>
     /// Represents the state of the game on the server within the custom game mode, derived from <see cref="EActor"/> and implementing <see cref="IAdditiveSettings{T}"/>.
@@ -74,6 +84,11 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// </summary>
         public bool CanBeEnded => EvaluateEndingConditions();
 
+        /// <summary>
+        /// Gets the current player count.
+        /// </summary>
+        public int PlayerCount => playerStates.Count;
+
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
@@ -110,10 +125,27 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <summary>
         /// Starts the <see cref="GameState"/>.
         /// </summary>
-        public virtual void Start()
+        /// <param name="isForced">A value indicating whether the <see cref="GameState"/> should be started regardless any conditions.</param>
+        public virtual void Start(bool isForced = false)
         {
+            if (!isForced && PlayerCount < Settings.MinimumPlayers)
+                return;
+
             foreach (PlayerState ps in PlayerStates)
                 ps.Deploy();
+        }
+
+        /// <summary>
+        /// Ends the <see cref="GameState"/>.
+        /// </summary>
+        /// <param name="isForced">A value indicating whether the <see cref="GameState"/> should be ended regardless any conditions.</param>
+        public virtual void End(bool isForced = false)
+        {
+            if (isForced || CanBeEnded)
+            {
+                foreach (PlayerState ps in PlayerStates)
+                    ps.Destroy();
+            }
         }
 
         /// <summary>
@@ -127,6 +159,18 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         {
             base.PostInitialize();
 
+            RespawnManager.Singleton._started = Settings.IsTeamRespawnEnabled;
+
+            if (Settings.TeamRespawnTime > 0f)
+                RespawnManager.Singleton.TimeTillRespawn = Settings.TeamRespawnTime;
+
+            if (!Settings.IsDecontaminationEnabled)
+                DecontaminationController.Singleton.NetworkDecontaminationOverride = DecontaminationController.DecontaminationStatus.Disabled;
+
+            Warhead.IsLocked = Settings.IsWarheadEnabled;
+            Warhead.AutoDetonate = Settings.AutoWarheadTime > 0f;
+            Warhead.AutoDetonateTime = Settings.AutoWarheadTime;
+
             foreach (Player player in Player.List)
             {
                 if (player.HasComponent(PlayerStateComponent, true))
@@ -137,10 +181,25 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         }
 
         /// <inheritdoc/>
+        protected override void OnBeginPlay()
+        {
+            base.OnBeginPlay();
+
+            Door.LockAll(Settings.LockedZones);
+            Door.LockAll(Settings.LockedDoors);
+            Lift.LockAll(Settings.LockedElevators);
+        }
+
+        /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
             base.SubscribeEvents();
 
+            Exiled.Events.Handlers.Server.EndingRound += OnEndingRound;
+            Exiled.Events.Handlers.Server.RespawningTeam += OnRespawningTeamInternal;
+            Exiled.Events.Handlers.Server.RespawnedTeam += OnRespawnedTeamInternal;
+
+            Exiled.Events.Handlers.Player.PreAuthenticating += OnPreAuthenticatingInternal;
             Exiled.Events.Handlers.Player.Verified += OnVerifiedInternal;
             Exiled.Events.Handlers.Player.Destroying += OnDestroyingInternal;
         }
@@ -150,8 +209,38 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         {
             base.UnsubscribeEvents();
 
+            Exiled.Events.Handlers.Server.EndingRound -= OnEndingRound;
+            Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeamInternal;
+            Exiled.Events.Handlers.Server.RespawnedTeam -= OnRespawnedTeamInternal;
+
+            Exiled.Events.Handlers.Player.PreAuthenticating -= OnPreAuthenticatingInternal;
             Exiled.Events.Handlers.Player.Verified -= OnVerifiedInternal;
             Exiled.Events.Handlers.Player.Destroying -= OnDestroyingInternal;
+        }
+
+        private void OnEndingRound(EndingRoundEventArgs ev)
+        {
+            if (!Settings.UseCustomEndingConditions || !EvaluateEndingConditions())
+                return;
+
+            ev.IsAllowed = true;
+        }
+
+        private void OnRespawningTeamInternal(RespawningTeamEventArgs ev)
+        {
+            ev.IsAllowed = (!Settings.SpawnableTeams.IsEmpty() && !Settings.SpawnableTeams.Contains(ev.NextKnownTeam)) ||
+                           (!Settings.NonSpawnableTeams.IsEmpty() && Settings.NonSpawnableTeams.Contains(ev.NextKnownTeam));
+        }
+
+        private void OnRespawnedTeamInternal(RespawnedTeamEventArgs ev)
+        {
+            RespawnManager.Singleton.TimeTillRespawn = Settings.TeamRespawnTime;
+        }
+
+        private void OnPreAuthenticatingInternal(PreAuthenticatingEventArgs ev)
+        {
+            if (PlayerCount == Settings.MaximumPlayers && Settings.RejectExceedingPlayers)
+                ev.Reject(Settings.RejectExceedingMessage, true);
         }
 
         private void OnVerifiedInternal(VerifiedEventArgs ev)
@@ -159,7 +248,12 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
             if (ev.Player.HasComponent(PlayerStateComponent, true))
                 return;
 
-            ev.Player.AddComponent(PlayerStateComponent);
+            EActor component = EObject.CreateDefaultSubobject(PlayerStateComponent, ev.Player.GameObject).Cast<EActor>();
+
+            if(PlayerCount == Settings.MaximumPlayers)
+                component.As<PlayerState>().IsRespawnable = false;
+
+            ev.Player.AddComponent(component);
         }
 
         private void OnDestroyingInternal(DestroyingEventArgs ev)

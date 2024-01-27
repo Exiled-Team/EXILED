@@ -8,6 +8,11 @@
 namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
     using Exiled.API.Features.Core.Generic;
+    using Exiled.CustomModules.API.Enums;
+    using MEC;
+    using PluginAPI.Core;
+
+    using Server = Exiled.API.Features.Server;
 
     /// <summary>
     /// The world base.
@@ -20,5 +25,19 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// Gets the <see cref="CustomGameModes.GameState"/>.
         /// </summary>
         public GameState GameState => gameState ??= GetComponent<GameState>();
+
+        /// <inheritdoc/>
+        protected override void Tick()
+        {
+            base.Tick();
+
+            if (GameState.MatchState != UEMatchState.Terminated)
+                return;
+
+            if (GameState.Settings.RestartRoundOnEnd)
+                Timing.CallDelayed(GameState.Settings.RestartWindupTime, Server.Restart);
+
+            CanEverTick = false;
+        }
     }
 }
