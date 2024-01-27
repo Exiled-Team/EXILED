@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions[index].labels.Add(retLabel);
 
             offset = 1;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
             newInstructions.InsertRange(
                 index,
