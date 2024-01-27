@@ -62,7 +62,7 @@ namespace Exiled.Events.EventArgs.Map
         /// <summary>
         /// Gets or sets a value indicating whether the warning sound for the pickup should be sent.
         /// </summary>
-        public bool ShouldWarning
+        public bool ShouldWarn
         {
             get => !PocketItem.WarningSent;
             set => PocketItem.WarningSent = !value;
