@@ -149,9 +149,10 @@ namespace Exiled.API.Features
             string result = scpName;
             result += info.Base switch
             {
-                MicroHidDamageHandler => " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM",
+                UniversalDamageHandler universalDamageHandler when universalDamageHandler.TranslationId == DeathTranslations.Tesla.Id => " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM",
+                UniversalDamageHandler universalDamageHandler when universalDamageHandler.TranslationId == DeathTranslations.Decontamination.Id => " LOST IN DECONTAMINATION SEQUENCE",
+                UniversalDamageHandler universalDamageHandler when universalDamageHandler.TranslationId == DeathTranslations.MarshmallowMan.Id => " TERMINATED BY MARSHMALLOW MAN",
                 WarheadDamageHandler => " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD",
-                UniversalDamageHandler => " LOST IN DECONTAMINATION SEQUENCE",
                 _ => info.Is(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker ?
                     " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName) : " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED"
             };
