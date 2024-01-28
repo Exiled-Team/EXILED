@@ -147,18 +147,14 @@ namespace Exiled.API.Features
         public static void CustomScpTermination(string scpName, CustomHandlerBase info)
         {
             string result = scpName;
-            if (info.Is(out MicroHidDamageHandler _))
-                result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
-            else if (info.Is(out WarheadDamageHandler _))
-                result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
-            else if (info.Is(out UniversalDamageHandler _))
-                result += " LOST IN DECONTAMINATION SEQUENCE";
-            else if (info.BaseIs(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
-                result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName);
-
-            // result += "To be changed";
-            else
-                result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
+            result += info.Base switch
+            {
+                MicroHidDamageHandler => " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM",
+                WarheadDamageHandler => " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD",
+                UniversalDamageHandler => " LOST IN DECONTAMINATION SEQUENCE",
+                _ => info.Is(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker ?
+                    " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName) : " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED"
+            };
 
             float num = AlphaWarheadController.TimeUntilDetonation <= 0f ? 3.5f : 1f;
             GlitchyMessage(result, UnityEngine.Random.Range(0.1f, 0.14f) * num, UnityEngine.Random.Range(0.07f, 0.08f) * num);
