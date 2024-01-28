@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using API.Features.Doors;
+    using API.Features.Pickups;
     using API.Features.Pools;
 
     using Exiled.Events.Attributes;

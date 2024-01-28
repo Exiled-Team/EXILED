@@ -21,6 +21,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
     using PlayerRoles.Subroutines;
+    using PluginAPI.Events;
 
     using static HarmonyLib.AccessTools;
 
@@ -55,14 +56,14 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // this._switchTarget
-                    new(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(Scp079CurrentCameraSync), nameof(Scp079CurrentCameraSync._switchTarget))),
 
                     // num (cost)
                     new(OpCodes.Ldloc_0),
 
                     // ChangingCameraEventArgs ev = new(Player, Scp079Camera, float)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingCameraEventArgs))[0]),
+                    new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingCameraEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),

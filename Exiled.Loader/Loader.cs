@@ -19,10 +19,16 @@ namespace Exiled.Loader
 
     using API.Enums;
     using API.Interfaces;
+
     using CommandSystem.Commands.Shared;
+
     using Exiled.API.Features;
-    using Exiled.API.Features.Attributes;
     using Features;
+    using Features.Configs;
+    using Features.Configs.CustomConverters;
+    using MEC;
+    using YamlDotNet.Serialization;
+    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Used to handle plugins.
@@ -80,6 +86,34 @@ namespace Exiled.Loader
         /// Gets plugin dependencies.
         /// </summary>
         public static List<Assembly> Dependencies { get; } = new();
+
+        /// <summary>
+        /// Gets or sets the serializer for configs and translations.
+        /// </summary>
+        public static ISerializer Serializer { get; set; } = new SerializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new ColorConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
+            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
+            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .IgnoreFields()
+            .DisableAliases()
+            .Build();
+
+        /// <summary>
+        /// Gets or sets the deserializer for configs and translations.
+        /// </summary>
+        public static IDeserializer Deserializer { get; set; } = new DeserializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new ColorConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .IgnoreFields()
+            .IgnoreUnmatchedProperties()
+            .Build();
 
         /// <summary>
         /// Loads all plugins.
@@ -147,14 +181,10 @@ namespace Exiled.Loader
         /// <returns>Returns the created plugin instance or <see langword="null"/>.</returns>
         public static IPlugin<IConfig> CreatePlugin(Assembly assembly)
         {
-            Type defaultPlayerClass = null;
             try
             {
                 foreach (Type type in assembly.GetTypes())
                 {
-                    if (typeof(Player).IsAssignableFrom(type))
-                        defaultPlayerClass = type;
-
                     if (type.IsAbstract || type.IsInterface)
                     {
                         Log.Debug($"\"{type.FullName}\" is an interface or abstract class, skipping.");
@@ -199,14 +229,6 @@ namespace Exiled.Loader
 
                     if (CheckPluginRequiredExiledVersion(plugin))
                         continue;
-
-                    if (defaultPlayerClass is not null)
-                    {
-                        DefaultPlayerClassAttribute dpc = Player.DEFAULT_PLAYER_CLASS.GetCustomAttribute<DefaultPlayerClassAttribute>();
-
-                        if (dpc is not null && !dpc.EnforceAuthority)
-                            Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
-                    }
 
                     return plugin;
                 }

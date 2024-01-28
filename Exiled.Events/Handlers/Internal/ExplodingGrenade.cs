@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Handlers.Internal
 {
+    using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Map;
 
     /// <summary>

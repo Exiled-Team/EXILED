@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using API.Features.Pools;
     using Exiled.API.Extensions;
+    using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
 
