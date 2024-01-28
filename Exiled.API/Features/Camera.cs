@@ -13,6 +13,7 @@ namespace Exiled.API.Features
 
     using Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using MapGeneration;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
@@ -23,7 +24,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game Scp079Camera.
     /// </summary>
-    public class Camera : IWrapper<Scp079Camera>, IWorldSpace
+    public class Camera : GameEntity, IWrapper<Scp079Camera>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="Scp079Camera"/>s and their corresponding <see cref="Camera"/>.
@@ -152,17 +153,17 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Camera"/>.
         /// </summary>
         /// <returns><see cref="Camera"/> object.</returns>
-        public static Camera Random => List.GetRandomValue();
+        public static Camera Random => List.Random();
+
+        /// <summary>
+        /// Gets the camera's <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the base <see cref="Scp079Camera"/>.
         /// </summary>
         public Scp079Camera Base { get; }
-
-        /// <summary>
-        /// Gets the camera's <see cref="UnityEngine.GameObject"/>.
-        /// </summary>
-        public GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the camera's <see cref="UnityEngine.Transform"/>.
@@ -187,7 +188,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's <see cref="ZoneType"/>.
         /// </summary>
-        public ZoneType Zone => Room?.Zone ?? ZoneType.Unspecified;
+        public ZoneType Zone => Room ? Room.Zone : ZoneType.Unspecified;
 
         /// <summary>
         /// Gets the camera's <see cref="CameraType"/>.
@@ -260,8 +261,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satisfy the condition.</returns>
         public static IEnumerable<Camera> Get(Func<Camera, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -307,8 +308,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <param name="result">A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satify the condition.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <param name="result">A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satisfy the condition.</param>
         /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
         public static bool TryGet(Func<Camera, bool> predicate, out IEnumerable<Camera> result) => (result = Get(predicate)).Any();
 
