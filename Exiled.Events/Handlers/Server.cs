@@ -113,6 +113,36 @@ namespace Exiled.Events.Handlers
         public static Event<RespawnedTeamEventArgs> RespawnedTeam { get; set; } = new();
 
         /// <summary>
+        /// Invoked before setting up the environment for the assignment of human roles.
+        /// </summary>
+        public static Event<PreAssigningHumanRolesEventArgs> PreAssigningHumanRoles { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before setting up the environment for the assignment of SCP roles.
+        /// </summary>
+        public static Event<PreAssigningScpRolesEventArgs> PreAssigningScpRoles { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before assigning human roles.
+        /// </summary>
+        public static Event<AssigningHumanRolesEventArgs> AssigningHumanRoles { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before assigning SCP roles.
+        /// </summary>
+        public static Event<AssigningScpRolesEventArgs> AssigningScpRoles { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before deploying a SCP role.
+        /// </summary>
+        public static Event<DeployingScpRoleEventArgs> DeployingScpRole { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before deploying a human role.
+        /// </summary>
+        public static Event<DeployingHumanRoleEventArgs> DeployingHumanRole { get; set; } = new();
+
+        /// <summary>
         /// Called before waiting for players.
         /// </summary>
         public static void OnWaitingForPlayers() => WaitingForPlayers.InvokeSafely();
@@ -211,5 +241,41 @@ namespace Exiled.Events.Handlers
         /// <param name="teamType"><inheritdoc cref="RespawnedTeamEventArgs.Team"/></param>
         /// <param name="hubs"><inheritdoc cref="RespawnedTeamEventArgs.Players"/></param>
         public static void OnRespawnedTeam(SpawnableTeamType teamType, List<ReferenceHub> hubs) => RespawnedTeam.InvokeSafely(new RespawnedTeamEventArgs(teamType, hubs));
+
+        /// <summary>
+        /// Called before setting up the environment for the assignment of human roles.
+        /// </summary>
+        /// <param name="ev">The <see cref="PreAssigningHumanRolesEventArgs"/> instance.</param>
+        public static void OnPreAssigningHumanRoles(PreAssigningHumanRolesEventArgs ev) => PreAssigningHumanRoles.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before setting up the environment for the assignment of SCP roles.
+        /// </summary>
+        /// <param name="ev">The <see cref="PreAssigningScpRolesEventArgs"/> instance.</param>
+        public static void OnPreAssigningScpRoles(PreAssigningScpRolesEventArgs ev) => PreAssigningScpRoles.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before assigning human roles.
+        /// </summary>
+        /// <param name="ev">The <see cref="AssigningHumanRolesEventArgs"/> instance.</param>
+        public static void OnAssigningHumanRoles(AssigningHumanRolesEventArgs ev) => AssigningHumanRoles.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before assigning SCP roles.
+        /// </summary>
+        /// <param name="ev">The <see cref="AssigningScpRolesEventArgs"/> instance.</param>
+        public static void OnAssigningScpRoles(AssigningScpRolesEventArgs ev) => AssigningScpRoles.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before deploying a SCP role.
+        /// </summary>
+        /// <param name="ev">The <see cref="DeployingScpRoleEventArgs"/> instance.</param>
+        public static void OnDeployingScpRole(DeployingScpRoleEventArgs ev) => DeployingScpRole.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before deploying a human role.
+        /// </summary>
+        /// <param name="ev">The <see cref="DeployingHumanRoleEventArgs"/> instance.</param>
+        public static void OnDeployingHumanRole(DeployingHumanRoleEventArgs ev) => DeployingHumanRole.InvokeSafely(ev);
     }
 }

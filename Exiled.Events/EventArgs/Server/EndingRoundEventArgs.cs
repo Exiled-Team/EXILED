@@ -18,18 +18,10 @@ namespace Exiled.Events.EventArgs.Server
         /// <summary>
         /// Initializes a new instance of the <see cref="EndingRoundEventArgs" /> class.
         /// </summary>
-        /// <param name="classList">
-        /// <inheritdoc cref="RoundSummary.SumInfo_ClassList" />
-        /// </param>
-        /// <param name="leadingTeam">
-        /// <inheritdoc cref="LeadingTeam" />
-        /// </param>
-        /// <param name="isAllowed">
-        /// <inheritdoc cref="IsRoundEnded" />
-        /// </param>
-        /// <param name="isForceEnded">
-        /// <inheritdoc cref="IsForceEnded" />
-        /// </param>
+        /// <param name="classList"><inheritdoc cref="RoundSummary.SumInfo_ClassList" /></param>
+        /// <param name="leadingTeam"><inheritdoc cref="LeadingTeam" /></param>
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed" /></param>
+        /// <param name="isForceEnded"><inheritdoc cref="IsForceEnded" /></param>
         public EndingRoundEventArgs(RoundSummary.LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, bool isAllowed, bool isForceEnded)
         {
             ClassList = classList;
