@@ -5,10 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Core
+namespace Exiled.API.Features.Core.Behaviours
 {
     using Exiled.API.Features;
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
 
     /// <summary>
     /// <see cref="EPlayerBehaviour"/> is a versatile component designed to enhance the functionality of playable characters.

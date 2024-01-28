@@ -7,7 +7,7 @@
 
 namespace Exiled.API.Enums
 {
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
 
 #pragma warning disable SA1310 // Field names should not contain underscore
 

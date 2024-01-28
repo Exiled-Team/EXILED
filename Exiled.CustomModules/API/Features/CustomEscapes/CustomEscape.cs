@@ -8,7 +8,6 @@
 namespace Exiled.CustomModules.API.Features.CustomEscapes
 {
     using System;
-
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -18,8 +17,8 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.Attributes;
     using MonoMod.Utils;
-
     using Utils.NonAllocLINQ;
 
     /// <summary>

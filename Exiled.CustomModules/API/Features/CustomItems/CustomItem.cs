@@ -20,10 +20,10 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Spawn;
+    using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
     using MapGeneration.Distributors;
-
     using UnityEngine;
 
     /// <summary>
