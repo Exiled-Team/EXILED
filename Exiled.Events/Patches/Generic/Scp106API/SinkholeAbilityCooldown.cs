@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Generic.Scp106API
 {
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Features.Pools;

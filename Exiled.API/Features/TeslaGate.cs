@@ -11,15 +11,10 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
-
     using Hazards;
-
     using MEC;
-
     using PlayerRoles;
-
     using UnityEngine;
 
     using BaseTeslaGate = global::TeslaGate;
@@ -27,7 +22,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game tesla gate.
     /// </summary>
-    public class TeslaGate : GameEntity, IWrapper<BaseTeslaGate>, IWorldSpace
+    public class TeslaGate : IWrapper<BaseTeslaGate>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BaseTeslaGate"/>s and their corresponding <see cref="TeslaGate"/>.
@@ -74,7 +69,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the tesla gate's <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public override GameObject GameObject => Base.gameObject;
+        public GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the tesla gate's <see cref="UnityEngine.Transform"/>.

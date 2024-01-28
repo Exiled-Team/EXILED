@@ -12,11 +12,14 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Items;
     using Exiled.API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
+
+    using InventorySystem.Items;
     using InventorySystem.Items.Radio;
 
     using PluginAPI.Events;

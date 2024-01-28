@@ -43,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             LocalBuilder ev = generator.DeclareLocal(typeof(DroppingScp330EventArgs));
 
-            int offset = -1;
+            const int offset = -1;
             int index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(ReferenceHub), nameof(ReferenceHub.inventory)))) + offset;
 
             newInstructions.InsertRange(
@@ -79,17 +79,17 @@ namespace Exiled.Events.Patches.Events.Scp330
                 });
 
             // Set our location of previous owner
-            offset = 1;
-            index = newInstructions.FindLastIndex(
-                instruction => instruction.StoresField(Field(typeof(ItemPickupBase), nameof(ItemPickupBase.PreviousOwner)))) + offset;
+            int jumpOverOffset = 1;
+            int jumpOverIndex = newInstructions.FindLastIndex(
+                instruction => instruction.StoresField(Field(typeof(ItemPickupBase), nameof(ItemPickupBase.PreviousOwner)))) + jumpOverOffset;
 
             // Remove TryRemove candy logic since we did it earlier from current location
-            newInstructions.RemoveRange(index, 6);
+            newInstructions.RemoveRange(jumpOverIndex, 6);
 
             int candyKindIdIndex = 4;
 
             newInstructions.InsertRange(
-                index,
+                jumpOverIndex,
                 new[]
                 {
                     // candyKindID = ev.Candy
@@ -101,8 +101,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                     new(OpCodes.Ldloc, candyKindIdIndex),
                 });
 
-            // before msg.SendToAuthenticated(0);
-            newInstructions[newInstructions.Count - 5].labels.Add(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

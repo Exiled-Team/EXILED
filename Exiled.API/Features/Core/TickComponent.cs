@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Core
     public sealed class TickComponent : EObject
     {
         /// <summary>
-        /// The default fixed tick rate (60 per second).
+        /// The default fixed tick rate.
         /// </summary>
         public const float DefaultFixedTickRate = 0.016f;
 

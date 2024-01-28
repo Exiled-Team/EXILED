@@ -205,6 +205,17 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
+        /// Sets <see cref="Room"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
+        /// </summary>
+        /// <param name="room">Room to modify.</param>
+        /// <param name="target">Only this player can see room color.</param>
+        /// <param name="multiplier">Light intensity multiplier to set.</param>
+        [Obsolete("This features has been remove by NW", true)]
+        public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier)
+        {
+        }
+
+        /// <summary>
         /// Change <see cref="Player"/> character model for appearance.
         /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
         /// </summary>

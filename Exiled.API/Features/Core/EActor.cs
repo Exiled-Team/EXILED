@@ -59,11 +59,6 @@ namespace Exiled.API.Features.Core
                 Base = gameObject;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="EActor"/> should be destroyed the next tick.
-        /// </summary>
-        public bool DestroyNextTick { get; set; }
-
         /// <inheritdoc/>
         public IReadOnlyCollection<EActor> ComponentsInChildren => componentsInChildren;
 
@@ -145,64 +140,34 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Attaches a <see cref="EActor"/> to the specified <see cref="GameObject"/>.
         /// </summary>
-        /// <param name="from"><see cref="GameObject"/>.</param>
-        /// <param name="to"><see cref="EActor"/>.</param>
-        public static void AttachTo(GameObject from, EActor to) => to.Base = from;
+        /// <param name="comp"><see cref="EActor"/>.</param>
+        /// <param name="gameObject"><see cref="GameObject"/>.</param>
+        public static void AttachTo(EActor comp, GameObject gameObject) => comp.Base = gameObject;
 
         /// <summary>
         /// Attaches a <see cref="EActor"/> to the specified <see cref="EActor"/>.
         /// </summary>
-        /// <param name="from">The source actor.</param>
         /// <param name="to">The actor to be modified.</param>
-        public static void AttachTo(EActor from, EActor to) => to.Base = from.Base;
+        /// <param name="from">The source actor.</param>
+        public static void AttachTo(EActor to, EActor from) => to.Base = from.Base;
 
         /// <inheritdoc/>
         public T AddComponent<T>(string name = "")
             where T : EActor
         {
             T component = CreateDefaultSubobject<T>(Base, string.IsNullOrEmpty(name) ? $"{GetType().Name}-Component#{ComponentsInChildren.Count}" : name).Cast<T>();
-            if (!component)
+            if (component is null)
                 return null;
 
             componentsInChildren.Add(component);
-
-            return component.Cast(out T param) ? param : throw new InvalidCastException("The provided EActor cannot be cast to the specified type.");
-        }
-
-        /// <inheritdoc/>
-        public T AddComponent<T>(Type type, string name = "")
-            where T : EActor
-        {
-            T component = CreateDefaultSubobject<T>(type, Base, string.IsNullOrEmpty(name) ? $"{type.Name}-Component#{ComponentsInChildren.Count}" : name).Cast<T>();
-            if (!component)
-                return null;
-
-            componentsInChildren.Add(component);
-
-            return component.Cast(out T param) ? param : throw new InvalidCastException("The provided EActor cannot be cast to the specified type.");
-        }
-
-        /// <inheritdoc/>
-        public T AddComponent<T>(EActor actor, string name = "")
-            where T : EActor
-        {
-            if (!actor)
-                throw new NullReferenceException("The provided EActor is null.");
-
-            if (!string.IsNullOrEmpty(name))
-                actor.Name = name;
-
-            AttachTo(Base, actor);
-            componentsInChildren.Add(actor);
-
-            return actor.Cast(out T param) ? param : throw new InvalidCastException("The provided EActor cannot be cast to the specified type.");
+            return component.Cast<T>();
         }
 
         /// <inheritdoc/>
         public EActor AddComponent(Type type, string name = "")
         {
             EActor component = CreateDefaultSubobject(type, Base, string.IsNullOrEmpty(name) ? $"{GetType().Name}-Component#{ComponentsInChildren.Count}" : name).Cast<EActor>();
-            if (!component)
+            if (component is null)
                 return null;
 
             componentsInChildren.Add(component);
@@ -210,49 +175,8 @@ namespace Exiled.API.Features.Core
         }
 
         /// <inheritdoc/>
-        public EActor AddComponent(EActor actor, string name = "")
-        {
-            if (!actor)
-                throw new NullReferenceException("The provided EActor is null.");
-
-            if (!string.IsNullOrEmpty(name))
-                actor.Name = name;
-
-            AttachTo(Base, actor);
-            componentsInChildren.Add(actor);
-
-            return actor;
-        }
-
-        /// <inheritdoc/>
-        public IEnumerable<EActor> AddComponents(IEnumerable<Type> types)
-        {
-            foreach (Type t in types)
-                yield return AddComponent(t);
-        }
-
-        /// <inheritdoc/>
-        public IEnumerable<EActor> AddComponents(IEnumerable<EActor> actors)
-        {
-            foreach (EActor actor in actors)
-                yield return AddComponent(actor);
-        }
-
-        /// <inheritdoc/>
-        public IEnumerable<T> AddComponents<T>(IEnumerable<T> actors)
-            where T : EActor
-        {
-            foreach (T actor in actors)
-                yield return AddComponent<T>(actor);
-        }
-
-        /// <inheritdoc/>
-        public IEnumerable<T> AddComponents<T>(IEnumerable<EActor> types)
-            where T : EActor
-        {
-            foreach (EActor type in types)
-                yield return AddComponent<T>(type);
-        }
+        public T AddComponent<T>(Type type, string name = "")
+            where T : EActor => ComponentsInChildren.FirstOrDefault(comp => type == comp.GetType()).Cast<T>();
 
         /// <inheritdoc/>
         public EActor GetComponent(Type type) => ComponentsInChildren.FirstOrDefault(comp => type == comp.GetType());
@@ -264,15 +188,6 @@ namespace Exiled.API.Features.Core
         /// <inheritdoc/>
         public T GetComponent<T>(Type type)
             where T : EActor => ComponentsInChildren.FirstOrDefault(comp => type == comp.GetType()).Cast<T>();
-
-        /// <inheritdoc/>
-        public IEnumerable<T> GetComponents<T>() => ComponentsInChildren.Where(comp => typeof(T).IsAssignableFrom(comp.GetType())).Cast<T>();
-
-        /// <inheritdoc/>
-        public IEnumerable<T> GetComponents<T>(Type type) => ComponentsInChildren.Where(comp => typeof(T).IsAssignableFrom(comp.GetType())).Cast<T>();
-
-        /// <inheritdoc/>
-        public IEnumerable<EActor> GetComponents(Type type) => ComponentsInChildren.Where(comp => type.IsAssignableFrom(comp.GetType()));
 
         /// <inheritdoc/>
         public bool TryGetComponent<T>(Type type, out T component)
@@ -311,12 +226,12 @@ namespace Exiled.API.Features.Core
 
         /// <inheritdoc/>
         public bool HasComponent<T>(bool depthInheritance = false) => depthInheritance
-            ? ComponentsInChildren.Any(comp => typeof(T).IsAssignableFrom(comp.GetType()))
+            ? ComponentsInChildren.Any(comp => typeof(T).IsSubclassOf(comp.GetType()))
             : ComponentsInChildren.Any(comp => typeof(T) == comp.GetType());
 
         /// <inheritdoc/>
         public bool HasComponent(Type type, bool depthInheritance = false) => depthInheritance
-            ? ComponentsInChildren.Any(comp => type.IsAssignableFrom(comp.GetType()))
+            ? ComponentsInChildren.Any(comp => type.IsSubclassOf(comp.GetType()))
             : ComponentsInChildren.Any(comp => type == comp.GetType());
 
         /// <summary>
@@ -339,11 +254,6 @@ namespace Exiled.API.Features.Core
         /// </summary>
         protected virtual void Tick()
         {
-            if (DestroyNextTick)
-            {
-                Destroy();
-                return;
-            }
         }
 
         /// <summary>
