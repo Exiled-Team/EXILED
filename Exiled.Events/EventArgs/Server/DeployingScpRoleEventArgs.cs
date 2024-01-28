@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs.Server
         private Action @delegate;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeployingScpRoleEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="DeployingScpRoleEventArgs"/> class.
         /// </summary>
         /// <param name="chosenPlayers">The players from which retrieve the player to be spawned from.</param>
         /// <param name="selectedRole"><inheritdoc cref="Role"/></param>

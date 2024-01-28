@@ -147,6 +147,7 @@ namespace Exiled.API.Features
         public static void CustomScpTermination(string scpName, CustomHandlerBase info)
         {
             string result = scpName;
+
             result += info.Base switch
             {
                 MicroHidDamageHandler => " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM",

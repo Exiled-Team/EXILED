@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Server
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -25,10 +26,11 @@ namespace Exiled.Events.Patches.Events.Server
     using Player = API.Features.Player;
 
     /// <summary>
-    /// Patch the <see cref="RespawnManager.Spawn" />.
-    /// Adds the <see cref="Server.RespawningTeam" /> event.
+    /// Patch the <see cref="RespawnManager.Spawn"/>.
+    /// Adds <see cref="Server.RespawningTeam"/> and <see cref="Server.DeployingTeamRole"/> events.
     /// </summary>
     [EventPatch(typeof(Server), nameof(Server.RespawningTeam))]
+    [EventPatch(typeof(Server), nameof(Server.DeployingTeamRole))]
     [HarmonyPatch(typeof(RespawnManager), nameof(RespawnManager.Spawn))]
     internal static class RespawningTeam
     {
@@ -43,71 +45,101 @@ namespace Exiled.Events.Patches.Events.Server
 
             Label continueLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(
-                index,
-                new[]
-                {
-                    // GetPlayers(list);
-                    new CodeInstruction(OpCodes.Ldloc_1).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetPlayers))),
+            newInstructions.InsertRange(index, new CodeInstruction[]
+            {
+                // GetPlayers(list);
+                new CodeInstruction(OpCodes.Ldloc_1).MoveLabelsFrom(newInstructions[index]),
+                new(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetPlayers))),
 
-                    // maxWaveSize
-                    new(OpCodes.Ldloc_2),
+                // maxWaveSize
+                new(OpCodes.Ldloc_2),
 
-                    // this.NextKnownTeam
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
+                // this.NextKnownTeam
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
 
-                    // true
-                    new(OpCodes.Ldc_I4_1),
+                // true
+                new(OpCodes.Ldc_I4_1),
 
-                    // RespawningTeamEventArgs ev = new(players, num, this.NextKnownTeam)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RespawningTeamEventArgs))[0]),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc, ev.LocalIndex),
+                // RespawningTeamEventArgs ev = new(players, num, this.NextKnownTeam)
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RespawningTeamEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, ev.LocalIndex),
 
-                    // Handlers.Server.OnRespawningTeam(ev)
-                    new(OpCodes.Call, Method(typeof(Server), nameof(Server.OnRespawningTeam))),
+                // Handlers.Server.OnRespawningTeam(ev)
+                new(OpCodes.Call, Method(typeof(Server), nameof(Server.OnRespawningTeam))),
 
-                    // if (ev.IsAllowed)
-                    //    goto continueLabel;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.IsAllowed))),
-                    new(OpCodes.Brtrue_S, continueLabel),
+                // if (ev.IsAllowed)
+                //    goto continueLabel;
+                new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.IsAllowed))),
+                new(OpCodes.Brtrue_S, continueLabel),
 
-                    // this.NextKnownTeam = SpawnableTeam.None
-                    //    return;
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldc_I4_0),
-                    new(OpCodes.Stfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
-                    new(OpCodes.Ret),
+                // this.NextKnownTeam = SpawnableTeam.None
+                //    return;
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldc_I4_0),
+                new(OpCodes.Stfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
+                new(OpCodes.Ret),
 
-                    // load "ev" four times
-                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
+                // load "ev" four times
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
 
-                    // num = ev.MaximumRespawnAmount
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.MaximumRespawnAmount))),
-                    new(OpCodes.Stloc_2),
+                // num = ev.MaximumRespawnAmount
+                new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.MaxWaveSize))),
+                new(OpCodes.Stloc_2),
 
-                    // spawnableTeamHandler = ev.SpawnableTeam
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.SpawnableTeam))),
-                    new(OpCodes.Stloc_0),
+                // spawnableTeamHandler = ev.SpawnableTeam
+                new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.SpawnableTeam))),
+                new(OpCodes.Stloc_0),
 
-                    // list = GetHubs(ev.Players)
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.Players))),
-                    new(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetHubs))),
-                    new(OpCodes.Stloc_1),
+                // list = GetHubs(ev.Players)
+                new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.Players))),
+                new(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetHubs))),
+                new(OpCodes.Stloc_1),
 
-                    // queueToFill = ev.SpawnQueue;
-                    new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.SpawnQueue))),
-                    new(OpCodes.Stloc, 7),
-                });
+                // queueToFill = ev.SpawnQueue;
+                new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.SpawnQueue))),
+                new(OpCodes.Stloc, 7),
+            });
 
             offset = -6;
             newInstructions.RemoveRange(newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(SpawnableTeamHandlerBase), nameof(SpawnableTeamHandlerBase.GenerateQueue))) + offset, 7);
+
+            offset = -3;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldc_I4_M1) + offset;
+
+            LocalBuilder deployingEv = generator.DeclareLocal(typeof(DeployingTeamRoleEventArgs));
+            Label jne = generator.DefineLabel();
+
+            newInstructions.InsertRange(index, new CodeInstruction[]
+            {
+                new(OpCodes.Ldloc_S, 10),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DeployingTeamRoleEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnDeployingTeamRole))),
+                new(OpCodes.Stloc_S, deployingEv.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DeployingTeamRoleEventArgs), nameof(DeployingTeamRoleEventArgs.Role))),
+                new(OpCodes.Ldloc_S, deployingEv.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DeployingTeamRoleEventArgs), nameof(DeployingTeamRoleEventArgs.Delegate))),
+                new(OpCodes.Callvirt, Method(typeof(Action), nameof(Action.Invoke))),
+                new(OpCodes.Ldloc_S, deployingEv.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DeployingTeamRoleEventArgs), nameof(DeployingTeamRoleEventArgs.IsReliable))),
+                new(OpCodes.Brfalse_S, jne),
+            });
+
+            offset = 5;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldc_I4_M1) + offset;
+            newInstructions[index].labels.Add(jne);
+
+            offset = -3;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldc_I4_M1) + offset;
+
+            newInstructions.RemoveRange(index, 5);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
