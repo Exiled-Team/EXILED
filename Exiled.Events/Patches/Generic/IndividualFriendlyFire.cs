@@ -95,11 +95,6 @@ namespace Exiled.Events.Patches.Generic
             if (attackerFootprint.Hub == Server.Host.ReferenceHub)
                 return true;
 
-            // Only check friendlyFire if the FootPrint hasn't changed (Fix for Grenade not dealing damage because it's from a dead player)
-            // TODO rework FriendlyFireRule to make it compatible with Footprint
-            if (!attackerFootprint.SameLife(new(attackerFootprint.Hub)))
-                return HitboxIdentity.CheckFriendlyFire(attackerFootprint.Role, victimHub.roleManager.CurrentRole.RoleTypeId);
-
             if (attackerFootprint.Hub is null || victimHub is null)
             {
                 Log.Debug($"CheckFriendlyFirePlayerRules, Attacker hub null: {attackerFootprint.Hub is null}, Victim hub null: {victimHub is null}");
