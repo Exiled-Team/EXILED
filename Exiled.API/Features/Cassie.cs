@@ -11,6 +11,7 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Text;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Generic.Pools;
 
     using MEC;
@@ -20,6 +21,8 @@ namespace Exiled.API.Features
     using PlayerStatsSystem;
 
     using Respawning;
+    using Subtitles;
+    using Utils.Networking;
 
     using CustomFirearmHandler = DamageHandlers.FirearmDamageHandler;
     using CustomHandlerBase = DamageHandlers.DamageHandlerBase;
@@ -158,8 +161,9 @@ namespace Exiled.API.Features
                     " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName) : " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED"
             };
 
-            float num = AlphaWarheadController.TimeUntilDetonation <= 0f ? 3.5f : 1f;
+            float num = AlphaWarheadController.Detonated ? 3.5f : 1f;
             GlitchyMessage(result, UnityEngine.Random.Range(0.1f, 0.14f) * num, UnityEngine.Random.Range(0.07f, 0.08f) * num);
+            new SubtitleMessage(new SubtitlePart(SubtitleType.SCP, new string[] { scpName.RemoveSpaces() })).SendToAuthenticated(0);
         }
 
         /// <summary>
