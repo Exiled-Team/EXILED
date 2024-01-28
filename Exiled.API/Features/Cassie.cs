@@ -147,6 +147,7 @@ namespace Exiled.API.Features
         public static void CustomScpTermination(string scpName, CustomHandlerBase info)
         {
             string result = scpName;
+
             result += info.Base switch
             {
                 UniversalDamageHandler universalDamageHandler when universalDamageHandler.TranslationId == DeathTranslations.Tesla.Id => " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM",
