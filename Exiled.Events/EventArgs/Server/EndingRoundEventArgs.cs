@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs.Server
         public LeadingTeam LeadingTeam { get; set; }
 
         /// <summary>
-        /// Gets or Sets a value indicating whether the round is ended by API call.
+        /// Gets or sets a value indicating whether the round is ended by API call.
         /// </summary>
         public bool IsForceEnded { get; set; }
 
