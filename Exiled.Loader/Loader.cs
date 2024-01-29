@@ -21,12 +21,11 @@ namespace Exiled.Loader
     using API.Interfaces;
 
     using CommandSystem.Commands.Shared;
-
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Features;
     using Features.Configs;
     using Features.Configs.CustomConverters;
-    using MEC;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NodeDeserializers;
 
@@ -75,7 +74,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the initialized global random class.
         /// </summary>
-        public static Random Random { get; } = new();
+        public static Random Random => CommonExtensions.Random;
 
         /// <summary>
         /// Gets the version of the assembly.

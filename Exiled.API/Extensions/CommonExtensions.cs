@@ -18,12 +18,17 @@ namespace Exiled.API.Extensions
     public static class CommonExtensions
     {
         /// <summary>
+        /// Gets the initialized global random class.
+        /// </summary>
+        public static System.Random Random { get; } = new();
+
+        /// <summary>
         /// Gets a random value from an <see cref="IEnumerable{T}"/>.
         /// </summary>
         /// <param name="enumerable"><see cref="IEnumerable{T}"/> to be used to get a random value.</param>
         /// <typeparam name="T">Type of <see cref="IEnumerable{T}"/> elements.</typeparam>
         /// <returns>Returns a random value from <see cref="IEnumerable{T}"/>.</returns>
-        public static T GetRandomValue<T>(this IEnumerable<T> enumerable) => enumerable is null || enumerable.Count() == 0 ? default : enumerable.ElementAt(Random.Range(0, enumerable.Count()));
+        public static T GetRandomValue<T>(this IEnumerable<T> enumerable) => enumerable is null || enumerable.Count() == 0 ? default : enumerable.ElementAt(UnityEngine.Random.Range(0, enumerable.Count()));
 
         /// <summary>
         /// Gets a random value from an <see cref="IEnumerable{T}"/> that matches the provided condition.
@@ -42,7 +47,7 @@ namespace Exiled.API.Extensions
         /// <returns>The new modfied curve.</returns>
         public static AnimationCurve Multiply(this AnimationCurve curve, float amount)
         {
-            for (int i = 0; i < curve.length; i++)
+            for (var i = 0; i < curve.length; i++)
                 curve.keys[i].value *= amount;
 
             return curve;
@@ -56,10 +61,31 @@ namespace Exiled.API.Extensions
         /// <returns>The new modfied curve.</returns>
         public static AnimationCurve Add(this AnimationCurve curve, float amount)
         {
-            for (int i = 0; i < curve.length; i++)
+            for (var i = 0; i < curve.length; i++)
                 curve.keys[i].value += amount;
 
             return curve;
         }
+
+        /// <summary>
+        /// Calculates whether the percentage chance has passed (<see cref="System.Random"/>).
+        /// </summary>
+        /// <param name="chance">Chance (percentage).</param>
+        /// <returns>Percentage chance has passed or not.</returns>
+        public static bool Chance(this double chance) => Random.NextDouble() * 100 <= chance;
+
+        /// <summary>
+        /// Calculates whether the percentage chance has passed (<see cref="UnityEngine.Random"/>).
+        /// </summary>
+        /// <param name="chance">Chance (percentage).</param>
+        /// <returns>Percentage chance has passed or not.</returns>
+        public static bool Chance(this int chance) => Chance(chance);
+
+        /// <summary>
+        /// Calculates whether the percentage chance has passed (<see cref="UnityEngine.Random"/>).
+        /// </summary>
+        /// <param name="chance">Chance (percentage).</param>
+        /// <returns>Percentage chance has passed or not.</returns>
+        public static bool Chance(this float chance) => UnityEngine.Random.value * 100 <= chance;
     }
 }
