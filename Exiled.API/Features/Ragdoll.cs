@@ -28,6 +28,8 @@ namespace Exiled.API.Features
 
     using UnityEngine;
 
+    using BaseScp3114Ragdoll = PlayerRoles.PlayableScps.Scp3114.Scp3114Ragdoll;
+
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -298,11 +300,12 @@ namespace Exiled.API.Features
 
             basicRagdoll.NetworkInfo = networkInfo;
 
-            ragdoll = new(basicRagdoll)
+            ragdoll = basicRagdoll is BaseScp3114Ragdoll scp3114Ragdoll ? new Scp3114Ragdoll(scp3114Ragdoll) : new Ragdoll(basicRagdoll)
             {
                 Position = networkInfo.StartPosition,
                 Rotation = networkInfo.StartRotation,
             };
+
             return true;
         }
 
@@ -377,7 +380,7 @@ namespace Exiled.API.Features
         /// <param name="ragdoll">The <see cref="BasicRagdoll"/> to get.</param>
         /// <returns>A <see cref="Ragdoll"/> or <see langword="null"/> if not found.</returns>
         public static Ragdoll Get(BasicRagdoll ragdoll) => ragdoll == null ? null :
-            BasicRagdollToRagdoll.TryGetValue(ragdoll, out Ragdoll doll) ? doll : new Ragdoll(ragdoll);
+            BasicRagdollToRagdoll.TryGetValue(ragdoll, out Ragdoll doll) ? doll : ragdoll is BaseScp3114Ragdoll scp3114Ragdoll ? new Scp3114Ragdoll(scp3114Ragdoll) : new Ragdoll(ragdoll);
 
         /// <summary>
         /// Gets the <see cref="IEnumerable{T}"/> of <see cref="Ragdoll"/> belonging to the <see cref="Player"/>, if any.
