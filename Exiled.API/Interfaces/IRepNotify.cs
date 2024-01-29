@@ -7,7 +7,7 @@
 
 namespace Exiled.API.Interfaces
 {
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
 
     /// <summary>
     /// Represents an interface for objects that provide replication notifications.

@@ -12,8 +12,8 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using System.Text;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Input;
-    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.CustomModules.API.Features.CustomAbilities.Settings;
     using Exiled.CustomModules.API.Features.PlayerAbilities;

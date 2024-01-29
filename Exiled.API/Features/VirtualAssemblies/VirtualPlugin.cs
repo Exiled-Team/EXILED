@@ -17,7 +17,7 @@ namespace Exiled.API.Features.VirtualAssemblies
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.VirtualAssemblies.EventArgs;
     using Exiled.API.Interfaces;
