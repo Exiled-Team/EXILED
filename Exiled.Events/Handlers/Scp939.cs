@@ -13,37 +13,37 @@ namespace Exiled.Events.Handlers
     using Exiled.Events.Features;
 
     /// <summary>
-    ///     Handles SCP-939 related events.
+    /// Handles SCP-939 related events.
     /// </summary>
     public static class Scp939
     {
         /// <summary>
-        ///     Invoked before SCP-939 changes its target focus.
+        /// Invoked before SCP-939 changes its target focus.
         /// </summary>
         public static Event<ChangingFocusEventArgs> ChangingFocus { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-939 uses its lunge ability.
+        /// Invoked before SCP-939 uses its lunge ability.
         /// </summary>
         public static Event<LungingEventArgs> Lunging { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-939 uses its amnestic cloud ability.
+        /// Invoked before SCP-939 uses its amnestic cloud ability.
         /// </summary>
         public static Event<PlacingAmnesticCloudEventArgs> PlacingAmnesticCloud { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-939 plays a stolen voice.
+        /// Invoked before SCP-939 plays a stolen voice.
         /// </summary>
         public static Event<PlayingVoiceEventArgs> PlayingVoice { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-939 will save Human voice.
+        /// Invoked before SCP-939 will save Human voice.
         /// </summary>
         public static Event<SavingVoiceEventArgs> SavingVoice { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before SCP-939 plays a sound effect.
+        /// Invoked before SCP-939 plays a sound effect.
         /// </summary>
         public static Event<PlayingSoundEventArgs> PlayingSound { get; set; } = new();
 
@@ -54,37 +54,42 @@ namespace Exiled.Events.Handlers
         public static Event<ClawedEventArgs> Clawed { get; set; } = new();
 
         /// <summary>
-        ///     Called before SCP-939 changes its target focus.
+        /// Invoked before validating visibility.
+        /// </summary>
+        public static Event<ValidatingVisibilityEventArgs> ValidatingVisibility { get; set; } = new();
+
+        /// <summary>
+        /// Called before SCP-939 changes its target focus.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingFocusEventArgs" /> instance.</param>
         public static void OnChangingFocus(ChangingFocusEventArgs ev) => ChangingFocus.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before SCP-939 uses its lunge ability.
+        /// Called before SCP-939 uses its lunge ability.
         /// </summary>
         /// <param name="ev">The <see cref="LungingEventArgs" /> instance.</param>
         public static void OnLunging(LungingEventArgs ev) => Lunging.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before SCP-939 uses its amnestic cloud ability.
+        /// Called before SCP-939 uses its amnestic cloud ability.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingAmnesticCloudEventArgs" /> instance.</param>
         public static void OnPlacingAmnesticCloud(PlacingAmnesticCloudEventArgs ev) => PlacingAmnesticCloud.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before SCP-939 plays a stolen voice.
+        /// Called before SCP-939 plays a stolen voice.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingAmnesticCloudEventArgs" /> instance.</param>
         public static void OnPlayingVoice(PlayingVoiceEventArgs ev) => PlayingVoice.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before SCP-939 plays a stolen voice.
+        /// Called before SCP-939 plays a stolen voice.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingAmnesticCloudEventArgs" /> instance.</param>
         public static void OnSavingVoice(SavingVoiceEventArgs ev) => SavingVoice.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before SCP-939 plays a sound.
+        /// Called before SCP-939 plays a sound.
         /// </summary>
         /// <param name="ev">The <see cref="PlayingSoundEventArgs"/> instance.</param>
         public static void OnPlayingSound(PlayingSoundEventArgs ev) => PlayingSound.InvokeSafely(ev);
@@ -94,5 +99,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ClawedEventArgs"/> instance.</param>
         public static void OnClawed(ClawedEventArgs ev) => Clawed.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before validating visibility.
+        /// </summary>
+        /// <param name="ev">The <see cref="ValidatingVisibilityEventArgs"/> instance.</param>
+        public static void OnValidatingVisibility(ValidatingVisibilityEventArgs ev) => ValidatingVisibility.InvokeSafely(ev);
     }
 }

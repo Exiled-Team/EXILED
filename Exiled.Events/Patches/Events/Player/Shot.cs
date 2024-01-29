@@ -29,8 +29,8 @@ namespace Exiled.Events.Patches.Events.Player
     using Item = API.Features.Items.Item;
 
     /// <summary>
-    ///     Patches <see cref="SingleBulletHitreg.ServerProcessRaycastHit(Ray, RaycastHit)" />.
-    ///     Adds the <see cref="Handlers.Player.Shot" /> events.
+    /// Patches <see cref="SingleBulletHitreg.ServerProcessRaycastHit(Ray, RaycastHit)" />.
+    /// Adds the <see cref="Handlers.Player.Shot" /> events.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Shot))]
     [HarmonyPatch(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.ServerProcessRaycastHit))]
@@ -143,8 +143,8 @@ namespace Exiled.Events.Patches.Events.Player
     }
 
     /// <summary>
-    ///     Patches <see cref="BuckshotHitreg.ShootPellet" />.
-    ///     Adds the <see cref="Handlers.Player.Shot" /> events.
+    /// Patches <see cref="BuckshotHitreg.ShootPellet" />.
+    /// Adds the <see cref="Handlers.Player.Shot" /> events.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Shot))]
     [HarmonyPatch(typeof(BuckshotHitreg), nameof(BuckshotHitreg.ShootPellet))]
@@ -230,8 +230,8 @@ namespace Exiled.Events.Patches.Events.Player
     }
 
     /// <summary>
-    ///     Patches <see cref="DisruptorHitreg.ServerPerformShot" />.
-    ///     Adds the <see cref="Handlers.Player.Shot" /> events.
+    /// Patches <see cref="DisruptorHitreg.ServerPerformShot" />.
+    /// Adds the <see cref="Handlers.Player.Shot" /> events.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Shot))]
     [HarmonyPatch(typeof(DisruptorHitreg), nameof(DisruptorHitreg.ServerPerformShot))]

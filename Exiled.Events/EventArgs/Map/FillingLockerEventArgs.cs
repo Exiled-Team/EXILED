@@ -15,18 +15,18 @@ namespace Exiled.Events.EventArgs.Map
     using MapGeneration.Distributors;
 
     /// <summary>
-    ///     Contains all information before the server spawns an item in locker.
+    /// Contains all information before the server spawns an item in locker.
     /// </summary>
     public class FillingLockerEventArgs : IDeniableEvent, IPickupEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="FillingLockerEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="FillingLockerEventArgs" /> class.
         /// </summary>
         /// <param name="pickupBase">
-        ///     <inheritdoc cref="Pickup" />
+        /// <inheritdoc cref="Pickup" />
         /// </param>
         /// <param name="lockerChamber">
-        ///     <inheritdoc cref="LockerChamber" />
+        /// <inheritdoc cref="LockerChamber" />
         /// </param>
         public FillingLockerEventArgs(ItemPickupBase pickupBase, LockerChamber lockerChamber)
         {
@@ -35,17 +35,17 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        ///     Gets a value indicating the item being spawned.
+        /// Gets a value indicating the item being spawned.
         /// </summary>
         public Pickup Pickup { get; }
 
         /// <summary>
-        ///     Gets a value indicating the target locker chamber.
+        /// Gets a value indicating the target locker chamber.
         /// </summary>
         public LockerChamber LockerChamber { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the item can be spawned.
+        /// Gets or sets a value indicating whether or not the item can be spawned.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

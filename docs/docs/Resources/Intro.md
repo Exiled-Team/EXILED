@@ -61,7 +61,7 @@ sidebar_position: 1
 | 20  | ChaosRepressor | ChaosInsurgency  | ChaosInsurgency  | ChaosInsurgency |
 | 21  | Overwatch      | Dead             | None             | Draw            |
 | 22  | Filmmaker      | Dead             | None             | Draw            |
-| 23  | Scp3114        | Dead             | None             | Draw            |
+| 23  | Scp3114        | SCPs             | Scp              | Anomalies       |
 ```
 
 </details>
@@ -136,7 +136,7 @@ sidebar_position: 1
 
 <details><summary> <b>Ammo</b></summary>
 
-```md title="Latest Updated: 8.2.1.0"
+```md title="Latest Updated: 8.7.0.0"
 [0] None 
 [1] Nato556 
 [2] Nato762 
@@ -151,7 +151,7 @@ sidebar_position: 1
 
 <details><summary> <b>Doors</b></summary>
 
-```md title="Latest Updated: 8.2.1.0"
+```md title="Latest Updated: 8.7.0.0"
 [0] UnknownDoor 
 [1] Scp914Door 
 [2] GR18Inner 
@@ -220,7 +220,7 @@ sidebar_position: 1
 
 <details><summary> <b>Rooms</b></summary>
 
-```md title="Latest Updated: 8.2.1.0"
+```md title="Latest Updated: 8.7.0.0"
 [0] Unknown 
 [1] LczArmory 
 [2] LczCurve 
@@ -283,7 +283,7 @@ sidebar_position: 1
 
 <details><summary> <b>Elevators</b></summary>
 
-```md title="Latest Updated: 8.2.1.0"
+```md title="Latest Updated: 8.7.0.0"
 [0] Unknown 
 [1] GateA 
 [2] GateB 
@@ -299,7 +299,7 @@ sidebar_position: 1
 
 <details><summary> <b>DamageType</b></summary>
 
-```md title="Latest Updated: 8.2.1.0"
+```md title="Latest Updated: 8.7.0.0"
 [0] Unknown 
 [1] Falldown 
 [2] Warhead 
@@ -343,6 +343,9 @@ sidebar_position: 1
 [40] Jailbird 
 [41] Frmg0 
 [42] A7 
+[43] Scp3114 
+[44] Strangled 
+[45] Marshmallow 
 ```
 
 </details>
@@ -378,7 +381,8 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Effects</b></summary>
 
-```md title="Latest Updated: 8.2.1.0"
+```md title="Latest Updated: 8.7.0.0"
+[-1] None 
 [0] AmnesiaItems 
 [1] AmnesiaVision 
 [2] Asphyxiated 
@@ -416,6 +420,10 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 [34] AntiScp207 
 [35] Scanned 
 [36] PocketCorroding 
+[37] SilentWalk 
+[38] Marshmallow 
+[39] Strangled 
+[40] Ghostly 
 ```
 
 </details>
@@ -424,7 +432,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Keycard Perms</b></summary>
 
-```md title="Latest Updated: 8.2.1.0"
+```md title="Latest Updated: 8.7.0.0"
 [0] None 
 [1] Checkpoints 
 [2] ExitGates 
@@ -445,7 +453,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Lock Type</b></summary>
 
-```md title="Latest Updated: 8.2.1.0"
+```md title="Latest Updated: 8.7.0.0"
 [0] None 
 [1] Regular079 
 [2] Lockdown079 
@@ -480,7 +488,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Blood</b></summary>
 
-```md title="Latest Updated: 8.2.1.0"
+```md title="Latest Updated: 8.7.0.0"
 [0] Default 
 [1] Scp106 
 [2] Spreaded 
@@ -493,7 +501,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>GeneratorState</b></summary>
 
-```md title="Latest Updated: 8.2.1.0"
+```md title="Latest Updated: 8.7.0.0"
 [1] None 
 [2] Unlocked 
 [4] Open 
@@ -535,7 +543,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Attachment Names</b></summary>
 
-```md title="Latest Updated: 8.2.1.0"
+```md title="Latest Updated: 8.7.0.0"
 [0] None 
 [1] IronSights 
 [2] DotSight 
@@ -590,7 +598,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Spawn Reasons</b></summary>
 
-```md title="Latest Updated: 8.2.1.0"
+```md title="Latest Updated: 8.7.0.0"
 [0] None 
 [1] RoundStart 
 [2] LateJoin 

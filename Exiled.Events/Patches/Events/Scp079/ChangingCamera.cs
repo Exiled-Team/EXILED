@@ -28,8 +28,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Scp079CurrentCameraSync.ServerProcessCmd(NetworkReader)" />.
-    ///     Adds the <see cref="Scp079.ChangingCamera" /> event.
+    /// Patches <see cref="Scp079CurrentCameraSync.ServerProcessCmd(NetworkReader)" />.
+    /// Adds the <see cref="Scp079.ChangingCamera" /> event.
     /// </summary>
     [EventPatch(typeof(Scp079), nameof(Scp079.ChangingCamera))]
     [HarmonyPatch(typeof(Scp079CurrentCameraSync), nameof(Scp079CurrentCameraSync.ServerProcessCmd))]
