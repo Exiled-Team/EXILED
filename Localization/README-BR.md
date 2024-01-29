@@ -1,15 +1,15 @@
-<h1 align="center">EXILED - EXtended In-runtime Library for External Development</h1>
-<div align="center">
-    
-[<img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" alt="CI"/>](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg?branch=master)
-<a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
-<img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
-![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
-<a href="https://discord.gg/PyUkWTg">
-    <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
-</a>    
+# EXILED - EXtended In-runtime Library for External Development
 
-</div>
+![EXILED CI](https://github.com/Exiled-Team/EXILED/workflows/EXILED%20CI/badge.svg?branch=2.0.0)
+<a href="https://github.com/Exiled-Team/EXILED/releases">
+  <img src="https://img.shields.io/github/release/Exiled-Team/EXILED/all.svg?style=flat" alt="GitHub Releases">
+</a>
+![Github All Downloads](https://img.shields.io/github/downloads/Exiled-Team/EXILED/total.svg?style=flat)
+![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev)
+<a href="https://discord.gg/PyUkWTg">
+  <img src="https://img.shields.io/discord/656673194693885975?logo=discord" alt="Chat on Discord">
+</a>
+
 
 EXILED é uma estrutura para plug-ins de alto nível aos servidores SCP: Secret Laboratory. Ele oferece um sistema de eventos para os desenvolvedores usarem para manipular ou alterar o código do jogo ou implementar suas próprias funções.
 Todos os eventos do EXILED são codificados com Harmony, o que significa que não requerem edição direta dos Assemblies do servidor para funcionar, o que permite dois benefícios exclusivos.
