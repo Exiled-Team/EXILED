@@ -17,10 +17,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomEscapes;
-
     using MEC;
-
     using PlayerRoles;
     using Respawning;
 

@@ -5,9 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Core
+namespace Exiled.API.Features.Core.Behaviours
 {
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Pickups;
 
     /// <summary>

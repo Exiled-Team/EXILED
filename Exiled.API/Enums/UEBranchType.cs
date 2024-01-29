@@ -7,7 +7,7 @@
 
 namespace Exiled.API.Enums
 {
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
 
     /// <summary>
     /// All available branch environments.

@@ -15,7 +15,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
-
+    using Exiled.CustomModules.API.Features.Attributes;
     using PlayerRoles;
     using Respawning;
     using Respawning.NamingRules;

@@ -307,6 +307,7 @@ namespace Exiled.API.Features
                 Position = networkInfo.StartPosition,
                 Rotation = networkInfo.StartRotation,
             };
+
             return true;
         }
 

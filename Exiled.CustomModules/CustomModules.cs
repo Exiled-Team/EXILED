@@ -36,8 +36,6 @@ namespace Exiled.CustomModules
         {
             Instance = this;
 
-            Exiled.Events.Patches.Events.Player.Joined.BasePlayerType = typeof(Pawn);
-
             SubscribeEvents();
 
             base.OnEnabled();
@@ -47,8 +45,6 @@ namespace Exiled.CustomModules
         public override void OnDisabled()
         {
             UnsubscribeEvents();
-
-            Exiled.Events.Patches.Events.Player.Joined.BasePlayerType = typeof(Player);
 
             base.OnDisabled();
         }

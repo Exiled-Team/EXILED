@@ -14,7 +14,9 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
     using Exiled.CustomModules.API.Features.CustomAbilities;
@@ -24,9 +26,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Features.PlayerAbilities;
     using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
-
     using PlayerRoles;
-
     using UnityEngine;
 
     /// <summary>
@@ -41,6 +41,7 @@ namespace Exiled.CustomModules.API.Features
     /// <br>It serves as a comprehensive representation of an in-game entity, encapsulating the associated <see cref="ReferenceHub"/> with an expanded set of features.</br>
     /// </remarks>
     /// </summary>
+    [DefaultPlayerClass(enforceAuthority: false)]
     public class Pawn : Player
     {
         private readonly List<ActiveAbilityBehaviour> abilityBehaviours = new();
