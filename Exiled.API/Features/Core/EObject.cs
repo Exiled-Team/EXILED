@@ -73,14 +73,15 @@ namespace Exiled.API.Features.Core
         public bool IsEditable { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="EObject"/> is being destroyed.
-        /// </summary>
-        public bool IsDestroying { get; private set; }
-
-        /// <summary>
         /// Gets all the active <see cref="EObject"/> instances.
         /// </summary>
         internal static List<EObject> InternalObjects { get; } = new();
+
+        /// <summary>
+        /// Implicitly converts the given <see cref="EObject"/> instance to a <see cref="bool"/>.
+        /// </summary>
+        /// <param name="object">Whether the <see cref="EObject"/> instance exists.</param>
+        public static implicit operator bool(EObject @object) => @object != null;
 
         /// <summary>
         /// Implicitly converts the given <see cref="EObject"/> instance to a <see cref="string"/>.
@@ -327,9 +328,7 @@ namespace Exiled.API.Features.Core
         public static EObject CreateDefaultSubobject(Type type, params object[] parameters)
         {
             BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-#pragma warning disable IDE0019 // Use pattern matching
-            EObject @object = Activator.CreateInstance(type, flags, null, parameters, null) as EObject;
-#pragma warning restore IDE0019 // Use pattern matching
+            EObject @object = Activator.CreateInstance(type, flags, null, parameters, null) is not EObject outer ? null : outer;
 
             // Do not use implicit bool conversion as @object may be null
             if (@object != null)
@@ -390,15 +389,15 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Creates a new instance of the <see cref="EObject"/> class.
         /// </summary>
-        /// <typeparam name="T">The cast <see cref="EObject"/> type.</typeparam>
-        /// <param name="type">The <see cref="EObject"/> type.</param>
+        /// <typeparam name="T">The <see cref="EObject"/> type.</typeparam>
         /// <param name="gameObject"><inheritdoc cref="Base"/></param>
         /// <param name="name">The name to be given to the new <see cref="EObject"/> instance.</param>
+        /// <param name="parameters">The parameters to initialize the object.</param>
         /// <returns>The new <see cref="EObject"/> instance.</returns>
-        public static T CreateDefaultSubobject<T>(Type type, GameObject gameObject, string name)
+        public static T CreateDefaultSubobject<T>(GameObject gameObject, string name, params object[] parameters)
             where T : EObject
         {
-            object newObj = CreateDefaultSubobject<T>(type);
+            object newObj = CreateDefaultSubobject<T>(parameters);
             if (newObj is not T outer)
                 return null;
 
@@ -410,15 +409,15 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Creates a new instance of the <see cref="EObject"/> class.
         /// </summary>
-        /// <typeparam name="T">The <see cref="EObject"/> type.</typeparam>
+        /// <typeparam name="T">The cast <see cref="EObject"/> type.</typeparam>
+        /// <param name="type">The <see cref="EObject"/> type.</param>
         /// <param name="gameObject"><inheritdoc cref="Base"/></param>
         /// <param name="name">The name to be given to the new <see cref="EObject"/> instance.</param>
-        /// <param name="parameters">The parameters to initialize the object.</param>
         /// <returns>The new <see cref="EObject"/> instance.</returns>
-        public static T CreateDefaultSubobject<T>(GameObject gameObject, string name, params object[] parameters)
+        public static T CreateDefaultSubobject<T>(Type type, GameObject gameObject, string name)
             where T : EObject
         {
-            object newObj = CreateDefaultSubobject<T>(parameters);
+            object newObj = CreateDefaultSubobject<T>(type);
             if (newObj is not T outer)
                 return null;
 
@@ -786,11 +785,10 @@ namespace Exiled.API.Features.Core
         /// <inheritdoc cref="Destroy()"/>
         protected virtual void Destroy(bool destroying)
         {
-            if (!destroyedValue && !IsDestroying)
+            if (!destroyedValue)
             {
                 if (destroying)
                 {
-                    IsDestroying = true;
                     OnBeginDestroy();
                     InternalObjects.Remove(this);
                 }

@@ -13,7 +13,6 @@ namespace Exiled.API.Features
 
     using DamageHandlers;
     using Enums;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Doors;
     using Exiled.API.Interfaces;
     using UnityEngine;
@@ -21,7 +20,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A wrapper class for <see cref="BreakableWindow"/>.
     /// </summary>
-    public class Window : GameEntity, IWrapper<BreakableWindow>, IWorldSpace
+    public class Window : IWrapper<BreakableWindow>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BreakableWindow"/>s and their corresponding <see cref="Window"/>.
@@ -58,7 +57,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the window.
         /// </summary>
-        public override GameObject GameObject => Base.gameObject;
+        public GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the window's <see cref="UnityEngine.Transform"/>.

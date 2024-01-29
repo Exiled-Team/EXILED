@@ -13,7 +13,6 @@ namespace Exiled.API.Features
 
     using Enums;
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using MapGeneration;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
@@ -24,7 +23,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game Scp079Camera.
     /// </summary>
-    public class Camera : GameEntity, IWrapper<Scp079Camera>, IWorldSpace
+    public class Camera : IWrapper<Scp079Camera>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="Scp079Camera"/>s and their corresponding <see cref="Camera"/>.
@@ -153,17 +152,17 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Camera"/>.
         /// </summary>
         /// <returns><see cref="Camera"/> object.</returns>
-        public static Camera Random => List.Random();
-
-        /// <summary>
-        /// Gets the camera's <see cref="UnityEngine.GameObject"/>.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
+        public static Camera Random => List.GetRandomValue();
 
         /// <summary>
         /// Gets the base <see cref="Scp079Camera"/>.
         /// </summary>
         public Scp079Camera Base { get; }
+
+        /// <summary>
+        /// Gets the camera's <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the camera's <see cref="UnityEngine.Transform"/>.
