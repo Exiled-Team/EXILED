@@ -19,11 +19,11 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Hitmarker.SendHitmarkerDirectly(ReferenceHub, float)"/>
+    /// Patches <see cref="Hitmarker.SendHitmarkerDirectly(ReferenceHub, float, bool)"/>
     /// to add <see cref="Handlers.Player.ShowingHitMarker"/> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.OnShowingHitMarker))]
-    [HarmonyPatch(typeof(Hitmarker), nameof(Hitmarker.SendHitmarkerDirectly), typeof(ReferenceHub), typeof(float))]
+    [HarmonyPatch(typeof(Hitmarker), nameof(Hitmarker.SendHitmarkerDirectly), typeof(ReferenceHub), typeof(float), typeof(bool))]
     internal class ShowingHitMarker
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
