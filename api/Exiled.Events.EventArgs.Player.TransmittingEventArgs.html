@@ -131,19 +131,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_TransmittingEventArgs__ctor_Exiled_API_Features_Player_PlayerRoles_Voice_VoiceModuleBase_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.TransmittingEventArgs.%23ctor(Exiled.API.Features.Player%2CPlayerRoles.Voice.VoiceModuleBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_TransmittingEventArgs__ctor_Exiled_API_Features_Player_PlayerRoles_Voice_VoiceModuleBase_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.TransmittingEventArgs.%23ctor(Exiled.API.Features.Player%2CPlayerRoles.Voice.VoiceModuleBase%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/TransmittingEventArgs.cs/#L31">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/TransmittingEventArgs.cs/#L34">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_TransmittingEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Player.TransmittingEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_Player_TransmittingEventArgs__ctor_Exiled_API_Features_Player_PlayerRoles_Voice_VoiceModuleBase_" data-uid="Exiled.Events.EventArgs.Player.TransmittingEventArgs.#ctor(Exiled.API.Features.Player,PlayerRoles.Voice.VoiceModuleBase)">TransmittingEventArgs(Player, VoiceModuleBase)</h4>
+  <h4 id="Exiled_Events_EventArgs_Player_TransmittingEventArgs__ctor_Exiled_API_Features_Player_PlayerRoles_Voice_VoiceModuleBase_System_Boolean_" data-uid="Exiled.Events.EventArgs.Player.TransmittingEventArgs.#ctor(Exiled.API.Features.Player,PlayerRoles.Voice.VoiceModuleBase,System.Boolean)">TransmittingEventArgs(Player, VoiceModuleBase, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.Player.TransmittingEventArgs.html">TransmittingEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TransmittingEventArgs(Player player, VoiceModuleBase voiceModule)</code></pre>
+    <pre><code class="lang-csharp hljs">public TransmittingEventArgs(Player player, VoiceModuleBase voiceModule, bool isAllowed = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -167,6 +167,12 @@
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.TransmittingEventArgs.VoiceModule"></inheritdoc>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">isAllowed</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Player.TransmittingEventArgs.IsAllowed"></inheritdoc>
+</td>
+      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
@@ -176,7 +182,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_TransmittingEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.TransmittingEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/TransmittingEventArgs.cs/#L56">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/TransmittingEventArgs.cs/#L60">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_TransmittingEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.Player.TransmittingEventArgs.IsAllowed*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_TransmittingEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.Player.TransmittingEventArgs.IsAllowed">IsAllowed</h4>
@@ -207,7 +213,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_TransmittingEventArgs_IsTransmitting.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.TransmittingEventArgs.IsTransmitting%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/TransmittingEventArgs.cs/#L51">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/TransmittingEventArgs.cs/#L54">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_TransmittingEventArgs_IsTransmitting_" data-uid="Exiled.Events.EventArgs.Player.TransmittingEventArgs.IsTransmitting*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_TransmittingEventArgs_IsTransmitting" data-uid="Exiled.Events.EventArgs.Player.TransmittingEventArgs.IsTransmitting">IsTransmitting</h4>
@@ -216,7 +222,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsTransmitting { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;IsTransmitting is always true.&quot;)]
+public bool IsTransmitting { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -238,7 +245,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_TransmittingEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.TransmittingEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/TransmittingEventArgs.cs/#L41">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/TransmittingEventArgs.cs/#L44">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_TransmittingEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Player.TransmittingEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_TransmittingEventArgs_Player" data-uid="Exiled.Events.EventArgs.Player.TransmittingEventArgs.Player">Player</h4>
@@ -269,7 +276,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Player_TransmittingEventArgs_VoiceModule.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Player.TransmittingEventArgs.VoiceModule%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/TransmittingEventArgs.cs/#L46">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Player/TransmittingEventArgs.cs/#L49">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Player_TransmittingEventArgs_VoiceModule_" data-uid="Exiled.Events.EventArgs.Player.TransmittingEventArgs.VoiceModule*"></a>
   <h4 id="Exiled_Events_EventArgs_Player_TransmittingEventArgs_VoiceModule" data-uid="Exiled.Events.EventArgs.Player.TransmittingEventArgs.VoiceModule">VoiceModule</h4>

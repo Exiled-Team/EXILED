@@ -83,7 +83,7 @@
   
   <h1 id="Exiled_Events_EventArgs_Scp3114_RevealedEventArgs" data-uid="Exiled.Events.EventArgs.Scp3114.RevealedEventArgs" class="text-break">Class RevealedEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Contains all information before SCP-3114 changes its target focus.</p>
+  <div class="markdown level0 summary"><p>Contains all information after SCP-3114 reveals.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -131,19 +131,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp3114_RevealedEventArgs__ctor_ReferenceHub_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.%23ctor(ReferenceHub)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp3114_RevealedEventArgs__ctor_Exiled_API_Features_Player_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.%23ctor(Exiled.API.Features.Player%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp3114/RevealedEventArgs.cs/#L25">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp3114/RevealedEventArgs.cs/#L28">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp3114_RevealedEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_Scp3114_RevealedEventArgs__ctor_ReferenceHub_" data-uid="Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.#ctor(ReferenceHub)">RevealedEventArgs(ReferenceHub)</h4>
+  <h4 id="Exiled_Events_EventArgs_Scp3114_RevealedEventArgs__ctor_Exiled_API_Features_Player_System_Boolean_" data-uid="Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.#ctor(Exiled.API.Features.Player,System.Boolean)">RevealedEventArgs(Player, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.html">RevealedEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RevealedEventArgs(ReferenceHub player)</code></pre>
+    <pre><code class="lang-csharp hljs">public RevealedEventArgs(Player player, bool isManualReveal)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -156,9 +156,15 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ReferenceHub</span></td>
+        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
         <td><span class="parametername">player</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.Player"></inheritdoc>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">isManualReveal</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.IsManualReveal"></inheritdoc>
 </td>
       </tr>
     </tbody>
@@ -167,10 +173,41 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp3114_RevealedEventArgs_IsManualReveal.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.IsManualReveal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp3114/RevealedEventArgs.cs/#L44">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_Scp3114_RevealedEventArgs_IsManualReveal_" data-uid="Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.IsManualReveal*"></a>
+  <h4 id="Exiled_Events_EventArgs_Scp3114_RevealedEventArgs_IsManualReveal" data-uid="Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.IsManualReveal">IsManualReveal</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the reveal is manual or not.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsManualReveal { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp3114_RevealedEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp3114/RevealedEventArgs.cs/#L32">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp3114/RevealedEventArgs.cs/#L36">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp3114_RevealedEventArgs_Player_" data-uid="Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp3114_RevealedEventArgs_Player" data-uid="Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.Player">Player</h4>
@@ -200,7 +237,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_Scp3114_RevealedEventArgs_Scp3114.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.Scp3114%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp3114/RevealedEventArgs.cs/#L35">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/Scp3114/RevealedEventArgs.cs/#L39">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_Scp3114_RevealedEventArgs_Scp3114_" data-uid="Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.Scp3114*"></a>
   <h4 id="Exiled_Events_EventArgs_Scp3114_RevealedEventArgs_Scp3114" data-uid="Exiled.Events.EventArgs.Scp3114.RevealedEventArgs.Scp3114">Scp3114</h4>
