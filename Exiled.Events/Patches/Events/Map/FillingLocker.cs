@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
 
@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="LockerChamber.SpawnItem" />.
-    ///     Adds the <see cref="Handlers.Map.FillingLocker" /> event.
+    /// Patches <see cref="LockerChamber.SpawnItem" />.
+    /// Adds the <see cref="Handlers.Map.FillingLocker" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.FillingLocker))]
     [HarmonyPatch(typeof(LockerChamber), nameof(LockerChamber.SpawnItem))]

@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Core.Generic
     using System.Linq;
     using System.Reflection;
 
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
 
     using LiteNetLib.Utils;
 
@@ -182,7 +182,7 @@ namespace Exiled.API.Features.Core.Generic
         /// Converts the <see cref="EnumClass{TSource, TObject}"/> instance to a human-readable <see cref="string"/> representation.
         /// </summary>
         /// <returns>A human-readable <see cref="string"/> representation of the <see cref="EnumClass{TSource, TObject}"/> instance.</returns>
-        public override string ToString() => name;
+        public override string ToString() => Name;
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.

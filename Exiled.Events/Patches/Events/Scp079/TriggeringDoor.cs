@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Doors;
 
     using Exiled.Events.Attributes;
@@ -26,8 +26,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Scp079DoorStateChanger.ServerProcessCmd" />.
-    ///     Adds the <see cref="Scp079.TriggeringDoor" /> event for  SCP-079.
+    /// Patches <see cref="Scp079DoorStateChanger.ServerProcessCmd" />.
+    /// Adds the <see cref="Scp079.TriggeringDoor" /> event for  SCP-079.
     /// </summary>
     [EventPatch(typeof(Scp079), nameof(Scp079.TriggeringDoor))]
     [HarmonyPatch(typeof(Scp079DoorStateChanger), nameof(Scp079DoorStateChanger.ServerProcessCmd))]

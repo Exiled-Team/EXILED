@@ -11,8 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Pools;
-    using Exiled.Events.Attributes;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.EventArgs.Scp049;
 
     using HarmonyLib;
@@ -23,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Scp049
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp049CallAbility.ServerProcessCmd" />.
-    ///     Adds the <see cref="Handlers.Scp049.SendingCall" /> event.
+    /// Patches <see cref="Scp049CallAbility.ServerProcessCmd" />.
+    /// Adds the <see cref="Handlers.Scp049.SendingCall" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp049CallAbility), nameof(Scp049CallAbility.ServerProcessCmd))]
     public class SendingCall

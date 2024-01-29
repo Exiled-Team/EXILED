@@ -12,20 +12,20 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information after the server verifies a player.
+    /// Contains all information after the server verifies a player.
     /// </summary>
     public class VerifiedEventArgs : IPlayerEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="VerifiedEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="VerifiedEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         public VerifiedEventArgs(Player player) => Player = player;
 
         /// <summary>
-        ///     Gets the verified player.
+        /// Gets the verified player.
         /// </summary>
         public Player Player { get; }
     }

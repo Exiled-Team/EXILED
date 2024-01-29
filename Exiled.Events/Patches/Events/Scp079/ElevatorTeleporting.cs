@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
@@ -28,8 +28,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Scp079ElevatorStateChanger.ServerProcessCmd(NetworkReader)" />.
-    ///     Adds the <see cref="Scp079.ElevatorTeleporting" /> event for SCP-079.
+    /// Patches <see cref="Scp079ElevatorStateChanger.ServerProcessCmd(NetworkReader)" />.
+    /// Adds the <see cref="Scp079.ElevatorTeleporting" /> event for SCP-079.
     /// </summary>
     [EventPatch(typeof(Scp079), nameof(Scp079.ElevatorTeleporting))]
     [HarmonyPatch(typeof(Scp079ElevatorStateChanger), nameof(Scp079ElevatorStateChanger.ServerProcessCmd))]

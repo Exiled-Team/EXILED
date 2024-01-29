@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Achievements;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patch the <see cref="AchievementHandlerBase.ServerAchieve"/>.
-    ///     Adds the <see cref="Handlers.Player.EarningAchievement"/> event.
+    /// Patch the <see cref="AchievementHandlerBase.ServerAchieve"/>.
+    /// Adds the <see cref="Handlers.Player.EarningAchievement"/> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.EarningAchievement))]
     [HarmonyPatch(typeof(AchievementHandlerBase), nameof(AchievementHandlerBase.ServerAchieve))]

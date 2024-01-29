@@ -25,7 +25,6 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.ToggleableLights;
-    using InventorySystem.Items.ToggleableLights.Flashlight;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp1576;
     using InventorySystem.Items.Usables.Scp244;
@@ -33,12 +32,11 @@ namespace Exiled.API.Features.Items
     using UnityEngine;
 
     using BaseConsumable = InventorySystem.Items.Usables.Consumable;
-    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="ItemBase"/>.
     /// </summary>
-    public class Item : TypeCastObject<Item>, IWrapper<ItemBase>
+    public class Item : GameEntity, IWrapper<ItemBase>
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
@@ -105,6 +103,11 @@ namespace Exiled.API.Features.Items
         /// Gets the <see cref="ItemBase"/> of the item.
         /// </summary>
         public ItemBase Base { get; }
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the item.
+        /// </summary>
+        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.
@@ -220,6 +223,13 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets the <see cref="Item"/> given a <see cref="GameObject"/>.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/> to check.</param>
+        /// <returns>The <see cref="Item"/> given the specified <see cref="GameObject"/>.</returns>
+        public static Item Get(GameObject gameObject) => !gameObject || !gameObject.TryGetComponent(out ItemBase ib) ? null : Get(ib);
+
+        /// <summary>
         /// Gets the Item belonging to the specified serial.
         /// </summary>
         /// <param name="serial">The Item serial.</param>
@@ -324,6 +334,19 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing Item-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* ={Owner}=";
+
+        /// <summary>
+        /// Changes the owner of the <see cref="Item"/>.
+        /// </summary>
+        /// <param name="oldOwner">Old <see cref="Item"/> owner.</param>
+        /// <param name="newOwner">New <see cref="Item"/> owner.</param>
+        public void ChangeItemOwner(Player oldOwner, Player newOwner)
+        {
+            if (oldOwner != null && newOwner != null)
+            {
+                ChangeOwner(oldOwner, newOwner);
+            }
+        }
 
         /// <summary>
         /// Change the owner of the <see cref="Item"/>.

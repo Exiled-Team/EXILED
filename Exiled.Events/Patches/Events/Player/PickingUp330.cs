@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches the <see cref="Scp330Bag.ServerProcessPickup" /> method to add the
-    ///     <see cref="Handlers.Player.PickingUpItem" /> event.
+    /// Patches the <see cref="Scp330Bag.ServerProcessPickup" /> method to add the
+    /// <see cref="Handlers.Player.PickingUpItem" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.PickingUpItem))]
     [HarmonyPatch(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup))]
