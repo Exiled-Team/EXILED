@@ -23,27 +23,19 @@ namespace Exiled.Events.EventArgs.Server
     public class RespawningTeamEventArgs : IDeniableEvent
     {
         private SpawnableTeamType nextKnownTeam;
-        private int maximumRespawnAmount;
+        private int maxWaveSize;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RespawningTeamEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="RespawningTeamEventArgs"/> class.
         /// </summary>
-        /// <param name="players">
-        /// <inheritdoc cref="Players" />
-        /// </param>
-        /// <param name="maxRespawn">
-        /// <inheritdoc cref="MaximumRespawnAmount" />
-        /// </param>
-        /// <param name="nextKnownTeam">
-        /// <inheritdoc cref="NextKnownTeam" />
-        /// </param>
-        /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
-        /// </param>
+        /// <param name="players"><inheritdoc cref="Players"/></param>
+        /// <param name="maxRespawn"><inheritdoc cref="MaxWaveSize"/></param>
+        /// <param name="nextKnownTeam"><inheritdoc cref="NextKnownTeam"/></param>
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public RespawningTeamEventArgs(List<Player> players, int maxRespawn, SpawnableTeamType nextKnownTeam, bool isAllowed = true)
         {
             Players = players;
-            MaximumRespawnAmount = maxRespawn;
+            MaxWaveSize = maxRespawn;
 
             this.nextKnownTeam = nextKnownTeam;
             SpawnQueue = new();
@@ -59,18 +51,18 @@ namespace Exiled.Events.EventArgs.Server
         /// <summary>
         /// Gets or sets the maximum amount of respawnable players.
         /// </summary>
-        public int MaximumRespawnAmount
+        public int MaxWaveSize
         {
-            get => maximumRespawnAmount;
+            get => maxWaveSize;
             set
             {
-                if (value < maximumRespawnAmount)
+                if (value < maxWaveSize)
                 {
                     if (Players.Count > value)
                         Players.RemoveRange(value, Players.Count - value);
                 }
 
-                maximumRespawnAmount = value;
+                maxWaveSize = value;
             }
         }
 
@@ -86,11 +78,11 @@ namespace Exiled.Events.EventArgs.Server
 
                 if (!RespawnManager.SpawnableTeams.TryGetValue(value, out SpawnableTeamHandlerBase spawnableTeam))
                 {
-                    MaximumRespawnAmount = 0;
+                    MaxWaveSize = 0;
                     return;
                 }
 
-                MaximumRespawnAmount = spawnableTeam.MaxWaveSize;
+                MaxWaveSize = spawnableTeam.MaxWaveSize;
                 if (RespawnManager.SpawnableTeams.TryGetValue(nextKnownTeam, out SpawnableTeamHandlerBase @base))
                     @base.GenerateQueue(SpawnQueue, Players.Count);
             }

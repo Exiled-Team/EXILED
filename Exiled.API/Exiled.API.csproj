@@ -14,6 +14,9 @@
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>Exiled.Events</_Parameter1>
         </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Exiled.Loader</_Parameter1>
+        </AssemblyAttribute>
     </ItemGroup>
 
     <ItemGroup>
@@ -32,6 +35,7 @@
         <Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll" Private="false" />
         <Reference Include="NorthwoodLib" HintPath="$(EXILED_REFERENCES)\NorthwoodLib.dll" Private="false" />
         <Reference Include="PluginAPI" HintPath="$(EXILED_REFERENCES)\PluginAPI.dll" Private="false" />
+        <Reference Include="System.ComponentModel.DataAnnotations" />
         <Reference Include="UnityEngine" HintPath="$(EXILED_REFERENCES)\UnityEngine.dll" Private="false" />
         <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
         <Reference Include="UnityEngine.ParticleSystemModule">
