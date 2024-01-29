@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp914
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp914Upgrader.ProcessPickup" />.
-    /// Adds the <see cref="Scp914.UpgradingPickup" /> event.
+    ///     Patches <see cref="Scp914Upgrader.ProcessPickup" />.
+    ///     Adds the <see cref="Scp914.UpgradingPickup" /> event.
     /// </summary>
     [EventPatch(typeof(Scp914), nameof(Scp914.UpgradingPickup))]
     [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPickup))]

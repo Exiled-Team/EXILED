@@ -12,20 +12,20 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before a player drops a null item.
+    ///     Contains all information before a player drops a null item.
     /// </summary>
     public class DroppingNothingEventArgs : IPlayerEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DroppingNothingEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="DroppingNothingEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         public DroppingNothingEventArgs(Player player) => Player = player;
 
         /// <summary>
-        /// Gets the player who's dropping the null item.
+        ///     Gets the player who's dropping the null item.
         /// </summary>
         public Player Player { get; }
     }

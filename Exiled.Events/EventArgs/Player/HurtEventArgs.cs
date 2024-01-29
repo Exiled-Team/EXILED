@@ -16,21 +16,21 @@ namespace Exiled.Events.EventArgs.Player
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
-    /// Contains all information before a player gets damaged.
+    ///     Contains all information before a player gets damaged.
     /// </summary>
     public class HurtEventArgs : IAttackerEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HurtEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="HurtEventArgs" /> class.
         /// </summary>
         /// <param name="target">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="damageHandler">
-        /// <inheritdoc cref="DamageHandler" />
+        ///     <inheritdoc cref="DamageHandler" />
         /// </param>
         /// <param name="handlerOutput">
-        /// <inheritdoc cref="HandlerOutput" />
+        ///     <inheritdoc cref="HandlerOutput" />
         /// </param>
         public HurtEventArgs(Player target, DamageHandlerBase damageHandler, DamageHandlerBase.HandlerOutput handlerOutput)
         {
@@ -47,12 +47,12 @@ namespace Exiled.Events.EventArgs.Player
         public Player Attacker { get; }
 
         /// <summary>
-        /// Gets the amount of inflicted damage.
+        ///     Gets the amount of inflicted damage.
         /// </summary>
         public float Amount => DamageHandler.Damage;
 
         /// <summary>
-        /// Gets or sets the action than will be made on the player.
+        ///     Gets or sets the action than will be made on the player.
         /// </summary>
         public DamageHandlerBase.HandlerOutput HandlerOutput { get; set; }
 

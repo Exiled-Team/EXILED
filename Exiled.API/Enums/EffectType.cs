@@ -14,15 +14,9 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Status effects as enum.
     /// </summary>
-    /// <seealso cref="EffectTypeExtension.TryGetEffectType(CustomPlayerEffects.StatusEffectBase, out EffectType)"/>
-    /// <seealso cref="EffectTypeExtension.TryGetType(EffectType, out Type)"/>
+    /// <seealso cref="EffectTypeExtension.Type(EffectType)"/>
     public enum EffectType
     {
-        /// <summary>
-        /// This EffectType do not exist it's only use when not found or error.
-        /// </summary>
-        None = -1, // TODO: remove = -1
-
         /// <summary>
         /// The player isn't able to open their inventory or reload a weapon.
         /// </summary>

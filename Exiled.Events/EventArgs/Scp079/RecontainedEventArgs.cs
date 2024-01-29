@@ -12,15 +12,15 @@ namespace Exiled.Events.EventArgs.Scp079
     using Interfaces;
 
     /// <summary>
-    /// Contains information after SCP-079 gets recontained.
+    ///     Contains information after SCP-079 gets recontained.
     /// </summary>
     public class RecontainedEventArgs : IScp079Event
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RecontainedEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="RecontainedEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         public RecontainedEventArgs(Player player)
         {
@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs.Scp079
         }
 
         /// <summary>
-        /// Gets the player that previously controlled SCP-079.
+        ///     Gets the player that previously controlled SCP-079.
         /// </summary>
         public Player Player { get; }
 

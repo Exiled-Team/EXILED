@@ -15,21 +15,21 @@ namespace Exiled.Events.EventArgs.Scp244
     using InventorySystem.Items.Usables.Scp244;
 
     /// <summary>
-    /// Contains all information before SCP-244 is used.
+    ///     Contains all information before radio battery charge is changed.
     /// </summary>
     public class UsingScp244EventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UsingScp244EventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="UsingScp244EventArgs" /> class.
         /// </summary>
         /// <param name="scp244">
-        /// <inheritdoc cref="Scp244" />
+        ///     <inheritdoc cref="Scp244" />
         /// </param>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public UsingScp244EventArgs(Scp244Item scp244, Player player, bool isAllowed = true)
         {
@@ -39,17 +39,17 @@ namespace Exiled.Events.EventArgs.Scp244
         }
 
         /// <summary>
-        /// Gets the Scp244 instance.
+        ///     Gets the Scp244 instance.
         /// </summary>
         public Scp244 Scp244 { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the SCP-244 can be used.
+        ///     Gets or sets a value indicating whether the radio battery charge can be changed or not.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets the player who's using the SCP-244.
+        ///     Gets the player who's using the radio.
         /// </summary>
         public Player Player { get; }
     }

@@ -16,21 +16,21 @@ namespace Exiled.Events.EventArgs.Scp079
     using Player;
 
     /// <summary>
-    /// Contains all information before SCP-079 interacts with a door.
+    ///     Contains all information before SCP-079 interacts with a door.
     /// </summary>
     public class TriggeringDoorEventArgs : IScp079Event, IDoorEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TriggeringDoorEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="TriggeringDoorEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="InteractingDoorEventArgs.Player" />
+        ///     <inheritdoc cref="InteractingDoorEventArgs.Player" />
         /// </param>
         /// <param name="door">
-        /// <inheritdoc cref="InteractingDoorEventArgs.Door" />
+        ///     <inheritdoc cref="InteractingDoorEventArgs.Door" />
         /// </param>
         /// <param name="auxiliaryPowerCost">
-        /// <inheritdoc cref="AuxiliaryPowerCost" />
+        ///     <inheritdoc cref="AuxiliaryPowerCost" />
         /// </param>
         public TriggeringDoorEventArgs(Player player, DoorVariant door, float auxiliaryPowerCost)
         {
@@ -41,17 +41,17 @@ namespace Exiled.Events.EventArgs.Scp079
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can interact with the door.
+        ///     Gets or sets a value indicating whether or not the player can interact with the door.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets the <see cref="API.Features.Doors.Door" /> instance.
+        ///     Gets or sets the <see cref="API.Features.Doors.Door" /> instance.
         /// </summary>
         public Door Door { get; set; }
 
         /// <summary>
-        /// Gets the player who's interacting with the door.
+        ///     Gets the player who's interacting with the door.
         /// </summary>
         public Player Player { get; }
 
@@ -59,7 +59,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public Scp079Role Scp079 { get; }
 
         /// <summary>
-        /// Gets or sets the amount of auxiliary power required to trigger a door through SCP-079.
+        ///     Gets or sets the amount of auxiliary power required to trigger a door through SCP-079.
         /// </summary>
         public float AuxiliaryPowerCost { get; set; }
     }

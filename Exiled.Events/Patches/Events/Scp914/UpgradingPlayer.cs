@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Scp914
     using Scp914 = Handlers.Scp914;
 
     /// <summary>
-    /// Patches <see cref="Scp914Upgrader.ProcessPlayer(ReferenceHub, bool, bool, Vector3, Scp914KnobSetting)" />
-    /// to add the <see cref="Scp914.UpgradingPlayer" /> event.
+    ///     Patches <see cref="Scp914Upgrader.ProcessPlayer(ReferenceHub, bool, bool, Vector3, Scp914KnobSetting)" />
+    ///     to add the <see cref="Scp914.UpgradingPlayer" /> event.
     /// </summary>
     [EventPatch(typeof(Scp914), nameof(Scp914.UpgradingPlayer))]
     [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPlayer))]

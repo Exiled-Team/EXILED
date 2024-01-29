@@ -17,20 +17,20 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items;
 
     /// <summary>
-    /// Contains all information before a player's held item changes.
+    ///     Contains all information before a player's held item changes.
     /// </summary>
     public class ChangingItemEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {
         private Item newItem;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChangingItemEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="ChangingItemEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="newItem">
-        /// <inheritdoc cref="Item" />
+        ///     <inheritdoc cref="Item" />
         /// </param>
         public ChangingItemEventArgs(Player player, ItemBase newItem)
         {
@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets the new item.
+        ///     Gets or sets the new item.
         /// </summary>
         public Item Item
         {
@@ -54,12 +54,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event is allowed to continue.
+        ///     Gets or sets a value indicating whether the event is allowed to continue.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        /// Gets the player who's changing the item.
+        ///     Gets the player who's changing the item.
         /// </summary>
         public Player Player { get; }
     }

@@ -156,8 +156,8 @@ namespace Exiled.API.Features
         /// Sends an <see cref="Error(object)"/> with the provided message if the condition is false and stops the execution.
         /// <example> For example:
         /// <code>
-        /// Player ply = Player.Get(2);
-        /// Log.Assert(ply is not null, "The player with the id 2 is null");
+        ///     Player ply = Player.Get(2);
+        ///     Log.Assert(ply is not null, "The player with the id 2 is null");
         /// </code>
         /// results in it logging an error if the player is null and not continuing.
         /// </example>

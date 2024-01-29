@@ -15,27 +15,27 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.MicroHID;
 
     /// <summary>
-    /// Contains all information before MicroHID energy is changed.
+    ///     Contains all information before MicroHID energy is changed.
     /// </summary>
     public class UsingMicroHIDEnergyEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UsingMicroHIDEnergyEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="UsingMicroHIDEnergyEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="microHIDitem">
-        /// <inheritdoc cref="MicroHID" />
+        ///     <inheritdoc cref="MicroHID" />
         /// </param>
         /// <param name="currentState">
-        /// <inheritdoc cref="CurrentState" />
+        ///     <inheritdoc cref="CurrentState" />
         /// </param>
         /// <param name="drain">
-        /// <inheritdoc cref="Drain" />
+        ///     <inheritdoc cref="Drain" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public UsingMicroHIDEnergyEventArgs(Player player, MicroHIDItem microHIDitem, HidState currentState, float drain, bool isAllowed = true)
         {
@@ -47,7 +47,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the MicroHID instance.
+        ///     Gets the MicroHID instance.
         /// </summary>
         public MicroHid MicroHID { get; }
 
@@ -55,22 +55,22 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => MicroHID;
 
         /// <summary>
-        /// Gets the current state of the MicroHID.
+        ///     Gets the current state of the MicroHID.
         /// </summary>
         public HidState CurrentState { get; }
 
         /// <summary>
-        /// Gets or sets the MicroHID energy drain.
+        ///     Gets or sets the MicroHID energy drain.
         /// </summary>
         public float Drain { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the MicroHID energy can be changed or not.
+        ///     Gets or sets a value indicating whether the MicroHID energy can be changed or not.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets the player who's using the MicroHID.
+        ///     Gets the player who's using the MicroHID.
         /// </summary>
         public Player Player { get; }
     }

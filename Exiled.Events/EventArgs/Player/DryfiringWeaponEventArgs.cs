@@ -13,21 +13,21 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before a player's weapon is dryfired.
+    ///     Contains all information before a player's weapon is dryfired.
     /// </summary>
     public class DryfiringWeaponEventArgs : IPlayerEvent, IFirearmEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DryfiringWeaponEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="DryfiringWeaponEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="firearm">
-        /// <inheritdoc cref="Firearm" />
+        ///     <inheritdoc cref="Firearm" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public DryfiringWeaponEventArgs(Player player, Firearm firearm, bool isAllowed = true)
         {
@@ -37,12 +37,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the weapon can be dryfired.
+        ///     Gets or sets a value indicating whether or not the weapon can be dryfired.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="API.Features.Items.Firearm" /> being dryfired.
+        ///     Gets the <see cref="API.Features.Items.Firearm" /> being dryfired.
         /// </summary>
         public Firearm Firearm { get; }
 
@@ -50,7 +50,7 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => Firearm;
 
         /// <summary>
-        /// Gets the player who's dryfiring the weapon.
+        ///     Gets the player who's dryfiring the weapon.
         /// </summary>
         public Player Player { get; }
     }

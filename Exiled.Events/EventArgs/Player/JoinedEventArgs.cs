@@ -12,20 +12,20 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    /// Contains all information after a player joins the server.
+    ///     Contains all information after a player joins the server.
     /// </summary>
     public class JoinedEventArgs : IPlayerEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="JoinedEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="JoinedEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         public JoinedEventArgs(Player player) => Player = player;
 
         /// <summary>
-        /// Gets the joined player.
+        ///     Gets the joined player.
         /// </summary>
         public Player Player { get; }
     }

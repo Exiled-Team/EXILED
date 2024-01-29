@@ -15,24 +15,24 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.Radio;
 
     /// <summary>
-    /// Contains all information before radio battery charge is changed.
+    ///     Contains all information before radio battery charge is changed.
     /// </summary>
     public class UsingRadioBatteryEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UsingRadioBatteryEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="UsingRadioBatteryEventArgs" /> class.
         /// </summary>
         /// <param name="radio">
-        /// <inheritdoc cref="Radio" />
+        ///     <inheritdoc cref="Radio" />
         /// </param>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="drain">
-        /// <inheritdoc cref="Drain" />
+        ///     <inheritdoc cref="Drain" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public UsingRadioBatteryEventArgs(RadioItem radio, Player player, float drain, bool isAllowed = true)
         {
@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the <see cref="API.Features.Items.Radio" /> which is being used.
+        ///     Gets the <see cref="API.Features.Items.Radio" /> which is being used.
         /// </summary>
         public Radio Radio { get; }
 
@@ -51,17 +51,17 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => Radio;
 
         /// <summary>
-        /// Gets or sets the radio battery drain per second.
+        ///     Gets or sets the radio battery drain per second.
         /// </summary>
         public float Drain { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the radio battery charge can be changed or not.
+        ///     Gets or sets a value indicating whether the radio battery charge can be changed or not.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets the player who's using the radio.
+        ///     Gets the player who's using the radio.
         /// </summary>
         public Player Player { get; }
     }

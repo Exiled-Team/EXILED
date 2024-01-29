@@ -17,26 +17,26 @@ namespace Exiled.Events.EventArgs.Player
     using PlayerRoles;
 
     /// <summary>
-    /// Contains all information before a player drops an item.
+    ///     Contains all information before a player drops an item.
     /// </summary>
     public class DroppingItemEventArgs : IPlayerEvent, IItemEvent, IDeniableEvent
     {
         private bool isAllowed = true;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DroppingItemEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="DroppingItemEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="item">
-        /// <inheritdoc cref="Item" />
+        ///     <inheritdoc cref="Item" />
         /// </param>
         /// <param name="isThrown">
-        /// <inheritdoc cref="IsThrown" />
+        ///     <inheritdoc cref="IsThrown" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public DroppingItemEventArgs(Player player, ItemBase item, bool isThrown, bool isAllowed = true)
         {
@@ -47,12 +47,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the item was thrown.
+        ///     Gets or sets a value indicating whether or not the item was thrown.
         /// </summary>
         public bool IsThrown { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the item can be dropped.
+        ///     Gets or sets a value indicating whether or not the item can be dropped.
         /// </summary>
         public bool IsAllowed
         {
@@ -72,12 +72,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the item to be dropped.
+        ///     Gets the item to be dropped.
         /// </summary>
         public Item Item { get; }
 
         /// <summary>
-        /// Gets the player who's dropping the item.
+        ///     Gets the player who's dropping the item.
         /// </summary>
         public Player Player { get; }
     }

@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="CustomNetworkManager.OnServerDisconnect(NetworkConnectionToClient)" />.
+    ///     Patches <see cref="CustomNetworkManager.OnServerDisconnect(NetworkConnectionToClient)" />.
     /// </summary>
     [HarmonyPatch(typeof(CustomNetworkManager), nameof(CustomNetworkManager.OnServerDisconnect), typeof(NetworkConnectionToClient))]
     internal static class HurtingFix

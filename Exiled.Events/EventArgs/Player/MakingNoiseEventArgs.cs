@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before a player makes noise.
+    ///     Contains all information before a player makes noise.
     /// </summary>
     public class MakingNoiseEventArgs : IPlayerEvent, IDeniableEvent
     {
@@ -30,12 +30,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the player who's making noise.
+        ///     Gets the player who's making noise.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the footsteps distance.
+        ///     Gets or sets the footsteps distance.
         /// </summary>
         public float Distance { get; set; }
 

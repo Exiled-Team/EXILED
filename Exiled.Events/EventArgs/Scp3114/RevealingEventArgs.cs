@@ -12,27 +12,23 @@ namespace Exiled.Events.EventArgs.Scp3114
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before SCP-3114 reveals.
+    ///     Contains all information before SCP-3114 changes its target focus.
     /// </summary>
     public class RevealingEventArgs : IScp3114Event, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RevealingEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="RevealingEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
-        /// </param>
-        /// <param name="isManualReveal">
-        /// <inheritdoc cref="IsManualReveal" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public RevealingEventArgs(Player player, bool isManualReveal, bool isAllowed = true)
+        public RevealingEventArgs(ReferenceHub player, bool isAllowed = true)
         {
-            Player = player;
+            Player = Player.Get(player);
             Scp3114 = Player.Role.As<Scp3114Role>();
-            IsManualReveal = isManualReveal;
             IsAllowed = isAllowed;
         }
 
@@ -44,10 +40,5 @@ namespace Exiled.Events.EventArgs.Scp3114
 
         /// <inheritdoc/>
         public Scp3114Role Scp3114 { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether the reveal is manual or not.
-        /// </summary>
-        public bool IsManualReveal { get; }
     }
 }

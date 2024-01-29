@@ -12,12 +12,12 @@ namespace Exiled.Events.EventArgs.Player
     using MapGeneration.Distributors;
 
     /// <summary>
-    /// Contains all information before a player closes a generator.
+    ///     Contains all information before a player closes a generator.
     /// </summary>
     public class ClosingGeneratorEventArgs : IPlayerEvent, IDeniableEvent, IGeneratorEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClosingGeneratorEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="ClosingGeneratorEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player who's closing the generator.</param>
         /// <param name="generator">The <see cref="Scp079Generator" /> instance.</param>
@@ -30,17 +30,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the generator door can be closed.
+        ///     Gets or sets a value indicating whether or not the generator door can be opened.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets the generator that is being closed.
+        ///     Gets the generator that is opening.
         /// </summary>
         public Generator Generator { get; }
 
         /// <summary>
-        /// Gets the player who's closing the generator door.
+        ///     Gets the player who's opening the generator door.
         /// </summary>
         public Player Player { get; }
     }

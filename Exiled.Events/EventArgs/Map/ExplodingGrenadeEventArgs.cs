@@ -23,7 +23,7 @@ namespace Exiled.Events.EventArgs.Map
     using UnityEngine;
 
     /// <summary>
-    /// Contains all information before a grenade explodes.
+    ///     Contains all information before a grenade explodes.
     /// </summary>
     public class ExplodingGrenadeEventArgs : IPlayerEvent, IDeniableEvent
     {
@@ -80,16 +80,16 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExplodingGrenadeEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="ExplodingGrenadeEventArgs" /> class.
         /// </summary>
         /// <param name="thrower">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="grenade">
-        /// <inheritdoc cref="Projectile" />
+        ///     <inheritdoc cref="Projectile" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, bool isAllowed = true)
         {
@@ -114,7 +114,7 @@ namespace Exiled.Events.EventArgs.Map
         public Vector3 Position { get; }
 
         /// <summary>
-        /// Gets the players who could be affected by the grenade, if any, and the damage that be dealt.
+        ///     Gets the players who could be affected by the grenade, if any, and the damage that be dealt.
         /// </summary>
         public List<Player> TargetsToAffect { get; }
 
@@ -124,12 +124,12 @@ namespace Exiled.Events.EventArgs.Map
         public EffectGrenadeProjectile Projectile { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the grenade can be thrown.
+        ///     Gets or sets a value indicating whether or not the grenade can be thrown.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        /// Gets the player who thrown the grenade.
+        ///     Gets the player who thrown the grenade.
         /// </summary>
         public Player Player { get; }
     }

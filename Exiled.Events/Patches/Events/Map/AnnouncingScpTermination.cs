@@ -23,9 +23,9 @@ namespace Exiled.Events.Patches.Events.Map
     using Player = API.Features.Player;
 
     /// <summary>
-    /// Patches
-    /// <see cref="NineTailedFoxAnnouncer.AnnounceScpTermination(ReferenceHub, PlayerStatsSystem.DamageHandlerBase)" />.
-    /// Adds the <see cref="Map.AnnouncingScpTermination" /> event.
+    ///     Patches
+    ///     <see cref="NineTailedFoxAnnouncer.AnnounceScpTermination(ReferenceHub, PlayerStatsSystem.DamageHandlerBase)" />.
+    ///     Adds the <see cref="Map.AnnouncingScpTermination" /> event.
     /// </summary>
     [EventPatch(typeof(Map), nameof(Map.AnnouncingScpTermination))]
     [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.AnnounceScpTermination))]

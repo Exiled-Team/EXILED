@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp939
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp939FocusKeySync.ServerProcessCmd(NetworkReader)" />
-    /// to add the <see cref="Scp939.ChangingFocus" /> event.
+    ///     Patches <see cref="Scp939FocusKeySync.ServerProcessCmd(NetworkReader)" />
+    ///     to add the <see cref="Scp939.ChangingFocus" /> event.
     /// </summary>
     [EventPatch(typeof(Scp939), nameof(Scp939.ChangingFocus))]
     [HarmonyPatch(typeof(Scp939FocusKeySync), nameof(Scp939FocusKeySync.ServerProcessCmd))]

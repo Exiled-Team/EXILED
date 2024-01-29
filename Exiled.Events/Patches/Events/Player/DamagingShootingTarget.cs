@@ -26,8 +26,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ShootingTarget.Damage(float, DamageHandlerBase, Vector3)" />.
-    /// Adds the <see cref="Handlers.Player.DamagingShootingTarget" /> event.
+    ///     Patches <see cref="ShootingTarget.Damage(float, DamageHandlerBase, Vector3)" />.
+    ///     Adds the <see cref="Handlers.Player.DamagingShootingTarget" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DamagingShootingTarget))]
     [HarmonyPatch(typeof(ShootingTarget), nameof(ShootingTarget.Damage))]

@@ -17,24 +17,24 @@ namespace Exiled.Events.EventArgs.Player
     using AmmoPickup = API.Features.Pickups.AmmoPickup;
 
     /// <summary>
-    /// Contains all information after a player drops ammo.
+    ///     Contains all information after a player drops ammo.
     /// </summary>
     public class DroppedAmmoEventArgs : IPlayerEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DroppedAmmoEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="DroppedAmmoEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="ammoType">
-        /// <inheritdoc cref="AmmoType" />
+        ///     <inheritdoc cref="AmmoType" />
         /// </param>
         /// <param name="amount">
-        /// <inheritdoc cref="Amount" />
+        ///     <inheritdoc cref="Amount" />
         /// </param>
         /// <param name="ammoPickups">
-        /// <inheritdoc cref="AmmoPickups" />
+        ///     <inheritdoc cref="AmmoPickups" />
         /// </param>
         public DroppedAmmoEventArgs(Player player, AmmoType ammoType, ushort amount, List<InventorySystem.Items.Firearms.Ammo.AmmoPickup> ammoPickups)
         {
@@ -45,22 +45,22 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the type of dropped ammo.
+        ///     Gets the type of dropped ammo.
         /// </summary>
         public AmmoType AmmoType { get; }
 
         /// <summary>
-        /// Gets the amount of dropped ammo.
+        ///     Gets the amount of dropped ammo.
         /// </summary>
         public ushort Amount { get; }
 
         /// <summary>
-        /// Gets the dropped ammo pickups.
+        ///     Gets the dropped ammo pickups.
         /// </summary>
         public IEnumerable<AmmoPickup> AmmoPickups { get; }
 
         /// <summary>
-        /// Gets the player who dropped the ammo.
+        ///     Gets the player who dropped the ammo.
         /// </summary>
         public Player Player { get; }
     }

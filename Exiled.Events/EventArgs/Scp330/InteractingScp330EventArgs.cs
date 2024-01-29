@@ -14,18 +14,18 @@ namespace Exiled.Events.EventArgs.Scp330
     using InventorySystem.Items.Usables.Scp330;
 
     /// <summary>
-    /// Contains all information before a player interacts with SCP-330.
+    ///     Contains all information before a player interacts with SCP-330.
     /// </summary>
     public class InteractingScp330EventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InteractingScp330EventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="InteractingScp330EventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="usage">
-        /// <inheritdoc cref="UsageCount" />
+        ///     <inheritdoc cref="UsageCount" />
         /// </param>
         public InteractingScp330EventArgs(Player player, int usage)
         {
@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs.Scp330
         }
 
         /// <summary>
-        /// Gets a value indicating how many times this player has interacted with SCP-330.
+        ///     Gets a value indicating how many times this player has interacted with SCP-330.
         /// </summary>
         public int UsageCount { get; }
 
@@ -47,17 +47,17 @@ namespace Exiled.Events.EventArgs.Scp330
         public CandyKindID Candy { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player's hands should get severed.
+        ///     Gets or sets a value indicating whether the player's hands should get severed.
         /// </summary>
         public bool ShouldSever { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player is allowed to interact with SCP-330.
+        ///     Gets or sets a value indicating whether the player is allowed to interact with SCP-330.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        /// Gets the <see cref="API.Features.Player" /> triggering the event.
+        ///     Gets the <see cref="API.Features.Player" /> triggering the event.
         /// </summary>
         public Player Player { get; }
     }

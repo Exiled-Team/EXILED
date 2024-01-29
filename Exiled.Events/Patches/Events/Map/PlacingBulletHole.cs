@@ -28,8 +28,8 @@ namespace Exiled.Events.Patches.Events.Map
     using Player = API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="StandardHitregBase.PlaceBulletholeDecal" />.
-    /// Adds the <see cref="Map.PlacingBulletHole" /> event.
+    ///     Patches <see cref="StandardHitregBase.PlaceBulletholeDecal" />.
+    ///     Adds the <see cref="Map.PlacingBulletHole" /> event.
     /// </summary>
     [EventPatch(typeof(Map), nameof(Map.PlacingBulletHole))]
     [HarmonyPatch(typeof(StandardHitregBase), nameof(StandardHitregBase.PlaceBulletholeDecal))]

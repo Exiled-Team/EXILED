@@ -34,6 +34,9 @@ namespace Exiled.Events.Patches.Generic
 
             Label returnLabel = generator.DefineLabel();
             Label skip = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
+
+            newInstructions[0].labels.Add(continueLabel);
 
             // if ((referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial && ExiledEvents.Instance.Config.TutorialNotAffectedByScp079Scan) || Scp079Role.TurnedPlayers.Contains(Player.Get(referenceHub)))
             //     return;
@@ -57,7 +60,7 @@ namespace Exiled.Events.Patches.Generic
 
                     // if (Scp079Role.TurnedPlayers.Contains(Player.Get(referenceHub)))
                     new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(API.Features.Roles.Scp079Role), nameof(API.Features.Roles.Scp079Role.TurnedPlayers))).WithLabels(skip),
-                    new(OpCodes.Ldarg_1),
+                    new (OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
                     new(OpCodes.Brtrue_S, returnLabel),

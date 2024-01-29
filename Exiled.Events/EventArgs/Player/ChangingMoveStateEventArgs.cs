@@ -16,24 +16,24 @@ namespace Exiled.Events.EventArgs.Player
     using PlayerRoles.FirstPersonControl;
 
     /// <summary>
-    /// Contains all information before changing movement state.
+    ///     Contains all information before changing movement state.
     /// </summary>
     public class ChangingMoveStateEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChangingMoveStateEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="ChangingMoveStateEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="oldState">
-        /// <inheritdoc cref="OldState" />
+        ///     <inheritdoc cref="OldState" />
         /// </param>
         /// <param name="newState">
-        /// <inheritdoc cref="NewState" />
+        ///     <inheritdoc cref="NewState" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public ChangingMoveStateEventArgs(Player player, PlayerMovementState oldState, PlayerMovementState newState, bool isAllowed = true)
         {
@@ -45,17 +45,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the player who's changing the movement state.
+        ///     Gets the player who's changing the movement state.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the old state.
+        ///     Gets the old state.
         /// </summary>
         public PlayerMovementState OldState { get; }
 
         /// <summary>
-        /// Gets or sets the new state.
+        ///     Gets or sets the new state.
         /// </summary>
         // TODO: remove setter
         public PlayerMovementState NewState
@@ -66,7 +66,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player can change the movement state.
+        ///     Gets or sets a value indicating whether the player can change the movement state.
         /// </summary>
         // TODO: remove
         [Obsolete("Property was removed due to desync problems.")]

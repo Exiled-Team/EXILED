@@ -15,18 +15,18 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.Usables;
 
     /// <summary>
-    /// Contains all information after a player used an item.
+    ///     Contains all information after a player used an item.
     /// </summary>
     public class UsedItemEventArgs : IPlayerEvent, IUsableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UsedItemEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="UsedItemEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="item">
-        /// <inheritdoc cref="Item" />
+        ///     <inheritdoc cref="Item" />
         /// </param>
         public UsedItemEventArgs(ReferenceHub player, UsableItem item)
         {
@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the item that the player used.
+        ///     Gets the item that the player used.
         /// </summary>
         public Usable Usable { get; }
 
@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => Usable;
 
         /// <summary>
-        /// Gets the player who used the item.
+        ///     Gets the player who used the item.
         /// </summary>
         public Player Player { get; }
     }

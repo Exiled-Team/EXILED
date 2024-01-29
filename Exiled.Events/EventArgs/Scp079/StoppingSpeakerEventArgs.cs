@@ -12,21 +12,21 @@ namespace Exiled.Events.EventArgs.Scp079
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all information before SCP-079 finishes using a speaker.
+    ///     Contains all information before SCP-079 finishes using a speaker.
     /// </summary>
     public class StoppingSpeakerEventArgs : IScp079Event, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StoppingSpeakerEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="StoppingSpeakerEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="room">
-        /// <inheritdoc cref="Room" />
+        ///     <inheritdoc cref="Room" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public StoppingSpeakerEventArgs(Player player, Room room, bool isAllowed = true)
         {
@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs.Scp079
         }
 
         /// <summary>
-        /// Gets the player who's controlling SCP-079.
+        ///     Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
 
@@ -45,12 +45,12 @@ namespace Exiled.Events.EventArgs.Scp079
         public Scp079Role Scp079 { get; }
 
         /// <summary>
-        /// Gets the room that the speaker is located in.
+        ///     Gets the room that the speaker is located in.
         /// </summary>
         public Room Room { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-079 can stop using the speaker.
+        ///     Gets or sets a value indicating whether or not SCP-079 can stop using the speaker.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

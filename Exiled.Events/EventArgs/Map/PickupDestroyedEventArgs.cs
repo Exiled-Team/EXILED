@@ -12,15 +12,15 @@ namespace Exiled.Events.EventArgs.Map
     using InventorySystem.Items.Pickups;
 
     /// <summary>
-    /// Contains all information after the server destroys a pickup.
+    ///     Contains all information after the server destroys a pickup.
     /// </summary>
     public class PickupDestroyedEventArgs : IPickupEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PickupDestroyedEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="PickupDestroyedEventArgs" /> class.
         /// </summary>
         /// <param name="pickupBase">
-        /// <inheritdoc cref="Pickup" />
+        ///     <inheritdoc cref="Pickup" />
         /// </param>
         public PickupDestroyedEventArgs(ItemPickupBase pickupBase)
         {
@@ -28,7 +28,7 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        /// Gets a value indicating the pickup being destroyed.
+        ///     Gets a value indicating the pickup being destroyed.
         /// </summary>
         public Pickup Pickup { get; }
     }

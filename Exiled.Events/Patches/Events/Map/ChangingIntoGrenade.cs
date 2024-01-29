@@ -29,8 +29,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="TimedGrenadePickup.Update" />.
-    /// Adds the <see cref="Map.ChangingIntoGrenade" /> and <see cref="Map.ChangedIntoGrenade" /> events.
+    ///     Patches <see cref="TimedGrenadePickup.Update" />.
+    ///     Adds the <see cref="Map.ChangingIntoGrenade" /> and <see cref="Map.ChangedIntoGrenade" /> events.
     /// </summary>
     [EventPatch(typeof(Map), nameof(Map.ChangingIntoGrenade))]
     [EventPatch(typeof(Map), nameof(Map.ChangedIntoGrenade))]
@@ -118,7 +118,7 @@ namespace Exiled.Events.Patches.Events.Map
                 // thrownProjectile
                 new(OpCodes.Ldloc_S, thrownProjectile.LocalIndex),
 
-                // ChangedIntoGrenadeEventArgs ev = new(timedGrenadePickup, thrownProjectile);
+                // var ev = new ChangedIntoGrenadeEventArgs(timedGrenadePickup, thrownProjectile);
                 // Map.OnChangingIntoGrenade(ev);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangedIntoGrenadeEventArgs))[0]),
                 new(OpCodes.Dup),

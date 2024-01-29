@@ -14,21 +14,21 @@ namespace Exiled.Events.EventArgs.Player
     using MapGeneration.Distributors;
 
     /// <summary>
-    /// Contains all information before a player opens a generator.
+    ///     Contains all information before a player opens a generator.
     /// </summary>
     public class OpeningGeneratorEventArgs : IPlayerEvent, IDeniableEvent, IGeneratorEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OpeningGeneratorEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="OpeningGeneratorEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="generator">
-        /// <inheritdoc cref="Generator" />
+        ///     <inheritdoc cref="Generator" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public OpeningGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true)
         {
@@ -38,17 +38,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the generator can be opened.
+        ///     Gets or sets a value indicating whether or not the generator can be opened.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets the generator that is opening.
+        ///     Gets the generator that is opening.
         /// </summary>
         public Generator Generator { get; }
 
         /// <summary>
-        /// Gets the player who's opening the generator.
+        ///     Gets the player who's opening the generator.
         /// </summary>
         public Player Player { get; }
     }

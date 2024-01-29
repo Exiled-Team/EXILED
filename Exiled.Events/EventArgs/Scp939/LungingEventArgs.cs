@@ -12,15 +12,15 @@ namespace Exiled.Events.EventArgs.Scp939
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before SCP-939 uses its lunge ability.
+    ///     Contains all information before SCP-939 uses its lunge ability.
     /// </summary>
     public class LungingEventArgs : IScp939Event
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LungingEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="LungingEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         public LungingEventArgs(Player player)
         {
@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs.Scp939
         }
 
         /// <summary>
-        /// Gets the player who's controlling SCP-939.
+        ///     Gets the player who's controlling SCP-939.
         /// </summary>
         public Player Player { get; }
 

@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ServerConsole.Disconnect(GameObject, string)" />.
-    /// Adds the <see cref="Handlers.Player.Kicked" /> event.
+    ///     Patches <see cref="ServerConsole.Disconnect(GameObject, string)" />.
+    ///     Adds the <see cref="Handlers.Player.Kicked" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Kicked))]
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.Disconnect), typeof(GameObject), typeof(string))]

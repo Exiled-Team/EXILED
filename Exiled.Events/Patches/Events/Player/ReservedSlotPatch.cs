@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ReservedSlot.HasReservedSlot(string, out bool)" />.
-    /// Adds the <see cref="Player.ReservedSlot" /> event.
+    ///     Patches <see cref="ReservedSlot.HasReservedSlot(string, out bool)" />.
+    ///     Adds the <see cref="Player.ReservedSlot" /> event.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.ReservedSlot))]
     [HarmonyPatch(typeof(ReservedSlot), nameof(ReservedSlot.HasReservedSlot))]

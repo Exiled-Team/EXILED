@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="CommandProcessor.ProcessAdminChat(string, CommandSender)" />.
-    /// Adds the <see cref="Handlers.Player.SendingAdminChatMessage" /> event.
+    ///     Patches <see cref="CommandProcessor.ProcessAdminChat(string, CommandSender)" />.
+    ///     Adds the <see cref="Handlers.Player.SendingAdminChatMessage" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.SendingAdminChatMessage))]
     [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessAdminChat))]

@@ -13,21 +13,21 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before a player's weapon is unloaded.
+    ///     Contains all information before a player's weapon is unloaded.
     /// </summary>
     public class UnloadingWeaponEventArgs : IPlayerEvent, IFirearmEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnloadingWeaponEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="UnloadingWeaponEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="firearm">
-        /// <inheritdoc cref="Firearm" />
+        ///     <inheritdoc cref="Firearm" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public UnloadingWeaponEventArgs(Player player, Firearm firearm, bool isAllowed = true)
         {
@@ -37,12 +37,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the weapon can be unloaded.
+        ///     Gets or sets a value indicating whether or not the weapon can be unloaded.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="API.Features.Items.Firearm" /> being unloaded.
+        ///     Gets the <see cref="API.Features.Items.Firearm" /> being unloaded.
         /// </summary>
         public Firearm Firearm { get; }
 
@@ -50,7 +50,7 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => Firearm;
 
         /// <summary>
-        /// Gets the player who's unloading the weapon.
+        ///     Gets the player who's unloading the weapon.
         /// </summary>
         public Player Player { get; }
     }

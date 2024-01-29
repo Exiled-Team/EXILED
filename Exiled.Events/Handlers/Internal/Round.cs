@@ -16,18 +16,15 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.Loader.Features;
 
     using InventorySystem;
-    using InventorySystem.Items.Usables;
+
     using PlayerRoles;
     using PlayerRoles.RoleAssign;
 
     /// <summary>
-    /// Handles some round clean-up events and some others related to players.
+    ///     Handles some round clean-up events and some others related to players.
     /// </summary>
     internal static class Round
     {
-        /// <inheritdoc cref="Handlers.Player.OnUsedItem" />
-        public static void OnServerOnUsingCompleted(ReferenceHub hub, UsableItem usable) => Handlers.Player.OnUsedItem(new (hub, usable));
-
         /// <inheritdoc cref="Handlers.Server.OnWaitingForPlayers" />
         public static void OnWaitingForPlayers()
         {
@@ -72,11 +69,12 @@ namespace Exiled.Events.Handlers.Internal
         /// <inheritdoc cref="Scp049.OnActivatingSense(ActivatingSenseEventArgs)" />
         public static void OnActivatingSense(ActivatingSenseEventArgs ev)
         {
-            if (ev.Target is null)
+            if (!Events.Instance.Config.CanScp049SenseTutorial || ev.Target is null || ev.Target.Role.Type is not RoleTypeId.Tutorial)
                 return;
-            if ((Events.Instance.Config.CanScp049SenseTutorial || ev.Target.Role.Type is not RoleTypeId.Tutorial) && !Scp049Role.TurnedPlayers.Contains(ev.Target))
-                return;
-            ev.Target = ev.Scp049.SenseAbility.CanFindTarget(out ReferenceHub hub) ? Player.Get(hub) : null;
+            if (ev.Scp049.SenseAbility.CanFindTarget(out ReferenceHub hub))
+                ev.Target = Player.Get(hub);
+            else
+                ev.Target = null;
         }
 
         /// <inheritdoc cref="Handlers.Player.OnVerified(VerifiedEventArgs)" />

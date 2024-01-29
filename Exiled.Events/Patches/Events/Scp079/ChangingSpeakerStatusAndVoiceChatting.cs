@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Player = API.Features.Player;
 
     /// <summary>
-    /// Patches Scp079VoiceModule.ServerIsSending />.
-    /// Adds the <see cref="Scp079.ChangingSpeakerStatus" /> and the <see cref="Handlers.Player.VoiceChatting"/> events.
+    ///     Patches Scp079VoiceModule.ServerIsSending />.
+    ///     Adds the <see cref="Scp079.ChangingSpeakerStatus" /> and the <see cref="Handlers.Player.VoiceChatting"/> events.
     /// </summary>
     [EventPatch(typeof(Scp079), nameof(Scp079.ChangingSpeakerStatus))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.VoiceChatting))]

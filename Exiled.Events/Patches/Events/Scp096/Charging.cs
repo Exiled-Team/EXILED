@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Scp096
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp096ChargeAbility.ServerProcessCmd(NetworkReader)" />.
-    /// Adds the <see cref="Handlers.Scp096.Charging" /> event.
+    ///     Patches <see cref="Scp096ChargeAbility.ServerProcessCmd(NetworkReader)" />.
+    ///     Adds the <see cref="Handlers.Scp096.Charging" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.Charging))]
     [HarmonyPatch(typeof(Scp096ChargeAbility), nameof(Scp096ChargeAbility.ServerProcessCmd))]

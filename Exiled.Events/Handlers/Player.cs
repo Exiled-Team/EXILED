@@ -453,11 +453,6 @@ namespace Exiled.Events.Handlers
         public static Event<TogglingOverwatchEventArgs> TogglingOverwatch { get; set; } = new();
 
         /// <summary>
-        /// Invoked before turning the <see cref="API.Features.Items.Radio" /> on/off.
-        /// </summary>
-        public static Event<TogglingRadioEventArgs> TogglingRadio { get; set; } = new();
-
-        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> searches a Pickup.
         /// </summary>
         public static Event<SearchingPickupEventArgs> SearchingPickup { get; set; } = new();
@@ -481,11 +476,6 @@ namespace Exiled.Events.Handlers
         /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
         /// </summary>
         public static Event<ItemAddedEventArgs> ItemAdded { get; set; } = new();
-
-        /// <summary>
-        /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item removed from their inventory.
-        /// </summary>
-        public static Event<ItemRemovedEventArgs> ItemRemoved { get; set; } = new();
 
         /// <summary>
         /// Invoked before KillPlayer is called.
@@ -911,12 +901,6 @@ namespace Exiled.Events.Handlers
         public static void OnTogglingOverwatch(TogglingOverwatchEventArgs ev) => TogglingOverwatch.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before turning the radio on/off.
-        /// </summary>
-        /// <param name="ev">The <see cref="TogglingRadioEventArgs"/> instance.</param>
-        public static void OnTogglingRadio(TogglingRadioEventArgs ev) => TogglingRadio.InvokeSafely(ev);
-
-        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> searches a Pickup.
         /// </summary>
         /// <param name="ev">The <see cref="SearchingPickupEventArgs"/> instance.</param>
@@ -942,15 +926,6 @@ namespace Exiled.Events.Handlers
         /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
         public static void OnItemAdded(ReferenceHub referenceHub, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase)
             => ItemAdded.InvokeSafely(new ItemAddedEventArgs(referenceHub, itemBase, pickupBase));
-
-        /// <summary>
-        /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item removed from their inventory.
-        /// </summary>
-        /// <param name="referenceHub">The <see cref="ReferenceHub"/> the item was removed from.</param>
-        /// <param name="itemBase">The removed <see cref="InventorySystem.Items.ItemBase"/>.</param>
-        /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
-        public static void OnItemRemoved(ReferenceHub referenceHub, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase)
-            => ItemRemoved.InvokeSafely(new ItemRemovedEventArgs(referenceHub, itemBase, pickupBase));
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> enters in an environmental hazard.

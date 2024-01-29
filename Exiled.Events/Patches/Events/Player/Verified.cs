@@ -19,8 +19,8 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
     /// <summary>
-    /// Patches <see cref="PlayerAuthenticationManager.FinalizeAuthentication" />.
-    /// Adds the <see cref="Handlers.Player.Verified" /> event.
+    ///     Patches <see cref="PlayerAuthenticationManager.FinalizeAuthentication" />.
+    ///     Adds the <see cref="Handlers.Player.Verified" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerAuthenticationManager), nameof(PlayerAuthenticationManager.FinalizeAuthentication))]
     internal static class Verified

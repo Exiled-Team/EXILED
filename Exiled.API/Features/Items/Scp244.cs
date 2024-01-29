@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Items
 {
-    using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
@@ -30,10 +29,6 @@ namespace Exiled.API.Features.Items
             : base(itemBase)
         {
             Base = itemBase;
-            Scp244DeployablePickup scp244Pickup = (Scp244DeployablePickup)Type.GetPickupBase();
-            Health = scp244Pickup._health;
-            ActivationDot = scp244Pickup._activationDot;
-            MaxDiameter = scp244Pickup.MaxDiameter;
         }
 
         /// <summary>
@@ -58,22 +53,6 @@ namespace Exiled.API.Features.Items
             get => Base._primed;
             set => Base._primed = value;
         }
-
-        /// <summary>
-        /// Gets or sets the Scp244's remaining health.
-        /// </summary>
-        public float Health { get; set; }
-
-        /// <summary>
-        /// Gets or sets the activation angle, where 1 is the minimum and -1 is the maximum activation angle.
-        /// </summary>
-        public float ActivationDot { get; set; }
-
-        /// <summary>
-        /// Gets or sets the maximum diameter within which SCP-244's hypothermia effect is dealt.
-        /// </summary>
-        /// <remarks>This does not prevent visual effects.</remarks>
-        public float MaxDiameter { get; set; }
 
         /// <summary>
         /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
@@ -107,9 +86,6 @@ namespace Exiled.API.Features.Items
         public override Item Clone() => new Scp244(Type)
         {
             Primed = Primed,
-            MaxDiameter = MaxDiameter,
-            Health = Health,
-            ActivationDot = ActivationDot,
         };
 
         /// <summary>
@@ -117,17 +93,5 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing SCP-244 related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* -{Primed}-";
-
-        /// <inheritdoc/>
-        internal override void ReadPickupInfo(Pickup pickup)
-        {
-            base.ReadPickupInfo(pickup);
-            if (pickup is Scp244Pickup scp244)
-            {
-                Health = scp244.Health;
-                ActivationDot = scp244.ActivationDot;
-                MaxDiameter = scp244.MaxDiameter;
-            }
-        }
     }
 }

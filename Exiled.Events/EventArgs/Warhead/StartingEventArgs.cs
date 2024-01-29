@@ -10,12 +10,12 @@ namespace Exiled.Events.EventArgs.Warhead
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before starting the warhead.
+    ///     Contains all information before starting the warhead.
     /// </summary>
     public class StartingEventArgs : StoppingEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StartingEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="StartingEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player who's going to start the warhead.</param>
         /// <param name="isAuto">Indicating whether or not the nuke was set off automatically.</param>
@@ -27,7 +27,7 @@ namespace Exiled.Events.EventArgs.Warhead
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the nuke was set off automatically.
+        ///     Gets or sets a value indicating whether or not the nuke was set off automatically.
         /// </summary>
         public bool IsAuto { get; set; }
     }

@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ItemSearchCompletor.Complete" />.
-    /// Adds the <see cref="Handlers.Player.PickingUpItem" /> event.
+    ///     Patches <see cref="ItemSearchCompletor.Complete" />.
+    ///     Adds the <see cref="Handlers.Player.PickingUpItem" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.PickingUpItem))]
     [HarmonyPatch(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.Complete))]

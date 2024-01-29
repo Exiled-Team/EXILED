@@ -12,20 +12,20 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    /// Contains all the information after a <see cref="API.Features.Player" /> lands on the ground.
+    ///     Contains all the information after a <see cref="API.Features.Player" /> lands on the ground.
     /// </summary>
     public class LandingEventArgs : IPlayerEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LandingEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="LandingEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         public LandingEventArgs(Player player) => Player = player;
 
         /// <summary>
-        /// Gets the <see cref="API.Features.Player" /> who's landing.
+        ///     Gets the <see cref="API.Features.Player" /> who's landing.
         /// </summary>
         public Player Player { get; }
     }

@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using BaseTeslaGate = TeslaGate;
 
     /// <summary>
-    /// Patches <see cref="TeslaGateController.FixedUpdate" />.
-    /// Adds the <see cref="Handlers.Player.TriggeringTesla" /> event.
+    ///     Patches <see cref="TeslaGateController.FixedUpdate" />.
+    ///     Adds the <see cref="Handlers.Player.TriggeringTesla" /> event.
     /// </summary>
     [HarmonyPatch(typeof(TeslaGateController), nameof(TeslaGateController.FixedUpdate))]
     internal static class TriggeringTesla

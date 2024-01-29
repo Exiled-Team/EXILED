@@ -10,12 +10,12 @@ namespace Exiled.Events.EventArgs.Interfaces
     using API.Features;
 
     /// <summary>
-    /// Event args used for all <see cref="API.Features.Generator" /> related events.
+    ///     Event args used for all <see cref="API.Features.Generator" /> related events.
     /// </summary>
     public interface IGeneratorEvent : IExiledEvent
     {
         /// <summary>
-        /// Gets the <see cref="API.Features.Generator" /> triggering the event.
+        ///     Gets the <see cref="API.Features.Generator" /> triggering the event.
         /// </summary>
         public Generator Generator { get; }
     }

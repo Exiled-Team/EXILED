@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp173
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp173BreakneckSpeedsAbility.IsActive" />.
-    /// Adds the <see cref="Handlers.Scp173.UsingBreakneckSpeeds" /> event.
+    ///     Patches <see cref="Scp173BreakneckSpeedsAbility.IsActive" />.
+    ///     Adds the <see cref="Handlers.Scp173.UsingBreakneckSpeeds" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp173.UsingBreakneckSpeeds))]
     [HarmonyPatch(typeof(Scp173BreakneckSpeedsAbility), nameof(Scp173BreakneckSpeedsAbility.IsActive), MethodType.Setter)]
@@ -50,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Scp173
                 new CodeInstruction[]
                 {
                     // Player.Get(base.Owner)
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Ldarg_0),
                     new(OpCodes.Call, PropertyGetter(typeof(StandardSubroutine<Scp173Role>), nameof(StandardSubroutine<Scp173Role>.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 

@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="FpcMotor.UpdateGrounded(ref bool, float)" />
-    /// Adds the <see cref="Player.Jumping" /> event.
+    ///     Patches <see cref="FpcMotor.UpdateGrounded(ref bool, float)" />
+    ///     Adds the <see cref="Player.Jumping" /> event.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.Jumping))]
     [HarmonyPatch(typeof(FpcMotor), nameof(FpcMotor.UpdateGrounded))]

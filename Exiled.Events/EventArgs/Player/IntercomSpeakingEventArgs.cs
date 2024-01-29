@@ -12,18 +12,18 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before a player speaks to the intercom.
+    ///     Contains all information before a player speaks to the intercom.
     /// </summary>
     public class IntercomSpeakingEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="IntercomSpeakingEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="IntercomSpeakingEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public IntercomSpeakingEventArgs(Player player, bool isAllowed = true)
         {
@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the player who's going to speak on the intercom.
+        ///     Gets the player who's going to speak on the intercom.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can speak on the intercom.
+        ///     Gets or sets a value indicating whether or not the player can speak on the intercom.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

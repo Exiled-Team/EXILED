@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="WorkstationController.NetworkStatus" />.
-    /// Adds the <see cref="Player.DeactivatingWorkstation" /> event.
+    ///     Patch the <see cref="WorkstationController.NetworkStatus" />.
+    ///     Adds the <see cref="Player.DeactivatingWorkstation" /> event.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.DeactivatingWorkstation))]
     [HarmonyPatch(typeof(WorkstationController), nameof(WorkstationController.NetworkStatus), MethodType.Setter)]

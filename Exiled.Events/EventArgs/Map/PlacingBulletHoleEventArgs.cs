@@ -14,18 +14,18 @@ namespace Exiled.Events.EventArgs.Map
     using UnityEngine;
 
     /// <summary>
-    /// Contains all information before placing a bullet hole decal.
+    ///     Contains all information before placing a bullet hole decal.
     /// </summary>
     public class PlacingBulletHoleEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlacingBulletHoleEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="PlacingBulletHoleEventArgs" /> class.
         /// </summary>
         /// <param name="owner">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="hit">
-        /// <inheritdoc cref="RaycastHit" />
+        ///     <inheritdoc cref="RaycastHit" />
         /// </param>
         public PlacingBulletHoleEventArgs(Player owner, RaycastHit hit)
         {
@@ -35,22 +35,22 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        /// Gets or sets the decal position.
+        ///     Gets or sets the decal position.
         /// </summary>
         public Vector3 Position { get; set; }
 
         /// <summary>
-        /// Gets or sets the decal rotation.
+        ///     Gets or sets the decal rotation.
         /// </summary>
         public Quaternion Rotation { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the decal can be placed.
+        ///     Gets or sets a value indicating whether or not the decal can be placed.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        /// Gets the decal owner.
+        ///     Gets the decal owner.
         /// </summary>
         public Player Player { get; }
     }

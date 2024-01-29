@@ -16,24 +16,24 @@ namespace Exiled.Events.EventArgs.Player
     using static InventorySystem.Items.Radio.RadioMessages;
 
     /// <summary>
-    /// Contains all information before radio preset is changed.
+    ///     Contains all information before radio preset is changed.
     /// </summary>
     public class ChangingRadioPresetEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChangingRadioPresetEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="ChangingRadioPresetEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="oldValue">
-        /// <inheritdoc cref="OldValue" />
+        ///     <inheritdoc cref="OldValue" />
         /// </param>
         /// <param name="newValue">
-        /// <inheritdoc cref="NewValue" />
+        ///     <inheritdoc cref="NewValue" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public ChangingRadioPresetEventArgs(Player player, RadioRangeLevel oldValue, RadioRangeLevel newValue, bool isAllowed = true)
         {
@@ -44,24 +44,24 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the old radio preset value.
+        ///     Gets the old radio preset value.
         /// </summary>
         public RadioRange OldValue { get; }
 
         /// <summary>
-        /// Gets or sets the new radio preset value.
-        /// <remarks>Client radio graphics won't sync with this value.</remarks>
+        ///     Gets or sets the new radio preset value.
+        ///     <remarks>Client radio graphics won't sync with this value.</remarks>
         /// </summary>
         public RadioRange NewValue { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the radio preset can be changed or not.
-        /// <remarks>Client radio graphics won't sync with <see cref="OldValue" />.</remarks>
+        ///     Gets or sets a value indicating whether the radio preset can be changed or not.
+        ///     <remarks>Client radio graphics won't sync with <see cref="OldValue" />.</remarks>
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets the player who's using the radio.
+        ///     Gets the player who's using the radio.
         /// </summary>
         public Player Player { get; }
     }

@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="MicroHIDItem.ExecuteServerside" />.
-    /// Adds the <see cref="Handlers.Player.UsingMicroHIDEnergy" /> event.
+    ///     Patches <see cref="MicroHIDItem.ExecuteServerside" />.
+    ///     Adds the <see cref="Handlers.Player.UsingMicroHIDEnergy" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsingMicroHIDEnergy))]
     [HarmonyPatch(typeof(MicroHIDItem), nameof(MicroHIDItem.ExecuteServerside))]

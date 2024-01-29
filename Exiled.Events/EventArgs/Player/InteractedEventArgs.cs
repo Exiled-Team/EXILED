@@ -12,15 +12,15 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    /// Contains all information after a player has interacted with an interactable.
+    ///     Contains all information after a player has interacted with an interactable.
     /// </summary>
     public class InteractedEventArgs : IPlayerEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InteractedEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="InteractedEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         public InteractedEventArgs(Player player)
         {
@@ -28,7 +28,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the player who interacted.
+        ///     Gets the player who interacted.
         /// </summary>
         public Player Player { get; }
     }

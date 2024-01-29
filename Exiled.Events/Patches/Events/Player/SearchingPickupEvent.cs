@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="SearchCoordinator.ReceiveRequestUnsafe" />.
-    /// Adds the <see cref="Handlers.Player.SearchingPickup" /> event.
+    ///     Patches <see cref="SearchCoordinator.ReceiveRequestUnsafe" />.
+    ///     Adds the <see cref="Handlers.Player.SearchingPickup" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.SearchingPickup))]
     [HarmonyPatch(typeof(SearchCoordinator), nameof(SearchCoordinator.ReceiveRequestUnsafe))]

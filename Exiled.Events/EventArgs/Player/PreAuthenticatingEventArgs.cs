@@ -23,7 +23,7 @@ namespace Exiled.Events.EventArgs.Player
 #pragma warning disable CS1591
 
     /// <summary>
-    /// Contains all information before pre-authenticating a player.
+    ///     Contains all information before pre-authenticating a player.
     /// </summary>
     public class PreAuthenticatingEventArgs : IExiledEvent
     {
@@ -61,47 +61,47 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the player's user id.
+        ///     Gets the player's user id.
         /// </summary>
         public string UserId { get; }
 
         /// <summary>
-        /// Gets the player's IP address.
+        ///     Gets the player's IP address.
         /// </summary>
         public string IpAddress { get; }
 
         /// <summary>
-        /// Gets the request's expiration.
+        ///     Gets the request's expiration.
         /// </summary>
         public long Expiration { get; }
 
         /// <summary>
-        /// Gets the flags.
+        ///     Gets the flags.
         /// </summary>
         public CentralAuthPreauthFlags Flags { get; }
 
         /// <summary>
-        /// Gets the player's country.
+        ///     Gets the player's country.
         /// </summary>
         public string Country { get; }
 
         /// <summary>
-        /// Gets the request's signature.
+        ///     Gets the request's signature.
         /// </summary>
         public byte[] Signature { get; }
 
         /// <summary>
-        /// Gets the reader starting position for reading the preauth.
+        ///     Gets the reader starting position for reading the preauth.
         /// </summary>
         public int ReaderStartPosition { get; }
 
         /// <summary>
-        /// Gets the connection request.
+        ///     Gets the connection request.
         /// </summary>
         public ConnectionRequest Request { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the player can be authenticated or not.
+        ///     Gets a value indicating whether the player can be authenticated or not.
         /// </summary>
         public bool IsAllowed { get; private set; } = true;
 
@@ -170,7 +170,7 @@ namespace Exiled.Events.EventArgs.Player
 
         /*
         /// <summary>
-        /// Delays the connection.
+        ///     Delays the connection.
         /// </summary>
         /// <param name="seconds">The delay in seconds.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
@@ -183,14 +183,14 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Rejects the player and redirects them to another server port.
+        ///     Rejects the player and redirects them to another server port.
         /// </summary>
         /// <param name="port">The new server port.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
         public void Redirect(ushort port, bool isForced) => Reject(RejectionReason.Redirect, isForced, null, 0, 0, port);
 
         /// <summary>
-        /// Rejects a player who's trying to authenticate.
+        ///     Rejects a player who's trying to authenticate.
         /// </summary>
         /// <param name="banReason">The ban reason.</param>
         /// <param name="expiration">The ban expiration time.</param>
@@ -198,7 +198,7 @@ namespace Exiled.Events.EventArgs.Player
         public void RejectBanned(string banReason, DateTime expiration, bool isForced) => Reject(RejectionReason.Banned, isForced, banReason, expiration.Ticks);
 
         /// <summary>
-        /// Rejects a player who's trying to authenticate.
+        ///     Rejects a player who's trying to authenticate.
         /// </summary>
         /// <param name="banReason">The ban reason.</param>
         /// <param name="expiration">The ban expiration time in .NET Ticks.</param>
@@ -206,7 +206,7 @@ namespace Exiled.Events.EventArgs.Player
         public void RejectBanned(string banReason, long expiration, bool isForced) => Reject(RejectionReason.Banned, isForced, banReason, expiration);
 
         /// <summary>
-        /// Rejects a player who's trying to authenticate.
+        ///     Rejects a player who's trying to authenticate.
         /// </summary>
         /// <param name="writer">The <see cref="NetDataWriter" /> instance.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
@@ -224,14 +224,14 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Rejects a player who's trying to authenticate.
+        ///     Rejects a player who's trying to authenticate.
         /// </summary>
         /// <param name="rejectionReason">The custom rejection reason.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
         public void Reject(string rejectionReason, bool isForced) => Reject(RejectionReason.Custom, isForced, rejectionReason);
 
         /// <summary>
-        /// Rejects a player who's trying to authenticate.
+        ///     Rejects a player who's trying to authenticate.
         /// </summary>
         /// <param name="rejectionReason">The rejection reason.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
@@ -280,8 +280,8 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Disallows the connection without sending any reason. Should only be used when the connection has already been
-        /// terminated by the plugin itself.
+        ///     Disallows the connection without sending any reason. Should only be used when the connection has already been
+        ///     terminated by the plugin itself.
         /// </summary>
         public void Disallow() => IsAllowed = false;
         */

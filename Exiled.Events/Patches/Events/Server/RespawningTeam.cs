@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Server
     using Player = API.Features.Player;
 
     /// <summary>
-    /// Patch the <see cref="RespawnManager.Spawn" />.
-    /// Adds the <see cref="Server.RespawningTeam" /> event.
+    ///     Patch the <see cref="RespawnManager.Spawn" />.
+    ///     Adds the <see cref="Server.RespawningTeam" /> event.
     /// </summary>
     [EventPatch(typeof(Server), nameof(Server.RespawningTeam))]
     [HarmonyPatch(typeof(RespawnManager), nameof(RespawnManager.Spawn))]

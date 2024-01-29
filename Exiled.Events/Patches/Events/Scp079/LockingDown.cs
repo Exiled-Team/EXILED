@@ -28,8 +28,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Player = API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="Scp079LockdownRoomAbility.ServerProcessCmd(NetworkReader)" />.
-    /// Adds the <see cref="Scp079.LockingDown" /> event for SCP-079.
+    ///     Patches <see cref="Scp079LockdownRoomAbility.ServerProcessCmd(NetworkReader)" />.
+    ///     Adds the <see cref="Scp079.LockingDown" /> event for SCP-079.
     /// </summary>
     [EventPatch(typeof(Scp079), nameof(Scp079.LockingDown))]
     [HarmonyPatch(typeof(Scp079LockdownRoomAbility), nameof(Scp079LockdownRoomAbility.ServerProcessCmd))]

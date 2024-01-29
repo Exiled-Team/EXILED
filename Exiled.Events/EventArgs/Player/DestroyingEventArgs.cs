@@ -12,15 +12,15 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before a player's object is destroyed.
+    ///     Contains all information before a player's object is destroyed.
     /// </summary>
     public class DestroyingEventArgs : IPlayerEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DestroyingEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="DestroyingEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         public DestroyingEventArgs(Player player)
         {
@@ -31,7 +31,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the destroying player.
+        ///     Gets the destroying player.
         /// </summary>
         public Player Player { get; }
     }

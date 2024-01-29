@@ -11,12 +11,12 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all information before freeing a handcuffed player.
+    ///     Contains all information before freeing a handcuffed player.
     /// </summary>
     public class RemovingHandcuffsEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RemovingHandcuffsEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="RemovingHandcuffsEventArgs" /> class.
         /// </summary>
         /// <param name="cuffer">The cuffer player.</param>
         /// <param name="target">The target player to be uncuffed.</param>
@@ -29,17 +29,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the target player to be cuffed.
+        ///     Gets the target player to be cuffed.
         /// </summary>
         public Player Target { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can be handcuffed.
+        ///     Gets or sets a value indicating whether or not the player can be handcuffed.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets the cuffer player.
+        ///     Gets the cuffer player.
         /// </summary>
         public Player Player { get; }
     }

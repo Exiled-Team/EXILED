@@ -14,24 +14,24 @@ namespace Exiled.Events.EventArgs.Scp096
     using Scp096Role = API.Features.Roles.Scp096Role;
 
     /// <summary>
-    /// Contains all information before adding a target to SCP-096.
+    ///     Contains all information before adding a target to SCP-096.
     /// </summary>
     public class AddingTargetEventArgs : IScp096Event, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddingTargetEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="AddingTargetEventArgs" /> class.
         /// </summary>
         /// <param name="scp096">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="target">
-        /// <inheritdoc cref="Target" />
+        ///     <inheritdoc cref="Target" />
         /// </param>
         /// <param name="isLooking">
-        /// <inheritdoc cref="IsLooking" />
+        ///     <inheritdoc cref="IsLooking" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public AddingTargetEventArgs(Player scp096, Player target, bool isLooking, bool isAllowed = true)
         {
@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs.Scp096
         }
 
         /// <summary>
-        /// Gets the <see cref="Player" /> that is controlling SCP-096.
+        ///     Gets the <see cref="Player" /> that is controlling SCP-096.
         /// </summary>
         public Player Player { get; }
 
@@ -51,17 +51,17 @@ namespace Exiled.Events.EventArgs.Scp096
         public Scp096Role Scp096 { get; }
 
         /// <summary>
-        /// Gets the <see cref="Player" /> being added as a target.
+        ///     Gets the <see cref="Player" /> being added as a target.
         /// </summary>
         public Player Target { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the target was being target cause of looking it's face.
+        ///     Gets a value indicating whether or not the target was being target cause of looking it's face.
         /// </summary>
         public bool IsLooking { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the target is allowed to be added.
+        ///     Gets or sets a value indicating whether or not the target is allowed to be added.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

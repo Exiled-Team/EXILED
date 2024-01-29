@@ -12,18 +12,18 @@ namespace Exiled.Events.EventArgs.Scp939
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before SCP-939 plays a stolen player's voice.
+    ///     Contains all information before SCP-939 plays a stolen player's voice.
     /// </summary>
     public class PlayingVoiceEventArgs : IScp939Event, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayingVoiceEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="PlayingVoiceEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="stolen">
-        /// The player who's voice was stolen.
+        ///     The player who's voice was stolen.
         /// </param>
         public PlayingVoiceEventArgs(ReferenceHub player, ReferenceHub stolen)
         {
@@ -33,17 +33,17 @@ namespace Exiled.Events.EventArgs.Scp939
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-939 can play the stolen voice.
+        ///     Gets or sets a value indicating whether or not SCP-939 can play the stolen voice.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        /// Gets the players who's voice was stolen.
+        ///     Gets the players who's voice was stolen.
         /// </summary>
         public Player Stolen { get; }
 
         /// <summary>
-        /// Gets the player who's controlling SCP-939.
+        ///     Gets the player who's controlling SCP-939.
         /// </summary>
         public Player Player { get; }
 

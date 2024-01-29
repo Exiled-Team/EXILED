@@ -28,8 +28,8 @@ namespace Exiled.Events.Patches.Events.Scp173
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp173BlinkTimer.ServerBlink(Vector3)" />.
-    /// Adds the <see cref="Handlers.Scp173.Blinking" /> event.
+    ///     Patches <see cref="Scp173BlinkTimer.ServerBlink(Vector3)" />.
+    ///     Adds the <see cref="Handlers.Scp173.Blinking" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp173.Blinking))]
     [HarmonyPatch(typeof(Scp173BlinkTimer), nameof(Scp173BlinkTimer.ServerBlink))]

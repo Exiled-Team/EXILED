@@ -14,21 +14,21 @@ namespace Exiled.Events.EventArgs.Player
     using MapGeneration.Distributors;
 
     /// <summary>
-    /// Contains all information before a generator is unlocked.
+    ///     Contains all information before a generator is unlocked.
     /// </summary>
     public class UnlockingGeneratorEventArgs : IPlayerEvent, IGeneratorEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnlockingGeneratorEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="UnlockingGeneratorEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        /// <inheritdoc cref="Player" />
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="generator">
-        /// <inheritdoc cref="Generator" />
+        ///     <inheritdoc cref="Generator" />
         /// </param>
         /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public UnlockingGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true)
         {
@@ -38,17 +38,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the generator can be unlocked.
+        ///     Gets or sets a value indicating whether or not the generator can be unlocked.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets the generator that is going to be unlocked.
+        ///     Gets the generator that is going to be unlocked.
         /// </summary>
         public Generator Generator { get; }
 
         /// <summary>
-        /// Gets the player who's unlocking the generator.
+        ///     Gets the player who's unlocking the generator.
         /// </summary>
         public Player Player { get; }
     }

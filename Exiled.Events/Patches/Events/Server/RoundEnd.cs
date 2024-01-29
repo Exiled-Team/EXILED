@@ -12,20 +12,21 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Server;
 
     using HarmonyLib;
-    using PlayerRoles;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="RoundSummary._ProcessServerSideCode()" />.
-    /// Adds the <see cref="Handlers.Server.EndingRound" /> and <see cref="Handlers.Server.RoundEnded" /> event.
-    /// Adds the <see cref="Round.IgnoredPlayers" /> Propperty.
+    ///     Patches <see cref="RoundSummary.Start" />.
+    ///     Adds the <see cref="Handlers.Server.EndingRound" /> and <see cref="Handlers.Server.RoundEnded" /> event.
     /// </summary>
+    /* TODO: Removed this when NW will have changed ChaosTargetCount == 0 with ChaosTargetCount <= 0
+    [EventPatch(typeof(Handlers.Server), nameof(Handlers.Server.EndingRound))]
+    [EventPatch(typeof(Handlers.Server), nameof(Handlers.Server.RoundEnded))]
+    */
     [HarmonyPatch]
     internal static class RoundEnd
     {
@@ -45,31 +46,9 @@ namespace Exiled.Events.Patches.Events.Server
             const string LeadingTeam = "<leadingTeam>5__9";
             const string NewList = "<newList>5__3";
 
-            int offset = -1;
-            int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(PlayerRolesUtils), nameof(PlayerRolesUtils.GetTeam), new Type[] { typeof(ReferenceHub), }))) + offset;
-
-            Label jmp = generator.DefineLabel();
-
-            // if (Round.IgnoredPlayers.Contains(referencehub)
-            //  goto jmp;
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
-                {
-                    new(OpCodes.Call, PropertyGetter(typeof(Round), nameof(Round.IgnoredPlayers))),
-                    new(OpCodes.Ldloc_S, 10),
-                    new(OpCodes.Call, Method(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Contains))),
-                    new(OpCodes.Brtrue_S, jmp),
-                });
-
-            offset = 4;
-            index = newInstructions.FindIndex(x => x.Calls(Method(typeof(PlayerRolesUtils), nameof(PlayerRolesUtils.GetTeam), new Type[] { typeof(ReferenceHub), }))) + offset;
-
-            newInstructions[index].labels.Add(jmp);
-
             // Replace ChaosTargetCount == 0 with ChaosTargetCount <= 0
-            offset = 1;
-            index = newInstructions.FindIndex(x => x.Calls(PropertyGetter(typeof(RoundSummary), nameof(RoundSummary.ChaosTargetCount)))) + offset;
+            int offset = 1;
+            int index = newInstructions.FindIndex(x => x.Calls(PropertyGetter(typeof(RoundSummary), nameof(RoundSummary.ChaosTargetCount)))) + offset;
             Label label = (Label)newInstructions[index].operand;
             newInstructions.RemoveAt(index);
 
@@ -77,8 +56,8 @@ namespace Exiled.Events.Patches.Events.Server
                 index,
                 new CodeInstruction[]
                 {
-                    new(OpCodes.Ldc_I4_0),
-                    new(OpCodes.Bgt_S, label),
+                    new CodeInstruction(OpCodes.Ldc_I4_0),
+                    new CodeInstruction(OpCodes.Bgt_S, label),
                 });
 
             offset = -1;
@@ -101,11 +80,7 @@ namespace Exiled.Events.Patches.Events.Server
                     // shouldRoundEnd
                     new(OpCodes.Ldloc_S, 4),
 
-                    // isForceEnd
-                    new(OpCodes.Ldloc_1),
-                    new(OpCodes.Ldfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
-
-                    // EndingRoundEventArgs evEndingRound = new(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, bool, bool);
+                    // EndingRoundEventArgs evEndingRound = new(RoundSummary.LeadingTeam, RoundSummary.SumInfo_ClassList, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EndingRoundEventArgs))[0]),
                     new(OpCodes.Dup),
 
@@ -119,16 +94,11 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.LeadingTeam))),
                     new(OpCodes.Stfld, Field(PrivateType, LeadingTeam)),
 
-                    // this._roundEnded = ev.IsForceEnded
+                    // this._roundEnded = ev.IsAllowed
                     new(OpCodes.Ldloc_1),
                     new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsForceEnded))),
-                    new(OpCodes.Stfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
-
-                    // flag = ev.IsAllowed
-                    new(OpCodes.Ldloc_S, evEndingRound.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(EndingRoundEventArgs), nameof(EndingRoundEventArgs.IsAllowed))),
-                    new(OpCodes.Stloc_S, 4),
+                    new(OpCodes.Stfld, Field(typeof(RoundSummary), nameof(RoundSummary._roundEnded))),
                 });
 
             offset = 7;

@@ -12,21 +12,21 @@ namespace Exiled.Events.EventArgs.Server
     using Interfaces;
 
     /// <summary>
-    /// Contains all information after the end of a round.
+    ///     Contains all information after the end of a round.
     /// </summary>
     public class RoundEndedEventArgs : IExiledEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RoundEndedEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="RoundEndedEventArgs" /> class.
         /// </summary>
         /// <param name="leadingTeam">
-        /// <inheritdoc cref="LeadingTeam" />
+        ///     <inheritdoc cref="LeadingTeam" />
         /// </param>
         /// <param name="classList">
-        /// <inheritdoc cref="ClassList" />
+        ///     <inheritdoc cref="ClassList" />
         /// </param>
         /// <param name="timeToRestart">
-        /// <inheritdoc cref="TimeToRestart" />
+        ///     <inheritdoc cref="TimeToRestart" />
         /// </param>
         public RoundEndedEventArgs(LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, int timeToRestart)
         {
@@ -36,17 +36,17 @@ namespace Exiled.Events.EventArgs.Server
         }
 
         /// <summary>
-        /// Gets the leading team.
+        ///     Gets the leading team.
         /// </summary>
         public LeadingTeam LeadingTeam { get; }
 
         /// <summary>
-        /// Gets or sets the round summary class list.
+        ///     Gets or sets the round summary class list.
         /// </summary>
         public RoundSummary.SumInfo_ClassList ClassList { get; set; }
 
         /// <summary>
-        /// Gets or sets the time to restart the next round.
+        ///     Gets or sets the time to restart the next round.
         /// </summary>
         public int TimeToRestart { get; set; }
     }

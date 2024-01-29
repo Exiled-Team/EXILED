@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Scp244
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp244DeployablePickup.UpdateRange" /> to add missing event handler to the
-    /// <see cref="Scp244.OpeningScp244" />.
+    ///     Patches <see cref="Scp244DeployablePickup.UpdateRange" /> to add missing event handler to the
+    ///     <see cref="Scp244.OpeningScp244" />.
     /// </summary>
     [EventPatch(typeof(Scp244), nameof(Scp244.OpeningScp244))]
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.UpdateRange))]

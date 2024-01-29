@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp079PingAbility.ServerProcessCmd" />.
-    /// Adds the <see cref="Handlers.Scp079.Pinging" /> event for  SCP-079.
+    ///     Patches <see cref="Scp079PingAbility.ServerProcessCmd" />.
+    ///     Adds the <see cref="Handlers.Scp079.Pinging" /> event for  SCP-079.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp079), nameof(Handlers.Scp079.Pinging))]
     [HarmonyPatch(typeof(Scp079PingAbility), nameof(Scp079PingAbility.ServerProcessCmd))]

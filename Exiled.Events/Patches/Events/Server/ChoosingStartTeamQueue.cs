@@ -19,8 +19,8 @@ namespace Exiled.Events.Patches.Events.Server
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="RoleAssigner.OnRoundStarted" /> setter.
-    /// Adds the <see cref="Handlers.Server.ChoosingStartTeamQueue" />.
+    ///     Patches <see cref="RoleAssigner.OnRoundStarted" /> setter.
+    ///     Adds the <see cref="Handlers.Server.ChoosingStartTeamQueue" />.
     /// </summary>
     [EventPatch(typeof(Handlers.Server), nameof(Handlers.Server.ChoosingStartTeamQueue))]
     [HarmonyPatch(typeof(RoleAssigner), nameof(RoleAssigner.OnRoundStarted))]

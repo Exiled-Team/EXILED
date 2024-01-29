@@ -12,16 +12,16 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all information before a player cancels usage of an item.
+    ///     Contains all information before a player cancels usage of an item.
     /// </summary>
     public class CancelledItemUseEventArgs : IPlayerEvent, IUsableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CancelledItemUseEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="CancelledItemUseEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player who's stopping the use of an item.</param>
         /// <param name="item">
-        /// <inheritdoc cref="Usable" />
+        ///     <inheritdoc cref="Usable" />
         /// </param>
         public CancelledItemUseEventArgs(Player player, Item item)
         {
@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the item that the player cancelling.
+        ///     Gets the item that the player cancelling.
         /// </summary>
         public Usable Usable { get; }
 
@@ -38,7 +38,7 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => Usable;
 
         /// <summary>
-        /// Gets the player who cancelling the item.
+        ///     Gets the player who cancelling the item.
         /// </summary>
         public Player Player { get; }
     }
