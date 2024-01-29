@@ -9,7 +9,6 @@ namespace Exiled.CustomItems.API.Features
 {
     using System;
 
-    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
@@ -19,7 +18,9 @@ namespace Exiled.CustomItems.API.Features
 
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
+
     using InventorySystem.Items.Firearms.BasicMessages;
+
     using UnityEngine;
 
     using Firearm = Exiled.API.Features.Items.Firearm;
@@ -76,6 +77,7 @@ namespace Exiled.CustomItems.API.Features
                 firearm.AddAttachment(Attachments);
 
             firearm.Ammo = ClipSize;
+            firearm.MaxAmmo = ClipSize;
 
             Pickup? pickup = firearm.CreatePickup(position);
 
@@ -103,6 +105,7 @@ namespace Exiled.CustomItems.API.Features
                     firearm.AddAttachment(Attachments);
 
                 byte ammo = firearm.Ammo;
+                firearm.MaxAmmo = ClipSize;
                 Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.");
                 Pickup? pickup = firearm.CreatePickup(position);
                 pickup.Scale = Scale;
@@ -128,6 +131,7 @@ namespace Exiled.CustomItems.API.Features
                     firearm.AddAttachment(Attachments);
 
                 firearm.Ammo = ClipSize;
+                firearm.MaxAmmo = ClipSize;
             }
 
             Log.Debug($"{nameof(Give)}: Adding {item.Serial} to tracker.");
