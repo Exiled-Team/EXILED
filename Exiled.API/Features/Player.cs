@@ -46,6 +46,8 @@ namespace Exiled.API.Features
     using NorthwoodLib;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.PlayableScps.Scp096;
+    using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.RoleAssign;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
@@ -84,6 +86,8 @@ namespace Exiled.API.Features
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
         private Role role;
+        private Roles.Scp096Role scp096Role;
+        private Roles.Scp173Role scp173Role;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -441,6 +445,16 @@ namespace Exiled.API.Features
             get => ReferenceHub.serverRoles.IsInOverwatch;
             set => ReferenceHub.serverRoles.IsInOverwatch = value;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the <see cref="Player"/> is target of SCP 096.
+        /// </summary>
+        public bool IsScp096Target => Player.Get(RoleTypeId.Scp096).Any(player => scp096Role.Targets.Contains(player));
+
+        /// <summary>
+        /// Gets a value indicating whether or not the <see cref="Player"/> is observing SCP 173.
+        /// </summary>
+        public bool IsScp173Observer => Player.Get(RoleTypeId.Scp173).Any(player => scp173Role.ObservingPlayers.Contains(player));
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player is allowed to enter noclip mode.
