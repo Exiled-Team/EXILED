@@ -7,14 +7,16 @@
 
 namespace Exiled.Events.Handlers.Internal
 {
+    using System.Linq;
+
     using CentralAuth;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp049;
     using Exiled.Loader;
     using Exiled.Loader.Features;
-
     using InventorySystem;
     using InventorySystem.Items.Usables;
     using PlayerRoles;
@@ -83,6 +85,12 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnVerified(VerifiedEventArgs ev)
         {
             RoleAssigner.CheckLateJoin(ev.Player.ReferenceHub, ClientInstanceMode.ReadyClient);
+
+            foreach (Room room in Room.List.Where(current => current.AreLightsOff))
+            {
+                ev.Player.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkLightsEnabled), true);
+                ev.Player.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkLightsEnabled), false);
+            }
         }
     }
 }
