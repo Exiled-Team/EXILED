@@ -786,7 +786,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the loudness of a player when speaking.
         /// </summary>
-        public float Loudness
+        public float Loudness => !IsSpeaking || VoiceModule is not StandardVoiceModule standardModule ? 0f : standardModule.GlobalPlayback.Loudness;
         {
             get
             {
