@@ -67,7 +67,7 @@ namespace Exiled.Events.EventArgs.Map
                         break;
                     case true:
                         {
-                            if (Server.FriendlyFire || thrower.Hub == Server.Host.ReferenceHub || HitboxIdentity.CheckFriendlyFire(thrower.Role, hub.roleManager.CurrentRole.RoleTypeId))
+                            if (Server.FriendlyFire || thrower.Hub == Server.Host.ReferenceHub || HitboxIdentity.IsEnemy(thrower.Role, hub.roleManager.CurrentRole.RoleTypeId))
                             {
                                 if (!TargetsToAffect.Contains(player))
                                     TargetsToAffect.Add(player);
