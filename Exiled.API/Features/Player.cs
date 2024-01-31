@@ -928,7 +928,12 @@ namespace Exiled.API.Features
                 }
 
                 if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                {
+                    if (IsInventoryFull)
+                        return;
+
                     AddItem(value.Base);
+                }
 
                 Inventory.ServerSelectItem(value.Serial);
             }
