@@ -74,12 +74,12 @@ namespace Exiled.CustomItems.API.Features
                 player = Server.Host;
 
             player.Role.Is(out FpcRole fpcRole);
-            var velocity = fpcRole.FirstPersonController.FpcModule.Motor.Velocity;
+            Vector3 velocity = fpcRole.FirstPersonController.FpcModule.Motor.Velocity;
 
             Throwable throwable = (Throwable)Item.Create(grenadeType, player);
 
             ThrownProjectile thrownProjectile = Object.Instantiate(throwable.Base.Projectile, position, throwable.Owner.CameraTransform.rotation);
-            Transform transform = thrownProjectile.transform;
+
             PickupSyncInfo newInfo = new()
             {
                 ItemId = throwable.Type,

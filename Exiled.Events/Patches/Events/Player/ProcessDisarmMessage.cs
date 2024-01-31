@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="DisarmingHandlers.ServerProcessDisarmMessage" />.
-    ///     Adds the <see cref="Handlers.Player.Handcuffing" /> and <see cref="Handlers.Player.RemovingHandcuffs" /> events.
+    /// Patches <see cref="DisarmingHandlers.ServerProcessDisarmMessage" />.
+    /// Adds the <see cref="Handlers.Player.Handcuffing" /> and <see cref="Handlers.Player.RemovingHandcuffs" /> events.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Handcuffing))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.RemovingHandcuffs))]
