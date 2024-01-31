@@ -11,12 +11,12 @@ namespace Exiled.API.Features.Spawn
     using System.Collections.Generic;
 
     /// <summary>
-    /// Handles special properties of spawning an item.
+    /// Handles special properties of spawning an entity.
     /// </summary>
     public class SpawnProperties
     {
         /// <summary>
-        /// Gets or sets a value indicating how many of the item can be spawned when the round starts.
+        /// Gets or sets a value indicating how many items can be spawned when the round starts.
         /// </summary>
         public uint Limit { get; set; }
 
@@ -45,9 +45,5 @@ namespace Exiled.API.Features.Spawn
         /// </summary>
         /// <returns>The amount of existing spawn points.</returns>
         public int Length => DynamicSpawnPoints.Count + StaticSpawnPoints.Count + RoleSpawnPoints.Count;
-
-        /// <inheritdoc cref="Length"/>
-        [Obsolete("Use SpawnProperties::Length property instead.", true)]
-        public int Count() => Length;
     }
 }

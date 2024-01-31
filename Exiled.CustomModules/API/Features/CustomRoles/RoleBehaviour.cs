@@ -17,10 +17,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Core.Generic;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
-    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomModules.API.Enums;
@@ -28,16 +29,16 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.CustomModules.API.Features.Inventory;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
-
     using PlayerRoles;
-
     using UnityEngine;
 
-    using static Exiled.API.Extensions.MirrorExtensions;
-
     /// <summary>
-    /// A tool to easily handle the custom role's logic.
+    /// Represents the base class for custom role behaviors.
     /// </summary>
+    /// <remarks>
+    /// This class extends <see cref="EPlayerBehaviour"/> and implements <see cref="IAdditiveSettings{T}"/>.
+    /// <br/>It provides a foundation for creating custom behaviors associated with in-game player roles.
+    /// </remarks>
     public abstract class RoleBehaviour : EPlayerBehaviour, IAdditiveSettings<RoleSettings>
     {
         private Vector3 lastPosition;
@@ -53,9 +54,24 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public static List<Player> StaticPlayers { get; } = new();
 
         /// <summary>
+        /// Gets the relative <see cref="CustomRoles.CustomRole"/>.
+        /// </summary>
+        public CustomRole CustomRole { get; private set; }
+
+        /// <summary>
+        /// Gets the relative <see cref="CustomRoles.CustomTeam"/>.
+        /// </summary>
+        public CustomTeam CustomTeam { get; private set; }
+
+        /// <summary>
         /// Gets or sets the <see cref="RoleSettings"/>.
         /// </summary>
         public virtual RoleSettings Settings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the role's configs.
+        /// </summary>
+        public virtual object Config { get; set; }
 
         /// <summary>
         /// Gets a random spawn point based on existing settings.
@@ -66,6 +82,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             {
                 if (Settings.SpawnProperties is null || Settings.SpawnProperties.IsEmpty)
                     return RoleExtensions.GetRandomSpawnLocation(Role).Position;
+
+                return Settings.SpawnProperties.StaticSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.StaticSpawnPoints, out Vector3 staticPos) ? staticPos :
+                    Settings.SpawnProperties.DynamicSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.DynamicSpawnPoints, out Vector3 dynamicPos) ? dynamicPos :
+                    Settings.SpawnProperties.RoleSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.RoleSpawnPoints, out Vector3 rolePos) ? rolePos : Vector3.zero;
 
                 static bool EvalSpawnPoint(IEnumerable<SpawnPoint> spawnpoints, out Vector3 outPos)
                 {
@@ -82,15 +102,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
                     return false;
                 }
-
-                if (Settings.SpawnProperties.StaticSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.StaticSpawnPoints, out Vector3 staticPos))
-                    return staticPos;
-                else if (Settings.SpawnProperties.DynamicSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.DynamicSpawnPoints, out Vector3 dynamicPos))
-                    return dynamicPos;
-                else if (Settings.SpawnProperties.RoleSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.RoleSpawnPoints, out Vector3 rolePos))
-                    return rolePos;
-
-                return Vector3.zero;
             }
         }
 
@@ -138,19 +149,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         protected RoleTypeId Role { get; set; }
 
         /// <summary>
-        /// Gets the relative <see cref="CustomRoles.CustomRole"/>.
-        /// </summary>
-        protected CustomRole CustomRole { get; private set; }
-
-        /// <summary>
         /// Gets the current speed of the  <see cref="EBehaviour{T}.Owner"/>.
         /// </summary>
         protected float CurrentSpeed { get; private set; }
-
-        /// <summary>
-        /// Gets the role's configs.
-        /// </summary>
-        protected virtual object ConfigRaw { get; private set; }
 
         /// <summary>
         /// Gets or sets the the escape settings.
@@ -160,7 +161,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
         /// </summary>
-        protected TDynamicEventDispatcher<Events.EscapingEventArgs> EscapingEventDispatcher { get; private set; }
+        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingEventDispatcher { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
@@ -182,35 +183,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public bool IsDamageIgnored(DamageType damageType) => Settings.IgnoredDamageTypes.Contains(damageType);
 
         /// <inheritdoc/>
-        public abstract void AdjustAddittivePipe();
-
-        /// <summary>
-        /// Loads the given config.
-        /// </summary>
-        /// <param name="config">The config load.</param>
-        protected virtual void LoadConfigs(object config)
+        public virtual void AdjustAdditivePipe()
         {
-            if (config is null)
-                return;
+            if (CustomTeam.TryGet(Owner.Cast<Pawn>(), out CustomTeam customTeam))
+                CustomTeam = customTeam;
 
-            foreach (PropertyInfo propertyInfo in config.GetType().GetProperties())
-            {
-                PropertyInfo targetInfo = typeof(RoleSettings).GetProperty(propertyInfo.Name) ?? typeof(InventoryManager).GetProperty(propertyInfo.Name);
-                if (targetInfo is null)
-                    continue;
-
-                targetInfo.SetValue(targetInfo.DeclaringType == typeof(RoleSettings) ? Settings : Inventory, propertyInfo.GetValue(config, null));
-            }
-        }
-
-        /// <inheritdoc/>
-        protected override void PostInitialize()
-        {
-            base.PostInitialize();
-
-            LoadConfigs(ConfigRaw);
-
-            if (CustomRole.TryGet(this, out CustomRole customRole))
+            if (CustomRole.TryGet(GetType(), out CustomRole customRole))
             {
                 CustomRole = customRole;
                 Settings = CustomRole.Settings;
@@ -225,7 +203,29 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 }
             }
 
-            AdjustAddittivePipe();
+            if (Config is null)
+                return;
+
+            foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
+            {
+                PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
+                if (targetInfo is null)
+                    continue;
+
+                targetInfo.SetValue(
+                    typeof(RoleSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings :
+                    typeof(InventoryManager).IsAssignableFrom(targetInfo.DeclaringType) ? Inventory :
+                    throw new TypeLoadException(),
+                    propertyInfo.GetValue(Config, null));
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void PostInitialize()
+        {
+            base.PostInitialize();
+
+            AdjustAdditivePipe();
 
             wasNoClipPermitted = Owner.IsNoclipPermitted;
             isHuman = !CustomRole.IsScp;
@@ -300,8 +300,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 }
             }
 
-            if (Settings.InitialBroadcast is not null)
-                Owner.Broadcast(Settings.InitialBroadcast, true);
+            if (Settings.SpawnedText)
+                Owner.ShowTextDisplay(Settings.SpawnedText, true);
 
             if (!string.IsNullOrEmpty(Settings.ConsoleMessage.Replace("{role}", CustomRole.Name)))
             {
@@ -368,13 +368,13 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     if (!settings.IsAllowed || Vector3.Distance(Owner.Position, settings.Position) > settings.DistanceThreshold)
                         continue;
 
-                    Events.EscapingEventArgs ev = new(Owner.Cast<Pawn>(), settings.Role, settings.CustomRole, UUEscapeScenarioType.None, default);
+                    Events.EventArgs.CustomEscapes.EscapingEventArgs ev = new(Owner.Cast<Pawn>(), settings.Role, settings.CustomRole, UUEscapeScenarioType.None, default);
                     EscapingEventDispatcher.InvokeAll(ev);
 
                     if (!ev.IsAllowed)
                         continue;
 
-                    ev.Player.SetRole(ev.NewRole != RoleTypeId.None ? ev.NewRole : ev.NewCustomRole);
+                    ev.Player.Cast<Pawn>().SetRole(ev.NewRole != RoleTypeId.None ? ev.NewRole : ev.NewCustomRole);
                     ev.Player.ShowHint(ev.Hint);
 
                     EscapedEventDispatcher.InvokeAll(ev.Player);
@@ -393,7 +393,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             base.OnEndPlay();
 
-            CustomRole.PlayersValue.Remove(Owner.Cast<Pawn>());
+            CustomRole.Eject(Owner.Cast<Pawn>());
 
             if (!Settings.DoesLookingAffectScp173)
                 Scp173Role.TurnedPlayers.Remove(Owner);
@@ -478,8 +478,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Fired before the player escapes.
         /// </summary>
-        /// <param name="ev">The <see cref="Events.EscapingEventArgs"/> instance.</param>
-        protected virtual void OnEscaping(Events.EscapingEventArgs ev)
+        /// <param name="ev">The <see cref="Events.EventArgs.CustomEscapes.EscapingEventArgs"/> instance.</param>
+        protected virtual void OnEscaping(Events.EventArgs.CustomEscapes.EscapingEventArgs ev)
         {
         }
 
@@ -625,8 +625,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             ev.IsAllowed = false;
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscaping(EscapingEventArgs)"/>
-        protected virtual void PreventPlayerFromEscaping(EscapingEventArgs ev)
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs)"/>
+        protected virtual void PreventPlayerFromEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs ev)
         {
             if (!Check(ev.Player) || useCustomEscape || wasEscaped || !EscapeSettings.IsEmpty())
                 return;
@@ -656,9 +656,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return;
             }
 
-            if (CustomRole.TryGet(ev.Attacker, out CustomRole customRole))
+            if (CustomRole.TryGet(ev.Attacker.Cast<Pawn>(), out CustomRole customRole))
             {
-                if (CustomTeam.TryGet<CustomTeam>(customRole, out CustomTeam customTeam) &&
+                if (CustomTeam.TryGet(ev.Attacker.Cast<Pawn>(), out CustomTeam customTeam) &&
                     Settings.KilledByCustomTeamAnnouncements.TryGetValue(customTeam.Id, out announcement))
                 {
                     DoAnnounce(announcement);

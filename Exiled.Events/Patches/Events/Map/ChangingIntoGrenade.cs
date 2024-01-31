@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
 
@@ -118,7 +118,7 @@ namespace Exiled.Events.Patches.Events.Map
                 // thrownProjectile
                 new(OpCodes.Ldloc_S, thrownProjectile.LocalIndex),
 
-                // var ev = new ChangedIntoGrenadeEventArgs(timedGrenadePickup, thrownProjectile);
+                // ChangedIntoGrenadeEventArgs ev = new(timedGrenadePickup, thrownProjectile);
                 // Map.OnChangingIntoGrenade(ev);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangedIntoGrenadeEventArgs))[0]),
                 new(OpCodes.Dup),

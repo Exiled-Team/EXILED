@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Core.Interfaces
 {
+    using Exiled.API.Features.Core.Behaviours;
+
     /// <summary>
     /// Defines additive settings set up through user-defined properties.
     /// </summary>
@@ -18,5 +20,10 @@ namespace Exiled.API.Features.Core.Interfaces
         /// Gets or sets the <typeparamref name="T"/> settings.
         /// </summary>
         public T Settings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the configs.
+        /// </summary>
+        public object Config { get; set; }
     }
 }

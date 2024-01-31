@@ -11,6 +11,8 @@ namespace Exiled.API.Extensions
     using System.Collections.Generic;
     using System.Linq;
 
+    using HarmonyLib;
+
     /// <summary>
     /// A set of extensions for easily interact with collections.
     /// </summary>
@@ -107,5 +109,80 @@ namespace Exiled.API.Extensions
 
             return enumerable;
         }
+
+        /// <summary>
+        /// Adds a collection of items to an existing <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the collection.</typeparam>
+        /// <param name="enumerable">The original <see cref="IEnumerable{T}"/> to which items will be added.</param>
+        /// <param name="collection">The collection of items to add.</param>
+        /// <returns>The modified <see cref="IEnumerable{T}"/> after adding the items.</returns>
+        public static IEnumerable<T> AddRange<T>(this IEnumerable<T> enumerable, IEnumerable<T> collection)
+        {
+            IEnumerable<T> result = enumerable;
+
+            foreach (T item in collection)
+                result.AddItem(item);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Adds a collection of items to an existing array of <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the collection.</typeparam>
+        /// <param name="array">The original array of <typeparamref name="T"/> to which items will be added.</param>
+        /// <param name="collection">The collection of items to add.</param>
+        /// <returns>The modified array of <typeparamref name="T"/> after adding the items.</returns>
+        public static T[] AddRange<T>(this T[] array, IEnumerable<T> collection)
+        {
+            foreach (T item in collection)
+                array.AddItem(item);
+
+            return array;
+        }
+
+        /// <summary>
+        /// Adds a collection of items to an existing <see cref="HashSet{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the collection.</typeparam>
+        /// <param name="hashset">The original <see cref="HashSet{T}"/> to which items will be added.</param>
+        /// <param name="collection">The collection of items to add.</param>
+        /// <returns>The modified <see cref="HashSet{T}"/> after adding the items.</returns>
+        public static HashSet<T> AddRange<T>(this HashSet<T> hashset, IEnumerable<T> collection)
+        {
+            foreach (T item in collection)
+                hashset.Add(item);
+
+            return hashset;
+        }
+
+        /// <summary>
+        /// Tries to add the specified key-value pair to the dictionary. Returns <see langword="false"/> if the key already exists.
+        /// </summary>
+        /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+        /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+        /// <param name="dictionary">The dictionary to which the key-value pair is to be added.</param>
+        /// <param name="kvp">The key-value pair to add to the dictionary.</param>
+        /// <returns><see langword="true"/> if the key-value pair was successfully added; otherwise, <see langword="false"/> if the key already exists in the dictionary.</returns>
+        public static bool TryAdd<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, KeyValuePair<TKey, TValue> kvp)
+        {
+            if (dictionary.ContainsKey(kvp.Key))
+                return false;
+
+            dictionary.Add(kvp.Key, kvp.Value);
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to add the specified key and value to the dictionary. Returns <see langword="false"/> if the key already exists.
+        /// </summary>
+        /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+        /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+        /// <param name="dictionary">The dictionary to which the key-value pair is to be added.</param>
+        /// <param name="key">The key to add to the dictionary.</param>
+        /// <param name="value">The value associated with the key.</param>
+        /// <returns><see langword="true"/> if the key-value pair was successfully added; otherwise, <see langword="false"/> if the key already exists in the dictionary.</returns>
+        public static bool TryAdd<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue value) => TryAdd(dictionary, new KeyValuePair<TKey, TValue>(key, value));
     }
 }

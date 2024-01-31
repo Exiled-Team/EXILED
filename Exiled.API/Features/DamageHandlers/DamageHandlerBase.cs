@@ -13,9 +13,9 @@ namespace Exiled.API.Features.DamageHandlers
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Features.Core;
 
     using Extensions;
-    using PlayerRoles.PlayableScps.Scp1507;
     using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.PlayableScps.Scp939;
 
@@ -26,7 +26,7 @@ namespace Exiled.API.Features.DamageHandlers
     /// <summary>
     /// A wrapper to easily manipulate the behavior of <see cref="BaseHandler"/>.
     /// </summary>
-    public abstract class DamageHandlerBase
+    public abstract class DamageHandlerBase : TypeCastObject<DamageHandlerBase>
     {
         private DamageType damageType;
         private CassieAnnouncement cassieAnnouncement;
@@ -97,61 +97,45 @@ namespace Exiled.API.Features.DamageHandlers
                 if (damageType != DamageType.Unknown)
                     return damageType;
 
-                switch (Base)
+                if (Base is UniversalDamageHandler handler)
                 {
-                    case CustomReasonDamageHandler:
-                        return DamageType.Custom;
-                    case WarheadDamageHandler:
-                        return DamageType.Warhead;
-                    case ExplosionDamageHandler:
-                        return DamageType.Explosion;
-                    case Scp018DamageHandler:
-                        return DamageType.Scp018;
-                    case RecontainmentDamageHandler:
-                        return DamageType.Recontainment;
-                    case MicroHidDamageHandler:
-                        return DamageType.MicroHid;
-                    case DisruptorDamageHandler:
-                        return DamageType.ParticleDisruptor;
-                    case Scp939DamageHandler:
-                        return DamageType.Scp939;
-                    case JailbirdDamageHandler:
-                        return DamageType.Jailbird;
-                    case Scp1507DamageHandler:
-                        return DamageType.Scp1507;
-                    case Scp956DamageHandler:
-                        return DamageType.Scp956;
-                    case SnowballDamageHandler:
-                        return DamageType.Snowball;
-                    case Scp3114DamageHandler scp3114DamageHandler:
-                        return scp3114DamageHandler.Subtype switch
-                        {
-                            Scp3114DamageHandler.HandlerType.Strangulation => DamageType.Strangled,
-                            Scp3114DamageHandler.HandlerType.SkinSteal => DamageType.Scp3114,
-                            Scp3114DamageHandler.HandlerType.Slap => DamageType.Scp3114,
-                            _ => DamageType.Unknown,
-                        };
-                    case Scp049DamageHandler scp049DamageHandler:
-                        return scp049DamageHandler.DamageSubType switch
-                        {
-                            Scp049DamageHandler.AttackType.CardiacArrest => DamageType.CardiacArrest,
-                            Scp049DamageHandler.AttackType.Instakill => DamageType.Scp049,
-                            Scp049DamageHandler.AttackType.Scp0492 => DamageType.Scp0492,
-                            _ => DamageType.Unknown,
-                        };
-                    case UniversalDamageHandler universal:
-                        {
-                            DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
+                    DeathTranslation translation = DeathTranslations.TranslationsById[handler.TranslationId];
 
-                            if (DamageTypeExtensions.TranslationIdConversion.ContainsKey(translation.Id))
-                                return DamageTypeExtensions.TranslationIdConversion[translation.Id];
+                    if (DamageTypeExtensions.TranslationIdConversion.ContainsKey(translation.Id))
+                        return damageType = DamageTypeExtensions.TranslationIdConversion[translation.Id];
 
-                            Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
-                            break;
-                        }
+                    Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}:" +
+                             $"No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}." +
+                             $"Report this to EXILED Devs.");
                 }
 
-                return DamageType.Unknown;
+                return damageType = Base switch
+                {
+                    CustomReasonDamageHandler => DamageType.Custom,
+                    WarheadDamageHandler => DamageType.Warhead,
+                    ExplosionDamageHandler => DamageType.Explosion,
+                    Scp018DamageHandler => DamageType.Scp018,
+                    RecontainmentDamageHandler => DamageType.Recontainment,
+                    MicroHidDamageHandler => DamageType.MicroHid,
+                    DisruptorDamageHandler => DamageType.ParticleDisruptor,
+                    Scp939DamageHandler => DamageType.Scp939,
+                    JailbirdDamageHandler => DamageType.Jailbird,
+                    Scp3114DamageHandler scp3114DamageHandler => scp3114DamageHandler.Subtype switch
+                    {
+                        Scp3114DamageHandler.HandlerType.Strangulation => DamageType.Strangled,
+                        Scp3114DamageHandler.HandlerType.SkinSteal => DamageType.Scp3114,
+                        Scp3114DamageHandler.HandlerType.Slap => DamageType.Scp3114,
+                        _ => DamageType.Unknown,
+                    },
+                    Scp049DamageHandler scp049DamageHandler => scp049DamageHandler.DamageSubType switch
+                    {
+                        Scp049DamageHandler.AttackType.CardiacArrest => DamageType.CardiacArrest,
+                        Scp049DamageHandler.AttackType.Instakill => DamageType.Scp049,
+                        Scp049DamageHandler.AttackType.Scp0492 => DamageType.Scp0492,
+                        _ => DamageType.Unknown,
+                    },
+                    _ => throw new InvalidOperationException("Unknown damage type."),
+                };
             }
 
             protected set
@@ -187,58 +171,6 @@ namespace Exiled.API.Features.DamageHandlers
         /// <param name="player">The <see cref="Player"/> to damage.</param>
         public virtual void ProcessDamage(Player player)
         {
-        }
-
-        /// <summary>
-        /// Unsafely casts the damage handler to the specified <see cref="BaseHandler"/> type.
-        /// </summary>
-        /// <typeparam name="T">The specified <see cref="BaseHandler"/> type.</typeparam>
-        /// <returns>A <see cref="BaseHandler"/> object.</returns>
-        public T As<T>()
-            where T : BaseHandler => Base as T;
-
-        /// <summary>
-        /// Unsafely casts the damage handler to the specified <see cref="DamageHandlerBase"/> type.
-        /// </summary>
-        /// <typeparam name="T">The specified <see cref="DamageHandlerBase"/> type.</typeparam>
-        /// <returns>A <see cref="DamageHandlerBase"/> object.</returns>
-        public T BaseAs<T>()
-            where T : DamageHandlerBase => this as T;
-
-        /// <summary>
-        /// Safely casts the damage handler to the specified <see cref="BaseHandler"/> type.
-        /// </summary>
-        /// <typeparam name="T">The specified <see cref="BaseHandler"/> type.</typeparam>
-        /// <param name="param">The casted <see cref="BaseHandler"/>.</param>
-        /// <returns>A <see cref="BaseHandler"/> object.</returns>
-        public bool Is<T>(out T param)
-            where T : BaseHandler
-        {
-            param = default;
-
-            if (Base is not T cast)
-                return false;
-
-            param = cast;
-            return true;
-        }
-
-        /// <summary>
-        /// Safely casts the damage handler to the specified <see cref="DamageHandlerBase"/> type.
-        /// </summary>
-        /// <typeparam name="T">The specified <see cref="DamageHandlerBase"/> type.</typeparam>
-        /// <param name="param">The casted <see cref="DamageHandlerBase"/>.</param>
-        /// <returns>A <see cref="DamageHandlerBase"/> object.</returns>
-        public bool BaseIs<T>(out T param)
-            where T : DamageHandlerBase
-        {
-            param = default;
-
-            if (this is not T cast)
-                return false;
-
-            param = cast;
-            return true;
         }
 
         /// <summary>

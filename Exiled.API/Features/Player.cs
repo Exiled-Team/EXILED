@@ -17,11 +17,12 @@ namespace Exiled.API.Features
     using CustomPlayerEffects;
     using DamageHandlers;
     using Enums;
+    using Exiled.API.Features.Attributes;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
@@ -65,6 +66,7 @@ namespace Exiled.API.Features
     using VoiceChat.Playbacks;
 
     using static DamageHandlers.DamageHandlerBase;
+    using static global::Broadcast;
 
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Firearm = Items.Firearm;
@@ -74,9 +76,17 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
+    [DefaultPlayerClass]
     public class Player : GameEntity, IWorldSpace
     {
 #pragma warning disable SA1401
+#pragma warning disable SA1310
+        /// <summary>
+        /// The default player class.
+        /// </summary>
+        internal static Type DEFAULT_PLAYER_CLASS = typeof(Player);
+#pragma warning restore SA1310
+
         /// <summary>
         /// A list of the player's items.
         /// </summary>
@@ -342,7 +352,7 @@ namespace Exiled.API.Features
                 // NW Client check.
                 if (value.Contains('<'))
                 {
-                    foreach (var token in value.Split('<'))
+                    foreach (string token in value.Split('<'))
                     {
                         if (token.StartsWith("/", StringComparison.Ordinal) ||
                             token.StartsWith("b>", StringComparison.Ordinal) ||
@@ -739,7 +749,7 @@ namespace Exiled.API.Features
         /// <remarks>This property will NOT persistently mute and unmute the player. For persistent mutes, see <see cref="Mute(bool)"/> and <see cref="UnMute(bool)"/>.</remarks>
         public bool IsMuted
         {
-            get => VoiceChatMutes.Mutes.Contains(UserId) && (VoiceChatMuteFlags.HasFlag(VcMuteFlags.GlobalRegular) || VoiceChatMuteFlags.HasFlag(VcMuteFlags.LocalRegular));
+            get => VoiceChatMutes.QueryLocalMute(UserId, false);
             set
             {
                 if (value)
@@ -771,7 +781,7 @@ namespace Exiled.API.Features
         /// <remarks>This property will NOT persistently mute and unmute the player. For persistent mutes, see <see cref="Mute(bool)"/> and <see cref="UnMute(bool)"/>.</remarks>
         public bool IsIntercomMuted
         {
-            get => VoiceChatMutes.Mutes.Contains(UserId) && (VoiceChatMuteFlags.HasFlag(VcMuteFlags.GlobalIntercom) || VoiceChatMuteFlags.HasFlag(VcMuteFlags.LocalIntercom));
+            get => VoiceChatMutes.QueryLocalMute(UserId, true);
             set
             {
                 if (value)
@@ -932,7 +942,12 @@ namespace Exiled.API.Features
                 }
 
                 if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                {
+                    if (IsInventoryFull)
+                        return;
+
                     AddItem(value.Base);
+                }
 
                 Inventory.ServerSelectItem(value.Serial);
             }
@@ -1209,6 +1224,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the all <see cref="Player"/> instances belonging to the given <see cref="global::ReferenceHub"/> instances, if any.
+        /// </summary>
+        /// <param name="hubs">The reference hubs to retrieve the players from.</param>
+        /// <returns>All <see cref="Player"/> instances belonging to the given <see cref="global::ReferenceHub"/> instances.</returns>
+        public static IEnumerable<Player> Get(IEnumerable<ReferenceHub> hubs) => hubs.Select(hub => Get(hub));
+
+        /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="Collider"/>, if any.
         /// </summary>
         /// <param name="collider"><see cref="Collider"/>.</param>
@@ -1427,6 +1449,24 @@ namespace Exiled.API.Features
         /// <param name="player">The player found or <see langword="null"/> if not found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
         public static bool TryGet(Collider collider, out Player player) => (player = Get(collider)) is not null;
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{Player}"/> containing all players processed based on the arguments specified.
+        /// </summary>
+        /// <param name="args">The array segment of strings representing the input arguments to be processed.</param>
+        /// <param name="startIndex">The starting index within the array segment.</param>
+        /// <param name="newargs">Contains the updated arguments after processing.</param>
+        /// <param name="keepEmptyEntries">Determines whether empty entries should be kept in the result.</param>
+        /// <returns>An <see cref="IEnumerable{Player}"/> representing the processed players.</returns>
+        public static IEnumerable<Player> GetProcessedData(ArraySegment<string> args, int startIndex, out string[] newargs, bool keepEmptyEntries = false) => RAUtils.ProcessPlayerIdOrNamesList(args, startIndex, out newargs, keepEmptyEntries).Select(hub => Get(hub));
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{Player}"/> containing all players processed based on the arguments specified.
+        /// </summary>
+        /// <param name="args">The array segment of strings representing the input arguments to be processed.</param>
+        /// <param name="startIndex">The starting index within the array segment.</param>
+        /// <returns>An <see cref="IEnumerable{Player}"/> representing the processed players.</returns>
+        public static IEnumerable<Player> GetProcessedData(ArraySegment<string> args, int startIndex = 0) => GetProcessedData(args, startIndex, out string[] _);
 
         /// <summary>
         /// Adds a player's UserId to the list of reserved slots.
@@ -1824,17 +1864,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
-        /// </summary>
-        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
-        /// <param name="shouldClearPrevious">Clears all player's broadcasts before sending the new one.</param>
-        public void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
-        {
-            if (broadcast.Show)
-                Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type, shouldClearPrevious);
-        }
-
-        /// <summary>
         /// Drops an item from the player's inventory.
         /// </summary>
         /// <param name="item">The <see cref="Item"/> to be dropped.</param>
@@ -1971,6 +2000,31 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Removes an <see cref="Item"/> from the player's inventory.
+        /// </summary>
+        /// <param name="itemType">The <see cref="ItemType"/> of the <see cref="Item"/>.</param>
+        /// <param name="destroy">Whether or not to destroy the item.</param>
+        /// <param name="removeAll">Whether or not to remove all items of the specified <see cref="ItemType"/>.</param>
+        public void RemoveItem(ItemType itemType, bool destroy = true, bool removeAll = false)
+        {
+            bool RemoveIfExisting(Item item) => item.Type == itemType && RemoveItem(item, destroy);
+
+            if (removeAll)
+            {
+                Items.ToList().ForEach(item => RemoveIfExisting(item));
+                return;
+            }
+
+            foreach (Item item in Items.ToList())
+            {
+                if (!RemoveIfExisting(item))
+                    continue;
+
+                break;
+            }
+        }
+
+        /// <summary>
         /// Removes all <see cref="Item"/>'s that satisfy the condition from the player's inventory.
         /// </summary>
         /// <param name="predicate">The condition to satisfy.</param>
@@ -2035,6 +2089,12 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
         public void Hurt(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase);
+
+        /// <summary>
+        /// Hurts the player.
+        /// </summary>
+        /// <param name="damageHandlerBase">The <see cref="DamageHandlers.DamageHandlerBase"/> used to deal damage.</param>
+        public void Hurt(DamageHandlers.DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase.Base);
 
         /// <summary>
         /// Hurts the player.
@@ -2226,10 +2286,8 @@ namespace Exiled.API.Features
         /// <param name="message">The message to be sent.</param>
         /// <param name="success">Indicates whether or not the message should be highlighted as success.</param>
         /// <param name="pluginName">The plugin name.</param>
-        public void RemoteAdminMessage(string message, bool success = true, string pluginName = null)
-        {
+        public void RemoteAdminMessage(string message, bool success = true, string pluginName = null) =>
             Sender.RaReply((pluginName ?? Assembly.GetCallingAssembly().GetName().Name) + "#" + message, success, true, string.Empty);
-        }
 
         /// <summary>
         /// Sends a message to the player's Remote Admin Chat.
@@ -2237,10 +2295,8 @@ namespace Exiled.API.Features
         /// <param name="message">The message to be sent.</param>
         /// <param name="channel">Indicates whether or not the message should be highlighted as success.</param>
         /// <returns><see langword="true"/> if message was send; otherwise, <see langword="false"/>.</returns>
-        public bool SendStaffMessage(string message, EncryptedChannelManager.EncryptedChannel channel = EncryptedChannelManager.EncryptedChannel.AdminChat)
-        {
-            return ReferenceHub.encryptedChannelManager.TrySendMessageToClient("!" + NetId + message, channel);
-        }
+        public bool SendStaffMessage(string message, EncryptedChannelManager.EncryptedChannel channel = EncryptedChannelManager.EncryptedChannel.AdminChat) =>
+            ReferenceHub.encryptedChannelManager.TrySendMessageToClient("!" + NetId + message, channel);
 
         /// <summary>
         /// Sends a message to the player's Remote Admin Chat.
@@ -2248,10 +2304,8 @@ namespace Exiled.API.Features
         /// <param name="message">The message to be sent.</param>
         /// <param name="channel">Indicates whether or not the message should be highlighted as success.</param>
         /// <returns><see langword="true"/> if message was send; otherwise, <see langword="false"/>.</returns>
-        public bool SendStaffPing(string message, EncryptedChannelManager.EncryptedChannel channel = EncryptedChannelManager.EncryptedChannel.AdminChat)
-        {
-            return ReferenceHub.encryptedChannelManager.TrySendMessageToClient("!0" + message, channel);
-        }
+        public bool SendStaffPing(string message, EncryptedChannelManager.EncryptedChannel channel = EncryptedChannelManager.EncryptedChannel.AdminChat) =>
+            ReferenceHub.encryptedChannelManager.TrySendMessageToClient("!0" + message, channel);
 
         /// <summary>
         /// Shows a broadcast to the player. Doesn't get logged to the console and can be monospaced.
@@ -2260,12 +2314,23 @@ namespace Exiled.API.Features
         /// <param name="message">The message to be broadcasted.</param>
         /// <param name="type">The broadcast type.</param>
         /// <param name="shouldClearPrevious">Clears all player's broadcasts before sending the new one.</param>
-        public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
+        public void Broadcast(ushort duration, string message, BroadcastFlags type = BroadcastFlags.Normal, bool shouldClearPrevious = false)
         {
             if (shouldClearPrevious)
                 ClearBroadcasts();
 
             Server.Broadcast.TargetAddElement(Connection, message, duration, type);
+        }
+
+        /// <summary>
+        /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
+        /// </summary>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        /// <param name="shouldClearPrevious">Clears all player's broadcasts before sending the new one.</param>
+        public void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
+        {
+            if (broadcast.Show)
+                Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type, shouldClearPrevious);
         }
 
         /// <summary>
@@ -2287,6 +2352,33 @@ namespace Exiled.API.Features
         /// <param name="weaponType">The <see cref="ItemType"/> of the weapon.</param>
         /// <param name="amount">The amount of ammo to be added.</param>
         public void AddAmmo(FirearmType weaponType, ushort amount) => AddAmmo(weaponType.GetWeaponAmmoType(), amount);
+
+        /// <summary>
+        /// Removes an amount of <see cref="AmmoType"/> from the player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to be removed.</param>
+        /// <param name="amount">The amount to be removed.</param>
+        /// <returns><see langword="true"/> if the specified amount of ammo was removed entirely or partially; otherwise, <see langword="false"/>.</returns>
+        public bool RemoveAmmo(AmmoType ammoType, ushort amount)
+        {
+            if (!Ammo.TryGetValue(ammoType.GetItemType(), out ushort value))
+                return false;
+
+            try
+            {
+                checked
+                {
+                    value -= amount;
+                }
+            }
+            catch (OverflowException)
+            {
+                value = ushort.MinValue;
+            }
+
+            SetAmmo(ammoType, value);
+            return true;
+        }
 
         /// <summary>
         /// Sets the amount of a specified <see cref="AmmoType">ammo type</see> to the player's inventory.
@@ -2665,7 +2757,7 @@ namespace Exiled.API.Features
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
         public void ResetInventory(IEnumerable<ItemType> newItems)
         {
-            ClearInventory();
+            ClearItems();
 
             foreach (ItemType item in newItems)
                 AddItem(item);
@@ -2677,7 +2769,7 @@ namespace Exiled.API.Features
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
         public void ResetInventory(IEnumerable<Item> newItems)
         {
-            ClearInventory();
+            ClearItems();
 
             foreach (Item item in newItems)
                 AddItem(item);
@@ -2705,6 +2797,9 @@ namespace Exiled.API.Features
         /// <seealso cref="DropItems()"/>
         public void ClearItems(bool destroy = true)
         {
+            if (CurrentArmor is not null)
+                CurrentArmor.RemoveExcessOnDrop = true;
+
             while (Items.Count > 0)
                 RemoveItem(Items.ElementAt(0), destroy);
         }
@@ -2777,6 +2872,12 @@ namespace Exiled.API.Features
             if (hint.Show)
                 ShowHint(hint.Content, hint.Duration);
         }
+
+        /// <inheritdoc cref="TextDisplay.Show(Player, object[])"/>
+        public void ShowTextDisplay(TextDisplay textDisplay, params object[] args) => textDisplay.Show(this, args);
+
+        /// <inheritdoc cref="TextDisplay.Show(Player, string, ushort, TextChannelType, object[])"/>
+        public void ShowTextDisplay(string content, ushort duration, TextChannelType textChannel, params object[] args) => TextDisplay.Show(this, content, duration, textChannel, args);
 
         /// <summary>
         /// Sends a HitMarker to the player.

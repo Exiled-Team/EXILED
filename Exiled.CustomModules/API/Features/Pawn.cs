@@ -12,32 +12,45 @@ namespace Exiled.CustomModules.API.Features
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
-    using Exiled.CustomItems.API.Features;
     using Exiled.CustomModules.API.Features.CustomAbilities;
     using Exiled.CustomModules.API.Features.CustomEscapes;
+    using Exiled.CustomModules.API.Features.CustomItems;
+    using Exiled.CustomModules.API.Features.CustomItems.Items;
+    using Exiled.CustomModules.API.Features.CustomItems.Pickups.Ammos;
     using Exiled.CustomModules.API.Features.CustomRoles;
+    using Exiled.CustomModules.API.Features.PlayerAbilities;
+    using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
     using PlayerRoles;
     using UnityEngine;
 
     /// <summary>
-    /// Represents the in-game player, by encapsulating a ReferenceHub.
+    /// Represents an in-game player by encapsulating a <see cref="ReferenceHub"/>, providing an extended feature set through the <see cref="Pawn"/> class.
     /// <para>
-    /// <see cref="Pawn"/> implements more features in addition to <see cref="Player"/>'s existing ones.
-    /// <br>This is treated as a <see cref="Player"/>, which means it can be used along with existing methods asking for a <see cref="Player"/> as parameter.</br>
-    /// <para>Nullable context is enabled in order to prevent users to pass or interact with <see langword="null"/> references.</para>
+    /// The <see cref="Pawn"/> class enhances the functionality of the base <see cref="Player"/> class, introducing additional features and capabilities.
+    /// <br>This class is designed to be used seamlessly alongside existing methods that expect a <see cref="Player"/> as a parameter, allowing for compatibility with the existing codebase.</br>
+    /// <para>The use of nullable context is enabled to prevent users from inadvertently passing or interacting with <see langword="null"/> references.</para>
     /// </para>
+    /// <remarks>
+    /// Developers can leverage the enhanced functionality provided by the <see cref="Pawn"/> class while benefiting from the familiar interface of the <see cref="Player"/> class.
+    /// <br>It serves as a comprehensive representation of an in-game entity, encapsulating the associated <see cref="ReferenceHub"/> with an expanded set of features.</br>
+    /// </remarks>
     /// </summary>
+    [DefaultPlayerClass(enforceAuthority: false)]
     public class Pawn : Player
     {
+        private readonly List<ActiveAbilityBehaviour> abilityBehaviours = new();
+        private readonly List<PlayerAbility> customAbilities = new();
+        private readonly Dictionary<uint, ushort> customAmmoBox = new();
+
         private RoleBehaviour roleBehaviour;
         private EscapeBehaviour escapeBehaviour;
-        private CustomRole customRole;
-        private CustomTeam customTeam;
-        private CustomEscape customEscape;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pawn"/> class.
@@ -46,14 +59,8 @@ namespace Exiled.CustomModules.API.Features
         public Pawn(ReferenceHub referenceHub)
             : base(referenceHub)
         {
-            foreach (KeyValuePair<Player, HashSet<CustomPlayerAbility>> kvp in CustomPlayerAbility.Manager)
-            {
-                if (kvp.Key != this)
-                    continue;
-
-                foreach (CustomPlayerAbility ability in kvp.Value)
-                    AbilityManager.Add(ability, GetComponent(ability.BehaviourComponent).Cast<PlayerAbilityBehaviour>());
-            }
+            PlayerAbility.AddedAbilityDispatcher.Bind(this, OnAddedAbility);
+            PlayerAbility.RemovingAbilityDispatcher.Bind(this, OnRemovingAbility);
         }
 
         /// <summary>
@@ -63,65 +70,86 @@ namespace Exiled.CustomModules.API.Features
         public Pawn(GameObject gameObject)
             : base(gameObject)
         {
-            foreach (KeyValuePair<Player, HashSet<CustomPlayerAbility>> kvp in CustomPlayerAbility.Manager)
-            {
-                if (kvp.Key != this)
-                    continue;
-
-                foreach (CustomPlayerAbility ability in kvp.Value)
-                    AbilityManager.Add(ability, GetComponent(ability.BehaviourComponent).Cast<PlayerAbilityBehaviour>());
-            }
+            PlayerAbility.AddedAbilityDispatcher.Bind(this, OnAddedAbility);
+            PlayerAbility.RemovingAbilityDispatcher.Bind(this, OnRemovingAbility);
         }
-
-        /// <summary>
-        /// Gets the pawn's ability manager.
-        /// </summary>
-        public Dictionary<CustomPlayerAbility, PlayerAbilityBehaviour> AbilityManager { get; private set; } = new();
 
         /// <summary>
         /// Gets all pawn's <see cref="EPlayerBehaviour"/>'s.
         /// </summary>
-        public IEnumerable<EPlayerBehaviour> Behaviours => ComponentsInChildren.Where(cmp => cmp is EPlayerBehaviour).Cast<EPlayerBehaviour>();
+        public IEnumerable<EPlayerBehaviour> Behaviours => GetComponents<EPlayerBehaviour>();
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.CustomRole"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
-        public CustomRole CustomRole => customRole ??= CustomRole.Get(this);
+        public CustomRole CustomRole => roleBehaviour.CustomRole;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.CustomTeam"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
-        public CustomTeam CustomTeam => customTeam ??= CustomTeam.Get(this);
+        public CustomTeam CustomTeam => roleBehaviour.CustomTeam;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomEscapes.CustomEscape"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
-        public CustomEscape CustomEscape => customEscape ??= CustomEscape.Get(this);
+        public CustomEscape CustomEscape => escapeBehaviour.CustomEscape;
+
+        /// <summary>
+        /// Gets the pawn's current <see cref="CustomItem"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
+        /// </summary>
+        public CustomItem CurrentCustomItem => CustomItem.TryGet(CurrentItem, out CustomItem customItem) ? customItem : null;
+
+        /// <summary>
+        /// Gets the pawn's custom abilities.
+        /// </summary>
+        public IEnumerable<PlayerAbility> CustomAbilities => customAbilities;
+
+        /// <summary>
+        /// Gets the pawn's ability behaviours.
+        /// </summary>
+        public IEnumerable<ActiveAbilityBehaviour> AbilityBehaviours => abilityBehaviours;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.RoleBehaviour"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
         public RoleBehaviour RoleBehaviour => roleBehaviour ??= GetComponent<RoleBehaviour>();
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomEscapes.EscapeBehaviour"/>.
+        /// <para/>
+        /// Can be <see langword="null"/>.
         /// </summary>
         public EscapeBehaviour EscapeBehaviour => escapeBehaviour ??= GetComponent<EscapeBehaviour>();
 
         /// <summary>
-        /// Gets the pawn's custom abilities.
+        /// Gets the pawn's custom ammo box containing.
         /// </summary>
-        public IEnumerable<CustomAbility<Player>> CustomAbilities => AbilityManager.Keys;
+        public IReadOnlyDictionary<uint, ushort> CustomAmmoBox => customAmmoBox;
 
         /// <summary>
-        /// Gets the pawn's <see cref="PlayerAbilityBehaviour"/>.
+        /// Gets the selected <see cref="PlayerAbility"/>.
         /// </summary>
-        public IEnumerable<PlayerAbilityBehaviour> AbilityBehaviours => AbilityManager.Values;
+        public PlayerAbility SelectedAbility => SelectedAbilityBehaviour.CustomAbility.Cast<PlayerAbility>();
+
+        /// <summary>
+        /// Gets or sets the selected <see cref="AbilityBehaviourBase{T}"/>.
+        /// </summary>
+        public AbilityBehaviourBase<Player> SelectedAbilityBehaviour { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the pawn has a <see cref="CustomRoles.CustomRole"/>.
         /// </summary>
-        public bool HasCustomRole => CustomRole.Players.Contains(this);
+        public bool HasCustomRole => CustomRole;
 
         /// <summary>
         /// Gets a value indicating whether the pawn is any SCP, including custom ones.
@@ -139,9 +167,62 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
+        /// Gets the global role of the pawn.
+        /// <para/>
+        /// It will return a <see cref="CustomRoles.CustomRole"/> if available, or the <see cref="Role"/> if null.
+        /// </summary>
+        public object GlobalRole => CustomRole ? CustomRole : Role;
+
+        /// <summary>
+        /// Gets the global items associated with the pawn.
+        /// <para/>
+        /// It will return a combination of standard <see cref="Item"/>s and <see cref="CustomItem"/>s.
+        /// </summary>
+        public IEnumerable<object> GlobalItems => Items.Cast<object>().Concat(CustomItems);
+
+        /// <summary>
+        /// Gets or sets the global current item of the pawn.
+        /// <para/>
+        /// If a <see cref="CustomItem"/> is equipped, it returns the <see cref="CustomItem"/>; otherwise, it returns the regular <see cref="Item"/>.
+        /// </summary>
+        public object GlobalCurrentItem
+        {
+            get => CurrentCustomItem ? CurrentCustomItem : CurrentItem;
+            set
+            {
+                if (value is null)
+                {
+                    Inventory.ServerSelectItem(0);
+                    return;
+                }
+
+                bool isCustomItem = typeof(CustomItem).IsAssignableFrom(value.GetType());
+                if (isCustomItem)
+                {
+                    if (!CustomItems.Any(customItem => customItem.GetType() == value.GetType()))
+                    {
+                        if (IsInventoryFull)
+                            return;
+
+                        AddItem(value);
+                    }
+
+                    Item customItem = Items.LastOrDefault(i => i.TryGetComponent(out ItemBehaviour behaviour) && behaviour.GetType() == (value as CustomItem).BehaviourComponent);
+                    Inventory.ServerSelectItem(customItem.Serial);
+                    return;
+                }
+
+                if (value is not Item item)
+                    return;
+
+                CurrentItem = value as Item;
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the pawn is any custom SCP.
         /// </summary>
-        public bool IsCustomScp => CustomRole is not null && CustomRole.IsScp;
+        public bool IsCustomScp => CustomRole && CustomRole.IsScp;
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="object"/> containing all custom items in the pawn's inventory.
@@ -180,6 +261,49 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
+        /// Gets a value indicating whether the pawn has the <see cref="CustomItem"/> of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="CustomItem"/>.</typeparam>
+        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
+        public bool HasCustomItem<T>()
+            where T : CustomItem => CustomItems.Any(item => item.GetType() == typeof(T));
+
+        /// <summary>
+        /// Gets a value indicating whether the pawn has the <see cref="PlayerAbility"/> of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="PlayerAbility"/>.</typeparam>
+        /// <returns><see langword="true"/> if a <see cref="PlayerAbility"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
+        public bool HasCustomAbility<T>()
+            where T : PlayerAbility => CustomItems.Any(item => item.GetType() == typeof(T));
+
+        /// <summary>
+        /// Tries to get the first <see cref="CustomItem"/> of the specified type from the collection of custom items.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="CustomItem"/> to retrieve.</typeparam>
+        /// <param name="customItem">The output parameter that will contain the retrieved <see cref="CustomItem"/>, if found.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetCustomItem<T>(out T customItem)
+            where T : CustomItem => customItem = CustomItems.FirstOrDefault(item => item.GetType() == typeof(T)).Cast<T>();
+
+        /// <summary>
+        /// Tries to get the <see cref="CustomRoles.CustomRole"/> of the specified type from the <see cref="Pawn"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="CustomRoles.CustomRole"/> to retrieve.</typeparam>
+        /// <param name="customRole">The output parameter that will contain the retrieved <see cref="CustomRoles.CustomRole"/>, if found.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomRoles.CustomRole"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetCustomRole<T>(out T customRole)
+            where T : CustomRole => CustomRole.Is(out customRole);
+
+        /// <summary>
+        /// Tries to get the <see cref="CustomAbility{T}"/> of the specified type from the player's abilities.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="CustomAbility{T}"/> to retrieve.</typeparam>
+        /// <param name="customAbility">The output parameter that will contain the retrieved <see cref="CustomAbility{T}"/>, if found.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomAbility{T}"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetCustomAbility<T>(out T customAbility)
+            where T : PlayerAbility => CustomAbilities.FirstOrDefault(ability => ability.GetType() == typeof(T)).Is(out customAbility);
+
+        /// <summary>
         /// Add a <see cref="CustomItem"/> of the specified type to the pawn's inventory.
         /// </summary>
         /// <param name="customItem">The item to be added.</param>
@@ -197,10 +321,7 @@ namespace Exiled.CustomModules.API.Features
             }
             catch
             {
-                if (customItem is CustomItem instance)
-                    return CustomItem.TryGive(this, instance.Id);
-
-                return false;
+                return customItem is CustomItem instance && CustomItem.TryGive(this, instance.Id);
             }
         }
 
@@ -218,47 +339,22 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Tries to get a <see cref="CustomItem"/> from the given <see cref="Item"/> instance.
-        /// </summary>
-        /// <typeparam name="T">The type of the <see cref="CustomItem"/> to look for.</typeparam>
-        /// <param name="customItem">The <see cref="CustomItem"/> result.</param>
-        /// <returns><see langword="true"/> if pawn owns the specified <see cref="CustomItem"/>; otherwise, <see langword="false"/>.</returns>
-        public bool TryGetCustomItem<T>(out T customItem)
-            where T : CustomItem
-        {
-            customItem = null;
-            foreach (Item item in Items)
-            {
-                if (!CustomItem.TryGet(item, out CustomItem tmp) || tmp is null || tmp.GetType() != typeof(T))
-                    continue;
-
-                customItem = (T)tmp;
-            }
-
-            return customItem is not null;
-        }
-
-        /// <summary>
-        /// Gets the pawn's <see cref="CustomRoles.CustomRole"/>.
-        /// </summary>
-        /// <param name="customRole">The <see cref="CustomRoles.CustomRole"/> result.</param>
-        /// <returns>The found <see cref="CustomRoles.CustomRole"/>, or <see langword="null"/> if not found.</returns>
-        public bool TryGetCustomRole(out CustomRole customRole) => (customRole = CustomRole) is not null;
-
-        /// <summary>
         /// Sets the pawn's role.
         /// </summary>
         /// <param name="role">The role to be set.</param>
         /// <param name="preservePlayerPosition">A value indicating whether the <see cref="Pawn"/> should be spawned in the same position.</param>
         public void SetRole(object role, bool preservePlayerPosition = false)
         {
-            if (role is RoleTypeId id)
+            if (role is RoleTypeId roleType)
             {
-                Role.Set(id);
+                Role.Set(roleType);
                 return;
             }
 
-            CustomRole.Spawn(this, role, preservePlayerPosition);
+            if (role is uint id)
+                CustomRole.Spawn(this, id, preservePlayerPosition);
+
+            throw new ArgumentException("The type of the role instance is not compatible with RoleTypeId or uint.");
         }
 
         /// <summary>
@@ -275,6 +371,102 @@ namespace Exiled.CustomModules.API.Features
             }
 
             DropItem(item);
+        }
+
+        /// <summary>
+        /// Gets the ammo count of a specified custom ammo in a pawn's inventory.
+        /// </summary>
+        /// <param name="customAmmoType">The custom ammo to be searched for in the pawn's inventory.</param>
+        /// <returns>The specified custom ammo count.</returns>
+        public ushort GetAmmo(uint customAmmoType) => (ushort)(customAmmoBox.TryGetValue(customAmmoType, out ushort amount) ? amount : 0);
+
+        /// <summary>
+        /// Adds an amount of custom ammo to the pawn's ammo box.
+        /// </summary>
+        /// <param name="id">The type of the custom ammo.</param>
+        /// <param name="amount">The amount to be added.</param>
+        /// <returns><see langword="true"/> if the specified amount of ammo was given entirely or partially; otherwise, <see langword="false"/>.</returns>
+        public bool AddAmmo(uint id, ushort amount)
+        {
+            if (!CustomItem.TryGet(id, out CustomItem customItem) || !customItem.Settings.Is(out AmmoSettings settings))
+                return false;
+
+            if (customAmmoBox.TryAdd(id, amount))
+                return true;
+
+            if (customAmmoBox[id] >= settings.MaxUnits)
+                return false;
+
+            ushort amt;
+            try
+            {
+                checked
+                {
+                    amt = (ushort)(customAmmoBox[id] + amount);
+                }
+            }
+            catch (OverflowException)
+            {
+                amt = ushort.MaxValue;
+            }
+
+            if (amt >= settings.MaxUnits)
+                amt = settings.MaxUnits;
+
+            customAmmoBox[id] = amt;
+            return true;
+        }
+
+        /// <summary>
+        /// Removes an amount of custom ammo from the pawn's ammo box.
+        /// </summary>
+        /// <param name="id">The type of the custom ammo.</param>
+        /// <param name="amount">The amount to be removed.</param>
+        /// <returns><see langword="true"/> if the specified amount of ammo was removed entirely or partially; otherwise, <see langword="false"/>.</returns>
+        public bool RemoveAmmo(uint id, ushort amount)
+        {
+            if (!customAmmoBox.TryGetValue(id, out ushort amt))
+                return false;
+
+            try
+            {
+                checked
+                {
+                    amt -= amount;
+                }
+            }
+            catch (OverflowException)
+            {
+                amt = ushort.MinValue;
+            }
+
+            customAmmoBox[id] = amt;
+            return true;
+        }
+
+        /// <summary>
+        /// Sets the amount of a specified custom ammo to the pawn's inventory.
+        /// </summary>
+        /// <param name="id">The type of the custom ammo.</param>
+        /// <param name="amount">The amount of ammo to be set.</param>
+        public void SetAmmo(uint id, ushort amount)
+        {
+            if (customAmmoBox.TryAdd(id, amount))
+                return;
+
+            customAmmoBox[id] = amount;
+        }
+
+        private void OnAddedAbility(AddedAbilityEventArgs<Player> ev)
+        {
+            abilityBehaviours.Add(GetComponent(ev.Ability.BehaviourComponent).Cast<ActiveAbilityBehaviour>());
+            customAbilities.Add(ev.Ability.Cast<PlayerAbility>());
+        }
+
+        private void OnRemovingAbility(RemovingAbilityEventArgs<Player> ev)
+        {
+            abilityBehaviours.Remove(GetComponent(ev.Ability.BehaviourComponent).Cast<ActiveAbilityBehaviour>());
+            customAbilities.Remove(ev.Ability.Cast<PlayerAbility>());
         }
     }
 }

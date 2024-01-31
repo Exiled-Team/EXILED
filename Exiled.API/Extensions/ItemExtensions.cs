@@ -18,7 +18,7 @@ namespace Exiled.API.Extensions
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms.Attachments;
-
+    using InventorySystem.Items.Pickups;
     using Structs;
 
     /// <summary>
@@ -95,6 +95,13 @@ namespace Exiled.API.Extensions
 
             return itemBase;
         }
+
+        /// <summary>
+        /// Given an <see cref="ItemType"/>, returns the matching <see cref="ItemPickupBase"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/>.</param>
+        /// <returns>The <see cref="ItemPickupBase"/>, or <see langword="null"/> if not found.</returns>
+        public static ItemPickupBase GetPickupBase(this ItemType type) => GetItemBase(type)?.PickupDropModel;
 
         /// <summary>
         /// Given an <see cref="ItemType"/>, returns the matching <see cref="ItemBase"/>, casted to <typeparamref name="T"/>.
@@ -226,9 +233,6 @@ namespace Exiled.API.Extensions
             ItemType.GrenadeHE => ProjectileType.FragGrenade,
             ItemType.SCP018 => ProjectileType.Scp018,
             ItemType.SCP2176 => ProjectileType.Scp2176,
-            ItemType.Coal => ProjectileType.Coal,
-            ItemType.SpecialCoal => ProjectileType.SpecialCoal,
-            ItemType.Snowball => ProjectileType.Snowball,
             _ => ProjectileType.None,
         };
 
@@ -243,9 +247,6 @@ namespace Exiled.API.Extensions
             ProjectileType.Scp018 => ItemType.SCP018,
             ProjectileType.FragGrenade => ItemType.GrenadeHE,
             ProjectileType.Scp2176 => ItemType.SCP2176,
-            ProjectileType.Coal => ItemType.Coal,
-            ProjectileType.SpecialCoal => ItemType.SpecialCoal,
-            ProjectileType.Snowball => ItemType.Snowball,
             _ => ItemType.None,
         };
 

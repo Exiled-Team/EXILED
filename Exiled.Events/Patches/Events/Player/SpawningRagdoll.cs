@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
@@ -47,16 +47,16 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder evScale = generator.DeclareLocal(typeof(Vector3));
             LocalBuilder targetScale = generator.DeclareLocal(typeof(Vector3));
 
-            int offset = 1;
+            int offset = 0;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
 
+            // remove
+            // "basicRagdoll.NetworkInfo = new RagdollData(owner, handler, transform.localPosition, transform.localRotation);"
             newInstructions.RemoveRange(index, 7);
-
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1);
 
             newInstructions.InsertRange(index, new[]
             {
-                 // hub
+                // hub
                 new CodeInstruction(OpCodes.Ldarg_0),
 
                 // handler
@@ -72,9 +72,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // new RagdollInfo(ReferenceHub, DamageHandlerBase, Vector3, Quaternion)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RagdollData))[0]),
-
-                // handler
-                new(OpCodes.Ldarg_1),
 
                 // true
                 new(OpCodes.Ldc_I4_1),
@@ -92,6 +89,12 @@ namespace Exiled.Events.Patches.Events.Player
                 //    return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
+
+                // this.NetworkInfo = ev.Info
+                new(OpCodes.Ldloc_1),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Info))),
+                new(OpCodes.Callvirt, PropertySetter(typeof(BasicRagdoll), nameof(BasicRagdoll.NetworkInfo))),
             });
 
             // Search the index in which our logic will be injected
