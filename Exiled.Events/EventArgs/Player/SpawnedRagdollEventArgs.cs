@@ -18,24 +18,24 @@ namespace Exiled.Events.EventArgs.Player
     using UnityEngine;
 
     /// <summary>
-    ///     Contains all information after spawning a player ragdoll.
+    /// Contains all information after spawning a player ragdoll.
     /// </summary>
     public class SpawnedRagdollEventArgs : IPlayerEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SpawnedRagdollEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="SpawnedRagdollEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="ragdoll">
-        ///     <inheritdoc cref="Ragdoll" />
+        /// <inheritdoc cref="Ragdoll" />
         /// </param>
         /// <param name="info">
-        ///     <inheritdoc cref="Info" />
+        /// <inheritdoc cref="Info" />
         /// </param>
         /// <param name="damageHandlerBase">
-        ///     <inheritdoc cref="DamageHandlerBase" />
+        /// <inheritdoc cref="DamageHandlerBase" />
         /// </param>
         public SpawnedRagdollEventArgs(Player player, Ragdoll ragdoll, RagdollData info, DamageHandlerBase damageHandlerBase)
         {
@@ -46,47 +46,47 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the ragdoll's position.
+        /// Gets the ragdoll's position.
         /// </summary>
         public Vector3 Position => Info.StartPosition;
 
         /// <summary>
-        ///     Gets the ragdoll's rotation.
+        /// Gets the ragdoll's rotation.
         /// </summary>
         public Quaternion Rotation => Info.StartRotation;
 
         /// <summary>
-        ///     Gets the ragdoll's <see cref="RoleTypeId" />.
+        /// Gets the ragdoll's <see cref="RoleTypeId" />.
         /// </summary>
         public RoleTypeId Role => Info.RoleType;
 
         /// <summary>
-        ///     Gets the ragdoll's creation time.
+        /// Gets the ragdoll's creation time.
         /// </summary>
         public double CreationTime => Info.CreationTime;
 
         /// <summary>
-        ///     Gets the ragdoll's nickname.
+        /// Gets the ragdoll's nickname.
         /// </summary>
         public string Nickname => Info.Nickname;
 
         /// <summary>
-        ///     Gets the ragdoll's <see cref="RagdollData" />.
+        /// Gets the ragdoll's <see cref="RagdollData" />.
         /// </summary>
         public RagdollData Info { get; }
 
         /// <summary>
-        ///     Gets the ragdoll's <see cref="PlayerStatsSystem.DamageHandlerBase" />.
+        /// Gets the ragdoll's <see cref="PlayerStatsSystem.DamageHandlerBase" />.
         /// </summary>
         public DamageHandlerBase DamageHandlerBase { get; }
 
         /// <summary>
-        ///     Gets the spawned <see cref="API.Features.Ragdoll"/>.
+        /// Gets the spawned <see cref="API.Features.Ragdoll"/>.
         /// </summary>
         public Ragdoll Ragdoll { get; }
 
         /// <summary>
-        ///     Gets the <see cref="Player">Owner</see> of the ragdoll.
+        /// Gets the <see cref="Player">Owner</see> of the ragdoll.
         /// </summary>
         public Player Player { get; }
     }

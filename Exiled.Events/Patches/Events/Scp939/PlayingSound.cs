@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Scp939
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp939AmnesticCloudAbility.ServerProcessCmd(NetworkReader)" />
-    ///     to add the <see cref="Scp939.PlayingSound" /> event.
+    /// Patches <see cref="Scp939AmnesticCloudAbility.ServerProcessCmd(NetworkReader)" />
+    /// to add the <see cref="Scp939.PlayingSound" /> event.
     /// </summary>
     [EventPatch(typeof(Scp939), nameof(Scp939.PlayingSound))]
     [HarmonyPatch(typeof(EnvironmentalMimicry), nameof(EnvironmentalMimicry.ServerProcessCmd))]

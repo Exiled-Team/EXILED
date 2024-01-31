@@ -12,6 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
 
     using MapGeneration.Distributors;
@@ -21,7 +22,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Wrapper class for <see cref="Scp079Generator"/>.
     /// </summary>
-    public class Generator : IWrapper<Scp079Generator>, IWorldSpace
+    public class Generator : GameEntity, IWrapper<Scp079Generator>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.
@@ -52,7 +53,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the generator.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Transform"/> of the generator.
@@ -116,7 +117,7 @@ namespace Exiled.API.Features
         public bool IsOpen
         {
             get => Base.HasFlag(Base.Network_flags, Scp079Generator.GeneratorFlags.Open);
-            set => Base.ServerSetFlag(Scp079Generator.GeneratorFlags.Unlocked, value);
+            set => Base.ServerSetFlag(Scp079Generator.GeneratorFlags.Open, value);
         }
 
         /// <summary>
@@ -238,8 +239,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satisfy the condition.</returns>
         public static IEnumerable<Generator> Get(Func<Generator, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -269,8 +270,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Try-get a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <param name="generators">A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satify the condition.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <param name="generators">A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satisfy the condition.</param>
         /// <returns>Whether or not at least one generator was found.</returns>
         public static bool TryGet(Func<Generator, bool> predicate, out IEnumerable<Generator> generators)
         {

@@ -17,16 +17,16 @@ namespace Exiled.Events.EventArgs.Player
     public class ChangingGroupEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ChangingGroupEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ChangingGroupEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="newGroup">
-        ///     <inheritdoc cref="NewGroup" />
+        /// <inheritdoc cref="NewGroup" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public ChangingGroupEventArgs(Player player, UserGroup newGroup, bool isAllowed = true)
         {
@@ -36,17 +36,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets the player's new group.
+        /// Gets or sets the player's new group.
         /// </summary>
         public UserGroup NewGroup { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can change groups.
+        /// Gets or sets a value indicating whether or not the player can change groups.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the player who's changing his group.
+        /// Gets the player who's changing his group.
         /// </summary>
         public Player Player { get; }
     }

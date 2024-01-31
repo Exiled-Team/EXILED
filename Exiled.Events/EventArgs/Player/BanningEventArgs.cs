@@ -12,14 +12,14 @@ namespace Exiled.Events.EventArgs.Player
     using API.Features;
 
     /// <summary>
-    ///     Contains all information before banning a player from the server.
+    /// Contains all information before banning a player from the server.
     /// </summary>
     public class BanningEventArgs : KickingEventArgs
     {
         private long duration;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="BanningEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="BanningEventArgs" /> class.
         /// </summary>
         /// <param name="target">The ban target.</param>
         /// <param name="issuer">The ban issuer.</param>
@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets the ban duration.
+        /// Gets or sets the ban duration.
         /// </summary>
         public long Duration
         {

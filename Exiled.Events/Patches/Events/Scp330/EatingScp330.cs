@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp330;
 
@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Scp330
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Scp330Bag.ServerOnUsingCompleted" />.
-    ///     Adds the <see cref="Scp330.EatingScp330" /> and <see cref="Scp330.EatenScp330" /> event.
+    /// Patches <see cref="Scp330Bag.ServerOnUsingCompleted" />.
+    /// Adds the <see cref="Scp330.EatingScp330" /> and <see cref="Scp330.EatenScp330" /> event.
     /// </summary>
     [EventPatch(typeof(Scp330), nameof(Scp330.EatingScp330))]
     [EventPatch(typeof(Scp330), nameof(Scp330.EatenScp330))]

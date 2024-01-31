@@ -8,11 +8,10 @@
 namespace Exiled.Events.Patches.Events.Scp173
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp173;
@@ -25,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Scp173
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp173TeleportAbility.ServerProcessCmd" />.
-    ///     Adds the <see cref="Handlers.Scp173.BlinkingRequest" /> event.
+    /// Patches <see cref="Scp173TeleportAbility.ServerProcessCmd" />.
+    /// Adds the <see cref="Handlers.Scp173.BlinkingRequest" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp173.BlinkingRequest))]
     [HarmonyPatch(typeof(Scp173TeleportAbility), nameof(Scp173TeleportAbility.ServerProcessCmd))]

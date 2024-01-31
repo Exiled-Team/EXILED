@@ -11,23 +11,17 @@ namespace Exiled.Events.Patches.Events.Scp049
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Pools;
-    using Exiled.Events.Attributes;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.EventArgs.Scp049;
     using HarmonyLib;
-    using Mirror;
-
-    using PlayerRoles;
-    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.Subroutines;
-    using Utils.Networking;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp049SenseAbility.ServerProcessCmd" />.
-    ///     Adds the <see cref="Handlers.Scp049.ActivatingSense" /> event.
+    /// Patches <see cref="Scp049SenseAbility.ServerProcessCmd" />.
+    /// Adds the <see cref="Handlers.Scp049.ActivatingSense" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.ServerProcessCmd))]
     public class ActivatingSense

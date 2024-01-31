@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="FirstPersonMovementModule.SyncMovementState" /> setter.
-    ///     Adds the <see cref="Player.ChangingMoveState" /> event.
+    /// Patches <see cref="FirstPersonMovementModule.SyncMovementState" /> setter.
+    /// Adds the <see cref="Player.ChangingMoveState" /> event.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.ChangingMoveState))]
     [HarmonyPatch(typeof(FirstPersonMovementModule), nameof(FirstPersonMovementModule.SyncMovementState), MethodType.Setter)]

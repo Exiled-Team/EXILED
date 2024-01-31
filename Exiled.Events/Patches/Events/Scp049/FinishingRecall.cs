@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp049;
 
@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp049
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp049ResurrectAbility.ServerComplete" />.
-    ///     Adds the <see cref="Handlers.Scp049.FinishingRecall" /> event.
+    /// Patches <see cref="Scp049ResurrectAbility.ServerComplete" />.
+    /// Adds the <see cref="Handlers.Scp049.FinishingRecall" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.FinishingRecall))]
     [HarmonyPatch(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.ServerComplete))]

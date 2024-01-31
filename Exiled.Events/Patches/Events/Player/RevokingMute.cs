@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patch the <see cref="VoiceChatMutes.RevokeLocalMute(string, bool)" />.
-    ///     Adds the <see cref="Handlers.Player.RevokingMute" /> event.
+    /// Patch the <see cref="VoiceChatMutes.RevokeLocalMute(string, bool)" />.
+    /// Adds the <see cref="Handlers.Player.RevokingMute" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.RevokingMute))]
     [HarmonyPatch(typeof(VoiceChatMutes), nameof(VoiceChatMutes.RevokeLocalMute))]

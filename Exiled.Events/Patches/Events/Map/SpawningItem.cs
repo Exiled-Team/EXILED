@@ -10,9 +10,8 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using API.Features.Core.Generic.Pools;
     using API.Features.Doors;
-    using API.Features.Pickups;
-    using API.Features.Pools;
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
@@ -24,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="ItemDistributor.SpawnPickup" />.
-    ///     Adds the <see cref="Map.SpawningItem" /> event.
+    /// Patches <see cref="ItemDistributor.SpawnPickup" />.
+    /// Adds the <see cref="Map.SpawningItem" /> event.
     /// </summary>
     [EventPatch(typeof(Map), nameof(Map.SpawningItem))]
     [HarmonyPatch(typeof(ItemDistributor), nameof(ItemDistributor.CreatePickup))]

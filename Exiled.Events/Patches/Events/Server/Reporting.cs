@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Server
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches CheaterReport.UserCode_CmdReport__UInt32__String__Byte\u005B\u005D__Boolean(uint, string, byte[], bool) />.
-    ///     Adds the <see cref="Server.ReportingCheater" /> and <see cref="Server.LocalReporting" /> events.
+    /// Patches CheaterReport.UserCode_CmdReport__UInt32__String__Byte\u005B\u005D__Boolean(uint, string, byte[], bool) />.
+    /// Adds the <see cref="Server.ReportingCheater" /> and <see cref="Server.LocalReporting" /> events.
     /// </summary>
     [EventPatch(typeof(Server), nameof(Server.ReportingCheater))]
     [EventPatch(typeof(Server), nameof(Server.LocalReporting))]

@@ -12,12 +12,12 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information after banning a player from the server.
+    /// Contains all information after banning a player from the server.
     /// </summary>
     public class BannedEventArgs : IPlayerEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="BannedEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="BannedEventArgs" /> class.
         /// </summary>
         /// <param name="target"><inheritdoc cref="Target" /></param>
         /// <param name="issuer"><inheritdoc cref="Player" /></param>
@@ -34,27 +34,27 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the banned player.
+        /// Gets the banned player.
         /// </summary>
         public Player Target { get; }
 
         /// <summary>
-        ///     Gets the issuer player.
+        /// Gets the issuer player.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets the ban details.
+        /// Gets the ban details.
         /// </summary>
         public BanDetails Details { get; }
 
         /// <summary>
-        ///     Gets the ban type.
+        /// Gets the ban type.
         /// </summary>
         public BanHandler.BanType Type { get; }
 
         /// <summary>
-        ///     Gets a value indicating whether the ban is forced or not.
+        /// Gets a value indicating whether the ban is forced or not.
         /// </summary>
         public bool IsForced { get; }
     }

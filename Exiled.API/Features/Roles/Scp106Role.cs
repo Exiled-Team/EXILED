@@ -12,7 +12,6 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Enums;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
-    using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.Subroutines;
     using PlayerStatsSystem;
