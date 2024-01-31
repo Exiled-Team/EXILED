@@ -132,7 +132,7 @@
   </span>
   <a id="Exiled_Events_Handlers_Scp3114_Disguised_" data-uid="Exiled.Events.Handlers.Scp3114.Disguised*"></a>
   <h4 id="Exiled_Events_Handlers_Scp3114_Disguised" data-uid="Exiled.Events.Handlers.Scp3114.Disguised">Disguised</h4>
-  <div class="markdown level1 summary"><p>Invoked before Disguising.</p>
+  <div class="markdown level1 summary"><p>Invoked when disguised.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -163,7 +163,7 @@
   </span>
   <a id="Exiled_Events_Handlers_Scp3114_Disguising_" data-uid="Exiled.Events.Handlers.Scp3114.Disguising*"></a>
   <h4 id="Exiled_Events_Handlers_Scp3114_Disguising" data-uid="Exiled.Events.Handlers.Scp3114.Disguising">Disguising</h4>
-  <div class="markdown level1 summary"><p>Invoked before Disguising.</p>
+  <div class="markdown level1 summary"><p>Invoked before disguising.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -194,7 +194,7 @@
   </span>
   <a id="Exiled_Events_Handlers_Scp3114_Revealed_" data-uid="Exiled.Events.Handlers.Scp3114.Revealed*"></a>
   <h4 id="Exiled_Events_Handlers_Scp3114_Revealed" data-uid="Exiled.Events.Handlers.Scp3114.Revealed">Revealed</h4>
-  <div class="markdown level1 summary"><p>Invoked before Disguising.</p>
+  <div class="markdown level1 summary"><p>Invoked when reveals.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -225,7 +225,7 @@
   </span>
   <a id="Exiled_Events_Handlers_Scp3114_Revealing_" data-uid="Exiled.Events.Handlers.Scp3114.Revealing*"></a>
   <h4 id="Exiled_Events_Handlers_Scp3114_Revealing" data-uid="Exiled.Events.Handlers.Scp3114.Revealing">Revealing</h4>
-  <div class="markdown level1 summary"><p>Invoked before Disguising.</p>
+  <div class="markdown level1 summary"><p>Invoked before reveals.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -256,7 +256,7 @@
   </span>
   <a id="Exiled_Events_Handlers_Scp3114_TryUseBody_" data-uid="Exiled.Events.Handlers.Scp3114.TryUseBody*"></a>
   <h4 id="Exiled_Events_Handlers_Scp3114_TryUseBody" data-uid="Exiled.Events.Handlers.Scp3114.TryUseBody">TryUseBody</h4>
-  <div class="markdown level1 summary"><p>Invoked before Disguising.</p>
+  <div class="markdown level1 summary"><p>Invoked before trying to use a body.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -278,6 +278,37 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Scp3114_VoiceLines.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Scp3114.VoiceLines%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Scp3114.cs/#L49">View Source</a>
+  </span>
+  <a id="Exiled_Events_Handlers_Scp3114_VoiceLines_" data-uid="Exiled.Events.Handlers.Scp3114.VoiceLines*"></a>
+  <h4 id="Exiled_Events_Handlers_Scp3114_VoiceLines" data-uid="Exiled.Events.Handlers.Scp3114.VoiceLines">VoiceLines</h4>
+  <div class="markdown level1 summary"><p>Invoked before sending any SCP-3114 voicelines.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Event&lt;VoiceLinesEventArgs&gt; VoiceLines { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.Events.Features.Event-1.html">Event</a>&lt;<a class="xref" href="Exiled.Events.EventArgs.Scp3114.VoiceLinesEventArgs.html">VoiceLinesEventArgs</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -285,11 +316,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Scp3114_OnDisguised_Exiled_Events_EventArgs_Scp3114_DisguisedEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Scp3114.OnDisguised(Exiled.Events.EventArgs.Scp3114.DisguisedEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Scp3114.cs/#L56">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Scp3114.cs/#L61">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Scp3114_OnDisguised_" data-uid="Exiled.Events.Handlers.Scp3114.OnDisguised*"></a>
   <h4 id="Exiled_Events_Handlers_Scp3114_OnDisguised_Exiled_Events_EventArgs_Scp3114_DisguisedEventArgs_" data-uid="Exiled.Events.Handlers.Scp3114.OnDisguised(Exiled.Events.EventArgs.Scp3114.DisguisedEventArgs)">OnDisguised(DisguisedEventArgs)</h4>
-  <div class="markdown level1 summary"><p>Called before diguising to a new Roles.</p>
+  <div class="markdown level1 summary"><p>Called after diguising.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -319,11 +350,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Scp3114_OnDisguising_Exiled_Events_EventArgs_Scp3114_DisguisingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Scp3114.OnDisguising(Exiled.Events.EventArgs.Scp3114.DisguisingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Scp3114.cs/#L50">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Scp3114.cs/#L55">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Scp3114_OnDisguising_" data-uid="Exiled.Events.Handlers.Scp3114.OnDisguising*"></a>
   <h4 id="Exiled_Events_Handlers_Scp3114_OnDisguising_Exiled_Events_EventArgs_Scp3114_DisguisingEventArgs_" data-uid="Exiled.Events.Handlers.Scp3114.OnDisguising(Exiled.Events.EventArgs.Scp3114.DisguisingEventArgs)">OnDisguising(DisguisingEventArgs)</h4>
-  <div class="markdown level1 summary"><p>Called before diguising to a new Roles.</p>
+  <div class="markdown level1 summary"><p>Called before diguising.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -353,11 +384,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Scp3114_OnRevealed_Exiled_Events_EventArgs_Scp3114_RevealedEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Scp3114.OnRevealed(Exiled.Events.EventArgs.Scp3114.RevealedEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Scp3114.cs/#L68">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Scp3114.cs/#L73">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Scp3114_OnRevealed_" data-uid="Exiled.Events.Handlers.Scp3114.OnRevealed*"></a>
   <h4 id="Exiled_Events_Handlers_Scp3114_OnRevealed_Exiled_Events_EventArgs_Scp3114_RevealedEventArgs_" data-uid="Exiled.Events.Handlers.Scp3114.OnRevealed(Exiled.Events.EventArgs.Scp3114.RevealedEventArgs)">OnRevealed(RevealedEventArgs)</h4>
-  <div class="markdown level1 summary"><p>Called before diguising to a new Roles.</p>
+  <div class="markdown level1 summary"><p>Called after reveals.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -387,11 +418,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Scp3114_OnRevealing_Exiled_Events_EventArgs_Scp3114_RevealingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Scp3114.OnRevealing(Exiled.Events.EventArgs.Scp3114.RevealingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Scp3114.cs/#L74">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Scp3114.cs/#L79">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Scp3114_OnRevealing_" data-uid="Exiled.Events.Handlers.Scp3114.OnRevealing*"></a>
   <h4 id="Exiled_Events_Handlers_Scp3114_OnRevealing_Exiled_Events_EventArgs_Scp3114_RevealingEventArgs_" data-uid="Exiled.Events.Handlers.Scp3114.OnRevealing(Exiled.Events.EventArgs.Scp3114.RevealingEventArgs)">OnRevealing(RevealingEventArgs)</h4>
-  <div class="markdown level1 summary"><p>Called before diguising to a new Roles.</p>
+  <div class="markdown level1 summary"><p>Called before revealing.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -421,11 +452,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Scp3114_OnTryUseBody_Exiled_Events_EventArgs_Scp3114_TryUseBodyEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Scp3114.OnTryUseBody(Exiled.Events.EventArgs.Scp3114.TryUseBodyEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Scp3114.cs/#L62">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Scp3114.cs/#L67">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Scp3114_OnTryUseBody_" data-uid="Exiled.Events.Handlers.Scp3114.OnTryUseBody*"></a>
   <h4 id="Exiled_Events_Handlers_Scp3114_OnTryUseBody_Exiled_Events_EventArgs_Scp3114_TryUseBodyEventArgs_" data-uid="Exiled.Events.Handlers.Scp3114.OnTryUseBody(Exiled.Events.EventArgs.Scp3114.TryUseBodyEventArgs)">OnTryUseBody(TryUseBodyEventArgs)</h4>
-  <div class="markdown level1 summary"><p>Called before diguising to a new Roles.</p>
+  <div class="markdown level1 summary"><p>Called before trying to use a body.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -446,6 +477,40 @@
         <td><a class="xref" href="Exiled.Events.EventArgs.Scp3114.TryUseBodyEventArgs.html">TryUseBodyEventArgs</a></td>
         <td><span class="parametername">ev</span></td>
         <td><p>The <a class="xref" href="Exiled.Events.EventArgs.Scp3114.TryUseBodyEventArgs.html">TryUseBodyEventArgs</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Scp3114_OnVoiceLines_Exiled_Events_EventArgs_Scp3114_VoiceLinesEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Scp3114.OnVoiceLines(Exiled.Events.EventArgs.Scp3114.VoiceLinesEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Scp3114.cs/#L85">View Source</a>
+  </span>
+  <a id="Exiled_Events_Handlers_Scp3114_OnVoiceLines_" data-uid="Exiled.Events.Handlers.Scp3114.OnVoiceLines*"></a>
+  <h4 id="Exiled_Events_Handlers_Scp3114_OnVoiceLines_Exiled_Events_EventArgs_Scp3114_VoiceLinesEventArgs_" data-uid="Exiled.Events.Handlers.Scp3114.OnVoiceLines(Exiled.Events.EventArgs.Scp3114.VoiceLinesEventArgs)">OnVoiceLines(VoiceLinesEventArgs)</h4>
+  <div class="markdown level1 summary"><p>Called before sending any SCP-3114 voicelines.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void OnVoiceLines(VoiceLinesEventArgs ev)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.Events.EventArgs.Scp3114.VoiceLinesEventArgs.html">VoiceLinesEventArgs</a></td>
+        <td><span class="parametername">ev</span></td>
+        <td><p>The <a class="xref" href="Exiled.Events.EventArgs.Scp3114.VoiceLinesEventArgs.html">VoiceLinesEventArgs</a> instance.</p>
 </td>
       </tr>
     </tbody>
