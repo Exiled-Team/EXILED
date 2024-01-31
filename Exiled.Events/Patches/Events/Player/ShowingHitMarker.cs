@@ -19,11 +19,11 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Hitmarker.SendHitmarkerDirectly(ReferenceHub, float)"/>
+    /// Patches <see cref="Hitmarker.SendHitmarkerDirectly(ReferenceHub, float, bool)"/>
     /// to add <see cref="Handlers.Player.ShowingHitMarker"/> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.OnShowingHitMarker))]
-    [HarmonyPatch(typeof(Hitmarker), nameof(Hitmarker.SendHitmarkerDirectly), typeof(ReferenceHub), typeof(float))]
+    [HarmonyPatch(typeof(Hitmarker), nameof(Hitmarker.SendHitmarkerDirectly), typeof(ReferenceHub), typeof(float), typeof(bool))]
     internal class ShowingHitMarker
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -36,41 +36,46 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(DisplayingHitmarkerEventArgs));
 
-            newInstructions.InsertRange(
-                index,
-                new[]
-                {
-                    // Player.Get(hub);
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            newInstructions.InsertRange(index, new CodeInstruction[]
+            {
+                // Player.Get(hub);
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                    // size
-                    new(OpCodes.Ldarg_1),
+                // size
+                new(OpCodes.Ldarg_1),
 
-                    // true
-                    new(OpCodes.Ldc_I4_1),
+                // play audio
+                new(OpCodes.Ldarg_2),
 
-                    // DisplayingHitmarkerEventArgs ev = new(Player, float, true);
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DisplayingHitmarkerEventArgs))[0]),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
+                // true
+                new(OpCodes.Ldc_I4_1),
 
-                    // Handlers.Player.OnShowingHitMarker(ev);
-                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShowingHitMarker))),
+                // DisplayingHitmarkerEventArgs ev = new(Player, float, bool, true);
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DisplayingHitmarkerEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                    // if (!ev.IsAllowed)
-                    //    return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DisplayingHitmarkerEventArgs), nameof(DisplayingHitmarkerEventArgs.IsAllowed))),
-                    new(OpCodes.Brtrue_S, continueLabel),
+                // Handlers.Player.OnShowingHitMarker(ev);
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShowingHitMarker))),
 
-                    new(OpCodes.Ret),
+                // if (!ev.IsAllowed)
+                //    return;
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DisplayingHitmarkerEventArgs), nameof(DisplayingHitmarkerEventArgs.IsAllowed))),
+                new(OpCodes.Brtrue_S, continueLabel),
 
-                    // size = ev.Size;
-                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DisplayingHitmarkerEventArgs), nameof(DisplayingHitmarkerEventArgs.Size))),
-                    new(OpCodes.Starg_S, 1),
-                });
+                new(OpCodes.Ret),
+
+                // size = ev.Size;
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DisplayingHitmarkerEventArgs), nameof(DisplayingHitmarkerEventArgs.Size))),
+                new(OpCodes.Starg_S, 1),
+
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DisplayingHitmarkerEventArgs), nameof(DisplayingHitmarkerEventArgs.PlayAudio))),
+                new(OpCodes.Starg_S, 2),
+            });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

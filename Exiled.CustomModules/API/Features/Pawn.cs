@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.CustomModules.API.Features.CustomItems.Items;
-
 namespace Exiled.CustomModules.API.Features
 {
     using System;
@@ -24,6 +22,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Features.CustomAbilities;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.CustomItems;
+    using Exiled.CustomModules.API.Features.CustomItems.Items;
     using Exiled.CustomModules.API.Features.CustomItems.Pickups.Ammos;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Features.PlayerAbilities;

@@ -30,9 +30,8 @@ namespace Exiled.CustomModules.API.Features
     using PlayerRoles.RoleAssign;
 
     /// <summary>
-    /// The actor which handles all tracking-related tasks for items.
+    /// The actor which handles all role assignment tasks for roles.
     /// </summary>
-    /// <typeparam name="T">The type of the <see cref="ITrackable"/>.</typeparam>
     public class RoleAssigner : StaticActor
     {
         /// <summary>
