@@ -29,8 +29,6 @@ namespace Exiled.CustomModules.API.Features
     using PlayerRoles;
     using PlayerRoles.RoleAssign;
 
-    using AssigningHumanRolesEventArgs = Exiled.CustomModules.Events.EventArgs.CustomRoles.AssigningHumanRolesEventArgs;
-
     /// <summary>
     /// The actor which handles all tracking-related tasks for items.
     /// </summary>
