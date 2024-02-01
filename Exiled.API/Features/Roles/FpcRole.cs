@@ -9,7 +9,7 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
 
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;

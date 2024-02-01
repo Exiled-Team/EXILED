@@ -17,10 +17,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomEscapes;
-
     using MEC;
-
     using PlayerRoles;
     using Respawning;
 
@@ -81,8 +80,13 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets a value indicating whether a player can spawn as this <see cref="CustomRole"/> based on its assigned probability.
         /// </summary>
-        /// <returns><see langword="true"/> if the probability condition was satified; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the probability condition was satisfied; otherwise, <see langword="false"/>.</returns>
         public bool CanSpawnByProbability => UnityEngine.Random.Range(0, 101) <= Chance;
+
+        /// <summary>
+        /// Gets all instances of this <see cref="CustomRole"/>.
+        /// </summary>
+        public int Instances { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="CustomRole"/>'s description.
@@ -171,6 +175,27 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public static CustomRole Get(Type type) =>
             typeof(CustomRole).IsAssignableFrom(type) ? TypeLookupTable[type] :
             typeof(RoleBehaviour).IsAssignableFrom(type) ? BehaviourLookupTable[type] : null;
+
+        /// <summary>
+        /// Gets all <see cref="CustomRole"/> instances belonging to the specified <see cref="Team"/>.
+        /// </summary>
+        /// <param name="team">The specified <see cref="Team"/>.</param>
+        /// <returns>All <see cref="CustomRole"/> instances belonging to the specified <see cref="Team"/>.</returns>
+        public static IEnumerable<CustomRole> Get(Team team) => List.Where(customRole => RoleExtensions.GetTeam(customRole.Role) == team);
+
+        /// <summary>
+        /// Gets all <see cref="CustomRole"/> instances belonging to the specified teams.
+        /// </summary>
+        /// <param name="teams">The specified teams.</param>
+        /// <returns>All <see cref="CustomRole"/> instances belonging to the specified teams.</returns>
+        public static IEnumerable<CustomRole> Get(IEnumerable<Team> teams) => List.Where(customRole => teams.Contains(RoleExtensions.GetTeam(customRole.Role)));
+
+        /// <summary>
+        /// Gets all <see cref="CustomRole"/> instances belonging to the specified teams.
+        /// </summary>
+        /// <param name="teams">The specified teams.</param>
+        /// <returns>All <see cref="CustomRole"/> instances belonging to the specified teams.</returns>
+        public static IEnumerable<CustomRole> Get(params Team[] teams) => List.Where(customRole => teams.Contains(RoleExtensions.GetTeam(customRole.Role)));
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> given the specified <see cref="Type"/>.
@@ -487,6 +512,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             player.AddComponent(BehaviourComponent);
             PlayersValue.Remove(player);
             PlayersValue.Add(player, this);
+            Instances += 1;
 
             return true;
         }
@@ -519,12 +545,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             if (!player.IsAlive)
             {
-                ForceSpawn_Internal(player);
+                ForceSpawn_Internal(player, false);
                 return;
             }
 
             player.Role.Set(RoleTypeId.Spectator, SpawnReason.Respawn);
-            Timing.CallDelayed(0.1f, () => ForceSpawn_Internal(player));
+            Timing.CallDelayed(0.1f, () => ForceSpawn_Internal(player, false));
         }
 
         /// <summary>
@@ -589,6 +615,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public bool Eject(Pawn player)
         {
             PlayersValue.Remove(player);
+            Instances -= 1;
 
             if (CustomTeam.TryGet(player, out CustomTeam customTeam))
             {
@@ -678,10 +705,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             return true;
         }
 
-        private void ForceSpawn_Internal(Pawn player) =>
-            player.AddComponent(BehaviourComponent, $"ECS-{Name}");
-
-        private void ForceSpawn_Internal(Pawn player, bool preservePosition) =>
+        private void ForceSpawn_Internal(Pawn player, bool preservePosition)
+        {
+            Instances += 1;
             player.AddComponent(BehaviourComponent, $"ECS-{Name}").Cast<RoleBehaviour>().Settings.PreservePosition = preservePosition;
+        }
     }
 }

@@ -8,6 +8,8 @@
 namespace Exiled.CustomModules
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Generic;
     using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.EventHandlers;
 
@@ -36,7 +38,8 @@ namespace Exiled.CustomModules
         {
             Instance = this;
 
-            Exiled.Events.Patches.Events.Player.Joined.BasePlayerType = typeof(Pawn);
+            if (Config.UseDefaultRoleAssigner)
+                StaticActor.CreateNewInstance<RoleAssigner>();
 
             SubscribeEvents();
 
@@ -46,9 +49,9 @@ namespace Exiled.CustomModules
         /// <inheritdoc/>
         public override void OnDisabled()
         {
-            UnsubscribeEvents();
+            StaticActor.Get<RoleAssigner>()?.Destroy();
 
-            Exiled.Events.Patches.Events.Player.Joined.BasePlayerType = typeof(Player);
+            UnsubscribeEvents();
 
             base.OnDisabled();
         }

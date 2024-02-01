@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Core.Interfaces
 {
+    using Exiled.API.Features.Core.Behaviours;
+
     /// <summary>
     /// Defines additive settings set up through user-defined properties.
     /// </summary>

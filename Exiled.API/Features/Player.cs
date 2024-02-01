@@ -17,11 +17,12 @@ namespace Exiled.API.Features
     using CustomPlayerEffects;
     using DamageHandlers;
     using Enums;
+    using Exiled.API.Features.Attributes;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
@@ -73,9 +74,17 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
+    [DefaultPlayerClass]
     public class Player : GameEntity, IWorldSpace
     {
 #pragma warning disable SA1401
+#pragma warning disable SA1310
+        /// <summary>
+        /// The default player class.
+        /// </summary>
+        internal static Type DEFAULT_PLAYER_CLASS = typeof(Player);
+#pragma warning restore SA1310
+
         /// <summary>
         /// A list of the player's items.
         /// </summary>
@@ -919,7 +928,12 @@ namespace Exiled.API.Features
                 }
 
                 if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                {
+                    if (IsInventoryFull)
+                        return;
+
                     AddItem(value.Base);
+                }
 
                 Inventory.ServerSelectItem(value.Serial);
             }
@@ -1196,6 +1210,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the all <see cref="Player"/> instances belonging to the given <see cref="global::ReferenceHub"/> instances, if any.
+        /// </summary>
+        /// <param name="hubs">The reference hubs to retrieve the players from.</param>
+        /// <returns>All <see cref="Player"/> instances belonging to the given <see cref="global::ReferenceHub"/> instances.</returns>
+        public static IEnumerable<Player> Get(IEnumerable<ReferenceHub> hubs) => hubs.Select(hub => Get(hub));
+
+        /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="Collider"/>, if any.
         /// </summary>
         /// <param name="collider"><see cref="Collider"/>.</param>
@@ -1414,6 +1435,24 @@ namespace Exiled.API.Features
         /// <param name="player">The player found or <see langword="null"/> if not found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
         public static bool TryGet(Collider collider, out Player player) => (player = Get(collider)) is not null;
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{Player}"/> containing all players processed based on the arguments specified.
+        /// </summary>
+        /// <param name="args">The array segment of strings representing the input arguments to be processed.</param>
+        /// <param name="startIndex">The starting index within the array segment.</param>
+        /// <param name="newargs">Contains the updated arguments after processing.</param>
+        /// <param name="keepEmptyEntries">Determines whether empty entries should be kept in the result.</param>
+        /// <returns>An <see cref="IEnumerable{Player}"/> representing the processed players.</returns>
+        public static IEnumerable<Player> GetProcessedData(ArraySegment<string> args, int startIndex, out string[] newargs, bool keepEmptyEntries = false) => RAUtils.ProcessPlayerIdOrNamesList(args, startIndex, out newargs, keepEmptyEntries).Select(hub => Get(hub));
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{Player}"/> containing all players processed based on the arguments specified.
+        /// </summary>
+        /// <param name="args">The array segment of strings representing the input arguments to be processed.</param>
+        /// <param name="startIndex">The starting index within the array segment.</param>
+        /// <returns>An <see cref="IEnumerable{Player}"/> representing the processed players.</returns>
+        public static IEnumerable<Player> GetProcessedData(ArraySegment<string> args, int startIndex = 0) => GetProcessedData(args, startIndex, out string[] _);
 
         /// <summary>
         /// Adds a player's UserId to the list of reserved slots.
@@ -2036,6 +2075,12 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
         public void Hurt(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase);
+
+        /// <summary>
+        /// Hurts the player.
+        /// </summary>
+        /// <param name="damageHandlerBase">The <see cref="DamageHandlers.DamageHandlerBase"/> used to deal damage.</param>
+        public void Hurt(DamageHandlers.DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase.Base);
 
         /// <summary>
         /// Hurts the player.

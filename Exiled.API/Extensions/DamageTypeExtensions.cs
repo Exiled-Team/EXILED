@@ -8,6 +8,7 @@
 namespace Exiled.API.Extensions
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Enums;
 
@@ -20,37 +21,6 @@ namespace Exiled.API.Extensions
     /// </summary>
     public static class DamageTypeExtensions
     {
-        private static readonly Dictionary<byte, DamageType> TranslationIdConversionInternal = new()
-        {
-            { DeathTranslations.Asphyxiated.Id, DamageType.Asphyxiation },
-            { DeathTranslations.Bleeding.Id, DamageType.Bleeding },
-            { DeathTranslations.Crushed.Id, DamageType.Crushed },
-            { DeathTranslations.Decontamination.Id, DamageType.Decontamination },
-            { DeathTranslations.Explosion.Id, DamageType.Explosion },
-            { DeathTranslations.Falldown.Id, DamageType.Falldown },
-            { DeathTranslations.Poisoned.Id, DamageType.Poison },
-            { DeathTranslations.Recontained.Id, DamageType.Recontainment },
-            { DeathTranslations.Scp049.Id, DamageType.Scp049 },
-            { DeathTranslations.Scp096.Id, DamageType.Scp096 },
-            { DeathTranslations.Scp173.Id, DamageType.Scp173 },
-            { DeathTranslations.Scp207.Id, DamageType.Scp207 },
-            { DeathTranslations.Scp939Lunge.Id, DamageType.Scp939 },
-            { DeathTranslations.Scp939Other.Id, DamageType.Scp939 },
-            { DeathTranslations.Scp3114Slap.Id, DamageType.Scp3114 },
-            { DeathTranslations.Tesla.Id, DamageType.Tesla },
-            { DeathTranslations.Unknown.Id, DamageType.Unknown },
-            { DeathTranslations.Warhead.Id, DamageType.Warhead },
-            { DeathTranslations.Zombie.Id, DamageType.Scp0492 },
-            { DeathTranslations.BulletWounds.Id, DamageType.Firearm },
-            { DeathTranslations.PocketDecay.Id, DamageType.PocketDimension },
-            { DeathTranslations.SeveredHands.Id, DamageType.SeveredHands },
-            { DeathTranslations.FriendlyFireDetector.Id, DamageType.FriendlyFireDetector },
-            { DeathTranslations.UsedAs106Bait.Id, DamageType.FemurBreaker },
-            { DeathTranslations.MicroHID.Id, DamageType.MicroHid },
-            { DeathTranslations.Hypothermia.Id, DamageType.Hypothermia },
-            { DeathTranslations.MarshmallowMan.Id, DamageType.Marshmallow },
-        };
-
         private static readonly Dictionary<DeathTranslation, DamageType> TranslationConversionInternal = new()
         {
             { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
@@ -104,7 +74,7 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets conversion information between <see cref="DeathTranslation.Id"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        public static IReadOnlyDictionary<byte, DamageType> TranslationIdConversion => TranslationIdConversionInternal;
+        public static IReadOnlyDictionary<byte, DamageType> TranslationIdConversion { get; } = TranslationConversionInternal.ToDictionary(x => x.Key.Id, y => y.Value);
 
         /// <summary>
         /// Gets conversion information between <see cref="DeathTranslation"/>s and <see cref="DamageType"/>s.
@@ -199,28 +169,26 @@ namespace Exiled.API.Extensions
 
                 case ScpDamageHandler scpDamageHandler:
                     {
-                        DeathTranslation translation = DeathTranslations.TranslationsById[scpDamageHandler._translationId];
-                        if (translation.Id == DeathTranslations.PocketDecay.Id)
+                        if (scpDamageHandler._translationId == DeathTranslations.PocketDecay.Id)
                             return DamageType.Scp106;
 
-                        return TranslationIdConversion.ContainsKey(translation.Id)
-                            ? TranslationIdConversion[translation.Id]
+                        return TranslationIdConversion.ContainsKey(scpDamageHandler._translationId)
+                            ? TranslationIdConversion[scpDamageHandler._translationId]
                             : DamageType.Scp;
                     }
 
                 case UniversalDamageHandler universal:
                     {
-                        DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
+                        if (TranslationIdConversion.ContainsKey(universal.TranslationId))
+                            return TranslationIdConversion[universal.TranslationId];
 
-                        if (TranslationIdConversion.ContainsKey(translation.Id))
-                            return TranslationIdConversion[translation.Id];
-
-                        Log.Warn($"{nameof(DamageTypeExtensions)}.{nameof(damageHandlerBase)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
+                        Log.Warn($"{nameof(DamageTypeExtensions)}.{nameof(damageHandlerBase)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {universal.TranslationId}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
                         return DamageType.Unknown;
                     }
-            }
 
-            return DamageType.Unknown;
+                default:
+                    return DamageType.Unknown;
+            }
         }
     }
 }

@@ -26,5 +26,11 @@ namespace Exiled.CustomModules
         /// <returns><see cref="bool"/>.</returns>
         [Description("Whether or not debug messages should be shown.")]
         public bool Debug { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the built-in role assigner should be used over the base game one.
+        /// </summary>
+        [Description("Whether the built-in role assigner should be used over the base game one.")]
+        public bool UseDefaultRoleAssigner { get; set; }
     }
 }
