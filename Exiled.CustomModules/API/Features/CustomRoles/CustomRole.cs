@@ -81,7 +81,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Gets a value indicating whether a player can spawn as this <see cref="CustomRole"/> based on its assigned probability.
         /// </summary>
         /// <returns><see langword="true"/> if the probability condition was satisfied; otherwise, <see langword="false"/>.</returns>
-        public bool CanSpawnByProbability => UnityEngine.Random.Range(0, 101) <= Chance;
+        public bool CanSpawnByProbability => UnityEngine.Random.Range(0, 101) <= Probability;
 
         /// <summary>
         /// Gets all instances of this <see cref="CustomRole"/>.
@@ -99,14 +99,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public virtual RoleTypeId Role { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomRole"/> should be considered an SCP.
-        /// </summary>
-        public virtual bool IsScp { get; }
-
-        /// <summary>
         /// Gets the relative spawn chance of the <see cref="CustomRole"/>.
         /// </summary>
-        public virtual int Chance { get; }
+        public virtual int Probability { get; }
 
         /// <summary>
         /// Gets the <see cref="RoleSettings"/>.
@@ -129,6 +124,13 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public virtual int MaxInstances => IsScp ? 1 : -1;
 
         /// <summary>
+        /// Gets the team ownership of the <see cref="CustomRole"/>.
+        /// </summary>
+        /// <para/>
+        /// By setting the ownership, the <see cref="CustomRole"/> will belong to the specified team.
+        public virtual Team TeamOwnership { get; }
+
+        /// <summary>
         /// Gets the <see cref="SpawnableTeamType"/> from which to retrieve players for assigning the <see cref="CustomRole"/>.
         /// </summary>
         public virtual SpawnableTeamType AssignFromTeam => SpawnableTeamType.None;
@@ -141,12 +143,17 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets a value indicating whether the <see cref="CustomRole"/> should be treated as a separate team unit.
         /// </summary>
-        public virtual bool IsCustomTeamUnit { get; }
+        public virtual bool IsTeamUnit { get; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="CustomRole"/> is registered.
         /// </summary>
         public virtual bool IsRegistered => Registered.Contains(this);
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="CustomRole"/> should be considered an SCP.
+        /// </summary>
+        public bool IsScp => TeamOwnership is Team.SCPs;
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pawn"/> containing all players owning this <see cref="CustomRole"/>.
