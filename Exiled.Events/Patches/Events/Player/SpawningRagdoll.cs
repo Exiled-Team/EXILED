@@ -52,8 +52,9 @@ namespace Exiled.Events.Patches.Events.Player
 
             // remove
             // "basicRagdoll.NetworkInfo = new RagdollData(owner, handler, transform.localPosition, transform.localRotation);"
-            newInstructions.RemoveRange(index, 7);
+            newInstructions.RemoveRange(index, 9);
 
+            // replace with
             newInstructions.InsertRange(index, new[]
             {
                 // hub
@@ -90,22 +91,11 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
 
-                // this.NetworkInfo = ev.Info
+                // basicRagdoll.NetworkInfo = ev.Info
                 new(OpCodes.Ldloc_1),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Info))),
-                new(OpCodes.Callvirt, PropertySetter(typeof(BasicRagdoll), nameof(BasicRagdoll.NetworkInfo))),
-            });
-
-            // Search the index in which our logic will be injected
-            offset = 0;
-            index = newInstructions.FindIndex(instruction => instruction.Calls(PropertySetter(typeof(BasicRagdoll), nameof(BasicRagdoll.NetworkInfo)))) + offset;
-
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // ev.Info
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Info))),
+                new(OpCodes.Call, PropertySetter(typeof(BasicRagdoll), nameof(BasicRagdoll.NetworkInfo))),
 
                 // new Vector3()
                 new(OpCodes.Ldloca_S, targetScale.LocalIndex),
