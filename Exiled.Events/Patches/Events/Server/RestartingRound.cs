@@ -42,7 +42,8 @@ namespace Exiled.Events.Patches.Events.Server
 
                     // API.Features.Log.Debug("Round restarting", Loader.ShouldDebugBeShown)
                     new(OpCodes.Ldstr, "Round restarting"),
-                    new(OpCodes.Call, Method(typeof(API.Features.Log), nameof(API.Features.Log.Debug), new[] { typeof(string) })),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Call, Method(typeof(API.Features.Log), nameof(API.Features.Log.Debug), new[] { typeof(string), typeof(bool) })),
                 });
 
             const int offset = 1;
