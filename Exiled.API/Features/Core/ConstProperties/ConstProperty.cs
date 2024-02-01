@@ -122,7 +122,7 @@ namespace Exiled.API.Features.Core.ConstProperties
                         property = Get((T)instruction.operand, currentType);
 
                         if (property == null)
-                            continue;
+                            break;
 
                         yield return new(OpCodes.Ldstr, property.Value);
                         continue;
@@ -131,7 +131,7 @@ namespace Exiled.API.Features.Core.ConstProperties
                         property = Get((T)instruction.operand, currentType);
 
                         if (property == null)
-                            continue;
+                            break;
 
                         yield return new(OpCodes.Ldc_R4, property.Value);
                         continue;
@@ -140,7 +140,7 @@ namespace Exiled.API.Features.Core.ConstProperties
                         property = Get((T)instruction.operand, currentType);
 
                         if (property == null)
-                            continue;
+                            break;
 
                         yield return new(OpCodes.Ldc_R8, property.Value);
                         continue;
@@ -152,7 +152,7 @@ namespace Exiled.API.Features.Core.ConstProperties
                         property = Get((T)instruction.operand, currentType);
 
                         if (property == null)
-                            continue;
+                            break;
 
                         yield return new(OpCodes.Ldstr, property.Value);
                         continue;

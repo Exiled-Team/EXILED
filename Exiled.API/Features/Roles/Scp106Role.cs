@@ -10,12 +10,12 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features.Core.ConstProperties;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.Subroutines;
     using PlayerStatsSystem;
-
     using UnityEngine;
 
     using Scp106GameRole = PlayerRoles.PlayableScps.Scp106.Scp106Role;
@@ -181,53 +181,52 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float SinkholeSpeedMultiplier => SinkholeController.SpeedMultiplier;
 
-        // TODO: ReAdd Setter but before making an propper way to overwrite NW constant only when the propperty has been used
 #pragma warning disable SA1623 // Property summary documentation should match accessors
 #pragma warning disable SA1202
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when being stationary.
         /// </summary>
-        internal float VigorStalkCostStationary { get; } = Scp106StalkAbility.VigorStalkCostStationary;
+        public ConstProperty<float> VigorStalkCostStationary { get; } = new(Scp106StalkAbility.VigorStalkCostStationary, typeof(Scp106StalkAbility));
 
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when moving.
         /// </summary>
-        internal float VigorStalkCostMoving { get; } = Scp106StalkAbility.VigorStalkCostMoving;
+        public ConstProperty<float> VigorStalkCostMoving { get; } = new(Scp106StalkAbility.VigorStalkCostMoving, typeof(Scp106StalkAbility));
 
         /// <summary>
         /// Gets or sets how mush vigor will be regenerate while moving per seconds.
         /// </summary>
-        internal float VigorRegeneration { get; } = Scp106StalkAbility.VigorRegeneration;
+        public ConstProperty<float> VigorRegeneration { get; } = new(Scp106StalkAbility.VigorRegeneration, typeof(Scp106StalkAbility));
 
         /// <summary>
         /// Gets or sets how mush damage Scp106 will dealt when attacking a player.
         /// </summary>
-        internal float AttackDamage { get; } = Scp106Attack.AttackDamage;
+        public ConstProperty<float> AttackDamage { get; } = new(Scp106Attack.AttackDamage, typeof(Scp106Attack));
 
         /// <summary>
         /// Gets or sets the duration of Corroding effect.
         /// </summary>
-        internal float CorrodingTime { get; } = Scp106Attack.CorrodingTime;
+        public ConstProperty<float> CorrodingTime { get; } = new(Scp106Attack.CorrodingTime, typeof(Scp106Attack));
 
         /// <summary>
         /// Gets or sets how mush vigor Scp106 will gain when being reward for having caught a player.
         /// </summary>
-        internal float VigorCaptureReward { get; } = Scp106Attack.VigorCaptureReward;
+        public ConstProperty<float> VigorCaptureReward { get; } = new(Scp106Attack.VigorCaptureReward, typeof(Scp106Attack));
 
         /// <summary>
         /// Gets or sets how mush reduction cooldown Scp106 will gain when being reward for having caught a player.
         /// </summary>
-        internal float CooldownReductionReward { get; } = Scp106Attack.CooldownReductionReward;
+        public ConstProperty<float> CooldownReductionReward { get; } = new(Scp106Attack.CooldownReductionReward, typeof(Scp106Attack));
 
         /// <summary>
         /// Gets or sets the cooldown duration of it's Sinkhole ability's.
         /// </summary>
-        internal float SinkholeCooldownDuration { get; } = Scp106SinkholeController.CooldownDuration;
+        public ConstProperty<float> SinkholeCooldownDuration { get; } = new(Scp106SinkholeController.CooldownDuration, typeof(Scp106SinkholeController));
 
         /// <summary>
         /// Gets or sets how mush vigor it's ability Hunter Atlas will cost per meter.
         /// </summary>
-        internal float HuntersAtlasCostPerMeter { get; } = Scp106HuntersAtlasAbility.CostPerMeter;
+        public ConstProperty<float> HuntersAtlasCostPerMeter { get; } = new(Scp106HuntersAtlasAbility.CostPerMeter, typeof(Scp106HuntersAtlasAbility));
 #pragma warning restore SA1623 // Property summary documentation should match accessors
 
         /// <summary>

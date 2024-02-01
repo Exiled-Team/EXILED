@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using CustomPlayerEffects;
+    using Exiled.API.Features.Core.ConstProperties;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
@@ -118,38 +119,37 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public IEnumerable<Player> DeadZombies => Scp049ResurrectAbility.DeadZombies.Select(x => Player.Get(x));
 
-        // TODO: ReAdd Setter but before making an propper way to overwrite NW constant only when the propperty has been used
 #pragma warning disable SA1623 // Property summary documentation should match accessors
 #pragma warning disable SA1202
         /// <summary>
         /// Gets or sets how mush time the Call Ability will be effective.
         /// </summary>
-        internal double CallAbilityDuration { get; } = Scp049CallAbility.EffectDuration;
+        public ConstProperty<double> CallAbilityDuration { get; } = new(Scp049CallAbility.EffectDuration, typeof(Scp049CallAbility));
 
         /// <summary>
         /// Gets or sets the Cooldown of the Call Ability.
         /// </summary>
-        internal double CallAbilityBaseCooldown { get; } = Scp049CallAbility.BaseCooldown;
+        public ConstProperty<double> CallAbilityBaseCooldown { get; } = new(Scp049CallAbility.BaseCooldown, typeof(Scp049CallAbility));
 
         /// <summary>
         /// Gets or sets the Cooldown of the Sense Ability.
         /// </summary>
-        internal double SenseAbilityBaseCooldown { get; } = Scp049SenseAbility.BaseCooldown;
+        public ConstProperty<double> SenseAbilityBaseCooldown { get; } = new(Scp049SenseAbility.BaseCooldown, typeof(Scp049SenseAbility));
 
         /// <summary>
         /// Gets or sets the Cooldown of the Sense Ability when you lost your target.
         /// </summary>
-        internal double SenseAbilityReducedCooldown { get; } = Scp049SenseAbility.ReducedCooldown;
+        public ConstProperty<double> SenseAbilityReducedCooldown { get; } = new(Scp049SenseAbility.ReducedCooldown, typeof(Scp049SenseAbility));
 
         /// <summary>
         /// Gets or sets the Cooldown of the Sense Ability when it's failed.
         /// </summary>
-        internal double SenseAbilityDuration { get; } = Scp049SenseAbility.EffectDuration;
+        public ConstProperty<double> SenseAbilityDuration { get; } = new(Scp049SenseAbility.EffectDuration, typeof(Scp049SenseAbility));
 
         /// <summary>
         /// Gets or sets how mush time the Sense Ability will be effective.
         /// </summary>
-        internal double SenseAbilityFailCooldown { get; } = Scp049SenseAbility.AttemptFailCooldown;
+        public ConstProperty<double> SenseAbilityFailCooldown { get; } = new(Scp049SenseAbility.AttemptFailCooldown, typeof(Scp049SenseAbility));
 #pragma warning restore SA1623 // Property summary documentation should match accessors
 
         /// <summary>
