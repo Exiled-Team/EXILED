@@ -5,9 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Runtime.InteropServices.WindowsRuntime;
-using Respawning;
-
 namespace Exiled.CustomModules.API.Features
 {
     using System;
@@ -31,6 +28,7 @@ namespace Exiled.CustomModules.API.Features
     using HarmonyLib;
     using PlayerRoles;
     using PlayerRoles.RoleAssign;
+    using Respawning;
 
     /// <summary>
     /// The actor which handles all team respawning tasks for roles.
@@ -91,12 +89,6 @@ namespace Exiled.CustomModules.API.Features
         {
             CustomTeam team = CustomTeam.Get((uint)NextKnownTeam);
             List<Player> toSpawn = Player.Get(Team.Dead).ToList();
-            int spawnable = toSpawn.Count;
-            int maxWaveSize = team.Size;
-
-            if (spawnable > maxWaveSize)
-                toSpawn.RemoveRange(spawnable, maxWaveSize - spawnable);
-
             CustomTeam.TrySpawn(toSpawn.Cast<Pawn>(), team);
         }
 

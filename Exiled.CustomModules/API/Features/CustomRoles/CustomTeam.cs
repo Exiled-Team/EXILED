@@ -117,7 +117,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets the <see cref="SpawnableTeamType"/> which is being spawned from.
         /// </summary>
-        public virtual SpawnableTeamType RespawnTeam { get; }
+        public virtual SpawnableTeamType[] SpawnableFromTeams { get; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="CustomTeam"/> is configured to use respawn tickets.
@@ -562,7 +562,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             players.ForEach(player => Spawn(player));
 
-            if (RespawnTeam is SpawnableTeamType.NineTailedFox && UnitNamingRule.TryGetNamingRule(SpawnableTeamType.NineTailedFox, out UnitNamingRule rule))
+            if (TeamsOwnership.Any(team => team == Team.FoundationForces) && UnitNamingRule.TryGetNamingRule(SpawnableTeamType.NineTailedFox, out UnitNamingRule rule))
                 UnitNameMessageHandler.SendNew(SpawnableTeamType.NineTailedFox, rule);
         }
 
@@ -604,7 +604,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 count++;
             }
 
-            if (RespawnTeam is SpawnableTeamType.NineTailedFox && UnitNamingRule.TryGetNamingRule(SpawnableTeamType.NineTailedFox, out UnitNamingRule rule))
+            if (TeamsOwnership.Any(team => team == Team.FoundationForces) && UnitNamingRule.TryGetNamingRule(SpawnableTeamType.NineTailedFox, out UnitNamingRule rule))
                 UnitNameMessageHandler.SendNew(SpawnableTeamType.NineTailedFox, rule);
         }
 
