@@ -86,6 +86,7 @@ namespace Exiled.Events.Handlers.Internal
         {
             RoleAssigner.CheckLateJoin(ev.Player.ReferenceHub, ClientInstanceMode.ReadyClient);
 
+            // TODO: Remove if this has been fixed for https://trello.com/c/CzPD304L/5983-networking-blackout-is-not-synchronized-for-the-new-players
             foreach (Room room in Room.List.Where(current => current.AreLightsOff))
             {
                 ev.Player.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkLightsEnabled), true);
