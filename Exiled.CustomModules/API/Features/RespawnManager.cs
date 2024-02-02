@@ -15,9 +15,11 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
+    using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Interfaces;
     using Exiled.CustomModules.Events.EventArgs.CustomItems;
@@ -65,6 +67,21 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the previous spawned team.
+        /// </summary>
+        public object PreviousKnownTeam { get; protected set; }
+
+        /// <summary>
+        /// Gets all teams' tickets.
+        /// </summary>
+        public Dictionary<uint, Func<uint>> AllTickets { get; } = new();
+
+        /// <summary>
+        /// Gets all enqueued roles.
+        /// </summary>
+        public List<object> EnqueuedRoles { get; }
+
+        /// <summary>
         /// Forces the spawn of a wave of the specified team.
         /// </summary>
         /// <param name="value">The specified team.</param>
@@ -92,14 +109,31 @@ namespace Exiled.CustomModules.API.Features
             CustomTeam.TrySpawn(toSpawn.Cast<Pawn>(), team);
         }
 
+        /// <inheritdoc />
+        protected override void PostInitialize_Static()
+        {
+            foreach (CustomTeam team in CustomTeam.Get(t => t.UseTickets))
+                AllTickets[team.Id] = () => team.Tickets;
+        }
+
+        /// <inheritdoc />
+        protected override void EndPlay_Static()
+        {
+            AllTickets.Clear();
+            EnqueuedRoles.Clear();
+        }
+
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
             base.SubscribeEvents();
 
+            Exiled.Events.Handlers.Server.RestartedRespawnSequence += OnRestartedRespawnSequence;
             Exiled.Events.Handlers.Server.SelectingRespawnTeam += OnSelectingRespawnTeam;
             Exiled.Events.Handlers.Server.PreRespawningTeam += OnPreRespawningTeam;
+            Exiled.Events.Handlers.Server.RespawningTeam += OnRespawningTeam;
             Exiled.Events.Handlers.Server.DeployingTeamRole += OnDeployingTeamRole;
+            Exiled.Events.Handlers.Server.RespawnedTeam += OnRespawnedTeam;
         }
 
         /// <inheritdoc/>
@@ -107,27 +141,48 @@ namespace Exiled.CustomModules.API.Features
         {
             base.UnsubscribeEvents();
 
+            Exiled.Events.Handlers.Server.RestartedRespawnSequence -= OnRestartedRespawnSequence;
             Exiled.Events.Handlers.Server.SelectingRespawnTeam -= OnSelectingRespawnTeam;
             Exiled.Events.Handlers.Server.PreRespawningTeam -= OnPreRespawningTeam;
+            Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeam;
             Exiled.Events.Handlers.Server.DeployingTeamRole -= OnDeployingTeamRole;
+            Exiled.Events.Handlers.Server.RespawnedTeam -= OnRespawnedTeam;
+        }
+
+        private void OnRestartedRespawnSequence(RestartedRespawnSequenceEventArgs ev)
+        {
+            if (PreviousKnownTeam is not uint id || !CustomTeam.TryGet(id, out CustomTeam team))
+                return;
+
+            ev.TimeForNextSequence = team.NextSequenceTime;
         }
 
         private void OnSelectingRespawnTeam(SelectingRespawnTeamEventArgs ev)
         {
+            NextKnownTeam = null;
             foreach (CustomTeam team in CustomTeam.List)
             {
                 if (!team.EvaluateConditions || !team.CanSpawnByProbability)
                     continue;
 
                 NextKnownTeam = team.Id;
+                return;
             }
+
+            if (NextKnownTeam is null)
+                NextKnownTeam = ev.Team;
         }
 
         private void OnPreRespawningTeam(PreRespawningTeamEventArgs ev)
         {
+            PreviousKnownTeam = NextKnownTeam;
+
             if (NextKnownTeam is not SpawnableTeamType team)
             {
                 CustomTeam customTeam = CustomTeam.Get((uint)NextKnownTeam);
+
+                if (!customTeam)
+                    return;
 
                 if (customTeam.TeamsOwnership.Any(t => t == (ev.NextKnownTeam is SpawnableTeamType.ChaosInsurgency ? Team.ChaosInsurgency : Team.FoundationForces)))
                 {
@@ -137,16 +192,72 @@ namespace Exiled.CustomModules.API.Features
 
                 ev.IsAllowed = false;
                 Spawn();
+                Respawning.RespawnManager.Singleton.RestartSequence();
                 return;
+            }
+        }
+
+        private void OnRespawningTeam(RespawningTeamEventArgs ev)
+        {
+            if (NextKnownTeam is not SpawnableTeamType team)
+                return;
+
+            foreach (CustomRole customRole in CustomRole.List)
+            {
+                if (!customRole.IsTeamUnit || customRole.AssignFromTeam != team || !customRole.EvaluateConditions)
+                    continue;
+
+                for (int i = customRole.Instances; i <= customRole.Instances; i++)
+                {
+                    if (!customRole.CanSpawnByProbability)
+                        continue;
+
+                    EnqueuedRoles.Add(customRole.Id);
+                }
+            }
+
+            EnqueuedRoles.AddRange(ev.SpawnQueue.Cast<object>());
+
+            object captain = EnqueuedRoles.FirstOrDefault(role => role is RoleTypeId rId && rId is RoleTypeId.NtfCaptain);
+
+            if (captain is not null)
+                EnqueuedRoles.Remove(captain);
+
+            EnqueuedRoles.RemoveRange(ev.SpawnQueue.Count - 1, EnqueuedRoles.Count - ev.SpawnQueue.Count);
+
+            if (captain is not null)
+            {
+                EnqueuedRoles.Add(captain);
+                captain = null;
             }
         }
 
         private void OnDeployingTeamRole(DeployingTeamRoleEventArgs ev)
         {
             if (NextKnownTeam is SpawnableTeamType team)
-                return;
+            {
+                object role = EnqueuedRoles.Random();
+
+                if (role is not uint)
+                {
+                    EnqueuedRoles.Remove(role);
+                    return;
+                }
+
+                ev.Delegate = () =>
+                {
+                    CustomRole customRole = CustomRole.Get((uint)role);
+                    CustomRole.TrySpawn(ev.Player.Cast<Pawn>(), customRole);
+                    EnqueuedRoles.Remove(role);
+                };
+            }
 
             ev.Delegate = () => CustomTeam.TrySpawn(ev.Player.Cast<Pawn>(), (uint)NextKnownTeam);
+        }
+
+        private void OnRespawnedTeam(RespawnedTeamEventArgs ev)
+        {
+            EnqueuedRoles.Clear();
         }
     }
 }

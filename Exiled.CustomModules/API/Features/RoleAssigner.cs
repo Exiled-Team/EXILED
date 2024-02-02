@@ -157,7 +157,6 @@ namespace Exiled.CustomModules.API.Features
                 }
             }
 
-            int index = 0;
             List<ReferenceHub> chosenPlayers = ScpPlayerPicker.ChoosePlayers(targetScpNumber);
 
             if (spawnable.Count < targetScpNumber)
