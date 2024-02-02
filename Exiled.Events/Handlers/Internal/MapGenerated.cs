@@ -48,7 +48,7 @@ namespace Exiled.Events.Handlers.Internal
             Map.ClearCache();
 
             // TODO: Fix For (https://trello.com/c/cUwpZDLs/5003-config-teamrespawnqueue-in-configgameplay-is-not-working-as-expected)
-            PlayerRoles.RoleAssign.HumanSpawner.Handlers[PlayerRoles.Team.ChaosInsurgency] = new PlayerRoles.RoleAssign.OneRoleHumanSpawner(PlayerRoles.RoleTypeId.ChaosRepressor);
+            PlayerRoles.RoleAssign.HumanSpawner.Handlers[PlayerRoles.Team.ChaosInsurgency] = new PlayerRoles.RoleAssign.OneRoleHumanSpawner(PlayerRoles.RoleTypeId.ChaosConscript);
             PlayerRoles.RoleAssign.HumanSpawner.Handlers[PlayerRoles.Team.OtherAlive] = new PlayerRoles.RoleAssign.OneRoleHumanSpawner(PlayerRoles.RoleTypeId.Tutorial);
             PlayerRoles.RoleAssign.HumanSpawner.Handlers[PlayerRoles.Team.Dead] = new PlayerRoles.RoleAssign.OneRoleHumanSpawner(PlayerRoles.RoleTypeId.Spectator);
 
