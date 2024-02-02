@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features
+namespace Exiled.CustomModules.API.Features.Attributes
 {
     using System;
 
@@ -31,8 +31,21 @@ namespace Exiled.CustomModules.API.Features
         public CustomTeamAttribute(uint id) => Id = id;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CustomTeamAttribute"/> class.
+        /// </summary>
+        /// <param name="id"><inheritdoc cref="Id"/></param>
+        /// <param name="types"><inheritdoc cref="Types"/></param>
+        public CustomTeamAttribute(uint id, params Type[] types)
+            : this(id) => Types = types;
+
+        /// <summary>
         /// Gets the custom team's id.
         /// </summary>
         internal uint Id { get; }
+
+        /// <summary>
+        /// Gets all custom role types.
+        /// </summary>
+        internal Type[] Types { get; }
     }
 }

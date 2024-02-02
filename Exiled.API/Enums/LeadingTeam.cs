@@ -39,10 +39,5 @@ namespace Exiled.API.Enums
         /// Represents a draw.
         /// </summary>
         Draw,
-
-        /// <summary>
-        /// Represents the Flamingo team.
-        /// </summary>
-        Flamingo,
     }
 }

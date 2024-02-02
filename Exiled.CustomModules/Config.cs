@@ -9,10 +9,7 @@ namespace Exiled.CustomModules
 {
     using System.ComponentModel;
 
-    using Exiled.API.Features;
     using Exiled.API.Interfaces;
-    using Exiled.CustomModules.API.Features.CustomAbilities;
-    using Exiled.CustomModules.API.Features.CustomRoles;
 
     /// <summary>
     /// The plugin's config.
@@ -31,39 +28,25 @@ namespace Exiled.CustomModules
         public bool Debug { get; set; } = false;
 
         /// <summary>
-        /// Gets the hint that is shown when someone gets a <see cref="CustomRole"/>.
+        /// Gets or sets a value indicating whether the built-in role assigner should be used over the base game one.
         /// </summary>
-        [Description("The hint that is shown when someone gets a custom role.")]
-        public Broadcast GotRoleHint { get; private set; } = new("You have spawned as a {0}\n{1}", 6);
+        [Description("Whether the built-in role assigner should be used over the base game one.")]
+        public bool UseDefaultRoleAssigner { get; set; } = true;
 
         /// <summary>
-        /// Gets the hint that is shown when someone used an <see cref="CustomAbility{T}"/>.
+        /// Gets or sets a value indicating whether the built-in respawn manager should be used over the base game one.
         /// </summary>
-        [Description("The hint that is shown when someone used a custom ability.")]
-        public Broadcast UsedAbilityHint { get; private set; } = new("Ability {0} has been activated.\n{1}", 5);
+        [Description("Whether the built-in respawn manager should be used over the base game one.")]
+        public bool UseDefaultRespawnManager { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether keypress ability activations can be used on the server.
+        /// Gets or sets a value indicating whether the automatic modules loader should be used.
+        /// <para/>
+        /// It iterates over all existing plugins trying to enable all the modules for each plugin's assembly.
+        /// <br/>
+        /// It negatively affects the performance in case of the presence of a big amount of plugins.
         /// </summary>
-        [Description("Whether or not Keypress ability activations will work on the server.")]
-        public bool UseKeypressActivation { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether abilities that are not the keypress primary can still be activated.
-        /// </summary>
-        [Description("Whether or not abilities that are not selected as the current keypress ability can still be activated.")]
-        public bool ActivateOnlySelected { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets the hint that is shown when someone fails to use a <see cref="CustomAbility{T}"/>.
-        /// </summary>
-        [Description("The hint showed to players when they fail to preform an action.")]
-        public Broadcast FailedActionHint { get; set; } = new("Failed to preform action: {0}", 5);
-
-        /// <summary>
-        /// Gets or sets the hint that is shown when someone switches their selected <see cref="CustomAbility{T}"/>.
-        /// </summary>
-        [Description("The hint that is shown to players when they switch abilities.")]
-        public Broadcast SwitchedAbilityHint { get; set; } = new("Selected ability {0}", 5);
+        [Description("Whether the automatic modules loader should be used")]
+        public bool UseAutomaticModulesLoader { get; set; }
     }
 }

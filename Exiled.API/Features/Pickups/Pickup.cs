@@ -291,7 +291,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether this pickup is spawned.
         /// </summary>
-        public bool IsSpawned => NetworkServer.spawned.ContainsValue(Base.netIdentity);
+        public bool IsSpawned { get; internal set; }
 
         /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.
@@ -484,7 +484,6 @@ namespace Exiled.API.Features.Pickups
             ItemType.SCP1576 => new Scp1576Pickup(),
             ItemType.SCP2176 => new Projectiles.Scp2176Projectile(),
             ItemType.SCP018 => new Projectiles.Scp018Projectile(),
-            ItemType.Snowball or ItemType.Coal or ItemType.SpecialCoal => new Projectiles.Projectile(type),
             _ => new Pickup(type),
         };
 
@@ -535,13 +534,12 @@ namespace Exiled.API.Features.Pickups
         {
             // condition for projectiles
             if (!GameObject.activeSelf)
-            {
                 GameObject.SetActive(true);
-            }
 
             if (!IsSpawned)
             {
                 NetworkServer.Spawn(GameObject);
+                IsSpawned = true;
             }
         }
 
@@ -572,6 +570,7 @@ namespace Exiled.API.Features.Pickups
         {
             if (IsSpawned)
             {
+                IsSpawned = false;
                 NetworkServer.UnSpawn(GameObject);
             }
         }

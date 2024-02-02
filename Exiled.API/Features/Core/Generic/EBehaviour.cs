@@ -8,7 +8,6 @@
 namespace Exiled.API.Features.Core.Generic
 {
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.DynamicEvents;
 
     /// <summary>
     /// <see cref="EBehaviour{T}"/> is a versatile component designed to enhance the functionality of various entities.
@@ -20,7 +19,7 @@ namespace Exiled.API.Features.Core.Generic
     /// to extend and customize their functionality. It provides a modular and extensible architecture for enhancing gameplay elements.
     /// </remarks>
     public abstract class EBehaviour<T> : EActor
-        where T : class
+        where T : GameEntity
     {
         /// <summary>
         /// Gets or sets the owner of the <see cref="EBehaviour{T}"/>.
@@ -28,11 +27,24 @@ namespace Exiled.API.Features.Core.Generic
         public virtual T Owner { get; protected set; }
 
         /// <summary>
-        /// Abstract method to find and set the owner for the current object.
+        /// Gets or sets a value indicating whether the <see cref="EBehaviour{T}"/> should be automatically disposed
+        /// when its owner is set to null.
+        /// <para/>
+        /// If set to true, the <see cref="EBehaviour{T}"/> will be disposed when the associated owner is set to null.
+        /// <br/>
+        /// This can be useful to manage resources and cleanup when the owning entity is no longer available.
+        /// <br/>
+        /// If set to false, the behaviour will remain active even when the owner is null, allowing for custom handling
+        /// of such scenarios by the derived classes.
+        /// </summary>
+        public virtual bool DisposeOnNullOwner { get; protected set; } = true;
+
+        /// <summary>
+        /// Abstract method to find and set the owner of the current object.
         /// </summary>
         /// <remarks>
-        /// This method is responsible for finding and setting the owner for the current object. Implementations should
-        /// define the logic to locate and assign the appropriate owner to the object based on the specific context.
+        /// This method is responsible for finding and setting the owner for the current object.
+        /// <br>Implementations should define the logic to locate and assign the appropriate owner to the object based on the specific context.</br>
         /// </remarks>
         protected abstract void FindOwner();
 
@@ -42,7 +54,7 @@ namespace Exiled.API.Features.Core.Generic
             base.PostInitialize();
 
             FindOwner();
-            if (Owner is null)
+            if (!Owner && DisposeOnNullOwner)
             {
                 Destroy();
                 return;
@@ -54,7 +66,7 @@ namespace Exiled.API.Features.Core.Generic
         {
             base.Tick();
 
-            if (Owner is null)
+            if (!Owner && DisposeOnNullOwner)
             {
                 Destroy();
                 return;
@@ -66,24 +78,8 @@ namespace Exiled.API.Features.Core.Generic
         {
             base.OnEndPlay();
 
-            if (Owner is null)
+            if (!Owner && DisposeOnNullOwner)
                 return;
-        }
-
-        /// <inheritdoc/>
-        protected override void SubscribeEvents()
-        {
-            base.SubscribeEvents();
-
-            DynamicEventManager.CreateFromTypeInstance(this);
-        }
-
-        /// <inheritdoc/>
-        protected override void UnsubscribeEvents()
-        {
-            base.UnsubscribeEvents();
-
-            DynamicEventManager.DestroyFromTypeInstance(this);
         }
 
         /// <summary>
@@ -92,9 +88,9 @@ namespace Exiled.API.Features.Core.Generic
         /// <param name="owner">The owner to be checked.</param>
         /// <returns><see langword="true"/> if the specified owner is not null and matches the stored owner; otherwise, <see langword="false"/>.</returns>
         /// <remarks>
-        /// This method verifies if the provided owner is not null and matches the stored owner. It is typically used
-        /// to ensure that the owner being checked is valid and corresponds to the expected owner for the current context.
+        /// This method verifies if the provided owner is not null and matches the stored owner.
+        /// <br/>It is typically used to ensure that the owner being checked is valid and corresponds to the expected owner for the current context.
         /// </remarks>
-        protected virtual bool Check(T owner) => owner is not null && Owner == owner;
+        protected virtual bool Check(T owner) => owner && Owner == owner;
     }
 }

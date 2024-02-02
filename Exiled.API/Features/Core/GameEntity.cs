@@ -56,15 +56,77 @@ namespace Exiled.API.Features.Core
         }
 
         /// <inheritdoc/>
+        public T AddComponent<T>(EActor actor, string name = "")
+            where T : EActor
+        {
+            if (!actor)
+                throw new NullReferenceException("The provided EActor is null.");
+
+            if (!string.IsNullOrEmpty(name))
+                actor.Name = name;
+
+            EActor.AttachTo(GameObject, actor);
+            componentsInChildren.Add(actor);
+
+            return actor.Cast(out T param) ? param : throw new InvalidCastException("The provided EActor cannot be cast to the specified type.");
+        }
+
+        /// <inheritdoc/>
         public T AddComponent<T>(Type type, string name = "")
             where T : EActor
         {
-            T component = EObject.CreateDefaultSubobject<T>(type, GameObject);
+            T component = EObject.CreateDefaultSubobject<T>(type, GameObject, string.IsNullOrEmpty(name) ? $"{type.Name}-Component#{ComponentsInChildren.Count}" : name).Cast<T>();
             if (!component)
                 return null;
 
             componentsInChildren.Add(component);
-            return component;
+
+            return component.Cast(out T param) ? param : throw new InvalidCastException("The provided EActor cannot be cast to the specified type.");
+        }
+
+        /// <inheritdoc/>
+        public EActor AddComponent(EActor actor, string name = "")
+        {
+            if (!actor)
+                throw new NullReferenceException("The provided EActor is null.");
+
+            if (!string.IsNullOrEmpty(name))
+                actor.Name = name;
+
+            EActor.AttachTo(GameObject, actor);
+            componentsInChildren.Add(actor);
+
+            return actor;
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<EActor> AddComponents(IEnumerable<Type> types)
+        {
+            foreach (Type t in types)
+                yield return AddComponent(t);
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<EActor> AddComponents(IEnumerable<EActor> actors)
+        {
+            foreach (EActor actor in actors)
+                yield return AddComponent(actor);
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<T> AddComponents<T>(IEnumerable<T> actors)
+            where T : EActor
+        {
+            foreach (T actor in actors)
+                yield return AddComponent<T>(actor);
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<T> AddComponents<T>(IEnumerable<EActor> types)
+            where T : EActor
+        {
+            foreach (EActor type in types)
+                yield return AddComponent<T>(type);
         }
 
         /// <inheritdoc/>
@@ -79,6 +141,15 @@ namespace Exiled.API.Features.Core
         public EActor GetComponent(Type type) => componentsInChildren.FirstOrDefault(comp => type == comp.GetType());
 
         /// <inheritdoc/>
+        public IEnumerable<T> GetComponents<T>() => componentsInChildren.Where(comp => typeof(T).IsAssignableFrom(comp.GetType())).Cast<T>();
+
+        /// <inheritdoc/>
+        public IEnumerable<T> GetComponents<T>(Type type) => componentsInChildren.Where(comp => typeof(T).IsAssignableFrom(comp.GetType())).Cast<T>();
+
+        /// <inheritdoc/>
+        public IEnumerable<EActor> GetComponents(Type type) => componentsInChildren.Where(comp => type.IsAssignableFrom(comp.GetType()));
+
+        /// <inheritdoc/>
         public bool TryGetComponent<T>(out T component)
             where T : EActor => component = GetComponent<T>();
 
@@ -91,12 +162,12 @@ namespace Exiled.API.Features.Core
 
         /// <inheritdoc/>
         public bool HasComponent<T>(bool depthInheritance = false) => depthInheritance
-            ? componentsInChildren.Any(comp => typeof(T).IsSubclassOf(comp.GetType()))
+            ? componentsInChildren.Any(comp => typeof(T).IsAssignableFrom(comp.GetType()))
             : componentsInChildren.Any(comp => typeof(T) == comp.GetType());
 
         /// <inheritdoc/>
         public bool HasComponent(Type type, bool depthInheritance = false) => depthInheritance
-            ? componentsInChildren.Any(comp => type.IsSubclassOf(comp.GetType()))
+            ? componentsInChildren.Any(comp => type.IsAssignableFrom(comp.GetType()))
             : componentsInChildren.Any(comp => type == comp.GetType());
     }
 }

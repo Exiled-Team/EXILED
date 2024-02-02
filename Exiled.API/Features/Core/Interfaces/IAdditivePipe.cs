@@ -15,6 +15,6 @@ namespace Exiled.API.Features.Core.Interfaces
         /// <summary>
         /// Additive property should be adjusted here.
         /// </summary>
-        public abstract void AdjustAddittivePipe();
+        public abstract void AdjustAdditivePipe();
     }
 }

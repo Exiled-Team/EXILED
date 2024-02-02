@@ -8,29 +8,44 @@
 namespace Exiled.CustomModules.API.Features.CustomEscapes
 {
     using System.Collections.Generic;
+    using System.Reflection;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.CustomModules.API.Features.CustomRoles;
 
     using PlayerRoles;
     using UnityEngine;
 
-    using EscapingEventArgs = Events.EscapingEventArgs;
-
     /// <summary>
-    /// A class to easily manage escaping behavior.
+    /// Represents the base class for custom escape behaviors.
     /// </summary>
+    /// <remarks>
+    /// This class extends <see cref="EPlayerBehaviour"/> and implements <see cref="IAdditiveSettingsCollection{T}"/>.
+    /// <br/>It serves as the foundation for creating custom escape behaviors associated with in-game player actions.
+    /// </remarks>
     public abstract class EscapeBehaviour : EPlayerBehaviour, IAdditiveSettingsCollection<EscapeSettings>
     {
         /// <summary>
-        /// Gets or sets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape settings.
+        /// Gets the relative <see cref="CustomEscapes.CustomEscape"/>.
+        /// </summary>
+        public CustomEscape CustomEscape { get; private set; }
+
+        /// <summary>
+        /// Gets or sets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape's settings.
         /// </summary>
         public virtual List<EscapeSettings> Settings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the escape's configs.
+        /// </summary>
+        public virtual object Config { get; set; }
 
         /// <summary>
         /// Gets the current escape scenario.
@@ -41,26 +56,42 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
         /// </summary>
         [DynamicEventDispatcher]
-        protected TDynamicEventDispatcher<EscapingEventArgs> EscapingEventDispatcher { get; private set; }
+        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingDispatcher { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
         /// </summary>
         [DynamicEventDispatcher]
-        protected TDynamicEventDispatcher<Player> EscapedEventDispatcher { get; private set; }
+        protected TDynamicEventDispatcher<Player> EscapedDispatcher { get; private set; }
 
         /// <inheritdoc/>
-        public abstract void AdjustAddittivePipe();
+        public virtual void AdjustAdditivePipe()
+        {
+            if (CustomEscape.TryGet(GetType(), out CustomEscape customEscape))
+                CustomEscape = customEscape;
+
+            CustomRole customRole = Owner.Cast<Pawn>().CustomRole;
+            Settings = customRole && !customRole.EscapeSettings.IsEmpty() ? customRole.EscapeSettings : CustomEscape.Settings;
+
+            if (Config is null)
+                return;
+
+            foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
+            {
+                PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
+                if (targetInfo is null)
+                    continue;
+
+                targetInfo.SetValue(Settings, propertyInfo.GetValue(Config, null));
+            }
+        }
 
         /// <inheritdoc/>
         protected override void PostInitialize()
         {
             base.PostInitialize();
 
-            if (Owner.Cast<Pawn>().TryGetCustomRole(out CustomRole customRole) && !customRole.EscapeSettings.IsEmpty())
-                Settings = customRole.EscapeSettings;
-
-            AdjustAddittivePipe();
+            AdjustAdditivePipe();
 
             FixedTickRate = 0.5f;
         }
@@ -75,16 +106,16 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                 if (!settings.IsAllowed || Vector3.Distance(Owner.Position, settings.Position) > settings.DistanceThreshold)
                     continue;
 
-                EscapingEventArgs ev = new(Owner.Cast<Pawn>(), settings.Role, settings.CustomRole, CurrentScenario, CustomEscape.AllScenarios[CurrentScenario]);
-                EscapingEventDispatcher.InvokeAll(ev);
+                Events.EventArgs.CustomEscapes.EscapingEventArgs ev = new(Owner.Cast<Pawn>(), settings.Role, settings.CustomRole, CurrentScenario, CustomEscape.AllScenarios[CurrentScenario]);
+                EscapingDispatcher.InvokeAll(ev);
 
                 if (!ev.IsAllowed)
                     continue;
 
-                ev.Player.SetRole(ev.NewRole != RoleTypeId.None ? ev.NewRole : ev.NewCustomRole);
+                ev.Player.Cast<Pawn>().SetRole(ev.NewRole != RoleTypeId.None ? ev.NewRole : ev.NewCustomRole);
                 ev.Player.ShowHint(ev.Hint);
 
-                EscapedEventDispatcher.InvokeAll(ev.Player);
+                EscapedDispatcher.InvokeAll(ev.Player);
 
                 CanEverTick = false;
                 Destroy();
@@ -94,12 +125,20 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         }
 
         /// <inheritdoc/>
+        protected override void OnEndPlay()
+        {
+            base.OnEndPlay();
+
+            CustomEscape.Detach(Owner);
+        }
+
+        /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
             base.SubscribeEvents();
 
-            EscapingEventDispatcher.Bind(this, OnEscaping);
-            EscapedEventDispatcher.Bind(this, OnEscaped);
+            EscapingDispatcher.Bind(this, OnEscaping);
+            EscapedDispatcher.Bind(this, OnEscaped);
         }
 
         /// <summary>
@@ -112,8 +151,8 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Fired before the player escapes.
         /// </summary>
-        /// <param name="ev">The <see cref="EscapingEventArgs"/> instance.</param>
-        protected virtual void OnEscaping(EscapingEventArgs ev)
+        /// <param name="ev">The <see cref="Events.EventArgs.CustomEscapes.EscapingEventArgs"/> instance.</param>
+        protected virtual void OnEscaping(Events.EventArgs.CustomEscapes.EscapingEventArgs ev)
         {
         }
 

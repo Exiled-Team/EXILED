@@ -9,7 +9,8 @@ namespace Exiled.Events.Patches.Events.Server
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
-    using Exiled.API.Features.Pools;
+
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Server;
 
