@@ -209,7 +209,7 @@ namespace Exiled.CustomModules.API.Features
                     continue;
 
                 ReferenceHub target = players[0];
-                CustomRole.TrySpawn(Player.Get(target).Cast<Pawn>(), role);
+                Player.Get(target).Cast<Pawn>().SetRole(role);
                 players.RemoveAt(0);
                 ++spawned;
             }
@@ -219,7 +219,7 @@ namespace Exiled.CustomModules.API.Features
                 for (int i = spawned; i == roles.Count(); i++)
                 {
                     ReferenceHub target = players[0];
-                    CustomRole.TrySpawn(Player.Get(target).Cast<Pawn>(), FindAvailableRole(predicate));
+                    Player.Get(target).Cast<Pawn>().SetRole(FindAvailableRole(predicate));
                     players.RemoveAt(0);
                 }
             }

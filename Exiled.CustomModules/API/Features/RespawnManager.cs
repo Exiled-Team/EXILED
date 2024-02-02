@@ -247,7 +247,7 @@ namespace Exiled.CustomModules.API.Features
                 ev.Delegate = () =>
                 {
                     CustomRole customRole = CustomRole.Get((uint)role);
-                    CustomRole.TrySpawn(ev.Player.Cast<Pawn>(), customRole);
+                    ev.Player.Cast<Pawn>().SetRole(customRole);
                     EnqueuedRoles.Remove(role);
                 };
             }
