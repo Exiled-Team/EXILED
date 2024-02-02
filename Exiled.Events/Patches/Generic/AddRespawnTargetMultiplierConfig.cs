@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Generic.Scp079API
             // replace "this.ChaosTargetCount += (int)((double)respawnedPlayers.Count * 0.75);"
             // with " this.ChaosTargetCount += (int)((double)respawnedPlayers.Count * ConfigFile.ServerConfig.GetDouble("respawn_target_multiplier", 0.75);"
             int offset = 0;
-            int index = newInstructions.FindIndex(instruction => instruction.operand == (object)RoundSummary.RespawnTargetMultiplier) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_R8) + offset;
             newInstructions.RemoveAt(index);
 
             newInstructions.InsertRange(
