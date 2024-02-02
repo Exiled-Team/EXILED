@@ -23,7 +23,6 @@ namespace Exiled.Events.EventArgs.Server
     public class PreRespawningTeamEventArgs : IDeniableEvent
     {
         private SpawnableTeamType nextKnownTeam;
-        private int maxWaveSize;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PreRespawningTeamEventArgs"/> class.
