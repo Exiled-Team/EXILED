@@ -90,10 +90,17 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// Enables all the custom escapes present in the assembly.
         /// </summary>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all enabled custom escapes.</returns>
-        public static List<CustomEscape> EnableAll()
+        public static List<CustomEscape> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+
+        /// <summary>
+        /// Enables all the custom escapes present in the assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to enable the escapes from.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all enabled custom escapes.</returns>
+        public static List<CustomEscape> EnableAll(Assembly assembly)
         {
             List<CustomEscape> customEscapes = new();
-            foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
+            foreach (Type type in assembly.GetTypes())
             {
                 CustomEscapeAttribute attribute = type.GetCustomAttribute<CustomEscapeAttribute>();
                 if (!typeof(CustomEscape).IsAssignableFrom(type) || attribute is null)

@@ -555,10 +555,24 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// must be marked with the <see cref="CustomRoleAttribute"/> to be considered for enabling. If
         /// a custom role is enabled successfully, it is added to the returned list.
         /// </remarks>
-        public static List<CustomRole> EnableAll()
+        public static List<CustomRole> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+
+        /// <summary>
+        /// Enables all the custom roles present in the assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to enable the roles from.</param>
+        /// <returns>
+        /// A <see cref="List{T}"/> of <see cref="CustomRole"/> containing all the enabled custom roles.
+        /// </returns>
+        /// <remarks>
+        /// This method dynamically enables all custom roles found in the calling assembly. Custom roles
+        /// must be marked with the <see cref="CustomRoleAttribute"/> to be considered for enabling. If
+        /// a custom role is enabled successfully, it is added to the returned list.
+        /// </remarks>
+        public static List<CustomRole> EnableAll(Assembly assembly)
         {
             List<CustomRole> customRoles = new();
-            foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
+            foreach (Type type in assembly.GetTypes())
             {
                 CustomRoleAttribute attribute = type.GetCustomAttribute<CustomRoleAttribute>();
                 if (!typeof(CustomRole).IsAssignableFrom(type) || attribute is null)

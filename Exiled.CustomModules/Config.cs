@@ -31,6 +31,22 @@ namespace Exiled.CustomModules
         /// Gets or sets a value indicating whether the built-in role assigner should be used over the base game one.
         /// </summary>
         [Description("Whether the built-in role assigner should be used over the base game one.")]
-        public bool UseDefaultRoleAssigner { get; set; }
+        public bool UseDefaultRoleAssigner { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the built-in respawn manager should be used over the base game one.
+        /// </summary>
+        [Description("Whether the built-in respawn manager should be used over the base game one.")]
+        public bool UseDefaultRespawnManager { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the automatic modules loader should be used.
+        /// <para/>
+        /// It iterates over all existing plugins trying to enable all the modules for each plugin's assembly.
+        /// <br/>
+        /// It negatively affects the performance in case of the presence of a big amount of plugins.
+        /// </summary>
+        [Description("Whether the automatic modules loader should be used")]
+        public bool UseAutomaticModulesLoader { get; set; }
     }
 }

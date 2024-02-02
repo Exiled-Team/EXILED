@@ -153,10 +153,17 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// Enables all the custom game modes present in the assembly.
         /// </summary>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomGameMode"/> containing all enabled custom game modes.</returns>
-        public static List<CustomGameMode> EnableAll()
+        public static List<CustomGameMode> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+
+        /// <summary>
+        /// Enables all the custom game modes present in the assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to enable the game modes from.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomGameMode"/> containing all enabled custom game modes.</returns>
+        public static List<CustomGameMode> EnableAll(Assembly assembly)
         {
             List<CustomGameMode> customGameModes = new();
-            foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
+            foreach (Type type in assembly.GetTypes())
             {
                 CustomGameModeAttribute attribute = type.GetCustomAttribute<CustomGameModeAttribute>();
                 if (!typeof(CustomGameMode).IsAssignableFrom(type) || attribute is null)

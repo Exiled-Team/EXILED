@@ -10,7 +10,13 @@ namespace Exiled.CustomModules
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Generic;
+    using Exiled.API.Interfaces;
     using Exiled.CustomModules.API.Features;
+    using Exiled.CustomModules.API.Features.CustomAbilities;
+    using Exiled.CustomModules.API.Features.CustomEscapes;
+    using Exiled.CustomModules.API.Features.CustomGameModes;
+    using Exiled.CustomModules.API.Features.CustomItems;
+    using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.EventHandlers;
 
     /// <summary>
@@ -38,8 +44,24 @@ namespace Exiled.CustomModules
         {
             Instance = this;
 
+            if (Config.UseAutomaticModulesLoader)
+            {
+                foreach (IPlugin<IConfig> plugin in Loader.Loader.Plugins)
+                {
+                    CustomItem.EnableAll(plugin.Assembly);
+                    CustomRole.EnableAll(plugin.Assembly);
+                    CustomAbility<GameEntity>.EnableAll(plugin.Assembly);
+                    CustomTeam.EnableAll(plugin.Assembly);
+                    CustomEscape.EnableAll(plugin.Assembly);
+                    CustomGameMode.EnableAll(plugin.Assembly);
+                }
+            }
+
             if (Config.UseDefaultRoleAssigner)
                 StaticActor.CreateNewInstance<RoleAssigner>();
+
+            if (Config.UseDefaultRespawnManager)
+                StaticActor.CreateNewInstance<RespawnManager>();
 
             SubscribeEvents();
 
@@ -50,6 +72,14 @@ namespace Exiled.CustomModules
         public override void OnDisabled()
         {
             StaticActor.Get<RoleAssigner>()?.Destroy();
+            StaticActor.Get<RespawnManager>()?.Destroy();
+
+            CustomItem.DisableAll();
+            CustomRole.DisableAll();
+            CustomAbility<GameEntity>.DisableAll();
+            CustomTeam.DisableAll();
+            CustomEscape.DisableAll();
+            CustomGameMode.DisableAll();
 
             UnsubscribeEvents();
 

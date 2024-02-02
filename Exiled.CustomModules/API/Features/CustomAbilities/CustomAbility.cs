@@ -464,10 +464,17 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Enables all the custom abilities present in the assembly.
         /// </summary>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> which contains all the enabled custom abilities.</returns>
-        public static IEnumerable<CustomAbility<T>> EnableAll()
+        public static IEnumerable<CustomAbility<T>> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+
+        /// <summary>
+        /// Enables all the custom abilities present in the assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to enable the abilities from.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> which contains all the enabled custom abilities.</returns>
+        public static IEnumerable<CustomAbility<T>> EnableAll(Assembly assembly)
         {
             List<CustomAbility<T>> customAbilities = new();
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (Type type in assembly.GetTypes())
             {
                 CustomAbilityAttribute attribute = type.GetCustomAttribute<CustomAbilityAttribute>();
                 if (!typeof(CustomAbility<T>).IsAssignableFrom(type) || attribute is null)

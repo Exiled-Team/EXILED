@@ -348,10 +348,24 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// must be marked with the <see cref="CustomItemAttribute"/> to be considered for enabling. If
         /// a custom item is enabled successfully, it is added to the returned list.
         /// </remarks>
-        public static List<CustomItem> EnableAll()
+        public static List<CustomItem> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+
+        /// <summary>
+        /// Enables all the custom items present in the assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to enable the items from.</param>
+        /// <returns>
+        /// A <see cref="List{T}"/> of <see cref="CustomItem"/> containing all the enabled custom items.
+        /// </returns>
+        /// <remarks>
+        /// This method dynamically enables all custom items found in the calling assembly. Custom items
+        /// must be marked with the <see cref="CustomItemAttribute"/> to be considered for enabling. If
+        /// a custom item is enabled successfully, it is added to the returned list.
+        /// </remarks>
+        public static List<CustomItem> EnableAll(Assembly assembly)
         {
             List<CustomItem> customItems = new();
-            foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
+            foreach (Type type in assembly.GetTypes())
             {
                 CustomItemAttribute attribute = type.GetCustomAttribute<CustomItemAttribute>();
                 if (!typeof(CustomItem).IsAssignableFrom(type) || attribute is null)
