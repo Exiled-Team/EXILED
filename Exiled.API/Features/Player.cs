@@ -10,9 +10,10 @@ namespace Exiled.API.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net.Http;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-
+    using System.Threading.Tasks;
     using Core;
     using CustomPlayerEffects;
     using DamageHandlers;
@@ -29,6 +30,7 @@ namespace Exiled.API.Features
     using Footprinting;
     using global::Scp914;
     using Hints;
+    using HtmlAgilityPack;
     using Interactables.Interobjects;
     using InventorySystem;
     using InventorySystem.Disarming;
@@ -1065,6 +1067,56 @@ namespace Exiled.API.Features
         /// Gets the player's ping.
         /// </summary>
         public int Ping => LiteNetLib4MirrorServer.GetPing(Connection.connectionId);
+
+        /// <summary>
+        /// Gets the Steam account age of the player in days.
+        /// </summary>
+        /// <remarks>
+        /// This property retrieves the Steam account age by making a synchronous HTTP request to steamid.io.
+        /// It is recommended to use the asynchronous method <see cref="AccountAge"/> when possible.
+        /// </remarks>
+        /// <returns>The Steam account age of the player in days. Returns -1 if an error occurs during retrieval.</returns>
+        public int AccountAge
+        {
+            get
+            {
+                try
+                {
+                    string userId = UserId;
+                    int index = userId.IndexOf('@');
+
+                    if (index != -1)
+                        userId = userId.Substring(0, index);
+
+                    string url = $"https://steamid.io/lookup/{userId}";
+
+                    using (HttpClient httpClient = new HttpClient())
+                    {
+                        HttpResponseMessage response = httpClient.GetAsync(url).GetAwaiter().GetResult();
+                        response.EnsureSuccessStatusCode();
+
+                        string html = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+                        var doc = new HtmlDocument();
+                        doc.LoadHtml(html);
+
+                        HtmlNode infoNode = doc.DocumentNode.SelectSingleNode("//*[@id=\"content\"]/dl/dd[6]");
+                        string infoText = infoNode?.InnerText;
+
+                        var parsedDate = DateTime.Parse(infoText);
+                        DateTime now = DateTime.Now;
+
+                        TimeSpan ts = now.Subtract(parsedDate);
+                        return (int)ts.TotalDays;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Error retrieving Steam account age for player {Nickname}: {ex.Message}");
+                    return -1;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the player's items.
