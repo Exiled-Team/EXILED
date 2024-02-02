@@ -104,6 +104,78 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public virtual int Probability { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the role can spawn given a condition.
+        /// </summary>
+        public virtual bool EvaluateConditions
+        {
+            get
+            {
+                IEnumerable<Pawn> list = Player.List.Cast<Pawn>();
+
+                if (RequiredTeamToSpawn is not Team.Dead)
+                {
+                    foreach (Pawn pawn in list)
+                    {
+                        if ((!pawn.HasCustomRole || !pawn.CustomRole.TeamsOwnership.Contains(RequiredTeamToSpawn)) && pawn.Role.Team != RequiredTeamToSpawn)
+                            continue;
+
+                        return true;
+                    }
+                }
+
+                if (RequiredRoleToSpawn is not RoleTypeId.None)
+                {
+                    foreach (Pawn pawn in list)
+                    {
+                        if (pawn.Role == RequiredRoleToSpawn)
+                        {
+                            if ((RoleExtensions.GetTeam(RequiredRoleToSpawn) is Team.SCPs && !pawn.IsScp) ||
+                                (RoleExtensions.GetTeam(RequiredRoleToSpawn) is not Team.SCPs && pawn.IsScp))
+                                continue;
+
+                            return true;
+                        }
+                    }
+                }
+
+                return (RequiredCustomTeamToSpawn > 0 && CustomTeam.TryGet(RequiredCustomTeamToSpawn, out CustomTeam team) && !team.Owners.IsEmpty()) ||
+                       (RequiredCustomRoleToSpawn > 0 && CustomRole.TryGet(RequiredCustomRoleToSpawn, out CustomRole role) && !role.Owners.IsEmpty());
+            }
+        }
+
+        /// <summary>
+        /// Gets the required <see cref="Team"/> that players must belong to in order to allow the <see cref="CustomRole"/> to spawn.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the required alive team to be eligible for spawning in the <see cref="CustomRole"/>.
+        /// </remarks>
+        public virtual Team RequiredTeamToSpawn => Team.Dead;
+
+        /// <summary>
+        /// Gets the required <see cref="RoleTypeId"/> that players must have to allow the <see cref="CustomRole"/> to spawn.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the required role type for players to be eligible for spawning in the <see cref="CustomRole"/>.
+        /// </remarks>
+        public virtual RoleTypeId RequiredRoleToSpawn => RoleTypeId.None;
+
+        /// <summary>
+        /// Gets the required custom team that players must belong to in order to allow the <see cref="CustomRole"/> to spawn.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the required alive custom team to be eligible for spawning in the <see cref="CustomRole"/>.
+        /// </remarks>
+        public virtual uint RequiredCustomTeamToSpawn { get; }
+
+        /// <summary>
+        /// Gets the required <see cref="CustomRole"/> that players must have to allow the <see cref="CustomRole"/> to spawn.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the required custom role for players to be eligible for spawning in the <see cref="CustomRole"/>.
+        /// </remarks>
+        public virtual uint RequiredCustomRoleToSpawn { get; }
+
+        /// <summary>
         /// Gets the <see cref="RoleSettings"/>.
         /// </summary>
         public virtual RoleSettings Settings { get; } = RoleSettings.Default;
@@ -124,11 +196,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public virtual int MaxInstances => IsScp ? 1 : -1;
 
         /// <summary>
-        /// Gets the team ownership of the <see cref="CustomRole"/>.
+        /// Gets the required teams for this <see cref="CustomRole"/> to win.
         /// </summary>
-        /// <para/>
-        /// By setting the ownership, the <see cref="CustomRole"/> will belong to the specified team.
-        public virtual Team TeamOwnership { get; }
+        /// <remarks>
+        /// This property specifies the teams the <see cref="CustomRole"/> belongs to.
+        /// </remarks>
+        public virtual Team[] TeamsOwnership { get; } = { };
 
         /// <summary>
         /// Gets the <see cref="SpawnableTeamType"/> from which to retrieve players for assigning the <see cref="CustomRole"/>.
@@ -139,6 +212,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Gets the <see cref="RoleTypeId"/> from which to retrieve players for assigning the <see cref="CustomRole"/>.
         /// </summary>
         public virtual RoleTypeId AssignFromRole { get; }
+
+        /// <summary>
+        /// Gets all roles to override, preventing the specified roles to spawn.
+        /// </summary>
+        public virtual RoleTypeId[] OverrideScps { get; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="CustomRole"/> should be treated as a separate team unit.
@@ -153,7 +231,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets a value indicating whether the <see cref="CustomRole"/> should be considered an SCP.
         /// </summary>
-        public bool IsScp => TeamOwnership is Team.SCPs;
+        public virtual bool IsScp { get; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pawn"/> containing all players owning this <see cref="CustomRole"/>.
@@ -184,18 +262,40 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             typeof(RoleBehaviour).IsAssignableFrom(type) ? BehaviourLookupTable[type] : null;
 
         /// <summary>
+        /// Gets all <see cref="CustomRole"/> instances based on the predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>All <see cref="CustomRole"/> instances matching the predicate.</returns>
+        public static IEnumerable<CustomRole> Get(Func<CustomRole, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Gets all <see cref="CustomRole"/> instances belonging to the specified <see cref="RoleTypeId"/>.
+        /// </summary>
+        /// <param name="role">The specified <see cref="RoleTypeId"/>.</param>
+        /// <returns>All <see cref="CustomRole"/> instances belonging to the specified <see cref="RoleTypeId"/>.</returns>
+        public static IEnumerable<CustomRole> Get(RoleTypeId role) => List.Where(customRole => customRole.AssignFromRole == role);
+
+        /// <summary>
         /// Gets all <see cref="CustomRole"/> instances belonging to the specified <see cref="Team"/>.
         /// </summary>
         /// <param name="team">The specified <see cref="Team"/>.</param>
         /// <returns>All <see cref="CustomRole"/> instances belonging to the specified <see cref="Team"/>.</returns>
-        public static IEnumerable<CustomRole> Get(Team team) => List.Where(customRole => RoleExtensions.GetTeam(customRole.Role) == team);
+        public static IEnumerable<CustomRole> Get(SpawnableTeamType team) => List.Where(customRole => customRole.AssignFromTeam == team);
+
+        /// <summary>
+        /// Gets all <see cref="CustomRole"/> instances belonging to the specified <see cref="Team"/>.
+        /// </summary>
+        /// <param name="team">The specified <see cref="Team"/>.</param>
+        /// <returns>All <see cref="CustomRole"/> instances belonging to the specified <see cref="Team"/>.</returns>
+        public static IEnumerable<CustomRole> Get(Team team) => List.Where(customRole => RoleExtensions.GetTeam(customRole.Role) == team || customRole.TeamsOwnership.Contains(team));
 
         /// <summary>
         /// Gets all <see cref="CustomRole"/> instances belonging to the specified teams.
         /// </summary>
         /// <param name="teams">The specified teams.</param>
         /// <returns>All <see cref="CustomRole"/> instances belonging to the specified teams.</returns>
-        public static IEnumerable<CustomRole> Get(IEnumerable<Team> teams) => List.Where(customRole => teams.Contains(RoleExtensions.GetTeam(customRole.Role)));
+        public static IEnumerable<CustomRole> Get(IEnumerable<Team> teams) => List.Where(customRole =>
+            teams.Contains(RoleExtensions.GetTeam(customRole.Role)) || customRole.TeamsOwnership.Any(to => teams.Contains(to)));
 
         /// <summary>
         /// Gets all <see cref="CustomRole"/> instances belonging to the specified teams.
