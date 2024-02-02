@@ -162,7 +162,7 @@ namespace Exiled.CustomModules.API.Features
             NextKnownTeam = null;
             foreach (CustomTeam team in CustomTeam.List)
             {
-                if (!team.EvaluateConditions || !team.CanSpawnByProbability)
+                if ((team.UseTickets && team.Tickets <= 0) || !team.EvaluateConditions || !team.CanSpawnByProbability)
                     continue;
 
                 NextKnownTeam = team.Id;
