@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Fixes
 
     /// <summary>
     /// Patches the <see cref="Scp096HitHandler.CheckDoorHit(Collider)"/> delegate.
-    /// Fix than Door get broken even if there open.
+    /// Fixes open doors getting easily broke.
     /// Bug reported to NW (https://trello.com/c/6Nz7Isjm/4637-scp096-easily-breaking-opened-doors).
     /// </summary>
     [HarmonyPatch(typeof(Scp096HitHandler), nameof(Scp096HitHandler.CheckDoorHit))]
