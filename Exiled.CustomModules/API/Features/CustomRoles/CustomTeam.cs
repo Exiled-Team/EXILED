@@ -285,8 +285,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Tries to spawn the specified <see cref="CustomTeam"/>.
         /// </summary>
         /// <param name="customTeam">The <see cref="CustomTeam"/> to be spawned.</param>
+        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was successfully spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(CustomTeam customTeam)
+        public static bool TryRespawn(CustomTeam customTeam, bool isForced = false)
         {
             if (!Player.Get(p => p.IsDead).Any() || customTeam is null)
                 return false;
@@ -299,8 +300,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Tries to spawn a <see cref="CustomTeam"/> given the specified id.
         /// </summary>
         /// <param name="id">The specified id.</param>
+        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was successfully spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(uint id)
+        public static bool TryRespawn(uint id, bool isForced = false)
         {
             if (!Player.Get(p => p.IsDead).Any() || TryGet(id, out CustomTeam customTeam))
                 return false;
@@ -314,8 +316,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </summary>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
         /// <param name="customTeam">The <see cref="CustomTeam"/> unit to be assigned.</param>
+        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <returns><see langword="true"/> if the player was successfully spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(Pawn player, CustomTeam customTeam)
+        public static bool TrySpawn(Pawn player, CustomTeam customTeam, bool isForced = false)
         {
             if (customTeam is null)
                 return false;
@@ -555,6 +558,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Forces a respawn wave by spawning the specified amount of units.
         /// </summary>
         /// <param name="amount">The number of units to be spawned.</param>
+        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <remarks>
         /// If the provided <paramref name="amount"/> is less than or equal to zero, no respawn action is taken.
         /// <para>
@@ -564,8 +568,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Additionally, if the respawn team is of type <see cref="SpawnableTeamType.NineTailedFox"/> and a valid <see cref="UnitNamingRule"/> is available using <see cref="UnitNamingRule.TryGetNamingRule"/>, a new unit naming message is sent for NineTailedFox units.
         /// </para>
         /// </remarks>
-        public void Respawn(int amount)
+        public void Respawn(int amount, bool isForced = false)
         {
+            if ((UseTickets && tickets <= 0) && !isForced)
+                return;
+
             IEnumerable<Pawn> players = Player.Get(Team.Dead).Take(amount).Cast<Pawn>();
 
             if (players.IsEmpty())
@@ -582,6 +589,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </summary>
         /// <param name="players">The collection of players to be spawned.</param>
         /// <param name="keepSize">A value indicating whether the team size should remain the same as the specified collection.</param>
+        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <remarks>
         /// If the provided collection of <paramref name="players"/> is null or empty, no respawn action is taken.
         /// <para>
@@ -594,9 +602,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Additionally, if the respawn team is of type <see cref="SpawnableTeamType.NineTailedFox"/> and a valid <see cref="UnitNamingRule"/> is available using <see cref="UnitNamingRule.TryGetNamingRule"/>, a new unit naming message is sent for NineTailedFox units.
         /// </para>
         /// </remarks>
-        public void Respawn(IEnumerable<Pawn> players, bool keepSize = true)
+        public void Respawn(IEnumerable<Pawn> players, bool keepSize = true, bool isForced = false)
         {
-            if (players is null || players.IsEmpty())
+            if (((UseTickets && tickets <= 0) && !isForced) || players is null || players.IsEmpty())
                 return;
 
             if (UseTickets && tickets > 0)
@@ -622,10 +630,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Forces a respawn wave, spawning players up to the specified team size.
         /// </summary>
+        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <remarks>
         /// This method triggers a respawn wave, spawning players up to the current team size limit.
         /// </remarks>
-        public void Respawn() => Respawn(Size);
+        public void Respawn(bool isForced = false) => Respawn(Size, isForced);
 
         /// <summary>
         /// Adds respawn tickets to the current <see cref="CustomTeam"/> instance.
