@@ -90,7 +90,7 @@ namespace Exiled.Events.Handlers.Internal
             {
                 if (player.Role is FpcRole { FakeAppearance: not null } fpcRole)
                     player.ChangeAppearance(fpcRole.FakeAppearance.Value, new[] { ev.Player });
-			}
+            }
 
             // TODO: Remove if this has been fixed for https://trello.com/c/CzPD304L/5983-networking-blackout-is-not-synchronized-for-the-new-players
             foreach (Room room in Room.List.Where(current => current.AreLightsOff))
