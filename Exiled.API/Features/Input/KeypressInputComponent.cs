@@ -56,25 +56,25 @@ namespace Exiled.API.Features.Input
         /// <summary>
         /// The input condition, paired to <see cref="UUKeypressTriggerType.KT_INPUT_0"/>, to be evaluated.
         /// </summary>
-        /// <returns><see langword="true"/> if the condition was satified; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the condition was satisfied; otherwise, <see langword="false"/>.</returns>
         protected virtual bool InputCondition_KT0() => false;
 
         /// <summary>
         /// The input condition, paired to <see cref="UUKeypressTriggerType.KT_INPUT_1"/>, to be evaluated.
         /// </summary>
-        /// <returns><see langword="true"/> if the condition was satified; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the condition was satisfied; otherwise, <see langword="false"/>.</returns>
         protected virtual bool InputCondition_KT1() => false;
 
         /// <summary>
         /// The input condition, paired to <see cref="UUKeypressTriggerType.KT_INPUT_2"/>, to be evaluated.
         /// </summary>
-        /// <returns><see langword="true"/> if the condition was satified; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the condition was satisfied; otherwise, <see langword="false"/>.</returns>
         protected virtual bool InputCondition_KT2() => false;
 
         /// <summary>
         /// The input condition, paired to <see cref="UUKeypressTriggerType.KT_INPUT_3"/>, to be evaluated.
         /// </summary>
-        /// <returns><see langword="true"/> if the condition was satified; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the condition was satisfied; otherwise, <see langword="false"/>.</returns>
         protected virtual bool InputCondition_KT3() => false;
 
         /// <summary>
