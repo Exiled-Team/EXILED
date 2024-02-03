@@ -151,9 +151,9 @@ namespace Exiled.API.Features
         public static new IReadOnlyCollection<Camera> List => Camera079ToCamera.Values;
 
         /// <summary>
-        /// Gets a random <see cref="Camera"/>.
+        /// Gets a randomly selected <see cref="Camera"/>.
         /// </summary>
-        /// <returns><see cref="Camera"/> object.</returns>
+        /// <returns>A randomly selected <see cref="Camera"/> object.</returns>
         public static Camera Random => List.Random();
 
         /// <summary>

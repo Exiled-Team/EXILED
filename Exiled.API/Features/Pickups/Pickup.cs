@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Extensions;
+
 namespace Exiled.API.Features.Pickups
 {
     using System;
@@ -107,6 +109,12 @@ namespace Exiled.API.Features.Pickups
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> which contains all the <see cref="Pickup"/> instances.
         /// </summary>
         public static new IEnumerable<Pickup> List => BaseToPickup.Values;
+
+        /// <summary>
+        /// Gets a randomly selected <see cref="Pickup"/>.
+        /// </summary>
+        /// <returns>A randomly selected <see cref="Pickup"/> object.</returns>
+        public static Pickup Random => BaseToPickup.Random().Value;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.

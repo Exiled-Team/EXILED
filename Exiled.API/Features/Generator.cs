@@ -12,11 +12,10 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
-
     using MapGeneration.Distributors;
-
     using UnityEngine;
 
     /// <summary>
@@ -45,6 +44,12 @@ namespace Exiled.API.Features
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances.
         /// </summary>
         public static new IReadOnlyCollection<Generator> List => Scp079GeneratorToGenerator.Values;
+
+        /// <summary>
+        /// Gets a randomly selected <see cref="Generator"/>.
+        /// </summary>
+        /// <returns>A randomly selected <see cref="Generator"/> object.</returns>
+        public static Generator Random => List.Random();
 
         /// <summary>
         /// Gets the base <see cref="Scp079Generator"/>.

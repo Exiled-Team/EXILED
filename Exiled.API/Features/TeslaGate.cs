@@ -5,6 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Extensions;
+using MapGeneration;
+
 namespace Exiled.API.Features
 {
     using System;
@@ -66,6 +69,12 @@ namespace Exiled.API.Features
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="Team"/> which contains all the teams ignored by tesla gates.
         /// </summary>
         public static List<Team> IgnoredTeams { get; set; } = new();
+
+        /// <summary>
+        /// Gets a randomly selected <see cref="TeslaGate"/>.
+        /// </summary>
+        /// <returns>A randomly selected <see cref="TeslaGate"/> object.</returns>
+        public static TeslaGate Random => List.Random();
 
         /// <summary>
         /// Gets the base <see cref="BaseTeslaGate"/>.

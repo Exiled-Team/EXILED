@@ -13,6 +13,7 @@ namespace Exiled.API.Features
 
     using DamageHandlers;
     using Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Doors;
     using Exiled.API.Interfaces;
@@ -50,6 +51,12 @@ namespace Exiled.API.Features
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
         public static new IReadOnlyCollection<Window> List => BreakableWindowToWindow.Values;
+
+        /// <summary>
+        /// Gets a randomly selected <see cref="Window"/>.
+        /// </summary>
+        /// <returns>A randomly selected <see cref="Window"/> object.</returns>
+        public static Window Random => List.Random();
 
         /// <summary>
         /// Gets the base-game <see cref="BreakableWindow"/> for this window.

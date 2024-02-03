@@ -70,6 +70,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a randomly selected <see cref="Ragdoll"/>.
+        /// </summary>
+        /// <returns>A randomly selected <see cref="Ragdoll"/> object.</returns>
+        public static Ragdoll Random => List.Random();
+
+        /// <summary>
         /// Gets a value indicating whether or not the clean up event can be executed.
         /// </summary>
         public bool AllowCleanUp => NetworkInfo.ExistenceTime < FreezeTime;

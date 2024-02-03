@@ -143,6 +143,12 @@ namespace Exiled.API.Features
         public static Dictionary<string, Player> UserIdsCache { get; } = new(20);
 
         /// <summary>
+        /// Gets a randomly selected <see cref="Player"/>.
+        /// </summary>
+        /// <returns>A randomly selected <see cref="Player"/> object.</returns>
+        public static Player Random => List.Random();
+
+        /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="RoleTypeId"/> and their FF multiplier. This is for non-unique roles.
         /// </summary>
         public Dictionary<RoleTypeId, float> FriendlyFireMultiplier { get; set; } = DictionaryPool<RoleTypeId, float>.Pool.Get();
@@ -3475,16 +3481,16 @@ namespace Exiled.API.Features
         {
             object randomObject = type.Name switch
             {
-                nameof(Camera) => Camera.List.Random(),
+                nameof(Camera) => Camera.Random,
                 nameof(Door) => Door.Random(),
-                nameof(Room) => Room.List.Random(),
-                nameof(TeslaGate) => TeslaGate.List.Random(),
-                nameof(Player) => Dictionary.Values.Random(),
-                nameof(Pickup) => Pickup.BaseToPickup.Random().Value,
-                nameof(Ragdoll) => Ragdoll.List.Random(),
+                nameof(Room) => Room.Random(),
+                nameof(TeslaGate) => TeslaGate.Random,
+                nameof(Player) => Random,
+                nameof(Pickup) => Pickup.Random,
+                nameof(Ragdoll) => Ragdoll.Random,
                 nameof(Locker) => Map.GetRandomLocker(),
-                nameof(Generator) => Generator.List.Random(),
-                nameof(Window) => Window.List.Random(),
+                nameof(Generator) => Generator.Random,
+                nameof(Window) => Window.Random,
                 nameof(Scp914) => Scp914.Scp914Controller,
                 nameof(LockerChamber) => Map.GetRandomLocker().Chambers.Random(),
                 _ => null,
@@ -3514,37 +3520,37 @@ namespace Exiled.API.Features
         public void RandomTeleport<T>() => RandomTeleport(typeof(T));
 
         /// <summary>
-        /// Get the time cooldown on this ItemType.
+        /// Retrieves the cooldown time for the specified ItemType.
         /// </summary>
-        /// <param name="itemType">The items to choose for getting cooldown.</param>
-        /// <returns>Return the time in seconds of the cooldowns.</returns>
+        /// <param name="itemType">The ItemType to retrieve the cooldown for.</param>
+        /// <returns>The cooldown time in seconds, or -1 if not found.</returns>
         public float GetCooldownItem(ItemType itemType)
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns.TryGetValue(itemType, out float value) ? value : -1;
 
         /// <summary>
-        /// Set the time cooldown on this ItemType.
+        /// Sets the cooldown time for the specified ItemType.
         /// </summary>
-        /// <param name="time">The times for the cooldown.</param>
-        /// <param name="itemType">The items to choose for being cooldown.</param>
+        /// <param name="time">The cooldown time in seconds.</param>
+        /// <param name="itemType">The ItemType to set the cooldown for.</param>
         public void SetCooldownItem(float time, ItemType itemType)
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
 
         /// <summary>
-        /// Explode the player.
+        /// Triggers an explosion for the player.
         /// </summary>
         public void Explode() => ExplosionUtils.ServerExplode(ReferenceHub);
 
         /// <summary>
-        /// Explode the player.
+        /// Triggers an explosion for the player.
         /// </summary>
-        /// <param name="projectileType">The projectile that will create the explosion.</param>
-        /// <param name="attacker">The Player that will causing the explosion.</param>
+        /// <param name="projectileType">The type of projectile causing the explosion.</param>
+        /// <param name="attacker">The player triggering the explosion.</param>
         public void Explode(ProjectileType projectileType, Player attacker = null) => Map.Explode(Position, projectileType, attacker);
 
         /// <summary>
-        /// Spawn projectile effect on the player.
+        /// Spawns an explosion effect for the player.
         /// </summary>
-        /// <param name="projectileType">The projectile that will create the effect.</param>
+        /// <param name="projectileType">The type of projectile creating the effect.</param>
         public void ExplodeEffect(ProjectileType projectileType) => Map.ExplodeEffect(Position, projectileType);
 
         /// <summary>
