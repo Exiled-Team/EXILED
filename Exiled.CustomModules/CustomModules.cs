@@ -56,6 +56,13 @@ namespace Exiled.CustomModules
         /// </summary>
         internal ServerHandler ServerHandler { get; private set; }
 
+        /// <summary>
+        /// Gets a value indicating whether the specified module is loaded.
+        /// </summary>
+        /// <param name="module">The module to check.</param>
+        /// <returns><see langword="true"/> if the module is loaded; otherwise, <see langword="false"/>.</returns>
+        public static bool IsModuleLoaded(ModuleType module) => Instance.Config.Modules.Contains(module);
+
         /// <inheritdoc/>
         public override void OnEnabled()
         {
