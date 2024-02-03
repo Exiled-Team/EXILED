@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="AssigningScpRolesEventArgs.cs" company="Exiled Team">
+// <copyright file="AssigningScpCustomRolesEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -19,14 +19,14 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomRoles
     /// <summary>
     /// Contains all information before assigning SCP roles.
     /// </summary>
-    public class AssigningScpRolesEventArgs : IExiledEvent
+    public class AssigningScpCustomRolesEventArgs : IExiledEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssigningScpRolesEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="AssigningScpCustomRolesEventArgs" /> class.
         /// </summary>
         /// <param name="chosenPlayers"><inheritdoc cref="Players"/></param>
         /// <param name="enqueuedScps"><inheritdoc cref="Roles"/></param>
-        public AssigningScpRolesEventArgs(List<ReferenceHub> chosenPlayers, List<object> enqueuedScps)
+        public AssigningScpCustomRolesEventArgs(List<ReferenceHub> chosenPlayers, List<object> enqueuedScps)
         {
             Players = Player.Get(chosenPlayers).ToList();
             Roles = enqueuedScps;

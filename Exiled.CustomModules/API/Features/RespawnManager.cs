@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.CustomModules.Events.EventArgs.CustomRoles;
+
 namespace Exiled.CustomModules.API.Features
 {
     using System;
@@ -38,6 +40,12 @@ namespace Exiled.CustomModules.API.Features
     public class RespawnManager : StaticActor
     {
         private object nextKnownTeam;
+
+        /// <summary>
+        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired when selecting the next known team.
+        /// </summary>
+        [DynamicEventDispatcher]
+        public static TDynamicEventDispatcher<SelectingCustomTeamRespawnEventArgs> SelectingCustomTeamRespawnDispatcher { get; private set; }
 
         /// <summary>
         /// Gets or sets the next known team.
@@ -165,7 +173,10 @@ namespace Exiled.CustomModules.API.Features
                 if ((team.UseTickets && team.Tickets <= 0) || !team.EvaluateConditions || !team.CanSpawnByProbability)
                     continue;
 
-                NextKnownTeam = team.Id;
+                SelectingCustomTeamRespawnEventArgs @event = new((object)team.Id);
+                SelectingCustomTeamRespawnDispatcher.InvokeAll(@event);
+
+                NextKnownTeam = @event.Team;
                 return;
             }
 
