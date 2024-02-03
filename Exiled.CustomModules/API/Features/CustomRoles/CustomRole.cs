@@ -327,7 +327,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <returns>The <see cref="CustomRole"/> matching the search or <see langword="null"/> if not registered.</returns>
         public static CustomRole Get(Pawn player) => PlayersValue.TryGetValue(player, out CustomRole customRole) ? customRole : default;
 
-
         /// <summary>
         /// Attempts to retrieve a <see cref="CustomRole"/> based on the provided id or <see cref="UUCustomRoleType"/>.
         /// </summary>
