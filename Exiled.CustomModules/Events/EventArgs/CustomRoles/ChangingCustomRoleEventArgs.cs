@@ -28,6 +28,9 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomRoles
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public ChangingCustomRoleEventArgs(Player player, object role, bool isAllowed = true)
         {
+            Player = player;
+            Role = role;
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
