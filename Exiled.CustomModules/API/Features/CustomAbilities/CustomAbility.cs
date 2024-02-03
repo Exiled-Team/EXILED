@@ -90,25 +90,25 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before adding an ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<AddingAbilityEventArgs<T>> AddingAbilityDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<AddingAbilityEventArgs<T>> AddingAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after adding an ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<AddedAbilityEventArgs<T>> AddedAbilityDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<AddedAbilityEventArgs<T>> AddedAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before removing an ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<RemovingAbilityEventArgs<T>> RemovingAbilityDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<RemovingAbilityEventArgs<T>> RemovingAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after removing an ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<RemovedAbilityEventArgs<T>> RemovedAbilityDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<RemovedAbilityEventArgs<T>> RemovedAbilityDispatcher { get; set; }
 
         /// <inheritdoc/>
         public Type BehaviourComponent { get; protected set; }
