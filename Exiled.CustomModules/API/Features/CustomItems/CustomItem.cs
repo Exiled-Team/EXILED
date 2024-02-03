@@ -20,15 +20,17 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Spawn;
+    using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.Attributes;
+    using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
     using MapGeneration.Distributors;
-
     using UnityEngine;
 
     /// <summary>
     /// A class to easily manage item behavior.
     /// </summary>
-    public abstract class CustomItem : TypeCastObject<CustomItem>, IAdditiveBehaviour, IEquatable<CustomItem>, IEquatable<uint>
+    public abstract class CustomItem : CustomModule, IAdditiveBehaviour
     {
         private static readonly List<CustomItem> Registered = new();
         private static readonly Dictionary<Item, CustomItem> ItemsValue = new();
@@ -78,22 +80,22 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <summary>
         /// Gets the <see cref="CustomItem"/>'s name.
         /// </summary>
-        public abstract string Name { get; }
+        public override string Name { get; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="CustomItem"/>'s id.
+        /// </summary>
+        public override uint Id { get; protected set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="CustomItem"/> is enabled.
+        /// </summary>
+        public override bool IsEnabled { get; }
 
         /// <summary>
         /// Gets the <see cref="CustomItem"/>'s description.
         /// </summary>
         public virtual string Description { get; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="CustomItem"/>'s id.
-        /// </summary>
-        public virtual uint Id { get; protected set; }
-
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomItem"/> is enabled.
-        /// </summary>
-        public virtual bool IsEnabled { get; }
 
         /// <summary>
         /// Gets the <see cref="CustomItem"/>'s <see cref="global::ItemType"/>.
@@ -126,52 +128,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public IEnumerable<Item> Items => ItemsValue.Where(x => x.Value.Id == Id).Select(x => x.Key);
 
         /// <summary>
-        /// Compares two operands: <see cref="CustomItem"/> and <see cref="object"/>.
+        /// Gets a <see cref="CustomItem"/> based on the provided id or <see cref="UUCustomItemType"/>.
         /// </summary>
-        /// <param name="left">The <see cref="CustomItem"/> to compare.</param>
-        /// <param name="right">The <see cref="object"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomItem left, object right) => left is null ? right is null : left.Equals(right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomItem"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomItem"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator ==(object left, CustomItem right) => right == left;
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomItem"/> and <see cref="object"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomItem"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomItem left, object right) => !(left == right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomItem"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="object"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomItem"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(object left, CustomItem right) => !(left == right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomItem"/> and <see cref="CustomItem"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="CustomItem"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomItem"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomItem left, CustomItem right) => left is null ? right is null : left.Equals(right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomItem"/> and <see cref="CustomItem"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="CustomItem"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomItem"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomItem left, CustomItem right) => !(left.Id == right.Id);
+        /// <param name="id">The id or <see cref="UUCustomItemType"/> of the custom item.</param>
+        /// <returns>The <see cref="CustomItem"/> with the specified id, or <see langword="null"/> if no item is found.</returns>
+        public static CustomItem Get(object id) => id is uint or UUCustomItemType ? Get((uint)id) : null;
 
         /// <summary>
         /// Retrieves a <see cref="CustomItem"/> instance based on the specified custom item id.
@@ -235,6 +196,14 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 
             return customItem;
         }
+
+        /// <summary>
+        /// Attempts to retrieve a <see cref="CustomItem"/> based on the provided id or <see cref="UUCustomItemType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomItemType"/> of the custom item.</param>
+        /// <param name="customItem">When this method returns, contains the <see cref="CustomItem"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(object id, out CustomItem customItem) => customItem = Get(id);
 
         /// <summary>
         /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified custom item id.
@@ -395,13 +364,30 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// must be marked with the <see cref="CustomItemAttribute"/> to be considered for enabling. If
         /// a custom item is enabled successfully, it is added to the returned list.
         /// </remarks>
-        public static List<CustomItem> EnableAll()
+        public static List<CustomItem> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+
+        /// <summary>
+        /// Enables all the custom items present in the assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to enable the items from.</param>
+        /// <returns>
+        /// A <see cref="List{T}"/> of <see cref="CustomItem"/> containing all the enabled custom items.
+        /// </returns>
+        /// <remarks>
+        /// This method dynamically enables all custom items found in the calling assembly. Custom items
+        /// must be marked with the <see cref="CustomItemAttribute"/> to be considered for enabling. If
+        /// a custom item is enabled successfully, it is added to the returned list.
+        /// </remarks>
+        public static List<CustomItem> EnableAll(Assembly assembly)
         {
+            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomItems))
+                throw new Exception("ModuleType::CustomItems must be enabled in order to load any custom items");
+
             List<CustomItem> customItems = new();
-            foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
+            foreach (Type type in assembly.GetTypes())
             {
                 CustomItemAttribute attribute = type.GetCustomAttribute<CustomItemAttribute>();
-                if ((type.BaseType != typeof(CustomItem) && !type.IsSubclassOf(typeof(CustomItem))) || attribute is null)
+                if (!typeof(CustomItem).IsAssignableFrom(type) || attribute is null)
                     continue;
 
                 CustomItem customItem = Activator.CreateInstance(type) as CustomItem;
@@ -413,7 +399,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                     customItems.Add(customItem);
             }
 
-            if (customItems.Count != Registered.Count())
+            if (customItems.Count != Registered.Count)
                 Log.Info($"{customItems.Count} custom items have been successfully registered!");
 
             return customItems;
@@ -625,46 +611,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <param name="player">The <see cref="Player"/> to receive the item.</param>
         /// <param name="displayMessage">Determines whether to display a message for the action (default is true).</param>
         public virtual void Give(Player player, bool displayMessage = true) => Give(player, Item.Create(ItemType), displayMessage);
-
-        /// <summary>
-        /// Determines whether id is equal to the current object.
-        /// </summary>
-        /// <param name="id">The id to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(uint id) => Id == id;
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="cr">The custom role to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(CustomItem cr) => cr && (ReferenceEquals(this, cr) || Id == cr.Id);
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="obj">The object to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public override bool Equals(object obj)
-        {
-            if (Equals(obj as CustomItem))
-                return true;
-
-            try
-            {
-                return Equals((uint)obj);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns a the 32-bit signed hash code of the current object instance.
-        /// </summary>
-        /// <returns>The 32-bit signed hash code of the current object instance.</returns>
-        public override int GetHashCode() => base.GetHashCode();
 
         /// <summary>
         /// Tries to register a <see cref="CustomItem"/>.

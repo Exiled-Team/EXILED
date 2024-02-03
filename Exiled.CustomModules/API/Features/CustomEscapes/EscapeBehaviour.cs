@@ -13,6 +13,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Enums;
@@ -55,13 +56,13 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
         /// </summary>
         [DynamicEventDispatcher]
-        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingEventDispatcher { get; private set; }
+        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingDispatcher { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
         /// </summary>
         [DynamicEventDispatcher]
-        protected TDynamicEventDispatcher<Player> EscapedEventDispatcher { get; private set; }
+        protected TDynamicEventDispatcher<Player> EscapedDispatcher { get; private set; }
 
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
@@ -106,7 +107,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                     continue;
 
                 Events.EventArgs.CustomEscapes.EscapingEventArgs ev = new(Owner.Cast<Pawn>(), settings.Role, settings.CustomRole, CurrentScenario, CustomEscape.AllScenarios[CurrentScenario]);
-                EscapingEventDispatcher.InvokeAll(ev);
+                EscapingDispatcher.InvokeAll(ev);
 
                 if (!ev.IsAllowed)
                     continue;
@@ -114,7 +115,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                 ev.Player.Cast<Pawn>().SetRole(ev.NewRole != RoleTypeId.None ? ev.NewRole : ev.NewCustomRole);
                 ev.Player.ShowHint(ev.Hint);
 
-                EscapedEventDispatcher.InvokeAll(ev.Player);
+                EscapedDispatcher.InvokeAll(ev.Player);
 
                 CanEverTick = false;
                 Destroy();
@@ -136,8 +137,8 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         {
             base.SubscribeEvents();
 
-            EscapingEventDispatcher.Bind(this, OnEscaping);
-            EscapedEventDispatcher.Bind(this, OnEscaped);
+            EscapingDispatcher.Bind(this, OnEscaping);
+            EscapedDispatcher.Bind(this, OnEscaped);
         }
 
         /// <summary>

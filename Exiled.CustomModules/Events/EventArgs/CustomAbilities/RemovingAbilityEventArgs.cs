@@ -12,7 +12,7 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomAbilities
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all informations before removing an ability.
+    /// Contains all information before removing an ability.
     /// </summary>
     /// <typeparam name="T">The type of the <see cref="GameEntity"/>.</typeparam>
     public class RemovingAbilityEventArgs<T> : IDeniableEvent
