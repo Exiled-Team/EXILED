@@ -1182,7 +1182,7 @@ namespace Exiled.API.Features
         /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
         /// <param name="distance">The max distance the player can be from the <see cref="Vector3"/> to be included.</param>
         /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> GetNearestPlayer(Vector3 vector, float distance) => List.Where(p => Vector3.Distance(vector, p.Position) <= distance);
+        public static IEnumerable<Player> GetNearestPlayers(Vector3 vector, float distance) => List.Where(p => Vector3.Distance(vector, p.Position) <= distance);
 
         /// <summary>
         /// Get all players that have a further distance than the distance.
