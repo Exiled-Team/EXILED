@@ -9,15 +9,12 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
-    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Extensions;
-
+    using Exiled.API.Features.Core.Generic.Pools;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-
     using PlayerStatsSystem;
     using RelativePositioning;
-
     using UnityEngine;
 
     /// <summary>
@@ -228,7 +225,7 @@ namespace Exiled.API.Features.Roles
             get => fakeAppearance;
             set
             {
-                fakeAppearance = value;
+                fakeAppearance = value.Value;
 
                 if (value.HasValue)
                     Owner.ChangeAppearance(value.Value);
