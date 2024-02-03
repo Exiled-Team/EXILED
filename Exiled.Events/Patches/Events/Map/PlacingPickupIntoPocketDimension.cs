@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Map
             if (TrackedItems.TryGetValue(ipb, out PocketItem pocketItem))
             {
                 PlacingPickupIntoPocketDimensionEventArgs ev = new(ipb, pocketItem, true);
-                Map.OnPocketDimensionItem(ev);
+                Map.OnPlacingPickupIntoPocketDimension(ev);
 
                 if (!ev.IsAllowed)
                 {
