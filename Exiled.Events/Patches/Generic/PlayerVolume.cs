@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Generic
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
 
     using HarmonyLib;
 
@@ -34,11 +34,11 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = Exiled.API.Features.Pools.ListPool<CodeInstruction>.Pool.Get(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label skip = generator.DefineLabel();
-            Label loopcheck = generator.DefineLabel();
-            Label loopstart = generator.DefineLabel();
+            Label loopCheck = generator.DefineLabel();
+            Label loopStart = generator.DefineLabel();
 
             LocalBuilder plr = generator.DeclareLocal(typeof(Player));
             LocalBuilder svm = generator.DeclareLocal(typeof(StandardVoiceModule));
@@ -84,12 +84,12 @@ namespace Exiled.Events.Patches.Generic
                 // for (int i = 0; i < array.Length; i++)
                 new(OpCodes.Ldc_I4_0),
                 new(OpCodes.Stloc_S, pos),
-                
+
                 // decoded[i] = Mathf.Abs(decoded[i])
-                new(OpCodes.Br_S, loopcheck),
+                new(OpCodes.Br_S, loopCheck),
 
                 // loop start
-                new CodeInstruction(OpCodes.Nop).WithLabels(loopstart),
+                new CodeInstruction(OpCodes.Nop).WithLabels(loopStart),
                 new(OpCodes.Ldloc_S, decoded),
                 new(OpCodes.Ldloc_S, pos),
                 new(OpCodes.Ldloc_S, decoded),
@@ -105,12 +105,12 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Stloc_S, pos),
 
                 // i < array.Length
-                new CodeInstruction(OpCodes.Nop).WithLabels(loopcheck),
+                new CodeInstruction(OpCodes.Nop).WithLabels(loopCheck),
                 new(OpCodes.Ldloc_S, pos),
                 new(OpCodes.Ldloc_S, decoded),
                 new(OpCodes.Ldlen),
                 new(OpCodes.Conv_I4),
-                new(OpCodes.Blt_S, loopstart),
+                new(OpCodes.Blt_S, loopStart),
 
                 // end loop -> standardVoiceModule.GlobalPlayback.Loudness = array.Sum() / (float)msg.DataLength;
                 new(OpCodes.Ldloc_S, svm),
