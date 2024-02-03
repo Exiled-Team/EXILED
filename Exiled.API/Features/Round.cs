@@ -11,7 +11,7 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
 
     using Enums;
-
+    using Exiled.API.Extensions;
     using GameCore;
 
     using PlayerRoles;
@@ -23,6 +23,8 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Round
     {
+        private static int targetOffset;
+
         /// <summary>
         /// Gets a list of players who will be ignored from determining round end.
         /// </summary>
@@ -180,6 +182,22 @@ namespace Exiled.API.Features
                 }
 
                 return sides;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a visual offset applied to the target counter for SCPs.
+        /// </summary>
+        public static int TargetOffset
+        {
+            get => targetOffset;
+            set
+            {
+                targetOffset = value;
+                foreach (Player player in Player.List)
+                {
+                    player.SendFakeSyncVar(RoundSummary.singleton.netIdentity, typeof(RoundSummary), nameof(RoundSummary.Network_chaosTargetCount), RoundSummary.singleton._chaosTargetCount + TargetOffset);
+                }
             }
         }
 
