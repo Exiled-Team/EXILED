@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Server
     /// <summary>
     /// Contains all information before setting up the environment for the assignment of SCP roles.
     /// </summary>
-    public class PreAssigningScpRolesEventArgs : IExiledEvent
+    public class PreAssigningScpRolesEventArgs : IExiledEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PreAssigningScpRolesEventArgs" /> class.
@@ -28,5 +28,8 @@ namespace Exiled.Events.EventArgs.Server
         /// Gets or sets the amount of SCPs to be spawned.
         /// </summary>
         public int Amount { get; set; }
+
+        /// <inheritdoc/>
+        public bool IsAllowed { get; set; } = true;
     }
 }

@@ -168,7 +168,7 @@ namespace Exiled.Installer
         /// </summary>
         public bool Exit { get; set; }
 
-        public async static Task Parse(string[] args)
+        public static async Task Parse(string[] args)
         {
             RootCommand.Handler = CommandHandler.Create<CommandSettings>(async args => await Program.MainSafe(args).ConfigureAwait(false));
             RootCommand.TreatUnmatchedTokensAsErrors = false;

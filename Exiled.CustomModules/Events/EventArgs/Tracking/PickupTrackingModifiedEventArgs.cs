@@ -15,7 +15,7 @@ namespace Exiled.CustomModules.Events.EventArgs.Tracking
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all informations after modifying a pickup tracking.
+    /// Contains all information after modifying a pickup tracking.
     /// </summary>
     public class PickupTrackingModifiedEventArgs : TrackingModifiedEventArgs, IPickupEvent
     {

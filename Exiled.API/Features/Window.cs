@@ -215,7 +215,7 @@ namespace Exiled.API.Features
         /// <returns>A string containing Window-related data.</returns>
         public override string ToString() => $"{Type} ({Health}) [{IsBroken}] *{DisableScpDamage}*";
 
-        private GlassType GetGlassType() => Room?.Type switch
+        private GlassType GetGlassType() => !Room ? GlassType.Unknown : Room.Type switch
         {
             RoomType.Lcz330 => GlassType.Scp330,
             RoomType.LczGlassBox => GlassType.GR18,

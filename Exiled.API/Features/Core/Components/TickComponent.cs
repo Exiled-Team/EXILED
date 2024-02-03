@@ -23,7 +23,9 @@ namespace Exiled.API.Features.Core.Components
         /// <summary>
         /// The default fixed tick rate (60 per second).
         /// </summary>
-        public const float DefaultFixedTickRate = 0.016f;
+#pragma warning disable SA1310
+        public const float DEFAULT_FIXED_TICK_RATE = 0.016f;
+#pragma warning restore SA1310
 
         private readonly HashSet<CoroutineHandle> boundHandles;
         private readonly CoroutineHandle executeAllHandle;
@@ -43,7 +45,7 @@ namespace Exiled.API.Features.Core.Components
         /// <summary>
         /// Gets or sets the current tick rate.
         /// </summary>
-        public float TickRate { get; set; } = DefaultFixedTickRate;
+        public float TickRate { get; set; } = DEFAULT_FIXED_TICK_RATE;
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="EActor"/> can tick.

@@ -164,7 +164,7 @@ namespace Exiled.API.Features
             get => referenceHub;
             private set
             {
-                referenceHub = value ?? throw new NullReferenceException("Player's ReferenceHub cannot be null!");
+                referenceHub = value ? value : throw new NullReferenceException("Player's ReferenceHub cannot be null!");
                 GameObject = value.gameObject;
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
@@ -928,7 +928,12 @@ namespace Exiled.API.Features
                 }
 
                 if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                {
+                    if (IsInventoryFull)
+                        return;
+
                     AddItem(value.Base);
+                }
 
                 Inventory.ServerSelectItem(value.Serial);
             }
@@ -976,7 +981,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current zone the player is in.
         /// </summary>
-        public ZoneType Zone => CurrentRoom?.Zone ?? ZoneType.Unspecified;
+        public ZoneType Zone => CurrentRoom ? CurrentRoom.Zone : ZoneType.Unspecified;
 
         /// <summary>
         /// Gets the current <see cref="Features.Lift"/> the player is in. Can be <see langword="null"/>.
@@ -1064,7 +1069,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is in the pocket dimension.
         /// </summary>
-        public bool IsInPocketDimension => CurrentRoom?.Type is RoomType.Pocket;
+        public bool IsInPocketDimension => CurrentRoom && CurrentRoom.Type is RoomType.Pocket;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player should use stamina system.
@@ -1818,6 +1823,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Tries to get an items from a player's inventory.
+        /// </summary>
+        /// <param name="predicate">The predicate to satisfy.</param>
+        /// <param name="items">The <see cref="IEnumerable{T}"/> found.</param>
+        /// <returns><see langword="true"/> if the item is found, <see langword="false"/> otherwise.</returns>
+        public bool TryGetItems(Func<Item, bool> predicate, out IEnumerable<Item> items)
+        {
+            items = Items.Where(predicate);
+
+            return items.Count() != 0;
+        }
+
+        /// <summary>
         /// Sets the player's rank.
         /// </summary>
         /// <param name="name">The rank name to be set.</param>
@@ -2005,12 +2023,7 @@ namespace Exiled.API.Features
         /// <param name="serial">The <see cref="Item"/> serial to remove.</param>
         /// <param name="destroy">Whether or not to destroy the item.</param>
         /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
-        public bool RemoveItem(ushort serial, bool destroy = true)
-        {
-            if (Items.SingleOrDefault(item => item.Serial == serial) is not Item item)
-                return false;
-            return RemoveItem(item, destroy);
-        }
+        public bool RemoveItem(ushort serial, bool destroy = true) => Items.SingleOrDefault(item => item.Serial == serial) is Item item && RemoveItem(item, destroy);
 
         /// <summary>
         /// Removes an <see cref="Item"/> from the player's inventory.

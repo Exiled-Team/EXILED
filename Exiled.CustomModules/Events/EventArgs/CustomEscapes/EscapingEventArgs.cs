@@ -14,7 +14,7 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomEscapes
     using PlayerRoles;
 
     /// <summary>
-    /// Contains all informations before escaping.
+    /// Contains all information before escaping.
     /// </summary>
     public class EscapingEventArgs : IPlayerEvent, IDeniableEvent
     {

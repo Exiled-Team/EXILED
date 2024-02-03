@@ -15,7 +15,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
+    using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
+    using HarmonyLib;
     using PlayerRoles;
     using Respawning;
     using Respawning.NamingRules;
@@ -30,7 +32,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// <br/>It serves as a versatile framework for handling custom team-related functionalities and interactions.
     /// </para>
     /// </remarks>
-    public abstract class CustomTeam : TypeCastObject<CustomTeam>, IEquatable<CustomTeam>, IEquatable<int>
+    public abstract class CustomTeam : CustomModule
     {
         private static readonly Dictionary<Player, CustomTeam> PlayersValue = new();
         private static readonly List<CustomTeam> Registered = new();
@@ -56,38 +58,19 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public static IEnumerable<Player> Players => PlayersValue.Keys.ToHashSet();
 
         /// <summary>
-        /// Gets or sets a collection of <see cref="Type"/> instances representing all custom role types offered as units.
+        /// Gets the name of the <see cref="CustomTeam"/>.
         /// </summary>
-        /// <remarks>
-        /// This property provides access to a curated collection of <see cref="Type"/> objects, encapsulating all available custom role types within the context of units.
-        /// <br/>The collection is designed to be both queried and modified as needed to accommodate dynamic scenarios within the game architecture.
-        /// </remarks>
-        public virtual IEnumerable<Type> Units { get; protected set; } = new Type[] { };
+        public override string Name { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomTeam"/>'s id.
         /// </summary>
-        public virtual uint Id { get; protected set; }
-
-        /// <summary>
-        /// Gets the relative spawn probability of the <see cref="CustomTeam"/>.
-        /// </summary>
-        public virtual int Probability { get; }
-
-        /// <summary>
-        /// Gets the <see cref="SpawnableTeamType"/> which is being spawned from.
-        /// </summary>
-        public virtual SpawnableTeamType RespawnTeam { get; }
-
-        /// <summary>
-        /// Gets the name of the <see cref="CustomTeam"/>.
-        /// </summary>
-        public abstract string Name { get; }
+        public override uint Id { get; protected set; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="CustomTeam"/> is enabled.
         /// </summary>
-        public virtual bool IsEnabled => true;
+        public override bool IsEnabled => true;
 
         /// <summary>
         /// Gets the display name of the <see cref="CustomTeam"/>.
@@ -111,7 +94,49 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <remarks>
         /// The size indicates the maximum number of players that can be part of this <see cref="CustomTeam"/>.
         /// </remarks>
-        public virtual uint Size { get; }
+        public virtual int Size { get; }
+
+        /// <summary>
+        /// Gets or sets a collection of ids representing all custom roles offered as units.
+        /// </summary>
+        /// <remarks>
+        /// This property provides access to a curated collection of <see cref="uint"/> objects, encapsulating all available custom role  within the context of units.
+        /// <br/>The collection is designed to be both queried and modified as needed to accommodate dynamic scenarios within the game architecture.
+        /// </remarks>
+        public virtual IEnumerable<uint> Units { get; protected set; } = new uint[] { };
+
+        /// <summary>
+        /// Gets the amount of time after which any team will be allowed to spawn.
+        /// </summary>
+        public virtual float NextSequenceTime => UnityEngine.Random.Range(
+            GameCore.ConfigFile.ServerConfig.GetFloat("minimum_MTF_time_to_spawn", MinNextSequenceTime),
+            GameCore.ConfigFile.ServerConfig.GetFloat("maximum_MTF_time_to_spawn", MaxNextSequenceTime));
+
+        /// <summary>
+        /// Gets or sets the minimum amount time after which any team will be allowed to spawn.
+        /// </summary>
+        public virtual float MinNextSequenceTime { get; set; } = 280f;
+
+        /// <summary>
+        /// Gets or sets the maximum amount time after which any team will be spawned.
+        /// </summary>
+        public virtual float MaxNextSequenceTime { get; set; } = 350f;
+
+        /// <summary>
+        /// Gets the relative spawn probability of the <see cref="CustomTeam"/>.
+        /// </summary>
+        public virtual int Probability { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether a player can spawn as this <see cref="CustomRole"/> based on its assigned probability.
+        /// </summary>
+        /// <returns><see langword="true"/> if the probability condition was satisfied; otherwise, <see langword="false"/>.</returns>
+        public bool CanSpawnByProbability => UnityEngine.Random.Range(0, 101) <= Probability;
+
+        /// <summary>
+        /// Gets the <see cref="SpawnableTeamType"/> which is being spawned from.
+        /// </summary>
+        public virtual SpawnableTeamType[] SpawnableFromTeams { get; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="CustomTeam"/> is configured to use respawn tickets.
@@ -130,12 +155,52 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public virtual uint Tickets { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomTeam"/> can be spawned even when SCP entities are alive.
+        /// Gets a value indicating whether the team can spawn given a condition.
+        /// </summary>
+        public virtual bool EvaluateConditions
+        {
+            get
+            {
+                IEnumerable<Pawn> list = Player.List.Cast<Pawn>();
+
+                if (RequiredTeamToSpawn is not Team.Dead)
+                {
+                    foreach (Pawn pawn in list)
+                    {
+                        if ((!pawn.HasCustomRole || !pawn.CustomRole.TeamsOwnership.Contains(RequiredTeamToSpawn)) && pawn.Role.Team != RequiredTeamToSpawn)
+                            continue;
+
+                        return true;
+                    }
+                }
+
+                if (RequiredRoleToSpawn is not RoleTypeId.None)
+                {
+                    foreach (Pawn pawn in list)
+                    {
+                        if (pawn.Role == RequiredRoleToSpawn)
+                        {
+                            if ((RoleExtensions.GetTeam(RequiredRoleToSpawn) is Team.SCPs && !pawn.IsScp) ||
+                                (RoleExtensions.GetTeam(RequiredRoleToSpawn) is not Team.SCPs && pawn.IsScp))
+                                continue;
+
+                            return true;
+                        }
+                    }
+                }
+
+                return (RequiredCustomTeamToSpawn > 0 && CustomTeam.TryGet(RequiredCustomTeamToSpawn, out CustomTeam team) && !team.Owners.IsEmpty()) ||
+                       (RequiredCustomRoleToSpawn > 0 && CustomRole.TryGet(RequiredCustomRoleToSpawn, out CustomRole role) && !role.Owners.IsEmpty());
+            }
+        }
+
+        /// <summary>
+        /// Gets the required <see cref="Team"/> that players must belong to in order to allow the <see cref="CustomTeam"/> to spawn.
         /// </summary>
         /// <remarks>
-        /// If set to <c>true</c>, the <see cref="CustomTeam"/> can spawn even when SCP entities are alive.
+        /// This property specifies the required alive team to be eligible for spawning in the <see cref="CustomTeam"/>.
         /// </remarks>
-        public virtual bool CanSpawnWithoutScps => true;
+        public virtual Team RequiredTeamToSpawn => Team.Dead;
 
         /// <summary>
         /// Gets the required <see cref="RoleTypeId"/> that players must have to allow the <see cref="CustomTeam"/> to spawn.
@@ -146,6 +211,14 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public virtual RoleTypeId RequiredRoleToSpawn => RoleTypeId.None;
 
         /// <summary>
+        /// Gets the required custom team that players must belong to in order to allow the <see cref="CustomTeam"/> to spawn.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the required alive custom team to be eligible for spawning in the <see cref="CustomTeam"/>.
+        /// </remarks>
+        public virtual uint RequiredCustomTeamToSpawn { get; }
+
+        /// <summary>
         /// Gets the required <see cref="CustomRole"/> that players must have to allow the <see cref="CustomTeam"/> to spawn.
         /// </summary>
         /// <remarks>
@@ -154,12 +227,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public virtual uint RequiredCustomRoleToSpawn { get; }
 
         /// <summary>
-        /// Gets the required leading teams for this <see cref="CustomTeam"/> to win.
+        /// Gets the teams the <see cref="CustomTeam"/> belongs to.
         /// </summary>
-        /// <remarks>
-        /// This property specifies the teams that the <see cref="CustomTeam"/> must surpass to achieve victory.
-        /// </remarks>
-        public virtual Team[] LeadingTeamsToWin => new Team[] { };
+        public virtual Team[] TeamsOwnership { get; } = { };
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="CustomTeam"/> is registered.
@@ -186,52 +256,47 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public CustomRole RandomUnit => CustomRole.Get(Units.Random());
 
         /// <summary>
-        /// Compares two operands: <see cref="CustomTeam"/> and <see cref="object"/>.
+        /// Gets all <see cref="CustomTeam"/> instances based on the predicate.
         /// </summary>
-        /// <param name="left">The <see cref="CustomTeam"/> to compare.</param>
-        /// <param name="right">The <see cref="object"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomTeam left, object right) => left is null ? right is null : left.Equals(right);
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>All <see cref="CustomTeam"/> instances matching the predicate.</returns>
+        public static IEnumerable<CustomTeam> Get(Func<CustomTeam, bool> predicate) => List.Where(predicate);
 
         /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomTeam"/>.
+        /// Gets a <see cref="CustomTeam"/> based on the provided id or <see cref="UUCustomTeamType"/>.
         /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomTeam"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator ==(object left, CustomTeam right) => right == left;
+        /// <param name="id">The id or <see cref="UUCustomTeamType"/> of the custom team.</param>
+        /// <returns>The <see cref="CustomTeam"/> with the specified id, or <see langword="null"/> if no team is found.</returns>
+        public static CustomTeam Get(object id) => id is uint or UUCustomTeamType ? Get((uint)id) : null;
 
         /// <summary>
-        /// Compares two operands: <see cref="CustomTeam"/> and <see cref="object"/>.
+        /// Gets a <see cref="CustomTeam"/> instance based on the specified id.
         /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomTeam"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomTeam left, object right) => !(left == right);
+        /// <param name="id">The id to check.</param>
+        /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
+        public static CustomTeam Get(uint id) => IdLookupTable[id];
 
         /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomTeam"/>.
+        /// Gets a <see cref="CustomTeam"/> instance based on the specified name.
         /// </summary>
-        /// <param name="left">The left <see cref="object"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomTeam"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(object left, CustomTeam right) => !(left == right);
+        /// <param name="name">The specified name.</param>
+        /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
+        public static CustomTeam Get(string name) => NameLookupTable[name];
 
         /// <summary>
-        /// Compares two operands: <see cref="CustomTeam"/> and <see cref="CustomTeam"/>.
+        /// Gets a <see cref="CustomTeam"/> instance associated with a specific <see cref="Player"/>.
         /// </summary>
-        /// <param name="left">The left <see cref="CustomTeam"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomTeam"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomTeam left, CustomTeam right) => left is null ? right is null : left.Equals(right);
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
+        public static CustomTeam Get(Player player) => !PlayersValue.TryGetValue(player, out CustomTeam customTeam) ? null : customTeam;
 
         /// <summary>
-        /// Compares two operands: <see cref="CustomTeam"/> and <see cref="CustomTeam"/>.
+        /// Attempts to retrieve a <see cref="CustomTeam"/> based on the provided id or <see cref="UUCustomTeamType"/>.
         /// </summary>
-        /// <param name="left">The left <see cref="CustomTeam"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomTeam"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomTeam left, CustomTeam right) => !(left.Id == right.Id);
+        /// <param name="id">The id or <see cref="UUCustomTeamType"/> of the custom team.</param>
+        /// <param name="customTeam">When this method returns, contains the <see cref="CustomTeam"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomTeam"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(object id, out CustomTeam customTeam) => customTeam = Get(id);
 
         /// <summary>
         /// Tries to get a <see cref="CustomTeam"/> given the specified id.
@@ -261,8 +326,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Tries to spawn the specified <see cref="CustomTeam"/>.
         /// </summary>
         /// <param name="customTeam">The <see cref="CustomTeam"/> to be spawned.</param>
+        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was successfully spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(CustomTeam customTeam)
+        public static bool TryRespawn(CustomTeam customTeam, bool isForced = false)
         {
             if (!Player.Get(p => p.IsDead).Any() || customTeam is null)
                 return false;
@@ -275,8 +341,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Tries to spawn a <see cref="CustomTeam"/> given the specified id.
         /// </summary>
         /// <param name="id">The specified id.</param>
+        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was successfully spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(uint id)
+        public static bool TryRespawn(uint id, bool isForced = false)
         {
             if (!Player.Get(p => p.IsDead).Any() || TryGet(id, out CustomTeam customTeam))
                 return false;
@@ -290,8 +357,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </summary>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
         /// <param name="customTeam">The <see cref="CustomTeam"/> unit to be assigned.</param>
+        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <returns><see langword="true"/> if the player was successfully spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(Pawn player, CustomTeam customTeam)
+        public static bool TrySpawn(Pawn player, CustomTeam customTeam, bool isForced = false)
         {
             if (customTeam is null)
                 return false;
@@ -351,7 +419,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="amount">The amount of units to be spawned.</param>
         /// <param name="customTeam">The <see cref="CustomTeam"/> to be spawned.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was successfully spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(uint amount, CustomTeam customTeam)
+        public static bool TrySpawn(int amount, CustomTeam customTeam)
         {
             if (customTeam is null)
                 return false;
@@ -366,9 +434,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="amount">The amount of units to be spawned.</param>
         /// <param name="id">The specified id.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was successfully spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(uint amount, uint id)
+        public static bool TrySpawn(int amount, uint id)
         {
-            if (TryGet(id, out CustomTeam customTeam))
+            if (!TryGet(id, out CustomTeam customTeam))
                 return false;
 
             customTeam.Respawn(amount);
@@ -379,10 +447,20 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Enables all the custom teams present in the assembly.
         /// </summary>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomTeam"/> which contains all the enabled custom teams.</returns>
-        public static IEnumerable<CustomTeam> EnableAll()
+        public static IEnumerable<CustomTeam> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+
+        /// <summary>
+        /// Enables all the custom teams present in the assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to enable the teams from.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomTeam"/> which contains all the enabled custom teams.</returns>
+        public static IEnumerable<CustomTeam> EnableAll(Assembly assembly)
         {
+            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomTeams))
+                throw new Exception("ModuleType::CustomTeams must be enabled in order to load any custom teams");
+
             List<CustomTeam> customTeams = new();
-            foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
+            foreach (Type type in assembly.GetTypes())
             {
                 CustomTeamAttribute attribute = type.GetCustomAttribute<CustomTeamAttribute>();
                 if (type.BaseType != typeof(CustomTeam) || attribute is null)
@@ -416,27 +494,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             return customTeams;
         }
-
-        /// <summary>
-        /// Gets a <see cref="CustomTeam"/> instance based on the specified id.
-        /// </summary>
-        /// <param name="id">The id to check.</param>
-        /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
-        public static CustomTeam Get(uint id) => IdLookupTable[id];
-
-        /// <summary>
-        /// Gets a <see cref="CustomTeam"/> instance based on the specified name.
-        /// </summary>
-        /// <param name="name">The specified name.</param>
-        /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
-        public static CustomTeam Get(string name) => NameLookupTable[name];
-
-        /// <summary>
-        /// Gets a <see cref="CustomTeam"/> instance associated with a specific <see cref="Player"/>.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> to check.</param>
-        /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
-        public static CustomTeam Get(Player player) => !PlayersValue.TryGetValue(player, out CustomTeam customTeam) ? null : customTeam;
 
         /// <summary>
         /// Determines whether the provided id is equal to the current object.
@@ -517,6 +574,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Forces a respawn wave by spawning the specified amount of units.
         /// </summary>
         /// <param name="amount">The number of units to be spawned.</param>
+        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <remarks>
         /// If the provided <paramref name="amount"/> is less than or equal to zero, no respawn action is taken.
         /// <para>
@@ -526,16 +584,19 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Additionally, if the respawn team is of type <see cref="SpawnableTeamType.NineTailedFox"/> and a valid <see cref="UnitNamingRule"/> is available using <see cref="UnitNamingRule.TryGetNamingRule"/>, a new unit naming message is sent for NineTailedFox units.
         /// </para>
         /// </remarks>
-        public void Respawn(uint amount)
+        public void Respawn(int amount, bool isForced = false)
         {
-            Pawn[] players = Player.Get(Team.Dead).Take((int)amount).Cast<Pawn>().ToArray();
+            if ((UseTickets && tickets <= 0) && !isForced)
+                return;
+
+            IEnumerable<Pawn> players = Player.Get(Team.Dead).Take(amount).Cast<Pawn>();
 
             if (players.IsEmpty())
                 return;
 
             players.ForEach(player => Spawn(player));
 
-            if (RespawnTeam is SpawnableTeamType.NineTailedFox && UnitNamingRule.TryGetNamingRule(SpawnableTeamType.NineTailedFox, out UnitNamingRule rule))
+            if (TeamsOwnership.Any(team => team == Team.FoundationForces) && UnitNamingRule.TryGetNamingRule(SpawnableTeamType.NineTailedFox, out UnitNamingRule rule))
                 UnitNameMessageHandler.SendNew(SpawnableTeamType.NineTailedFox, rule);
         }
 
@@ -544,6 +605,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </summary>
         /// <param name="players">The collection of players to be spawned.</param>
         /// <param name="keepSize">A value indicating whether the team size should remain the same as the specified collection.</param>
+        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <remarks>
         /// If the provided collection of <paramref name="players"/> is null or empty, no respawn action is taken.
         /// <para>
@@ -556,9 +618,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Additionally, if the respawn team is of type <see cref="SpawnableTeamType.NineTailedFox"/> and a valid <see cref="UnitNamingRule"/> is available using <see cref="UnitNamingRule.TryGetNamingRule"/>, a new unit naming message is sent for NineTailedFox units.
         /// </para>
         /// </remarks>
-        public void Respawn(IEnumerable<Pawn> players, bool keepSize = true)
+        public void Respawn(IEnumerable<Pawn> players, bool keepSize = true, bool isForced = false)
         {
-            if (players is null || players.IsEmpty())
+            if (((UseTickets && tickets <= 0) && !isForced) || players is null || players.IsEmpty())
                 return;
 
             if (UseTickets && tickets > 0)
@@ -577,17 +639,18 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 count++;
             }
 
-            if (RespawnTeam is SpawnableTeamType.NineTailedFox && UnitNamingRule.TryGetNamingRule(SpawnableTeamType.NineTailedFox, out UnitNamingRule rule))
+            if (TeamsOwnership.Any(team => team == Team.FoundationForces) && UnitNamingRule.TryGetNamingRule(SpawnableTeamType.NineTailedFox, out UnitNamingRule rule))
                 UnitNameMessageHandler.SendNew(SpawnableTeamType.NineTailedFox, rule);
         }
 
         /// <summary>
         /// Forces a respawn wave, spawning players up to the specified team size.
         /// </summary>
+        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <remarks>
         /// This method triggers a respawn wave, spawning players up to the current team size limit.
         /// </remarks>
-        public void Respawn() => Respawn(Size);
+        public void Respawn(bool isForced = false) => Respawn(Size, isForced);
 
         /// <summary>
         /// Adds respawn tickets to the current <see cref="CustomTeam"/> instance.
@@ -608,7 +671,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public void RemoveTickets(uint amount)
         {
             if (tickets < amount)
+            {
+                tickets = 0;
                 return;
+            }
 
             tickets -= amount;
         }
@@ -633,7 +699,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     }
 
                     if (attribute.Types is not null && !attribute.Types.IsEmpty())
-                        Units = Units.Concat(attribute.Types);
+                    {
+                        foreach (Type t in attribute.Types)
+                            Units.AddItem(CustomRole.Get(t).Id);
+                    }
                 }
 
                 CustomTeam duplicate = Registered.FirstOrDefault(x => x.Id == Id || x.Name == Name);

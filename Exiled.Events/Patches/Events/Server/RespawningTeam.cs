@@ -38,12 +38,56 @@ namespace Exiled.Events.Patches.Events.Server
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            int offset = -6;
-            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(UnitNamingRule), nameof(UnitNamingRule.TryGetNamingRule)))) + offset;
-
-            LocalBuilder ev = generator.DeclareLocal(typeof(RespawningTeamEventArgs));
+            LocalBuilder preRespawningEv = generator.DeclareLocal(typeof(PreRespawningTeamEventArgs));
+            LocalBuilder respawningEv = generator.DeclareLocal(typeof(RespawningTeamEventArgs));
+            LocalBuilder deployingEv = generator.DeclareLocal(typeof(DeployingTeamRoleEventArgs));
 
             Label continueLabel = generator.DefineLabel();
+            Label ret = generator.DefineLabel();
+            Label jne = generator.DefineLabel();
+
+            int offset = -7;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Sub) + offset;
+
+            newInstructions.InsertRange(index, new CodeInstruction[]
+            {
+                // preRespawningEv = new PreRespawningTeamEventArgs(SpawnableTeamHandlerBase, int, SpawnableTeamType, bool)
+                // Handlers.Server.OnPreRespawningTeam(preRespawningEv)
+                new(OpCodes.Ldloc_0),
+                new(OpCodes.Ldloc_2),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PreRespawningTeamEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, preRespawningEv.LocalIndex),
+                new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnPreRespawningTeam))),
+
+                // if (!preRespawningEv.IsAllowed)
+                // goto ret
+                new(OpCodes.Callvirt, PropertyGetter(typeof(PreRespawningTeamEventArgs), nameof(PreRespawningTeamEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, ret),
+
+                // SpawnableTeamHandlerBase = preRespawningEv.SpawnableTeamHandler
+                new(OpCodes.Ldloc_S, preRespawningEv.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(PreRespawningTeamEventArgs), nameof(PreRespawningTeamEventArgs.SpawnableTeamHandler))),
+                new(OpCodes.Stloc_0),
+
+                // this.NextKnownTeam = preRespawningEv.NextKnownTeam
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldloc_S, preRespawningEv.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(PreRespawningTeamEventArgs), nameof(PreRespawningTeamEventArgs.NextKnownTeam))),
+                new(OpCodes.Stfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
+
+                // maxWaveSize = preRespawningEv.MaxWaveSize
+                new(OpCodes.Ldloc_S, preRespawningEv.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(PreRespawningTeamEventArgs), nameof(PreRespawningTeamEventArgs.MaxWaveSize))),
+                new(OpCodes.Stloc_2),
+            });
+
+            offset = -6;
+            index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(UnitNamingRule), nameof(UnitNamingRule.TryGetNamingRule)))) + offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
@@ -61,40 +105,22 @@ namespace Exiled.Events.Patches.Events.Server
                 // true
                 new(OpCodes.Ldc_I4_1),
 
-                // RespawningTeamEventArgs ev = new(players, num, this.NextKnownTeam)
+                // RespawningTeamEventArgs respawningEv = new(players, num, this.NextKnownTeam)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RespawningTeamEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Stloc, respawningEv.LocalIndex),
 
-                // Handlers.Server.OnRespawningTeam(ev)
+                // Handlers.Server.OnRespawningTeam(respawningEv)
                 new(OpCodes.Call, Method(typeof(Server), nameof(Server.OnRespawningTeam))),
 
-                // if (ev.IsAllowed)
+                // if (respawningEv.IsAllowed)
                 //    goto continueLabel;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.IsAllowed))),
                 new(OpCodes.Brtrue_S, continueLabel),
 
-                // this.NextKnownTeam = SpawnableTeam.None
-                //    return;
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Stfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
-                new(OpCodes.Ret),
-
-                // load "ev" four times
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
+                new CodeInstruction(OpCodes.Ldloc_S, respawningEv.LocalIndex).WithLabels(continueLabel),
                 new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-
-                // num = ev.MaximumRespawnAmount
-                new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.MaxWaveSize))),
-                new(OpCodes.Stloc_2),
-
-                // spawnableTeamHandler = ev.SpawnableTeam
-                new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.SpawnableTeam))),
-                new(OpCodes.Stloc_0),
 
                 // list = GetHubs(ev.Players)
                 new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.Players))),
@@ -111,9 +137,6 @@ namespace Exiled.Events.Patches.Events.Server
 
             offset = -3;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldc_I4_M1) + offset;
-
-            LocalBuilder deployingEv = generator.DeclareLocal(typeof(DeployingTeamRoleEventArgs));
-            Label jne = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
@@ -140,6 +163,8 @@ namespace Exiled.Events.Patches.Events.Server
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldc_I4_M1) + offset;
 
             newInstructions.RemoveRange(index, 5);
+
+            newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
