@@ -7,10 +7,15 @@
 
 namespace Exiled.CustomModules
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Generic;
     using Exiled.API.Interfaces;
+    using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.API.Features.CustomAbilities;
     using Exiled.CustomModules.API.Features.CustomEscapes;
@@ -24,6 +29,16 @@ namespace Exiled.CustomModules
     /// </summary>
     public class CustomModules : Plugin<Config>
     {
+        private static readonly Dictionary<ModuleType, Action<Assembly>> ModulesLoader = new()
+        {
+            { ModuleType.CustomItems, asm => CustomItem.EnableAll(asm) },
+            { ModuleType.CustomRoles, asm => CustomRole.EnableAll(asm) },
+            { ModuleType.CustomAbilities, asm => CustomAbility<GameEntity>.EnableAll(asm) },
+            { ModuleType.CustomTeams, asm => CustomTeam.EnableAll(asm) },
+            { ModuleType.CustomEscapes, asm => CustomEscape.EnableAll(asm) },
+            { ModuleType.CustomGameModes, asm => CustomGameMode.EnableAll(asm) },
+        };
+
         /// <summary>
         /// Gets a static reference to the plugin's instance.
         /// </summary>
@@ -46,22 +61,18 @@ namespace Exiled.CustomModules
 
             if (Config.UseAutomaticModulesLoader)
             {
-                foreach (IPlugin<IConfig> plugin in Loader.Loader.Plugins)
-                {
-                    CustomItem.EnableAll(plugin.Assembly);
-                    CustomRole.EnableAll(plugin.Assembly);
-                    CustomAbility<GameEntity>.EnableAll(plugin.Assembly);
-                    CustomTeam.EnableAll(plugin.Assembly);
-                    CustomEscape.EnableAll(plugin.Assembly);
-                    CustomGameMode.EnableAll(plugin.Assembly);
-                }
+                foreach (IPlugin<IConfig> plugin in Exiled.Loader.Loader.Plugins)
+                    Config.Modules.ForEach(module => ModulesLoader[module](plugin.Assembly));
             }
 
-            if (Config.UseDefaultRoleAssigner)
+            if (Config.Modules.Contains(ModuleType.CustomRoles) && Config.UseDefaultRoleAssigner)
                 StaticActor.CreateNewInstance<RoleAssigner>();
 
-            if (Config.UseDefaultRespawnManager)
+            if (Config.Modules.Contains(ModuleType.CustomTeams) && Config.UseDefaultRespawnManager)
                 StaticActor.CreateNewInstance<RespawnManager>();
+
+            if (Config.Modules.Contains(ModuleType.CustomGameModes))
+                World.CreateNewInstance();
 
             SubscribeEvents();
 
@@ -73,6 +84,7 @@ namespace Exiled.CustomModules
         {
             StaticActor.Get<RoleAssigner>()?.Destroy();
             StaticActor.Get<RespawnManager>()?.Destroy();
+            World.Get().Destroy();
 
             CustomItem.DisableAll();
             CustomRole.DisableAll();
