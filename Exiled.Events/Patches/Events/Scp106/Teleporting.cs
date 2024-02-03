@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp106;
     using Exiled.Events.Handlers;
@@ -82,7 +82,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                     new(OpCodes.Stloc_0),
                 });
 
-            foreach (var instruction in newInstructions)
+            foreach (CodeInstruction instruction in newInstructions)
                 yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);

@@ -23,6 +23,27 @@ namespace Exiled.API.Structs
         /// <param name="rotation">The rotation of the primitive.</param>
         /// <param name="scale">The scale of the primitive.</param>
         /// <param name="spawn">Whether or not the primitive should be spawned.</param>
+        /// <param name="isStatic">Whether or not the primitive should be static.</param>
+        public PrimitiveSettings(PrimitiveType primitiveType, Color color, Vector3 position, Vector3 rotation, Vector3 scale, bool spawn, bool isStatic)
+        {
+            PrimitiveType = primitiveType;
+            Color = color;
+            Position = position;
+            Rotation = rotation;
+            Scale = scale;
+            Spawn = spawn;
+            IsStatic = isStatic;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PrimitiveSettings"/> struct.
+        /// </summary>
+        /// <param name="primitiveType">The type of the primitive.</param>
+        /// <param name="color">The color of the primitive.</param>
+        /// <param name="position">The position of the primitive.</param>
+        /// <param name="rotation">The rotation of the primitive.</param>
+        /// <param name="scale">The scale of the primitive.</param>
+        /// <param name="spawn">Whether or not the primitive should be spawned.</param>
         public PrimitiveSettings(PrimitiveType primitiveType, Color color, Vector3 position, Vector3 rotation, Vector3 scale, bool spawn)
         {
             PrimitiveType = primitiveType;
@@ -31,6 +52,7 @@ namespace Exiled.API.Structs
             Rotation = rotation;
             Scale = scale;
             Spawn = spawn;
+            IsStatic = false;
         }
 
         /// <summary>
@@ -57,6 +79,11 @@ namespace Exiled.API.Structs
         /// Gets the primitive scale.
         /// </summary>
         public Vector3 Scale { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the primitive should be spawned.
+        /// </summary>
+        public bool IsStatic { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not the primitive should be spawned.

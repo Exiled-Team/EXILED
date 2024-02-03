@@ -16,7 +16,7 @@ namespace Exiled.API.Extensions
     using System.Text;
 
     using Features;
-    using Features.Pools;
+    using Features.Core.Generic.Pools;
 
     using InventorySystem.Items.Firearms;
 
@@ -202,17 +202,6 @@ namespace Exiled.API.Extensions
         public static void SetName(this Player target, Player player, string name)
         {
             target.SendFakeSyncVar(player.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), name);
-        }
-
-        /// <summary>
-        /// Sets <see cref="Room"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
-        /// </summary>
-        /// <param name="room">Room to modify.</param>
-        /// <param name="target">Only this player can see room color.</param>
-        /// <param name="multiplier">Light intensity multiplier to set.</param>
-        [Obsolete("This features has been remove by NW", true)]
-        public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier)
-        {
         }
 
         /// <summary>
