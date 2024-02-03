@@ -22,9 +22,6 @@ namespace Exiled.Events.EventArgs.Server
     /// </summary>
     public class RespawningTeamEventArgs : IDeniableEvent
     {
-        private SpawnableTeamType nextKnownTeam;
-        private int maxWaveSize;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RespawningTeamEventArgs"/> class.
         /// </summary>
@@ -36,7 +33,7 @@ namespace Exiled.Events.EventArgs.Server
         {
             Players = players;
             MaxWaveSize = maxRespawn;
-            this.nextKnownTeam = nextKnownTeam;
+            NextKnownTeam = nextKnownTeam;
             SpawnQueue = new();
             IsAllowed = isAllowed;
         }
