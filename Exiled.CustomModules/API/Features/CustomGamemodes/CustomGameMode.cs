@@ -206,6 +206,9 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomGameMode"/> containing all enabled custom game modes.</returns>
         public static List<CustomGameMode> EnableAll(Assembly assembly)
         {
+            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomGameModes))
+                throw new Exception("ModuleType::CustomGameModes must be enabled in order to load any custom game modes");
+
             List<CustomGameMode> customGameModes = new();
             foreach (Type type in assembly.GetTypes())
             {

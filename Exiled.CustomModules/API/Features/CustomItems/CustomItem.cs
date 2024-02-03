@@ -380,6 +380,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// </remarks>
         public static List<CustomItem> EnableAll(Assembly assembly)
         {
+            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomItems))
+                throw new Exception("ModuleType::CustomItems must be enabled in order to load any custom items");
+
             List<CustomItem> customItems = new();
             foreach (Type type in assembly.GetTypes())
             {

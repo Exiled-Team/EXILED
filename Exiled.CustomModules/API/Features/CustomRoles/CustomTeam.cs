@@ -459,6 +459,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomTeam"/> which contains all the enabled custom teams.</returns>
         public static IEnumerable<CustomTeam> EnableAll(Assembly assembly)
         {
+            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomTeams))
+                throw new Exception("ModuleType::CustomTeams must be enabled in order to load any custom teams");
+
             List<CustomTeam> customTeams = new();
             foreach (Type type in assembly.GetTypes())
             {

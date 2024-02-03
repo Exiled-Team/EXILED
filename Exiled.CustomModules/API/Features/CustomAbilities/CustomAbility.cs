@@ -481,6 +481,9 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> which contains all the enabled custom abilities.</returns>
         public static IEnumerable<CustomAbility<T>> EnableAll(Assembly assembly)
         {
+            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomAbilities))
+                throw new Exception("ModuleType::CustomAbilities must be enabled in order to load any custom abilities");
+
             List<CustomAbility<T>> customAbilities = new();
             foreach (Type type in assembly.GetTypes())
             {

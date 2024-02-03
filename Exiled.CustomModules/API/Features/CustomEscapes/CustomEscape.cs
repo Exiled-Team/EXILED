@@ -183,6 +183,9 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all enabled custom escapes.</returns>
         public static List<CustomEscape> EnableAll(Assembly assembly)
         {
+            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomEscapes))
+                throw new Exception("ModuleType::CustomEscapes must be enabled in order to load any custom escapes");
+
             List<CustomEscape> customEscapes = new();
             foreach (Type type in assembly.GetTypes())
             {
