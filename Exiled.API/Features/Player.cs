@@ -1177,6 +1177,22 @@ namespace Exiled.API.Features
         public static IEnumerable<Player> Get(Func<Player, bool> predicate) => List.Where(predicate);
 
         /// <summary>
+        /// Get all players near the <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
+        /// <param name="distance">The max distance the player can be from the <see cref="Vector3"/> to be included.</param>
+        /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
+        public static IEnumerable<Player> GetNearestPlayer(Vector3 vector, float distance) => List.Where(p => Vector3.Distance(vector, p.Position) <= distance);
+
+        /// <summary>
+        /// Get all players that have a further distance than the distance.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
+        /// <param name="distance">The minimum distance the player can be from the <see cref="Vector3"/> to be included.</param>
+        /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
+        public static IEnumerable<Player> GetFarthestPlayers(Vector3 vector, float distance) => List.Where(p => Vector3.Distance(vector, p.Position) >= distance);
+
+        /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSystem.ICommandSender"/>, if any.
         /// </summary>
         /// <param name="sender">The command sender.</param>
