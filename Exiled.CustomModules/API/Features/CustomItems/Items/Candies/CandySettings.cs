@@ -49,22 +49,14 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
         /// <summary>
         /// Gets or sets the <see cref="TextDisplay"/> that will be displayed when player ate custom candy..
         /// </summary>
-        public virtual TextDisplay EatenCustomCandyMessage { get; set; } = new("You have eaten a custom candy. Let's see what effect you will get...", 5, true, TextChannelType.Hint);
+        public virtual TextDisplay EatenCustomCandyMessage { get; set; }
 
         /// <summary>
         /// Gets or sets a <see cref="TextDisplay"/> that will be displayed when player has received custom candy.
         /// </summary>
-        public virtual TextDisplay ReceiveCustomCandyMessage { get; set; } = new("You have received a custom candy!", 5, true, TextChannelType.Hint);
+        public virtual TextDisplay ReceivedCustomCandyMessage { get; set; }
 
         /// <inheritdoc/>
         public override TextDisplay SelectedText { get; set; }
-
-        /// <summary>
-        /// Applies effect to player.
-        /// </summary>
-        /// <param name="player">Player to apply effects.</param>
-        public virtual void ApplyEffects(Pawn player)
-        {
-        }
     }
 }
