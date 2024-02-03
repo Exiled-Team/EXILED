@@ -12,21 +12,21 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information before a spectator changes the spectated player.
+    /// Contains all information before a spectator changes the spectated player.
     /// </summary>
     public class ChangingSpectatedPlayerEventArgs : IPlayerEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ChangingSpectatedPlayerEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ChangingSpectatedPlayerEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="oldTarget">
-        ///     <inheritdoc cref="OldTarget" />
+        /// <inheritdoc cref="OldTarget" />
         /// </param>
         /// <param name="newTarget">
-        ///     <inheritdoc cref="NewTarget" />
+        /// <inheritdoc cref="NewTarget" />
         /// </param>
         public ChangingSpectatedPlayerEventArgs(ReferenceHub player, uint oldTarget, uint newTarget)
         {
@@ -36,17 +36,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets player that was spectated.
+        /// Gets player that was being spectated.
         /// </summary>
         public Player OldTarget { get; }
 
         /// <summary>
-        ///     Gets the player who's going to be spectated.
+        /// Gets the player who's going to be spectated.
         /// </summary>
         public Player NewTarget { get; }
 
         /// <summary>
-        ///     Gets player that is changing spectated player.
+        /// Gets player that is changing spectated player.
         /// </summary>
         public Player Player { get; }
     }

@@ -11,24 +11,21 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Items;
-    using API.Features.Pools;
-
-    using CustomPlayerEffects;
+    using API.Features.Core.Generic.Pools;
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
-    using InventorySystem.Items;
     using InventorySystem.Items.Firearms.BasicMessages;
+    using InventorySystem.Items.Firearms.Modules;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="FirearmBasicMessagesHandler.ServerShotReceived" />.
-    ///     Adds the <see cref="Handlers.Player.Shooting" /> events.
+    /// Patches <see cref="FirearmBasicMessagesHandler.ServerShotReceived" />.
+    /// Adds the <see cref="Handlers.Player.Shooting" /> events.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Shooting))]
     [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerShotReceived))]
@@ -42,11 +39,9 @@ namespace Exiled.Events.Patches.Events.Player
             Label returnLabel = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ShootingEventArgs));
-            LocalBuilder firearm = generator.DeclareLocal(typeof(Item));
-            LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
-            int offset = -1;
-            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(SpawnProtected), nameof(SpawnProtected.CheckPlayer)))) + offset;
+            int offset = -2;
+            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(IActionModule), nameof(IActionModule.ServerAuthorizeShot)))) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -55,29 +50,9 @@ namespace Exiled.Events.Patches.Events.Player
                     // Player.Get(referenceHub)
                     new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, player.LocalIndex),
-
-                    // if (player == null)
-                    //     return;
-                    new(OpCodes.Brfalse_S, returnLabel),
-
-                    // firearm = (Firearm)Item.Get(curInstance)
-                    new(OpCodes.Ldloc_1),
-                    new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
-                    new(OpCodes.Isinst, typeof(Firearm)),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, firearm.LocalIndex),
-
-                    // if (firearm == null)
-                    //     return;
-                    new(OpCodes.Brfalse_S, returnLabel),
-
-                    // player
-                    new(OpCodes.Ldloc_S, player.LocalIndex),
 
                     // firearm
-                    new(OpCodes.Ldloc_S, firearm.LocalIndex),
+                    new(OpCodes.Ldloc_1),
 
                     // msg
                     new(OpCodes.Ldarg_1),
@@ -92,19 +67,9 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShooting))),
 
                     // if (ev.IsAllowed)
-                    //    goto isAllowedLabel;
+                    //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.IsAllowed))),
-                    new(OpCodes.Brtrue_S, isAllowedLabel),
-
-                    // firearm.Ammo += 1;
-                    // return;
-                    new(OpCodes.Ldloc_S, firearm.LocalIndex),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Firearm), nameof(Firearm.Ammo))),
-                    new(OpCodes.Ldc_I4_1),
-                    new(OpCodes.Add),
-                    new(OpCodes.Callvirt, PropertySetter(typeof(Firearm), nameof(Firearm.Ammo))),
-                    new(OpCodes.Ret),
+                    new(OpCodes.Brfalse_S, returnLabel),
 
                     // isAllowedLabel:
                     // msg = ev.ShotMessage

@@ -12,7 +12,9 @@ namespace Exiled.API.Features.Toys
     using AdminToys;
 
     using Enums;
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
+    using Footprinting;
     using Mirror;
 
     using UnityEngine;
@@ -20,7 +22,7 @@ namespace Exiled.API.Features.Toys
     /// <summary>
     /// A wrapper class for <see cref="AdminToys.AdminToyBase"/>.
     /// </summary>
-    public abstract class AdminToy : IWorldSpace
+    public abstract class AdminToy : GameEntity, IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminToy"/> class.
@@ -35,6 +37,9 @@ namespace Exiled.API.Features.Toys
             Map.ToysValue.Add(this);
         }
 
+        /// <inheritdoc/>
+        public override GameObject GameObject => AdminToyBase.gameObject;
+
         /// <summary>
         /// Gets the original <see cref="AdminToys.AdminToyBase"/>.
         /// </summary>
@@ -44,6 +49,24 @@ namespace Exiled.API.Features.Toys
         /// Gets the <see cref="AdminToyType"/>.
         /// </summary>
         public AdminToyType ToyType { get; }
+
+        /// <summary>
+        /// Gets or sets who spawn the Primitive AdminToy.
+        /// </summary>
+        public Player Player
+        {
+            get => Player.Get(Footprint);
+            set => Footprint = value.Footprint;
+        }
+
+        /// <summary>
+        /// Gets or sets the Footprint of the player who spawned the AdminToy.
+        /// </summary>
+        public Footprint Footprint
+        {
+            get => AdminToyBase.SpawnerFootprint;
+            set => AdminToyBase.SpawnerFootprint = value;
+        }
 
         /// <summary>
         /// Gets or sets the position of the toy.
@@ -83,6 +106,15 @@ namespace Exiled.API.Features.Toys
         {
             get => AdminToyBase.MovementSmoothing;
             set => AdminToyBase.NetworkMovementSmoothing = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether IsStatic.
+        /// </summary>
+        public bool IsStatic
+        {
+            get => AdminToyBase.IsStatic;
+            set => AdminToyBase.IsStatic = value;
         }
 
         /// <summary>

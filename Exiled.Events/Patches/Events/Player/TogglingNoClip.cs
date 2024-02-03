@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
 
     using Exiled.API.Features.Roles;
     using Exiled.Events.Attributes;
@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     patches <see cref="FpcNoclip.IsActive" /> to add the
-    ///     <see cref="Handlers.Player.TogglingNoClip" /> event.
+    /// patches <see cref="FpcNoclip.IsActive" /> to add the
+    /// <see cref="Handlers.Player.TogglingNoClip" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.TogglingNoClip))]
     [HarmonyPatch(typeof(FpcNoclipToggleMessage), nameof(FpcNoclipToggleMessage.ProcessMessage))]

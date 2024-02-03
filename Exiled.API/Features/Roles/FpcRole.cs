@@ -9,7 +9,7 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
 
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
@@ -24,6 +24,8 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public abstract class FpcRole : Role
     {
+        private bool isUsingStamina = true;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FpcRole"/> class.
         /// </summary>
@@ -127,6 +129,30 @@ namespace Exiled.API.Features.Roles
         public bool IsInvisible { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not the player should use stamina system. Resets on death.
+        /// </summary>
+        public bool IsUsingStamina
+        {
+            get => isUsingStamina;
+            set
+            {
+                if (!value)
+                    Owner.ResetStamina();
+                isUsingStamina = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the stamina usage multiplier. Resets on death.
+        /// </summary>
+        public float StaminaUsageMultiplier { get; set; } = 1f;
+
+        /// <summary>
+        /// Gets or sets the stamina regen multiplier. Resets on death.
+        /// </summary>
+        public float StaminaRegenMultiplier { get; set; } = 1f;
+
+        /// <summary>
         /// Gets a list of players who can't see the player.
         /// </summary>
         public HashSet<Player> IsInvisibleFor { get; } = HashSetPool<Player>.Pool.Get();
@@ -190,6 +216,21 @@ namespace Exiled.API.Features.Roles
         {
             get => Owner.ReferenceHub.playerStats.GetModule<AdminFlagsStat>().HasFlag(AdminFlags.Noclip);
             set => Owner.ReferenceHub.playerStats.GetModule<AdminFlagsStat>().SetFlag(AdminFlags.Noclip, value);
+        }
+
+        /// <summary>
+        /// Resets the <see cref="Player"/>'s stamina.
+        /// </summary>
+        /// <param name="multipliers">Resets <see cref="StaminaUsageMultiplier"/> and <see cref="StaminaRegenMultiplier"/>.</param>
+        public void ResetStamina(bool multipliers = false)
+        {
+            Owner.Stamina = Owner.StaminaStat.MaxValue;
+
+            if (!multipliers)
+                return;
+
+            StaminaUsageMultiplier = 1f;
+            StaminaRegenMultiplier = 1f;
         }
     }
 }

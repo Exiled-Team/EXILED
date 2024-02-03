@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="ElevatorManager.ServerReceiveMessage(NetworkConnection, ElevatorManager.ElevatorSyncMsg)" />.
-    ///     Adds the <see cref="Handlers.Player.InteractingElevator" /> event.
+    /// Patches <see cref="ElevatorManager.ServerReceiveMessage(NetworkConnection, ElevatorManager.ElevatorSyncMsg)" />.
+    /// Adds the <see cref="Handlers.Player.InteractingElevator" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.InteractingElevator))]
     [HarmonyPatch(typeof(ElevatorManager), nameof(ElevatorManager.ServerReceiveMessage))]

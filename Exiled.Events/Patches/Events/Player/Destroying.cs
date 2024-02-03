@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Runtime.CompilerServices;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patch the <see cref="ReferenceHub.OnDestroy" />.
-    ///     Adds the <see cref="Handlers.Player.Destroying" /> event.
+    /// Patch the <see cref="ReferenceHub.OnDestroy" />.
+    /// Adds the <see cref="Handlers.Player.Destroying" /> event.
     /// </summary>
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.OnDestroy))]
     internal static class Destroying

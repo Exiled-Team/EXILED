@@ -14,8 +14,8 @@ namespace Exiled.Events.Patches.Generic
     using System.Reflection.Emit;
 
     using API.Features;
+    using API.Features.Core.Generic.Pools;
     using API.Features.Items;
-    using API.Features.Pools;
     using Exiled.API.Features.Pickups;
     using HarmonyLib;
 
@@ -77,10 +77,9 @@ namespace Exiled.Events.Patches.Generic
         {
             Item item = Item.Get(itemBase);
             Pickup pickup = Pickup.Get(itemPickupBase);
-            /*
-            if (pickup?.IsLoaded ?? false)
-                pickup.GetPickupInfo(item);
-            */
+
+            item.ReadPickupInfo(pickup);
+
             player?.ItemsValue.Add(item);
         }
     }

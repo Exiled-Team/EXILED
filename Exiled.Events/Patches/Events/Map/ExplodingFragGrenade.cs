@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
 
@@ -72,7 +72,7 @@ namespace Exiled.Events.Patches.Events.Map
                 index,
                 new CodeInstruction[]
                 {
-                    // Player.Get(attacker.Hub);
+                    // attacker;
                     new(OpCodes.Ldarg_0),
 
                     // position

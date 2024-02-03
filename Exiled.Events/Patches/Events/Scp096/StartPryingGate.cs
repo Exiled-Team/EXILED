@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp096;
 
@@ -22,13 +22,13 @@ namespace Exiled.Events.Patches.Events.Scp096
     using Mirror;
 
     using PlayerRoles.PlayableScps.Scp096;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches the <see cref="Scp096PrygateAbility.ServerProcessCmd(NetworkReader)" /> method.
-    ///     Adds the <see cref="Handlers.Scp096.StartPryingGate" /> event.
+    /// Patches the <see cref="Scp096PrygateAbility.ServerProcessCmd(NetworkReader)" /> method.
+    /// Adds the <see cref="Handlers.Scp096.StartPryingGate" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.StartPryingGate))]
     [HarmonyPatch(typeof(Scp096PrygateAbility), nameof(Scp096PrygateAbility.ServerProcessCmd))]
@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Scp096
                 {
                     // Player.Get(base.Owner)
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp096Role>), nameof(ScpStandardSubroutine<Scp096Role>.Owner))),
+                    new(OpCodes.Call, PropertyGetter(typeof(StandardSubroutine<Scp096Role>), nameof(StandardSubroutine<Scp096Role>.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // this._syncDoor

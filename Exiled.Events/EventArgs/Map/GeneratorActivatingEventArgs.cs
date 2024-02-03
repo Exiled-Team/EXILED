@@ -14,18 +14,18 @@ namespace Exiled.Events.EventArgs.Map
     using MapGeneration.Distributors;
 
     /// <summary>
-    ///     Contains all information after activating a generator.
+    /// Contains all information after activating a generator.
     /// </summary>
     public class GeneratorActivatingEventArgs : IGeneratorEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GeneratorActivatingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="GeneratorActivatingEventArgs" /> class.
         /// </summary>
         /// <param name="generator">
-        ///     <inheritdoc cref="Generator" />
+        /// <inheritdoc cref="Generator" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public GeneratorActivatingEventArgs(Scp079Generator generator, bool isAllowed = true)
         {
@@ -34,12 +34,12 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        ///     Gets the activated generator.
+        /// Gets the generator.
         /// </summary>
         public Generator Generator { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the generator can be activated or not.
+        /// Gets or sets a value indicating whether the generator can be activated or not.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

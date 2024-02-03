@@ -31,6 +31,7 @@ namespace Exiled.API.Features
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Scp939;
+    using PlayerRoles.Ragdolls;
     using RelativePositioning;
     using UnityEngine;
     using Utils;
@@ -109,6 +110,13 @@ namespace Exiled.API.Features
         public static bool IsLczDecontaminated => DecontaminationController.Singleton.IsDecontaminating;
 
         /// <summary>
+        /// Gets a value indicating whether decontamination phase is in the light containment zone.
+        /// </summary>
+        public static DecontaminationState DecontaminationState =>
+            DecontaminationController.Singleton.NetworkDecontaminationOverride is DecontaminationController.DecontaminationStatus.Disabled ?
+            DecontaminationState.Disabled : (DecontaminationState)DecontaminationController.Singleton._nextPhase;
+
+        /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
         /// </summary>
         public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports { get; } = TeleportsValue.AsReadOnly();
@@ -139,7 +147,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="global::AmbientSoundPlayer"/>.
         /// </summary>
-        public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer != null ? ambientSoundPlayer : (ambientSoundPlayer = ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>());
+        public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer ??= ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>();
 
         /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
@@ -240,7 +248,7 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Locker"/>.
         /// </summary>
         /// <returns><see cref="Locker"/> object.</returns>
-        public static Locker GetRandomLocker() => Lockers.GetRandomValue();
+        public static Locker GetRandomLocker() => Lockers.Random();
 
         /// <summary>
         /// Gets a random <see cref="Pickup"/>.
@@ -250,7 +258,7 @@ namespace Exiled.API.Features
         public static Pickup GetRandomPickup(ItemType type = ItemType.None)
         {
             List<Pickup> pickups = (type != ItemType.None ? Pickup.List.Where(p => p.Type == type) : Pickup.List).ToList();
-            return pickups.GetRandomValue();
+            return pickups.Random();
         }
 
         /// <summary>

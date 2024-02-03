@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -25,10 +25,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="UsableItemsController.ServerReceivedStatus" />.
-    ///     Adds the <see cref="Handlers.Player.UsingItem" /> event,
-    ///     <see cref="Handlers.Player.CancellingItemUse" /> event and
-    ///     <see cref="Handlers.Player.CancelledItemUse" /> event.
+    /// Patches <see cref="UsableItemsController.ServerReceivedStatus" />.
+    /// Adds the <see cref="Handlers.Player.UsingItem" /> event,
+    /// <see cref="Handlers.Player.CancellingItemUse" /> event and
+    /// <see cref="Handlers.Player.CancelledItemUse" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.CancellingItemUse))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsingItem))]
@@ -42,7 +42,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label returnLabel = generator.DefineLabel();
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(UsingItemEventArgs));
+            LocalBuilder evUsingItemEventArgs = generator.DeclareLocal(typeof(UsingItemEventArgs));
+            LocalBuilder evCancellingItemUseEventArgs = generator.DeclareLocal(typeof(CancellingItemUseEventArgs));
 
             int offset = 2;
             int index = newInstructions.FindIndex(
@@ -66,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingItemEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
+                    new(OpCodes.Stloc_S, evUsingItemEventArgs.LocalIndex),
 
                     // Handlers.Player.OnUsingItem(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingItem))),
@@ -77,7 +78,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brfalse_S, returnLabel),
 
                     // cooldown = ev.Cooldown
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Ldloc_S, evUsingItemEventArgs.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(UsingItemEventArgs), nameof(UsingItemEventArgs.Cooldown))),
                     new(OpCodes.Stloc_S, 4),
                 });
@@ -101,6 +102,8 @@ namespace Exiled.Events.Patches.Events.Player
                     // CancellingItemUseEventArgs ev = new(Player, UsableItem)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(CancellingItemUseEventArgs))[0]),
                     new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, evCancellingItemUseEventArgs.LocalIndex),
 
                     // Handlers.Player.OnCancellingItemUse(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnCancellingItemUse))),
@@ -122,10 +125,9 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Ldloc_0),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                    // handler.CurrentUsable.Item
-                    new(OpCodes.Ldloc_2),
-                    new(OpCodes.Ldflda, Field(typeof(PlayerHandler), nameof(PlayerHandler.CurrentUsable))),
-                    new(OpCodes.Ldfld, Field(typeof(CurrentlyUsedItem), nameof(CurrentlyUsedItem.Item))),
+                    // evCancellingItemUseEventArgs.Item
+                    new(OpCodes.Ldloc_S, evCancellingItemUseEventArgs.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(CancellingItemUseEventArgs), nameof(CancellingItemUseEventArgs.Item))),
 
                     // CancellingItemUseEventArgs ev = new(Player, UsableItem)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(CancelledItemUseEventArgs))[0]),

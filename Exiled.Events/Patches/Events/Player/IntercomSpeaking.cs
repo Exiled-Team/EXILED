@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Diagnostics;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Intercom.Update" />.
-    ///     Adds the <see cref="Handlers.Player.IntercomSpeaking" /> event.
+    /// Patches <see cref="Intercom.Update" />.
+    /// Adds the <see cref="Handlers.Player.IntercomSpeaking" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.IntercomSpeaking))]
     [HarmonyPatch(typeof(Intercom), nameof(Intercom.Update))]

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Permissions.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -15,7 +15,7 @@ namespace Exiled.Events.Commands.Reload
     using Exiled.Permissions.Extensions;
 
     /// <summary>
-    /// The reload configs command.
+    /// The reload permissions command.
     /// </summary>
     public class Permissions : ICommand
     {

@@ -11,20 +11,20 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using PlayerRoles.PlayableScps.Scp106;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp106Attack.ServerShoot" />.
-    ///     Adds the <see cref="Handlers.Player.EnteringPocketDimension" /> event.
+    /// Patches <see cref="Scp106Attack.ServerShoot" />.
+    /// Adds the <see cref="Handlers.Player.EnteringPocketDimension" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.EnteringPocketDimension))]
     [HarmonyPatch(typeof(Scp106Attack), nameof(Scp106Attack.ServerShoot))]
@@ -58,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // Player.Get(base.Owner)
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp106Role>), nameof(ScpStandardSubroutine<Scp106Role>.Owner))),
+                    new(OpCodes.Call, PropertyGetter(typeof(StandardSubroutine<Scp106Role>), nameof(StandardSubroutine<Scp106Role>.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // true

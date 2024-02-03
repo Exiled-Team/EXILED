@@ -12,35 +12,33 @@ namespace Exiled.Events.EventArgs.Scp079
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
 
-    using Scp079Role = API.Features.Roles.Scp079Role;
-
     /// <summary>
-    ///     Contains all information before SCP-079 gains experience.
+    /// Contains all information before SCP-079 gains experience.
     /// </summary>
     public class GainingExperienceEventArgs : IScp079Event, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GainingExperienceEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="GainingExperienceEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="gainType">
-        ///     <inheritdoc cref="GainType" />
+        /// <inheritdoc cref="GainType" />
         /// </param>
         /// <param name="roleType">
-        ///     <inheritdoc cref="RoleType" />
+        /// <inheritdoc cref="RoleType" />
         /// </param>
         /// <param name="amount">
-        ///     <inheritdoc cref="Amount" />
+        /// <inheritdoc cref="Amount" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public GainingExperienceEventArgs(Player player, Scp079HudTranslation gainType, int amount, RoleTypeId roleType, bool isAllowed = true)
         {
             Player = player;
-            Scp079 = Player.Role.As<Scp079Role>();
+            Scp079 = player.Role.As<API.Features.Roles.Scp079Role>();
             GainType = gainType;
             RoleType = roleType;
             Amount = amount;
@@ -48,32 +46,32 @@ namespace Exiled.Events.EventArgs.Scp079
         }
 
         /// <summary>
-        ///     Gets or sets the role that was used to gain experience.
-        ///     <remark>The RoleType will be <see cref="RoleTypeId.None"/> when it's not an assisted experience.</remark>
+        /// Gets or sets the role that was used to gain experience.
+        /// <remark>The RoleType will be <see cref="RoleTypeId.None"/> when it's not an assisted experience.</remark>
         /// </summary>
         public RoleTypeId RoleType { get; set; }
 
         /// <summary>
-        ///     Gets or sets the experience gain type.
+        /// Gets or sets the experience gain type.
         /// </summary>
         public Scp079HudTranslation GainType { get; set; }
 
         /// <summary>
-        ///     Gets or sets the amount of experience to be gained.
+        /// Gets or sets the amount of experience to be gained.
         /// </summary>
         public int Amount { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the experience is successfully granted.
+        /// Gets or sets a value indicating whether or not the experience is successfully granted.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the player who's controlling SCP-079.
+        /// Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
 
         /// <inheritdoc/>
-        public Scp079Role Scp079 { get; }
+        public API.Features.Roles.Scp079Role Scp079 { get; }
     }
 }

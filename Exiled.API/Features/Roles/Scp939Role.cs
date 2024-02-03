@@ -10,14 +10,14 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
 
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
     using PlayerRoles.PlayableScps.Scp939.Ripples;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using RelativePositioning;
 

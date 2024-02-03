@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Items;
 
     using Exiled.Events.Attributes;
@@ -28,10 +28,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="FirearmBasicMessagesHandler.ServerRequestReceived" />.
-    ///     Adds <see cref="Player.ReloadingWeapon" />, <see cref="Player.UnloadingWeapon" />,
-    ///     <see cref="Player.DryfiringWeapon" />, <see cref="Player.AimingDownSight" /> and
-    ///     <see cref="Player.TogglingWeaponFlashlight" /> events.
+    /// Patches <see cref="FirearmBasicMessagesHandler.ServerRequestReceived" />.
+    /// Adds <see cref="Player.ReloadingWeapon" />, <see cref="Player.UnloadingWeapon" />,
+    /// <see cref="Player.DryfiringWeapon" />, <see cref="Player.AimingDownSight" /> and
+    /// <see cref="Player.TogglingWeaponFlashlight" /> events.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.ReloadingWeapon))]
     [EventPatch(typeof(Player), nameof(Player.UnloadingWeapon))]
@@ -234,7 +234,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldloc_S, firearm.LocalIndex),
 
                     // !flag
-                    new(OpCodes.Ldloc_S, 6),
+                    new(OpCodes.Ldloc_S, 8),
                     new(OpCodes.Ldc_I4_0),
                     new(OpCodes.Ceq),
 

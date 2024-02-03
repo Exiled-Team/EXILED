@@ -8,11 +8,10 @@
 namespace Exiled.Events.Patches.Events.Scp173
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp173;
@@ -20,13 +19,13 @@ namespace Exiled.Events.Patches.Events.Scp173
     using HarmonyLib;
 
     using PlayerRoles.PlayableScps.Scp173;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp173TeleportAbility.ServerProcessCmd" />.
-    ///     Adds the <see cref="Handlers.Scp173.BlinkingRequest" /> event.
+    /// Patches <see cref="Scp173TeleportAbility.ServerProcessCmd" />.
+    /// Adds the <see cref="Handlers.Scp173.BlinkingRequest" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp173.BlinkingRequest))]
     [HarmonyPatch(typeof(Scp173TeleportAbility), nameof(Scp173TeleportAbility.ServerProcessCmd))]
@@ -47,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Scp173
                 {
                     // Player.Get(this.Owner)
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ScpStandardSubroutine<Scp173Role>), nameof(ScpStandardSubroutine<Scp173Role>.Owner))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StandardSubroutine<Scp173Role>), nameof(StandardSubroutine<Scp173Role>.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // this._observersTracker.Observers

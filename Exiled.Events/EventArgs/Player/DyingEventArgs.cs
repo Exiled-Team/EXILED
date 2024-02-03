@@ -21,56 +21,49 @@ namespace Exiled.Events.EventArgs.Player
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
-    ///     Contains all information before a player dies.
+    /// Contains all information before a player dies.
     /// </summary>
     public class DyingEventArgs : IAttackerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DyingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="DyingEventArgs" /> class.
         /// </summary>
         /// <param name="target">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="damageHandler">
-        ///     <inheritdoc cref="DamageHandler" />
+        /// <inheritdoc cref="DamageHandler" />
         /// </param>
         public DyingEventArgs(Player target, DamageHandlerBase damageHandler)
         {
             DamageHandler = new CustomDamageHandler(target, damageHandler);
             Player = target;
-#pragma warning disable CS0618
             ItemsToDrop = Player.Items.ToList();
-#pragma warning restore CS0618
-            Attacker = DamageHandler.BaseIs(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
+            Attacker = DamageHandler.Is(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
         }
 
         /// <summary>
-        ///     Gets or sets the list of items to be dropped.
+        /// Gets the list of items to be dropped.
         /// </summary>
-        public List<Item> ItemsToDrop
-        {
-            get;
-            [Obsolete("This setter has been deprecated")]
-            set;
-        }
+        public List<Item> ItemsToDrop { get; }
 
         /// <summary>
-        ///     Gets the dying player.
+        /// Gets the dying player.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets or sets the <see cref="CustomDamageHandler" />.
+        /// Gets or sets the <see cref="CustomDamageHandler" />.
         /// </summary>
         public CustomDamageHandler DamageHandler { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can be killed.
+        /// Gets or sets a value indicating whether or not the player can be killed.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        ///     Gets the killing player.
+        /// Gets the killing player.
         /// </summary>
         public Player Attacker { get; }
     }

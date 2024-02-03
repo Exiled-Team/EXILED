@@ -18,7 +18,11 @@ namespace Exiled.Loader
     using API.Interfaces;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Attributes;
+    using Exiled.API.Features.Core.Generic.Pools;
     using YamlDotNet.Core;
+
+    using Serialization = API.Features.EConfig;
 
     /// <summary>
     /// Used to handle plugin configs.
@@ -26,7 +30,7 @@ namespace Exiled.Loader
     public static class ConfigManager
     {
         /// <summary>
-        /// Loads all plugin configs.
+        /// Loads all the plugin configs.
         /// </summary>
         /// <param name="rawConfigs">The raw configs to be loaded.</param>
         /// <returns>Returns a dictionary of loaded configs.</returns>
@@ -36,11 +40,14 @@ namespace Exiled.Loader
             {
                 Log.Info($"Loading plugin configs... ({LoaderPlugin.Config.ConfigType})");
 
-                Dictionary<string, object> rawDeserializedConfigs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? DictionaryPool<string, object>.Pool.Get();
+                Dictionary<string, object> rawDeserializedConfigs = Serialization.Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? DictionaryPool<string, object>.Pool.Get();
                 SortedDictionary<string, IConfig> deserializedConfigs = new(StringComparer.Ordinal);
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
+                    if (plugin.Config.GetType().GetCustomAttribute<ConfigAttribute>() is not null)
+                        continue;
+
                     deserializedConfigs.Add(plugin.Prefix, plugin.LoadConfig(rawDeserializedConfigs));
                 }
 
@@ -65,16 +72,17 @@ namespace Exiled.Loader
         }
 
         /// <summary>
-        /// Loads the config of a plugin using the actual distribution.
+        /// Loads the config of a plugin using the distribution.
         /// </summary>
         /// <param name="plugin">The plugin which config will be loaded.</param>
         /// <param name="rawConfigs">The raw configs to detect if the plugin already has generated configs.</param>
         /// <returns>The <see cref="IConfig"/> of the plugin.</returns>
-        public static IConfig LoadConfig(this IPlugin<IConfig> plugin, Dictionary<string, object> rawConfigs = null) => LoaderPlugin.Config.ConfigType switch
-        {
-            ConfigType.Separated => LoadSeparatedConfig(plugin),
-            _ => LoadDefaultConfig(plugin, rawConfigs),
-        };
+        public static IConfig LoadConfig(this IPlugin<IConfig> plugin, Dictionary<string, object> rawConfigs = null) =>
+            plugin.Config.GetType().GetCustomAttribute<ConfigAttribute>() is not null ? null : LoaderPlugin.Config.ConfigType switch
+            {
+                ConfigType.Separated => LoadSeparatedConfig(plugin),
+                _ => LoadDefaultConfig(plugin, rawConfigs),
+            };
 
         /// <summary>
         /// Loads the config of a plugin using the default distribution.
@@ -84,9 +92,12 @@ namespace Exiled.Loader
         /// <returns>The <see cref="IConfig"/> of the plugin.</returns>
         public static IConfig LoadDefaultConfig(this IPlugin<IConfig> plugin, Dictionary<string, object> rawConfigs)
         {
-            rawConfigs ??= Loader.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? new Dictionary<string, object>();
+            if (plugin.Config.GetType().GetCustomAttribute<ConfigAttribute>() is not null)
+                return null;
 
-            if (!rawConfigs.TryGetValue(plugin.Prefix, out object rawDeserializedConfig))
+            rawConfigs ??= Serialization.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? new Dictionary<string, object>();
+
+            if (!rawConfigs.TryGetValue(plugin.Prefix, out object rawDeserializedConfig) && plugin.Config.GetType().GetCustomAttribute<ConfigAttribute>() is null)
             {
                 Log.Warn($"{plugin.Name} doesn't have default configs, generating...");
 
@@ -97,8 +108,8 @@ namespace Exiled.Loader
 
             try
             {
-                string rawConfigString = Loader.Serializer.Serialize(rawDeserializedConfig);
-                config = (IConfig)Loader.Deserializer.Deserialize(rawConfigString, plugin.Config.GetType());
+                string rawConfigString = Serialization.Serializer.Serialize(rawDeserializedConfig);
+                config = (IConfig)Serialization.Deserializer.Deserialize(rawConfigString, plugin.Config.GetType());
                 plugin.Config.CopyProperties(config);
             }
             catch (YamlException yamlException)
@@ -117,6 +128,9 @@ namespace Exiled.Loader
         /// <returns>The <see cref="IConfig"/> of the plugin.</returns>
         public static IConfig LoadSeparatedConfig(this IPlugin<IConfig> plugin)
         {
+            if (plugin.Config.GetType().GetCustomAttribute<ConfigAttribute>() is not null)
+                return null;
+
             if (!File.Exists(plugin.ConfigPath))
             {
                 Log.Warn($"{plugin.Name} doesn't have default configs, generating...");
@@ -127,7 +141,7 @@ namespace Exiled.Loader
 
             try
             {
-                config = (IConfig)Loader.Deserializer.Deserialize(File.ReadAllText(plugin.ConfigPath), plugin.Config.GetType());
+                config = (IConfig)Serialization.Deserializer.Deserialize(File.ReadAllText(plugin.ConfigPath), plugin.Config.GetType());
                 plugin.Config.CopyProperties(config);
             }
             catch (YamlException yamlException)
@@ -172,7 +186,7 @@ namespace Exiled.Loader
         }
 
         /// <summary>
-        /// Reads, Loads and Saves plugin configs.
+        /// Reads, loads, and saves plugin configs.
         /// </summary>
         /// <returns>Returns a value indicating if the reloading process has been completed successfully or not.</returns>
         public static bool Reload() => Save(LoadSorted(Read()));
@@ -237,10 +251,10 @@ namespace Exiled.Loader
 
                 if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
                 {
-                    return SaveDefaultConfig(Loader.Serializer.Serialize(configs));
+                    return SaveDefaultConfig(Serialization.Serializer.Serialize(configs));
                 }
 
-                return configs.All(config => SaveSeparatedConfig(config.Key, Loader.Serializer.Serialize(config.Value)));
+                return configs.All(config => SaveSeparatedConfig(config.Key, Serialization.Serializer.Serialize(config.Value)));
             }
             catch (YamlException yamlException)
             {

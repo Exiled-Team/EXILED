@@ -16,7 +16,7 @@ namespace Exiled.API.Extensions
     using System.Text;
 
     using Features;
-    using Features.Pools;
+    using Features.Core.Generic.Pools;
 
     using InventorySystem.Items.Firearms;
 
@@ -44,7 +44,6 @@ namespace Exiled.API.Extensions
         private static readonly ReadOnlyDictionary<string, string> ReadOnlyRpcFullNamesValue = new(RpcFullNamesValue);
         private static MethodInfo setDirtyBitsMethodInfoValue;
         private static MethodInfo sendSpawnMessageMethodInfoValue;
-        private static MethodInfo bufferRpcMethodInfoValue;
 
         /// <summary>
         /// Gets <see cref="MethodInfo"/> corresponding to <see cref="Type"/>.
@@ -55,7 +54,7 @@ namespace Exiled.API.Extensions
             {
                 if (WriterExtensionsValue.Count == 0)
                 {
-                    foreach (MethodInfo method in typeof(NetworkWriterExtensions).GetMethods().Where(x => !x.IsGenericMethod && (x.GetParameters()?.Length == 2)))
+                    foreach (MethodInfo method in typeof(NetworkWriterExtensions).GetMethods().Where(x => !x.IsGenericMethod && x.GetCustomAttribute(typeof(ObsoleteAttribute)) == null && (x.GetParameters()?.Length == 2)))
                         WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
 
                     Type fuckNorthwood = Assembly.GetAssembly(typeof(RoleTypeId)).GetType("Mirror.GeneratedNetworkCode");
@@ -147,11 +146,6 @@ namespace Exiled.API.Extensions
         public static MethodInfo SendSpawnMessageMethodInfo => sendSpawnMessageMethodInfoValue ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
 
         /// <summary>
-        /// Gets a NetworkConnectionToClient.BufferRpc's <see cref="MethodInfo"/>.
-        /// </summary>
-        public static MethodInfo BufferRpcMethodInfo => bufferRpcMethodInfoValue ??= typeof(NetworkConnectionToClient).GetMethod("BufferRpc", BindingFlags.NonPublic | BindingFlags.Instance, null, CallingConventions.HasThis, new Type[] { typeof(RpcMessage), typeof(int) }, null);
-
-        /// <summary>
         /// Plays a beep sound that only the target <paramref name="player"/> can hear.
         /// </summary>
         /// <param name="player">Target to play sound to.</param>
@@ -208,16 +202,6 @@ namespace Exiled.API.Extensions
         public static void SetName(this Player target, Player player, string name)
         {
             target.SendFakeSyncVar(player.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), name);
-        }
-
-        /// <summary>
-        /// Sets <see cref="Room"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
-        /// </summary>
-        /// <param name="room">Room to modify.</param>
-        /// <param name="target">Only this player can see room color.</param>
-        /// <param name="multiplier">Light intensity multiplier to set.</param>
-        public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier)
-        {
         }
 
         /// <summary>
@@ -352,6 +336,9 @@ namespace Exiled.API.Extensions
         /// <param name="value">Value of send to target.</param>
         public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
         {
+            if (!target.IsConnected)
+                return;
+
             NetworkWriterPooled writer = NetworkWriterPool.Get();
             NetworkWriterPooled writer2 = NetworkWriterPool.Get();
             MakeCustomSyncWriter(behaviorOwner, targetType, null, CustomSyncVarGenerator, writer, writer2);
@@ -388,6 +375,9 @@ namespace Exiled.API.Extensions
         /// <param name="values">Values of send to target.</param>
         public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
         {
+            if (!target.IsConnected)
+                return;
+
             NetworkWriterPooled writer = NetworkWriterPool.Get();
 
             foreach (object value in values)
@@ -401,7 +391,7 @@ namespace Exiled.API.Extensions
                 payload = writer.ToArraySegment(),
             };
 
-            BufferRpcMethodInfo.Invoke(target.Connection, new object[] { msg, 0 });
+            target.Connection.Send(msg);
 
             NetworkWriterPool.Return(writer);
         }
@@ -427,6 +417,9 @@ namespace Exiled.API.Extensions
         /// </example>
         public static void SendFakeSyncObject(Player target, NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customAction)
         {
+            if (!target.IsConnected)
+                return;
+
             NetworkWriterPooled writer = NetworkWriterPool.Get();
             NetworkWriterPooled writer2 = NetworkWriterPool.Get();
             MakeCustomSyncWriter(behaviorOwner, targetType, customAction, null, writer, writer2);

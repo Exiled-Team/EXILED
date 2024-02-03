@@ -7,35 +7,49 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
+    using Exiled.API.Enums;
     using Exiled.Events.EventArgs.Interfaces;
 
+    using static LightContainmentZoneDecontamination.DecontaminationController.DecontaminationPhase;
+
     /// <summary>
-    ///     Contains all information before C.A.S.S.I.E announces light containment zone decontamination.
+    /// Contains all information before C.A.S.S.I.E announces light containment zone decontamination.
     /// </summary>
     public class AnnouncingDecontaminationEventArgs : IExiledEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="AnnouncingDecontaminationEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="AnnouncingDecontaminationEventArgs" /> class.
         /// </summary>
         /// <param name="announcementId">
-        ///     <inheritdoc cref="Id" />
+        /// <inheritdoc cref="Id" />
         /// </param>
-        /// <param name="isGlobal">
-        ///     <inheritdoc cref="IsGlobal" />
+        /// <param name="phaseFunction">
+        /// <inheritdoc cref="PhaseFunction" />
         /// </param>
-        public AnnouncingDecontaminationEventArgs(int announcementId, bool isGlobal)
+        public AnnouncingDecontaminationEventArgs(int announcementId, PhaseFunction phaseFunction)
         {
             Id = announcementId;
-            IsGlobal = isGlobal;
+            PhaseFunction = phaseFunction;
+            IsGlobal = PhaseFunction is PhaseFunction.GloballyAudible or PhaseFunction.Final;
         }
 
         /// <summary>
-        ///     Gets the announcement id, from 0 to 6.
+        /// Gets the announcement id, from 0 to 6.
         /// </summary>
         public int Id { get; }
 
         /// <summary>
-        ///     Gets a value indicating whether the announcement is going to be global or not.
+        /// Gets the announcement id, from 0 to 6.
+        /// </summary>
+        public DecontaminationState State => (DecontaminationState)Id;
+
+        /// <summary>
+        /// Gets a value indicating whether the action will be.
+        /// </summary>
+        public PhaseFunction PhaseFunction { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the announcement is going to be global or not.
         /// </summary>
         public bool IsGlobal { get; }
     }
