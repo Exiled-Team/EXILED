@@ -53,6 +53,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public static TDynamicEventDispatcher<ChangingCustomRoleEventArgs> ChangingCustomRoleDispatcher { get; protected set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after a player changes role.
+        /// </summary>
+        [DynamicEventDispatcher]
+        public static TDynamicEventDispatcher<ChangedCustomRoleEventArgs> ChangedCustomRoleDispatcher { get; protected set; }
+
+        /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomRole"/>'s.
         /// </summary>
         public static IEnumerable<CustomRole> List => Registered;
@@ -674,16 +680,20 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (!CustomRole.TryGet(ev.Role, out CustomRole role))
                 return false;
 
-            if (role.Id == Id)
-            {
-                player.AddComponent(BehaviourComponent);
-                PlayersValue.Remove(player);
-                PlayersValue.Add(player, this);
-                Instances += 1;
-                return true;
-            }
+            if (role.Id != Id)
+                return role.Spawn(player);
 
-            return role.Spawn(player);
+            object prevRole = player.CustomRole ? player.CustomRole.Id : player.Role.Type;
+            player.AddComponent(BehaviourComponent);
+            PlayersValue.Remove(player);
+            PlayersValue.Add(player, this);
+            Instances += 1;
+
+            ChangedCustomRoleEventArgs @event = new(player, prevRole);
+            ChangedCustomRoleDispatcher.InvokeAll(@event);
+
+            return true;
+
         }
 
         /// <summary>
@@ -731,17 +741,25 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return;
             }
 
+            object prevRole = player.CustomRole ? player.CustomRole.Id : player.Role.Type;
             Remove(player);
             PlayersValue.Add(player, this);
 
             if (!player.IsAlive)
             {
                 ForceSpawn_Internal(player, false);
+                ChangedCustomRoleEventArgs @event = new(player, prevRole);
+                ChangedCustomRoleDispatcher.InvokeAll(@event);
                 return;
             }
 
             player.Role.Set(RoleTypeId.Spectator, SpawnReason.Respawn);
-            Timing.CallDelayed(0.1f, () => ForceSpawn_Internal(player, false));
+            Timing.CallDelayed(0.1f, () =>
+            {
+                ForceSpawn_Internal(player, false);
+                ChangedCustomRoleEventArgs @event = new(player, prevRole);
+                ChangedCustomRoleDispatcher.InvokeAll(@event);
+            });
         }
 
         /// <summary>
@@ -778,17 +796,25 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return;
             }
 
+            object prevRole = player.CustomRole ? player.CustomRole.Id : player.Role.Type;
             PlayersValue.Remove(player);
             PlayersValue.Add(player, this);
 
             if (!player.IsAlive)
             {
                 ForceSpawn_Internal(player, preservePosition);
+                ChangedCustomRoleEventArgs @event = new(player, prevRole);
+                ChangedCustomRoleDispatcher.InvokeAll(@event);
                 return;
             }
 
             player.Role.Set(RoleTypeId.Spectator, SpawnReason.Respawn);
-            Timing.CallDelayed(0.1f, () => ForceSpawn_Internal(player, preservePosition));
+            Timing.CallDelayed(0.1f, () =>
+            {
+                ForceSpawn_Internal(player, preservePosition);
+                ChangedCustomRoleEventArgs @event = new(player, prevRole);
+                ChangedCustomRoleDispatcher.InvokeAll(@event);
+            });
         }
 
         /// <summary>
