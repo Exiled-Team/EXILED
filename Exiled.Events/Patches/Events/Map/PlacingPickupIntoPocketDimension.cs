@@ -21,9 +21,9 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     ///     Patches <see cref="Scp106PocketItemManager"/>
-    ///     Adds the <see cref="Map.PocketDimensionPickup" /> event.
+    ///     Adds the <see cref="Map.PlacingPickupIntoPocketDimension" /> event.
     /// </summary>
-    [EventPatch(typeof(Map), nameof(Map.PocketDimensionPickup))]
+    [EventPatch(typeof(Map), nameof(Map.PlacingPickupIntoPocketDimension))]
     [HarmonyPatch(typeof(Scp106PocketItemManager), nameof(Scp106PocketItemManager.OnAdded))]
     internal static class PlacingPickupIntoPocketDimension
     {

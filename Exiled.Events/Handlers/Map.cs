@@ -108,7 +108,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before an item is placed in the pocket dimension.
         /// </summary>
-        public static Event<PlacingPickupIntoPocketDimensionEventArgs> PocketDimensionPickup { get; set; } = new();
+        public static Event<PlacingPickupIntoPocketDimensionEventArgs> PlacingPickupIntoPocketDimension { get; set; } = new();
 
         /// <summary>
         /// Called before placing a decal.
@@ -215,6 +215,6 @@ namespace Exiled.Events.Handlers
         /// Called before an item is dropped in the pocket dimension.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingPickupIntoPocketDimensionEventArgs"/> instnace.</param>
-        public static void OnPocketDimensionItem(PlacingPickupIntoPocketDimensionEventArgs ev) => PocketDimensionPickup.InvokeSafely(ev);
+        public static void OnPocketDimensionItem(PlacingPickupIntoPocketDimensionEventArgs ev) => PlacingPickupIntoPocketDimension.InvokeSafely(ev);
     }
 }
