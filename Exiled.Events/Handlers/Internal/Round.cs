@@ -8,9 +8,9 @@
 namespace Exiled.Events.Handlers.Internal
 {
     using CentralAuth;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
-    using Exiled.API.Extensions;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp049;
     using Exiled.Loader;
