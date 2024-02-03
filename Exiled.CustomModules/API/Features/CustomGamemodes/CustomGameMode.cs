@@ -16,7 +16,9 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
+    using Unity.Collections.LowLevel.Unsafe;
 
     /// <summary>
     /// Represents a custom game mode in the system, derived from <see cref="CustomModule"/> and implementing <see cref="IAdditiveBehaviours"/>.
@@ -89,6 +91,40 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         public virtual GameModeSettings Settings { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the game mode can start automatically based on the configured probability, if automatic.
+        /// </summary>
+        /// <returns><see langword="true"/> if the game mode can start automatically; otherwise, <see langword="false"/>.</returns>
+        public bool CanStartAuto => Settings.Automatic && Settings.AutomaticProbability.EvaluateProbability();
+
+        /// <summary>
+        /// Gets the type of the game state.
+        /// </summary>
+        /// <param name="customGameMode">The custom game mode.</param>
+        /// <returns>The type of the game state if found; otherwise, <see langword="null"/>.</returns>
+        public Type GameState => BehaviourComponents.FirstOrDefault(comp => typeof(GameState).IsAssignableFrom(comp));
+
+        /// <summary>
+        /// Gets the types of the player states.
+        /// </summary>
+        /// <param name="customGameMode">The custom game mode.</param>
+        /// <returns>The types of the player states if found; otherwise, empty.</returns>
+        public IEnumerable<Type> PlayerStates => BehaviourComponents.Where(comp => typeof(PlayerState).IsAssignableFrom(comp));
+
+        /// <summary>
+        /// Gets all <see cref="CustomGameMode"/> instances based on the predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>All <see cref="CustomGameMode"/> instances matching the predicate.</returns>
+        public static IEnumerable<CustomGameMode> Get(Func<CustomGameMode, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Gets a <see cref="CustomGameMode"/> based on the provided id or <see cref="UUGameModeType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUGameModeType"/> of the custom game mode.</param>
+        /// <returns>The <see cref="CustomGameMode"/> with the specified id, or <see langword="null"/> if no game mode is found.</returns>
+        public static CustomGameMode Get(object id) => id is uint or UUGameModeType ? Get((uint)id) : null;
+
+        /// <summary>
         /// Gets a <see cref="CustomGameMode"/> given the specified <see cref="Id"/>.
         /// </summary>
         /// <param name="id">The specified id.</param>
@@ -124,6 +160,14 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <param name="playerState">The specified <see cref="PlayerState"/>.</param>
         /// <returns>The <see cref="CustomGameMode"/> matching the search or <see langword="null"/> if not found.</returns>
         public static CustomGameMode Get(PlayerState playerState) => Get(playerState.GetType());
+
+        /// <summary>
+        /// Attempts to retrieve a <see cref="CustomGameMode"/> based on the provided id or <see cref="UUCustomGameModeType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomGameModeType"/> of the custom game mode.</param>
+        /// <param name="customGameMode">When this method returns, contains the <see cref="CustomGameMode"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomGameMode"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(object id, out CustomGameMode customGameMode) => customGameMode = Get(id);
 
         /// <summary>
         /// Tries to get a <see cref="CustomGameMode"/> given the specified <see cref="CustomGameMode"/>.
@@ -174,6 +218,13 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
                 if (!customGameMode.IsEnabled)
                     continue;
 
+                if (customGameMode.BehaviourComponents.Count(comp => typeof(GameState).IsAssignableFrom(comp)) != 1 || customGameMode.PlayerStates.Count() <= 0)
+                {
+                    Log.Error($"Failed to load the custom game mode.\n" +
+                              $"The game mode \"{customGameMode.Name}\" should have exactly one GameState component and at least one PlayerState component defined.");
+                    continue;
+                }
+
                 if (customGameMode.TryRegister(attribute))
                     customGameModes.Add(customGameMode);
             }
@@ -191,7 +242,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         public static List<CustomGameMode> DisableAll()
         {
             List<CustomGameMode> customGameModes = new();
-            customGameModes.AddRange(List.Where(customGamemode => customGamemode.TryUnregister()));
+            customGameModes.AddRange(List.Where(customGameMode => customGameMode.TryUnregister()));
 
             Log.Info($"{customGameModes.Count()} custom game modes have been successfully unregistered!");
 
