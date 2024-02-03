@@ -21,6 +21,8 @@ namespace Exiled.CustomModules
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.CustomGameModes;
     using Exiled.CustomModules.API.Features.CustomItems;
+    using Exiled.CustomModules.API.Features.CustomItems.Items;
+    using Exiled.CustomModules.API.Features.CustomItems.Pickups;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.EventHandlers;
 
@@ -73,6 +75,15 @@ namespace Exiled.CustomModules
 
             if (Config.Modules.Contains(ModuleType.CustomGameModes))
                 World.CreateNewInstance();
+
+            if (Config.Modules.Contains(ModuleType.CustomAbilities))
+                StaticActor.CreateNewInstance<AbilityTracker>();
+
+            if (Config.Modules.Contains(ModuleType.CustomItems))
+            {
+                StaticActor.CreateNewInstance<ItemTracker>();
+                StaticActor.CreateNewInstance<PickupTracker>();
+            }
 
             SubscribeEvents();
 

@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.CustomModules.API.Enums;
-
 namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
     using System;
@@ -20,6 +18,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
+    using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomAbilities.Settings;
     using Exiled.CustomModules.API.Features.CustomEscapes;
