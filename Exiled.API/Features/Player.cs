@@ -3397,18 +3397,18 @@ namespace Exiled.API.Features
         {
             switch (obj)
             {
-                case Role role:
-                    if (role.Owner is not null)
-                        Teleport(role.Owner.Position + offset);
-                    else
-                        Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid role teleport (role is missing Owner).");
-                    break;
                 case TeslaGate teslaGate:
                     Teleport(
                         teslaGate.Position + offset + Vector3.up +
                         (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
                             ? new Vector3(3, 0, 0)
                             : new Vector3(0, 0, 3)));
+                    break;
+                case Role role:
+                    if (role.Owner is not null)
+                        Teleport(role.Owner.Position + offset);
+                    else
+                        Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid role teleport (role is missing Owner).");
                     break;
                 case Item item:
                     if (item.Owner is not null)
