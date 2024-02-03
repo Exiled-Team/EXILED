@@ -10,8 +10,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies.Patches
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Items;
-    using Exiled.API.Features.Pools;
     using HarmonyLib;
     using InventorySystem.Items;
     using InventorySystem.Items.Usables.Scp330;
