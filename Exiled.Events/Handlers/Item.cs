@@ -14,27 +14,27 @@ namespace Exiled.Events.Handlers
     using Exiled.Events.Features;
 
     /// <summary>
-    ///     Item related events.
+    /// Item related events.
     /// </summary>
     public static class Item
     {
         /// <summary>
-        ///     Invoked before the ammo of an firearm are changed.
+        /// Invoked before the ammo of an firearm are changed.
         /// </summary>
         public static Event<ChangingAmmoEventArgs> ChangingAmmo { get; set; } = new ();
 
         /// <summary>
-        ///     Invoked before item attachments are changed.
+        /// Invoked before item attachments are changed.
         /// </summary>
         public static Event<ChangingAttachmentsEventArgs> ChangingAttachments { get; set; } = new();
 
         /// <summary>
-        ///     Invoked after item attachments are changed.
+        /// Invoked after item attachments are changed.
         /// </summary>
         public static Event<ChangedAttachmentsEventArgs> ChangedAttachments { get; set; } = new();
 
         /// <summary>
-        ///     Invoked before receiving a preference.
+        /// Invoked before receiving a preference.
         /// </summary>
         public static Event<ReceivingPreferenceEventArgs> ReceivingPreference { get; set; } = new();
 
@@ -54,25 +54,30 @@ namespace Exiled.Events.Handlers
         public static Event<ChargingJailbirdEventArgs> ChargingJailbird { get; set; } = new();
 
         /// <summary>
+        /// Invoked before a radio pickup is draining battery.
+        /// </summary>
+        public static Event<UsingRadioPickupBatteryEventArgs> UsingRadioPickupBattery { get; set; } = new();
+
+        /// <summary>
         /// Called before the ammo of an firearm is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingAmmoEventArgs"/> instance.</param>
         public static void OnChangingAmmo(ChangingAmmoEventArgs ev) => ChangingAmmo.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before item attachments are changed.
+        /// Called before item attachments are changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs" /> instance.</param>
         public static void OnChangingAttachments(ChangingAttachmentsEventArgs ev) => ChangingAttachments.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called after item attachments are changed.
+        /// Called after item attachments are changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs" /> instance.</param>
         public static void OnChangedAttachments(ChangedAttachmentsEventArgs ev) => ChangedAttachments.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before receiving a preference.
+        /// Called before receiving a preference.
         /// </summary>
         /// <param name="ev">The <see cref="ReceivingPreferenceEventArgs" /> instance.</param>
         public static void OnReceivingPreference(ReceivingPreferenceEventArgs ev) => ReceivingPreference.InvokeSafely(ev);
@@ -94,5 +99,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChargingJailbirdEventArgs"/> instance.</param>
         public static void OnChargingJailbird(ChargingJailbirdEventArgs ev) => ChargingJailbird.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before radio pickup is draining battery.
+        /// </summary>
+        /// <param name="ev">The <see cref="UsingRadioPickupBatteryEventArgs"/> instance.</param>
+        public static void OnUsingRadioPickupBattery(UsingRadioPickupBatteryEventArgs ev) => UsingRadioPickupBattery.InvokeSafely(ev);
     }
 }

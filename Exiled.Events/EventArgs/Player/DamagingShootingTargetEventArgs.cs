@@ -20,33 +20,33 @@ namespace Exiled.Events.EventArgs.Player
     using UnityEngine;
 
     /// <summary>
-    ///     Contains all information before a player damages a shooting target.
+    /// Contains all information before a player damages a shooting target.
     /// </summary>
     public class DamagingShootingTargetEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DamagingShootingTargetEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="DamagingShootingTargetEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="damage">
-        ///     <inheritdoc cref="Amount" />
+        /// <inheritdoc cref="Amount" />
         /// </param>
         /// <param name="distance">
-        ///     <inheritdoc cref="Distance" />
+        /// <inheritdoc cref="Distance" />
         /// </param>
         /// <param name="shootingTarget">
-        ///     <inheritdoc cref="ShootingTarget" />
+        /// <inheritdoc cref="ShootingTarget" />
         /// </param>
         /// <param name="damageHandler">
-        ///     <inheritdoc cref="Item" />
+        /// <inheritdoc cref="Item" />
         /// </param>
         /// <param name="hitLocation">
-        ///     <inheritdoc cref="HitLocation" />
+        /// <inheritdoc cref="HitLocation" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public DamagingShootingTargetEventArgs(Player player, float damage, float distance, Vector3 hitLocation, ShootingTarget shootingTarget, DamageHandlerBase damageHandler, bool isAllowed = true)
         {
@@ -61,42 +61,42 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the shooting target which is being damaged.
+        /// Gets the shooting target which is being damaged.
         /// </summary>
         public ShootingTargetToy ShootingTarget { get; }
 
         /// <summary>
-        ///     Gets the <see cref="AttackerDamageHandler" />.
+        /// Gets the <see cref="AttackerDamageHandler" />.
         /// </summary>
         public AttackerDamageHandler DamageHandler { get; }
 
         /// <summary>
-        ///     Gets the exact world location the bullet impacted the target.
+        /// Gets the exact world location the bullet impacted the target.
         /// </summary>
         public Vector3 HitLocation { get; }
 
         /// <summary>
-        ///     Gets or sets the damage amount.
+        /// Gets or sets the damage amount.
         /// </summary>
         public float Amount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the distance between the shooter and the shooting target.
+        /// Gets or sets the distance between the shooter and the shooting target.
         /// </summary>
         public float Distance { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the target can be damaged.
+        /// Gets or sets a value indicating whether or not the target can be damaged.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the item which is being used to deal the damage.
+        /// Gets the item which is being used to deal the damage.
         /// </summary>
         public Item Item { get; }
 
         /// <summary>
-        ///     Gets the player who's damaging the shooting target.
+        /// Gets the player who's damaging the shooting target.
         /// </summary>
         public Player Player { get; }
     }

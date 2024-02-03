@@ -50,8 +50,6 @@ namespace Exiled.API.Structs
         /// Converts a <see cref="ArmorAmmoLimit"/> to its appropriate base game <see cref="BodyArmor.ArmorAmmoLimit"/>.
         /// </summary>
         /// <param name="armorLimit">armor limit.</param>
-        public static explicit operator BodyArmor.ArmorAmmoLimit(ArmorAmmoLimit armorLimit) =>
-            new()
-                { AmmoType = armorLimit.AmmoType.GetItemType(), Limit = armorLimit.Limit };
+        public static explicit operator BodyArmor.ArmorAmmoLimit(ArmorAmmoLimit armorLimit) => new() { AmmoType = armorLimit.AmmoType.GetItemType(), Limit = armorLimit.Limit };
     }
 }

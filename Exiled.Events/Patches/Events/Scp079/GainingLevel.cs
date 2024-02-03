@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Scp079TierManager.AccessTierIndex" />.
-    ///     Adds the <see cref="Scp079.GainingLevel" /> event.
+    /// Patches <see cref="Scp079TierManager.AccessTierIndex" />.
+    /// Adds the <see cref="Scp079.GainingLevel" /> event.
     /// </summary>
     [EventPatch(typeof(Scp079), nameof(Scp079.GainingLevel))]
     [HarmonyPatch(typeof(Scp079TierManager), nameof(Scp079TierManager.AccessTierIndex), MethodType.Setter)]

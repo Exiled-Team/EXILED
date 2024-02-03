@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp096;
 
@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Scp096
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches the <see cref="Scp096TryNotToCryAbility.ServerProcessCmd(NetworkReader)" /> method.
-    ///     Adds the <see cref="Handlers.Scp096.TryingNotToCry" /> event.
+    /// Patches the <see cref="Scp096TryNotToCryAbility.ServerProcessCmd(NetworkReader)" /> method.
+    /// Adds the <see cref="Handlers.Scp096.TryingNotToCry" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.TryingNotToCry))]
     [HarmonyPatch(typeof(Scp096TryNotToCryAbility), nameof(Scp096TryNotToCryAbility.ServerProcessCmd))]

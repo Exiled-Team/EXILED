@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
@@ -28,8 +28,8 @@ namespace Exiled.Events.Patches.Events.Map
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="StandardHitregBase.PlaceBulletholeDecal" />.
-    ///     Adds the <see cref="Map.PlacingBulletHole" /> event.
+    /// Patches <see cref="StandardHitregBase.PlaceBulletholeDecal" />.
+    /// Adds the <see cref="Map.PlacingBulletHole" /> event.
     /// </summary>
     [EventPatch(typeof(Map), nameof(Map.PlacingBulletHole))]
     [HarmonyPatch(typeof(StandardHitregBase), nameof(StandardHitregBase.PlaceBulletholeDecal))]

@@ -14,24 +14,24 @@ namespace Exiled.Events.EventArgs.Map
     using UnityEngine;
 
     /// <summary>
-    ///     Contains all information before placing a blood decal.
+    /// Contains all information before placing a blood decal.
     /// </summary>
     public class PlacingBloodEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PlacingBloodEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="PlacingBloodEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="target">
-        ///     <inheritdoc cref="Target" />
+        /// <inheritdoc cref="Target" />
         /// </param>
         /// <param name="hit">
-        ///     <inheritdoc cref="RaycastHit" />
+        /// <inheritdoc cref="RaycastHit" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public PlacingBloodEventArgs(Player player, Player target, RaycastHit hit, bool isAllowed = true)
         {
@@ -42,22 +42,22 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        ///     Gets the <see cref="Player"/> who's placing the blood.
+        /// Gets the <see cref="Player"/> who's placing the blood.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets the target's <see cref="Player"/> instance.
+        /// Gets the target's <see cref="Player"/> instance.
         /// </summary>
         public Player Target { get; }
 
         /// <summary>
-        ///     Gets or sets the blood placing position.
+        /// Gets or sets the blood placing position.
         /// </summary>
         public Vector3 Position { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the blood can be placed.
+        /// Gets or sets a value indicating whether or not the blood can be placed.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

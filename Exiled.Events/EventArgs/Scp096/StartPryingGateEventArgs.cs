@@ -16,21 +16,21 @@ namespace Exiled.Events.EventArgs.Scp096
     using Scp096Role = API.Features.Roles.Scp096Role;
 
     /// <summary>
-    ///     Contains all information before SCP-096 begins prying a gate open.
+    /// Contains all information before SCP-096 begins prying a gate open.
     /// </summary>
     public class StartPryingGateEventArgs : IScp096Event, IDeniableEvent, IDoorEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="StartPryingGateEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="StartPryingGateEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="gate">
-        ///     <inheritdoc cref="Door" />
+        /// <inheritdoc cref="Door" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public StartPryingGateEventArgs(Player player, PryableDoor gate, bool isAllowed = true)
         {
@@ -44,22 +44,22 @@ namespace Exiled.Events.EventArgs.Scp096
         public Scp096Role Scp096 { get; }
 
         /// <summary>
-        ///     Gets or Sets a value indicating whether or not the gate can be pried open by SCP-096.
+        /// Gets or Sets a value indicating whether or not the gate can be pried open by SCP-096.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the <see cref="Door" /> to be pried open.
+        /// Gets the <see cref="Door" /> to be pried open.
         /// </summary>
         public Door Door => Gate;
 
         /// <summary>
-        ///     Gets the <see cref="Gate" /> to be pried open.
+        /// Gets the <see cref="Gate" /> to be pried open.
         /// </summary>
         public Gate Gate { get; }
 
         /// <summary>
-        ///     Gets the player that is controlling SCP-096.
+        /// Gets the player that is controlling SCP-096.
         /// </summary>
         public Player Player { get; }
     }

@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Item;
 
@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Item
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Firearm.Status" />.
-    ///     Adds the <see cref="Item.ChangingAmmo" /> event.
+    /// Patches <see cref="Firearm.Status" />.
+    /// Adds the <see cref="Item.ChangingAmmo" /> event.
     /// </summary>
     [EventPatch(typeof(Item), nameof(Item.ChangingAmmo))]
     [HarmonyPatch(typeof(Firearm), nameof(Firearm.Status), MethodType.Setter)]

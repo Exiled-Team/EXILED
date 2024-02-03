@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Diagnostics;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
 
@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp079Generator.Engaged" />.
-    ///     Adds the <see cref="Map.GeneratorActivating" /> event.
+    /// Patches <see cref="Scp079Generator.Engaged" />.
+    /// Adds the <see cref="Map.GeneratorActivating" /> event.
     /// </summary>
     [EventPatch(typeof(Map), nameof(Map.GeneratorActivating))]
     [HarmonyPatch(typeof(Scp079Generator), nameof(Scp079Generator.Engaged), MethodType.Setter)]

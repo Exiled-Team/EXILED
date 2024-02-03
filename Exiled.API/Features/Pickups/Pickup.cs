@@ -42,7 +42,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for <see cref="ItemPickupBase"/>.
     /// </summary>
-    public class Pickup : TypeCastObject<Pickup>, IWrapper<ItemPickupBase>, IWorldSpace
+    public class Pickup : GameEntity, IWrapper<ItemPickupBase>, IWorldSpace
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Items.Item"/>.
@@ -109,7 +109,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public override GameObject GameObject => GameObject;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Transform"/> of the Pickup.
@@ -291,7 +291,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether this pickup is spawned.
         /// </summary>
-        public bool IsSpawned => NetworkServer.spawned.ContainsValue(Base.netIdentity);
+        public bool IsSpawned { get; internal set; }
 
         /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.
@@ -534,13 +534,12 @@ namespace Exiled.API.Features.Pickups
         {
             // condition for projectiles
             if (!GameObject.activeSelf)
-            {
                 GameObject.SetActive(true);
-            }
 
             if (!IsSpawned)
             {
                 NetworkServer.Spawn(GameObject);
+                IsSpawned = true;
             }
         }
 
@@ -571,6 +570,7 @@ namespace Exiled.API.Features.Pickups
         {
             if (IsSpawned)
             {
+                IsSpawned = false;
                 NetworkServer.UnSpawn(GameObject);
             }
         }

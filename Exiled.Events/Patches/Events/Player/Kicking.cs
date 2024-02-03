@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using CommandSystem;
     using Exiled.API.Features;
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -21,8 +21,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="BanPlayer.KickUser(ReferenceHub, ICommandSender , string)" />.
-    ///     Adds the <see cref="Handlers.Player.Kicking" /> event.
+    /// Patches <see cref="BanPlayer.KickUser(ReferenceHub, ICommandSender , string)" />.
+    /// Adds the <see cref="Handlers.Player.Kicking" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Kicking))]
     [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.KickUser), typeof(ReferenceHub), typeof(ICommandSender), typeof(string))]

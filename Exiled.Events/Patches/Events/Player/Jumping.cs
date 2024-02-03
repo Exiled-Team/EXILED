@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="FpcMotor.UpdateGrounded(ref bool, float)" />
-    ///     Adds the <see cref="Player.Jumping" /> event.
+    /// Patches <see cref="FpcMotor.UpdateGrounded(ref bool, float)" />
+    /// Adds the <see cref="Player.Jumping" /> event.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.Jumping))]
     [HarmonyPatch(typeof(FpcMotor), nameof(FpcMotor.UpdateGrounded))]

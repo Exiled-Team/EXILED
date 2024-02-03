@@ -10,12 +10,12 @@ namespace Exiled.Events.EventArgs.Interfaces
     using API.Features;
 
     /// <summary>
-    ///     Event args used for all <see cref="TeslaGate" /> related events.
+    /// Event args used for all <see cref="TeslaGate" /> related events.
     /// </summary>
     public interface ITeslaEvent : IExiledEvent
     {
         /// <summary>
-        ///     Gets the <see cref="TeslaGate" /> triggering the event.
+        /// Gets the <see cref="TeslaGate" /> triggering the event.
         /// </summary>
         public TeslaGate Tesla { get; }
     }

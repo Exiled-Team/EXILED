@@ -26,7 +26,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of players who will be ignored from determining round end.
         /// </summary>
-        public static HashSet<ReferenceHub> IgnoredPlayers { get; } = new(20);
+        public static HashSet<Player> IgnoredPlayers { get; } = new(20);
 
         /// <summary>
         /// Gets the time elapsed from the start of the round.
@@ -44,7 +44,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the round is started or not.
         /// </summary>
-        public static bool IsStarted => ReferenceHub.LocalHub?.characterClassManager.RoundStarted ?? false;
+        public static bool IsStarted => ReferenceHub.LocalHub && ReferenceHub.LocalHub.characterClassManager.RoundStarted;
 
         /// <summary>
         /// Gets a value indicating whether the round in progress or not.

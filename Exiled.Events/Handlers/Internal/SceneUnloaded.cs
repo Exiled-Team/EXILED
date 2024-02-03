@@ -15,21 +15,21 @@ namespace Exiled.Events.Handlers.Internal
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
     /// <summary>
-    ///     Handles scene unload event.
+    /// Handles scene unload event.
     /// </summary>
     internal static class SceneUnloaded
     {
         /// <summary>
-        ///     Called once when the server changes the scene.
+        /// Called once when the server changes the scene.
         /// </summary>
         /// <remarks>
-        ///     This fixes the main issue with ghost mode,
-        ///     when it spams with a NRE error.
-        ///     Before that, we were clearing the cache
-        ///     on WaitForPlayers event, but
-        ///     sometimes (ordinally on silent rount restart)
-        ///     the server accepts players' tokens before
-        ///     WaitForPlayers event is called.
+        /// This fixes the main issue with ghost mode,
+        /// when it spams with a NRE error.
+        /// Before that, we were clearing the cache
+        /// on WaitForPlayers event, but
+        /// sometimes (ordinally on silent rount restart)
+        /// the server accepts players' tokens before
+        /// WaitForPlayers event is called.
         /// </remarks>
         public static void OnSceneUnloaded(Scene _)
         {

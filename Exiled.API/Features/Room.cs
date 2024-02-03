@@ -168,7 +168,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the FlickerableLightController's NetworkIdentity.
         /// </summary>
-        public NetworkIdentity RoomLightControllerNetIdentity => RoomLightController?.netIdentity;
+        public NetworkIdentity RoomLightControllerNetIdentity => RoomLightController ? RoomLightController.netIdentity : null;
 
         /// <summary>
         /// Gets the room's FlickerableLightController.
@@ -246,8 +246,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains elements that satisfy the condition.</returns>
         public static IEnumerable<Room> Get(Func<Room, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace Exiled.API.Features
             }
 
             // Finally, try for objects that aren't children, like players and pickups.
-            return room ?? Get(objectInRoom.transform.position) ?? default;
+            return room ? room : Get(objectInRoom.transform.position) ?? default;
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="zoneType">Filters by <see cref="ZoneType"/>.</param>
         /// <returns><see cref="Room"/> object.</returns>
-        public static Room Random(ZoneType zoneType = ZoneType.Unspecified) => (zoneType is not ZoneType.Unspecified ? Get(r => r.Zone.HasFlag(zoneType)) : List).GetRandomValue();
+        public static Room Random(ZoneType zoneType = ZoneType.Unspecified) => (zoneType is not ZoneType.Unspecified ? Get(r => r.Zone.HasFlag(zoneType)) : List).Random();
 
         /// <summary>
         /// Returns the local space position, based on a world space position.
@@ -310,9 +310,19 @@ namespace Exiled.API.Features
         /// <summary>
         /// Flickers the room's lights off for a duration.
         /// </summary>
-        /// <param name="duration">Duration in seconds.</param>
-        public void TurnOffLights(float duration)
+        /// <param name="duration">Duration in seconds, or -1 for an indefinite duration.</param>
+        public void TurnOffLights(float duration = -1)
         {
+            if (duration == -1)
+            {
+                foreach (RoomLightController light in RoomLightControllers)
+                {
+                    light.SetLights(false);
+                }
+
+                return;
+            }
+
             foreach (RoomLightController light in RoomLightControllers)
             {
                 light.ServerFlickerLights(duration);
@@ -324,8 +334,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">Duration in seconds, or <c>-1</c> for permanent lockdown.</param>
         /// <param name="lockType">DoorLockType of the lockdown.</param>
-        /// <seealso cref="Door.LockAll(float, ZoneType, DoorLockType)"/>
-        /// <seealso cref="Door.LockAll(float, IEnumerable{ZoneType}, DoorLockType)"/>
         public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (Door door in Doors)
@@ -457,14 +465,19 @@ namespace Exiled.API.Features
         {
             Transform transform = gameObject.transform;
 
-            return transform.parent?.name.RemoveBracketsOnEndOfName() switch
+            if (transform && transform.parent)
             {
-                "HeavyRooms" => ZoneType.HeavyContainment,
-                "LightRooms" => ZoneType.LightContainment,
-                "EntranceRooms" => ZoneType.Entrance,
-                "HCZ_EZ_Checkpoint" => ZoneType.HeavyContainment | ZoneType.Entrance,
-                _ => transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified,
-            };
+                return transform.parent.name.RemoveBracketsOnEndOfName() switch
+                {
+                    "HeavyRooms" => ZoneType.HeavyContainment,
+                    "LightRooms" => ZoneType.LightContainment,
+                    "EntranceRooms" => ZoneType.Entrance,
+                    "HCZ_EZ_Checkpoint" => ZoneType.HeavyContainment | ZoneType.Entrance,
+                    _ => transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified,
+                };
+            }
+
+            return ZoneType.Unspecified;
         }
 
         private void InternalCreate()

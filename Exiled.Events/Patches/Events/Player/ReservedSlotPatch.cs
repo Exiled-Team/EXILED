@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="ReservedSlot.HasReservedSlot(string, out bool)" />.
-    ///     Adds the <see cref="Player.ReservedSlot" /> event.
+    /// Patches <see cref="ReservedSlot.HasReservedSlot(string, out bool)" />.
+    /// Adds the <see cref="Player.ReservedSlot" /> event.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.ReservedSlot))]
     [HarmonyPatch(typeof(ReservedSlot), nameof(ReservedSlot.HasReservedSlot))]
