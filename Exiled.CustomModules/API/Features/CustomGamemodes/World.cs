@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Features.Core;
+
 namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
     using System.Collections.Generic;
@@ -95,6 +97,9 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         {
             if (!enqueuedGameMode)
                 return;
+
+            if (TryGetComponent(enqueuedGameMode.GameState, out EActor comp))
+                comp.Destroy();
 
             enqueuedGameMode = null;
         }
