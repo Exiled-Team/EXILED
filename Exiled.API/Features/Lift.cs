@@ -47,6 +47,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="elevator">The <see cref="ElevatorChamber"/> to wrap.</param>
         internal Lift(ElevatorChamber elevator)
+            : base()
         {
             Base = elevator;
             ElevatorChamberToLift.Add(elevator, this);

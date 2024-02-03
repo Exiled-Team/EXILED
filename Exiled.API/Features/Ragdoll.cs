@@ -49,6 +49,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ragdoll">The encapsulated <see cref="BasicRagdoll"/>.</param>
         internal Ragdoll(BasicRagdoll ragdoll)
+            : base()
         {
             Base = ragdoll;
             BasicRagdollToRagdoll.Add(ragdoll, this);

@@ -30,6 +30,7 @@ namespace Exiled.API.Features.Toys
         /// <param name="toyAdminToyBase">The <see cref="AdminToys.AdminToyBase"/> to be wrapped.</param>
         /// <param name="type">The <see cref="AdminToyType"/> of the object.</param>
         internal AdminToy(AdminToyBase toyAdminToyBase, AdminToyType type)
+            : base()
         {
             AdminToyBase = toyAdminToyBase;
             ToyType = type;

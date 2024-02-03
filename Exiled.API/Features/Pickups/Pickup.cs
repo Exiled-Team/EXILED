@@ -56,6 +56,7 @@ namespace Exiled.API.Features.Pickups
         /// Created only for <see cref="Projectile"/> properly work.
         /// </remarks>
         internal Pickup()
+            : base()
         {
         }
 
@@ -64,6 +65,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="pickupBase">The base <see cref="ItemPickupBase"/> class.</param>
         internal Pickup(ItemPickupBase pickupBase)
+            : base()
         {
             Base = pickupBase;
 

@@ -100,6 +100,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="referenceHub">The <see cref="global::ReferenceHub"/> of the player to be encapsulated.</param>
         public Player(ReferenceHub referenceHub)
+            : base()
         {
             ReferenceHub = referenceHub;
             Items = ItemsValue.AsReadOnly();
@@ -110,6 +111,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> of the player.</param>
         public Player(GameObject gameObject)
+            : base()
         {
             ReferenceHub = ReferenceHub.GetHub(gameObject);
             Items = ItemsValue.AsReadOnly();

@@ -46,6 +46,7 @@ namespace Exiled.API.Features.Doors
         /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
         /// <param name="rooms">The <see cref="List{T}"/> of <see cref="Features.Room"/>'s for this door.</param>
         internal Door(DoorVariant door, List<Room> rooms)
+            : base()
         {
             Base = door;
 

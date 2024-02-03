@@ -48,6 +48,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="itemBase">The <see cref="ItemBase"/> to encapsulate.</param>
         public Item(ItemBase itemBase)
+            : base()
         {
             Base = itemBase;
             BaseToItem.Add(itemBase, this);

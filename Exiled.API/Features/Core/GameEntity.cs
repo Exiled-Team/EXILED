@@ -21,6 +21,17 @@ namespace Exiled.API.Features.Core
     public abstract class GameEntity : TypeCastObject<GameEntity>, IEntity
     {
         private readonly HashSet<EActor> componentsInChildren = new();
+        private readonly HashSet<GameEntity> activeInstances = new();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameEntity"/> class.
+        /// </summary>
+        protected GameEntity() => activeInstances.Add(this);
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="GameEntity"/> class.
+        /// </summary>
+        ~GameEntity() => activeInstances.Remove(this);
 
         /// <inheritdoc/>
         public IReadOnlyCollection<EActor> ComponentsInChildren => componentsInChildren;

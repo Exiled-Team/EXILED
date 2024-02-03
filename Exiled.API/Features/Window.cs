@@ -34,6 +34,7 @@ namespace Exiled.API.Features
         /// <param name="window">The base <see cref="BreakableWindow"/> for this door.</param>
         /// <param name="room">The <see cref="Room"/> for this window.</param>
         internal Window(BreakableWindow window, Room room)
+            : base()
         {
             BreakableWindowToWindow.Add(window, this);
             Base = window;

@@ -40,6 +40,7 @@ namespace Exiled.API.Features
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
         /// <param name="room">The <see cref="Features.Room"/> for this tesla.</param>
         internal TeslaGate(BaseTeslaGate baseTeslaGate, Room room)
+            : base()
         {
             Base = baseTeslaGate;
             BaseTeslaGateToTeslaGate.Add(baseTeslaGate, this);

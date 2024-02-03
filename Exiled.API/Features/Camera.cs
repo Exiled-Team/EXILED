@@ -134,6 +134,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera079">The base camera.</param>
         internal Camera(Scp079Camera camera079)
+            : base()
         {
             Base = camera079;
             Camera079ToCamera.Add(camera079, this);

@@ -32,6 +32,7 @@ namespace Exiled.API.Features.Hazards
         /// </summary>
         /// <param name="hazard">The <see cref="EnvironmentalHazard"/> instance.</param>
         public Hazard(EnvironmentalHazard hazard)
+            : base()
         {
             Base = hazard;
 

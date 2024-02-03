@@ -35,6 +35,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/>.</param>
         internal Generator(Scp079Generator scp079Generator)
+            : base()
         {
             Base = scp079Generator;
             Scp079GeneratorToGenerator.Add(scp079Generator, this);
