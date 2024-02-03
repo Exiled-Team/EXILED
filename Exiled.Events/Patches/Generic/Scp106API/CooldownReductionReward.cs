@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Generic.Scp106API
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.API.Features;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp106;

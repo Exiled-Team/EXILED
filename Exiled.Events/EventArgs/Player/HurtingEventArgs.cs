@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs.Player
         {
             DamageHandler = new CustomDamageHandler(target, damageHandler);
 
-            Attacker = DamageHandler.BaseIs(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
+            Attacker = DamageHandler.Is(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
             Player = target;
         }
 

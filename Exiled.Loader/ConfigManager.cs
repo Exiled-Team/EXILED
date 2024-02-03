@@ -17,7 +17,13 @@ namespace Exiled.Loader
     using API.Interfaces;
 
     using Exiled.API.Features;
+<<<<<<< HEAD
     using Exiled.API.Features.Pools;
+=======
+    using Exiled.API.Features.Attributes;
+    using Exiled.API.Features.Core.Generic.Pools;
+    using YamlDotNet.Core;
+>>>>>>> apis-rework
 
     using YamlDotNet.Core;
 

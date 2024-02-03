@@ -5,7 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+<<<<<<< HEAD:Exiled.API/Features/Attributes/CustomItemAttribute.cs
 namespace Exiled.API.Features.Attributes
+=======
+namespace Exiled.CustomModules.API.Features.Attributes
+>>>>>>> apis-rework:Exiled.CustomModules/API/Features/Attributes/CustomItemAttribute.cs
 {
     using System;
 

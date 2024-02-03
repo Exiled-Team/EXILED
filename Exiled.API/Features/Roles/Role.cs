@@ -8,18 +8,18 @@
 namespace Exiled.API.Features.Roles
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     using Enums;
-
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Extensions;
-
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
-
     using UnityEngine;
+    using YamlDotNet.Serialization.TypeInspectors;
 
     using FilmmakerGameRole = PlayerRoles.Filmmaker.FilmmakerRole;
     using HumanGameRole = PlayerRoles.HumanRole;
@@ -50,6 +50,22 @@ namespace Exiled.API.Features.Roles
             Base = baseRole;
         }
 
+<<<<<<< HEAD
+=======
+        /// <summary>
+        /// Gets a random human <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static RoleTypeId RandomHuman => Enum.GetValues(typeof(RoleTypeId)).ToArray<RoleTypeId>().Shuffle().FirstOrDefault(role => role.IsHuman());
+
+        /// <summary>
+        /// Gets a random human <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static RoleTypeId RandomScp => Enum.GetValues(typeof(RoleTypeId)).ToArray<RoleTypeId>().Shuffle().FirstOrDefault(role => RoleExtensions.GetTeam(role) == Team.SCPs);
+
+        /// <inheritdoc/>
+        public override GameObject GameObject => Base.gameObject;
+
+>>>>>>> apis-rework
         /// <summary>
         /// Gets the <see cref="Player"/> this role is referring to.
         /// </summary>
@@ -174,6 +190,29 @@ namespace Exiled.API.Features.Roles
         /// <param name="role">The <see cref="Role"/>.</param>
         /// <returns><see langword="true"/> if the values are not equal.</returns>
         public static bool operator !=(RoleTypeId type, Role role) => role != type;
+
+        /// <summary>
+        /// Gets a random <see cref="RoleTypeId"/>.
+        /// </summary>
+        /// <param name="includeNonPlayableRoles">Specifies whether non-playable roles should be included.</param>
+        /// <param name="except">An optional collection of role types to exclude.</param>
+        /// <returns>A random <see cref="RoleTypeId"/>.</returns>
+        public static RoleTypeId Random(bool includeNonPlayableRoles = false, IEnumerable<RoleTypeId> except = null)
+        {
+            RoleTypeId[] roles = Enum.GetValues(typeof(RoleTypeId)).ToArray<RoleTypeId>();
+
+            if (!includeNonPlayableRoles)
+            {
+                IEnumerable<RoleTypeId> exceptRoles = roles.Except(new RoleTypeId[] { RoleTypeId.Filmmaker, RoleTypeId.None, RoleTypeId.Overwatch, RoleTypeId.Spectator });
+
+                if (except is not null)
+                    exceptRoles = exceptRoles.Except(except);
+
+                return exceptRoles.Shuffle().First();
+            }
+
+            return includeNonPlayableRoles && except is not null ? roles.Except(except).Shuffle().First() : roles.Shuffle().First();
+        }
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => base.Equals(obj);

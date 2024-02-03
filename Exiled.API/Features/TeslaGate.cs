@@ -207,8 +207,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains elements that satisfy the condition.</returns>
         public static IEnumerable<TeslaGate> Get(Func<TeslaGate, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -226,8 +226,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Try-get a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <param name="gates">A <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains elements that satify the condition.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <param name="gates">A <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains elements that satisfy the condition.</param>
         /// <returns>Whether or not at least one tesla gate was found.</returns>
         public static bool TryGet(Func<TeslaGate, bool> predicate, out IEnumerable<TeslaGate> gates)
         {

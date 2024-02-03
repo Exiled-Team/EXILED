@@ -49,6 +49,11 @@ namespace Exiled.Events.Handlers
         public static Event<ReportingCheaterEventArgs> ReportingCheater { get; set; } = new();
 
         /// <summary>
+        /// Invoked before setting up the environment for respawning a wave of Chaos Insurgency or NTF.
+        /// </summary>
+        public static Event<PreRespawningTeamEventArgs> PreRespawningTeam { get; set; } = new();
+
+        /// <summary>
         /// Invoked before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
         public static Event<RespawningTeamEventArgs> RespawningTeam { get; set; } = new();
@@ -64,7 +69,7 @@ namespace Exiled.Events.Handlers
         public static Event<LocalReportingEventArgs> LocalReporting { get; set; } = new();
 
         /// <summary>
-        /// Invoked before choosing the Team than player will get.
+        /// Invoked before choosing the team to be assigned to a player.
         /// </summary>
         public static Event<ChoosingStartTeamQueueEventArgs> ChoosingStartTeamQueue { get; set; } = new();
 
@@ -104,6 +109,54 @@ namespace Exiled.Events.Handlers
         public static Event ReloadedPermissions { get; set; } = new();
 
         /// <summary>
+<<<<<<< HEAD
+=======
+        /// Invoked after a team has spawned.
+        /// </summary>
+        public static Event<RespawnedTeamEventArgs> RespawnedTeam { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before setting up the environment for the assignment of human roles.
+        /// </summary>
+        public static Event<PreAssigningHumanRolesEventArgs> PreAssigningHumanRoles { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before setting up the environment for the assignment of SCP roles.
+        /// </summary>
+        public static Event<PreAssigningScpRolesEventArgs> PreAssigningScpRoles { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before assigning human roles.
+        /// </summary>
+        public static Event<AssigningHumanRolesEventArgs> AssigningHumanRoles { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before assigning SCP roles.
+        /// </summary>
+        public static Event<AssigningScpRolesEventArgs> AssigningScpRoles { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before deploying a SCP role.
+        /// </summary>
+        public static Event<DeployingScpRoleEventArgs> DeployingScpRole { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before deploying a human role.
+        /// </summary>
+        public static Event<DeployingHumanRoleEventArgs> DeployingHumanRole { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before deploying a team role.
+        /// </summary>
+        public static Event<DeployingTeamRoleEventArgs> DeployingTeamRole { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after a new respawn sequence has been restarted.
+        /// </summary>
+        public static Event<RestartedRespawnSequenceEventArgs> RestartedRespawnSequence { get; set; } = new();
+
+        /// <summary>
+>>>>>>> apis-rework
         /// Called before waiting for players.
         /// </summary>
         public static void OnWaitingForPlayers() => WaitingForPlayers.InvokeSafely();
@@ -137,10 +190,29 @@ namespace Exiled.Events.Handlers
         public static void OnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(ev);
 
         /// <summary>
+        /// Called before selecting the team that will respawn next.
+        /// </summary>
+        /// <param name="ev">The <see cref="SelectingRespawnTeamEventArgs"/> instance.</param>
+        public static void OnSelectingRespawnTeam(SelectingRespawnTeamEventArgs ev) => SelectingRespawnTeam.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before setting up the environment for respawning a wave of Chaos Insurgency or NTF.
+        /// </summary>
+        /// <param name="ev">The <see cref="PreRespawningTeamEventArgs"/> instance.</param>
+        public static void OnPreRespawningTeam(PreRespawningTeamEventArgs ev) => PreRespawningTeam.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
         /// <param name="ev">The <see cref="RespawningTeamEventArgs"/> instance.</param>
         public static void OnRespawningTeam(RespawningTeamEventArgs ev) => RespawningTeam.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a team has spawned.
+        /// </summary>
+        /// <param name="teamType"><inheritdoc cref="RespawnedTeamEventArgs.Team"/></param>
+        /// <param name="hubs"><inheritdoc cref="RespawnedTeamEventArgs.Players"/></param>
+        public static void OnRespawnedTeam(SpawnableTeamType teamType, List<ReferenceHub> hubs) => RespawnedTeam.InvokeSafely(new RespawnedTeamEventArgs(teamType, hubs));
 
         /// <summary>
         /// Called before adding an unit name.
@@ -155,7 +227,7 @@ namespace Exiled.Events.Handlers
         public static void OnLocalReporting(LocalReportingEventArgs ev) => LocalReporting.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="Player"/>'s custom display name is changed.
+        /// Called before choosing the team to be assigned to a player.
         /// </summary>
         /// <param name="ev">The <see cref="ChoosingStartTeamQueueEventArgs"/> instance.</param>
         public static void OnChoosingStartTeam(ChoosingStartTeamQueueEventArgs ev) => ChoosingStartTeamQueue.InvokeSafely(ev);
@@ -191,9 +263,56 @@ namespace Exiled.Events.Handlers
         public static void OnReloadedPermissions() => ReloadedPermissions.InvokeSafely();
 
         /// <summary>
-        /// Called before selecting the team that will respawn next.
+        /// Called before setting up the environment for the assignment of human roles.
         /// </summary>
+<<<<<<< HEAD
         /// <param name="ev">The <see cref="SelectingRespawnTeamEventArgs"/> instance.</param>
         public static void OnSelectingRespawnTeam(SelectingRespawnTeamEventArgs ev) => SelectingRespawnTeam.InvokeSafely(ev);
+=======
+        /// <param name="ev">The <see cref="PreAssigningHumanRolesEventArgs"/> instance.</param>
+        public static void OnPreAssigningHumanRoles(PreAssigningHumanRolesEventArgs ev) => PreAssigningHumanRoles.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before setting up the environment for the assignment of SCP roles.
+        /// </summary>
+        /// <param name="ev">The <see cref="PreAssigningScpRolesEventArgs"/> instance.</param>
+        public static void OnPreAssigningScpRoles(PreAssigningScpRolesEventArgs ev) => PreAssigningScpRoles.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before assigning human roles.
+        /// </summary>
+        /// <param name="ev">The <see cref="AssigningHumanRolesEventArgs"/> instance.</param>
+        public static void OnAssigningHumanRoles(AssigningHumanRolesEventArgs ev) => AssigningHumanRoles.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before assigning SCP roles.
+        /// </summary>
+        /// <param name="ev">The <see cref="AssigningScpRolesEventArgs"/> instance.</param>
+        public static void OnAssigningScpRoles(AssigningScpRolesEventArgs ev) => AssigningScpRoles.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before deploying a SCP role.
+        /// </summary>
+        /// <param name="ev">The <see cref="DeployingScpRoleEventArgs"/> instance.</param>
+        public static void OnDeployingScpRole(DeployingScpRoleEventArgs ev) => DeployingScpRole.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before deploying a human role.
+        /// </summary>
+        /// <param name="ev">The <see cref="DeployingHumanRoleEventArgs"/> instance.</param>
+        public static void OnDeployingHumanRole(DeployingHumanRoleEventArgs ev) => DeployingHumanRole.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before deploying a team role.
+        /// </summary>
+        /// <param name="ev">The <see cref="DeployingTeamRoleEventArgs"/> instance.</param>
+        public static void OnDeployingTeamRole(DeployingTeamRoleEventArgs ev) => DeployingTeamRole.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a new respawn sequence has been restarted.
+        /// </summary>
+        /// <param name="ev">The <see cref="RestartedRespawnSequenceEventArgs"/> instance.</param>
+        public static void OnRestartedRespawnSequence(RestartedRespawnSequenceEventArgs ev) => RestartedRespawnSequence.InvokeSafely(ev);
+>>>>>>> apis-rework
     }
 }
