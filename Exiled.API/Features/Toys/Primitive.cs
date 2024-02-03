@@ -111,16 +111,9 @@ namespace Exiled.API.Features.Toys
         {
             Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
-<<<<<<< HEAD
             primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
             primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
             primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
-=======
-            Transform transform = primitive.Base.transform;
-            transform.position = position ?? Vector3.zero;
-            transform.eulerAngles = rotation ?? Vector3.zero;
-            transform.localScale = scale ?? Vector3.one;
->>>>>>> apis-rework
 
             if (spawn)
                 primitive.Spawn();
@@ -145,16 +138,9 @@ namespace Exiled.API.Features.Toys
         {
             Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
-<<<<<<< HEAD
             primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
             primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
             primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
-=======
-            Transform transform = primitive.Base.transform;
-            transform.position = position ?? Vector3.zero;
-            transform.eulerAngles = rotation ?? Vector3.zero;
-            transform.localScale = scale ?? Vector3.one;
->>>>>>> apis-rework
 
             if (spawn)
                 primitive.Spawn();
@@ -175,16 +161,9 @@ namespace Exiled.API.Features.Toys
         {
             Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
-<<<<<<< HEAD
             primitive.AdminToyBase.transform.position = primitiveSettings.Position;
             primitive.AdminToyBase.transform.eulerAngles = primitiveSettings.Rotation;
             primitive.AdminToyBase.transform.localScale = primitiveSettings.Scale;
-=======
-            Transform transform = primitive.Base.transform;
-            transform.position = primitiveSettings.Position;
-            transform.eulerAngles = primitiveSettings.Rotation;
-            transform.localScale = primitiveSettings.Scale;
->>>>>>> apis-rework
 
             if (primitiveSettings.Spawn)
                 primitive.Spawn();

@@ -144,19 +144,6 @@ namespace Exiled.API.Features.DynamicEvents
         public virtual void Unbind(object obj) => boundDelegates.Remove(obj);
 
         /// <summary>
-        /// Unbinds a listener from the event dispatcher.
-        /// </summary>
-        /// <param name="obj">The listener instance.</param>
-        /// <param name="del">The delegate to be unbound.</param>
-        public virtual void Unbind(object obj, Action<T> del)
-        {
-            if (!boundDelegates.ContainsKey(obj))
-                return;
-
-            boundDelegates[obj].Remove(del);
-        }
-
-        /// <summary>
         /// Invokes the delegates from the specified listener.
         /// </summary>
         /// <param name="obj">The listener instance.</param>

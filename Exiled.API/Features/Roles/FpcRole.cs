@@ -9,13 +9,8 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
-<<<<<<< HEAD
     using Exiled.API.Extensions;
     using Exiled.API.Features.Pools;
-=======
-    using Exiled.API.Features.Core.Generic.Pools;
-    using Exiled.API.Extensions;
->>>>>>> apis-rework
 
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
@@ -31,11 +26,7 @@ namespace Exiled.API.Features.Roles
     public abstract class FpcRole : Role
     {
         private bool isUsingStamina = true;
-<<<<<<< HEAD
         private RoleTypeId? fakeAppearance = null;
-=======
-        private RoleTypeId fakeAppearance;
->>>>>>> apis-rework
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FpcRole"/> class.

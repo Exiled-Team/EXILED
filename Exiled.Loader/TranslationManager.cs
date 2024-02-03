@@ -17,7 +17,7 @@ namespace Exiled.Loader
     using API.Interfaces;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Pools;
 
     using YamlDotNet.Core;
 

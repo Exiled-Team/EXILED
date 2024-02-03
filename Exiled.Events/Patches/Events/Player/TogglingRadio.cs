@@ -12,12 +12,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
     using System.Reflection.Emit;
 
-<<<<<<< HEAD
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pools;
-=======
-    using Exiled.API.Features.Core.Generic.Pools;
->>>>>>> apis-rework
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 

@@ -12,25 +12,22 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
 
-    using CentralAuth;
     using CommandSystem;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Components;
-    using Exiled.API.Features.Roles;
+
     using Footprinting;
-    using InventorySystem.Items.Firearms.BasicMessages;
-    using InventorySystem.Items.Firearms.Modules;
+
     using MEC;
+
     using Mirror;
 
     using PlayerRoles;
-    using PlayerRoles.FirstPersonControl;
-    using RelativePositioning;
+
     using UnityEngine;
 
-    using Firearm = Items.Firearm;
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -139,7 +136,7 @@ namespace Exiled.API.Features
             GameObject newObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
             Npc npc = new(newObject)
             {
-                IsVerified = userId != PlayerAuthenticationManager.DedicatedId && userId != null,
+                IsVerified = true,
                 IsNPC = true,
             };
             try
@@ -164,22 +161,7 @@ namespace Exiled.API.Features
             NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
             try
             {
-                if (userId == PlayerAuthenticationManager.DedicatedId)
-                {
-                    npc.ReferenceHub.authManager.SyncedUserId = userId;
-                    try
-                    {
-                        npc.ReferenceHub.authManager.InstanceMode = ClientInstanceMode.DedicatedServer;
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Debug($"Ignore: {e}");
-                    }
-                }
-                else
-                {
-                    npc.ReferenceHub.authManager.UserId = userId == string.Empty ? $"Dummy@localhost" : userId;
-                }
+                npc.ReferenceHub.authManager.UserId = string.IsNullOrEmpty(userId) ? $"Dummy@localhost" : userId;
             }
             catch (Exception e)
             {
@@ -213,96 +195,6 @@ namespace Exiled.API.Features
             CustomNetworkManager.TypedSingleton.OnServerDisconnect(conn);
             Dictionary.Remove(GameObject);
             Object.Destroy(GameObject);
-        }
-
-        /// <summary>
-        /// Forces the NPC to look in the specified rotation.
-        /// </summary>
-        /// <param name="position">The position to look at.</param>
-        public void LookAt(Vector3 position)
-        {
-            if (Role is FpcRole fpc)
-            {
-                Vector3 direction = position - Position;
-                Quaternion quat = Quaternion.LookRotation(direction, Vector3.up);
-                LookAt(quat);
-            }
-        }
-
-        /// <summary>
-        /// Forces the NPC to look in the specified rotation.
-        /// </summary>
-        /// <param name="rotation">The rotation to look towards.</param>
-        public void LookAt(Quaternion rotation)
-        {
-            if (Role is not FpcRole fpc)
-                return;
-
-            if (rotation.eulerAngles.z != 0f)
-                rotation = Quaternion.LookRotation(rotation * Vector3.forward, Vector3.up);
-
-            Vector2 angles = new Vector2(-rotation.eulerAngles.x, rotation.eulerAngles.y);
-
-            ushort hor = (ushort)Mathf.RoundToInt(Mathf.Repeat(angles.y, 360f) * (ushort.MaxValue / 360f));
-            ushort vert = (ushort)Mathf.RoundToInt(Mathf.Clamp(Mathf.Repeat(angles.x + 90f, 360f) - 2f, 0f, 176f) * (ushort.MaxValue / 176f));
-
-            fpc.FirstPersonController.FpcModule.MouseLook.ApplySyncValues(hor, vert);
-        }
-
-        /// <summary>
-        /// Forces the NPC to shoot their current <see cref="Firearm"></see>.
-        /// </summary>
-        /// <returns><see langword="true"/> if the weapon shot request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
-        public bool ShootWeapon()
-        {
-            if (CurrentItem is not Firearm firearm)
-                return false;
-
-            if (!firearm.Base.ActionModule.ServerAuthorizeShot())
-                return false;
-
-            ShotMessage message = new ShotMessage()
-            {
-                ShooterCameraRotation = CameraTransform.rotation,
-                ShooterPosition = new RelativePosition(Transform.position),
-                ShooterWeaponSerial = CurrentItem.Serial,
-                TargetNetId = 0,
-                TargetPosition = default,
-                TargetRotation = Quaternion.identity,
-            };
-
-            Physics.Raycast(CameraTransform.position, CameraTransform.forward, out RaycastHit hit, firearm.Base.BaseStats.MaxDistance(), StandardHitregBase.HitregMask);
-
-            if (hit.transform && hit.collider.TryGetComponent(out IDestructible destructible) && destructible != null)
-            {
-                message.TargetNetId = destructible.NetworkId;
-                message.TargetPosition = new RelativePosition(hit.transform.position);
-                message.TargetRotation = hit.transform.rotation;
-            }
-            else if (hit.transform)
-            {
-                message.TargetPosition = new RelativePosition(hit.transform.position);
-                message.TargetRotation = hit.transform.rotation;
-            }
-
-            FirearmBasicMessagesHandler.ServerShotReceived(ReferenceHub.connectionToClient, message);
-            return true;
-        }
-
-        /// <summary>
-        /// Sets the NPC's current <see cref="Firearm"></see> status for Aiming Down Sights.
-        /// </summary>
-        /// <param name="shouldADS">Should the player be aiming down sights.</param>
-        /// <returns><see langword="true"/> if the weapon Aim Down Sights request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
-        public bool SetAimDownSight(bool shouldADS)
-        {
-            if (CurrentItem is Firearm firearm)
-            {
-                FirearmBasicMessagesHandler.ServerRequestReceived(ReferenceHub.connectionToClient, new RequestMessage(firearm.Serial, shouldADS ? RequestType.AdsIn : RequestType.AdsOut));
-                return true;
-            }
-
-            return false;
         }
     }
 }

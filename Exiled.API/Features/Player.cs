@@ -17,16 +17,12 @@ namespace Exiled.API.Features
     using CustomPlayerEffects;
     using DamageHandlers;
     using Enums;
-<<<<<<< HEAD
     using Exiled.API.Features.Core.Interfaces;
-=======
-    using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Core.Generic.Pools;
->>>>>>> apis-rework
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
@@ -164,7 +160,7 @@ namespace Exiled.API.Features
             get => referenceHub;
             private set
             {
-                referenceHub = value ? value : throw new NullReferenceException("Player's ReferenceHub cannot be null!");
+                referenceHub = value ?? throw new NullReferenceException("Player's ReferenceHub cannot be null!");
                 GameObject = value.gameObject;
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
@@ -788,11 +784,6 @@ namespace Exiled.API.Features
         public bool IsSpeaking => VoiceModule != null && VoiceModule.IsSpeaking;
 
         /// <summary>
-        /// Gets the loudness of a player when speaking.
-        /// </summary>
-        public float Loudness => !IsSpeaking || VoiceModule is not StandardVoiceModule standardModule ? 0f : standardModule.GlobalPlayback.Loudness;
-
-        /// <summary>
         /// Gets the player's voice color.
         /// </summary>
         public Color VoiceColor => ReferenceHub.serverRoles.GetVoiceColor();
@@ -938,12 +929,7 @@ namespace Exiled.API.Features
                 }
 
                 if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
-                {
-                    if (IsInventoryFull)
-                        return;
-
                     AddItem(value.Base);
-                }
 
                 Inventory.ServerSelectItem(value.Serial);
             }
@@ -991,7 +977,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current zone the player is in.
         /// </summary>
-        public ZoneType Zone => CurrentRoom ? CurrentRoom.Zone : ZoneType.Unspecified;
+        public ZoneType Zone => CurrentRoom?.Zone ?? ZoneType.Unspecified;
 
         /// <summary>
         /// Gets the current <see cref="Features.Lift"/> the player is in. Can be <see langword="null"/>.
@@ -1079,7 +1065,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is in the pocket dimension.
         /// </summary>
-        public bool IsInPocketDimension => CurrentRoom && CurrentRoom.Type is RoomType.Pocket;
+        public bool IsInPocketDimension => CurrentRoom?.Type is RoomType.Pocket;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player should use stamina system.
@@ -1218,13 +1204,6 @@ namespace Exiled.API.Features
                 return null;
             }
         }
-
-        /// <summary>
-        /// Gets the all <see cref="Player"/> instances belonging to the given <see cref="global::ReferenceHub"/> instances, if any.
-        /// </summary>
-        /// <param name="hubs">The reference hubs to retrieve the players from.</param>
-        /// <returns>All <see cref="Player"/> instances belonging to the given <see cref="global::ReferenceHub"/> instances.</returns>
-        public static IEnumerable<Player> Get(IEnumerable<ReferenceHub> hubs) => hubs.Select(hub => Get(hub));
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="Collider"/>, if any.
@@ -1445,24 +1424,6 @@ namespace Exiled.API.Features
         /// <param name="player">The player found or <see langword="null"/> if not found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
         public static bool TryGet(Collider collider, out Player player) => (player = Get(collider)) is not null;
-
-        /// <summary>
-        /// Gets an <see cref="IEnumerable{Player}"/> containing all players processed based on the arguments specified.
-        /// </summary>
-        /// <param name="args">The array segment of strings representing the input arguments to be processed.</param>
-        /// <param name="startIndex">The starting index within the array segment.</param>
-        /// <param name="newargs">Contains the updated arguments after processing.</param>
-        /// <param name="keepEmptyEntries">Determines whether empty entries should be kept in the result.</param>
-        /// <returns>An <see cref="IEnumerable{Player}"/> representing the processed players.</returns>
-        public static IEnumerable<Player> GetProcessedData(ArraySegment<string> args, int startIndex, out string[] newargs, bool keepEmptyEntries = false) => RAUtils.ProcessPlayerIdOrNamesList(args, startIndex, out newargs, keepEmptyEntries).Select(hub => Get(hub));
-
-        /// <summary>
-        /// Gets an <see cref="IEnumerable{Player}"/> containing all players processed based on the arguments specified.
-        /// </summary>
-        /// <param name="args">The array segment of strings representing the input arguments to be processed.</param>
-        /// <param name="startIndex">The starting index within the array segment.</param>
-        /// <returns>An <see cref="IEnumerable{Player}"/> representing the processed players.</returns>
-        public static IEnumerable<Player> GetProcessedData(ArraySegment<string> args, int startIndex = 0) => GetProcessedData(args, startIndex, out string[] _);
 
         /// <summary>
         /// Adds a player's UserId to the list of reserved slots.
@@ -1772,7 +1733,7 @@ namespace Exiled.API.Features
         public bool TryRemoveCustomeRoleFriendlyFire(string role) => CustomRoleFriendlyFireMultiplier.Remove(role);
 
         /// <summary>
-        /// Forces the player to reload their current <see cref="Firearm"></see>.
+        /// Forces the player to reload their current weapon.
         /// </summary>
         /// <returns><see langword="true"/> if firearm was successfully reloaded. Otherwise, <see langword="false"/>.</returns>
         public bool ReloadWeapon()
@@ -1780,43 +1741,11 @@ namespace Exiled.API.Features
             if (CurrentItem is Firearm firearm)
             {
                 bool result = firearm.Base.AmmoManagerModule.ServerTryReload();
-                if (result)
-                    Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
+                Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
                 return result;
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Forces the player to unload their current <see cref="Firearm"></see>.
-        /// </summary>
-        /// <returns><see langword="true"/> if the weapon unload request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
-        public bool UnloadWeapon()
-        {
-            if (CurrentItem is Firearm firearm)
-            {
-                bool result = firearm.Base.AmmoManagerModule.ServerTryUnload();
-                if (result)
-                    Connection.Send(new RequestMessage(firearm.Serial, RequestType.Unload));
-                return result;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Forces the player to toggle the Flashlight Attachment on their current <see cref="Firearm"></see>.
-        /// </summary>
-        /// <returns><see langword="true"/> if the weapon flashlight toggle request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
-        public bool ToggleWeaponFlashlight()
-        {
-            if (RoleManager.CurrentRole is not IFpcRole fpc || CurrentItem is not Firearm firearm)
-                return false;
-
-            bool oldCheck = firearm.FlashlightEnabled; // Temporary Solution
-            FirearmBasicMessagesHandler.ServerRequestReceived(ReferenceHub.connectionToClient, new RequestMessage(firearm.Serial, RequestType.ToggleFlashlight));
-            return oldCheck != firearm.FlashlightEnabled;
         }
 
         /// <summary>
@@ -1830,19 +1759,6 @@ namespace Exiled.API.Features
             item = Inventory.UserInventory.Items.TryGetValue(serial, out ItemBase itemBase) ? Item.Get(itemBase) : null;
 
             return item != null;
-        }
-
-        /// <summary>
-        /// Tries to get an items from a player's inventory.
-        /// </summary>
-        /// <param name="predicate">The predicate to satisfy.</param>
-        /// <param name="items">The <see cref="IEnumerable{T}"/> found.</param>
-        /// <returns><see langword="true"/> if the item is found, <see langword="false"/> otherwise.</returns>
-        public bool TryGetItems(Func<Item, bool> predicate, out IEnumerable<Item> items)
-        {
-            items = Items.Where(predicate);
-
-            return items.Count() != 0;
         }
 
         /// <summary>
@@ -2044,7 +1960,12 @@ namespace Exiled.API.Features
         /// <param name="serial">The <see cref="Item"/> serial to remove.</param>
         /// <param name="destroy">Whether or not to destroy the item.</param>
         /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
-        public bool RemoveItem(ushort serial, bool destroy = true) => Items.SingleOrDefault(item => item.Serial == serial) is Item item && RemoveItem(item, destroy);
+        public bool RemoveItem(ushort serial, bool destroy = true)
+        {
+            if (Items.SingleOrDefault(item => item.Serial == serial) is not Item item)
+                return false;
+            return RemoveItem(item, destroy);
+        }
 
         /// <summary>
         /// Removes all <see cref="Item"/>'s that satisfy the condition from the player's inventory.
@@ -2111,12 +2032,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
         public void Hurt(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase);
-
-        /// <summary>
-        /// Hurts the player.
-        /// </summary>
-        /// <param name="damageHandlerBase">The <see cref="DamageHandlers.DamageHandlerBase"/> used to deal damage.</param>
-        public void Hurt(DamageHandlers.DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase.Base);
 
         /// <summary>
         /// Hurts the player.

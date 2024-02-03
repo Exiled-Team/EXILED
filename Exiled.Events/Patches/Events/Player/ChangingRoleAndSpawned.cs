@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Core.Generic.Pools;
+    using API.Features.Pools;
 
     using API.Features.Roles;
     using Exiled.Events.EventArgs.Player;

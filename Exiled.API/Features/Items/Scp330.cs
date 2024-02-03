@@ -88,24 +88,6 @@ namespace Exiled.API.Features.Items
         public CandyKindID ExposedType { get; set; } = CandyKindID.None;
 
         /// <summary>
-        /// Gets or sets a index in <see cref="Candies"/> of current selected candy.
-        /// </summary>
-        public int SelectedCandyId
-        {
-            get => Base.SelectedCandyId;
-            set
-            {
-                Base.SelectedCandyId = value;
-                Base.Owner.connectionToClient.Send(new SelectScp330Message
-                {
-                    CandyID = value,
-                    Drop = false,
-                    Serial = Serial,
-                });
-            }
-        }
-
-        /// <summary>
         /// Adds a specific candy to the bag.
         /// </summary>
         /// <param name="type">The <see cref="CandyKindID"/> to add.</param>

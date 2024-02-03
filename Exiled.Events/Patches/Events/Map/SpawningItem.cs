@@ -10,13 +10,9 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Core.Generic.Pools;
     using API.Features.Doors;
-<<<<<<< HEAD
     using API.Features.Pickups;
     using API.Features.Pools;
-=======
->>>>>>> apis-rework
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;

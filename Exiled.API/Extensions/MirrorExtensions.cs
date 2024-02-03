@@ -16,7 +16,7 @@ namespace Exiled.API.Extensions
     using System.Text;
 
     using Features;
-    using Features.Core.Generic.Pools;
+    using Features.Pools;
 
     using InventorySystem.Items.Firearms;
 

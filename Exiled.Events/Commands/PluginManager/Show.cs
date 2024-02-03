@@ -12,7 +12,7 @@ namespace Exiled.Events.Commands.PluginManager
     using System.Linq;
     using System.Text;
 
-    using API.Features.Core.Generic.Pools;
+    using API.Features.Pools;
     using API.Interfaces;
 
     using CommandSystem;

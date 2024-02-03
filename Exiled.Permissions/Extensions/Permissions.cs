@@ -17,7 +17,7 @@ namespace Exiled.Permissions.Extensions
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Pools;
     using Features;
 
     using Properties;

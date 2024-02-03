@@ -22,10 +22,6 @@ csharp_style_var_elsewhere = false:error
 
 # ReSharper properties
 resharper_csharp_max_line_length = 400
-<<<<<<< HEAD
-=======
-dotnet_diagnostic.SA1009.severity = none
->>>>>>> apis-rework
 
 [*.properties]
 ij_properties_align_group_field_declarations = false
@@ -33,7 +29,6 @@ ij_properties_keep_blank_lines = false
 ij_properties_key_value_delimiter = equals
 ij_properties_spaces_around_key_value_delimiter = false
 
-<<<<<<< HEAD
 [*.styl]
 indent_size = 2
 ij_stylus_align_closing_brace_with_properties = false
@@ -54,8 +49,6 @@ ij_stylus_space_before_opening_brace = true
 ij_stylus_use_double_quotes = true
 ij_stylus_value_alignment = 0
 
-=======
->>>>>>> apis-rework
 [.editorconfig]
 ij_editorconfig_align_group_field_declarations = false
 ij_editorconfig_space_after_colon = false
