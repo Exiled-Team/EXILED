@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="PocketDimensionPickupEventArgs.cs" company="Exiled Team">
+// <copyright file="PlacingPickupIntoPocketDimensionEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -18,15 +18,15 @@ namespace Exiled.Events.EventArgs.Map
     /// <summary>
     /// Contains information about items in the pocket dimension.
     /// </summary>
-    public class PocketDimensionPickupEventArgs : IDeniableEvent, IPickupEvent
+    public class PlacingPickupIntoPocketDimensionEventArgs : IDeniableEvent, IPickupEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PocketDimensionPickupEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="PlacingPickupIntoPocketDimensionEventArgs"/> class.
         /// </summary>
         /// <param name="pickupBase"><inheritdoc cref="Pickup"/></param>
         /// <param name="pocketItem"><inheritdoc cref="PocketItem"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public PocketDimensionPickupEventArgs(ItemPickupBase pickupBase, PocketItem pocketItem, bool isAllowed)
+        public PlacingPickupIntoPocketDimensionEventArgs(ItemPickupBase pickupBase, PocketItem pocketItem, bool isAllowed)
         {
             Pickup = Pickup.Get(pickupBase);
             PocketItem = pocketItem;
