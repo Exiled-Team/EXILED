@@ -1177,19 +1177,35 @@ namespace Exiled.API.Features
         public static IEnumerable<Player> Get(Func<Player, bool> predicate) => List.Where(predicate);
 
         /// <summary>
-        /// Get all players near the <see cref="Vector3"/>.
+        /// Gets the nearest player to the specified <see cref="Vector3"/> within the given distance.
         /// </summary>
         /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
-        /// <param name="distance">The max distance the player can be from the <see cref="Vector3"/> to be included.</param>
-        /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
+        /// <param name="distance">The maximum distance the player can be from the <paramref name="vector"/> to be included.</param>
+        /// <returns>The nearest <see cref="Player"/> within the specified distance, or <see langword="null"/> if no player is found.</returns>
+        public static Player GetNearestPlayer(Vector3 vector, float distance) => GetNearestPlayers(vector, distance).OrderBy(p => Vector3.Distance(vector, p.Position)).FirstOrDefault();
+
+        /// <summary>
+        /// Gets all players near the specified <see cref="Vector3"/> within the given distance.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
+        /// <param name="distance">The maximum distance the player can be from the <paramref name="vector"/> to be included.</param>
+        /// <returns>The filtered collection of <see cref="Player"/> objects.</returns>
         public static IEnumerable<Player> GetNearestPlayers(Vector3 vector, float distance) => List.Where(p => Vector3.Distance(vector, p.Position) <= distance);
 
         /// <summary>
-        /// Get all players that have a further distance than the distance.
+        /// Gets the farthest player from the specified <see cref="Vector3"/> within the given distance.
         /// </summary>
         /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
-        /// <param name="distance">The minimum distance the player can be from the <see cref="Vector3"/> to be included.</param>
-        /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
+        /// <param name="distance">The minimum distance the player can be from the <paramref name="vector"/> to be included.</param>
+        /// <returns>The farthest <see cref="Player"/> from the specified <paramref name="vector"/> within the given distance, or <see langword="null"/> if no player is found.</returns>
+        public static Player GetFarthestPlayer(Vector3 vector, float distance) => GetFarthestPlayers(vector, distance).OrderByDescending(p => Vector3.Distance(vector, p.Position)).FirstOrDefault();
+
+        /// <summary>
+        /// Gets all players that have a distance greater than the specified distance from the given <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
+        /// <param name="distance">The minimum distance the player can be from the <paramref name="vector"/> to be included.</param>
+        /// <returns>The filtered collection of <see cref="Player"/> objects.</returns>
         public static IEnumerable<Player> GetFarthestPlayers(Vector3 vector, float distance) => List.Where(p => Vector3.Distance(vector, p.Position) >= distance);
 
         /// <summary>
