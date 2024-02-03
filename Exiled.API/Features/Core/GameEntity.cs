@@ -11,8 +11,8 @@ namespace Exiled.API.Features.Core
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Interfaces;
-
     using UnityEngine;
 
     /// <summary>
@@ -128,6 +128,147 @@ namespace Exiled.API.Features.Core
             foreach (EActor type in types)
                 yield return AddComponent<T>(type);
         }
+
+                /// <inheritdoc />
+        public T RemoveComponent<T>(string name = "")
+            where T : EActor
+        {
+            T comp = null;
+
+            if (string.IsNullOrEmpty(name))
+            {
+                if (!TryGetComponent<T>(out comp))
+                    return null;
+
+                comp.Base = null;
+                componentsInChildren.Remove(comp);
+                return comp;
+            }
+
+            foreach (EActor actor in GetComponents<T>())
+            {
+                if (actor.Name != name)
+                    continue;
+
+                comp = actor.Cast<T>();
+            }
+
+            return comp;
+        }
+
+        /// <inheritdoc />
+        public T RemoveComponent<T>(EActor actor, string name = "")
+            where T : EActor
+        {
+            T comp = null;
+
+            if (string.IsNullOrEmpty(name))
+            {
+                if (!TryGetComponent<T>(out comp) || comp != actor)
+                    return null;
+
+                comp.Base = null;
+                componentsInChildren.Remove(comp);
+                return comp;
+            }
+
+            foreach (EActor component in GetComponents<T>())
+            {
+                if (component.Name != name && component == actor)
+                    continue;
+
+                comp = component.Cast<T>();
+            }
+
+            return comp;
+        }
+
+        /// <inheritdoc />
+        public EActor RemoveComponent(Type type, string name = "")
+        {
+            EActor comp = null;
+
+            if (string.IsNullOrEmpty(name))
+            {
+                if (!TryGetComponent(type, out comp))
+                    return null;
+
+                comp.Base = null;
+                componentsInChildren.Remove(comp);
+                return comp;
+            }
+
+            foreach (EActor actor in GetComponents(type))
+            {
+                if (actor.Name != name)
+                    continue;
+
+                comp = actor;
+            }
+
+            return comp;
+        }
+
+        /// <inheritdoc />
+        public EActor RemoveComponent(EActor actor, string name = "")
+        {
+            if (!componentsInChildren.Contains(actor))
+                return null;
+
+            if (string.IsNullOrEmpty(name))
+            {
+                actor.Base = null;
+                componentsInChildren.Remove(actor);
+                return actor;
+            }
+
+            foreach (EActor component in componentsInChildren)
+            {
+                if (component != actor || actor.Name != name)
+                    continue;
+
+                actor = component;
+            }
+
+            return actor;
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<T> RemoveComponentOfType<T>(string name = "")
+            where T : EActor
+        {
+            IEnumerable<T> components = GetComponents<T>();
+
+            foreach (T comp in components)
+                RemoveComponent(comp, name);
+
+            return components;
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<EActor> RemoveComponentOfType(Type type, string name = "")
+        {
+            IEnumerable<EActor> components = GetComponents(type);
+
+            foreach (EActor comp in components)
+                RemoveComponent(comp, name);
+
+            return components;
+        }
+
+        /// <inheritdoc />
+        public void RemoveComponents(IEnumerable<Type> types) => types.ForEach(type => RemoveComponent(type));
+
+        /// <inheritdoc />
+        public void RemoveComponents(IEnumerable<EActor> actors) => actors.ForEach(actor => RemoveComponent(actor));
+
+        /// <inheritdoc />
+        public void RemoveComponents<T>(IEnumerable<T> actors)
+            where T : EActor => actors.ForEach(actor => RemoveComponent(actor));
+
+        /// <inheritdoc />
+        public void RemoveComponents<T>(IEnumerable<EActor> types)
+            where T : EActor => types.ForEach(type => RemoveComponent(type));
 
         /// <inheritdoc/>
         public T GetComponent<T>()
