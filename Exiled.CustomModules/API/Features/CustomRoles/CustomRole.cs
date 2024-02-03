@@ -693,7 +693,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             ChangedCustomRoleDispatcher.InvokeAll(@event);
 
             return true;
-
         }
 
         /// <summary>

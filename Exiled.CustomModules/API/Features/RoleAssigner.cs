@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.CustomModules.Events.EventArgs.CustomRoles;
-
 namespace Exiled.CustomModules.API.Features
 {
     using System;
@@ -23,6 +21,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Interfaces;
     using Exiled.CustomModules.Events.EventArgs.CustomItems;
+    using Exiled.CustomModules.Events.EventArgs.CustomRoles;
     using Exiled.CustomModules.Events.EventArgs.Tracking;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;

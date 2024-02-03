@@ -99,14 +99,12 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <summary>
         /// Gets the type of the game state.
         /// </summary>
-        /// <param name="customGameMode">The custom game mode.</param>
         /// <returns>The type of the game state if found; otherwise, <see langword="null"/>.</returns>
         public Type GameState => BehaviourComponents.FirstOrDefault(comp => typeof(GameState).IsAssignableFrom(comp));
 
         /// <summary>
         /// Gets the types of the player states.
         /// </summary>
-        /// <param name="customGameMode">The custom game mode.</param>
         /// <returns>The types of the player states if found; otherwise, empty.</returns>
         public IEnumerable<Type> PlayerStates => BehaviourComponents.Where(comp => typeof(PlayerState).IsAssignableFrom(comp));
 
@@ -162,9 +160,9 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         public static CustomGameMode Get(PlayerState playerState) => Get(playerState.GetType());
 
         /// <summary>
-        /// Attempts to retrieve a <see cref="CustomGameMode"/> based on the provided id or <see cref="UUCustomGameModeType"/>.
+        /// Attempts to retrieve a <see cref="CustomGameMode"/> based on the provided id or <see cref="UUGameModeType"/>.
         /// </summary>
-        /// <param name="id">The id or <see cref="UUCustomGameModeType"/> of the custom game mode.</param>
+        /// <param name="id">The id or <see cref="UUGameModeType"/> of the custom game mode.</param>
         /// <param name="customGameMode">When this method returns, contains the <see cref="CustomGameMode"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomGameMode"/> was found; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(object id, out CustomGameMode customGameMode) => customGameMode = Get(id);

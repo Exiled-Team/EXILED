@@ -168,7 +168,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the FlickerableLightController's NetworkIdentity.
         /// </summary>
-        public NetworkIdentity RoomLightControllerNetIdentity => RoomLightController?.netIdentity;
+        public NetworkIdentity RoomLightControllerNetIdentity => RoomLightController ? RoomLightController.netIdentity : null;
 
         /// <summary>
         /// Gets the room's FlickerableLightController.
@@ -283,7 +283,7 @@ namespace Exiled.API.Features
             }
 
             // Finally, try for objects that aren't children, like players and pickups.
-            return room ?? Get(objectInRoom.transform.position) ?? default;
+            return room ? room : Get(objectInRoom.transform.position) ?? default;
         }
 
         /// <summary>
@@ -465,14 +465,19 @@ namespace Exiled.API.Features
         {
             Transform transform = gameObject.transform;
 
-            return transform.parent?.name.RemoveBracketsOnEndOfName() switch
+            if (transform && transform.parent)
             {
-                "HeavyRooms" => ZoneType.HeavyContainment,
-                "LightRooms" => ZoneType.LightContainment,
-                "EntranceRooms" => ZoneType.Entrance,
-                "HCZ_EZ_Checkpoint" => ZoneType.HeavyContainment | ZoneType.Entrance,
-                _ => transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified,
-            };
+                return transform.parent.name.RemoveBracketsOnEndOfName() switch
+                {
+                    "HeavyRooms" => ZoneType.HeavyContainment,
+                    "LightRooms" => ZoneType.LightContainment,
+                    "EntranceRooms" => ZoneType.Entrance,
+                    "HCZ_EZ_Checkpoint" => ZoneType.HeavyContainment | ZoneType.Entrance,
+                    _ => transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified,
+                };
+            }
+
+            return ZoneType.Unspecified;
         }
 
         private void InternalCreate()
