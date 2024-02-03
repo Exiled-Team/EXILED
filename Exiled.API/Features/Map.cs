@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Lockers;
-
 namespace Exiled.API.Features
 {
     using System;
@@ -18,6 +16,7 @@ namespace Exiled.API.Features
     using Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Hazards;
+    using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Toys;
     using global::Hazards;
@@ -239,7 +238,7 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Locker"/>.
         /// </summary>
         /// <returns><see cref="Locker"/> object.</returns>
-        public static Locker GetRandomLocker() => Locker.List.GetRandomValue();
+        public static Locker GetRandomLocker() => Locker.List.Random();
 
         /// <summary>
         /// Gets a random <see cref="Pickup"/>.

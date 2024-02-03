@@ -41,7 +41,6 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
-    using MapGeneration.Distributors;
     using MEC;
     using Mirror;
     using Mirror.LiteNetLib4Mirror;
@@ -3448,10 +3447,7 @@ namespace Exiled.API.Features
                     Teleport(scp914._knobTransform.position + Vector3.up + offset);
                     break;
                 case Chamber chamber:
-                    Teleport(chamber.UseMultipleSpawnpoints ? chamber.Spawnpoints.GetRandomValue().transform.position : chamber.Spawnpoint.transform.position + Vector3.up + offset);
-                    break;
-                case LockerChamber chamber:
-                    Teleport(Chamber.Get(chamber));
+                    Teleport(chamber.UseMultipleSpawnpoints ? chamber.Spawnpoints.Random().transform.position : chamber.Spawnpoint.transform.position + Vector3.up + offset);
                     break;
                 case ElevatorChamber elevator:
                     Teleport(elevator.transform.position + Vector3.up + offset);
@@ -3489,7 +3485,7 @@ namespace Exiled.API.Features
                 nameof(Player) => Random,
                 nameof(Pickup) => Pickup.Random,
                 nameof(Ragdoll) => Ragdoll.Random,
-                nameof(Locker) => Map.GetRandomLocker(),
+                nameof(Lockers.Locker) => Map.GetRandomLocker(),
                 nameof(Generator) => Generator.Random,
                 nameof(Window) => Window.Random,
                 nameof(Scp914) => Scp914.Scp914Controller,

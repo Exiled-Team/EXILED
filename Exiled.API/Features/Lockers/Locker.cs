@@ -14,14 +14,13 @@ namespace Exiled.API.Features.Lockers
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using MapGeneration.Distributors;
-    using UnityEngine;
 
     using BaseLocker = MapGeneration.Distributors.Locker;
 
     /// <summary>
     /// Represents a basic locker.
     /// </summary>
-    public class Locker : TypeCastObject<Locker>, IWrapper<BaseLocker>
+    public class Locker : GameEntity, IWrapper<BaseLocker>
     {
         /// <summary>
         /// <see cref="Dictionary{TKey,TValue}"/> with <see cref="BaseLocker"/> and <see cref="Locker"/>.
@@ -76,7 +75,7 @@ namespace Exiled.API.Features.Lockers
         /// </summary>
         /// <param name="locker"><see cref="BaseLocker"/> instance.</param>
         /// <returns><see cref="Locker"/> instance.</returns>
-        public static Locker Get(BaseLocker locker) => BaseToExiledLockers.TryGetValue(locker, out var lk)
+        public static Locker Get(BaseLocker locker) => BaseToExiledLockers.TryGetValue(locker, out Locker lk)
             ? lk
             : locker switch
             {
@@ -98,7 +97,7 @@ namespace Exiled.API.Features.Lockers
         /// <param name="player">Player who interacts.</param>
         public void Interact(Chamber chamber = null, Player player = null)
         {
-            chamber ??= Chambers.GetRandomValue();
+            chamber ??= Chambers.Random();
 
             Base.ServerInteract(player?.ReferenceHub, (byte)Chambers.ToList().IndexOf(chamber));
         }

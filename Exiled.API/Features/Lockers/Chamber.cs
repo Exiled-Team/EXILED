@@ -58,7 +58,7 @@ namespace Exiled.API.Features.Lockers
             {
                 Base._toBeSpawned.Clear();
 
-                foreach (var pickup in value)
+                foreach (Pickup pickup in value)
                     Base._toBeSpawned.Add(pickup.Base);
             }
         }
@@ -73,7 +73,7 @@ namespace Exiled.API.Features.Lockers
             {
                 Base._content.Clear();
 
-                foreach (var pickup in value)
+                foreach (Pickup pickup in value)
                     Base._content.Add(pickup.Base);
             }
         }
@@ -178,6 +178,6 @@ namespace Exiled.API.Features.Lockers
         /// </summary>
         /// <param name="chamber"><see cref="LockerChamber"/>.</param>
         /// <returns><see cref="Chamber"/>.</returns>
-        internal static Chamber Get(LockerChamber chamber) => Chambers.TryGetValue(chamber, out var chmb) ? chmb : new(chamber, Locker.Get(x => x.Chambers.Any(x => x.Base == chamber)).FirstOrDefault());
+        internal static Chamber Get(LockerChamber chamber) => Chambers.TryGetValue(chamber, out Chamber chmb) ? chmb : new(chamber, Locker.Get(x => x.Chambers.Any(x => x.Base == chamber)).FirstOrDefault());
     }
 }
