@@ -5,24 +5,19 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Extensions;
-using MapGeneration;
-
 namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
-
     using Hazards;
-
+    using MapGeneration;
     using MEC;
-
     using PlayerRoles;
-
     using UnityEngine;
 
     using BaseTeslaGate = global::TeslaGate;

@@ -5,24 +5,21 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Extensions;
-
 namespace Exiled.API.Features.Pickups
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.API.Interfaces;
-
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables.Scp244;
-
     using Mirror;
     using RelativePositioning;
     using UnityEngine;
@@ -38,7 +35,6 @@ namespace Exiled.API.Features.Pickups
     using BaseScp1576Pickup = InventorySystem.Items.Usables.Scp1576.Scp1576Pickup;
     using BaseScp2176Projectile = InventorySystem.Items.ThrowableProjectiles.Scp2176Projectile;
     using BaseScp330Pickup = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
-
     using Object = UnityEngine.Object;
 
     /// <summary>
