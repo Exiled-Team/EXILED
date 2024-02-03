@@ -9,21 +9,27 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.InteropServices.WindowsRuntime;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Doors;
+    using Exiled.API.Features.Roles;
     using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.CustomRoles;
+    using Exiled.CustomModules.Events.EventArgs.CustomRoles;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
-
     using GameCore;
     using Interactables.Interobjects.DoorUtils;
     using LightContainmentZoneDecontamination;
+    using PlayerRoles;
     using Respawning;
     using UnityStandardAssets.CinematicEffects;
     using Utils.Networking;
@@ -128,8 +134,13 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <param name="isForced">A value indicating whether the <see cref="GameState"/> should be started regardless any conditions.</param>
         public virtual void Start(bool isForced = false)
         {
+            if (!typeof(World).IsAssignableFrom(new StackTrace().GetFrame(1)?.GetMethod()?.DeclaringType))
+                throw new Exception("Only the World can start a GameState.");
+
             if (!isForced && PlayerCount < Settings.MinimumPlayers)
                 return;
+
+            World.Get().RunningGameMode = CustomGameMode.Get(this).Id;
 
             foreach (PlayerState ps in PlayerStates)
                 ps.Deploy();
@@ -141,11 +152,16 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <param name="isForced">A value indicating whether the <see cref="GameState"/> should be ended regardless any conditions.</param>
         public virtual void End(bool isForced = false)
         {
-            if (isForced || CanBeEnded)
-            {
-                foreach (PlayerState ps in PlayerStates)
-                    ps.Destroy();
-            }
+            if (!typeof(GameState).IsAssignableFrom(new StackTrace().GetFrame(1)?.GetMethod()?.DeclaringType))
+                throw new Exception("Only the World can end a GameState.");
+
+            if (!isForced && !CanBeEnded)
+                return;
+
+            World.Get().RunningGameMode = UUGameModeType.None;
+
+            foreach (PlayerState ps in PlayerStates)
+                ps.Destroy();
         }
 
         /// <summary>
@@ -190,12 +206,28 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
             Lift.LockAll(Settings.LockedElevators);
         }
 
+        /// <inheritdoc />
+        protected override void OnEndPlay()
+        {
+            base.OnEndPlay();
+
+            Door.UnlockAll();
+            Lift.UnlockAll();
+        }
+
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
             base.SubscribeEvents();
 
-            Exiled.Events.Handlers.Server.EndingRound += OnEndingRound;
+            StaticActor.Get<RoleAssigner>().AssigningHumanCustomRolesDispatcher.Bind(this, OnAssigningCustomHumanRolesInternal);
+            StaticActor.Get<RoleAssigner>().AssigningScpCustomRolesDispatcher.Bind(this, OnAssigningCustomScpRolesInternal);
+
+            StaticActor.Get<Features.RespawnManager>().SelectingCustomTeamRespawnDispatcher.Bind(this, OnSelectingCustomTeamRespawnInternal);
+
+            Exiled.Events.Handlers.Server.AssigningHumanRoles += OnAssigningHumanRolesInternal;
+            Exiled.Events.Handlers.Server.AssigningScpRoles += OnAssigningScpRolesInternal;
+            Exiled.Events.Handlers.Server.EndingRound += OnEndingRoundInternal;
             Exiled.Events.Handlers.Server.RespawningTeam += OnRespawningTeamInternal;
             Exiled.Events.Handlers.Server.RespawnedTeam += OnRespawnedTeamInternal;
 
@@ -209,7 +241,12 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         {
             base.UnsubscribeEvents();
 
-            Exiled.Events.Handlers.Server.EndingRound -= OnEndingRound;
+            StaticActor.Get<RoleAssigner>().AssigningHumanCustomRolesDispatcher.Unbind(this);
+            StaticActor.Get<Features.RespawnManager>().SelectingCustomTeamRespawnDispatcher.Unbind(this);
+
+            Exiled.Events.Handlers.Server.AssigningHumanRoles -= OnAssigningHumanRolesInternal;
+            Exiled.Events.Handlers.Server.AssigningScpRoles -= OnAssigningScpRolesInternal;
+            Exiled.Events.Handlers.Server.EndingRound -= OnEndingRoundInternal;
             Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeamInternal;
             Exiled.Events.Handlers.Server.RespawnedTeam -= OnRespawnedTeamInternal;
 
@@ -218,7 +255,187 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
             Exiled.Events.Handlers.Player.Destroying -= OnDestroyingInternal;
         }
 
-        private void OnEndingRound(EndingRoundEventArgs ev)
+        private void OnAssigningHumanRolesInternal(AssigningHumanRolesEventArgs ev)
+        {
+            if (!Settings.SpawnableRoles.IsEmpty())
+            {
+                IEnumerable<RoleTypeId> roles = ev.Roles.Where(role => Settings.SpawnableRoles.Contains(role));
+                int amount = roles.Count();
+                if (amount < ev.Roles.Length)
+                {
+                    List<RoleTypeId> newRoles = new();
+
+                    for (int i = 0; i < amount; i++)
+                        newRoles.Add(Role.Random(false, Settings.SpawnableRoles.Except(ev.Roles)));
+
+                    ev.Roles = roles.Concat(newRoles).ToArray();
+                }
+
+                return;
+            }
+
+            if (!Settings.NonSpawnableRoles.IsEmpty())
+            {
+                IEnumerable<RoleTypeId> roles = ev.Roles.Where(role => !Settings.NonSpawnableRoles.Contains(role));
+                int amount = roles.Count();
+                if (amount < ev.Roles.Length)
+                {
+                    List<RoleTypeId> newRoles = new();
+
+                    for (int i = 0; i < amount; i++)
+                        newRoles.Add(Role.Random(false, Settings.NonSpawnableRoles));
+
+                    ev.Roles = roles.Concat(newRoles).ToArray();
+                }
+            }
+        }
+
+        private void OnAssigningScpRolesInternal(AssigningScpRolesEventArgs ev)
+        {
+            if (!Settings.SpawnableRoles.IsEmpty())
+            {
+                IEnumerable<RoleTypeId> roles = ev.Roles.Where(role => Settings.SpawnableRoles.Contains(role));
+                int amount = roles.Count();
+                if (amount < ev.Roles.Count)
+                {
+                    List<RoleTypeId> newRoles = new();
+
+                    for (int i = 0; i < amount; i++)
+                        newRoles.Add(Role.Random(false, Settings.SpawnableRoles.Except(ev.Roles)));
+
+                    ev.Roles = roles.Concat(newRoles).ToList();
+                }
+
+                return;
+            }
+
+            if (!Settings.NonSpawnableRoles.IsEmpty())
+            {
+                IEnumerable<RoleTypeId> roles = ev.Roles.Where(role => !Settings.NonSpawnableRoles.Contains(role));
+                int amount = roles.Count();
+                if (amount < ev.Roles.Count)
+                {
+                    List<RoleTypeId> newRoles = new();
+
+                    for (int i = 0; i < amount; i++)
+                        newRoles.Add(Role.Random(false, Settings.NonSpawnableRoles));
+
+                    ev.Roles = roles.Concat(newRoles).ToList();
+                }
+            }
+        }
+
+        private void OnAssigningCustomHumanRolesInternal(Events.EventArgs.CustomRoles.AssigningHumanCustomRolesEventArgs ev)
+        {
+            if (!Settings.SpawnableCustomRoles.IsEmpty())
+            {
+                List<uint> customRoles = new();
+                foreach (object role in ev.Roles)
+                {
+                    if (!CustomRole.TryGet(role, out CustomRole cr) || !Settings.SpawnableCustomRoles.Contains(cr.Id))
+                        continue;
+
+                    customRoles.Add(cr.Id);
+                }
+
+                ev.Roles.RemoveAll(o => CustomRole.TryGet(o, out CustomRole cr) && !Settings.SpawnableCustomRoles.Contains(cr.Id));
+
+                int amount = customRoles.Count();
+                if (amount < (ev.Roles.Count - customRoles.Count))
+                {
+                    List<uint> newRoles = new();
+
+                    for (int i = 0; i < amount; i++)
+                        newRoles.Add(CustomRole.Get(role => !role.IsScp && !role.IsTeamUnit).Random().Id);
+
+                    ev.Roles = ev.Roles.Where(role => role is not RoleTypeId).Cast<object>().Concat(newRoles.Cast<object>()).ToList();
+                }
+
+                return;
+            }
+
+            if (!Settings.NonSpawnableCustomRoles.IsEmpty())
+            {
+                List<uint> customRoles = new();
+                foreach (object role in ev.Roles)
+                {
+                    if (!CustomRole.TryGet(role, out CustomRole cr) || Settings.NonSpawnableCustomRoles.Contains(cr.Id))
+                        continue;
+
+                    customRoles.Add(cr.Id);
+                }
+
+                ev.Roles.RemoveAll(o => CustomRole.TryGet(o, out CustomRole cr) && Settings.NonSpawnableCustomRoles.Contains(cr.Id));
+
+                int amount = customRoles.Count();
+                if (amount < (ev.Roles.Count - customRoles.Count))
+                {
+                    List<uint> newRoles = new();
+
+                    for (int i = 0; i < amount; i++)
+                        newRoles.Add(CustomRole.Get(role => !role.IsScp && !role.IsTeamUnit).Random().Id);
+
+                    ev.Roles = ev.Roles.Where(role => role is not RoleTypeId).Cast<object>().Concat(newRoles.Cast<object>()).ToList();
+                }
+            }
+        }
+
+        private void OnAssigningCustomScpRolesInternal(Events.EventArgs.CustomRoles.AssigningScpCustomRolesEventArgs ev)
+        {
+            if (!Settings.SpawnableCustomRoles.IsEmpty())
+            {
+                List<uint> customRoles = new();
+                foreach (object role in ev.Roles)
+                {
+                    if (!CustomRole.TryGet(role, out CustomRole cr) || !Settings.SpawnableCustomRoles.Contains(cr.Id))
+                        continue;
+
+                    customRoles.Add(cr.Id);
+                }
+
+                ev.Roles.RemoveAll(o => CustomRole.TryGet(o, out CustomRole cr) && !Settings.SpawnableCustomRoles.Contains(cr.Id));
+
+                int amount = customRoles.Count();
+                if (amount < (ev.Roles.Count - customRoles.Count))
+                {
+                    List<uint> newRoles = new();
+
+                    for (int i = 0; i < amount; i++)
+                        newRoles.Add(CustomRole.Get(role => !role.IsScp && !role.IsTeamUnit).Random().Id);
+
+                    ev.Roles = ev.Roles.Where(role => role is not RoleTypeId).Cast<object>().Concat(newRoles.Cast<object>()).ToList();
+                }
+
+                return;
+            }
+
+            if (!Settings.NonSpawnableCustomRoles.IsEmpty())
+            {
+                List<uint> customRoles = new();
+                foreach (object role in ev.Roles)
+                {
+                    if (!CustomRole.TryGet(role, out CustomRole cr) || Settings.NonSpawnableCustomRoles.Contains(cr.Id))
+                        continue;
+
+                    customRoles.Add(cr.Id);
+                }
+
+                ev.Roles.RemoveAll(o => CustomRole.TryGet(o, out CustomRole cr) && Settings.NonSpawnableCustomRoles.Contains(cr.Id));
+
+                int amount = customRoles.Count();
+                if (amount < (ev.Roles.Count - customRoles.Count))
+                {
+                    List<uint> newRoles = new();
+
+                    for (int i = 0; i < amount; i++)
+                        newRoles.Add(CustomRole.Get(role => role.IsScp && !role.IsTeamUnit).Random().Id);
+
+                    ev.Roles = ev.Roles.Where(role => role is not RoleTypeId).Cast<object>().Concat(newRoles.Cast<object>()).ToList();
+                }
+            }
+        }
+
+        private void OnEndingRoundInternal(EndingRoundEventArgs ev)
         {
             if (!Settings.UseCustomEndingConditions || !EvaluateEndingConditions())
                 return;
@@ -226,10 +443,68 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
             ev.IsAllowed = true;
         }
 
+        private void OnSelectingRespawnTeamInternal(SelectingRespawnTeamEventArgs ev)
+        {
+            if (!Settings.SpawnableTeams.IsEmpty() && Settings.SpawnableTeams.Contains(ev.Team))
+            {
+                if (ev.Team is SpawnableTeamType.ChaosInsurgency && !Settings.SpawnableTeams.Contains(SpawnableTeamType.NineTailedFox))
+                {
+                    ev.Team = SpawnableTeamType.NineTailedFox;
+                    return;
+                }
+
+                if (ev.Team is SpawnableTeamType.NineTailedFox && !Settings.SpawnableTeams.Contains(SpawnableTeamType.ChaosInsurgency))
+                {
+                    ev.Team = SpawnableTeamType.ChaosInsurgency;
+                    return;
+                }
+
+                ev.Team = SpawnableTeamType.None;
+                return;
+            }
+
+            if (!Settings.NonSpawnableTeams.IsEmpty() && Settings.NonSpawnableTeams.Contains(ev.Team))
+            {
+                if (ev.Team is SpawnableTeamType.ChaosInsurgency && !Settings.NonSpawnableTeams.Contains(SpawnableTeamType.NineTailedFox))
+                {
+                    ev.Team = SpawnableTeamType.NineTailedFox;
+                    return;
+                }
+
+                if (ev.Team is SpawnableTeamType.NineTailedFox && !Settings.NonSpawnableTeams.Contains(SpawnableTeamType.ChaosInsurgency))
+                {
+                    ev.Team = SpawnableTeamType.ChaosInsurgency;
+                    return;
+                }
+
+                ev.Team = SpawnableTeamType.None;
+            }
+        }
+
+        private void OnSelectingCustomTeamRespawnInternal(SelectingCustomTeamRespawnEventArgs ev)
+        {
+            if (!CustomTeam.TryGet(ev.Team, out CustomTeam team))
+                return;
+
+            if (!Settings.SpawnableCustomTeams.IsEmpty() && Settings.SpawnableCustomTeams.Contains(team.Id))
+            {
+                CustomTeam newTeam = CustomTeam.Get(t => Settings.SpawnableCustomTeams.Contains(t.Id)).Shuffle().FirstOrDefault();
+                ev.Team = newTeam ? newTeam.Id : SpawnableTeamType.None;
+                return;
+            }
+
+            if (!Settings.NonSpawnableCustomTeams.IsEmpty() && Settings.NonSpawnableCustomTeams.Contains(team.Id))
+            {
+                CustomTeam newTeam = CustomTeam.Get(t => !Settings.NonSpawnableCustomTeams.Contains(t.Id)).Shuffle().FirstOrDefault();
+                ev.Team = newTeam ? newTeam.Id : SpawnableTeamType.None;
+            }
+        }
+
         private void OnRespawningTeamInternal(RespawningTeamEventArgs ev)
         {
-            ev.IsAllowed = (!Settings.SpawnableTeams.IsEmpty() && !Settings.SpawnableTeams.Contains(ev.NextKnownTeam)) ||
-                           (!Settings.NonSpawnableTeams.IsEmpty() && Settings.NonSpawnableTeams.Contains(ev.NextKnownTeam));
+            if ((!Settings.SpawnableTeams.IsEmpty() && !Settings.SpawnableTeams.Contains(ev.NextKnownTeam)) ||
+                (!Settings.NonSpawnableTeams.IsEmpty() && Settings.NonSpawnableTeams.Contains(ev.NextKnownTeam)))
+                ev.IsAllowed = false;
         }
 
         private void OnRespawnedTeamInternal(RespawnedTeamEventArgs ev)

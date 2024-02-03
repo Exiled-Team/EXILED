@@ -28,7 +28,9 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// The default fixed tick rate.
         /// </summary>
-        public const float DefaultFixedTickRate = TickComponent.DefaultFixedTickRate;
+#pragma warning disable SA1310
+        public const float DEFAULT_FIXED_TICK_RATE = TickComponent.DEFAULT_FIXED_TICK_RATE;
+#pragma warning restore SA1310
 
         private readonly HashSet<EActor> componentsInChildren = HashSetPool<EActor>.Pool.Get();
         private CoroutineHandle serverTick;
@@ -43,7 +45,7 @@ namespace Exiled.API.Features.Core
         {
             IsEditable = true;
             CanEverTick = true;
-            fixedTickRate = DefaultFixedTickRate;
+            fixedTickRate = DEFAULT_FIXED_TICK_RATE;
             PostInitialize();
             Timing.CallDelayed(fixedTickRate, () => OnBeginPlay());
             Timing.CallDelayed(fixedTickRate * 2, () => serverTick = Timing.RunCoroutine(ServerTick()));

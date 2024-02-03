@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.CustomModules.Events.EventArgs.CustomRoles;
-
 namespace Exiled.CustomModules.API.Features
 {
     using System;
@@ -25,6 +23,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Interfaces;
     using Exiled.CustomModules.Events.EventArgs.CustomItems;
+    using Exiled.CustomModules.Events.EventArgs.CustomRoles;
     using Exiled.CustomModules.Events.EventArgs.Tracking;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -45,7 +44,7 @@ namespace Exiled.CustomModules.API.Features
         /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired when selecting the next known team.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<SelectingCustomTeamRespawnEventArgs> SelectingCustomTeamRespawnDispatcher { get; private set; }
+        public TDynamicEventDispatcher<SelectingCustomTeamRespawnEventArgs> SelectingCustomTeamRespawnDispatcher { get; private set; }
 
         /// <summary>
         /// Gets or sets the next known team.
