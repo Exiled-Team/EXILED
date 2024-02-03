@@ -1190,7 +1190,7 @@ namespace Exiled.API.Features
         /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
         /// <param name="distance">The maximum distance the player can be from the <paramref name="vector"/> to be included.</param>
         /// <returns>The nearest <see cref="Player"/> within the specified distance, or <see langword="null"/> if no player is found.</returns>
-        public static Player GetNearestPlayer(Vector3 vector, float distance) => GetNearestPlayers(vector, distance).OrderBy(p => Vector3.Distance(vector, p.Position)).FirstOrDefault();
+        public static Player GetNearestPlayer(Vector3 vector, float distance) => GetNearestPlayers(vector, distance).OrderBy(p => (vector - p.Position).sqrMagnitude).FirstOrDefault();
 
         /// <summary>
         /// Gets all players near the specified <see cref="Vector3"/> within the given distance.
@@ -1198,7 +1198,7 @@ namespace Exiled.API.Features
         /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
         /// <param name="distance">The maximum distance the player can be from the <paramref name="vector"/> to be included.</param>
         /// <returns>The filtered collection of <see cref="Player"/> objects.</returns>
-        public static IEnumerable<Player> GetNearestPlayers(Vector3 vector, float distance) => List.Where(p => Vector3.Distance(vector, p.Position) <= distance);
+        public static IEnumerable<Player> GetNearestPlayers(Vector3 vector, float distance) => List.Where(p => (vector - p.Position).sqrMagnitude <= distance * distance);
 
         /// <summary>
         /// Gets the farthest player from the specified <see cref="Vector3"/> within the given distance.
@@ -1206,7 +1206,7 @@ namespace Exiled.API.Features
         /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
         /// <param name="distance">The minimum distance the player can be from the <paramref name="vector"/> to be included.</param>
         /// <returns>The farthest <see cref="Player"/> from the specified <paramref name="vector"/> within the given distance, or <see langword="null"/> if no player is found.</returns>
-        public static Player GetFarthestPlayer(Vector3 vector, float distance) => GetFarthestPlayers(vector, distance).OrderByDescending(p => Vector3.Distance(vector, p.Position)).FirstOrDefault();
+        public static Player GetFarthestPlayer(Vector3 vector, float distance) => GetFarthestPlayers(vector, distance).OrderByDescending(p => (vector - p.Position).sqrMagnitude).FirstOrDefault();
 
         /// <summary>
         /// Gets all players that have a distance greater than the specified distance from the given <see cref="Vector3"/>.
@@ -1214,7 +1214,7 @@ namespace Exiled.API.Features
         /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
         /// <param name="distance">The minimum distance the player can be from the <paramref name="vector"/> to be included.</param>
         /// <returns>The filtered collection of <see cref="Player"/> objects.</returns>
-        public static IEnumerable<Player> GetFarthestPlayers(Vector3 vector, float distance) => List.Where(p => Vector3.Distance(vector, p.Position) >= distance);
+        public static IEnumerable<Player> GetFarthestPlayers(Vector3 vector, float distance) => List.Where(p => (vector - p.Position).sqrMagnitude >= distance * distance);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSystem.ICommandSender"/>, if any.
