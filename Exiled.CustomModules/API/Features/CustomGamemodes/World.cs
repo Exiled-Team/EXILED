@@ -109,6 +109,9 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
             if (!isForced && customGameMode.Settings.MinimumPlayers < Server.PlayerCount)
                 return;
 
+            if (GameState)
+                RemoveComponent(GameState).Destroy();
+
             AddComponent(enqueuedGameMode.GameState);
             GameState.Start(isForced);
         }
