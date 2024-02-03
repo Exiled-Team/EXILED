@@ -2337,7 +2337,7 @@ namespace Exiled.API.Features
         public void UnMute(bool isIntercom = false) => VoiceChatMutes.RevokeLocalMute(UserId, isIntercom);
 
         /// <summary>
-        /// Blink the player's tag.
+        /// Blinks the player's tag.
         /// </summary>
         /// <returns>Used to wait.</returns>
         public IEnumerator<float> BlinkTag()
