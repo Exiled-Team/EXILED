@@ -5,13 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Core;
-
 namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
     using System.Collections.Generic;
 
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Generic;
     using Exiled.CustomModules.API.Enums;
     using MEC;
