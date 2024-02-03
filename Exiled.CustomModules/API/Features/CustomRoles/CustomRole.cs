@@ -15,11 +15,14 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomEscapes;
+    using Exiled.CustomModules.Events.EventArgs.CustomRoles;
     using MEC;
     using PlayerRoles;
     using Respawning;
@@ -42,6 +45,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         private static readonly Dictionary<Type, CustomRole> BehaviourLookupTable = new();
         private static readonly Dictionary<uint, CustomRole> IdLookupTable = new();
         private static readonly Dictionary<string, CustomRole> NameLookupTable = new();
+
+        /// <summary>
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired before a player changes role.
+        /// </summary>
+        [DynamicEventDispatcher]
+        public static TDynamicEventDispatcher<ChangingCustomRoleEventArgs> ChangingCustomRoleDispatcher { get; protected set; }
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomRole"/>'s.
@@ -649,12 +658,32 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (player.IsAlive)
                 return false;
 
-            player.AddComponent(BehaviourComponent);
-            PlayersValue.Remove(player);
-            PlayersValue.Add(player, this);
-            Instances += 1;
+            ChangingCustomRoleEventArgs ev = new(player, Id);
+            ChangingCustomRoleDispatcher.InvokeAll(ev);
 
-            return true;
+            if (!ev.IsAllowed)
+                return false;
+
+            player = ev.Player.Cast<Pawn>();
+            if (ev.Role is RoleTypeId rId)
+            {
+                player.SetRole(rId);
+                return true;
+            }
+
+            if (!CustomRole.TryGet(ev.Role, out CustomRole role))
+                return false;
+
+            if (role.Id == Id)
+            {
+                player.AddComponent(BehaviourComponent);
+                PlayersValue.Remove(player);
+                PlayersValue.Add(player, this);
+                Instances += 1;
+                return true;
+            }
+
+            return role.Spawn(player);
         }
 
         /// <summary>
@@ -680,6 +709,28 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </remarks>
         public void ForceSpawn(Pawn player)
         {
+            ChangingCustomRoleEventArgs ev = new(player, Id);
+            ChangingCustomRoleDispatcher.InvokeAll(ev);
+
+            if (!ev.IsAllowed)
+                return;
+
+            player = ev.Player.Cast<Pawn>();
+            if (ev.Role is RoleTypeId rId)
+            {
+                player.SetRole(rId);
+                return;
+            }
+
+            if (!CustomRole.TryGet(ev.Role, out CustomRole role))
+                return;
+
+            if (role.Id != Id)
+            {
+                role.ForceSpawn(player);
+                return;
+            }
+
             Remove(player);
             PlayersValue.Add(player, this);
 
@@ -705,6 +756,28 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </remarks>
         public void ForceSpawn(Pawn player, bool preservePosition)
         {
+            ChangingCustomRoleEventArgs ev = new(player, Id);
+            ChangingCustomRoleDispatcher.InvokeAll(ev);
+
+            if (!ev.IsAllowed)
+                return;
+
+            player = ev.Player.Cast<Pawn>();
+            if (ev.Role is RoleTypeId rId)
+            {
+                player.SetRole(rId);
+                return;
+            }
+
+            if (!CustomRole.TryGet(ev.Role, out CustomRole role))
+                return;
+
+            if (role.Id != Id)
+            {
+                role.ForceSpawn(player, preservePosition);
+                return;
+            }
+
             PlayersValue.Remove(player);
             PlayersValue.Add(player, this);
 
@@ -754,6 +827,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </remarks>
         public bool Eject(Pawn player)
         {
+            Round.IgnoredPlayers.Remove(player);
             PlayersValue.Remove(player);
             Instances -= 1;
 

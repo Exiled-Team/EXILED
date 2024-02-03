@@ -227,11 +227,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public virtual uint RequiredCustomRoleToSpawn { get; }
 
         /// <summary>
-        /// Gets the required leading teams for this <see cref="CustomTeam"/> to win.
+        /// Gets the teams the <see cref="CustomTeam"/> belongs to.
         /// </summary>
-        /// <remarks>
-        /// This property specifies the teams the <see cref="CustomTeam"/> belongs to.
-        /// </remarks>
         public virtual Team[] TeamsOwnership { get; } = { };
 
         /// <summary>
