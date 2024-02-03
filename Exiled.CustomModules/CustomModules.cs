@@ -93,9 +93,13 @@ namespace Exiled.CustomModules
         /// <inheritdoc/>
         public override void OnDisabled()
         {
+            World.Get().Destroy();
+
             StaticActor.Get<RoleAssigner>()?.Destroy();
             StaticActor.Get<RespawnManager>()?.Destroy();
-            World.Get().Destroy();
+            StaticActor.Get<AbilityTracker>()?.Destroy();
+            StaticActor.Get<ItemTracker>()?.Destroy();
+            StaticActor.Get<PickupTracker>()?.Destroy();
 
             CustomItem.DisableAll();
             CustomRole.DisableAll();
