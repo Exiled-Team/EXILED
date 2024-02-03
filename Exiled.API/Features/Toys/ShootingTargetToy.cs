@@ -177,9 +177,10 @@ namespace Exiled.API.Features.Toys
                     }
             }
 
-            shootingTargetToy.Base.transform.position = position ?? Vector3.zero;
-            shootingTargetToy.Base.transform.eulerAngles = rotation ?? Vector3.zero;
-            shootingTargetToy.Base.transform.localScale = scale ?? Vector3.one;
+            Transform transform = shootingTargetToy.Base.transform;
+            transform.position = position ?? Vector3.zero;
+            transform.eulerAngles = rotation ?? Vector3.zero;
+            transform.localScale = scale ?? Vector3.one;
 
             if (spawn)
                 shootingTargetToy.Spawn();

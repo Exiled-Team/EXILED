@@ -111,9 +111,10 @@ namespace Exiled.API.Features.Toys
         {
             Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
-            primitive.Base.transform.position = position ?? Vector3.zero;
-            primitive.Base.transform.eulerAngles = rotation ?? Vector3.zero;
-            primitive.Base.transform.localScale = scale ?? Vector3.one;
+            Transform transform = primitive.Base.transform;
+            transform.position = position ?? Vector3.zero;
+            transform.eulerAngles = rotation ?? Vector3.zero;
+            transform.localScale = scale ?? Vector3.one;
 
             if (spawn)
                 primitive.Spawn();
@@ -138,9 +139,10 @@ namespace Exiled.API.Features.Toys
         {
             Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
-            primitive.Base.transform.position = position ?? Vector3.zero;
-            primitive.Base.transform.eulerAngles = rotation ?? Vector3.zero;
-            primitive.Base.transform.localScale = scale ?? Vector3.one;
+            Transform transform = primitive.Base.transform;
+            transform.position = position ?? Vector3.zero;
+            transform.eulerAngles = rotation ?? Vector3.zero;
+            transform.localScale = scale ?? Vector3.one;
 
             if (spawn)
                 primitive.Spawn();
@@ -161,9 +163,10 @@ namespace Exiled.API.Features.Toys
         {
             Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
-            primitive.Base.transform.position = primitiveSettings.Position;
-            primitive.Base.transform.eulerAngles = primitiveSettings.Rotation;
-            primitive.Base.transform.localScale = primitiveSettings.Scale;
+            Transform transform = primitive.Base.transform;
+            transform.position = primitiveSettings.Position;
+            transform.eulerAngles = primitiveSettings.Rotation;
+            transform.localScale = primitiveSettings.Scale;
 
             if (primitiveSettings.Spawn)
                 primitive.Spawn();
@@ -171,6 +174,7 @@ namespace Exiled.API.Features.Toys
             primitive.Base.NetworkScale = primitive.Base.transform.localScale;
             primitive.Base.NetworkPrimitiveType = primitiveSettings.PrimitiveType;
             primitive.Color = primitiveSettings.Color;
+            primitive.IsStatic = primitiveSettings.IsStatic;
 
             return primitive;
         }

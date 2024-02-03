@@ -20,11 +20,13 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="size"><inheritdoc cref="Size"/></param>
+        /// <param name="playAudio"><inheritdoc cref="PlayAudio"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DisplayingHitmarkerEventArgs(Player player, float size, bool isAllowed = true)
+        public DisplayingHitmarkerEventArgs(Player player, float size, bool playAudio, bool isAllowed = true)
         {
             Player = player;
             Size = size;
+            PlayAudio = playAudio;
             IsAllowed = isAllowed;
         }
 
@@ -33,6 +35,11 @@ namespace Exiled.Events.EventArgs.Player
 
         /// <inheritdoc/>
         public Player Player { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether audio should be played.
+        /// </summary>
+        public bool PlayAudio { get; set; }
 
         /// <summary>
         /// Gets or sets the hitmarker's size.

@@ -70,6 +70,7 @@ namespace Exiled.API.Features
             .WithTypeConverter(new AttachmentIdentifiersConverter())
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .WithDuplicateKeyChecking()
             .IgnoreFields()
             .IgnoreUnmatchedProperties()
             .Build();
@@ -102,7 +103,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the absolute path.
         /// </summary>
-        public string? AbsolutePath => Path.Combine(Paths.Configs, Path.Combine(Folder, Name));
+        public string? AbsolutePath => Folder is not null && Name is not null ? Path.Combine(Paths.Configs, Path.Combine(Folder, Name)) : null;
 
         /// <summary>
         /// Gets a <see cref="EConfig"/> instance given the specified type <typeparamref name="T"/>.
@@ -126,7 +127,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="folder">The folder of the config to look for.</param>
         /// <returns>The corresponding <see cref="EConfig"/> instance or <see langword="null"/> if not found.</returns>
-        public static EConfig Get(string folder) => List.FirstOrDefault(cfg => cfg.Folder == folder);
+        public static EConfig Get(string folder) => List.FirstOrDefault(cfg => cfg.Folder == folder) ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Generates a new config of type <typeparamref name="T"/>.
@@ -175,7 +176,7 @@ namespace Exiled.API.Features
                 if (attribute is null)
                     return null;
 
-                ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
+                ConstructorInfo? constructor = type.GetConstructor(Type.EmptyTypes);
                 if (constructor is not null)
                 {
                     config = constructor.Invoke(null)!;
@@ -227,26 +228,29 @@ namespace Exiled.API.Features
                 if (!wrapper!.Name!.Contains(".yml"))
                     wrapper.Name += ".yml";
 
-                string path = Path.Combine(Paths.Configs, wrapper.Folder);
-                if (attribute.IsParent)
+                if (wrapper.Folder is not null)
                 {
-                    if (!Directory.Exists(Path.Combine(path)))
-                        Directory.CreateDirectory(path);
+                    string path = Path.Combine(Paths.Configs, wrapper.Folder);
+                    if (attribute.IsParent)
+                    {
+                        if (!Directory.Exists(Path.Combine(path)))
+                            Directory.CreateDirectory(path);
 
-                    Load(wrapper, wrapper.AbsolutePath!);
-                    wrapper!.data!.Add(wrapper);
-                    MainConfigsValue.Add(wrapper);
+                        Load(wrapper, wrapper.AbsolutePath!);
+                        wrapper!.data!.Add(wrapper);
+                        MainConfigsValue.Add(wrapper);
 
-                    Dictionary<EConfig, string> localCache = new(Cache);
-                    foreach (KeyValuePair<EConfig, string> elem in localCache)
-                        LoadFromCache(elem.Key);
+                        Dictionary<EConfig, string> localCache = new(Cache);
+                        foreach (KeyValuePair<EConfig, string> elem in localCache)
+                            LoadFromCache(elem.Key);
 
-                    return wrapper;
+                        return wrapper;
+                    }
+
+                    Cache.Add(wrapper, wrapper.AbsolutePath!);
+                    if (!Directory.Exists(path) || !MainConfigsValue.Any(cfg => cfg.Folder == wrapper.Folder))
+                        return wrapper;
                 }
-
-                Cache.Add(wrapper, wrapper.AbsolutePath!);
-                if (!Directory.Exists(path) || !MainConfigsValue.Any(cfg => cfg.Folder == wrapper.Folder))
-                    return wrapper;
 
                 LoadFromCache(wrapper);
 
@@ -303,12 +307,12 @@ namespace Exiled.API.Features
             path ??= config.AbsolutePath;
             if (File.Exists(path))
             {
-                config.Base = Deserializer.Deserialize(File.ReadAllText(path), config.Base!.GetType())!;
+                config.Base = Deserializer.Deserialize(File.ReadAllText(path ?? throw new ArgumentNullException(nameof(path))), config.Base!.GetType())!;
                 File.WriteAllText(path, Serializer.Serialize(config.Base!));
                 return;
             }
 
-            File.WriteAllText(path, Serializer.Serialize(config.Base!));
+            File.WriteAllText(path ?? throw new ArgumentNullException(nameof(path)), Serializer.Serialize(config.Base!));
         }
 
         /// <summary>
@@ -345,12 +349,14 @@ namespace Exiled.API.Features
                 return;
 
             string? path = GetPath<T>();
-            PropertyInfo propertyInfo = param.Base!.GetType().GetProperty(name);
+            PropertyInfo? propertyInfo = param.Base!.GetType().GetProperty(name);
             if (propertyInfo is not null)
             {
                 propertyInfo.SetValue(param, value);
-                File.WriteAllText(path, Serializer.Serialize(param));
-                this.CopyProperties(Deserializer.Deserialize(File.ReadAllText(path), GetType()));
+                File.WriteAllText(path ?? throw new InvalidOperationException(), Serializer.Serialize(param));
+
+                if (path is not null)
+                    this.CopyProperties(Deserializer.Deserialize(File.ReadAllText(path), GetType()));
             }
         }
     }

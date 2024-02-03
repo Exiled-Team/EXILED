@@ -54,7 +54,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <para/>
         /// <see cref="KT_INPUT_0"/> defines an action which displays information about the ability.
         /// </summary>
-        /// <returns><see langword="true"/> if the condition was satified; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the condition was satisfied; otherwise, <see langword="false"/>.</returns>
         protected override bool InputCondition_KT0() => PressCount == 1 && Owner.Role is FpcRole { MoveState: PlayerMovementState.Sneaking };
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <para/>
         /// <see cref="KT_INPUT_1"/> defines an action which activates the ability.
         /// </summary>
-        /// <returns><see langword="true"/> if the condition was satified; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the condition was satisfied; otherwise, <see langword="false"/>.</returns>
         protected override bool InputCondition_KT1() => PressCount == 1;
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <para/>
         /// <see cref="KT_INPUT_2"/> defines an action which switches backward.
         /// </summary>
-        /// <returns><see langword="true"/> if the condition was satified; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the condition was satisfied; otherwise, <see langword="false"/>.</returns>
         protected override bool InputCondition_KT2() => PressCount == 2 && Owner.Role is FpcRole { MoveState: PlayerMovementState.Sneaking };
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <para/>
         /// <see cref="KT_INPUT_3"/> defines an action which switches forward.
         /// </summary>
-        /// <returns><see langword="true"/> if the condition was satified; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the condition was satisfied; otherwise, <see langword="false"/>.</returns>
         protected override bool InputCondition_KT3() => PressCount == 2;
 
         /// <summary>

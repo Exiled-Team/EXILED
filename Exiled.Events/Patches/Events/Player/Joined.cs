@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Player
 #if DEBUG
                 Log.Debug("Creating new player object");
 #endif
-                player = Activator.CreateInstance(Player.DEFAULT_PLAYER_CLASS, false, hub) as Player;
+                player = Activator.CreateInstance(Player.DEFAULT_PLAYER_CLASS, args: hub) as Player;
 #if DEBUG
                 Log.Debug($"Object exists {player is not null}");
                 Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}");

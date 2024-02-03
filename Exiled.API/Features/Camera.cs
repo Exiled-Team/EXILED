@@ -134,6 +134,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera079">The base camera.</param>
         internal Camera(Scp079Camera camera079)
+            : base()
         {
             Base = camera079;
             Camera079ToCamera.Add(camera079, this);
@@ -147,12 +148,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the <see cref="Camera"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<Camera> List => Camera079ToCamera.Values;
+        public static new IReadOnlyCollection<Camera> List => Camera079ToCamera.Values;
 
         /// <summary>
-        /// Gets a random <see cref="Camera"/>.
+        /// Gets a randomly selected <see cref="Camera"/>.
         /// </summary>
-        /// <returns><see cref="Camera"/> object.</returns>
+        /// <returns>A randomly selected <see cref="Camera"/> object.</returns>
         public static Camera Random => List.Random();
 
         /// <summary>
@@ -164,11 +165,6 @@ namespace Exiled.API.Features
         /// Gets the base <see cref="Scp079Camera"/>.
         /// </summary>
         public Scp079Camera Base { get; }
-
-        /// <summary>
-        /// Gets the camera's <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the camera's name.
@@ -198,12 +194,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's position.
         /// </summary>
-        public Vector3 Position => Base.Position;
+        public override Vector3 Position => Base.Position;
 
         /// <summary>
         /// Gets or sets the camera's rotation.
         /// </summary>
-        public Quaternion Rotation
+        public override Quaternion Rotation
         {
             get => Base._cameraAnchor.rotation;
             set => Base._cameraAnchor.rotation = value;
