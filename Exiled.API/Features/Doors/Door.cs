@@ -80,11 +80,6 @@ namespace Exiled.API.Features.Doors
         public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
-        /// Gets the door's <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public Transform Transform => Base.transform;
-
-        /// <summary>
         /// Gets the door's <see cref="DoorType"/>.
         /// </summary>
         public DoorType Type { get; }
@@ -186,13 +181,13 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets or sets the door's position.
         /// </summary>
-        public Vector3 Position
+        public override Vector3 Position
         {
-            get => GameObject.transform.position;
+            get => Transform.position;
             set
             {
                 NetworkServer.UnSpawn(GameObject);
-                GameObject.transform.position = value;
+                Transform.position = value;
                 NetworkServer.Spawn(GameObject);
             }
         }
@@ -255,13 +250,13 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets or sets the door's rotation.
         /// </summary>
-        public Quaternion Rotation
+        public override Quaternion Rotation
         {
-            get => GameObject.transform.rotation;
+            get => Transform.rotation;
             set
             {
                 NetworkServer.UnSpawn(GameObject);
-                GameObject.transform.rotation = value;
+                Transform.rotation = value;
                 NetworkServer.Spawn(GameObject);
             }
         }
@@ -275,7 +270,7 @@ namespace Exiled.API.Features.Doors
             set
             {
                 NetworkServer.UnSpawn(GameObject);
-                GameObject.transform.localScale = value;
+                Transform.localScale = value;
                 NetworkServer.Spawn(GameObject);
             }
         }

@@ -167,11 +167,6 @@ namespace Exiled.API.Features
         public Scp079Camera Base { get; }
 
         /// <summary>
-        /// Gets the camera's <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public Transform Transform => Base.transform;
-
-        /// <summary>
         /// Gets the camera's name.
         /// </summary>
         public string Name => Base.Label;
@@ -199,12 +194,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's position.
         /// </summary>
-        public Vector3 Position => Base.Position;
+        public override Vector3 Position => Base.Position;
 
         /// <summary>
         /// Gets or sets the camera's rotation.
         /// </summary>
-        public Quaternion Rotation
+        public override Quaternion Rotation
         {
             get => Base._cameraAnchor.rotation;
             set => Base._cameraAnchor.rotation = value;

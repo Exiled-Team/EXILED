@@ -92,11 +92,6 @@ namespace Exiled.API.Features
         public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
-        /// Gets the lift's <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public Transform Transform => Base.transform;
-
-        /// <summary>
         /// Gets or sets the lift's <see cref="ElevatorChamber"/> status.
         /// </summary>
         public ElevatorSequence Status
@@ -186,19 +181,19 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the lift's position.
         /// </summary>
-        public Vector3 Position
+        public override Vector3 Position
         {
-            get => Base.transform.position;
-            set => Base.transform.position = value;
+            get => Transform.position;
+            set => Transform.position = value;
         }
 
         /// <summary>
         /// Gets or sets the lift's rotation.
         /// </summary>
-        public Quaternion Rotation
+        public override Quaternion Rotation
         {
-            get => Base.transform.rotation;
-            set => Base.transform.rotation = value;
+            get => Transform.rotation;
+            set => Transform.rotation = value;
         }
 
         /// <summary>

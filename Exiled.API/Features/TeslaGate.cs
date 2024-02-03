@@ -78,19 +78,14 @@ namespace Exiled.API.Features
         public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
-        /// Gets the tesla gate's <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public Transform Transform => Base.transform;
-
-        /// <summary>
         /// Gets the tesla gate's position.
         /// </summary>
-        public Vector3 Position => Transform.position;
+        public override Vector3 Position => Transform.position;
 
         /// <summary>
         /// Gets the tesla gate's rotation.
         /// </summary>
-        public Quaternion Rotation => Quaternion.Euler(Base.localRotation);
+        public override Quaternion Rotation => Quaternion.Euler(Base.localRotation);
 
         /// <summary>
         /// Gets the tesla gate's <see cref="Features.Room"/> which is located in.

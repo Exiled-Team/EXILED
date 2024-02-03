@@ -114,11 +114,6 @@ namespace Exiled.API.Features.Pickups
         public override GameObject GameObject => GameObject;
 
         /// <summary>
-        /// Gets the <see cref="UnityEngine.Transform"/> of the Pickup.
-        /// </summary>
-        public Transform Transform => Base.transform;
-
-        /// <summary>
         /// Gets the <see cref="UnityEngine.Rigidbody"/> of the Pickup.
         /// </summary>
         public Rigidbody Rigidbody => PhysicsModule?.Rb;
@@ -265,7 +260,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the pickup position.
         /// </summary>
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
-        public Vector3 Position
+        public override Vector3 Position
         {
             get => Base.Position;
             set => Base.Position = value;
@@ -276,7 +271,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public RelativePosition RelativePosition
         {
-            get => new(Room.transform.TransformPoint(Position));
+            get => new(Room.Transform.TransformPoint(Position));
             set => Position = value.Position;
         }
 
@@ -284,7 +279,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the pickup rotation.
         /// </summary>
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
-        public Quaternion Rotation
+        public override Quaternion Rotation
         {
             get => Base.Rotation;
             set => Base.Rotation = value;

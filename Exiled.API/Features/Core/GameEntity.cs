@@ -13,13 +13,21 @@ namespace Exiled.API.Features.Core
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.API.Interfaces;
     using UnityEngine;
 
     /// <summary>
     /// The base class which defines in-game entities.
     /// </summary>
-    public abstract class GameEntity : TypeCastObject<GameEntity>, IEntity
+    public abstract class GameEntity : TypeCastObject<GameEntity>, IEntity, IWorldSpace
     {
+        /// <summary>
+        /// The room's transform.
+        /// </summary>
+#pragma warning disable SA1401
+        protected Transform transform;
+#pragma warning restore SA1401
+
         private static readonly HashSet<GameEntity> ActiveInstances = new();
         private readonly HashSet<EActor> componentsInChildren = new();
 
@@ -47,6 +55,29 @@ namespace Exiled.API.Features.Core
         /// Gets or sets the <see cref="GameEntity"/>'s <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         public virtual GameObject GameObject { get; protected set; }
+
+        /// <summary>
+        /// Gets the <see cref="GameEntity"/> <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public virtual Transform Transform => transform ? transform : transform = GameObject.transform;
+
+        /// <summary>
+        /// Gets or sets the <see cref="GameEntity"/> position.
+        /// </summary>
+        public virtual Vector3 Position
+        {
+            get => Transform.position;
+            set => Transform.position = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="GameEntity"/> rotation.
+        /// </summary>
+        public virtual Quaternion Rotation
+        {
+            get => Transform.rotation;
+            set => Transform.rotation = value;
+        }
 
         /// <summary>
         /// Gets the nearest game entity to the specified <see cref="Vector3" /> within the given distance.

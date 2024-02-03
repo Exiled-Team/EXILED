@@ -85,11 +85,6 @@ namespace Exiled.API.Features
         public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
-        /// Gets the <see cref="UnityEngine.Transform"/> of the ragdoll.
-        /// </summary>
-        public Transform Transform => Base.transform;
-
-        /// <summary>
         /// Gets or sets the ragdoll's <see cref="RagdollData"/>.
         /// </summary>
         public RagdollData NetworkInfo
@@ -221,14 +216,14 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the ragdoll's position.
         /// </summary>
-        public Vector3 Position
+        public override Vector3 Position
         {
-            get => Base.transform.position;
+            get => Transform.position;
             set
             {
                 NetworkServer.UnSpawn(GameObject);
 
-                Base.transform.position = value;
+                Transform.position = value;
 
                 NetworkServer.Spawn(GameObject);
             }
@@ -237,14 +232,14 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the ragdoll's rotation.
         /// </summary>
-        public Quaternion Rotation
+        public override Quaternion Rotation
         {
             get => Base.transform.rotation;
             set
             {
                 NetworkServer.UnSpawn(GameObject);
 
-                Base.transform.rotation = value;
+                Transform.rotation = value;
 
                 NetworkServer.Spawn(GameObject);
             }
@@ -255,12 +250,12 @@ namespace Exiled.API.Features
         /// </summary>
         public Vector3 Scale
         {
-            get => Base.transform.localScale;
+            get => Transform.localScale;
             set
             {
                 NetworkServer.UnSpawn(GameObject);
 
-                Base.transform.localScale = value;
+                Transform.localScale = value;
 
                 NetworkServer.Spawn(GameObject);
             }

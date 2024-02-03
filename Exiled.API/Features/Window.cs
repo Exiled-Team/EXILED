@@ -64,7 +64,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the window's <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => Base._transform;
+        public override Transform Transform => Base._transform;
 
         /// <summary>
         /// Gets the <see cref="Features.Room"/> the window is in.
@@ -80,15 +80,6 @@ namespace Exiled.API.Features
         /// Gets the window's <see cref="ZoneType"/>.
         /// </summary>
         public ZoneType Zone => Room.Zone;
-
-        /// <summary>
-        /// Gets or sets the window's position.
-        /// </summary>
-        public Vector3 Position
-        {
-            get => GameObject.transform.position;
-            set => GameObject.transform.position = value;
-        }
 
         /// <summary>
         /// Gets a value indicating whether or not this window is breakable.
@@ -111,15 +102,6 @@ namespace Exiled.API.Features
         {
             get => Base.health;
             set => Base.health = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the window's rotation.
-        /// </summary>
-        public Quaternion Rotation
-        {
-            get => GameObject.transform.rotation;
-            set => GameObject.transform.rotation = value;
         }
 
         /// <summary>

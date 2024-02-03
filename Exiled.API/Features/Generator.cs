@@ -57,11 +57,6 @@ namespace Exiled.API.Features
         public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
-        /// Gets the <see cref="UnityEngine.Transform"/> of the generator.
-        /// </summary>
-        public Transform Transform => Base.transform;
-
-        /// <summary>
         /// Gets the generator's <see cref="Room"/>.
         /// </summary>
         public Room Room => room ??= Room.FindParentRoom(GameObject);
@@ -205,12 +200,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the generator position.
         /// </summary>
-        public Vector3 Position => Base.transform.position;
+        public override Vector3 Position => Transform.position;
 
         /// <summary>
         /// Gets the generator rotation.
         /// </summary>
-        public Quaternion Rotation => Base.transform.rotation;
+        public override Quaternion Rotation => Transform.rotation;
 
         /// <summary>
         /// Gets or sets the required permissions to interact with the generator.

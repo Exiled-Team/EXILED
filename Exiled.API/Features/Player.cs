@@ -75,7 +75,7 @@ namespace Exiled.API.Features
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
     [DefaultPlayerClass]
-    public class Player : GameEntity, IWorldSpace
+    public class Player : GameEntity
     {
 #pragma warning disable SA1401
 #pragma warning disable SA1310
@@ -189,7 +189,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="ReferenceHub"/>'s <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => ReferenceHub.transform;
+        public override Transform Transform => ReferenceHub.transform;
 
         /// <summary>
         /// Gets the hint currently watched by the player.
@@ -504,7 +504,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <seealso cref="Teleport(Vector3)"/>
         /// <seealso cref="Teleport(object)"/>
-        public Vector3 Position
+        public override Vector3 Position
         {
             get => Transform.position;
             set => ReferenceHub.TryOverridePosition(value, Vector3.zero);
@@ -524,7 +524,7 @@ namespace Exiled.API.Features
         /// Gets or sets the player's rotation.
         /// </summary>
         /// <returns>Returns the direction the player is looking at.</returns>
-        public Quaternion Rotation
+        public override Quaternion Rotation
         {
             get => Transform.rotation;
             set => ReferenceHub.TryOverridePosition(Position, value.eulerAngles);
@@ -3397,12 +3397,27 @@ namespace Exiled.API.Features
         {
             switch (obj)
             {
+                case Role role:
+                    if (role.Owner is not null)
+                        Teleport(role.Owner.Position + offset);
+                    else
+                        Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid role teleport (role is missing Owner).");
+                    break;
                 case TeslaGate teslaGate:
                     Teleport(
                         teslaGate.Position + offset + Vector3.up +
                         (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
                             ? new Vector3(3, 0, 0)
                             : new Vector3(0, 0, 3)));
+                    break;
+                case Item item:
+                    if (item.Owner is not null)
+                        Teleport(item.Owner.Position + offset);
+                    else
+                        Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid item teleport (item is missing Owner).");
+                    break;
+                case GameEntity entity:
+                    Teleport(entity.Position + Vector3.up + offset);
                     break;
                 case IPosition positionObject:
                     Teleport(positionObject.Position + Vector3.up + offset);
@@ -3425,12 +3440,6 @@ namespace Exiled.API.Features
                 case Scp914Controller scp914:
                     Teleport(scp914._knobTransform.position + Vector3.up + offset);
                     break;
-                case Role role:
-                    if (role.Owner is not null)
-                        Teleport(role.Owner.Position + offset);
-                    else
-                        Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid role teleport (role is missing Owner).");
-                    break;
                 case Locker locker:
                     Teleport(locker.transform.position + Vector3.up + offset);
                     break;
@@ -3439,12 +3448,6 @@ namespace Exiled.API.Features
                     break;
                 case ElevatorChamber elevator:
                     Teleport(elevator.transform.position + Vector3.up + offset);
-                    break;
-                case Item item:
-                    if (item.Owner is not null)
-                        Teleport(item.Owner.Position + offset);
-                    else
-                        Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid item teleport (item is missing Owner).");
                     break;
 
                 // Unity
@@ -3513,7 +3516,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Get the time cooldown on this ItemType.
         /// </summary>
-        /// <param name="itemType">The itemtypes to choose for getting cooldown.</param>
+        /// <param name="itemType">The items to choose for getting cooldown.</param>
         /// <returns>Return the time in seconds of the cooldowns.</returns>
         public float GetCooldownItem(ItemType itemType)
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns.TryGetValue(itemType, out float value) ? value : -1;
@@ -3522,7 +3525,7 @@ namespace Exiled.API.Features
         /// Set the time cooldown on this ItemType.
         /// </summary>
         /// <param name="time">The times for the cooldown.</param>
-        /// <param name="itemType">The itemtypes to choose for being cooldown.</param>
+        /// <param name="itemType">The items to choose for being cooldown.</param>
         public void SetCooldownItem(float time, ItemType itemType)
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
 

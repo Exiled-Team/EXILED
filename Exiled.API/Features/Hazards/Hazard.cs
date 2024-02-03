@@ -105,7 +105,7 @@ namespace Exiled.API.Features.Hazards
         /// <summary>
         /// Gets or sets the position.
         /// </summary>
-        public Vector3 Position
+        public override Vector3 Position
         {
             get => Base.SourcePosition;
             set => Base.SourcePosition = value;

@@ -70,30 +70,12 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets the position of the toy.
-        /// </summary>
-        public Vector3 Position
-        {
-            get => AdminToyBase.transform.position;
-            set => AdminToyBase.transform.position = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the rotation of the toy.
-        /// </summary>
-        public Quaternion Rotation
-        {
-            get => AdminToyBase.transform.rotation;
-            set => AdminToyBase.transform.rotation = value;
-        }
-
-        /// <summary>
         /// Gets or sets the scale of the toy.
         /// </summary>
         public Vector3 Scale
         {
-            get => AdminToyBase.transform.localScale;
-            set => AdminToyBase.transform.localScale = value;
+            get => Transform.localScale;
+            set => Transform.localScale = value;
         }
 
         /// <summary>
