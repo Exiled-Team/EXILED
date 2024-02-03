@@ -10,6 +10,7 @@ namespace Exiled.Events.Handlers.Internal
     using CentralAuth;
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
+    using Exiled.API.Extensions;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp049;
     using Exiled.Loader;
@@ -83,6 +84,12 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnVerified(VerifiedEventArgs ev)
         {
             RoleAssigner.CheckLateJoin(ev.Player.ReferenceHub, ClientInstanceMode.ReadyClient);
+
+            foreach (Player player in Player.List)
+            {
+                if (player.Role is FpcRole { FakeAppearance: not null } fpcRole)
+                    player.ChangeAppearance(fpcRole.FakeAppearance.Value, new[] { ev.Player });
+            }
         }
     }
 }
