@@ -87,6 +87,90 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public virtual List<EscapeSettings> Settings { get; } = new() { EscapeSettings.Default, };
 
         /// <summary>
+        /// Gets a <see cref="CustomEscape"/> based on the provided id or <see cref="UUCustomEscapeType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomEscapeType"/> of the custom escape.</param>
+        /// <returns>The <see cref="CustomEscape"/> with the specified id, or <see langword="null"/> if no escape is found.</returns>
+        public static CustomEscape Get(object id) => id is uint or UUCustomEscapeType ? Get((uint)id) : null;
+
+        /// <summary>
+        /// Gets a <see cref="CustomEscape"/> given the specified <see cref="Id"/>.
+        /// </summary>
+        /// <param name="id">The specified id.</param>
+        /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not registered.</returns>
+        public static CustomEscape Get(uint id) => IdLookupTable[id];
+
+        /// <summary>
+        /// Gets a <see cref="CustomEscape"/> given the specified name.
+        /// </summary>
+        /// <param name="name">The specified name.</param>
+        /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not registered.</returns>
+        public static CustomEscape Get(string name) => NameLookupTable[name];
+
+        /// <summary>
+        /// Gets a <see cref="CustomEscape"/> given the specified <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type">The specified <see cref="Type"/>.</param>
+        /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not found.</returns>
+        public static CustomEscape Get(Type type) =>
+            typeof(EscapeBehaviour).IsAssignableFrom(type) ? BehaviourLookupTable[type] :
+            typeof(CustomEscape).IsAssignableFrom(type) ? TypeLookupTable[type] : null;
+
+        /// <summary>
+        /// Gets a <see cref="CustomEscape"/> given the specified <see cref="EscapeBehaviour"/>.
+        /// </summary>
+        /// <param name="escapeBuilder">The specified <see cref="EscapeBehaviour"/>.</param>
+        /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not found.</returns>
+        public static CustomEscape Get(EscapeBehaviour escapeBuilder) => Get(escapeBuilder.GetType());
+
+        /// <summary>
+        /// Gets a <see cref="CustomEscape"/> from a <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="CustomEscape"/> owner.</param>
+        /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not registered.</returns>
+        public static CustomEscape Get(Player player) => PlayersValue.TryGetValue(player, out CustomEscape customEscape) ? customEscape : default;
+
+        /// <summary>
+        /// Attempts to retrieve a <see cref="CustomEscape"/> based on the provided id or <see cref="UUCustomEscapeType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomEscapeType"/> of the custom escape.</param>
+        /// <param name="customEscape">When this method returns, contains the <see cref="CustomEscape"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(object id, out CustomEscape customEscape) => customEscape = Get(id);
+
+        /// <summary>
+        /// Tries to get a <see cref="CustomEscape"/> given the specified <see cref="CustomEscape"/>.
+        /// </summary>
+        /// <param name="id">The id to look for.</param>
+        /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(uint id, out CustomEscape customEscape) => customEscape = Get(id);
+
+        /// <summary>
+        /// Tries to get a <see cref="CustomEscape"/> given a specified name.
+        /// </summary>
+        /// <param name="name">The <see cref="CustomEscape"/> name to look for.</param>
+        /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(string name, out CustomEscape customEscape) => customEscape = List.FirstOrDefault(cRole => cRole.Name == name);
+
+        /// <summary>
+        /// Tries to get the player's current <see cref="CustomEscape"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to search on.</param>
+        /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(Player player, out CustomEscape customEscape) => customEscape = Get(player);
+
+        /// <summary>
+        /// Tries to get the player's current <see cref="CustomEscape"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> to search for.</param>
+        /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(Type type, out CustomEscape customEscape) => customEscape = Get(type.GetType());
+
+        /// <summary>
         /// Enables all the custom escapes present in the assembly.
         /// </summary>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all enabled custom escapes.</returns>
@@ -134,75 +218,6 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
 
             return customEscapes;
         }
-
-        /// <summary>
-        /// Gets a <see cref="CustomEscape"/> given the specified <see cref="Id"/>.
-        /// </summary>
-        /// <param name="id">The specified id.</param>
-        /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomEscape Get(uint id) => IdLookupTable[id];
-
-        /// <summary>
-        /// Gets a <see cref="CustomEscape"/> given the specified name.
-        /// </summary>
-        /// <param name="name">The specified name.</param>
-        /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomEscape Get(string name) => NameLookupTable[name];
-
-        /// <summary>
-        /// Gets a <see cref="CustomEscape"/> given the specified <see cref="Type"/>.
-        /// </summary>
-        /// <param name="type">The specified <see cref="Type"/>.</param>
-        /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not found.</returns>
-        public static CustomEscape Get(Type type) =>
-            typeof(EscapeBehaviour).IsAssignableFrom(type) ? BehaviourLookupTable[type] :
-            typeof(CustomEscape).IsAssignableFrom(type) ? TypeLookupTable[type] : null;
-
-        /// <summary>
-        /// Gets a <see cref="CustomEscape"/> given the specified <see cref="EscapeBehaviour"/>.
-        /// </summary>
-        /// <param name="escapeBuilder">The specified <see cref="EscapeBehaviour"/>.</param>
-        /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not found.</returns>
-        public static CustomEscape Get(EscapeBehaviour escapeBuilder) => Get(escapeBuilder.GetType());
-
-        /// <summary>
-        /// Gets a <see cref="CustomEscape"/> from a <see cref="Player"/>.
-        /// </summary>
-        /// <param name="player">The <see cref="CustomEscape"/> owner.</param>
-        /// <returns>The <see cref="CustomEscape"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static CustomEscape Get(Player player) => PlayersValue.TryGetValue(player, out CustomEscape customEscape) ? customEscape : default;
-
-        /// <summary>
-        /// Tries to get a <see cref="CustomEscape"/> given the specified <see cref="CustomEscape"/>.
-        /// </summary>
-        /// <param name="id">The id to look for.</param>
-        /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(uint id, out CustomEscape customEscape) => customEscape = Get(id);
-
-        /// <summary>
-        /// Tries to get a <see cref="CustomEscape"/> given a specified name.
-        /// </summary>
-        /// <param name="name">The <see cref="CustomEscape"/> name to look for.</param>
-        /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out CustomEscape customEscape) => customEscape = List.FirstOrDefault(cRole => cRole.Name == name);
-
-        /// <summary>
-        /// Tries to get the player's current <see cref="CustomEscape"/>.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> to search on.</param>
-        /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Player player, out CustomEscape customEscape) => customEscape = Get(player);
-
-        /// <summary>
-        /// Tries to get the player's current <see cref="CustomEscape"/>.
-        /// </summary>
-        /// <param name="type">The <see cref="Type"/> to search for.</param>
-        /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out CustomEscape customEscape) => customEscape = Get(type.GetType());
 
         /// <summary>
         /// Attaches a <see cref="CustomEscape"/> with the specified <paramref name="id"/> to the specified <see cref="Player"/>.

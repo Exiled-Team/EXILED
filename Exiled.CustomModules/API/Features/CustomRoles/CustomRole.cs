@@ -17,6 +17,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using MEC;
@@ -239,6 +240,13 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public IEnumerable<Pawn> Owners => Player.Get(x => TryGet(x.Cast<Pawn>(), out CustomRole customRole) && customRole.Id == Id).Cast<Pawn>();
 
         /// <summary>
+        /// Gets a <see cref="CustomRole"/> based on the provided id or <see cref="UUCustomRoleType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomRoleType"/> of the custom role.</param>
+        /// <returns>The <see cref="CustomRole"/> with the specified id, or <see langword="null"/> if no role is found.</returns>
+        public static CustomRole Get(object id) => id is uint or UUCustomRoleType ? Get((uint)id) : null;
+
+        /// <summary>
         /// Gets a <see cref="CustomRole"/> given the specified id.
         /// </summary>
         /// <param name="id">The specified id.</param>
@@ -318,6 +326,15 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="player">The <see cref="CustomRole"/> owner.</param>
         /// <returns>The <see cref="CustomRole"/> matching the search or <see langword="null"/> if not registered.</returns>
         public static CustomRole Get(Pawn player) => PlayersValue.TryGetValue(player, out CustomRole customRole) ? customRole : default;
+
+
+        /// <summary>
+        /// Attempts to retrieve a <see cref="CustomRole"/> based on the provided id or <see cref="UUCustomRoleType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomRoleType"/> of the custom role.</param>
+        /// <param name="customRole">When this method returns, contains the <see cref="CustomRole"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomRole"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(object id, out CustomRole customRole) => customRole = Get(id);
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> given the specified id.

@@ -15,6 +15,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
+    using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using HarmonyLib;
     using PlayerRoles;
@@ -258,6 +259,49 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public CustomRole RandomUnit => CustomRole.Get(Units.Random());
 
         /// <summary>
+        /// Gets all <see cref="CustomTeam"/> instances based on the predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>All <see cref="CustomTeam"/> instances matching the predicate.</returns>
+        public static IEnumerable<CustomTeam> Get(Func<CustomTeam, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Gets a <see cref="CustomTeam"/> based on the provided id or <see cref="UUCustomTeamType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomTeamType"/> of the custom team.</param>
+        /// <returns>The <see cref="CustomTeam"/> with the specified id, or <see langword="null"/> if no team is found.</returns>
+        public static CustomTeam Get(object id) => id is uint or UUCustomTeamType ? Get((uint)id) : null;
+
+        /// <summary>
+        /// Gets a <see cref="CustomTeam"/> instance based on the specified id.
+        /// </summary>
+        /// <param name="id">The id to check.</param>
+        /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
+        public static CustomTeam Get(uint id) => IdLookupTable[id];
+
+        /// <summary>
+        /// Gets a <see cref="CustomTeam"/> instance based on the specified name.
+        /// </summary>
+        /// <param name="name">The specified name.</param>
+        /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
+        public static CustomTeam Get(string name) => NameLookupTable[name];
+
+        /// <summary>
+        /// Gets a <see cref="CustomTeam"/> instance associated with a specific <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
+        public static CustomTeam Get(Player player) => !PlayersValue.TryGetValue(player, out CustomTeam customTeam) ? null : customTeam;
+
+        /// <summary>
+        /// Attempts to retrieve a <see cref="CustomTeam"/> based on the provided id or <see cref="UUCustomTeamType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomTeamType"/> of the custom team.</param>
+        /// <param name="customTeam">When this method returns, contains the <see cref="CustomTeam"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomTeam"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(object id, out CustomTeam customTeam) => customTeam = Get(id);
+
+        /// <summary>
         /// Tries to get a <see cref="CustomTeam"/> given the specified id.
         /// </summary>
         /// <param name="id">The id to look for.</param>
@@ -450,34 +494,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             return customTeams;
         }
-
-        /// <summary>
-        /// Gets all <see cref="CustomTeam"/> instances based on the predicate.
-        /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <returns>All <see cref="CustomTeam"/> instances matching the predicate.</returns>
-        public static IEnumerable<CustomTeam> Get(Func<CustomTeam, bool> predicate) => List.Where(predicate);
-
-        /// <summary>
-        /// Gets a <see cref="CustomTeam"/> instance based on the specified id.
-        /// </summary>
-        /// <param name="id">The id to check.</param>
-        /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
-        public static CustomTeam Get(uint id) => IdLookupTable[id];
-
-        /// <summary>
-        /// Gets a <see cref="CustomTeam"/> instance based on the specified name.
-        /// </summary>
-        /// <param name="name">The specified name.</param>
-        /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
-        public static CustomTeam Get(string name) => NameLookupTable[name];
-
-        /// <summary>
-        /// Gets a <see cref="CustomTeam"/> instance associated with a specific <see cref="Player"/>.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> to check.</param>
-        /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
-        public static CustomTeam Get(Player player) => !PlayersValue.TryGetValue(player, out CustomTeam customTeam) ? null : customTeam;
 
         /// <summary>
         /// Determines whether the provided id is equal to the current object.

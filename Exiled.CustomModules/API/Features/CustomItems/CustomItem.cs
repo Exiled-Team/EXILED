@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.CustomModules.API.Enums;
+
 namespace Exiled.CustomModules.API.Features.CustomItems
 {
     using System;
@@ -127,6 +129,13 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public IEnumerable<Item> Items => ItemsValue.Where(x => x.Value.Id == Id).Select(x => x.Key);
 
         /// <summary>
+        /// Gets a <see cref="CustomItem"/> based on the provided id or <see cref="UUCustomItemType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomItemType"/> of the custom item.</param>
+        /// <returns>The <see cref="CustomItem"/> with the specified id, or <see langword="null"/> if no item is found.</returns>
+        public static CustomItem Get(object id) => id is uint or UUCustomItemType ? Get((uint)id) : null;
+
+        /// <summary>
         /// Retrieves a <see cref="CustomItem"/> instance based on the specified custom item id.
         /// </summary>
         /// <param name="id">The custom item id to retrieve.</param>
@@ -188,6 +197,14 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 
             return customItem;
         }
+
+        /// <summary>
+        /// Attempts to retrieve a <see cref="CustomItem"/> based on the provided id or <see cref="UUCustomItemType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomItemType"/> of the custom item.</param>
+        /// <param name="customItem">When this method returns, contains the <see cref="CustomItem"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(object id, out CustomItem customItem) => customItem = Get(id);
 
         /// <summary>
         /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified custom item id.

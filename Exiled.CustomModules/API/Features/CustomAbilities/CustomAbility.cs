@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.CustomModules.API.Enums;
+
 namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
     using System;
@@ -141,6 +143,13 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Gets the reflected generic type.
         /// </summary>
         protected Type ReflectedGenericType => reflectedGenericType ??= GetType().GetGenericArguments()[0];
+
+        /// <summary>
+        /// Gets a <see cref="CustomAbility{T}"/> based on the provided id or <see cref="UUCustomAbilityType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomAbilityType"/> of the custom ability.</param>
+        /// <returns>The <see cref="CustomAbility{T}"/> with the specified id, or <see langword="null"/> if no ability is found.</returns>
+        public static CustomAbility<T> Get(object id) => id is uint or UUCustomAbilityType ? Get((uint)id) : null;
 
         /// <summary>
         /// Gets a <see cref="CustomAbility{T}"/> given the specified id.
