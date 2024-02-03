@@ -49,7 +49,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<Window> List => BreakableWindowToWindow.Values;
+        public static new IReadOnlyCollection<Window> List => BreakableWindowToWindow.Values;
 
         /// <summary>
         /// Gets the base-game <see cref="BreakableWindow"/> for this window.

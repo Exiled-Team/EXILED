@@ -67,7 +67,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<Door> List => DoorVariantToDoor.Values;
+        public static new IReadOnlyCollection<Door> List => DoorVariantToDoor.Values;
 
         /// <summary>
         /// Gets the base-game <see cref="DoorVariant"/> corresponding with this door.

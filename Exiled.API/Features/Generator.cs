@@ -44,7 +44,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<Generator> List => Scp079GeneratorToGenerator.Values;
+        public static new IReadOnlyCollection<Generator> List => Scp079GeneratorToGenerator.Values;
 
         /// <summary>
         /// Gets the base <see cref="Scp079Generator"/>.

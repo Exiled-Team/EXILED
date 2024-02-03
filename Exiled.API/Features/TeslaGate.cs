@@ -50,7 +50,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains all the <see cref="TeslaGate"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<TeslaGate> List => BaseTeslaGateToTeslaGate.Values;
+        public static new IReadOnlyCollection<TeslaGate> List => BaseTeslaGateToTeslaGate.Values;
 
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="Player"/> which contains all the players ignored by tesla gates.

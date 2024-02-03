@@ -148,7 +148,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the <see cref="Camera"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<Camera> List => Camera079ToCamera.Values;
+        public static new IReadOnlyCollection<Camera> List => Camera079ToCamera.Values;
 
         /// <summary>
         /// Gets a random <see cref="Camera"/>.

@@ -106,7 +106,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> which contains all the <see cref="Pickup"/> instances.
         /// </summary>
-        public static IEnumerable<Pickup> List => BaseToPickup.Values;
+        public static new IEnumerable<Pickup> List => BaseToPickup.Values;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
