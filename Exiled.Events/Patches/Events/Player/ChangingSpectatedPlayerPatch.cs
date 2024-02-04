@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -21,8 +21,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="SpectatorRole.SyncedSpectatedNetId" /> setter.
-    ///     Adds the <see cref="Handlers.Player.ChangingSpectatedPlayer" />.
+    /// Patches <see cref="SpectatorRole.SyncedSpectatedNetId" /> setter.
+    /// Adds the <see cref="Handlers.Player.ChangingSpectatedPlayer" />.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingSpectatedPlayer))]
     [HarmonyPatch(typeof(SpectatorRole), nameof(SpectatorRole.SyncedSpectatedNetId), MethodType.Setter)]

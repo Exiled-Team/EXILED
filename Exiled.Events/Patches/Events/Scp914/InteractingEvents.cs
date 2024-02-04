@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp914
     using System.Reflection.Emit;
 
     using API.Features;
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp914;
 
@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Scp914
     using Scp914 = Handlers.Scp914;
 
     /// <summary>
-    ///     Patches <see cref="Scp914Controller.ServerInteract" />.
-    ///     Adds the <see cref="Scp914.Activating" /> event.
+    /// Patches <see cref="Scp914Controller.ServerInteract" />.
+    /// Adds the <see cref="Scp914.Activating" /> event.
     /// </summary>
     [EventPatch(typeof(Scp914), nameof(Scp914.Activating))]
     [HarmonyPatch(typeof(Scp914Controller), nameof(Scp914Controller.ServerInteract))]

@@ -10,19 +10,19 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
-    using InventorySystem.Items.Flashlight;
+    using InventorySystem.Items.ToggleableLights;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="FlashlightNetworkHandler.ServerProcessMessage" />.
-    ///     Adds the <see cref="Handlers.Player.TogglingFlashlight" /> event.
+    /// Patches <see cref="FlashlightNetworkHandler.ServerProcessMessage" />.
+    /// Adds the <see cref="Handlers.Player.TogglingFlashlight" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.TogglingFlashlight))]
     [HarmonyPatch(typeof(FlashlightNetworkHandler), nameof(FlashlightNetworkHandler.ServerProcessMessage))]
@@ -44,14 +44,14 @@ namespace Exiled.Events.Patches.Events.Player
                     // Player.Get(referenceHub)
                     new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
 
-                    // flashlightItem
+                    // ToggleableLightItemBase
                     new(OpCodes.Ldloc_1),
 
                     // msg.NewState
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Ldfld, Field(typeof(FlashlightNetworkHandler.FlashlightMessage), nameof(FlashlightNetworkHandler.FlashlightMessage.NewState))),
 
-                    // TogglingFlashlightEventArgs ev = new(Player, FlashlightItem, bool)
+                    // TogglingFlashlightEventArgs ev = new(Player, ToggleableLightItemBase, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingFlashlightEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),

@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Core.Generic
     using System.Linq;
     using System.Reflection;
 
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
 
     using LiteNetLib.Utils;
 
@@ -22,7 +22,7 @@ namespace Exiled.API.Features.Core.Generic
     /// </summary>
     /// <typeparam name="TSource">The type of the <see langword="unmanaged"/> source object to handle the instance of.</typeparam>
     /// <typeparam name="TObject">The type of the child object to handle the instance of.</typeparam>
-    public abstract class UnmanagedEnumClass<TSource, TObject> : IComparable, IEquatable<TObject>, IComparable<TObject>, IComparer<TObject>
+    public abstract class UnmanagedEnumClass<TSource, TObject> : IComparable, IEquatable<TObject>, IComparable<TObject>, IComparer<TObject>, IConvertible
         where TSource : unmanaged, IComparable, IFormattable, IConvertible, IComparable<TSource>, IEquatable<TSource>
         where TObject : UnmanagedEnumClass<TSource, TObject>
     {
@@ -204,7 +204,7 @@ namespace Exiled.API.Features.Core.Generic
         /// Converts the <see cref="UnmanagedEnumClass{TSource, TObject}"/> instance to a human-readable <see cref="string"/> representation.
         /// </summary>
         /// <returns>A human-readable <see cref="string"/> representation of the <see cref="UnmanagedEnumClass{TSource, TObject}"/> instance.</returns>
-        public override string ToString() => name;
+        public override string ToString() => Name;
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
@@ -270,5 +270,56 @@ namespace Exiled.API.Features.Core.Generic
         /// Greater than zero This instance follows other in the sort order.
         /// </returns>
         public int Compare(TObject x, TObject y) => x == null ? -1 : y == null ? 1 : x.Value.CompareTo(y.Value);
+
+        /// <inheritdoc/>
+        TypeCode IConvertible.GetTypeCode() => Value.GetTypeCode();
+
+        /// <inheritdoc/>
+        bool IConvertible.ToBoolean(IFormatProvider provider) => Value.ToBoolean(provider);
+
+        /// <inheritdoc/>
+        char IConvertible.ToChar(IFormatProvider provider) => Value.ToChar(provider);
+
+        /// <inheritdoc/>
+        sbyte IConvertible.ToSByte(IFormatProvider provider) => Value.ToSByte(provider);
+
+        /// <inheritdoc/>
+        byte IConvertible.ToByte(IFormatProvider provider) => Value.ToByte(provider);
+
+        /// <inheritdoc/>
+        short IConvertible.ToInt16(IFormatProvider provider) => Value.ToInt16(provider);
+
+        /// <inheritdoc/>
+        ushort IConvertible.ToUInt16(IFormatProvider provider) => Value.ToUInt16(provider);
+
+        /// <inheritdoc/>
+        int IConvertible.ToInt32(IFormatProvider provider) => Value.ToInt32(provider);
+
+        /// <inheritdoc/>
+        uint IConvertible.ToUInt32(IFormatProvider provider) => Value.ToUInt32(provider);
+
+        /// <inheritdoc/>
+        long IConvertible.ToInt64(IFormatProvider provider) => Value.ToInt64(provider);
+
+        /// <inheritdoc/>
+        ulong IConvertible.ToUInt64(IFormatProvider provider) => Value.ToUInt64(provider);
+
+        /// <inheritdoc/>
+        float IConvertible.ToSingle(IFormatProvider provider) => Value.ToSingle(provider);
+
+        /// <inheritdoc/>
+        double IConvertible.ToDouble(IFormatProvider provider) => Value.ToDouble(provider);
+
+        /// <inheritdoc/>
+        decimal IConvertible.ToDecimal(IFormatProvider provider) => Value.ToDecimal(provider);
+
+        /// <inheritdoc/>
+        DateTime IConvertible.ToDateTime(IFormatProvider provider) => Value.ToDateTime(provider);
+
+        /// <inheritdoc/>
+        string IConvertible.ToString(IFormatProvider provider) => ToString();
+
+        /// <inheritdoc/>
+        object IConvertible.ToType(Type conversionType, IFormatProvider provider) => Value.ToType(conversionType, provider);
     }
 }

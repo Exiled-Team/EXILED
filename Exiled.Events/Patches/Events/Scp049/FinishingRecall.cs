@@ -11,22 +11,25 @@ namespace Exiled.Events.Patches.Events.Scp049
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp049;
 
     using HarmonyLib;
 
     using PlayerRoles.PlayableScps.Scp049;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp049ResurrectAbility.ServerComplete" />.
-    ///     Adds the <see cref="Handlers.Scp049.FinishingRecall" /> event.
+    /// Patches <see cref="Scp049ResurrectAbility.ServerComplete" />.
+    /// Adds the <see cref="Handlers.Scp049.FinishingRecall" /> event.
+    /// Fix bug than Overwatch can get force respawn by Scp049
+    /// Bug reported to NW https://trello.com/c/V0uHP2eV/5745-overwatch-overwatch-can-get-respawned-by-scp-049.
+    /// The fix is directly inside the <see cref="FinishingRecallEventArgs"/>.
     /// </summary>
-    [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.FinishingRecall))]
+    // [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.FinishingRecall))]
     [HarmonyPatch(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.ServerComplete))]
     internal static class FinishingRecall
     {
@@ -49,7 +52,7 @@ namespace Exiled.Events.Patches.Events.Scp049
 
                     // Player.Get(base.Owner)
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp049Role>), nameof(ScpStandardSubroutine<Scp049Role>.Owner))),
+                    new(OpCodes.Call, PropertyGetter(typeof(StandardSubroutine<Scp049Role>), nameof(StandardSubroutine<Scp049Role>.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // base.CurRagdoll

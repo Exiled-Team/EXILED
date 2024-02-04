@@ -8,7 +8,10 @@
 namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Features.Items;
+
+    using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
+    using InventorySystem.Items.Usables;
 
     /// <summary>
     /// A wrapper class for dropped Usable Pickup.
@@ -44,29 +47,25 @@ namespace Exiled.API.Features.Pickups
         public float MaxCancellableTime { get; set; }
 
         /// <inheritdoc/>
-        internal override Pickup GetItemInfo(Item item)
+        internal override void ReadItemInfo(Item item)
         {
-            base.GetItemInfo(item);
+            base.ReadItemInfo(item);
             if (item is Usable usableitem)
             {
                 UseTime = usableitem.UseTime;
                 MaxCancellableTime = usableitem.MaxCancellableTime;
             }
-
-            return this;
         }
 
         /// <inheritdoc/>
-        internal override Item GetPickupInfo(Item item)
+        protected override void InitializeProperties(ItemBase itemBase)
         {
-            base.GetPickupInfo(item);
-            if (item is Usable usableitem)
+            base.InitializeProperties(itemBase);
+            if (itemBase is UsableItem usableitem)
             {
-                usableitem.UseTime = UseTime;
-                usableitem.MaxCancellableTime = MaxCancellableTime;
+                UseTime = usableitem.UseTime;
+                MaxCancellableTime = usableitem.MaxCancellableTime;
             }
-
-            return item;
         }
     }
 }

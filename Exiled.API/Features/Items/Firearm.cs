@@ -20,20 +20,16 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Structs;
 
     using Extensions;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
-    using InventorySystem.Items.Pickups;
 
     using UnityEngine;
 
     using BaseFirearm = InventorySystem.Items.Firearms.Firearm;
-    using FirearmPickup = Pickups.FirearmPickup;
-    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.Firearms.Firearm"/>.
@@ -118,9 +114,31 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets the max ammo for this firearm.
+        /// Gets or sets the max ammo for this firearm.
         /// </summary>
-        public byte MaxAmmo => Base.AmmoManagerModule.MaxAmmo;
+        /// <remarks>Disruptor can't be used for MaxAmmo.</remarks>
+        public byte MaxAmmo
+        {
+            get => Base.AmmoManagerModule.MaxAmmo;
+            set
+            {
+                switch (Base.AmmoManagerModule)
+                {
+                    case TubularMagazineAmmoManager tubularMagazineAmmoManager:
+                        tubularMagazineAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier) - (Base.Status.Flags.HasFlagFast(FirearmStatusFlags.Cocked) ? tubularMagazineAmmoManager.ChamberedRounds : 0));
+                        break;
+                    case ClipLoadedInternalMagAmmoManager clipLoadedInternalMagAmmoManager:
+                        clipLoadedInternalMagAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier));
+                        break;
+                    case AutomaticAmmoManager automaticAmmoManager:
+                        automaticAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier) - automaticAmmoManager.ChamberedAmount);
+                        break;
+                    default:
+                        Log.Warn($"MaxAmmo can't be used for this Item: {Type} ({Base.AmmoManagerModule})");
+                        return;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="Enums.FirearmType"/> of the firearm.
@@ -141,6 +159,16 @@ namespace Exiled.API.Features.Items
         /// Gets a value indicating whether the firearm's flashlight module is enabled.
         /// </summary>
         public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
+
+        /// <summary>
+        /// Gets a value indicating whether the firearm's NightVision is being used.
+        /// </summary>
+        public bool NightVisionEnabled => Aiming && Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.NightVision);
+
+        /// <summary>
+        /// Gets a value indicating whether the firearm's flashlight module is enabled or NightVision is being used.
+        /// </summary>
+        public bool CanSeeThroughDark => FlashlightEnabled || NightVisionEnabled;
 
         /// <summary>
         /// Gets a value indicating whether or not the firearm is automatic.
@@ -170,19 +198,10 @@ namespace Exiled.API.Features.Items
         public uint BaseCode => BaseCodesValue[FirearmType];
 
         /// <summary>
-        /// Gets or sets the fire rate of the firearm, if it is an automatic weapon.
+        /// Gets the fire rate of the firearm, if it is an automatic weapon.
         /// </summary>
-        /// <remarks>This property will not do anything if the firearm is not an automatic weapon.</remarks>
         /// <seealso cref="IsAutomatic"/>
-        public float FireRate
-        {
-            get => Base is AutomaticFirearm auto ? auto._fireRate : 1f;
-            set
-            {
-                if (Base is AutomaticFirearm auto)
-                    auto._fireRate = value;
-            }
-        }
+        public float FireRate => Base is AutomaticFirearm auto ? auto._fireRate : 1f;
 
         /// <summary>
         /// Gets or sets the recoil settings of the firearm, if it's an automatic weapon.
@@ -194,8 +213,21 @@ namespace Exiled.API.Features.Items
             get => Base is AutomaticFirearm auto ? auto._recoil : default;
             set
             {
-                if (Base is AutomaticFirearm auto)
-                    auto.ActionModule = new AutomaticAction(Base, auto._semiAutomatic, auto._boltTravelTime, 1f / auto._fireRate, auto._dryfireClipId, auto._triggerClipId, auto._gunshotPitchRandomization, value, auto._recoilPattern, false, Mathf.Max(1, auto._chamberSize));
+                if (Base is not AutomaticFirearm auto)
+                    return;
+
+                auto.ActionModule = new AutomaticAction(
+                    Base,
+                    auto._semiAutomatic,
+                    auto._boltTravelTime,
+                    1f / auto._fireRate,
+                    auto._dryfireClipId,
+                    auto._triggerClipId,
+                    auto._gunshotPitchRandomization,
+                    value,
+                    auto._recoilPattern,
+                    false,
+                    Mathf.Max(1, auto._chamberSize));
             }
         }
 
@@ -203,6 +235,21 @@ namespace Exiled.API.Features.Items
         /// Gets the firearm's <see cref="FirearmRecoilPattern"/>. Will be <see langword="null"/> for non-automatic weapons.
         /// </summary>
         public FirearmRecoilPattern RecoilPattern => Base is AutomaticFirearm auto ? auto._recoilPattern : null;
+
+        /// <summary>
+        /// Gets the <see cref="FirearmBaseStats"/>.
+        /// </summary>
+        public FirearmBaseStats Stats => Base.BaseStats;
+
+        /// <summary>
+        /// Gets the base damage.
+        /// </summary>
+        public float BaseDamage => Stats.BaseDamage;
+
+        /// <summary>
+        /// Gets the maximum value of the firearm's range.
+        /// </summary>
+        public float MaxRange => Stats.MaxDistance();
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] which contains all available attachments for all firearms.
@@ -214,8 +261,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The type of firearm to create.</param>
         /// <returns>The newly created firearm.</returns>
-        public static Firearm Create(FirearmType type)
-            => type is not FirearmType.None ? (Firearm)Create(type.GetItemType()) : null;
+        public static Firearm Create(FirearmType type) => type is not FirearmType.None ? (Firearm)Create(type.GetItemType()) : null;
 
         /// <summary>
         /// Adds a <see cref="AttachmentIdentifier"/> to the firearm.
@@ -560,28 +606,11 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
+        /// Gets the damage based on the specified distance.
         /// </summary>
-        /// <param name="position">The location to spawn the item.</param>
-        /// <param name="rotation">The rotation of the item.</param>
-        /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
-        /// <returns>The created <see cref="Pickup"/>.</returns>
-        public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
-        {
-            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
-
-            ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-            ipb.gameObject.transform.localScale = Scale;
-
-            FirearmPickup pickup = Pickup.Get(ipb).As<FirearmPickup>();
-
-            pickup.Status = Base.Status;
-
-            if (spawn)
-                pickup.Spawn();
-
-            return pickup;
-        }
+        /// <param name="distance">The distance to evaluate.</param>
+        /// <returns>The corresponding damage based on the specified distance.</returns>
+        public float GetDamageAtDistance(float distance) => Stats.DamageAtDistance(Base, distance);
 
         /// <summary>
         /// Clones current <see cref="Firearm"/> object.
@@ -595,10 +624,7 @@ namespace Exiled.API.Features.Items
             };
 
             if (cloneableItem.Base is AutomaticFirearm)
-            {
-                cloneableItem.FireRate = FireRate;
                 cloneableItem.Recoil = Recoil;
-            }
 
             cloneableItem.AddAttachment(AttachmentIdentifiers);
 

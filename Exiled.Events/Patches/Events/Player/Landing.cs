@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="AnimatedCharacterModel.OnGrounded" />
-    ///     Adds the <see cref="Player.Landing" /> event.
+    /// Patches <see cref="AnimatedCharacterModel.OnGrounded" />
+    /// Adds the <see cref="Player.Landing" /> event.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.Landing))]
     [HarmonyPatch(typeof(AnimatedCharacterModel), nameof(AnimatedCharacterModel.OnGrounded))]
@@ -48,15 +48,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // LandingEventArgs ev = new(Player)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LandingEventArgs))[0]),
-                    new(OpCodes.Dup),
 
                     // Player.OnLanding(ev)
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnLanding))),
-
-                    // player.IsJumping = false
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(LandingEventArgs), nameof(LandingEventArgs.Player))),
-                    new(OpCodes.Ldc_I4_0),
-                    new(OpCodes.Callvirt, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.IsJumping))),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)

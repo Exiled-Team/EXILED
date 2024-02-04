@@ -10,8 +10,9 @@ namespace Exiled.API.Features.Pickups
     using System;
 
     using Exiled.API.Features.DamageHandlers;
+    using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
-
+    using InventorySystem.Items;
     using InventorySystem.Items.Usables.Scp244;
 
     using UnityEngine;
@@ -76,6 +77,16 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
+        /// Gets or sets the maximum diameter within which SCP-244's hypothermia effect is dealt.
+        /// </summary>
+        /// <remarks>This does not prevent visual effects.</remarks>
+        public float MaxDiameter
+        {
+            get => Base.MaxDiameter;
+            set => Base.MaxDiameter = value;
+        }
+
+        /// <summary>
         /// Gets or sets the Scp244's remaining health.
         /// </summary>
         public float Health
@@ -113,10 +124,10 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Damages the Scp244Pickup.
+        /// Damages the <see cref="Scp244Pickup"/>.
         /// </summary>
         /// <param name="handler">The <see cref="DamageHandler"/> used to deal damage.</param>
-        /// <returns><see langword="true"/> if the the damage has been deal; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the the damage has been dealt; otherwise, <see langword="false"/>.</returns>
         public bool Damage(DamageHandler handler) => Base.Damage(handler.Damage, handler, Vector3.zero);
 
         /// <summary>
@@ -124,5 +135,17 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <returns>A string containing Scp244Pickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Health}| -{State}- ={CurrentSizePercent}=";
+
+        /// <inheritdoc/>
+        internal override void ReadItemInfo(Item item)
+        {
+            base.ReadItemInfo(item);
+            if (item is Scp244 scp244)
+            {
+                ActivationDot = scp244.ActivationDot;
+                MaxDiameter = scp244.MaxDiameter;
+                Health = scp244.Health;
+            }
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
@@ -27,8 +27,8 @@ namespace Exiled.Events.Patches.Events.Player
     using Player = Handlers.Player;
 
     /// <summary>
-    ///     Patches <see cref="RagdollManager.ServerSpawnRagdoll(ReferenceHub, DamageHandlerBase)" />.
-    ///     <br>Adds the <see cref="Player.SpawningRagdoll" /> and <see cref="Player.SpawnedRagdoll"/> events.</br>
+    /// Patches <see cref="RagdollManager.ServerSpawnRagdoll(ReferenceHub, DamageHandlerBase)" />.
+    /// <br>Adds the <see cref="Player.SpawningRagdoll" /> and <see cref="Player.SpawnedRagdoll"/> events.</br>
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.SpawningRagdoll))]
     [EventPatch(typeof(Player), nameof(Player.SpawnedRagdoll))]
@@ -47,16 +47,17 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder evScale = generator.DeclareLocal(typeof(Vector3));
             LocalBuilder targetScale = generator.DeclareLocal(typeof(Vector3));
 
-            int offset = 1;
+            int offset = 0;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
 
-            newInstructions.RemoveRange(index, 7);
+            // remove
+            // "basicRagdoll.NetworkInfo = new RagdollData(owner, handler, transform.localPosition, transform.localRotation);"
+            newInstructions.RemoveRange(index, 9);
 
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1);
-
+            // replace with
             newInstructions.InsertRange(index, new[]
             {
-                 // hub
+                // hub
                 new CodeInstruction(OpCodes.Ldarg_0),
 
                 // handler
@@ -72,9 +73,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // new RagdollInfo(ReferenceHub, DamageHandlerBase, Vector3, Quaternion)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RagdollData))[0]),
-
-                // handler
-                new(OpCodes.Ldarg_1),
 
                 // true
                 new(OpCodes.Ldc_I4_1),
@@ -92,17 +90,12 @@ namespace Exiled.Events.Patches.Events.Player
                 //    return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
-            });
 
-            // Search the index in which our logic will be injected
-            offset = 0;
-            index = newInstructions.FindIndex(instruction => instruction.Calls(PropertySetter(typeof(BasicRagdoll), nameof(BasicRagdoll.NetworkInfo)))) + offset;
-
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // ev.Info
+                // basicRagdoll.NetworkInfo = ev.Info
+                new(OpCodes.Ldloc_1),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Info))),
+                new(OpCodes.Call, PropertySetter(typeof(BasicRagdoll), nameof(BasicRagdoll.NetworkInfo))),
 
                 // new Vector3()
                 new(OpCodes.Ldloca_S, targetScale.LocalIndex),

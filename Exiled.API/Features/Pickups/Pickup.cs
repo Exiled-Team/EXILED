@@ -7,19 +7,19 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.API.Interfaces;
-
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables.Scp244;
-
     using Mirror;
     using RelativePositioning;
     using UnityEngine;
@@ -27,6 +27,7 @@ namespace Exiled.API.Features.Pickups
     using BaseAmmoPickup = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
     using BaseBodyArmorPickup = InventorySystem.Items.Armor.BodyArmorPickup;
     using BaseFirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
+    using BaseJailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
     using BaseKeycardPickup = InventorySystem.Items.Keycards.KeycardPickup;
     using BaseMicroHIDPickup = InventorySystem.Items.MicroHID.MicroHIDPickup;
     using BaseRadioPickup = InventorySystem.Items.Radio.RadioPickup;
@@ -34,11 +35,12 @@ namespace Exiled.API.Features.Pickups
     using BaseScp1576Pickup = InventorySystem.Items.Usables.Scp1576.Scp1576Pickup;
     using BaseScp2176Projectile = InventorySystem.Items.ThrowableProjectiles.Scp2176Projectile;
     using BaseScp330Pickup = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
+    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="ItemPickupBase"/>.
     /// </summary>
-    public class Pickup : TypeCastObject<Pickup>, IWrapper<ItemPickupBase>, IWorldSpace
+    public class Pickup : GameEntity, IWrapper<ItemPickupBase>, IWorldSpace
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Items.Item"/>.
@@ -52,6 +54,7 @@ namespace Exiled.API.Features.Pickups
         /// Created only for <see cref="Projectile"/> properly work.
         /// </remarks>
         internal Pickup()
+            : base()
         {
         }
 
@@ -60,6 +63,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="pickupBase">The base <see cref="ItemPickupBase"/> class.</param>
         internal Pickup(ItemPickupBase pickupBase)
+            : base()
         {
             Base = pickupBase;
 
@@ -68,6 +72,8 @@ namespace Exiled.API.Features.Pickups
                 return;
 
             BaseToPickup.Add(pickupBase, this);
+
+            InitializeProperties(InventoryItemLoader.AvailableItems[pickupBase.Info.ItemId]);
         }
 
         /// <summary>
@@ -91,22 +97,25 @@ namespace Exiled.API.Features.Pickups
             Info = psi;
 
             BaseToPickup.Add(Base, this);
+
+            InitializeProperties(itemBase);
         }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> which contains all the <see cref="Pickup"/> instances.
         /// </summary>
-        public static IEnumerable<Pickup> List => BaseToPickup.Values;
+        public static new IEnumerable<Pickup> List => BaseToPickup.Values;
+
+        /// <summary>
+        /// Gets a randomly selected <see cref="Pickup"/>.
+        /// </summary>
+        /// <returns>A randomly selected <see cref="Pickup"/> object.</returns>
+        public static Pickup Random => BaseToPickup.Random().Value;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.Transform"/> of the Pickup.
-        /// </summary>
-        public Transform Transform => Base.transform;
+        public override GameObject GameObject => GameObject;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Rigidbody"/> of the Pickup.
@@ -255,7 +264,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the pickup position.
         /// </summary>
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
-        public Vector3 Position
+        public override Vector3 Position
         {
             get => Base.Position;
             set => Base.Position = value;
@@ -266,7 +275,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public RelativePosition RelativePosition
         {
-            get => new(Room.transform.TransformPoint(Position));
+            get => new(Room.Transform.TransformPoint(Position));
             set => Position = value.Position;
         }
 
@@ -274,7 +283,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the pickup rotation.
         /// </summary>
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
-        public Quaternion Rotation
+        public override Quaternion Rotation
         {
             get => Base.Rotation;
             set => Base.Rotation = value;
@@ -284,11 +293,6 @@ namespace Exiled.API.Features.Pickups
         /// Gets a value indicating whether this pickup is spawned.
         /// </summary>
         public bool IsSpawned { get; internal set; }
-
-        /// <summary>
-        /// Gets a value indicating whether or not this is a worn item.
-        /// </summary>
-        public bool IsLoaded { get; internal set; }
 
         /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.
@@ -320,6 +324,7 @@ namespace Exiled.API.Features.Pickups
                 BaseBodyArmorPickup bodyArmorPickup => new BodyArmorPickup(bodyArmorPickup),
                 BaseScp330Pickup scp330Pickup => new Scp330Pickup(scp330Pickup),
                 BaseScp1576Pickup scp1576Pickup => new Scp1576Pickup(scp1576Pickup),
+                BaseJailbirdPickup jailbirdPickup => new JailbirdPickup(jailbirdPickup),
                 ThrownProjectile thrownProjectile => thrownProjectile switch
                 {
                     BaseScp018Projectile scp018 => new Projectiles.Scp018Projectile(scp018),
@@ -475,7 +480,7 @@ namespace Exiled.API.Features.Pickups
             ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardMTFCaptain or ItemType.KeycardMTFOperative or ItemType.KeycardMTFPrivate => new KeycardPickup(type),
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new BodyArmorPickup(type),
             ItemType.SCP330 => new Scp330Pickup(),
-            ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP1853 or ItemType.Painkillers or ItemType.Medkit or ItemType.Adrenaline => new UsablePickup(type),
+            ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP1853 or ItemType.Painkillers or ItemType.Medkit or ItemType.Adrenaline or ItemType.AntiSCP207 => new UsablePickup(type),
             ItemType.Jailbird => new JailbirdPickup(),
             ItemType.SCP1576 => new Scp1576Pickup(),
             ItemType.SCP2176 => new Projectiles.Scp2176Projectile(),
@@ -492,7 +497,7 @@ namespace Exiled.API.Features.Pickups
         /// <param name="previousOwner">An optional previous owner of the item.</param>
         /// <returns>The <see cref="Pickup"/>. See documentation of <see cref="Create(ItemType)"/> for more information on casting.</returns>
         /// <seealso cref="Projectile.CreateAndSpawn(Enums.ProjectileType, Vector3, Quaternion, bool, Player)"/>
-        public static Pickup CreateAndSpawn(ItemType type, Vector3 position, Quaternion rotation, Player previousOwner = null) => Spawn(Create(type), position, rotation, previousOwner);
+        public static Pickup CreateAndSpawn(ItemType type, Vector3 position, Quaternion rotation, Player previousOwner = null) => Create(type).Spawn(position, rotation, previousOwner);
 
         /// <summary>
         /// Spawns a <see cref="Pickup"/>.
@@ -502,16 +507,10 @@ namespace Exiled.API.Features.Pickups
         /// <param name="rotation">The rotation to spawn the <see cref="Pickup"/>.</param>
         /// <param name="previousOwner">An optional previous owner of the item.</param>
         /// <returns>The <see cref="Pickup"/> Spawn.</returns>
-        /// <seealso cref="Projectile.Spawn(Projectile, Vector3, Quaternion, bool, Player)"/>
+        /// <seealso cref="Projectile.Spawn(Vector3, Quaternion, bool, Player)"/>
+        [Obsolete("Use pickup.Spawn(Vector3, Quaternion, Player) instead of this", true)]
         public static Pickup Spawn(Pickup pickup, Vector3 position, Quaternion rotation, Player previousOwner = null)
-        {
-            pickup.Position = position;
-            pickup.Rotation = rotation;
-            pickup.PreviousOwner = previousOwner;
-            pickup.Spawn();
-
-            return pickup;
-        }
+            => pickup.Spawn(position, rotation, previousOwner);
 
         /// <summary>
         /// Returns the amount of time it will take for the provided <paramref name="player"/> to pick up this item, based on <see cref="Weight"/> and active status effects.
@@ -529,22 +528,38 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Spawns pickup on server.
+        /// Spawns pickup on a server.
         /// </summary>
         /// <seealso cref="UnSpawn"/>
         public void Spawn()
         {
             // condition for projectiles
             if (!GameObject.activeSelf)
-            {
                 GameObject.SetActive(true);
-            }
 
             if (!IsSpawned)
             {
                 NetworkServer.Spawn(GameObject);
                 IsSpawned = true;
             }
+        }
+
+        /// <summary>
+        /// Spawns pickup on a server.
+        /// </summary>
+        /// <param name="position">The position to spawn the <see cref="Pickup"/> at.</param>
+        /// <param name="rotation">The rotation to spawn the <see cref="Pickup"/>.</param>
+        /// <param name="previousOwner">An optional previous owner of the item.</param>
+        /// <returns>The spawned <see cref="Pickup"/>.</returns>
+        /// <seealso cref="Projectile.Spawn(Vector3, Quaternion, bool, Player)"/>
+        public Pickup Spawn(Vector3 position, Quaternion rotation, Player previousOwner = null)
+        {
+            Position = position;
+            Rotation = rotation;
+            PreviousOwner = previousOwner;
+            Spawn();
+
+            return this;
         }
 
         /// <summary>
@@ -585,35 +600,23 @@ namespace Exiled.API.Features.Pickups
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{IsLocked}- ={InUse}=";
 
         /// <summary>
-        /// Returns the Pickup with the according property from the Item.
+        /// Helper method for saving data between items and pickups.
         /// </summary>
-        /// <param name="item"> Item-related data to give to the Pickup.</param>
-        /// <returns>A Pickup containing the Item-related data.</returns>
-        internal virtual Pickup GetItemInfo(Items.Item item)
+        /// <param name="item"> <see cref="Items.Item"/>-related data to give to the <see cref="Pickup"/>.</param>
+        internal virtual void ReadItemInfo(Items.Item item)
         {
-            IsLoaded = true;
-
             if (item is not null)
             {
                 Scale = item.Scale;
             }
-
-            return this;
         }
 
         /// <summary>
-        /// Returns the Item with the according property from the Pickup.
+        /// initialize item properties.
         /// </summary>
-        /// <param name="item"> Pickup-related data to give to the Item.</param>
-        /// <returns>A Item containing the Pickup-related data.</returns>
-        internal virtual Items.Item GetPickupInfo(Items.Item item)
+        /// <param name="itemBase">target item.</param>
+        protected virtual void InitializeProperties(ItemBase itemBase)
         {
-            if (item is not null)
-            {
-                item.Scale = Scale;
-            }
-
-            return item;
         }
     }
 }

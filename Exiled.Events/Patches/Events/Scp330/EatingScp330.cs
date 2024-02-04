@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp330;
 
@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Scp330
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Scp330Bag.ServerOnUsingCompleted" />.
-    ///     Adds the <see cref="Scp330.EatingScp330" /> and <see cref="Scp330.EatenScp330" /> event.
+    /// Patches <see cref="Scp330Bag.ServerOnUsingCompleted" />.
+    /// Adds the <see cref="Scp330.EatingScp330" /> and <see cref="Scp330.EatenScp330" /> event.
     /// </summary>
     [EventPatch(typeof(Scp330), nameof(Scp330.EatingScp330))]
     [EventPatch(typeof(Scp330), nameof(Scp330.EatenScp330))]
@@ -41,6 +41,8 @@ namespace Exiled.Events.Patches.Events.Scp330
             int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(ICandy), nameof(ICandy.ServerApplyEffects)))) + offset;
 
             Label returnLabel = generator.DefineLabel();
+
+            LocalBuilder ev = generator.DeclareLocal(typeof(EatingScp330EventArgs));
 
             newInstructions.InsertRange(
                 index,
@@ -60,6 +62,8 @@ namespace Exiled.Events.Patches.Events.Scp330
                     // EatingScp330EventArgs ev = new(player, candy, true)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatingScp330EventArgs))[0]),
                     new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Handlers.Scp330.OnEatingScp330(ev)
                     new(OpCodes.Call, Method(typeof(Scp330), nameof(Scp330.OnEatingScp330))),
@@ -68,6 +72,11 @@ namespace Exiled.Events.Patches.Events.Scp330
                     //  return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(EatingScp330EventArgs), nameof(EatingScp330EventArgs.IsAllowed))),
                     new(OpCodes.Brfalse, returnLabel),
+
+                    // candy = ev.Candy
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EatingScp330EventArgs), nameof(EatingScp330EventArgs.Candy))),
+                    new(OpCodes.Stloc_0),
                 });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

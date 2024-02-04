@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Attributes.Validators
         /// Initializes a new instance of the <see cref="PossibleValuesAttribute"/> class.
         /// </summary>
         /// <param name="values">Values should be used.</param>
-        public PossibleValuesAttribute(params string[] values)
+        public PossibleValuesAttribute(params object[] values)
         {
             Values = values;
         }
@@ -29,9 +29,9 @@ namespace Exiled.API.Features.Attributes.Validators
         /// <summary>
         /// Gets the values.
         /// </summary>
-        public string[] Values { get; }
+        public object[] Values { get; }
 
         /// <inheritdoc/>
-        public bool Validate(object value) => Values.Contains(value.ToString());
+        public bool Validate(object value) => Values.Contains(value);
     }
 }

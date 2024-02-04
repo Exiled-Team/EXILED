@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Inventory.UserCode_CmdDropAmmo__Byte__UInt16" />.
-    ///     <br>Adds the <see cref="Handlers.Player.DroppingAmmo" /> and <see cref="Handlers.Player.DroppedAmmo" /> events.</br>
+    /// Patches <see cref="Inventory.UserCode_CmdDropAmmo__Byte__UInt16" />.
+    /// <br>Adds the <see cref="Handlers.Player.DroppingAmmo" /> and <see cref="Handlers.Player.DroppedAmmo" /> events.</br>
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DroppingAmmo))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DroppedAmmo))]

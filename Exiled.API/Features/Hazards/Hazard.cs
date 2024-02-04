@@ -20,7 +20,7 @@ namespace Exiled.API.Features.Hazards
     /// <summary>
     /// A wrapper for <see cref="EnvironmentalHazard"/>.
     /// </summary>
-    public class Hazard : TypeCastObject<Hazard>, IWrapper<EnvironmentalHazard>
+    public class Hazard : GameEntity, IWrapper<EnvironmentalHazard>
     {
         /// <summary>
         /// <see cref="Dictionary{TKey,TValue}"/> with <see cref="EnvironmentalHazard"/> to it's <see cref="Hazard"/>.
@@ -32,6 +32,7 @@ namespace Exiled.API.Features.Hazards
         /// </summary>
         /// <param name="hazard">The <see cref="EnvironmentalHazard"/> instance.</param>
         public Hazard(EnvironmentalHazard hazard)
+            : base()
         {
             Base = hazard;
 
@@ -41,12 +42,15 @@ namespace Exiled.API.Features.Hazards
         /// <summary>
         /// Gets the list of all hazards.
         /// </summary>
-        public static IReadOnlyCollection<Hazard> List => EnvironmentalHazardToHazard.Values;
+        public static new IReadOnlyCollection<Hazard> List => EnvironmentalHazardToHazard.Values;
 
         /// <summary>
         /// Gets the <see cref="EnvironmentalHazard"/>.
         /// </summary>
         public EnvironmentalHazard Base { get; }
+
+        /// <inheritdoc/>
+        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets or sets the list with all affected by this hazard players.
@@ -101,7 +105,7 @@ namespace Exiled.API.Features.Hazards
         /// <summary>
         /// Gets or sets the position.
         /// </summary>
-        public Vector3 Position
+        public override Vector3 Position
         {
             get => Base.SourcePosition;
             set => Base.SourcePosition = value;

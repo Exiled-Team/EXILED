@@ -11,21 +11,18 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
-
-    using InventorySystem.Items.Pickups;
-    using InventorySystem.Searching;
     using RemoteAdmin;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="CommandProcessor.ProcessAdminChat(string, CommandSender)" />.
-    ///     Adds the <see cref="Handlers.Player.SendingAdminChatMessage" /> event.
+    /// Patches <see cref="CommandProcessor.ProcessAdminChat(string, CommandSender)" />.
+    /// Adds the <see cref="Handlers.Player.SendingAdminChatMessage" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.SendingAdminChatMessage))]
     [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessAdminChat))]
@@ -54,19 +51,22 @@ namespace Exiled.Events.Patches.Events.Player
                     // message
                     new(OpCodes.Ldarg_0),
 
-                    // SearchingPickupEventArgs ev = new(Player, ItemPickupBase, SearchSession, SearchCompletor, float);
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
+                    // SendingAdminChatMessageEventsArgs ev = new(Player, string, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SendingAdminChatMessageEventsArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                    // Handlers.Player.OnSearchPickupRequest(ev)
+                    // Handlers.Player.OnSendingAdminChatMessage(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSendingAdminChatMessage))),
 
                     // if (ev.IsAllowed)
                     //    goto allowLabel;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SendingAdminChatMessageEventsArgs), nameof(SendingAdminChatMessageEventsArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, allowLabel),
+                    new(OpCodes.Brtrue_S, allowLabel),
 
                     // IsNotAllowedMessaqe(ev.Player);
                     // return;

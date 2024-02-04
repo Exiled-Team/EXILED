@@ -10,20 +10,25 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1313
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
     using HarmonyLib;
-    using PlayerRoles.FirstPersonControl;
+    using InventorySystem;
 
     /// <summary>
-    /// Patches <see cref="FpcStateProcessor.UpdateMovementState"/>.
-    /// Implements <see cref="Player.IsUsingStamina"/>.
+    /// Patches <see cref="Inventory.StaminaUsageMultiplier"/>.
+    /// Implements <see cref="Player.IsUsingStamina"/>, <see cref="FpcRole.IsUsingStamina"/> and <see cref="FpcRole.StaminaUsageMultiplier"/>.
     /// </summary>
-    [HarmonyPatch(typeof(FpcStateProcessor), nameof(FpcStateProcessor.UpdateMovementState))]
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.StaminaUsageMultiplier), MethodType.Getter)]
     internal class StaminaUsage
     {
-        private static void Postfix(FpcStateProcessor __instance, PlayerMovementState state, ref PlayerMovementState __result)
+        private static void Postfix(Inventory __instance, ref float __result)
         {
-            if (Player.TryGet(__instance.Hub, out Player player) && !player.IsUsingStamina)
-                __instance._stat.CurValue = __instance._stat.MaxValue;
+            if (Player.TryGet(__instance._hub, out Player player))
+            {
+                if (player.Role.Is(out FpcRole fpc))
+                    __result *= fpc.IsUsingStamina ? fpc.StaminaUsageMultiplier : 0;
+                __result *= player.IsUsingStamina ? 1 : 0;
+            }
         }
     }
 }

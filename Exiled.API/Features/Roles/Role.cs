@@ -8,18 +8,18 @@
 namespace Exiled.API.Features.Roles
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     using Enums;
-
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Extensions;
-
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
-
     using UnityEngine;
+    using YamlDotNet.Serialization.TypeInspectors;
 
     using FilmmakerGameRole = PlayerRoles.Filmmaker.FilmmakerRole;
     using HumanGameRole = PlayerRoles.HumanRole;
@@ -29,25 +29,40 @@ namespace Exiled.API.Features.Roles
     using Scp096GameRole = PlayerRoles.PlayableScps.Scp096.Scp096Role;
     using Scp106GameRole = PlayerRoles.PlayableScps.Scp106.Scp106Role;
     using Scp173GameRole = PlayerRoles.PlayableScps.Scp173.Scp173Role;
+    using Scp3114GameRole = PlayerRoles.PlayableScps.Scp3114.Scp3114Role;
     using Scp939GameRole = PlayerRoles.PlayableScps.Scp939.Scp939Role;
     using SpectatorGameRole = PlayerRoles.Spectating.SpectatorRole;
 
     /// <summary>
     /// Defines the class for role-related classes.
     /// </summary>
-    public abstract class Role : TypeCastObject<Role>, IWrapper<PlayerRoleBase>
+    public abstract class Role : GameEntity, IWrapper<PlayerRoleBase>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Role"/> class.
         /// </summary>
         /// <param name="baseRole">the base <see cref="PlayerRoleBase"/>.</param>
         protected Role(PlayerRoleBase baseRole)
+            : base()
         {
             if (baseRole.TryGetOwner(out ReferenceHub hub))
                 Owner = Player.Get(hub);
 
             Base = baseRole;
         }
+
+        /// <summary>
+        /// Gets a random human <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static RoleTypeId RandomHuman => Enum.GetValues(typeof(RoleTypeId)).ToArray<RoleTypeId>().Shuffle().FirstOrDefault(role => role.IsHuman());
+
+        /// <summary>
+        /// Gets a random human <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static RoleTypeId RandomScp => Enum.GetValues(typeof(RoleTypeId)).ToArray<RoleTypeId>().Shuffle().FirstOrDefault(role => RoleExtensions.GetTeam(role) == Team.SCPs);
+
+        /// <inheritdoc/>
+        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="Player"/> this role is referring to.
@@ -112,7 +127,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
         /// </summary>
-        public bool IsValid => Owner == null || Type == Owner.RoleManager.CurrentRole.RoleTypeId;
+        public bool IsValid => Owner != null && Owner.IsConnected && Base == Owner.RoleManager.CurrentRole;
 
         /// <summary>
         /// Gets a random spawn position of this role.
@@ -174,6 +189,29 @@ namespace Exiled.API.Features.Roles
         /// <returns><see langword="true"/> if the values are not equal.</returns>
         public static bool operator !=(RoleTypeId type, Role role) => role != type;
 
+        /// <summary>
+        /// Gets a random <see cref="RoleTypeId"/>.
+        /// </summary>
+        /// <param name="includeNonPlayableRoles">Specifies whether non-playable roles should be included.</param>
+        /// <param name="except">An optional collection of role types to exclude.</param>
+        /// <returns>A random <see cref="RoleTypeId"/>.</returns>
+        public static RoleTypeId Random(bool includeNonPlayableRoles = false, IEnumerable<RoleTypeId> except = null)
+        {
+            RoleTypeId[] roles = Enum.GetValues(typeof(RoleTypeId)).ToArray<RoleTypeId>();
+
+            if (!includeNonPlayableRoles)
+            {
+                IEnumerable<RoleTypeId> exceptRoles = roles.Except(new RoleTypeId[] { RoleTypeId.Filmmaker, RoleTypeId.None, RoleTypeId.Overwatch, RoleTypeId.Spectator });
+
+                if (except is not null)
+                    exceptRoles = exceptRoles.Except(except);
+
+                return exceptRoles.Shuffle().First();
+            }
+
+            return includeNonPlayableRoles && except is not null ? roles.Except(except).Shuffle().First() : roles.Shuffle().First();
+        }
+
         /// <inheritdoc/>
         public override bool Equals(object obj) => base.Equals(obj);
 
@@ -222,6 +260,7 @@ namespace Exiled.API.Features.Roles
             Scp096GameRole scp096Role => new Scp096Role(scp096Role),
             Scp106GameRole scp106Role => new Scp106Role(scp106Role),
             Scp173GameRole scp173Role => new Scp173Role(scp173Role),
+            Scp3114GameRole scp3114Role => new Scp3114Role(scp3114Role),
             Scp939GameRole scp939Role => new Scp939Role(scp939Role),
             OverwatchGameRole overwatchRole => new OverwatchRole(overwatchRole),
             SpectatorGameRole spectatorRole => new SpectatorRole(spectatorRole),

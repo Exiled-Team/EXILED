@@ -21,12 +21,12 @@ namespace Exiled.Events.Handlers
     public static class Map
     {
         /// <summary>
-        /// Invoked before placing decals.
+        /// Invoked before placing bullet holes.
         /// </summary>
         public static Event<PlacingBulletHoleEventArgs> PlacingBulletHole { get; set; } = new();
 
         /// <summary>
-        /// Invoked before placing bloods.
+        /// Invoked before placing blood.
         /// </summary>
         public static Event<PlacingBloodEventArgs> PlacingBlood { get; set; } = new();
 
@@ -104,6 +104,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before a team vehicle is spawned.
         /// </summary>
         public static Event<SpawningTeamVehicleEventArgs> SpawningTeamVehicle { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before an item is placed in the pocket dimension.
+        /// </summary>
+        public static Event<PlacingPickupIntoPocketDimensionEventArgs> PlacingPickupIntoPocketDimension { get; set; } = new();
 
         /// <summary>
         /// Called before placing a decal.
@@ -205,5 +210,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SpawningTeamVehicleEventArgs"/> instance.</param>
         public static void OnSpawningTeamVehicle(SpawningTeamVehicleEventArgs ev) => SpawningTeamVehicle.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before an item is dropped in the pocket dimension.
+        /// </summary>
+        /// <param name="ev">The <see cref="PlacingPickupIntoPocketDimensionEventArgs"/> instnace.</param>
+        public static void OnPlacingPickupIntoPocketDimension(PlacingPickupIntoPocketDimensionEventArgs ev) => PlacingPickupIntoPocketDimension.InvokeSafely(ev);
     }
 }

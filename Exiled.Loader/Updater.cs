@@ -31,7 +31,7 @@ namespace Exiled.Loader
     /// </summary>
     internal sealed class Updater
     {
-        private const long REPOID = 231269519;
+        private const long REPO_ID = 231269519;
         private const string INSTALLER_ASSET_NAME_LINUX = "Exiled.Installer-Linux";
         private const string INSTALLER_ASSET_NAME_WIN = "Exiled.Installer-Win.exe";
 
@@ -108,7 +108,7 @@ namespace Exiled.Loader
         }
 
         /// <summary>
-        /// Looks for any updates.
+        /// Checks for any updates.
         /// </summary>
         internal void CheckUpdate()
         {
@@ -117,6 +117,10 @@ namespace Exiled.Loader
                 Update(client, newVersion);
         }
 
+        /// <summary>
+        /// Creates a HTTP Client, and checks at the Exiled-Team GitHub repository.
+        /// </summary>
+        /// <returns>Client determining if it was successful connecting to the Exiled GitHub repository.</returns>
         private HttpClient CreateHttpClient()
         {
             HttpClient client = new()
@@ -129,6 +133,13 @@ namespace Exiled.Loader
             return client;
         }
 
+        /// <summary>
+        /// Finds an update using the client.
+        /// </summary>
+        /// <param name="client">The HTTP Client.</param>
+        /// <param name="forced">Whether the detection was forced.</param>
+        /// <param name="newVersion"> Whether there is a new version of EXILED.</param>
+        /// <returns>Whether there is an update.</returns>
         private bool FindUpdate(HttpClient client, bool forced, out NewVersion newVersion)
         {
             try
@@ -137,7 +148,7 @@ namespace Exiled.Loader
 
                 Log.Info($"Found the smallest version of Exiled - {smallestVersion.Library.GetName().Name}:{smallestVersion.Version}");
 
-                TaggedRelease[] releases = TagReleases(client.GetReleases(REPOID, new GetReleasesSettings(50, 1)).GetAwaiter().GetResult());
+                TaggedRelease[] releases = TagReleases(client.GetReleases(REPO_ID, new GetReleasesSettings(50, 1)).GetAwaiter().GetResult());
                 if (FindRelease(releases, out Release targetRelease, smallestVersion, forced))
                 {
                     if (!FindAsset(InstallerName, targetRelease, out ReleaseAsset asset))
@@ -147,7 +158,7 @@ namespace Exiled.Loader
                     }
                     else
                     {
-                        Log.Info($"Found asset - Name: {asset.Name} | Size: {asset.Size} Download: {asset.BrowserDownloadUrl}");
+                        Log.Info($"Found asset - Name: {asset.Name} | Size: {asset.Size} | Download: {asset.BrowserDownloadUrl}");
                         newVersion = new NewVersion(targetRelease, asset);
                         return true;
                     }
@@ -160,7 +171,7 @@ namespace Exiled.Loader
             }
             catch (Utf8Json.JsonParsingException)
             {
-                Log.Error("Encountered GitHub ratelimit, unable to check and download the latest version of Exiled.");
+                Log.Error("Encountered GitHub rate limit, unable to check and download the latest version of Exiled.");
             }
             catch (Exception ex)
             {
@@ -171,6 +182,11 @@ namespace Exiled.Loader
             return false;
         }
 
+        /// <summary>
+        /// Updates the client's version of Exiled.
+        /// </summary>
+        /// <param name="client">The HTTP Client.</param>
+        /// <param name="newVersion">The updated version of Exiled.</param>
         private void Update(HttpClient client, NewVersion newVersion)
         {
             try
@@ -253,6 +269,11 @@ namespace Exiled.Loader
             }
         }
 
+        /// <summary>
+        /// Gets the releases of Exiled.
+        /// </summary>
+        /// <param name="releases">Gets the array of releases that has been made.</param>
+        /// <returns>The last item in the array, which is the newest version of Exiled.</returns>
         private TaggedRelease[] TagReleases(Release[] releases)
         {
             TaggedRelease[] arr = new TaggedRelease[releases.Length];
@@ -262,14 +283,23 @@ namespace Exiled.Loader
             return arr;
         }
 
+        /// <summary>
+        /// Finds the latest release.
+        /// </summary>
+        /// <param name="releases">The list of releases (array).</param>
+        /// <param name="release"> The most recent release of Exiled.</param>
+        /// <param name="smallestVersion">Finds the smallest version of the Exiled Library.</param>
+        /// <param name="forced">Whether this update was forced or not.</param>
+        /// <returns>Whether the specific release was found.</returns>
         private bool FindRelease(TaggedRelease[] releases, out Release release, ExiledLib smallestVersion, bool forced = false)
         {
             bool includePRE = config.ShouldDownloadTestingReleases || ExiledLib.Any(l => l.Version.PreRelease is not null);
-
+            Version gameVersion = new(GameCore.Version.Major, GameCore.Version.Minor, GameCore.Version.Revision);
             for (int z = 0; z < releases.Length; z++)
             {
                 TaggedRelease taggedRelease = releases[z];
-                if (taggedRelease.Release.PreRelease && !includePRE)
+
+                if (!taggedRelease.Release.Description.Contains($"[Game Version: {gameVersion}]") || (taggedRelease.Release.PreRelease && !includePRE))
                     continue;
 
                 if (taggedRelease.Version > smallestVersion.Version || forced)
@@ -283,6 +313,13 @@ namespace Exiled.Loader
             return false;
         }
 
+        /// <summary>
+        /// Finds the specified asset.
+        /// </summary>
+        /// <param name="assetName">Passes in the specified asset name.</param>
+        /// <param name="release">Passes in the release version.</param>
+        /// <param name="asset">The asset that is tied to the release.</param>
+        /// <returns>Whether it was able to find the asset.</returns>
         private bool FindAsset(string assetName, Release release, out ReleaseAsset asset)
         {
             for (int z = 0; z < release.Assets.Length; z++)
