@@ -43,7 +43,7 @@ namespace Exiled.API.Features.DynamicEvents
         /// This indexer allows access to bound listeners using an <see cref="object"/> reference.
         /// </summary>
         /// <param name="object">The listener to look for.</param>
-        /// <returns>The obund listener corresponding to the specified reference.</returns>
+        /// <returns>The bound listener corresponding to the specified reference.</returns>
         public KeyValuePair<object, List<Action<T>>> this[object @object] => boundDelegates.FirstOrDefault(kvp => kvp.Key == @object);
 
         /// <summary>
