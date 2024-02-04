@@ -1117,7 +1117,7 @@ namespace Exiled.API.Features
         /// This property checks if the player is present in the list of targets maintained by SCP-096.
         /// </remarks>
         /// <returns>True if the player is a target of SCP-096; otherwise, false.</returns>
-        public bool IsScp096Target => Player.List.Any(x => x.Role is Scp096Role scp096Role && scp096Role.Targets.Contains(x));
+        public bool IsScp096Target => Player.List.Any(x => x.Role is Roles.Scp096Role scp096Role && scp096Role.Targets.Contains(x));
  
         // <summary>
         /// Gets a value indicating whether the player is a target of SCP-173.
