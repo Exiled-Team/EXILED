@@ -10,7 +10,6 @@ namespace Exiled.API.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net.Http;
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
@@ -31,7 +30,6 @@ namespace Exiled.API.Features
     using Footprinting;
     using global::Scp914;
     using Hints;
-    using HtmlAgilityPack;
     using Interactables.Interobjects;
     using InventorySystem;
     using InventorySystem.Disarming;
