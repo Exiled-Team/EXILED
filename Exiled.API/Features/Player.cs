@@ -98,8 +98,6 @@ namespace Exiled.API.Features
         private Roles.Scp096Role scp096Role;
         private Roles.Scp173Role scp173Role;
 
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
@@ -1115,10 +1113,14 @@ namespace Exiled.API.Features
         public bool IsInventoryFull => Items.Count >= Inventory.MaxSlots;
 
         /// <summary>
-        /// Gets a value indicating whether or not the <see cref="Player"/> is target of SCP 096.
+        /// Gets a value indicating whether the player is a target of SCP-096.
         /// </summary>
-        public bool IsScp096Target => Player.List.Any(player => scp096Role.Targets.Contains(player));
-
+        /// <remarks>
+        /// This property checks if the player is present in the list of targets maintained by SCP-096.
+        /// </remarks>
+        /// <returns>True if the player is a target of SCP-096; otherwise, false.</returns>
+        public bool IsScp096Target => Player.List.Any(x => x.Role is Scp096Role scp096Role && scp096Role.Targets.Contains(x));
+ 
         /// <summary>
         /// Gets a value indicating whether or not the <see cref="Player"/> is observing SCP 173.
         /// </summary>
