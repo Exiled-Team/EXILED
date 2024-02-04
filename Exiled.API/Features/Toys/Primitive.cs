@@ -174,6 +174,7 @@ namespace Exiled.API.Features.Toys
             primitive.Base.NetworkScale = primitive.Base.transform.localScale;
             primitive.Base.NetworkPrimitiveType = primitiveSettings.PrimitiveType;
             primitive.Color = primitiveSettings.Color;
+            primitive.IsStatic = primitiveSettings.IsStatic;
 
             return primitive;
         }

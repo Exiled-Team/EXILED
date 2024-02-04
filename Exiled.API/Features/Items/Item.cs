@@ -48,6 +48,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="itemBase">The <see cref="ItemBase"/> to encapsulate.</param>
         public Item(ItemBase itemBase)
+            : base()
         {
             Base = itemBase;
             BaseToItem.Add(itemBase, this);
@@ -78,7 +79,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a list of all <see cref="Item"/>'s on the server.
         /// </summary>
-        public static IEnumerable<Item> List => BaseToItem.Values;
+        public static new IEnumerable<Item> List => BaseToItem.Values;
 
         /// <summary>
         /// Gets or sets the unique serial number for the item.

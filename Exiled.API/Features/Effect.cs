@@ -31,6 +31,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="statusEffectBase">Get all the information of the effect>.</param>
         public Effect(StatusEffectBase statusEffectBase)
+            : base()
         {
             if (!statusEffectBase.TryGetEffectType(out EffectType effect))
                 Log.Error($"EffectType not found please report to Exiled BugReport : {statusEffectBase}");
