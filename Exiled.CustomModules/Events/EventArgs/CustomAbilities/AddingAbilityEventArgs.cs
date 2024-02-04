@@ -12,7 +12,7 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomAbilities
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all informations before adding an ability.
+    /// Contains all information before adding an ability.
     /// </summary>
     /// <typeparam name="T">The type of the <see cref="GameEntity"/>.</typeparam>
     public class AddingAbilityEventArgs<T> : IDeniableEvent

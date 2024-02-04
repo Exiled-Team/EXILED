@@ -111,6 +111,11 @@ namespace Exiled.Events.Handlers
         public static Event<Scp244SpawningEventArgs> Scp244Spawning { get; set; } = new();
 
         /// <summary>
+        /// Invoked before an item is placed in the pocket dimension.
+        /// </summary>
+        public static Event<PlacingPickupIntoPocketDimensionEventArgs> PlacingPickupIntoPocketDimension { get; set; } = new();
+
+        /// <summary>
         /// Called before placing a decal.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingBulletHoleEventArgs"/> instance.</param>
@@ -216,5 +221,10 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="Scp244SpawningEventArgs"/> instance.</param>
         public static void OnScp244Spawning(Scp244SpawningEventArgs ev) => Scp244Spawning.InvokeSafely(ev);
+
+        /// Called before an item is dropped in the pocket dimension.
+        /// </summary>
+        /// <param name="ev">The <see cref="PlacingPickupIntoPocketDimensionEventArgs"/> instnace.</param>
+        public static void OnPlacingPickupIntoPocketDimension(PlacingPickupIntoPocketDimensionEventArgs ev) => PlacingPickupIntoPocketDimension.InvokeSafely(ev);
     }
 }

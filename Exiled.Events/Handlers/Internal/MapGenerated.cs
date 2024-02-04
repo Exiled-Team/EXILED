@@ -12,8 +12,8 @@ namespace Exiled.Events.Handlers.Internal
     using System.Linq;
 
     using API.Features;
+    using API.Features.Core.Generic.Pools;
     using API.Features.Items;
-    using API.Features.Pools;
     using API.Structs;
 
     using Exiled.API.Enums;
@@ -46,6 +46,11 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnMapGenerated()
         {
             Map.ClearCache();
+
+            // TODO: Fix For (https://trello.com/c/cUwpZDLs/5003-config-teamrespawnqueue-in-configgameplay-is-not-working-as-expected)
+            PlayerRoles.RoleAssign.HumanSpawner.Handlers[PlayerRoles.Team.ChaosInsurgency] = new PlayerRoles.RoleAssign.OneRoleHumanSpawner(PlayerRoles.RoleTypeId.ChaosConscript);
+            PlayerRoles.RoleAssign.HumanSpawner.Handlers[PlayerRoles.Team.OtherAlive] = new PlayerRoles.RoleAssign.OneRoleHumanSpawner(PlayerRoles.RoleTypeId.Tutorial);
+            PlayerRoles.RoleAssign.HumanSpawner.Handlers[PlayerRoles.Team.Dead] = new PlayerRoles.RoleAssign.OneRoleHumanSpawner(PlayerRoles.RoleTypeId.Spectator);
 
             GenerateAttachments();
             Timing.CallDelayed(1, GenerateCache);

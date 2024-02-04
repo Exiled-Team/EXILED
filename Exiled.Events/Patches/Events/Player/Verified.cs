@@ -14,7 +14,7 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features;
     using CentralAuth;
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
