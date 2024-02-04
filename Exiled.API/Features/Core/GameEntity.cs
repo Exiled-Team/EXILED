@@ -13,14 +13,40 @@ namespace Exiled.API.Features.Core
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.API.Interfaces;
     using UnityEngine;
 
     /// <summary>
     /// The base class which defines in-game entities.
     /// </summary>
-    public abstract class GameEntity : TypeCastObject<GameEntity>, IEntity
+    public abstract class GameEntity : TypeCastObject<GameEntity>, IEntity, IWorldSpace
     {
+        /// <summary>
+        /// The room's transform.
+        /// </summary>
+#pragma warning disable SA1401
+        protected Transform transform;
+#pragma warning restore SA1401
+
+        private static readonly HashSet<GameEntity> ActiveInstances = new();
         private readonly HashSet<EActor> componentsInChildren = new();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameEntity"/> class.
+        /// </summary>
+        protected GameEntity() => ActiveInstances.Add(this);
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="GameEntity"/> class.
+        /// </summary>
+        ~GameEntity() => ActiveInstances.Remove(this);
+
+        /// <summary>
+        /// Gets all active <see cref="GameEntity"/> instances.
+        /// <para/>
+        /// This collection should be used sparingly and only if circumstances require it, due to its potentially large size.
+        /// </summary>
+        public static HashSet<GameEntity> List => ActiveInstances;
 
         /// <inheritdoc/>
         public IReadOnlyCollection<EActor> ComponentsInChildren => componentsInChildren;
@@ -29,6 +55,67 @@ namespace Exiled.API.Features.Core
         /// Gets or sets the <see cref="GameEntity"/>'s <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         public virtual GameObject GameObject { get; protected set; }
+
+        /// <summary>
+        /// Gets the <see cref="GameEntity"/> <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public virtual Transform Transform => transform ? transform : transform = GameObject.transform;
+
+        /// <summary>
+        /// Gets or sets the <see cref="GameEntity"/> position.
+        /// </summary>
+        public virtual Vector3 Position
+        {
+            get => Transform.position;
+            set => Transform.position = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="GameEntity"/> rotation.
+        /// </summary>
+        public virtual Quaternion Rotation
+        {
+            get => Transform.rotation;
+            set => Transform.rotation = value;
+        }
+
+        /// <summary>
+        /// Gets the nearest game entity to the specified <see cref="Vector3" /> within the given distance.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3" /> to compare.</param>
+        /// <param name="distance">The maximum distance the game entity can be from the <paramref name="vector" /> to be included.</param>
+        /// <returns>
+        /// The nearest <see cref="GameEntity" /> within the specified distance, or <see langword="null" /> if no game
+        /// entity is found.
+        /// </returns>
+        public static GameEntity GetNearestEntity(Vector3 vector, float distance) => GetNearestEntities(vector, distance).OrderBy(p => (vector - p.GameObject.transform.position).sqrMagnitude).FirstOrDefault();
+
+        /// <summary>
+        /// Gets all game entities near the specified <see cref="Vector3" /> within the given distance.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3" /> to compare.</param>
+        /// <param name="distance">The maximum distance the game entity can be from the <paramref name="vector" /> to be included.</param>
+        /// <returns>The filtered collection of <see cref="GameEntity" /> objects.</returns>
+        public static IEnumerable<GameEntity> GetNearestEntities(Vector3 vector, float distance) => List.Where(p => p.GameObject.transform && (vector - p.GameObject.transform.position).sqrMagnitude <= distance * distance);
+
+        /// <summary>
+        /// Gets the farthest game entity from the specified <see cref="Vector3" /> within the given distance.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3" /> to compare.</param>
+        /// <param name="distance">The minimum distance the game entity can be from the <paramref name="vector" /> to be included.</param>
+        /// <returns>
+        /// The farthest <see cref="GameEntity" /> from the specified <paramref name="vector" /> within the given
+        /// distance, or <see langword="null" /> if no game entity is found.
+        /// </returns>
+        public static GameEntity GetFarthestEntity(Vector3 vector, float distance) => GetFarthestEntities(vector, distance).OrderByDescending(p => (vector - p.GameObject.transform.position).sqrMagnitude).FirstOrDefault();
+
+        /// <summary>
+        /// Gets all game entities that have a distance greater than the specified distance from the given <see cref="Vector3" />.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3" /> to compare.</param>
+        /// <param name="distance">The minimum distance the game entity can be from the <paramref name="vector" /> to be included.</param>
+        /// <returns>The filtered collection of <see cref="GameEntity" /> objects.</returns>
+        public static IEnumerable<GameEntity> GetFarthestEntities(Vector3 vector, float distance) => List.Where(p => p.GameObject.transform && (vector - p.GameObject.transform.position).sqrMagnitude >= distance * distance);
 
         /// <inheritdoc/>
         public T AddComponent<T>(string name = "")

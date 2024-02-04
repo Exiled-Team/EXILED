@@ -75,7 +75,7 @@ namespace Exiled.API.Features
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
     [DefaultPlayerClass]
-    public class Player : GameEntity, IWorldSpace
+    public class Player : GameEntity
     {
 #pragma warning disable SA1401
 #pragma warning disable SA1310
@@ -100,6 +100,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="referenceHub">The <see cref="global::ReferenceHub"/> of the player to be encapsulated.</param>
         public Player(ReferenceHub referenceHub)
+            : base()
         {
             ReferenceHub = referenceHub;
             Items = ItemsValue.AsReadOnly();
@@ -110,6 +111,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> of the player.</param>
         public Player(GameObject gameObject)
+            : base()
         {
             ReferenceHub = ReferenceHub.GetHub(gameObject);
             Items = ItemsValue.AsReadOnly();
@@ -133,12 +135,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
         /// </summary>
-        public static IReadOnlyCollection<Player> List => Dictionary.Values;
+        public static new IReadOnlyCollection<Player> List => Dictionary.Values;
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.
         /// </summary>
         public static Dictionary<string, Player> UserIdsCache { get; } = new(20);
+
+        /// <summary>
+        /// Gets a randomly selected <see cref="Player"/>.
+        /// </summary>
+        /// <returns>A randomly selected <see cref="Player"/> object.</returns>
+        public static Player Random => List.Random();
 
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="RoleTypeId"/> and their FF multiplier. This is for non-unique roles.
@@ -187,7 +195,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="ReferenceHub"/>'s <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => ReferenceHub.transform;
+        public override Transform Transform => ReferenceHub.transform;
 
         /// <summary>
         /// Gets the hint currently watched by the player.
@@ -502,7 +510,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <seealso cref="Teleport(Vector3)"/>
         /// <seealso cref="Teleport(object)"/>
-        public Vector3 Position
+        public override Vector3 Position
         {
             get => Transform.position;
             set => ReferenceHub.TryOverridePosition(value, Vector3.zero);
@@ -522,7 +530,7 @@ namespace Exiled.API.Features
         /// Gets or sets the player's rotation.
         /// </summary>
         /// <returns>Returns the direction the player is looking at.</returns>
-        public Quaternion Rotation
+        public override Quaternion Rotation
         {
             get => Transform.rotation;
             set => ReferenceHub.TryOverridePosition(Position, value.eulerAngles);
@@ -1177,6 +1185,38 @@ namespace Exiled.API.Features
         public static IEnumerable<Player> Get(Func<Player, bool> predicate) => List.Where(predicate);
 
         /// <summary>
+        /// Gets the nearest player to the specified <see cref="Vector3"/> within the given distance.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
+        /// <param name="distance">The maximum distance the player can be from the <paramref name="vector"/> to be included.</param>
+        /// <returns>The nearest <see cref="Player"/> within the specified distance, or <see langword="null"/> if no player is found.</returns>
+        public static Player GetNearestPlayer(Vector3 vector, float distance) => GetNearestPlayers(vector, distance).OrderBy(p => (vector - p.Position).sqrMagnitude).FirstOrDefault();
+
+        /// <summary>
+        /// Gets all players near the specified <see cref="Vector3"/> within the given distance.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
+        /// <param name="distance">The maximum distance the player can be from the <paramref name="vector"/> to be included.</param>
+        /// <returns>The filtered collection of <see cref="Player"/> objects.</returns>
+        public static IEnumerable<Player> GetNearestPlayers(Vector3 vector, float distance) => List.Where(p => (vector - p.Position).sqrMagnitude <= distance * distance);
+
+        /// <summary>
+        /// Gets the farthest player from the specified <see cref="Vector3"/> within the given distance.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
+        /// <param name="distance">The minimum distance the player can be from the <paramref name="vector"/> to be included.</param>
+        /// <returns>The farthest <see cref="Player"/> from the specified <paramref name="vector"/> within the given distance, or <see langword="null"/> if no player is found.</returns>
+        public static Player GetFarthestPlayer(Vector3 vector, float distance) => GetFarthestPlayers(vector, distance).OrderByDescending(p => (vector - p.Position).sqrMagnitude).FirstOrDefault();
+
+        /// <summary>
+        /// Gets all players that have a distance greater than the specified distance from the given <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
+        /// <param name="distance">The minimum distance the player can be from the <paramref name="vector"/> to be included.</param>
+        /// <returns>The filtered collection of <see cref="Player"/> objects.</returns>
+        public static IEnumerable<Player> GetFarthestPlayers(Vector3 vector, float distance) => List.Where(p => (vector - p.Position).sqrMagnitude >= distance * distance);
+
+        /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSystem.ICommandSender"/>, if any.
         /// </summary>
         /// <param name="sender">The command sender.</param>
@@ -1767,7 +1807,7 @@ namespace Exiled.API.Features
         public bool TryRemoveCustomeRoleFriendlyFire(string role) => CustomRoleFriendlyFireMultiplier.Remove(role);
 
         /// <summary>
-        /// Forces the player to reload their current weapon.
+        /// Forces the player to reload their current <see cref="Firearm"></see>.
         /// </summary>
         /// <returns><see langword="true"/> if firearm was successfully reloaded. Otherwise, <see langword="false"/>.</returns>
         public bool ReloadWeapon()
@@ -1775,11 +1815,43 @@ namespace Exiled.API.Features
             if (CurrentItem is Firearm firearm)
             {
                 bool result = firearm.Base.AmmoManagerModule.ServerTryReload();
-                Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
+                if (result)
+                    Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
                 return result;
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Forces the player to unload their current <see cref="Firearm"></see>.
+        /// </summary>
+        /// <returns><see langword="true"/> if the weapon unload request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
+        public bool UnloadWeapon()
+        {
+            if (CurrentItem is Firearm firearm)
+            {
+                bool result = firearm.Base.AmmoManagerModule.ServerTryUnload();
+                if (result)
+                    Connection.Send(new RequestMessage(firearm.Serial, RequestType.Unload));
+                return result;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Forces the player to toggle the Flashlight Attachment on their current <see cref="Firearm"></see>.
+        /// </summary>
+        /// <returns><see langword="true"/> if the weapon flashlight toggle request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
+        public bool ToggleWeaponFlashlight()
+        {
+            if (RoleManager.CurrentRole is not IFpcRole fpc || CurrentItem is not Firearm firearm)
+                return false;
+
+            bool oldCheck = firearm.FlashlightEnabled; // Temporary Solution
+            FirearmBasicMessagesHandler.ServerRequestReceived(ReferenceHub.connectionToClient, new RequestMessage(firearm.Serial, RequestType.ToggleFlashlight));
+            return oldCheck != firearm.FlashlightEnabled;
         }
 
         /// <summary>
@@ -2265,7 +2337,7 @@ namespace Exiled.API.Features
         public void UnMute(bool isIntercom = false) => VoiceChatMutes.RevokeLocalMute(UserId, isIntercom);
 
         /// <summary>
-        /// Blink the player's tag.
+        /// Blinks the player's tag.
         /// </summary>
         /// <returns>Used to wait.</returns>
         public IEnumerator<float> BlinkTag()
@@ -3338,6 +3410,21 @@ namespace Exiled.API.Features
                             ? new Vector3(3, 0, 0)
                             : new Vector3(0, 0, 3)));
                     break;
+                case Role role:
+                    if (role.Owner is not null)
+                        Teleport(role.Owner.Position + offset);
+                    else
+                        Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid role teleport (role is missing Owner).");
+                    break;
+                case Item item:
+                    if (item.Owner is not null)
+                        Teleport(item.Owner.Position + offset);
+                    else
+                        Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid item teleport (item is missing Owner).");
+                    break;
+                case GameEntity entity:
+                    Teleport(entity.Position + Vector3.up + offset);
+                    break;
                 case IPosition positionObject:
                     Teleport(positionObject.Position + Vector3.up + offset);
                     break;
@@ -3359,12 +3446,6 @@ namespace Exiled.API.Features
                 case Scp914Controller scp914:
                     Teleport(scp914._knobTransform.position + Vector3.up + offset);
                     break;
-                case Role role:
-                    if (role.Owner is not null)
-                        Teleport(role.Owner.Position + offset);
-                    else
-                        Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid role teleport (role is missing Owner).");
-                    break;
                 case Locker locker:
                     Teleport(locker.transform.position + Vector3.up + offset);
                     break;
@@ -3373,12 +3454,6 @@ namespace Exiled.API.Features
                     break;
                 case ElevatorChamber elevator:
                     Teleport(elevator.transform.position + Vector3.up + offset);
-                    break;
-                case Item item:
-                    if (item.Owner is not null)
-                        Teleport(item.Owner.Position + offset);
-                    else
-                        Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid item teleport (item is missing Owner).");
                     break;
 
                 // Unity
@@ -3406,16 +3481,16 @@ namespace Exiled.API.Features
         {
             object randomObject = type.Name switch
             {
-                nameof(Camera) => Camera.List.Random(),
+                nameof(Camera) => Camera.Random,
                 nameof(Door) => Door.Random(),
-                nameof(Room) => Room.List.Random(),
-                nameof(TeslaGate) => TeslaGate.List.Random(),
-                nameof(Player) => Dictionary.Values.Random(),
-                nameof(Pickup) => Pickup.BaseToPickup.Random().Value,
-                nameof(Ragdoll) => Ragdoll.List.Random(),
+                nameof(Room) => Room.Random(),
+                nameof(TeslaGate) => TeslaGate.Random,
+                nameof(Player) => Random,
+                nameof(Pickup) => Pickup.Random,
+                nameof(Ragdoll) => Ragdoll.Random,
                 nameof(Locker) => Map.GetRandomLocker(),
-                nameof(Generator) => Generator.List.Random(),
-                nameof(Window) => Window.List.Random(),
+                nameof(Generator) => Generator.Random,
+                nameof(Window) => Window.Random,
                 nameof(Scp914) => Scp914.Scp914Controller,
                 nameof(LockerChamber) => Map.GetRandomLocker().Chambers.Random(),
                 _ => null,
@@ -3445,37 +3520,37 @@ namespace Exiled.API.Features
         public void RandomTeleport<T>() => RandomTeleport(typeof(T));
 
         /// <summary>
-        /// Get the time cooldown on this ItemType.
+        /// Retrieves the cooldown time for the specified ItemType.
         /// </summary>
-        /// <param name="itemType">The itemtypes to choose for getting cooldown.</param>
-        /// <returns>Return the time in seconds of the cooldowns.</returns>
+        /// <param name="itemType">The ItemType to retrieve the cooldown for.</param>
+        /// <returns>The cooldown time in seconds, or -1 if not found.</returns>
         public float GetCooldownItem(ItemType itemType)
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns.TryGetValue(itemType, out float value) ? value : -1;
 
         /// <summary>
-        /// Set the time cooldown on this ItemType.
+        /// Sets the cooldown time for the specified ItemType.
         /// </summary>
-        /// <param name="time">The times for the cooldown.</param>
-        /// <param name="itemType">The itemtypes to choose for being cooldown.</param>
+        /// <param name="time">The cooldown time in seconds.</param>
+        /// <param name="itemType">The ItemType to set the cooldown for.</param>
         public void SetCooldownItem(float time, ItemType itemType)
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
 
         /// <summary>
-        /// Explode the player.
+        /// Triggers an explosion for the player.
         /// </summary>
         public void Explode() => ExplosionUtils.ServerExplode(ReferenceHub);
 
         /// <summary>
-        /// Explode the player.
+        /// Triggers an explosion for the player.
         /// </summary>
-        /// <param name="projectileType">The projectile that will create the explosion.</param>
-        /// <param name="attacker">The Player that will causing the explosion.</param>
+        /// <param name="projectileType">The type of projectile causing the explosion.</param>
+        /// <param name="attacker">The player triggering the explosion.</param>
         public void Explode(ProjectileType projectileType, Player attacker = null) => Map.Explode(Position, projectileType, attacker);
 
         /// <summary>
-        /// Spawn projectile effect on the player.
+        /// Spawns an explosion effect for the player.
         /// </summary>
-        /// <param name="projectileType">The projectile that will create the effect.</param>
+        /// <param name="projectileType">The type of projectile creating the effect.</param>
         public void ExplodeEffect(ProjectileType projectileType) => Map.ExplodeEffect(Position, projectileType);
 
         /// <summary>
