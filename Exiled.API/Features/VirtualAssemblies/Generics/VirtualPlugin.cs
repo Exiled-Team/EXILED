@@ -5,11 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.VirtualAssemblies
+namespace Exiled.API.Features.VirtualAssemblies.Generics
 {
-    using Exiled.API.Features;
-    using Exiled.API.Interfaces;
-
     /// <inheritdoc/>
     /// <typeparam name="TConfig">The type of the plugin's config.</typeparam>
     public abstract class VirtualPlugin<TConfig> : VirtualPlugin
