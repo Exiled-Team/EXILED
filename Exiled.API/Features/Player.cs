@@ -1120,7 +1120,7 @@ namespace Exiled.API.Features
         public bool IsScp096Target => Player.List.Any(x => x.Role is Roles.Scp096Role scp096Role && scp096Role.Targets.Contains(x));
  
         // <summary>
-        /// Gets a value indicating whether the player is a target of SCP-173.
+        /// Gets a value indicating whether the player is a observer of SCP-173.
         /// </summary>
         /// <remarks>
         /// This property checks if the player is present in the list of observers maintained by SCP-173.
