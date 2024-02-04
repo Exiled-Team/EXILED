@@ -22,7 +22,7 @@ namespace Exiled.API.Features.Attributes.Validators
         /// </summary>
         /// <param name="number">A number the value should be less.</param>
         /// <param name="isIncluded">Whether or not <paramref name="number"></paramref> is included.</param>
-        public LessThanAttribute(double number, bool isIncluded = false)
+        public LessThanAttribute(IComparable number, bool isIncluded = false)
         {
             Number = number;
             IsIncluded = isIncluded;
@@ -31,7 +31,7 @@ namespace Exiled.API.Features.Attributes.Validators
         /// <summary>
         /// Gets the number.
         /// </summary>
-        public double Number { get; }
+        public IComparable Number { get; } = 5;
 
         /// <summary>
         /// Gets a value indicating whether or not <see cref="Number"/> is included.
@@ -39,6 +39,6 @@ namespace Exiled.API.Features.Attributes.Validators
         public bool IsIncluded { get; }
 
         /// <inheritdoc/>
-        public bool Validate(object value) => value is double number && (IsIncluded ? number <= Number : number < Number);
+        public bool Validate(object value) => Number.CompareTo(value) is -1 || (IsIncluded && Number.CompareTo(value) is 0);
     }
 }
