@@ -10,8 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Pools;
-    using Exiled.Events.Attributes;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
 
@@ -55,7 +54,7 @@ namespace Exiled.Events.Patches.Events.Scp939
                 // Player player = Player.Get(hub);
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(CharacterModel), nameof(CharacterModel.OwnerHub))),
-                new(OpCodes.Call, Method(typeof(Exiled.API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // true;
                 new(OpCodes.Ldc_I4_1),
@@ -65,7 +64,7 @@ namespace Exiled.Events.Patches.Events.Scp939
                 new(OpCodes.Dup),
 
                 // Handlers.Scp939.OnPlayingFootstep(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp939), nameof(Handlers.Scp939.OnPlayingFootstep))),
+                new(OpCodes.Call, Method(typeof(Scp939), nameof(Scp939.OnPlayingFootstep))),
 
                 // if (!IsAllowed)
                 //      return;
@@ -79,7 +78,7 @@ namespace Exiled.Events.Patches.Events.Scp939
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-            foreach (var instruction in newInstructions)
+            foreach (CodeInstruction instruction in newInstructions)
                 yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
