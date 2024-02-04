@@ -10,15 +10,15 @@ namespace Exiled.Events.EventArgs.Map
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information before decontaminating the light containment zone.
+    /// Contains all information before decontaminating the light containment zone.
     /// </summary>
     public class DecontaminatingEventArgs : IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DecontaminatingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="DecontaminatingEventArgs" /> class.
         /// </summary>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public DecontaminatingEventArgs(bool isAllowed = true)
         {
@@ -26,7 +26,7 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not light containment zone decontamination can begin.
+        /// Gets or sets a value indicating whether or not light containment zone decontamination can begin.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

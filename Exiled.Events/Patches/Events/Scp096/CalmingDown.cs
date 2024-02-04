@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp096
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp096RageManager.ServerEndEnrage(bool)" />.
-    ///     Adds the <see cref="Handlers.Scp096.CalmingDown" /> event.
+    /// Patches <see cref="Scp096RageManager.ServerEndEnrage(bool)" />.
+    /// Adds the <see cref="Handlers.Scp096.CalmingDown" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.CalmingDown))]
     [HarmonyPatch(typeof(Scp096RageManager), nameof(Scp096RageManager.ServerEndEnrage))]

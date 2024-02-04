@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patch the <see cref="VoiceChatMutes.IssueLocalMute(string, bool)" />.
-    ///     Adds the <see cref="Handlers.Player.IssuingMute" /> event.
+    /// Patch the <see cref="VoiceChatMutes.IssueLocalMute(string, bool)" />.
+    /// Adds the <see cref="Handlers.Player.IssuingMute" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.IssuingMute))]
     [HarmonyPatch(typeof(VoiceChatMutes), nameof(VoiceChatMutes.IssueLocalMute))]

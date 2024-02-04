@@ -15,21 +15,21 @@ namespace Exiled.Events.EventArgs.Player
     using Lift = API.Features.Lift;
 
     /// <summary>
-    ///     Contains all information before a player interacts with an elevator.
+    /// Contains all information before a player interacts with an elevator.
     /// </summary>
     public class InteractingElevatorEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="InteractingElevatorEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="InteractingElevatorEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="elevator">
-        ///     <inheritdoc cref="Elevator" />
+        /// <inheritdoc cref="Elevator" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public InteractingElevatorEventArgs(Player player, ElevatorChamber elevator, bool isAllowed = true)
         {
@@ -40,22 +40,22 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the <see cref="Elevator" /> instance.
+        /// Gets the <see cref="Elevator" /> instance.
         /// </summary>
         public ElevatorChamber Elevator { get; }
 
         /// <summary>
-        ///     Gets the <see cref="Lift" /> instance.
+        /// Gets the <see cref="Lift" /> instance.
         /// </summary>
         public Lift Lift { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can interact with the elevator.
+        /// Gets or sets a value indicating whether or not the player can interact with the elevator.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the player who's interacting with the elevator.
+        /// Gets the player who's interacting with the elevator.
         /// </summary>
         public Player Player { get; }
     }
