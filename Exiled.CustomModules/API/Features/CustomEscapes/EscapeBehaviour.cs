@@ -53,16 +53,16 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         protected virtual byte CurrentScenario => CalculateEscapeScenario();
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
         /// </summary>
         [DynamicEventDispatcher]
-        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingDispatcher { get; private set; }
+        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
         /// </summary>
         [DynamicEventDispatcher]
-        protected TDynamicEventDispatcher<Player> EscapedDispatcher { get; private set; }
+        protected TDynamicEventDispatcher<Player> EscapedDispatcher { get; set; }
 
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
