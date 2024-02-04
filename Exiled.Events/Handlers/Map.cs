@@ -222,6 +222,7 @@ namespace Exiled.Events.Handlers
         /// <param name="ev">The <see cref="Scp244SpawningEventArgs"/> instance.</param>
         public static void OnScp244Spawning(Scp244SpawningEventArgs ev) => Scp244Spawning.InvokeSafely(ev);
 
+        /// <summary>
         /// Called before an item is dropped in the pocket dimension.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingPickupIntoPocketDimensionEventArgs"/> instnace.</param>
