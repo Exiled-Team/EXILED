@@ -20,7 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.58" />
         <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
         <PackageReference Include="System.Memory" Version="4.5.5" />
         <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" />
