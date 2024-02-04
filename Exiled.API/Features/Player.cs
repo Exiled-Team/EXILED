@@ -1121,10 +1121,14 @@ namespace Exiled.API.Features
         /// <returns>True if the player is a target of SCP-096; otherwise, false.</returns>
         public bool IsScp096Target => Player.List.Any(x => x.Role is Scp096Role scp096Role && scp096Role.Targets.Contains(x));
  
-        /// <summary>
-        /// Gets a value indicating whether or not the <see cref="Player"/> is observing SCP 173.
+        // <summary>
+        /// Gets a value indicating whether the player is a target of SCP-173.
         /// </summary>
-        public bool IsScp173Observer => Player.List.Any(player => scp173Role.ObservingPlayers.Contains(player));
+        /// <remarks>
+        /// This property checks if the player is present in the list of observers maintained by SCP-173.
+        /// </remarks>
+        /// <returns>True if the player is a observer of SCP-173; otherwise, false.</returns>
+        public bool IsScp173Observer => Player.List.Any(x => x.Role is Roles.Scp173Role scp173Role && scp173Role.ObservingPlayers.Contains(x));
 
         /// <summary>
         /// Gets a value indicating whether or not the player has agreed to microphone recording.
