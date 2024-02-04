@@ -95,9 +95,7 @@ namespace Exiled.API.Features
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
         private Role role;
-        private Roles.Scp096Role scp096Role;
-        private Roles.Scp173Role scp173Role;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
