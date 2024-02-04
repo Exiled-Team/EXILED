@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Locker.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -42,7 +42,7 @@ namespace Exiled.API.Features.Lockers
         /// <summary>
         /// Gets the list with all <see cref="Locker"/>.
         /// </summary>
-        public static IReadOnlyCollection<Locker> List => BaseToExiledLockers.Values;
+        public static new IReadOnlyCollection<Locker> List => BaseToExiledLockers.Values;
 
         /// <inheritdoc/>
         public BaseLocker Base { get; }

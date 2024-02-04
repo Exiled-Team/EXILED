@@ -5,10 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Lockers;
-
 namespace Exiled.Events.EventArgs.Map
 {
+    using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
 
