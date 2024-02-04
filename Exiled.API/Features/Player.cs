@@ -10,7 +10,6 @@ namespace Exiled.API.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net.Http;
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
@@ -31,7 +30,6 @@ namespace Exiled.API.Features
     using Footprinting;
     using global::Scp914;
     using Hints;
-    using HtmlAgilityPack;
     using Interactables.Interobjects;
     using InventorySystem;
     using InventorySystem.Disarming;
@@ -49,7 +47,6 @@ namespace Exiled.API.Features
     using NorthwoodLib;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-    using PlayerRoles.PlayableScps.Scp096;
     using PlayerRoles.RoleAssign;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
@@ -97,10 +94,6 @@ namespace Exiled.API.Features
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
         private Role role;
-        private Roles.Scp096Role scp096Role;
-        private Roles.Scp173Role scp173Role;
-
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -1117,14 +1110,22 @@ namespace Exiled.API.Features
         public bool IsInventoryFull => Items.Count >= Inventory.MaxSlots;
 
         /// <summary>
-        /// Gets a value indicating whether or not the <see cref="Player"/> is target of SCP 096.
+        /// Gets a value indicating whether the player is a target of SCP-096.
         /// </summary>
-        public bool IsScp096Target => Player.Get(RoleTypeId.Scp096).Any(player => scp096Role.Targets.Contains(player));
+        /// <remarks>
+        /// This property checks if the player is present in the list of targets maintained by SCP-096.
+        /// </remarks>
+        /// <returns>True if the player is a target of SCP-096; otherwise, false.</returns>
+        public bool IsScp096Target => Player.List.Any(x => x.Role is Roles.Scp096Role scp096Role && scp096Role.Targets.Contains(x));
 
         /// <summary>
-        /// Gets a value indicating whether or not the <see cref="Player"/> is observing SCP 173.
+        /// Gets a value indicating whether the player is an observer of SCP-173.
         /// </summary>
-        public bool IsScp173Observer => Player.Get(RoleTypeId.Scp173).Any(player => scp173Role.ObservingPlayers.Contains(player));
+        /// <remarks>
+        /// This property checks if the player is present in the list of observers maintained by SCP-173.
+        /// </remarks>
+        /// <returns>True if the player is an observer of SCP-173; otherwise, false.</returns>
+        public bool IsScp173Observer => Player.List.Any(x => x.Role is Roles.Scp173Role scp173Role && scp173Role.ObservingPlayers.Contains(x));
 
         /// <summary>
         /// Gets a value indicating whether or not the player has agreed to microphone recording.
