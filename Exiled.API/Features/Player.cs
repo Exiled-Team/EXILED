@@ -349,7 +349,7 @@ namespace Exiled.API.Features
                 // NW Client check.
                 if (value.Contains('<'))
                 {
-                    foreach (var token in value.Split('<'))
+                    foreach (string token in value.Split('<'))
                     {
                         if (token.StartsWith("/", StringComparison.Ordinal) ||
                             token.StartsWith("b>", StringComparison.Ordinal) ||
@@ -619,7 +619,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is jumping.
         /// </summary>
-        public bool IsJumping { get; internal set; }
+        public bool IsJumping => Role is FpcRole fpc && fpc.FirstPersonController.FpcModule.Motor.IsJumping;
 
         /// <summary>
         /// Gets the player's IP address.
@@ -736,7 +736,7 @@ namespace Exiled.API.Features
         /// <remarks>This property will NOT persistently mute and unmute the player. For persistent mutes, see <see cref="Mute(bool)"/> and <see cref="UnMute(bool)"/>.</remarks>
         public bool IsMuted
         {
-            get => VoiceChatMutes.Mutes.Contains(UserId) && (VoiceChatMuteFlags.HasFlag(VcMuteFlags.GlobalRegular) || VoiceChatMuteFlags.HasFlag(VcMuteFlags.LocalRegular));
+            get => VoiceChatMutes.QueryLocalMute(UserId, false);
             set
             {
                 if (value)
@@ -768,7 +768,7 @@ namespace Exiled.API.Features
         /// <remarks>This property will NOT persistently mute and unmute the player. For persistent mutes, see <see cref="Mute(bool)"/> and <see cref="UnMute(bool)"/>.</remarks>
         public bool IsIntercomMuted
         {
-            get => VoiceChatMutes.Mutes.Contains(UserId) && (VoiceChatMuteFlags.HasFlag(VcMuteFlags.GlobalIntercom) || VoiceChatMuteFlags.HasFlag(VcMuteFlags.LocalIntercom));
+            get => VoiceChatMutes.QueryLocalMute(UserId, true);
             set
             {
                 if (value)
@@ -916,7 +916,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the item in the player's hand. Value will be <see langword="null"/> if the player is not holding anything.
         /// </summary>
-        /// <seealso cref="DropHeldItem"/>
+        /// <seealso cref="DropHeldItem()"/>
         public Item CurrentItem
         {
             get => Item.Get(Inventory.CurInstance);
@@ -953,32 +953,6 @@ namespace Exiled.API.Features
         {
             get => StaminaStat.CurValue;
             set => StaminaStat.CurValue = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the stamina usage multiplier. Resets on death.
-        /// </summary>
-        public float StaminaUsageMultiplier
-        {
-            get => Role is FpcRole fpcRole ? fpcRole.StaminaUsageMultiplier : 1f;
-            set
-            {
-                if (Role is FpcRole fpcRole)
-                    fpcRole.StaminaUsageMultiplier = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the stamina regen multiplier. Resets on death.
-        /// </summary>
-        public float StaminaRegenMultiplier
-        {
-            get => Role is FpcRole fpcRole ? fpcRole.StaminaRegenMultiplier : 1f;
-            set
-            {
-                if (Role is FpcRole fpcRole)
-                    fpcRole.StaminaRegenMultiplier = value;
-            }
         }
 
         /// <summary>
@@ -1094,17 +1068,9 @@ namespace Exiled.API.Features
         public bool IsInPocketDimension => CurrentRoom?.Type is RoomType.Pocket;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player should use stamina system. Resets on death.
+        /// Gets or sets a value indicating whether or not the player should use stamina system.
         /// </summary>
-        public bool IsUsingStamina
-        {
-            get => Role is FpcRole fpcRole && fpcRole.IsUsingStamina;
-            set
-            {
-                if (Role is FpcRole fpcRole)
-                    fpcRole.IsUsingStamina = value;
-            }
-        }
+        public bool IsUsingStamina { get; set; } = true;
 
         /// <summary>
         /// Gets the player's ping.
@@ -1198,7 +1164,7 @@ namespace Exiled.API.Features
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> filtered based on a predicate.
         /// </summary>
         /// <param name="predicate">The condition to satisfy.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Player"/> which contains elements that satify the condition.</returns>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Player"/> which contains elements that satisfy the condition.</returns>
         public static IEnumerable<Player> Get(Func<Player, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -1458,6 +1424,24 @@ namespace Exiled.API.Features
         /// <param name="player">The player found or <see langword="null"/> if not found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
         public static bool TryGet(Collider collider, out Player player) => (player = Get(collider)) is not null;
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{Player}"/> containing all players processed based on the arguments specified.
+        /// </summary>
+        /// <param name="args">The array segment of strings representing the input arguments to be processed.</param>
+        /// <param name="startIndex">The starting index within the array segment.</param>
+        /// <param name="newargs">Contains the updated arguments after processing.</param>
+        /// <param name="keepEmptyEntries">Determines whether empty entries should be kept in the result.</param>
+        /// <returns>An <see cref="IEnumerable{Player}"/> representing the processed players.</returns>
+        public static IEnumerable<Player> GetProcessedData(ArraySegment<string> args, int startIndex, out string[] newargs, bool keepEmptyEntries = false) => RAUtils.ProcessPlayerIdOrNamesList(args, startIndex, out newargs, keepEmptyEntries).Select(hub => Get(hub));
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{Player}"/> containing all players processed based on the arguments specified.
+        /// </summary>
+        /// <param name="args">The array segment of strings representing the input arguments to be processed.</param>
+        /// <param name="startIndex">The starting index within the array segment.</param>
+        /// <returns>An <see cref="IEnumerable{Player}"/> representing the processed players.</returns>
+        public static IEnumerable<Player> GetProcessedData(ArraySegment<string> args, int startIndex = 0) => GetProcessedData(args, startIndex, out string[] _);
 
         /// <summary>
         /// Adds a player's UserId to the list of reserved slots.
@@ -1868,9 +1852,27 @@ namespace Exiled.API.Features
         /// <summary>
         /// Drops an item from the player's inventory.
         /// </summary>
-        /// <param name="item">The item to be dropped.</param>
+        /// <param name="item">The <see cref="Item"/> to be dropped.</param>
+        /// <param name="isThrown">Is the item Thrown?.</param>
+        public void DropItem(Item item, bool isThrown = false)
+        {
+            if (item is null)
+                return;
+            Inventory.UserCode_CmdDropItem__UInt16__Boolean(item.Serial, isThrown);
+        }
+
+        /// <summary>
+        /// Drops an item from the player's inventory.
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/> to be dropped.</param>
         /// <returns>dropped <see cref="Pickup"/>.</returns>
-        public Pickup DropItem(Item item) => Pickup.Get(Inventory.ServerDropItem(item.Serial));
+        public Pickup DropItem(Item item) => item is not null ? Pickup.Get(Inventory.ServerDropItem(item.Serial)) : null;
+
+        /// <summary>
+        /// Drops the held item. Will not do anything if the player is not holding an item.
+        /// </summary>
+        /// <param name="isThrown">Is the item Thrown?.</param>
+        public void DropHeldItem(bool isThrown = false) => DropItem(CurrentItem, isThrown);
 
         /// <summary>
         /// Drops the held item. Will not do anything if the player is not holding an item.
@@ -2028,17 +2030,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Resets the <see cref="Player"/>'s stamina.
         /// </summary>
-        /// <param name="multipliers">Resets <see cref="StaminaUsageMultiplier"/> and <see cref="StaminaRegenMultiplier"/>.</param>
-        public void ResetStamina(bool multipliers = false)
-        {
-            Stamina = StaminaStat.MaxValue;
-
-            if (!multipliers)
-                return;
-
-            StaminaUsageMultiplier = 1f;
-            StaminaRegenMultiplier = 1f;
-        }
+        public void ResetStamina() => Stamina = StaminaStat.MaxValue;
 
         /// <summary>
         /// Gets a user's SCP preference.
@@ -2688,7 +2680,7 @@ namespace Exiled.API.Features
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
         public void ResetInventory(IEnumerable<ItemType> newItems)
         {
-            ClearInventory();
+            ClearItems();
 
             foreach (ItemType item in newItems)
                 AddItem(item);
@@ -2700,7 +2692,7 @@ namespace Exiled.API.Features
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
         public void ResetInventory(IEnumerable<Item> newItems)
         {
-            ClearInventory();
+            ClearItems();
 
             foreach (Item item in newItems)
                 AddItem(item);
@@ -2728,6 +2720,9 @@ namespace Exiled.API.Features
         /// <seealso cref="DropItems()"/>
         public void ClearItems(bool destroy = true)
         {
+            if (CurrentArmor is not null)
+                CurrentArmor.RemoveExcessOnDrop = true;
+
             while (Items.Count > 0)
                 RemoveItem(Items.ElementAt(0), destroy);
         }
@@ -3087,12 +3082,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets an instance of <see cref="StatusEffectBase"/> by <see cref="EffectType"/>.
         /// </summary>
-        /// <param name="type">The <see cref="EffectType"/>.</param>
+        /// <param name="effectType">The <see cref="EffectType"/>.</param>
         /// <returns>The <see cref="StatusEffectBase"/>.</returns>
-        public StatusEffectBase GetEffect(EffectType type)
+        public StatusEffectBase GetEffect(EffectType effectType)
         {
-            ReferenceHub.playerEffectsController._effectsByType.TryGetValue(type.Type(), out StatusEffectBase playerEffect);
-
+            if (!effectType.TryGetType(out Type type))
+                return null;
+            ReferenceHub.playerEffectsController._effectsByType.TryGetValue(type, out StatusEffectBase playerEffect);
             return playerEffect;
         }
 
@@ -3161,7 +3157,7 @@ namespace Exiled.API.Features
             if (TryGetEffect(type, out StatusEffectBase statusEffect))
             {
                 statusEffect.Intensity = intensity;
-                statusEffect.ServerChangeDuration(duration, true);
+                statusEffect.ServerChangeDuration(duration, false);
             }
         }
 

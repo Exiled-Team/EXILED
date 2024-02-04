@@ -77,6 +77,7 @@ namespace Exiled.CustomItems.API.Features
                 firearm.AddAttachment(Attachments);
 
             firearm.Ammo = ClipSize;
+            firearm.MaxAmmo = ClipSize;
 
             Pickup? pickup = firearm.CreatePickup(position);
 
@@ -102,7 +103,9 @@ namespace Exiled.CustomItems.API.Features
             {
                 if (!Attachments.IsEmpty())
                     firearm.AddAttachment(Attachments);
+
                 byte ammo = firearm.Ammo;
+                firearm.MaxAmmo = ClipSize;
                 Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.");
                 Pickup? pickup = firearm.CreatePickup(position);
                 pickup.Scale = Scale;
@@ -126,7 +129,9 @@ namespace Exiled.CustomItems.API.Features
             {
                 if (!Attachments.IsEmpty())
                     firearm.AddAttachment(Attachments);
+
                 firearm.Ammo = ClipSize;
+                firearm.MaxAmmo = ClipSize;
             }
 
             Log.Debug($"{nameof(Give)}: Adding {item.Serial} to tracker.");
@@ -193,7 +198,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalReloading(ReloadingWeaponEventArgs ev)
         {
-            if (!Check(ev.Firearm))
+            if (!Check(ev.Player.CurrentItem))
                 return;
 
             Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: Reloading weapon. Calling external reload event..");

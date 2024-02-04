@@ -14,21 +14,21 @@ namespace Exiled.Events.EventArgs.Player
     using MapGeneration.Distributors;
 
     /// <summary>
-    ///     Contains all information before a player filps the switch to a generator.
+    /// Contains all information before a player filps the switch to a generator.
     /// </summary>
     public class ActivatingGeneratorEventArgs : IPlayerEvent, IGeneratorEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ActivatingGeneratorEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ActivatingGeneratorEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="generator">
-        ///     <inheritdoc cref="Generator" />
+        /// <inheritdoc cref="Generator" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public ActivatingGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true)
         {
@@ -38,17 +38,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the switch can be flipped.
+        /// Gets or sets a value indicating whether or not the switch can be flipped.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the <see cref="Generator" /> instance.
+        /// Gets the <see cref="Generator" /> instance.
         /// </summary>
         public Generator Generator { get; }
 
         /// <summary>
-        ///     Gets the player who's filpping the switch to the generator.
+        /// Gets the player who's filpping the switch to the generator.
         /// </summary>
         public Player Player { get; }
     }
