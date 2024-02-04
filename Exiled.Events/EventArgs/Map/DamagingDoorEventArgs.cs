@@ -55,7 +55,7 @@ namespace Exiled.Events.EventArgs.Map
         public float Health { get; set; }
 
         /// <summary>
-        ///     Gets a value indicating the door that takes damage
+        ///     Gets a value indicating the door that takes damage.
         /// </summary>
         public Door Door { get; }
     }
