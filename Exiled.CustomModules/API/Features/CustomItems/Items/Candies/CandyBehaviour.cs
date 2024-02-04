@@ -84,7 +84,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
             base.SubscribeEvents();
 
             Exiled.Events.Handlers.Scp330.EatingScp330 += OnEatingScp330Internal;
-            Exiled.Events.Handlers.Scp330.InteractingScp330 += OnInteractingScp330Internal;
         }
 
         /// <inheritdoc/>
@@ -93,7 +92,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
             base.UnsubscribeEvents();
 
             Exiled.Events.Handlers.Scp330.EatingScp330 -= OnEatingScp330Internal;
-            Exiled.Events.Handlers.Scp330.InteractingScp330 -= OnInteractingScp330Internal;
         }
 
         /// <inheritdoc/>
@@ -120,14 +118,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
         {
         }
 
-        /// <summary>
-        /// Fired when player interacts with SCP-330 and gets a custom candy.
-        /// </summary>
-        /// <param name="ev">The <see cref="EatingScp330EventArgs"/> event instance.</param>
-        protected virtual void OnInteracting(InteractingScp330EventArgs ev)
-        {
-        }
-
         /// <inheritdoc cref="OnEatingCandy"/>
         private protected void OnEatingScp330Internal(EatingScp330EventArgs ev)
         {
@@ -138,22 +128,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
             ev.Player.ShowTextDisplay(CandySettings.EatenCustomCandyMessage);
 
             OnEatingCandy(ev);
-        }
-
-        /// <inheritdoc cref="OnInteracting"/>
-        private protected void OnInteractingScp330Internal(InteractingScp330EventArgs ev)
-        {
-            if (ev.Candy != CandySettings.CandyType || Random.value * 100 >= CandySettings.Weight ||
-                !ev.Player.TryGetItems(x => x.Type == ItemType.SCP330, out IEnumerable<Item> items) ||
-                !items.Single().Is(out Scp330 scp330))
-                return;
-
-            TrackedCandies.Add(scp330.SelectedCandyId);
-            StaticActor.Get<ItemTracker>().AddOrTrack(scp330);
-            scp330.AddComponent<CandyBehaviour>();
-            ev.Player.ShowTextDisplay(CandySettings.ReceivedCustomCandyMessage);
-
-            OnInteracting(ev);
         }
     }
 }
