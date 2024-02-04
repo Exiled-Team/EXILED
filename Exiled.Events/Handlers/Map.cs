@@ -121,6 +121,11 @@ namespace Exiled.Events.Handlers
         public static Event<DestroyedDoorEventArgs> DoorDestroyed { get; set; } = new();
 
         /// <summary>
+        /// Invoked before an item is placed in the pocket dimension.
+        /// </summary>
+        public static Event<PlacingPickupIntoPocketDimensionEventArgs> PlacingPickupIntoPocketDimension { get; set; } = new();
+
+        /// <summary>
         /// Called before placing a decal.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingBulletHoleEventArgs"/> instance.</param>
@@ -238,5 +243,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DamagingDoorEventArgs"/> instance.</param>
         public static void OnDoorDamaging(DamagingDoorEventArgs ev) => DoorDamaging.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before an item is dropped in the pocket dimension.
+        /// </summary>
+        /// <param name="ev">The <see cref="PlacingPickupIntoPocketDimensionEventArgs"/> instnace.</param>
+        public static void OnPlacingPickupIntoPocketDimension(PlacingPickupIntoPocketDimensionEventArgs ev) => PlacingPickupIntoPocketDimension.InvokeSafely(ev);
     }
 }
