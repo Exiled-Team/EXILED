@@ -1117,12 +1117,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the <see cref="Player"/> is target of SCP 096.
         /// </summary>
-        public bool IsScp096Target => Player.Get(RoleTypeId.Scp096).Any(player => scp096Role.Targets.Contains(player));
+        public bool IsScp096Target => Player.List.Any(player => scp096Role.Targets.Contains(player));
 
         /// <summary>
         /// Gets a value indicating whether or not the <see cref="Player"/> is observing SCP 173.
         /// </summary>
-        public bool IsScp173Observer => Player.Get(RoleTypeId.Scp173).Any(player => scp173Role.ObservingPlayers.Contains(player));
+        public bool IsScp173Observer => Player.List.Any(player => scp173Role.ObservingPlayers.Contains(player));
 
         /// <summary>
         /// Gets a value indicating whether or not the player has agreed to microphone recording.
