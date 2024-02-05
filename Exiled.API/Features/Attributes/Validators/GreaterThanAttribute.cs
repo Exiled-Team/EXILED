@@ -31,7 +31,7 @@ namespace Exiled.API.Features.Attributes.Validators
         /// <summary>
         /// Gets the number.
         /// </summary>
-        public IComparable Number { get; } = 5;
+        public IComparable Number { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not <see cref="Number"/> is included.
