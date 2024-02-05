@@ -53,6 +53,11 @@ namespace Exiled.Events.Handlers
         public static Event<ReportingCheaterEventArgs> ReportingCheater { get; set; } = new();
 
         /// <summary>
+        /// Invoked before setting up the environment for respawning a wave of Chaos Insurgency or NTF.
+        /// </summary>
+        public static Event<PreRespawningTeamEventArgs> PreRespawningTeam { get; set; } = new();
+
+        /// <summary>
         /// Invoked before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
         public static Event<RespawningTeamEventArgs> RespawningTeam { get; set; } = new();
@@ -186,10 +191,29 @@ namespace Exiled.Events.Handlers
         public static void OnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(ev);
 
         /// <summary>
+        /// Called before selecting the team that will respawn next.
+        /// </summary>
+        /// <param name="ev">The <see cref="SelectingRespawnTeamEventArgs"/> instance.</param>
+        public static void OnSelectingRespawnTeam(SelectingRespawnTeamEventArgs ev) => SelectingRespawnTeam.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before setting up the environment for respawning a wave of Chaos Insurgency or NTF.
+        /// </summary>
+        /// <param name="ev">The <see cref="PreRespawningTeamEventArgs"/> instance.</param>
+        public static void OnPreRespawningTeam(PreRespawningTeamEventArgs ev) => PreRespawningTeam.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
         /// <param name="ev">The <see cref="RespawningTeamEventArgs"/> instance.</param>
         public static void OnRespawningTeam(RespawningTeamEventArgs ev) => RespawningTeam.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a team has spawned.
+        /// </summary>
+        /// <param name="teamType"><inheritdoc cref="RespawnedTeamEventArgs.Team"/></param>
+        /// <param name="hubs"><inheritdoc cref="RespawnedTeamEventArgs.Players"/></param>
+        public static void OnRespawnedTeam(SpawnableTeamType teamType, List<ReferenceHub> hubs) => RespawnedTeam.InvokeSafely(new RespawnedTeamEventArgs(teamType, hubs));
 
         /// <summary>
         /// Called before adding an unit name.
@@ -238,19 +262,6 @@ namespace Exiled.Events.Handlers
         /// Called after the "reload permissions" command is ran.
         /// </summary>
         public static void OnReloadedPermissions() => ReloadedPermissions.InvokeSafely();
-
-        /// <summary>
-        /// Called before selecting the team that will respawn next.
-        /// </summary>
-        /// <param name="ev">The <see cref="SelectingRespawnTeamEventArgs"/> instance.</param>
-        public static void OnSelectingRespawnTeam(SelectingRespawnTeamEventArgs ev) => SelectingRespawnTeam.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called after a team has spawned.
-        /// </summary>
-        /// <param name="teamType"><inheritdoc cref="RespawnedTeamEventArgs.Team"/></param>
-        /// <param name="hubs"><inheritdoc cref="RespawnedTeamEventArgs.Players"/></param>
-        public static void OnRespawnedTeam(SpawnableTeamType teamType, List<ReferenceHub> hubs) => RespawnedTeam.InvokeSafely(new RespawnedTeamEventArgs(teamType, hubs));
 
         /// <summary>
         /// Called before setting up the environment for the assignment of human roles.

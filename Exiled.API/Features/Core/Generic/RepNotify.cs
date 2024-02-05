@@ -38,7 +38,7 @@ namespace Exiled.API.Features.Core.Generic
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before replicating the <see cref="RepNotify{TRep}"/>.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<ReplicatingReferenceEventArgs<TRep>> ReplicatingReferenceDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<ReplicatingReferenceEventArgs<TRep>> ReplicatingReferenceDispatcher { get; set; }
 
         /// <inheritdoc/>
         public virtual bool Replicates { get; set; }

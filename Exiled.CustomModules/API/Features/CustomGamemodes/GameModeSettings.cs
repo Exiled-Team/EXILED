@@ -22,6 +22,26 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     public class GameModeSettings : TypeCastObject<GameModeSettings>, IAdditiveProperty
     {
         /// <summary>
+        /// Gets or sets a value indicating whether the game mode operates in automatic mode.
+        /// </summary>
+        /// <remarks>
+        /// In automatic mode, the behavior of the game mode is managed automatically by the <see cref="World"/>.
+        /// <br/>
+        /// The game mode will start automatically if the specified probability condition is met and the minimum player requirement (<see cref="MinimumPlayers"/>) is satisfied.
+        /// </remarks>
+        public virtual bool Automatic { get; set; }
+
+        /// <summary>
+        /// Gets or sets the probability condition for automatic game mode activation.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the probability condition that determines whether the game mode will start automatically.
+        /// <br/>
+        /// If the specified probability condition is met and the minimum player requirement (<see cref="MinimumPlayers"/>) is satisfied, the game mode will activate automatically.
+        /// </remarks>
+        public virtual float AutomaticProbability { get; set; }
+
+        /// <summary>
         /// Gets or sets the minimum amount of players to start the game mode.
         /// </summary>
         public virtual uint MinimumPlayers { get; set; }
@@ -129,7 +149,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <br/>
         /// It's highly recommended to not use it along with <see cref="NonSpawnableCustomRoles"/>.
         /// </summary>
-        public virtual UUCustomRoleType[] SpawnableCustomRoles { get; set; }
+        public virtual uint[] SpawnableCustomRoles { get; set; }
 
         /// <summary>
         /// Gets or sets a <see cref="SpawnableTeamType"/>[] containing all spawnable teams.
@@ -147,7 +167,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <br/>
         /// It's highly recommended to not use it along with <see cref="NonSpawnableCustomTeams"/>.
         /// </summary>
-        public virtual UUCustomTeamType[] SpawnableCustomTeams { get; set; }
+        public virtual uint[] SpawnableCustomTeams { get; set; }
 
         /// <summary>
         /// Gets or sets a <see cref="RoleTypeId"/>[] containing all non spawnable roles.
@@ -165,7 +185,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <br/>
         /// It's highly recommended to not use it along with <see cref="SpawnableCustomRoles"/>.
         /// </summary>
-        public virtual UUCustomRoleType[] NonSpawnableCustomRoles { get; set; }
+        public virtual uint[] NonSpawnableCustomRoles { get; set; }
 
         /// <summary>
         /// Gets or sets a <see cref="UUCustomTeamType"/>[] containing all non spawnable custom teams.
@@ -183,6 +203,6 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <br/>
         /// It's highly recommended to not use it along with <see cref="SpawnableCustomTeams"/>.
         /// </summary>
-        public virtual UUCustomTeamType[] NonSpawnableCustomTeams { get; set; }
+        public virtual uint[] NonSpawnableCustomTeams { get; set; }
     }
 }

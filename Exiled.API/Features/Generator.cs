@@ -12,11 +12,10 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
-
     using MapGeneration.Distributors;
-
     using UnityEngine;
 
     /// <summary>
@@ -35,6 +34,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/>.</param>
         internal Generator(Scp079Generator scp079Generator)
+            : base()
         {
             Base = scp079Generator;
             Scp079GeneratorToGenerator.Add(scp079Generator, this);
@@ -43,7 +43,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<Generator> List => Scp079GeneratorToGenerator.Values;
+        public static new IReadOnlyCollection<Generator> List => Scp079GeneratorToGenerator.Values;
+
+        /// <summary>
+        /// Gets a randomly selected <see cref="Generator"/>.
+        /// </summary>
+        /// <returns>A randomly selected <see cref="Generator"/> object.</returns>
+        public static Generator Random => List.Random();
 
         /// <summary>
         /// Gets the base <see cref="Scp079Generator"/>.
@@ -54,11 +60,6 @@ namespace Exiled.API.Features
         /// Gets the <see cref="UnityEngine.GameObject"/> of the generator.
         /// </summary>
         public override GameObject GameObject => Base.gameObject;
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.Transform"/> of the generator.
-        /// </summary>
-        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the generator's <see cref="Room"/>.
@@ -204,12 +205,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the generator position.
         /// </summary>
-        public Vector3 Position => Base.transform.position;
+        public override Vector3 Position => Transform.position;
 
         /// <summary>
         /// Gets the generator rotation.
         /// </summary>
-        public Quaternion Rotation => Base.transform.rotation;
+        public override Quaternion Rotation => Transform.rotation;
 
         /// <summary>
         /// Gets or sets the required permissions to interact with the generator.

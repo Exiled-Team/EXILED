@@ -32,6 +32,7 @@ namespace Exiled.API.Features.Hazards
         /// </summary>
         /// <param name="hazard">The <see cref="EnvironmentalHazard"/> instance.</param>
         public Hazard(EnvironmentalHazard hazard)
+            : base()
         {
             Base = hazard;
 
@@ -41,7 +42,7 @@ namespace Exiled.API.Features.Hazards
         /// <summary>
         /// Gets the list of all hazards.
         /// </summary>
-        public static IReadOnlyCollection<Hazard> List => EnvironmentalHazardToHazard.Values;
+        public static new IReadOnlyCollection<Hazard> List => EnvironmentalHazardToHazard.Values;
 
         /// <summary>
         /// Gets the <see cref="EnvironmentalHazard"/>.
@@ -104,7 +105,7 @@ namespace Exiled.API.Features.Hazards
         /// <summary>
         /// Gets or sets the position.
         /// </summary>
-        public Vector3 Position
+        public override Vector3 Position
         {
             get => Base.SourcePosition;
             set => Base.SourcePosition = value;

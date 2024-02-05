@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Server
     /// <summary>
     /// Contains all information before setting up the environment for the assignment of human roles.
     /// </summary>
-    public class PreAssigningHumanRolesEventArgs : IExiledEvent
+    public class PreAssigningHumanRolesEventArgs : IExiledEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PreAssigningHumanRolesEventArgs" /> class.
@@ -38,5 +38,8 @@ namespace Exiled.Events.EventArgs.Server
         /// Gets or sets the human queue length.
         /// </summary>
         public int QueueLength { get; set; }
+
+        /// <inheritdoc/>
+        public bool IsAllowed { get; set; } = true;
     }
 }

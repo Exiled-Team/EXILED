@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.Patches.CustomItems
+namespace Exiled.CustomModules.Patches
 {
     using System.Collections.Generic;
     using System.Reflection;

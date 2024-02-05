@@ -13,6 +13,7 @@ namespace Exiled.API.Features
 
     using DamageHandlers;
     using Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Doors;
     using Exiled.API.Interfaces;
@@ -34,6 +35,7 @@ namespace Exiled.API.Features
         /// <param name="window">The base <see cref="BreakableWindow"/> for this door.</param>
         /// <param name="room">The <see cref="Room"/> for this window.</param>
         internal Window(BreakableWindow window, Room room)
+            : base()
         {
             BreakableWindowToWindow.Add(window, this);
             Base = window;
@@ -48,7 +50,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<Window> List => BreakableWindowToWindow.Values;
+        public static new IReadOnlyCollection<Window> List => BreakableWindowToWindow.Values;
+
+        /// <summary>
+        /// Gets a randomly selected <see cref="Window"/>.
+        /// </summary>
+        /// <returns>A randomly selected <see cref="Window"/> object.</returns>
+        public static Window Random => List.Random();
 
         /// <summary>
         /// Gets the base-game <see cref="BreakableWindow"/> for this window.
@@ -63,7 +71,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the window's <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => Base._transform;
+        public override Transform Transform => Base._transform;
 
         /// <summary>
         /// Gets the <see cref="Features.Room"/> the window is in.
@@ -79,15 +87,6 @@ namespace Exiled.API.Features
         /// Gets the window's <see cref="ZoneType"/>.
         /// </summary>
         public ZoneType Zone => Room.Zone;
-
-        /// <summary>
-        /// Gets or sets the window's position.
-        /// </summary>
-        public Vector3 Position
-        {
-            get => GameObject.transform.position;
-            set => GameObject.transform.position = value;
-        }
 
         /// <summary>
         /// Gets a value indicating whether or not this window is breakable.
@@ -110,15 +109,6 @@ namespace Exiled.API.Features
         {
             get => Base.health;
             set => Base.health = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the window's rotation.
-        /// </summary>
-        public Quaternion Rotation
-        {
-            get => GameObject.transform.rotation;
-            set => GameObject.transform.rotation = value;
         }
 
         /// <summary>
@@ -215,7 +205,7 @@ namespace Exiled.API.Features
         /// <returns>A string containing Window-related data.</returns>
         public override string ToString() => $"{Type} ({Health}) [{IsBroken}] *{DisableScpDamage}*";
 
-        private GlassType GetGlassType() => Room?.Type switch
+        private GlassType GetGlassType() => !Room ? GlassType.Unknown : Room.Type switch
         {
             RoomType.Lcz330 => GlassType.Scp330,
             RoomType.LczGlassBox => GlassType.GR18,

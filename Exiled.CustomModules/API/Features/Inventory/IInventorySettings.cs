@@ -30,5 +30,10 @@ namespace Exiled.CustomModules.API.Features.Inventory
         /// Gets or sets the ammo box settings to be applied.
         /// </summary>
         public abstract Dictionary<AmmoType, ushort> AmmoBox { get; set; }
+
+        /// <summary>
+        /// Gets or sets the custom ammo box settings to be applied.
+        /// </summary>
+        public abstract Dictionary<uint, ushort> CustomAmmoBox { get; set; }
     }
 }

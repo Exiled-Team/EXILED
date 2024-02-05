@@ -89,7 +89,7 @@ namespace Exiled.Events.Patches.Generic
 
             // Return false, no custom friendly fire allowed, default to NW logic for FF. No point in processing if FF is enabled across the board.
             if (Server.FriendlyFire)
-                return HitboxIdentity.CheckFriendlyFire(attackerFootprint.Role, victimHub.roleManager.CurrentRole.RoleTypeId);
+                return HitboxIdentity.IsEnemy(attackerFootprint.Role, victimHub.roleManager.CurrentRole.RoleTypeId);
 
             // always allow damage from Server.Host
             if (attackerFootprint.Hub == Server.Host.ReferenceHub)
@@ -165,14 +165,14 @@ namespace Exiled.Events.Patches.Generic
                 Log.Error($"CheckFriendlyFirePlayerRules failed to handle friendly fire because: {ex}");
             }
 
-            return HitboxIdentity.CheckFriendlyFire(attackerFootprint.Role, victimHub.roleManager.CurrentRole.RoleTypeId);
+            return HitboxIdentity.IsEnemy(attackerFootprint.Role, victimHub.roleManager.CurrentRole.RoleTypeId);
         }
     }
 
     /// <summary>
-    /// Patches <see cref="HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, bool)"/>.
+    /// Patches <see cref="HitboxIdentity.IsDamageable(ReferenceHub, ReferenceHub)"/>.
     /// </summary>
-    [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool))]
+    [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.IsDamageable), typeof(ReferenceHub), typeof(ReferenceHub))]
     internal static class HitboxIdentityCheckFriendlyFire
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

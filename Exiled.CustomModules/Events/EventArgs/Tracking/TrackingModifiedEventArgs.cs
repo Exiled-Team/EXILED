@@ -14,7 +14,7 @@ namespace Exiled.CustomModules.Events.EventArgs.Tracking
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all informations after modifying a tracking.
+    /// Contains all information after modifying a tracking.
     /// </summary>
     public class TrackingModifiedEventArgs : IExiledEvent
     {

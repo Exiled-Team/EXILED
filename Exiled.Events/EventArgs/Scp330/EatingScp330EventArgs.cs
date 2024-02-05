@@ -32,9 +32,9 @@ namespace Exiled.Events.EventArgs.Scp330
         }
 
         /// <summary>
-        /// Gets the <see cref="ICandy" /> that is being eaten by the player.
+        /// Gets or sets the <see cref="ICandy" /> that is being eaten by the player.
         /// </summary>
-        public ICandy Candy { get; }
+        public ICandy Candy { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can eat SCP-330.
