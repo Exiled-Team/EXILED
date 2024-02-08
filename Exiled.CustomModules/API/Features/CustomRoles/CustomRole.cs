@@ -50,13 +50,13 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired before a player changes role.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<ChangingCustomRoleEventArgs> ChangingCustomRoleDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<ChangingCustomRoleEventArgs> ChangingCustomRoleDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after a player changes role.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<ChangedCustomRoleEventArgs> ChangedCustomRoleDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<ChangedCustomRoleEventArgs> ChangedCustomRoleDispatcher { get; set; }
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomRole"/>'s.
