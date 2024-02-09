@@ -27,6 +27,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
         internal BaseCandy(CandySettings settings, Action<Pawn> applyEffectsDelegate)
         {
             this.settings = settings;
+            ApplyEffects = applyEffectsDelegate;
         }
 
         /// <inheritdoc/>
