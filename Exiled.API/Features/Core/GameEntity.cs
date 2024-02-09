@@ -117,6 +117,20 @@ namespace Exiled.API.Features.Core
         /// <returns>The filtered collection of <see cref="GameEntity" /> objects.</returns>
         public static IEnumerable<GameEntity> GetFarthestEntities(Vector3 vector, float distance) => List.Where(p => p.GameObject.transform && (vector - p.GameObject.transform.position).sqrMagnitude >= distance * distance);
 
+        /// <summary>
+        /// Returns the local space position, based on a world space position.
+        /// </summary>
+        /// <param name="position">World position.</param>
+        /// <returns>Local position, based on the room.</returns>
+        public Vector3 LocalPosition(Vector3 position) => Transform.InverseTransformPoint(position);
+
+        /// <summary>
+        /// Returns the World position, based on a local space position.
+        /// </summary>
+        /// <param name="offset">Local position.</param>
+        /// <returns>World position, based on the room.</returns>
+        public Vector3 WorldPosition(Vector3 offset) => Transform.TransformPoint(offset);
+
         /// <inheritdoc/>
         public T AddComponent<T>(string name = "")
             where T : EActor
