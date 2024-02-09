@@ -7,13 +7,17 @@
 
 namespace Exiled.Events.Patches.Events.Scp3114
 {
+#pragma warning disable SA1402 // File may only contain a single type
+
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.EventArgs.Scp3114;
     using HarmonyLib;
+    using Mirror;
     using PlayerRoles.PlayableScps.Scp3114;
 
     using static HarmonyLib.AccessTools;
@@ -67,9 +71,46 @@ namespace Exiled.Events.Patches.Events.Scp3114
 
                     // ev.NewState
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DancingEventArgs), nameof(DancingEventArgs.NewState))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DancingEventArgs), nameof(DancingEventArgs.IsDancing))),
                 });
 
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+    }
+
+    /// <summary>
+    /// Patches <see cref="Scp3114Dance.ServerProcessCmd"/>
+    /// to add <see cref="Handlers.Scp3114.Dancing"/> event.
+    /// </summary>
+    [HarmonyPatch(typeof(Scp3114Dance), nameof(Scp3114Dance.ServerWriteRpc))]
+    internal class ChooseDanceType
+    {
+        /// <summary>
+        /// Gets or sets a value indicating wish dance Scp3114 will make.
+        /// </summary>
+        internal static byte DanceType { get; set; }
+
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            int offset = -4;
+            int index = newInstructions.FindIndex(x => x.operand == (object)Method(typeof(NetworkWriter), nameof(NetworkWriter.WriteByte))) + offset;
+
+            newInstructions.RemoveRange(index, 4);
+
+            // replace "writer.WriteByte((byte)UnityEngine.Random.Range(0, 255))"
+            // with "writer.WriteByte(ChooseDanceType.DanceType)"
+            newInstructions.InsertRange(index, new CodeInstruction[]
+                {
+                    // ChooseDanceType.DanceType;
+                    new(OpCodes.Call, PropertyGetter(typeof(ChooseDanceType), nameof(ChooseDanceType.DanceType))),
+                });
+            for (int z = 0; z < newInstructions.Count; z++)
+                Log.Info($"{newInstructions[z].opcode} {newInstructions[z].operand} {newInstructions[z].labels.Count()}");
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
