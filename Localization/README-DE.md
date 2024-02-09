@@ -12,7 +12,7 @@
 </div>
 
 EXILED ist ein hochrangiges Plugin-Framework für SCP: Secret Laboratory Server. Es bietet ein Event System, in das Entwickler einhaken können, um Spielcodes zu manipulieren oder zu ändern oder ihre eigenen Funktionen zu implementieren.
-Alle EXILED-EVENTS sind mit Harmony kodiert, was bedeutet, dass sie keine direkte Bearbeitung der Serverassemblies benötigen, um zu funktionieren, was zwei einzigartige Vorteile ermöglicht.
+Alle EXILED-EVENTS sind mit Harmony programmiert, was bedeutet, dass sie keine direkte Bearbeitung der Serverassemblies benötigen, um zu funktionieren, was zwei einzigartige Vorteile ermöglicht.
 
  - Erstens kann der gesamte Code des Frameworks frei veröffentlicht und geteilt werden, was es Entwicklern ermöglicht, besser zu verstehen, *wie* es funktioniert und Vorschläge für das Hinzufügen oder Ändern seiner Funktionen zu bieten.
  - Zweitens, da der gesamte Code im Zusammenhang mit dem Framework außerhalb der Serverassembly erfolgt, haben Dinge wie kleine Spielupdates wenig oder gar keinen Einfluss auf das Framework. Dies macht es höchstwahrscheinlich mit zukünftigen Spielupdates kompatibel, sowie einfacher zu aktualisieren, wenn es *notwendig* ist.
