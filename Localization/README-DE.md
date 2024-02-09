@@ -92,7 +92,7 @@ Alle davon werden beim Serverstart automatisch generiert, sie befinden sich in d
 Plugin-Konfigurationen werden ***NICHT*** in der oben genannten ``config_gameplay.txt`` Datei sein, stattdessen werden Plugin-Konfigurationen in der ``~/.config/EXILED/Configs/(ServerPortHier)-config.yml`` Datei gesetzt (``%AppData%\EXILED\(ServerPortHier)-config.yml`` auf Windows).
 Einige Plugins erhalten jedoch ihre Konfigurationseinstellungen aus anderen Standorten auf eigene Faust, dies ist einfach der Standardort von EXILED für sie, daher beziehen Sie sich auf das einzelne Plugin, wenn es Probleme gibt.
 
-# Für Entwickler
+# Für Entwickler/Developmer
 
 Wenn Sie ein Plugin für EXILED erstellen möchten, ist es ziemlich einfach. Wenn Sie mehr ein Tutorial möchten, besuchen Sie bitte unsere [Getting Started Seite.](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
 
@@ -146,7 +146,7 @@ Das bedeutet auch, dass Sie Plugins aktualisieren können, ohne den Server volls
  - Wenn das Plugin dynamische Updates unterstützt, stellen Sie sicher, dass Sie, wenn Sie die neuere Version des Plugins in den "Plugins"-Ordner legen, auch die ältere Version aus dem Ordner entfernen, bevor Sie EXILED neu laden. Das Versäumnis, dies zu gewährleisten, wird in vielen schlechten Dingen resultieren.
  - Alle Probleme, die aus dem dynamischen Aktualisieren eines Plugins entstehen, sind ausschließlich die Verantwortung von Ihnen und dem Entwickler des betreffenden Plugins. Während EXILED dynamische Updates vollständig unterstützt und fördert, könnte der einzige Weg, wie es fehlschlagen oder schiefgehen könnte, sein, wenn der Serverhost oder Plugin-Entwickler etwas falsch gemacht hat. Überprüfen Sie, dass alles korrekt von beiden Parteien gemacht wurde, bevor Sie einen Fehler den EXILED-Entwicklern bezüglich dynamischer Updates melden.
 
- ***Für Entwickler***
+ ***Für Entwickler/Developer***
 
  - Plugins, die dynamische Updates unterstützen möchten, müssen sicherstellen, dass sie sich von allen Ereignissen, in die sie eingehakt sind, abmelden, wenn sie deaktiviert oder neu geladen werden.
  - Plugins, die benutzerdefinierte Harmony-Patches haben, müssen irgendeine Art von wechselnder Variablen innerhalb des Namens der Harmony-Instanz verwenden und müssen ``UnPatchAll()`` auf ihrer Harmony-Instanz ausführen, wenn das Plugin deaktiviert oder neu geladen wird.
