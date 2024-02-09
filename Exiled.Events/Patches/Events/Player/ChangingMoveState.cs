@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="FirstPersonMovementModule.SyncMovementState" /> setter.
-    ///     Adds the <see cref="Player.ChangingMoveState" /> event.
+    /// Patches <see cref="FirstPersonMovementModule.SyncMovementState" /> setter.
+    /// Adds the <see cref="Player.ChangingMoveState" /> event.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.ChangingMoveState))]
     [HarmonyPatch(typeof(FirstPersonMovementModule), nameof(FirstPersonMovementModule.SyncMovementState), MethodType.Setter)]

@@ -11,18 +11,18 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    ///     Contains all information when checking if a player has a reserved slot.
+    /// Contains all information when checking if a player has a reserved slot.
     /// </summary>
     public class ReservedSlotsCheckEventArgs : IExiledEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ReservedSlotsCheckEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ReservedSlotsCheckEventArgs" /> class.
         /// </summary>
         /// <param name="userId">
-        ///     <inheritdoc cref="UserId" />
+        /// <inheritdoc cref="UserId" />
         /// </param>
         /// <param name="hasReservedSlot">
-        ///     <inheritdoc cref="HasReservedSlot" />
+        /// <inheritdoc cref="HasReservedSlot" />
         /// </param>
         public ReservedSlotsCheckEventArgs(string userId, bool hasReservedSlot)
         {
@@ -31,17 +31,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the UserID of the player that is being checked.
+        /// Gets the UserID of the player that is being checked.
         /// </summary>
         public string UserId { get; }
 
         /// <summary>
-        ///     Gets a value indicating whether the player has a reserved slot in the base game system.
+        /// Gets a value indicating whether the player has a reserved slot in the base game system.
         /// </summary>
         public bool HasReservedSlot { get; }
 
         /// <summary>
-        ///     Gets or sets the event result.
+        /// Gets or sets the event result.
         /// </summary>
         public ReservedSlotEventResult Result { get; set; } = ReservedSlotEventResult.UseBaseGameSystem;
     }

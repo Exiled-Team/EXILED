@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp106
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Scp106HuntersAtlasAbility.GetSafePosition" />.
-    ///     Adds the <see cref="Scp106.Teleporting" /> event.
+    /// Patches <see cref="Scp106HuntersAtlasAbility.GetSafePosition" />.
+    /// Adds the <see cref="Scp106.Teleporting" /> event.
     /// </summary>
     [EventPatch(typeof(Scp106), nameof(Scp106.Teleporting))]
     [HarmonyPatch(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.GetSafePosition))]
@@ -82,7 +82,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                     new(OpCodes.Stloc_0),
                 });
 
-            foreach (var instruction in newInstructions)
+            foreach (CodeInstruction instruction in newInstructions)
                 yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);

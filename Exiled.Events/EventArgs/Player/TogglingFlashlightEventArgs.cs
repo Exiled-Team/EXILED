@@ -14,23 +14,23 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.ToggleableLights;
 
     /// <summary>
-    ///     Contains all information before a player toggles a flashlight.
+    /// Contains all information before a player toggles a flashlight.
     /// </summary>
     public class TogglingFlashlightEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent
     {
         private readonly bool initialState;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="TogglingFlashlightEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="TogglingFlashlightEventArgs" /> class.
         /// </summary>
         /// <param name="hub">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="flashlight">
-        ///     <inheritdoc cref="Flashlight" />
+        /// <inheritdoc cref="Flashlight" />
         /// </param>
         /// <param name="newState">
-        ///     <inheritdoc cref="NewState" />
+        /// <inheritdoc cref="NewState" />
         /// </param>
         public TogglingFlashlightEventArgs(ReferenceHub hub, ToggleableLightItemBase flashlight, bool newState)
         {
@@ -41,7 +41,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the <see cref="API.Features.Items.Flashlight" /> being toggled.
+        /// Gets the <see cref="API.Features.Items.Flashlight" /> being toggled.
         /// </summary>
         public Flashlight Flashlight { get; }
 
@@ -49,12 +49,12 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => Flashlight;
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the flashlight should be on.
+        /// Gets or sets a value indicating whether or not the flashlight should be on.
         /// </summary>
         public bool NewState { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can toggle the flashlight.
+        /// Gets or sets a value indicating whether or not the player can toggle the flashlight.
         /// </summary>
         public bool IsAllowed
         {
@@ -63,7 +63,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the player who's toggling the flashlight.
+        /// Gets the player who's toggling the flashlight.
         /// </summary>
         public Player Player { get; }
     }
