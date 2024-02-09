@@ -183,10 +183,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // true (adsIn)
                     new(OpCodes.Ldc_I4_1),
 
-                    // false (adsOut)
-                    new(OpCodes.Ldc_I4_0),
-
-                    // AimingDownSightEventArgs ev = new(Player, firearm, bool, bool)
+                    // AimingDownSightEventArgs ev = new(Player, firearm, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AimingDownSightEventArgs))[0]),
 
                     // Player.OnAimingDownSight(ev)
@@ -210,10 +207,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // false (adsIn)
                     new(OpCodes.Ldc_I4_0),
 
-                    // true (adsOut)
-                    new(OpCodes.Ldc_I4_1),
-
-                    // AimingDownSightEventArgs ev = new(Player, firearm, bool, bool)
+                    // AimingDownSightEventArgs ev = new(Player, firearm, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AimingDownSightEventArgs))[0]),
 
                     // Player.OnAimingDownSight(ev)
