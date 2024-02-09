@@ -143,9 +143,7 @@ Das bedeutet auch, dass Sie Plugins aktualisieren können, ohne den Server volls
 
 ***Für Hosts***
  - Wenn Sie ein Plugin aktualisieren, stellen Sie sicher, dass sein Assembly-Name nicht derselbe ist wie die aktuelle Version, die Sie installiert haben (falls vorhanden). Das Plugin muss vom Entwickler mit dynamischen Updates im Hinterkopf gebaut worden sein, damit dies funktioniert, einfach das Umbenennen der Datei wird nicht funktionieren.
- - Wenn das Plugin dynamische Updates unterstützt, stellen Sie sicher, dass Sie, wenn Sie die neuere Version des Plugins in den "Plugins"-Ordner legen, auch die ältere Version aus dem Ordner entfernen, bevor Sie EX
-
-ILED neu laden. Das Versäumnis, dies zu gewährleisten, wird in vielen schlechten Dingen resultieren.
+ - Wenn das Plugin dynamische Updates unterstützt, stellen Sie sicher, dass Sie, wenn Sie die neuere Version des Plugins in den "Plugins"-Ordner legen, auch die ältere Version aus dem Ordner entfernen, bevor Sie EXILED neu laden. Das Versäumnis, dies zu gewährleisten, wird in vielen schlechten Dingen resultieren.
  - Alle Probleme, die aus dem dynamischen Aktualisieren eines Plugins entstehen, sind ausschließlich die Verantwortung von Ihnen und dem Entwickler des betreffenden Plugins. Während EXILED dynamische Updates vollständig unterstützt und fördert, könnte der einzige Weg, wie es fehlschlagen oder schiefgehen könnte, sein, wenn der Serverhost oder Plugin-Entwickler etwas falsch gemacht hat. Überprüfen Sie, dass alles korrekt von beiden Parteien gemacht wurde, bevor Sie einen Fehler den EXILED-Entwicklern bezüglich dynamischer Updates melden.
 
  ***Für Entwickler***
