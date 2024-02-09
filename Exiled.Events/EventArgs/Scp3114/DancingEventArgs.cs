@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs.Scp3114
 {
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
@@ -27,7 +28,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         {
             Player = player;
             Scp3114 = Player.Role.As<Scp3114Role>();
-            DanceType = (byte)(newState ? 0 : UnityEngine.Random.Range(0, Scp3114.Dance._danceVariants));
+            IsDancing = newState;
             IsAllowed = isAllowed;
         }
 
@@ -37,15 +38,15 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <summary>
         /// Gets a value indicating whether or not SCP-3114 will dancing.
         /// </summary>
-        public bool IsDancing => ChooseDanceType.DanceType is 0;
+        public bool IsDancing { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-3114 will dance.
         /// </summary>
-        public byte DanceType
+        public DanceType DanceType
         {
-            get => ChooseDanceType.DanceType;
-            set => ChooseDanceType.DanceType = value;
+            get => Scp3114.DanceType;
+            set => Scp3114.DanceType = value;
         }
 
         /// <inheritdoc/>

@@ -8,11 +8,11 @@
 namespace Exiled.Events.Patches.Events.Scp3114
 {
 #pragma warning disable SA1402 // File may only contain a single type
-
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Reflection;
     using System.Reflection.Emit;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.EventArgs.Scp3114;
@@ -83,38 +83,52 @@ namespace Exiled.Events.Patches.Events.Scp3114
 
     /// <summary>
     /// Patches <see cref="Scp3114Dance.ServerProcessCmd"/>
-    /// to add <see cref="Handlers.Scp3114.Dancing"/> event.
+    /// to implement <see cref="Exiled.API.Features.Roles.Scp3114Role.DanceType"/> setter.
     /// </summary>
     [HarmonyPatch(typeof(Scp3114Dance), nameof(Scp3114Dance.ServerWriteRpc))]
     internal class ChooseDanceType
     {
-        /// <summary>
-        /// Gets or sets a value indicating wish dance Scp3114 will make.
-        /// </summary>
-        internal static byte DanceType { get; set; }
-
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             int offset = -4;
-            int index = newInstructions.FindIndex(x => x.operand == (object)Method(typeof(NetworkWriter), nameof(NetworkWriter.WriteByte))) + offset;
+            int index = newInstructions.FindIndex(x => x.operand is MethodInfo methodInfo && methodInfo == Method(typeof(NetworkWriter), nameof(NetworkWriter.WriteByte))) + offset;
 
             newInstructions.RemoveRange(index, 4);
 
             // replace "writer.WriteByte((byte)UnityEngine.Random.Range(0, 255))"
-            // with "writer.WriteByte(ChooseDanceType.DanceType)"
+            // with "writer.WriteByte(ChooseDanceType.Handle(Player.Get(this.Owner)))"
             newInstructions.InsertRange(index, new CodeInstruction[]
                 {
-                    // ChooseDanceType.DanceType;
-                    new(OpCodes.Call, PropertyGetter(typeof(ChooseDanceType), nameof(ChooseDanceType.DanceType))),
+                    // Handle(Player.Get(this.Owner));
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, Method(typeof(ChooseDanceType), nameof(Handle))),
                 });
-            for (int z = 0; z < newInstructions.Count; z++)
-                Log.Info($"{newInstructions[z].opcode} {newInstructions[z].operand} {newInstructions[z].labels.Count()}");
+
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+
+        private static byte Handle(Scp3114Dance scp3114Dance)
+        {
+            DanceType danceType = DanceType.Random;
+
+            if (Player.TryGet(scp3114Dance.Owner, out Player player) && player.Role.Is(out API.Features.Roles.Scp3114Role role))
+            {
+                danceType = role.DanceType;
+            }
+
+            if (danceType == DanceType.Random)
+            {
+                byte val = (byte)UnityEngine.Random.Range(0, 255);
+                Log.Info(val);
+                return val;
+            }
+
+            return (byte)((byte)danceType * scp3114Dance._danceVariants);
         }
     }
 }
