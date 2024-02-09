@@ -63,7 +63,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// The player's role was changed by an exiled plugin.
         /// </summary>
-        public static readonly SpawnReason ForceClass = new(RoleChangeReason.RemoteAdmin);
+        public static readonly SpawnReason ForceClass = new((RoleChangeReason)9);
 
         private SpawnReason(RoleChangeReason value)
             : base(value)
