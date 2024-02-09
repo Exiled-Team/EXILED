@@ -1110,6 +1110,24 @@ namespace Exiled.API.Features
         public bool IsInventoryFull => Items.Count >= Inventory.MaxSlots;
 
         /// <summary>
+        /// Gets a value indicating whether the player is a target of SCP-096.
+        /// </summary>
+        /// <remarks>
+        /// This property checks if the player is present in the list of targets maintained by SCP-096.
+        /// </remarks>
+        /// <returns>True if the player is a target of SCP-096; otherwise, false.</returns>
+        public bool IsScp096Target => Player.List.Any(x => x.Role is Roles.Scp096Role scp096Role && scp096Role.Targets.Contains(x));
+
+        /// <summary>
+        /// Gets a value indicating whether the player is an observer of SCP-173.
+        /// </summary>
+        /// <remarks>
+        /// This property checks if the player is present in the list of observers maintained by SCP-173.
+        /// </remarks>
+        /// <returns>True if the player is an observer of SCP-173; otherwise, false.</returns>
+        public bool IsScp173Observer => Player.List.Any(x => x.Role is Roles.Scp173Role scp173Role && scp173Role.ObservingPlayers.Contains(x));
+
+        /// <summary>
         /// Gets a value indicating whether or not the player has agreed to microphone recording.
         /// </summary>
         public bool AgreedToRecording => VoiceChatPrivacySettings.CheckUserFlags(ReferenceHub, VcPrivacyFlags.SettingsSelected | VcPrivacyFlags.AllowRecording | VcPrivacyFlags.AllowMicCapture);
