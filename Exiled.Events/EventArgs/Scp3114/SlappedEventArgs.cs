@@ -11,6 +11,7 @@ namespace Exiled.Events.EventArgs.Scp3114
     using Exiled.API.Features.Roles;
     using Interfaces;
     using Mono.Cecil;
+    using PlayerRoles.PlayableScps.Subroutines;
 
     /// <summary>
     /// Contains all information after SCP-3114 slaps.
@@ -23,10 +24,12 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// /// <param name="player">
         /// <inheritdoc cref="Player" />
         /// </param>
-        public SlappedEventArgs(Player player)
+        public SlappedEventArgs(Player player, AttackResult attackResult, Player target)
         {
             Player = player;
+            Target = target;
             Scp3114 = Player.Role.As<Scp3114Role>();
+            AttackResult = attackResult;
         }
 
         /// <summary>
@@ -36,5 +39,10 @@ namespace Exiled.Events.EventArgs.Scp3114
 
         /// <inheritdoc/>
         public Scp3114Role Scp3114 { get; }
+
+        public AttackResult AttackResult { get; }
+
+        public Player Target { get; }
+
     }
 }

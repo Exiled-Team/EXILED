@@ -8,8 +8,9 @@
 namespace Exiled.Events.Patches.Events.Scp3114
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection.Emit;
-
+    using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp3114;
@@ -18,7 +19,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
     using HarmonyLib;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp3114;
-
+    using PlayerRoles.PlayableScps.Subroutines;
     using static HarmonyLib.AccessTools;
 
     /// <summary>
@@ -33,16 +34,24 @@ namespace Exiled.Events.Patches.Events.Scp3114
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int offset = 8;
             int index = newInstructions.FindIndex(instruction =>
-                instruction.opcode == OpCodes.Ldfld &&
-                instruction.LoadsField(Field(typeof(ReferenceHub), nameof(ReferenceHub.PlayerCameraReference)))) + offset;
+                instruction.opcode == OpCodes.Ret);
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            Label label = generator.DefineLabel();
+
+            newInstructions[index] = new CodeInstruction(OpCodes.Br, label);
+
+            newInstructions.InsertRange(newInstructions.Count - 1, new CodeInstruction[]
             {
                 // Player::Get(Owner)
-                new(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(label).MoveLabelsFrom(newInstructions[newInstructions.Count - 1]),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Scp3114Slap), nameof(Scp3114Slap.Owner))),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldsfld, Field(typeof(ScpAttackAbilityBase<Scp3114Role>), nameof(ScpAttackAbilityBase<Scp3114Role>._syncAttack))),
+
+                new(OpCodes.Ldloc_1),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // SlappedEventArgs ev = new(player);
@@ -51,6 +60,9 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 // Handlers.Scp3114.OnSlapped(ev)
                 new(OpCodes.Call, Method(typeof(Handlers.Scp3114), nameof(Handlers.Scp3114.OnSlapped))),
             });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                Log.Info($"{newInstructions[z].opcode} {newInstructions[z].operand} : {string.Join(", ", newInstructions[z].labels.Select(x => newInstructions.FindIndex(y => y.operand == (object)x)))}");
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
