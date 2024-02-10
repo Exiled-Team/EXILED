@@ -34,7 +34,7 @@ namespace Exiled.Events.Features
     /// An implementation of the <see cref="IExiledEvent"/> interface that encapsulates an event with arguments.
     /// </summary>
     /// <typeparam name="T">The specified <see cref="EventArgs"/> that the event will use.</typeparam>
-    public class Event<T> : Event
+    public class Event<T> : IExiledEvent
     {
         private static readonly Dictionary<Type, Event<T>> TypeToEvent = new();
 
@@ -44,7 +44,6 @@ namespace Exiled.Events.Features
         /// Initializes a new instance of the <see cref="Event{T}"/> class.
         /// </summary>
         public Event()
-            : base()
         {
             TypeToEvent.Add(typeof(T), this);
         }
