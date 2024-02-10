@@ -47,6 +47,9 @@ namespace Exiled.API.Features.Scp914Processors
         /// <returns>The <see cref="StandardProcessor"/> instance.</returns>
         public static Scp914Processor Get(Scp914ItemProcessor scp914ItemProcessor) => ProcessorToWrapper.TryGetValue(scp914ItemProcessor, out Scp914Processor processor) ? processor : scp914ItemProcessor switch
         {
+            AmmoItemProcessor ammoItemProcessor => new AmmoProcessor(ammoItemProcessor),
+            FirearmItemProcessor firearmItemProcessor => new FirearmProcessor(firearmItemProcessor),
+            MicroHidItemProcessor microHidItemProcessor => new MicroHidProcessor(microHidItemProcessor),
             StandardItemProcessor standardItemProcessor => new StandardProcessor(standardItemProcessor),
             _ => new Scp914Processor(scp914ItemProcessor)
         };
@@ -67,5 +70,13 @@ namespace Exiled.API.Features.Scp914Processors
         /// <param name="scp914KnobSetting">Setting to use.</param>
         /// <returns>A new upgraded pickup.</returns>
         public Pickup UpgradePickup(Pickup pickup, Scp914KnobSetting scp914KnobSetting) => Pickup.Get(Base.OnPickupUpgraded(scp914KnobSetting, pickup.Base, Scp914.MovingVector));
+
+        /// <summary>
+        /// Gets a random output item.
+        /// </summary>
+        /// <param name="knobSetting">Selected <see cref="Scp914KnobSetting"/>.</param>
+        /// <param name="previousItem">The item to be updated.</param>
+        /// <returns>A new item.</returns>
+        public virtual ItemType GetRandomOutput(Scp914KnobSetting knobSetting, ItemType previousItem) => previousItem;
     }
 }

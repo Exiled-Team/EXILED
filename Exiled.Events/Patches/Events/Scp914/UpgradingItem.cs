@@ -11,13 +11,11 @@ namespace Exiled.Events.Patches.Events.Scp914
     using System.Reflection.Emit;
 
     using API.Features.Pools;
+    using Exiled.API.Features.Scp914Processors;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp914;
-
     using global::Scp914;
-
     using Handlers;
-
     using HarmonyLib;
 
     using static HarmonyLib.AccessTools;
@@ -52,6 +50,9 @@ namespace Exiled.Events.Patches.Events.Scp914
 
                     // knobSetting
                     new(OpCodes.Ldarg_3),
+
+                    new(OpCodes.Ldloc_0),
+                    new(OpCodes.Call, Method(typeof(Scp914Processor), nameof(Scp914Processor.Get))),
 
                     // UpgradingPickupEventArgs ev = new(pickup, outputPos, knobSetting)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingPickupEventArgs))[0]),
