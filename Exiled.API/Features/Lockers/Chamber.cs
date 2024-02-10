@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Chamber.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Lockers
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
     using MapGeneration.Distributors;
@@ -20,7 +21,7 @@ namespace Exiled.API.Features.Lockers
     /// <summary>
     /// A wrapper for <see cref="LockerChamber"/>.
     /// </summary>
-    public class Chamber : IWrapper<LockerChamber>
+    public class Chamber : GameEntity, IWrapper<LockerChamber>
     {
         /// <summary>
         /// <see cref="Dictionary{TKey,TValue}"/> with <see cref="LockerChamber"/> and <see cref="Chamber"/>.
@@ -43,7 +44,7 @@ namespace Exiled.API.Features.Lockers
         /// <summary>
         /// Gets the list with all chambers.
         /// </summary>
-        public static IReadOnlyCollection<Chamber> List => Chambers.Values;
+        public static new IReadOnlyCollection<Chamber> List => Chambers.Values;
 
         /// <inheritdoc/>
         public LockerChamber Base { get; }
