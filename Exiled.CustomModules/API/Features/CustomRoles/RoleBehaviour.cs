@@ -17,10 +17,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Behaviours;
+    using Exiled.API.Features.Core.Generic;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
-    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomModules.API.Enums;
@@ -28,12 +29,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.CustomModules.API.Features.Inventory;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
-
     using PlayerRoles;
-
     using UnityEngine;
-
-    using static Exiled.API.Extensions.MirrorExtensions;
 
     /// <summary>
     /// Represents the base class for custom role behaviors.
@@ -86,6 +83,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 if (Settings.SpawnProperties is null || Settings.SpawnProperties.IsEmpty)
                     return RoleExtensions.GetRandomSpawnLocation(Role).Position;
 
+                return Settings.SpawnProperties.StaticSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.StaticSpawnPoints, out Vector3 staticPos) ? staticPos :
+                    Settings.SpawnProperties.DynamicSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.DynamicSpawnPoints, out Vector3 dynamicPos) ? dynamicPos :
+                    Settings.SpawnProperties.RoleSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.RoleSpawnPoints, out Vector3 rolePos) ? rolePos : Vector3.zero;
+
                 static bool EvalSpawnPoint(IEnumerable<SpawnPoint> spawnpoints, out Vector3 outPos)
                 {
                     outPos = default;
@@ -101,10 +102,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
                     return false;
                 }
-
-                return Settings.SpawnProperties.StaticSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.StaticSpawnPoints, out Vector3 staticPos) ? staticPos :
-                    Settings.SpawnProperties.DynamicSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.DynamicSpawnPoints, out Vector3 dynamicPos) ? dynamicPos :
-                    Settings.SpawnProperties.RoleSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.RoleSpawnPoints, out Vector3 rolePos) ? rolePos : Vector3.zero;
             }
         }
 
@@ -162,14 +159,14 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         protected virtual List<EscapeSettings> EscapeSettings { get; set; } = new();
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
         /// </summary>
-        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingEventDispatcher { get; private set; }
+        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingEventDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
         /// </summary>
-        protected TDynamicEventDispatcher<Player> EscapedEventDispatcher { get; private set; }
+        protected TDynamicEventDispatcher<Player> EscapedEventDispatcher { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the specified <see cref="DamageType"/> is allowed.
@@ -184,6 +181,42 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="damageType">The <see cref="DamageType"/> to check.</param>
         /// <returns><see langword="true"/> if the specified <see cref="DamageType"/> is ignored; otherwise, <see langword="false"/>.</returns>
         public bool IsDamageIgnored(DamageType damageType) => Settings.IgnoredDamageTypes.Contains(damageType);
+
+        /// <summary>
+        /// Evaluates the specified conditions affecting the round's ending conditions.
+        /// </summary>
+        /// <returns>The corresponding evaluation.</returns>
+        public virtual bool EvaluateEndingConditions()
+        {
+            if (CustomRole.TeamsOwnership.Length == 1)
+                return true;
+
+            SummaryInfo summaryInfo = World.Get().SummaryInfo;
+
+            if (CustomRole.TeamsOwnership.Contains(Team.SCPs) && summaryInfo.FoundationForces <= 0 && summaryInfo.ChaosInsurgency <= 0)
+                return true;
+
+            if (CustomRole.TeamsOwnership.Any(team => team is Team.ClassD or Team.ChaosInsurgency) && summaryInfo.FoundationForces <= 0 && summaryInfo.Anomalies <= 0)
+                return true;
+
+            if (CustomRole.TeamsOwnership.Any(team => team is Team.FoundationForces or Team.Scientists) && summaryInfo.ChaosInsurgency <= 0 && summaryInfo.Anomalies <= 0)
+                return true;
+
+            if (CustomRole.TeamsOwnership.IsEmpty())
+            {
+                int uniqueFaction = 0;
+                if (summaryInfo.FoundationForces > 0)
+                    ++uniqueFaction;
+                if (summaryInfo.ChaosInsurgency > 0)
+                    ++uniqueFaction;
+                if (summaryInfo.Anomalies > 0)
+                    ++uniqueFaction;
+
+                return uniqueFaction <= 1;
+            }
+
+            return false;
+        }
 
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()

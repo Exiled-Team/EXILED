@@ -44,7 +44,6 @@ namespace Exiled.Events.EventArgs.Player
             SearchSession = searchSession;
             SearchCompletor = searchCompletor;
             SearchTime = searchTime;
-            IsAllowed = searchCompletor.ValidateStart();
         }
 
         /// <summary>
@@ -65,7 +64,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets or sets a value indicating whether the Pickup can be searched.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed { get; set; } = true;
 
         /// <summary>
         /// Gets the Pickup that is being searched.

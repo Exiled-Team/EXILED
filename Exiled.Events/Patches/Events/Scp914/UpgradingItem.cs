@@ -10,8 +10,8 @@ namespace Exiled.Events.Patches.Events.Scp914
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
     using Exiled.API.Features.Scp914Processors;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp914;
     using global::Scp914;

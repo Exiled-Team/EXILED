@@ -5,9 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features
+namespace Exiled.CustomModules.API.Features.Attributes
 {
     using System;
+
+    using Exiled.CustomModules.API.Features.CustomGameModes;
 
     /// <summary>
     /// This attribute determines whether the class which is being applied to should be treated as <see cref="CustomGameMode"/>.

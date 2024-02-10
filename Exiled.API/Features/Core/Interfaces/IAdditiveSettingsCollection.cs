@@ -9,6 +9,8 @@ namespace Exiled.API.Features.Core.Interfaces
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Features.Core.Behaviours;
+
     /// <summary>
     /// Defines a collection of additive settings set up through user-defined properties.
     /// </summary>

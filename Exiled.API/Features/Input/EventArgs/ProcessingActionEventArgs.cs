@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Input.EventArgs
     using Exiled.API.Features.Input;
 
     /// <summary>
-    /// Contains all informations before processing an action.
+    /// Contains all information before processing an action.
     /// </summary>
     public class ProcessingActionEventArgs : EventArgs
     {

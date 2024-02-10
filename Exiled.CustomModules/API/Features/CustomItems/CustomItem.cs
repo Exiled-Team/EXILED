@@ -20,10 +20,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Spawn;
+    using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
     using MapGeneration.Distributors;
-
     using UnityEngine;
 
     /// <summary>
@@ -127,6 +128,13 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public IEnumerable<Item> Items => ItemsValue.Where(x => x.Value.Id == Id).Select(x => x.Key);
 
         /// <summary>
+        /// Gets a <see cref="CustomItem"/> based on the provided id or <see cref="UUCustomItemType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomItemType"/> of the custom item.</param>
+        /// <returns>The <see cref="CustomItem"/> with the specified id, or <see langword="null"/> if no item is found.</returns>
+        public static CustomItem Get(object id) => id is uint or UUCustomItemType ? Get((uint)id) : null;
+
+        /// <summary>
         /// Retrieves a <see cref="CustomItem"/> instance based on the specified custom item id.
         /// </summary>
         /// <param name="id">The custom item id to retrieve.</param>
@@ -188,6 +196,14 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 
             return customItem;
         }
+
+        /// <summary>
+        /// Attempts to retrieve a <see cref="CustomItem"/> based on the provided id or <see cref="UUCustomItemType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomItemType"/> of the custom item.</param>
+        /// <param name="customItem">When this method returns, contains the <see cref="CustomItem"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomItem"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(object id, out CustomItem customItem) => customItem = Get(id);
 
         /// <summary>
         /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified custom item id.
@@ -348,10 +364,27 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// must be marked with the <see cref="CustomItemAttribute"/> to be considered for enabling. If
         /// a custom item is enabled successfully, it is added to the returned list.
         /// </remarks>
-        public static List<CustomItem> EnableAll()
+        public static List<CustomItem> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+
+        /// <summary>
+        /// Enables all the custom items present in the assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to enable the items from.</param>
+        /// <returns>
+        /// A <see cref="List{T}"/> of <see cref="CustomItem"/> containing all the enabled custom items.
+        /// </returns>
+        /// <remarks>
+        /// This method dynamically enables all custom items found in the calling assembly. Custom items
+        /// must be marked with the <see cref="CustomItemAttribute"/> to be considered for enabling. If
+        /// a custom item is enabled successfully, it is added to the returned list.
+        /// </remarks>
+        public static List<CustomItem> EnableAll(Assembly assembly)
         {
+            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomItems))
+                throw new Exception("ModuleType::CustomItems must be enabled in order to load any custom items");
+
             List<CustomItem> customItems = new();
-            foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
+            foreach (Type type in assembly.GetTypes())
             {
                 CustomItemAttribute attribute = type.GetCustomAttribute<CustomItemAttribute>();
                 if (!typeof(CustomItem).IsAssignableFrom(type) || attribute is null)

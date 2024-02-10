@@ -15,6 +15,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Items;
@@ -37,58 +38,58 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
     public abstract class ItemBehaviour : EItemBehaviour, IItemBehaviour, IAdditiveSettings<ItemSettings>
     {
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item changes role.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item changes role.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<OwnerChangingRoleEventArgs> OwnerChangingRoleDispatcher { get; private set; }
+        public TDynamicEventDispatcher<OwnerChangingRoleEventArgs> OwnerChangingRoleDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item dies.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item dies.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<OwnerDyingEventArgs> OwnerDyingDispatcher { get; private set; }
+        public TDynamicEventDispatcher<OwnerDyingEventArgs> OwnerDyingDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item escapes.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item escapes.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<OwnerEscapingEventArgs> OwnerEscapingDispatcher { get; private set; }
+        public TDynamicEventDispatcher<OwnerEscapingEventArgs> OwnerEscapingDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item gets handcuffed.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item gets handcuffed.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<OwnerHandcuffingEventArgs> OwnerHandcuffingDispatcher { get; private set; }
+        public TDynamicEventDispatcher<OwnerHandcuffingEventArgs> OwnerHandcuffingDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item drops it.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item drops it.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<DroppingItemEventArgs> DroppingItemDispatcher { get; private set; }
+        public TDynamicEventDispatcher<DroppingItemEventArgs> DroppingItemDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item picks it up.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item picks it up.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<PickingUpItemEventArgs> PickingUpItemDispatcher { get; private set; }
+        public TDynamicEventDispatcher<PickingUpItemEventArgs> PickingUpItemDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item changes it.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item changes it.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<ChangingItemEventArgs> ChangingItemDispatcher { get; private set; }
+        public TDynamicEventDispatcher<ChangingItemEventArgs> ChangingItemDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item upgrades it.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item upgrades it.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<UpgradingEventArgs> UpgradingPickupDispatcher { get; private set; }
+        public TDynamicEventDispatcher<UpgradingEventArgs> UpgradingPickupDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item upgrades it through his inventory.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item upgrades it through his inventory.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<UpgradingItemEventArgs> UpgradingItemDispatcher { get; private set; }
+        public TDynamicEventDispatcher<UpgradingItemEventArgs> UpgradingItemDispatcher { get; set; }
 
         /// <inheritdoc/>
         public override bool DisposeOnNullOwner { get; protected set; } = false;

@@ -8,7 +8,6 @@
 namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
     using System;
-
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -19,11 +18,12 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
+    using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomAbilities.Settings;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
     using HarmonyLib;
-
     using Utils.NonAllocLINQ;
 
     /// <summary>
@@ -90,25 +90,25 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before adding an ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<AddingAbilityEventArgs<T>> AddingAbilityDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<AddingAbilityEventArgs<T>> AddingAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after adding an ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<AddedAbilityEventArgs<T>> AddedAbilityDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<AddedAbilityEventArgs<T>> AddedAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before removing an ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<RemovingAbilityEventArgs<T>> RemovingAbilityDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<RemovingAbilityEventArgs<T>> RemovingAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after removing an ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<RemovedAbilityEventArgs<T>> RemovedAbilityDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<RemovedAbilityEventArgs<T>> RemovedAbilityDispatcher { get; set; }
 
         /// <inheritdoc/>
         public Type BehaviourComponent { get; protected set; }
@@ -142,6 +142,13 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Gets the reflected generic type.
         /// </summary>
         protected Type ReflectedGenericType => reflectedGenericType ??= GetType().GetGenericArguments()[0];
+
+        /// <summary>
+        /// Gets a <see cref="CustomAbility{T}"/> based on the provided id or <see cref="UUCustomAbilityType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomAbilityType"/> of the custom ability.</param>
+        /// <returns>The <see cref="CustomAbility{T}"/> with the specified id, or <see langword="null"/> if no ability is found.</returns>
+        public static CustomAbility<T> Get(object id) => id is uint or UUCustomAbilityType ? Get((uint)id) : null;
 
         /// <summary>
         /// Gets a <see cref="CustomAbility{T}"/> given the specified id.
@@ -465,10 +472,20 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Enables all the custom abilities present in the assembly.
         /// </summary>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> which contains all the enabled custom abilities.</returns>
-        public static IEnumerable<CustomAbility<T>> EnableAll()
+        public static IEnumerable<CustomAbility<T>> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+
+        /// <summary>
+        /// Enables all the custom abilities present in the assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to enable the abilities from.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> which contains all the enabled custom abilities.</returns>
+        public static IEnumerable<CustomAbility<T>> EnableAll(Assembly assembly)
         {
+            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomAbilities))
+                throw new Exception("ModuleType::CustomAbilities must be enabled in order to load any custom abilities");
+
             List<CustomAbility<T>> customAbilities = new();
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (Type type in assembly.GetTypes())
             {
                 CustomAbilityAttribute attribute = type.GetCustomAttribute<CustomAbilityAttribute>();
                 if (!typeof(CustomAbility<T>).IsAssignableFrom(type) || attribute is null)

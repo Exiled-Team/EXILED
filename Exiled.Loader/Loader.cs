@@ -19,10 +19,9 @@ namespace Exiled.Loader
 
     using API.Enums;
     using API.Interfaces;
-
     using CommandSystem.Commands.Shared;
-
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Features;
 
     /// <summary>
@@ -148,10 +147,14 @@ namespace Exiled.Loader
         /// <returns>Returns the created plugin instance or <see langword="null"/>.</returns>
         public static IPlugin<IConfig> CreatePlugin(Assembly assembly)
         {
+            Type defaultPlayerClass = null;
             try
             {
                 foreach (Type type in assembly.GetTypes())
                 {
+                    if (typeof(Player).IsAssignableFrom(type))
+                        defaultPlayerClass = type;
+
                     if (type.IsAbstract || type.IsInterface)
                     {
                         Log.Debug($"\"{type.FullName}\" is an interface or abstract class, skipping.");
@@ -196,6 +199,14 @@ namespace Exiled.Loader
 
                     if (CheckPluginRequiredExiledVersion(plugin))
                         continue;
+
+                    if (defaultPlayerClass is not null)
+                    {
+                        DefaultPlayerClassAttribute dpc = Player.DEFAULT_PLAYER_CLASS.GetCustomAttribute<DefaultPlayerClassAttribute>();
+
+                        if (dpc is not null && !dpc.EnforceAuthority)
+                            Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
+                    }
 
                     return plugin;
                 }

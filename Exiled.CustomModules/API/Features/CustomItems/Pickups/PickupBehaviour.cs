@@ -14,6 +14,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Pickups;
@@ -31,10 +32,10 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
     public abstract class PickupBehaviour : EPickupBehaviour, IPickupBehaviour, IAdditiveSettings<PickupSettings>
     {
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before the pickup is gets picked up.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before the pickup is gets picked up.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<PickingUpItemEventArgs> PickingUpItemDispatcher { get; private set; }
+        public TDynamicEventDispatcher<PickingUpItemEventArgs> PickingUpItemDispatcher { get; set; }
 
         /// <inheritdoc/>
         public override bool DisposeOnNullOwner { get; protected set; } = false;

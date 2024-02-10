@@ -17,7 +17,7 @@ namespace Exiled.API.Features.VirtualAssemblies
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.VirtualAssemblies.EventArgs;
     using Exiled.API.Interfaces;
@@ -33,22 +33,22 @@ namespace Exiled.API.Features.VirtualAssemblies
         private VirtualPluginAttribute project;
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before enabling a <see cref="VirtualPlugin"/>.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before enabling a <see cref="VirtualPlugin"/>.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<EnablingVirtualPluginEventArgs> EnablingVirtualPluginDispatcher { get; private set; }
+        public static TDynamicEventDispatcher<EnablingVirtualPluginEventArgs> EnablingVirtualPluginDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before disabling a <see cref="VirtualPlugin"/>.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before disabling a <see cref="VirtualPlugin"/>.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<DisablingVirtualPluginEventArgs> DisablingVirtualPluginDispatcher { get; private set; }
+        public static TDynamicEventDispatcher<DisablingVirtualPluginEventArgs> DisablingVirtualPluginDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before reloading a <see cref="VirtualPlugin"/>.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before reloading a <see cref="VirtualPlugin"/>.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<ReloadingVirtualPluginEventArgs> ReloadingVirtualPluginDispatcher { get; private set; }
+        public static TDynamicEventDispatcher<ReloadingVirtualPluginEventArgs> ReloadingVirtualPluginDispatcher { get; set; }
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> containing all registered <see cref="VirtualPlugin"/> instances.
