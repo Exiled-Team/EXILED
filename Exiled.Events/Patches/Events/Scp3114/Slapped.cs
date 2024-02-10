@@ -9,13 +9,16 @@ namespace Exiled.Events.Patches.Events.Scp3114
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
     using Exiled.API.Features.Pools;
     using Exiled.Events.Attributes;
+    using Exiled.Events.EventArgs.Scp3114;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
+    using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp3114;
-    using Exiled.Events.EventArgs.Scp3114;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>
@@ -23,14 +26,19 @@ namespace Exiled.Events.Patches.Events.Scp3114
     /// Adds the <see cref="Handlers.Scp3114.Slapped" /> event.
     /// </summary>
     [EventPatch(typeof(Scp3114), nameof(Scp3114.Slapped))]
-    [HarmonyPatch(typeof(Scp3114Slap), nameof(Scp3114Slap.DamagePlayers))]
+    [HarmonyPatch(typeof(PlayerRoles.PlayableScps.Scp3114.Scp3114Slap), nameof(PlayerRoles.PlayableScps.Scp3114.Scp3114Slap.DamagePlayers))]
     internal class Slapped
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            const int offset = 8;
+            int index = newInstructions.FindIndex(instruction =>
+                instruction.opcode == OpCodes.Ldfld &&
+                instruction.LoadsField(Field(typeof(ReferenceHub), nameof(ReferenceHub.PlayerCameraReference)))) + offset;
+
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 // Player::Get(Owner)
                 new(OpCodes.Ldarg_0),
