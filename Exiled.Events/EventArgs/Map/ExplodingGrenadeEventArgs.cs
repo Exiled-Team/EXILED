@@ -10,9 +10,9 @@ namespace Exiled.Events.EventArgs.Map
     using System.Collections.Generic;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
-    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.Patches.Generic;
 
@@ -67,7 +67,7 @@ namespace Exiled.Events.EventArgs.Map
                         break;
                     case true:
                         {
-                            if (Server.FriendlyFire || thrower.Hub == Server.Host.ReferenceHub || HitboxIdentity.CheckFriendlyFire(thrower.Role, hub.roleManager.CurrentRole.RoleTypeId))
+                            if (Server.FriendlyFire || thrower.Hub == Server.Host.ReferenceHub || HitboxIdentity.IsEnemy(thrower.Role, hub.roleManager.CurrentRole.RoleTypeId))
                             {
                                 if (!TargetsToAffect.Contains(player))
                                     TargetsToAffect.Add(player);
