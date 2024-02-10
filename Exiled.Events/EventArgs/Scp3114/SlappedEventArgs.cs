@@ -21,8 +21,14 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <summary>
         /// Initializes a new instance of the <see cref="SlappedEventArgs" /> class.
         /// </summary>
-        /// /// <param name="player">
+        /// <param name="player">
         /// <inheritdoc cref="Player" />
+        /// </param>
+        /// <param name="attackResult">
+        /// <inheritdoc cref="AttackResult" />
+        /// </param>
+        /// <param name="target">
+        /// <inheritdoc cref="Target" />
         /// </param>
         public SlappedEventArgs(Player player, AttackResult attackResult, Player target)
         {
@@ -40,9 +46,14 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <inheritdoc/>
         public Scp3114Role Scp3114 { get; }
 
+        /// <summary>
+        /// Gets the SCP-3114.
+        /// </summary>
         public AttackResult AttackResult { get; }
 
+        /// <summary>
+        /// Gets the SCP-3114.
+        /// </summary>
         public Player Target { get; }
-
     }
 }

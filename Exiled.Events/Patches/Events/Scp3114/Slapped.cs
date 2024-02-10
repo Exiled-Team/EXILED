@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection.Emit;
+
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.Events.Attributes;
@@ -17,9 +18,9 @@ namespace Exiled.Events.Patches.Events.Scp3114
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
-    using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.PlayableScps.Subroutines;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>
@@ -27,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
     /// Adds the <see cref="Handlers.Scp3114.Slapped" /> event.
     /// </summary>
     [EventPatch(typeof(Scp3114), nameof(Scp3114.Slapped))]
-    [HarmonyPatch(typeof(PlayerRoles.PlayableScps.Scp3114.Scp3114Slap), nameof(PlayerRoles.PlayableScps.Scp3114.Scp3114Slap.DamagePlayers))]
+    [HarmonyPatch(typeof(Scp3114Slap), nameof(Scp3114Slap.DamagePlayers))]
     internal class Slapped
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -54,11 +55,11 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 new(OpCodes.Ldloc_1),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // SlappedEventArgs ev = new(player);
+                // SlappedEventArgs ev = new(player, AttackResult, target);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SlappedEventArgs))[0]),
 
                 // Handlers.Scp3114.OnSlapped(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Scp3114), nameof(Handlers.Scp3114.OnSlapped))),
+                new(OpCodes.Call, Method(typeof(Scp3114), nameof(Scp3114.OnSlapped))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
