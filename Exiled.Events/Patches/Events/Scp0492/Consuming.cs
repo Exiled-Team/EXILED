@@ -44,21 +44,18 @@ namespace Exiled.Events.Patches.Events.Scp0492
                 // radgoll
                 new(OpCodes.Ldarg_1),
 
-                // ConsumeError.None
-                new(OpCodes.Ldc_I4_0),
-
                 // true
                 new(OpCodes.Ldc_I4_1),
 
-                // ConsumingCorpseEventArgs ev = new(this.Owner, this.Ragdoll, ConsumeError.None, true)
+                // ConsumingCorpseEventArgs ev = new(this.Owner, this.Ragdoll, true)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ConsumingCorpseEventArgs))[0]),
                 new(OpCodes.Dup),
 
                 // Handlers.Scp0492.OnConsumingCorpse(ev)
                 new(OpCodes.Call, Method(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.OnConsumingCorpse))),
 
-                // return new code
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ConsumingCorpseEventArgs), nameof(ConsumingCorpseEventArgs.ErrorCode))),
+                // return ev.IsAllowed
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ConsumingCorpseEventArgs), nameof(ConsumingCorpseEventArgs.IsAllowed))),
                 new(OpCodes.Ret),
             });
 
