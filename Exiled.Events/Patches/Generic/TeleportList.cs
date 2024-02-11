@@ -7,8 +7,11 @@
 
 namespace Exiled.Events.Patches.Generic
 {
+    using System;
 #pragma warning disable SA1402 // File may only contain a single type
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Reflection.Emit;
 
     using API.Features;
@@ -28,7 +31,7 @@ namespace Exiled.Events.Patches.Generic
         private static void Postfix()
         {
             Map.TeleportsValue.Clear();
-            Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
+            Map.TeleportsValue.AddRange(UnityEngine.Object.FindObjectsOfType<PocketDimensionTeleport>());
         }
     }
 
@@ -44,8 +47,13 @@ namespace Exiled.Events.Patches.Generic
 
             // replace "PocketDimensionTeleport[] array = UnityEngine.Object.FindObjectsOfType<PocketDimensionTeleport>();"
             // with
-            // replace "PocketDimensionTeleport[] array = Exiled.API.Features.Map.TeleportsValue"
-            newInstructions[0] = new(OpCodes.Call, PropertyGetter(typeof(Map), nameof(Map.PocketDimensionTeleports)));
+            // replace "PocketDimensionTeleport[] array = Exiled.API.Features.Map.TeleportsValue.ToArray()"
+            newInstructions.RemoveAt(0);
+            newInstructions.InsertRange(0, new CodeInstruction[]
+            {
+                new(OpCodes.Call, PropertyGetter(typeof(Map), nameof(Map.PocketDimensionTeleports))),
+                new(OpCodes.Call, Method(typeof(Enumerable), nameof(Enumerable.ToArray)).MakeGenericMethod(typeof(PocketDimensionGenerator))),
+            });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
