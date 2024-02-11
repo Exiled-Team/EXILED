@@ -9,10 +9,13 @@ namespace Exiled.Events
 {
     using System;
     using System.Diagnostics;
+    using System.Linq;
+    using System.Reflection;
 
     using API.Enums;
     using API.Features;
     using CentralAuth;
+    using Exiled.API.Interfaces;
     using Exiled.Events.Features;
     using HarmonyLib;
     using InventorySystem.Items.Pickups;
@@ -83,6 +86,19 @@ namespace Exiled.Events
             ServerConsole.ReloadServerName();
 
             EventManager.RegisterEvents<Handlers.Player>(this);
+
+            foreach (Type type in typeof(IEnumClass).Assembly.GetTypes().Where(x => x.GetInterface(nameof(IEnumClass)) == typeof(IEnumClass)))
+            {
+                FieldInfo[] fieldInfos = type.GetFields();
+
+                if (fieldInfos.All(x => !x.IsInitOnly))
+                    continue;
+
+                foreach (FieldInfo field in fieldInfos.Where(x => x.IsStatic))
+                {
+                    field.GetValue(null);
+                }
+            }
         }
 
         /// <inheritdoc/>

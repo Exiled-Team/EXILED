@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Core.Generic
     using System.Reflection;
 
     using Exiled.API.Features.Core.Generic.Pools;
-
+    using Exiled.API.Interfaces;
     using LiteNetLib.Utils;
 
     /// <summary>
@@ -22,7 +22,7 @@ namespace Exiled.API.Features.Core.Generic
     /// </summary>
     /// <typeparam name="TSource">The type of the <see langword="unmanaged"/> source object to handle the instance of.</typeparam>
     /// <typeparam name="TObject">The type of the child object to handle the instance of.</typeparam>
-    public abstract class UniqueUnmanagedEnumClass<TSource, TObject> : IComparable, IEquatable<TObject>, IComparable<TObject>, IComparer<TObject>, IConvertible
+    public abstract class UniqueUnmanagedEnumClass<TSource, TObject> : IComparable, IEquatable<TObject>, IComparable<TObject>, IComparer<TObject>, IConvertible, IEnumClass
         where TSource : unmanaged, IComparable, IFormattable, IConvertible, IComparable<TSource>, IEquatable<TSource>
         where TObject : UniqueUnmanagedEnumClass<TSource, TObject>
     {
