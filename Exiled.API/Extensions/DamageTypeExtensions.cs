@@ -117,11 +117,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The damage type to be checked.</param>
         /// <returns>Returns whether or not the <see cref="DamageType"/> is caused by status effect.</returns>
-        public static bool IsStatusEffect(this DamageType type) => type switch
-        {
-            DamageType.Asphyxiation or DamageType.Poison or DamageType.Bleeding or DamageType.Scp207 or DamageType.Hypothermia or DamageType.Strangled => true,
-            _ => false,
-        };
+        public static bool IsStatusEffect(this DamageType type) => type is DamageType.Asphyxiation or DamageType.Poison or DamageType.Bleeding or DamageType.Scp207 or DamageType.Hypothermia or DamageType.Strangled;
 
         /// <summary>
         /// Gets the <see cref="DamageType"/> of an <see cref="DamageHandlerBase"/>s.

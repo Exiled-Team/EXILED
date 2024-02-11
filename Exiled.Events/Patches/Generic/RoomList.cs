@@ -45,6 +45,7 @@ namespace Exiled.Events.Patches.Generic
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(Room))[0]),
+                    new(OpCodes.Pop),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
