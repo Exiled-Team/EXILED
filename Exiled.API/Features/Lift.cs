@@ -52,7 +52,7 @@ namespace Exiled.API.Features
             Base = elevator;
             ElevatorChamberToLift.Add(elevator, this);
 
-            internalDoorsList.AddRange(Interactables.Interobjects.ElevatorDoor.AllElevatorDoors[Group]);
+            internalDoorsList.AddRange(Elevator.AllElevatorDoors[Group]);
         }
 
         /// <summary>
@@ -311,7 +311,7 @@ namespace Exiled.API.Features
         /// <param name="types">The doors to affect.</param>
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="lockReason">The specified <see cref="DoorLockReason"/>.</param>
-        public static void LockAll(IEnumerable<ElevatorType> types, float duration, DoorLockReason lockReason = DoorLockReason.Isolation) => types.ForEach(t => Lock(t, lockReason));
+        public static void LockAll(IEnumerable<ElevatorType> types, float duration, DoorLockReason lockReason = DoorLockReason.Isolation) => types.ForEach(t => Lock(t, duration, lockReason));
 
         /// <summary>
         /// Unlocks all lifts in the facility.
@@ -390,7 +390,7 @@ namespace Exiled.API.Features
         public void Lock(float duration, DoorLockReason lockReason = DoorLockReason.Isolation)
         {
             Status = ElevatorSequence.DoorClosing;
-            ChangeLock(lockReason);
+            Lock(duration, lockReason);
         }
 
         /// <summary>
