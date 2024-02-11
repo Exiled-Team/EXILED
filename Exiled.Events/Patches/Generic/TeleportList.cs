@@ -45,9 +45,7 @@ namespace Exiled.Events.Patches.Generic
             // replace "PocketDimensionTeleport[] array = UnityEngine.Object.FindObjectsOfType<PocketDimensionTeleport>();"
             // with
             // replace "PocketDimensionTeleport[] array = Exiled.API.Features.Map.TeleportsValue"
-            int offset = 0;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call && instruction.operand == (object)Method(typeof(Object), nameof(Object.FindObjectsOfType))) + offset;
-            newInstructions[index] = new(OpCodes.Call, PropertyGetter(typeof(Map), nameof(Map.PocketDimensionTeleports)));
+            newInstructions[0] = new(OpCodes.Call, PropertyGetter(typeof(Map), nameof(Map.PocketDimensionTeleports)));
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
