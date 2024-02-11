@@ -41,10 +41,10 @@ namespace Exiled.CustomModules.API.Features
         private object nextKnownTeam;
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired when selecting the next known team.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired when selecting the next known team.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<SelectingCustomTeamRespawnEventArgs> SelectingCustomTeamRespawnDispatcher { get; private set; }
+        public TDynamicEventDispatcher<SelectingCustomTeamRespawnEventArgs> SelectingCustomTeamRespawnDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the next known team.
