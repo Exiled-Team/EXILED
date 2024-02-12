@@ -33,11 +33,6 @@ namespace Exiled.Events.Patches.Fixes
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            Label continueLabel = generator.DefineLabel();
-
-            LocalBuilder player = generator.DeclareLocal(typeof(Player));
-            LocalBuilder eventArgs = generator.DeclareLocal(typeof(SpawningEventArgs));
-
             const int toRemove = 7;
 
             const int offset = -1;
