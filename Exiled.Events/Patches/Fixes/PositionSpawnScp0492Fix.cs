@@ -17,14 +17,14 @@ namespace Exiled.Events.Patches.Fixes
     using HarmonyLib;
 
     using PlayerRoles.PlayableScps.Scp049;
-
+    using PlayerRoles.Ragdolls;
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp049ResurrectAbility.ServerComplete"/> delegate.
-    /// Removes useless position setter for Scp0492.
+    /// Fix bug where Scp0492 respawn at wrong place.
     /// </summary>
     [HarmonyPatch(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.ServerComplete))]
     internal static class PositionSpawnScp0492Fix
@@ -33,15 +33,21 @@ namespace Exiled.Events.Patches.Fixes
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int toRemove = 7;
+            const int toRemove = 4;
 
-            const int offset = -1;
+            const int offset = 1;
             int index = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(Component), nameof(Component.transform)))) + offset;
 
-            newInstructions[index + toRemove].MoveLabelsFrom(newInstructions[index]);
-
+            // replace "ownerHub.transform.position = base.CastRole.FpcModule.Position;"
+            // with "ownerHub.transform.position = base.CurRagdoll.Info.StartPosition;"
             newInstructions.RemoveRange(index, toRemove);
-
+            newInstructions.InsertRange(index, new CodeInstruction[]
+            {
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Call, PropertyGetter(typeof(RagdollAbilityBase<Scp049Role>), nameof(RagdollAbilityBase<Scp049Role>.CurRagdoll))),
+                new(OpCodes.Ldflda, Field(typeof(BasicRagdoll), nameof(BasicRagdoll.Info))),
+                new(OpCodes.Ldfld, Field(typeof(RagdollData), nameof(RagdollData.StartPosition))),
+            });
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
