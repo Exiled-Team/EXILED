@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Fixes
 
     /// <summary>
     /// Patches <see cref="Scp049ResurrectAbility.ServerComplete"/> delegate.
-    /// Fix bug where Scp0492 respawn at wrong place.
+    /// Fix bug where Scp0492 respawn at wrong place partially fix nw bug (https://trello.com/c/T1P333XK/5482-scp049-able-to-revive-old-player-corpse?filter=SCP049).
     /// </summary>
     [HarmonyPatch(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.ServerComplete))]
     internal static class PositionSpawnScp0492Fix
