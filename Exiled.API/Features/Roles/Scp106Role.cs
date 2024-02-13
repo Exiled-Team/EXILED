@@ -25,6 +25,16 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public class Scp106Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
     {
+        private readonly ConstProperty<float> vigorStalkCostStationary = new(Scp106StalkAbility.VigorStalkCostStationary, typeof(Scp106StalkAbility));
+        private readonly ConstProperty<float> vigorStalkCostMoving = new(Scp106StalkAbility.VigorStalkCostMoving, typeof(Scp106StalkAbility));
+        private readonly ConstProperty<float> vigorRegeneration = new(Scp106StalkAbility.VigorRegeneration, typeof(Scp106StalkAbility));
+        private readonly ConstProperty<float> attackDamage = new(Scp106Attack.AttackDamage, typeof(Scp106Attack));
+        private readonly ConstProperty<float> corrodingTime = new(Scp106Attack.CorrodingTime, typeof(Scp106Attack));
+        private readonly ConstProperty<float> vigorCaptureReward = new(Scp106Attack.VigorCaptureReward, typeof(Scp106Attack));
+        private readonly ConstProperty<float> cooldownReductionReward = new(Scp106Attack.CooldownReductionReward, typeof(Scp106Attack));
+        private readonly ConstProperty<float> sinkholeCooldownDuration = new(Scp106SinkholeController.CooldownDuration, typeof(Scp106SinkholeController));
+        private readonly ConstProperty<float> huntersAtlasCostPerMeter = new(Scp106HuntersAtlasAbility.CostPerMeter, typeof(Scp106HuntersAtlasAbility));
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp106Role"/> class.
         /// </summary>
@@ -181,53 +191,86 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float SinkholeSpeedMultiplier => SinkholeController.SpeedMultiplier;
 
-#pragma warning disable SA1623 // Property summary documentation should match accessors
-#pragma warning disable SA1202
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when being stationary.
         /// </summary>
-        public ConstProperty<float> VigorStalkCostStationary { get; } = new(Scp106StalkAbility.VigorStalkCostStationary, typeof(Scp106StalkAbility));
+        public float VigorStalkCostStationary
+        {
+            get => vigorStalkCostStationary;
+            set => vigorStalkCostStationary.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when moving.
         /// </summary>
-        public ConstProperty<float> VigorStalkCostMoving { get; } = new(Scp106StalkAbility.VigorStalkCostMoving, typeof(Scp106StalkAbility));
+        public float VigorStalkCostMoving
+        {
+            get => vigorStalkCostMoving;
+            set => vigorStalkCostMoving.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets how mush vigor will be regenerate while moving per seconds.
         /// </summary>
-        public ConstProperty<float> VigorRegeneration { get; } = new(Scp106StalkAbility.VigorRegeneration, typeof(Scp106StalkAbility));
+        public float VigorRegeneration
+        {
+            get => vigorRegeneration;
+            set => vigorRegeneration.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets how mush damage Scp106 will dealt when attacking a player.
         /// </summary>
-        public ConstProperty<float> AttackDamage { get; } = new(Scp106Attack.AttackDamage, typeof(Scp106Attack));
+        public float AttackDamage
+        {
+            get => attackDamage;
+            set => attackDamage.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets the duration of Corroding effect.
         /// </summary>
-        public ConstProperty<float> CorrodingTime { get; } = new(Scp106Attack.CorrodingTime, typeof(Scp106Attack));
+        public float CorrodingTime
+        {
+            get => corrodingTime;
+            set => corrodingTime.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets how mush vigor Scp106 will gain when being reward for having caught a player.
         /// </summary>
-        public ConstProperty<float> VigorCaptureReward { get; } = new(Scp106Attack.VigorCaptureReward, typeof(Scp106Attack));
+        public float VigorCaptureReward
+        {
+            get => vigorCaptureReward;
+            set => vigorCaptureReward.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets how mush reduction cooldown Scp106 will gain when being reward for having caught a player.
         /// </summary>
-        public ConstProperty<float> CooldownReductionReward { get; } = new(Scp106Attack.CooldownReductionReward, typeof(Scp106Attack));
+        public float CooldownReductionReward
+        {
+            get => cooldownReductionReward;
+            set => cooldownReductionReward.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets the cooldown duration of it's Sinkhole ability's.
         /// </summary>
-        public ConstProperty<float> SinkholeCooldownDuration { get; } = new(Scp106SinkholeController.CooldownDuration, typeof(Scp106SinkholeController));
+        public float SinkholeCooldownDuration
+        {
+            get => sinkholeCooldownDuration;
+            set => sinkholeCooldownDuration.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets how mush vigor it's ability Hunter Atlas will cost per meter.
         /// </summary>
-        public ConstProperty<float> HuntersAtlasCostPerMeter { get; } = new(Scp106HuntersAtlasAbility.CostPerMeter, typeof(Scp106HuntersAtlasAbility));
-#pragma warning restore SA1623 // Property summary documentation should match accessors
+        public float HuntersAtlasCostPerMeter
+        {
+            get => huntersAtlasCostPerMeter;
+            set => huntersAtlasCostPerMeter.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets the amount of time in between player captures.

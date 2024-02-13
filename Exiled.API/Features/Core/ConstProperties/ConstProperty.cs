@@ -38,6 +38,23 @@ namespace Exiled.API.Features.Core.ConstProperties
             List.Add(this);
         }
 
+        ~ConstProperty()
+        {
+            List.Remove(this);
+
+            foreach (MethodInfo methodInfo in TypesToPatch.SelectMany(x => x.GetMethods().Where(y => y.DeclaringType != null && y.DeclaringType == x)))
+            {
+                try
+                {
+                    Harmony.Unpatch(methodInfo, HarmonyPatchType.Transpiler);
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the value of game's constant.
         /// </summary>
@@ -97,7 +114,7 @@ namespace Exiled.API.Features.Core.ConstProperties
 
             foreach (CodeInstruction instruction in instructions)
             {
-                if (instruction.operand.GetType() != typeof(T))
+                if (instruction.operand == null || instruction.operand.GetType() != typeof(T))
                 {
                     yield return instruction;
                     continue;
@@ -164,9 +181,16 @@ namespace Exiled.API.Features.Core.ConstProperties
 
         private void Patch()
         {
-            foreach (MethodInfo methodInfo in TypesToPatch.SelectMany(x => x.GetMethods()))
+            foreach (MethodInfo methodInfo in TypesToPatch.SelectMany(x => x.GetMethods().Where(y => y.DeclaringType != null && y.DeclaringType == x)))
             {
-                Harmony.Patch(methodInfo, transpiler: new HarmonyMethod(typeof(ConstProperty<T>), nameof(Transpiler)));
+                try
+                {
+                    Harmony.Patch(methodInfo, transpiler: new HarmonyMethod(typeof(ConstProperty<T>), nameof(Transpiler)));
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception);
+                }
             }
 
             patched = true;

@@ -28,6 +28,13 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public class Scp049Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
     {
+        private readonly ConstProperty<double> callAbilityDuration = new(Scp049CallAbility.EffectDuration, typeof(Scp049CallAbility));
+        private readonly ConstProperty<double> callAbilityBaseCooldown = new(Scp049CallAbility.BaseCooldown, typeof(Scp049CallAbility));
+        private readonly ConstProperty<double> senseAbilityBaseCooldown = new(Scp049SenseAbility.BaseCooldown, typeof(Scp049SenseAbility));
+        private readonly ConstProperty<double> senseAbilityReducedCooldown = new(Scp049SenseAbility.ReducedCooldown, typeof(Scp049SenseAbility));
+        private readonly ConstProperty<double> senseAbilityDuration = new(Scp049SenseAbility.EffectDuration, typeof(Scp049SenseAbility));
+        private readonly ConstProperty<double> senseAbilityFailCooldown = new(Scp049SenseAbility.AttemptFailCooldown, typeof(Scp049SenseAbility));
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp049Role"/> class.
         /// </summary>
@@ -119,38 +126,59 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public IEnumerable<Player> DeadZombies => Scp049ResurrectAbility.DeadZombies.Select(x => Player.Get(x));
 
-#pragma warning disable SA1623 // Property summary documentation should match accessors
-#pragma warning disable SA1202
         /// <summary>
         /// Gets or sets how mush time the Call Ability will be effective.
         /// </summary>
-        public ConstProperty<double> CallAbilityDuration { get; } = new(Scp049CallAbility.EffectDuration, typeof(Scp049CallAbility));
+        public double CallAbilityDuration
+        {
+            get => callAbilityDuration;
+            set => callAbilityDuration.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets the Cooldown of the Call Ability.
         /// </summary>
-        public ConstProperty<double> CallAbilityBaseCooldown { get; } = new(Scp049CallAbility.BaseCooldown, typeof(Scp049CallAbility));
+        public double CallAbilityBaseCooldown
+        {
+            get => callAbilityBaseCooldown;
+            set => callAbilityBaseCooldown.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets the Cooldown of the Sense Ability.
         /// </summary>
-        public ConstProperty<double> SenseAbilityBaseCooldown { get; } = new(Scp049SenseAbility.BaseCooldown, typeof(Scp049SenseAbility));
+        public double SenseAbilityBaseCooldown
+        {
+            get => senseAbilityBaseCooldown;
+            set => senseAbilityBaseCooldown.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets the Cooldown of the Sense Ability when you lost your target.
         /// </summary>
-        public ConstProperty<double> SenseAbilityReducedCooldown { get; } = new(Scp049SenseAbility.ReducedCooldown, typeof(Scp049SenseAbility));
+        public double SenseAbilityReducedCooldown
+        {
+            get => senseAbilityReducedCooldown;
+            set => senseAbilityReducedCooldown.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets the Cooldown of the Sense Ability when it's failed.
         /// </summary>
-        public ConstProperty<double> SenseAbilityDuration { get; } = new(Scp049SenseAbility.EffectDuration, typeof(Scp049SenseAbility));
+        public double SenseAbilityDuration
+        {
+            get => senseAbilityDuration;
+            set => senseAbilityDuration.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets how mush time the Sense Ability will be effective.
         /// </summary>
-        public ConstProperty<double> SenseAbilityFailCooldown { get; } = new(Scp049SenseAbility.AttemptFailCooldown, typeof(Scp049SenseAbility));
-#pragma warning restore SA1623 // Property summary documentation should match accessors
+        public double SenseAbilityFailCooldown
+        {
+            get => senseAbilityFailCooldown;
+            set => senseAbilityFailCooldown.Value = value;
+        }
 
         /// <summary>
         /// Gets all the resurrected players.
