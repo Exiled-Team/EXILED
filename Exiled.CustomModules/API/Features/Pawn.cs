@@ -304,24 +304,39 @@ namespace Exiled.CustomModules.API.Features
             where T : PlayerAbility => CustomAbilities.FirstOrDefault(ability => ability.GetType() == typeof(T)).Is(out customAbility);
 
         /// <summary>
-        /// Add a <see cref="CustomItem"/> of the specified type to the pawn's inventory.
+        /// Add an <see cref="Item"/> or <see cref="CustomItem"/> of the specified type to the pawn's inventory.
         /// </summary>
-        /// <param name="customItem">The item to be added.</param>
+        /// <param name="item">The item to be added.</param>
         /// <returns><see langword="true"/> if the item has been given to the pawn; otherwise, <see langword="false"/>.</returns>
-        public bool AddItem(object customItem)
+        public bool AddItem(object item)
         {
             if (IsInventoryFull)
                 return false;
 
-            try
+            switch (item)
             {
-                uint value = (uint)customItem;
-                CustomItem.TryGive(this, value);
-                return true;
-            }
-            catch
-            {
-                return customItem is CustomItem instance && CustomItem.TryGive(this, instance.Id);
+                case Item baseItem:
+                    AddItem(baseItem);
+                    return true;
+                case ItemType itemType:
+                    AddItem(itemType);
+                    return true;
+                case string name:
+                    CustomItem.TryGive(this, name);
+                    return true;
+                case CustomItem instance when CustomItem.TryGive(this, instance.Id):
+                    return true;
+                default:
+                    try
+                    {
+                        uint value = (uint)item;
+                        CustomItem.TryGive(this, value);
+                        return true;
+                    }
+                    catch
+                    {
+                        throw new ArgumentException("Item is not of a supported type.");
+                    }
             }
         }
 
@@ -354,14 +369,22 @@ namespace Exiled.CustomModules.API.Features
             if (role is uint id)
                 CustomRole.Spawn(this, id, preservePlayerPosition);
 
-            throw new ArgumentException("The type of the role instance is not compatible with RoleTypeId or uint.");
+            try
+            {
+                uint uuId = (uint)role;
+                CustomRole.Spawn(this, uuId, preservePlayerPosition);
+            }
+            catch
+            {
+                throw new ArgumentException("The type of the role instance is not compatible with RoleTypeId or uint.");
+            }
         }
 
         /// <summary>
         /// Safely drops an item.
         /// </summary>
         /// <param name="item">The item to be dropped.</param>
-        public void SafeDropItem(Item item)
+        public new void DropItem(Item item)
         {
             if (TryGetCustomItem(out CustomItem customItem))
             {
@@ -370,7 +393,7 @@ namespace Exiled.CustomModules.API.Features
                 return;
             }
 
-            DropItem(item);
+            base.DropItem(item);
         }
 
         /// <summary>

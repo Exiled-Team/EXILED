@@ -38,22 +38,22 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         private CoroutineHandle onReadyHandle;
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after the <see cref="PlayerState"/> has been deployed.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after the <see cref="PlayerState"/> has been deployed.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<PlayerState> DeployedDispatcher { get; private set; }
+        public static TDynamicEventDispatcher<PlayerState> DeployedDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after the <see cref="PlayerState"/> has been activated.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after the <see cref="PlayerState"/> has been activated.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<PlayerState> ActivatedDispatcher { get; private set; }
+        public static TDynamicEventDispatcher<PlayerState> ActivatedDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after the <see cref="PlayerState"/> has been deactivated.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after the <see cref="PlayerState"/> has been deactivated.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<PlayerState> DeactivatedDispatcher { get; private set; }
+        public static TDynamicEventDispatcher<PlayerState> DeactivatedDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="PlayerState"/> can behave regularly.

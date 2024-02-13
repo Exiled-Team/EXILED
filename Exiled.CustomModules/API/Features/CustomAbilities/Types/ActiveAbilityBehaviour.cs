@@ -32,26 +32,26 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <typeparamref name="TEntity"/> <see cref="GameEntity"/> activates the ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<IAbilityBehaviour> OnActivatingDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnActivatingDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after a
         /// <typeparamref name="TEntity"/> <see cref="GameEntity"/> activates the ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<IAbilityBehaviour> OnActivatedDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnActivatedDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after the ability expires.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<IAbilityBehaviour> OnExpiredDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnExpiredDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after the ability is ready.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<IAbilityBehaviour> OnReadyDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnReadyDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Settings.ActiveAbilitySettings"/>.

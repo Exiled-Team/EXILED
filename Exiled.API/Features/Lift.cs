@@ -47,6 +47,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="elevator">The <see cref="ElevatorChamber"/> to wrap.</param>
         internal Lift(ElevatorChamber elevator)
+            : base()
         {
             Base = elevator;
             ElevatorChamberToLift.Add(elevator, this);
@@ -62,7 +63,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<Lift> List => ElevatorChamberToLift.Values;
+        public static new IReadOnlyCollection<Lift> List => ElevatorChamberToLift.Values;
 
         /// <summary>
         /// Gets a random <see cref="Lift"/>.
@@ -89,11 +90,6 @@ namespace Exiled.API.Features
         /// Gets the <see cref="UnityEngine.GameObject"/> of the lift.
         /// </summary>
         public override GameObject GameObject => Base.gameObject;
-
-        /// <summary>
-        /// Gets the lift's <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets or sets the lift's <see cref="ElevatorChamber"/> status.
@@ -185,19 +181,19 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the lift's position.
         /// </summary>
-        public Vector3 Position
+        public override Vector3 Position
         {
-            get => Base.transform.position;
-            set => Base.transform.position = value;
+            get => Transform.position;
+            set => Transform.position = value;
         }
 
         /// <summary>
         /// Gets or sets the lift's rotation.
         /// </summary>
-        public Quaternion Rotation
+        public override Quaternion Rotation
         {
-            get => Base.transform.rotation;
-            set => Base.transform.rotation = value;
+            get => Transform.rotation;
+            set => Transform.rotation = value;
         }
 
         /// <summary>

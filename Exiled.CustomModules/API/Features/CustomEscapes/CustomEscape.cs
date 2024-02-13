@@ -87,46 +87,11 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public virtual List<EscapeSettings> Settings { get; } = new() { EscapeSettings.Default, };
 
         /// <summary>
-        /// Enables all the custom escapes present in the assembly.
+        /// Gets a <see cref="CustomEscape"/> based on the provided id or <see cref="UUCustomEscapeType"/>.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all enabled custom escapes.</returns>
-        public static List<CustomEscape> EnableAll()
-        {
-            List<CustomEscape> customEscapes = new();
-            foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
-            {
-                CustomEscapeAttribute attribute = type.GetCustomAttribute<CustomEscapeAttribute>();
-                if (!typeof(CustomEscape).IsAssignableFrom(type) || attribute is null)
-                    continue;
-
-                CustomEscape customEscape = Activator.CreateInstance(type) as CustomEscape;
-
-                if (!customEscape.IsEnabled)
-                    continue;
-
-                if (customEscape.TryRegister(attribute))
-                    customEscapes.Add(customEscape);
-            }
-
-            if (customEscapes.Count() != List.Count())
-                Log.Info($"{customEscapes.Count()} custom escapes have been successfully registered!");
-
-            return customEscapes;
-        }
-
-        /// <summary>
-        /// Disables all the custom escapes present in the assembly.
-        /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all disabled custom escapes.</returns>
-        public static List<CustomEscape> DisableAll()
-        {
-            List<CustomEscape> customEscapes = new();
-            customEscapes.AddRange(List.Where(customEscape => customEscape.TryUnregister()));
-
-            Log.Info($"{customEscapes.Count()} custom escapes have been successfully unregistered!");
-
-            return customEscapes;
-        }
+        /// <param name="id">The id or <see cref="UUCustomEscapeType"/> of the custom escape.</param>
+        /// <returns>The <see cref="CustomEscape"/> with the specified id, or <see langword="null"/> if no escape is found.</returns>
+        public static CustomEscape Get(object id) => id is uint or UUCustomEscapeType ? Get((uint)id) : null;
 
         /// <summary>
         /// Gets a <see cref="CustomEscape"/> given the specified <see cref="Id"/>.
@@ -166,6 +131,14 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public static CustomEscape Get(Player player) => PlayersValue.TryGetValue(player, out CustomEscape customEscape) ? customEscape : default;
 
         /// <summary>
+        /// Attempts to retrieve a <see cref="CustomEscape"/> based on the provided id or <see cref="UUCustomEscapeType"/>.
+        /// </summary>
+        /// <param name="id">The id or <see cref="UUCustomEscapeType"/> of the custom escape.</param>
+        /// <param name="customEscape">When this method returns, contains the <see cref="CustomEscape"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGet(object id, out CustomEscape customEscape) => customEscape = Get(id);
+
+        /// <summary>
         /// Tries to get a <see cref="CustomEscape"/> given the specified <see cref="CustomEscape"/>.
         /// </summary>
         /// <param name="id">The id to look for.</param>
@@ -196,6 +169,58 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(Type type, out CustomEscape customEscape) => customEscape = Get(type.GetType());
+
+        /// <summary>
+        /// Enables all the custom escapes present in the assembly.
+        /// </summary>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all enabled custom escapes.</returns>
+        public static List<CustomEscape> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+
+        /// <summary>
+        /// Enables all the custom escapes present in the assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to enable the escapes from.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all enabled custom escapes.</returns>
+        public static List<CustomEscape> EnableAll(Assembly assembly)
+        {
+            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomEscapes))
+                throw new Exception("ModuleType::CustomEscapes must be enabled in order to load any custom escapes");
+
+            List<CustomEscape> customEscapes = new();
+            foreach (Type type in assembly.GetTypes())
+            {
+                CustomEscapeAttribute attribute = type.GetCustomAttribute<CustomEscapeAttribute>();
+                if (!typeof(CustomEscape).IsAssignableFrom(type) || attribute is null)
+                    continue;
+
+                CustomEscape customEscape = Activator.CreateInstance(type) as CustomEscape;
+
+                if (!customEscape.IsEnabled)
+                    continue;
+
+                if (customEscape.TryRegister(attribute))
+                    customEscapes.Add(customEscape);
+            }
+
+            if (customEscapes.Count() != List.Count())
+                Log.Info($"{customEscapes.Count()} custom escapes have been successfully registered!");
+
+            return customEscapes;
+        }
+
+        /// <summary>
+        /// Disables all the custom escapes present in the assembly.
+        /// </summary>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all disabled custom escapes.</returns>
+        public static List<CustomEscape> DisableAll()
+        {
+            List<CustomEscape> customEscapes = new();
+            customEscapes.AddRange(List.Where(customEscape => customEscape.TryUnregister()));
+
+            Log.Info($"{customEscapes.Count()} custom escapes have been successfully unregistered!");
+
+            return customEscapes;
+        }
 
         /// <summary>
         /// Attaches a <see cref="CustomEscape"/> with the specified <paramref name="id"/> to the specified <see cref="Player"/>.
