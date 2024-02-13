@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Scp914Processors
     using global::Scp914.Processors;
 
     /// <summary>
-    /// A processor for <see cref="ItemCategory.Ammo"/>/
+    /// A processor for <see cref="ItemCategory.Ammo"/>.
     /// </summary>
     public class AmmoProcessor : Scp914Processor, IWrapper<AmmoItemProcessor>
     {

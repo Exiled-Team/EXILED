@@ -5,10 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Items;
-using Exiled.API.Features.Scp914Processors;
-using Scp914.Processors;
-
 namespace Exiled.API.Features
 {
     using System.Collections.Generic;
@@ -17,7 +13,9 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Scp914Processors;
     using global::Scp914;
+    using global::Scp914.Processors;
     using UnityEngine;
 
     /// <summary>
