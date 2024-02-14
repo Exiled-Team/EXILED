@@ -26,25 +26,25 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after the ability's level is changed.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<IAbilityBehaviour> OnLevelChangedDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnLevelChangedDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after the ability's level is added.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<IAbilityBehaviour> OnLevelAddedDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnLevelAddedDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after the ability's level is removed.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<IAbilityBehaviour> OnLevelRemovedDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnLevelRemovedDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after the ability's max level has been reached.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<IAbilityBehaviour> OnMaxLevelReachedDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnMaxLevelReachedDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Settings.LevelAbilitySettings"/>.

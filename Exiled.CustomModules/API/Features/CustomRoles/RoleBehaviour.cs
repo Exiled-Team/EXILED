@@ -159,14 +159,14 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         protected virtual List<EscapeSettings> EscapeSettings { get; set; } = new();
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
         /// </summary>
-        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingEventDispatcher { get; private set; }
+        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingEventDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
         /// </summary>
-        protected TDynamicEventDispatcher<Player> EscapedEventDispatcher { get; private set; }
+        protected TDynamicEventDispatcher<Player> EscapedEventDispatcher { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the specified <see cref="DamageType"/> is allowed.
@@ -181,6 +181,42 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="damageType">The <see cref="DamageType"/> to check.</param>
         /// <returns><see langword="true"/> if the specified <see cref="DamageType"/> is ignored; otherwise, <see langword="false"/>.</returns>
         public bool IsDamageIgnored(DamageType damageType) => Settings.IgnoredDamageTypes.Contains(damageType);
+
+        /// <summary>
+        /// Evaluates the specified conditions affecting the round's ending conditions.
+        /// </summary>
+        /// <returns>The corresponding evaluation.</returns>
+        public virtual bool EvaluateEndingConditions()
+        {
+            if (CustomRole.TeamsOwnership.Length == 1)
+                return true;
+
+            SummaryInfo summaryInfo = World.Get().SummaryInfo;
+
+            if (CustomRole.TeamsOwnership.Contains(Team.SCPs) && summaryInfo.FoundationForces <= 0 && summaryInfo.ChaosInsurgency <= 0)
+                return true;
+
+            if (CustomRole.TeamsOwnership.Any(team => team is Team.ClassD or Team.ChaosInsurgency) && summaryInfo.FoundationForces <= 0 && summaryInfo.Anomalies <= 0)
+                return true;
+
+            if (CustomRole.TeamsOwnership.Any(team => team is Team.FoundationForces or Team.Scientists) && summaryInfo.ChaosInsurgency <= 0 && summaryInfo.Anomalies <= 0)
+                return true;
+
+            if (CustomRole.TeamsOwnership.IsEmpty())
+            {
+                int uniqueFaction = 0;
+                if (summaryInfo.FoundationForces > 0)
+                    ++uniqueFaction;
+                if (summaryInfo.ChaosInsurgency > 0)
+                    ++uniqueFaction;
+                if (summaryInfo.Anomalies > 0)
+                    ++uniqueFaction;
+
+                return uniqueFaction <= 1;
+            }
+
+            return false;
+        }
 
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()

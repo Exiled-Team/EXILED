@@ -1,15 +1,15 @@
-# EXILED - EXtended In-runtime Library for External Development
-
-![EXILED CI](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg?branch=master)
-<a href="https://github.com/Exiled-Team/EXILED/releases">
-  <img src="https://img.shields.io/github/release/Exiled-Team/EXILED/all.svg?style=flat" alt="GitHub Releases">
-</a>
-![Github All Downloads](https://img.shields.io/github/downloads/Exiled-Team/EXILED/total.svg?style=flat)
-![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev)
+<h1 align="center">EXILED - EXtended In-runtime Library for External Development</h1>
+<div align="center">
+    
+[<img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" alt="CI"/>](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg?branch=master)
+<a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
+<img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
+![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
 <a href="https://discord.gg/PyUkWTg">
-  <img src="https://img.shields.io/discord/656673194693885975?logo=discord" alt="Chat on Discord">
-</a>
+    <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
+</a>    
 
+</div>
 
 EXILED is a high-level plugin framework for SCP: Secret Laboratory servers. It offers an event system for developers to hook into in order to manipulate or change game code or implement their own functions.
 All EXILED events are coded with Harmony, meaning they require no direct editing of server assemblies to function, which allows for two unique benefits.
@@ -26,6 +26,7 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
 - [Italiano](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-IT.md)
 - [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
 - [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
+- [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
 
 # Installation
 Installation of EXILED is quite simple. It loads itself through Northwood’s Plugin API. That's why there are two folders inside the ``Exiled.tar.gz`` in release files. ``SCP Secret Laboratory`` contains the necessary files to load EXILED features in ``EXILED`` folder. All you need to do is move these two folders into the appropriate path, which are explained below, and you are done! 
