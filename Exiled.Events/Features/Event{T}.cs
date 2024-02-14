@@ -197,7 +197,7 @@ namespace Exiled.Events.Features
             {
                 try
                 {
-                    Timing.RunCoroutine(SafeCoroutineEnumerator(handler(arg)));
+                    Timing.RunCoroutine(SafeCoroutineEnumerator(handler(arg), handler));
                 }
                 catch (Exception ex)
                 {
@@ -209,7 +209,7 @@ namespace Exiled.Events.Features
         /// <summary>
         ///     Runs the coroutine manualy so exceptions can be caught and logged.
         /// </summary>
-        private static IEnumerator<float> SafeCoroutineEnumerator(IEnumerator<float> coroutine)
+        private IEnumerator<float> SafeCoroutineEnumerator(IEnumerator<float> coroutine, CustomAsyncEventHandler<T> handler)
         {
             while (true)
             {
