@@ -197,7 +197,7 @@ namespace Exiled.Events.Features
             {
                 try
                 {
-                    Timing.RunCoroutine(handler(arg));
+                    Timing.RunCoroutine(SafeCoroutineEnumerator(handler(arg)));
                 }
                 catch (Exception ex)
                 {
