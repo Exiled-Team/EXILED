@@ -195,14 +195,7 @@ namespace Exiled.Events.Features
 
             foreach (CustomAsyncEventHandler<T> handler in InnerAsyncEvent.GetInvocationList().Cast<CustomAsyncEventHandler<T>>())
             {
-                try
-                {
-                    Timing.RunCoroutine(SafeCoroutineEnumerator(handler(arg), handler));
-                }
-                catch (Exception ex)
-                {
-                    Log.Error($"Method \"{handler.Method.Name}\" of the class \"{handler.Method.ReflectedType.FullName}\" caused an exception when handling the event \"{GetType().FullName}\"\n{ex}");
-                }
+                Timing.RunCoroutine(SafeCoroutineEnumerator(handler(arg), handler));
             }
         }
 
