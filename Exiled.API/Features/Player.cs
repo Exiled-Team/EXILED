@@ -1107,7 +1107,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player's inventory is full.
         /// </summary>
-        public bool IsInventoryFull => Items.Count >= Inventory.MaxSlots;
+        public bool IsInventoryFull => Items.Count(x => x.Category != ItemCategory.Ammo) >= Inventory.MaxSlots;
 
         /// <summary>
         /// Gets a value indicating whether the player is a target of SCP-096.
