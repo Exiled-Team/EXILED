@@ -80,7 +80,8 @@ namespace Exiled.Events.Patches.Generic
 
             item.ReadPickupInfo(pickup);
 
-            player?.ItemsValue.Add(item);
+            if (item is not Ammo)
+                player?.ItemsValue.Add(item);
         }
     }
 
