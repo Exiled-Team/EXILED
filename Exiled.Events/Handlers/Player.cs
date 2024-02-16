@@ -945,11 +945,11 @@ namespace Exiled.Events.Handlers
         {
             ItemAddedEventArgs ev = new(referenceHub, itemBase, pickupBase);
 
-            ItemAdded.InvokeSafely(ev);
-
             ev.Item.ReadPickupInfo(ev.Pickup);
 
             ev.Player.ItemsValue.Add(ev.Item);
+
+            ItemAdded.InvokeSafely(ev);
         }
 
         /// <summary>
