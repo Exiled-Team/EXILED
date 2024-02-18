@@ -39,6 +39,16 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets the charges for Jailbird in SCP-914 on Course.
+        /// </summary>
+        public static int Scp914CourseCharges => JailbirdDeteriorationTracker.Scp914CoarseCharges;
+
+        /// <summary>
+        /// Gets the damage done to the Jailbird in SCP-914 on Course.
+        /// </summary>
+        public static float Scp914CourseDamage => JailbirdDeteriorationTracker.Scp914CoarseDamage;
+
+        /// <summary>
         /// Gets the <see cref="JailbirdItem"/> that this class is encapsulating.
         /// </summary>
         public new JailbirdItem Base { get; }
