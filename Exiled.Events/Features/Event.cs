@@ -175,7 +175,7 @@ namespace Exiled.Events.Features
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Method \"{handler.Method.Name}\" of the class \"{handler.Method.ReflectedType.FullName}\" caused an exception when handling the event \"{GetType().FullName}\"\n{ex}");
+                    EventExceptionLogger.CaptureException(ex, GetType().FullName, handler.Method);
                 }
             }
         }

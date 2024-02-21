@@ -38,7 +38,7 @@ namespace Exiled.Events.EventArgs.Scp049
             Scp049 = Player.Role.As<Scp049Role>();
             Target = target;
             Ragdoll = Ragdoll.Get(ragdoll);
-            IsAllowed = isAllowed;
+            IsAllowed = isAllowed && Target.Role is SpectatorRole spectatorRole && spectatorRole.IsReadyToRespawn;
         }
 
         /// <inheritdoc/>
