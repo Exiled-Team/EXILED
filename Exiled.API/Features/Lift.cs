@@ -275,8 +275,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Locks the lift.
         /// </summary>
-        /// <param name="lockReason">The <see cref="DoorLockReason"/>.</param>
-        public void Lock(DoorLockReason lockReason = DoorLockReason.Isolation)
+        /// <param name="lockReason">The <see cref="DoorLockType"/>.</param>
+        public void Lock(DoorLockType lockReason = DoorLockType.Isolation)
         {
             Status = ElevatorSequence.DoorClosing;
             ChangeLock(lockReason);
@@ -286,51 +286,27 @@ namespace Exiled.API.Features
         /// Locks the lift.
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="lockReason">The <see cref="DoorLockReason"/>.</param>
-        public void Lock(float duration, DoorLockReason lockReason = DoorLockReason.Isolation)
-        {
-            Status = ElevatorSequence.DoorClosing;
-            ChangeLock(lockReason);
-        }
+        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
+        /// <param name="updateTheDoorState">A value indicating whether the door state should be modified.</param>
+        public void Lock(float duration, DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = true) => Doors.ForEach(x => x.Lock(duration, lockType, updateTheDoorState));
 
         /// <summary>
         /// Unlocks the lift.
         /// </summary>
-        public void Unlock() => ChangeLock(DoorLockReason.None);
+        public void Unlock() => Doors.ForEach(x => x.ChangeLock(DoorLockType.None));
 
         /// <summary>
         /// Unlocks the lift.
         /// </summary>
         /// <param name="delay">The delay after which the lift should be unlocked.</param>
-        public void Unlock(float delay) => Timing.CallDelayed(delay, () => ChangeLock(DoorLockReason.None));
+        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
+        public void Unlock(float delay, DoorLockType lockType = DoorLockType.AdminCommand) => Doors.ForEach(x => x.Unlock(delay, lockType));
 
         /// <summary>
         /// Changes lock of the lift.
         /// </summary>
-        /// <param name="lockReason">The <see cref="DoorLockReason"/>.</param>
-        public void ChangeLock(DoorLockReason lockReason)
-        {
-            bool forceLock = lockReason != DoorLockReason.None;
-
-            foreach (Doors.ElevatorDoor door in Doors)
-            {
-                if (!forceLock)
-                {
-                    door.LockType = 0;
-
-                    door.ChangeLock(DoorLockType.None);
-                }
-                else
-                {
-                    door.ChangeLock((DoorLockType)lockReason);
-
-                    if (CurrentLevel != 1)
-                        TrySetDestination(Group, 1, true);
-                }
-
-                Base.RefreshLocks(Group, door.Base);
-            }
-        }
+        /// <param name="lockReason">The <see cref="DoorLockType"/>.</param>
+        public void ChangeLock(DoorLockType lockReason) => Doors.ForEach(x => x.ChangeLock(lockReason));
 
         /// <summary>
         /// Returns whether or not the provided <see cref="Vector3">position</see> is inside the lift.

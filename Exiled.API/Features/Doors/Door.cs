@@ -457,12 +457,12 @@ namespace Exiled.API.Features.Doors
         /// Permanently locks all active locks on the door, and then reverts back any changes after a specified length of time.
         /// </summary>
         /// <param name="lockType">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
-        /// <param name="shouldBeModified">A value indicating whether the door state should be modified.</param>
-        public void Lock(DoorLockType lockType = DoorLockType.Regular079, bool shouldBeModified = false)
+        /// <param name="updateTheDoorState">A value indicating whether the door state should be modified.</param>
+        public void Lock(DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = true)
         {
             ChangeLock(lockType);
 
-            if (shouldBeModified)
+            if (updateTheDoorState)
             {
                 DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason)LockType);
                 if (mode is DoorLockMode.CanOpen)
@@ -477,10 +477,10 @@ namespace Exiled.API.Features.Doors
         /// </summary>
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
         /// <param name="lockType">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
-        /// <param name="shouldBeClosed">A value indicating whether the door should be closed.</param>
-        public void Lock(float time, DoorLockType lockType = DoorLockType.Regular079, bool shouldBeClosed = false)
+        /// <param name="updateTheDoorState">A value indicating whether the door state should be modified.</param>
+        public void Lock(float time, DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = true)
         {
-            Lock(lockType, shouldBeClosed);
+            Lock(lockType, updateTheDoorState);
             Unlock(time, lockType);
         }
 
@@ -493,7 +493,7 @@ namespace Exiled.API.Features.Doors
         /// Unlocks and clears all active locks on the door after a specified length of time.
         /// </summary>
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
-        /// <param name="flagsToUnlock">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
+        /// <param name="flagsToUnlock">The <see cref="DoorLockType"/> of the lockdown.</param>
         public void Unlock(float time, DoorLockType flagsToUnlock) => DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
 
         /// <summary>
