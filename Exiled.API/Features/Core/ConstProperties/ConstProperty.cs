@@ -9,11 +9,13 @@ namespace Exiled.API.Features.Core.ConstProperties
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
 
     using HarmonyLib;
+    using Mono.Cecil;
 
     /// <summary>
     /// A class to manipulate game's constants.
@@ -46,7 +48,7 @@ namespace Exiled.API.Features.Core.ConstProperties
             {
                 try
                 {
-                    Harmony.Unpatch(methodInfo, HarmonyPatchType.Transpiler);
+                    Harmony.Unpatch(methodInfo, AccessTools.Method(typeof(ConstProperty<T>), nameof(Transpiler)));
                 }
                 catch (Exception exception)
                 {
@@ -70,7 +72,7 @@ namespace Exiled.API.Features.Core.ConstProperties
             {
                 this.value = value;
 
-                if (!patched)
+                if (!patched && !EqualityComparer<T>.Default.Equals(value, ConstantValue))
                 {
                     Patch();
                     patched = true;
@@ -171,7 +173,7 @@ namespace Exiled.API.Features.Core.ConstProperties
                         if (property == null)
                             break;
 
-                        yield return new(OpCodes.Ldstr, property.Value);
+                        yield return new(instruction.opcode, property.Value);
                         continue;
                 }
 
@@ -181,8 +183,14 @@ namespace Exiled.API.Features.Core.ConstProperties
 
         private void Patch()
         {
+            AssemblyDefinition assembly = AssemblyDefinition.ReadAssembly(Path.Combine(Paths.ManagedAssemblies, "Assembly-CSharp.dll"));
+
             foreach (MethodInfo methodInfo in TypesToPatch.SelectMany(x => x.GetMethods().Where(y => y.DeclaringType != null && y.DeclaringType == x)))
             {
+                MethodReference methodReference = assembly.MainModule.ImportReference(methodInfo);
+                if (!methodReference.Resolve().Body.Instructions.Any(x => x.Operand is T t && EqualityComparer<T>.Default.Equals(t, ConstantValue)))
+                    continue;
+
                 try
                 {
                     Harmony.Patch(methodInfo, transpiler: new HarmonyMethod(typeof(ConstProperty<T>), nameof(Transpiler)));
