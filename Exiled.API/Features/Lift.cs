@@ -416,7 +416,7 @@ namespace Exiled.API.Features
             {
                 if (!forceLock)
                 {
-                    door.DoorLockType = 0;
+                    door.LockType = 0;
 
                     door.ChangeLock(DoorLockType.None);
                 }

@@ -17,6 +17,7 @@ namespace Exiled.API.Features.Doors
     using Exiled.API.Interfaces;
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
+    using MapGeneration.Distributors;
     using MEC;
     using Mirror;
     using UnityEngine;
@@ -208,12 +209,12 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not the door is locked.
         /// </summary>
-        public bool IsLocked => DoorLockType > 0;
+        public bool IsLocked => LockType > 0;
 
         /// <summary>
         /// Gets or sets the door lock type.
         /// </summary>
-        public DoorLockType DoorLockType
+        public DoorLockType LockType
         {
             get => (DoorLockType)Base.NetworkActiveLocks;
             set
@@ -436,126 +437,6 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
-        /// Permanently locks a <see cref="Door"/> corresponding to the given type.
-        /// </summary>
-        /// <param name="type">The door to affect.</param>
-        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void Lock(DoorType type, DoorLockType lockType = DoorLockType.Regular079) => Get(type)?.Lock(lockType);
-
-        /// <summary>
-        /// Temporary locks a <see cref="Door"/> corresponding to the given type.
-        /// </summary>
-        /// <param name="type">The door to affect.</param>
-        /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void Lock(DoorType type, float duration, DoorLockType lockType = DoorLockType.Regular079) => Get(type)?.Lock(duration, lockType);
-
-        /// <summary>
-        /// Unlocks a <see cref="Door"/> corresponding to the specified type.
-        /// </summary>
-        /// <param name="type">The <see cref="DoorType"/>.</param>
-        public static void Unlock(DoorType type) => Get(type)?.Unlock();
-
-        /// <summary>
-        /// Locks a <see cref="Door">doors</see> corresponding to the given type.
-        /// </summary>
-        /// <param name="type">The door to affect.</param>
-        /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void LockAll(DoorType type, float duration, DoorLockType lockType = DoorLockType.Regular079) => Get(type)?.Lock(duration, lockType);
-
-        /// <summary>
-        /// Permanently locks all <see cref="Door">doors</see> in the facility.
-        /// </summary>
-        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void LockAll(DoorLockType lockType = DoorLockType.Regular079) => List.ForEach(door => door.Lock(lockType));
-
-        /// <summary>
-        /// Locks all <see cref="Door">doors</see> in the facility.
-        /// </summary>
-        /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void LockAll(float duration, DoorLockType lockType = DoorLockType.Regular079) => List.ForEach(door => door.Lock(duration, lockType, true));
-
-        /// <summary>
-        /// Permanently locks all <see cref="Door">doors</see> given the specified <see cref="ZoneType"/>.
-        /// </summary>
-        /// <param name="type">The <see cref="ZoneType"/> to affect.</param>
-        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void LockAll(ZoneType type, DoorLockType lockType = DoorLockType.Regular079) => Get(type).ForEach(door => door.Lock(lockType, true));
-
-        /// <summary>
-        /// Permanently locks all <see cref="Door">doors</see> given the specified zones.
-        /// </summary>
-        /// <param name="types">The zones to affect.</param>
-        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void LockAll(IEnumerable<ZoneType> types, DoorLockType lockType = DoorLockType.Regular079) => Get(types).ForEach(door => door.Lock(lockType, true));
-
-        /// <summary>
-        /// Temporary locks all <see cref="Door">doors</see> given the specified <see cref="ZoneType"/>.
-        /// </summary>
-        /// <param name="type">The <see cref="ZoneType"/> to affect.</param>
-        /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void LockAll(ZoneType type, float duration, DoorLockType lockType = DoorLockType.Regular079) => Get(type).ForEach(door => door.Lock(lockType, true));
-
-        /// <summary>
-        /// Temporary locks all <see cref="Door">doors</see> given the specified zones.
-        /// </summary>
-        /// <param name="types">The zones to affect.</param>
-        /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void LockAll(IEnumerable<ZoneType> types, float duration, DoorLockType lockType = DoorLockType.Regular079) => types.ForEach(t => LockAll(t, duration, lockType));
-
-        /// <summary>
-        /// Permanently locks all <see cref="Door">doors</see> corresponding to the given types.
-        /// </summary>
-        /// <param name="types">The doors to affect.</param>
-        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void LockAll(IEnumerable<DoorType> types, DoorLockType lockType = DoorLockType.Regular079) => Get(types).ForEach(door => door.Lock(lockType, true));
-
-        /// <summary>
-        /// Temporary locks all <see cref="Door">doors</see> corresponding to the given types.
-        /// </summary>
-        /// <param name="types">The doors to affect.</param>
-        /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void LockAll(IEnumerable<DoorType> types, float duration, DoorLockType lockType = DoorLockType.Regular079) => types.ForEach(t => LockAll(t, duration, lockType));
-
-        /// <summary>
-        /// Unlocks all <see cref="Door">doors</see> in the facility.
-        /// </summary>
-        public static void UnlockAll() => List.ForEach(door => door.Unlock());
-
-        /// <summary>
-        /// Unlocks all <see cref="Door">doors</see> in the facility.
-        /// </summary>
-        /// <param name="type">The zones to affect.</param>
-        public static void UnlockAll(ZoneType type) => UnlockAll(door => door.Zone.HasFlag(type));
-
-        /// <summary>
-        /// Unlocks all <see cref="Door">doors</see> in the facility.
-        /// </summary>
-        /// <param name="types">The zones to affect.</param>
-        public static void UnlockAll(params ZoneType[] types) => UnlockAll(door => types.Contains(door.Zone));
-
-        /// <summary>
-        /// Unlocks all <see cref="Door">doors</see> in the facility.
-        /// </summary>
-        /// <param name="types">The zones to affect.</param>
-        public static void UnlockAll(IEnumerable<ZoneType> types) => UnlockAll(door => types.Contains(door.Zone));
-
-        /// <summary>
-        /// Unlocks all <see cref="Door">doors</see> in the facility.
-        /// </summary>
-        /// <param name="predicate">The condition to satisfy.</param>
-        public static void UnlockAll(Func<Door, bool> predicate)
-        {
-            foreach (Door door in Get(predicate))
-                door.Unlock();
-        }
-
-        /// <summary>
         /// Makes the door play a beep sound.
         /// </summary>
         /// <param name="beep">The beep sound to play.</param>
@@ -576,37 +457,25 @@ namespace Exiled.API.Features.Doors
         /// Change the door lock with the given lock type.
         /// </summary>
         /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
-        public void ChangeLock(DoorLockType lockType)
-        {
-            if (lockType is DoorLockType.None)
-            {
-                Base.NetworkActiveLocks = 0;
-            }
-            else
-            {
-                DoorLockType locks = DoorLockType;
-                if (locks.HasFlag(lockType))
-                    locks &= ~lockType;
-                else
-                    locks |= lockType;
-
-                Base.NetworkActiveLocks = (ushort)locks;
-            }
-
-            DoorEvents.TriggerAction(Base, IsLocked ? DoorAction.Locked : DoorAction.Unlocked, null);
-        }
+        public void ChangeLock(DoorLockType lockType) => Base.ServerChangeLock((DoorLockReason)lockType, !LockType.HasFlag(lockType));
 
         /// <summary>
         /// Permanently locks all active locks on the door, and then reverts back any changes after a specified length of time.
         /// </summary>
         /// <param name="lockType">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
-        /// <param name="shouldBeClosed">A value indicating whether the door should be closed.</param>
-        public void Lock(DoorLockType lockType = DoorLockType.Regular079, bool shouldBeClosed = false)
+        /// <param name="shouldBeModified">A value indicating whether the door state should be modified.</param>
+        public void Lock(DoorLockType lockType = DoorLockType.Regular079, bool shouldBeModified = false)
         {
-            if (shouldBeClosed)
-                IsOpen = false;
-
             ChangeLock(lockType);
+
+            if (shouldBeModified)
+            {
+                DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason)LockType);
+                if (mode is DoorLockMode.CanOpen)
+                    IsOpen = true;
+                else if (mode is DoorLockMode.CanClose)
+                    IsOpen = false;
+            }
         }
 
         /// <summary>
@@ -644,7 +513,7 @@ namespace Exiled.API.Features.Doors
         /// Returns the Door in a human-readable format.
         /// </summary>
         /// <returns>A string containing Door-related data.</returns>
-        public override string ToString() => $"{Type} ({Zone}) [{Room}] *{DoorLockType}* ={RequiredPermissions.RequiredPermissions}=";
+        public override string ToString() => $"{Type} ({Zone}) [{Room}] *{LockType}* ={RequiredPermissions.RequiredPermissions}=";
 
         /// <summary>
         /// Creates the door object associated with a specific <see cref="DoorVariant"/>.
