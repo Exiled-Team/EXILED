@@ -178,7 +178,7 @@ namespace Exiled.Events.Patches.Events.Scp914
 
                     // processor = ev.Processor
                     new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingInventoryItemEventArgs), nameof(UpgradingInventoryItemEventArgs.Processor))),
-                    new(OpCodes.Stloc_S, 9)
+                    new(OpCodes.Stloc_S, 9),
                 });
 
             offset = 3;
