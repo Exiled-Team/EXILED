@@ -426,12 +426,9 @@ namespace Exiled.API.Features.Doors
         /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
         /// <param name="onlyUnbroken">A value indicating whether it filters broken doors.</param>
         /// <returns><see cref="Door"/> object.</returns>
-        public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
-        {
-            return onlyUnbroken || type is not ZoneType.Unspecified ?
+        public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false) => onlyUnbroken || type is not ZoneType.Unspecified ?
                 Get(x => (x.Room is null || x.Room.Zone.HasFlag(type) || type == ZoneType.Unspecified) && (x is Breakable { IsDestroyed: true } || !onlyUnbroken)).Random() :
                 DoorVariantToDoor.Values.Random();
-        }
 
         /// <summary>
         /// Makes the door play a beep sound.
