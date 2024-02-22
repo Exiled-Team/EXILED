@@ -428,12 +428,9 @@ namespace Exiled.API.Features.Doors
         /// <returns><see cref="Door"/> object.</returns>
         public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
         {
-            List<Door> doors = onlyUnbroken || type is not ZoneType.Unspecified ? Get(x =>
-                        (x.Room is null || x.Room.Zone.HasFlag(type) || type == ZoneType.Unspecified) && (x is Breakable { IsDestroyed: true } || !onlyUnbroken)).
-                    ToList() :
-                DoorVariantToDoor.Values.ToList();
-
-            return doors[UnityEngine.Random.Range(0, doors.Count)];
+            return onlyUnbroken || type is not ZoneType.Unspecified ?
+                Get(x => (x.Room is null || x.Room.Zone.HasFlag(type) || type == ZoneType.Unspecified) && (x is Breakable { IsDestroyed: true } || !onlyUnbroken)).Random() :
+                DoorVariantToDoor.Values.Random();
         }
 
         /// <summary>
