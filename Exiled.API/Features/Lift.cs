@@ -25,7 +25,8 @@ namespace Exiled.API.Features
     using static Interactables.Interobjects.ElevatorChamber;
     using static Interactables.Interobjects.ElevatorManager;
 
-    using Elevator = Interactables.Interobjects.ElevatorDoor;
+    using BaseElevatorDoor = Interactables.Interobjects.ElevatorDoor;
+    using ElevatorDoor = Doors.ElevatorDoor;
 
     /// <summary>
     /// The in-game lift.
@@ -40,7 +41,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Internal list that contains all ElevatorDoor for current group.
         /// </summary>
-        private readonly List<Elevator> internalDoorsList = ListPool<Elevator>.Pool.Get();
+        private readonly List<ElevatorDoor> internalDoorsList = ListPool<ElevatorDoor>.Pool.Get();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Lift"/> class.
@@ -52,13 +53,13 @@ namespace Exiled.API.Features
             Base = elevator;
             ElevatorChamberToLift.Add(elevator, this);
 
-            internalDoorsList.AddRange(Interactables.Interobjects.ElevatorDoor.AllElevatorDoors[Group]);
+            internalDoorsList.AddRange(BaseElevatorDoor.AllElevatorDoors[Group].Select(x => Door.Get(x).As<ElevatorDoor>()));
         }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="Lift"/> class.
         /// </summary>
-        ~Lift() => ListPool<Elevator>.Pool.Return(internalDoorsList);
+        ~Lift() => ListPool<ElevatorDoor>.Pool.Return(internalDoorsList);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances.
@@ -74,7 +75,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value of the internal doors list.
         /// </summary>
-        public IReadOnlyCollection<Doors.ElevatorDoor> Doors => internalDoorsList.Select(x => Door.Get(x).As<Doors.ElevatorDoor>()).ToList();
+        public IReadOnlyList<ElevatorDoor> Doors => internalDoorsList;
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
@@ -176,7 +177,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="CurrentDestination"/>.
         /// </summary>
-        public Doors.ElevatorDoor CurrentDestination => Door.Get(Base.CurrentDestination).As<Doors.ElevatorDoor>();
+        public ElevatorDoor CurrentDestination => Door.Get(Base.CurrentDestination).As<ElevatorDoor>();
 
         /// <summary>
         /// Gets or sets the lift's position.
@@ -200,13 +201,6 @@ namespace Exiled.API.Features
         /// Gets the base <see cref="ElevatorChamber"/>.
         /// </summary>
         public ElevatorChamber Base { get; }
-
-        /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances from the specified <see cref="Status"/>.
-        /// </summary>
-        /// <param name="status">The specified <see cref="ElevatorChamber"/>.</param>
-        /// <returns>A <see cref="Lift"/> or <see langword="null"/> if not found.</returns>
-        public static IEnumerable<Lift> Get(ElevatorSequence status) => Get(lift => lift.Status == status);
 
         /// <summary>
         /// Gets the <see cref="Lift"/> belonging to the <see cref="ElevatorChamber"/>, if any.
