@@ -201,9 +201,9 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         {
             base.OnBeginPlay();
 
-            Door.LockAll(Settings.LockedZones);
-            Door.LockAll(Settings.LockedDoors);
-            Lift.LockAll(Settings.LockedElevators);
+            Door.Get(Settings.LockedZones).ForEach(x => x.Lock());
+            Door.Get(Settings.LockedDoors).ForEach(x => x.Lock());
+            Lift.Get(Settings.LockedElevators).ForEach(x => x.Lock());
         }
 
         /// <inheritdoc />
@@ -211,8 +211,8 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         {
             base.OnEndPlay();
 
-            Door.UnlockAll();
-            Lift.UnlockAll();
+            Door.List.ForEach(x => x.Unlock());
+            Lift.List.ForEach(x => x.Unlock());
         }
 
         /// <inheritdoc/>
