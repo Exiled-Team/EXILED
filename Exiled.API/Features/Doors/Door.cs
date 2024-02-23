@@ -497,7 +497,7 @@ namespace Exiled.API.Features.Doors
         /// <param name="type">The <see cref="ZoneType"/> to affect.</param>
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void LockAll(ZoneType type, float duration, DoorLockType lockType = DoorLockType.Regular079) => Get(type).ForEach(door => door.Lock(duration, lockType, true));
+        public static void LockAll(ZoneType type, float duration, DoorLockType lockType = DoorLockType.Regular079) => Get(type).ForEach(door => door.Lock(lockType, true));
 
         /// <summary>
         /// Temporary locks all <see cref="Door">doors</see> given the specified zones.

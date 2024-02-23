@@ -311,7 +311,7 @@ namespace Exiled.API.Features
         /// <param name="types">The doors to affect.</param>
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="lockReason">The specified <see cref="DoorLockReason"/>.</param>
-        public static void LockAll(IEnumerable<ElevatorType> types, float duration, DoorLockReason lockReason = DoorLockReason.Isolation) => types.ForEach(t => Lock(t, duration, lockReason));
+        public static void LockAll(IEnumerable<ElevatorType> types, float duration, DoorLockReason lockReason = DoorLockReason.Isolation) => types.ForEach(t => Lock(t, lockReason));
 
         /// <summary>
         /// Unlocks all lifts in the facility.
@@ -390,7 +390,7 @@ namespace Exiled.API.Features
         public void Lock(float duration, DoorLockReason lockReason = DoorLockReason.Isolation)
         {
             Status = ElevatorSequence.DoorClosing;
-            Unlock(duration, lockReason);
+            ChangeLock(lockReason);
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace Exiled.API.Features
         /// Unlocks the lift.
         /// </summary>
         /// <param name="delay">The delay after which the lift should be unlocked.</param>
-        public void Unlock(float delay, DoorLockReason lockReason) => Timing.CallDelayed(delay, () => ChangeLock(lockReason));
+        public void Unlock(float delay) => Timing.CallDelayed(delay, () => ChangeLock(DoorLockReason.None));
 
         /// <summary>
         /// Changes lock of the lift.
