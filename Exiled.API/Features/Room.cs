@@ -333,20 +333,6 @@ namespace Exiled.API.Features
         public static Room Random(ZoneType zoneType = ZoneType.Unspecified) => (zoneType is not ZoneType.Unspecified ? Get(r => r.Zone.HasFlag(zoneType)) : List).Random();
 
         /// <summary>
-        /// Returns the local space position, based on a world space position.
-        /// </summary>
-        /// <param name="position">World position.</param>
-        /// <returns>Local position, based on the room.</returns>
-        public Vector3 LocalPosition(Vector3 position) => Transform.InverseTransformPoint(position);
-
-        /// <summary>
-        /// Returns the World position, based on a local space position.
-        /// </summary>
-        /// <param name="offset">Local position.</param>
-        /// <returns>World position, based on the room.</returns>
-        public Vector3 WorldPosition(Vector3 offset) => Transform.TransformPoint(offset);
-
-        /// <summary>
         /// Flickers the room's lights off for a duration.
         /// </summary>
         /// <param name="duration">Duration in seconds, or -1 for an indefinite duration.</param>

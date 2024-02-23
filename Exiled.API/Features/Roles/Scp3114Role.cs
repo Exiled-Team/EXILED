@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
@@ -241,5 +242,15 @@ namespace Exiled.API.Features.Roles
         /// <param name="alreadySpawned">The List of Roles already spawned.</param>
         /// <returns>The Spawn Chance.</returns>
         public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base is ISpawnableScp spawnableScp ? spawnableScp.GetSpawnChance(alreadySpawned) : 0;
+
+        /// <summary>
+        /// Stops dancing.
+        /// </summary>
+        public void StopDancing() => Dance.SendRpc(x => x.IsDancing = false);
+
+        /// <summary>
+        /// Starts dancing.
+        /// </summary>
+        public void StartDanging() => Dance.SendRpc(x => x.IsDancing = true);
     }
 }
