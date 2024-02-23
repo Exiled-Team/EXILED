@@ -130,6 +130,15 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the door is close.
+        /// </summary>
+        public bool IsClose
+        {
+            get => !IsOpen;
+            set => IsOpen = !value;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether or not this door is a gate.
         /// </summary>
         public bool IsGate => this is Gate;
