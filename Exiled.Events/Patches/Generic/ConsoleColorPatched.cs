@@ -24,24 +24,26 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.PrintFormattedString))]
     internal class ConsoleColorPatched
     {
-        private static readonly Dictionary<Color, int> AnsiColors = new()
+        private static readonly Regex TagDetector = new(@"<(color|b|i|u|size)=("""".*?""""|'.*?'|[^'"""">]+)>(.*?)<\/\1>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly Dictionary<Color32, int> AnsiColors = new()
         {
-            { new Color(0, 0, 0),                                   37 },  // Black -> Convert to White
-            { new Color(128 / 255.0f, 0, 0),                        31 },  // Red
-            { new Color(0, 128 / 255.0f, 0),                        32 },  // Green
-            { new Color(128 / 255.0f, 128 / 255.0f, 0),             33 },  // Yellow
-            { new Color(0, 0, 128 / 255.0f),                        34 },  // Blue
-            { new Color(128 / 255.0f, 0, 128 / 255.0f),             35 },  // Magenta
-            { new Color(0, 128 / 255.0f, 128 / 255.0f),             36 },  // Cyan
-            { new Color(192 / 255.0f, 192 / 255.0f, 192 / 255.0f),  37 },  // White
-            { new Color(128 / 255.0f, 128 / 255.0f, 128 / 255.0f),  37 },  // Dark Gray -> Convert to White
-            { new Color(1, 0, 0),                                   91 },  // Dark Red
-            { new Color(0, 1, 0),                                   92 },  // Dark Green
-            { new Color(1, 1, 0),                                   93 },  // Dark Yellow
-            { new Color(0, 0, 1),                                   94 },  // Dark Blue
-            { new Color(1, 0, 1),                                   95 },  // Dark Magenta
-            { new Color(0, 1, 1),                                   96 },  // Dark Cyan
-            { new Color(1, 1, 1),                                   97 },  // Dark White
+            { new Color32(0, 0, 0, 255),        37 },  // Black -> Convert to White
+            { new Color32(128, 0, 0, 255),      31 },  // Red
+            { new Color32(0, 128, 0, 255),      32 },  // Green
+            { new Color32(128, 128, 0, 255),    33 },  // Yellow
+            { new Color32(0, 0, 128, 255),      34 },  // Blue
+            { new Color32(128, 0, 128, 255),    35 },  // Magenta
+            { new Color32(0, 128, 128, 255),    36 },  // Cyan
+            { new Color32(192, 192, 192, 255),  37 },  // White
+            { new Color32(128, 128, 128, 255),  37 },  // Dark Gray -> Convert to White
+            { new Color32(255, 0, 0, 255),      91 },  // Dark Red
+            { new Color32(0, 255, 0, 255),      92 },  // Dark Green
+            { new Color32(255, 255, 0, 255),    93 },  // Dark Yellow
+            { new Color32(0, 0, 255, 255),      94 },  // Dark Blue
+            { new Color32(255, 0, 255, 255),    95 },  // Dark Magenta
+            { new Color32(0, 255, 255, 255),    96 },  // Dark Cyan
+            { new Color32(255, 255, 255, 255),  97 },  // Dark White
         };
 
         private static bool Prefix(ServerConsole __instance, string text, ConsoleColor defaultColor)
@@ -49,7 +51,7 @@ namespace Exiled.Events.Patches.Generic
             string result = text;
 
             // Color, Bold, Italic, Size
-            result = Regex.Replace(result, @"<(color|b|i|u|size)=("".*?""|'.*?'|[^'"">]+)>(.*?)<\/\1>", match =>
+            result = TagDetector.Replace(result, match =>
             {
                 string tag = match.Groups[1].Value.ToLower();
                 string value = match.Groups[2].Value;
@@ -60,28 +62,28 @@ namespace Exiled.Events.Patches.Generic
                 {
                     "color" => Misc.TryParseColor(value, out Color32 color32) ? $"\u001b[{ClosestAnsiColor(color32)}m{content}\u001b[22m" : content,
                     "b" => $"\u001b[1m{content}\u001b[22m",
-                    "i" => $"\u001b[2m{content}\u001b[23m",
+                    "i" => $"\u001b[3m{content}\u001b[23m",
                     "u" => $"\u001b[4m{content}\u001b[24m",
                     _ => content,
                 };
-            }, RegexOptions.IgnoreCase);
+            });
 
             ServerStatic.ServerOutput?.AddLog(result, defaultColor);
             return false;
         }
 
-        private static int ClosestAnsiColor(Color color)
+        private static int ClosestAnsiColor(Color32 color)
         {
             // Initialize variables for closest color
             int closestColor = 0; // Default to reset
             double closestDistance = double.MaxValue;
 
             // Calculate distance from given color to each Bukkit API color
-            foreach (KeyValuePair<Color, int> AnsiColor in AnsiColors)
+            foreach (KeyValuePair<Color32, int> AnsiColor in AnsiColors)
             {
-                double distance = Math.Pow(color.r - (AnsiColor.Key.r / 1), 2) +
-                                  Math.Pow(color.g - (AnsiColor.Key.g / 1), 2) +
-                                  Math.Pow(color.b - (AnsiColor.Key.b / 1), 2);
+                double distance = Math.Pow(color.r - AnsiColor.Key.r, 2) +
+                                  Math.Pow(color.g - AnsiColor.Key.g, 2) +
+                                  Math.Pow(color.b - AnsiColor.Key.b, 2);
 
                 // Update closest color if distance is smaller
                 if (distance < closestDistance)
