@@ -23,12 +23,12 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.PrintFormattedString))]
     internal class ConsoleColorPatched
     {
-        private static readonly AnsiUsage Testing = AnsiUsage.FullColor | AnsiUsage.StartWithAnsi;
+        private static readonly AnsiUsage Testing = AnsiUsage.All;
         private static readonly Regex TagDetector = new(@"<([a-z]+)(?:=([""'][^""']*[""']|[^'"">]+))?>(.*?)<\/\1>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Dictionary<Color32, int> AnsiColors = new()
         {
-            { new Color32(0, 0, 0, 255),        37 },  // Black -> Convert to White
+            { new Color32(0, 0, 0, 255),        37 },  // Black (30) -> Convert to White
             { new Color32(128, 0, 0, 255),      31 },  // Red
             { new Color32(0, 128, 0, 255),      32 },  // Green
             { new Color32(128, 128, 0, 255),    33 },  // Yellow
@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Generic
             { new Color32(128, 0, 128, 255),    35 },  // Magenta
             { new Color32(0, 128, 128, 255),    36 },  // Cyan
             { new Color32(192, 192, 192, 255),  37 },  // White
-            { new Color32(128, 128, 128, 255),  37 },  // Dark Gray -> Convert to White
+            { new Color32(128, 128, 128, 255),  37 },  // Dark Gray (38) -> Convert to White
             { new Color32(255, 0, 0, 255),      91 },  // Dark Red
             { new Color32(0, 255, 0, 255),      92 },  // Dark Green
             { new Color32(255, 255, 0, 255),    93 },  // Dark Yellow
@@ -73,6 +73,7 @@ namespace Exiled.Events.Patches.Generic
                     return content = tag switch
                     {
                         "color" => Misc.TryParseColor(value, out Color32 color32) ? $"\u001b[{ClosestAnsiColor(color32)}m{content}\u001b[{defaultAnsiColor}m" : content,
+                        "mark" => Misc.TryParseColor(value, out Color32 color32) ? $"\u001b[{ClosestAnsiColor(color32, true)}m{content}\u001b[49m" : content,
                         "b" => $"\u001b[1m{content}\u001b[22m",
                         "i" => $"\u001b[3m{content}\u001b[23m",
                         "u" => $"\u001b[4m{content}\u001b[24m",
@@ -85,13 +86,13 @@ namespace Exiled.Events.Patches.Generic
             return false;
         }
 
-        private static string ClosestAnsiColor(Color32 color)
+        private static string ClosestAnsiColor(Color32 color, bool isBackgroundColor = false)
         {
             if (Testing.HasFlag(AnsiUsage.FullColor))
-                return $"38;2;{color.r};{color.g};{color.b}";
+                return $"{(isBackgroundColor ? "48" : "38")};2;{color.r};{color.g};{color.b}";
 
             // Initialize variables for closest color
-            int closestColor = 0; // Default to reset
+            int closestColor = 37; // Default to reset
             double closestDistance = double.MaxValue;
 
             // Calculate distance from given color to each Bukkit API color
@@ -108,6 +109,9 @@ namespace Exiled.Events.Patches.Generic
                     closestDistance = distance;
                 }
             }
+
+            if (isBackgroundColor)
+                closestColor += 10;
 
             return closestColor.ToString();
         }
