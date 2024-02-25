@@ -23,7 +23,8 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.PrintFormattedString))]
     internal class ConsoleColorPatched
     {
-        private static readonly AnsiUsage Testing = AnsiUsage.All;
+        // private static readonly AnsiUsage Testing = AnsiUsage.All;
+        private static readonly AnsiUsage Testing = AnsiUsage.StartWithAnsi | AnsiUsage.ForceDefaultColor;
         private static readonly Regex TagDetector = new(@"<([a-z]+)(?:=([""'][^""']*[""']|[^'"">]+))?>(.*?)<\/\1>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Dictionary<Color32, int> AnsiColors = new()
@@ -59,7 +60,7 @@ namespace Exiled.Events.Patches.Generic
 
         private static bool Prefix(ServerConsole __instance, string text, ConsoleColor defaultColor)
         {
-            string defaultAnsiColor = Testing.HasFlag(AnsiUsage.ForceDefaultColor) ? ClosestAnsiColor(Misc.ConsoleColors[defaultColor]) : 39.ToString();
+            string defaultAnsiColor = Testing.HasFlag(AnsiUsage.ForceDefaultColor) && Misc.TryParseColor(ServerConsole.ConsoleColorToHex(defaultColor), out Color32 color32) ? ClosestAnsiColor(color32) : 39.ToString();
 
             text = TagDetector.Replace(text, match =>
                 {
