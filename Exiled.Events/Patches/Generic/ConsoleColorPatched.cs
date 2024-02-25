@@ -23,6 +23,7 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.PrintFormattedString))]
     internal class ConsoleColorPatched
     {
+        private static readonly AnsiUsage Testing = AnsiUsage.FullColor | AnsiUsage.StartWithAnsi;
         private static readonly Regex TagDetector = new(@"<([a-z]+)(?:=([""'][^""']*[""']|[^'"">]+))?>(.*?)<\/\1>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Dictionary<Color32, int> AnsiColors = new()
@@ -45,35 +46,49 @@ namespace Exiled.Events.Patches.Generic
             { new Color32(255, 255, 255, 255),  97 },  // Dark White
         };
 
+        [Flags]
+        private enum AnsiUsage
+        {
+            None = 0,
+            StartWithAnsi = 1,
+            ForceDefault = 2,
+            FullColor = 4,
+            All = -1,
+        }
+
         private static bool Prefix(ServerConsole __instance, string text, ConsoleColor defaultColor)
         {
-            string result = text;
+            string defaultAnsiColor = Testing.HasFlag(AnsiUsage.ForceDefault) ? ClosestAnsiColor(Misc.ConsoleColors[defaultColor]) : 39.ToString();
 
-            result = TagDetector.Replace(result, match =>
-            {
-                string tag = match.Groups[1].Value.ToLower();
-                string value = match.Groups[2].Value;
-                string content = match.Groups[3].Value;
-
-                if (PluginAPI.Core.Log.DisableBetterColors)
-                    return content;
-
-                return content = tag switch
+            text = TagDetector.Replace(text, match =>
                 {
-                    "color" => Misc.TryParseColor(value, out Color32 color32) ? $"\u001b[{ClosestAnsiColor(color32)}m{content}\u001b[22m" : content,
-                    "b" => $"\u001b[1m{content}\u001b[22m",
-                    "i" => $"\u001b[3m{content}\u001b[23m",
-                    "u" => $"\u001b[4m{content}\u001b[24m",
-                    _ => content,
-                };
-            });
+                    string tag = match.Groups[1].Value.ToLower();
+                    string value = match.Groups[2].Value;
+                    string content = match.Groups[3].Value;
 
-            ServerStatic.ServerOutput?.AddLog(result, defaultColor);
+                    if (PluginAPI.Core.Log.DisableBetterColors)
+                        return content;
+
+                    return content = tag switch
+                    {
+                        "color" => Misc.TryParseColor(value, out Color32 color32) ? $"\u001b[{ClosestAnsiColor(color32)}m{content}\u001b[{defaultAnsiColor}m" : content,
+                        "b" => $"\u001b[1m{content}\u001b[22m",
+                        "i" => $"\u001b[3m{content}\u001b[23m",
+                        "u" => $"\u001b[4m{content}\u001b[24m",
+                        _ => content,
+                    };
+                });
+            if (!PluginAPI.Core.Log.DisableBetterColors && Testing.HasFlag(AnsiUsage.StartWithAnsi))
+                text = $"\u001b[{defaultAnsiColor}m" + text;
+            ServerStatic.ServerOutput?.AddLog(text, defaultColor);
             return false;
         }
 
-        private static int ClosestAnsiColor(Color32 color)
+        private static string ClosestAnsiColor(Color32 color)
         {
+            if (Testing.HasFlag(AnsiUsage.FullColor))
+                return $"38;2;{color.r};{color.g};{color.b}";
+
             // Initialize variables for closest color
             int closestColor = 0; // Default to reset
             double closestDistance = double.MaxValue;
@@ -93,7 +108,7 @@ namespace Exiled.Events.Patches.Generic
                 }
             }
 
-            return closestColor;
+            return closestColor.ToString();
         }
     }
 }
