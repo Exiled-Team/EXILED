@@ -7,15 +7,14 @@
 
 namespace Exiled.Events.Patches.Generic
 {
+#pragma warning disable SA1312 // Variable names should begin with lower-case letter
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+
     using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
-#pragma warning disable SA1117 // Parameters should be on same line or separate lines
 
-#pragma warning disable SA1312 // Variable names should begin with lower-case letter
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using HarmonyLib;
-
     using UnityEngine;
 
     /// <summary>
@@ -24,7 +23,7 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.PrintFormattedString))]
     internal class ConsoleColorPatched
     {
-        private static readonly Regex TagDetector = new(@"<(color|b|i|u|size)=("""".*?""""|'.*?'|[^'"""">]+)>(.*?)<\/\1>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex TagDetector = new(@"<([a-z]+)(?:=([""'][^""']*[""']|[^'"">]+))?>(.*?)<\/\1>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Dictionary<Color32, int> AnsiColors = new()
         {
@@ -50,14 +49,15 @@ namespace Exiled.Events.Patches.Generic
         {
             string result = text;
 
-            // Color, Bold, Italic, Size
             result = TagDetector.Replace(result, match =>
             {
                 string tag = match.Groups[1].Value.ToLower();
                 string value = match.Groups[2].Value;
                 string content = match.Groups[3].Value;
+
                 if (PluginAPI.Core.Log.DisableBetterColors)
                     return content;
+
                 return content = tag switch
                 {
                     "color" => Misc.TryParseColor(value, out Color32 color32) ? $"\u001b[{ClosestAnsiColor(color32)}m{content}\u001b[22m" : content,
