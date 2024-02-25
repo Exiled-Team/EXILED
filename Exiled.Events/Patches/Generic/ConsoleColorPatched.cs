@@ -60,7 +60,7 @@ namespace Exiled.Events.Patches.Generic
 
         private static bool Prefix(ServerConsole __instance, string text, ConsoleColor defaultColor)
         {
-            string defaultAnsiColor = Testing.HasFlag(AnsiUsage.ForceDefaultColor) && Misc.TryParseColor(ServerConsole.ConsoleColorToHex(defaultColor), out Color32 color32) ? ClosestAnsiColor(color32) : 39.ToString();
+            string defaultAnsiColor = Testing.HasFlag(AnsiUsage.ForceDefaultColor) && Misc.TryParseColor(ServerConsole.ConsoleColorToHex(defaultColor), out Color32 color32) ? ClosestAnsiColor(color32) : "39";
 
             text = TagDetector.Replace(text, match =>
                 {
