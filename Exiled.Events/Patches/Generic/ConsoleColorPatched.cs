@@ -50,15 +50,16 @@ namespace Exiled.Events.Patches.Generic
         private enum AnsiUsage
         {
             None = 0,
-            StartWithAnsi = 1,
-            ForceDefault = 2,
-            FullColor = 4,
+            Enable = 1,
+            StartWithAnsi = 2 | Enable,
+            ForceDefaultColor = 4 | Enable,
+            FullColor = 8 | Enable,
             All = -1,
         }
 
         private static bool Prefix(ServerConsole __instance, string text, ConsoleColor defaultColor)
         {
-            string defaultAnsiColor = Testing.HasFlag(AnsiUsage.ForceDefault) ? ClosestAnsiColor(Misc.ConsoleColors[defaultColor]) : 39.ToString();
+            string defaultAnsiColor = Testing.HasFlag(AnsiUsage.ForceDefaultColor) ? ClosestAnsiColor(Misc.ConsoleColors[defaultColor]) : 39.ToString();
 
             text = TagDetector.Replace(text, match =>
                 {
@@ -66,7 +67,7 @@ namespace Exiled.Events.Patches.Generic
                     string value = match.Groups[2].Value;
                     string content = match.Groups[3].Value;
 
-                    if (PluginAPI.Core.Log.DisableBetterColors)
+                    if (PluginAPI.Core.Log.DisableBetterColors && Testing.HasFlag(AnsiUsage.Enable))
                         return content;
 
                     return content = tag switch
