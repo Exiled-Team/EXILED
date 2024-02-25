@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Generic
 {
     using System.Text;
+    using System.Text.RegularExpressions;
 
     using CommandSystem;
     using CommandSystem.Commands.Shared;
@@ -21,6 +22,8 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(HelpCommand), nameof(HelpCommand.GetCommandList))]
     internal class HelpCommandPatches
     {
+        private static readonly Regex ConsoleTagReplacer = new(@"<\/?[ib]>");
+
         private static bool Prefix(HelpCommand __instance, ICommandHandler handler, string header, ref string __result)
         {
             StringBuilder _helpBuilder = __instance._helpBuilder;
@@ -43,8 +46,9 @@ namespace Exiled.Events.Patches.Generic
                 GetCommand(command);
             }
 
-            __result = _helpBuilder.ToString();
+            __result = ConsoleTagReplacer.Replace(_helpBuilder.ToString(), string.Empty);
             return false;
+
             void GetCommand(ICommand command, int space = 0)
             {
                 if (command is IHiddenCommand)
@@ -54,7 +58,7 @@ namespace Exiled.Events.Patches.Generic
                 _helpBuilder.Append(new string(' ', space * 2));
                 _helpBuilder.Append(" - <b>");
                 _helpBuilder.Append(command.Command);
-                _helpBuilder.Append("</b>");
+                _helpBuilder.Append("</b> ");
                 if (command.Aliases != null && command.Aliases.Length != 0)
                 {
                     _helpBuilder.Append("(");
