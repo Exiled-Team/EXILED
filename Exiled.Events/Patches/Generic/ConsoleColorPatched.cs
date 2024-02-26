@@ -60,11 +60,17 @@ namespace Exiled.Events.Patches.Generic
 
         private static bool Prefix(ServerConsole __instance, string text, ConsoleColor defaultColor)
         {
+            defaultColor = defaultColor is ConsoleColor.Black or ConsoleColor.DarkGray ? ConsoleColor.White : defaultColor;
             string defaultAnsiColor = Testing.HasFlag(AnsiUsage.ForceDefaultColor) && Misc.TryParseColor(ServerConsole.ConsoleColorToHex(defaultColor), out Color32 color32)
                 ? ClosestAnsiColor(color32) : "39";
+            bool Find = true;
 
-            text = TagDetector.Replace(text, match =>
+            while (Find)
+            {
+                Find = false;
+                text = TagDetector.Replace(text, match =>
                 {
+                    Find = true;
                     string tag = match.Groups[1].Value.ToLower();
                     string value = match.Groups[2].Value;
                     string content = match.Groups[3].Value;
@@ -82,6 +88,7 @@ namespace Exiled.Events.Patches.Generic
                         _ => content,
                     };
                 });
+            }
             if (!PluginAPI.Core.Log.DisableBetterColors && Testing.HasFlag(AnsiUsage.StartWithAnsi))
                 text = $"\u001b[{defaultAnsiColor}m" + text;
             ServerStatic.ServerOutput?.AddLog(text, defaultColor);
