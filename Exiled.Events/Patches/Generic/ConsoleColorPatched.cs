@@ -97,7 +97,7 @@ namespace Exiled.Events.Patches.Generic
             int closestColor = 37; // Default to reset
             double closestDistance = double.MaxValue;
 
-            // Calculate distance from given color to each Bukkit API color
+            // Calculate distance from given color to each Ansi color
             foreach (KeyValuePair<Color32, int> AnsiColor in AnsiColors)
             {
                 double distance = Math.Pow(color.r - AnsiColor.Key.r, 2) +
