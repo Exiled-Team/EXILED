@@ -89,6 +89,7 @@ namespace Exiled.Events.Patches.Generic
                     };
                 });
             }
+
             if (!PluginAPI.Core.Log.DisableBetterColors && Testing.HasFlag(AnsiUsage.StartWithAnsi))
                 text = $"\u001b[{defaultAnsiColor}m" + text;
             ServerStatic.ServerOutput?.AddLog(text, defaultColor);
