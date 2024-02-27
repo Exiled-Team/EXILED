@@ -7,9 +7,6 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1312 // Variable names should begin with lower-case letter
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-
     using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
@@ -23,7 +20,6 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.PrintFormattedString))]
     internal class ConsoleColorPatched
     {
-        // private static readonly AnsiUsage Testing = AnsiUsage.All;
         private static readonly AnsiUsage Testing = AnsiUsage.All;
         private static readonly Regex TagDetector = new(@"<([a-z]+)(?:=([^>]+))?>(.*?)<\/\1>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
 
