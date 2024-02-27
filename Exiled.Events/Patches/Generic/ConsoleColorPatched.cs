@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Patches.Generic
 {
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+
     using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
@@ -60,14 +62,14 @@ namespace Exiled.Events.Patches.Generic
             string defaultAnsiColor = Testing.HasFlag(AnsiUsage.ForceDefaultColor) && Misc.TryParseColor(ServerConsole.ConsoleColorToHex(defaultColor), out Color32 color32)
                 ? ClosestAnsiColor(color32) : "39";
 
-            bool Find = true;
+            bool find = true;
 
-            while (Find)
+            while (find)
             {
-                Find = false;
+                find = false;
                 text = TagDetector.Replace(text, match =>
                 {
-                    Find = true;
+                    find = true;
                     string tag = match.Groups[1].Value.ToLower();
                     string value = match.Groups[2].Value;
                     string content = match.Groups[3].Value;
@@ -103,16 +105,16 @@ namespace Exiled.Events.Patches.Generic
             double closestDistance = double.MaxValue;
 
             // Calculate distance from given color to each Ansi color
-            foreach (KeyValuePair<Color32, int> AnsiColor in AnsiColors)
+            foreach (KeyValuePair<Color32, int> ansiColor in AnsiColors)
             {
-                double distance = Math.Pow(color.r - AnsiColor.Key.r, 2) +
-                                  Math.Pow(color.g - AnsiColor.Key.g, 2) +
-                                  Math.Pow(color.b - AnsiColor.Key.b, 2);
+                double distance = Math.Pow(color.r - ansiColor.Key.r, 2) +
+                                  Math.Pow(color.g - ansiColor.Key.g, 2) +
+                                  Math.Pow(color.b - ansiColor.Key.b, 2);
 
                 // Update closest color if distance is smaller
                 if (distance < closestDistance)
                 {
-                    closestColor = AnsiColor.Value;
+                    closestColor = ansiColor.Value;
                     closestDistance = distance;
                 }
             }
