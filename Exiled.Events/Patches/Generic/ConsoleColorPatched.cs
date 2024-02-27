@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Generic
     {
         // private static readonly AnsiUsage Testing = AnsiUsage.All;
         private static readonly AnsiUsage Testing = AnsiUsage.All;
-        private static readonly Regex TagDetector = new(@"<([a-z]+)(?:=([^>]+))?>(.*?)<\/\1>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex TagDetector = new(@"<([a-z]+)(?:=([^>]+))?>(.*?)<\/\1>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
 
         private static readonly Dictionary<Color32, int> AnsiColors = new()
         {
