@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Generic
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text.RegularExpressions;
 
     using HarmonyLib;
@@ -23,7 +24,7 @@ namespace Exiled.Events.Patches.Generic
     internal class ConsoleColorPatched
     {
         private static readonly AnsiUsage Testing = AnsiUsage.All;
-        private static readonly Regex TagDetector = new(@"<([a-z]+)(?:=([^>]+))?>(.*?)<\/\1>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+        private static readonly Regex TagDetector = new(@"<([a-z]{1,13})(?:=([^>]+))?>(.*?)<\/\1>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
 
         private static readonly Dictionary<Color32, int> AnsiColors = new()
         {
@@ -69,6 +70,8 @@ namespace Exiled.Events.Patches.Generic
                 find = false;
                 text = TagDetector.Replace(text, match =>
                 {
+                    if (text.ElementAtOrDefault(match.Index - 1) is '\\')
+                        return match.Value;
                     find = true;
                     string tag = match.Groups[1].Value.ToLower();
                     string value = match.Groups[2].Value;
