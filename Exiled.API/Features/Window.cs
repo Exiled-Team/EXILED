@@ -181,23 +181,21 @@ namespace Exiled.API.Features
         /// <summary>
         /// Break the window.
         /// </summary>
-        public void BreakWindow() => Base.BreakWindow();
+        public void Break() => Base.BreakWindow();
 
         /// <summary>
         /// Damages the window.
         /// </summary>
         /// <param name="amount">The amount of damage to deal.</param>
-        public void DamageWindow(float amount) => Base.ServerDamageWindow(amount);
+        public void Damage(float amount) => Base.ServerDamageWindow(amount);
 
         /// <summary>
         /// Damages the window.
         /// </summary>
         /// <param name="amount">The amount of damage to deal.</param>
         /// <param name="handler">The handler of damage.</param>
-        public void DamageWindow(float amount, DamageHandlerBase handler)
-        {
-            Base.Damage(amount, handler, Vector3.zero);
-        }
+        /// <returns>Whether or not the Window get Damage.</returns>
+        public bool Damage(float amount, DamageHandlerBase handler) => Base.Damage(amount, handler, Vector3.zero);
 
         /// <summary>
         /// Returns the Window in a human-readable format.

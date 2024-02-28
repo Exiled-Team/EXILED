@@ -4,18 +4,16 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
+
 namespace Exiled.Events.Patches.Events.Map
 {
-    using System.Diagnostics;
-
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
     using HarmonyLib;
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
     using Mirror;
-
-    using UnityEngine;
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
     /// <summary>
     ///     Patches <see cref="BreakableDoor.ServerDamage" />.
@@ -31,28 +29,19 @@ namespace Exiled.Events.Patches.Events.Map
         {
             if (!NetworkServer.active)
             {
-                Debug.LogWarning("[Server] function 'System.Boolean Interactables.Interobjects.BreakableDoor::ServerDamage(System.Single,Interactables.Interobjects.DoorUtils.DoorDamageType)' called when server was not active");
+                UnityEngine.Debug.LogWarning("[Server] function 'System.Boolean Interactables.Interobjects.BreakableDoor::ServerDamage(System.Single,Interactables.Interobjects.DoorUtils.DoorDamageType)' called when server was not active");
                 __result = default;
                 return default;
             }
 
             if (__instance._destroyed || __instance.Network_destroyed)
-            {
-                __result = false;
                 return false;
-            }
 
             if (__instance._ignoredDamageSources.HasFlagFast(type))
-            {
-                __result = false;
                 return false;
-            }
 
             if (__instance._brokenPrefab == null || __instance._objectToReplace == null)
-            {
-                __result = false;
                 return false;
-            }
 
             DamagingDoorEventArgs damagingDoorEventArgs = new(__instance, Health, type);
 
@@ -62,10 +51,7 @@ namespace Exiled.Events.Patches.Events.Map
             type = damagingDoorEventArgs.DoorDamageType;
 
             if (!damagingDoorEventArgs.IsAllowed)
-            {
-                __result = false;
                 return false;
-            }
 
             __instance.RemainingHealth -= Health;
             if (__instance.RemainingHealth <= 0f)
@@ -77,7 +63,6 @@ namespace Exiled.Events.Patches.Events.Map
                 if (!destroyingDoorEventArgs.IsAllowed)
                 {
                     __instance.RemainingHealth += Health;
-                    __result = false;
                     return false;
                 }
 

@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Core.Generic
     using System.Reflection;
 
     using Exiled.API.Features.Core.Generic.Pools;
-
+    using Exiled.API.Interfaces;
     using LiteNetLib.Utils;
 
     /// <summary>
@@ -22,7 +22,7 @@ namespace Exiled.API.Features.Core.Generic
     /// </summary>
     /// <typeparam name="TSource">The type of the source object to handle the instance of.</typeparam>
     /// <typeparam name="TObject">The type of the child object to handle the instance of.</typeparam>
-    public abstract class EnumClass<TSource, TObject> : IComparable, IEquatable<TObject>, IComparable<TObject>, IComparer<TObject>
+    public abstract class EnumClass<TSource, TObject> : IComparable, IEquatable<TObject>, IComparable<TObject>, IComparer<TObject>, IEnumClass
         where TSource : Enum
         where TObject : EnumClass<TSource, TObject>
     {

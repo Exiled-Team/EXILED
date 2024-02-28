@@ -113,11 +113,6 @@ namespace Exiled.API.Features.Pickups
         public static Pickup Random => BaseToPickup.Random().Value;
 
         /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
-        /// </summary>
-        public override GameObject GameObject => GameObject;
-
-        /// <summary>
         /// Gets the <see cref="UnityEngine.Rigidbody"/> of the Pickup.
         /// </summary>
         public Rigidbody Rigidbody => PhysicsModule?.Rb;

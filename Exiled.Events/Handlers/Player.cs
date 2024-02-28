@@ -469,8 +469,8 @@ namespace Exiled.Events.Handlers
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> damage a Window.
-        /// </summary> // TODO: DamagingWindow instead of PlayerDamageWindow
-        public static Event<DamagingWindowEventArgs> PlayerDamageWindow { get; set; } = new();
+        /// </summary>
+        public static Event<DamagingWindowEventArgs> DamagingWindow { get; set; } = new();
 
         /// <summary>
         /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
@@ -647,8 +647,7 @@ namespace Exiled.Events.Handlers
         /// Called before throwing a grenade.
         /// </summary>
         /// <param name="ev">The <see cref="ThrownProjectileEventArgs"/> instance.</param>
-        // TODO: rename that to OnThrownProjectile
-        public static void OnThrowingProjectile(ThrownProjectileEventArgs ev) => ThrownProjectile.InvokeSafely(ev);
+        public static void OnThrownProjectile(ThrownProjectileEventArgs ev) => ThrownProjectile.InvokeSafely(ev);
 
         /// <summary>
         /// Called before receving a throwing request.
@@ -996,7 +995,7 @@ namespace Exiled.Events.Handlers
         /// Called before a <see cref="API.Features.Player"/> damage a window.
         /// </summary>
         /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance. </param>
-        public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
+        public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => DamagingWindow.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> unlocks a generator.
