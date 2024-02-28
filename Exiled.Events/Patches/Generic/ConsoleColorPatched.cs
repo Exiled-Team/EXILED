@@ -72,6 +72,7 @@ namespace Exiled.Events.Patches.Generic
                 {
                     if (match.Index is not 0 && text[match.Index - 1] is '\\')
                         return match.Value;
+
                     find = true;
                     string tag = match.Groups[1].Value.ToLower();
                     string value = match.Groups[2].Value;
