@@ -70,7 +70,7 @@ namespace Exiled.Events.Patches.Generic
                 find = false;
                 text = TagDetector.Replace(text, match =>
                 {
-                    if (text.ElementAtOrDefault(match.Index - 1) is '\\')
+                    if (match.Index is not 0 && text[match.Index - 1] is '\\')
                         return match.Value;
                     find = true;
                     string tag = match.Groups[1].Value.ToLower();
