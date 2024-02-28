@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs.Map
     /// <summary>
     ///     Contains all the information before the door explodes.
     /// </summary>
-    public class DestroyingDoorEventArgs : IDeniableEvent
+    public class DestroyingDoorEventArgs : IDeniableEvent, IDoorEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DestroyingDoorEventArgs" /> class.

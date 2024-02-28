@@ -7,12 +7,13 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
+    using Exiled.Events.EventArgs.Interfaces;
     using Interactables.Interobjects.DoorUtils;
 
     /// <summary>
     ///     Contains all the information after the door explodes.
     /// </summary>
-    public class DestroyedDoorEventArgs
+    public class DestroyedDoorEventArgs : IDoorEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DestroyedDoorEventArgs" /> class.
