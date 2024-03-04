@@ -130,11 +130,11 @@ namespace Exiled.API.Extensions
         /// <returns>Returns a <see cref="SpawnLocation"/> representing the spawn, or <see langword="null"/> if no spawns were found.</returns>
         public static SpawnLocation GetRandomSpawnLocation(this RoleTypeId roleType)
         {
-            if (roleType.GetRoleBase() is IFpcRole fpcRole &&
+            if (roleType.TryGetRoleBase(out FpcStandardRoleBase fpcRole) &&
                 fpcRole.SpawnpointHandler != null &&
                 fpcRole.SpawnpointHandler.TryGetSpawnpoint(out Vector3 position, out float horizontalRotation))
             {
-                return new SpawnLocation(roleType, position, horizontalRotation);
+                return new(roleType, position, horizontalRotation);
             }
 
             return null;
