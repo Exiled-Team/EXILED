@@ -94,6 +94,16 @@ namespace Exiled.API.Extensions
         public static bool TryGetRoleBase(this RoleTypeId roleType, out PlayerRoleBase roleBase) => PlayerRoleLoader.TryGetRoleTemplate(roleType, out roleBase);
 
         /// <summary>
+        /// Tries to get the base <see cref="PlayerRoleBase"/> of the given <see cref="RoleTypeId"/>.
+        /// </summary>
+        /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
+        /// <param name="roleBase">The <see cref="PlayerRoleBase"/> to return.</param>
+        /// <typeparam name="T">The type to cast the <see cref="PlayerRoleBase"/> to.</typeparam>
+        /// <returns>The <see cref="PlayerRoleBase"/>.</returns>
+        public static bool TryGetRoleBase<T>(this RoleTypeId roleType, out T roleBase)
+            where T : PlayerRoleBase => PlayerRoleLoader.TryGetRoleTemplate(roleType, out roleBase);
+
+        /// <summary>
         /// Gets the <see cref="LeadingTeam"/>.
         /// </summary>
         /// <param name="team">Team.</param>

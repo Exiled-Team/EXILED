@@ -10,16 +10,14 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
 
     using API.Features;
-    using Exiled.Events.Attributes;
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Spawn;
     using Exiled.Events.EventArgs.Player;
-
     using HarmonyLib;
-
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.FirstPersonControl.NetworkMessages;
     using PlayerRoles.FirstPersonControl.Spawnpoints;
-
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
@@ -27,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// Patches <see cref="RoleSpawnpointManager.Init"/> delegate.
     /// Adds the <see cref="Handlers.Player.Spawning"/> event.
+    /// Fix for spawning in wrong location.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Spawning))]
     [HarmonyPatch]
     internal static class Spawning
     {
@@ -46,10 +44,14 @@ namespace Exiled.Events.Patches.Events.Player
 
                 if (newRole is IFpcRole fpcRole)
                 {
-                    if (newRole.ServerSpawnFlags.HasFlag(RoleSpawnFlags.UseSpawnpoint) && fpcRole.SpawnpointHandler != null && fpcRole.SpawnpointHandler.TryGetSpawnpoint(out Vector3 position, out float horizontalRot))
+                    if (newRole.ServerSpawnFlags.HasFlag(RoleSpawnFlags.UseSpawnpoint))
                     {
-                        oldPosition = position;
-                        oldRotation = horizontalRot;
+                        SpawnLocation spawnLocation = newRole.RoleTypeId.GetRandomSpawnLocation();
+                        if (spawnLocation != null)
+                        {
+                            oldPosition = spawnLocation.Position;
+                            oldRotation = spawnLocation.HorizontalRotation;
+                        }
                     }
 
                     SpawningEventArgs ev = new(player, oldPosition, oldRotation, prevRole);
