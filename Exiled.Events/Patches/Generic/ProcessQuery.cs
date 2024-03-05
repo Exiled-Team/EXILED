@@ -56,7 +56,8 @@ namespace Exiled.Events.Patches.Generic
                 // sender
                 new(OpCodes.Ldarg_1),
 
-                // bool hasPermissions = CheckPermissions(command, sender)
+                // if (!CheckPermissions(command, sender))
+                //    return;
                 new(OpCodes.Call, Method(typeof(ProcessQuery), nameof(CheckPermissions))),
                 new(OpCodes.Brfalse_S, returnLabel),
             });
