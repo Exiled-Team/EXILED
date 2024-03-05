@@ -58,12 +58,6 @@ namespace Exiled.Events.Patches.Generic
 
                 // bool hasPermissions = CheckPermissions(command, sender)
                 new(OpCodes.Call, Method(typeof(ProcessQuery), nameof(CheckPermissions))),
-                new(OpCodes.Stloc_S, hasPermissions),
-
-                // hasPermissions
-                new(OpCodes.Ldloc_S, hasPermissions),
-
-                // if (!hasPermissions) return;
                 new(OpCodes.Brfalse_S, returnLabel),
             });
 
