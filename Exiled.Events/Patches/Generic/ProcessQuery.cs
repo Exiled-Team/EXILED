@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Generic
         {
             if (command is IPermissionCommand permissionCommand && !sender.CheckPermission(permissionCommand.Permission))
             {
-                sender.RaReply($"{command.Command}#You do not have permissions to use this command", false, true, string.Empty);
+                sender.RaReply($"{command.Command}#You do not have permissions to use this command. Required permission: {permissionCommand.Permission}", false, true, string.Empty);
                 return false;
             }
 
