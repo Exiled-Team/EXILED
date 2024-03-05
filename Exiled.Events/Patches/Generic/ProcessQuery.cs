@@ -41,7 +41,6 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            LocalBuilder hasPermissions = generator.DeclareLocal(typeof(bool));
 
             Label returnLabel = generator.DefineLabel();
 
