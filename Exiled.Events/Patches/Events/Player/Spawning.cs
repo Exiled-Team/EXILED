@@ -10,16 +10,13 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
 
     using API.Features;
-    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Spawn;
     using Exiled.Events.EventArgs.Player;
     using HarmonyLib;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-    using PlayerRoles.FirstPersonControl.NetworkMessages;
     using PlayerRoles.FirstPersonControl.Spawnpoints;
-    using PlayerRoles.PlayableScps;
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
@@ -42,9 +39,6 @@ namespace Exiled.Events.Patches.Events.Player
             if (newRole.ServerSpawnReason == RoleChangeReason.Destroyed || !Player.TryGet(hub, out Player player))
                 return true;
 
-            if (newRole.ServerSpawnReason == RoleChangeReason.RoundStart && prevRole.RoleTypeId == newRole.RoleTypeId)
-                return false;
-
             Vector3 oldPosition = hub.transform.position;
             float oldRotation = (prevRole as IFpcRole)?.FpcModule.MouseLook.CurrentVertical ?? 0;
 
@@ -55,8 +49,6 @@ namespace Exiled.Events.Patches.Events.Player
                     SpawnLocation spawnLocation = newRole.RoleTypeId.GetRandomSpawnLocation();
                     if (spawnLocation != null)
                     {
-                        if (newRole is FpcStandardScp)
-                            Log.Info($"{player.DisplayNickname} ({prevRole.RoleTypeId} - {newRole.RoleTypeId}) - Old Pos: {Room.Get(oldPosition)?.Type ?? RoomType.Unknown} ({oldPosition}) - New Pos: {Room.Get(spawnLocation.Position)?.Type ?? RoomType.Unknown} ({spawnLocation.Position})");
                         oldPosition = spawnLocation.Position;
                         oldRotation = spawnLocation.HorizontalRotation;
                     }
@@ -66,9 +58,8 @@ namespace Exiled.Events.Patches.Events.Player
 
                 Handlers.Player.OnSpawning(ev);
 
-                hub.transform.position = ev.Position;
+                player.Position = ev.Position;
                 fpcRole.FpcModule.MouseLook.CurrentHorizontal = ev.HorizontalRotation;
-                hub.connectionToClient.Send(new FpcOverrideMessage(ev.Position, ev.HorizontalRotation));
             }
             else
             {
