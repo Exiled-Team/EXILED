@@ -135,12 +135,24 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
         /// <returns>An <see cref="Array"/> of <see cref="ItemType"/> that the role receives on spawn. Will be empty for classes that do not spawn with items.</returns>
-        public static ItemType[] GetStartingInventory(this RoleTypeId roleType)
+        public static ItemType[] GetStartingItems(this RoleTypeId roleType)
         {
             if (StartingInventories.DefinedInventories.TryGetValue(roleType, out InventoryRoleInfo info))
                 return info.Items;
 
             return Array.Empty<ItemType>();
+        }
+
+        /// <summary>
+        /// Gets the starting <see cref="InventoryRoleInfo"/> of a <see cref="RoleTypeId"/>.
+        /// </summary>
+        /// <param name="role">The <see cref="RoleTypeId"/>.</param>
+        /// <returns>The <see cref="InventoryRoleInfo"/> that the role receives on spawn. </returns>
+        public static InventoryRoleInfo GetStartingInventory(this RoleTypeId role)
+        {
+            return StartingInventories.DefinedInventories.TryGetValue(role, out InventoryRoleInfo info)
+                ? info
+                : default;
         }
 
         /// <summary>

@@ -32,7 +32,6 @@ namespace Exiled.API.Features
     using Hints;
     using Interactables.Interobjects;
     using InventorySystem;
-    using InventorySystem.Configs;
     using InventorySystem.Disarming;
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
@@ -2801,11 +2800,10 @@ namespace Exiled.API.Features
         /// <param name="role">The role loadout to give.</param>
         public void GrantLoadout(RoleTypeId role)
         {
-            if (!StartingInventories.DefinedInventories.TryGetValue(role, out InventoryRoleInfo inventory))
-                return;
+            InventoryRoleInfo info = role.GetStartingInventory();
 
-            AddItem(inventory.Items);
-            inventory.Ammo.ForEach(a => AddAmmo(a.Key.GetAmmoType(), a.Value));
+            AddItem(info.Items);
+            info.Ammo.ForEach(a => AddAmmo(a.Key.GetAmmoType(), a.Value));
         }
 
         /// <summary>
