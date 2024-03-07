@@ -255,6 +255,7 @@ namespace Exiled.API.Features.Roles
         public void StatDancing(DanceType danceType) => Dance.SendRpc((x) =>
         {
             x.IsDancing = true;
+            x._serverStartPos = new(Position);
             DanceType = danceType;
         });
     }
