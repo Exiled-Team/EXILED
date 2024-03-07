@@ -27,8 +27,9 @@ namespace Exiled.Events.EventArgs.Scp3114
         public DancingEventArgs(bool newState, Player player, bool isAllowed = true)
         {
             Player = player;
-            Scp3114 = Player.Role.As<Scp3114Role>();
+            Scp3114 = player.Role.As<Scp3114Role>();
             IsDancing = newState;
+            DanceType = (DanceType)(newState ? UnityEngine.Random.Range(0, Scp3114.Dance._danceVariants) : 0);
             IsAllowed = isAllowed;
         }
 

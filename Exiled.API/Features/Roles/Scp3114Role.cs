@@ -216,9 +216,9 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets a dance type that SCP-3114 will have. Be default is <see cref="DanceType.Random"/>.
+        /// Gets or sets a dance type that SCP-3114 will have./>.
         /// </summary>
-        public DanceType DanceType { get; set; }
+        internal DanceType DanceType { get; set; }
 
         /// <summary>
         /// Reset Scp3114 FakeIdentity.
@@ -249,8 +249,13 @@ namespace Exiled.API.Features.Roles
         public void StopDancing() => Dance.SendRpc(x => x.IsDancing = false);
 
         /// <summary>
-        /// Starts dancing.
+        /// Make Scp3114 Dancing.
         /// </summary>
-        public void StartDanging() => Dance.SendRpc(x => x.IsDancing = true);
+        /// <param name="danceType">Wish <see cref="DanceType"/> than Scp3114 will do.</param>
+        public void StatDancing(DanceType danceType) => Dance.SendRpc((x) =>
+        {
+            x.IsDancing = true;
+            DanceType = danceType;
+        });
     }
 }
