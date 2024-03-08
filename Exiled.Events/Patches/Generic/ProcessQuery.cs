@@ -41,7 +41,6 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-
             Label returnLabel = generator.DefineLabel();
 
             int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(ICommand), nameof(ICommand.Execute))));
