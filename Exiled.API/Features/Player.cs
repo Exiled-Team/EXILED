@@ -533,7 +533,7 @@ namespace Exiled.API.Features
         public override Quaternion Rotation
         {
             get => Transform.rotation;
-            set => ReferenceHub.TryOverridePosition(Position, value.eulerAngles);
+            set => ReferenceHub.TryOverridePosition(Position, value.eulerAngles - Transform.eulerAngles);
         }
 
         /// <summary>
