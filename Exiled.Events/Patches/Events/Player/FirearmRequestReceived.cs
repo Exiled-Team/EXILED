@@ -300,9 +300,9 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brfalse_S, returnLabel),
                 });
 
-            offset = 2;
+            offset = 1;
             index = newInstructions.FindIndex(
-                instruction => instruction.opcode == OpCodes.Callvirt && instruction.operand == (object)Method(typeof(IAmmoManagerModule), nameof(IAmmoManagerModule.ServerTryUnload))) + offset;
+                instruction => instruction.opcode == OpCodes.Callvirt && instruction.operand == (object)PropertySetter(typeof(InventorySystem.Items.Firearms.Firearm), nameof(InventorySystem.Items.Firearms.Firearm.Status))) + offset;
 
             newInstructions.InsertRange(
                 index,
