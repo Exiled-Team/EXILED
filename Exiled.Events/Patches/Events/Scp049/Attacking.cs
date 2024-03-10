@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Scp049
             int offset = -3;
             int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger)))) + offset;
 
-            Label continueLabel = generator.DefineLabel();
+            Label ret = generator.DefineLabel();
 
             newInstructions.InsertRange(
                 index,
@@ -64,12 +64,10 @@ namespace Exiled.Events.Patches.Events.Scp049
                     // if (!ev.IsAllowed)
                     //      return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(AttackingEventArgs), nameof(AttackingEventArgs.IsAllowed))),
-                    new(OpCodes.Brtrue_S, continueLabel),
-
-                    new(OpCodes.Ret),
-
-                    new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
+                    new(OpCodes.Brfalse_S, ret),
                 });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
