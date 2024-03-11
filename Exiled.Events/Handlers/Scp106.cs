@@ -38,6 +38,11 @@ namespace Exiled.Events.Handlers
         public static Event<ExitStalkingEventArgs> ExitStalking { get; set; } = new();
 
         /// <summary>
+        /// Invoked before SCP-106 passes a door.
+        /// </summary>
+        public static Event<PassingDoorEventArgs> PassingDoor { get; set; } = new();
+
+        /// <summary>
         /// Called before SCP-106 attacks player.
         /// </summary>
         /// <param name="ev">The <see cref="AttackingEventArgs" /> instance.</param>
@@ -60,5 +65,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ExitStalkingEventArgs"/> instance.</param>
         public static void OnExitStalking(ExitStalkingEventArgs ev) => ExitStalking.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-106 passes a door.
+        /// </summary>
+        /// <param name="ev">The <see cref="PassingDoorEventArgs"/> instance.</param>
+        public static void OnPassingDoor(PassingDoorEventArgs ev) => PassingDoor.InvokeSafely(ev);
     }
 }
