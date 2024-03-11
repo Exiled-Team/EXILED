@@ -15,7 +15,6 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using Hazards;
-    using MapGeneration;
     using MEC;
     using PlayerRoles;
     using UnityEngine;
@@ -27,6 +26,11 @@ namespace Exiled.API.Features
     /// </summary>
     public class TeslaGate : GameEntity, IWrapper<BaseTeslaGate>, IWorldSpace
     {
+        /// <summary>
+        /// The square distance of the value from <see cref="TeslaGateController.ServerReceiveMessage"/> that check if the player is too far for being shot.
+        /// </summary>
+        public const float SqrDistance = 2.2f * 2.2f;
+
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BaseTeslaGate"/>s and their corresponding <see cref="TeslaGate"/>.
         /// </summary>
@@ -266,7 +270,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the hurt range of the tesla gate; otherwise, <see langword="false"/>.</returns>
-        public bool IsPlayerInHurtRange(Player player) => player is not null && Vector3.Distance(Position, player.Position) <= Base.sizeOfTrigger * 2.2f;
+        public bool IsPlayerInHurtRange(Player player) => player is not null && MathExtensions.DistanceSquared(Position, player.Position) <= Base.sizeOfTrigger * Base.sizeOfTrigger * SqrDistance;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="Player"/> is in the idle range of a specific tesla gate.
