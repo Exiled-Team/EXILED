@@ -253,15 +253,6 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets the duration of ghostlight signal loss.
-        /// </summary>
-        public float GhostlightLockoutDuration
-        {
-            get => LostSignalHandler._ghostlightLockoutDuration;
-            set => LostSignalHandler._ghostlightLockoutDuration = value;
-        }
-
-        /// <summary>
         /// Gets or sets the cost for blackout ability.
         /// </summary>
         public int BlackoutCost
