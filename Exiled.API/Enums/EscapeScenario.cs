@@ -7,39 +7,48 @@
 
 namespace Exiled.API.Enums
 {
+    using Exiled.API.Features.Core.Generic;
+
+    using static Escape;
+
     /// <summary>
     /// A set of different Escape Scenario Type.
     /// </summary>
-    public enum EscapeScenario
+    public sealed class EscapeScenario : EnumClass<EscapeScenarioType, EscapeScenario>
     {
         /// <summary>
         /// No Escape Scenario.
         /// </summary>
-        None,
+        public static readonly EscapeScenario None = new(EscapeScenarioType.None);
 
         /// <summary>
         /// ClassD Escape Scenario.
         /// </summary>
-        ClassD,
+        public static readonly EscapeScenario ClassD = new(EscapeScenarioType.ClassD);
 
         /// <summary>
         /// Cuffed ClassD Escape.
         /// </summary>
-        CuffedClassD,
+        public static readonly EscapeScenario CuffedClassD = new(EscapeScenarioType.CuffedClassD);
 
         /// <summary>
         /// Scientist Escape.
         /// </summary>
-        Scientist,
+        public static readonly EscapeScenario Scientist = new(EscapeScenarioType.Scientist);
 
         /// <summary>
         /// Cuffed Scientist Escape.
         /// </summary>
-        CuffedScientist,
+        public static readonly EscapeScenario CuffedScientist = new(EscapeScenarioType.CuffedScientist);
 
         /// <summary>
         /// Unspecified Escape.
         /// </summary>
-        CustomEscape,
+        public static readonly EscapeScenario CustomEscape = new((EscapeScenarioType)5);
+
+        private EscapeScenario(EscapeScenarioType value)
+            : base(value)
+        {
+        }
     }
 }

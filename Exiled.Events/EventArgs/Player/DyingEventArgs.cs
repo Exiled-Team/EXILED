@@ -38,21 +38,14 @@ namespace Exiled.Events.EventArgs.Player
         {
             DamageHandler = new CustomDamageHandler(target, damageHandler);
             Player = target;
-#pragma warning disable CS0618
             ItemsToDrop = Player.Items.ToList();
-#pragma warning restore CS0618
-            Attacker = DamageHandler.BaseIs(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
+            Attacker = DamageHandler.Is(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
         }
 
         /// <summary>
-        /// Gets or sets the list of items to be dropped.
+        /// Gets the list of items to be dropped.
         /// </summary>
-        public List<Item> ItemsToDrop
-        {
-            get;
-            [Obsolete("This setter has been deprecated")]
-            set;
-        }
+        public List<Item> ItemsToDrop { get; }
 
         /// <summary>
         /// Gets the dying player.
