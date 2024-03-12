@@ -41,8 +41,8 @@ namespace Exiled.Events.EventArgs.Scp079
         public Room Room { get; }
 
         /// <summary>
-        /// Gets or sets the duration that SCP-079 should lose its signal for.
+        /// Gets the duration that SCP-079 should lose its signal for.
         /// </summary>
-        public double Duration { get; set; }
+        public double Duration { get; }
     }
 }
