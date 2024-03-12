@@ -11,15 +11,16 @@ namespace Exiled.API.Features.Pickups
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.API.Interfaces;
+
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables.Scp244;
+
     using Mirror;
     using RelativePositioning;
     using UnityEngine;
@@ -35,12 +36,13 @@ namespace Exiled.API.Features.Pickups
     using BaseScp1576Pickup = InventorySystem.Items.Usables.Scp1576.Scp1576Pickup;
     using BaseScp2176Projectile = InventorySystem.Items.ThrowableProjectiles.Scp2176Projectile;
     using BaseScp330Pickup = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
+
     using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="ItemPickupBase"/>.
     /// </summary>
-    public class Pickup : GameEntity, IWrapper<ItemPickupBase>, IWorldSpace
+    public class Pickup : TypeCastObject<Pickup>, IWrapper<ItemPickupBase>, IWorldSpace
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Items.Item"/>.
@@ -54,7 +56,6 @@ namespace Exiled.API.Features.Pickups
         /// Created only for <see cref="Projectile"/> properly work.
         /// </remarks>
         internal Pickup()
-            : base()
         {
         }
 
@@ -63,7 +64,6 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="pickupBase">The base <see cref="ItemPickupBase"/> class.</param>
         internal Pickup(ItemPickupBase pickupBase)
-            : base()
         {
             Base = pickupBase;
 
@@ -104,13 +104,17 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> which contains all the <see cref="Pickup"/> instances.
         /// </summary>
-        public static new IEnumerable<Pickup> List => BaseToPickup.Values;
+        public static IEnumerable<Pickup> List => BaseToPickup.Values;
 
         /// <summary>
-        /// Gets a randomly selected <see cref="Pickup"/>.
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
         /// </summary>
-        /// <returns>A randomly selected <see cref="Pickup"/> object.</returns>
-        public static Pickup Random => BaseToPickup.Random().Value;
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.Transform"/> of the Pickup.
+        /// </summary>
+        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Rigidbody"/> of the Pickup.
@@ -259,7 +263,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the pickup position.
         /// </summary>
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
-        public override Vector3 Position
+        public Vector3 Position
         {
             get => Base.Position;
             set => Base.Position = value;
@@ -270,7 +274,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public RelativePosition RelativePosition
         {
-            get => new(Room.Transform.TransformPoint(Position));
+            get => new(Room.transform.TransformPoint(Position));
             set => Position = value.Position;
         }
 
@@ -278,7 +282,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the pickup rotation.
         /// </summary>
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
-        public override Quaternion Rotation
+        public Quaternion Rotation
         {
             get => Base.Rotation;
             set => Base.Rotation = value;
@@ -287,7 +291,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether this pickup is spawned.
         /// </summary>
-        public bool IsSpawned { get; internal set; }
+        public bool IsSpawned => NetworkServer.spawned.ContainsValue(Base.netIdentity);
 
         /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.
@@ -530,12 +534,13 @@ namespace Exiled.API.Features.Pickups
         {
             // condition for projectiles
             if (!GameObject.activeSelf)
+            {
                 GameObject.SetActive(true);
+            }
 
             if (!IsSpawned)
             {
                 NetworkServer.Spawn(GameObject);
-                IsSpawned = true;
             }
         }
 
@@ -566,7 +571,6 @@ namespace Exiled.API.Features.Pickups
         {
             if (IsSpawned)
             {
-                IsSpawned = false;
                 NetworkServer.UnSpawn(GameObject);
             }
         }

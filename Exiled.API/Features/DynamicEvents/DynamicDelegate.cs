@@ -43,11 +43,5 @@ namespace Exiled.API.Features.DynamicEvents
         /// Gets the <see cref="DynamicDelegate"/>'s delegate.
         /// </summary>
         public Action Delegate { get; }
-
-        /// <summary>
-        /// Implicitly converts an <see cref="DynamicDelegate"/> to <see cref="Action"/>.
-        /// </summary>
-        /// <param name="delegate">The <see cref="DynamicDelegate"/> to convert.</param>
-        public static implicit operator Action(DynamicDelegate @delegate) => @delegate.Delegate;
     }
 }

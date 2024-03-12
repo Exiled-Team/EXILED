@@ -12,16 +12,16 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
-    using Exiled.API.Extensions;
-    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
+
     using MapGeneration.Distributors;
+
     using UnityEngine;
 
     /// <summary>
     /// Wrapper class for <see cref="Scp079Generator"/>.
     /// </summary>
-    public class Generator : GameEntity, IWrapper<Scp079Generator>, IWorldSpace
+    public class Generator : IWrapper<Scp079Generator>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.
@@ -34,7 +34,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/>.</param>
         internal Generator(Scp079Generator scp079Generator)
-            : base()
         {
             Base = scp079Generator;
             Scp079GeneratorToGenerator.Add(scp079Generator, this);
@@ -43,13 +42,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances.
         /// </summary>
-        public static new IReadOnlyCollection<Generator> List => Scp079GeneratorToGenerator.Values;
-
-        /// <summary>
-        /// Gets a randomly selected <see cref="Generator"/>.
-        /// </summary>
-        /// <returns>A randomly selected <see cref="Generator"/> object.</returns>
-        public static Generator Random => List.Random();
+        public static IReadOnlyCollection<Generator> List => Scp079GeneratorToGenerator.Values;
 
         /// <summary>
         /// Gets the base <see cref="Scp079Generator"/>.
@@ -59,7 +52,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the generator.
         /// </summary>
-        public override GameObject GameObject => Base.gameObject;
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.Transform"/> of the generator.
+        /// </summary>
+        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the generator's <see cref="Room"/>.
@@ -205,12 +203,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the generator position.
         /// </summary>
-        public override Vector3 Position => Transform.position;
+        public Vector3 Position => Base.transform.position;
 
         /// <summary>
         /// Gets the generator rotation.
         /// </summary>
-        public override Quaternion Rotation => Transform.rotation;
+        public Quaternion Rotation => Base.transform.rotation;
 
         /// <summary>
         /// Gets or sets the required permissions to interact with the generator.
@@ -240,8 +238,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satisfy.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satisfy the condition.</returns>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satify the condition.</returns>
         public static IEnumerable<Generator> Get(Func<Generator, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -271,8 +269,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Try-get a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satisfy.</param>
-        /// <param name="generators">A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satisfy the condition.</param>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="generators">A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satify the condition.</param>
         /// <returns>Whether or not at least one generator was found.</returns>
         public static bool TryGet(Func<Generator, bool> predicate, out IEnumerable<Generator> generators)
         {

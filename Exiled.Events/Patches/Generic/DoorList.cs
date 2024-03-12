@@ -11,14 +11,18 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1402
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection.Emit;
 
     using API.Features;
 
     using Exiled.API.Features.Doors;
+    using Exiled.API.Features.Pools;
 
     using HarmonyLib;
 
     using Interactables.Interobjects.DoorUtils;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="DoorVariant.RegisterRooms"/>.

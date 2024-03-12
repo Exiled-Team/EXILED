@@ -38,7 +38,7 @@ namespace Exiled.Events.EventArgs.Map
             Player = scp;
             Role = scp.Role;
             DamageHandler = new CustomDamageHandler(scp, damageHandlerBase);
-            Attacker = DamageHandler.Is(out CustomAttackerHandler customAttackerHandler) ? customAttackerHandler.Attacker : null;
+            Attacker = DamageHandler.BaseIs(out CustomAttackerHandler customAttackerHandler) ? customAttackerHandler.Attacker : null;
             TerminationCause = damageHandlerBase.CassieDeathAnnouncement.Announcement;
             IsAllowed = isAllowed;
         }

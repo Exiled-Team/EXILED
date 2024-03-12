@@ -13,8 +13,6 @@ namespace Exiled.API.Features
 
     using DamageHandlers;
     using Enums;
-    using Exiled.API.Extensions;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Doors;
     using Exiled.API.Interfaces;
     using UnityEngine;
@@ -22,7 +20,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A wrapper class for <see cref="BreakableWindow"/>.
     /// </summary>
-    public class Window : GameEntity, IWrapper<BreakableWindow>, IWorldSpace
+    public class Window : IWrapper<BreakableWindow>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BreakableWindow"/>s and their corresponding <see cref="Window"/>.
@@ -35,7 +33,6 @@ namespace Exiled.API.Features
         /// <param name="window">The base <see cref="BreakableWindow"/> for this door.</param>
         /// <param name="room">The <see cref="Room"/> for this window.</param>
         internal Window(BreakableWindow window, Room room)
-            : base()
         {
             BreakableWindowToWindow.Add(window, this);
             Base = window;
@@ -50,13 +47,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
-        public static new IReadOnlyCollection<Window> List => BreakableWindowToWindow.Values;
-
-        /// <summary>
-        /// Gets a randomly selected <see cref="Window"/>.
-        /// </summary>
-        /// <returns>A randomly selected <see cref="Window"/> object.</returns>
-        public static Window Random => List.Random();
+        public static IReadOnlyCollection<Window> List => BreakableWindowToWindow.Values;
 
         /// <summary>
         /// Gets the base-game <see cref="BreakableWindow"/> for this window.
@@ -66,12 +57,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the window.
         /// </summary>
-        public override GameObject GameObject => Base.gameObject;
+        public GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the window's <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public override Transform Transform => Base._transform;
+        public Transform Transform => Base._transform;
 
         /// <summary>
         /// Gets the <see cref="Features.Room"/> the window is in.
@@ -87,6 +78,15 @@ namespace Exiled.API.Features
         /// Gets the window's <see cref="ZoneType"/>.
         /// </summary>
         public ZoneType Zone => Room.Zone;
+
+        /// <summary>
+        /// Gets or sets the window's position.
+        /// </summary>
+        public Vector3 Position
+        {
+            get => GameObject.transform.position;
+            set => GameObject.transform.position = value;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this window is breakable.
@@ -109,6 +109,15 @@ namespace Exiled.API.Features
         {
             get => Base.health;
             set => Base.health = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the window's rotation.
+        /// </summary>
+        public Quaternion Rotation
+        {
+            get => GameObject.transform.rotation;
+            set => GameObject.transform.rotation = value;
         }
 
         /// <summary>
@@ -150,8 +159,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Window"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satisfy.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Window"/> which contains elements that satisfy the condition.</returns>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Window"/> which contains elements that satify the condition.</returns>
         public static IEnumerable<Window> Get(Func<Window, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -169,8 +178,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Try-get a <see cref="IEnumerable{T}"/> of <see cref="Window"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satisfy.</param>
-        /// <param name="windows">A <see cref="IEnumerable{T}"/> of <see cref="Window"/> which contains elements that satisfy the condition.</param>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="windows">A <see cref="IEnumerable{T}"/> of <see cref="Window"/> which contains elements that satify the condition.</param>
         /// <returns>Whether or not at least one window was found.</returns>
         public static bool TryGet(Func<Window, bool> predicate, out IEnumerable<Window> windows)
         {
@@ -181,21 +190,23 @@ namespace Exiled.API.Features
         /// <summary>
         /// Break the window.
         /// </summary>
-        public void Break() => Base.BreakWindow();
+        public void BreakWindow() => Base.BreakWindow();
 
         /// <summary>
         /// Damages the window.
         /// </summary>
         /// <param name="amount">The amount of damage to deal.</param>
-        public void Damage(float amount) => Base.ServerDamageWindow(amount);
+        public void DamageWindow(float amount) => Base.ServerDamageWindow(amount);
 
         /// <summary>
         /// Damages the window.
         /// </summary>
         /// <param name="amount">The amount of damage to deal.</param>
         /// <param name="handler">The handler of damage.</param>
-        /// <returns>Whether or not the Window get Damage.</returns>
-        public bool Damage(float amount, DamageHandlerBase handler) => Base.Damage(amount, handler, Vector3.zero);
+        public void DamageWindow(float amount, DamageHandlerBase handler)
+        {
+            Base.Damage(amount, handler, Vector3.zero);
+        }
 
         /// <summary>
         /// Returns the Window in a human-readable format.
@@ -203,7 +214,7 @@ namespace Exiled.API.Features
         /// <returns>A string containing Window-related data.</returns>
         public override string ToString() => $"{Type} ({Health}) [{IsBroken}] *{DisableScpDamage}*";
 
-        private GlassType GetGlassType() => !Room ? GlassType.Unknown : Room.Type switch
+        private GlassType GetGlassType() => Room?.Type switch
         {
             RoomType.Lcz330 => GlassType.Scp330,
             RoomType.LczGlassBox => GlassType.GR18,

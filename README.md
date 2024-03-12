@@ -27,7 +27,6 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
 - [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
 - [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
 - [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
-- [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
 
 # Installation
 Installation of EXILED is quite simple. It loads itself through Northwood’s Plugin API. That's why there are two folders inside the ``Exiled.tar.gz`` in release files. ``SCP Secret Laboratory`` contains the necessary files to load EXILED features in ``EXILED`` folder. All you need to do is move these two folders into the appropriate path, which are explained below, and you are done! 
@@ -47,7 +46,7 @@ If you choose to use the installer it will, if run correctly, take care of insta
 ### Manual installation
   - Download the **`Exiled.tar.gz` [from here](https://github.com/Exiled-Team/EXILED/releases)**
   - Extract its contents with [7Zip](https://www.7-zip.org/) or [WinRar](https://www.win-rar.com/download.html?&L=6)
-  - Move the **``EXILED``** folder to **`%appdata%`** *Note: This folder needs to go in ``C:\Users\%UserName%\AppData\Roaming``, and ***NOT*** ``C:\Users\%UserName%\AppData\Roaming\SCP Secret Laboratory``, and **IT MUST** be in (...)\AppData\Roaming, not (...)\AppData\!*
+  - Move the **``EXILED``** folder to **`%appdata%`** *Note: This folder needs to go in ``C:\Users\(Your_User)\AppData\Roaming``, and ***NOT*** ``C:\Users\(Your_User)\AppData\Roaming\SCP Secret Laboratory``, and **IT MUST** be in (...)\AppData\Roaming, not (...)\AppData\!*
   - Move **``SCP Secret Laboratory``** to **`%appdata%`**.
     - Windows 10 & 11:
       Write `%appdata%` in Cortana / the search icon, or the Windows Explorer bar.
@@ -58,7 +57,7 @@ If you choose to use the installer it will, if run correctly, take care of insta
 That's it, EXILED should now be installed and active the next time you boot up your server. Note that EXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
 - To install a plugin, simply:
   - Download a plugin from [*their* releases page](https://i.imgur.com/u34wgPD.jpg) (**it MUST be a `.dll`!**)
-  - Move it to: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (move here by pressing Win + R, then writing `%appdata%`)
+  - Move it to: ``C:\Users\(Your_User)\AppData\Roaming\EXILED\Plugins`` (move here by pressing Win + R, then writing `%appdata%`)
 
 # Linux
 ### Automatic installation ([more information](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))

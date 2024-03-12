@@ -12,8 +12,8 @@ namespace Exiled.API.Features.Core.Generic
     using System.Linq;
     using System.Reflection;
 
-    using Exiled.API.Features.Core.Generic.Pools;
-    using Exiled.API.Interfaces;
+    using Exiled.API.Features.Pools;
+
     using LiteNetLib.Utils;
 
     /// <summary>
@@ -22,7 +22,7 @@ namespace Exiled.API.Features.Core.Generic
     /// </summary>
     /// <typeparam name="TSource">The type of the source object to handle the instance of.</typeparam>
     /// <typeparam name="TObject">The type of the child object to handle the instance of.</typeparam>
-    public abstract class EnumClass<TSource, TObject> : IComparable, IEquatable<TObject>, IComparable<TObject>, IComparer<TObject>, IEnumClass
+    public abstract class EnumClass<TSource, TObject> : IComparable, IEquatable<TObject>, IComparable<TObject>, IComparer<TObject>
         where TSource : Enum
         where TObject : EnumClass<TSource, TObject>
     {
@@ -182,7 +182,7 @@ namespace Exiled.API.Features.Core.Generic
         /// Converts the <see cref="EnumClass{TSource, TObject}"/> instance to a human-readable <see cref="string"/> representation.
         /// </summary>
         /// <returns>A human-readable <see cref="string"/> representation of the <see cref="EnumClass{TSource, TObject}"/> instance.</returns>
-        public override string ToString() => Name;
+        public override string ToString() => name;
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.

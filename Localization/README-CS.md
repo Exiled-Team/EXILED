@@ -44,7 +44,7 @@ Pokud se rozhodnete použít instalační program, postará se při správném s
 ### Manuální instalace
   - Stáhněte si **`Exiled.tar.gz` [odsud](https://github.com/Exiled-Team/EXILED/releases)**
   - Extrahujte jeho obsah pomocí [7Zip](https://www.7-zip.org/) nebo [WinRar](https://www.win-rar.com/download.html?&L=6)
-  - Přesuňte **``EXILED``** složku do **`%appdata%`** *Poznámka: Tato složka musí jít do ``C:\Users\%UserName%\AppData\Roaming``, a ***NE*** ``C:\Users\%UserName%\AppData\Roaming\SCP Secret Laboratory``, a **MUSÍ** být v (...)\AppData\Roaming, ne (...)\AppData\!*
+  - Přesuňte **``EXILED``** složku do **`%appdata%`** *Poznámka: Tato složka musí jít do ``C:\Users\(Vaše_Jméno)\AppData\Roaming``, a ***NE*** ``C:\Users\(Vaše_Jméno)\AppData\Roaming\SCP Secret Laboratory``, a **MUSÍ** být v (...)\AppData\Roaming, ne (...)\AppData\!*
   - Přesuňte **``SCP Secret Laboratory``** do **`%appdata%`**.
     - Windows 10 & 11:
       Napište `%appdata%` do Cortany / vyhledávání.
@@ -55,7 +55,7 @@ Pokud se rozhodnete použít instalační program, postará se při správném s
 To je vše, EXILED by nyní měl být nainstalován a aktivní při příštím spuštění serveru. Pozor, EXILED sám o sobě neudělá téměř nic, takže se ujistěte, že si stáhnete nové pluginy z **[našeho serveru Discord](https://discord.gg/PyUkWTg)**.
 - Chcete-li nainstalovat plugin, jednoduše:
   - Stáhněte si plugin z [*jeho* stránky vydání](https://i.imgur.com/u34wgPD.jpg) (**MUSÍ být `.dll`!**)
-  - Přesuňte jej do: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (dostaňte se sem stiskem Win + R, a pak psaním `%appdata%`)
+  - Přesuňte jej do: ``C:\Users\(Vaše_Jméno)\AppData\Roaming\EXILED\Plugins`` (dostaňte se sem stiskem Win + R, a pak psaním `%appdata%`)
 
 # Linux
 ### Automatická instalace ([více informací](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))

@@ -134,17 +134,22 @@ namespace Exiled.CreditTags
                 {
                     switch (Config.Mode)
                     {
-                        case InfoSide.Badge when canReceiveCreditBadge:
-                            SetCreditBadge(player, value);
+                        case InfoSide.Badge:
+                            if (canReceiveCreditBadge)
+                                SetCreditBadge(player, value);
+
                             break;
-                        case InfoSide.CustomPlayerInfo when canReceiveCreditCustomInfo:
-                            SetCreditCustomInfo(player, value);
+                        case InfoSide.CustomPlayerInfo:
+                            if (canReceiveCreditCustomInfo)
+                                SetCreditCustomInfo(player, value);
+
                             break;
-                        case InfoSide.FirstAvailable when canReceiveCreditBadge:
-                            SetCreditBadge(player, value);
-                            break;
-                        case InfoSide.FirstAvailable when canReceiveCreditCustomInfo:
-                            SetCreditCustomInfo(player, value);
+                        case InfoSide.FirstAvailable:
+                            if (canReceiveCreditBadge)
+                                SetCreditBadge(player, value);
+                            else if (canReceiveCreditCustomInfo)
+                                SetCreditCustomInfo(player, value);
+
                             break;
                     }
                 }

@@ -11,7 +11,8 @@ $Projects = @(
     'Exiled.Events',
     'Exiled.CreditTags',
     'Exiled.Example',
-    'Exiled.CustomModules'
+    'Exiled.CustomItems',
+    'Exiled.CustomRoles'
 )
 
 function Execute {

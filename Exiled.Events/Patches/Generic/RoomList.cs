@@ -14,7 +14,7 @@ namespace Exiled.Events.Patches.Generic
 
     using API.Features;
 
-    using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Pools;
 
     using HarmonyLib;
 
@@ -37,15 +37,14 @@ namespace Exiled.Events.Patches.Generic
             int offset = -3;
             int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(RoomIdUtils), nameof(RoomIdUtils.PositionToCoords)))) + offset;
 
-            // new Room(gameObject)
+            // Room.CreateComponent(gameObject);
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
                 {
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(Room))[0]),
-                    new(OpCodes.Pop),
+                    new(OpCodes.Call, Method(typeof(Room), nameof(Room.CreateComponent))),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)

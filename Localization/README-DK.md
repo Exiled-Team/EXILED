@@ -44,7 +44,7 @@ Hvis du vælger at bruge installationsprogrammet, vil det, hvis det køres korre
 ### Manuel installation
   - Download **`Exiled.tar.gz` [herfra](https://github.com/Exiled-Team/EXILED/releases)**
   - Udpak indholdet med [7Zip](https://www.7-zip.org/) eller [WinRar](https://www.win-rar.com/download.html?&L=6)
-  - Flyt mappen **``EXILED``** til **`%appdata%`** *Bemærk: Denne mappe skal ligge i ``C:\Users\%UserName%\AppData\Roaming``, og ***IKKE*** ``C:\Users\%UserName%\AppData\Roaming\SCP Secret Laboratory``, og **Den SKAL** ligge i (...)\AppData\Roaming\SCP Secret Laboratory``. ..)\AppData\Roaming, ikke (...)\AppData\!*  - Flyt **``SCP Secret Laboratory``** til **`%appdata%`**.
+  - Flyt mappen **``EXILED``** til **`%appdata%`** *Bemærk: Denne mappe skal ligge i ``C:\Users\(Din_Bruger)\AppData\Roaming``, og ***IKKE*** ``C:\Users\(Din_Bruger)\AppData\Roaming\SCP Secret Laboratory``, og **Den SKAL** ligge i (...)\AppData\Roaming\SCP Secret Laboratory``. ..)\AppData\Roaming, ikke (...)\AppData\!*  - Flyt **``SCP Secret Laboratory``** til **`%appdata%`**.
     - Windows 10 og 11:
       Skriv `%appdata%` i Cortana / søgeikonet eller Windows Explorer-linjen
     - Alle andre Windows-versioner:

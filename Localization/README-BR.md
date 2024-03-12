@@ -44,7 +44,7 @@ Se você optar por usar o instalador, se executado corretamente, ele cuidará de
 ### Instalação manual
   - Baixe o **`Exiled.tar.gz` [daqui](https://github.com/Exiled-Team/EXILED/releases)**
   - Extraía seus conteúdos com [7Zip](https://www.7-zip.org/) ou [WinRar](https://www.win-rar.com/download.html?&L=6)
-  - Mova a pasta **``EXILED``** para **`%appdata%`** *Note: Esta pasta precisa ir ao diretório ``C:\Users\%UserName%\AppData\Roaming``, e ***NÃO*** ao ``C:\Users\%UserName%\AppData\Roaming\SCP Secret Laboratory``, e **DEVE** estar em (...)\AppData\Roaming, not (...)\AppData\!*
+  - Mova a pasta **``EXILED``** para **`%appdata%`** *Note: Esta pasta precisa ir ao diretório ``C:\Users\(Your_User)\AppData\Roaming``, e ***NÃO*** ao ``C:\Users\(Your_User)\AppData\Roaming\SCP Secret Laboratory``, e **DEVE** estar em (...)\AppData\Roaming, not (...)\AppData\!*
   - Mova **``SCP Secret Laboratory``** para **`%appdata%`**.
     - Windows 10 e 11:
       Escreva `%appdata%` na Cortana / no ícone de pesquisa ou na barra do Windows Explorer
@@ -55,7 +55,7 @@ Se você optar por usar o instalador, se executado corretamente, ele cuidará de
 É isso, o EXILED agora deve estar instalado e ativo na próxima vez que você inicializar seu servidor. Observe que o EXILED sozinho não fará quase nada, portanto, certifique-se de obter novos plug-ins de **[nosso servidor do Discord](https://discord.gg/PyUkWTg)**
 - Para instalar um plug-in, basta:
   - Baixar um plug-in da [página de lançamentos *deles*](https://i.imgur.com/u34wgPD.jpg) (**DEVE ser um `.dll`!**)
-  - Mova-o para: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (mova-se para cá pressionando Win + R e, em seguida, escrevendo `%appdata%`)
+  - Mova-o para: ``C:\Users\(Your_User)\AppData\Roaming\EXILED\Plugins`` (mova-se para cá pressionando Win + R e, em seguida, escrevendo `%appdata%`)
 
 # Linux
 ### Instalação automática ([mais informações](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))

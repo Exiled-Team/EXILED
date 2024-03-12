@@ -14,7 +14,7 @@ namespace Exiled.API.Extensions
     using System.Text;
     using System.Text.RegularExpressions;
 
-    using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Pools;
 
     /// <summary>
     /// A set of extensions for <see cref="string"/>.

@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.Joined" /> event.
     /// </summary>
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.Start))]
-    public static class Joined
+    internal static class Joined
     {
         internal static void CallEvent(ReferenceHub hub, out Player player)
         {
@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Player
 #if DEBUG
                 Log.Debug("Creating new player object");
 #endif
-                player = Activator.CreateInstance(Player.DEFAULT_PLAYER_CLASS, args: hub) as Player;
+                player = new Player(hub);
 #if DEBUG
                 Log.Debug($"Object exists {player is not null}");
                 Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}");

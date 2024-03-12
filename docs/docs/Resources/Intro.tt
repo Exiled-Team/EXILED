@@ -34,7 +34,7 @@ sidebar_position: 1
 - [IntercomStates](#intercomstates)
 - [BroadcastType](#broadcasttype)
 - [Attachment Names](#attachmentnames)
-- [RoleChangeReason](#rolechangereason)
+- [Spawn Reasons](#spawnreasons)
 - [Prefabs](#prefabs)
 
 ### External resources
@@ -237,12 +237,12 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 </details>
 
-### RoleChangeReason
+### SpawnReasons
 
-<details><summary> <b>RoleChangeReason</b></summary>
+<details><summary> <b>Spawn Reasons</b></summary>
 
-```md title="Latest Updated: <#= Exiled.Loader.AutoUpdateFiles.RequiredSCPSLVersion#>"
-<#= string.Join("\n",Enum.GetValues(typeof(RoleChangeReason)).Cast<RoleChangeReason>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
+<#= string.Join("\n",Enum.GetValues(typeof(SpawnReason)).Cast<SpawnReason>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>

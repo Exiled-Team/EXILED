@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Core.Generic.Pools;
+    using API.Features.Pools;
     using Exiled.Events.Attributes;
     using GameCore;
 
@@ -42,8 +42,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                     // API.Features.Log.Debug("Round restarting", Loader.ShouldDebugBeShown)
                     new(OpCodes.Ldstr, "Round restarting"),
-                    new(OpCodes.Ldc_I4_0),
-                    new(OpCodes.Call, Method(typeof(API.Features.Log), nameof(API.Features.Log.Debug), new[] { typeof(string), typeof(bool) })),
+                    new(OpCodes.Call, Method(typeof(API.Features.Log), nameof(API.Features.Log.Debug), new[] { typeof(string) })),
                 });
 
             const int offset = 1;

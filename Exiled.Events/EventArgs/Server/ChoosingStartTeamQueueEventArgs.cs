@@ -11,19 +11,21 @@ namespace Exiled.Events.EventArgs.Server
     using System.Collections.Generic;
     using System.Text;
 
-    using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Pools;
     using Interfaces;
     using PlayerRoles;
 
     /// <summary>
-    /// Contains all information choosing the team to be assigned to a player.
+    /// Contains all information before a spectator changes the spectated player.
     /// </summary>
     public class ChoosingStartTeamQueueEventArgs : IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChoosingStartTeamQueueEventArgs" /> class.
         /// </summary>
-        /// <param name="teamRespawnQueue"><inheritdoc cref="TeamRespawnQueue" /></param>
+        /// <param name="teamRespawnQueue">
+        /// <inheritdoc cref="TeamRespawnQueue" />
+        /// </param>
         public ChoosingStartTeamQueueEventArgs(string teamRespawnQueue)
         {
             TeamRespawnQueue = new();
@@ -36,19 +38,19 @@ namespace Exiled.Events.EventArgs.Server
         }
 
         /// <summary>
-        /// Gets the team respawn queue.
+        /// Gets the TeamRespawnQueue.
         /// </summary>
         public List<Team> TeamRespawnQueue { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the team can be assigned.
+        /// Gets or sets a value indicating whether the event can continue.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        /// Gets the team respawn queue in a string value.
+        /// Gets the TeamRespawnQueue in a string value.
         /// </summary>
-        /// <returns>The actual modified team respawn queue.</returns>
+        /// <returns>The actual modified TeamRespawnQueue.</returns>
         internal string GetTeamRespawnQueue()
         {
             StringBuilder teamRespawnQueue = StringBuilderPool.Pool.Get();

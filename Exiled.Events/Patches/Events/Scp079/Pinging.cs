@@ -8,12 +8,14 @@
 namespace Exiled.Events.Patches.Events.Scp079
 {
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
-    using API.Features.Core.Generic.Pools;
+    using API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
     using HarmonyLib;
+    using Mirror;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Pinging;
     using PlayerRoles.Subroutines;
@@ -69,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldc_I4_1),
 
                     // PingingEventArgs ev = new(ReferenceHub, RelativePosition, int, byte, Vector3, bool)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PingingEventArgs))[0]),
+                    new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(PingingEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),

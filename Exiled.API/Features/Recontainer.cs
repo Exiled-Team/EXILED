@@ -224,6 +224,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Breaks the glass protecting the activator button.
         /// </summary>
-        public static void Break() => ActivatorWindow.Break();
+        public static void BreakGlass() => ActivatorWindow.BreakWindow();
     }
 }

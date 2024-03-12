@@ -13,7 +13,7 @@ namespace Exiled.Events.Features
     using System.Reflection;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Interfaces;
     using HarmonyLib;
