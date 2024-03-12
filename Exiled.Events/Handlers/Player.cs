@@ -469,8 +469,8 @@ namespace Exiled.Events.Handlers
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> damage a Window.
-        /// </summary> // TODO: DamagingWindow instead of PlayerDamageWindow
-        public static Event<DamagingWindowEventArgs> PlayerDamageWindow { get; set; } = new();
+        /// </summary>
+        public static Event<DamagingWindowEventArgs> DamagingWindow { get; set; } = new();
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> damage a Door.
@@ -481,6 +481,16 @@ namespace Exiled.Events.Handlers
         /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
         /// </summary>
         public static Event<ItemAddedEventArgs> ItemAdded { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
+        /// </summary>
+        public static Event<AddingItemEventArgs> AddingItem { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before a <see cref="T:Exiled.API.Features.Player" /> has an item removed from their inventory.
+        /// </summary>
+        public static Event<RemovingItemEventArgs> RemovingItem { get; set; } = new();
 
         /// <summary>
         /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item removed from their inventory.
@@ -511,6 +521,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before a <see cref="API.Features.Player"/>'s nickname is changed.
         /// </summary>
         public static Event<ChangingNicknameEventArgs> ChangingNickname { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before displaying the hitmarker to the player.
+        /// </summary>
+        public static Event<DisplayingHitmarkerEventArgs> ShowingHitMarker { get; set; } = new();
 
         /// <summary>
         /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
@@ -637,8 +652,7 @@ namespace Exiled.Events.Handlers
         /// Called before throwing a grenade.
         /// </summary>
         /// <param name="ev">The <see cref="ThrownProjectileEventArgs"/> instance.</param>
-        // TODO: rename that to OnThrownProjectile
-        public static void OnThrowingProjectile(ThrownProjectileEventArgs ev) => ThrownProjectile.InvokeSafely(ev);
+        public static void OnThrownProjectile(ThrownProjectileEventArgs ev) => ThrownProjectile.InvokeSafely(ev);
 
         /// <summary>
         /// Called before receving a throwing request.
@@ -931,7 +945,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///  Called before KillPlayer is called.
         /// </summary>
-        /// <param name="ev">The <see cref="KillingPlayerEventArgs"/> event handler. </param>
+        /// <param name="ev">The <see cref="KillingPlayerEventArgs"/> instance. </param>
         public static void OnKillPlayer(KillingPlayerEventArgs ev) => KillingPlayer.InvokeSafely(ev);
 
         /// <summary>
@@ -953,9 +967,21 @@ namespace Exiled.Events.Handlers
             => ItemRemoved.InvokeSafely(new ItemRemovedEventArgs(referenceHub, itemBase, pickupBase));
 
         /// <summary>
+        /// Called before a <see cref="API.Features.Player" /> has an item added to their inventory.
+        /// </summary>
+        /// <param name="ev">The <see cref="AddingItemEventArgs"/> instance.</param>
+        public static void OnAddingItem(AddingItemEventArgs ev) => AddingItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player" /> has an item removed from their inventory.
+        /// </summary>
+        /// <param name="ev">The <see cref="RemovingItemEventArgs"/> instance.</param>
+        public static void OnRemovingItem(RemovingItemEventArgs ev) => RemovingItem.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> enters in an environmental hazard.
         /// </summary>
-        /// <param name="ev">The <see cref="EnteringEnvironmentalHazardEventArgs"/> instance. </param>
+        /// <param name="ev">The <see cref="EnteringEnvironmentalHazardEventArgs"/> instance.</param>
         public static void OnEnteringEnvironmentalHazard(EnteringEnvironmentalHazardEventArgs ev) => EnteringEnvironmentalHazard.InvokeSafely(ev);
 
         /// <summary>
@@ -974,7 +1000,7 @@ namespace Exiled.Events.Handlers
         /// Called before a <see cref="API.Features.Player"/> damage a window.
         /// </summary>
         /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance. </param>
-        public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
+        public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => DamagingWindow.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> damage a window.
@@ -1089,6 +1115,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingNicknameEventArgs"/> instance.</param>
         public static void OnChangingNickname(ChangingNicknameEventArgs ev) => ChangingNickname.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before displaying the hitmarker to the player.
+        /// </summary>
+        /// <param name="ev">The <see cref="DisplayingHitmarkerEventArgs"/> instance.</param>
+        public static void OnShowingHitMarker(DisplayingHitmarkerEventArgs ev) => ShowingHitMarker.InvokeSafely(ev);
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
