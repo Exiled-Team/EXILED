@@ -10,14 +10,12 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
 
     using API.Features;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-    using PlayerRoles.FirstPersonControl.NetworkMessages;
     using PlayerRoles.FirstPersonControl.Spawnpoints;
 
     using UnityEngine;
