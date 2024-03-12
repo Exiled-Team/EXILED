@@ -48,6 +48,11 @@ namespace Exiled.API.Features.Roles
 
             SpeakerAbility = scp079SpeakerAbility;
 
+            if (!SubroutineModule.TryGetSubroutine(out Scp079ElevatorStateChanger scp079ElevatorStateChanger))
+                Log.Error("Scp079ElevatorStateChanger subroutine not found in Scp079Role::ctor");
+
+            ElevatorStateChanger = scp079ElevatorStateChanger;
+
             if (!SubroutineModule.TryGetSubroutine(out Scp079DoorStateChanger scp079DoorAbility))
                 Log.Error("Scp079DoorStateChanger subroutine not found in Scp079Role::ctor");
 
@@ -135,6 +140,11 @@ namespace Exiled.API.Features.Roles
         public Scp079SpeakerAbility SpeakerAbility { get; }
 
         /// <summary>
+        /// Gets SCP-079's <see cref="Scp079ElevatorStateChanger"/>.
+        /// </summary>
+        public Scp079ElevatorStateChanger ElevatorStateChanger { get; }
+
+        /// <summary>
         /// Gets SCP-079's <see cref="Scp079DoorAbility"/>.
         /// </summary>
         public Scp079DoorStateChanger DoorStateChanger { get; }
@@ -212,6 +222,79 @@ namespace Exiled.API.Features.Roles
         {
             get => Camera.Get(Base.CurrentCamera) ?? Camera.Get(CameraType.Hcz079ContChamber);
             set => Base._curCamSync.CurrentCamera = value.Base;
+        }
+
+        /// <summary>
+        /// Gets or sets 079s cooldown duration for Tesla.
+        /// </summary>
+        public float TeslaCooldown
+        {
+            get => TeslaAbility._cooldown;
+            set => TeslaAbility._cooldown = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of aux power to be taken when Tesla is powered by 079.
+        /// Note: Will not apply change on client.
+        /// </summary>
+        public int TeslaUseCost
+        {
+            get => TeslaAbility._cost;
+            set => TeslaAbility._cost = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the multiplier of aux power to regen while speaking.
+        /// </summary>
+        public float SpeakingRegenMultiplier
+        {
+            get => SpeakerAbility._regenMultiplier;
+            set => SpeakerAbility._regenMultiplier = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the duration of ghostlight signal loss.
+        /// </summary>
+        public float GhostlightLockoutDuration
+        {
+            get => LostSignalHandler._ghostlightLockoutDuration;
+            set => LostSignalHandler._ghostlightLockoutDuration = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the cost for blackout ability.
+        /// </summary>
+        public int BlackoutCost
+        {
+            get => BlackoutZoneAbility._cost;
+            set => BlackoutZoneAbility._cost = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the duration for blackout ability.
+        /// </summary>
+        public float BlackoutDuration
+        {
+            get => BlackoutZoneAbility._duration;
+            set => BlackoutZoneAbility._duration = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the cooldown for blackout ability.
+        /// </summary>
+        public float BlackoutCooldown
+        {
+            get => BlackoutZoneAbility._cooldown;
+            set => BlackoutZoneAbility._cooldown = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the cost for changing elevator state.
+        /// </summary>
+        public int ElevatorCost
+        {
+            get => ElevatorStateChanger._cost;
+            set => ElevatorStateChanger._cost = value;
         }
 
         /// <summary>
