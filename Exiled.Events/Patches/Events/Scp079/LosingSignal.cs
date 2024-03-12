@@ -33,8 +33,9 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             if (ev.IsAllowed)
             {
-                __instance._recoveryTime = NetworkTime.time + duration;
+                __instance._recoveryTime = NetworkTime.time + ev.Duration;
                 __instance.ServerSendRpc(true);
+                Handlers.Scp079.OnLostSignal(new(hub, ev.Duration));
             }
 
             return false;
