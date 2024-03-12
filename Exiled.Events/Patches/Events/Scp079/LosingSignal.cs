@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="LosingSignal.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -7,38 +7,92 @@
 
 namespace Exiled.Events.Patches.Events.Scp079
 {
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
     using HarmonyLib;
-    using Mirror;
+    using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp079LostSignalHandler.ServerLoseSignal"/>.
-    /// Adds the <see cref="Handlers.Scp079.LosingSignal" /> event for SCP-079.
+    /// Adds the <see cref="Handlers.Scp079.LosingSignal" /> event and <see cref="Handlers.Scp079.LostSignal"/> for SCP-079.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp079), nameof(Handlers.Scp079.LosingSignal))]
+    [EventPatch(typeof(Handlers.Scp079), nameof(Handlers.Scp079.LostSignal))]
     [HarmonyPatch(typeof(Scp079LostSignalHandler), nameof(Scp079LostSignalHandler.ServerLoseSignal))]
     internal static class LosingSignal
     {
-#pragma warning disable SA1313
-        private static bool Prefix(Scp079LostSignalHandler __instance, float duration)
-#pragma warning restore SA1313
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (!__instance.Role.TryGetOwner(out ReferenceHub hub))
-                return true;
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            LosingSignalEventArgs ev = new(hub, duration);
-            Handlers.Scp079.OnLosingSignal(ev);
+            Label retLabel = generator.DefineLabel();
 
-            if (ev.IsAllowed)
-            {
-                __instance._recoveryTime = NetworkTime.time + ev.Duration;
-                __instance.ServerSendRpc(true);
-                Handlers.Scp079.OnLostSignal(new(hub, ev.Duration));
-            }
+            LocalBuilder ev = generator.DeclareLocal(typeof(LosingSignalEventArgs));
 
-            return false;
+            newInstructions.InsertRange(0, new CodeInstruction[]
+                {
+                    // this.Role._lastOwner
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp079LostSignalHandler), nameof(Scp079LostSignalHandler.Role))),
+                    new(OpCodes.Ldfld, Field(typeof(PlayerRoleBase), nameof(PlayerRoleBase._lastOwner))),
+
+                    // duration
+                    new(OpCodes.Ldarg_1),
+
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
+                    // LosingSignalEventArgs ev = new(ReferenceHub, float, bool)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LosingSignalEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+
+                    // Scp079.OnLosingSignal(ev)
+                    new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnLosingSignal))),
+
+                    // if (ev.IsAllowed) return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(LosingSignalEventArgs), nameof(LosingSignalEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, retLabel),
+
+                    // duration = ev.Duration
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(LosingSignalEventArgs), nameof(LosingSignalEventArgs.Duration))),
+                    new(OpCodes.Starg_S, 1),
+                });
+
+            newInstructions.InsertRange(newInstructions.Count - 1, new CodeInstruction[]
+                {
+                    // this.Role._lastOwner
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp079LostSignalHandler), nameof(Scp079LostSignalHandler.Role))),
+                    new(OpCodes.Ldfld, Field(typeof(PlayerRoleBase), nameof(PlayerRoleBase._lastOwner))),
+
+                    // duration
+                    new(OpCodes.Ldarg_1),
+
+                    // LostSignalEventArgs ev = new(ReferenceHub, float)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LostSignalEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+
+                    // Scp079.OnLostSignal(ev)
+                    new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnLostSignal))),
+                });
+            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

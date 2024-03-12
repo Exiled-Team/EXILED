@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="LostSignalEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Scp079
     /// <summary>
     /// Contains all information after SCP-079 loses its signal.
     /// </summary>
-    public class LostSignalEventArgs : IScp079Event
+    public class LostSignalEventArgs : IScp079Event, IRoomEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LostSignalEventArgs"/> class.
@@ -26,6 +26,7 @@ namespace Exiled.Events.EventArgs.Scp079
             Player = Player.Get(hub);
             Scp079 = Player.Role.As<Scp079Role>();
             Duration = duration;
+            Room = Scp079.Camera.Room;
         }
 
         /// <summary>
@@ -35,6 +36,9 @@ namespace Exiled.Events.EventArgs.Scp079
 
         /// <inheritdoc/>
         public Scp079Role Scp079 { get; }
+
+        /// <inheritdoc/>
+        public Room Room { get; }
 
         /// <summary>
         /// Gets or sets the duration that SCP-079 should lose its signal for.
