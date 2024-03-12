@@ -483,27 +483,6 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="door">The door to lock.</param>
         /// <returns><see langword="true"/> if the door has been lock; otherwise, <see langword="false"/>.</returns>
-        public bool LockDoor(Door door)
-        {
-            if (door is not null)
-            {
-                DoorLockChanger.LockedDoor = door.Base;
-                DoorLockChanger._lockTime = NetworkTime.time;
-                DoorLockChanger.LockedDoor.ServerChangeLock(DoorLockReason.Regular079, true);
-                if (door.Room is not null)
-                    MarkRoom(door.Room);
-                AuxManager.CurrentAux -= DoorLockChanger.GetCostForDoor(DoorAction.Locked, DoorLockChanger.LockedDoor);
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Locks the provided <paramref name="door"/>.
-        /// </summary>
-        /// <param name="door">The door to lock.</param>
-        /// <returns><see langword="true"/> if the door has been lock; otherwise, <see langword="false"/>.</returns>
         /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
         public bool LockDoor(Door door, bool consumeEnergy = true)
         {
