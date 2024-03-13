@@ -396,6 +396,11 @@ namespace Exiled.API.Features.Roles
         public float RemainingLockdownDuration => LockdownRoomAbility.RemainingLockdownDuration;
 
         /// <summary>
+        /// Gets the avaible ammount of rooms that SCP-079 can blacked out.
+        /// </summary>
+        public int BlackoutRemaining => BlackoutCapacity - BlackoutCount;
+
+        /// <summary>
         /// Gets the amount of rooms that SCP-079 has blacked out.
         /// </summary>
         public int BlackoutCount => BlackoutRoomAbility.RoomsOnCooldown;
