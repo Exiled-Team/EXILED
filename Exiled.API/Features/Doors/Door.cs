@@ -563,11 +563,11 @@ namespace Exiled.API.Features.Doors
         {
             switch (Base)
             {
-                case Interactables.Interobjects.BasicDoor basic:
-                    basic.RpcPlayBeepSound(beep is not DoorBeepType.InteractionAllowed);
+                case Interactables.Interobjects.BasicDoor basic when beep is DoorBeepType.PermissionDenied or DoorBeepType.LockBypassDenied:
+                    basic.RpcPlayBeepSound(beep is DoorBeepType.PermissionDenied);
                     break;
                 case Interactables.Interobjects.CheckpointDoor chkPt:
-                    chkPt.RpcPlayBeepSound((byte)Mathf.Min((int)beep, 3));
+                    chkPt.RpcPlayBeepSound((byte)Mathf.Min((int)beep, 2));
                     break;
             }
         }

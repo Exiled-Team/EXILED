@@ -30,29 +30,7 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(RoomIdentifier), nameof(RoomIdentifier.TryAssignId))]
     internal class RoomList
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codeInstructions)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(codeInstructions);
-
-            int offset = -3;
-            int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(RoomIdUtils), nameof(RoomIdUtils.PositionToCoords)))) + offset;
-
-            // new Room(gameObject)
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
-                {
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(Room))[0]),
-                    new(OpCodes.Pop),
-                });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Pool.Return(newInstructions);
-        }
+        private static void Postfix(RoomIdentifier __instance) => Room.Get(__instance);
     }
 
     /// <summary>

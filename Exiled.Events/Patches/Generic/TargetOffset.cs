@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Generic
 {
+#pragma warning disable IDE0060 // Supprimer le paramètre inutilisé
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
