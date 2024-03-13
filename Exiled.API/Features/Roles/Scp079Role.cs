@@ -116,6 +116,7 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp079ScannerTracker subroutine not found in Scp079Role::ctor");
 
             ScannerTracker = scp079ScannerTracker;
+            ScannerSequence = scp079ScannerTracker._sequence;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079ScannerZoneSelector scp079ScannerZoneSelector))
                 Log.Error("Scp079ScannerZoneSelector subroutine not found in Scp079Role::ctor");
@@ -208,6 +209,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-079's <see cref="Scp079ScannerTracker"/>.
         /// </summary>
         public Scp079ScannerTracker ScannerTracker { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079ScannerSequence"/>.
+        /// </summary>
+        public Scp079ScannerSequence ScannerSequence { get; }
 
         /// <summary>
         /// Gets SCP-079's <see cref="Scp079ScannerZoneSelector"/>.
