@@ -448,9 +448,13 @@ namespace Exiled.API.Features.Roles
         public bool IsLost => LostSignalHandler.Lost;
 
         /// <summary>
-        /// Gets a value indicating how much more time SCP-079 will be lost.
+        /// Gets or sets a value indicating how much more time SCP-079 will be lost.
         /// </summary>
-        public float LostTime => LostSignalHandler.RemainingTime;
+        public float LostTime
+        {
+            get => LostSignalHandler.RemainingTime;
+            set => LoseSignal(value);
+        }
 
         /// <summary>
         /// Gets SCP-079's energy regeneration speed.
