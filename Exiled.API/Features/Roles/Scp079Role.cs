@@ -355,9 +355,19 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets SCP-079's next level threshold.
+        /// Gets or sets SCP-079's next level threshold.
         /// </summary>
-        public int NextLevelThreshold => TierManager.NextLevelThreshold;
+        public int NextLevelThreshold
+        {
+            get => TierManager.NextLevelThreshold;
+            set
+            {
+                if (TierManager.AccessTierIndex >= TierManager._thresholdsCount)
+                    return;
+
+                TierManager._levelupThresholds[TierManager.AccessTierIndex] = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets SCP-079's energy.
@@ -394,11 +404,6 @@ namespace Exiled.API.Features.Roles
         /// Gets the Remaining Lockdown Duration.
         /// </summary>
         public float RemainingLockdownDuration => LockdownRoomAbility.RemainingLockdownDuration;
-
-        /// <summary>
-        /// Gets the avaible ammount of rooms that SCP-079 can blacked out.
-        /// </summary>
-        public int BlackoutRemaining => BlackoutCapacity - BlackoutCount;
 
         /// <summary>
         /// Gets the amount of rooms that SCP-079 has blacked out.
