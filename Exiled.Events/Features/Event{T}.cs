@@ -36,7 +36,7 @@ namespace Exiled.Events.Features
     /// <typeparam name="T">The specified <see cref="EventArgs"/> that the event will use.</typeparam>
     public class Event<T> : IExiledEvent
     {
-        private static readonly Dictionary<Type, Event<T>> TypeToEvent = new();
+        private static readonly Dictionary<Type, IExiledEvent> TypeToEvent = new();
 
         private bool patched;
 
@@ -55,7 +55,7 @@ namespace Exiled.Events.Features
         /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Event{T}"/> which contains all the <see cref="Event{T}"/> instances.
         /// </summary>
-        public static IReadOnlyDictionary<Type, Event<T>> Dictionary => TypeToEvent;
+        public static IReadOnlyDictionary<Type, IExiledEvent> Dictionary => TypeToEvent;
 
         /// <summary>
         /// Subscribes a target <see cref="CustomEventHandler{TEventArgs}"/> to the inner event and checks if patching is possible, if dynamic patching is enabled.
