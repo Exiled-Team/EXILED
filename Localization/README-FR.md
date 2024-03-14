@@ -58,7 +58,7 @@ Si vous choisissez d'utiliser l'installateur, il se chargera, s'il est exécuté
 ### Installation de plugin
 C'est tout, EXILED devrait maintenant être installé et actif la prochaine fois que vous démarrez votre serveur. Notez que EXILED par lui-même ne fera presque rien, alors assurez-vous d'obtenir de nouveaux plugins depuis **[notre serveur Discord](https://discord.gg/PyUkWTg)**
 - Pour installer un plugin, il suffit de :
-  - Télécharger un plugin depuis [*leur* page de release](https://i.imgur.com/u34wgPD.jpg) (**il DOIT s'agir d'un fichier `.dll`!**)
+  - Télécharger un plugin depuis [*cette page*](https://i.imgur.com/u34wgPD.jpg) (**il DOIT s'agir d'un fichier `.dll`!**)
   - Déplacer vers: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (pour y accéder, appuyez sur Win + R, puis écrivez `%appdata%`)
 
 # Linux
@@ -82,7 +82,7 @@ C'est tout, EXILED devrait maintenant être installé et actif la prochaine fois
 ### Installation de plugins
 C'est tout, EXILED devrait maintenant être installé et actif la prochaine fois que vous démarrez votre serveur. Notez que EXILED par lui-même ne fera presque rien, alors assurez-vous d'obtenir des plugins depuis **[depuis notre serveur Discord](https://discord.gg/PyUkWTg)**
 - Pour installer un plugin, simplement :
-  - Téléchargez un plugin depuis [*leur page de release](https://i.imgur.com/u34wgPD.jpg) (**il DOIT s'agir d'un fichier `.dll`!**)
+  - Téléchargez un plugin depuis [*cette page*](https://i.imgur.com/u34wgPD.jpg) (**il DOIT s'agir d'un fichier `.dll`!**)
   - Déplacez-le vers: ``~/.config/EXILED/Plugins`` (si vous utilisez SSH en tant que root, alors recherchez le `.config` correct qui sera à l'intérieur de `/home/(SCP Server User)`)
 
 # Config
