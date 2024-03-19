@@ -236,6 +236,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Returns the closest <see cref="TeslaGate"/> to the given <paramref name="position"/>.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3">position</see> to find the closest tesla to.</param>
+        /// <param name="distance">The distance between the tesla and the point.</param>
+        /// <returns>The tesla closest to the provided position.</returns>
+        public static TeslaGate GetClosest(Vector3 position, out float distance)
+        {
+            TeslaGate closest = TeslaGate.List.OrderBy(tesla => Vector3.Distance(position, tesla.Position)).FirstOrDefault();
+            distance = Vector3.Distance(position, closest.Position);
+            return closest;
+        }
+
+        /// <summary>
         /// Triggers the tesla gate.
         /// </summary>
         /// <param name="isInstantBurst">A value indicating whether the shock should be treated as instant burst.</param>
