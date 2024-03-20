@@ -267,7 +267,7 @@ namespace Exiled.API.Features.Items
             Firearm firearm = type is FirearmType.None ? null : (Firearm)Create(type.GetItemType());
 
             if (firearm is not null)
-                firearm.Ammo = ammo is null ? firearm.MaxAmmo : (byte)ammo;
+                firearm.Ammo = ammo ?? firearm.MaxAmmo;
 
             return firearm;
         }
