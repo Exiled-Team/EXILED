@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="TogglingWeaponFlashlightEventArgs.cs" company="Exiled Team">
+// <copyright file="ToggledWeaponFlashlightEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -13,12 +13,12 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before a player toggles the weapon's flashlight.
+    /// Contains all information after a player toggles the weapon's flashlight.
     /// </summary>
-    public class TogglingWeaponFlashlightEventArgs : IPlayerEvent, IFirearmEvent, IDeniableEvent
+    public class ToggledWeaponFlashlightEventArgs : IPlayerEvent, IFirearmEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TogglingWeaponFlashlightEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ToggledWeaponFlashlightEventArgs" /> class.
         /// </summary>
         /// <param name="player">
         /// <inheritdoc cref="Player" />
@@ -29,26 +29,17 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="newState">
         /// <inheritdoc cref="NewState" />
         /// </param>
-        /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
-        /// </param>
-        public TogglingWeaponFlashlightEventArgs(Player player, Firearm firearm, bool newState, bool isAllowed = true)
+        public ToggledWeaponFlashlightEventArgs(Player player, Firearm firearm, bool newState)
         {
             Firearm = firearm;
             Player = player;
             NewState = newState;
-            IsAllowed = isAllowed;
         }
 
         /// <summary>
         /// Gets a value indicating whether the new weapon's flashlight state will be enabled.
         /// </summary>
         public bool NewState { get; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the weapon's flashlight can be toggled.
-        /// </summary>
-        public bool IsAllowed { get; set; }
 
         /// <summary>
         /// Gets the <see cref="API.Features.Items.Firearm" /> being held.
