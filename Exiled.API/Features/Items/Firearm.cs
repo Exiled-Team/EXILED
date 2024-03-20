@@ -260,29 +260,14 @@ namespace Exiled.API.Features.Items
         /// Creates and returns a <see cref="Firearm"/> representing the provided <see cref="Enums.FirearmType"/>.
         /// </summary>
         /// <param name="type">The type of firearm to create.</param>
+        /// <param name="ammo">The amount of ammo to add. Use null to add max ammo.</param>
         /// <returns>The newly created firearm.</returns>
-        public static Firearm Create(FirearmType type)
+        public static Firearm Create(FirearmType type, byte? ammo = null)
         {
             Firearm firearm = type is FirearmType.None ? null : (Firearm)Create(type.GetItemType());
 
             if (firearm is not null)
-                firearm.Ammo = firearm.MaxAmmo;
-
-            return firearm;
-        }
-
-        /// <summary>
-        /// Creates and returns a <see cref="Firearm"/> representing the provided <see cref="Enums.FirearmType"/>.
-        /// </summary>
-        /// <param name="type">The type of firearm to create.</param>
-        /// <param name="ammo">The amount of ammo to add.</param>
-        /// <returns>The newly created firearm.</returns>
-        public static Firearm Create(FirearmType type, byte ammo)
-        {
-            Firearm firearm = Create(type);
-
-            if (firearm is not null)
-                firearm.Ammo = ammo;
+                firearm.Ammo = ammo is null ? firearm.MaxAmmo : (byte)ammo;
 
             return firearm;
         }
