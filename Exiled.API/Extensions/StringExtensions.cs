@@ -88,6 +88,31 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
+        /// Converts a <see cref="string"/> from snake_case convention.
+        /// </summary>
+        /// <param name="str">The string to be converted.</param>
+        /// <returns>Returns the new NotSnakeCase string.</returns>
+        public static string FromSnakeCase(this string str)
+        {
+            string result = string.Empty;
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (str[i] == '_')
+                {
+                    result += str[i + 1].ToString().ToUpper();
+                    i++;
+                }
+                else
+                {
+                    result += str[i];
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Converts an <see cref="IEnumerable{T}"/> into a string.
         /// </summary>
         /// <typeparam name="T">The type of the IEnumerable.</typeparam>

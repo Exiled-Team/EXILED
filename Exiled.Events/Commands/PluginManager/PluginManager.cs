@@ -33,7 +33,7 @@ namespace Exiled.Events.Commands.PluginManager
         public override string[] Aliases { get; } = new[] { "plymanager", "plmanager", "pmanager", "plym" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = "Manage plugin. Enable, disable and show plugins.";
+        public override string Description { get; } = "Manage plugin. Enable, disable, show and install plugins.";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()
@@ -42,12 +42,13 @@ namespace Exiled.Events.Commands.PluginManager
             RegisterCommand(Enable.Instance);
             RegisterCommand(Disable.Instance);
             RegisterCommand(Patches.Instance);
+            RegisterCommand(Install.Instance);
         }
 
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Please, specify a valid subcommand! Available ones: enable, disable, show, patches";
+            response = "Please, specify a valid subcommand! Available ones: enable, disable, show, patches, install";
             return false;
         }
     }
