@@ -67,7 +67,7 @@ namespace Exiled.API.Features.Items
             if (Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.Flashlight))
                 firearmStatusFlags |= FirearmStatusFlags.FlashlightEnabled;
 
-            Base.Status = new FirearmStatus(Base.AmmoManagerModule.MaxAmmo, firearmStatusFlags, Base.Status.Attachments);
+            Base.Status = new(Base.AmmoManagerModule.MaxAmmo, firearmStatusFlags, Base.Status.Attachments);
         }
 
         /// <inheritdoc cref="BaseCodesValue"/>.
@@ -260,11 +260,26 @@ namespace Exiled.API.Features.Items
         /// Creates and returns a <see cref="Firearm"/> representing the provided <see cref="Enums.FirearmType"/>.
         /// </summary>
         /// <param name="type">The type of firearm to create.</param>
-        /// <param name="ammo">Amount of ammo to add.</param>
         /// <returns>The newly created firearm.</returns>
-        public static Firearm Create(FirearmType type, byte ammo = 0)
+        public static Firearm Create(FirearmType type)
         {
             Firearm firearm = type is FirearmType.None ? null : (Firearm)Create(type.GetItemType());
+
+            if (firearm is not null)
+                firearm.Ammo = firearm.MaxAmmo;
+
+            return firearm;
+        }
+
+        /// <summary>
+        /// Creates and returns a <see cref="Firearm"/> representing the provided <see cref="Enums.FirearmType"/>.
+        /// </summary>
+        /// <param name="type">The type of firearm to create.</param>
+        /// <param name="ammo">The amount of ammo to add.</param>
+        /// <returns>The newly created firearm.</returns>
+        public static Firearm Create(FirearmType type, byte ammo)
+        {
+            Firearm firearm = Create(type);
 
             if (firearm is not null)
                 firearm.Ammo = ammo;
