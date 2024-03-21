@@ -18,13 +18,12 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
-    using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
-    using MapGeneration.Distributors;
     using UnityEngine;
 
     /// <summary>
@@ -521,16 +520,16 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                 {
                     for (int i = 0; i < 50; i++)
                     {
-                        if (Map.Lockers is null)
+                        if (Locker.List is null)
                             continue;
 
-                        Locker locker = Map.Lockers[Loader.Loader.Random.Next(Map.Lockers.Count)];
+                        Locker locker = Locker.List.Random();
 
                         if (locker is null || locker.Loot is null || locker.Chambers is null)
                             continue;
 
-                        LockerChamber chamber = locker.Chambers[Loader.Loader.Random.Next(Mathf.Max(0, locker.Chambers.Length - 1))];
-                        Vector3 position = chamber._spawnpoint.transform.position;
+                        Chamber chamber = locker.Chambers.Random();
+                        Vector3 position = chamber.Spawnpoint.position;
                         Spawn(position, null);
 
                         Log.Debug($"Spawned {Name} at {position} ({spawnPoint.Name})", true);

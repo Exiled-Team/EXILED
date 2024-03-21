@@ -16,6 +16,7 @@ namespace Exiled.API.Features
     using Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Hazards;
+    using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Toys;
     using global::Hazards;
@@ -26,7 +27,6 @@ namespace Exiled.API.Features
     using Items;
     using LightContainmentZoneDecontamination;
     using MapGeneration;
-    using MapGeneration.Distributors;
     using Mirror;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
@@ -46,11 +46,6 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Map
     {
-        /// <summary>
-        /// A list of <see cref="Locker"/>s on the map.
-        /// </summary>
-        internal static readonly List<Locker> LockersValue = new(35);
-
         /// <summary>
         /// A list of <see cref="PocketDimensionTeleport"/>s on the map.
         /// </summary>
@@ -120,11 +115,6 @@ namespace Exiled.API.Features
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
         /// </summary>
         public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports { get; } = TeleportsValue.AsReadOnly();
-
-        /// <summary>
-        /// Gets all <see cref="Locker"/> objects.
-        /// </summary>
-        public static ReadOnlyCollection<Locker> Lockers { get; } = LockersValue.AsReadOnly();
 
         /// <summary>
         /// Gets all <see cref="AdminToy"/> objects.
@@ -248,7 +238,7 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Locker"/>.
         /// </summary>
         /// <returns><see cref="Locker"/> object.</returns>
-        public static Locker GetRandomLocker() => Lockers.Random();
+        public static Locker GetRandomLocker() => Locker.List.Random();
 
         /// <summary>
         /// Gets a random <see cref="Pickup"/>.
@@ -395,13 +385,13 @@ namespace Exiled.API.Features
         {
             Item.BaseToItem.Clear();
 
-            LockersValue.RemoveAll(locker => locker == null);
-
             Ragdoll.BasicRagdollToRagdoll.Clear();
 
             Firearm.ItemTypeToFirearmInstance.Clear();
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
+            Locker.BaseToExiledLockers.Clear();
+            Chamber.Chambers.Clear();
         }
     }
 }

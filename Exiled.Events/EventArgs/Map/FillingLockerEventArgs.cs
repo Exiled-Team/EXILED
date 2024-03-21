@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
+    using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
 
@@ -31,7 +32,7 @@ namespace Exiled.Events.EventArgs.Map
         public FillingLockerEventArgs(ItemPickupBase pickupBase, LockerChamber lockerChamber)
         {
             Pickup = Pickup.Get(pickupBase);
-            LockerChamber = lockerChamber;
+            Chamber = Chamber.Get(lockerChamber);
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace Exiled.Events.EventArgs.Map
         /// <summary>
         /// Gets a value indicating the target locker chamber.
         /// </summary>
-        public LockerChamber LockerChamber { get; }
+        public Chamber Chamber { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the item can be spawned.
