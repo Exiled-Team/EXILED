@@ -1253,7 +1253,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="sender">The command sender.</param>
         /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
-        public static Player Get(CommandSender sender) => Get(sender.SenderId);
+        public static Player Get(CommandSender sender) => sender is ServerConsoleSender ? Server.Host : Get(sender.SenderId);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="global::ReferenceHub"/>, if any.
