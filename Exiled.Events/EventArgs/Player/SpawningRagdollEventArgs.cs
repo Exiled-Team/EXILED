@@ -28,16 +28,12 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="info">
         /// <inheritdoc cref="Info" />
         /// </param>
-        /// <param name="damageHandlerBase">
-        /// <inheritdoc cref="DamageHandlerBase" />
-        /// </param>
         /// <param name="isAllowed">
         /// <inheritdoc cref="IsAllowed" />
         /// </param>
-        public SpawningRagdollEventArgs(RagdollData info, DamageHandlerBase damageHandlerBase, bool isAllowed = true)
+        public SpawningRagdollEventArgs(RagdollData info, bool isAllowed = true)
         {
             Info = info;
-            DamageHandlerBase = damageHandlerBase;
             Player = Player.Get(info.OwnerHub);
             Scale = Player.Scale;
             IsAllowed = isAllowed;
@@ -97,7 +93,11 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets or sets the ragdoll's <see cref="PlayerStatsSystem.DamageHandlerBase" />.
         /// </summary>
-        public DamageHandlerBase DamageHandlerBase { get; set; }
+        public DamageHandlerBase DamageHandlerBase
+        {
+            get => Info.Handler;
+            set => Info = new RagdollData(Player.ReferenceHub, value, Role, Position, Rotation, Nickname, CreationTime);
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the ragdoll can be spawned.
