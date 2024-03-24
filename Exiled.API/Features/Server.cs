@@ -38,7 +38,7 @@ namespace Exiled.API.Features
         public static Dictionary<Assembly, IPlugin<IConfig>> PluginAssemblies { get; } = new();
 
         /// <summary>
-        /// Gets the player's host of the server.
+        /// Gets the Player of the server.
         /// Might be <see langword="null"/> when called when the server isn't loaded.
         /// </summary>
         public static Player Host { get; internal set; }
