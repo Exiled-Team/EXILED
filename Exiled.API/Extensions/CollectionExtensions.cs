@@ -27,14 +27,13 @@ namespace Exiled.API.Extensions
         /// <returns>A new enumerable with elements removed based on the specified condition.</returns>
         public static IEnumerable<T> RemoveSpecified<T>(this IEnumerable<T> enumerable, Func<T, bool> func)
         {
-            List<T> collection = enumerable.ToList();
-
-            foreach (T item in collection.Where(func).ToList())
+            foreach (T item in enumerable)
             {
-                collection.Remove(item);
+                if (!func(item))
+                {
+                    yield return item;
+                }
             }
-
-            return collection;
         }
 
         /// <summary>
