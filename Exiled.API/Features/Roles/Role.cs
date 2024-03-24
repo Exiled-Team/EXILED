@@ -52,14 +52,34 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets a random human <see cref="RoleTypeId"/>.
+        /// Gets an array of all <see cref="RoleTypeId"/>.
         /// </summary>
-        public static RoleTypeId RandomHuman => Enum.GetValues(typeof(RoleTypeId)).ToArray<RoleTypeId>().Shuffle().FirstOrDefault(role => role.IsHuman());
+        public static IEnumerable<RoleTypeId> AllRoles => Enum.GetValues(typeof(RoleTypeId)).ToArray<RoleTypeId>();
+
+        /// <summary>
+        /// Gets a shuffled list of all possible <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static IEnumerable<RoleTypeId> ShuffledAllRoles => AllRoles.Shuffle();
 
         /// <summary>
         /// Gets a random human <see cref="RoleTypeId"/>.
         /// </summary>
-        public static RoleTypeId RandomScp => Enum.GetValues(typeof(RoleTypeId)).ToArray<RoleTypeId>().Shuffle().FirstOrDefault(role => RoleExtensions.GetTeam(role) == Team.SCPs);
+        public static RoleTypeId RandomHuman => ShuffledAllRoles.FirstOrDefault(role => role.IsHuman());
+
+        /// <summary>
+        /// Gets a random human <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static RoleTypeId RandomScp => ShuffledAllRoles.FirstOrDefault(role => RoleExtensions.GetTeam(role) == Team.SCPs);
+
+        /// <summary>
+        /// Gets a random Ntf <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static RoleTypeId RandomNtf => ShuffledAllRoles.FirstOrDefault(role => RoleExtensions.GetTeam(role) == Team.FoundationForces);
+
+        /// <summary>
+        /// Gets a random Chaos Insurgent <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static RoleTypeId RandomChaos => ShuffledAllRoles.FirstOrDefault(role => RoleExtensions.GetTeam(role) == Team.ChaosInsurgency);
 
         /// <inheritdoc/>
         public override GameObject GameObject => Base.gameObject;
