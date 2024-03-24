@@ -102,7 +102,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether the door is fully open.
         /// </summary>
-        public virtual bool IsFullyOpen => ExactState is 1 || (Base is Timed173PryableDoor && ExactState is 0.5845918f);
+        public virtual bool IsFullyOpen => ExactState is 1;
 
         /// <summary>
         /// Gets a value indicating whether or not the door is currently moving.
