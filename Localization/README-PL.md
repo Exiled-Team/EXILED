@@ -45,7 +45,7 @@ Jeżeli zdecydujecie się na skorzystanie z instalatora, ten - jeżeli użyty po
 ### Ręczna instalacja
   - Pobierzcie **`Exiled.tar.gz` klikając [tutaj](https://github.com/Exiled-Team/EXILED/releases)**
   - Wypakujcie jego zawartośc za pomocą [7Zip'a](https://www.7-zip.org/) albo [WinRar'a](https://www.win-rar.com/download.html?&L=6)
-  - Przenieście folder **``EXILED``** do **`%appdata%`** *UWAGA: Folder EXILED musi znaleźć się w ścieżce ``C:\Users\(Wasz_użytkownik)\AppData\Roaming``, ***A NIE*** ``C:\Users\(Wasz_użytkownik)\AppData\Roaming\SCP Secret Laboratory``, i **MUSI** być w (...)\AppData\Roaming, a nie (...)\AppData\!*
+  - Przenieście folder **``EXILED``** do **`%appdata%`** *UWAGA: Folder EXILED musi znaleźć się w ścieżce ``C:\Users\%UserName%\AppData\Roaming``, ***A NIE*** ``C:\Users\%UserName%\AppData\Roaming\SCP Secret Laboratory``, i **MUSI** być w (...)\AppData\Roaming, a nie (...)\AppData\!*
     - Windows 10:
       Wpiszcie `%appdata%` w Cortanie / ikonce wyszukiwania, albo w Eksploratorze plików Windows
     - Jakakolwiek inna wersja windows:
@@ -55,7 +55,7 @@ Jeżeli zdecydujecie się na skorzystanie z instalatora, ten - jeżeli użyty po
 To tyle, EXILED powinien być juz zainstalowany i aktywowany podczas następnego uruchomienia serwera. Pamiętajcie, że sam EXILED nie będzie robił prawie nic, aby zdobyć pluginy udajcie się na **[nasz serwer Discord](https://discord.gg/PyUkWTg)**
 - Aby zainstalować plugin wystarczy:
   - Pobrać go z [*jego* strony wydań](https://i.imgur.com/u34wgPD.jpg) (**MUSI być to plik `.dll`!**)
-  - Przenieść go do folderu: ``C:\Users\(Wasz_użytkownik)\AppData\Roaming\EXILED\Plugins`` (aby się tutaj dostać wystarczy wcisnąć Win + R i wpisać `%appdata%`)
+  - Przenieść go do folderu: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (aby się tutaj dostać wystarczy wcisnąć Win + R i wpisać `%appdata%`)
 
 # Linux
 ### Automatyczna instalacja ([więcej informacji](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))

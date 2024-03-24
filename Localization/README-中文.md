@@ -37,7 +37,7 @@ EXILED的安装十分简单。因为是用NW插件API来将自身载入，你会
 ### 手动安装
   - 下载 **[Exiled.tar.gz](https://github.com/galaxy119/EXILED/releases)**
   - 使用 [7Zip](https://www.7-zip.org/) 或 [WinRar](https://www.win-rar.com/download.html?&L=6) 解压里面的内容
-  - 移动 **``EXILED``** 文件夹到 **`%appdata%`** （*备注: 这个文件夹需要放在 ``C:\用户\(你的用户)\AppData\Roaming``， 而 ***不是*** ``C:\用户\(你的用户)\AppData\Roaming\SCP Secret Laboratory``， 而且它 **必须** 在 (...)\AppData\Roaming， 而不是 (...)\AppData\!*）
+  - 移动 **``EXILED``** 文件夹到 **`%appdata%`** （*备注: 这个文件夹需要放在 ``C:\用户\%UserName%\AppData\Roaming``， 而 ***不是*** ``C:\用户\%UserName%\AppData\Roaming\SCP Secret Laboratory``， 而且它 **必须** 在 (...)\AppData\Roaming， 而不是 (...)\AppData\!*）
   - 移动 **``SCP Secret Laboratory``** 文件夹到 **`%appdata%`** 中。
   - 按 Win + R 并输入 `%appdata%` 可快捷打开AppData文件夹。
 
@@ -65,7 +65,7 @@ EXILED的安装十分简单。因为是用NW插件API来将自身载入，你会
 - 想要安装插件，只需要:
   - 从[**插件仓库**的Releases页面](https://i.imgur.com/u34wgPD.jpg)中下载DLL文件。(**它必须是个`.dll`!**)
 ## Windows
-  - 移动DLL文件到: ``C:\用户\(你的用户)\AppData\Roaming\EXILED\Plugins`` (可以通过按 Win + R键输入``%appdata%`` 来快速定位到AppData)
+  - 移动DLL文件到: ``C:\用户\%UserName%\AppData\Roaming\EXILED\Plugins`` (可以通过按 Win + R键输入``%appdata%`` 来快速定位到AppData)
 ## Linux
   - 移动DLL文件到: ``~/.config/EXILED/Plugins`` (如果你的SSH用的是root用户，请搜索正确的`.config`文件夹，它会在 `/home/(SCP服务器用户)`下。)
 

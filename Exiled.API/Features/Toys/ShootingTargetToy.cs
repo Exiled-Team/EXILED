@@ -52,11 +52,6 @@ namespace Exiled.API.Features.Toys
         public ShootingTarget Base { get; }
 
         /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the target.
-        /// </summary>
-        public GameObject GameObject => Base.gameObject;
-
-        /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the bullseye.
         /// </summary>
         public GameObject Bullseye => Base._bullsEye.gameObject;
@@ -182,9 +177,10 @@ namespace Exiled.API.Features.Toys
                     }
             }
 
-            shootingTargetToy.AdminToyBase.transform.position = position ?? Vector3.zero;
-            shootingTargetToy.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
-            shootingTargetToy.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+            Transform transform = shootingTargetToy.Base.transform;
+            transform.position = position ?? Vector3.zero;
+            transform.eulerAngles = rotation ?? Vector3.zero;
+            transform.localScale = scale ?? Vector3.one;
 
             if (spawn)
                 shootingTargetToy.Spawn();

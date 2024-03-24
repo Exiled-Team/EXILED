@@ -35,7 +35,7 @@ Eğer kurulum programını kullanmayı seçerseniz ve doğru bir şekilde çalı
 ### Manuel indirme
   -  **`Exiled.tar.gz` ['yi buradan indir](https://github.com/Exiled-Team/EXILED/releases)**
   - İçeriğini [7Zip](https://www.7-zip.org/) veya [WinRar](https://www.win-rar.com/download.html?&L=6) ile çıkartın.
-  - **``EXILED``** Klasörünü **`%appdata%`** ya taşıyın *Not: Bu klasör  ``C:\Users\(Kullanıcı_ismi)\AppData\Roaming``, ve ``C:\Users\(Kullanıcı_ismi)\AppData\Roaming\SCP Secret Laboratory``**'nin içinde değil!**, ve (...)\AppData\Roaming'**de olması zorunludur**. (...)\AppData*'YA DEĞİL!
+  - **``EXILED``** Klasörünü **`%appdata%`** ya taşıyın *Not: Bu klasör  ``C:\Users\%UserName%\AppData\Roaming``, ve ``C:\Users\%UserName%\AppData\Roaming\SCP Secret Laboratory``**'nin içinde değil!**, ve (...)\AppData\Roaming'**de olması zorunludur**. (...)\AppData*'YA DEĞİL!
   - **``SCP Secret Laboratory``**Klasörünü **`%appdata%`**'ya taşı.
     - Windows 10 ve 11:
       Cortanaya / Arama simgesine veya Windows Explorer çubuğuna `%appdata%` yazın.
@@ -46,7 +46,7 @@ Eğer kurulum programını kullanmayı seçerseniz ve doğru bir şekilde çalı
 Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığında aktif olmalıdır. Unutmayın ki EXILED kendi başına neredeyse hiçbir şey yapmaz, bu yüzden yeni eklentileri **[Discord](https://discord.gg/PyUkWTg)** sunucumuzdan almayı unutmayın.
 - Bir Eklenti indirmek için aşağıdaki talimatları okuyun:
   - Bir eklentiyi indirmek için [*Onun* releases (yayınlanma) sayfasına gidin](https://i.imgur.com/u34wgPD.jpg) (**`.dll` UZANTILI OLMALIDIR**)
-  - İndirdiğiniz eklentiyi: ``C:\Users\(Kullanıcı_ismi)\AppData\Roaming\EXILED\Plugins``'dizinine taşıyın (Win + R Tuşlarına basarak `%appdata%` yazarak buraya taşıyabilirsiniz)
+  - İndirdiğiniz eklentiyi: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins``'dizinine taşıyın (Win + R Tuşlarına basarak `%appdata%` yazarak buraya taşıyabilirsiniz)
 
 # Linux
 ### Otomatik indirme ([Daha fazla bilgi için tıkla](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))

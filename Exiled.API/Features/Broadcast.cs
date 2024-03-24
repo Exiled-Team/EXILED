@@ -9,6 +9,8 @@ namespace Exiled.API.Features
 {
     using System.ComponentModel;
 
+    using static global::Broadcast;
+
     /// <summary>
     /// Useful class to save broadcast configs in a cleaner way.
     /// </summary>
@@ -29,7 +31,7 @@ namespace Exiled.API.Features
         /// <param name="duration">The duration of the broadcast, in seconds.</param>
         /// <param name="show">Whether or not the broadcast should be shown.</param>
         /// <param name="type">The type of the broadcast.</param>
-        public Broadcast(string content, ushort duration = 10, bool show = true, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
+        public Broadcast(string content, ushort duration = 10, bool show = true, BroadcastFlags type = BroadcastFlags.Normal)
         {
             Content = content;
             Duration = duration;
@@ -53,7 +55,7 @@ namespace Exiled.API.Features
         /// Gets or sets the broadcast type.
         /// </summary>
         [Description("The broadcast type")]
-        public global::Broadcast.BroadcastFlags Type { get; set; }
+        public BroadcastFlags Type { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the broadcast should be shown or not.

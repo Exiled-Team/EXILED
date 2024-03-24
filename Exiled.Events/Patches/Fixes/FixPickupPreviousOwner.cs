@@ -10,13 +10,12 @@ namespace Exiled.Events.Patches.Fixes
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Footprinting;
     using HarmonyLib;
     using InventorySystem;
     using InventorySystem.Items.Firearms.Ammo;
     using InventorySystem.Items.Pickups;
-    using VoiceChat;
 
     using static HarmonyLib.AccessTools;
 

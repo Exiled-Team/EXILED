@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -58,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrownProjectileEventArgs))[0]),
 
                 // Handlers.Player.OnThrownProjectile(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnThrowingProjectile))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnThrownProjectile))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

@@ -8,9 +8,8 @@
 namespace Exiled.API.Features.DamageHandlers
 {
     using Enums;
-
     using Extensions;
-
+    using PlayerRoles.PlayableScps.Scp939;
     using PlayerStatsSystem;
 
     using BaseHandler = PlayerStatsSystem.DamageHandlerBase;
@@ -46,13 +45,15 @@ namespace Exiled.API.Features.DamageHandlers
                             Scp049DamageHandler.AttackType.Scp0492 => DamageType.Scp0492,
                             _ => DamageType.Scp049,
                         };
+                    case Scp939DamageHandler:
+                        return DamageType.Scp939;
                     case BaseScpHandler scp:
-                        {
-                            DeathTranslation translation = DeathTranslations.TranslationsById[scp._translationId];
-                            if (translation.Id == DeathTranslations.PocketDecay.Id)
-                                return DamageType.Scp106;
-                            return DamageTypeExtensions.TranslationIdConversion.ContainsKey(translation.Id) ? DamageTypeExtensions.TranslationIdConversion[translation.Id] : DamageType.Scp;
-                        }
+                    {
+                        DeathTranslation translation = DeathTranslations.TranslationsById[scp._translationId];
+                        return translation.Id == DeathTranslations.PocketDecay.Id ? DamageType.Scp106 :
+                            DamageTypeExtensions.TranslationIdConversion.ContainsKey(translation.Id) ?
+                                DamageTypeExtensions.TranslationIdConversion[translation.Id] : DamageType.Scp;
+                    }
 
                     default:
                         return base.Type;

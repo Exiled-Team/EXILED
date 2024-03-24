@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs.Player
         public HurtEventArgs(Player target, DamageHandlerBase damageHandler, DamageHandlerBase.HandlerOutput handlerOutput)
         {
             DamageHandler = new CustomDamageHandler(target, damageHandler);
-            Attacker = DamageHandler.BaseIs(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
+            Attacker = DamageHandler.Is(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
             Player = target;
             HandlerOutput = handlerOutput;
         }

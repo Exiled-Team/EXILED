@@ -248,7 +248,7 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Locker"/>.
         /// </summary>
         /// <returns><see cref="Locker"/> object.</returns>
-        public static Locker GetRandomLocker() => Lockers.GetRandomValue();
+        public static Locker GetRandomLocker() => Lockers.Random();
 
         /// <summary>
         /// Gets a random <see cref="Pickup"/>.
@@ -258,7 +258,7 @@ namespace Exiled.API.Features
         public static Pickup GetRandomPickup(ItemType type = ItemType.None)
         {
             List<Pickup> pickups = (type != ItemType.None ? Pickup.List.Where(p => p.Type == type) : Pickup.List).ToList();
-            return pickups.GetRandomValue();
+            return pickups.Random();
         }
 
         /// <summary>
@@ -369,10 +369,9 @@ namespace Exiled.API.Features
             attacker ??= Server.Host;
             if (!InventoryItemLoader.TryGetItem(item, out ThrowableItem throwableItem))
                 return;
-            ExplosionUtils.ServerSpawnEffect(position, item);
 
-            if (throwableItem.Projectile is ExplosionGrenade explosionGrenade)
-                ExplosionGrenade.Explode(attacker.Footprint, position, explosionGrenade);
+            if (throwableItem.Projectile is TimeGrenade timedGrenadePickup)
+                timedGrenadePickup.ServerFuseEnd();
         }
 
         /// <summary>

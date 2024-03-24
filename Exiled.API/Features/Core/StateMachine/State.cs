@@ -14,7 +14,6 @@ namespace Exiled.API.Features.Core.StateMachine
 
     using Exiled.API.Features;
     using Exiled.API.Features.Core.Attributes;
-    using UnityEngine;
 
     /// <summary>
     /// The base class which handles in-context states.

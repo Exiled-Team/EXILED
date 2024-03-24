@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Warhead;
 

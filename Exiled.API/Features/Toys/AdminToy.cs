@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Toys
     using AdminToys;
 
     using Enums;
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using Footprinting;
     using Mirror;
@@ -21,7 +22,7 @@ namespace Exiled.API.Features.Toys
     /// <summary>
     /// A wrapper class for <see cref="AdminToys.AdminToyBase"/>.
     /// </summary>
-    public abstract class AdminToy : IWorldSpace
+    public abstract class AdminToy : GameEntity, IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminToy"/> class.
@@ -29,12 +30,16 @@ namespace Exiled.API.Features.Toys
         /// <param name="toyAdminToyBase">The <see cref="AdminToys.AdminToyBase"/> to be wrapped.</param>
         /// <param name="type">The <see cref="AdminToyType"/> of the object.</param>
         internal AdminToy(AdminToyBase toyAdminToyBase, AdminToyType type)
+            : base()
         {
             AdminToyBase = toyAdminToyBase;
             ToyType = type;
 
             Map.ToysValue.Add(this);
         }
+
+        /// <inheritdoc/>
+        public override GameObject GameObject => AdminToyBase.gameObject;
 
         /// <summary>
         /// Gets the original <see cref="AdminToys.AdminToyBase"/>.
@@ -65,30 +70,12 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets the position of the toy.
-        /// </summary>
-        public Vector3 Position
-        {
-            get => AdminToyBase.transform.position;
-            set => AdminToyBase.transform.position = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the rotation of the toy.
-        /// </summary>
-        public Quaternion Rotation
-        {
-            get => AdminToyBase.transform.rotation;
-            set => AdminToyBase.transform.rotation = value;
-        }
-
-        /// <summary>
         /// Gets or sets the scale of the toy.
         /// </summary>
         public Vector3 Scale
         {
-            get => AdminToyBase.transform.localScale;
-            set => AdminToyBase.transform.localScale = value;
+            get => Transform.localScale;
+            set => Transform.localScale = value;
         }
 
         /// <summary>

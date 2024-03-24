@@ -157,7 +157,12 @@ namespace Exiled.API.Features
         public static void PlayEffects(byte[] effects)
         {
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
-                controller?.RpcPlayEffects(effects);
+            {
+                if (!controller)
+                    continue;
+
+                controller.RpcPlayEffects(effects);
+            }
         }
 
         /// <summary>
@@ -177,17 +182,15 @@ namespace Exiled.API.Features
         /// <param name="playMusic">Whether or not to play the Chaos Insurgency spawn music.</param>
         public static void SummonChaosInsurgencyVan(bool playMusic = true)
         {
-            PlayEffects(
-                playMusic
-                    ? new[]
-                    {
-                        RespawnEffectType.PlayChaosInsurgencyMusic,
-                        RespawnEffectType.SummonChaosInsurgencyVan,
-                    }
-                    : new[]
-                    {
-                        RespawnEffectType.SummonChaosInsurgencyVan,
-                    });
+            PlayEffects(playMusic ? new[]
+                {
+                    RespawnEffectType.PlayChaosInsurgencyMusic,
+                    RespawnEffectType.SummonChaosInsurgencyVan,
+                }
+                : new[]
+                {
+                    RespawnEffectType.SummonChaosInsurgencyVan,
+                });
         }
 
         /// <summary>

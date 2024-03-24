@@ -34,7 +34,7 @@ EXILED - низкоуровневый фреймворк для серверов
 ### Установка вручную
 - Скачайте **`Exiled.tar.gz` [отсюда](https://github.com/galaxy119/EXILED/releases)**.
 - Распакуйте его содержимое с помощью [7Zip](https://www.7-zip.org/) или [WinRar](https://www.win-rar.com/download.html?&L=6).
-- Переместите папку **`EXILED`** в **`%appdata%`** *Примечание: Эта папка должна находиться в ``C:\Users\(ВАШ_ПОЛЬЗОВАТЕЛЬ)\AppData\Roaming``, и ***НЕ*** ``C:\Users\(ВАШ_ПОЛЬЗОВАТЕЛЬ)\AppData\Roaming\SCP Secret Laboratory``, и **ЭТО ДОЛЖНО** быть в (. ...)\AppData\Roaming, а не (...)\AppData\!*.
+- Переместите папку **`EXILED`** в **`%appdata%`** *Примечание: Эта папка должна находиться в ``C:\Users\%UserName%\AppData\Roaming``, и ***НЕ*** ``C:\Users\%UserName%\AppData\Roaming\SCP Secret Laboratory``, и **ЭТО ДОЛЖНО** быть в (. ...)\AppData\Roaming, а не (...)\AppData\!*.
 - Переместите **``SCP Secret Laboratory``** в **`%appdata%`**.
   - Windows 10:
     Напишите `%appdata%` в Cortana / значке поиска или в строке проводника Windows.
@@ -45,7 +45,7 @@ EXILED - низкоуровневый фреймворк для серверов
 Вот и все, теперь EXILED должен быть установлен и активен при следующей загрузке вашего сервера. Обратите внимание, что EXILED сам по себе почти ничего не делает, поэтому обязательно получайте новые плагины с **[нашего сервера Discord](https://discord.gg/PyUkWTg)**.
 - Чтобы установить плагин, просто:
   - Скачайте плагин с [*их* страницы релизов](https://i.imgur.com/u34wgPD.jpg) (**он ДОЛЖЕН быть `.dll`!**)
-  - Переместите его в: ``C:\Users\(ВАШ_ПОЛЬЗОВАТЕЛЬ)\AppData\Roaming\EXILED\Plugins`` (переместите его сюда, нажав Win + R, а затем написав `%appdata%`)
+  - Переместите его в: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (переместите его сюда, нажав Win + R, а затем написав `%appdata%`)
 
 # Linux
 ### Автоматическая установка ([подробнее](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))

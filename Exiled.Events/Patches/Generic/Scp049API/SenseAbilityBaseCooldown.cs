@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Generic.Scp079API
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.API.Features;
 
     using HarmonyLib;

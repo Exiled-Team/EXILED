@@ -7,7 +7,6 @@
 
 namespace Exiled.Loader
 {
-    using System;
     using System.IO;
     using System.Reflection;
 

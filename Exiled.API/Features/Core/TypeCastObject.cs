@@ -7,11 +7,13 @@
 
 namespace Exiled.API.Features.Core
 {
+    using Exiled.API.Features.Core.Interfaces;
+
     /// <summary>
     /// The interface which allows defined objects to be cast to each other.
     /// </summary>
     /// <typeparam name="T">The type of the object to cast.</typeparam>
-    public abstract class TypeCastObject<T>
+    public abstract class TypeCastObject<T> : NullableObject, ITypeCast<T>
         where T : class
     {
         /// <summary>
@@ -21,37 +23,29 @@ namespace Exiled.API.Features.Core
         {
         }
 
-        /// <summary>
-        /// Unsafely casts the current <typeparamref name="T"/> instance to the specified <typeparamref name="TObject"/> type.
-        /// </summary>
-        /// <typeparam name="TObject">The type to which to cast the <typeparamref name="T"/> instance.</typeparam>
-        /// <returns>The cast <typeparamref name="T"/> instance.</returns>
+        /// <inheritdoc/>
         public TObject Cast<TObject>()
-            where TObject : class, T => this as T as TObject;
+            where TObject : class, T => this as TObject;
 
-        /// <summary>
-        /// Safely casts the current <typeparamref name="TObject"/> instance to the specified <typeparamref name="TObject"/> type.
-        /// </summary>
-        /// <typeparam name="TObject">The type to which to cast the <typeparamref name="TObject"/> instance.</typeparam>
-        /// <param name="param">The cast object.</param>
-        /// <returns><see langword="true"/> if the <typeparamref name="TObject"/> instance was successfully cast; otherwise, <see langword="false"/>.</returns>
+        /// <inheritdoc/>
         public bool Cast<TObject>(out TObject param)
             where TObject : class, T
         {
-            param = default;
-
-            if (this as TObject is not TObject cast)
+            if (this is not TObject cast)
+            {
+                param = default;
                 return false;
+            }
 
             param = cast;
             return true;
         }
 
-        /// <inheritdoc cref="Cast{T}()"/>
+        /// <inheritdoc/>
         public TObject As<TObject>()
             where TObject : class, T => Cast<TObject>();
 
-        /// <inheritdoc cref="Cast{T}(out T)"/>
+        /// <inheritdoc/>
         public bool Is<TObject>(out TObject param)
             where TObject : class, T => Cast(out param);
     }

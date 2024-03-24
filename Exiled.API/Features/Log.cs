@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Reflection;
 
     /// <summary>
@@ -38,20 +39,21 @@ namespace Exiled.API.Features
         /// Server must have exiled_debug config enabled.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
-        public static void Debug(object message)
+        /// <param name="traceMethod">A value indicating whether the method invoking the debug function should be traced.</param>
+        public static void Debug(object message, bool traceMethod = false)
         {
             Assembly callingAssembly = Assembly.GetCallingAssembly();
 
 #if DEBUG
             if (callingAssembly.GetName().Name is "Exiled.API")
             {
-                Send($"[{callingAssembly.GetName().Name}] {message}", Discord.LogLevel.Debug, ConsoleColor.Green);
+                Send($"[{callingAssembly.GetName().Name}{(traceMethod ? $"::{new StackFrame(1, false).GetMethod()}] {message}" : $"] {message}")}", Discord.LogLevel.Debug, ConsoleColor.Green);
                 return;
             }
 #endif
 
             if (DebugEnabled.Contains(callingAssembly))
-                Send($"[{callingAssembly.GetName().Name}] {message}", Discord.LogLevel.Debug, ConsoleColor.Green);
+                Send($"[{callingAssembly.GetName().Name}{(traceMethod ? $"::{new StackFrame(1, false).GetMethod()}] {message}" : $"] {message}")}", Discord.LogLevel.Debug, ConsoleColor.Green);
         }
 
         /// <summary>
@@ -73,19 +75,20 @@ namespace Exiled.API.Features
         /// Server must have exiled_debug config enabled.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
-        public static void Debug(string message)
+        /// <param name="traceMethod">A value indicating whether the method invoking the debug function should be traced.</param>
+        public static void Debug(string message, bool traceMethod = false)
         {
             Assembly callingAssembly = Assembly.GetCallingAssembly();
 #if DEBUG
             if (callingAssembly.GetName().Name is "Exiled.API")
             {
-                Send($"[{callingAssembly.GetName().Name}] {message}", Discord.LogLevel.Debug, ConsoleColor.Green);
+                Send($"[{callingAssembly.GetName().Name}{(traceMethod ? $"::{new StackFrame(1, false).GetMethod()}] {message}" : $"] {message}")}", Discord.LogLevel.Debug, ConsoleColor.Green);
                 return;
             }
 #endif
 
             if (DebugEnabled.Contains(callingAssembly))
-                Send($"[{callingAssembly.GetName().Name}] {message}", Discord.LogLevel.Debug, ConsoleColor.Green);
+                Send($"[{callingAssembly.GetName().Name}{(traceMethod ? $"::{new StackFrame(1, false).GetMethod()}] {message}" : $"] {message}")}", Discord.LogLevel.Debug, ConsoleColor.Green);
         }
 
         /// <summary>

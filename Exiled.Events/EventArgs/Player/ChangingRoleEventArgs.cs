@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs.Player
 
     using API.Enums;
     using API.Features;
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Interfaces;
 
     using InventorySystem.Configs;

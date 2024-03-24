@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 sidebar_position: 1
 ---
@@ -21,7 +34,7 @@ sidebar_position: 1
 - [IntercomStates](#intercomstates)
 - [BroadcastType](#broadcasttype)
 - [Attachment Names](#attachmentnames)
-- [Spawn Reasons](#spawnreasons)
+- [RoleChangeReason](#rolechangereason)
 - [Prefabs](#prefabs)
 
 ### External resources
@@ -136,7 +149,7 @@ sidebar_position: 1
 
 <details><summary> <b>Ammo</b></summary>
 
-```md title="Latest Updated: 8.7.3.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] None 
 [1] Nato556 
 [2] Nato762 
@@ -151,7 +164,7 @@ sidebar_position: 1
 
 <details><summary> <b>Doors</b></summary>
 
-```md title="Latest Updated: 8.7.3.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] UnknownDoor 
 [1] Scp914Door 
 [2] GR18Inner 
@@ -220,7 +233,7 @@ sidebar_position: 1
 
 <details><summary> <b>Rooms</b></summary>
 
-```md title="Latest Updated: 8.7.3.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] Unknown 
 [1] LczArmory 
 [2] LczCurve 
@@ -283,7 +296,7 @@ sidebar_position: 1
 
 <details><summary> <b>Elevators</b></summary>
 
-```md title="Latest Updated: 8.7.3.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] Unknown 
 [1] GateA 
 [2] GateB 
@@ -299,7 +312,7 @@ sidebar_position: 1
 
 <details><summary> <b>DamageType</b></summary>
 
-```md title="Latest Updated: 8.7.3.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] Unknown 
 [1] Falldown 
 [2] Warhead 
@@ -381,49 +394,49 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Effects</b></summary>
 
-```md title="Latest Updated: 8.7.3.0"
-[-1] None 
-[0] AmnesiaItems 
-[1] AmnesiaVision 
-[2] Asphyxiated 
-[3] Bleeding 
-[4] Blinded 
-[5] Burned 
-[6] Concussed 
-[7] Corroding 
-[8] Deafened 
-[9] Decontaminating 
-[10] Disabled 
-[11] Ensnared 
-[12] Exhausted 
-[13] Flashed 
-[14] Hemorrhage 
-[15] Invigorated 
-[16] BodyshotReduction 
-[17] Poisoned 
-[18] Scp207 
-[19] Invisible 
-[20] SinkHole 
-[21] DamageReduction 
-[22] MovementBoost 
-[23] RainbowTaste 
-[24] SeveredHands 
-[25] Stained 
-[26] Vitality 
-[27] Hypothermia 
-[28] Scp1853 
-[29] CardiacArrest 
-[30] InsufficientLighting 
-[31] SoundtrackMute 
-[32] SpawnProtected 
-[33] Traumatized 
-[34] AntiScp207 
-[35] Scanned 
-[36] PocketCorroding 
-[37] SilentWalk 
-[38] Marshmallow 
-[39] Strangled 
-[40] Ghostly 
+```md title="Latest Updated: 8.8.0.0"
+[0] None 
+[1] AmnesiaItems 
+[2] AmnesiaVision 
+[3] Asphyxiated 
+[4] Bleeding 
+[5] Blinded 
+[6] Burned 
+[7] Concussed 
+[8] Corroding 
+[9] Deafened 
+[10] Decontaminating 
+[11] Disabled 
+[12] Ensnared 
+[13] Exhausted 
+[14] Flashed 
+[15] Hemorrhage 
+[16] Invigorated 
+[17] BodyshotReduction 
+[18] Poisoned 
+[19] Scp207 
+[20] Invisible 
+[21] SinkHole 
+[22] DamageReduction 
+[23] MovementBoost 
+[24] RainbowTaste 
+[25] SeveredHands 
+[26] Stained 
+[27] Vitality 
+[28] Hypothermia 
+[29] Scp1853 
+[30] CardiacArrest 
+[31] InsufficientLighting 
+[32] SoundtrackMute 
+[33] SpawnProtected 
+[34] Traumatized 
+[35] AntiScp207 
+[36] Scanned 
+[37] PocketCorroding 
+[38] SilentWalk 
+[39] Marshmallow 
+[40] Strangled 
+[41] Ghostly 
 ```
 
 </details>
@@ -432,7 +445,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Keycard Perms</b></summary>
 
-```md title="Latest Updated: 8.7.3.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] None 
 [1] Checkpoints 
 [2] ExitGates 
@@ -453,7 +466,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Lock Type</b></summary>
 
-```md title="Latest Updated: 8.7.3.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] None 
 [1] Regular079 
 [2] Lockdown079 
@@ -488,7 +501,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Blood</b></summary>
 
-```md title="Latest Updated: 8.7.3.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] Default 
 [1] Scp106 
 [2] Spreaded 
@@ -501,7 +514,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>GeneratorState</b></summary>
 
-```md title="Latest Updated: 8.7.3.0"
+```md title="Latest Updated: 8.8.0.0"
 [1] None 
 [2] Unlocked 
 [4] Open 
@@ -543,7 +556,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Attachment Names</b></summary>
 
-```md title="Latest Updated: 8.7.3.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] None 
 [1] IronSights 
 [2] DotSight 
@@ -594,11 +607,11 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 </details>
 
-### SpawnReasons
+### RoleChangeReason
 
-<details><summary> <b>Spawn Reasons</b></summary>
+<details><summary> <b>RoleChangeReason</b></summary>
 
-```md title="Latest Updated: 8.7.3.0"
+```md title="Latest Updated: 13.4.0.2"
 [0] None 
 [1] RoundStart 
 [2] LateJoin 
@@ -606,7 +619,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 [4] Died 
 [5] Escaped 
 [6] Revived 
-[7] ForceClass 
+[7] RemoteAdmin 
 [8] Destroyed 
 ```
 

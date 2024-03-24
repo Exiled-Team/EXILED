@@ -11,8 +11,11 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using Hazards;
+    using MapGeneration;
     using MEC;
     using PlayerRoles;
     using UnityEngine;
@@ -22,7 +25,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game tesla gate.
     /// </summary>
-    public class TeslaGate : IWrapper<BaseTeslaGate>, IWorldSpace
+    public class TeslaGate : GameEntity, IWrapper<BaseTeslaGate>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BaseTeslaGate"/>s and their corresponding <see cref="TeslaGate"/>.
@@ -35,6 +38,7 @@ namespace Exiled.API.Features
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
         /// <param name="room">The <see cref="Features.Room"/> for this tesla.</param>
         internal TeslaGate(BaseTeslaGate baseTeslaGate, Room room)
+            : base()
         {
             Base = baseTeslaGate;
             BaseTeslaGateToTeslaGate.Add(baseTeslaGate, this);
@@ -44,7 +48,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains all the <see cref="TeslaGate"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<TeslaGate> List => BaseTeslaGateToTeslaGate.Values;
+        public static new IReadOnlyCollection<TeslaGate> List => BaseTeslaGateToTeslaGate.Values;
 
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="Player"/> which contains all the players ignored by tesla gates.
@@ -62,6 +66,12 @@ namespace Exiled.API.Features
         public static List<Team> IgnoredTeams { get; set; } = new();
 
         /// <summary>
+        /// Gets a randomly selected <see cref="TeslaGate"/>.
+        /// </summary>
+        /// <returns>A randomly selected <see cref="TeslaGate"/> object.</returns>
+        public static TeslaGate Random => List.Random();
+
+        /// <summary>
         /// Gets the base <see cref="BaseTeslaGate"/>.
         /// </summary>
         public BaseTeslaGate Base { get; }
@@ -69,22 +79,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the tesla gate's <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
-
-        /// <summary>
-        /// Gets the tesla gate's <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public Transform Transform => Base.transform;
+        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the tesla gate's position.
         /// </summary>
-        public Vector3 Position => Transform.position;
+        public override Vector3 Position => Transform.position;
 
         /// <summary>
         /// Gets the tesla gate's rotation.
         /// </summary>
-        public Quaternion Rotation => Quaternion.Euler(Base.localRotation);
+        public override Quaternion Rotation => Quaternion.Euler(Base.localRotation);
 
         /// <summary>
         /// Gets the tesla gate's <see cref="Features.Room"/> which is located in.
@@ -207,8 +212,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains elements that satisfy the condition.</returns>
         public static IEnumerable<TeslaGate> Get(Func<TeslaGate, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -226,8 +231,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Try-get a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <param name="gates">A <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains elements that satify the condition.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <param name="gates">A <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains elements that satisfy the condition.</param>
         /// <returns>Whether or not at least one tesla gate was found.</returns>
         public static bool TryGet(Func<TeslaGate, bool> predicate, out IEnumerable<TeslaGate> gates)
         {

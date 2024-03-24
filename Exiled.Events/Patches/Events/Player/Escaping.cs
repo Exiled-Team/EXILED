@@ -13,12 +13,11 @@ namespace Exiled.Events.Patches.Events.Player
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Enums;
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
 
     using EventArgs.Player;
     using Exiled.Events.Attributes;

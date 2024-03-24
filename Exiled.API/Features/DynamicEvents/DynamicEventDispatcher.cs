@@ -42,7 +42,7 @@ namespace Exiled.API.Features.DynamicEvents
         /// This indexer allows access to bound listeners using an <see cref="object"/> reference.
         /// </summary>
         /// <param name="object">The listener to look for.</param>
-        /// <returns>The obund listener corresponding to the specified reference.</returns>
+        /// <returns>The bound listener corresponding to the specified reference.</returns>
         public KeyValuePair<object, List<Action>> this[object @object] => boundDelegates.FirstOrDefault(kvp => kvp.Key == @object);
 
         /// <summary>
@@ -141,6 +141,19 @@ namespace Exiled.API.Features.DynamicEvents
         /// </summary>
         /// <param name="obj">The listener instance.</param>
         public virtual void Unbind(object obj) => boundDelegates.Remove(obj);
+
+        /// <summary>
+        /// Unbinds a listener from the event dispatcher.
+        /// </summary>
+        /// <param name="obj">The listener instance.</param>
+        /// <param name="del">The delegate to be unbound.</param>
+        public virtual void Unbind(object obj, Action del)
+        {
+            if (!boundDelegates.ContainsKey(obj))
+                return;
+
+            boundDelegates[obj].Remove(del);
+        }
 
         /// <summary>
         /// Invokes the delegates from the specified listener.
