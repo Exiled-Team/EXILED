@@ -199,7 +199,7 @@ namespace Exiled.Events.Features
         {
             while (true)
             {
-                object current;
+                float current;
                 try
                 {
                     if (!coroutine.MoveNext())
@@ -212,7 +212,7 @@ namespace Exiled.Events.Features
                     yield break;
                 }
 
-                yield return (float)current;
+                yield return current;
             }
         }
     }
