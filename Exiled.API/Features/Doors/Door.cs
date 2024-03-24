@@ -107,7 +107,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not the door is currently moving.
         /// </summary>
-        public virtual bool IsMoving => ExactState is not(0 or 1);
+        public virtual bool IsMoving => !(IsFullyOpen || IsFullyClosed);
 
         /// <summary>
         /// Gets a value indicating the precise state of the door, from <c>0-1</c>. A value of <c>0</c> indicates the door is fully closed, while a value of <c>1</c> indicates the door is fully open. Values in-between represent the door's animation progress.
