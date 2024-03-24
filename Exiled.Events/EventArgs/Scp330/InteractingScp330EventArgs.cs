@@ -51,14 +51,10 @@ namespace Exiled.Events.EventArgs.Scp330
         /// </summary>
         public bool ShouldSever { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the player is allowed to interact with SCP-330.
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsAllowed { get; set; } = true;
 
-        /// <summary>
-        /// Gets the <see cref="API.Features.Player" /> triggering the event.
-        /// </summary>
+        /// <inheritdoc/>
         public Player Player { get; }
     }
 }

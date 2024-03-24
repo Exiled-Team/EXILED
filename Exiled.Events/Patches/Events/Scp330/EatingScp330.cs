@@ -53,6 +53,9 @@ namespace Exiled.Events.Patches.Events.Scp330
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp330Bag), nameof(Scp330Bag.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                    // this
+                    new(OpCodes.Ldarg_0),
+
                     // ICandy
                     new(OpCodes.Ldloc_0),
 
@@ -92,6 +95,9 @@ namespace Exiled.Events.Patches.Events.Scp330
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp330Bag), nameof(Scp330Bag.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    // this
+                    new(OpCodes.Ldarg_0),
 
                     // ICandy
                     new(OpCodes.Ldloc_0),
