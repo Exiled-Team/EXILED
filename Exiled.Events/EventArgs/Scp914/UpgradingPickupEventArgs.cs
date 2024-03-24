@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs.Scp914
     using System;
 
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Scp914Processors;
     using Exiled.Events.EventArgs.Interfaces;
     using global::Scp914;
     using InventorySystem.Items.Pickups;
@@ -32,11 +33,15 @@ namespace Exiled.Events.EventArgs.Scp914
         /// <param name="knobSetting">
         /// <inheritdoc cref="KnobSetting" />
         /// </param>
-        public UpgradingPickupEventArgs(ItemPickupBase item, Vector3 newPos, Scp914KnobSetting knobSetting)
+        /// <param name="processor">
+        /// <inheritdoc cref="Processor"/>
+        /// </param>
+        public UpgradingPickupEventArgs(ItemPickupBase item, Vector3 newPos, Scp914KnobSetting knobSetting, Scp914Processor processor)
         {
             Pickup = Pickup.Get(item);
             OutputPosition = newPos;
             KnobSetting = knobSetting;
+            Processor = processor;
         }
 
         /// <summary>
@@ -59,6 +64,11 @@ namespace Exiled.Events.EventArgs.Scp914
         /// Gets or sets SCP-914 working knob setting.
         /// </summary>
         public Scp914KnobSetting KnobSetting { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="Scp914Processor"/> for this item.
+        /// </summary>
+        public Scp914Processor Processor { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the upgrade is successful.

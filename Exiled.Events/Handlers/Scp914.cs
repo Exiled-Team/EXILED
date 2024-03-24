@@ -43,6 +43,16 @@ namespace Exiled.Events.Handlers
         public static Event<ChangingKnobSettingEventArgs> ChangingKnobSetting { get; set; } = new();
 
         /// <summary>
+        /// Invoked after SCP-914 upgrades an item.
+        /// </summary>
+        public static Event<UpgradedPickupEventArgs> UpgradedPickup { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after SCP-914 upgrades an item.
+        /// </summary>
+        public static Event<UpgradedInventoryItemEventArgs> UpgradedInventoryItem { get; set; } = new();
+
+        /// <summary>
         /// Called before SCP-914 upgrades a item.
         /// </summary>
         /// <param name="ev">The <see cref="UpgradingPickupEventArgs" /> instance.</param>
@@ -71,5 +81,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingKnobSettingEventArgs" /> instance.</param>
         public static void OnChangingKnobSetting(ChangingKnobSettingEventArgs ev) => ChangingKnobSetting.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked after SCP-914 upgrades an item.
+        /// </summary>
+        /// <param name="ev">The <see cref="UpgradedPickupEventArgs"/> instance.</param>
+        public static void OnUpgradedPickup(UpgradedPickupEventArgs ev) => UpgradedPickup.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after SCP-914 upgrades an item.
+        /// </summary>
+        /// <param name="ev">The <see cref="UpgradedInventoryItemEventArgs"/> instance.</param>
+        public static void OnUpgradedInventoryItem(UpgradedInventoryItemEventArgs ev) => UpgradedInventoryItem.InvokeSafely(ev);
     }
 }
