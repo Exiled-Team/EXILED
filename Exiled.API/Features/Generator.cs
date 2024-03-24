@@ -26,7 +26,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.
         /// </summary>
-        internal static readonly Dictionary<Scp079Generator, Generator> Scp079GeneratorToGenerator = new();
+        internal static readonly Dictionary<Scp079Generator, Generator> Scp079GeneratorToGenerator = new(new ComponentsEqualityComparer());
         private Room room;
 
         /// <summary>

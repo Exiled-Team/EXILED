@@ -35,7 +35,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="ElevatorChamber"/>s and their corresponding <see cref="Lift"/>.
         /// </summary>
-        internal static readonly Dictionary<ElevatorChamber, Lift> ElevatorChamberToLift = new(8);
+        internal static readonly Dictionary<ElevatorChamber, Lift> ElevatorChamberToLift = new(8, new ComponentsEqualityComparer());
 
         /// <summary>
         /// Internal list that contains all ElevatorDoor for current group.
