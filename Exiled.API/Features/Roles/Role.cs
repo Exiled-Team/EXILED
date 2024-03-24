@@ -229,7 +229,7 @@ namespace Exiled.API.Features.Roles
                 ? includeNonPlayableRoles
                     ? AllRoles
                     : AllRoles.RemoveSpecified(r => RoleExtensions.GetTeam(r) == Team.Dead)
-                : Enum.GetValues(typeof(RoleTypeId)).ToArray<RoleTypeId>().Except(except);
+                : AllRoles.Except(except);
 
             return roles.Shuffle().FirstOrDefault();
         }
