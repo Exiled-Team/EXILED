@@ -59,9 +59,9 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether if a rotation is detected on the player.
+        /// Gets or sets a value indicating whether if the player should get <see cref="Enums.DamageType.Falldown"/> damage.
         /// </summary>
-        public bool FallDamageEnable
+        public bool IsFallDamageEnable
         {
             get => FirstPersonController.FpcModule.Motor._enableFallDamage;
             set
