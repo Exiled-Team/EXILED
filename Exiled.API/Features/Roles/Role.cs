@@ -117,7 +117,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Enums.Side"/> of this <see cref="Role"/>.
         /// </summary>
-        public Side Side => Base.Team.GetSide();
+        public Side Side => Team.GetSide();
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Color"/> of this <see cref="Role"/>.
