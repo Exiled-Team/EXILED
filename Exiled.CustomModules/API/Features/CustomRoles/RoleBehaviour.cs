@@ -126,7 +126,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets or sets a <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> which should be permanently given to the player.
         /// </summary>
-        protected virtual IEnumerable<EffectType> PermanentEffects { get; set; }
+        protected virtual IEnumerable<Effect> PermanentEffects { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether <see cref="FakeAppearance"/> should be used.
@@ -372,8 +372,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (UseFakeAppearance)
                 Owner.ChangeAppearance(FakeAppearance, false);
 
-            if (PermanentEffects is not null)
-                Owner.EnableEffects(PermanentEffects);
+            PermanentEffects?.ForEach(x => Owner.SyncEffect(x));
         }
 
         /// <inheritdoc/>
@@ -390,10 +389,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             if (SustainEffects)
             {
-                foreach (EffectType effect in PermanentEffects)
+                foreach (Effect effect in PermanentEffects)
                 {
-                    if (!Owner.GetEffect(effect).IsEnabled)
-                        Owner.EnableEffect(effect);
+                    Owner.SyncEffect(effect);
                 }
             }
 
