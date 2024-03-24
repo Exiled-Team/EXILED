@@ -64,7 +64,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the next Scp to spawn according to NW logic.
         /// </summary>
-        public static RoleTypeId NextSpawnScp => ScpSpawner.NextScp;
+        public static RoleTypeId NextScpSpawn => ScpSpawner.NextScp;
 
         /// <summary>
         /// Gets the next Human to spawn according to NW logic.
@@ -212,7 +212,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="includeNonPlayableRoles">Specifies whether non-playable roles should be included.</param>
         /// <param name="except">An optional collection of role types to exclude.</param>
         /// <returns>A random <see cref="RoleTypeId"/>.</returns>
-        public static RoleTypeId Random(bool includeNonPlayableRoles = false, IEnumerable<RoleTypeId> except = null)
+        public static RoleTypeId GetRandom(bool includeNonPlayableRoles = false, IEnumerable<RoleTypeId> except = null)
         {
             IEnumerable<RoleTypeId> roles = except is null
                 ? includeNonPlayableRoles
