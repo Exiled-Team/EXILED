@@ -19,6 +19,25 @@ namespace Exiled.API.Extensions
     public static class CollectionExtensions
     {
         /// <summary>
+        /// Removes elements from the enumerable that satisfy the specified condition.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the enumerable.</typeparam>
+        /// <param name="enumerable">The enumerable to remove elements from.</param>
+        /// <param name="func">The condition used to determine which elements to remove.</param>
+        /// <returns>A new enumerable with elements removed based on the specified condition.</returns>
+        public static IEnumerable<T> RemoveSpecified<T>(this IEnumerable<T> enumerable, Func<T, bool> func)
+        {
+            List<T> collection = enumerable.ToList();
+
+            foreach (T item in collection.Where(func).ToList())
+            {
+                collection.Remove(item);
+            }
+
+            return collection;
+        }
+
+        /// <summary>
         /// Gets a random item from an <see cref="IEnumerable{T}"/>.
         /// </summary>
         /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to get the item from.</param>

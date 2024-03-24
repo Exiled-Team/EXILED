@@ -18,8 +18,8 @@ namespace Exiled.API.Features.Roles
     using Extensions;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PlayerRoles.RoleAssign;
     using UnityEngine;
-    using YamlDotNet.Serialization.TypeInspectors;
 
     using FilmmakerGameRole = PlayerRoles.Filmmaker.FilmmakerRole;
     using HumanGameRole = PlayerRoles.HumanRole;
@@ -62,24 +62,14 @@ namespace Exiled.API.Features.Roles
         public static IEnumerable<RoleTypeId> ShuffledAllRoles => AllRoles.Shuffle();
 
         /// <summary>
-        /// Gets a random human <see cref="RoleTypeId"/>.
+        /// Gets the next Scp to spawn according to NW logic.
         /// </summary>
-        public static RoleTypeId RandomHuman => ShuffledAllRoles.FirstOrDefault(role => role.IsHuman());
+        public static RoleTypeId NextSpawnScp => ScpSpawner.NextScp;
 
         /// <summary>
-        /// Gets a random human <see cref="RoleTypeId"/>.
+        /// Gets the next Human to spawn according to NW logic.
         /// </summary>
-        public static RoleTypeId RandomScp => ShuffledAllRoles.FirstOrDefault(role => RoleExtensions.GetTeam(role) == Team.SCPs);
-
-        /// <summary>
-        /// Gets a random Ntf <see cref="RoleTypeId"/>.
-        /// </summary>
-        public static RoleTypeId RandomNtf => ShuffledAllRoles.FirstOrDefault(role => RoleExtensions.GetTeam(role) == Team.FoundationForces);
-
-        /// <summary>
-        /// Gets a random Chaos Insurgent <see cref="RoleTypeId"/>.
-        /// </summary>
-        public static RoleTypeId RandomChaos => ShuffledAllRoles.FirstOrDefault(role => RoleExtensions.GetTeam(role) == Team.ChaosInsurgency);
+        public static RoleTypeId NextHumanSpawn => HumanSpawner.NextHumanRoleToSpawn;
 
         /// <inheritdoc/>
         public override GameObject GameObject => Base.gameObject;
@@ -210,6 +200,13 @@ namespace Exiled.API.Features.Roles
         public static bool operator !=(RoleTypeId type, Role role) => role != type;
 
         /// <summary>
+        /// Gets a random <see cref="RoleTypeId"/> from the specified <see cref="Team"/>.
+        /// </summary>
+        /// <param name="team">The team to get a random of.</param>
+        /// <returns>A random role from the specified team.</returns>
+        public static RoleTypeId GetRandom(Team team) => ShuffledAllRoles.FirstOrDefault(r => RoleExtensions.GetTeam(r) == team);
+
+        /// <summary>
         /// Gets a random <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="includeNonPlayableRoles">Specifies whether non-playable roles should be included.</param>
@@ -217,19 +214,13 @@ namespace Exiled.API.Features.Roles
         /// <returns>A random <see cref="RoleTypeId"/>.</returns>
         public static RoleTypeId Random(bool includeNonPlayableRoles = false, IEnumerable<RoleTypeId> except = null)
         {
-            RoleTypeId[] roles = Enum.GetValues(typeof(RoleTypeId)).ToArray<RoleTypeId>();
+            IEnumerable<RoleTypeId> roles = except is null
+                ? includeNonPlayableRoles
+                    ? AllRoles
+                    : AllRoles.RemoveSpecified(r => RoleExtensions.GetTeam(r) == Team.Dead)
+                : Enum.GetValues(typeof(RoleTypeId)).ToArray<RoleTypeId>().Except(except);
 
-            if (!includeNonPlayableRoles)
-            {
-                IEnumerable<RoleTypeId> exceptRoles = roles.Except(new RoleTypeId[] { RoleTypeId.Filmmaker, RoleTypeId.None, RoleTypeId.Overwatch, RoleTypeId.Spectator });
-
-                if (except is not null)
-                    exceptRoles = exceptRoles.Except(except);
-
-                return exceptRoles.Shuffle().First();
-            }
-
-            return includeNonPlayableRoles && except is not null ? roles.Except(except).Shuffle().First() : roles.Shuffle().First();
+            return roles.Shuffle().FirstOrDefault();
         }
 
         /// <inheritdoc/>
