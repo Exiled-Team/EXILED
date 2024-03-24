@@ -24,7 +24,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-3114.
     /// </summary>
-    public class Scp3114Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp3114Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp3114Role"/> class.

@@ -16,6 +16,7 @@ namespace Exiled.API.Features.Roles
     using MapGeneration;
     using Mirror;
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
     using PlayerRoles.PlayableScps.Scp079.Pinging;
@@ -31,7 +32,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-079.
     /// </summary>
-    public class Scp079Role : Role, ISubroutinedScpRole
+    public class Scp079Role : Role, ISubroutinedScpRole, ISpawnableScp
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp079Role"/> class.

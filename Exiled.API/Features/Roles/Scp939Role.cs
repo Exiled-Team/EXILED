@@ -13,6 +13,7 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Features.Core.Generic.Pools;
 
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
@@ -28,7 +29,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-939.
     /// </summary>
-    public class Scp939Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp939Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp939Role"/> class.
