@@ -3286,13 +3286,14 @@ namespace Exiled.API.Features
         /// <typeparam name="T">The <see cref="StatusEffectBase"/> to change the intensity of.</typeparam>
         /// <param name="intensity">The intensity of the effect.</param>
         /// <param name="duration">The new duration to add to the effect.</param>
-        public void ChangeEffectIntensity<T>(byte intensity, float duration = 0)
+        /// <param name="addDuration">Whether or not to add the duration..</param>
+        public void ChangeEffectIntensity<T>(byte intensity, float duration = 0, bool addDuration = false)
             where T : StatusEffectBase
         {
             if (TryGetEffect(out T statusEffect))
             {
                 statusEffect.Intensity = intensity;
-                statusEffect.ServerChangeDuration(duration, true);
+                statusEffect.ServerChangeDuration(duration, addDuration);
             }
         }
 
@@ -3302,12 +3303,13 @@ namespace Exiled.API.Features
         /// <param name="type">The <see cref="EffectType"/> to change.</param>
         /// <param name="intensity">The new intensity to use.</param>
         /// <param name="duration">The new duration to add to the effect.</param>
-        public void ChangeEffectIntensity(EffectType type, byte intensity, float duration = 0)
+        /// <param name="addDuration">Whether or not to add the duration..</param>
+        public void ChangeEffectIntensity(EffectType type, byte intensity, float duration = 0, bool addDuration = false)
         {
             if (TryGetEffect(type, out StatusEffectBase statusEffect))
             {
                 statusEffect.Intensity = intensity;
-                statusEffect.ServerChangeDuration(duration, true);
+                statusEffect.ServerChangeDuration(duration, addDuration);
             }
         }
 
