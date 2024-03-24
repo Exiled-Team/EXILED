@@ -363,9 +363,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return;
             }
 
-            if (Owner.Role.Cast(out FpcRole fpcRole))
-                fpcRole.IsNoclipEnabled = false;
-
             if (Settings.ArtificialHealth > 0f)
                 Owner.AddAhp(Settings.ArtificialHealth, Owner.MaxArtificialHealth, 0, 1, 0);
 
