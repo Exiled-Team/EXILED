@@ -60,7 +60,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="team">The team to get a random of.</param>
         /// <returns>A random role from the specified team.</returns>
-        public static RoleTypeId GetRandomRole(this Team team) => Role.ShuffledAllRoles.FirstOrDefault(r => RoleExtensions.GetTeam(r) == team);
+        public static RoleTypeId GetRandomRole(this Team team) => Role.ShuffledAllRoles.FirstOrDefault(r => GetTeam(r) == team);
 
         /// <summary>
         /// Gets the <see cref="Team"/> of the given <see cref="RoleTypeId"/>.
