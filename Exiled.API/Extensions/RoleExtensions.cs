@@ -63,6 +63,13 @@ namespace Exiled.API.Extensions
         public static RoleTypeId GetRandomRole(this Team team) => Role.ShuffledAllRoles.FirstOrDefault(r => GetTeam(r) == team);
 
         /// <summary>
+        /// Gets a random <see cref="RoleTypeId"/> from the specified <see cref="Side"/>.
+        /// </summary>
+        /// <param name="side">The team to get a random of.</param>
+        /// <returns>A random role from the specified side.</returns>
+        public static RoleTypeId GetRandomRole(this Side side) => Role.ShuffledAllRoles.FirstOrDefault(r => GetSide(r) == side);
+
+        /// <summary>
         /// Gets the <see cref="Team"/> of the given <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
