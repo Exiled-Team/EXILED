@@ -209,11 +209,11 @@ namespace Exiled.API.Features.Roles
         {
             IEnumerable<RoleTypeId> roles = except is null
                 ? includeNonPlayableRoles
-                    ? AllRoles
-                    : AllRoles.RemoveSpecified(r => RoleExtensions.GetTeam(r) == Team.Dead)
-                : AllRoles.Except(except);
+                    ? ShuffledAllRoles
+                    : ShuffledAllRoles.RemoveSpecified(r => RoleExtensions.GetTeam(r) == Team.Dead)
+                : ShuffledAllRoles.Except(except);
 
-            return roles.Shuffle().FirstOrDefault();
+            return roles.FirstOrDefault();
         }
 
         /// <inheritdoc/>
