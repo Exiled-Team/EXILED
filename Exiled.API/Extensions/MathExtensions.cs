@@ -17,6 +17,12 @@ namespace Exiled.API.Extensions
     /// </summary>
     public static class MathExtensions
     {
+        /// <summary>Returns the square of the Euclidean distance between two specified points.</summary>
+        /// <param name="value1">First point.</param>
+        /// <param name="value2">Seconds point.</param>
+        /// <returns>Square of the distance.</returns>
+        public static float DistanceSquared(Vector3 value1, Vector3 value2) => (value1 - value2).sqrMagnitude;
+
         /// <summary>
         /// Evaluates a probability.
         /// </summary>
