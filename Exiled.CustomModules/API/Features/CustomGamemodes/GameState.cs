@@ -266,7 +266,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
                     List<RoleTypeId> newRoles = new();
 
                     for (int i = 0; i < amount; i++)
-                        newRoles.Add(Role.GetRandom(false, Settings.SpawnableRoles.Except(ev.Roles)));
+                        newRoles.Add(Role.Random(false, Settings.SpawnableRoles.Except(ev.Roles)));
 
                     ev.Roles = roles.Concat(newRoles).ToArray();
                 }
@@ -283,7 +283,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
                     List<RoleTypeId> newRoles = new();
 
                     for (int i = 0; i < amount; i++)
-                        newRoles.Add(Role.GetRandom(false, Settings.NonSpawnableRoles));
+                        newRoles.Add(Role.Random(false, Settings.NonSpawnableRoles));
 
                     ev.Roles = roles.Concat(newRoles).ToArray();
                 }
@@ -301,7 +301,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
                     List<RoleTypeId> newRoles = new();
 
                     for (int i = 0; i < amount; i++)
-                        newRoles.Add(Role.GetRandom(false, Settings.SpawnableRoles.Except(ev.Roles)));
+                        newRoles.Add(Role.Random(false, Settings.SpawnableRoles.Except(ev.Roles)));
 
                     ev.Roles = roles.Concat(newRoles).ToList();
                 }
@@ -318,7 +318,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
                     List<RoleTypeId> newRoles = new();
 
                     for (int i = 0; i < amount; i++)
-                        newRoles.Add(Role.GetRandom(false, Settings.NonSpawnableRoles));
+                        newRoles.Add(Role.Random(false, Settings.NonSpawnableRoles));
 
                     ev.Roles = roles.Concat(newRoles).ToList();
                 }

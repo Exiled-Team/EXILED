@@ -205,14 +205,11 @@ namespace Exiled.API.Features.Roles
         /// <param name="includeNonPlayableRoles">Specifies whether non-playable roles should be included.</param>
         /// <param name="except">An optional collection of role types to exclude.</param>
         /// <returns>A random <see cref="RoleTypeId"/>.</returns>
-        public static RoleTypeId GetRandom(bool includeNonPlayableRoles = false, IEnumerable<RoleTypeId> except = null)
+        public static RoleTypeId Random(bool includeNonPlayableRoles = false, IEnumerable<RoleTypeId> except = null)
         {
-            IEnumerable<RoleTypeId> roles = except is null
-                ? includeNonPlayableRoles
-                    ? ShuffledAllRoles
-                    : ShuffledAllRoles.RemoveSpecified(r => RoleExtensions.GetTeam(r) == Team.Dead)
-                : ShuffledAllRoles.Except(except);
-
+            IEnumerable<RoleTypeId> roles = includeNonPlayableRoles
+                ? ShuffledAllRoles.Except(except ?? Enumerable.Empty<RoleTypeId>())
+                : ShuffledAllRoles.RemoveSpecified(r => RoleExtensions.GetTeam(r) == Team.Dead).Except(except ?? Enumerable.Empty<RoleTypeId>());
             return roles.FirstOrDefault();
         }
 
