@@ -63,6 +63,16 @@ namespace Exiled.Events.Handlers
         public static Event<RecontainedEventArgs> Recontained { get; set; } = new();
 
         /// <summary>
+        /// Invoked before SCP-079 loses signal.
+        /// </summary>
+        public static Event<LosingSignalEventArgs> LosingSignal { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before SCP-079 loses signal.
+        /// </summary>
+        public static Event<LostSignalEventArgs> LostSignal { get; set; } = new();
+
+        /// <summary>
         /// Invoked before SCP-079 sends a ping.
         /// </summary>
         public static Event<PingingEventArgs> Pinging { get; set; } = new();
@@ -130,6 +140,18 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="RecontainedEventArgs" /> instance.</param>
         public static void OnRecontained(RecontainedEventArgs ev) => Recontained.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-079 loses signal.
+        /// </summary>
+        /// <param name="ev">The <see cref="LosingSignalEventArgs" /> instance.</param>
+        public static void OnLosingSignal(LosingSignalEventArgs ev) => LosingSignal.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after SCP-079 loses signal.
+        /// </summary>
+        /// <param name="ev">The <see cref="LostSignalEventArgs" /> instance.</param>
+        public static void OnLostSignal(LostSignalEventArgs ev) => LostSignal.InvokeSafely(ev);
 
         /// <summary>
         /// Called before SCP-079 sends a ping.

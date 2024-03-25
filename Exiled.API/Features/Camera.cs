@@ -197,13 +197,9 @@ namespace Exiled.API.Features
         public override Vector3 Position => Base.Position;
 
         /// <summary>
-        /// Gets or sets the camera's rotation.
+        /// Gets the camera's rotation.
         /// </summary>
-        public override Quaternion Rotation
-        {
-            get => Base._cameraAnchor.rotation;
-            set => Base._cameraAnchor.rotation = value;
-        }
+        public override Quaternion Rotation => Base._cameraAnchor.rotation;
 
         /// <summary>
         /// Gets the value of the <see cref="Camera"/> zoom.

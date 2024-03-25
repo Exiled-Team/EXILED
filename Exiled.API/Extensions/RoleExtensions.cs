@@ -12,12 +12,12 @@ namespace Exiled.API.Extensions
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Features.Roles;
     using Exiled.API.Features.Spawn;
     using InventorySystem;
     using InventorySystem.Configs;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-
     using UnityEngine;
 
     using Team = PlayerRoles.Team;
@@ -54,6 +54,27 @@ namespace Exiled.API.Extensions
             Team.OtherAlive => Side.Tutorial,
             _ => Side.None,
         };
+
+        /// <summary>
+        /// Gets a random <see cref="RoleTypeId"/> from the specified <see cref="Team"/>.
+        /// </summary>
+        /// <param name="team">The team to get a random of.</param>
+        /// <returns>A random role from the specified team.</returns>
+        public static RoleTypeId GetRandomRole(this Team team) => Role.ShuffledAllRoles.FirstOrDefault(r => GetTeam(r) == team);
+
+        /// <summary>
+        /// Gets a random <see cref="RoleTypeId"/> from the specified <see cref="Side"/>.
+        /// </summary>
+        /// <param name="side">The team to get a random of.</param>
+        /// <returns>A random role from the specified side.</returns>
+        public static RoleTypeId GetRandomRole(this Side side) => Role.ShuffledAllRoles.FirstOrDefault(r => GetSide(r) == side);
+
+        /// <summary>
+        /// Gets a random <see cref="RoleTypeId"/> that matches the condition.
+        /// </summary>
+        /// <param name="func">A function defining the condition for selecting.</param>
+        /// <returns>A random <see cref="RoleTypeId"/>.</returns>
+        public static RoleTypeId GetRandomRole(Func<RoleTypeId, bool> func) => Role.ShuffledAllRoles.FirstOrDefault(r => func(r));
 
         /// <summary>
         /// Gets the <see cref="Team"/> of the given <see cref="RoleTypeId"/>.
