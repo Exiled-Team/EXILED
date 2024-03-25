@@ -16,7 +16,6 @@ namespace Exiled.Loader
     using API.Enums;
     using API.Extensions;
     using API.Interfaces;
-
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core.Generic.Pools;
@@ -147,7 +146,39 @@ namespace Exiled.Loader
             catch (YamlException yamlException)
             {
                 Log.Error($"{plugin.Name} configs could not be loaded, some of them are in a wrong format, default configs will be loaded instead!\n{yamlException}");
-                config = plugin.Config;
+                return plugin.Config;
+            }
+
+            Type configType = config.GetType();
+            Type pluginConfigType = plugin.Config.GetType();
+
+            int validations = 0;
+
+            foreach (PropertyInfo propertyInfo in configType.GetProperties())
+            {
+                foreach (Attribute attribute in propertyInfo.GetCustomAttributes())
+                {
+                    if (attribute is not IValidator validator)
+                        continue;
+
+                    object value = propertyInfo.GetValue(config, null);
+                    object defaultValue = pluginConfigType.GetProperty(propertyInfo.Name)?.GetValue(plugin.Config, null);
+
+                    if (!validator.Validate(value))
+                    {
+                        Log.Error($"{plugin.Name} config value {propertyInfo.Name} hasn't passed the validation (attribute ({attribute.GetType().Name})). Default value ({defaultValue}) will be used instead.");
+                        propertyInfo.SetValue(configType, defaultValue);
+                    }
+                    else
+                    {
+                        validations++;
+                    }
+                }
+            }
+
+            if (validations > 0)
+            {
+                Log.Debug($"Successfully passed {validations} validations");
             }
 
             return config;
