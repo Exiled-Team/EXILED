@@ -38,8 +38,6 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public abstract class Role : GameEntity, IWrapper<PlayerRoleBase>
     {
-        private static RoleTypeId[] allRoles;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Role"/> class.
         /// </summary>
@@ -56,16 +54,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets an array of all <see cref="RoleTypeId"/>.
         /// </summary>
-        public static RoleTypeId[] AllRoles
-        {
-            get
-            {
-                if (allRoles is null)
-                    allRoles = Enum.GetValues(typeof(RoleTypeId)).ToArray<RoleTypeId>();
-
-                return allRoles;
-            }
-        }
+        public static IEnumerable<RoleTypeId> AllRoles => EnumExtensions.QueryEnumValue<RoleTypeId>();
 
         /// <summary>
         /// Gets a shuffled list of all possible <see cref="RoleTypeId"/>.
@@ -209,13 +198,6 @@ namespace Exiled.API.Features.Roles
         /// <param name="role">The <see cref="Role"/>.</param>
         /// <returns><see langword="true"/> if the values are not equal.</returns>
         public static bool operator !=(RoleTypeId type, Role role) => role != type;
-
-        /// <summary>
-        /// Gets a random <see cref="RoleTypeId"/> from the specified <see cref="Team"/>.
-        /// </summary>
-        /// <param name="team">The team to get a random of.</param>
-        /// <returns>A random role from the specified team.</returns>
-        public static RoleTypeId GetRandom(Team team) => ShuffledAllRoles.FirstOrDefault(r => RoleExtensions.GetTeam(r) == team);
 
         /// <summary>
         /// Gets a random <see cref="RoleTypeId"/>.
