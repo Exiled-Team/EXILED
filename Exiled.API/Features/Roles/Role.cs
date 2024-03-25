@@ -64,7 +64,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a random human <see cref="RoleTypeId"/>.
         /// </summary>
-        public static RoleTypeId RandomHuman => ShuffledAllRoles.FirstOrDefault(role => role.IsHuman());
+        public static RoleTypeId RandomHuman => RoleExtensions.GetRandomRole(r => r.IsHuman());
 
         /// <summary>
         /// Gets a random human <see cref="RoleTypeId"/>.
