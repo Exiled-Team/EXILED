@@ -62,6 +62,16 @@ namespace Exiled.API.Features.Roles
         public static IEnumerable<RoleTypeId> ShuffledAllRoles => AllRoles.Shuffle();
 
         /// <summary>
+        /// Gets a random human <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static RoleTypeId RandomHuman => ShuffledAllRoles.FirstOrDefault(role => role.IsHuman());
+
+        /// <summary>
+        /// Gets a random human <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static RoleTypeId RandomScp => Team.SCPs.GetRandomRole();
+
+        /// <summary>
         /// Gets the next Scp to spawn according to NW logic.
         /// </summary>
         public static RoleTypeId NextScpSpawn => ScpSpawner.NextScp;
