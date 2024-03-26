@@ -1,6 +1,6 @@
 # Exiled Documentation pour les bas niveau
 *(écrit par [KadeDev](https://github.com/KadeDev) pour la communautée)*
-*(traduit par [Crazy](https://github.com/CrazyMega02))
+*(traduit par [Crazy](https://github.com/CrazyMega02))*
 
 ## Savoir bien commencer
 ### Intro
@@ -12,7 +12,7 @@ Cela permet aussi au developpeurs de plugin à ne pas avoir à constament mettre
 
 Ce document ci-joint va vous apprendre les bases pour la création d'un plugin Exiled.D'ici là vous pouvez motrer au monde entier toute la créativitée que vous avez en vous et pourrez créé grace à ce-ci!
 
-### Example de Plugin
+### Exemple de Plugin
 Un [Exemple de Plugin](https://github.com/galaxy119/EXILED/tree/master/Exiled.Example) qui est un simple plugin montrant les différents évenements et comment les mettre en place proprement. Cette exemple vous permettra d'apprende à utiliser correctement Exiled. Plusieurs choses sont important dans ce plugin, nous allons donc les voir.
 
 #### On Enable + On Disable Mise à jour Dynamique
