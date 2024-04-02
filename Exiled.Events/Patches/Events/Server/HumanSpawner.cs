@@ -50,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Server
                 new(OpCodes.Starg_S, 0),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(PreAssigningHumanRolesEventArgs), nameof(PreAssigningHumanRolesEventArgs.QueueLength))),
-                new(OpCodes.Starg_S, 2),
+                new(OpCodes.Starg_S, 1),
             });
 
             newInstructions.InsertRange(index, new CodeInstruction[]
