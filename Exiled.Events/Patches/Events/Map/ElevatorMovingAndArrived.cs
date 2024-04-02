@@ -49,8 +49,7 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Ldc_I4_1),
 
                     // ElevatorMovingEventArgs ev = new(Lift, true);
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ElevatorMovingEventArgs))),
-                    new(OpCodes.Dup),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ElevatorMovingEventArgs))[0]),
                     new(OpCodes.Dup),
 
                     // Handlers.Map.OnElevatorMoving(ev);
@@ -74,7 +73,7 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Call, Method(typeof(Lift), nameof(Lift.Get), new[] { typeof(ElevatorChamber) })),
 
                     // ElevatorArrivedEventArgs ev = new(Lift);
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ElevatorArrivedEventArgs))),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ElevatorArrivedEventArgs))[0]),
 
                     // Handlers.Map.OnElevatorArrived(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnElevatorArrived))),
