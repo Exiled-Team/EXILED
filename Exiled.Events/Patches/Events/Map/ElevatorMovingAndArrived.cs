@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Map
 
             int index = newInstructions.FindIndex(x => x.Calls(PropertyGetter(typeof(NetworkServer), nameof(NetworkServer.active))));
 
-            Label returnLabel = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(
                 index,
@@ -56,9 +56,14 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnElevatorMoving))),
 
                     // if (!ev.IsAllowed)
-                    //    return;
+                    //    return false;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ElevatorMovingEventArgs), nameof(ElevatorMovingEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, returnLabel),
+                    new(OpCodes.Brtrue_S, continueLabel),
+
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Ret),
+
+                    new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
                 });
 
             int offset = 1;
@@ -78,8 +83,6 @@ namespace Exiled.Events.Patches.Events.Map
                     // Handlers.Map.OnElevatorArrived(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnElevatorArrived))),
                 });
-
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
