@@ -40,6 +40,9 @@ namespace Exiled.API.Features.Core.ConstProperties
             List.Add(this);
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ConstProperty{T}"/> class.
+        /// </summary>
         ~ConstProperty()
         {
             List.Remove(this);
