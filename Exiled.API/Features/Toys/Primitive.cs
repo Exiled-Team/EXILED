@@ -111,14 +111,15 @@ namespace Exiled.API.Features.Toys
         {
             Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
-            primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
-            primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
-            primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+            Transform transform = primitive.Base.transform;
+            transform.position = position ?? Vector3.zero;
+            transform.eulerAngles = rotation ?? Vector3.zero;
+            transform.localScale = scale ?? Vector3.one;
 
             if (spawn)
                 primitive.Spawn();
 
-            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
+            primitive.Base.NetworkScale = primitive.Base.transform.localScale;
             primitive.Color = color ?? Color.gray;
 
             return primitive;
@@ -138,14 +139,15 @@ namespace Exiled.API.Features.Toys
         {
             Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
-            primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
-            primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
-            primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+            Transform transform = primitive.Base.transform;
+            transform.position = position ?? Vector3.zero;
+            transform.eulerAngles = rotation ?? Vector3.zero;
+            transform.localScale = scale ?? Vector3.one;
 
             if (spawn)
                 primitive.Spawn();
 
-            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
+            primitive.Base.NetworkScale = primitive.Base.transform.localScale;
             primitive.Base.NetworkPrimitiveType = primitiveType;
             primitive.Color = color ?? Color.gray;
 
@@ -161,14 +163,15 @@ namespace Exiled.API.Features.Toys
         {
             Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
-            primitive.AdminToyBase.transform.position = primitiveSettings.Position;
-            primitive.AdminToyBase.transform.eulerAngles = primitiveSettings.Rotation;
-            primitive.AdminToyBase.transform.localScale = primitiveSettings.Scale;
+            Transform transform = primitive.Base.transform;
+            transform.position = primitiveSettings.Position;
+            transform.eulerAngles = primitiveSettings.Rotation;
+            transform.localScale = primitiveSettings.Scale;
 
             if (primitiveSettings.Spawn)
                 primitive.Spawn();
 
-            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
+            primitive.Base.NetworkScale = primitive.Base.transform.localScale;
             primitive.Base.NetworkPrimitiveType = primitiveSettings.PrimitiveType;
             primitive.Color = primitiveSettings.Color;
             primitive.IsStatic = primitiveSettings.IsStatic;

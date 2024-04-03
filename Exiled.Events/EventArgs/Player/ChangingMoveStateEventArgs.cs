@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     /// Contains all information before changing movement state.
     /// </summary>
-    public class ChangingMoveStateEventArgs : IPlayerEvent, IDeniableEvent
+    public class ChangingMoveStateEventArgs : IPlayerEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingMoveStateEventArgs" /> class.
@@ -32,16 +32,10 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="newState">
         /// <inheritdoc cref="NewState" />
         /// </param>
-        /// <param name="isAllowed">
-        /// <inheritdoc cref="IsAllowed" />
-        /// </param>
-        public ChangingMoveStateEventArgs(Player player, PlayerMovementState oldState, PlayerMovementState newState, bool isAllowed = true)
+        public ChangingMoveStateEventArgs(Player player, PlayerMovementState oldState, PlayerMovementState newState)
         {
             Player = player;
             OldState = oldState;
-#pragma warning disable CS0618
-            NewState = newState;
-#pragma warning restore CS0618
         }
 
         /// <summary>
@@ -55,21 +49,8 @@ namespace Exiled.Events.EventArgs.Player
         public PlayerMovementState OldState { get; }
 
         /// <summary>
-        /// Gets or sets the new state.
+        /// Gets the new state.
         /// </summary>
-        // TODO: remove setter
-        public PlayerMovementState NewState
-        {
-            get;
-            [Obsolete("Setter was removed due to desync problems.")]
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the player can change the movement state.
-        /// </summary>
-        // TODO: remove
-        [Obsolete("Property was removed due to desync problems.")]
-        public bool IsAllowed { get; set; } = true;
+        public PlayerMovementState NewState { get; }
     }
 }

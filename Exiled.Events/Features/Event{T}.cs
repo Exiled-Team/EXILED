@@ -182,7 +182,7 @@ namespace Exiled.Events.Features
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Method \"{handler.Method.Name}\" of the class \"{handler.Method.ReflectedType.FullName}\" caused an exception when handling the event \"{GetType().FullName}\"\n{ex}");
+                    EventExceptionLogger.CaptureException(ex, GetType().FullName, handler.Method);
                 }
             }
         }
@@ -195,14 +195,31 @@ namespace Exiled.Events.Features
 
             foreach (CustomAsyncEventHandler<T> handler in InnerAsyncEvent.GetInvocationList().Cast<CustomAsyncEventHandler<T>>())
             {
+                Timing.RunCoroutine(SafeCoroutineEnumerator(handler(arg), handler));
+            }
+        }
+
+        /// <summary>
+        ///     Runs the coroutine manualy so exceptions can be caught and logged.
+        /// </summary>
+        private IEnumerator<float> SafeCoroutineEnumerator(IEnumerator<float> coroutine, CustomAsyncEventHandler<T> handler)
+        {
+            while (true)
+            {
+                float current;
                 try
                 {
-                    Timing.RunCoroutine(handler(arg));
+                    if (!coroutine.MoveNext())
+                        break;
+                    current = coroutine.Current;
                 }
                 catch (Exception ex)
                 {
                     Log.Error($"Method \"{handler.Method.Name}\" of the class \"{handler.Method.ReflectedType.FullName}\" caused an exception when handling the event \"{GetType().FullName}\"\n{ex}");
+                    yield break;
                 }
+
+                yield return current;
             }
         }
     }
