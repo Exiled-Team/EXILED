@@ -369,10 +369,9 @@ namespace Exiled.API.Features
             attacker ??= Server.Host;
             if (!InventoryItemLoader.TryGetItem(item, out ThrowableItem throwableItem))
                 return;
-            ExplosionUtils.ServerSpawnEffect(position, item);
 
-            if (throwableItem.Projectile is ExplosionGrenade explosionGrenade)
-                ExplosionGrenade.Explode(attacker.Footprint, position, explosionGrenade);
+            if (throwableItem.Projectile is TimeGrenade timedGrenadePickup)
+                timedGrenadePickup.ServerFuseEnd();
         }
 
         /// <summary>
