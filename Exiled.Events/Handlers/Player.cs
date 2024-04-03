@@ -488,11 +488,6 @@ namespace Exiled.Events.Handlers
         public static Event<ItemRemovedEventArgs> ItemRemoved { get; set; } = new();
 
         /// <summary>
-        /// Invoked before KillPlayer is called.
-        /// </summary>
-        public static Event<KillingPlayerEventArgs> KillingPlayer { get; set; } = new();
-
-        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> enters in an environmental hazard.
         /// </summary>
         public static Event<EnteringEnvironmentalHazardEventArgs> EnteringEnvironmentalHazard { get; set; } = new();
@@ -927,12 +922,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SendingAdminChatMessageEventsArgs"/> instance.</param>
         public static void OnSendingAdminChatMessage(SendingAdminChatMessageEventsArgs ev) => SendingAdminChatMessage.InvokeSafely(ev);
-
-        /// <summary>
-        ///  Called before KillPlayer is called.
-        /// </summary>
-        /// <param name="ev">The <see cref="KillingPlayerEventArgs"/> event handler. </param>
-        public static void OnKillPlayer(KillingPlayerEventArgs ev) => KillingPlayer.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
