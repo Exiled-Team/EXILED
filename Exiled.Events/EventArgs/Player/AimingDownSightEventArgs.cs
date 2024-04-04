@@ -15,7 +15,6 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     /// Contains all information when a player aims.
     /// </summary>
-    // TODO: remove stupid AdsIn/AdsOut propetry, and let exists only one
     public class AimingDownSightEventArgs : IPlayerEvent, IFirearmEvent
     {
         /// <summary>
@@ -30,15 +29,11 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="adsIn">
         /// <inheritdoc cref="AdsIn" />
         /// </param>
-        /// <param name="adsOut">
-        /// <inheritdoc cref="AdsOut" />
-        /// </param>
-        public AimingDownSightEventArgs(Player player, Firearm firearm, bool adsIn, bool adsOut)
+        public AimingDownSightEventArgs(Player player, Firearm firearm, bool adsIn)
         {
             Firearm = firearm;
             Player = player;
             AdsIn = adsIn;
-            AdsOut = adsOut;
         }
 
         /// <summary>
@@ -49,7 +44,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets a value indicating whether or not the player is aiming down sight out.
         /// </summary>
-        public bool AdsOut { get; }
+        public bool AdsOut => !AdsIn;
 
         /// <summary>
         /// Gets the <see cref="API.Features.Items.Firearm" /> used to trigger the aim action.
