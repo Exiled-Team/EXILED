@@ -53,13 +53,13 @@ namespace Exiled.API.Features.Core.StateMachine
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when entering a new state.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<State> BeginStateMulticastDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<State> BeginStateMulticastDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when exiting the current state.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<State> EndStateMulticastDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<State> EndStateMulticastDispatcher { get; set; }
 
         /// <summary>
         /// Fired every tick from the current state.
