@@ -73,7 +73,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <summary>
         /// Gets all <see cref="PlayerState"/> instances.
         /// </summary>
-        public List<PlayerState> PlayerStates => playerStates;
+        public IEnumerable<PlayerState> PlayerStates => playerStates;
 
         /// <summary>
         /// Gets or sets the <see cref="UEMatchState"/>.
