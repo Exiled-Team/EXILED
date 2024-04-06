@@ -38,13 +38,17 @@ namespace Exiled.API.Features.Core.Generic
         public UniqueUnmanagedEnumClass()
         {
             values ??= new();
+            TypeCode code = Convert.GetTypeCode(typeof(TSource).GetField("MinValue").GetValue(null));
+
+            if (code is TypeCode.UInt16 or TypeCode.UInt32 or TypeCode.UInt64)
+                nextValue = 0;
 
             lock (values)
             {
                 TSource value;
                 do
                 {
-                    value = (TSource)(object)nextValue++;
+                    value = (TSource)Convert.ChangeType(nextValue++, code);
                 }
                 while (values.ContainsKey(value));
 
