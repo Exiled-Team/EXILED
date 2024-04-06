@@ -33,7 +33,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="RoomIdentifier"/>s and their corresponding <see cref="Room"/>.
         /// </summary>
-        internal static readonly Dictionary<RoomIdentifier, Room> RoomIdentifierToRoom = new(250);
+        internal static readonly Dictionary<RoomIdentifier, Room> RoomIdentifierToRoom = new(250, new ComponentsEqualityComparer());
 
         private readonly GameObject gameObject;
 
@@ -141,32 +141,32 @@ namespace Exiled.API.Features
         public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && player.CurrentRoom is not null && (player.CurrentRoom.Transform == Transform));
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Window"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="Window"/> in the <see cref="Room"/>.
         /// </summary>
-        public IReadOnlyCollection<Window> Windows { get; private set; }
+        public IReadOnlyList<Window> Windows { get; private set; }
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
         /// </summary>
-        public IReadOnlyCollection<Door> Doors { get; private set; }
+        public IReadOnlyList<Door> Doors { get; private set; }
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Scp079Speaker"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="Scp079Speaker"/> in the <see cref="Room"/>.
         /// </summary>
-        public IReadOnlyCollection<Scp079Speaker> Speakers { get; private set; }
+        public IReadOnlyList<Scp079Speaker> Speakers { get; private set; }
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Camera"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="Camera"/> in the <see cref="Room"/>.
         /// </summary>
-        public IReadOnlyCollection<Camera> Cameras { get; private set; }
+        public IReadOnlyList<Camera> Cameras { get; private set; }
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="RoomLightController"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="RoomLightController"/> in the <see cref="Room"/>.
         /// </summary>
         /// <remarks>
         /// Using that will make sense only for rooms with more than one light controller, in other cases better to use <see cref="RoomLightController"/>.
         /// </remarks>
-        public IReadOnlyCollection<RoomLightController> RoomLightControllers { get; private set; }
+        public IReadOnlyList<RoomLightController> RoomLightControllers { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> in the <see cref="Room"/>.

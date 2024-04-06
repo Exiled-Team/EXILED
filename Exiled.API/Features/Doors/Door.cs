@@ -38,7 +38,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>'s and their corresponding <see cref="Door"/>.
         /// </summary>
-        internal static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
+        internal static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new(new ComponentsEqualityComparer());
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Door"/> class.
@@ -107,7 +107,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not the door is currently moving.
         /// </summary>
-        public virtual bool IsMoving => ExactState is not(0 or 1);
+        public virtual bool IsMoving => !(IsFullyOpen || IsFullyClosed);
 
         /// <summary>
         /// Gets a value indicating the precise state of the door, from <c>0-1</c>. A value of <c>0</c> indicates the door is fully closed, while a value of <c>1</c> indicates the door is fully open. Values in-between represent the door's animation progress.
@@ -414,8 +414,8 @@ namespace Exiled.API.Features.Doors
         /// <returns>The door closest to the provided position.</returns>
         public static Door GetClosest(Vector3 position, out float distance)
         {
-            Door doorToReturn = List.OrderBy(door => Vector3.Distance(position, door.Position)).FirstOrDefault();
-            distance = Vector3.Distance(position, doorToReturn.Position);
+            Door doorToReturn = List.OrderBy(door => MathExtensions.DistanceSquared(position, door.Position)).FirstOrDefault();
+            distance = MathExtensions.DistanceSquared(position, doorToReturn.Position);
             return doorToReturn;
         }
 
