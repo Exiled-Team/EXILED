@@ -115,7 +115,7 @@ namespace Exiled.API.Features
         public static DecontaminationPhase DecontaminationPhase => (DecontaminationPhase)DecontaminationController.Singleton._nextPhase;
 
         /// <summary>
-        /// Gets or sets a value indicating whether decontamination overide is in the light containment zone.
+        /// Gets or sets a value indicating whether the decontamination override is in the light containment zone.
         /// </summary>
         public static DecontaminationController.DecontaminationStatus DecontaminationOverride
         {
