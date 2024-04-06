@@ -112,9 +112,16 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether decontamination phase is in the light containment zone.
         /// </summary>
-        public static DecontaminationState DecontaminationState =>
-            DecontaminationController.Singleton.NetworkDecontaminationOverride is DecontaminationController.DecontaminationStatus.Disabled ?
-            DecontaminationState.Disabled : (DecontaminationState)DecontaminationController.Singleton._nextPhase;
+        public static DecontaminationPhase DecontaminationPhase => (DecontaminationPhase)DecontaminationController.Singleton._nextPhase;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the decontamination override is in the light containment zone.
+        /// </summary>
+        public static DecontaminationController.DecontaminationStatus DecontaminationOverride
+        {
+            get => DecontaminationController.Singleton.DecontaminationOverride;
+            set => DecontaminationController.Singleton.DecontaminationOverride = value;
+        }
 
         /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
