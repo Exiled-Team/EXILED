@@ -223,18 +223,6 @@ namespace Exiled.API.Features.Roles
         public bool IsHumeShieldedRole => this is IHumeShieldRole;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player has noclip enabled.
-        /// </summary>
-        /// <returns><see cref="bool"/> indicating status.</returns>
-        /// <remarks>For permitting a player to enter and exit noclip freely, see <see cref="Player.IsNoclipPermitted"/>.</remarks>
-        /// <seealso cref="Player.IsNoclipPermitted"/>
-        public bool IsNoclipEnabled
-        {
-            get => Owner.ReferenceHub.playerStats.GetModule<AdminFlagsStat>().HasFlag(AdminFlags.Noclip);
-            set => Owner.ReferenceHub.playerStats.GetModule<AdminFlagsStat>().SetFlag(AdminFlags.Noclip, value);
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating the fake appearance of the player.
         /// </summary>
         public RoleTypeId? FakeAppearance
