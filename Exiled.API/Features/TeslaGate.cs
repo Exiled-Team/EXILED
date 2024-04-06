@@ -34,7 +34,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BaseTeslaGate"/>s and their corresponding <see cref="TeslaGate"/>.
         /// </summary>
-        internal static readonly Dictionary<BaseTeslaGate, TeslaGate> BaseTeslaGateToTeslaGate = new(10);
+        internal static readonly Dictionary<BaseTeslaGate, TeslaGate> BaseTeslaGateToTeslaGate = new(5, new ComponentsEqualityComparer());
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeslaGate"/> class.
