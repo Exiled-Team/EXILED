@@ -52,7 +52,6 @@ namespace Exiled.API.Features
     using PlayerRoles.Voice;
     using PlayerStatsSystem;
     using PluginAPI.Core;
-
     using RelativePositioning;
     using RemoteAdmin;
     using Respawning.NamingRules;
@@ -463,8 +462,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether or not the player is allowed to enter noclip mode.
         /// </summary>
-        /// <remarks>For forcing the player into noclip mode, see <see cref="FpcRole.IsNoclipEnabled"/>.</remarks>
-        /// <seealso cref="FpcRole.IsNoclipEnabled"/>
+        /// <remarks>For forcing the player into noclip mode, see <see cref="IsNoclipEnabled"/>.</remarks>
+        /// <seealso cref="IsNoclipEnabled"/>
         public bool IsNoclipPermitted
         {
             get => FpcNoclip.IsPermitted(ReferenceHub);
@@ -475,6 +474,18 @@ namespace Exiled.API.Features
                 else
                     FpcNoclip.UnpermitPlayer(ReferenceHub);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the player has noclip enabled.
+        /// </summary>
+        /// <returns><see cref="bool"/> indicating status.</returns>
+        /// <remarks>For permitting a player to enter and exit noclip freely, see <see cref="IsNoclipPermitted"/>.</remarks>
+        /// <seealso cref="IsNoclipPermitted"/>
+        public bool IsNoclipEnabled
+        {
+            get => ReferenceHub.playerStats.GetModule<AdminFlagsStat>().HasFlag(AdminFlags.Noclip);
+            set => ReferenceHub.playerStats.GetModule<AdminFlagsStat>().SetFlag(AdminFlags.Noclip, value);
         }
 
         /// <summary>
@@ -533,7 +544,7 @@ namespace Exiled.API.Features
         public override Quaternion Rotation
         {
             get => Transform.rotation;
-            set => ReferenceHub.TryOverridePosition(Position, value.eulerAngles);
+            set => ReferenceHub.TryOverridePosition(Position, value.eulerAngles - Transform.eulerAngles);
         }
 
         /// <summary>
@@ -1208,7 +1219,7 @@ namespace Exiled.API.Features
         /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
         /// <param name="distance">The maximum distance the player can be from the <paramref name="vector"/> to be included.</param>
         /// <returns>The nearest <see cref="Player"/> within the specified distance, or <see langword="null"/> if no player is found.</returns>
-        public static Player GetNearestPlayer(Vector3 vector, float distance) => GetNearestPlayers(vector, distance).OrderBy(p => (vector - p.Position).sqrMagnitude).FirstOrDefault();
+        public static Player GetNearestPlayer(Vector3 vector, float distance) => GetNearestPlayers(vector, distance).OrderBy(p => MathExtensions.DistanceSquared(vector, p.Position)).FirstOrDefault();
 
         /// <summary>
         /// Gets all players near the specified <see cref="Vector3"/> within the given distance.
@@ -1216,7 +1227,7 @@ namespace Exiled.API.Features
         /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
         /// <param name="distance">The maximum distance the player can be from the <paramref name="vector"/> to be included.</param>
         /// <returns>The filtered collection of <see cref="Player"/> objects.</returns>
-        public static IEnumerable<Player> GetNearestPlayers(Vector3 vector, float distance) => List.Where(p => (vector - p.Position).sqrMagnitude <= distance * distance);
+        public static IEnumerable<Player> GetNearestPlayers(Vector3 vector, float distance) => List.Where(p => MathExtensions.DistanceSquared(vector, p.Position) <= distance * distance);
 
         /// <summary>
         /// Gets the farthest player from the specified <see cref="Vector3"/> within the given distance.
@@ -1224,7 +1235,7 @@ namespace Exiled.API.Features
         /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
         /// <param name="distance">The minimum distance the player can be from the <paramref name="vector"/> to be included.</param>
         /// <returns>The farthest <see cref="Player"/> from the specified <paramref name="vector"/> within the given distance, or <see langword="null"/> if no player is found.</returns>
-        public static Player GetFarthestPlayer(Vector3 vector, float distance) => GetFarthestPlayers(vector, distance).OrderByDescending(p => (vector - p.Position).sqrMagnitude).FirstOrDefault();
+        public static Player GetFarthestPlayer(Vector3 vector, float distance) => GetFarthestPlayers(vector, distance).OrderByDescending(p => MathExtensions.DistanceSquared(vector, p.Position)).FirstOrDefault();
 
         /// <summary>
         /// Gets all players that have a distance greater than the specified distance from the given <see cref="Vector3"/>.
@@ -1232,7 +1243,7 @@ namespace Exiled.API.Features
         /// <param name="vector">The <see cref="Vector3"/> to compare.</param>
         /// <param name="distance">The minimum distance the player can be from the <paramref name="vector"/> to be included.</param>
         /// <returns>The filtered collection of <see cref="Player"/> objects.</returns>
-        public static IEnumerable<Player> GetFarthestPlayers(Vector3 vector, float distance) => List.Where(p => (vector - p.Position).sqrMagnitude >= distance * distance);
+        public static IEnumerable<Player> GetFarthestPlayers(Vector3 vector, float distance) => List.Where(p => MathExtensions.DistanceSquared(vector, p.Position) >= distance * distance);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSystem.ICommandSender"/>, if any.
@@ -1253,7 +1264,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="sender">The command sender.</param>
         /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
-        public static Player Get(CommandSender sender) => Get(sender.SenderId);
+        public static Player Get(CommandSender sender) => sender is ServerConsoleSender ? Server.Host : Get(sender.SenderId);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="global::ReferenceHub"/>, if any.
@@ -1925,7 +1936,7 @@ namespace Exiled.API.Features
         /// <param name="cuffer">The cuffer player.</param>
         public void Handcuff(Player cuffer)
         {
-            if (cuffer is not null && !IsCuffed && (cuffer.Position - Position).sqrMagnitude <= DisarmingHandlers.ServerDisarmingDistanceSqrt)
+            if (cuffer is not null && !IsCuffed && MathExtensions.DistanceSquared(cuffer.Position, Position) <= DisarmingHandlers.ServerDisarmingDistanceSqrt)
                 Cuffer = cuffer;
         }
 
@@ -2163,7 +2174,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Hurts the player.
         /// </summary>
-        /// <param name="damageHandlerBase">The <see cref="DamageHandlers.DamageHandlerBase"/> used to deal damage.</param>
+        /// <param name="damageHandlerBase">The <see cref="Features.DamageHandlers.DamageHandlerBase"/> used to deal damage.</param>
         public void Hurt(DamageHandlers.DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase.Base);
 
         /// <summary>
@@ -2791,6 +2802,23 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Grants the player their current role's loadout.
+        /// </summary>
+        public void GrantLoadout() => GrantLoadout(Role.Type);
+
+        /// <summary>
+        /// Grants a player a role's loadout.
+        /// </summary>
+        /// <param name="role">The role loadout to give.</param>
+        public void GrantLoadout(RoleTypeId role)
+        {
+            InventoryRoleInfo info = role.GetStartingInventory();
+
+            AddItem(info.Items);
+            info.Ammo.ForEach(a => AddAmmo(a.Key.GetAmmoType(), a.Value));
+        }
+
+        /// <summary>
         /// Gives the player a specific candy. Will give the player a bag if they do not already have one.
         /// </summary>
         /// <param name="candyType">The <see cref="CandyKindID"/> to give.</param>
@@ -3105,7 +3133,7 @@ namespace Exiled.API.Features
 
             statusEffect.ServerSetState(intensity, duration, addDurationIfActive);
 
-            return statusEffect is not null && statusEffect.IsEnabled;
+            return statusEffect.IsEnabled;
         }
 
         /// <summary>
@@ -3164,10 +3192,7 @@ namespace Exiled.API.Features
         {
             if (effect.IsEnabled)
             {
-                EnableEffect(effect.Type, effect.Duration, effect.AddDurationIfActive);
-
-                if (effect.Intensity > 0)
-                    ChangeEffectIntensity(effect.Type, effect.Intensity, effect.Duration);
+                EnableEffect(effect.Type, effect.Intensity, effect.Duration, effect.AddDurationIfActive);
             }
         }
 
@@ -3191,8 +3216,7 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="EffectType"/> that was given to the player.</returns>
         public EffectType ApplyRandomEffect(EffectCategory category, byte intensity, float duration = 0f, bool addDurationIfActive = false)
         {
-            Array effectTypes = Enum.GetValues(typeof(EffectType));
-            IEnumerable<EffectType> validEffects = effectTypes.ToArray<EffectType>().Where(effect => effect.GetCategories().HasFlag(category));
+            IEnumerable<EffectType> validEffects = EnumExtensions.QueryEnumValue<EffectType>().Where(effect => effect.GetCategories().HasFlag(category));
             EffectType effectType = validEffects.Random();
 
             EnableEffect(effectType, intensity, duration, addDurationIfActive);
@@ -3289,13 +3313,14 @@ namespace Exiled.API.Features
         /// <typeparam name="T">The <see cref="StatusEffectBase"/> to change the intensity of.</typeparam>
         /// <param name="intensity">The intensity of the effect.</param>
         /// <param name="duration">The new duration to add to the effect.</param>
-        public void ChangeEffectIntensity<T>(byte intensity, float duration = 0)
+        /// <param name="addDuration">Whether or not to add the duration..</param>
+        public void ChangeEffectIntensity<T>(byte intensity, float duration = 0, bool addDuration = false)
             where T : StatusEffectBase
         {
-            if (ReferenceHub.playerEffectsController.TryGetEffect(out T statusEffect))
+            if (TryGetEffect(out T statusEffect))
             {
                 statusEffect.Intensity = intensity;
-                statusEffect.ServerChangeDuration(duration, true);
+                statusEffect.ServerChangeDuration(duration, addDuration);
             }
         }
 
@@ -3305,12 +3330,50 @@ namespace Exiled.API.Features
         /// <param name="type">The <see cref="EffectType"/> to change.</param>
         /// <param name="intensity">The new intensity to use.</param>
         /// <param name="duration">The new duration to add to the effect.</param>
-        public void ChangeEffectIntensity(EffectType type, byte intensity, float duration = 0)
+        /// <param name="addDuration">Whether or not to add the duration..</param>
+        public void ChangeEffectIntensity(EffectType type, byte intensity, float duration = 0, bool addDuration = false)
         {
             if (TryGetEffect(type, out StatusEffectBase statusEffect))
             {
                 statusEffect.Intensity = intensity;
-                statusEffect.ServerChangeDuration(duration, false);
+                statusEffect.ServerChangeDuration(duration, addDuration);
+            }
+        }
+
+        /// <summary>
+        /// Increases intensity of a <see cref="StatusEffectBase"/>.
+        /// </summary>
+        /// <param name="intensity">The intensity to add.</param>
+        /// <param name="duration">The duration.</param>
+        /// <param name="addDuration">Whether or not to add the duration on top.</param>
+        /// <typeparam name="T">The <see cref="StatusEffectBase"/> to increase intensity of.</typeparam>
+        public void AddEffectIntensity<T>(byte intensity, float duration = 0, bool addDuration = true)
+            where T : StatusEffectBase
+        {
+            if (TryGetEffect(out T statusEffect))
+            {
+                intensity = (byte)Mathf.Clamp(statusEffect.Intensity + intensity, byte.MinValue, byte.MaxValue);
+
+                statusEffect.Intensity = intensity;
+                statusEffect.ServerChangeDuration(duration, addDuration);
+            }
+        }
+
+        /// <summary>
+        /// Increases intensity of a <see cref="StatusEffectBase"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="EffectType"/>to increase intensity of.</param>
+        /// <param name="intensity">The intensity to add.</param>
+        /// <param name="duration">The duration.</param>
+        /// <param name="addDuration">Whether or not to add the duration on top.</param>
+        public void AddEffectIntensity(EffectType type, byte intensity, float duration = 0, bool addDuration = true)
+        {
+            if (TryGetEffect(type, out StatusEffectBase statusEffect))
+            {
+                intensity = (byte)Mathf.Clamp(statusEffect.Intensity + intensity, byte.MinValue, byte.MaxValue);
+
+                statusEffect.Intensity = intensity;
+                statusEffect.ServerChangeDuration(duration, addDuration);
             }
         }
 
