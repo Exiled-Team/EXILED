@@ -9,13 +9,13 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
-    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.Subroutines;
+    using PlayerStatsSystem;
 
     using static PlayerRoles.PlayableScps.Scp3114.Scp3114Identity;
 
@@ -151,9 +151,14 @@ namespace Exiled.API.Features.Roles
             set
             {
                 if (Ragdoll is null)
-                    return;
+                {
+                    if (!Ragdoll.TryCreate(value, "Ragdoll", new CustomReasonDamageHandler("SCP-3114"), out Ragdoll ragdoll))
+                        return;
+                    Ragdoll = ragdoll;
+                }
 
                 Ragdoll.Role = value;
+                DisguiseStatus = DisguiseStatus.Active;
                 Identity.ServerResendIdentity();
             }
         }

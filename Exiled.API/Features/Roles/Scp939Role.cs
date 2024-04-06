@@ -268,12 +268,12 @@ namespace Exiled.API.Features.Roles
             switch (ripple)
             {
                 case UsableRippleType.Footstep:
-                    FootstepRippleTrigger._syncPos = new RelativePosition(position);
+                    FootstepRippleTrigger._syncPos = new(position);
                     FootstepRippleTrigger.ServerSendRpc(playerToSend.ReferenceHub);
                     break;
                 case UsableRippleType.FireArm:
                     FirearmRippleTrigger._syncRoleColor = RoleTypeId.ClassD;
-                    FirearmRippleTrigger._syncRipplePos = new RelativePosition(position);
+                    FirearmRippleTrigger._syncRipplePos = new(position);
                     FirearmRippleTrigger.ServerSendRpc(playerToSend.ReferenceHub);
                     break;
             }
