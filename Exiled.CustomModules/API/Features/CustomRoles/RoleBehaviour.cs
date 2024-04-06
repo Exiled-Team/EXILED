@@ -396,7 +396,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             {
                 foreach (EscapeSettings settings in EscapeSettings)
                 {
-                    if (!settings.IsAllowed || Vector3.Distance(Owner.Position, settings.Position) > settings.DistanceThreshold)
+                    if (!settings.IsAllowed || MathExtensions.DistanceSquared(Owner.Position, settings.Position) > settings.DistanceThreshold * settings.DistanceThreshold)
                         continue;
 
                     Events.EventArgs.CustomEscapes.EscapingEventArgs ev = new(Owner.Cast<Pawn>(), settings.Role, settings.CustomRole, UUEscapeScenarioType.None, default);
@@ -534,7 +534,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             List<Player> targets = new();
             foreach (Player pl in Player.Get(predicate))
             {
-                if (Vector3.Distance(pl.Position, Owner.Position) <= distance)
+                if (MathExtensions.DistanceSquared(pl.Position, Owner.Position) <= distance * distance)
                     targets.Add(pl);
             }
 
@@ -554,7 +554,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             players = new();
             foreach (Player pl in Player.Get(predicate))
             {
-                if (Vector3.Distance(pl.Position, Owner.Position) <= distance)
+                if (MathExtensions.DistanceSquared(pl.Position, Owner.Position) <= distance * distance)
                     players.Add(pl);
             }
 
