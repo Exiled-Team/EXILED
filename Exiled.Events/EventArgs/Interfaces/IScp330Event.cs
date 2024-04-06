@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs.Interfaces
     using API.Features.Items;
 
     /// <summary>
-    /// Event args used for all <see cref="API.Features.Items.Scp330" /> related events.
+    /// An interface which defines the contract for <see cref="API.Features.Items.Scp330" /> related events.
     /// </summary>
     public interface IScp330Event : IItemEvent
     {
