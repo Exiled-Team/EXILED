@@ -20,7 +20,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BaseController"/>'s and their corresponding <see cref="AirlockController"/>.
         /// </summary>
-        internal static readonly Dictionary<BaseController, AirlockController> BaseToExiledControllers = new();
+        internal static readonly Dictionary<BaseController, AirlockController> BaseToExiledControllers = new(new ComponentsEqualityComparer());
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AirlockController"/> class.

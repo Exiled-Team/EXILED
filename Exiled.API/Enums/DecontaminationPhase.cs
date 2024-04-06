@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="DecontaminationState.cs" company="Exiled Team">
+// <copyright file="DecontaminationPhase.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -12,14 +12,9 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Represents the state of a <see cref="LightContainmentZoneDecontamination.DecontaminationController"/>.
     /// </summary>
-    /// <seealso cref="Map.DecontaminationState"/>
-    public enum DecontaminationState
+    /// <seealso cref="Map.DecontaminationPhase"/>
+    public enum DecontaminationPhase
     {
-        /// <summary>
-        /// Decontamination is disable.
-        /// </summary>
-        Disabled = -1,
-
         /// <summary>
         /// Decontamination has started.
         /// </summary>
