@@ -16,6 +16,7 @@ namespace Exiled.Events.Patches.Fixes
     using InventorySystem;
     using InventorySystem.Items.Firearms.Ammo;
     using InventorySystem.Items.Pickups;
+    using VoiceChat;
 
     using static HarmonyLib.AccessTools;
 
