@@ -253,6 +253,11 @@ namespace Exiled.Events.Handlers
         public static Event<ReloadingWeaponEventArgs> ReloadingWeapon { get; set; } = new();
 
         /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> reloads a weapon.
+        /// </summary>
+        public static Event<ReloadedWeaponEventArgs> ReloadedWeapon { get; set; } = new();
+
+        /// <summary>
         /// Invoked before spawning a <see cref="API.Features.Player"/>.
         /// </summary>
         public static Event<SpawningEventArgs> Spawning { get; set; } = new();
@@ -393,6 +398,11 @@ namespace Exiled.Events.Handlers
         public static Event<UnloadingWeaponEventArgs> UnloadingWeapon { get; set; } = new();
 
         /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> unloads a weapon.
+        /// </summary>
+        public static Event<UnloadedWeaponEventArgs> UnloadedWeapon { get; set; } = new();
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> triggers an aim action.
         /// </summary>
         public static Event<AimingDownSightEventArgs> AimingDownSight { get; set; } = new();
@@ -401,6 +411,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before a <see cref="API.Features.Player"/> toggles the weapon's flashlight.
         /// </summary>
         public static Event<TogglingWeaponFlashlightEventArgs> TogglingWeaponFlashlight { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> toggles the weapon's flashlight.
+        /// </summary>
+        public static Event<ToggledWeaponFlashlightEventArgs> ToggledWeaponFlashlight { get; set; } = new();
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> dryfires a weapon.
@@ -746,6 +761,12 @@ namespace Exiled.Events.Handlers
         public static void OnReloadingWeapon(ReloadingWeaponEventArgs ev) => ReloadingWeapon.InvokeSafely(ev);
 
         /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> reloads a weapon.
+        /// </summary>
+        /// <param name="ev">The <see cref="ReloadedWeaponEventArgs"/> instance.</param>
+        public static void OnReloadedWeapon(ReloadedWeaponEventArgs ev) => ReloadedWeapon.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before spawning a <see cref="API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="SpawningEventArgs"/> instance.</param>
@@ -846,6 +867,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="UnloadingWeaponEventArgs"/> instance.</param>
         public static void OnUnloadingWeapon(UnloadingWeaponEventArgs ev) => UnloadingWeapon.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> unloads a weapon.
+        /// </summary>
+        /// <param name="ev">The <see cref="UnloadedWeaponEventArgs"/> instance.</param>
+        public static void OnUnloadedWeapon(UnloadedWeaponEventArgs ev) => UnloadedWeapon.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> triggers an aim action.
