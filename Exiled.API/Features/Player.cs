@@ -3117,7 +3117,7 @@ namespace Exiled.API.Features
 
             statusEffect.ServerSetState(intensity, duration, addDurationIfActive);
 
-            return statusEffect is not null && statusEffect.IsEnabled;
+            return statusEffect.IsEnabled;
         }
 
         /// <summary>
@@ -3176,10 +3176,7 @@ namespace Exiled.API.Features
         {
             if (effect.IsEnabled)
             {
-                EnableEffect(effect.Type, effect.Duration, effect.AddDurationIfActive);
-
-                if (effect.Intensity > 0)
-                    ChangeEffectIntensity(effect.Type, effect.Intensity, effect.Duration);
+                EnableEffect(effect.Type, effect.Intensity, effect.Duration, effect.AddDurationIfActive);
             }
         }
 
@@ -3300,13 +3297,14 @@ namespace Exiled.API.Features
         /// <typeparam name="T">The <see cref="StatusEffectBase"/> to change the intensity of.</typeparam>
         /// <param name="intensity">The intensity of the effect.</param>
         /// <param name="duration">The new duration to add to the effect.</param>
-        public void ChangeEffectIntensity<T>(byte intensity, float duration = 0)
+        /// <param name="addDuration">Whether or not to add the duration..</param>
+        public void ChangeEffectIntensity<T>(byte intensity, float duration = 0, bool addDuration = false)
             where T : StatusEffectBase
         {
-            if (ReferenceHub.playerEffectsController.TryGetEffect(out T statusEffect))
+            if (TryGetEffect(out T statusEffect))
             {
                 statusEffect.Intensity = intensity;
-                statusEffect.ServerChangeDuration(duration, true);
+                statusEffect.ServerChangeDuration(duration, addDuration);
             }
         }
 
@@ -3316,12 +3314,50 @@ namespace Exiled.API.Features
         /// <param name="type">The <see cref="EffectType"/> to change.</param>
         /// <param name="intensity">The new intensity to use.</param>
         /// <param name="duration">The new duration to add to the effect.</param>
-        public void ChangeEffectIntensity(EffectType type, byte intensity, float duration = 0)
+        /// <param name="addDuration">Whether or not to add the duration..</param>
+        public void ChangeEffectIntensity(EffectType type, byte intensity, float duration = 0, bool addDuration = false)
         {
             if (TryGetEffect(type, out StatusEffectBase statusEffect))
             {
                 statusEffect.Intensity = intensity;
-                statusEffect.ServerChangeDuration(duration, false);
+                statusEffect.ServerChangeDuration(duration, addDuration);
+            }
+        }
+
+        /// <summary>
+        /// Increases intensity of a <see cref="StatusEffectBase"/>.
+        /// </summary>
+        /// <param name="intensity">The intensity to add.</param>
+        /// <param name="duration">The duration.</param>
+        /// <param name="addDuration">Whether or not to add the duration on top.</param>
+        /// <typeparam name="T">The <see cref="StatusEffectBase"/> to increase intensity of.</typeparam>
+        public void AddEffectIntensity<T>(byte intensity, float duration = 0, bool addDuration = true)
+            where T : StatusEffectBase
+        {
+            if (TryGetEffect(out T statusEffect))
+            {
+                intensity = (byte)Mathf.Clamp(statusEffect.Intensity + intensity, byte.MinValue, byte.MaxValue);
+
+                statusEffect.Intensity = intensity;
+                statusEffect.ServerChangeDuration(duration, addDuration);
+            }
+        }
+
+        /// <summary>
+        /// Increases intensity of a <see cref="StatusEffectBase"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="EffectType"/>to increase intensity of.</param>
+        /// <param name="intensity">The intensity to add.</param>
+        /// <param name="duration">The duration.</param>
+        /// <param name="addDuration">Whether or not to add the duration on top.</param>
+        public void AddEffectIntensity(EffectType type, byte intensity, float duration = 0, bool addDuration = true)
+        {
+            if (TryGetEffect(type, out StatusEffectBase statusEffect))
+            {
+                intensity = (byte)Mathf.Clamp(statusEffect.Intensity + intensity, byte.MinValue, byte.MaxValue);
+
+                statusEffect.Intensity = intensity;
+                statusEffect.ServerChangeDuration(duration, addDuration);
             }
         }
 
