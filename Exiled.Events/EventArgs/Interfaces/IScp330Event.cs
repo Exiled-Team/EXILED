@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ICameraEvent.cs" company="Exiled Team">
+// <copyright file="IScp330Event.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,16 +7,16 @@
 
 namespace Exiled.Events.EventArgs.Interfaces
 {
-    using API.Features;
+    using API.Features.Items;
 
     /// <summary>
-    /// Event args used for all <see cref="API.Features.Camera" /> related events.
+    /// An interface which defines the contract for <see cref="API.Features.Items.Scp330" /> related events.
     /// </summary>
-    public interface ICameraEvent : IExiledEvent
+    public interface IScp330Event : IItemEvent
     {
         /// <summary>
-        /// Gets the <see cref="API.Features.Camera" /> triggering the event.
+        /// Gets the <see cref="API.Features.Items.Scp330" /> triggering the event.
         /// </summary>
-        public Camera Camera { get; }
+        public Scp330 Scp330 { get; }
     }
 }
