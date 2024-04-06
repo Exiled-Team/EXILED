@@ -34,7 +34,6 @@ namespace Exiled.API.Features
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Lift : GameEntity, IWrapper<ElevatorChamber>, IWorldSpace
     {
-
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="ElevatorChamber"/>s and their corresponding <see cref="Lift"/>.
         /// </summary>
@@ -181,9 +180,6 @@ namespace Exiled.API.Features
         /// </summary>
         public Doors.ElevatorDoor CurrentDestination => Door.Get(Base.CurrentDestination).As<Doors.ElevatorDoor>();
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"Type = {Type} Status = {Status} Level = {CurrentLevel} Lock = {IsLocked}";
-
         /// <summary>
         /// Gets or sets the lift's position.
         /// </summary>
@@ -206,6 +202,9 @@ namespace Exiled.API.Features
         /// Gets the base <see cref="ElevatorChamber"/>.
         /// </summary>
         public ElevatorChamber Base { get; }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay => $"Type = {Type} Status = {Status} Level = {CurrentLevel} Lock = {IsLocked}";
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances from the specified <see cref="Status"/>.

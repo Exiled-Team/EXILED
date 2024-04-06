@@ -7,8 +7,8 @@
 
 namespace Exiled.API.Features.DamageHandlers
 {
-    using System.Diagnostics;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using CustomPlayerEffects;
     using Enums;

@@ -131,9 +131,6 @@ namespace Exiled.API.Features
 
         private Room room;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"Room = {Room?.RoomName.ToString() ?? "Unknow"} Name = {Name} Id = {Id} Used = {IsBeingUsed}";
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Camera"/> class.
         /// </summary>
@@ -219,6 +216,9 @@ namespace Exiled.API.Features
             get => Base.IsActive;
             set => Base.IsActive = value;
         }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay => $"Room = {Room?.RoomName.ToString() ?? "Unknow"} Name = {Name} Id = {Id} Used = {IsBeingUsed}";
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the <see cref="Camera"/> instances given a <see cref="IEnumerable{T}"/> of <see cref="Scp079Camera"/>.
