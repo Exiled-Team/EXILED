@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
