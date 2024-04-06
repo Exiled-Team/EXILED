@@ -14,6 +14,7 @@ namespace Exiled.API.Features
 
     using Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
@@ -29,42 +30,80 @@ namespace Exiled.API.Features
     /// The in-game room.
     /// </summary>
     [DebuggerDisplay("Type = {Type} Name = {Name}")]
-    public class Room : MonoBehaviour, IWorldSpace
+    public class Room : GameEntity, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="RoomIdentifier"/>s and their corresponding <see cref="Room"/>.
         /// </summary>
-        internal static readonly Dictionary<RoomIdentifier, Room> RoomIdentifierToRoom = new(250);
+        internal static readonly Dictionary<RoomIdentifier, Room> RoomIdentifierToRoom = new(250, new ComponentsEqualityComparer());
+
+        private GameObject gameObject;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Room"/> class.
+        /// </summary>
+        /// <param name="go">The room's <see cref="UnityEngine.GameObject"/>.</param>
+        internal Room(GameObject go)
+        {
+            gameObject = go;
+
+            Identifier = gameObject.GetComponent<RoomIdentifier>();
+            RoomIdentifierToRoom.Add(Identifier, this);
+
+            Zone = FindZone(gameObject);
+#if Debug
+            if (Type is RoomType.Unknown)
+                Log.Error($"[ZONETYPE UNKNOWN] {this}");
+#endif
+            Type = FindType(gameObject);
+#if Debug
+            if (Type is RoomType.Unknown)
+                Log.Error($"[ROOMTYPE UNKNOWN] {this}");
+#endif
+
+            RoomLightControllersValue.AddRange(gameObject.GetComponentsInChildren<RoomLightController>());
+
+            RoomLightControllers = RoomLightControllersValue.AsReadOnly();
+
+            GameObject.GetComponentsInChildren<BreakableWindow>().ForEach(component =>
+            {
+                Window window = new(component, this);
+                window.Room.WindowsValue.Add(window);
+            });
+
+            if (GameObject.GetComponentInChildren<global::TeslaGate>() is global::TeslaGate tesla)
+                TeslaGate = new TeslaGate(tesla, this);
+
+            Windows = WindowsValue.AsReadOnly();
+            Doors = DoorsValue.AsReadOnly();
+            Speakers = SpeakersValue.AsReadOnly();
+            Cameras = CamerasValue.AsReadOnly();
+        }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains all the <see cref="Room"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<Room> List => RoomIdentifierToRoom.Values;
-
-        /// <summary>
-        /// Gets the <see cref="Room"/> name.
-        /// </summary>
-        public string Name => name;
+        public static new IReadOnlyCollection<Room> List => RoomIdentifierToRoom.Values;
 
         /// <summary>
         /// Gets the <see cref="Room"/> <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public GameObject GameObject => gameObject;
+        public override GameObject GameObject => gameObject;
 
         /// <summary>
-        /// Gets the <see cref="Room"/> <see cref="UnityEngine.Transform"/>.
+        /// Gets the <see cref="Room"/> name.
         /// </summary>
-        public Transform Transform => transform;
+        public string Name => GameObject.name;
 
         /// <summary>
-        /// Gets the <see cref="Room"/> position.
+        /// Gets the <see cref="Room"/>'s position.
         /// </summary>
-        public Vector3 Position => transform.position;
+        public override Vector3 Position => Transform.position;
 
         /// <summary>
-        /// Gets the <see cref="Room"/> rotation.
+        /// Gets the <see cref="Room"/>'s rotation.
         /// </summary>
-        public Quaternion Rotation => transform.rotation;
+        public override Quaternion Rotation => Transform.rotation;
 
         /// <summary>
         /// Gets the <see cref="ZoneType"/> in which the room is located.
@@ -104,32 +143,32 @@ namespace Exiled.API.Features
         public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && player.CurrentRoom is not null && (player.CurrentRoom.Transform == Transform));
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Window"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="Window"/> in the <see cref="Room"/>.
         /// </summary>
-        public IReadOnlyCollection<Window> Windows { get; private set; }
+        public IReadOnlyList<Window> Windows { get; private set; }
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
         /// </summary>
-        public IReadOnlyCollection<Door> Doors { get; private set; }
+        public IReadOnlyList<Door> Doors { get; private set; }
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Scp079Speaker"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="Scp079Speaker"/> in the <see cref="Room"/>.
         /// </summary>
-        public IReadOnlyCollection<Scp079Speaker> Speakers { get; private set; }
+        public IReadOnlyList<Scp079Speaker> Speakers { get; private set; }
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Camera"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="Camera"/> in the <see cref="Room"/>.
         /// </summary>
-        public IReadOnlyCollection<Camera> Cameras { get; private set; }
+        public IReadOnlyList<Camera> Cameras { get; private set; }
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="RoomLightController"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="RoomLightController"/> in the <see cref="Room"/>.
         /// </summary>
         /// <remarks>
         /// Using that will make sense only for rooms with more than one light controller, in other cases better to use <see cref="RoomLightController"/>.
         /// </remarks>
-        public IReadOnlyCollection<RoomLightController> RoomLightControllers { get; private set; }
+        public IReadOnlyList<RoomLightController> RoomLightControllers { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> in the <see cref="Room"/>.
@@ -170,7 +209,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the FlickerableLightController's NetworkIdentity.
         /// </summary>
-        public NetworkIdentity RoomLightControllerNetIdentity => RoomLightController?.netIdentity;
+        public NetworkIdentity RoomLightControllerNetIdentity => RoomLightController ? RoomLightController.netIdentity : null;
 
         /// <summary>
         /// Gets the room's FlickerableLightController.
@@ -248,8 +287,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains elements that satisfy the condition.</returns>
         public static IEnumerable<Room> Get(Func<Room, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -285,7 +324,7 @@ namespace Exiled.API.Features
             }
 
             // Finally, try for objects that aren't children, like players and pickups.
-            return room ?? Get(objectInRoom.transform.position) ?? default;
+            return room ? room : Get(objectInRoom.transform.position) ?? default;
         }
 
         /// <summary>
@@ -293,21 +332,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="zoneType">Filters by <see cref="ZoneType"/>.</param>
         /// <returns><see cref="Room"/> object.</returns>
-        public static Room Random(ZoneType zoneType = ZoneType.Unspecified) => (zoneType is not ZoneType.Unspecified ? Get(r => r.Zone.HasFlag(zoneType)) : List).GetRandomValue();
-
-        /// <summary>
-        /// Returns the local space position, based on a world space position.
-        /// </summary>
-        /// <param name="position">World position.</param>
-        /// <returns>Local position, based on the room.</returns>
-        public Vector3 LocalPosition(Vector3 position) => Transform.InverseTransformPoint(position);
-
-        /// <summary>
-        /// Returns the World position, based on a local space position.
-        /// </summary>
-        /// <param name="offset">Local position.</param>
-        /// <returns>World position, based on the room.</returns>
-        public Vector3 WorldPosition(Vector3 offset) => Transform.TransformPoint(offset);
+        public static Room Random(ZoneType zoneType = ZoneType.Unspecified) => (zoneType is not ZoneType.Unspecified ? Get(r => r.Zone.HasFlag(zoneType)) : List).Random();
 
         /// <summary>
         /// Flickers the room's lights off for a duration.
@@ -336,8 +361,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">Duration in seconds, or <c>-1</c> for permanent lockdown.</param>
         /// <param name="lockType">DoorLockType of the lockdown.</param>
-        /// <seealso cref="Door.LockAll(float, ZoneType, DoorLockType)"/>
-        /// <seealso cref="Door.LockAll(float, IEnumerable{ZoneType}, DoorLockType)"/>
         public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (Door door in Doors)
@@ -388,16 +411,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>A string containing Room-related data.</returns>
         public override string ToString() => $"{Type} ({Zone}) [{Doors.Count}] *{Cameras.Count}* |{TeslaGate != null}|";
-
-        /// <summary>
-        /// Factory method to create and add a <see cref="Room"/> component to a Transform.
-        /// We can add parameters to be set privately here.
-        /// </summary>
-        /// <param name="roomGameObject">The Game Object to attach the Room component to.</param>
-        internal static void CreateComponent(GameObject roomGameObject)
-        {
-            roomGameObject.AddComponent<Room>().InternalCreate();
-        }
 
         private static RoomType FindType(GameObject gameObject)
         {
@@ -469,51 +482,19 @@ namespace Exiled.API.Features
         {
             Transform transform = gameObject.transform;
 
-            return transform.parent?.name.RemoveBracketsOnEndOfName() switch
+            if (transform && transform.parent)
             {
-                "HeavyRooms" => ZoneType.HeavyContainment,
-                "LightRooms" => ZoneType.LightContainment,
-                "EntranceRooms" => ZoneType.Entrance,
-                "HCZ_EZ_Checkpoint" => ZoneType.HeavyContainment | ZoneType.Entrance,
-                _ => transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified,
-            };
-        }
-
-        private void InternalCreate()
-        {
-            Identifier = gameObject.GetComponent<RoomIdentifier>();
-            RoomIdentifierToRoom.Add(Identifier, this);
-
-            Zone = FindZone(gameObject);
-#if Debug
-            if (Type is RoomType.Unknown)
-                Log.Error($"[ZONETYPE UNKNOWN] {this}");
-#endif
-            Type = FindType(gameObject);
-#if Debug
-            if (Type is RoomType.Unknown)
-                Log.Error($"[ROOMTYPE UNKNOWN] {this}");
-#endif
-
-            RoomLightControllersValue.AddRange(gameObject.GetComponentsInChildren<RoomLightController>());
-
-            RoomLightControllers = RoomLightControllersValue.AsReadOnly();
-
-            GetComponentsInChildren<BreakableWindow>().ForEach(component =>
-            {
-                Window window = new(component, this);
-                window.Room.WindowsValue.Add(window);
-            });
-
-            if (GetComponentInChildren<global::TeslaGate>() is global::TeslaGate tesla)
-            {
-                TeslaGate = new TeslaGate(tesla, this);
+                return transform.parent.name.RemoveBracketsOnEndOfName() switch
+                {
+                    "HeavyRooms" => ZoneType.HeavyContainment,
+                    "LightRooms" => ZoneType.LightContainment,
+                    "EntranceRooms" => ZoneType.Entrance,
+                    "HCZ_EZ_Checkpoint" => ZoneType.HeavyContainment | ZoneType.Entrance,
+                    _ => transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified,
+                };
             }
 
-            Windows = WindowsValue.AsReadOnly();
-            Doors = DoorsValue.AsReadOnly();
-            Speakers = SpeakersValue.AsReadOnly();
-            Cameras = CamerasValue.AsReadOnly();
+            return ZoneType.Unspecified;
         }
     }
 }

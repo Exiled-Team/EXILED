@@ -16,6 +16,8 @@ namespace Exiled.API.Features.Items
 
     using Structs;
 
+    using VoiceChat.Playbacks;
+
     /// <summary>
     /// A wrapper class for <see cref="RadioItem"/>.
     /// </summary>
@@ -92,6 +94,11 @@ namespace Exiled.API.Features.Items
             get => Base._enabled;
             set => Base._enabled = value;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the radio is transmitting.
+        /// </summary>
+        public bool IsTransmitting => PersonalRadioPlayback.IsTransmitting(Owner.ReferenceHub);
 
         /// <summary>
         /// Sets the <see cref="RadioRangeSettings"/> of the given <paramref name="range"/>.

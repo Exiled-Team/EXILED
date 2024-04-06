@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Items
 {
     using System.Diagnostics;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
@@ -32,6 +33,10 @@ namespace Exiled.API.Features.Items
             : base(itemBase)
         {
             Base = itemBase;
+            Scp244DeployablePickup scp244Pickup = (Scp244DeployablePickup)Type.GetPickupBase();
+            Health = scp244Pickup._health;
+            ActivationDot = scp244Pickup._activationDot;
+            MaxDiameter = scp244Pickup.MaxDiameter;
         }
 
         /// <summary>

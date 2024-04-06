@@ -38,7 +38,7 @@ namespace Exiled.API.Features
         public static Dictionary<Assembly, IPlugin<IConfig>> PluginAssemblies { get; } = new();
 
         /// <summary>
-        /// Gets the player's host of the server.
+        /// Gets the Player of the server.
         /// Might be <see langword="null"/> when called when the server isn't loaded.
         /// </summary>
         public static Player Host { get; internal set; }
@@ -242,14 +242,6 @@ namespace Exiled.API.Features
 
             return true;
         }
-
-        /// <summary>
-        /// Runs a server command.
-        /// </summary>
-        /// <param name="command">The command to be run.</param>
-        /// <param name="sender">The <see cref="CommandSender"/> running the command.</param>
-        [Obsolete("Use Server.ExecuteCommand() instead.")]
-        public static void RunCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender);
 
         /// <summary>
         /// Executes a server command.

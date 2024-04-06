@@ -56,19 +56,19 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         public HitboxType Hitbox
         {
-            get => As<BaseFirearmHandler>().Hitbox;
-            set => As<BaseFirearmHandler>().Hitbox = value;
+            get => (Base as BaseFirearmHandler).Hitbox;
+            set => (Base as BaseFirearmHandler).Hitbox = value;
         }
 
         /// <summary>
         /// Gets the penetration.
         /// </summary>
-        public float Penetration => As<BaseFirearmHandler>()._penetration;
+        public float Penetration => (Base as BaseFirearmHandler)._penetration;
 
         /// <summary>
         /// Gets a value indicating whether the human hitboxes should be used.
         /// </summary>
-        public bool UseHumanHitboxes => As<BaseFirearmHandler>()._useHumanHitboxes;
+        public bool UseHumanHitboxes => (Base as BaseFirearmHandler)._useHumanHitboxes;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
@@ -87,10 +87,15 @@ namespace Exiled.API.Features.DamageHandlers
         /// <inheritdoc/>
         public override void ProcessDamage(Player player)
         {
-            if (Is(out BaseFirearmHandler firearmHandler))
-                firearmHandler.ProcessDamage(player.ReferenceHub);
-            else if (Is(out MicroHidDamageHandler microHidHandler))
-                microHidHandler.ProcessDamage(player.ReferenceHub);
+            switch (Base)
+            {
+                case BaseFirearmHandler firearmDamageHandler:
+                    firearmDamageHandler.ProcessDamage(player.ReferenceHub);
+                    break;
+                case MicroHidDamageHandler microHidHandler:
+                    microHidHandler.ProcessDamage(player.ReferenceHub);
+                    break;
+            }
         }
 
         /// <inheritdoc/>

@@ -27,7 +27,7 @@ namespace Exiled.API.Features.Roles
     /// Defines a role that represents SCP-049.
     /// </summary>
     [DebuggerDisplay("Scp-049")]
-    public class Scp049Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp049Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp049Role"/> class.

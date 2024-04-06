@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Features.Hazards;
     using Mirror;
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.Subroutines;
@@ -25,7 +26,7 @@ namespace Exiled.API.Features.Roles
     /// Defines a role that represents SCP-173.
     /// </summary>
     [DebuggerDisplay("Scp-173")]
-    public class Scp173Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp173Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp173Role"/> class.

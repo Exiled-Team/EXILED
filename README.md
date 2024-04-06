@@ -1,15 +1,15 @@
-# EXILED - EXtended In-runtime Library for External Development
-
-![EXILED CI](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg?branch=master)
-<a href="https://github.com/Exiled-Team/EXILED/releases">
-  <img src="https://img.shields.io/github/release/Exiled-Team/EXILED/all.svg?style=flat" alt="GitHub Releases">
-</a>
-![Github All Downloads](https://img.shields.io/github/downloads/Exiled-Team/EXILED/total.svg?style=flat)
-![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev)
+<h1 align="center">EXILED - EXtended In-runtime Library for External Development</h1>
+<div align="center">
+    
+[<img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" alt="CI"/>](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg?branch=master)
+<a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
+<img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
+![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
 <a href="https://discord.gg/PyUkWTg">
-  <img src="https://img.shields.io/discord/656673194693885975?logo=discord" alt="Chat on Discord">
-</a>
+    <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
+</a>    
 
+</div>
 
 EXILED is a high-level plugin framework for SCP: Secret Laboratory servers. It offers an event system for developers to hook into in order to manipulate or change game code or implement their own functions.
 All EXILED events are coded with Harmony, meaning they require no direct editing of server assemblies to function, which allows for two unique benefits.
@@ -26,6 +26,8 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
 - [Italiano](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-IT.md)
 - [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
 - [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
+- [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
+- [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
 
 # Installation
 Installation of EXILED is quite simple. It loads itself through Northwood’s Plugin API. That's why there are two folders inside the ``Exiled.tar.gz`` in release files. ``SCP Secret Laboratory`` contains the necessary files to load EXILED features in ``EXILED`` folder. All you need to do is move these two folders into the appropriate path, which are explained below, and you are done! 
@@ -45,7 +47,7 @@ If you choose to use the installer it will, if run correctly, take care of insta
 ### Manual installation
   - Download the **`Exiled.tar.gz` [from here](https://github.com/Exiled-Team/EXILED/releases)**
   - Extract its contents with [7Zip](https://www.7-zip.org/) or [WinRar](https://www.win-rar.com/download.html?&L=6)
-  - Move the **``EXILED``** folder to **`%appdata%`** *Note: This folder needs to go in ``C:\Users\(Your_User)\AppData\Roaming``, and ***NOT*** ``C:\Users\(Your_User)\AppData\Roaming\SCP Secret Laboratory``, and **IT MUST** be in (...)\AppData\Roaming, not (...)\AppData\!*
+  - Move the **``EXILED``** folder to **`%appdata%`** *Note: This folder needs to go in ``C:\Users\%UserName%\AppData\Roaming``, and ***NOT*** ``C:\Users\%UserName%\AppData\Roaming\SCP Secret Laboratory``, and **IT MUST** be in (...)\AppData\Roaming, not (...)\AppData\!*
   - Move **``SCP Secret Laboratory``** to **`%appdata%`**.
     - Windows 10 & 11:
       Write `%appdata%` in Cortana / the search icon, or the Windows Explorer bar.
@@ -56,7 +58,7 @@ If you choose to use the installer it will, if run correctly, take care of insta
 That's it, EXILED should now be installed and active the next time you boot up your server. Note that EXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
 - To install a plugin, simply:
   - Download a plugin from [*their* releases page](https://i.imgur.com/u34wgPD.jpg) (**it MUST be a `.dll`!**)
-  - Move it to: ``C:\Users\(Your_User)\AppData\Roaming\EXILED\Plugins`` (move here by pressing Win + R, then writing `%appdata%`)
+  - Move it to: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (move here by pressing Win + R, then writing `%appdata%`)
 
 # Linux
 ### Automatic installation ([more information](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))

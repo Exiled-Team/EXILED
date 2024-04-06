@@ -31,7 +31,7 @@ namespace Exiled.API.Features.DynamicEvents
         /// </summary>
         public delegate void FDelegate();
 
-        /// <inheritdoc cref="CreateFromTypeInstance(object)"/>
+        /// <inheritdoc cref="BindAllFromTypeInstance(object)"/>
         public static void CreateFromTypeInstance(object obj) => Get<DynamicEventManager>().BindAllFromTypeInstance(obj);
 
         /// <inheritdoc cref="UnbindAllFromTypeInstance(object)"/>

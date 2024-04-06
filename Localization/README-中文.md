@@ -1,14 +1,15 @@
-# EXILED - EXtended In-runtime Library for External Development
-
-![EXILED CI](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg?branch=master)
-<a href="https://github.com/Exiled-Team/EXILED/releases">
-  <img src="https://img.shields.io/github/release/Exiled-Team/EXILED/all.svg?style=flat" alt="GitHub Releases">
-</a>
-![Github All Downloads](https://img.shields.io/github/downloads/Exiled-Team/EXILED/total.svg?style=flat)
-![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev)
+<h1 align="center">EXILED - EXtended In-runtime Library for External Development</h1>
+<div align="center">
+    
+[<img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" alt="CI"/>](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg?branch=master)
+<a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
+<img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
+![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
 <a href="https://discord.gg/PyUkWTg">
-  <img src="https://img.shields.io/discord/656673194693885975?logo=discord" alt="Chat on Discord">
-</a>
+    <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
+</a>    
+
+</div>
 
 
 EXILED是一个用于SCP: 秘密实验室服务器的高级插件框架。 它为开发者提供了一个可以改变游戏代码或实现其自己的功能的事件系统。
@@ -36,7 +37,7 @@ EXILED的安装十分简单。因为是用NW插件API来将自身载入，你会
 ### 手动安装
   - 下载 **[Exiled.tar.gz](https://github.com/galaxy119/EXILED/releases)**
   - 使用 [7Zip](https://www.7-zip.org/) 或 [WinRar](https://www.win-rar.com/download.html?&L=6) 解压里面的内容
-  - 移动 **``EXILED``** 文件夹到 **`%appdata%`** （*备注: 这个文件夹需要放在 ``C:\用户\(你的用户)\AppData\Roaming``， 而 ***不是*** ``C:\用户\(你的用户)\AppData\Roaming\SCP Secret Laboratory``， 而且它 **必须** 在 (...)\AppData\Roaming， 而不是 (...)\AppData\!*）
+  - 移动 **``EXILED``** 文件夹到 **`%appdata%`** （*备注: 这个文件夹需要放在 ``C:\用户\%UserName%\AppData\Roaming``， 而 ***不是*** ``C:\用户\%UserName%\AppData\Roaming\SCP Secret Laboratory``， 而且它 **必须** 在 (...)\AppData\Roaming， 而不是 (...)\AppData\!*）
   - 移动 **``SCP Secret Laboratory``** 文件夹到 **`%appdata%`** 中。
   - 按 Win + R 并输入 `%appdata%` 可快捷打开AppData文件夹。
 
@@ -64,7 +65,7 @@ EXILED的安装十分简单。因为是用NW插件API来将自身载入，你会
 - 想要安装插件，只需要:
   - 从[**插件仓库**的Releases页面](https://i.imgur.com/u34wgPD.jpg)中下载DLL文件。(**它必须是个`.dll`!**)
 ## Windows
-  - 移动DLL文件到: ``C:\用户\(你的用户)\AppData\Roaming\EXILED\Plugins`` (可以通过按 Win + R键输入``%appdata%`` 来快速定位到AppData)
+  - 移动DLL文件到: ``C:\用户\%UserName%\AppData\Roaming\EXILED\Plugins`` (可以通过按 Win + R键输入``%appdata%`` 来快速定位到AppData)
 ## Linux
   - 移动DLL文件到: ``~/.config/EXILED/Plugins`` (如果你的SSH用的是root用户，请搜索正确的`.config`文件夹，它会在 `/home/(SCP服务器用户)`下。)
 

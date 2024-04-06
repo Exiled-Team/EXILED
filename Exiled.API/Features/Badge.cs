@@ -15,7 +15,7 @@ namespace Exiled.API.Features
     /// Represents an in-game badge.
     /// </summary>
     [DebuggerDisplay("Color = {Color} Text = {Text}")]
-    public struct Badge
+    public readonly struct Badge
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Badge"/> struct.

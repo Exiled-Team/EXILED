@@ -55,13 +55,13 @@ namespace Exiled.Installer
         // Force use of LF because the file uses LF
         private static readonly Dictionary<string, string> Markup = Resources.Markup.Trim().Split('\n').ToDictionary(s => s.Split(':')[0], s => s.Split(':', 2)[1]);
 
-        private async static Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
             Console.OutputEncoding = new UTF8Encoding(false, false);
             await CommandSettings.Parse(args).ConfigureAwait(false);
         }
 
-        internal async static Task MainSafe(CommandSettings args)
+        internal static async Task MainSafe(CommandSettings args)
         {
             bool error = false;
             try
@@ -111,10 +111,8 @@ namespace Exiled.Installer
                 Console.WriteLine(Resources.Program_MainSafe_Asset_found_);
                 Console.WriteLine(FormatAsset(exiledAsset));
 
-                using HttpClient httpClient = new()
-                {
-                    Timeout = TimeSpan.FromSeconds(SecondsWaitForDownload),
-                };
+                using HttpClient httpClient = new();
+                httpClient.Timeout = TimeSpan.FromSeconds(SecondsWaitForDownload);
                 httpClient.DefaultRequestHeaders.Add("User-Agent", Header);
 
                 using HttpResponseMessage downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);
@@ -144,12 +142,12 @@ namespace Exiled.Installer
                 Environment.Exit(error ? 1 : 0);
         }
 
-        private async static Task<IEnumerable<Release>> GetReleases()
+        private static async Task<IEnumerable<Release>> GetReleases()
         {
             IEnumerable<Release> releases = (await GitHubClient.Repository.Release.GetAll(RepoID).ConfigureAwait(false))
                 .Where(
                     r => Version.TryParse(r.TagName, out Version version)
-                         && (version > VersionLimit));
+                         && version > VersionLimit);
 
             return releases.OrderByDescending(r => r.CreatedAt.Ticks);
         }
@@ -267,7 +265,8 @@ namespace Exiled.Installer
                 {
                     return TryParse(pair.Value);
                 }
-                else if (!fileInFolder && !isFolder &&
+
+                if (!fileInFolder && !isFolder &&
                          pair.Key.Equals(fileName, StringComparison.OrdinalIgnoreCase))
                 {
                     return TryParse(pair.Value);
@@ -280,20 +279,27 @@ namespace Exiled.Installer
         private static Release FindRelease(CommandSettings args, IEnumerable<Release> releases)
         {
             Console.WriteLine(Resources.Program_TryFindRelease_Trying_to_find_release__);
-            Version targetVersion = args.TargetVersion is not null ? new Version(args.TargetVersion) : new Version(releases.First().TagName);
+            Version? targetVersion = args.TargetVersion is not null ? new Version(args.TargetVersion) : null;
 
-            foreach (Release r in releases)
+            List<Release> enumerable = releases.ToList();
+
+            foreach (Release release in enumerable)
             {
-                if (targetVersion != new Version(r.TagName))
-                    continue;
+                if (targetVersion != null)
+                {
+                    if (targetVersion == new Version(release.TagName))
+                        return release;
+                }
+                else
+                {
+                    if (release.Prerelease && !args.PreReleases)
+                        continue;
 
-                if (targetVersion.IsPreRelease && !args.PreReleases)
-                    continue;
-
-                return r;
+                    return release;
+                }
             }
 
-            return releases.First();
+            return enumerable.First();
         }
     }
 }
