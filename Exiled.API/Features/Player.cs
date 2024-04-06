@@ -52,7 +52,6 @@ namespace Exiled.API.Features
     using PlayerRoles.Voice;
     using PlayerStatsSystem;
     using PluginAPI.Core;
-
     using RelativePositioning;
     using RemoteAdmin;
     using Respawning.NamingRules;
@@ -2800,6 +2799,23 @@ namespace Exiled.API.Features
                 foreach (KeyValuePair<Firearm, IEnumerable<AttachmentIdentifier>> item in firearms)
                     AddItem(item.Key, item.Value);
             }
+        }
+
+        /// <summary>
+        /// Grants the player their current role's loadout.
+        /// </summary>
+        public void GrantLoadout() => GrantLoadout(Role.Type);
+
+        /// <summary>
+        /// Grants a player a role's loadout.
+        /// </summary>
+        /// <param name="role">The role loadout to give.</param>
+        public void GrantLoadout(RoleTypeId role)
+        {
+            InventoryRoleInfo info = role.GetStartingInventory();
+
+            AddItem(info.Items);
+            info.Ammo.ForEach(a => AddAmmo(a.Key.GetAmmoType(), a.Value));
         }
 
         /// <summary>
