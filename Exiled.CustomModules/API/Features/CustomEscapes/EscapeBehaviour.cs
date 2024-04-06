@@ -10,18 +10,16 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Enums;
-    using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.CustomModules.API.Features.CustomRoles;
 
     using PlayerRoles;
-    using UnityEngine;
 
     /// <summary>
     /// Represents the base class for custom escape behaviors.
@@ -103,7 +101,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
 
             foreach (EscapeSettings settings in Settings)
             {
-                if (!settings.IsAllowed || Vector3.Distance(Owner.Position, settings.Position) > settings.DistanceThreshold)
+                if (!settings.IsAllowed || MathExtensions.DistanceSquared(Owner.Position, settings.Position) > settings.DistanceThreshold * settings.DistanceThreshold)
                     continue;
 
                 Events.EventArgs.CustomEscapes.EscapingEventArgs ev = new(Owner.Cast<Pawn>(), settings.Role, settings.CustomRole, CurrentScenario, CustomEscape.AllScenarios[CurrentScenario]);
