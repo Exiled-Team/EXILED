@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.API.Features.Pickups;
 #pragma warning disable IDE0079
 #pragma warning disable IDE0060
 #pragma warning disable SA1623 // Property summary documentation should match accessors
@@ -942,15 +941,7 @@ namespace Exiled.Events.Handlers
         /// <param name="itemBase">The added <see cref="InventorySystem.Items.ItemBase"/>.</param>
         /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
         public static void OnItemAdded(ReferenceHub referenceHub, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase)
-        {
-            ItemAddedEventArgs ev = new(referenceHub, itemBase, pickupBase);
-
-            ev.Item.ReadPickupInfo(ev.Pickup);
-
-            ev.Player.ItemsValue.Add(ev.Item);
-
-            ItemAdded.InvokeSafely(ev);
-        }
+            => ItemAdded.InvokeSafely(new ItemAddedEventArgs(referenceHub, itemBase, pickupBase));
 
         /// <summary>
         /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item removed from their inventory.
@@ -959,14 +950,7 @@ namespace Exiled.Events.Handlers
         /// <param name="itemBase">The removed <see cref="InventorySystem.Items.ItemBase"/>.</param>
         /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
         public static void OnItemRemoved(ReferenceHub referenceHub, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase)
-        {
-            ItemRemovedEventArgs ev = new(referenceHub, itemBase, pickupBase);
-            ItemRemoved.InvokeSafely(ev);
-
-            ev.Player.ItemsValue.Remove(ev.Item);
-
-            API.Features.Items.Item.BaseToItem.Remove(itemBase);
-        }
+            => ItemRemoved.InvokeSafely(new ItemRemovedEventArgs(referenceHub, itemBase, pickupBase));
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> enters in an environmental hazard.

@@ -1965,8 +1965,7 @@ namespace Exiled.API.Features
                     Inventory.NetworkCurItem = ItemIdentifier.None;
 
                 Inventory.UserInventory.Items.Remove(item.Serial);
-                typeof(InventoryExtensions).InvokeStaticEvent(nameof(InventoryExtensions.OnItemRemoved), new object[] { ReferenceHub, item.Base, null });
-
+                ItemsValue.Remove(item);
                 Inventory.SendItemsNextFrame = true;
             }
 
@@ -2590,6 +2589,8 @@ namespace Exiled.API.Features
                 }
 
                 typeof(InventoryExtensions).InvokeStaticEvent(nameof(InventoryExtensions.OnItemAdded), new object[] { ReferenceHub, itemBase, null });
+
+                ItemsValue.Add(item);
 
                 Inventory.SendItemsNextFrame = true;
                 return item;
