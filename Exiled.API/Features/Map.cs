@@ -353,7 +353,7 @@ namespace Exiled.API.Features
         /// <param name="toleration">The maximum toleration to define the radius from which get the cameras.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the found cameras.</returns>
         public static IEnumerable<Camera> GetNearCameras(Vector3 position, float toleration = 15f)
-            => Camera.Get(cam => (position - cam.Position).sqrMagnitude <= toleration * toleration);
+            => Camera.Get(cam => MathExtensions.DistanceSquared(position, cam.Position) <= toleration * toleration);
 
         /// <summary>
         /// Explode.
@@ -369,10 +369,9 @@ namespace Exiled.API.Features
             attacker ??= Server.Host;
             if (!InventoryItemLoader.TryGetItem(item, out ThrowableItem throwableItem))
                 return;
-            ExplosionUtils.ServerSpawnEffect(position, item);
 
-            if (throwableItem.Projectile is ExplosionGrenade explosionGrenade)
-                ExplosionGrenade.Explode(attacker.Footprint, position, explosionGrenade);
+            if (throwableItem.Projectile is TimeGrenade timedGrenadePickup)
+                timedGrenadePickup.ServerFuseEnd();
         }
 
         /// <summary>
