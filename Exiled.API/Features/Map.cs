@@ -377,8 +377,12 @@ namespace Exiled.API.Features
             if (!InventoryItemLoader.TryGetItem(item, out ThrowableItem throwableItem))
                 return;
 
-            if (throwableItem.Projectile is TimeGrenade timedGrenadePickup)
+            if (Object.Instantiate(throwableItem.Projectile) is TimeGrenade timedGrenadePickup)
+            {
+                timedGrenadePickup.PreviousOwner = attacker.Footprint;
+                timedGrenadePickup.Position = position;
                 timedGrenadePickup.ServerFuseEnd();
+            }
         }
 
         /// <summary>
