@@ -36,5 +36,10 @@ namespace Exiled.API.Enums
         /// Dance5
         /// </summary>
         Dance5,
+
+        /// <summary>
+        /// Dance1
+        /// </summary>
+        None = byte.MaxValue,
     }
 }

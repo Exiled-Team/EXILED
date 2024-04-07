@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs.Scp3114
             Player = player;
             Scp3114 = player.Role.As<Scp3114Role>();
             IsDancing = newState;
-            DanceType = (DanceType)(newState ? UnityEngine.Random.Range(0, Scp3114.Dance._danceVariants) : 0);
+            DanceType = (DanceType)(newState ? UnityEngine.Random.Range(0, Scp3114.Dance._danceVariants) : byte.MaxValue);
             IsAllowed = isAllowed;
         }
 
