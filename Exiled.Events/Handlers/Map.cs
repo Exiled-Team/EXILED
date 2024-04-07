@@ -116,6 +116,16 @@ namespace Exiled.Events.Handlers
         public static Event<PlacingPickupIntoPocketDimensionEventArgs> PlacingPickupIntoPocketDimension { get; set; } = new();
 
         /// <summary>
+        /// Invoked before elevator starts moving.
+        /// </summary>
+        public static Event<ElevatorMovingEventArgs> ElevatorMoving { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after an elevator has arrived.
+        /// </summary>
+        public static Event<ElevatorArrivedEventArgs> ElevatorArrived { get; set; } = new();
+
+        /// <summary>
         /// Called before placing a decal.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingBulletHoleEventArgs"/> instance.</param>
@@ -227,5 +237,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="PlacingPickupIntoPocketDimensionEventArgs"/> instnace.</param>
         public static void OnPlacingPickupIntoPocketDimension(PlacingPickupIntoPocketDimensionEventArgs ev) => PlacingPickupIntoPocketDimension.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before elevator starts moving.
+        /// </summary>
+        /// <param name="ev">The <see cref="ElevatorMovingEventArgs"/> instance.</param>
+        public static void OnElevatorMoving(ElevatorMovingEventArgs ev) => ElevatorMoving.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after an elevator has arrived.
+        /// </summary>
+        /// <param name="ev">The <see cref="ElevatorArrivedEventArgs"/> instance.</param>
+        public static void OnElevatorArrived(ElevatorArrivedEventArgs ev) => ElevatorArrived.InvokeSafely(ev);
     }
 }
