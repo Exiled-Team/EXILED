@@ -7,59 +7,67 @@
 
 namespace Exiled.API.Enums
 {
+    using Exiled.API.Features.Core.Generic;
+    using PlayerRoles;
+
     /// <summary>
     /// Possible spawn reasons.
     /// </summary>
-    public enum SpawnReason : byte // TOTO: Remove this file and use Basegame
+    public sealed class SpawnReason : EnumClass<RoleChangeReason, SpawnReason>
     {
         /// <summary>
         /// No reason specified.
         /// </summary>
-        None,
+        public static readonly SpawnReason None = new(RoleChangeReason.None);
 
         /// <summary>
         /// The round has just started.
         /// </summary>
-        RoundStart,
+        public static readonly SpawnReason RoundStart = new(RoleChangeReason.RoundStart);
 
         /// <summary>
         /// The player joined and the round recently started.
         /// </summary>
-        LateJoin,
+        public static readonly SpawnReason LateJoin = new(RoleChangeReason.LateJoin);
 
         /// <summary>
         /// The player was dead and is respawning.
         /// </summary>
-        Respawn,
+        public static readonly SpawnReason Respawn = new(RoleChangeReason.Respawn);
 
         /// <summary>
         /// The player has died.
         /// </summary>
-        Died,
+        public static readonly SpawnReason Died = new(RoleChangeReason.Died);
 
         /// <summary>
         /// The player has escaped.
         /// </summary>
-        Escaped,
+        public static readonly SpawnReason Escaped = new(RoleChangeReason.Escaped);
 
         /// <summary>
         /// The player was revived by SCP-049.
         /// </summary>
-        Revived,
+        public static readonly SpawnReason Revived = new(RoleChangeReason.Revived);
 
         /// <summary>
-        /// The player's role was changed by an admin command or plugin.
+        /// The player's role was changed by an admin command.
         /// </summary>
-        ForceClass,
+        public static readonly SpawnReason RemoteAdmin = new(RoleChangeReason.RemoteAdmin);
 
         /// <summary>
-        /// The player will be destroyed.
+        /// The user will be destroyed.
         /// </summary>
-        Destroyed,
+        public static readonly SpawnReason Destroyed = new(RoleChangeReason.Destroyed);
 
         /// <summary>
-        /// The player was spawned due to the usage of an item.
+        /// The player's role was changed by an exiled plugin.
         /// </summary>
-        ItemUsage,
+        public static readonly SpawnReason ForceClass = new((RoleChangeReason)9);
+
+        private SpawnReason(RoleChangeReason value)
+            : base(value)
+        {
+        }
     }
 }

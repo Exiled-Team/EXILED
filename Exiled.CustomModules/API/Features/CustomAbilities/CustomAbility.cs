@@ -8,7 +8,6 @@
 namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
     using System;
-
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -19,9 +18,12 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
+    using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.Attributes;
+    using Exiled.CustomModules.API.Features.CustomAbilities.Settings;
+    using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
     using HarmonyLib;
-
     using Utils.NonAllocLINQ;
 
     /// <summary>
@@ -35,13 +37,17 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     /// <br/>It is designed to be utilized in conjunction with the <see cref="IAdditiveBehaviour"/> interface, enabling seamless integration into existing systems for extending and enhancing ability-related functionalities.
     /// </para>
     /// </remarks>
-    public abstract class CustomAbility<T> : TypeCastObject<CustomAbility<T>>, ICustomAbility
+    public abstract class CustomAbility<T> : CustomModule, ICustomAbility
         where T : GameEntity
     {
-        private static readonly Dictionary<Type, CustomAbility<T>> TypeLookupTable = new();
-        private static readonly Dictionary<Type, CustomAbility<T>> BehaviourLookupTable = new();
-        private static readonly Dictionary<uint, CustomAbility<T>> IdLookupTable = new();
-        private static readonly Dictionary<string, CustomAbility<T>> NameLookupTable = new();
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable SA1600 // Elements should be documented
+        protected static readonly Dictionary<Type, CustomAbility<T>> TypeLookupTable = new();
+        protected static readonly Dictionary<Type, CustomAbility<T>> BehaviourLookupTable = new();
+        protected static readonly Dictionary<uint, CustomAbility<T>> IdLookupTable = new();
+        protected static readonly Dictionary<string, CustomAbility<T>> NameLookupTable = new();
+#pragma warning restore SA1600 // Elements should be documented
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         private Type reflectedGenericType;
 
@@ -84,43 +90,53 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before adding an ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<AddingAbilityEventArgs<T>> AddingAbilityDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<AddingAbilityEventArgs<T>> AddingAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after adding an ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<AddedAbilityEventArgs<T>> AddedAbilityDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<AddedAbilityEventArgs<T>> AddedAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before removing an ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<RemovingAbilityEventArgs<T>> RemovingAbilityDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<RemovingAbilityEventArgs<T>> RemovingAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after removing an ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<RemovedAbilityEventArgs<T>> RemovedAbilityDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<RemovedAbilityEventArgs<T>> RemovedAbilityDispatcher { get; set; }
 
         /// <inheritdoc/>
         public Type BehaviourComponent { get; protected set; }
 
         /// <summary>
+        /// Gets the ability's settings.
+        /// </summary>
+        public virtual AbilitySettings Settings { get; } = AbilitySettings.Default;
+
+        /// <summary>
         /// Gets the <see cref="CustomAbility{T}"/>'s name.
         /// </summary>
-        public abstract string Name { get; }
+        public override string Name { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomAbility{T}"/>'s id.
         /// </summary>
-        public virtual uint Id { get; protected set; }
+        public override uint Id { get; protected set; }
 
         /// <summary>
         /// Gets a value indicating whether the ability is enabled.
         /// </summary>
-        public virtual bool IsEnabled => true;
+        public override bool IsEnabled { get; }
+
+        /// <summary>
+        /// Gets the description of the ability.
+        /// </summary>
+        public virtual string Description { get; }
 
         /// <summary>
         /// Gets the reflected generic type.
@@ -128,52 +144,11 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         protected Type ReflectedGenericType => reflectedGenericType ??= GetType().GetGenericArguments()[0];
 
         /// <summary>
-        /// Compares two operands: <see cref="CustomAbility{T}"/> and <see cref="object"/>.
+        /// Gets a <see cref="CustomAbility{T}"/> based on the provided id or <see cref="UUCustomAbilityType"/>.
         /// </summary>
-        /// <param name="left">The <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <param name="right">The <see cref="object"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomAbility<T> left, object right) => left is null ? right is null : left.Equals(right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomAbility{T}"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator ==(object left, CustomAbility<T> right) => right == left;
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomAbility{T}"/> and <see cref="object"/>.
-        /// </summary>
-        /// <param name="left">The <see cref="object"/> to compare.</param>
-        /// <param name="right">The <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomAbility<T> left, object right) => !(left == right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="object"/> and <see cref="CustomAbility{T}"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="object"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(object left, CustomAbility<T> right) => !(left == right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomAbility{T}"/> and <see cref="CustomAbility{T}"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(CustomAbility<T> left, CustomAbility<T> right) => left is null ? right is null : left.Equals(right);
-
-        /// <summary>
-        /// Compares two operands: <see cref="CustomAbility{T}"/> and <see cref="CustomAbility{T}"/>.
-        /// </summary>
-        /// <param name="left">The left <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <param name="right">The right <see cref="CustomAbility{T}"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(CustomAbility<T> left, CustomAbility<T> right) => !(left.Id == right.Id);
+        /// <param name="id">The id or <see cref="UUCustomAbilityType"/> of the custom ability.</param>
+        /// <returns>The <see cref="CustomAbility{T}"/> with the specified id, or <see langword="null"/> if no ability is found.</returns>
+        public static CustomAbility<T> Get(object id) => id is uint or UUCustomAbilityType ? Get((uint)id) : null;
 
         /// <summary>
         /// Gets a <see cref="CustomAbility{T}"/> given the specified id.
@@ -497,13 +472,23 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Enables all the custom abilities present in the assembly.
         /// </summary>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> which contains all the enabled custom abilities.</returns>
-        public static IEnumerable<CustomAbility<T>> EnableAll()
+        public static IEnumerable<CustomAbility<T>> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+
+        /// <summary>
+        /// Enables all the custom abilities present in the assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to enable the abilities from.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> which contains all the enabled custom abilities.</returns>
+        public static IEnumerable<CustomAbility<T>> EnableAll(Assembly assembly)
         {
+            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomAbilities))
+                throw new Exception("ModuleType::CustomAbilities must be enabled in order to load any custom abilities");
+
             List<CustomAbility<T>> customAbilities = new();
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (Type type in assembly.GetTypes())
             {
                 CustomAbilityAttribute attribute = type.GetCustomAttribute<CustomAbilityAttribute>();
-                if (!type.IsSubclassOf(typeof(CustomAbility<T>)) || attribute is null)
+                if (!typeof(CustomAbility<T>).IsAssignableFrom(type) || attribute is null)
                     continue;
 
                 CustomAbility<T> customAbility = Activator.CreateInstance(type) as CustomAbility<T>;
@@ -515,7 +500,8 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
                     customAbilities.Add(customAbility);
             }
 
-            Log.SendRaw($"{customAbilities.Count()} custom abilities have been successfully registered!", ConsoleColor.DarkGreen);
+            if (customAbilities.Count != Registered.Count)
+                Log.Info($"{customAbilities.Count()} custom abilities have been successfully registered!");
 
             return customAbilities;
         }
@@ -529,7 +515,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
             List<CustomAbility<T>> customAbilities = new();
             customAbilities.AddRange(UnorderedRegistered.Where(ability => ability.TryUnregister()));
 
-            Log.SendRaw($"{customAbilities.Count()} custom abilities have been successfully unregistered!", ConsoleColor.DarkGreen);
+            Log.Info($"{customAbilities.Count()} custom abilities have been successfully unregistered!");
 
             return customAbilities;
         }
@@ -597,46 +583,6 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
                 return false;
             }
         }
-
-        /// <summary>
-        /// Determines whether the provided id is equal to the current object.
-        /// </summary>
-        /// <param name="id">The id to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(uint id) => Id == id;
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="ca">The custom ability to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(CustomAbility<T> ca) => ca && (ReferenceEquals(this, ca) || Id == ca.Id);
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="obj">The object to compare.</param>
-        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public override bool Equals(object obj)
-        {
-            if (Equals(obj as CustomAbility<T>))
-                return true;
-
-            try
-            {
-                return Equals((uint)obj);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns a the 32-bit signed hash code of the current object instance.
-        /// </summary>
-        /// <returns>The 32-bit signed hash code of the current object instance.</returns>
-        public override int GetHashCode() => base.GetHashCode();
 
         /// <summary>
         /// Tries to register a <see cref="CustomAbility{T}"/>.

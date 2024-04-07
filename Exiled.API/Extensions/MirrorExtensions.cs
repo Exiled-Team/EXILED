@@ -16,19 +16,15 @@ namespace Exiled.API.Extensions
     using System.Text;
 
     using Features;
-    using Features.Pools;
-
+    using Features.Core.Generic.Pools;
     using InventorySystem.Items.Firearms;
-
     using Mirror;
-
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PlayerRoles.Subroutines;
     using RelativePositioning;
-
     using Respawning;
-
     using UnityEngine;
 
     /// <summary>
@@ -205,17 +201,6 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Sets <see cref="Room"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
-        /// </summary>
-        /// <param name="room">Room to modify.</param>
-        /// <param name="target">Only this player can see room color.</param>
-        /// <param name="multiplier">Light intensity multiplier to set.</param>
-        [Obsolete("This features has been remove by NW", true)]
-        public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier)
-        {
-        }
-
-        /// <summary>
         /// Change <see cref="Player"/> character model for appearance.
         /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
         /// </summary>
@@ -260,7 +245,8 @@ namespace Exiled.API.Extensions
                 else
                     fpc = playerfpc;
 
-                fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort value, out ushort _);
+                ushort value = 0;
+                fpc?.FpcModule.MouseLook.GetSyncValues(0, out value, out ushort _);
                 writer.WriteRelativePosition(player.RelativePosition);
                 writer.WriteUShort(value);
             }
@@ -458,6 +444,26 @@ namespace Exiled.API.Extensions
                 player.Connection.Send(objectDestroyMessage, 0);
                 SendSpawnMessageMethodInfo.Invoke(null, new object[] { identity, player.Connection });
             }
+        }
+
+        /// <summary>
+        /// Sends a <see cref="SubroutineMessage"/>.
+        /// </summary>
+        /// <param name="subroutineBase">Base <see cref="SubroutineBase"/> instance.</param>
+        /// <param name="applyingChanges">Action that will apply needed changes to a <paramref name="subroutineBase"/>.</param>
+        /// <param name="toAll">Should message be sent to everybody or to <see cref="SubroutineBase.Role"/> only.</param>
+        /// <typeparam name="T">A type of <see cref="SubroutineBase"/>.</typeparam>
+        public static void SendRpc<T>(this T subroutineBase, Action<T> applyingChanges, bool toAll = true)
+            where T : SubroutineBase
+        {
+            applyingChanges(subroutineBase);
+
+            SubroutineMessage msg = new(subroutineBase, true);
+
+            if (toAll)
+                NetworkServer.SendToAll(msg);
+            else
+                subroutineBase.Role._lastOwner.connectionToClient.Send(msg);
         }
 
         // Get components index in identity.(private)

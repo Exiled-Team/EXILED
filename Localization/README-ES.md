@@ -1,14 +1,15 @@
-# EXILED - EXtended In-runtime Library for External Development
-
-![EXILED CI](https://github.com/galaxy119/EXILED/workflows/EXILED%20CI/badge.svg?branch=2.0.0)
-<a href="https://github.com/Exiled-Team/EXILED/releases">
-  <img src="https://img.shields.io/github/release/Exiled-Team/EXILED/all.svg?style=flat" alt="GitHub Releases">
-</a>
-![Github All Downloads](https://img.shields.io/github/downloads/galaxy119/EXILED/total.svg?style=flat)
-![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev)
+<h1 align="center">EXILED - EXtended In-runtime Library for External Development</h1>
+<div align="center">
+    
+[<img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" alt="CI"/>](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg?branch=master)
+<a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
+<img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
+![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
 <a href="https://discord.gg/PyUkWTg">
-  <img src="https://img.shields.io/discord/656673194693885975?logo=discord" alt="Chat on Discord">
-</a>
+    <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
+</a>    
+
+</div>
 
 
 EXILED es una plataforma de desarrollo de plugins para servidores de SCP: Secret Laboratory. Ofrece un sistema de eventos para desarrolladores y poder modificar o cambiar código del juego, o implementar sus propias funciones.
@@ -44,7 +45,7 @@ Si eliges el instalador automático (si se ejecuta correctamente) se encargará 
 ### Instalación manual
   - Descarga **`Exiled.tar.gz` [de aquí](https://github.com/galaxy119/EXILED/releases)**
   - Extrae el contenido con [7Zip](https://www.7-zip.org/) o [WinRar](https://www.win-rar.com/download.html?&L=6)
-  - Mueve la carpeta **``EXILED``** a **`%appdata%`** *Nota: ¡Esta carpeta tiene que ir en ``C:\Users\(Usuario)\AppData\Roaming``, y  ***NO*** en ``C:\Users\(Usuario)\AppData\Roaming\SCP Secret Laboratory`` y **DEBE ESTAR** en (...)\AppData\Roaming, no en (...)\AppData\!*
+  - Mueve la carpeta **``EXILED``** a **`%appdata%`** *Nota: ¡Esta carpeta tiene que ir en ``C:\Users\%UserName%\AppData\Roaming``, y  ***NO*** en ``C:\Users\%UserName%\AppData\Roaming\SCP Secret Laboratory`` y **DEBE ESTAR** en (...)\AppData\Roaming, no en (...)\AppData\!*
   - Mueve **``SCP Secret Laboratory``** a: **`%appdata%`**.
     - Windows 10/11:
       Escribe `%appdata%` en Cortana / la barra de buscar, o en la barra del Explorador de Archivos
@@ -55,7 +56,7 @@ Si eliges el instalador automático (si se ejecuta correctamente) se encargará 
 ¡Ya estaría! EXILED debería estar instalado y activo la próxima vez que inicies el servidor. Recuerda que EXILED por si solo no hace absolutamente nada, así que asegúrate de que instalas plugins desde **[nuestro servidor de Discord](https://discord.gg/PyUkWTg)**
 - Para instalar un plugin simplemente:
   - Descarga un plugin de [*su* página de versiones](https://i.imgur.com/u34wgPD.jpg) (**¡DEBE ser un `.dll`!**)
-  - Colócalo en: ``C:\Users\(Usuario)\AppData\Roaming\EXILED\Plugins`` (muévete a esta carpeta presionando Win + R, después escribiendo `%appdata%`)
+  - Colócalo en: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (muévete a esta carpeta presionando Win + R, después escribiendo `%appdata%`)
 
 # Linux
 ### Instalación automática ([más información](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))

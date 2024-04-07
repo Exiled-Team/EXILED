@@ -8,13 +8,32 @@
 namespace Exiled.CustomModules.API.Features.PlayerAbilities
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Core;
     using Exiled.CustomModules.API.Features.CustomAbilities;
 
     /// <summary>
     /// Represents the base class for ability behaviors associated with a player, providing support for levels and unlocking the ability.
     /// </summary>
-    public abstract class UnlockableAbilityBehaviour : UnlockableAbilityBehaviour<Player>
+    public abstract class UnlockableAbilityBehaviour : UnlockableAbilityBehaviour<Player>, ISelectableAbility
     {
+        /// <inheritdoc/>
+        public virtual bool IsSelectable => IsUnlocked;
+
+        /// <inheritdoc/>
+        public virtual bool IsSelected => Owner is Pawn pawn && pawn.SelectedAbilityBehaviour && pawn.SelectedAbilityBehaviour == this;
+
+        /// <inheritdoc/>
+        public virtual void Select() => Owner.Cast<Pawn>().SelectedAbilityBehaviour = this;
+
+        /// <inheritdoc/>
+        public virtual void Unselect()
+        {
+            if (!IsSelected)
+                return;
+
+            Owner.Cast<Pawn>().SelectedAbilityBehaviour = null;
+        }
+
         /// <inheritdoc/>
         protected override void FindOwner() => Owner = Player.Get(Base);
 
@@ -23,7 +42,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnUnlocked();
 
-            Owner.ShowHint(Settings.Unlocked);
+            Owner.ShowTextDisplay(UnlockableAbilitySettings.Unlocked);
         }
 
         /// <inheritdoc/>
@@ -31,7 +50,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.DenyActivation();
 
-            Owner.ShowHint(Settings.CannotBeUsed);
+            Owner.ShowTextDisplay(UnlockableAbilitySettings.CannotBeUsed);
         }
 
         /// <inheritdoc/>
@@ -39,7 +58,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnActivated();
 
-            Owner.ShowHint(Settings.Activated);
+            Owner.ShowTextDisplay(UnlockableAbilitySettings.Activated);
         }
 
         /// <inheritdoc/>
@@ -47,7 +66,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnActivated();
 
-            Owner.ShowHint(Settings.Expired);
+            Owner.ShowTextDisplay(UnlockableAbilitySettings.Expired);
         }
 
         /// <inheritdoc/>
@@ -55,7 +74,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnReady();
 
-            Owner.ShowHint(Settings.OnReady);
+            Owner.ShowTextDisplay(UnlockableAbilitySettings.OnReady);
         }
 
         /// <inheritdoc/>
@@ -63,7 +82,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnLevelAdded();
 
-            Owner.ShowHint(Settings.NextLevel);
+            Owner.ShowTextDisplay(UnlockableAbilitySettings.NextLevel);
         }
 
         /// <inheritdoc/>
@@ -71,7 +90,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnLevelRemoved();
 
-            Owner.ShowHint(Settings.PreviousLevel);
+            Owner.ShowTextDisplay(UnlockableAbilitySettings.PreviousLevel);
         }
 
         /// <inheritdoc/>
@@ -79,7 +98,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         {
             base.OnMaxLevelReached();
 
-            Owner.ShowHint(Settings.MaxLevelReached);
+            Owner.ShowTextDisplay(UnlockableAbilitySettings.MaxLevelReached);
         }
     }
 }

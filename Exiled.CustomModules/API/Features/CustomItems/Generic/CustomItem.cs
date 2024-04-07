@@ -9,6 +9,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 {
     using System;
 
+    using Exiled.CustomModules.API.Features.CustomItems.Items;
+
     /// <inheritdoc/>
     public abstract class CustomItem<T> : CustomItem
         where T : ItemBehaviour

@@ -44,31 +44,28 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         /// </summary>
         /// <param name="id">The specified id.</param>
         /// <returns>The <see cref="ItemAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new ItemAbility Get(uint id) =>
-            List.FirstOrDefault(customAbility => customAbility == id && customAbility.IsEnabled);
+        public static new ItemAbility Get(uint id) => CustomAbility<Item>.Get(id).Cast<ItemAbility>();
 
         /// <summary>
         /// Gets a <see cref="ItemAbility"/> given the specified name.
         /// </summary>
         /// <param name="name">The specified name.</param>
         /// <returns>The <see cref="ItemAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new ItemAbility Get(string name) => List.FirstOrDefault(customAbility => customAbility.Name == name);
+        public static new ItemAbility Get(string name) => CustomAbility<Item>.Get(name).Cast<ItemAbility>();
 
         /// <summary>
         /// Gets a <see cref="ItemAbility"/> given the specified <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The specified <see cref="Type"/>.</param>
         /// <returns>The <see cref="ItemAbility"/> matching the search or <see langword="null"/> if not found.</returns>
-        public static new ItemAbility Get(Type type) =>
-            type.BaseType != typeof(IAbilityBehaviour) && !type.IsSubclassOf(typeof(IAbilityBehaviour)) ? null :
-            List.FirstOrDefault(customAbility => customAbility.BehaviourComponent == type);
+        public static new ItemAbility Get(Type type) => CustomAbility<Item>.Get(type).Cast<ItemAbility>();
 
         /// <summary>
         /// Gets all <see cref="ItemAbility"/>'s from a <see cref="Item"/>.
         /// </summary>
         /// <param name="entity">The <see cref="ItemAbility"/>'s owner.</param>
         /// <returns>The <see cref="ItemAbility"/> matching the search or <see langword="null"/> if not registered.</returns>
-        public static new IEnumerable<ItemAbility> Get(Item entity) => Manager.FirstOrDefault(kvp => kvp.Key == entity).Value;
+        public static new IEnumerable<ItemAbility> Get(Item entity) => CustomAbility<Item>.Get(entity).Cast<ItemAbility>();
 
         /// <summary>
         /// Tries to get a <see cref="ItemAbility"/> given the specified <paramref name="customAbility"/>.
@@ -115,26 +112,26 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
             where TAbility : ItemAbility => CustomAbility<Item>.Add(entity, out param);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, Type)"/>
-        public static new bool Add(Item entity, Type type) => CustomAbility<Item>.Add(entity, type) && StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+        public static new bool Add(Item entity, Type type) => CustomAbility<Item>.Add(entity, type) && StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, string)"/>
-        public static new bool Add(Item entity, string name) => CustomAbility<Item>.Add(entity, name) && StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+        public static new bool Add(Item entity, string name) => CustomAbility<Item>.Add(entity, name) && StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, uint)"/>
-        public static new bool Add(Item entity, uint id) => CustomAbility<Item>.Add(entity, id) && StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+        public static new bool Add(Item entity, uint id) => CustomAbility<Item>.Add(entity, id) && StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, IEnumerable{Type})"/>
         public static new void Add(Item entity, IEnumerable<Type> types)
         {
             CustomAbility<Item>.Add(entity, types);
-            StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+            StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
         }
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, IEnumerable{string})"/>
         public static new void Add(Item entity, IEnumerable<string> names)
         {
             CustomAbility<Item>.Add(entity, names);
-            StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+            StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
         }
 
         /// <inheritdoc cref="CustomAbility{T}.Remove{TAbility}(T)"/>
@@ -151,7 +148,7 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
             if (!entity.TryGetComponent(itemAbility.BehaviourComponent, out EActor component) || component is not IAbilityBehaviour behaviour)
                 return false;
 
-            StaticActor.Get<ItemTracker>().Remove(entity, behaviour);
+            StaticActor.Get<AbilityTracker>().Remove(entity, behaviour);
             return CustomAbility<Item>.Remove(entity, type);
         }
 
@@ -163,7 +160,7 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
                 component is not IAbilityBehaviour behaviour)
                 return false;
 
-            StaticActor.Get<ItemTracker>().Remove(entity, behaviour);
+            StaticActor.Get<AbilityTracker>().Remove(entity, behaviour);
             return CustomAbility<Item>.Remove(entity, name);
         }
 
@@ -175,14 +172,14 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
                 component is not IAbilityBehaviour behaviour)
                 return false;
 
-            StaticActor.Get<ItemTracker>().Remove(entity, behaviour);
+            StaticActor.Get<AbilityTracker>().Remove(entity, behaviour);
             return CustomAbility<Item>.Remove(entity, id);
         }
 
         /// <inheritdoc cref="CustomAbility{T}.RemoveAll(T)"/>
         public static new void RemoveAll(Item entity)
         {
-            StaticActor.Get<ItemTracker>().Remove(entity);
+            StaticActor.Get<AbilityTracker>().Remove(entity);
             CustomAbility<Item>.RemoveAll(entity);
         }
 
@@ -218,7 +215,7 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         {
             base.Add(entity);
 
-            StaticActor.Get<ItemTracker>().AddOrTrack(entity);
+            StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
         }
 
         /// <inheritdoc cref="CustomAbility{T}.Remove(T)"/>
@@ -227,7 +224,7 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
             if (!entity.TryGetComponent(BehaviourComponent, out EActor component) || component is not IAbilityBehaviour behaviour)
                 return false;
 
-            StaticActor.Get<ItemTracker>().Remove(entity, behaviour);
+            StaticActor.Get<AbilityTracker>().Remove(entity, behaviour);
 
             return base.Remove(entity);
         }

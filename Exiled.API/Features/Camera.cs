@@ -134,6 +134,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera079">The base camera.</param>
         internal Camera(Scp079Camera camera079)
+            : base()
         {
             Base = camera079;
             Camera079ToCamera.Add(camera079, this);
@@ -147,12 +148,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the <see cref="Camera"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<Camera> List => Camera079ToCamera.Values;
+        public static new IReadOnlyCollection<Camera> List => Camera079ToCamera.Values;
 
         /// <summary>
-        /// Gets a random <see cref="Camera"/>.
+        /// Gets a randomly selected <see cref="Camera"/>.
         /// </summary>
-        /// <returns><see cref="Camera"/> object.</returns>
+        /// <returns>A randomly selected <see cref="Camera"/> object.</returns>
         public static Camera Random => List.Random();
 
         /// <summary>
@@ -164,11 +165,6 @@ namespace Exiled.API.Features
         /// Gets the base <see cref="Scp079Camera"/>.
         /// </summary>
         public Scp079Camera Base { get; }
-
-        /// <summary>
-        /// Gets the camera's <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the camera's name.
@@ -188,7 +184,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's <see cref="ZoneType"/>.
         /// </summary>
-        public ZoneType Zone => Room?.Zone ?? ZoneType.Unspecified;
+        public ZoneType Zone => Room ? Room.Zone : ZoneType.Unspecified;
 
         /// <summary>
         /// Gets the camera's <see cref="CameraType"/>.
@@ -198,16 +194,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's position.
         /// </summary>
-        public Vector3 Position => Base.Position;
+        public override Vector3 Position => Base.Position;
 
         /// <summary>
-        /// Gets or sets the camera's rotation.
+        /// Gets the camera's rotation.
         /// </summary>
-        public Quaternion Rotation
-        {
-            get => Base._cameraAnchor.rotation;
-            set => Base._cameraAnchor.rotation = value;
-        }
+        public override Quaternion Rotation => Base._cameraAnchor.rotation;
 
         /// <summary>
         /// Gets the value of the <see cref="Camera"/> zoom.
@@ -261,8 +253,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satisfy the condition.</returns>
         public static IEnumerable<Camera> Get(Func<Camera, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -308,8 +300,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <param name="result">A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satify the condition.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <param name="result">A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satisfy the condition.</param>
         /// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/>, or <see langword="false"/> if <see cref="Camera"/> is <see langword="null"/>.</returns>
         public static bool TryGet(Func<Camera, bool> predicate, out IEnumerable<Camera> result) => (result = Get(predicate)).Any();
 

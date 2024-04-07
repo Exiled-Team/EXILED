@@ -38,8 +38,7 @@ namespace Exiled.Events.EventArgs.Scp049
             Scp049 = Player.Role.As<Scp049Role>();
             Target = target;
             Ragdoll = Ragdoll.Get(ragdoll);
-            IsAllowed = isAllowed;
-            IsFlamingo = ragdoll is PlayerRoles.PlayableScps.Scp1507.Scp1507Ragdoll;
+            IsAllowed = isAllowed && Target.Role is SpectatorRole spectatorRole && spectatorRole.IsReadyToRespawn;
         }
 
         /// <inheritdoc/>
@@ -64,10 +63,5 @@ namespace Exiled.Events.EventArgs.Scp049
         /// Gets or sets a value indicating whether or not the player can be revived.
         /// </summary>
         public bool IsAllowed { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not revived player should become a zombie flamingo.
-        /// </summary>
-        public bool IsFlamingo { get; set; }
     }
 }

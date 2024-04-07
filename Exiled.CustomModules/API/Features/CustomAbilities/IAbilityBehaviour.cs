@@ -7,10 +7,12 @@
 
 namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
+    using Exiled.CustomModules.API.Interfaces;
+
     /// <summary>
     /// Represents a marker interface for custom ability behaviors.
     /// </summary>
-    public interface IAbilityBehaviour
+    public interface IAbilityBehaviour : ITrackable
     {
     }
 }

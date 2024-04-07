@@ -8,6 +8,8 @@
 namespace Exiled.API.Features.Roles
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     using Enums;
     using Exiled.API.Features.Core;
@@ -16,6 +18,7 @@ namespace Exiled.API.Features.Roles
     using Extensions;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PlayerRoles.RoleAssign;
     using UnityEngine;
 
     using FilmmakerGameRole = PlayerRoles.Filmmaker.FilmmakerRole;
@@ -25,7 +28,6 @@ namespace Exiled.API.Features.Roles
     using Scp079GameRole = PlayerRoles.PlayableScps.Scp079.Scp079Role;
     using Scp096GameRole = PlayerRoles.PlayableScps.Scp096.Scp096Role;
     using Scp106GameRole = PlayerRoles.PlayableScps.Scp106.Scp106Role;
-    using Scp1507GameRole = PlayerRoles.PlayableScps.Scp1507.Scp1507Role;
     using Scp173GameRole = PlayerRoles.PlayableScps.Scp173.Scp173Role;
     using Scp3114GameRole = PlayerRoles.PlayableScps.Scp3114.Scp3114Role;
     using Scp939GameRole = PlayerRoles.PlayableScps.Scp939.Scp939Role;
@@ -41,12 +43,43 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="baseRole">the base <see cref="PlayerRoleBase"/>.</param>
         protected Role(PlayerRoleBase baseRole)
+            : base()
         {
             if (baseRole.TryGetOwner(out ReferenceHub hub))
                 Owner = Player.Get(hub);
 
             Base = baseRole;
         }
+
+        /// <summary>
+        /// Gets an array of all <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static IEnumerable<RoleTypeId> AllRoles => EnumExtensions.QueryEnumValue<RoleTypeId>();
+
+        /// <summary>
+        /// Gets a shuffled list of all possible <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static IEnumerable<RoleTypeId> ShuffledAllRoles => AllRoles.Shuffle();
+
+        /// <summary>
+        /// Gets a random human <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static RoleTypeId RandomHuman => RoleExtensions.GetRandomRole(r => r.IsHuman());
+
+        /// <summary>
+        /// Gets a random human <see cref="RoleTypeId"/>.
+        /// </summary>
+        public static RoleTypeId RandomScp => Team.SCPs.GetRandomRole();
+
+        /// <summary>
+        /// Gets the next Scp to spawn according to NW logic.
+        /// </summary>
+        public static RoleTypeId NextScpSpawn => ScpSpawner.NextScp;
+
+        /// <summary>
+        /// Gets the next Human to spawn according to NW logic.
+        /// </summary>
+        public static RoleTypeId NextHumanSpawn => HumanSpawner.NextHumanRoleToSpawn;
 
         /// <inheritdoc/>
         public override GameObject GameObject => Base.gameObject;
@@ -84,7 +117,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Enums.Side"/> of this <see cref="Role"/>.
         /// </summary>
-        public Side Side => Base.Team.GetSide();
+        public Side Side => Team.GetSide();
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Color"/> of this <see cref="Role"/>.
@@ -176,6 +209,20 @@ namespace Exiled.API.Features.Roles
         /// <returns><see langword="true"/> if the values are not equal.</returns>
         public static bool operator !=(RoleTypeId type, Role role) => role != type;
 
+        /// <summary>
+        /// Gets a random <see cref="RoleTypeId"/>.
+        /// </summary>
+        /// <param name="includeNonPlayableRoles">Specifies whether non-playable roles should be included.</param>
+        /// <param name="except">An optional collection of role types to exclude.</param>
+        /// <returns>A random <see cref="RoleTypeId"/>.</returns>
+        public static RoleTypeId Random(bool includeNonPlayableRoles = false, IEnumerable<RoleTypeId> except = null)
+        {
+            IEnumerable<RoleTypeId> roles = includeNonPlayableRoles
+                ? ShuffledAllRoles.Except(except ?? Enumerable.Empty<RoleTypeId>())
+                : ShuffledAllRoles.RemoveSpecified(r => RoleExtensions.GetTeam(r) == Team.Dead).Except(except ?? Enumerable.Empty<RoleTypeId>());
+            return roles.FirstOrDefault();
+        }
+
         /// <inheritdoc/>
         public override bool Equals(object obj) => base.Equals(obj);
 
@@ -193,14 +240,14 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleTypeId"/> to be set.</param>
         /// <param name="reason">The <see cref="Enums.SpawnReason"/> defining why the player's role was changed.</param>
-        public virtual void Set(RoleTypeId newRole, SpawnReason reason = Enums.SpawnReason.ForceClass) => Set(newRole, reason, RoleSpawnFlags.All);
+        public virtual void Set(RoleTypeId newRole, SpawnReason reason = null) => Set(newRole, reason ?? Enums.SpawnReason.ForceClass, RoleSpawnFlags.All);
 
-        /// <summary>
+        /// <summary>S
         /// Sets the player's <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleTypeId"/> to be set.</param>
         /// <param name="spawnFlags">The <see cref="RoleSpawnFlags"/> defining player spawn logic.</param>
-        public virtual void Set(RoleTypeId newRole, RoleSpawnFlags spawnFlags) => Owner.RoleManager.ServerSetRole(newRole, (RoleChangeReason)Enums.SpawnReason.ForceClass, spawnFlags);
+        public virtual void Set(RoleTypeId newRole, RoleSpawnFlags spawnFlags) => Owner.RoleManager.ServerSetRole(newRole, Enums.SpawnReason.ForceClass, spawnFlags);
 
         /// <summary>
         /// Sets the player's <see cref="RoleTypeId"/>.
@@ -209,7 +256,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="reason">The <see cref="Enums.SpawnReason"/> defining why the player's role was changed.</param>
         /// <param name="spawnFlags">The <see cref="RoleSpawnFlags"/> defining player spawn logic.</param>
         public virtual void Set(RoleTypeId newRole, SpawnReason reason, RoleSpawnFlags spawnFlags) =>
-            Owner.RoleManager.ServerSetRole(newRole, (RoleChangeReason)reason, spawnFlags);
+            Owner.RoleManager.ServerSetRole(newRole, reason, spawnFlags);
 
         /// <summary>
         /// Creates a role from <see cref="RoleTypeId"/> and <see cref="Player"/>.
@@ -230,7 +277,6 @@ namespace Exiled.API.Features.Roles
             SpectatorGameRole spectatorRole => new SpectatorRole(spectatorRole),
             HumanGameRole humanRole => new HumanRole(humanRole),
             FilmmakerGameRole filmmakerRole => new FilmMakerRole(filmmakerRole),
-            Scp1507GameRole scp1507Role => new Scp1507Role(scp1507Role),
             _ => new NoneRole(role),
         };
     }

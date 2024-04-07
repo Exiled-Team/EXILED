@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp914
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp914;
     using global::Scp914;
@@ -25,9 +25,10 @@ namespace Exiled.Events.Patches.Events.Scp914
 
     /// <summary>
     /// Patches <see cref="Scp914Upgrader.ProcessPlayer(ReferenceHub, bool, bool, Vector3, Scp914KnobSetting)" />
-    /// to add the <see cref="Scp914.UpgradingPlayer" /> event.
+    /// to add the <see cref="Scp914.UpgradingPlayer" /> and <see cref="Scp914.UpgradingInventoryItem" /> event.
     /// </summary>
     [EventPatch(typeof(Scp914), nameof(Scp914.UpgradingPlayer))]
+    [EventPatch(typeof(Scp914), nameof(Scp914.UpgradingInventoryItem))]
     [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPlayer))]
     internal static class UpgradingPlayer
     {

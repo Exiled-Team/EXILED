@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.EventArgs.Server;
 
     using HarmonyLib;
@@ -57,8 +57,9 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction[]
                 {
                     new(OpCodes.Call, PropertyGetter(typeof(Round), nameof(Round.IgnoredPlayers))),
-                    new(OpCodes.Ldloc_S, 11),
-                    new(OpCodes.Call, Method(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Contains))),
+                    new(OpCodes.Ldloc_S, 10),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Call, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
                     new(OpCodes.Brtrue_S, jmp),
                 });
 

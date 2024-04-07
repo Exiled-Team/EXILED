@@ -21,7 +21,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// This EffectType do not exist it's only use when not found or error.
         /// </summary>
-        None = -1, // TODO: remove = -1
+        None,
 
         /// <summary>
         /// The player isn't able to open their inventory or reload a weapon.
@@ -228,25 +228,5 @@ namespace Exiled.API.Enums
         /// Makes the player nearly invisible, and allows them to pass through doors.
         /// </summary>
         Ghostly,
-
-        /// <summary>
-        /// Makes you a flamingo.
-        /// </summary>
-        BecomingFlamingo,
-
-        /// <summary>
-        /// Makes you a Child after eating Cake.
-        /// </summary>
-        Scp559,
-
-        /// <summary>
-        /// Scp956 found you.
-        /// </summary>
-        Scp956Target,
-
-        /// <summary>
-        /// you are snowed.
-        /// </summary>
-        Snowed,
     }
 }

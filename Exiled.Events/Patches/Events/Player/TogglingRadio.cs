@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -103,7 +103,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
-            foreach (var instruction in newInstructions)
+            foreach (CodeInstruction instruction in newInstructions)
                 yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);

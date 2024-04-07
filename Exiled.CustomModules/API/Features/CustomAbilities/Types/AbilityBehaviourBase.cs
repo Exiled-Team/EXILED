@@ -7,10 +7,13 @@
 
 namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
+    using System.Reflection;
+
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
+    using Exiled.CustomModules.API.Features.CustomAbilities.Settings;
 
     /// <summary>
     /// Represents the base class for ability behaviors associated with a specific entity type.
@@ -31,13 +34,35 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         public bool IsActive { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the ability settings.
+        /// Gets or sets the <see cref="AbilitySettings"/>.
         /// </summary>
         public AbilitySettings Settings { get; set; }
 
+        /// <summary>
+        /// Gets or sets the ability's configs.
+        /// </summary>
+        public virtual object Config { get; set; }
+
         /// <inheritdoc/>
-        public virtual void AdjustAddittivePipe()
+        public virtual void AdjustAdditivePipe()
         {
+            if (CustomAbility<TEntity>.TryGet(GetType(), out CustomAbility<TEntity> customAbility))
+            {
+                CustomAbility = customAbility;
+                Settings = CustomAbility.Settings;
+            }
+
+            if (Config is null)
+                return;
+
+            foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
+            {
+                PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
+                if (targetInfo is null)
+                    continue;
+
+                targetInfo.SetValue(Settings, propertyInfo.GetValue(Config, null));
+            }
         }
 
         /// <inheritdoc/>
@@ -45,8 +70,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         {
             base.PostInitialize();
 
-            if (CustomAbility<TEntity>.TryGet(GetType(), out CustomAbility<TEntity> customAbility))
-                CustomAbility = customAbility;
+            AdjustAdditivePipe();
         }
 
         /// <inheritdoc/>

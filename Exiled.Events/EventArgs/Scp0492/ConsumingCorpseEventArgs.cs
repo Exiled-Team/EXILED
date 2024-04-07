@@ -24,16 +24,14 @@ namespace Exiled.Events.EventArgs.Scp0492
         /// </summary>
         /// <param name="player"> <inheritdoc cref="Player"/></param>
         /// <param name="ragDoll"> <inheritdoc cref="Ragdoll"/> </param>
-        /// <param name="error"> <inheritdoc cref="ErrorCode"/> </param>
         /// <param name="isAllowed"> <inheritdoc cref="IsAllowed"/> </param>
         /// <remarks> See <see cref="ZombieConsumeAbility.ConsumedRagdolls"/> for all ragdolls consumed.</remarks>
-        // TODO: remove isAllowed argument
-        public ConsumingCorpseEventArgs(ReferenceHub player, BasicRagdoll ragDoll, ZombieConsumeAbility.ConsumeError error, bool isAllowed = true)
+        public ConsumingCorpseEventArgs(ReferenceHub player, BasicRagdoll ragDoll, bool isAllowed = true)
         {
             Player = Player.Get(player);
             Scp0492 = Player.Role.As<Scp0492Role>();
             Ragdoll = Ragdoll.Get(ragDoll);
-            ErrorCode = error;
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
@@ -50,17 +48,8 @@ namespace Exiled.Events.EventArgs.Scp0492
         public Ragdoll Ragdoll { get; }
 
         /// <summary>
-        /// Gets or sets error code to send back to client.
-        /// </summary>
-        public ZombieConsumeAbility.ConsumeError ErrorCode { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether 049-2 can consume a corpse.
         /// </summary>
-        public bool IsAllowed
-        {
-            get => ErrorCode == ZombieConsumeAbility.ConsumeError.None;
-            set => ErrorCode = value ? ZombieConsumeAbility.ConsumeError.None : ZombieConsumeAbility.ConsumeError.TargetNotValid;
-        }
+        public bool IsAllowed { get; set; }
     }
 }

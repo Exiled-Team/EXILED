@@ -10,11 +10,12 @@ namespace Exiled.CustomModules.Events.EventArgs.Tracking
     using System.Collections.Generic;
 
     using Exiled.API.Features.Pickups;
-    using Exiled.CustomModules.API.Features.CustomAbilities;
+    using Exiled.CustomModules.API.Features;
+    using Exiled.CustomModules.API.Interfaces;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all informations after modifying a pickup tracking.
+    /// Contains all information after modifying a pickup tracking.
     /// </summary>
     public class PickupTrackingModifiedEventArgs : TrackingModifiedEventArgs, IPickupEvent
     {
@@ -22,9 +23,9 @@ namespace Exiled.CustomModules.Events.EventArgs.Tracking
         /// Initializes a new instance of the <see cref="PickupTrackingModifiedEventArgs"/> class.
         /// </summary>
         /// <param name="pickup"><inheritdoc cref="Pickup"/></param>
-        /// <param name="previousAbilities"><inheritdoc cref="TrackingModifiedEventArgs.PreviousAbilities"/></param>
-        /// <param name="currentAbilities"><inheritdoc cref="TrackingModifiedEventArgs.CurrentAbilities"/></param>
-        public PickupTrackingModifiedEventArgs(Pickup pickup, IEnumerable<IAbilityBehaviour> previousAbilities, IEnumerable<IAbilityBehaviour> currentAbilities)
+        /// <param name="previousAbilities"><inheritdoc cref="TrackingModifiedEventArgs.PreviousTrackableItems"/></param>
+        /// <param name="currentAbilities"><inheritdoc cref="TrackingModifiedEventArgs.CurrentTrackableItems"/></param>
+        public PickupTrackingModifiedEventArgs(Pickup pickup, IEnumerable<ITrackable> previousAbilities, IEnumerable<ITrackable> currentAbilities)
             : base(previousAbilities, currentAbilities) => Pickup = pickup;
 
         /// <inheritdoc/>

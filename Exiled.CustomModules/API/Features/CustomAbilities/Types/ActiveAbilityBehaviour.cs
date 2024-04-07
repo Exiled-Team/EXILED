@@ -9,9 +9,11 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
     using System;
 
+    using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.DynamicEvents;
+    using Exiled.CustomModules.API.Features.CustomAbilities.Settings;
 
     using MEC;
 
@@ -30,26 +32,31 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <typeparamref name="TEntity"/> <see cref="GameEntity"/> activates the ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<IAbilityBehaviour> OnActivatingDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnActivatingDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after a
         /// <typeparamref name="TEntity"/> <see cref="GameEntity"/> activates the ability.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<IAbilityBehaviour> OnActivatedDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnActivatedDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after the ability expires.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<IAbilityBehaviour> OnExpiredDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnExpiredDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after the ability is ready.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<IAbilityBehaviour> OnReadyDispatcher { get; protected set; }
+        public TDynamicEventDispatcher<IAbilityBehaviour> OnReadyDispatcher { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Settings.ActiveAbilitySettings"/>.
+        /// </summary>
+        public ActiveAbilitySettings ActiveAbilitySettings { get; set; }
 
         /// <summary>
         /// Gets or sets the last time the ability was used.
@@ -59,7 +66,16 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <summary>
         /// Gets a value indicating whether the ability is ready.
         /// </summary>
-        public virtual bool IsReady => DateTime.Now > LastUsed + TimeSpan.FromSeconds(Settings.Cooldown);
+        public virtual bool IsReady => DateTime.Now > LastUsed + TimeSpan.FromSeconds(ActiveAbilitySettings.Cooldown);
+
+        /// <summary>
+        /// Gets or sets the remaining cooldown.
+        /// </summary>
+        public virtual float RemainingCooldown
+        {
+            get => (float)Math.Max(0f, (LastUsed + TimeSpan.FromSeconds(ActiveAbilitySettings.Cooldown) - DateTime.Now).TotalSeconds);
+            set => LastUsed = LastUsed.AddSeconds(value);
+        }
 
         /// <summary>
         /// Forces the cooldown making the ability usable.
@@ -68,7 +84,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         public virtual DateTime ForceCooldown()
         {
             OnReady();
-            LastUsed = DateTime.Now - TimeSpan.FromSeconds(Settings.Cooldown + 1);
+            LastUsed = DateTime.Now - TimeSpan.FromSeconds(ActiveAbilitySettings.Cooldown + 1);
             return LastUsed;
         }
 
@@ -85,7 +101,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
             if (onReadyHandle.IsRunning)
                 Timing.KillCoroutines(onReadyHandle);
 
-            onReadyHandle = Timing.CallDelayed((DateTime.Now + TimeSpan.FromSeconds(Settings.Cooldown)).Second + 1, () =>
+            onReadyHandle = Timing.CallDelayed((DateTime.Now + TimeSpan.FromSeconds(ActiveAbilitySettings.Cooldown)).Second + 1, () =>
             {
                 if (IsReady)
                     OnReady();
@@ -95,10 +111,19 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         }
 
         /// <inheritdoc/>
-        public override void AdjustAddittivePipe()
+        public override void AdjustAdditivePipe()
         {
-            LastUsed = Settings.ForceCooldownOnAdded ? ForceCooldown() : ResetCooldown();
-            isDurationBased = Settings.Duration > 0f;
+            base.AdjustAdditivePipe();
+
+            if (!Settings.Cast(out ActiveAbilitySettings settings))
+            {
+                Log.Debug($"{CustomAbility.Name}'s settings are not suitable for an Active Ability", true);
+                Destroy();
+            }
+
+            ActiveAbilitySettings = settings;
+            LastUsed = ActiveAbilitySettings.ForceCooldownOnAdded ? ForceCooldown() : ResetCooldown();
+            isDurationBased = ActiveAbilitySettings.Duration > 0f;
         }
 
         /// <summary>
@@ -149,7 +174,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         {
             OnActivatingDispatcher.InvokeAll(this);
 
-            Timing.CallDelayed(Settings.WindupTime, OnActivated);
+            Timing.CallDelayed(ActiveAbilitySettings.WindupTime, OnActivated);
         }
 
         /// <summary>
@@ -164,7 +189,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
                 IsActive = true;
 
                 SubscribeEvents();
-                Timing.CallDelayed(Settings.Duration, OnExpired);
+                Timing.CallDelayed(ActiveAbilitySettings.Duration, OnExpired);
             }
             else
             {

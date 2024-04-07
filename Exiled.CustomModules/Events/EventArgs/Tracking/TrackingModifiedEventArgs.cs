@@ -9,33 +9,34 @@ namespace Exiled.CustomModules.Events.EventArgs.Tracking
 {
     using System.Collections.Generic;
 
-    using Exiled.CustomModules.API.Features.CustomAbilities;
+    using Exiled.CustomModules.API.Features;
+    using Exiled.CustomModules.API.Interfaces;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all informations after modifying a tracking.
+    /// Contains all information after modifying a tracking.
     /// </summary>
     public class TrackingModifiedEventArgs : IExiledEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackingModifiedEventArgs"/> class.
         /// </summary>
-        /// <param name="previousAbilities"><inheritdoc cref="PreviousAbilities"/></param>
-        /// <param name="currentAbilities"><inheritdoc cref="CurrentAbilities"/></param>
-        public TrackingModifiedEventArgs(IEnumerable<IAbilityBehaviour> previousAbilities, IEnumerable<IAbilityBehaviour> currentAbilities)
+        /// <param name="previousAbilities"><inheritdoc cref="PreviousTrackableItems"/></param>
+        /// <param name="currentAbilities"><inheritdoc cref="CurrentTrackableItems"/></param>
+        public TrackingModifiedEventArgs(IEnumerable<ITrackable> previousAbilities, IEnumerable<ITrackable> currentAbilities)
         {
-            PreviousAbilities = previousAbilities;
-            CurrentAbilities = currentAbilities;
+            PreviousTrackableItems = previousAbilities;
+            CurrentTrackableItems = currentAbilities;
         }
 
         /// <summary>
         /// Gets all previous abilities.
         /// </summary>
-        public IEnumerable<IAbilityBehaviour> PreviousAbilities { get; }
+        public IEnumerable<ITrackable> PreviousTrackableItems { get; }
 
         /// <summary>
         /// Gets all current abilities.
         /// </summary>
-        public IEnumerable<IAbilityBehaviour> CurrentAbilities { get; }
+        public IEnumerable<ITrackable> CurrentTrackableItems { get; }
     }
 }

@@ -41,13 +41,14 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
         /// </summary>
-        internal static readonly Dictionary<ItemBase, Item> BaseToItem = new();
+        internal static readonly Dictionary<ItemBase, Item> BaseToItem = new(new ComponentsEqualityComparer());
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
         /// <param name="itemBase">The <see cref="ItemBase"/> to encapsulate.</param>
         public Item(ItemBase itemBase)
+            : base()
         {
             Base = itemBase;
             BaseToItem.Add(itemBase, this);
@@ -78,7 +79,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a list of all <see cref="Item"/>'s on the server.
         /// </summary>
-        public static IEnumerable<Item> List => BaseToItem.Values;
+        public static new IEnumerable<Item> List => BaseToItem.Values;
 
         /// <summary>
         /// Gets or sets the unique serial number for the item.
@@ -278,7 +279,6 @@ namespace Exiled.API.Features.Items
             ItemType.GrenadeFlash => new FlashGrenade(owner),
             ItemType.GrenadeHE => new ExplosiveGrenade(type, owner),
             ItemType.SCP018 => new Scp018(type, owner),
-            ItemType.Snowball or ItemType.Coal or ItemType.SpecialCoal => new Throwable(type),
             ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunCom45 or ItemType.GunE11SR or ItemType.GunFSP9 or ItemType.ParticleDisruptor or ItemType.GunA7 or ItemType.GunFRMG0 => new Firearm(type),
             ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardChaosInsurgency or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardMTFPrivate or ItemType.KeycardMTFOperative or
             ItemType.KeycardMTFCaptain => new Keycard(type),

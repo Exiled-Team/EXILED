@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
@@ -40,8 +40,8 @@ namespace Exiled.Events.Patches.Events.Server
             LocalBuilder evLocalReporting = generator.DeclareLocal(typeof(LocalReportingEventArgs));
             LocalBuilder evReportingCheater = generator.DeclareLocal(typeof(ReportingCheaterEventArgs));
 
-            int offset = -1;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newarr) + offset;
+            int offset = 2;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_S && instruction.operand == (object)4) + offset;
 
             Label ret = generator.DefineLabel();
 

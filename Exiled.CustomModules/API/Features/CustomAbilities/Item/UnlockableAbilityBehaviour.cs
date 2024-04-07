@@ -35,7 +35,8 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         {
             base.OnUnlocked();
 
-            ItemOwner?.ShowHint(Settings.Unlocked);
+            if (ItemOwner)
+                ItemOwner.ShowTextDisplay(UnlockableAbilitySettings.Unlocked);
         }
 
         /// <inheritdoc/>
@@ -43,7 +44,8 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         {
             base.DenyActivation();
 
-            ItemOwner?.ShowHint(Settings.CannotBeUsed);
+            if (ItemOwner)
+                ItemOwner.ShowTextDisplay(UnlockableAbilitySettings.CannotBeUsed);
         }
 
         /// <inheritdoc/>
@@ -51,7 +53,8 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         {
             base.OnActivated();
 
-            ItemOwner?.ShowHint(Settings.Activated);
+            if (ItemOwner)
+                ItemOwner.ShowTextDisplay(UnlockableAbilitySettings.Activated);
         }
 
         /// <inheritdoc/>
@@ -59,7 +62,8 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         {
             base.OnActivated();
 
-            ItemOwner?.ShowHint(Settings.Expired);
+            if (ItemOwner)
+                ItemOwner.ShowTextDisplay(UnlockableAbilitySettings.Expired);
         }
 
         /// <inheritdoc/>
@@ -67,7 +71,8 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         {
             base.OnReady();
 
-            ItemOwner?.ShowHint(Settings.OnReady);
+            if (ItemOwner)
+                ItemOwner.ShowTextDisplay(UnlockableAbilitySettings.OnReady);
         }
 
         /// <inheritdoc/>
@@ -75,7 +80,8 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         {
             base.OnLevelAdded();
 
-            ItemOwner?.ShowHint(Settings.NextLevel);
+            if (ItemOwner)
+                ItemOwner.ShowTextDisplay(UnlockableAbilitySettings.NextLevel);
         }
 
         /// <inheritdoc/>
@@ -83,7 +89,8 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         {
             base.OnLevelRemoved();
 
-            ItemOwner?.ShowHint(Settings.PreviousLevel);
+            if (ItemOwner)
+                ItemOwner.ShowTextDisplay(UnlockableAbilitySettings.PreviousLevel);
         }
 
         /// <inheritdoc/>
@@ -91,7 +98,8 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         {
             base.OnMaxLevelReached();
 
-            ItemOwner?.ShowHint(Settings.MaxLevelReached);
+            if (ItemOwner)
+                ItemOwner.ShowTextDisplay(UnlockableAbilitySettings.MaxLevelReached);
         }
     }
 }

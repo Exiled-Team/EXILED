@@ -88,8 +88,8 @@ namespace Exiled.API.Features.Core.Generic
         /// <param name="owner">The owner to be checked.</param>
         /// <returns><see langword="true"/> if the specified owner is not null and matches the stored owner; otherwise, <see langword="false"/>.</returns>
         /// <remarks>
-        /// This method verifies if the provided owner is not null and matches the stored owner. It is typically used
-        /// to ensure that the owner being checked is valid and corresponds to the expected owner for the current context.
+        /// This method verifies if the provided owner is not null and matches the stored owner.
+        /// <br/>It is typically used to ensure that the owner being checked is valid and corresponds to the expected owner for the current context.
         /// </remarks>
         protected virtual bool Check(T owner) => owner && Owner == owner;
     }

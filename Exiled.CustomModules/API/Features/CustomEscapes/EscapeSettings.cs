@@ -7,7 +7,9 @@
 
 namespace Exiled.CustomModules.API.Features.CustomEscapes
 {
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using PlayerRoles;
     using UnityEngine;
@@ -15,7 +17,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     /// <summary>
     /// A tool to easily setup escapes.
     /// </summary>
-    public struct EscapeSettings : IAdditiveProperty
+    public class EscapeSettings : TypeCastObject<EscapeSettings>, IAdditiveProperty
     {
         /// <summary>
         /// The default distance tolerance value.
@@ -33,7 +35,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public static readonly EscapeSettings Default = new(true);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EscapeSettings"/> struct.
+        /// Initializes a new instance of the <see cref="EscapeSettings"/> class.
         /// </summary>
         /// <param name="role"><inheritdoc cref="Role"/></param>
         /// <param name="position"><inheritdoc cref="Position"/></param>
@@ -44,7 +46,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EscapeSettings"/> struct.
+        /// Initializes a new instance of the <see cref="EscapeSettings"/> class.
         /// </summary>
         /// <param name="customRole"><inheritdoc cref="CustomRole"/></param>
         /// <param name="position"><inheritdoc cref="Position"/></param>
@@ -55,7 +57,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EscapeSettings"/> struct.
+        /// Initializes a new instance of the <see cref="EscapeSettings"/> class.
         /// </summary>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         /// <param name="role"><inheritdoc cref="Role"/></param>

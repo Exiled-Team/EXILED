@@ -11,11 +11,13 @@ namespace Exiled.CustomModules.Events.EventArgs.Tracking
 
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
+    using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.API.Features.CustomAbilities;
+    using Exiled.CustomModules.API.Interfaces;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all informations after modifying an item tracking.
+    /// Contains all information after modifying an item tracking.
     /// </summary>
     public class ItemTrackingModifiedEventArgs : TrackingModifiedEventArgs, IItemEvent
     {
@@ -23,9 +25,9 @@ namespace Exiled.CustomModules.Events.EventArgs.Tracking
         /// Initializes a new instance of the <see cref="ItemTrackingModifiedEventArgs"/> class.
         /// </summary>
         /// <param name="item"><inheritdoc cref="Pickup"/></param>
-        /// <param name="previousAbilities"><inheritdoc cref="TrackingModifiedEventArgs.PreviousAbilities"/></param>
-        /// <param name="currentAbilities"><inheritdoc cref="TrackingModifiedEventArgs.CurrentAbilities"/></param>
-        public ItemTrackingModifiedEventArgs(Item item, IEnumerable<IAbilityBehaviour> previousAbilities, IEnumerable<IAbilityBehaviour> currentAbilities)
+        /// <param name="previousAbilities"><inheritdoc cref="TrackingModifiedEventArgs.PreviousTrackableItems"/></param>
+        /// <param name="currentAbilities"><inheritdoc cref="TrackingModifiedEventArgs.CurrentTrackableItems"/></param>
+        public ItemTrackingModifiedEventArgs(Item item, IEnumerable<ITrackable> previousAbilities, IEnumerable<ITrackable> currentAbilities)
             : base(previousAbilities, currentAbilities) => Item = item;
 
         /// <inheritdoc/>
