@@ -246,19 +246,7 @@ namespace Exiled.CustomModules.API.Features
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="EffectType"/>.
         /// </summary>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="EffectType"/>.</returns>
-        public IEnumerable<EffectType> EffectTypes
-        {
-            get
-            {
-                foreach (object effect in Enum.GetValues(typeof(EffectType)))
-                {
-                    if (!Enum.TryParse(effect.ToString(), out EffectType effectType) || !TryGetEffect(effectType, out _))
-                        continue;
-
-                    yield return effectType;
-                }
-            }
-        }
+        public IEnumerable<EffectType> EffectTypes => EnumExtensions.QueryEnumValue<EffectType>();
 
         /// <summary>
         /// Gets a value indicating whether the pawn has the <see cref="CustomItem"/> of the specified type.

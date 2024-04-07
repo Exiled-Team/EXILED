@@ -67,7 +67,7 @@ namespace Exiled.API.Features.Items
             if (Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.Flashlight))
                 firearmStatusFlags |= FirearmStatusFlags.FlashlightEnabled;
 
-            Base.Status = new FirearmStatus(Base.AmmoManagerModule.MaxAmmo, firearmStatusFlags, Base.Status.Attachments);
+            Base.Status = new(Base.AmmoManagerModule.MaxAmmo, firearmStatusFlags, Base.GetCurrentAttachmentsCode());
         }
 
         /// <inheritdoc cref="BaseCodesValue"/>.
@@ -260,8 +260,17 @@ namespace Exiled.API.Features.Items
         /// Creates and returns a <see cref="Firearm"/> representing the provided <see cref="Enums.FirearmType"/>.
         /// </summary>
         /// <param name="type">The type of firearm to create.</param>
+        /// <param name="ammo">The amount of ammo to add. Use null to add max ammo.</param>
         /// <returns>The newly created firearm.</returns>
-        public static Firearm Create(FirearmType type) => type is not FirearmType.None ? (Firearm)Create(type.GetItemType()) : null;
+        public static Firearm Create(FirearmType type, byte? ammo = null)
+        {
+            Firearm firearm = type is FirearmType.None ? null : (Firearm)Create(type.GetItemType());
+
+            if (firearm is not null)
+                firearm.Ammo = ammo ?? firearm.MaxAmmo;
+
+            return firearm;
+        }
 
         /// <summary>
         /// Adds a <see cref="AttachmentIdentifier"/> to the firearm.
