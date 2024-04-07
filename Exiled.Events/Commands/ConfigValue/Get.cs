@@ -43,7 +43,7 @@ namespace Exiled.Events.Commands.ConfigValue
 
             if (!sender.CheckPermission(perm) && sender is PlayerCommandSender playerSender && !playerSender.FullPermissions)
             {
-                response = $"You can't enable a plugin, you don't have \"{perm}\" permissions.";
+                response = $"You can't get a config value, you don't have \"{perm}\" permissions.";
                 return false;
             }
 

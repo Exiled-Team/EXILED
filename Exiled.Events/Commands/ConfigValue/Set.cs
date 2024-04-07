@@ -8,6 +8,7 @@
 namespace Exiled.Events.Commands.ConfigValue
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
@@ -30,13 +31,13 @@ namespace Exiled.Events.Commands.ConfigValue
         public static Set Instance { get; } = new();
 
         /// <inheritdoc/>
-        public string Command { get; } = "get";
+        public string Command { get; } = "set";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = { "print" };
+        public string[] Aliases { get; } = { "edit" };
 
         /// <inheritdoc/>
-        public string Description { get; } = "Gets a config value";
+        public string Description { get; } = "Sets a config value";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -45,13 +46,13 @@ namespace Exiled.Events.Commands.ConfigValue
 
             if (!sender.CheckPermission(perm) && sender is PlayerCommandSender playerSender && !playerSender.FullPermissions)
             {
-                response = $"You can't enable a plugin, you don't have \"{perm}\" permissions.";
+                response = $"You can't set a config value, you don't have \"{perm}\" permissions.";
                 return false;
             }
 
             if (arguments.Count != 2)
             {
-                response = "Please, use: cv get PluginName.ValueName NewValue";
+                response = "Please, use: cv set PluginName.ValueName NewValue";
                 return false;
             }
 
@@ -66,7 +67,7 @@ namespace Exiled.Events.Commands.ConfigValue
                 return false;
             }
 
-            IPlugin<IConfig> plugin = Loader.Plugins.First(x => x.Name == pluginName);
+            IPlugin<IConfig> plugin = Loader.GetPlugin(pluginName);
 
             if (plugin.Config == null)
             {
@@ -100,8 +101,9 @@ namespace Exiled.Events.Commands.ConfigValue
                 return false;
             }
 
-            property.SetValue(plugin.Config, newValue);
-            bool success = ConfigManager.Reload();
+            SortedDictionary<string, IConfig> configs = ConfigManager.LoadSorted(ConfigManager.Read());
+            property.SetValue(configs[pluginName], newValue);
+            bool success = ConfigManager.Save(configs);
 
             response = success ? "Value has been successfully changed and added in config" : "Value has been successfully changed but not added in config";
             return true;
