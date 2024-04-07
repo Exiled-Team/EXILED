@@ -14,7 +14,7 @@ namespace Exiled.API.Extensions
     using System.Text;
     using System.Text.RegularExpressions;
 
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
 
     /// <summary>
     /// A set of extensions for <see cref="string"/>.
@@ -136,7 +136,7 @@ namespace Exiled.API.Extensions
         public static string GetBefore(this string input, char symbol)
         {
             int start = input.IndexOf(symbol);
-            if (start != 0)
+            if (start > 0)
                 input = input.Substring(0, start);
 
             return input;

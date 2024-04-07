@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.Jailbird;
 
     using BaseJailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
@@ -97,9 +98,10 @@ namespace Exiled.API.Features.Pickups
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
 
         /// <inheritdoc/>
-        internal override Pickup GetItemInfo(Item item)
+        internal override void ReadItemInfo(Item item)
         {
-            base.GetItemInfo(item);
+            base.ReadItemInfo(item);
+
             if (item is Jailbird jailBirditem)
             {
                 MeleeDamage = jailBirditem.MeleeDamage;
@@ -107,23 +109,19 @@ namespace Exiled.API.Features.Pickups
                 FlashDuration = jailBirditem.FlashDuration;
                 Radius = jailBirditem.Radius;
             }
-
-            return this;
         }
 
         /// <inheritdoc/>
-        internal override Item GetPickupInfo(Item item)
+        protected override void InitializeProperties(ItemBase itemBase)
         {
-            base.GetPickupInfo(item);
-            if (item is Jailbird jailBirditem)
+            base.InitializeProperties(itemBase);
+            if (itemBase is JailbirdItem jailbirdItem)
             {
-                jailBirditem.MeleeDamage = MeleeDamage;
-                jailBirditem.ChargeDamage = ChargeDamage;
-                jailBirditem.FlashDuration = FlashDuration;
-                jailBirditem.Radius = Radius;
+                MeleeDamage = jailbirdItem._hitreg._damageMelee;
+                ChargeDamage = jailbirdItem._hitreg._damageCharge;
+                FlashDuration = jailbirdItem._hitreg._flashDuration;
+                Radius = jailbirdItem._hitreg._hitregRadius;
             }
-
-            return item;
         }
     }
 }

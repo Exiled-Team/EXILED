@@ -42,7 +42,7 @@ namespace Exiled.API.Features.Pickups
         public new BaseRadio Base { get; }
 
         /// <summary>
-        /// Gets or sets the Radio Energy.
+        /// Gets or sets the Radio Battery Level.
         /// </summary>
         public float BatteryLevel
         {

@@ -11,6 +11,9 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
 
+    using InventorySystem.Items;
+    using InventorySystem.Items.Keycards;
+
     using BaseKeycard = InventorySystem.Items.Keycards.KeycardPickup;
 
     /// <summary>
@@ -49,27 +52,23 @@ namespace Exiled.API.Features.Pickups
         public new BaseKeycard Base { get; }
 
         /// <inheritdoc/>
-        internal override Pickup GetItemInfo(Item item)
+        internal override void ReadItemInfo(Item item)
         {
-            base.GetItemInfo(item);
+            base.ReadItemInfo(item);
             if (item is Keycard keycarditem)
             {
                 Permissions = keycarditem.Permissions;
             }
-
-            return this;
         }
 
         /// <inheritdoc/>
-        internal override Item GetPickupInfo(Item item)
+        protected override void InitializeProperties(ItemBase itemBase)
         {
-            base.GetPickupInfo(item);
-            if (item is Keycard keycarditem)
+            base.InitializeProperties(itemBase);
+            if (itemBase is KeycardItem keycardItem)
             {
-                keycarditem.Permissions = Permissions;
+                Permissions = (KeycardPermissions)keycardItem.Permissions;
             }
-
-            return item;
         }
     }
 }

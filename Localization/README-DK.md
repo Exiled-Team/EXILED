@@ -1,15 +1,15 @@
-# EXILED - EXtended In-runtime Library for External Development
-
-![EXILED CI](https://github.com/Exiled-Team/EXILED/workflows/EXILED%20CI/badge.svg?branch=2.0.0)
-<a href="https://github.com/Exiled-Team/EXILED/releases">
-  <img src="https://img.shields.io/github/release/Exiled-Team/EXILED/all.svg?style=flat" alt="GitHub Releases">
-</a>
-![Github Alle Downloads](https://img.shields.io/github/downloads/Exiled-Team/EXILED/total.svg?style=flat)
-![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev)
+<h1 align="center">EXILED - EXtended In-runtime Library for External Development</h1>
+<div align="center">
+    
+[<img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" alt="CI"/>](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg?branch=master)
+<a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
+<img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
+![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
 <a href="https://discord.gg/PyUkWTg">
-  <img src="https://img.shields.io/discord/656673194693885975?logo=discord" alt="Chat on Discord">
-</a>
+    <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
+</a>    
 
+</div>
 
 EXILED er et plugin-framework på højt niveau til SCP: Secret Laboratory-servere. Det tilbyder et event-system, som udviklere kan bruge til at manipulere eller ændre spilkoden eller implementere deres egne funktioner.
 Alle EXILED-hændelser er kodet med Harmony, hvilket betyder, at de ikke kræver direkte redigering af server Assemblies for at fungere, hvilket giver to unikke fordele.
@@ -44,7 +44,7 @@ Hvis du vælger at bruge installationsprogrammet, vil det, hvis det køres korre
 ### Manuel installation
   - Download **`Exiled.tar.gz` [herfra](https://github.com/Exiled-Team/EXILED/releases)**
   - Udpak indholdet med [7Zip](https://www.7-zip.org/) eller [WinRar](https://www.win-rar.com/download.html?&L=6)
-  - Flyt mappen **``EXILED``** til **`%appdata%`** *Bemærk: Denne mappe skal ligge i ``C:\Users\(Din_Bruger)\AppData\Roaming``, og ***IKKE*** ``C:\Users\(Din_Bruger)\AppData\Roaming\SCP Secret Laboratory``, og **Den SKAL** ligge i (...)\AppData\Roaming\SCP Secret Laboratory``. ..)\AppData\Roaming, ikke (...)\AppData\!*  - Flyt **``SCP Secret Laboratory``** til **`%appdata%`**.
+  - Flyt mappen **``EXILED``** til **`%appdata%`** *Bemærk: Denne mappe skal ligge i ``C:\Users\%UserName%\AppData\Roaming``, og ***IKKE*** ``C:\Users\%UserName%\AppData\Roaming\SCP Secret Laboratory``, og **Den SKAL** ligge i (...)\AppData\Roaming\SCP Secret Laboratory``. ..)\AppData\Roaming, ikke (...)\AppData\!*  - Flyt **``SCP Secret Laboratory``** til **`%appdata%`**.
     - Windows 10 og 11:
       Skriv `%appdata%` i Cortana / søgeikonet eller Windows Explorer-linjen
     - Alle andre Windows-versioner:

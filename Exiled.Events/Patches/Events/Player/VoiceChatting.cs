@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using API.Features.Roles;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
@@ -21,14 +21,18 @@ namespace Exiled.Events.Patches.Events.Player
 
     using PlayerRoles.Voice;
 
+    using VoiceChat;
     using VoiceChat.Networking;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// patches <see cref="VoiceTransceiver.ServerReceiveMessage(NetworkConnection, VoiceMessage)"/> to add the <see cref="Handlers.Player.VoiceChatting"/> event.
+    /// Patches <see cref="VoiceTransceiver.ServerReceiveMessage(NetworkConnection, VoiceMessage)"/>.
+    /// Adds the <see cref="Handlers.Player.VoiceChatting"/> event.
+    /// Adds the <see cref="Handlers.Player.Transmitting"/> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.VoiceChatting))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Transmitting))]
     [HarmonyPatch(typeof(VoiceTransceiver), nameof(VoiceTransceiver.ServerReceiveMessage))]
     internal static class VoiceChatting
     {
@@ -38,10 +42,12 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label retLabel = generator.DefineLabel();
             Label isMutedLabel = generator.DefineLabel();
+            Label skipLabel = generator.DefineLabel();
             List<Label> labels;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(VoiceChattingEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
+            LocalBuilder voiceModule = generator.DeclareLocal(typeof(VoiceModuleBase));
 
             const int offset = 3;
             int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(VoiceModuleBase), nameof(VoiceModuleBase.CheckRateLimit)))) + offset;
@@ -77,6 +83,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Role), nameof(Role.Base))),
                 new(OpCodes.Isinst, typeof(IVoiceRole)),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(IVoiceRole), nameof(IVoiceRole.VoiceModule))),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, voiceModule.LocalIndex),
 
                 // true
                 new(OpCodes.Ldc_I4_1),
@@ -99,6 +107,37 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(VoiceChattingEventArgs), nameof(VoiceChattingEventArgs.VoiceMessage))),
                 new(OpCodes.Stloc_1),
+
+                // if(voiceModule.CurrentChannel != VoiceChatChannel.Radio)
+                //     goto skipLabel;
+                new(OpCodes.Ldloc_S, voiceModule.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(VoiceModuleBase), nameof(VoiceModuleBase.CurrentChannel))),
+                new(OpCodes.Ldc_I4_S, (sbyte)VoiceChatChannel.Radio),
+                new(OpCodes.Ceq),
+                new(OpCodes.Brfalse_S, skipLabel),
+
+                // player
+                new(OpCodes.Ldloc_S, player.LocalIndex),
+
+                // voiceModule
+                new(OpCodes.Ldloc_S, voiceModule.LocalIndex),
+
+                // true
+                new(OpCodes.Ldc_I4_1),
+
+                // TransmittingEventArgs ev = new TransmittingEventArgs(Player, VoiceModuleBase, bool)
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TransmittingEventArgs))[0]),
+                new(OpCodes.Dup),
+
+                // Handlers.Player.OnTransmitting(ev);
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnTransmitting))),
+
+                // if(!ev.IsAllowed)
+                //     return;
+                new(OpCodes.Callvirt, PropertyGetter(typeof(TransmittingEventArgs), nameof(TransmittingEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, retLabel),
+
+                new CodeInstruction(OpCodes.Nop).WithLabels(skipLabel),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(retLabel);

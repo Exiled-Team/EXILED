@@ -8,35 +8,41 @@
 namespace Exiled.Events.EventArgs.Scp330
 {
     using API.Features;
-
+    using Exiled.API.Features.Items;
     using Interfaces;
 
     using InventorySystem.Items.Usables.Scp330;
 
     /// <summary>
-    ///     Contains all information after a player has eaten SCP-330.
+    /// Contains all information after a player has eaten SCP-330.
     /// </summary>
-    public class EatenScp330EventArgs : IPlayerEvent
+    public class EatenScp330EventArgs : IPlayerEvent, IScp330Event
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="EatenScp330EventArgs" /> class.
+        /// Initializes a new instance of the <see cref="EatenScp330EventArgs" /> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player" />.</param>
+        /// <param name="scp330"><inheritdoc cref="Scp330" />.</param>
         /// <param name="candy"><inheritdoc cref="Candy" />.</param>
-        public EatenScp330EventArgs(Player player, ICandy candy)
+        public EatenScp330EventArgs(Player player, Scp330 scp330, ICandy candy)
         {
             Player = player;
+            Scp330 = scp330;
             Candy = candy;
         }
 
         /// <summary>
-        ///     Gets the <see cref="ICandy" /> that was eaten by the player.
+        /// Gets the <see cref="ICandy" /> that was eaten by the player.
         /// </summary>
         public ICandy Candy { get; }
 
-        /// <summary>
-        ///     Gets the player who's eaten SCP-330.
-        /// </summary>
+        /// <inheritdoc/>
+        public Scp330 Scp330 { get; }
+
+        /// <inheritdoc/>
+        public Item Item => Scp330;
+
+        /// <inheritdoc/>
         public Player Player { get; }
     }
 }

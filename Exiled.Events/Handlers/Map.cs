@@ -21,12 +21,12 @@ namespace Exiled.Events.Handlers
     public static class Map
     {
         /// <summary>
-        /// Invoked before placing decals.
+        /// Invoked before placing bullet holes.
         /// </summary>
         public static Event<PlacingBulletHoleEventArgs> PlacingBulletHole { get; set; } = new();
 
         /// <summary>
-        /// Invoked before placing bloods.
+        /// Invoked before placing blood.
         /// </summary>
         public static Event<PlacingBloodEventArgs> PlacingBlood { get; set; } = new();
 
@@ -99,6 +99,26 @@ namespace Exiled.Events.Handlers
         /// Invoked after an pickup is destroyed.
         /// </summary>
         public static Event<PickupDestroyedEventArgs> PickupDestroyed { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before a team vehicle is spawned.
+        /// </summary>
+        public static Event<SpawningTeamVehicleEventArgs> SpawningTeamVehicle { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before an item is placed in the pocket dimension.
+        /// </summary>
+        public static Event<PlacingPickupIntoPocketDimensionEventArgs> PlacingPickupIntoPocketDimension { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before elevator starts moving.
+        /// </summary>
+        public static Event<ElevatorMovingEventArgs> ElevatorMoving { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after an elevator has arrived.
+        /// </summary>
+        public static Event<ElevatorArrivedEventArgs> ElevatorArrived { get; set; } = new();
 
         /// <summary>
         /// Called before placing a decal.
@@ -194,5 +214,29 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="PickupDestroyedEventArgs"/> instance.</param>
         public static void OnPickupDestroyed(PickupDestroyedEventArgs ev) => PickupDestroyed.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked before a team vehicle is spawned.
+        /// </summary>
+        /// <param name="ev">The <see cref="SpawningTeamVehicleEventArgs"/> instance.</param>
+        public static void OnSpawningTeamVehicle(SpawningTeamVehicleEventArgs ev) => SpawningTeamVehicle.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before an item is dropped in the pocket dimension.
+        /// </summary>
+        /// <param name="ev">The <see cref="PlacingPickupIntoPocketDimensionEventArgs"/> instnace.</param>
+        public static void OnPlacingPickupIntoPocketDimension(PlacingPickupIntoPocketDimensionEventArgs ev) => PlacingPickupIntoPocketDimension.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before elevator starts moving.
+        /// </summary>
+        /// <param name="ev">The <see cref="ElevatorMovingEventArgs"/> instance.</param>
+        public static void OnElevatorMoving(ElevatorMovingEventArgs ev) => ElevatorMoving.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after an elevator has arrived.
+        /// </summary>
+        /// <param name="ev">The <see cref="ElevatorArrivedEventArgs"/> instance.</param>
+        public static void OnElevatorArrived(ElevatorArrivedEventArgs ev) => ElevatorArrived.InvokeSafely(ev);
     }
 }

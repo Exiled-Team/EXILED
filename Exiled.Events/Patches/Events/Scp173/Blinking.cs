@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp173
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp173;
 
@@ -21,15 +21,15 @@ namespace Exiled.Events.Patches.Events.Scp173
     using PlayerRoles;
 
     using PlayerRoles.PlayableScps.Scp173;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp173BlinkTimer.ServerBlink(Vector3)" />.
-    ///     Adds the <see cref="Handlers.Scp173.Blinking" /> event.
+    /// Patches <see cref="Scp173BlinkTimer.ServerBlink(Vector3)" />.
+    /// Adds the <see cref="Handlers.Scp173.Blinking" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp173.Blinking))]
     [HarmonyPatch(typeof(Scp173BlinkTimer), nameof(Scp173BlinkTimer.ServerBlink))]
@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Scp173
                 {
                     // Player.Get(base.Role._lastOwner)
                     new CodeInstruction(OpCodes.Ldarg_0),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ScpSubroutineBase), nameof(ScpSubroutineBase.Role))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SubroutineBase), nameof(SubroutineBase.Role))),
                     new(OpCodes.Ldfld, Field(typeof(PlayerRoleBase), nameof(PlayerRoleBase._lastOwner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 

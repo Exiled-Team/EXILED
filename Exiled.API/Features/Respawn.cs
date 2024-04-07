@@ -54,14 +54,27 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the next known <see cref="SpawnableTeamType"/> that will spawn.
+        /// Gets or sets the next known <see cref="SpawnableTeamType"/> that will spawn.
         /// </summary>
-        public static SpawnableTeamType NextKnownTeam => RespawnManager.Singleton.NextKnownTeam;
+        public static SpawnableTeamType NextKnownTeam
+        {
+            get => RespawnManager.Singleton.NextKnownTeam;
+            set => RespawnManager.Singleton.NextKnownTeam = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of seconds before the next respawn phase will occur.
+        /// </summary>
+        public static float TimeUntilNextPhase
+        {
+            get => RespawnManager.Singleton._timeForNextSequence - (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds;
+            set => RespawnManager.Singleton._timeForNextSequence = (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds + value;
+        }
 
         /// <summary>
         /// Gets a <see cref="TimeSpan"/> indicating the amount of time before the next respawn wave will occur.
         /// </summary>
-        public static TimeSpan TimeUntilSpawnWave => TimeSpan.FromSeconds(RespawnManager.Singleton._timeForNextSequence - (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds);
+        public static TimeSpan TimeUntilSpawnWave => TimeSpan.FromSeconds(TimeUntilNextPhase);
 
         /// <summary>
         /// Gets a <see cref="DateTime"/> indicating the moment in UTC time the next respawn wave will occur.
@@ -71,7 +84,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not a team is currently being spawned or the animations are playing for a team.
         /// </summary>
-        public static bool IsSpawning => RespawnManager.Singleton._curSequence == RespawnManager.RespawnSequencePhase.PlayingEntryAnimations || RespawnManager.Singleton._curSequence == RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
+        public static bool IsSpawning => RespawnManager.Singleton._curSequence is RespawnManager.RespawnSequencePhase.PlayingEntryAnimations or RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
 
         /// <summary>
         /// Gets or sets the amount of spawn tickets belonging to the Chaos Insurgency.
@@ -80,7 +93,7 @@ namespace Exiled.API.Features
         public static float ChaosTickets
         {
             get => RespawnTokensManager.Counters[0].Amount;
-            set => RespawnTokensManager.GrantTokens(SpawnableTeamType.ChaosInsurgency, value);
+            set => RespawnTokensManager.ModifyTokens(SpawnableTeamType.ChaosInsurgency, value);
         }
 
         /// <summary>
@@ -90,7 +103,7 @@ namespace Exiled.API.Features
         public static float NtfTickets
         {
             get => RespawnTokensManager.Counters[1].Amount;
-            set => RespawnTokensManager.GrantTokens(SpawnableTeamType.NineTailedFox, value);
+            set => RespawnTokensManager.ModifyTokens(SpawnableTeamType.NineTailedFox, value);
         }
 
         /// <summary>
@@ -144,7 +157,12 @@ namespace Exiled.API.Features
         public static void PlayEffects(byte[] effects)
         {
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
-                controller?.RpcPlayEffects(effects);
+            {
+                if (!controller)
+                    continue;
+
+                controller.RpcPlayEffects(effects);
+            }
         }
 
         /// <summary>
@@ -164,17 +182,15 @@ namespace Exiled.API.Features
         /// <param name="playMusic">Whether or not to play the Chaos Insurgency spawn music.</param>
         public static void SummonChaosInsurgencyVan(bool playMusic = true)
         {
-            PlayEffects(
-                playMusic
-                    ? new[]
-                    {
-                        RespawnEffectType.PlayChaosInsurgencyMusic,
-                        RespawnEffectType.SummonChaosInsurgencyVan,
-                    }
-                    : new[]
-                    {
-                        RespawnEffectType.SummonChaosInsurgencyVan,
-                    });
+            PlayEffects(playMusic ? new[]
+                {
+                    RespawnEffectType.PlayChaosInsurgencyMusic,
+                    RespawnEffectType.SummonChaosInsurgencyVan,
+                }
+                : new[]
+                {
+                    RespawnEffectType.SummonChaosInsurgencyVan,
+                });
         }
 
         /// <summary>
@@ -182,14 +198,21 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="team">The <see cref="SpawnableTeamType"/> to grant tickets to.</param>
         /// <param name="amount">The amount of tickets to grant.</param>
-        public static void GrantTickets(SpawnableTeamType team, float amount) => RespawnTokensManager.GrantTokens(team, amount);
+        public static void GrantTickets(SpawnableTeamType team, float amount) => RespawnTokensManager.GrantTokens(team, Math.Max(0, amount));
 
         /// <summary>
         /// Removes tickets from a <see cref="SpawnableTeamType"/>.
         /// </summary>
         /// <param name="team">The <see cref="SpawnableTeamType"/> to remove tickets from.</param>
         /// <param name="amount">The amount of tickets to remove.</param>
-        public static void RemoveTickets(SpawnableTeamType team, float amount) => RespawnTokensManager.RemoveTokens(team, amount);
+        public static void RemoveTickets(SpawnableTeamType team, float amount) => RespawnTokensManager.RemoveTokens(team, Math.Max(0, amount));
+
+        /// <summary>
+        /// Modify tickets from a <see cref="SpawnableTeamType"/>.
+        /// </summary>
+        /// <param name="team">The <see cref="SpawnableTeamType"/> to modify tickets from.</param>
+        /// <param name="amount">The amount of tickets to modify.</param>
+        public static void ModifyTickets(SpawnableTeamType team, float amount) => RespawnTokensManager.ModifyTokens(team, amount);
 
         /// <summary>
         /// Forces a spawn of the given <see cref="SpawnableTeamType"/>.

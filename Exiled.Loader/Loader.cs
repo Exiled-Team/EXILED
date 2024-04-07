@@ -19,17 +19,10 @@ namespace Exiled.Loader
 
     using API.Enums;
     using API.Interfaces;
-
     using CommandSystem.Commands.Shared;
-
     using Exiled.API.Features;
-
+    using Exiled.API.Features.Attributes;
     using Features;
-    using Features.Configs;
-    using Features.Configs.CustomConverters;
-
-    using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Used to handle plugins.
@@ -89,38 +82,12 @@ namespace Exiled.Loader
         public static List<Assembly> Dependencies { get; } = new();
 
         /// <summary>
-        /// Gets or sets the serializer for configs and translations.
-        /// </summary>
-        public static ISerializer Serializer { get; set; } = new SerializerBuilder()
-            .WithTypeConverter(new VectorsConverter())
-            .WithTypeConverter(new ColorConverter())
-            .WithTypeConverter(new AttachmentIdentifiersConverter())
-            .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
-            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
-            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .IgnoreFields()
-            .DisableAliases()
-            .Build();
-
-        /// <summary>
-        /// Gets or sets the deserializer for configs and translations.
-        /// </summary>
-        public static IDeserializer Deserializer { get; set; } = new DeserializerBuilder()
-            .WithTypeConverter(new VectorsConverter())
-            .WithTypeConverter(new ColorConverter())
-            .WithTypeConverter(new AttachmentIdentifiersConverter())
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
-            .IgnoreFields()
-            .IgnoreUnmatchedProperties()
-            .Build();
-
-        /// <summary>
         /// Loads all plugins.
         /// </summary>
         public static void LoadPlugins()
         {
+            File.Delete(Path.Combine(Paths.Plugins, "Exiled.Updater.dll"));
+
             foreach (string assemblyPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
                 Assembly assembly = LoadAssembly(assemblyPath);
@@ -180,10 +147,14 @@ namespace Exiled.Loader
         /// <returns>Returns the created plugin instance or <see langword="null"/>.</returns>
         public static IPlugin<IConfig> CreatePlugin(Assembly assembly)
         {
+            Type defaultPlayerClass = null;
             try
             {
                 foreach (Type type in assembly.GetTypes())
                 {
+                    if (typeof(Player).IsAssignableFrom(type))
+                        defaultPlayerClass = type;
+
                     if (type.IsAbstract || type.IsInterface)
                     {
                         Log.Debug($"\"{type.FullName}\" is an interface or abstract class, skipping.");
@@ -229,6 +200,14 @@ namespace Exiled.Loader
                     if (CheckPluginRequiredExiledVersion(plugin))
                         continue;
 
+                    if (defaultPlayerClass is not null)
+                    {
+                        DefaultPlayerClassAttribute dpc = Player.DEFAULT_PLAYER_CLASS.GetCustomAttribute<DefaultPlayerClassAttribute>();
+
+                        if (dpc is not null && !dpc.EnforceAuthority)
+                            Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
+                    }
+
                     return plugin;
                 }
             }
@@ -255,8 +234,9 @@ namespace Exiled.Loader
         public static void EnablePlugins()
         {
             List<IPlugin<IConfig>> toLoad = Plugins.ToList();
+            List<IPlugin<IConfig>> toLoad2 = new();
 
-            foreach (IPlugin<IConfig> plugin in toLoad.ToList())
+            foreach (IPlugin<IConfig> plugin in toLoad)
             {
                 try
                 {
@@ -264,7 +244,10 @@ namespace Exiled.Loader
                     {
                         plugin.OnEnabled();
                         plugin.OnRegisteringCommands();
-                        toLoad.Remove(plugin);
+                    }
+                    else
+                    {
+                        toLoad2.Add(plugin);
                     }
 
                     if (plugin.Config.Debug)
@@ -276,7 +259,7 @@ namespace Exiled.Loader
                 }
             }
 
-            foreach (IPlugin<IConfig> plugin in toLoad)
+            foreach (IPlugin<IConfig> plugin in toLoad2)
             {
                 try
                 {
@@ -358,12 +341,43 @@ namespace Exiled.Loader
         /// Runs the plugin manager, by loading all dependencies, plugins, configs and then enables all plugins.
         /// </summary>
         /// <param name="dependencies">The dependencies that could have been loaded by Exiled.Bootstrap.</param>
-        public void Run(Assembly[] dependencies = null)
+        /// <returns>A MEC <see cref="IEnumerator{T}"/>.</returns>
+        public IEnumerator<float> Run(Assembly[] dependencies = null)
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? CheckUAC() : geteuid() == 0)
             {
                 ServerConsole.AddLog("YOU ARE RUNNING THE SERVER AS ROOT / ADMINISTRATOR. THIS IS HIGHLY UNRECOMMENDED. PLEASE INSTALL YOUR SERVER AS A NON-ROOT/ADMIN USER.", ConsoleColor.DarkRed);
                 Thread.Sleep(5000);
+            }
+
+            if (LoaderPlugin.Config.EnableAutoUpdates)
+            {
+                Thread thread = new(() =>
+                {
+                    Updater updater = Updater.Initialize(LoaderPlugin.Config);
+                    updater.CheckUpdate();
+                })
+                {
+                    Name = "Exiled Updater",
+                    Priority = ThreadPriority.AboveNormal,
+                };
+
+                thread.Start();
+            }
+
+            if (!LoaderPlugin.Config.ShouldLoadOutdatedExiled &&
+                !GameCore.Version.CompatibilityCheck(
+                (byte)AutoUpdateFiles.RequiredSCPSLVersion.Major,
+                (byte)AutoUpdateFiles.RequiredSCPSLVersion.Minor,
+                (byte)AutoUpdateFiles.RequiredSCPSLVersion.Revision,
+                GameCore.Version.Major,
+                GameCore.Version.Minor,
+                GameCore.Version.Revision,
+                GameCore.Version.BackwardCompatibility,
+                GameCore.Version.BackwardRevision))
+            {
+                ServerConsole.AddLog($"Exiled is outdated, a new version will be installed automatically as soon as it's available.\nSCP:SL: {GameCore.Version.VersionString} Exiled Supported Version: {AutoUpdateFiles.RequiredSCPSLVersion}", ConsoleColor.DarkRed);
+                yield break;
             }
 
             if (dependencies?.Length > 0)

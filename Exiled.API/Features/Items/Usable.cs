@@ -10,7 +10,8 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
-    using InventorySystem.Items;
+    using InventorySystem;
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables;
 
     using UnityEngine;
@@ -109,10 +110,13 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            Pickup pickup = Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
+            PickupSyncInfo info = new(Type, Weight, Serial);
 
-            pickup.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-            pickup.Scale = Scale;
+            ItemPickupBase ipb = InventoryExtensions.ServerCreatePickup(Base, info, position, rotation);
+
+            Base.OnRemoved(ipb);
+
+            Pickup pickup = Pickup.Get(ipb);
 
             if (spawn)
                 pickup.Spawn();
@@ -130,6 +134,17 @@ namespace Exiled.API.Features.Items
                 throw new System.InvalidOperationException("The Owner of the item cannot be null.");
 
             Owner.UseItem(this);
+        }
+
+        /// <inheritdoc/>
+        internal override void ReadPickupInfo(Pickup pickup)
+        {
+            base.ReadPickupInfo(pickup);
+            if (pickup is UsablePickup usablePickup)
+            {
+                UseTime = usablePickup.UseTime;
+                MaxCancellableTime = usablePickup.MaxCancellableTime;
+            }
         }
     }
 }

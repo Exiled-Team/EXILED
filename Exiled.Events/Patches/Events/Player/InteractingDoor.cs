@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="DoorVariant.ServerInteract(ReferenceHub, byte)" />.
-    ///     Adds the <see cref="Handlers.Player.InteractingDoor" /> event.
+    /// Patches <see cref="DoorVariant.ServerInteract(ReferenceHub, byte)" />.
+    /// Adds the <see cref="Handlers.Player.InteractingDoor" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.InteractingDoor))]
     [HarmonyPatch(typeof(DoorVariant), nameof(DoorVariant.ServerInteract), typeof(ReferenceHub), typeof(byte))]
@@ -44,10 +44,6 @@ namespace Exiled.Events.Patches.Events.Player
                 0,
                 new CodeInstruction[]
                 {
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, Method(typeof(InteractingDoor), nameof(InteractingDoor.CanStateChange))),
-                    new(OpCodes.Brfalse_S, retLabel),
-
                     // InteractingDoorEventArgs ev = new(Player.Get(ply), __instance, false);
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
@@ -114,11 +110,6 @@ namespace Exiled.Events.Patches.Events.Player
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
-        }
-
-        private static bool CanStateChange(DoorVariant variant)
-        {
-            return !(variant.GetExactState() > 0f && variant.GetExactState() < 1f);
         }
     }
 }

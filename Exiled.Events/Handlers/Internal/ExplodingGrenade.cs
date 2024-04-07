@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Handlers.Internal
 {
-    using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Map;
 
     /// <summary>
@@ -18,8 +17,7 @@ namespace Exiled.Events.Handlers.Internal
         /// <inheritdoc cref="Map.OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs)" />
         public static void OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs ev)
         {
-            if (ev.Pickup is GrenadePickup grenadePickup)
-                grenadePickup.GetPickupInfo(ev.Projectile);
+            ev.Pickup.WriteProjectileInfo(ev.Projectile);
         }
     }
 }

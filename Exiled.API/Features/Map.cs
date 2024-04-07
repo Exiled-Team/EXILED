@@ -31,6 +31,7 @@ namespace Exiled.API.Features
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Scp939;
+    using PlayerRoles.Ragdolls;
     using RelativePositioning;
     using UnityEngine;
     using Utils;
@@ -109,6 +110,20 @@ namespace Exiled.API.Features
         public static bool IsLczDecontaminated => DecontaminationController.Singleton.IsDecontaminating;
 
         /// <summary>
+        /// Gets a value indicating whether decontamination phase is in the light containment zone.
+        /// </summary>
+        public static DecontaminationPhase DecontaminationPhase => (DecontaminationPhase)DecontaminationController.Singleton._nextPhase;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the decontamination override is in the light containment zone.
+        /// </summary>
+        public static DecontaminationController.DecontaminationStatus DecontaminationOverride
+        {
+            get => DecontaminationController.Singleton.DecontaminationOverride;
+            set => DecontaminationController.Singleton.DecontaminationOverride = value;
+        }
+
+        /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
         /// </summary>
         public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports { get; } = TeleportsValue.AsReadOnly();
@@ -139,7 +154,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="global::AmbientSoundPlayer"/>.
         /// </summary>
-        public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer != null ? ambientSoundPlayer : (ambientSoundPlayer = ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>());
+        public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer ??= ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>();
 
         /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
@@ -218,10 +233,29 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Changes the <see cref="Color"/> of all lights in the facility.
+        /// </summary>
+        /// <param name="color">The new <see cref="Color"/> of the lights.</param>
+        public static void ChangeLightsColor(Color color)
+        {
+            foreach (RoomLightController light in RoomLightController.Instances)
+                light.NetworkOverrideColor = color;
+        }
+
+        /// <summary>
+        /// Resets the <see cref="Color">color</see> of all lights in the facility.
+        /// </summary>
+        public static void ResetLightsColor()
+        {
+            foreach (RoomLightController light in RoomLightController.Instances)
+                light.NetworkOverrideColor = Color.clear;
+        }
+
+        /// <summary>
         /// Gets a random <see cref="Locker"/>.
         /// </summary>
         /// <returns><see cref="Locker"/> object.</returns>
-        public static Locker GetRandomLocker() => Lockers.GetRandomValue();
+        public static Locker GetRandomLocker() => Lockers.Random();
 
         /// <summary>
         /// Gets a random <see cref="Pickup"/>.
@@ -231,7 +265,7 @@ namespace Exiled.API.Features
         public static Pickup GetRandomPickup(ItemType type = ItemType.None)
         {
             List<Pickup> pickups = (type != ItemType.None ? Pickup.List.Where(p => p.Type == type) : Pickup.List).ToList();
-            return pickups.GetRandomValue();
+            return pickups.Random();
         }
 
         /// <summary>
@@ -326,7 +360,7 @@ namespace Exiled.API.Features
         /// <param name="toleration">The maximum toleration to define the radius from which get the cameras.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the found cameras.</returns>
         public static IEnumerable<Camera> GetNearCameras(Vector3 position, float toleration = 15f)
-            => Camera.Get(cam => (position - cam.Position).sqrMagnitude <= toleration * toleration);
+            => Camera.Get(cam => MathExtensions.DistanceSquared(position, cam.Position) <= toleration * toleration);
 
         /// <summary>
         /// Explode.
@@ -342,10 +376,13 @@ namespace Exiled.API.Features
             attacker ??= Server.Host;
             if (!InventoryItemLoader.TryGetItem(item, out ThrowableItem throwableItem))
                 return;
-            ExplosionUtils.ServerSpawnEffect(position, item);
 
-            if (throwableItem.Projectile is ExplosionGrenade explosionGrenade)
-                ExplosionGrenade.Explode(attacker.Footprint, position, explosionGrenade);
+            if (Object.Instantiate(throwableItem.Projectile) is TimeGrenade timedGrenadePickup)
+            {
+                timedGrenadePickup.PreviousOwner = attacker.Footprint;
+                timedGrenadePickup.Position = position;
+                timedGrenadePickup.ServerFuseEnd();
+            }
         }
 
         /// <summary>
@@ -375,6 +412,8 @@ namespace Exiled.API.Features
             Firearm.ItemTypeToFirearmInstance.Clear();
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
+
+            Workstation.BaseToWrapper.Clear();
         }
     }
 }

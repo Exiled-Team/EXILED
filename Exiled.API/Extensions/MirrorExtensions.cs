@@ -16,19 +16,15 @@ namespace Exiled.API.Extensions
     using System.Text;
 
     using Features;
-    using Features.Pools;
-
+    using Features.Core.Generic.Pools;
     using InventorySystem.Items.Firearms;
-
     using Mirror;
-
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PlayerRoles.Subroutines;
     using RelativePositioning;
-
     using Respawning;
-
     using UnityEngine;
 
     /// <summary>
@@ -44,7 +40,6 @@ namespace Exiled.API.Extensions
         private static readonly ReadOnlyDictionary<string, string> ReadOnlyRpcFullNamesValue = new(RpcFullNamesValue);
         private static MethodInfo setDirtyBitsMethodInfoValue;
         private static MethodInfo sendSpawnMessageMethodInfoValue;
-        private static MethodInfo bufferRpcMethodInfoValue;
 
         /// <summary>
         /// Gets <see cref="MethodInfo"/> corresponding to <see cref="Type"/>.
@@ -55,7 +50,7 @@ namespace Exiled.API.Extensions
             {
                 if (WriterExtensionsValue.Count == 0)
                 {
-                    foreach (MethodInfo method in typeof(NetworkWriterExtensions).GetMethods().Where(x => !x.IsGenericMethod && (x.GetParameters()?.Length == 2)))
+                    foreach (MethodInfo method in typeof(NetworkWriterExtensions).GetMethods().Where(x => !x.IsGenericMethod && x.GetCustomAttribute(typeof(ObsoleteAttribute)) == null && (x.GetParameters()?.Length == 2)))
                         WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
 
                     Type fuckNorthwood = Assembly.GetAssembly(typeof(RoleTypeId)).GetType("Mirror.GeneratedNetworkCode");
@@ -147,11 +142,6 @@ namespace Exiled.API.Extensions
         public static MethodInfo SendSpawnMessageMethodInfo => sendSpawnMessageMethodInfoValue ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
 
         /// <summary>
-        /// Gets a NetworkConnectionToClient.BufferRpc's <see cref="MethodInfo"/>.
-        /// </summary>
-        public static MethodInfo BufferRpcMethodInfo => bufferRpcMethodInfoValue ??= typeof(NetworkConnectionToClient).GetMethod("BufferRpc", BindingFlags.NonPublic | BindingFlags.Instance, null, CallingConventions.HasThis, new Type[] { typeof(RpcMessage), typeof(int) }, null);
-
-        /// <summary>
         /// Plays a beep sound that only the target <paramref name="player"/> can hear.
         /// </summary>
         /// <param name="player">Target to play sound to.</param>
@@ -211,16 +201,6 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Sets <see cref="Room"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
-        /// </summary>
-        /// <param name="room">Room to modify.</param>
-        /// <param name="target">Only this player can see room color.</param>
-        /// <param name="multiplier">Light intensity multiplier to set.</param>
-        public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier)
-        {
-        }
-
-        /// <summary>
         /// Change <see cref="Player"/> character model for appearance.
         /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
         /// </summary>
@@ -241,7 +221,7 @@ namespace Exiled.API.Extensions
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
         {
-            if (!RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))
+            if (!player.IsConnected || !RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))
                 return;
 
             bool isRisky = type.GetTeam() is Team.Dead || player.IsDead;
@@ -265,7 +245,8 @@ namespace Exiled.API.Extensions
                 else
                     fpc = playerfpc;
 
-                fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort value, out ushort _);
+                ushort value = 0;
+                fpc?.FpcModule.MouseLook.GetSyncValues(0, out value, out ushort _);
                 writer.WriteRelativePosition(player.RelativePosition);
                 writer.WriteUShort(value);
             }
@@ -329,7 +310,7 @@ namespace Exiled.API.Extensions
             string[] translations = translation.Split('\n');
 
             for (int i = 0; i < cassies.Length; i++)
-                announcement.Append($"{translations[i]}<size=0> {cassies[i].Replace(' ', ' ')} </size><split>");
+                announcement.Append($"{translations[i].Replace(' ', ' ')}<size=0> {cassies[i]} </size><split>");
 
             string message = StringBuilderPool.Pool.ToStringReturn(announcement);
 
@@ -352,6 +333,9 @@ namespace Exiled.API.Extensions
         /// <param name="value">Value of send to target.</param>
         public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
         {
+            if (!target.IsConnected)
+                return;
+
             NetworkWriterPooled writer = NetworkWriterPool.Get();
             NetworkWriterPooled writer2 = NetworkWriterPool.Get();
             MakeCustomSyncWriter(behaviorOwner, targetType, null, CustomSyncVarGenerator, writer, writer2);
@@ -388,6 +372,9 @@ namespace Exiled.API.Extensions
         /// <param name="values">Values of send to target.</param>
         public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
         {
+            if (!target.IsConnected)
+                return;
+
             NetworkWriterPooled writer = NetworkWriterPool.Get();
 
             foreach (object value in values)
@@ -401,7 +388,7 @@ namespace Exiled.API.Extensions
                 payload = writer.ToArraySegment(),
             };
 
-            BufferRpcMethodInfo.Invoke(target.Connection, new object[] { msg, 0 });
+            target.Connection.Send(msg);
 
             NetworkWriterPool.Return(writer);
         }
@@ -427,6 +414,9 @@ namespace Exiled.API.Extensions
         /// </example>
         public static void SendFakeSyncObject(Player target, NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customAction)
         {
+            if (!target.IsConnected)
+                return;
+
             NetworkWriterPooled writer = NetworkWriterPool.Get();
             NetworkWriterPooled writer2 = NetworkWriterPool.Get();
             MakeCustomSyncWriter(behaviorOwner, targetType, customAction, null, writer, writer2);
@@ -454,6 +444,26 @@ namespace Exiled.API.Extensions
                 player.Connection.Send(objectDestroyMessage, 0);
                 SendSpawnMessageMethodInfo.Invoke(null, new object[] { identity, player.Connection });
             }
+        }
+
+        /// <summary>
+        /// Sends a <see cref="SubroutineMessage"/>.
+        /// </summary>
+        /// <param name="subroutineBase">Base <see cref="SubroutineBase"/> instance.</param>
+        /// <param name="applyingChanges">Action that will apply needed changes to a <paramref name="subroutineBase"/>.</param>
+        /// <param name="toAll">Should message be sent to everybody or to <see cref="SubroutineBase.Role"/> only.</param>
+        /// <typeparam name="T">A type of <see cref="SubroutineBase"/>.</typeparam>
+        public static void SendRpc<T>(this T subroutineBase, Action<T> applyingChanges, bool toAll = true)
+            where T : SubroutineBase
+        {
+            applyingChanges(subroutineBase);
+
+            SubroutineMessage msg = new(subroutineBase, true);
+
+            if (toAll)
+                NetworkServer.SendToAll(msg);
+            else
+                subroutineBase.Role._lastOwner.connectionToClient.Send(msg);
         }
 
         // Get components index in identity.(private)

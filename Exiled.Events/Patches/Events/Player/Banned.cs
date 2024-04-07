@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -20,8 +20,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="BanHandler.IssueBan(BanDetails, BanHandler.BanType, bool)" />.
-    ///     Adds the <see cref="Handlers.Player.Banned" /> event.
+    /// Patches <see cref="BanHandler.IssueBan(BanDetails, BanHandler.BanType, bool)" />.
+    /// Adds the <see cref="Handlers.Player.Banned" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Banned))]
     [HarmonyPatch(typeof(BanHandler), nameof(BanHandler.IssueBan))]

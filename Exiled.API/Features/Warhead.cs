@@ -52,6 +52,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the auto detonation time.
+        /// </summary>
+        public static float AutoDetonateTime
+        {
+            get => Controller._autoDetonateTime;
+            set => Controller._autoDetonateTime = value;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not doors will be opened when the warhead activates.
         /// </summary>
         public static bool OpenDoors
@@ -135,12 +144,21 @@ namespace Exiled.API.Features
         public static float RealDetonationTimer => Controller.CurScenario.TimeToDetonate;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the warhead can be disabled.
+        /// Gets or sets a value indicating whether the warhead should be disabled.
         /// </summary>
         public static bool IsLocked
         {
             get => Controller.IsLocked;
             set => Controller.IsLocked = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of kills caused by the warhead (shown on the summary screen).
+        /// </summary>
+        public static int Kills
+        {
+            get => Controller.WarheadKills;
+            set => Controller.WarheadKills = value;
         }
 
         /// <summary>

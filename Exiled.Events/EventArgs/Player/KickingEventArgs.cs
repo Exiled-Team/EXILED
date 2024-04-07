@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+    using System.Linq;
     using System.Reflection;
 
     using API.Features;
@@ -14,43 +16,44 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information before kicking a player from the server.
+    /// Contains all information before kicking a player from the server.
     /// </summary>
     public class KickingEventArgs : IPlayerEvent, IDeniableEvent
     {
+        private readonly string startkickmessage;
         private bool isAllowed;
         private Player issuer;
         private Player target;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="KickingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="KickingEventArgs" /> class.
         /// </summary>
         /// <param name="target">
-        ///     <inheritdoc cref="Target" />
+        /// <inheritdoc cref="Target" />
         /// </param>
         /// <param name="issuer">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="reason">
-        ///     <inheritdoc cref="Reason" />
+        /// <inheritdoc cref="Reason" />
         /// </param>
         /// <param name="fullMessage">
-        ///     <inheritdoc cref="FullMessage" />
+        /// <inheritdoc cref="FullMessage" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public KickingEventArgs(Player target, Player issuer, string reason, string fullMessage, bool isAllowed = true)
         {
             Target = target;
             Player = issuer ?? Server.Host;
             Reason = reason;
-            FullMessage = fullMessage;
+            startkickmessage = fullMessage;
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        ///     Gets or sets the ban target.
+        /// Gets or sets the ban target.
         /// </summary>
         public Player Target
         {
@@ -68,17 +71,22 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets the kick reason.
+        /// Gets or sets the kick reason.
         /// </summary>
         public string Reason { get; set; }
 
         /// <summary>
-        ///     Gets or sets the full kick message.
+        /// Gets or sets the full kick message.
         /// </summary>
-        public string FullMessage { get; set; }
+        public string FullMessage
+        {
+            get => startkickmessage + Reason;
+            [Obsolete("this will be remove use Reason instead of FullMessage")]
+            set => Reason = value.StartsWith(startkickmessage) ? value.Remove(0, startkickmessage.Count()) : value;
+        }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not action is taken against the target.
+        /// Gets or sets a value indicating whether or not action is taken against the target.
         /// </summary>
         public bool IsAllowed
         {
@@ -96,7 +104,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets the ban issuer.
+        /// Gets or sets the ban issuer.
         /// </summary>
         public Player Player
         {
@@ -114,7 +122,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Logs the kick, anti-backdoor protection from malicious plugins.
+        /// Logs the kick, anti-backdoor protection from malicious plugins.
         /// </summary>
         /// <param name="assemblyName">The name of the calling assembly.</param>
         /// <param name="message">The message to be logged.</param>

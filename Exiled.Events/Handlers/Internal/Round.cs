@@ -7,22 +7,29 @@
 
 namespace Exiled.Events.Handlers.Internal
 {
+    using System.Linq;
+
+    using CentralAuth;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp049;
     using Exiled.Loader;
     using Exiled.Loader.Features;
-
     using InventorySystem;
-
+    using InventorySystem.Items.Usables;
     using PlayerRoles;
     using PlayerRoles.RoleAssign;
 
     /// <summary>
-    ///     Handles some round clean-up events and some others related to players.
+    /// Handles some round clean-up events and some others related to players.
     /// </summary>
     internal static class Round
     {
+        /// <inheritdoc cref="Handlers.Player.OnUsedItem" />
+        public static void OnServerOnUsingCompleted(ReferenceHub hub, UsableItem usable) => Handlers.Player.OnUsedItem(new(hub, usable));
+
         /// <inheritdoc cref="Handlers.Server.OnWaitingForPlayers" />
         public static void OnWaitingForPlayers()
         {
@@ -64,10 +71,33 @@ namespace Exiled.Events.Handlers.Internal
                 ev.Player.Inventory.ServerDropEverything();
         }
 
+        /// <inheritdoc cref="Scp049.OnActivatingSense(ActivatingSenseEventArgs)" />
+        public static void OnActivatingSense(ActivatingSenseEventArgs ev)
+        {
+            if (ev.Target is null)
+                return;
+            if ((Events.Instance.Config.CanScp049SenseTutorial || ev.Target.Role.Type is not RoleTypeId.Tutorial) && !Scp049Role.TurnedPlayers.Contains(ev.Target))
+                return;
+            ev.Target = ev.Scp049.SenseAbility.CanFindTarget(out ReferenceHub hub) ? Player.Get(hub) : null;
+        }
+
         /// <inheritdoc cref="Handlers.Player.OnVerified(VerifiedEventArgs)" />
         public static void OnVerified(VerifiedEventArgs ev)
         {
             RoleAssigner.CheckLateJoin(ev.Player.ReferenceHub, ClientInstanceMode.ReadyClient);
+
+            foreach (Player player in Player.List)
+            {
+                if (player.Role is FpcRole { FakeAppearance: not null } fpcRole)
+                    player.ChangeAppearance(fpcRole.FakeAppearance.Value, new[] { ev.Player });
+            }
+
+            // TODO: Remove if this has been fixed for https://trello.com/c/CzPD304L/5983-networking-blackout-is-not-synchronized-for-the-new-players
+            foreach (Room room in Room.Get(current => current.AreLightsOff))
+            {
+                ev.Player.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkLightsEnabled), true);
+                ev.Player.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkLightsEnabled), false);
+            }
         }
     }
 }

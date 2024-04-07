@@ -15,13 +15,14 @@
 
   <PropertyGroup>
     <!-- This is the global version and is used for all projects that don't have a version -->
-    <Version Condition="$(Version) == ''">8.2.1</Version>
+    <Version Condition="$(Version) == ''">8.8.1</Version>
     <!-- Enables public beta warning via the PUBLIC_BETA constant -->
     <PublicBeta>false</PublicBeta>
 
     <HarmonyVersion>2.2.2</HarmonyVersion>
     <StyleCopVersion>1.1.118</StyleCopVersion>
     <SemanticVersioningVersion>2.0.2</SemanticVersioningVersion>
+    <YamlDotNetVersion>13.7.1</YamlDotNetVersion>
 
     <Copyright>Copyright © $(Authors) 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
     <RepositoryType>Git</RepositoryType>

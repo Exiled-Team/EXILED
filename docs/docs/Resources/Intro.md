@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 sidebar_position: 1
 ---
@@ -21,7 +34,7 @@ sidebar_position: 1
 - [IntercomStates](#intercomstates)
 - [BroadcastType](#broadcasttype)
 - [Attachment Names](#attachmentnames)
-- [Spawn Reasons](#spawnreasons)
+- [RoleChangeReason](#rolechangereason)
 - [Prefabs](#prefabs)
 
 ### External resources
@@ -34,7 +47,7 @@ sidebar_position: 1
 
 <details><summary> <b>Roles</b></summary>
 
-```md title="Latest Updated: 13.2.0.0"
+```md title="Latest Updated: 13.4.0.2"
 | Id  | RoleTypeId     | Team             | Side             | LeadingTeam     |
 |-----|----------------|------------------|------------------|-----------------|
 | -1  | None           | Dead             | None             | Draw            |
@@ -61,6 +74,7 @@ sidebar_position: 1
 | 20  | ChaosRepressor | ChaosInsurgency  | ChaosInsurgency  | ChaosInsurgency |
 | 21  | Overwatch      | Dead             | None             | Draw            |
 | 22  | Filmmaker      | Dead             | None             | Draw            |
+| 23  | Scp3114        | SCPs             | Scp              | Anomalies       |
 ```
 
 </details>
@@ -69,7 +83,7 @@ sidebar_position: 1
 
 <details><summary> <b>Items</b></summary>
 
-```md  title="Latest Updated: 13.2.0.0"
+```md  title="Latest Updated: 13.4.0.2"
 [-1] None 
 [0] KeycardJanitor 
 [1] KeycardScientist 
@@ -125,6 +139,7 @@ sidebar_position: 1
 [51] AntiSCP207 
 [52] GunFRMG0 
 [53] GunA7 
+[54] Lantern 
 ```
 
 </details>
@@ -134,7 +149,7 @@ sidebar_position: 1
 
 <details><summary> <b>Ammo</b></summary>
 
-```md title="Latest Updated: 8.0.0.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] None 
 [1] Nato556 
 [2] Nato762 
@@ -149,7 +164,7 @@ sidebar_position: 1
 
 <details><summary> <b>Doors</b></summary>
 
-```md title="Latest Updated: 8.0.0.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] UnknownDoor 
 [1] Scp914Door 
 [2] GR18Inner 
@@ -218,62 +233,61 @@ sidebar_position: 1
 
 <details><summary> <b>Rooms</b></summary>
 
-```md title="Latest Updated: 8.0.0.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] Unknown 
 [1] LczArmory 
 [2] LczCurve 
 [3] LczStraight 
-[4] Lcz012 
-[5] Lcz914 
-[6] LczCrossing 
-[7] LczTCross 
-[8] LczCafe 
-[9] LczPlants 
-[10] LczToilets 
-[11] LczAirlock 
-[12] Lcz173 
-[13] LczClassDSpawn 
-[14] LczCheckpointB 
-[15] LczGlassBox 
-[16] LczCheckpointA 
-[17] Hcz079 
-[18] HczEzCheckpointA 
-[19] HczEzCheckpointB 
-[20] HczArmory 
-[21] Hcz939 
-[22] HczHid 
-[23] Hcz049 
-[24] HczCrossing 
-[25] Hcz106 
-[26] HczNuke 
-[27] HczTesla 
-[28] HczServers 
-[29] HczTCross 
-[30] HczCurve 
-[31] Hcz096 
-[32] EzVent 
-[33] EzIntercom 
-[34] EzGateA 
-[35] EzDownstairsPcs 
-[36] EzCurve 
-[37] EzPcs 
-[38] EzCrossing 
-[39] EzCollapsedTunnel 
-[40] EzConference 
-[41] EzStraight 
-[42] EzCafeteria 
-[43] EzUpstairsPcs 
-[44] EzGateB 
-[45] EzShelter 
-[46] Pocket 
-[47] Surface 
-[48] HczStraight 
-[49] EzTCross 
-[50] Lcz330 
-[51] EzCheckpointHallway 
-[52] HczTestRoom 
-[53] HczElevatorA 
-[54] HczElevatorB 
+[4] Lcz914 
+[5] LczCrossing 
+[6] LczTCross 
+[7] LczCafe 
+[8] LczPlants 
+[9] LczToilets 
+[10] LczAirlock 
+[11] Lcz173 
+[12] LczClassDSpawn 
+[13] LczCheckpointB 
+[14] LczGlassBox 
+[15] LczCheckpointA 
+[16] Hcz079 
+[17] HczEzCheckpointA 
+[18] HczEzCheckpointB 
+[19] HczArmory 
+[20] Hcz939 
+[21] HczHid 
+[22] Hcz049 
+[23] HczCrossing 
+[24] Hcz106 
+[25] HczNuke 
+[26] HczTesla 
+[27] HczServers 
+[28] HczTCross 
+[29] HczCurve 
+[30] Hcz096 
+[31] EzVent 
+[32] EzIntercom 
+[33] EzGateA 
+[34] EzDownstairsPcs 
+[35] EzCurve 
+[36] EzPcs 
+[37] EzCrossing 
+[38] EzCollapsedTunnel 
+[39] EzConference 
+[40] EzStraight 
+[41] EzCafeteria 
+[42] EzUpstairsPcs 
+[43] EzGateB 
+[44] EzShelter 
+[45] Pocket 
+[46] Surface 
+[47] HczStraight 
+[48] EzTCross 
+[49] Lcz330 
+[50] EzCheckpointHallway 
+[51] HczTestRoom 
+[52] HczElevatorA 
+[53] HczElevatorB 
 ```
 
 </details>
@@ -282,7 +296,7 @@ sidebar_position: 1
 
 <details><summary> <b>Elevators</b></summary>
 
-```md title="Latest Updated: 8.0.0.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] Unknown 
 [1] GateA 
 [2] GateB 
@@ -298,7 +312,7 @@ sidebar_position: 1
 
 <details><summary> <b>DamageType</b></summary>
 
-```md title="Latest Updated: 8.0.0.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] Unknown 
 [1] Falldown 
 [2] Warhead 
@@ -340,6 +354,11 @@ sidebar_position: 1
 [38] CardiacArrest 
 [39] Com45 
 [40] Jailbird 
+[41] Frmg0 
+[42] A7 
+[43] Scp3114 
+[44] Strangled 
+[45] Marshmallow 
 ```
 
 </details>
@@ -375,44 +394,49 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Effects</b></summary>
 
-```md title="Latest Updated: 8.0.0.0"
-[0] AmnesiaItems 
-[1] AmnesiaVision 
-[2] Asphyxiated 
-[3] Bleeding 
-[4] Blinded 
-[5] Burned 
-[6] Concussed 
-[7] Corroding 
-[8] Deafened 
-[9] Decontaminating 
-[10] Disabled 
-[11] Ensnared 
-[12] Exhausted 
-[13] Flashed 
-[14] Hemorrhage 
-[15] Invigorated 
-[16] BodyshotReduction 
-[17] Poisoned 
-[18] Scp207 
-[19] Invisible 
-[20] SinkHole 
-[21] DamageReduction 
-[22] MovementBoost 
-[23] RainbowTaste 
-[24] SeveredHands 
-[25] Stained 
-[26] Vitality 
-[27] Hypothermia 
-[28] Scp1853 
-[29] CardiacArrest 
-[30] InsufficientLighting 
-[31] SoundtrackMute 
-[32] SpawnProtected 
-[33] Traumatized 
-[34] AntiScp207 
-[35] Scanned 
-[36] PocketCorroding 
+```md title="Latest Updated: 8.8.0.0"
+[0] None 
+[1] AmnesiaItems 
+[2] AmnesiaVision 
+[3] Asphyxiated 
+[4] Bleeding 
+[5] Blinded 
+[6] Burned 
+[7] Concussed 
+[8] Corroding 
+[9] Deafened 
+[10] Decontaminating 
+[11] Disabled 
+[12] Ensnared 
+[13] Exhausted 
+[14] Flashed 
+[15] Hemorrhage 
+[16] Invigorated 
+[17] BodyshotReduction 
+[18] Poisoned 
+[19] Scp207 
+[20] Invisible 
+[21] SinkHole 
+[22] DamageReduction 
+[23] MovementBoost 
+[24] RainbowTaste 
+[25] SeveredHands 
+[26] Stained 
+[27] Vitality 
+[28] Hypothermia 
+[29] Scp1853 
+[30] CardiacArrest 
+[31] InsufficientLighting 
+[32] SoundtrackMute 
+[33] SpawnProtected 
+[34] Traumatized 
+[35] AntiScp207 
+[36] Scanned 
+[37] PocketCorroding 
+[38] SilentWalk 
+[39] Marshmallow 
+[40] Strangled 
+[41] Ghostly 
 ```
 
 </details>
@@ -421,7 +445,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Keycard Perms</b></summary>
 
-```md title="Latest Updated: 8.0.0.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] None 
 [1] Checkpoints 
 [2] ExitGates 
@@ -442,7 +466,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Lock Type</b></summary>
 
-```md title="Latest Updated: 8.0.0.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] None 
 [1] Regular079 
 [2] Lockdown079 
@@ -462,7 +486,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Structures</b></summary>
 
-```md title="Latest Updated: 13.2.0.0"
+```md title="Latest Updated: 13.4.0.2"
 [0] StandardLocker 
 [1] LargeGunLocker 
 [2] ScpPedestal 
@@ -477,7 +501,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Blood</b></summary>
 
-```md title="Latest Updated: 8.0.0.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] Default 
 [1] Scp106 
 [2] Spreaded 
@@ -490,7 +514,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>GeneratorState</b></summary>
 
-```md title="Latest Updated: 8.0.0.0"
+```md title="Latest Updated: 8.8.0.0"
 [1] None 
 [2] Unlocked 
 [4] Open 
@@ -504,7 +528,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Intercom States</b></summary>
 
-```md title="Latest Updated: 13.2.0.0"
+```md title="Latest Updated: 13.4.0.2"
 [0] Ready 
 [1] Starting 
 [2] InUse 
@@ -518,7 +542,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>BroadcastFlags</b></summary>
 
-```md title="Latest Updated: 13.2.0.0"
+```md title="Latest Updated: 13.4.0.2"
 [0] Normal 
 [1] Truncated 
 [2] AdminChat 
@@ -532,7 +556,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Attachment Names</b></summary>
 
-```md title="Latest Updated: 8.0.0.0"
+```md title="Latest Updated: 8.8.0.0"
 [0] None 
 [1] IronSights 
 [2] DotSight 
@@ -583,11 +607,11 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 </details>
 
-### SpawnReasons
+### RoleChangeReason
 
-<details><summary> <b>Spawn Reasons</b></summary>
+<details><summary> <b>RoleChangeReason</b></summary>
 
-```md title="Latest Updated: 8.0.0.0"
+```md title="Latest Updated: 13.4.0.2"
 [0] None 
 [1] RoundStart 
 [2] LateJoin 
@@ -595,7 +619,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 [4] Died 
 [5] Escaped 
 [6] Revived 
-[7] ForceClass 
+[7] RemoteAdmin 
 [8] Destroyed 
 ```
 

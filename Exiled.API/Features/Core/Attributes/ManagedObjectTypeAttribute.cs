@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Core.Attributes
     using System;
 
     /// <summary>
-    /// An attribute to easily manage CustomAbility initialization.
+    /// An attribute to mark an <see cref="EObject"/> type as a managed object type.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class ManagedObjectTypeAttribute : Attribute

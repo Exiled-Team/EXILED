@@ -38,7 +38,7 @@ namespace Exiled.API.Features
         public static Dictionary<Assembly, IPlugin<IConfig>> PluginAssemblies { get; } = new();
 
         /// <summary>
-        /// Gets the player's host of the server.
+        /// Gets the Player of the server.
         /// Might be <see langword="null"/> when called when the server isn't loaded.
         /// </summary>
         public static Player Host { get; internal set; }
@@ -244,11 +244,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Runs a server command.
+        /// Executes a server command.
         /// </summary>
         /// <param name="command">The command to be run.</param>
         /// <param name="sender">The <see cref="CommandSender"/> running the command.</param>
-        public static void RunCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender);
+        /// <returns>Command response, if there is one; otherwise, <see langword="null"/>.</returns>
+        public static string ExecuteCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender);
 
         /// <summary>
         /// Safely gets an <see cref="object"/> from <see cref="SessionVariables"/>, then casts it to <typeparamref name="T"/>.

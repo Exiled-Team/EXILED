@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
     using Exiled.Events.Attributes;
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patch the <see cref="PlayerInteract.UserCode_CmdSwitchAWButton" />.
-    ///     Adds the <see cref="Handlers.Player.ActivatingWarheadPanel" /> event.
+    /// Patch the <see cref="PlayerInteract.UserCode_CmdSwitchAWButton" />.
+    /// Adds the <see cref="Handlers.Player.ActivatingWarheadPanel" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ActivatingWarheadPanel))]
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdSwitchAWButton))]

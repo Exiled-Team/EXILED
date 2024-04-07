@@ -12,9 +12,9 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
-
+    using CentralAuth;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -22,29 +22,26 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="ServerRoles.UserCode_CmdServerSignatureComplete__String__String__String__Boolean" />.
-    ///     Adds the <see cref="Handlers.Player.Verified" /> event.
+    /// Patches <see cref="PlayerAuthenticationManager.FinalizeAuthentication" />.
+    /// Adds the <see cref="Handlers.Player.Verified" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdServerSignatureComplete__String__String__String__Boolean))]
+    [HarmonyPatch(typeof(PlayerAuthenticationManager), nameof(PlayerAuthenticationManager.FinalizeAuthentication))]
     internal static class Verified
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            Label callJoined = generator.DefineLabel();
-
-            LocalBuilder player = generator.DeclareLocal(typeof(Player));
-
-            const int offset = -2;
+            const int offset = -4;
             int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions)))) + offset;
 
             newInstructions.InsertRange(
                 index,
-                new[]
+                new CodeInstruction[]
                 {
+                    // Helper(authenticationManager);
                     new(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Call, Method(typeof(Verified), nameof(Verified.HandleCmdServerSignature))),
+                    new(OpCodes.Call, Method(typeof(Verified), nameof(Helper))),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -53,12 +50,12 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
-        private static void HandleCmdServerSignature(ServerRoles instance)
+        private static void Helper(PlayerAuthenticationManager auth)
         {
-            if (!Player.UnverifiedPlayers.TryGetValue(instance._hub.gameObject, out Player player))
-                Joined.CallEvent(instance._hub, out player);
+            if (!Player.UnverifiedPlayers.TryGetValue(auth._hub.gameObject, out Player player))
+                Joined.CallEvent(auth._hub, out player);
 
-            Player.Dictionary.Add(instance._hub.gameObject, player);
+            Player.Dictionary.Add(auth._hub.gameObject, player);
 
             player.IsVerified = true;
             player.RawUserId = player.UserId.GetRawUserId();

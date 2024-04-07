@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Warhead;
 
@@ -20,8 +20,8 @@ namespace Exiled.Events.Patches.Events.Warhead
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patch the <see cref="AlphaWarheadController.StartDetonation" />.
-    ///     Adds the <see cref="Handlers.Warhead.Starting" /> event.
+    /// Patch the <see cref="AlphaWarheadController.StartDetonation" />.
+    /// Adds the <see cref="Handlers.Warhead.Starting" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.StartDetonation))]

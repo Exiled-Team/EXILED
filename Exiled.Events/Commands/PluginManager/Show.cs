@@ -12,7 +12,7 @@ namespace Exiled.Events.Commands.PluginManager
     using System.Linq;
     using System.Text;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using API.Interfaces;
 
     using CommandSystem;
@@ -45,7 +45,7 @@ namespace Exiled.Events.Commands.PluginManager
         {
             const string perm = "pm.showplugins";
 
-            if (!sender.CheckPermission(perm) && sender is PlayerCommandSender playerSender && !playerSender.ServerRoles.RaEverywhere)
+            if (!sender.CheckPermission(perm) && sender is PlayerCommandSender playerSender && !playerSender.FullPermissions)
             {
                 response = $"You can't get a list of all plugins, you don't have \"{perm}\" permissions.";
                 return false;

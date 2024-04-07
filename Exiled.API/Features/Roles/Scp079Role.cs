@@ -16,11 +16,12 @@ namespace Exiled.API.Features.Roles
     using MapGeneration;
     using Mirror;
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
     using PlayerRoles.PlayableScps.Scp079.Pinging;
     using PlayerRoles.PlayableScps.Scp079.Rewards;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
     using RelativePositioning;
     using Utils.NonAllocLINQ;
 
@@ -31,7 +32,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-079.
     /// </summary>
-    public class Scp079Role : Role, ISubroutinedScpRole
+    public class Scp079Role : Role, ISubroutinedScpRole, ISpawnableScp
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp079Role"/> class.
@@ -47,6 +48,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp079SpeakerAbility subroutine not found in Scp079Role::ctor");
 
             SpeakerAbility = scp079SpeakerAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079ElevatorStateChanger scp079ElevatorStateChanger))
+                Log.Error("Scp079ElevatorStateChanger subroutine not found in Scp079Role::ctor");
+
+            ElevatorStateChanger = scp079ElevatorStateChanger;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079DoorStateChanger scp079DoorAbility))
                 Log.Error("Scp079DoorStateChanger subroutine not found in Scp079Role::ctor");
@@ -111,6 +117,7 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp079ScannerTracker subroutine not found in Scp079Role::ctor");
 
             ScannerTracker = scp079ScannerTracker;
+            ScannerSequence = scp079ScannerTracker._sequence;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079ScannerZoneSelector scp079ScannerZoneSelector))
                 Log.Error("Scp079ScannerZoneSelector subroutine not found in Scp079Role::ctor");
@@ -133,6 +140,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-079's <see cref="Scp079SpeakerAbility"/>.
         /// </summary>
         public Scp079SpeakerAbility SpeakerAbility { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079ElevatorStateChanger"/>.
+        /// </summary>
+        public Scp079ElevatorStateChanger ElevatorStateChanger { get; }
 
         /// <summary>
         /// Gets SCP-079's <see cref="Scp079DoorAbility"/>.
@@ -200,6 +212,11 @@ namespace Exiled.API.Features.Roles
         public Scp079ScannerTracker ScannerTracker { get; }
 
         /// <summary>
+        /// Gets SCP-079's <see cref="Scp079ScannerSequence"/>.
+        /// </summary>
+        public Scp079ScannerSequence ScannerSequence { get; }
+
+        /// <summary>
         /// Gets SCP-079's <see cref="Scp079ScannerZoneSelector"/>.
         /// </summary>
         public Scp079ScannerZoneSelector ScannerZoneSelector { get; }
@@ -212,6 +229,70 @@ namespace Exiled.API.Features.Roles
         {
             get => Camera.Get(Base.CurrentCamera) ?? Camera.Get(CameraType.Hcz079ContChamber);
             set => Base._curCamSync.CurrentCamera = value.Base;
+        }
+
+        /// <summary>
+        /// Gets or sets 079s cooldown duration for Tesla.
+        /// </summary>
+        public float TeslaCooldown
+        {
+            get => TeslaAbility._cooldown;
+            set => TeslaAbility._cooldown = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of aux power to be taken when Tesla is powered by 079.
+        /// Note: Will not apply change on client.
+        /// </summary>
+        public int TeslaUseCost
+        {
+            get => TeslaAbility._cost;
+            set => TeslaAbility._cost = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the multiplier of aux power to regen while speaking.
+        /// </summary>
+        public float SpeakingRegenMultiplier
+        {
+            get => SpeakerAbility._regenMultiplier;
+            set => SpeakerAbility._regenMultiplier = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the cost for blackout ability.
+        /// </summary>
+        public int BlackoutCost
+        {
+            get => BlackoutZoneAbility._cost;
+            set => BlackoutZoneAbility._cost = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the duration for blackout ability.
+        /// </summary>
+        public float BlackoutDuration
+        {
+            get => BlackoutZoneAbility._duration;
+            set => BlackoutZoneAbility._duration = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the cooldown for blackout ability.
+        /// </summary>
+        public float BlackoutCooldown
+        {
+            get => BlackoutZoneAbility._cooldown;
+            set => BlackoutZoneAbility._cooldown = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the cost for changing elevator state.
+        /// </summary>
+        public int ElevatorCost
+        {
+            get => ElevatorStateChanger._cost;
+            set => ElevatorStateChanger._cost = value;
         }
 
         /// <summary>
@@ -281,9 +362,19 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets SCP-079's next level threshold.
+        /// Gets or sets SCP-079's next level threshold.
         /// </summary>
-        public int NextLevelThreshold => TierManager.NextLevelThreshold;
+        public int NextLevelThreshold
+        {
+            get => TierManager.NextLevelThreshold;
+            set
+            {
+                if (TierManager.AccessTierIndex >= TierManager._thresholdsCount)
+                    return;
+
+                TierManager._levelupThresholds[TierManager.AccessTierIndex] = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets SCP-079's energy.
@@ -364,9 +455,13 @@ namespace Exiled.API.Features.Roles
         public bool IsLost => LostSignalHandler.Lost;
 
         /// <summary>
-        /// Gets a value indicating how much more time SCP-079 will be lost.
+        /// Gets or sets a value indicating how much more time SCP-079 will be lost.
         /// </summary>
-        public float LostTime => LostSignalHandler.RemainingTime;
+        public float LostTime
+        {
+            get => LostSignalHandler.RemainingTime;
+            set => LoseSignal(value);
+        }
 
         /// <summary>
         /// Gets SCP-079's energy regeneration speed.
@@ -394,32 +489,35 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="amount">The amount to grant.</param>
         /// <param name="reason">The reason to grant experience.</param>
-        public void AddExperience(int amount, Scp079HudTranslation reason = Scp079HudTranslation.ExpGainAdminCommand) => TierManager.ServerGrantExperience(amount, reason);
-
-        /// <summary>
-        /// Grants SCP-079 experience.
-        /// </summary>
-        /// <param name="amount">The amount to grant.</param>
-        /// <param name="reason">The reason to grant experience.</param>
         /// <param name="subject">The RoleType of the player that's causing it to happen.</param>
-        public void AddExperience(int amount, Scp079HudTranslation reason, RoleTypeId subject) => TierManager.ServerGrantExperience(amount, reason, subject);
+        public void AddExperience(int amount, Scp079HudTranslation reason = Scp079HudTranslation.ExpGainAdminCommand, RoleTypeId subject = RoleTypeId.None) => TierManager.ServerGrantExperience(amount, reason, subject);
 
         /// <summary>
         /// Locks the provided <paramref name="door"/>.
         /// </summary>
         /// <param name="door">The door to lock.</param>
         /// <returns><see langword="true"/> if the door has been lock; otherwise, <see langword="false"/>.</returns>
-        public bool LockDoor(Door door)
+        /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
+        public bool LockDoor(Door door, bool consumeEnergy = true)
         {
             if (door is not null)
             {
                 DoorLockChanger.LockedDoor = door.Base;
-                door.Lock((float)DoorLockChanger._lockTime, DoorLockType.Regular079);
+                DoorLockChanger._lockTime = NetworkTime.time;
+                DoorLockChanger.LockedDoor.ServerChangeLock(DoorLockReason.Regular079, true);
+                MarkRoom(door.Room);
+                if (consumeEnergy)
+                    AuxManager.CurrentAux -= GetCost(door, DoorAction.Locked);
                 return true;
             }
 
             return false;
         }
+
+        /// <summary>
+        /// Unlocks the <see cref="LockedDoor"/>.
+        /// </summary>
+        public void UnlockDoor() => LockedDoor?.Unlock();
 
         /// <summary>
         /// Unlocks the provided <paramref name="door"/>.
@@ -469,7 +567,7 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="camera">The camera to get the cost to switch to.</param>
         /// <returns>The cost to switch from the current camera to the new camera.</returns>
-        public int GetSwitchCost(Camera camera) => camera is null ? CurrentCameraSync.GetSwitchCost(camera.Base) : 0;
+        public int GetSwitchCost(Camera camera) => camera is null ? 0 : CurrentCameraSync.GetSwitchCost(camera.Base);
 
         /// <summary>
         /// Gets the cost to modify a door.
@@ -526,10 +624,9 @@ namespace Exiled.API.Features.Roles
         /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
         public void Ping(Vector3 position, PingType pingType = PingType.Default, bool consumeEnergy = true)
         {
-            var relativePosition = new RelativePosition(position);
-            PingAbility._syncPos = relativePosition;
+            PingAbility._syncPos = new(position);
             PingAbility._syncNormal = position;
-            pingType = (PingType)PingAbility._syncProcessorIndex;
+            PingAbility._syncProcessorIndex = (byte)pingType;
 
             PingAbility.ServerSendRpc(x => PingAbility.ServerCheckReceiver(x, PingAbility._syncPos.Position, (int)pingType));
 
@@ -558,7 +655,7 @@ namespace Exiled.API.Features.Roles
             Scp079Camera cam = CurrentCameraSync.CurrentCamera;
             RewardManager.MarkRoom(cam.Room);
 
-            if (!TeslaGateController.Singleton.TeslaGates.TryGetFirst(x => RoomIdUtils.IsTheSameRoom(cam.Position, x.transform.position), out var teslaGate))
+            if (!TeslaGateController.Singleton.TeslaGates.TryGetFirst(x => RoomIdUtils.IsTheSameRoom(cam.Position, x.transform.position), out global::TeslaGate teslaGate))
                 return;
 
             if (consumeEnergy)

@@ -14,41 +14,41 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
 
+    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms.Ammo;
-    using InventorySystem.Items.Flashlight;
     using InventorySystem.Items.Jailbird;
     using InventorySystem.Items.Keycards;
     using InventorySystem.Items.MicroHID;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
+    using InventorySystem.Items.ToggleableLights;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp1576;
     using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Items.Usables.Scp330;
-
     using UnityEngine;
 
     using BaseConsumable = InventorySystem.Items.Usables.Consumable;
-    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="ItemBase"/>.
     /// </summary>
-    public class Item : TypeCastObject<Item>, IWrapper<ItemBase>
+    public class Item : GameEntity, IWrapper<ItemBase>
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
         /// </summary>
-        internal static readonly Dictionary<ItemBase, Item> BaseToItem = new();
+        internal static readonly Dictionary<ItemBase, Item> BaseToItem = new(new ComponentsEqualityComparer());
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
         /// <param name="itemBase">The <see cref="ItemBase"/> to encapsulate.</param>
         public Item(ItemBase itemBase)
+            : base()
         {
             Base = itemBase;
             BaseToItem.Add(itemBase, this);
@@ -79,7 +79,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a list of all <see cref="Item"/>'s on the server.
         /// </summary>
-        public static IEnumerable<Item> List => BaseToItem.Values;
+        public static new IEnumerable<Item> List => BaseToItem.Values;
 
         /// <summary>
         /// Gets or sets the unique serial number for the item.
@@ -104,6 +104,11 @@ namespace Exiled.API.Features.Items
         /// Gets the <see cref="ItemBase"/> of the item.
         /// </summary>
         public ItemBase Base { get; }
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the item.
+        /// </summary>
+        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.
@@ -151,7 +156,7 @@ namespace Exiled.API.Features.Items
         public bool IsThrowable => this is Throwable;
 
         /// <summary>
-        /// Gets a value indicating whether or not this item can be used by player.
+        /// Gets a value indicating whether or not this item can be used by a player.
         /// </summary>
         public bool IsUsable => this is Usable;
 
@@ -159,6 +164,16 @@ namespace Exiled.API.Features.Items
         /// Gets a value indicating whether or not this item is a weapon.
         /// </summary>
         public bool IsWeapon => this is Firearm;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this item emits light.
+        /// </summary>
+        public bool IsLightEmitter => Base is ILightEmittingItem;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this item can be used to disarm players.
+        /// </summary>
+        public bool IsDisarmer => Base is IDisarmingItem;
 
         /// <summary>
         /// Gets the <see cref="Player"/> who owns the item.
@@ -194,7 +209,7 @@ namespace Exiled.API.Features.Items
                 MicroHIDItem micro => new MicroHid(micro),
                 BodyArmor armor => new Armor(armor),
                 AmmoItem ammo => new Ammo(ammo),
-                FlashlightItem flashlight => new Flashlight(flashlight),
+                ToggleableLightItemBase flashlight => new Flashlight(flashlight),
                 JailbirdItem jailbird => new Jailbird(jailbird),
                 ThrowableItem throwable => throwable.Projectile switch
                 {
@@ -207,6 +222,13 @@ namespace Exiled.API.Features.Items
                 _ => new Item(itemBase),
             };
         }
+
+        /// <summary>
+        /// Gets the <see cref="Item"/> given a <see cref="GameObject"/>.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/> to check.</param>
+        /// <returns>The <see cref="Item"/> given the specified <see cref="GameObject"/>.</returns>
+        public static Item Get(GameObject gameObject) => !gameObject || !gameObject.TryGetComponent(out ItemBase ib) ? null : Get(ib);
 
         /// <summary>
         /// Gets the Item belonging to the specified serial.
@@ -251,7 +273,7 @@ namespace Exiled.API.Features.Items
             ItemType.Adrenaline or ItemType.Medkit or ItemType.Painkillers or ItemType.SCP500 or ItemType.SCP207 or ItemType.SCP1853 => new Consumable(type),
             ItemType.SCP244a or ItemType.SCP244b => new Scp244(type),
             ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39 => new Ammo(type),
-            ItemType.Flashlight => new Flashlight(),
+            ItemType.Flashlight or ItemType.Lantern => new Flashlight(type),
             ItemType.Radio => new Radio(),
             ItemType.MicroHID => new MicroHid(),
             ItemType.GrenadeFlash => new FlashGrenade(owner),
@@ -288,10 +310,11 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public virtual Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
+            PickupSyncInfo info = new(Type, Weight, Serial);
 
-            ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-            ipb.gameObject.transform.localScale = Scale;
+            ItemPickupBase ipb = InventoryExtensions.ServerCreatePickup(Base, info, position, rotation);
+
+            Base.OnRemoved(ipb);
 
             Pickup pickup = Pickup.Get(ipb);
 
@@ -314,6 +337,19 @@ namespace Exiled.API.Features.Items
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* ={Owner}=";
 
         /// <summary>
+        /// Changes the owner of the <see cref="Item"/>.
+        /// </summary>
+        /// <param name="oldOwner">Old <see cref="Item"/> owner.</param>
+        /// <param name="newOwner">New <see cref="Item"/> owner.</param>
+        public void ChangeItemOwner(Player oldOwner, Player newOwner)
+        {
+            if (oldOwner != null && newOwner != null)
+            {
+                ChangeOwner(oldOwner, newOwner);
+            }
+        }
+
+        /// <summary>
         /// Change the owner of the <see cref="Item"/>.
         /// </summary>
         /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
@@ -325,6 +361,18 @@ namespace Exiled.API.Features.Items
             Base.Owner = newOwner.ReferenceHub;
 
             Base.OnAdded(null);
+        }
+
+        /// <summary>
+        /// Helper method for saving data between items and pickups.
+        /// </summary>
+        /// <param name="pickup"><see cref="Pickup"/>-related data to give to the <see cref="Item"/>.</param>
+        internal virtual void ReadPickupInfo(Pickup pickup)
+        {
+            if (pickup is not null)
+            {
+                Scale = pickup.Scale;
+            }
         }
     }
 }

@@ -7,11 +7,11 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
-    using Exiled.API.Features;
+    using System;
+
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.Events.EventArgs.Interfaces;
-
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -26,16 +26,12 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="projectile">The <see cref="TimeGrenadeProjectile"/>.</param>
         public ChangedIntoGrenadeEventArgs(TimedGrenadePickup pickup, ThrownProjectile projectile)
         {
-            if (pickup is not TimedGrenadePickup)
-                Log.Error($"{nameof(ChangedIntoGrenadeEventArgs)}: Pickup is not TimedGrenadePickup!");
-
             Pickup = (GrenadePickup)API.Features.Pickups.Pickup.Get(pickup);
             Projectile = (Projectile)API.Features.Pickups.Pickup.Get(projectile);
-            FuseTime = (Projectile as TimeGrenadeProjectile)?.FuseTime ?? float.NaN;
         }
 
         /// <summary>
-        /// Gets a value indicating the pickup that changed.
+        /// Gets a value indicating the pickup that changed into a grenade.
         /// </summary>
         public GrenadePickup Pickup { get; }
 
@@ -47,7 +43,7 @@ namespace Exiled.Events.EventArgs.Map
         /// <summary>
         /// Gets or sets a value indicating how long the fuse of the changed grenade will be.
         /// </summary>
-        // TODO: float
+        [Obsolete("Use Projectile.Is(Projectile, out TimeGrenadeProjectile timeGrenadeProjectile) ? timeGrenadeProjectile.FuseTime : 0 instead of this", true)]
         public double FuseTime { get; set; }
     }
 }

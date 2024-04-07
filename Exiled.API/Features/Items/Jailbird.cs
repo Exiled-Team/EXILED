@@ -7,10 +7,16 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
+
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
     using InventorySystem.Items.Autosync;
     using InventorySystem.Items.Jailbird;
     using Mirror;
+    using UnityEngine;
+
+    using JailbirdPickup = Pickups.JailbirdPickup;
 
     /// <summary>
     /// A wrapped class for <see cref="JailbirdItem"/>.
@@ -102,10 +108,42 @@ namespace Exiled.API.Features.Items
             get => Base._deterioration.WearState;
             set
             {
-                if (JailbirdDeteriorationTracker.ReceivedStates.ContainsKey(Serial))
-                    JailbirdDeteriorationTracker.ReceivedStates[Serial] = value;
+                TotalDamageDealt = GetDamage(value);
+                TotalCharges = GetCharge(value);
                 Base._deterioration.RecheckUsage();
             }
+        }
+
+        /// <summary>
+        /// Calculates the damage corresponding to a given <see cref="JailbirdWearState"/>.
+        /// </summary>
+        /// <param name="wearState">The wear state to calculate damage for.</param>
+        /// <returns>The amount of damage associated with the specified wear state.</returns>
+        public float GetDamage(JailbirdWearState wearState)
+        {
+            foreach (Keyframe keyframe in Base._deterioration._chargesToWearState.keys)
+            {
+                if (Base._deterioration.FloatToState(keyframe.value) == wearState)
+                    return keyframe.time;
+            }
+
+            throw new Exception("Wear state not found in charges to wear state mapping.");
+        }
+
+        /// <summary>
+        /// Gets the charge needed to reach a specific <see cref="JailbirdWearState"/>.
+        /// </summary>
+        /// <param name="wearState">The desired wear state to calculate the charge for.</param>
+        /// <returns>The charge value required to achieve the specified wear state.</returns>
+        public int GetCharge(JailbirdWearState wearState)
+        {
+            foreach (Keyframe keyframe in Base._deterioration._chargesToWearState.keys)
+            {
+                if (Base._deterioration.FloatToState(keyframe.value) == wearState)
+                    return Mathf.RoundToInt(keyframe.time);
+            }
+
+            throw new Exception("Wear state not found in charges to wear state mapping.");
         }
 
         /// <summary>
@@ -143,5 +181,18 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing JailBird-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
+
+        /// <inheritdoc/>
+        internal override void ReadPickupInfo(Pickup pickup)
+        {
+            base.ReadPickupInfo(pickup);
+            if (pickup is JailbirdPickup jailbirdPickup)
+            {
+                MeleeDamage = jailbirdPickup.MeleeDamage;
+                ChargeDamage = jailbirdPickup.ChargeDamage;
+                FlashDuration = jailbirdPickup.FlashDuration;
+                Radius = jailbirdPickup.Radius;
+            }
+        }
     }
 }

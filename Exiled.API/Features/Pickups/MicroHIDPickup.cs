@@ -41,7 +41,7 @@ namespace Exiled.API.Features.Pickups
         public new BaseMicroHID Base { get; }
 
         /// <summary>
-        /// Gets or sets the MicroHID Energy.
+        /// Gets or sets the MicroHID Energy Level.
         /// </summary>
         public float Energy
         {

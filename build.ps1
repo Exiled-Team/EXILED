@@ -9,11 +9,9 @@ $Projects = @(
     'Exiled.API',
     'Exiled.Permissions',
     'Exiled.Events',
-    'Exiled.Updater',
     'Exiled.CreditTags',
     'Exiled.Example',
-    'Exiled.CustomItems',
-    'Exiled.CustomRoles'
+    'Exiled.CustomModules'
 )
 
 function Execute {

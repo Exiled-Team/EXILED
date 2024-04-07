@@ -21,22 +21,22 @@ namespace Exiled.Events.EventArgs.Item
     using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
-    ///     Contains all information before changing item attachments.
+    /// Contains all information before changing item attachments.
     /// </summary>
     public class ChangingAttachmentsEventArgs : IPlayerEvent, IDeniableEvent, IFirearmEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ChangingAttachmentsEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ChangingAttachmentsEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="firearm">
-        ///     <inheritdoc cref="Firearm" />
+        /// <inheritdoc cref="Firearm" />
         /// </param>
         /// <param name="code">The attachments code.</param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public ChangingAttachmentsEventArgs(
             Player player,
@@ -54,32 +54,32 @@ namespace Exiled.Events.EventArgs.Item
         }
 
         /// <summary>
-        ///     Gets the old <see cref="AttachmentIdentifier" />.
+        /// Gets the old <see cref="AttachmentIdentifier" />.
         /// </summary>
         public IEnumerable<AttachmentIdentifier> CurrentAttachmentIdentifiers { get; }
 
         /// <summary>
-        ///     Gets or sets the new <see cref="AttachmentIdentifier" />.
+        /// Gets or sets the new <see cref="AttachmentIdentifier" />.
         /// </summary>
         public List<AttachmentIdentifier> NewAttachmentIdentifiers { get; set; }
 
         /// <summary>
-        ///     Gets the <see cref="CurrentAttachmentIdentifiers" /> code.
+        /// Gets the <see cref="CurrentAttachmentIdentifiers" /> code.
         /// </summary>
         public uint CurrentCode { get; }
 
         /// <summary>
-        ///     Gets the <see cref="NewAttachmentIdentifiers" /> code.
+        /// Gets the <see cref="NewAttachmentIdentifiers" /> code.
         /// </summary>
         public uint NewCode { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the attachments can be changed.
+        /// Gets or sets a value indicating whether or not the attachments can be changed.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the <see cref="API.Features.Items.Firearm" /> which is being modified.
+        /// Gets the <see cref="API.Features.Items.Firearm" /> which is being modified.
         /// </summary>
         public Firearm Firearm { get; }
 
@@ -87,7 +87,7 @@ namespace Exiled.Events.EventArgs.Item
         public Item Item => Firearm;
 
         /// <summary>
-        ///     Gets the <see cref="API.Features.Player" /> who's changing attachments.
+        /// Gets the <see cref="API.Features.Player" /> who's changing attachments.
         /// </summary>
         public Player Player { get; }
     }

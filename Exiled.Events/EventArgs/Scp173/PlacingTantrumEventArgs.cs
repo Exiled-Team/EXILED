@@ -11,29 +11,29 @@ namespace Exiled.Events.EventArgs.Scp173
     using Exiled.Events.EventArgs.Interfaces;
 
     using Hazards;
-    using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerRoles.Subroutines;
 
     using Scp173Role = API.Features.Roles.Scp173Role;
 
     /// <summary>
-    ///     Contains all information before the tantrum is placed.
+    /// Contains all information before the tantrum is placed.
     /// </summary>
     public class PlacingTantrumEventArgs : IScp173Event, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PlacingTantrumEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="PlacingTantrumEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///     <inheritdoc cref="Player" />
+        /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="tantrumHazard">
-        ///     <inheritdoc cref="TantrumHazard" />
+        /// <inheritdoc cref="TantrumHazard" />
         /// </param>
         /// <param name="cooldown">
-        ///     <inheritdoc cref="Cooldown" />
+        /// <inheritdoc cref="Cooldown" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <inheritdoc cref="IsAllowed" />
         /// </param>
         public PlacingTantrumEventArgs(Player player, TantrumEnvironmentalHazard tantrumHazard, AbilityCooldown cooldown, bool isAllowed = true)
         {
@@ -45,27 +45,27 @@ namespace Exiled.Events.EventArgs.Scp173
         }
 
         /// <summary>
-        ///     Gets the player's <see cref="Scp173Role" /> instance.
+        /// Gets the player's <see cref="Scp173Role" /> instance.
         /// </summary>
         public Scp173Role Scp173 { get; }
 
         /// <summary>
-        ///     Gets the <see cref="TantrumEnvironmentalHazard" />.
+        /// Gets the <see cref="TantrumEnvironmentalHazard" />.
         /// </summary>
         public TantrumEnvironmentalHazard TantrumHazard { get; }
 
         /// <summary>
-        ///     Gets the tantrum <see cref="AbilityCooldown"/>.
+        /// Gets the tantrum <see cref="AbilityCooldown"/>.
         /// </summary>
         public AbilityCooldown Cooldown { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the tantrum can be placed.
+        /// Gets or sets a value indicating whether or not the tantrum can be placed.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the player who's placing the tantrum.
+        /// Gets the player who's placing the tantrum.
         /// </summary>
         public Player Player { get; }
     }

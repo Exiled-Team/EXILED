@@ -27,46 +27,39 @@ namespace Exiled.API.Features.Core
     /// </remarks>
     public abstract class StaticActor : EActor
     {
-        private static StaticActor instance;
-
         /// <summary>
         /// Gets a value indicating whether the <see cref="PostInitialize()"/> method has already been called by Unity.
         /// </summary>
-        public static bool IsInitialized { get; private set; }
+        public bool IsInitialized { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="OnBeginPlay()"/> method has already been called by Unity.
         /// </summary>
-        public static bool IsStarted { get; private set; }
+        public bool IsStarted { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="OnEndPlay()"/> method has already been called by Unity.
         /// </summary>
-        public static bool IsDestroyed { get; private set; }
+        public bool IsDestroyed { get; private set; }
 
-        /// <summary>
-        /// Gets the global access point to the unique instance of this class.
-        /// </summary>
-        public static StaticActor Instance => instance ? instance : IsDestroyed ? null : (instance = FindExistingInstance() ?? CreateNewInstance());
-
-        /// <summary>
-        /// Looks or an existing instance of the <see cref="StaticActor"/>.
-        /// </summary>
-        /// <returns>The existing <see cref="StaticActor"/> instance, or <see langword="null"/> if not found.</returns>
-        public static StaticActor FindExistingInstance()
-        {
-            StaticActor[] existingInstances = FindActiveObjectsOfType<StaticActor>();
-            return existingInstances == null || existingInstances.Length == 0 ? null : existingInstances[0];
-        }
+        /// <inheritdoc cref="CreateNewInstance"/>
+        /// <typeparam name="T"><inheritdoc path="/param[@name='type']" cref="CreateNewInstance"/></typeparam>
+        public static StaticActor CreateNewInstance<T>()
+            where T : new() => CreateNewInstance(typeof(T));
 
         /// <summary>
         /// Creates a new instance of the <see cref="StaticActor"/>.
         /// </summary>
+        /// <param name="type">The type of the <see cref="StaticActor"/>.</param>
         /// <returns>The created <see cref="StaticActor"/> instance, or <see langword="null"/> if not found.</returns>
-        public static StaticActor CreateNewInstance()
+        public static StaticActor CreateNewInstance(Type type)
         {
-            EObject @object = CreateDefaultSubobject<StaticActor>();
-            @object.Name = "__" + typeof(StaticActor).Name + " (StaticActor)";
+            EObject @object = CreateDefaultSubobject<StaticActor>(type);
+            @object.Name = "__" + type.Name + " (StaticActor)";
+
+            if (Server.Host.GameObject)
+                @object.Base = Server.Host.GameObject;
+
             return @object.Cast<StaticActor>();
         }
 
@@ -76,7 +69,7 @@ namespace Exiled.API.Features.Core
         /// <typeparam name="T">The type of the <see cref="StaticActor"/> to look for.</typeparam>
         /// <returns>The corresponding <see cref="StaticActor"/>, or <see langword="null"/> if not found.</returns>
         public static T Get<T>()
-            where T : StaticActor
+            where T : StaticActor, new()
         {
             foreach (StaticActor actor in FindActiveObjectsOfType<StaticActor>())
             {
@@ -86,7 +79,7 @@ namespace Exiled.API.Features.Core
                 return actor.Cast<T>();
             }
 
-            return null;
+            return CreateNewInstance<T>().Cast<T>();
         }
 
         /// <summary>
@@ -106,14 +99,14 @@ namespace Exiled.API.Features.Core
                 return actor.Cast<T>();
             }
 
-            return null;
+            return CreateNewInstance(type).Cast<T>();
         }
 
         /// <summary>
         /// Gets a <see cref="StaticActor"/> given the specified type.
         /// </summary>
         /// <param name="type">The the type of the <see cref="StaticActor"/> to look for.</param>
-        /// <returns>The corresponding <see cref="StaticActor"/>, or <see langword="null"/> if not found.</returns>
+        /// <returns>The corresponding <see cref="StaticActor"/>.</returns>
         public static StaticActor Get(Type type)
         {
             foreach (StaticActor actor in FindActiveObjectsOfType<StaticActor>())
@@ -124,7 +117,7 @@ namespace Exiled.API.Features.Core
                 return actor;
             }
 
-            return null;
+            return CreateNewInstance(type);
         }
 
         /// <inheritdoc/>
@@ -132,13 +125,7 @@ namespace Exiled.API.Features.Core
         {
             base.PostInitialize();
 
-            StaticActor ldarg_0 = GetComponent<StaticActor>();
-
-            if (instance == null)
-            {
-                instance = ldarg_0;
-            }
-            else if (ldarg_0 != instance)
+            if (Get(GetType()))
             {
                 Log.Warn($"Found a duplicated instance of a StaticActor with type {GetType().Name} in the Actor {Name} that will be ignored");
                 NotifyInstanceRepeated();
@@ -168,9 +155,6 @@ namespace Exiled.API.Features.Core
         /// <inheritdoc/>
         protected override void OnEndPlay()
         {
-            if (this != instance)
-                return;
-
             IsDestroyed = true;
             EndPlay_Static();
         }

@@ -7,58 +7,46 @@
 
 namespace Exiled.Events.EventArgs.Server
 {
-    using System;
-
     using API.Enums;
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information before ending a round.
+    /// Contains all information before ending a round.
     /// </summary>
     public class EndingRoundEventArgs : IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="EndingRoundEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="EndingRoundEventArgs" /> class.
         /// </summary>
-        /// <param name="classList">
-        ///     <inheritdoc cref="RoundSummary.SumInfo_ClassList" />
-        /// </param>
-        /// <param name="leadingTeam">
-        ///     <inheritdoc cref="LeadingTeam" />
-        /// </param>
-        /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsRoundEnded" />
-        /// </param>
-        public EndingRoundEventArgs(RoundSummary.LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, bool isAllowed)
+        /// <param name="classList"><inheritdoc cref="RoundSummary.SumInfo_ClassList" /></param>
+        /// <param name="leadingTeam"><inheritdoc cref="LeadingTeam" /></param>
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed" /></param>
+        /// <param name="isForceEnded"><inheritdoc cref="IsForceEnded" /></param>
+        public EndingRoundEventArgs(RoundSummary.LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, bool isAllowed, bool isForceEnded)
         {
             ClassList = classList;
             LeadingTeam = (LeadingTeam)leadingTeam;
-            IsRoundEnded = isAllowed;
+            IsForceEnded = isForceEnded;
         }
 
         /// <summary>
-        ///     Gets or sets the round summary class list.
+        /// Gets or sets the round summary class list.
         /// </summary>
         public RoundSummary.SumInfo_ClassList ClassList { get; set; }
 
         /// <summary>
-        ///     Gets or sets the leading team.
+        /// Gets or sets the leading team.
         /// </summary>
         public LeadingTeam LeadingTeam { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the round is going to finish or not.
+        /// Gets or sets a value indicating whether the round is ended by API call.
         /// </summary>
-        public bool IsRoundEnded { get; set; }
+        public bool IsForceEnded { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether the event can be executed or not.
         /// </summary>
-        [Obsolete("Use IsRoundEnded instead", true)]
-        public bool IsAllowed
-        {
-            get => IsRoundEnded;
-            set => IsRoundEnded = value;
-        }
-}
+        public bool IsAllowed { get; set; }
+    }
 }

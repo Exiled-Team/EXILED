@@ -7,13 +7,13 @@
 
 namespace Exiled.Loader
 {
+    using System;
     using System.ComponentModel;
     using System.IO;
 
     using API.Enums;
     using API.Interfaces;
     using Exiled.API.Features;
-    using YamlDotNet.Core;
 
     /// <summary>
     /// The configs of the loader.
@@ -29,27 +29,27 @@ namespace Exiled.Loader
         public bool Debug { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets a value indicating whether outdated exiled should be loaded or not.
+        /// Gets or sets a value indicating whether outdated Exiled versions should be loaded or not.
         /// </summary>
-        [Description("Indicates whether outdated Exiled should be loaded or not. It could cause issues when it's true")]
+        [Description("Indicates whether outdated Exiled versions should be loaded or not.")]
         public bool ShouldLoadOutdatedExiled { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether outdated plugins should be loaded or not.
         /// </summary>
-        [Description("Indicates whether outdated plugins should be loaded or not")]
+        [Description("Indicates whether outdated plugins should be loaded or not.")]
         public bool ShouldLoadOutdatedPlugins { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the Exiled directory path from which plugins will be loaded.
         /// </summary>
-        [Description("The Exiled directory path from which plugins will be loaded")]
+        [Description("The Exiled directory path from which plugins will be loaded.")]
         public string ExiledDirectoryPath { get; set; } = Path.Combine(Paths.AppData, "EXILED");
 
         /// <summary>
         /// Gets or sets the environment type.
         /// </summary>
-        [Description("The working environment type (Development, Testing, Production, Ptb, ProductionDebug)")]
+        [Description("The working environment type (Development, Testing, Production, Ptb, ProductionDebug).")]
         public EnvironmentType Environment { get; set; } = EnvironmentType.Production;
 
         /// <summary>
@@ -59,15 +59,21 @@ namespace Exiled.Loader
         public ConfigType ConfigType { get; set; } = ConfigType.Default;
 
         /// <summary>
-        /// Gets or sets the quotes wrapper type.
+        /// Gets or sets a value indicating whether testing releases have to be downloaded or not.
         /// </summary>
-        [Description("Indicates in which quoted strings in configs will be wrapped (Any, SingleQuoted, DoubleQuoted, Folded, Literal)")]
-        public ScalarStyle ScalarStyle { get; set; } = ScalarStyle.SingleQuoted;
+        [Description("Indicates whether testing releases have to be downloaded or not.")]
+        public bool ShouldDownloadTestingReleases { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets the quotes wrapper type.
+        /// Gets or sets which assemblies should be excluded from the update.
         /// </summary>
-        [Description("Indicates in which quoted strings with multiline in configs will be wrapped (Any, SingleQuoted, DoubleQuoted, Folded, Literal)")]
-        public ScalarStyle MultiLineScalarStyle { get; set; } = ScalarStyle.Literal;
+        [Description("Indicates which assemblies should be excluded from the updater.")]
+        public string[] ExcludeAssemblies { get; set; } = Array.Empty<string>();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether Exiled should auto-update itself as soon as a new release is available.
+        /// </summary>
+        [Description("Indicates whether Exiled should auto-update itself as soon as a new release is available.")]
+        public bool EnableAutoUpdates { get; set; } = true;
     }
 }

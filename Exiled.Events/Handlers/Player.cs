@@ -147,6 +147,11 @@ namespace Exiled.Events.Handlers
         public static Event<HurtingEventArgs> Hurting { get; set; } = new();
 
         /// <summary>
+        /// Invoked after hurting a <see cref="API.Features.Player"/>.
+        /// </summary>
+        public static Event<HurtEventArgs> Hurt { get; set; } = new();
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> dies.
         /// </summary>
         public static Event<DyingEventArgs> Dying { get; set; } = new();
@@ -252,6 +257,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <remarks>Denying this event will only make it so that spectators will not see the inspection, not the player.</remarks>
         public static Event<InspectingWeaponEventArgs> InspectingWeapon { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> reloads a weapon.
+        /// </summary>
+        public static Event<ReloadedWeaponEventArgs> ReloadedWeapon { get; set; } = new();
 
         /// <summary>
         /// Invoked before spawning a <see cref="API.Features.Player"/>.
@@ -394,6 +404,11 @@ namespace Exiled.Events.Handlers
         public static Event<UnloadingWeaponEventArgs> UnloadingWeapon { get; set; } = new();
 
         /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> unloads a weapon.
+        /// </summary>
+        public static Event<UnloadedWeaponEventArgs> UnloadedWeapon { get; set; } = new();
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> triggers an aim action.
         /// </summary>
         public static Event<AimingDownSightEventArgs> AimingDownSight { get; set; } = new();
@@ -402,6 +417,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before a <see cref="API.Features.Player"/> toggles the weapon's flashlight.
         /// </summary>
         public static Event<TogglingWeaponFlashlightEventArgs> TogglingWeaponFlashlight { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> toggles the weapon's flashlight.
+        /// </summary>
+        public static Event<ToggledWeaponFlashlightEventArgs> ToggledWeaponFlashlight { get; set; } = new();
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> dryfires a weapon.
@@ -454,14 +474,24 @@ namespace Exiled.Events.Handlers
         public static Event<TogglingOverwatchEventArgs> TogglingOverwatch { get; set; } = new();
 
         /// <summary>
+        /// Invoked before turning the <see cref="API.Features.Items.Radio" /> on/off.
+        /// </summary>
+        public static Event<TogglingRadioEventArgs> TogglingRadio { get; set; } = new();
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> searches a Pickup.
         /// </summary>
         public static Event<SearchingPickupEventArgs> SearchingPickup { get; set; } = new();
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> send a message in AdminChat.
+        /// </summary>
+        public static Event<SendingAdminChatMessageEventsArgs> SendingAdminChatMessage { get; set; } = new();
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> damage a Window.
-        /// </summary> // TODO: DamagingWindow instead of PlayerDamageWindow
-        public static Event<DamagingWindowEventArgs> PlayerDamageWindow { get; set; } = new();
+        /// </summary>
+        public static Event<DamagingWindowEventArgs> DamagingWindow { get; set; } = new();
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> damage a Door.
@@ -474,9 +504,19 @@ namespace Exiled.Events.Handlers
         public static Event<ItemAddedEventArgs> ItemAdded { get; set; } = new();
 
         /// <summary>
-        /// Invoked before KillPlayer is called.
+        /// Invoked before a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
         /// </summary>
-        public static Event<KillingPlayerEventArgs> KillingPlayer { get; set; } = new();
+        public static Event<AddingItemEventArgs> AddingItem { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before a <see cref="T:Exiled.API.Features.Player" /> has an item removed from their inventory.
+        /// </summary>
+        public static Event<RemovingItemEventArgs> RemovingItem { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item removed from their inventory.
+        /// </summary>
+        public static Event<ItemRemovedEventArgs> ItemRemoved { get; set; } = new();
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> enters in an environmental hazard.
@@ -497,6 +537,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before a <see cref="API.Features.Player"/>'s nickname is changed.
         /// </summary>
         public static Event<ChangingNicknameEventArgs> ChangingNickname { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before displaying the hitmarker to the player.
+        /// </summary>
+        public static Event<DisplayingHitmarkerEventArgs> ShowingHitMarker { get; set; } = new();
 
         /// <summary>
         /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
@@ -623,8 +668,7 @@ namespace Exiled.Events.Handlers
         /// Called before throwing a grenade.
         /// </summary>
         /// <param name="ev">The <see cref="ThrownProjectileEventArgs"/> instance.</param>
-        // TODO: rename that to OnThrownProjectile
-        public static void OnThrowingProjectile(ThrownProjectileEventArgs ev) => ThrownProjectile.InvokeSafely(ev);
+        public static void OnThrownProjectile(ThrownProjectileEventArgs ev) => ThrownProjectile.InvokeSafely(ev);
 
         /// <summary>
         /// Called before receving a throwing request.
@@ -721,6 +765,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ReloadingWeaponEventArgs"/> instance.</param>
         public static void OnReloadingWeapon(ReloadingWeaponEventArgs ev) => ReloadingWeapon.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> reloads a weapon.
+        /// </summary>
+        /// <param name="ev">The <see cref="ReloadedWeaponEventArgs"/> instance.</param>
+        public static void OnReloadedWeapon(ReloadedWeaponEventArgs ev) => ReloadedWeapon.InvokeSafely(ev);
 
         /// <summary>
         /// Called before spawning a <see cref="API.Features.Player"/>.
@@ -825,6 +875,12 @@ namespace Exiled.Events.Handlers
         public static void OnUnloadingWeapon(UnloadingWeaponEventArgs ev) => UnloadingWeapon.InvokeSafely(ev);
 
         /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> unloads a weapon.
+        /// </summary>
+        /// <param name="ev">The <see cref="UnloadedWeaponEventArgs"/> instance.</param>
+        public static void OnUnloadedWeapon(UnloadedWeaponEventArgs ev) => UnloadedWeapon.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> triggers an aim action.
         /// </summary>
         /// <param name="ev">The <see cref="AimingDownSightEventArgs"/> instance.</param>
@@ -897,16 +953,22 @@ namespace Exiled.Events.Handlers
         public static void OnTogglingOverwatch(TogglingOverwatchEventArgs ev) => TogglingOverwatch.InvokeSafely(ev);
 
         /// <summary>
+        /// Called before turning the radio on/off.
+        /// </summary>
+        /// <param name="ev">The <see cref="TogglingRadioEventArgs"/> instance.</param>
+        public static void OnTogglingRadio(TogglingRadioEventArgs ev) => TogglingRadio.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> searches a Pickup.
         /// </summary>
         /// <param name="ev">The <see cref="SearchingPickupEventArgs"/> instance.</param>
         public static void OnSearchPickupRequest(SearchingPickupEventArgs ev) => SearchingPickup.InvokeSafely(ev);
 
         /// <summary>
-        ///  Called before KillPlayer is called.
+        /// Called before a <see cref="API.Features.Player"/> searches a Pickup.
         /// </summary>
-        /// <param name="ev">The <see cref="KillingPlayerEventArgs"/> event handler. </param>
-        public static void OnKillPlayer(KillingPlayerEventArgs ev) => KillingPlayer.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="SendingAdminChatMessageEventsArgs"/> instance.</param>
+        public static void OnSendingAdminChatMessage(SendingAdminChatMessageEventsArgs ev) => SendingAdminChatMessage.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
@@ -918,9 +980,30 @@ namespace Exiled.Events.Handlers
             => ItemAdded.InvokeSafely(new ItemAddedEventArgs(referenceHub, itemBase, pickupBase));
 
         /// <summary>
+        /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item removed from their inventory.
+        /// </summary>
+        /// <param name="referenceHub">The <see cref="ReferenceHub"/> the item was removed from.</param>
+        /// <param name="itemBase">The removed <see cref="InventorySystem.Items.ItemBase"/>.</param>
+        /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
+        public static void OnItemRemoved(ReferenceHub referenceHub, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase)
+            => ItemRemoved.InvokeSafely(new ItemRemovedEventArgs(referenceHub, itemBase, pickupBase));
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player" /> has an item added to their inventory.
+        /// </summary>
+        /// <param name="ev">The <see cref="AddingItemEventArgs"/> instance.</param>
+        public static void OnAddingItem(AddingItemEventArgs ev) => AddingItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player" /> has an item removed from their inventory.
+        /// </summary>
+        /// <param name="ev">The <see cref="RemovingItemEventArgs"/> instance.</param>
+        public static void OnRemovingItem(RemovingItemEventArgs ev) => RemovingItem.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> enters in an environmental hazard.
         /// </summary>
-        /// <param name="ev">The <see cref="EnteringEnvironmentalHazardEventArgs"/> instance. </param>
+        /// <param name="ev">The <see cref="EnteringEnvironmentalHazardEventArgs"/> instance.</param>
         public static void OnEnteringEnvironmentalHazard(EnteringEnvironmentalHazardEventArgs ev) => EnteringEnvironmentalHazard.InvokeSafely(ev);
 
         /// <summary>
@@ -939,7 +1022,7 @@ namespace Exiled.Events.Handlers
         /// Called before a <see cref="API.Features.Player"/> damage a window.
         /// </summary>
         /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance. </param>
-        public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
+        public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => DamagingWindow.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> damage a window.
@@ -1020,6 +1103,12 @@ namespace Exiled.Events.Handlers
         public static void OnHurting(HurtingEventArgs ev) => Hurting.InvokeSafely(ev);
 
         /// <summary>
+        /// Called ater a <see cref="API.Features.Player"/> being hurt.
+        /// </summary>
+        /// <param name="ev">The <see cref="HurtingEventArgs"/> instance. </param>
+        public static void OnHurt(HurtEventArgs ev) => Hurt.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> dies.
         /// </summary>
         /// <param name="ev">The <see cref="DyingEventArgs"/> instance. </param>
@@ -1048,6 +1137,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingNicknameEventArgs"/> instance.</param>
         public static void OnChangingNickname(ChangingNicknameEventArgs ev) => ChangingNickname.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before displaying the hitmarker to the player.
+        /// </summary>
+        /// <param name="ev">The <see cref="DisplayingHitmarkerEventArgs"/> instance.</param>
+        public static void OnShowingHitMarker(DisplayingHitmarkerEventArgs ev) => ShowingHitMarker.InvokeSafely(ev);
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.

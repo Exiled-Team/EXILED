@@ -13,9 +13,10 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
 
     using API.Features.Roles;
+    using Exiled.API.Enums;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -31,8 +32,8 @@ namespace Exiled.Events.Patches.Events.Player
     using Player = Handlers.Player;
 
     /// <summary>
-    ///     Patches <see cref="PlayerRoleManager.InitializeNewRole(RoleTypeId, RoleChangeReason, RoleSpawnFlags, Mirror.NetworkReader)" />
-    ///     Adds the <see cref="Player.ChangingRole" /> event.
+    /// Patches <see cref="PlayerRoleManager.InitializeNewRole(RoleTypeId, RoleChangeReason, RoleSpawnFlags, Mirror.NetworkReader)" />
+    /// Adds the <see cref="Player.ChangingRole" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerRoleManager), nameof(PlayerRoleManager.InitializeNewRole))]
     internal static class ChangingRoleAndSpawned
@@ -111,8 +112,9 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
                     new(OpCodes.Starg_S, 1),
 
-                    // reason = changingRoleEventArgs.Reason
+                    // reason = changingRoleEventArgs.Reason.Value
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Reason))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawnReason), nameof(SpawnReason.Value))),
                     new(OpCodes.Starg_S, 2),
 
                     // spawnFlags = changingRoleEventArgs.SpawnFlags

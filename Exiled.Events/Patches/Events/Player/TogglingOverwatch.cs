@@ -10,7 +10,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
+    using CommandSystem.Commands.RemoteAdmin;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -19,10 +20,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// patches <see cref="ServerRoles.SetOverwatchStatus(byte)"/> to add the <see cref="Handlers.Player.TogglingOverwatch"/> event.
+    /// patches <see cref="OverwatchCommand.SetOverwatchStatus(ServerRoles, byte)"/> to add the <see cref="Handlers.Player.TogglingOverwatch"/> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.TogglingOverwatch))]
-    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.SetOverwatchStatus), typeof(byte))]
+    [HarmonyPatch(typeof(OverwatchCommand), nameof(OverwatchCommand.SetOverwatchStatus))]
     internal static class TogglingOverwatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
