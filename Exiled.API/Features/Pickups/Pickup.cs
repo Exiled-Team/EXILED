@@ -113,11 +113,6 @@ namespace Exiled.API.Features.Pickups
         public static Pickup Random => BaseToPickup.Random().Value;
 
         /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
-        /// </summary>
-        public override GameObject GameObject => GameObject;
-
-        /// <summary>
         /// Gets the <see cref="UnityEngine.Rigidbody"/> of the Pickup.
         /// </summary>
         public Rigidbody Rigidbody => PhysicsModule?.Rb;
@@ -293,6 +288,11 @@ namespace Exiled.API.Features.Pickups
         /// Gets a value indicating whether this pickup is spawned.
         /// </summary>
         public bool IsSpawned { get; internal set; }
+
+        /// <summary>
+        /// Gets a <see cref="API.Features.Lift"/> in which pickup is now. Can be <see langword="null"/>.
+        /// </summary>
+        public Lift Lift => Lift.Get(Position);
 
         /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.
