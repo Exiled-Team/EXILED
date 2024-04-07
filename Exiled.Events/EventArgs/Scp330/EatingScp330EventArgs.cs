@@ -8,7 +8,7 @@
 namespace Exiled.Events.EventArgs.Scp330
 {
     using API.Features;
-
+    using Exiled.API.Features.Items;
     using Interfaces;
 
     using InventorySystem.Items.Usables.Scp330;
@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Scp330
     /// <summary>
     /// Contains all information before a player eats SCP-330.
     /// </summary>
-    public class EatingScp330EventArgs : IPlayerEvent, IDeniableEvent
+    public class EatingScp330EventArgs : IPlayerEvent, IScp330Event, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EatingScp330EventArgs" /> class.
@@ -36,14 +36,16 @@ namespace Exiled.Events.EventArgs.Scp330
         /// </summary>
         public ICandy Candy { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the player can eat SCP-330.
-        /// </summary>
+        /// <inheritdoc/>
+        public Scp330 Scp330 { get; }
+
+        /// <inheritdoc/>
+        public Item Item => Scp330;
+
+        /// <inheritdoc/>
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        /// Gets the player who's eating SCP-330.
-        /// </summary>
+        /// <inheritdoc/>
         public Player Player { get; }
     }
 }
