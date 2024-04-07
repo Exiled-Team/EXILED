@@ -14,19 +14,20 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
     using Exiled.CustomModules.API.Features.CustomAbilities;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.API.Features.CustomItems;
+    using Exiled.CustomModules.API.Features.CustomItems.Items;
     using Exiled.CustomModules.API.Features.CustomItems.Pickups.Ammos;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Features.PlayerAbilities;
     using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
-
     using PlayerRoles;
-
     using UnityEngine;
 
     /// <summary>
@@ -41,6 +42,7 @@ namespace Exiled.CustomModules.API.Features
     /// <br>It serves as a comprehensive representation of an in-game entity, encapsulating the associated <see cref="ReferenceHub"/> with an expanded set of features.</br>
     /// </remarks>
     /// </summary>
+    [DefaultPlayerClass(enforceAuthority: false)]
     public class Pawn : Player
     {
         private readonly List<ActiveAbilityBehaviour> abilityBehaviours = new();
@@ -165,9 +167,62 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
+        /// Gets the global role of the pawn.
+        /// <para/>
+        /// It will return a <see cref="CustomRoles.CustomRole"/> if available, or the <see cref="Role"/> if null.
+        /// </summary>
+        public object GlobalRole => CustomRole ? CustomRole : Role;
+
+        /// <summary>
+        /// Gets the global items associated with the pawn.
+        /// <para/>
+        /// It will return a combination of standard <see cref="Item"/>s and <see cref="CustomItem"/>s.
+        /// </summary>
+        public IEnumerable<object> GlobalItems => Items.Cast<object>().Concat(CustomItems);
+
+        /// <summary>
+        /// Gets or sets the global current item of the pawn.
+        /// <para/>
+        /// If a <see cref="CustomItem"/> is equipped, it returns the <see cref="CustomItem"/>; otherwise, it returns the regular <see cref="Item"/>.
+        /// </summary>
+        public object GlobalCurrentItem
+        {
+            get => CurrentCustomItem ? CurrentCustomItem : CurrentItem;
+            set
+            {
+                if (value is null)
+                {
+                    Inventory.ServerSelectItem(0);
+                    return;
+                }
+
+                bool isCustomItem = typeof(CustomItem).IsAssignableFrom(value.GetType());
+                if (isCustomItem)
+                {
+                    if (!CustomItems.Any(customItem => customItem.GetType() == value.GetType()))
+                    {
+                        if (IsInventoryFull)
+                            return;
+
+                        AddItem(value);
+                    }
+
+                    Item customItem = Items.LastOrDefault(i => i.TryGetComponent(out ItemBehaviour behaviour) && behaviour.GetType() == (value as CustomItem).BehaviourComponent);
+                    Inventory.ServerSelectItem(customItem.Serial);
+                    return;
+                }
+
+                if (value is not Item item)
+                    return;
+
+                CurrentItem = value as Item;
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the pawn is any custom SCP.
         /// </summary>
-        public bool IsCustomScp => CustomRole is not null && CustomRole.IsScp;
+        public bool IsCustomScp => CustomRole && CustomRole.IsScp;
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="object"/> containing all custom items in the pawn's inventory.
@@ -191,19 +246,7 @@ namespace Exiled.CustomModules.API.Features
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="EffectType"/>.
         /// </summary>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="EffectType"/>.</returns>
-        public IEnumerable<EffectType> EffectTypes
-        {
-            get
-            {
-                foreach (object effect in Enum.GetValues(typeof(EffectType)))
-                {
-                    if (!Enum.TryParse(effect.ToString(), out EffectType effectType) || !TryGetEffect(effectType, out _))
-                        continue;
-
-                    yield return effectType;
-                }
-            }
-        }
+        public IEnumerable<EffectType> EffectTypes => EnumExtensions.QueryEnumValue<EffectType>();
 
         /// <summary>
         /// Gets a value indicating whether the pawn has the <see cref="CustomItem"/> of the specified type.
@@ -218,7 +261,7 @@ namespace Exiled.CustomModules.API.Features
         /// </summary>
         /// <typeparam name="T">The type of the <see cref="PlayerAbility"/>.</typeparam>
         /// <returns><see langword="true"/> if a <see cref="PlayerAbility"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
-        public bool HasCustomAbilty<T>()
+        public bool HasCustomAbility<T>()
             where T : PlayerAbility => CustomItems.Any(item => item.GetType() == typeof(T));
 
         /// <summary>
@@ -249,24 +292,39 @@ namespace Exiled.CustomModules.API.Features
             where T : PlayerAbility => CustomAbilities.FirstOrDefault(ability => ability.GetType() == typeof(T)).Is(out customAbility);
 
         /// <summary>
-        /// Add a <see cref="CustomItem"/> of the specified type to the pawn's inventory.
+        /// Add an <see cref="Item"/> or <see cref="CustomItem"/> of the specified type to the pawn's inventory.
         /// </summary>
-        /// <param name="customItem">The item to be added.</param>
+        /// <param name="item">The item to be added.</param>
         /// <returns><see langword="true"/> if the item has been given to the pawn; otherwise, <see langword="false"/>.</returns>
-        public bool AddItem(object customItem)
+        public bool AddItem(object item)
         {
             if (IsInventoryFull)
                 return false;
 
-            try
+            switch (item)
             {
-                uint value = (uint)customItem;
-                CustomItem.TryGive(this, value);
-                return true;
-            }
-            catch
-            {
-                return customItem is CustomItem instance && CustomItem.TryGive(this, instance.Id);
+                case Item baseItem:
+                    AddItem(baseItem);
+                    return true;
+                case ItemType itemType:
+                    AddItem(itemType);
+                    return true;
+                case string name:
+                    CustomItem.TryGive(this, name);
+                    return true;
+                case CustomItem instance when CustomItem.TryGive(this, instance.Id):
+                    return true;
+                default:
+                    try
+                    {
+                        uint value = (uint)item;
+                        CustomItem.TryGive(this, value);
+                        return true;
+                    }
+                    catch
+                    {
+                        throw new ArgumentException("Item is not of a supported type.");
+                    }
             }
         }
 
@@ -299,14 +357,22 @@ namespace Exiled.CustomModules.API.Features
             if (role is uint id)
                 CustomRole.Spawn(this, id, preservePlayerPosition);
 
-            throw new ArgumentException("The type of the role instance is not compatible with RoleTypeId or uint.");
+            try
+            {
+                uint uuId = (uint)role;
+                CustomRole.Spawn(this, uuId, preservePlayerPosition);
+            }
+            catch
+            {
+                throw new ArgumentException("The type of the role instance is not compatible with RoleTypeId or uint.");
+            }
         }
 
         /// <summary>
         /// Safely drops an item.
         /// </summary>
         /// <param name="item">The item to be dropped.</param>
-        public void SafeDropItem(Item item)
+        public new void DropItem(Item item)
         {
             if (TryGetCustomItem(out CustomItem customItem))
             {
@@ -315,7 +381,7 @@ namespace Exiled.CustomModules.API.Features
                 return;
             }
 
-            DropItem(item);
+            base.DropItem(item);
         }
 
         /// <summary>
@@ -326,7 +392,7 @@ namespace Exiled.CustomModules.API.Features
         public ushort GetAmmo(uint customAmmoType) => (ushort)(customAmmoBox.TryGetValue(customAmmoType, out ushort amount) ? amount : 0);
 
         /// <summary>
-        /// Adds an amount of custom ammos to the pawn's ammo box.
+        /// Adds an amount of custom ammo to the pawn's ammo box.
         /// </summary>
         /// <param name="id">The type of the custom ammo.</param>
         /// <param name="amount">The amount to be added.</param>
@@ -363,7 +429,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Removes an amount of custom ammos from the pawn's ammo box.
+        /// Removes an amount of custom ammo from the pawn's ammo box.
         /// </summary>
         /// <param name="id">The type of the custom ammo.</param>
         /// <param name="amount">The amount to be removed.</param>

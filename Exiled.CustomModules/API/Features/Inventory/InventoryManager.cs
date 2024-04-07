@@ -29,14 +29,17 @@ namespace Exiled.CustomModules.API.Features.Inventory
         /// <param name="inventory">The list of items to be given.</param>
         /// <param name="customItems">The list of custom items to be given.</param>
         /// <param name="ammoBox">The ammo box settings to be applied.</param>
+        /// <param name="customAmmoBox">The custom ammo box settings to be applied.</param>
         public InventoryManager(
             List<ItemType> inventory,
             List<object> customItems,
-            Dictionary<AmmoType, ushort> ammoBox)
+            Dictionary<AmmoType, ushort> ammoBox,
+            Dictionary<uint, ushort> customAmmoBox)
         {
             Items = inventory;
             CustomItems = customItems;
             AmmoBox = ammoBox;
+            CustomAmmoBox = customAmmoBox;
         }
 
         /// <inheritdoc/>
@@ -47,6 +50,9 @@ namespace Exiled.CustomModules.API.Features.Inventory
 
         /// <inheritdoc/>
         public Dictionary<AmmoType, ushort> AmmoBox { get; set; } = new();
+
+        /// <inheritdoc/>
+        public Dictionary<uint, ushort> CustomAmmoBox { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the probability associated with this inventory slot.

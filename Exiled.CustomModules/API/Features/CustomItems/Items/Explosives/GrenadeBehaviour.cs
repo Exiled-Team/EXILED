@@ -9,7 +9,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
 {
     using Exiled.API.Features;
     using Exiled.API.Features.Components;
-    using Exiled.API.Features.Core.Generics;
+    using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;

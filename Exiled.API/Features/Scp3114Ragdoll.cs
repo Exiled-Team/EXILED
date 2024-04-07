@@ -10,25 +10,25 @@ namespace Exiled.API.Features
     using Exiled.API.Interfaces;
     using PlayerRoles;
 
-    using BaseRagdoll = PlayerRoles.PlayableScps.Scp3114.Scp3114Ragdoll;
+    using BaseScp3114Ragdoll = PlayerRoles.PlayableScps.Scp3114.Scp3114Ragdoll;
 
     /// <summary>
     /// A wrapper for SCP-3114 ragdolls.
     /// </summary>
-    public class Scp3114Ragdoll : Ragdoll, IWrapper<BaseRagdoll>
+    public class Scp3114Ragdoll : Ragdoll, IWrapper<BaseScp3114Ragdoll>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp3114Ragdoll"/> class.
         /// </summary>
         /// <param name="ragdoll">The base ragdoll to wrap. <inheritdoc cref="Base"/></param>
-        internal Scp3114Ragdoll(BaseRagdoll ragdoll)
+        internal Scp3114Ragdoll(BaseScp3114Ragdoll ragdoll)
             : base(ragdoll)
         {
             Base = ragdoll;
         }
 
         /// <inheritdoc/>
-        public new BaseRagdoll Base { get; }
+        public new BaseScp3114Ragdoll Base { get; }
 
         /// <summary>
         /// Gets or sets the role that the corpse is disguised as.

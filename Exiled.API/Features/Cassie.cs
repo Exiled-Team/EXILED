@@ -11,7 +11,8 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Text;
 
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Generic.Pools;
 
     using MEC;
 
@@ -20,6 +21,8 @@ namespace Exiled.API.Features
     using PlayerStatsSystem;
 
     using Respawning;
+    using Subtitles;
+    using Utils.Networking;
 
     using CustomFirearmHandler = DamageHandlers.FirearmDamageHandler;
     using CustomHandlerBase = DamageHandlers.DamageHandlerBase;
@@ -147,21 +150,20 @@ namespace Exiled.API.Features
         public static void CustomScpTermination(string scpName, CustomHandlerBase info)
         {
             string result = scpName;
-            if (info.Is(out MicroHidDamageHandler _))
-                result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
-            else if (info.Is(out WarheadDamageHandler _))
-                result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
-            else if (info.Is(out UniversalDamageHandler _))
-                result += " LOST IN DECONTAMINATION SEQUENCE";
-            else if (info.BaseIs(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
-                result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName);
 
-            // result += "To be changed";
-            else
-                result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
+            result += info.Base switch
+            {
+                UniversalDamageHandler universalDamageHandler when universalDamageHandler.TranslationId == DeathTranslations.Tesla.Id => " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM",
+                UniversalDamageHandler universalDamageHandler when universalDamageHandler.TranslationId == DeathTranslations.Decontamination.Id => " LOST IN DECONTAMINATION SEQUENCE",
+                UniversalDamageHandler universalDamageHandler when universalDamageHandler.TranslationId == DeathTranslations.MarshmallowMan.Id => " TERMINATED BY MARSHMALLOW MAN",
+                WarheadDamageHandler => " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD",
+                _ => info.Is(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker ?
+                    " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName) : " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED"
+            };
 
-            float num = AlphaWarheadController.TimeUntilDetonation <= 0f ? 3.5f : 1f;
+            float num = AlphaWarheadController.Detonated ? 3.5f : 1f;
             GlitchyMessage(result, UnityEngine.Random.Range(0.1f, 0.14f) * num, UnityEngine.Random.Range(0.07f, 0.08f) * num);
+            new SubtitleMessage(new SubtitlePart(SubtitleType.SCP, new string[] { scpName.RemoveSpaces() })).SendToAuthenticated(0);
         }
 
         /// <summary>

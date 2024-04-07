@@ -11,16 +11,15 @@ namespace Exiled.API.Features.Pickups
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.API.Interfaces;
-
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables.Scp244;
-
     using Mirror;
     using RelativePositioning;
     using UnityEngine;
@@ -36,7 +35,6 @@ namespace Exiled.API.Features.Pickups
     using BaseScp1576Pickup = InventorySystem.Items.Usables.Scp1576.Scp1576Pickup;
     using BaseScp2176Projectile = InventorySystem.Items.ThrowableProjectiles.Scp2176Projectile;
     using BaseScp330Pickup = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
-
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -56,6 +54,7 @@ namespace Exiled.API.Features.Pickups
         /// Created only for <see cref="Projectile"/> properly work.
         /// </remarks>
         internal Pickup()
+            : base()
         {
         }
 
@@ -64,6 +63,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="pickupBase">The base <see cref="ItemPickupBase"/> class.</param>
         internal Pickup(ItemPickupBase pickupBase)
+            : base()
         {
             Base = pickupBase;
 
@@ -104,17 +104,13 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> which contains all the <see cref="Pickup"/> instances.
         /// </summary>
-        public static IEnumerable<Pickup> List => BaseToPickup.Values;
+        public static new IEnumerable<Pickup> List => BaseToPickup.Values;
 
         /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
+        /// Gets a randomly selected <see cref="Pickup"/>.
         /// </summary>
-        public override GameObject GameObject => GameObject;
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.Transform"/> of the Pickup.
-        /// </summary>
-        public Transform Transform => Base.transform;
+        /// <returns>A randomly selected <see cref="Pickup"/> object.</returns>
+        public static Pickup Random => BaseToPickup.Random().Value;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Rigidbody"/> of the Pickup.
@@ -263,7 +259,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the pickup position.
         /// </summary>
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
-        public Vector3 Position
+        public override Vector3 Position
         {
             get => Base.Position;
             set => Base.Position = value;
@@ -274,7 +270,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public RelativePosition RelativePosition
         {
-            get => new(Room.transform.TransformPoint(Position));
+            get => new(Room.Transform.TransformPoint(Position));
             set => Position = value.Position;
         }
 
@@ -282,7 +278,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the pickup rotation.
         /// </summary>
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
-        public Quaternion Rotation
+        public override Quaternion Rotation
         {
             get => Base.Rotation;
             set => Base.Rotation = value;
@@ -292,6 +288,11 @@ namespace Exiled.API.Features.Pickups
         /// Gets a value indicating whether this pickup is spawned.
         /// </summary>
         public bool IsSpawned { get; internal set; }
+
+        /// <summary>
+        /// Gets a <see cref="API.Features.Lift"/> in which pickup is now. Can be <see langword="null"/>.
+        /// </summary>
+        public Lift Lift => Lift.Get(Position);
 
         /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.

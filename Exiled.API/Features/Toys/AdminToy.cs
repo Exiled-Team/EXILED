@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Toys
     using Enums;
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
+    using Footprinting;
     using Mirror;
 
     using UnityEngine;
@@ -29,6 +30,7 @@ namespace Exiled.API.Features.Toys
         /// <param name="toyAdminToyBase">The <see cref="AdminToys.AdminToyBase"/> to be wrapped.</param>
         /// <param name="type">The <see cref="AdminToyType"/> of the object.</param>
         internal AdminToy(AdminToyBase toyAdminToyBase, AdminToyType type)
+            : base()
         {
             AdminToyBase = toyAdminToyBase;
             ToyType = type;
@@ -50,21 +52,21 @@ namespace Exiled.API.Features.Toys
         public AdminToyType ToyType { get; }
 
         /// <summary>
-        /// Gets or sets the position of the toy.
+        /// Gets or sets who spawn the Primitive AdminToy.
         /// </summary>
-        public Vector3 Position
+        public Player Player
         {
-            get => AdminToyBase.transform.position;
-            set => AdminToyBase.transform.position = value;
+            get => Player.Get(Footprint);
+            set => Footprint = value.Footprint;
         }
 
         /// <summary>
-        /// Gets or sets the rotation of the toy.
+        /// Gets or sets the Footprint of the player who spawned the AdminToy.
         /// </summary>
-        public Quaternion Rotation
+        public Footprint Footprint
         {
-            get => AdminToyBase.transform.rotation;
-            set => AdminToyBase.transform.rotation = value;
+            get => AdminToyBase.SpawnerFootprint;
+            set => AdminToyBase.SpawnerFootprint = value;
         }
 
         /// <summary>
@@ -72,8 +74,8 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public Vector3 Scale
         {
-            get => AdminToyBase.transform.localScale;
-            set => AdminToyBase.transform.localScale = value;
+            get => Transform.localScale;
+            set => Transform.localScale = value;
         }
 
         /// <summary>
@@ -87,6 +89,15 @@ namespace Exiled.API.Features.Toys
         {
             get => AdminToyBase.MovementSmoothing;
             set => AdminToyBase.NetworkMovementSmoothing = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether IsStatic.
+        /// </summary>
+        public bool IsStatic
+        {
+            get => AdminToyBase.IsStatic;
+            set => AdminToyBase.IsStatic = value;
         }
 
         /// <summary>

@@ -5,10 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features
+namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
-    using Exiled.CustomModules.API.Features.CustomAbilities;
-
     /// <summary>
     /// The actor which handles all tracking-related tasks for item abilities.
     /// </summary>

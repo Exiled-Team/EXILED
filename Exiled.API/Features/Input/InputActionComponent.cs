@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Input
     using Exiled.API.Enums;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Input.EventArgs;
 
@@ -28,7 +29,7 @@ namespace Exiled.API.Features.Input
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired before processing an action.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<ProcessingActionEventArgs> ProcessingActionDispatcher { get; protected set; }
+        public static TDynamicEventDispatcher<ProcessingActionEventArgs> ProcessingActionDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of key presses.
