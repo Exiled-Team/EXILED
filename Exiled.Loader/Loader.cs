@@ -234,8 +234,9 @@ namespace Exiled.Loader
         public static void EnablePlugins()
         {
             List<IPlugin<IConfig>> toLoad = Plugins.ToList();
+            List<IPlugin<IConfig>> toLoad2 = new();
 
-            foreach (IPlugin<IConfig> plugin in toLoad.ToList())
+            foreach (IPlugin<IConfig> plugin in toLoad)
             {
                 try
                 {
@@ -243,7 +244,10 @@ namespace Exiled.Loader
                     {
                         plugin.OnEnabled();
                         plugin.OnRegisteringCommands();
-                        toLoad.Remove(plugin);
+                    }
+                    else
+                    {
+                        toLoad2.Add(plugin);
                     }
 
                     if (plugin.Config.Debug)
@@ -255,7 +259,7 @@ namespace Exiled.Loader
                 }
             }
 
-            foreach (IPlugin<IConfig> plugin in toLoad)
+            foreach (IPlugin<IConfig> plugin in toLoad2)
             {
                 try
                 {

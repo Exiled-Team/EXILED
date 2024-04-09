@@ -17,6 +17,7 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Scp914Processors;
     using Exiled.API.Features.Toys;
     using global::Hazards;
     using InventorySystem;
@@ -112,9 +113,16 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether decontamination phase is in the light containment zone.
         /// </summary>
-        public static DecontaminationState DecontaminationState =>
-            DecontaminationController.Singleton.NetworkDecontaminationOverride is DecontaminationController.DecontaminationStatus.Disabled ?
-            DecontaminationState.Disabled : (DecontaminationState)DecontaminationController.Singleton._nextPhase;
+        public static DecontaminationPhase DecontaminationPhase => (DecontaminationPhase)DecontaminationController.Singleton._nextPhase;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the decontamination override is in the light containment zone.
+        /// </summary>
+        public static DecontaminationController.DecontaminationStatus DecontaminationOverride
+        {
+            get => DecontaminationController.Singleton.DecontaminationOverride;
+            set => DecontaminationController.Singleton.DecontaminationOverride = value;
+        }
 
         /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
@@ -361,7 +369,7 @@ namespace Exiled.API.Features
         /// <param name="toleration">The maximum toleration to define the radius from which get the cameras.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the found cameras.</returns>
         public static IEnumerable<Camera> GetNearCameras(Vector3 position, float toleration = 15f)
-            => Camera.Get(cam => (position - cam.Position).sqrMagnitude <= toleration * toleration);
+            => Camera.Get(cam => MathExtensions.DistanceSquared(position, cam.Position) <= toleration * toleration);
 
         /// <summary>
         /// Explode.
@@ -377,10 +385,13 @@ namespace Exiled.API.Features
             attacker ??= Server.Host;
             if (!InventoryItemLoader.TryGetItem(item, out ThrowableItem throwableItem))
                 return;
-            ExplosionUtils.ServerSpawnEffect(position, item);
 
-            if (throwableItem.Projectile is ExplosionGrenade explosionGrenade)
-                ExplosionGrenade.Explode(attacker.Footprint, position, explosionGrenade);
+            if (Object.Instantiate(throwableItem.Projectile) is TimeGrenade timedGrenadePickup)
+            {
+                timedGrenadePickup.PreviousOwner = attacker.Footprint;
+                timedGrenadePickup.Position = position;
+                timedGrenadePickup.ServerFuseEnd();
+            }
         }
 
         /// <summary>
@@ -410,6 +421,9 @@ namespace Exiled.API.Features
             Firearm.ItemTypeToFirearmInstance.Clear();
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
+
+            Scp914Processor.ProcessorToWrapper.Clear();
+            Workstation.BaseToWrapper.Clear();
         }
     }
 }

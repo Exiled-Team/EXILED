@@ -11,7 +11,9 @@ namespace Exiled.Events.EventArgs.Scp914
 
     using API.Features;
     using API.Features.Items;
+    using Exiled.API.Features.Scp914Processors;
     using global::Scp914;
+    using global::Scp914.Processors;
     using Interfaces;
     using InventorySystem.Items;
 
@@ -32,15 +34,19 @@ namespace Exiled.Events.EventArgs.Scp914
         /// <param name="knobSetting">
         /// <inheritdoc cref="KnobSetting" />
         /// </param>
+        /// <param name="processor">
+        /// <inheritdoc cref="Processor"/>
+        /// </param>
         /// <param name="isAllowed">
         /// <inheritdoc cref="IsAllowed" />
         /// </param>
-        public UpgradingInventoryItemEventArgs(Player player, ItemBase item, Scp914KnobSetting knobSetting, bool isAllowed = true)
+        public UpgradingInventoryItemEventArgs(Player player, ItemBase item, Scp914KnobSetting knobSetting, Scp914ItemProcessor processor, bool isAllowed = true)
         {
             Player = player;
             Item = Item.Get(item);
             KnobSetting = knobSetting;
             IsAllowed = isAllowed;
+            Processor = Scp914Processor.Get(processor);
         }
 
         /// <summary>
@@ -53,6 +59,11 @@ namespace Exiled.Events.EventArgs.Scp914
         /// Gets or sets SCP-914 working knob setting.
         /// </summary>
         public Scp914KnobSetting KnobSetting { get; set; }
+
+        /// <summary>
+        /// Gets or sets a <see cref="Scp914Processor"/> that will be used for upgrading item.
+        /// </summary>
+        public Scp914Processor Processor { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the upgrade is successful.
