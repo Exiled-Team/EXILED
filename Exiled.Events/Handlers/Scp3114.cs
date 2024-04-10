@@ -48,7 +48,7 @@ namespace Exiled.Events.Handlers
         public static Event<VoiceLinesEventArgs> VoiceLines { get; set; } = new();
 
         /// <summary>
-        /// Invoked before SCP-3314 starts or stops dancing.
+        /// Invoked before SCP-3314 changes its dancing status.
         /// </summary>
         public static Event<DancingEventArgs> Dancing { get; set; } = new();
 
