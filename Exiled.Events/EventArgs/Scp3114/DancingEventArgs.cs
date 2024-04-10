@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs.Scp3114
         public bool IsDancing { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-3114 will dance.
+        /// Gets or sets the bound dance.
         /// </summary>
         public DanceType DanceType
         {
