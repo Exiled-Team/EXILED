@@ -18,6 +18,7 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Scp914Processors;
     using Exiled.API.Features.Toys;
     using global::Hazards;
     using InventorySystem;
@@ -337,11 +338,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Places a decal.
+        /// </summary>
+        /// <param name="position">The position of the blood decal.</param>
+        /// <param name="direction">The direction of the blood decal.</param>
+        /// <param name="type">The type of decal to place.</param>
+        public static void PlaceDecal(Vector3 position, Vector3 direction, DecalPoolType type) => new GunDecalMessage(position, direction, type).SendToAuthenticated(0);
+
+        /// <summary>
         /// Places a blood decal.
         /// </summary>
         /// <param name="position">The position of the blood decal.</param>
         /// <param name="direction">The direction of the blood decal.</param>
-        public static void PlaceBlood(Vector3 position, Vector3 direction) => new GunDecalMessage(position, direction, DecalPoolType.Blood).SendToAuthenticated(0);
+        public static void PlaceBlood(Vector3 position, Vector3 direction) => PlaceDecal(position, direction, DecalPoolType.Blood);
 
         /// <summary>
         /// Gets all the near cameras.
@@ -404,6 +413,8 @@ namespace Exiled.API.Features
             Locker.BaseToExiledLockers.Clear();
 
             Chamber.Chambers.Clear();
+
+            Scp914Processor.ProcessorToWrapper.Clear();
 
             Workstation.BaseToWrapper.Clear();
         }
