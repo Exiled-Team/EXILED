@@ -222,7 +222,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets a dance type that SCP-3114 will have./>.
+        /// Gets or sets the bound dance.
         /// </summary>
         internal DanceType DanceType { get; set; }
 
