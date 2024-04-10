@@ -8,7 +8,7 @@
 namespace Exiled.API.Enums
 {
     /// <summary>
-    /// Gets all SCP-3114 dance types.
+    /// All available dance variants being used by SCP-3114.
     /// </summary>
     public enum DanceType : byte
     {
