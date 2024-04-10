@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Scp3114
     using Exiled.Events.Patches.Events.Scp3114;
 
     /// <summary>
-    /// Contains all information before SCP-3114 starts or stops dancing.
+    /// Contains all information before SCP-3114 changes its dancing status.
     /// </summary>
     public class DancingEventArgs : IDeniableEvent, IScp3114Event
     {
