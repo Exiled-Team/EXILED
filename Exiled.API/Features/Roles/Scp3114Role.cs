@@ -255,7 +255,7 @@ namespace Exiled.API.Features.Roles
         public void StopDancing() => Dance.SendRpc(x => x.IsDancing = false);
 
         /// <summary>
-        /// Make Scp3114 Dancing.
+        /// Starts the dancing process.
         /// </summary>
         /// <param name="danceType">Wish <see cref="DanceType"/> than Scp3114 will do.</param>
         public void StatDancing(DanceType danceType) => Dance.SendRpc((x) =>
