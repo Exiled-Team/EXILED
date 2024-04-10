@@ -1856,7 +1856,7 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if the weapon flashlight toggle request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
         public bool ToggleWeaponFlashlight()
         {
-            if (RoleManager.CurrentRole is not IFpcRole fpc || CurrentItem is not Firearm firearm)
+            if (RoleManager.CurrentRole is not IFpcRole || CurrentItem is not Firearm firearm)
                 return false;
 
             bool oldCheck = firearm.FlashlightEnabled; // Temporary Solution
