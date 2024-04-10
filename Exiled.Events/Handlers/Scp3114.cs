@@ -94,7 +94,7 @@ namespace Exiled.Events.Handlers
         public static void OnVoiceLines(VoiceLinesEventArgs ev) => VoiceLines.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before SCP-3314 starts or stops dancing.
+        /// Called before SCP-3314 changes its dancing status.
         /// </summary>
         /// <param name="ev">The <see cref="DancingEventArgs"/> instance.</param>
         public static void OnDancing(DancingEventArgs ev) => Dancing.InvokeSafely(ev);
