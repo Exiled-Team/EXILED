@@ -2216,10 +2216,10 @@ namespace Exiled.API.Features
         /// <param name="overrideMaxHealth">Whether or not healing should exceed their max health.</param>
         public void Heal(float amount, bool overrideMaxHealth = false)
         {
-            if (overrideMaxHealth && amount + Health > MaxHealth)
-                MaxHealth = amount;
-
-            Health += amount;
+            if (overrideMaxHealth)
+                Health += amount;
+            else
+                Health = Mathf.Min(Health + amount, MaxHealth);
         }
 
         /// <summary>
