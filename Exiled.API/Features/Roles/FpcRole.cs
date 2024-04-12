@@ -46,6 +46,16 @@ namespace Exiled.API.Features.Roles
         public FpcStandardRoleBase FirstPersonController { get; }
 
         /// <summary>
+        /// Gets the <see cref="FirstPersonMovementModule"/>.
+        /// </summary>
+        public FirstPersonMovementModule MovementModule => FirstPersonController.FpcModule;
+
+        /// <summary>
+        /// Gets the <see cref="CharacterController"/>.
+        /// </summary>
+        public CharacterController CharacterController => FirstPersonController.FpcModule.CharController;
+
+        /// <summary>
         /// Gets or sets the player's relative position.
         /// </summary>
         public RelativePosition RelativePosition

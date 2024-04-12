@@ -47,12 +47,12 @@ namespace Exiled.API.Features
     using NorthwoodLib;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.RoleAssign;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
     using PlayerStatsSystem;
     using PluginAPI.Core;
-
     using RelativePositioning;
     using RemoteAdmin;
     using Respawning.NamingRules;
@@ -1584,6 +1584,29 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if the record was successfully added, or <see langword="false"/> if the provided UserId already is in whitelist.</returns>
         /// <seealso cref="AddToWhitelist(string, bool)"/>
         public bool GrantWhitelist(bool isPermanent) => AddToWhitelist(UserId, isPermanent);
+
+        /// <summary>
+        /// Gets vision information based on the specified target player and optional mask layer.
+        /// </summary>
+        /// <param name="target">The Player to target.</param>
+        /// <param name="maskLayer">The mask layer to use (default is 0).</param>
+        /// <returns>A <see cref="VisionInformation"/> object containing the provided information.</returns>
+        public VisionInformation GetVisionInformation(Player target, int maskLayer = 0) =>
+            VisionInformation.GetVisionInformation(ReferenceHub, CameraTransform, target.Position, target.Role is FpcRole fpc ? fpc.CharacterController.radius : 0, 0, true, true, maskLayer, true);
+
+        /// <summary>
+        /// Gets vision information based on the specified target position and optional parameters.
+        /// </summary>
+        /// <param name="target">The target position as a <see cref="Vector3"/>.</param>
+        /// <param name="radius">The radius to check (default is 0).</param>
+        /// <param name="visionTriggerDistance">The vision trigger distance (default is 0).</param>
+        /// <param name="checkFog">Specifies whether to check fog (default is true).</param>
+        /// <param name="checkLineOfSight">Specifies whether to check Line of Sight (default is true).</param>
+        /// <param name="maskLayer">The mask layer to use (default is 0).</param>
+        /// <param name="checkInDarkness">Specifies whether to check if the player is in darkness (default is true).</param>
+        /// <returns>A <see cref="VisionInformation"/> object based on the provided information.</returns>
+        public VisionInformation GetVisionInformation(Vector3 target, float radius = 0f, float visionTriggerDistance = 0f, bool checkFog = true, bool checkLineOfSight = true, int maskLayer = 0, bool checkInDarkness = true) =>
+            VisionInformation.GetVisionInformation(ReferenceHub, CameraTransform, target, radius, visionTriggerDistance, checkFog, checkLineOfSight, maskLayer, checkInDarkness);
 
         /// <summary>
         /// Tries to add <see cref="RoleTypeId"/> to FriendlyFire rules.
