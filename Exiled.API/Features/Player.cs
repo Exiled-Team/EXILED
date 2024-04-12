@@ -2230,7 +2230,7 @@ namespace Exiled.API.Features
             if (overrideMaxHealth)
                 Health += amount;
             else
-                Health = Mathf.Min(Health + amount, MaxHealth);
+                healthStat.ServerHeal(amount);
         }
 
         /// <summary>
