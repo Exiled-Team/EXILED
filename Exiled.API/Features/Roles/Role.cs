@@ -54,7 +54,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets an array of all <see cref="RoleTypeId"/>.
         /// </summary>
-        public static IEnumerable<RoleTypeId> AllRoles => EnumExtensions.QueryEnumValue<RoleTypeId>();
+        public static IEnumerable<RoleTypeId> AllRoles { get; } = EnumExtensions.QueryValues<RoleTypeId>();
 
         /// <summary>
         /// Gets a shuffled list of all possible <see cref="RoleTypeId"/>.
@@ -220,6 +220,7 @@ namespace Exiled.API.Features.Roles
             IEnumerable<RoleTypeId> roles = includeNonPlayableRoles
                 ? ShuffledAllRoles.Except(except ?? Enumerable.Empty<RoleTypeId>())
                 : ShuffledAllRoles.RemoveSpecified(r => RoleExtensions.GetTeam(r) == Team.Dead).Except(except ?? Enumerable.Empty<RoleTypeId>());
+
             return roles.FirstOrDefault();
         }
 
