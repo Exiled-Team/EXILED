@@ -18,126 +18,126 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Default.
         /// </summary>
-        Default = 2 >> 0,
+        Default = 1 << 0,
 
         /// <summary>
         /// TransparentFX.
         /// </summary>
-        TransparentFX = 2 >> 1,
+        TransparentFX = 1 << 1,
 
         /// <summary>
         /// IgnoreRaycast.
         /// </summary>
-        IgnoreRaycast = 2 >> 2,
+        IgnoreRaycast = 1 << 2,
 
         /// <summary>
         /// Water.
         /// </summary>
-        Water = 2 >> 4,
+        Water = 1 << 4,
 
         /// <summary>
         /// UI.
         /// </summary>
-        UI = 2 >> 5,
+        UI = 1 << 5,
 
         /// <summary>
         /// Player.
         /// </summary>
-        Player = 2 >> 8,
+        Player = 1 << 8,
 
         /// <summary>
         /// Pickup.
         /// </summary>
-        Pickup = 2 >> 9,
+        Pickup = 1 << 9,
 
         /// <summary>
         /// Viewmodel.
         /// </summary>
-        Viewmodel = 2 >> 10,
+        Viewmodel = 1 << 10,
 
         /// <summary>
         /// Light.
         /// </summary>
-        Light = 2 >> 12,
+        Light = 1 << 12,
 
         /// <summary>
         /// Hitbox.
         /// </summary>
-        Hitbox = 2 >> 13,
+        Hitbox = 1 << 13,
 
         /// <summary>
         /// Glass.
         /// </summary>
-        Glass = 2 >> 14,
+        Glass = 1 << 14,
 
         /// <summary>
         /// InvisibleCollider.
         /// </summary>
-        InvisibleCollider = 2 >> 16,
+        InvisibleCollider = 1 << 16,
 
         /// <summary>
         /// Ragdoll.
         /// </summary>
-        Ragdoll = 2 >> 17,
+        Ragdoll = 1 << 17,
 
         /// <summary>
         /// CCTV.
         /// </summary>
-        CCTV = 2 >> 18,
+        CCTV = 1 << 18,
 
         /// <summary>
         /// Interface079.
         /// </summary>
-        Interface079 = 2 >> 19,
+        Interface079 = 1 << 19,
 
         /// <summary>
         /// Grenade.
         /// </summary>
-        Grenade = 2 >> 20,
+        Grenade = 1 << 20,
 
         /// <summary>
         /// Phantom.
         /// </summary>
-        Phantom = 2 >> 21,
+        Phantom = 1 << 21,
 
         /// <summary>
         /// Icon.
         /// </summary>
-        Icon = 2 >> 22,
+        Icon = 1 << 22,
 
         /// <summary>
         /// PostProcessingLayer.
         /// </summary>
-        PostProcessingLayer = 2 >> 23,
+        PostProcessingLayer = 1 << 23,
 
         /// <summary>
         /// DestroyedDoor.
         /// </summary>
-        DestroyedDoor = 2 >> 25,
+        DestroyedDoor = 1 << 25,
 
         /// <summary>
         /// Door.
         /// </summary>
-        Door = 2 >> 27,
+        Door = 1 << 27,
 
         /// <summary>
         /// BreakableGlass.
         /// </summary>
-        BreakableGlass = 2 >> 28,
+        BreakableGlass = 1 << 28,
 
         /// <summary>
         /// Blood_Decals.
         /// </summary>
-        Blood_Decals = 2 >> 29,
+        Blood_Decals = 1 << 29,
 
         /// <summary>
         /// Locker.
         /// </summary>
-        Locker = 2 >> 30,
+        Locker = 1 << 30,
 
         /// <summary>
         /// SCP018.
         /// </summary>
-        SCP018 = 2 >> 31,
+        SCP018 = 1 << 31,
     }
 }
