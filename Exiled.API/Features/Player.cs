@@ -1603,8 +1603,8 @@ namespace Exiled.API.Features
         /// <param name="target">The Player to target.</param>
         /// <param name="maskLayer">The mask layer to use (default is 0).</param>
         /// <returns>A <see cref="VisionInformation"/> object containing the provided information.</returns>
-        public VisionInformation GetVisionInformation(Player target, int maskLayer = 0) =>
-            VisionInformation.GetVisionInformation(ReferenceHub, CameraTransform, target.Position, target.Role is FpcRole fpc ? fpc.CharacterController.radius : 0, 0, true, true, maskLayer, true);
+        public VisionInformation GetVisionInformation(Player target, LayerMaskFlags maskLayer = 0) =>
+            VisionInformation.GetVisionInformation(ReferenceHub, CameraTransform, target.Position, target.Role is FpcRole fpc ? fpc.CharacterController.radius : 0, 0, true, true, (int)maskLayer, true);
 
         /// <summary>
         /// Gets vision information based on the specified target position and optional parameters.
@@ -1617,8 +1617,8 @@ namespace Exiled.API.Features
         /// <param name="maskLayer">The mask layer to use (default is 0).</param>
         /// <param name="checkInDarkness">Specifies whether to check if the player is in darkness (default is true).</param>
         /// <returns>A <see cref="VisionInformation"/> object based on the provided information.</returns>
-        public VisionInformation GetVisionInformation(Vector3 target, float radius = 0f, float visionTriggerDistance = 0f, bool checkFog = true, bool checkLineOfSight = true, int maskLayer = 0, bool checkInDarkness = true) =>
-            VisionInformation.GetVisionInformation(ReferenceHub, CameraTransform, target, radius, visionTriggerDistance, checkFog, checkLineOfSight, maskLayer, checkInDarkness);
+        public VisionInformation GetVisionInformation(Vector3 target, float radius = 0f, float visionTriggerDistance = 0f, bool checkFog = true, bool checkLineOfSight = true, LayerMaskFlags maskLayer = 0, bool checkInDarkness = true) =>
+            VisionInformation.GetVisionInformation(ReferenceHub, CameraTransform, target, radius, visionTriggerDistance, checkFog, checkLineOfSight, (int)maskLayer, checkInDarkness);
 
         /// <summary>
         /// Tries to add <see cref="RoleTypeId"/> to FriendlyFire rules.
