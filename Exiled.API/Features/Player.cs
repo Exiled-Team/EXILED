@@ -856,7 +856,6 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the player's health.
-        /// If the health is greater than the <see cref="MaxHealth"/>, the MaxHealth will also be changed to match the health.
         /// </summary>
         public float Health
         {
