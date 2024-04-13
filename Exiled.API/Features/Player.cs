@@ -1812,6 +1812,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Tries to remove <see cref="RoleTypeId"/> from FriendlyFire rules.
         /// </summary>
+        /// <param name="roles"> Roles to remove from friendly fire rules. </param>
+        public void TryRemoveFriendlyFire(List<RoleTypeId> roles)
+        {
+            foreach(RoleTypeId roleType in roles)
+            {
+                FriendlyFireMultiplier.Remove(roleType);
+            }
+        }
+
+        /// <summary>
+        /// Tries to remove <see cref="RoleTypeId"/> from FriendlyFire rules.
+        /// </summary>
         /// <param name="role"> Role to add. </param>
         /// <returns> Whether or not the item was able to be added. </returns>
         public bool TryRemoveCustomeRoleFriendlyFire(string role) => CustomRoleFriendlyFireMultiplier.Remove(role);
