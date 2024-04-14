@@ -1812,7 +1812,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Tries to remove a <see cref="IEnumerable{T}"/> of <see cref="RoleTypeId"/> from FriendlyFire rules.
         /// </summary>
-        /// <param name="roles"> Roles to remove from friendly fire rules. </param>
+        /// <param name="roles"> The <see cref="IEnumerable{T}"/> of <see cref="RoleTypeId"/> to remove. </param>
         public void TryRemoveFriendlyFire(List<RoleTypeId> roles)
         {
             foreach(RoleTypeId roleType in roles)
