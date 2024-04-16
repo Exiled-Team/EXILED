@@ -51,6 +51,7 @@ namespace Exiled.Installer
         private static readonly string Header = $"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}";
 
         private static readonly GitHubClient GitHubClient = new(new ProductHeaderValue(Header));
+        static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB" };
 
         // Force use of LF because the file uses LF
         private static readonly Dictionary<string, string> Markup = Resources.Markup.Trim().Split('\n').ToDictionary(s => s.Split(':')[0], s => s.Split(':', 2)[1]);
@@ -168,7 +169,7 @@ namespace Exiled.Installer
             return builder.ToString().Trim('\r', '\n');
         }
 
-        private static string FormatAsset(ReleaseAsset a) => $"ID: {a.Id} | NAME: {a.Name} | SIZE: {a.Size} | URL: {a.Url} | DownloadURL: {a.BrowserDownloadUrl}";
+        private static string FormatAsset(ReleaseAsset a) => $"ID: {a.Id} | NAME: {a.Name} | SIZE: {a.Size} ({GetSizeSuffix(a.Size)}) | URL: {a.Url} | DownloadURL: {a.BrowserDownloadUrl}";
 
         private static void ResolvePath(string filePath, string folderPath, out string path) => path = Path.Combine(folderPath, filePath);
 
@@ -300,6 +301,27 @@ namespace Exiled.Installer
             }
 
             return enumerable.First();
+        }
+        private static string GetSizeSuffix(long value, int decimalPlaces = 1)
+        {
+            if (decimalPlaces < 0) { throw new ArgumentOutOfRangeException("decimalPlaces"); }
+            switch (value)
+            {
+                case < 0:
+                    return "-" + GetSizeSuffix(-value, decimalPlaces);
+                case 0:
+                    return string.Format("{0:n" + decimalPlaces + "} bytes", 0);
+            }
+
+            int magnitude = (int)Math.Log(value, 1024);
+            decimal adjustedSize = (decimal)value / (1L << (magnitude * 10));
+            if (Math.Round(adjustedSize, decimalPlaces) >= 1000)
+            {
+                magnitude += 1;
+                adjustedSize /= 1024;
+            }
+
+            return string.Format("{0:n" + decimalPlaces + "} {1}", adjustedSize, SizeSuffixes[magnitude]);
         }
     }
 }
