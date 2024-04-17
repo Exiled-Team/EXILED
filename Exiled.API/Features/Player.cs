@@ -93,6 +93,8 @@ namespace Exiled.API.Features
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
         private Role role;
+        private List<sbyte> categoryLimits;
+        private List<ServerConfigSynchronizer.AmmoLimit> ammoLimits;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -2497,16 +2499,43 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="type">The <see cref="AmmoType"/> of the ammo to check.</param>
         /// <returns>The maximum amount of ammo this player can carry. Guaranteed to be between <c>0</c> and <see cref="ServerConfigSynchronizer.AmmoLimit"/>.</returns>
-        public int GetAmmoLimit(AmmoType type) =>
+        public ushort GetAmmoLimit(AmmoType type) =>
             InventorySystem.Configs.InventoryLimits.GetAmmoLimit(type.GetItemType(), referenceHub);
+
+        /// <summary>
+        /// Gets the maximum amount of ammo the player can hold, given the ammo <see cref="AmmoType"/>.
+        /// This method factors in the armor the player is wearing, as well as server configuration.
+        /// For the maximum amount of ammo that can be given regardless of worn armor and server configuration, see <see cref="ServerConfigSynchronizer.AmmoLimit"/>.
+        /// </summary>
+        /// <param name="ammotype">The <see cref="AmmoType"/> of the ammo to check.</param>
+        /// <param name="value">The <see cref="ushort"/> number that will define the new limit.</param>
+        public void SetAmmoLimit(AmmoType ammotype, ushort value)
+        {
+            ItemType itemtype = ammotype.GetItemType();
+            int index = ammoLimits.FindIndex(x => x.AmmoType == itemtype);
+            ammoLimits ??= ServerConfigSynchronizer.Singleton.AmmoLimitsSync.ToList();
+            ServerConfigSynchronizer.Singleton.AmmoLimitsSync.AddOperation(SyncList<ServerConfigSynchronizer.AmmoLimit>.Operation.OP_SET, index, ammoLimits[index], new() { Limit = value, AmmoType = itemtype }, false);
+        }
 
         /// <summary>
         /// Gets the maximum amount of an <see cref="ItemCategory"/> the player can hold, based on the armor the player is wearing, as well as server configuration.
         /// </summary>
         /// <param name="category">The <see cref="ItemCategory"/> to check.</param>
         /// <returns>The maximum amount of items in the category that the player can hold.</returns>
-        public int GetCategoryLimit(ItemCategory category) =>
+        public sbyte GetCategoryLimit(ItemCategory category) =>
             InventorySystem.Configs.InventoryLimits.GetCategoryLimit(category, referenceHub);
+
+        /// <summary>
+        /// Set the maximum amount of an <see cref="ItemCategory"/> the player can hold, based on the armor the player is wearing, as well as server configuration.
+        /// </summary>
+        /// <param name="category">The <see cref="ItemCategory"/> to check.</param>
+        /// <param name="value">The <see cref="int"/> number that will define the new limit.</param>
+        public void SetCategoryLimit(ItemCategory category, sbyte value)
+        {
+            categoryLimits ??= ServerConfigSynchronizer.Singleton.CategoryLimits.ToList();
+            categoryLimits[(int)category] = value;
+            ServerConfigSynchronizer.Singleton.CategoryLimits.AddOperation(SyncList<sbyte>.Operation.OP_SET, (int)category, categoryLimits[(int)category], value, false);
+        }
 
         /// <summary>
         /// Adds an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.

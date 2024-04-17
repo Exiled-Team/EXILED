@@ -40,6 +40,7 @@ namespace Exiled.API.Extensions
         private static readonly ReadOnlyDictionary<string, string> ReadOnlyRpcFullNamesValue = new(RpcFullNamesValue);
         private static MethodInfo setDirtyBitsMethodInfoValue;
         private static MethodInfo sendSpawnMessageMethodInfoValue;
+        private static MethodInfo addOperationMethodInfo;
 
         /// <summary>
         /// Gets <see cref="MethodInfo"/> corresponding to <see cref="Type"/>.
@@ -140,6 +141,20 @@ namespace Exiled.API.Extensions
         /// Gets a NetworkServer.SendSpawnMessage's <see cref="MethodInfo"/>.
         /// </summary>
         public static MethodInfo SendSpawnMessageMethodInfo => sendSpawnMessageMethodInfoValue ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
+
+        /// <summary>
+        /// Gets a SyncList{T}.AddOperation's <see cref="MethodInfo"/>.
+        /// </summary>
+        public static MethodInfo AddOperationMethodInfo => addOperationMethodInfo ??= typeof(SyncList<>).GetMethod("AddOperation", BindingFlags.NonPublic | BindingFlags.Static);
+
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning disable SA1600 // Elements should be documented
+        public static void AddOperation<T>(this SyncList<T> synclist, SyncList<T>.Operation op, int itemIndex, T oldItem, T newItem, bool checkAccess)
+        {
+            AddOperationMethodInfo.Invoke(synclist, new object[] { op, itemIndex, oldItem, newItem, checkAccess, });
+        }
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning restore SA1600 // Elements should be documented
 
         /// <summary>
         /// Plays a beep sound that only the target <paramref name="player"/> can hear.
