@@ -88,13 +88,17 @@ namespace Exiled.API.Features
         /// A list of the player's items.
         /// </summary>
         internal readonly List<Item> ItemsValue = new(8);
+#pragma warning disable SA1307 // Accessible fields should begin with upper-case letter
+#pragma warning disable SA1600 // Elements should be documented
+        internal List<sbyte> categoryLimits;
+        internal List<ServerConfigSynchronizer.AmmoLimit> ammoLimits;
+#pragma warning restore SA1600 // Elements should be documented
+#pragma warning restore SA1307 // Accessible fields should begin with upper-case letter
 #pragma warning restore SA1401
 
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
         private Role role;
-        private List<sbyte> categoryLimits;
-        private List<ServerConfigSynchronizer.AmmoLimit> ammoLimits;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
