@@ -885,7 +885,7 @@ namespace Exiled.API.Features
         /// </summary>
         public float ArtificialHealth
         {
-            get => ActiveArtificialHealthProcesses.FirstOrDefault()?.CurrentAmount ?? 0f;
+            get => ActiveArtificialHealthProcesses.Max(process => process.CurrentAmount);
             set
             {
                 if (value > MaxArtificialHealth)
