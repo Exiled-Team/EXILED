@@ -665,5 +665,15 @@ namespace Exiled.API.Features.Items
             Base._sendStatusNextFrame = true;
             Base._footprintValid = false;
         }
+
+        /// <inheritdoc/>
+        internal override void ReadPickupInfo(Pickup pickup)
+        {
+            base.ReadPickupInfo(pickup);
+            if (pickup is Pickups.FirearmPickup firearm)
+            {
+                MaxAmmo = firearm.MaxAmmo;
+            }
+        }
     }
 }

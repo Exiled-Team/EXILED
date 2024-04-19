@@ -7,11 +7,13 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
-
+    using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
 
     using BaseFirearm = InventorySystem.Items.Firearms.FirearmPickup;
+    using FirearmItem = InventorySystem.Items.Firearms.Firearm;
 
     /// <summary>
     /// A wrapper class for a Firearm pickup.
@@ -43,6 +45,11 @@ namespace Exiled.API.Features.Pickups
         /// Gets the <see cref="BaseFirearm"/> that this class is encapsulating.
         /// </summary>
         public new BaseFirearm Base { get; }
+
+        /// <summary>
+        /// Gets or sets the max ammo the Firearm can have.
+        /// </summary>
+        public byte MaxAmmo { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the pickup is already distributed.
@@ -94,5 +101,25 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <returns>A string containing FirearmPickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{IsDistributed}| -{Ammo}-";
+
+        /// <inheritdoc/>
+        internal override void ReadItemInfo(Item item)
+        {
+            base.ReadItemInfo(item);
+
+            if (item is Items.Firearm firearm)
+            {
+                MaxAmmo = firearm.MaxAmmo;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void InitializeProperties(ItemBase itemBase)
+        {
+            if (itemBase is FirearmItem firearm)
+            {
+                MaxAmmo = firearm.AmmoManagerModule.MaxAmmo;
+            }
+        }
     }
 }
