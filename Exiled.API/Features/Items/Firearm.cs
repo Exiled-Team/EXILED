@@ -632,9 +632,7 @@ namespace Exiled.API.Features.Items
                 Ammo = Ammo,
             };
 
-            if (cloneableItem.Base is AutomaticFirearm)
-                cloneableItem.Recoil = Recoil;
-
+            cloneableItem.Recoil = Recoil;
             cloneableItem.AddAttachment(AttachmentIdentifiers);
 
             return cloneableItem;
@@ -673,6 +671,7 @@ namespace Exiled.API.Features.Items
             if (pickup is Pickups.FirearmPickup firearm)
             {
                 MaxAmmo = firearm.MaxAmmo;
+                Recoil = firearm.Recoil;
             }
         }
     }

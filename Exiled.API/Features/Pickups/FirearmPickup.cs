@@ -7,6 +7,9 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using CameraShaking;
+    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using InventorySystem.Items;
@@ -47,9 +50,14 @@ namespace Exiled.API.Features.Pickups
         public new BaseFirearm Base { get; }
 
         /// <summary>
-        /// Gets or sets the max ammo the Firearm can have.
+        /// Gets the <see cref="Enums.FirearmType"/> of the firearm.
         /// </summary>
-        public byte MaxAmmo { get; set; }
+        public FirearmType FirearmType => Type.GetFirearmType();
+
+        /// <summary>
+        /// Gets the <see cref="Enums.AmmoType"/> of the firearm.
+        /// </summary>
+        public AmmoType AmmoType => FirearmType.GetWeaponAmmoType();
 
         /// <summary>
         /// Gets or sets a value indicating whether the pickup is already distributed.
@@ -79,6 +87,11 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
+        /// Gets or sets the max ammo the Firearm can have.
+        /// </summary>
+        public byte MaxAmmo { get; set; }
+
+        /// <summary>
         /// Gets or sets the <see cref="FirearmStatusFlags"/>.
         /// </summary>
         public FirearmStatusFlags Flags
@@ -86,6 +99,12 @@ namespace Exiled.API.Features.Pickups
             get => Base.NetworkStatus.Flags;
             set => Base.NetworkStatus = new(Base.NetworkStatus.Ammo, value, Base.NetworkStatus.Attachments);
         }
+
+        /// <summary>
+        /// Gets or sets the recoil settings of the firearm, if it's an automatic weapon.
+        /// </summary>
+        /// <remarks>This property will not do anything if the firearm is not an automatic weapon.</remarks>
+        public RecoilSettings Recoil { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the attachment code have this <see cref="FirearmPickup"/>.
@@ -110,15 +129,18 @@ namespace Exiled.API.Features.Pickups
             if (item is Items.Firearm firearm)
             {
                 MaxAmmo = firearm.MaxAmmo;
+                Recoil = firearm.Recoil;
             }
         }
 
         /// <inheritdoc/>
         protected override void InitializeProperties(ItemBase itemBase)
         {
+            base.InitializeProperties(itemBase);
             if (itemBase is FirearmItem firearm)
             {
                 MaxAmmo = firearm.AmmoManagerModule.MaxAmmo;
+                Recoil = firearm is AutomaticFirearm auto ? auto._recoil : default;
             }
         }
     }
