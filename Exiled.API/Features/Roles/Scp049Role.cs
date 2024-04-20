@@ -26,7 +26,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-049.
     /// </summary>
-    public class Scp049Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp049Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
     {
         private readonly ConstProperty<double> callAbilityDuration = new(Scp049CallAbility.EffectDuration, typeof(Scp049CallAbility));
         private readonly ConstProperty<double> callAbilityBaseCooldown = new(Scp049CallAbility.BaseCooldown, typeof(Scp049CallAbility));
