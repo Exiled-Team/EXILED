@@ -74,12 +74,10 @@ namespace Exiled.API.Features.Core.Modifications
             get => value;
             set
             {
-                if (!patched && !EqualityComparer<T>.Default.Equals(StandardValue, value))
-                {
-                    Patch();
-                }
-
                 this.value = value;
+
+                if (!patched && !EqualityComparer<T>.Default.Equals(StandardValue, value))
+                    Patch();
             }
         }
 

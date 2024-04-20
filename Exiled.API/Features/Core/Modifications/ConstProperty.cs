@@ -76,10 +76,7 @@ namespace Exiled.API.Features.Core.Modifications
                 this.value = value;
 
                 if (!patched && !EqualityComparer<T>.Default.Equals(value, ConstantValue))
-                {
                     Patch();
-                    patched = true;
-                }
             }
         }
 
