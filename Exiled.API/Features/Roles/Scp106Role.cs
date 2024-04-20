@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Enums;
     using Exiled.API.Features.Core.Modifications;
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.Subroutines;
@@ -23,7 +24,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-106.
     /// </summary>
-    public class Scp106Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp106Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
     {
         private readonly ConstProperty<float> vigorStalkCostStationary = new(Scp106StalkAbility.VigorStalkCostStationary, typeof(Scp106StalkAbility));
         private readonly ConstProperty<float> vigorStalkCostMoving = new(Scp106StalkAbility.VigorStalkCostMoving, typeof(Scp106StalkAbility));

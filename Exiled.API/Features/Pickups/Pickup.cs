@@ -290,6 +290,11 @@ namespace Exiled.API.Features.Pickups
         public bool IsSpawned { get; internal set; }
 
         /// <summary>
+        /// Gets a <see cref="API.Features.Lift"/> in which pickup is now. Can be <see langword="null"/>.
+        /// </summary>
+        public Lift Lift => Lift.Get(Position);
+
+        /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.
         /// </summary>
         /// <param name="pickupBase">The <see cref="ItemPickupBase"/> to convert into a <see cref="Pickup"/>.</param>
