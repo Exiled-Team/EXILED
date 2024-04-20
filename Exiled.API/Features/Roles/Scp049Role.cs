@@ -11,7 +11,7 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using CustomPlayerEffects;
-    using Exiled.API.Features.Core.ConstProperties;
+    using Exiled.API.Features.Core.Modifications;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;

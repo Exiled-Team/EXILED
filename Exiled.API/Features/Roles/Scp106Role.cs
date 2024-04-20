@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
-    using Exiled.API.Features.Core.ConstProperties;
+    using Exiled.API.Features.Core.Modifications;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp106;

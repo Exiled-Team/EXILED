@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Core.ConstProperties
+namespace Exiled.API.Features.Core.Modifications
 {
     using System;
     using System.Collections.Generic;
@@ -111,7 +111,7 @@ namespace Exiled.API.Features.Core.ConstProperties
         /// <param name="constValue">A game's constant value.</param>
         /// <param name="type">Type where this constant is using.</param>
         /// <returns>The <see cref="ConstProperty{T}"/> instance or <see langword="null"/>.</returns>
-        internal static ConstProperty<T> Get(T constValue, Type type) => List.Find(x => x.TypesToPatch.Contains(type) && typeof(T) == x.ConstantValue.GetType() && EqualityComparer<T>.Default.Equals(constValue, x.ConstantValue));
+        internal static ConstProperty<T> Get(T constValue, Type type) => List.Find(x => Enumerable.Contains(x.TypesToPatch, type) && typeof(T) == x.ConstantValue.GetType() && EqualityComparer<T>.Default.Equals(constValue, x.ConstantValue));
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
         {
@@ -125,57 +125,32 @@ namespace Exiled.API.Features.Core.ConstProperties
                     continue;
                 }
 
+                ConstProperty<T> property = Get((T)instruction.operand, currentType);
+
+                if (property == null)
+                {
+                    yield return instruction;
+                    continue;
+                }
+
                 switch (Type.GetTypeCode(typeof(T)))
                 {
                     case TypeCode.Int16 or TypeCode.Int32 or TypeCode.Int64 or TypeCode.Boolean or TypeCode.Byte or TypeCode.SByte or TypeCode.UInt16 or TypeCode.UInt32 or TypeCode.UInt64:
-
-                        ConstProperty<T> property = Get((T)instruction.operand, currentType);
-
-                        if (instruction.opcode == OpCodes.Ldc_I4_S || instruction.opcode == OpCodes.Ldc_I4 || instruction.opcode == OpCodes.Ldc_I8)
-                        {
-                            yield return new(instruction.opcode, property.Value);
-                            continue;
-                        }
-
-                        yield return new(OpCodes.Ldc_I4_S, property.Value);
+                        yield return new(OpCodes.Ldc_I4_S, Convert.ToInt32(property.Value));
                         continue;
                     case TypeCode.Char or TypeCode.String:
-
-                        property = Get((T)instruction.operand, currentType);
-
-                        if (property == null)
-                            break;
-
                         yield return new(OpCodes.Ldstr, property.Value);
                         continue;
                     case TypeCode.Single:
-
-                        property = Get((T)instruction.operand, currentType);
-
-                        if (property == null)
-                            break;
-
                         yield return new(OpCodes.Ldc_R4, property.Value);
                         continue;
                     case TypeCode.Double:
-
-                        property = Get((T)instruction.operand, currentType);
-
-                        if (property == null)
-                            break;
-
                         yield return new(OpCodes.Ldc_R8, property.Value);
                         continue;
                     case TypeCode.Empty:
                         yield return instruction;
                         continue;
                     case TypeCode.Object:
-
-                        property = Get((T)instruction.operand, currentType);
-
-                        if (property == null)
-                            break;
-
                         yield return new(instruction.opcode, property.Value);
                         continue;
                 }
