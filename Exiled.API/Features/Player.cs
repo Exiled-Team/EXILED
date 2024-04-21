@@ -885,17 +885,8 @@ namespace Exiled.API.Features
         /// </summary>
         public float ArtificialHealth
         {
-            get => ActiveArtificialHealthProcesses.Max(process => process.CurrentAmount);
-            set
-            {
-                if (value > MaxArtificialHealth)
-                    MaxArtificialHealth = value;
-
-                AhpStat.AhpProcess ahp = ActiveArtificialHealthProcesses.FirstOrDefault();
-
-                if (ahp is not null)
-                    ahp.CurrentAmount = value;
-            }
+            get => AhpStat.CurValue;
+            set => AhpStat.CurValue = value;
         }
 
         /// <summary>
@@ -903,18 +894,19 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxArtificialHealth
         {
-            get => ActiveArtificialHealthProcesses.FirstOrDefault()?.Limit ?? 0f;
-            set
-            {
-                if (!ActiveArtificialHealthProcesses.Any())
-                    AddAhp(value);
-
-                AhpStat.AhpProcess ahp = ActiveArtificialHealthProcesses.FirstOrDefault();
-
-                if (ahp is not null)
-                    ahp.Limit = value;
-            }
+            get => AhpStat.MaxValue;
+            set => AhpStat._maxSoFar = value;
         }
+
+        /// <summary>
+        /// Gets the <see cref="AhpStat"/> of the Player.
+        /// </summary>
+        public AhpStat AhpStat => ReferenceHub.playerStats.GetModule<AhpStat>();
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> of all active Artificial Health processes on the player.
+        /// </summary>
+        public List<AhpStat.AhpProcess> ActiveArtificialHealthProcesses => AhpStat._activeProcesses;
 
         /// <summary>
         /// Gets or sets the player's Hume Shield.
@@ -925,11 +917,6 @@ namespace Exiled.API.Features
             get => HumeShieldStat.CurValue;
             set => HumeShieldStat.CurValue = value;
         }
-
-        /// <summary>
-        /// Gets a <see cref="List{T}"/> of all active Artificial Health processes on the player.
-        /// </summary>
-        public List<AhpStat.AhpProcess> ActiveArtificialHealthProcesses => ReferenceHub.playerStats.GetModule<AhpStat>()._activeProcesses;
 
         /// <summary>
         /// Gets the player's <see cref="PlayerStatsSystem.HumeShieldStat"/>.
