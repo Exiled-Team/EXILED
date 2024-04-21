@@ -101,12 +101,6 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets the recoil settings of the firearm, if it's an automatic weapon.
-        /// </summary>
-        /// <remarks>This property will not do anything if the firearm is not an automatic weapon.</remarks>
-        public RecoilSettings Recoil { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the attachment code have this <see cref="FirearmPickup"/>.
         /// </summary>
         public uint Attachments
@@ -129,7 +123,6 @@ namespace Exiled.API.Features.Pickups
             if (item is Items.Firearm firearm)
             {
                 MaxAmmo = firearm.MaxAmmo;
-                Recoil = firearm.Recoil;
             }
         }
 
@@ -140,7 +133,6 @@ namespace Exiled.API.Features.Pickups
             if (itemBase is FirearmItem firearm)
             {
                 MaxAmmo = firearm.AmmoManagerModule.MaxAmmo;
-                Recoil = firearm is AutomaticFirearm auto ? auto._recoil : default;
             }
         }
     }

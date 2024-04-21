@@ -671,7 +671,6 @@ namespace Exiled.API.Features.Items
             if (pickup is Pickups.FirearmPickup firearm)
             {
                 MaxAmmo = firearm.MaxAmmo;
-                Recoil = firearm.Recoil;
             }
         }
     }
