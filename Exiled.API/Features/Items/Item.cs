@@ -129,7 +129,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the Weight of the item.
         /// </summary>
-        public float Weight
+        public virtual float Weight
         {
             get => weight;
             set => weight = value;
