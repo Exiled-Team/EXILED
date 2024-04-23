@@ -1139,6 +1139,12 @@ namespace Exiled.Events.Handlers
         public static void OnShowingHitMarker(DisplayingHitmarkerEventArgs ev) => ShowingHitMarker.InvokeSafely(ev);
 
         /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> toggles the weapon's flashlight.
+        /// </summary>
+        /// <param name="ev">The <see cref="ToggledWeaponFlashlightEventArgs"/> instance.</param>
+        public static void OnToggledWeaponFlashlight(ToggledWeaponFlashlightEventArgs ev) => ToggledWeaponFlashlight.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
         /// </summary>
         /// <param name="userId"><inheritdoc cref="PreAuthenticatingEventArgs.UserId"/></param>

@@ -46,9 +46,6 @@ namespace Exiled.Events.Patches.Events.Scp079
                     // duration
                     new(OpCodes.Ldarg_1),
 
-                    // true
-                    new(OpCodes.Ldc_I4_1),
-
                     // LosingSignalEventArgs ev = new(ReferenceHub, float, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LosingSignalEventArgs))[0]),
                     new(OpCodes.Dup),
