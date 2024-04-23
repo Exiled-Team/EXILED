@@ -52,6 +52,26 @@ namespace Exiled.API.Features.Core.Modifications
         }
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="ReadonlyField{T}"/> class.
+        /// </summary>
+        ~ReadonlyField()
+        {
+            Fields.Remove(this);
+
+            foreach (MethodInfo methodInfo in TypesToPatch.SelectMany(x => x.GetMethods().Where(y => y.DeclaringType != null && y.DeclaringType == x)))
+            {
+                try
+                {
+                    ConstProperty<T>.Harmony.Unpatch(methodInfo, AccessTools.Method(typeof(ConstProperty<T>), nameof(Transpiler)));
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception);
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the <see cref="System.Reflection.FieldInfo"/> that should be replaced.
         /// </summary>
         public FieldInfo FieldInfo { get; }
