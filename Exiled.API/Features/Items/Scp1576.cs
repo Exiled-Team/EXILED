@@ -5,10 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Core.Modifications;
-
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Features.Core.Modifications;
     using Exiled.API.Interfaces;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp1576;
@@ -18,8 +17,8 @@ namespace Exiled.API.Features.Items
     /// </summary>
     public class Scp1576 : Usable, IWrapper<Scp1576Item>
     {
-        private readonly ConstProperty<float> cooldown = new(Scp1576Item.UseCooldown, typeof(Scp1576Item));
-        private readonly ConstProperty<double> warningDuration = new(Scp1576Item.WarningDuration, typeof(Scp1576Item));
+        private readonly ConstProperty<float> cooldown = new(Scp1576Item.UseCooldown, new[] { typeof(Scp1576Item) });
+        private readonly ConstProperty<double> warningDuration = new(Scp1576Item.WarningDuration, new[] { typeof(Scp1576Item) });
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp1576"/> class.

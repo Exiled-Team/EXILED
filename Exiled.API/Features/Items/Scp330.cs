@@ -5,11 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Core.Modifications;
-
 namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
+
+    using Exiled.API.Features.Core.Modifications;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
     using InventorySystem;
@@ -47,7 +47,7 @@ namespace Exiled.API.Features.Items
     /// </summary>
     public class Scp330 : Usable, IWrapper<Scp330Bag>
     {
-        private readonly ConstProperty<int> maxCandies = new(Scp330Bag.MaxCandies, typeof(Scp330Bag));
+        private readonly ConstProperty<int> maxCandies = new(Scp330Bag.MaxCandies, new[] { typeof(Scp330Bag) });
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330"/> class.

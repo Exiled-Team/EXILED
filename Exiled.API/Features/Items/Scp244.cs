@@ -5,11 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Core.Modifications;
-
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Modifications;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
     using InventorySystem;
@@ -22,7 +21,7 @@ namespace Exiled.API.Features.Items
     /// </summary>
     public class Scp244 : Usable, IWrapper<Scp244Item>
     {
-        private readonly ConstProperty<float> dropHeightOffset = new(Scp244Item.DropHeightOffset, typeof(Scp244Item));
+        private readonly ConstProperty<float> dropHeightOffset = new(Scp244Item.DropHeightOffset, new[] { typeof(Scp244Item) });
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp244"/> class.

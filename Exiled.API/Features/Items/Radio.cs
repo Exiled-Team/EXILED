@@ -5,11 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Core.Modifications;
-
 namespace Exiled.API.Features.Items
 {
     using Enums;
+    using Exiled.API.Features.Core.Modifications;
     using Exiled.API.Interfaces;
     using InventorySystem.Items.Radio;
     using Structs;
@@ -20,7 +19,7 @@ namespace Exiled.API.Features.Items
     /// </summary>
     public class Radio : Item, IWrapper<RadioItem>
     {
-        private readonly ConstProperty<float> drainMultiplier = new(RadioItem.DrainMultiplier, typeof(RadioItem));
+        private readonly ConstProperty<float> drainMultiplier = new(RadioItem.DrainMultiplier, new[] { typeof(RadioItem) });
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Radio"/> class.

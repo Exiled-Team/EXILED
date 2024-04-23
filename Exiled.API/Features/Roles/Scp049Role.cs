@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Roles
 
     using CustomPlayerEffects;
     using Exiled.API.Features.Core.Modifications;
+    using HarmonyLib;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
@@ -28,12 +29,12 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public class Scp049Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
     {
-        private readonly ConstProperty<double> callAbilityDuration = new(Scp049CallAbility.EffectDuration, typeof(Scp049CallAbility));
-        private readonly ConstProperty<double> callAbilityBaseCooldown = new(Scp049CallAbility.BaseCooldown, typeof(Scp049CallAbility));
-        private readonly ConstProperty<double> senseAbilityBaseCooldown = new(Scp049SenseAbility.BaseCooldown, typeof(Scp049SenseAbility));
-        private readonly ConstProperty<double> senseAbilityReducedCooldown = new(Scp049SenseAbility.ReducedCooldown, typeof(Scp049SenseAbility));
-        private readonly ConstProperty<double> senseAbilityDuration = new(Scp049SenseAbility.EffectDuration, typeof(Scp049SenseAbility));
-        private readonly ConstProperty<double> senseAbilityFailCooldown = new(Scp049SenseAbility.AttemptFailCooldown, typeof(Scp049SenseAbility));
+        private readonly ConstProperty<double> callAbilityDuration = new(Scp049CallAbility.EffectDuration, new[] { typeof(Scp049CallAbility) });
+        private readonly ConstProperty<double> callAbilityBaseCooldown = new(Scp049CallAbility.BaseCooldown, new[] { typeof(Scp049CallAbility) });
+        private readonly ConstProperty<double> senseAbilityBaseCooldown = new(Scp049SenseAbility.BaseCooldown, new[] { typeof(Scp049SenseAbility) });
+        private readonly ConstProperty<double> senseAbilityReducedCooldown = new(Scp049SenseAbility.ReducedCooldown, new[] { typeof(Scp049SenseAbility) });
+        private readonly ConstProperty<double> senseAbilityDuration = new(Scp049SenseAbility.EffectDuration, new[] { typeof(Scp049SenseAbility) }, new[] { AccessTools.Method(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.ServerLoseTarget)) });
+        private readonly ConstProperty<double> senseAbilityFailCooldown = new(Scp049SenseAbility.AttemptFailCooldown, new[] { typeof(Scp049SenseAbility) }, new[] { AccessTools.Method(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.ServerProcessCmd)) });
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp049Role"/> class.

@@ -26,15 +26,15 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public class Scp106Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
     {
-        private readonly ConstProperty<float> vigorStalkCostStationary = new(Scp106StalkAbility.VigorStalkCostStationary, typeof(Scp106StalkAbility));
-        private readonly ConstProperty<float> vigorStalkCostMoving = new(Scp106StalkAbility.VigorStalkCostMoving, typeof(Scp106StalkAbility));
-        private readonly ConstProperty<float> vigorRegeneration = new(Scp106StalkAbility.VigorRegeneration, typeof(Scp106StalkAbility));
-        private readonly ConstProperty<float> attackDamage = new(Scp106Attack.AttackDamage, typeof(Scp106Attack));
-        private readonly ConstProperty<float> corrodingTime = new(Scp106Attack.CorrodingTime, typeof(Scp106Attack));
-        private readonly ConstProperty<float> vigorCaptureReward = new(Scp106Attack.VigorCaptureReward, typeof(Scp106Attack));
-        private readonly ConstProperty<float> cooldownReductionReward = new(Scp106Attack.CooldownReductionReward, typeof(Scp106Attack));
-        private readonly ConstProperty<float> sinkholeCooldownDuration = new(Scp106SinkholeController.CooldownDuration, typeof(Scp106SinkholeController));
-        private readonly ConstProperty<float> huntersAtlasCostPerMeter = new(Scp106HuntersAtlasAbility.CostPerMeter, typeof(Scp106HuntersAtlasAbility));
+        private readonly ConstProperty<float> vigorStalkCostStationary = new(Scp106StalkAbility.VigorStalkCostStationary, new[] { typeof(Scp106StalkAbility) });
+        private readonly ConstProperty<float> vigorStalkCostMoving = new(Scp106StalkAbility.VigorStalkCostMoving, new[] { typeof(Scp106StalkAbility) });
+        private readonly ConstProperty<float> vigorRegeneration = new(Scp106StalkAbility.VigorRegeneration, new[] { typeof(Scp106StalkAbility) });
+        private readonly ConstProperty<double> attackDamage = new(Scp106Attack.AttackDamage, new[] { typeof(Scp106Attack) });
+        private readonly ConstProperty<float> corrodingTime = new(Scp106Attack.CorrodingTime, new[] { typeof(Scp106Attack) });
+        private readonly ConstProperty<float> vigorCaptureReward = new(Scp106Attack.VigorCaptureReward, new[] { typeof(Scp106Attack) });
+        private readonly ConstProperty<float> cooldownReductionReward = new(Scp106Attack.CooldownReductionReward, new[] { typeof(Scp106Attack) });
+        private readonly ConstProperty<double> sinkholeCooldownDuration = new(Scp106SinkholeController.CooldownDuration, new[] { typeof(Scp106SinkholeController) });
+        private readonly ConstProperty<float> huntersAtlasCostPerMeter = new(Scp106HuntersAtlasAbility.CostPerMeter, new[] { typeof(Scp106HuntersAtlasAbility) });
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp106Role"/> class.
@@ -222,7 +222,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets how mush damage Scp106 will dealt when attacking a player.
         /// </summary>
-        public float AttackDamage
+        public double AttackDamage
         {
             get => attackDamage;
             set => attackDamage.Value = value;
@@ -258,7 +258,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the cooldown duration of it's Sinkhole ability's.
         /// </summary>
-        public float SinkholeCooldownDuration
+        public double SinkholeCooldownDuration
         {
             get => sinkholeCooldownDuration;
             set => sinkholeCooldownDuration.Value = value;
@@ -346,7 +346,7 @@ namespace Exiled.API.Features.Roles
             if (player is null)
                 return false;
             Attack._targetHub = player.ReferenceHub;
-            DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, AttackDamage, DeathTranslations.PocketDecay);
+            DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, (float)AttackDamage, DeathTranslations.PocketDecay);
 
             if (!Attack._targetHub.playerStats.DealDamage(handler))
                 return false;

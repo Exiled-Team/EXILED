@@ -81,9 +81,14 @@ namespace Exiled.API.Features.Core.Modifications
             }
         }
 
+        /// <summary>
+        /// Gets a <see cref="ReadonlyField{T}"/> by the field it should replace.
+        /// </summary>
+        /// <param name="fieldInfo">The <see cref="System.Reflection.FieldInfo"/> by which search will be performed.</param>
+        /// <returns>A <see cref="ReadonlyField{T}"/> assosiated with this <see cref="System.Reflection.FieldInfo"/>.</returns>
         internal static ReadonlyField<T> Get(FieldInfo fieldInfo) => Fields.FirstOrDefault(x => x.FieldInfo == fieldInfo);
 
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             foreach (CodeInstruction instruction in instructions)
             {
@@ -95,10 +100,6 @@ namespace Exiled.API.Features.Core.Modifications
 
                 if (Fields.Any(x => x.FieldInfo == fieldInfo))
                 {
-                    /*yield return new CodeInstruction(OpCodes.Ldarg_0);
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ReadonlyField<T>), nameof(Get)));
-                    yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ReadonlyField<T>), nameof(Value)));*/
-
                     ReadonlyField<T> field = Get(fieldInfo);
 
                     switch (Type.GetTypeCode(typeof(T)))
@@ -133,6 +134,23 @@ namespace Exiled.API.Features.Core.Modifications
         private void Patch()
         {
             AssemblyDefinition assembly = AssemblyDefinition.ReadAssembly(Path.Combine(Paths.ManagedAssemblies, "Assembly-CSharp.dll"));
+
+            foreach (MethodInfo methodInfo in TypesToPatch.SelectMany(x => x.GetProperties().Where(y => y.SetMethod != null && y.DeclaringType != null && y.DeclaringType == x)
+                         .Select(y => y.SetMethod)))
+            {
+                MethodReference methodReference = assembly.MainModule.ImportReference(methodInfo);
+                if (!methodReference.Resolve().Body.Instructions.Any(x => x.Operand is T t && EqualityComparer<T>.Default.Equals(t, StandardValue)))
+                    continue;
+
+                try
+                {
+                    ConstProperty<T>.Harmony.Patch(methodInfo, transpiler: new HarmonyMethod(typeof(ConstProperty<T>), nameof(Transpiler)));
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception);
+                }
+            }
 
             foreach (MethodInfo methodInfo in TypesToPatch.SelectMany(x => x.GetMethods().Where(y => y.DeclaringType != null && y.DeclaringType == x)))
             {

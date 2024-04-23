@@ -23,7 +23,7 @@ namespace Exiled.API.Features.Core.Modifications
     /// <typeparam name="T">Constant type.</typeparam>
     public class ConstProperty<T>
     {
-        private bool patched;
+        private bool patched = false;
         private T value;
 
         /// <summary>
@@ -31,11 +31,13 @@ namespace Exiled.API.Features.Core.Modifications
         /// </summary>
         /// <param name="constantValue">An actual constant value.</param>
         /// <param name="typesToPatch">A collection of types where this constant is used.</param>
-        public ConstProperty(T constantValue, params Type[] typesToPatch)
+        /// <param name="skipMethods"><inheritdoc cref="SkipMethods"/></param>
+        public ConstProperty(T constantValue, Type[] typesToPatch, MethodInfo[] skipMethods = null)
         {
             ConstantValue = constantValue;
             value = constantValue;
             TypesToPatch = typesToPatch;
+            SkipMethods = skipMethods ?? Array.Empty<MethodInfo>();
 
             List.Add(this);
         }
@@ -86,6 +88,11 @@ namespace Exiled.API.Features.Core.Modifications
         public Type[] TypesToPatch { get; }
 
         /// <summary>
+        /// Gets a collection of methods that should be skipped when patching.
+        /// </summary>
+        public MethodInfo[] SkipMethods { get; }
+
+        /// <summary>
         /// Gets the <see cref="HarmonyLib.Harmony"/> instance for this constant property.
         /// </summary>
         internal static Harmony Harmony { get; } = new($"exiled.api-{typeof(T).FullName}");
@@ -124,7 +131,7 @@ namespace Exiled.API.Features.Core.Modifications
 
                 ConstProperty<T> property = Get((T)instruction.operand, currentType);
 
-                if (property == null)
+                if (property == null || !EqualityComparer<T>.Default.Equals((T)instruction.operand, property.ConstantValue))
                 {
                     yield return instruction;
                     continue;
@@ -160,8 +167,31 @@ namespace Exiled.API.Features.Core.Modifications
         {
             AssemblyDefinition assembly = AssemblyDefinition.ReadAssembly(Path.Combine(Paths.ManagedAssemblies, "Assembly-CSharp.dll"));
 
+            foreach (MethodInfo methodInfo in TypesToPatch.SelectMany(x => x.GetProperties().Where(y => y.SetMethod != null && y.DeclaringType != null && y.DeclaringType == x)
+                         .Select(y => y.SetMethod)))
+            {
+                if (Array.Exists(SkipMethods, x => x == methodInfo))
+                    continue;
+
+                MethodReference methodReference = assembly.MainModule.ImportReference(methodInfo);
+                if (!methodReference.Resolve().Body.Instructions.Any(x => x.Operand is T t && EqualityComparer<T>.Default.Equals(t, ConstantValue)))
+                    continue;
+
+                try
+                {
+                    Harmony.Patch(methodInfo, transpiler: new HarmonyMethod(typeof(ConstProperty<T>), nameof(Transpiler)));
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception);
+                }
+            }
+
             foreach (MethodInfo methodInfo in TypesToPatch.SelectMany(x => x.GetMethods().Where(y => y.DeclaringType != null && y.DeclaringType == x)))
             {
+                if (Array.Exists(SkipMethods, x => x == methodInfo))
+                    continue;
+
                 MethodReference methodReference = assembly.MainModule.ImportReference(methodInfo);
                 if (!methodReference.Resolve().Body.Instructions.Any(x => x.Operand is T t && EqualityComparer<T>.Default.Equals(t, ConstantValue)))
                     continue;
