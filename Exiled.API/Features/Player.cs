@@ -728,9 +728,7 @@ namespace Exiled.API.Features
                 try
                 {
                     ReferenceHub.transform.localScale = value;
-
-                    foreach (Player target in List)
-                        Server.SendSpawnMessage?.Invoke(null, new object[] { NetworkIdentity, target.Connection });
+                    NotifyScaleChange();
                 }
                 catch (Exception exception)
                 {
@@ -1579,6 +1577,30 @@ namespace Exiled.API.Features
         /// Reloads the whitelist, clearing all whitelist changes made with add/remove methods and reverting to the whitelist files.
         /// </summary>
         public static void ReloadWhitelist() => WhiteList.Reload();
+
+        /// <summary>
+        /// Fakes the players size for a list of players.
+        /// </summary>
+        /// <param name="players">The players to fake the current player to.</param>
+        /// <param name="fakeScale">The <see cref="Vector3"/> scale to fake.</param>
+        public void SetFakeSize(IEnumerable<Player> players, Vector3 fakeScale)
+        {
+            if (fakeScale == Scale)
+                return;
+
+            try
+            {
+                Vector3 currentScale = Scale;
+
+                ReferenceHub.transform.localScale = fakeScale;
+                NotifyScaleChange(players);
+                ReferenceHub.transform.localScale = currentScale;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{nameof(SetFakeSize)} error: {ex}");
+            }
+        }
 
         /// <summary>
         /// Adds a player's UserId to the list of reserved slots.
@@ -3631,5 +3653,15 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>
         public override string ToString() => $"{Id} ({Nickname}) [{UserId}] *{(Role is null ? "No role" : Role)}*";
+
+        /// <summary>
+        /// Notifies a list of players of a Scale change.
+        /// </summary>
+        /// <param name="players">Players to notify. If null will use Player::List.</param>
+        internal void NotifyScaleChange(IEnumerable<Player> players = null)
+        {
+            foreach (Player target in players ?? List)
+                Server.SendSpawnMessage?.Invoke(null, new object[] { NetworkIdentity, target.Connection });
+        }
     }
 }
