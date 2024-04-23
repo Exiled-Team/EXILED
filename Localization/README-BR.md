@@ -11,7 +11,7 @@
 
 </div>
 
-O EXILED é uma estrutura para plug-ins de alto nível aos servidores de SCP: Secret Laboratory. Ele oferece um sistema de eventos para os desenvolvedores usarem para manipular ou alterar o código do jogo ou implementar suas próprias funções.
+O EXILED é uma estrutura para plug-ins de alto nível aos servidores de SCP: Secret Laboratory. Ele oferece um sistema de eventos para os desenvolvedores usarem com o intuito de manipular ou alterar o código do jogo ou implementar suas próprias funções.
 Todos os eventos do EXILED são codificados com Harmony, o que significa que não requerem edição direta dos Assemblies do servidor para funcionar, o que permite dois benefícios exclusivos.
 
  - Em primeiro lugar, todo o código da estrutura pode ser publicado e compartilhado livremente, permitindo que os desenvolvedores entendam melhor *como* ele funciona, além de oferecer sugestões para adicionar ou alterar suas funções.
@@ -23,8 +23,12 @@ Todos os eventos do EXILED são codificados com Harmony, o que significa que nã
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
 - [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
+- [Italiano](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-IT.md)
 - [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
 - [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
+- [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
+- [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
+- [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
 
 # Instalação
 A instalação do EXILED é bastante simples. Ele se carrega por meio da API de plug-in da NW. É por isso que existem duas pastas dentro de ``Exiled.tar.gz`` nos arquivos de lançamento. ``SCP Secret Laboratory`` contém os arquivos necessários para carregar os recursos do EXILED na pasta ``EXILED``. Com isso dito, tudo o que você precisa fazer é mover essas duas pastas para o caminho apropriado, explicado abaixo, e pronto!
@@ -76,21 +80,21 @@ Se você optar por usar o instalador, se executado corretamente, ele cuidará de
   - Mova a pasta **`SCP Secret Laboratory`** para **``~/.config``**. *Nota: Esta pasta precisa ir ao diretório ``~/.config``, e ***NÃO*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Instalando plug-ins
-É isso, o EXILED agora deve estar instalado e ativo na próxima vez que você inicializar seu servidor. Observe que o EXILED sozinho não fará quase nada, portanto, certifique-se de obter novos plug-ins de **[nosso servidor do Discord](https://discord.gg/PyUkWTg)**
+É isso, o EXILED agora deve estar instalado e ativo na próxima vez que você inicializar seu servidor. Observe que o EXILED sozinho não fará quase nada, portanto, certifique-se de obter novos plug-ins no **[nosso servidor do Discord](https://discord.gg/PyUkWTg)**
 - Para instalar um plug-in, basta:
   - Baixar um plug-in da [página de lançamento *deles*](https://i.imgur.com/u34wgPD.jpg) (**DEVE ser um `.dll`!**)
-  - Mova-o para: ``~/.config/EXILED/Plugins`` (se você utiliza SSH como root, então procure pela `.config` correta, que estará dentro de `/home/(Usuário de Servidor de SCP)`)
+  - Mova-o para: ``~/.config/EXILED/Plugins`` (se você utiliza SSH como root, então procure pela `.config` correta, que estará dentro de `/home/(Usuário do Servidor de SCP)`)
 
 # Configuração
 O EXILED por si só oferece algumas opções de configuração.
-Todas elas são gerados automaticamente na inicialização do servidor e estão localizadas no arquivo ``~/.config/EXILED/Configs/(ServerPortHere)-config.yml`` (``%AppData%\EXILED\Configs\(PortaDoServidorAqui)-config.yml`` no Windows).
+Todas elas são geradas automaticamente na inicialização do servidor e estão localizadas no arquivo ``~/.config/EXILED/Configs/(PortaDoServidorAqui)-config.yml`` (``%AppData%\EXILED\Configs\(PortaDoServidorAqui)-config.yml`` no Windows).
 
-As configurações do plug-in ***NÃO*** estarão no arquivo ``config_gameplay.txt`` supracitado, em vez disso, as configurações do plug-in são definidas no arquivo ``~/.config/EXILED/Configs/(`PortaDoServidor)-config.yml`` (``%AppData%\EXILED\(PortaDoServidor)-config.yml`` no Windows).
+As configurações do plug-in ***NÃO*** estarão no arquivo ``config_gameplay.txt`` supracitado, em vez disso, as configurações do plug-in são definidas no arquivo ``~/.config/EXILED/Configs/(PortaDoServidor)-config.yml`` (``%AppData%\EXILED\(PortaDoServidor)-config.yml`` no Windows).
 No entanto, alguns plug-ins podem obter suas configurações de outros locais por conta própria. Esta é simplesmente a localização padrão do EXILED para eles, portanto, consulte o criador do plug-in se houver problemas.
 
 # Para Desenvolvedores
 
-Se você deseja fazer um Plug-in ao EXILED, é bem simples fazê-lo. Se você quiser ver algum tipo de tutorial, visite nosso [Manual de Instruções.](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
+Se você deseja fazer um plug-in ao EXILED, é bem simples de fazê-lo. Se você quiser ver algum tipo de tutorial, visite nosso [Manual de Instruções.](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
 
 Para tutoriais mais abrangentes e ativamente atualizados, consulte [o site da EXILED](https://exiled-team.github.io/EXILED/articles/install.html).
 
