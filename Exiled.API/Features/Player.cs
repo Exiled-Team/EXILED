@@ -1812,7 +1812,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Sets the <see cref="CustomRoleFriendlyFireMultiplier"/>.
         /// </summary>
-        /// <param name="customRoleFriendlyFireMultiplier"> New rules for CustomeRoleFriendlyFireMultiplier to set to. </param>
+        /// <param name="customRoleFriendlyFireMultiplier"> New rules for CustomRoleFriendlyFireMultiplier to set to. </param>
         public void TrySetCustomRoleFriendlyFire(Dictionary<string, Dictionary<RoleTypeId, float>> customRoleFriendlyFireMultiplier)
             => CustomRoleFriendlyFireMultiplier = customRoleFriendlyFireMultiplier;
 
@@ -1820,7 +1820,7 @@ namespace Exiled.API.Features
         /// Sets the <see cref="CustomRoleFriendlyFireMultiplier"/>.
         /// </summary>
         /// <param name="roleTypeId"> Role to associate FF rules to. </param>
-        /// <param name="customRoleFriendlyFireMultiplier"> New rules for CustomeRoleFriendlyFireMultiplier to set to. </param>
+        /// <param name="customRoleFriendlyFireMultiplier"> New rules for CustomRoleFriendlyFireMultiplier to set to. </param>
         public void TrySetCustomRoleFriendlyFire(string roleTypeId, Dictionary<RoleTypeId, float> customRoleFriendlyFireMultiplier) =>
             CustomRoleFriendlyFireMultiplier[roleTypeId] = customRoleFriendlyFireMultiplier;
 
@@ -1836,7 +1836,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="role"> Role to add. </param>
         /// <returns> Whether or not the item was able to be added. </returns>
-        public bool TryRemoveCustomeRoleFriendlyFire(string role) => CustomRoleFriendlyFireMultiplier.Remove(role);
+        public bool TryRemoveCustomRoleFriendlyFire(string role) => CustomRoleFriendlyFireMultiplier.Remove(role);
 
         /// <summary>
         /// Forces the player to reload their current <see cref="Firearm"></see>.
