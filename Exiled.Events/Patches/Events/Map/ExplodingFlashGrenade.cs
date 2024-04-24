@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection.Emit;
@@ -35,8 +36,7 @@ namespace Exiled.Events.Patches.Events.Map
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            // Immediately return
-            Label returnLabel = generator.DefineLabel();
+            Label ignoreLabel = generator.DefineLabel();
 
             int offset = 4;
             int index = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(Keyframe), nameof(Keyframe.time)))) + offset;
@@ -45,17 +45,16 @@ namespace Exiled.Events.Patches.Events.Map
                 index,
                 new[]
                 {
-                    // FlashbangGrenade
+                    // ExplodingFlashGrenade.ProcessEvent(this, num)
                     new CodeInstruction(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Ldarg_0),
-
-                    // Processes ExplodingGrenadeEventArgs and stores flashed players count
+                    new CodeInstruction(OpCodes.Ldloc_0),
                     new(OpCodes.Call, Method(typeof(ExplodingFlashGrenade), nameof(ProcessEvent))),
-                    new(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._hitPlayerCount))),
-                    new(OpCodes.Br_S, returnLabel),
+
+                    // ignore the foreach since exiled overwrite it
+                    new(OpCodes.Br_S, ignoreLabel),
                 });
 
-            newInstructions[newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ble_S) - 3].WithLabels(returnLabel);
+            newInstructions[newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ble_S) - 3].WithLabels(ignoreLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -63,31 +62,37 @@ namespace Exiled.Events.Patches.Events.Map
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
-        private static int ProcessEvent(FlashbangGrenade instance)
+        private static void ProcessEvent(FlashbangGrenade instance, float distance)
         {
-            ExplodingGrenadeEventArgs explodingGrenadeEvent = new ExplodingGrenadeEventArgs(Player.Get(instance.PreviousOwner.Hub), instance);
+            List<Player> targetToAffect = ListPool<Player>.Pool.Get();
+            foreach (ReferenceHub referenceHub in ReferenceHub.AllHubs)
+            {
+                Player player = Player.Get(referenceHub);
+                if ((instance.transform.position - referenceHub.transform.position).sqrMagnitude <= distance)
+                    continue;
+                if (!ExiledEvents.Instance.Config.CanFlashbangsAffectThrower && instance.PreviousOwner.SameLife(new(referenceHub)))
+                    continue;
+                if (!IndividualFriendlyFire.CheckFriendlyFirePlayer(instance.PreviousOwner, player.ReferenceHub))
+                    continue;
+                if (!Physics.Linecast(instance.transform.position, player.Position, instance._blindingMask))
+                    continue;
+
+                targetToAffect.Add(Player.Get(referenceHub));
+            }
+
+            ExplodingGrenadeEventArgs explodingGrenadeEvent = new(Player.Get(instance.PreviousOwner.Hub), instance, targetToAffect);
+
+            ListPool<Player>.Pool.Return(targetToAffect);
 
             Handlers.Map.OnExplodingGrenade(explodingGrenadeEvent);
 
             if (!explodingGrenadeEvent.IsAllowed)
-                return 0;
+                return;
 
-            int size = 0;
             foreach (Player player in explodingGrenadeEvent.TargetsToAffect)
             {
-                if (!ExiledEvents.Instance.Config.CanFlashbangsAffectThrower && explodingGrenadeEvent.Player == player)
-                    continue;
-
-                if (IndividualFriendlyFire.CheckFriendlyFirePlayer(instance.PreviousOwner, player.ReferenceHub))
-                {
-                    instance.ProcessPlayer(player.ReferenceHub);
-                    size++;
-                }
+                instance.ProcessPlayer(player.ReferenceHub);
             }
-
-            return size;
         }
-
-        private static List<Player> ConvertHubs(List<ReferenceHub> hubs) => hubs.Select(Player.Get).ToList();
     }
 }
