@@ -207,7 +207,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Turns off all lights in the facility.
         /// </summary>
-        /// <param name="duration">The duration of the blackout.</param>
+        /// <param name="duration">The duration of the blackout. -1 for permanent.</param>
         /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
         public static void TurnOffAllLights(float duration, ZoneType zoneTypes = ZoneType.Unspecified)
         {
@@ -218,14 +218,19 @@ namespace Exiled.API.Features
                     continue;
 
                 if (zoneTypes == ZoneType.Unspecified || room.Zone.HasFlag(zoneTypes))
-                    controller.ServerFlickerLights(duration);
+                {
+                    if (duration is -1)
+                        controller.LightsEnabled = false;
+                    else
+                        controller.ServerFlickerLights(duration);
+                }
             }
         }
 
         /// <summary>
         /// Turns off all lights in the facility.
         /// </summary>
-        /// <param name="duration">The duration of the blackout.</param>
+        /// <param name="duration">The duration of the blackout. -1 for permanent.</param>
         /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
         public static void TurnOffAllLights(float duration, IEnumerable<ZoneType> zoneTypes)
         {
@@ -264,10 +269,7 @@ namespace Exiled.API.Features
         /// <param name="type">Filters by <see cref="ItemType"/>.</param>
         /// <returns><see cref="Pickup"/> object.</returns>
         public static Pickup GetRandomPickup(ItemType type = ItemType.None)
-        {
-            List<Pickup> pickups = (type != ItemType.None ? Pickup.List.Where(p => p.Type == type) : Pickup.List).ToList();
-            return pickups.Random();
-        }
+            => (type is ItemType.None ? Pickup.List : Pickup.Get(type)).Random();
 
         /// <summary>
         /// Plays a random ambient sound.
