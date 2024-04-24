@@ -38,8 +38,8 @@ namespace Exiled.Events.Patches.Events.Map
 
             Label ignoreLabel = generator.DefineLabel();
 
-            int offset = 4;
-            int index = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(Keyframe), nameof(Keyframe.time)))) + offset;
+            int offset = 1;
+            int index = newInstructions.FindLastIndex(instruction => instruction.StoresField(Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._hitPlayerCount)))) + offset;
 
             newInstructions.InsertRange(
                 index,
