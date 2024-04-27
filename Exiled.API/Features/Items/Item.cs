@@ -171,6 +171,11 @@ namespace Exiled.API.Features.Items
         public bool IsLightEmitter => Base is ILightEmittingItem;
 
         /// <summary>
+        /// Gets a value indicating whether or not this item is currently imitating light.
+        /// </summary>
+        public bool IsEmittingLight => Base is ILightEmittingItem light && light.IsEmittingLight;
+
+        /// <summary>
         /// Gets a value indicating whether or not this item can be used to disarm players.
         /// </summary>
         public bool IsDisarmer => Base is IDisarmingItem;
