@@ -556,6 +556,11 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
+        /// Sends a Door Interaction.
+        /// </summary>
+        public void Interact() => Base.ServerInteract(null, 0);
+
+        /// <summary>
         /// Interacts with the Door.
         /// </summary>
         /// <param name="player">The player interacting.</param>
