@@ -556,6 +556,13 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
+        /// Interacts with the Door.
+        /// </summary>
+        /// <param name="player">The player interacting.</param>
+        /// <param name="colliderId">Collider Id.</param>
+        public void Interact(Player player, byte colliderId = 0) => Base.ServerInteract(player.ReferenceHub, colliderId);
+
+        /// <summary>
         /// Makes the door play a beep sound.
         /// </summary>
         /// <param name="beep">The beep sound to play.</param>
