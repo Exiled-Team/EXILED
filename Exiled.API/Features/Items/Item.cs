@@ -13,11 +13,11 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
-
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms.Ammo;
+    using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Jailbird;
     using InventorySystem.Items.Keycards;
     using InventorySystem.Items.MicroHID;
@@ -168,7 +168,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether or not this item emits light.
         /// </summary>
-        public bool IsLightEmitter => Base is ILightEmittingItem;
+        public bool IsLightEmitter => this is Firearm firearm ? firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight) : Base is ILightEmittingItem;
 
         /// <summary>
         /// Gets a value indicating whether or not this item is currently imitating light.
