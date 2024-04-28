@@ -156,6 +156,11 @@ namespace Exiled.API.Features.Items
         public bool Aiming => Base.AdsModule.ServerAds;
 
         /// <summary>
+        /// Gets a value indicating whether the firearm Flashlight.
+        /// </summary>
+        public bool HasFlashlight => Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.Flashlight);
+
+        /// <summary>
         /// Gets a value indicating whether the firearm's flashlight module is enabled.
         /// </summary>
         public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
