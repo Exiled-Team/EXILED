@@ -33,9 +33,20 @@ namespace Exiled.Permissions.Features
         public List<string> Permissions { get; set; } = new();
 
         /// <summary>
+        /// Gets or sets disabled for the group permissions.
+        /// </summary>
+        public List<string> DisabledPermissions { get; set; } = new();
+
+        /// <summary>
         /// Gets the combined permissions of the group plus all inherited groups.
         /// </summary>
         [YamlIgnore]
         public List<string> CombinedPermissions { get; internal set; } = new();
+
+        /// <summary>
+        /// Gets the combined disabled permissions of the group plus all inherited groups.
+        /// </summary>
+        [YamlIgnore]
+        public List<string> CombinedDisabledPermissions { get; internal set; } = new();
     }
 }
