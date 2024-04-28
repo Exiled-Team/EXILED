@@ -31,6 +31,12 @@ namespace Exiled.API.Features.CustomStats
         /// <inheritdoc/>
         public override void Update()
         {
+            if (MaxValue == default)
+            {
+                base.Update();
+                return;
+            }
+
             if (!NetworkServer.active)
                 return;
 
