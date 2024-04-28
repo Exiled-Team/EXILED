@@ -19,6 +19,7 @@ namespace Exiled.API.Features
     using Enums;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.CustomStats;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Items;
@@ -92,6 +93,7 @@ namespace Exiled.API.Features
 
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
+        private CustomHumeShieldStat humeShieldStat;
         private Role role;
 
         /// <summary>
@@ -178,6 +180,7 @@ namespace Exiled.API.Features
                 CameraTransform = value.PlayerCameraReference;
 
                 value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[Array.IndexOf(PlayerStats.DefinedModules, typeof(HealthStat))] = healthStat = new CustomHealthStat { Hub = value };
+                value.playerStats._dictionarizedTypes[typeof(HumeShieldStat)] = value.playerStats.StatModules[Array.IndexOf(PlayerStats.DefinedModules, typeof(HumeShieldStat))] = humeShieldStat = new CustomHumeShieldStat { Hub = value };
             }
         }
 
@@ -927,14 +930,23 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the player's Max amount of Hume Shield.
+        /// </summary>
+        public float MaxHumeShield
+        {
+            get => HumeShieldStat.MaxValue;
+            set => HumeShieldStat.CustomMaxValue = value;
+        }
+
+        /// <summary>
         /// Gets a <see cref="List{T}"/> of all active Artificial Health processes on the player.
         /// </summary>
         public List<AhpStat.AhpProcess> ActiveArtificialHealthProcesses => ReferenceHub.playerStats.GetModule<AhpStat>()._activeProcesses;
 
         /// <summary>
-        /// Gets the player's <see cref="PlayerStatsSystem.HumeShieldStat"/>.
+        /// Gets the player's <see cref="CustomHumeShieldStat"/>.
         /// </summary>
-        public HumeShieldStat HumeShieldStat => ReferenceHub.playerStats.GetModule<HumeShieldStat>();
+        public CustomHumeShieldStat HumeShieldStat => humeShieldStat;
 
         /// <summary>
         /// Gets or sets the item in the player's hand. Value will be <see langword="null"/> if the player is not holding anything.
