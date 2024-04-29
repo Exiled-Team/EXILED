@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using CustomPlayerEffects;
-
 namespace Exiled.Permissions.Extensions
 {
     using System;
