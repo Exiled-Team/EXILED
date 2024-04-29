@@ -8,8 +8,10 @@
 namespace Exiled.API.Features.Hazards
 {
     using Exiled.API.Extensions;
+    using Mirror;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp939;
+    using UnityEngine;
 
     using Scp939GameRole = PlayerRoles.PlayableScps.Scp939.Scp939Role;
 
@@ -116,6 +118,21 @@ namespace Exiled.API.Features.Hazards
         {
             get => Ability.TargetState;
             set => Ability.TargetState = value;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="AmnesticCloudHazard"/> at the position.
+        /// </summary>
+        /// <param name="scp939Role">The <see cref="Scp939Role"/> to use for spawning.</param>
+        /// <returns>The created <see cref="AmnesticCloudHazard"/>.</returns>
+        public static AmnesticCloudHazard CreateAndSpawn(Roles.Scp939Role scp939Role)
+        {
+            Scp939AmnesticCloudInstance cloud = Object.Instantiate(AmnesticCloudPrefab);
+            cloud.ServerSetup(scp939Role.Owner.ReferenceHub);
+
+            NetworkServer.Spawn(cloud.gameObject);
+
+            return Get(cloud) as AmnesticCloudHazard;
         }
     }
 }
