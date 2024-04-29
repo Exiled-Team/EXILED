@@ -11,7 +11,7 @@
 
 </div>
 
-O EXILED é uma estrutura para plug-ins de alto nível aos servidores de SCP: Secret Laboratory. Ele oferece um sistema de eventos para os desenvolvedores usarem com o intuito de manipular ou alterar o código do jogo ou implementar suas próprias funções.
+O EXILED é uma estrutura para plug-ins de alto nível aos servidores de SCP: Secret Laboratory. Ele oferece um sistema de eventos para os desenvolvedores usarem com o intuito de manipular, alterar o código do jogo ou implementar suas próprias funções.
 Todos os eventos do EXILED são codificados com Harmony, o que significa que não requerem edição direta dos Assemblies do servidor para funcionar, o que permite dois benefícios exclusivos.
 
  - Em primeiro lugar, todo o código da estrutura pode ser publicado e compartilhado livremente, permitindo que os desenvolvedores entendam melhor *como* ele funciona, além de oferecer sugestões para adicionar ou alterar suas funções.
