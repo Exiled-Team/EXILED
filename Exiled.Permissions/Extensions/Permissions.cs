@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using CustomPlayerEffects;
+
 namespace Exiled.Permissions.Extensions
 {
     using System;
@@ -141,6 +143,13 @@ namespace Exiled.Permissions.Extensions
 
                     group.Value.CombinedPermissions = group.Value.Permissions.Union(inheritedPerms).ToList();
 
+                    IEnumerable<string> inheritedDisabledPerms = new List<string>();
+
+                    inheritedDisabledPerms = Groups.Where(pair => group.Value.Inheritance.Contains(pair.Key))
+                        .Aggregate(inheritedDisabledPerms, (current, pair) => current.Union(pair.Value.CombinedDisabledPermissions));
+
+                    group.Value.CombinedPermissions = group.Value.Permissions.Union(inheritedDisabledPerms).ToList();
+
                     Log.Debug($"{group.Key} permissions loaded.");
                 }
                 catch (Exception e)
@@ -225,15 +234,13 @@ namespace Exiled.Permissions.Extensions
             const char permSeparator = '.';
             const string allPerms = ".*";
 
-            if (group.CombinedPermissions.Contains(allPerms))
-                return true;
-
             if (permission.Contains(permSeparator))
             {
                 StringBuilder strBuilder = StringBuilderPool.Pool.Get();
                 string[] seraratedPermissions = permission.Split(permSeparator);
 
                 bool Check(string source) => group.CombinedPermissions.Contains(source, StringComparison.OrdinalIgnoreCase);
+                bool CheckDisabled(string source) => group.CombinedDisabledPermissions.Contains(source, StringComparison.OrdinalIgnoreCase);
 
                 bool result = false;
                 for (int z = 0; z < seraratedPermissions.Length; z++)
@@ -259,6 +266,10 @@ namespace Exiled.Permissions.Extensions
                     }
 
                     strBuilder.Append(allPerms);
+
+                    if (CheckDisabled(strBuilder.ToString()))
+                        break;
+
                     if (Check(strBuilder.ToString()))
                     {
                         result = true;
@@ -273,12 +284,54 @@ namespace Exiled.Permissions.Extensions
             }
 
             // It'll work when there is no dot in the permission.
-            bool result2 = group.CombinedPermissions.Contains(permission, StringComparison.OrdinalIgnoreCase);
+            bool result2 = group.CombinedPermissions.Contains(permission, StringComparison.OrdinalIgnoreCase) || group.CombinedPermissions.Contains(allPerms);
+
+            if (group.CombinedDisabledPermissions.Contains(permission, StringComparison.OrdinalIgnoreCase))
+                result2 = false;
 
             Log.Debug($"Result outside the block: {result2}");
 
             return result2;
         }
+
+        /// <summary>
+        /// Checks a sender's permission.
+        /// </summary>
+        /// <param name="sender">The sender to be checked.</param>
+        /// <param name="permission">The permission to be checked.</param>
+        /// <param name="response">A response. Contains text only if function returned <see langword="false"/>, otherwise will be <see langword="null"/>.</param>
+        /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
+        public static bool CheckPermission(this ICommandSender sender, string permission, out string response)
+        {
+            if (sender.CheckPermission(permission))
+            {
+                response = null;
+                return true;
+            }
+
+            response = $"You don't have permission to execute this command. Required permission: {permission}";
+            return false;
+        }
+
+        /// <summary>
+        /// Checks a sender's permission.
+        /// </summary>
+        /// <param name="sender">The sender to be checked.</param>
+        /// <param name="permission">The permission to be checked.</param>
+        /// <param name="response">A response. Contains text only if function returned <see langword="false"/>, otherwise will be <see langword="null"/>.</param>
+        /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
+        public static bool CheckPermission(this CommandSender sender, string permission, out string response)
+            => (sender as ICommandSender).CheckPermission(permission, out response);
+
+        /// <summary>
+        /// Checks a sender's permission.
+        /// </summary>
+        /// <param name="sender">The sender to be checked.</param>
+        /// <param name="permission">The permission to be checked.</param>
+        /// <param name="response">A response. Contains text only if function returned <see langword="false"/>, otherwise will be <see langword="null"/>.</param>
+        /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
+        public static bool CheckPermission(this Player sender, string permission, out string response)
+            => sender.Sender.CheckPermission(permission, out response);
 
         /// <summary>
         /// Checks a player's permission.
