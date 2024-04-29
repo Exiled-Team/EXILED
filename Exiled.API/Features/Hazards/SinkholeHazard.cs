@@ -8,7 +8,6 @@
 namespace Exiled.API.Features.Hazards
 {
     using global::Hazards;
-    using UnityEngine;
 
     /// <summary>
     /// Represents a sinkhole hazard.
