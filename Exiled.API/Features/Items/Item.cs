@@ -168,7 +168,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether or not this item emits light.
         /// </summary>
-        public bool IsLightEmitter => this is Firearm firearm ? firearm.HasFlashlight : Base is ILightEmittingItem;
+        public bool CanEmitLight => this is Firearm firearm ? firearm.HasFlashlight : Base is ILightEmittingItem;
 
         /// <summary>
         /// Gets a value indicating whether or not this item is currently imitating light.
