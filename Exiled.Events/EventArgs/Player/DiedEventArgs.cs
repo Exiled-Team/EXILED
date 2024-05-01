@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs.Player
         public DiedEventArgs(Player target, RoleTypeId targetOldRole, DamageHandlerBase damageHandler)
         {
             DamageHandler = new(target, damageHandler);
-            Attacker = DamageHandler is CustomAttackerHandler attackerDamageHandler ? attackerDamageHandler.Attacker : null;
+            Attacker = DamageHandler.Attacker;
             Player = target;
             TargetOldRole = targetOldRole;
         }
