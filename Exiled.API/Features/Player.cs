@@ -2268,34 +2268,28 @@ namespace Exiled.API.Features
         /// <summary>
         /// Kills the player.
         /// </summary>
-        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/>.</param>
-        public void Kill(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.KillPlayer(damageHandlerBase);
-
-        /// <summary>
-        /// Kills the player.
-        /// </summary>
         /// <param name="damageType">The <see cref="DamageType"/> the player has been killed.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(DamageType damageType, string cassieAnnouncement = "")
-        {
-            if ((Role.Side != Side.Scp) && !string.IsNullOrEmpty(cassieAnnouncement))
-                Cassie.Message(cassieAnnouncement);
-
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, -1, cassieAnnouncement));
-        }
+        public void Kill(DamageType damageType, string cassieAnnouncement = "") => Kill(new CustomDamageHandler(this, null, -1, damageType, cassieAnnouncement));
 
         /// <summary>
         /// Kills the player.
         /// </summary>
         /// <param name="deathReason">The reason the player has been killed.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(string deathReason, string cassieAnnouncement = "")
-        {
-            if ((Role.Side != Side.Scp) && !string.IsNullOrEmpty(cassieAnnouncement))
-                Cassie.Message(cassieAnnouncement);
+        public void Kill(string deathReason, string cassieAnnouncement = "") => Kill(new CustomReasonDamageHandler(deathReason, -1, cassieAnnouncement));
 
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, -1, cassieAnnouncement));
-        }
+        /// <summary>
+        /// Kills the player.
+        /// </summary>
+        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/>.</param>
+        public void Kill(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.KillPlayer(damageHandlerBase);
+
+        /// <summary>
+        /// Kills the player.
+        /// </summary>
+        /// <param name="handler">A <see cref="DamageHandler"/> to kill the player with.</param>
+        public void Kill(DamageHandler handler) => ReferenceHub.playerStats.KillPlayer(handler);
 
         /// <summary>
         /// Kills the player and vaporizes the body.

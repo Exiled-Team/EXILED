@@ -20,7 +20,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     /// Contains all information after a player dies.
     /// </summary>
-    public class DiedEventArgs : IPlayerEvent, IAttackerEvent
+    public class DiedEventArgs : IAttackerEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DiedEventArgs" /> class.
@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </param>
         public DiedEventArgs(Player target, RoleTypeId targetOldRole, DamageHandlerBase damageHandler)
         {
-            DamageHandler = new CustomDamageHandler(target, damageHandler);
+            DamageHandler = new(target, damageHandler);
             Attacker = DamageHandler.Is(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
             Player = target;
             TargetOldRole = targetOldRole;
