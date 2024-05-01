@@ -214,6 +214,12 @@ namespace Exiled.API.Enums
         SilentWalk,
 
         /// <summary>
+        /// Makes you a marshmallow guy.
+        /// </summary>
+        [Obsolete("Not functional in-game")]
+        Marshmallow,
+
+        /// <summary>
         /// The effect that is given to the player when getting attacked by SCP-3114's Strangle ability.
         /// </summary>
         Strangled,
