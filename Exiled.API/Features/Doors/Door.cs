@@ -17,7 +17,6 @@ namespace Exiled.API.Features.Doors
     using Exiled.API.Interfaces;
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
-    using MEC;
     using Mirror;
     using UnityEngine;
 
@@ -556,16 +555,10 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
-        /// Sends a Door Interaction.
-        /// </summary>
-        public void Interact() => Base.ServerInteract(null, 0);
-
-        /// <summary>
         /// Interacts with the Door.
         /// </summary>
         /// <param name="player">The player interacting.</param>
-        /// <param name="colliderId">Collider Id.</param>
-        public void Interact(Player player, byte colliderId = 0) => Base.ServerInteract(player.ReferenceHub, colliderId);
+        public void Interact(Player player = null) => Base.ServerInteract(player?.ReferenceHub, 0);
 
         /// <summary>
         /// Makes the door play a beep sound.
