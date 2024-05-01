@@ -122,7 +122,6 @@ namespace Exiled.API.Features.DamageHandlers2
 
                 return damageType = Base switch
                 {
-                    CustomReasonDamageHandler => DamageType.Custom,
                     WarheadDamageHandler => DamageType.Warhead,
                     ExplosionDamageHandler => DamageType.Explosion,
                     Scp018DamageHandler => DamageType.Scp018,
@@ -145,6 +144,7 @@ namespace Exiled.API.Features.DamageHandlers2
                         Scp049DamageHandler.AttackType.Scp0492 => DamageType.Scp0492,
                         _ => DamageType.Unknown,
                     },
+                    CustomReasonDamageHandler => DamageType.Custom,
                     _ => throw new InvalidOperationException("Unknown damage type."),
                 };
             }
@@ -170,19 +170,29 @@ namespace Exiled.API.Features.DamageHandlers2
         public static implicit operator BaseHandler(DamageHandlerBase damageHandlerBase) => damageHandlerBase.Base;
 
         /// <summary>
-        /// Applies the damage to the specified <see cref="Player"/>.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> to damage.</param>
-        /// <returns>The <see cref="Action"/> of the call to this method.</returns>
-        public Action ApplyDamage(Player player) => (Action)Base.ApplyDamage(player.ReferenceHub);
-
-        /// <summary>
         /// Computes and processes the damage.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to damage.</param>
         public virtual void ProcessDamage(Player player)
         {
         }
+
+        /// <summary>
+        /// Unsafely converts <see cref="Base"/> to specified damage handler.
+        /// </summary>
+        /// <typeparam name="T">Type of damage handler to which <see cref="Base"/> need to be converted.</typeparam>
+        /// <returns>The converted damage handler or <see langword="null"/>.</returns>
+        public T BaseAs<T>()
+            where T : BaseHandler => Base as T;
+
+        /// <summary>
+        /// Safely converts <see cref="Base"/> to specified damage handler.
+        /// </summary>
+        /// <param name="value">Converted <see cref="Base"/>.</param>
+        /// <typeparam name="T">Type of damage handler to which <see cref="Base"/> need to be converted.</typeparam>
+        /// <returns><see langword="true"/> if conversion was successful. Otherwise, <see langword="false"/>.</returns>
+        public bool BaseIs<T>(out T value)
+            where T : BaseHandler => (value = BaseAs<T>()) != null;
 
         /// <summary>
         /// A wrapper to easily manipulate the behavior of <see cref="BaseHandler.CassieAnnouncement"/>.
