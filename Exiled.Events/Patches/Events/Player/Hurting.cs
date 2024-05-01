@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using API.Features.Roles;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
@@ -39,11 +39,8 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
-            LocalBuilder ev = generator.DeclareLocal(typeof(HurtingEventArgs));
 
-            Label notRecontainment = generator.DefineLabel();
-            Label ret = generator.DefineLabel();
-
+            Label jump = generator.DefineLabel();
             int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
@@ -57,44 +54,22 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Stloc, player.LocalIndex),
 
-                    // if (handler is RecontainmentDamageHandler)
-                    // {
-                    //    if (player.Role == RoleTypeId.Scp079)
-                    //    {
-                    //        Handlers.Scp079.OnRecontained(new RecontainedEventArgs(player));
-                    //        return;
-                    //    }
-                    // }
-                    new(OpCodes.Ldarg_1),
-                    new(OpCodes.Isinst, typeof(RecontainmentDamageHandler)),
-                    new(OpCodes.Brfalse, notRecontainment),
-
-                    new(OpCodes.Ldloc, player.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Role), nameof(Role.Type))),
-                    new(OpCodes.Ldc_I4_7),
-                    new(OpCodes.Ceq),
-                    new(OpCodes.Brfalse, notRecontainment),
-
-                    new(OpCodes.Ldloc, player.LocalIndex),
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RecontainedEventArgs))[0]),
-                    new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnRecontained))),
-
                     // HurtingEventArgs ev = new(player, handler)
-                    new CodeInstruction(OpCodes.Ldloc, player.LocalIndex).WithLabels(notRecontainment),
+                    new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(HurtingEventArgs))[0]),
                     new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc, ev.LocalIndex),
 
                     // Handlers.Player.OnHurting(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHurting))),
 
                     // if (!ev.IsAllowed)
-                    //    return;
+                    //  return false;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse, ret),
+                    new(OpCodes.Brtrue, jump),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Ret),
+                    new CodeInstruction(OpCodes.Nop).WithLabels(jump),
                 });
 
             offset = 2;
@@ -118,7 +93,6 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(HurtEventArgs), nameof(HurtEventArgs.HandlerOutput))),
                     new(OpCodes.Stloc_1),
                 });
-            newInstructions[newInstructions.Count - 1].WithLabels(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

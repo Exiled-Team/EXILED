@@ -17,6 +17,7 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Scp914Processors;
     using Exiled.API.Features.Toys;
     using global::Hazards;
     using InventorySystem;
@@ -112,9 +113,16 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether decontamination phase is in the light containment zone.
         /// </summary>
-        public static DecontaminationState DecontaminationState =>
-            DecontaminationController.Singleton.NetworkDecontaminationOverride is DecontaminationController.DecontaminationStatus.Disabled ?
-            DecontaminationState.Disabled : (DecontaminationState)DecontaminationController.Singleton._nextPhase;
+        public static DecontaminationPhase DecontaminationPhase => (DecontaminationPhase)DecontaminationController.Singleton._nextPhase;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the decontamination override is in the light containment zone.
+        /// </summary>
+        public static DecontaminationController.DecontaminationStatus DecontaminationOverride
+        {
+            get => DecontaminationController.Singleton.DecontaminationOverride;
+            set => DecontaminationController.Singleton.DecontaminationOverride = value;
+        }
 
         /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
@@ -248,7 +256,7 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Locker"/>.
         /// </summary>
         /// <returns><see cref="Locker"/> object.</returns>
-        public static Locker GetRandomLocker() => Lockers.GetRandomValue();
+        public static Locker GetRandomLocker() => Lockers.Random();
 
         /// <summary>
         /// Gets a random <see cref="Pickup"/>.
@@ -258,7 +266,7 @@ namespace Exiled.API.Features
         public static Pickup GetRandomPickup(ItemType type = ItemType.None)
         {
             List<Pickup> pickups = (type != ItemType.None ? Pickup.List.Where(p => p.Type == type) : Pickup.List).ToList();
-            return pickups.GetRandomValue();
+            return pickups.Random();
         }
 
         /// <summary>
@@ -340,11 +348,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Places a decal.
+        /// </summary>
+        /// <param name="position">The position of the blood decal.</param>
+        /// <param name="direction">The direction of the blood decal.</param>
+        /// <param name="type">The type of decal to place.</param>
+        public static void PlaceDecal(Vector3 position, Vector3 direction, DecalPoolType type) => new GunDecalMessage(position, direction, type).SendToAuthenticated(0);
+
+        /// <summary>
         /// Places a blood decal.
         /// </summary>
         /// <param name="position">The position of the blood decal.</param>
         /// <param name="direction">The direction of the blood decal.</param>
-        public static void PlaceBlood(Vector3 position, Vector3 direction) => new GunDecalMessage(position, direction, DecalPoolType.Blood).SendToAuthenticated(0);
+        public static void PlaceBlood(Vector3 position, Vector3 direction) => PlaceDecal(position, direction, DecalPoolType.Blood);
 
         /// <summary>
         /// Gets all the near cameras.
@@ -353,7 +369,7 @@ namespace Exiled.API.Features
         /// <param name="toleration">The maximum toleration to define the radius from which get the cameras.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the found cameras.</returns>
         public static IEnumerable<Camera> GetNearCameras(Vector3 position, float toleration = 15f)
-            => Camera.Get(cam => (position - cam.Position).sqrMagnitude <= toleration * toleration);
+            => Camera.Get(cam => MathExtensions.DistanceSquared(position, cam.Position) <= toleration * toleration);
 
         /// <summary>
         /// Explode.
@@ -369,10 +385,13 @@ namespace Exiled.API.Features
             attacker ??= Server.Host;
             if (!InventoryItemLoader.TryGetItem(item, out ThrowableItem throwableItem))
                 return;
-            ExplosionUtils.ServerSpawnEffect(position, item);
 
-            if (throwableItem.Projectile is ExplosionGrenade explosionGrenade)
-                ExplosionGrenade.Explode(attacker.Footprint, position, explosionGrenade);
+            if (Object.Instantiate(throwableItem.Projectile) is TimeGrenade timedGrenadePickup)
+            {
+                timedGrenadePickup.PreviousOwner = attacker.Footprint;
+                timedGrenadePickup.Position = position;
+                timedGrenadePickup.ServerFuseEnd();
+            }
         }
 
         /// <summary>
@@ -402,6 +421,9 @@ namespace Exiled.API.Features
             Firearm.ItemTypeToFirearmInstance.Clear();
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
+
+            Scp914Processor.ProcessorToWrapper.Clear();
+            Workstation.BaseToWrapper.Clear();
         }
     }
 }
