@@ -9,13 +9,13 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1600
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-
     using System;
+    using System.Collections.Generic;
 
     using API.Features;
+    using Exiled.API.Extensions;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader.Features;
-
     using HarmonyLib;
 
     /// <summary>
@@ -46,6 +46,22 @@ namespace Exiled.Events.Patches.Events.Player
                 else
                 {
                     Handlers.Player.OnJoined(new JoinedEventArgs(player));
+
+                    foreach (KeyValuePair<string, object> kvp in Server.FakeSyncVars)
+                    {
+                        string propertyName = kvp.Key.Substring(kvp.Key.LastIndexOf('.'));
+                        string typeName = kvp.Key.Replace('.' + propertyName, string.Empty);
+
+                        Type type = typeof(ReferenceHub).Assembly.GetType(typeName);
+
+                        if (type == null)
+                        {
+                            Log.Error($"Provided type name is invalid or incorrect ({typeName}).");
+                            return;
+                        }
+
+                        player.SendFakeSyncVar(player.NetworkIdentity, type, propertyName, kvp.Value);
+                    }
                 }
             }
             catch (Exception exception)

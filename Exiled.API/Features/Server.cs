@@ -30,8 +30,6 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Server
     {
-        private static MethodInfo sendSpawnMessage;
-
         /// <summary>
         /// Gets a dictionary that pairs assemblies with their associated plugins.
         /// </summary>
@@ -47,11 +45,6 @@ namespace Exiled.API.Features
         /// Gets the cached <see cref="global::Broadcast"/> component.
         /// </summary>
         public static global::Broadcast Broadcast => global::Broadcast.Singleton;
-
-        /// <summary>
-        /// Gets the cached <see cref="SendSpawnMessage"/> <see cref="MethodInfo"/>.
-        /// </summary>
-        public static MethodInfo SendSpawnMessage => sendSpawnMessage ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
 
         /// <summary>
         /// Gets or sets the name of the server.
@@ -202,6 +195,44 @@ namespace Exiled.API.Features
         /// </para>
         /// </summary>
         public static Dictionary<string, object> SessionVariables { get; } = new();
+
+        /// <summary>
+        /// Gets or sets a list with all fake SyncVar that will be applied to player ass soon as he connects.
+        /// <para>
+        /// As string argument use a full name of Network property ('full type name'.'property name').
+        /// As object argument use value that will be used instead of a current value.
+        /// </para>
+        /// </summary>
+        public static List<KeyValuePair<string, object>> FakeSyncVars { get; set; } = new();
+
+        /// <summary>
+        /// Adds a new value to <see cref="FakeSyncVars"/>.
+        /// </summary>
+        /// <param name="propertyInfo">A property of a sync var (starts with "Network").</param>
+        /// <param name="newValue">The value that will replace actual one.</param>
+        public static void AddFakeSyncVar(PropertyInfo propertyInfo, object newValue)
+        {
+            if (propertyInfo.PropertyType != newValue.GetType())
+            {
+                Log.Error($"Type mismatch between property info type ({propertyInfo.PropertyType}) and new value type ({newValue.GetType()})");
+                return;
+            }
+
+            string fullName = propertyInfo.DeclaringType!.FullName + '.' + propertyInfo.Name;
+
+            if (FakeSyncVars.Exists(x => x.Key == fullName))
+                FakeSyncVars.Remove(FakeSyncVars.Find(x => x.Key == fullName));
+
+            FakeSyncVars.Add(new(fullName, newValue));
+        }
+
+        /// <summary>
+        /// Adds a new value to <see cref="FakeSyncVars"/>.
+        /// </summary>
+        /// <param name="fieldInfo">The sync var field.</param>
+        /// <param name="newValue">The new value that will replace actual one.</param>
+        public static void AddFakeSyncVar(FieldInfo fieldInfo, object newValue) =>
+            AddFakeSyncVar(fieldInfo.DeclaringType!.GetProperty("Network" + fieldInfo.Name), newValue);
 
         /// <summary>
         /// Restarts the server, reconnects all players.
