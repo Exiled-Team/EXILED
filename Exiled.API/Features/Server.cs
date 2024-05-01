@@ -203,7 +203,7 @@ namespace Exiled.API.Features
         /// As object argument use value that will be used instead of a current value.
         /// </para>
         /// </summary>
-        public static List<KeyValuePair<string, object>> FakeSyncVars { get; set; } = new();
+        public static Dictionary<string, object> FakeSyncVars { get; set; } = new();
 
         /// <summary>
         /// Adds a new value to <see cref="FakeSyncVars"/>.
@@ -220,10 +220,10 @@ namespace Exiled.API.Features
 
             string fullName = propertyInfo.DeclaringType!.FullName + '.' + propertyInfo.Name;
 
-            if (FakeSyncVars.Exists(x => x.Key == fullName))
-                FakeSyncVars.Remove(FakeSyncVars.Find(x => x.Key == fullName));
+            if (FakeSyncVars.ContainsKey(fullName))
+                FakeSyncVars.Remove(fullName);
 
-            FakeSyncVars.Add(new(fullName, newValue));
+            FakeSyncVars.Add(fullName, newValue);
         }
 
         /// <summary>
