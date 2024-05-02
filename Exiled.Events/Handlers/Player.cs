@@ -25,6 +25,16 @@ namespace Exiled.Events.Handlers
     public class Player
     {
         /// <summary>
+        /// Invoked when sending a complaint about a player to the local server administrators.
+        /// </summary>
+        public static Event<LocalReportingEventArgs> LocalReporting { get; set; } = new();
+
+        /// <summary>
+        /// Invoked when a player reports a cheater.
+        /// </summary>
+        public static Event<ReportingCheaterEventArgs> ReportingCheater { get; set; } = new();
+
+        /// <summary>
         /// Invoked before authenticating a <see cref="API.Features.Player"/>.
         /// </summary>
         public static Event<PreAuthenticatingEventArgs> PreAuthenticating { get; set; } = new();
@@ -536,6 +546,18 @@ namespace Exiled.Events.Handlers
         /// Invoked before displaying the hitmarker to the player.
         /// </summary>
         public static Event<DisplayingHitmarkerEventArgs> ShowingHitMarker { get; set; } = new();
+
+        /// <summary>
+        /// Called when sending a complaint about a player to the local server administrators.
+        /// </summary>
+        /// <param name="ev">The <see cref="LocalReportingEventArgs"/> instance.</param>
+        public static void OnLocalReporting(LocalReportingEventArgs ev) => LocalReporting.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called when a player reports a cheater.
+        /// </summary>
+        /// <param name="ev">The <see cref="ReportingCheaterEventArgs"/> instance.</param>
+        public static void OnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(ev);
 
         /// <summary>
         /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
