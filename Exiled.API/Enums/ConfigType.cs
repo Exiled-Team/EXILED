@@ -15,19 +15,19 @@ namespace Exiled.API.Enums
     public enum ConfigType
     {
         /// <summary>
+        /// Default. Removed in the future.
+        /// </summary>
+        [Obsolete("Separated & Merged exist now.")]
+        Default = Separated,
+
+        /// <summary>
         /// Separated distribution, each plugin will have an individual config file.
         /// </summary>
-        Separated,
+        Separated = 0,
 
         /// <summary>
         /// Merged configs, all plugins share a config file.
         /// </summary>
         Merged,
-
-        /// <summary>
-        /// Default. Removed in the future.
-        /// </summary>
-        [Obsolete("Separated & Merged exist now.")]
-        Default = Separated,
     }
 }
