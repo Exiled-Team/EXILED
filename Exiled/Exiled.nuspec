@@ -14,7 +14,7 @@
     <projectUrl>https://github.com/Exiled-Team/EXILED</projectUrl>
     <icon>images\Exiled_Icon.jpg</icon>
     <description>Plugin framework for SCP: Secret Laboratory.</description>
-    <readme>README.md</readme>
+    <PackageReadmeFile>../README.md</PackageReadmeFile>
 
     <dependencies>
       <group targetFramework="net48" />
