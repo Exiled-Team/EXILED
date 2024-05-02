@@ -14,7 +14,7 @@
     <projectUrl>https://github.com/Exiled-Team/EXILED</projectUrl>
     <icon>images\Exiled_Icon.jpg</icon>
     <description>Plugin framework for SCP: Secret Laboratory.</description>
-    <readme>../README.md</readme>
+    <readme>README.md</readme>
 
     <dependencies>
       <group targetFramework="net48" />
@@ -23,7 +23,6 @@
   </metadata>
 
   <files>
-  <file src="..\README.md" target="\" />
     <!-- Project files -->
     <file src="..\References\Assembly-CSharp-Publicized.dll" target="lib\net48" />
     <file src="..\References\CommandSystem.Core.dll" target="lib\net48" />
@@ -53,6 +52,7 @@
     <!-- Project files -->
 
     <!-- Icon -->
+    <file src="..\readme.md" target="readme.md" />
     <file src="..\assets\Exiled_Icon.jpg" target="images" />
   </files>
 
