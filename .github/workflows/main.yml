@@ -3,10 +3,10 @@ name: Exiled Main CI
 on:
   push:
     branches:
-      - master
+      - patch-2
   pull_request:
     branches:
-      - master
+      - patch-2
 
 env:
   EXILED_REFERENCES_URL: https://misaka-zerotwo.github.io/SL-References/Master.zip
