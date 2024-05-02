@@ -28,6 +28,7 @@
     <RepositoryUrl>https://github.com/Exiled-Team/EXILED</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Exiled-Team/EXILED</PackageProjectUrl>
     <PackageLicenseExpression>CC-BY-SA-3.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
 
     <DefineConstants Condition="$(PublicBeta) == 'true'">$(DefineConstants);PUBLIC_BETA</DefineConstants>
   </PropertyGroup>
