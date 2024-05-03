@@ -31,7 +31,7 @@ Todos os eventos do EXILED são codificados com Harmony, o que significa que nã
 - [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
 
 # Instalação
-A instalação do EXILED é bastante simples. Ele se carrega por meio da API de plug-in da NW. É por isso que existem duas pastas dentro de ``Exiled.tar.gz`` nos arquivos de lançamento. ``SCP Secret Laboratory`` contém os arquivos necessários para carregar os recursos do EXILED na pasta ``EXILED``. Com isso dito, tudo o que você precisa fazer é mover essas duas pastas para o caminho apropriado, explicado abaixo, e pronto!
+A instalação do EXILED é bastante simples. Ele se carrega por meio da API de plug-in da NW. É por isso que existem duas pastas dentro de ``Exiled.tar.gz`` nos arquivos de lançamento. ``SCP Secret Laboratory`` contém os arquivos necessários para carregar os recursos do EXILED na pasta ``EXILED``. Com isso dito, tudo o que você precisa fazer é mover essas duas pastas para o caminho adequado que é explicado abaixo, e pronto!
 
 Se você optar por usar o instalador, se executado corretamente, ele cuidará de instalar todos os recursos do EXILED.
 
@@ -103,7 +103,7 @@ Mas certifique-se de seguir estas regras ao publicar seus plug-ins:
  - Seu plug-in deve conter uma classe herdada de ``Exiled.API.Features.Plugin<>``, caso contrário, o EXILED não carregará seu plug-in quando o servidor iniciar.
  - Quando um plug-in é carregado, o código dentro do método ``OnEnabled()`` da classe supracitada é acionado imediatamente, ele não espera que outros plug-ins sejam carregados. Ele não espera a conclusão do processo de inicialização do servidor. ***Ele não espera por nada.*** Ao configurar seu método ``OnEnable()``, certifique-se de não estar acessando coisas que ainda não foram inicializadas pelo servidor, como ``ServerConsole.Port``, ou ``PlayerManager.localPlayer``.
  - Se você precisar acessar coisas que não foram inicializadas antes do carregamento do plug-in, é recomendável simplesmente aguardar o evento ``WaitingForPlayers`` para fazê-lo, se por algum motivo precisar fazer as coisas antes, envolva o código em um loop ``` while(!x)``` que verifica se a variável/objeto que você precisa não é mais *null* antes de continuar.
- - O EXILED suporta o recarregamento dinâmico de Assemblies de plug-ins no meio da execução. Isso significa que, se você precisar atualizar um plug-in, isso pode ser feito sem reiniciar o servidor, no entanto, se você estiver atualizando um plug-in no meio da execução, o plug-in precisa ser configurado corretamente para suportá-la, ou você terá um tempo bem ruim. Consulte a seção ``Atualizações Dinâmicas`` para mais informações e orientações a seguir.
+ - O EXILED suporta o recarregamento dinâmico de Assemblies de plug-ins no meio da execução. Isso significa que, se você precisar atualizar um plug-in, isso pode ser feito sem reiniciar o servidor, no entanto, se você estiver atualizando um plug-in no meio da execução, o plug-in precisa ser configurado corretamente para suportá-lo, ou você terá um sério problema. Consulte a seção ``Atualizações Dinâmicas`` para mais informações e orientações a seguir.
  - **NÃO** há evento OnUpdate, OnFixedUpdate ou OnLateUpdate no EXILED. Se você precisar, por algum motivo, executar o código com frequência, poderá usar uma corrotina MEC que espera por um quadro, 0.01f, ou usar uma camada de Timing como Timing.FixedUpdate.
 
 ### Desativando patches de evento do EXILED
@@ -111,7 +111,7 @@ Mas certifique-se de seguir estas regras ao publicar seus plug-ins:
 
 ### Corrotinas MEC
 Se você não estiver familiarizado com o MEC, este será um guia muito breve e simples para você começar.
-Corrotinas MEC são basicamente métodos cronometrados, que suportam períodos de espera antes de continuar a execução, sem interromper/suspender o alinhamento (thread) principal do jogo.
+Corrotinas MEC são basicamente métodos cronometrados que suportam períodos de espera antes de continuar a execução, sem interromper/suspender o alinhamento (thread) principal do jogo.
 As corrotinas MEC são seguras para usar com o Unity, ao contrário do alinhamento tradicional. ***NÃO tente criar novos alinhamentos para interagir com o Unity, eles VÃO travar o servidor.***
 
 Para usar o MEC, você precisará referenciar ``Assembly-CSharp-firstpass.dll`` dos arquivos do servidor e incluir ``using MEC;``.
