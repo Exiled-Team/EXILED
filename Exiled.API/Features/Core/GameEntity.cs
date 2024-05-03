@@ -34,7 +34,12 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEntity"/> class.
         /// </summary>
-        protected GameEntity() => ActiveInstances.Add(this);
+        /// <param name="gameObject">Gameobject of the Entity.</param>
+        protected GameEntity(GameObject gameObject)
+        {
+            GameObject = gameObject;
+            ActiveInstances.Add(this);
+        }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="GameEntity"/> class.
