@@ -40,6 +40,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Projectile(ItemType type)
+            : base(null)
         {
             if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase) || itemBase is not ThrowableItem throwable)
                 return;
@@ -47,6 +48,8 @@ namespace Exiled.API.Features.Pickups.Projectiles
             throwable.Projectile.gameObject.SetActive(false);
             base.Base = Base = Object.Instantiate(throwable.Projectile);
             throwable.Projectile.gameObject.SetActive(true);
+
+            GameObject = throwable.Projectile.gameObject;
 
             PickupSyncInfo psi = new()
             {

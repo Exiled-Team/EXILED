@@ -50,20 +50,9 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
         /// </summary>
-        /// <remarks>
-        /// Created only for <see cref="Projectile"/> properly work.
-        /// </remarks>
-        internal Pickup()
-            : base()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Pickup"/> class.
-        /// </summary>
         /// <param name="pickupBase">The base <see cref="ItemPickupBase"/> class.</param>
         internal Pickup(ItemPickupBase pickupBase)
-            : base()
+            : base(pickupBase.gameObject)
         {
             Base = pickupBase;
 
@@ -81,10 +70,12 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Pickup(ItemType type)
+            : base(null)
         {
             if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
                 return;
 
+            GameObject = itemBase.gameObject;
             Base = Object.Instantiate(itemBase.PickupDropModel);
 
             PickupSyncInfo psi = new()
