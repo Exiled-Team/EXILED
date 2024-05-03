@@ -63,11 +63,7 @@ namespace Exiled.API.Features
 
             RoomLightControllers = RoomLightControllersValue.AsReadOnly();
 
-            GameObject.GetComponentsInChildren<BreakableWindow>().ForEach(component =>
-            {
-                Window window = new(component, this);
-                window.Room.WindowsValue.Add(window);
-            });
+            GameObject.GetComponentsInChildren<BreakableWindow>().ForEach(x => WindowsValue.Add(new(x, this)));
 
             if (GameObject.GetComponentInChildren<global::TeslaGate>() is global::TeslaGate tesla)
                 TeslaGate = new TeslaGate(tesla, this);
