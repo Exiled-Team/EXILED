@@ -40,7 +40,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Projectile(ItemType type)
-            : base(null)
+            : this(Object.Instantiate(InventoryItemLoader.AvailableItems[type] as ThrowableItem).Projectile)
         {
             if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase) || itemBase is not ThrowableItem throwable)
                 return;

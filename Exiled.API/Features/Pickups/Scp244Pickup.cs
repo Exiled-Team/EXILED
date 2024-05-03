@@ -12,9 +12,8 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
-    using InventorySystem.Items;
+    using InventorySystem;
     using InventorySystem.Items.Usables.Scp244;
-
     using UnityEngine;
 
     /// <summary>
@@ -37,9 +36,8 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Scp244Pickup(ItemType type)
-            : base(type)
+            : this((Scp244DeployablePickup)UnityEngine.Object.Instantiate(InventoryItemLoader.AvailableItems[type].PickupDropModel))
         {
-            Base = (Scp244DeployablePickup)((Pickup)this).Base;
         }
 
         /// <summary>

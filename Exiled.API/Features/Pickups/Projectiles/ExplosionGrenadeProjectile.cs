@@ -9,10 +9,11 @@ namespace Exiled.API.Features.Pickups.Projectiles
 {
     using Exiled.API.Enums;
     using Exiled.API.Interfaces;
-
+    using InventorySystem;
     using InventorySystem.Items.ThrowableProjectiles;
 
     using PlayerRoles;
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for ExplosionGrenade.
@@ -34,9 +35,8 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal ExplosionGrenadeProjectile(ItemType type)
-            : base(type)
+            : this((ExplosionGrenade)Object.Instantiate(InventoryItemLoader.AvailableItems[type] as ThrowableItem).Projectile)
         {
-            Base = (ExplosionGrenade)((Pickup)this).Base;
         }
 
         /// <summary>

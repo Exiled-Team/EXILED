@@ -8,8 +8,9 @@
 namespace Exiled.API.Features.Pickups.Projectiles
 {
     using Exiled.API.Interfaces;
-
+    using InventorySystem;
     using InventorySystem.Items.ThrowableProjectiles;
+    using UnityEngine;
 
     using BaseScp2176Projectile = InventorySystem.Items.ThrowableProjectiles.Scp2176Projectile;
 
@@ -32,9 +33,8 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Initializes a new instance of the <see cref="Scp2176Projectile"/> class.
         /// </summary>
         internal Scp2176Projectile()
-            : base(ItemType.SCP2176)
+            : this((BaseScp2176Projectile)Object.Instantiate(InventoryItemLoader.AvailableItems[ItemType.SCP2176] as ThrowableItem).Projectile)
         {
-            Base = (BaseScp2176Projectile)((Pickup)this).Base;
         }
 
         /// <summary>
