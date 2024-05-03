@@ -43,9 +43,9 @@ namespace Exiled.API.Features
         /// <param name="roomIdentifier">The room's <see cref="RoomIdentifier"/>.</param>
         internal Room(RoomIdentifier roomIdentifier)
         {
-            gameObject = roomIdentifier.gameObject;
+            Identifier = roomIdentifier;
+            gameObject = Identifier.gameObject;
 
-            Identifier = gameObject.GetComponent<RoomIdentifier>();
             RoomIdentifierToRoom.Add(Identifier, this);
 
             Zone = FindZone(gameObject);
