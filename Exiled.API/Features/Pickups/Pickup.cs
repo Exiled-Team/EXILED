@@ -70,7 +70,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Pickup(ItemType type)
-            : this(Object.Instantiate(InventoryItemLoader.AvailableItems[type].PickupDropModel))
+            : this(type.GetItemBase().ServerDropItem())
         {
         }
 
@@ -196,13 +196,7 @@ namespace Exiled.API.Features.Pickups
         public PickupSyncInfo Info
         {
             get => Base.NetworkInfo;
-            set
-            {
-                Base.Info = value;
-
-                if (GameObject.activeSelf)
-                    Base.NetworkInfo = value;
-            }
+            set => Base.NetworkInfo = value;
         }
 
         /// <summary>

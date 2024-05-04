@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Pickups.Projectiles
 {
+    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
     using InventorySystem;
     using InventorySystem.Items.ThrowableProjectiles;
@@ -33,7 +34,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Initializes a new instance of the <see cref="Scp018Projectile"/> class.
         /// </summary>
         internal Scp018Projectile()
-            : this((BaseScp018Projectile)Object.Instantiate(InventoryItemLoader.AvailableItems[ItemType.SCP018] as ThrowableItem).Projectile)
+            : this((BaseScp018Projectile)ItemType.SCP018.GetItemBase().ServerDropItem())
         {
         }
 

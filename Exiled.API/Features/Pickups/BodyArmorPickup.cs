@@ -10,13 +10,12 @@ namespace Exiled.API.Features.Pickups
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
-    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
-    using UnityEngine;
 
     using BaseBodyArmor = InventorySystem.Items.Armor.BodyArmorPickup;
 
@@ -43,7 +42,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal BodyArmorPickup(ItemType type)
-            : this((BaseBodyArmor)Object.Instantiate(InventoryItemLoader.AvailableItems[type].PickupDropModel))
+            : this((BaseBodyArmor)type.GetItemBase().ServerDropItem())
         {
         }
 

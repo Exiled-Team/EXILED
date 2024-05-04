@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Pickups.Projectiles
 {
+    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
     using InventorySystem;
     using InventorySystem.Items.ThrowableProjectiles;
@@ -34,7 +35,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal TimeGrenadeProjectile(ItemType type)
-            : this((TimeGrenade)Object.Instantiate(InventoryItemLoader.AvailableItems[type] as ThrowableItem).Projectile)
+            : this((TimeGrenade)type.GetItemBase().ServerDropItem())
         {
         }
 

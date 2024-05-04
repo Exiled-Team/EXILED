@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using InventorySystem;
@@ -37,7 +38,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal KeycardPickup(ItemType type)
-            : this((BaseKeycard)Object.Instantiate(InventoryItemLoader.AvailableItems[type].PickupDropModel))
+            : this((BaseKeycard)type.GetItemBase().ServerDropItem())
         {
         }
 

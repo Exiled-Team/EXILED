@@ -38,7 +38,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal GrenadePickup(ItemType type)
-            : this((TimedGrenadePickup)Object.Instantiate(InventoryItemLoader.AvailableItems[ItemType.Jailbird].PickupDropModel))
+            : this((TimedGrenadePickup)type.GetItemBase().ServerDropItem())
         {
         }
 

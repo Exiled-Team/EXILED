@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using InventorySystem;
@@ -35,7 +36,7 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="JailbirdPickup"/> class.
         /// </summary>
         internal JailbirdPickup()
-            : this((BaseJailbirdPickup)Object.Instantiate(InventoryItemLoader.AvailableItems[ItemType.Jailbird].PickupDropModel))
+            : this((BaseJailbirdPickup)ItemType.Jailbird.GetItemBase().ServerDropItem())
         {
         }
 

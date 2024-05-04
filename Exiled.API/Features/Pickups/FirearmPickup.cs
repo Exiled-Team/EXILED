@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
     using InventorySystem;
     using InventorySystem.Items.Firearms;
@@ -34,7 +35,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal FirearmPickup(ItemType type)
-            : this((BaseFirearm)Object.Instantiate(InventoryItemLoader.AvailableItems[type].PickupDropModel))
+            : this((BaseFirearm)type.GetItemBase().ServerDropItem())
         {
             IsDistributed = true;
         }

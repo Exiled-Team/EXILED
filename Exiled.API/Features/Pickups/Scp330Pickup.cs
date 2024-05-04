@@ -9,10 +9,9 @@ namespace Exiled.API.Features.Pickups
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
-    using InventorySystem;
     using InventorySystem.Items.Usables.Scp330;
-    using UnityEngine;
 
     using BaseScp330 = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
 
@@ -35,7 +34,7 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="Scp330Pickup"/> class.
         /// </summary>
         internal Scp330Pickup()
-            : this((BaseScp330)Object.Instantiate(InventoryItemLoader.AvailableItems[ItemType.SCP330].PickupDropModel))
+            : this((BaseScp330)ItemType.SCP330.GetItemBase().ServerDropItem())
         {
             Base = (BaseScp330)((Pickup)this).Base;
         }

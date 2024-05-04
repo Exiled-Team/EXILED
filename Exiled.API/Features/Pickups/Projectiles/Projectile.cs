@@ -40,26 +40,8 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Projectile(ItemType type)
-            : this(Object.Instantiate(InventoryItemLoader.AvailableItems[type] as ThrowableItem).Projectile)
+            : this((ThrownProjectile)type.GetItemBase().ServerDropItem())
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase) || itemBase is not ThrowableItem throwable)
-                return;
-
-            throwable.Projectile.gameObject.SetActive(false);
-            base.Base = Base = Object.Instantiate(throwable.Projectile);
-            throwable.Projectile.gameObject.SetActive(true);
-
-            GameObject = throwable.Projectile.gameObject;
-
-            PickupSyncInfo psi = new()
-            {
-                ItemId = type,
-                Serial = ItemSerialGenerator.GenerateNext(),
-                WeightKg = itemBase.Weight,
-            };
-
-            Info = psi;
-            BaseToPickup.Add(Base, this);
         }
 
         /// <summary>
