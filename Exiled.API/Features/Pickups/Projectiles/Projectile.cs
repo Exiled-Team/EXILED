@@ -75,7 +75,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
             ProjectileType.Scp018 => new Scp018Projectile(),
             ProjectileType.Flashbang => new FlashbangProjectile(),
             ProjectileType.Scp2176 => new Scp2176Projectile(),
-            ProjectileType.FragGrenade => new ExplosionGrenadeProjectile(ItemType.GrenadeHE),
+            ProjectileType.FragGrenade => new ExplosionGrenadeProjectile(),
             _ => throw new System.Exception($"ProjectileType does not contain a valid value : {projectiletype}"),
         };
 

@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
     using Exiled.API.Enums;
     using Exiled.API.Interfaces;
     using InventorySystem;
+    using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
     using UnityEngine;
 
@@ -34,6 +35,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         internal FlashbangProjectile()
             : this((FlashbangGrenade)Object.Instantiate(InventoryItemLoader.AvailableItems[ItemType.GrenadeFlash] as ThrowableItem).Projectile)
         {
+            Info = new(ItemType.GrenadeFlash, InventoryItemLoader.AvailableItems[ItemType.GrenadeFlash].Weight, ItemSerialGenerator.GenerateNext());
         }
 
         /// <summary>
