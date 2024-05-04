@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Hazards
 {
     using CustomPlayerEffects;
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using global::Hazards;
     using Mirror;
@@ -59,6 +60,9 @@ namespace Exiled.API.Features.Hazards
         /// Gets the <see cref="TantrumEnvironmentalHazard"/>.
         /// </summary>
         public new TantrumEnvironmentalHazard Base { get; }
+
+        /// <inheritdoc />
+        public override HazardType Type { get; } = HazardType.Tantrum;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not sizzle should be played.

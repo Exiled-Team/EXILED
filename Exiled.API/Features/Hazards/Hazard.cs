@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Hazards
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using global::Hazards;
@@ -48,6 +49,11 @@ namespace Exiled.API.Features.Hazards
         /// Gets the <see cref="EnvironmentalHazard"/>.
         /// </summary>
         public EnvironmentalHazard Base { get; }
+
+        /// <summary>
+        /// Gets the <see cref="HazardType"/>.
+        /// </summary>
+        public virtual HazardType Type { get; } = HazardType.Unknown;
 
         /// <inheritdoc/>
         public override GameObject GameObject => Base.gameObject;
@@ -147,6 +153,13 @@ namespace Exiled.API.Features.Hazards
         /// <param name="predicate">Condition to satisfy.</param>
         /// <returns><see cref="IEnumerable{T}"/> of <see cref="Hazard"/> based on predicate.</returns>
         public static IEnumerable<Hazard> Get(Func<Hazard, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> of <see cref="Hazard"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="HazardType"/> to get.</param>
+        /// <returns><see cref="IEnumerable{T}"/> of <see cref="Hazard"/> based on type.</returns>
+        public static IEnumerable<Hazard> Get(HazardType type) => Get(h => h.Type == type);
 
         /// <summary>
         /// Checks if player is in hazard zone.

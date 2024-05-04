@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Hazards
 {
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp939;
@@ -63,6 +64,9 @@ namespace Exiled.API.Features.Hazards
         /// Gets the player who controls SCP-939.
         /// </summary>
         public Player Owner { get; }
+
+        /// <inheritdoc />
+        public override HazardType Type { get; } = HazardType.AmnesticCloud;
 
         /// <summary>
         /// Gets or sets current state of cloud.
