@@ -164,4 +164,4 @@ Como tal, os plug-ins que oferecem suporte a Atualizações Dinâmicas ***DEVEM*
 
 Mas nem todo plug-in tem de oferecer suporte a Atualizações Dinâmicas. Se você não pretende oferecer suporte a Atualizações Dinâmicas, tudo bem, simplesmente não altere o nome do Assembly do seu plug-in ao criar uma nova versão e não precisará se preocupar com nada disso, apenas certifique-se de que os anfitriões de servidor saibam que eles precisarão reinicializar completamente seus servidores para atualizar seu plug-in.
 
-**Transcrição brasileira feita por**: *Firething*
+**Tradução brasileira feita por**: *Firething*
