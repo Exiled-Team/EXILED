@@ -302,26 +302,16 @@ namespace Exiled.Installer
 
             return enumerable.First();
         }
-        private static string GetSizeSuffix(long value, int decimalPlaces = 1)
+        private static string GetSizeSuffix(long bytes)
         {
-            if (decimalPlaces < 0) { throw new ArgumentOutOfRangeException(nameof(decimalPlaces)); }
-            switch (value)
-            {
-                case < 0:
-                    return "-" + GetSizeSuffix(-value, decimalPlaces);
-                case 0:
-                    return string.Format("{0:n" + decimalPlaces + "} bytes", 0);
-            }
+            bytes = Math.Abs(bytes);
 
-            int magnitude = (int)Math.Log(value, 1024);
-            decimal adjustedSize = (decimal)value / (1L << (magnitude * 10));
-            if (Math.Round(adjustedSize, decimalPlaces) >= 1000)
-            {
-                magnitude += 1;
-                adjustedSize /= 1024;
-            }
+            long unit = 1024;
+            if (bytes < unit)
+                return $"{bytes} B";
 
-            return string.Format("{0:n" + decimalPlaces + "} {1}", adjustedSize, SizeSuffixes[magnitude]);
+            int exp = (int)Math.Log(bytes, unit);
+            return $"{bytes / Math.Pow(unit, exp):F2} {"KMGTPE"[exp - 1]}B";
         }
     }
 }
