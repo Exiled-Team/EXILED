@@ -311,7 +311,7 @@ namespace Exiled.Installer
                 return $"{bytes} B";
 
             int exp = (int)Math.Log(bytes, unit);
-            return $"{bytes / Math.Pow(unit, exp):F2} {"KMGTPE"[exp - 1]}B";
+            return $"{bytes / Math.Pow(unit, exp):F2} {"KMG"[exp - 1]}B";
         }
     }
 }
