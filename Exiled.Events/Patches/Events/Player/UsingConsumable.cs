@@ -28,7 +28,6 @@ namespace Exiled.Events.Patches.Events.Player
     /// </summary>
     [HarmonyPatch(typeof(UsableItemsController), nameof(UsableItemsController.Update))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingConsumable))]
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingConsumable))]
     internal static class UsingConsumable
     {
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
