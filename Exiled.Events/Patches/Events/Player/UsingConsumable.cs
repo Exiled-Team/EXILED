@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="UsingItemCompleted.cs" company="Exiled Team">
+// <copyright file="UsingConsumable.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -12,11 +12,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Core.Generic.Pools;
-
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
-
     using HarmonyLib;
-
     using InventorySystem.Items.Usables;
     using Mirror;
 
@@ -29,7 +27,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.UsedItem" /> event.
     /// </summary>
     [HarmonyPatch(typeof(UsableItemsController), nameof(UsableItemsController.Update))]
-    internal static class UsingItemCompleted
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingConsumable))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingConsumable))]
+    internal static class UsingConsumable
     {
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -58,12 +58,12 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // UsingItemCompletedEventArgs ev = new(Player, UsableItem)
                 // Handlers.Player.OnUsingItemCompleted(ev)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingItemCompletedEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingConsumableEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingItemCompleted))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingConsumable))),
 
                 // if (ev.IsAllowed) goto continueLabel;
-                new(OpCodes.Call, PropertyGetter(typeof(UsingItemCompletedEventArgs), nameof(UsingItemCompletedEventArgs.IsAllowed))),
+                new(OpCodes.Call, PropertyGetter(typeof(UsingConsumableEventArgs), nameof(UsingConsumableEventArgs.IsAllowed))),
                 new(OpCodes.Brtrue_S, continueLabel),
 
                 // currentUsable.Item.OnUsingCancelled();
