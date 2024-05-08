@@ -94,7 +94,7 @@ EXILED เองมีตัวเลือกการกําหนด config
 
 # สำหรับนักพัฒนา
 
-คุณสามารถสร้างปลั๊กอินสำหรับ EXILED ได้เอง, ไม่ยากเลย. ถ้าหากคุณต้องการคำแนะนำเพิ่มเติมกรุณาไปที่ [หน้าเริ่มต้น](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
+คุณสามารถสร้างปลั๊กอินสำหรับ EXILED ได้เอง, ไม่ยากเลย. ถ้าหากคุณต้องการคำแนะนำเพิ่มเติมกรุณาไปที่ [หน้าเริ่มต้น](https://github.com/Exiled-Team/EXILED/blob/master/Localization/GettingStarted-ไทย.md).
 
 สำหรับบทช่วยสอนที่ครอบคลุมและอัปเดตมากขึ้น, โปรดไปที่ [เว็บไซต์ EXILED](https://exiled-team.github.io/EXILED/articles/install.html).
 
