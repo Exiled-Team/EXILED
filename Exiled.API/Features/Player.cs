@@ -850,18 +850,11 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the player's health.
-        /// If the health is greater than the <see cref="MaxHealth"/>, the MaxHealth will also be changed to match the health.
         /// </summary>
         public float Health
         {
             get => healthStat.CurValue;
-            set
-            {
-                if (value > MaxHealth)
-                    MaxHealth = value;
-
-                healthStat.CurValue = value;
-            }
+            set => healthStat.CurValue = value;
         }
 
         /// <summary>
@@ -2227,10 +2220,10 @@ namespace Exiled.API.Features
         /// <param name="overrideMaxHealth">Whether or not healing should exceed their max health.</param>
         public void Heal(float amount, bool overrideMaxHealth = false)
         {
-            if (!overrideMaxHealth)
-                ReferenceHub.playerStats.GetModule<HealthStat>().ServerHeal(amount);
-            else
+            if (overrideMaxHealth)
                 Health += amount;
+            else
+                healthStat.ServerHeal(amount);
         }
 
         /// <summary>
