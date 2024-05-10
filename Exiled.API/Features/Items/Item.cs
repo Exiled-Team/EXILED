@@ -48,7 +48,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="itemBase">The <see cref="ItemBase"/> to encapsulate.</param>
         public Item(ItemBase itemBase)
-            : base()
+            : base(itemBase.gameObject)
         {
             Base = itemBase;
             BaseToItem.Add(itemBase, this);
@@ -104,11 +104,6 @@ namespace Exiled.API.Features.Items
         /// Gets the <see cref="ItemBase"/> of the item.
         /// </summary>
         public ItemBase Base { get; }
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the item.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.

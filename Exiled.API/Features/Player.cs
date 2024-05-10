@@ -99,7 +99,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="referenceHub">The <see cref="global::ReferenceHub"/> of the player to be encapsulated.</param>
         public Player(ReferenceHub referenceHub)
-            : base()
+            : base(referenceHub.gameObject)
         {
             ReferenceHub = referenceHub;
             Items = ItemsValue.AsReadOnly();
@@ -110,7 +110,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> of the player.</param>
         public Player(GameObject gameObject)
-            : base()
+            : base(gameObject)
         {
             ReferenceHub = ReferenceHub.GetHub(gameObject);
             Items = ItemsValue.AsReadOnly();
@@ -1784,7 +1784,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Sets the <see cref="CustomRoleFriendlyFireMultiplier"/>.
         /// </summary>
-        /// <param name="customRoleFriendlyFireMultiplier"> New rules for CustomeRoleFriendlyFireMultiplier to set to. </param>
+        /// <param name="customRoleFriendlyFireMultiplier"> New rules for CustomRoleFriendlyFireMultiplier to set to. </param>
         public void TrySetCustomRoleFriendlyFire(Dictionary<string, Dictionary<RoleTypeId, float>> customRoleFriendlyFireMultiplier)
             => CustomRoleFriendlyFireMultiplier = customRoleFriendlyFireMultiplier;
 
@@ -1792,7 +1792,7 @@ namespace Exiled.API.Features
         /// Sets the <see cref="CustomRoleFriendlyFireMultiplier"/>.
         /// </summary>
         /// <param name="roleTypeId"> Role to associate FF rules to. </param>
-        /// <param name="customRoleFriendlyFireMultiplier"> New rules for CustomeRoleFriendlyFireMultiplier to set to. </param>
+        /// <param name="customRoleFriendlyFireMultiplier"> New rules for CustomRoleFriendlyFireMultiplier to set to. </param>
         public void TrySetCustomRoleFriendlyFire(string roleTypeId, Dictionary<RoleTypeId, float> customRoleFriendlyFireMultiplier) =>
             CustomRoleFriendlyFireMultiplier[roleTypeId] = customRoleFriendlyFireMultiplier;
 
@@ -1808,7 +1808,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="role"> Role to add. </param>
         /// <returns> Whether or not the item was able to be added. </returns>
-        public bool TryRemoveCustomeRoleFriendlyFire(string role) => CustomRoleFriendlyFireMultiplier.Remove(role);
+        public bool TryRemoveCustomRoleFriendlyFire(string role) => CustomRoleFriendlyFireMultiplier.Remove(role);
 
         /// <summary>
         /// Forces the player to reload their current <see cref="Firearm"></see>.
@@ -2059,7 +2059,8 @@ namespace Exiled.API.Features
                     Inventory.NetworkCurItem = ItemIdentifier.None;
 
                 Inventory.UserInventory.Items.Remove(item.Serial);
-                ItemsValue.Remove(item);
+                typeof(InventoryExtensions).InvokeStaticEvent(nameof(InventoryExtensions.OnItemRemoved), new object[] { ReferenceHub, item.Base, null });
+
                 Inventory.SendItemsNextFrame = true;
             }
 
@@ -2704,8 +2705,6 @@ namespace Exiled.API.Features
                 }
 
                 typeof(InventoryExtensions).InvokeStaticEvent(nameof(InventoryExtensions.OnItemAdded), new object[] { ReferenceHub, itemBase, null });
-
-                ItemsValue.Add(item);
 
                 Inventory.SendItemsNextFrame = true;
                 return item;
