@@ -88,15 +88,18 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="grenade">
         /// <inheritdoc cref="Projectile" />
         /// </param>
+        /// <param name="targetsToAffect">
+        /// <inheritdoc cref="TargetsToAffect" />
+        /// </param>
         /// <param name="isAllowed">
         /// <inheritdoc cref="IsAllowed" />
         /// </param>
-        public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, bool isAllowed = true)
+        public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, List<Player> targetsToAffect, bool isAllowed = true)
         {
             Player = thrower ?? Server.Host;
             Projectile = (EffectGrenadeProjectile)Pickup.Get(grenade);
             Position = Projectile.Position;
-            TargetsToAffect = ListPool<Player>.Pool.Get(Player.List);
+            TargetsToAffect = ListPool<Player>.Pool.Get(targetsToAffect ?? new());
             IsAllowed = isAllowed;
         }
 
