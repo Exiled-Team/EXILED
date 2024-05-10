@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Hazards
         /// </summary>
         /// <param name="hazard">The <see cref="EnvironmentalHazard"/> instance.</param>
         public Hazard(EnvironmentalHazard hazard)
-            : base()
+            : base(hazard.gameObject)
         {
             Base = hazard;
 
@@ -54,9 +54,6 @@ namespace Exiled.API.Features.Hazards
         /// Gets the <see cref="HazardType"/>.
         /// </summary>
         public virtual HazardType Type { get; } = HazardType.Unknown;
-
-        /// <inheritdoc/>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets or sets the list with all affected by this hazard players.
