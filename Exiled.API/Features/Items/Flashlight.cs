@@ -48,7 +48,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets a value indicating whether the item is emitting light.
         /// </summary>
-        public bool IsEmittingLight
+        public new bool IsEmittingLight
         {
             get => Base.IsEmittingLight;
             set
