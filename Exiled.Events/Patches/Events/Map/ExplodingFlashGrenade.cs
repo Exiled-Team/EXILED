@@ -77,6 +77,9 @@ namespace Exiled.Events.Patches.Events.Map
                 if (!ExiledEvents.Instance.Config.CanFlashbangsAffectThrower && explodingGrenadeEvent.Player == player)
                     continue;
 
+                if (player.FlashImmune)
+                    continue;
+
                 if (IndividualFriendlyFire.CheckFriendlyFirePlayer(instance.PreviousOwner, player.ReferenceHub))
                 {
                     instance.ProcessPlayer(player.ReferenceHub);
