@@ -26,8 +26,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="UsableItemsController.Update" />
     /// Adds the <see cref="Handlers.Player.UsedItem" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(UsableItemsController), nameof(UsableItemsController.Update))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingConsumable))]
+    [HarmonyPatch(typeof(UsableItemsController), nameof(UsableItemsController.Update))]
     internal static class UsingConsumable
     {
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
