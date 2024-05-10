@@ -38,7 +38,7 @@ namespace Exiled.Events.Handlers
         public static Event<RevealedEventArgs> Revealed { get; set; } = new();
 
         /// <summary>
-        /// Invoked when SCP-3114 slaps a player.
+        /// Invoked after SCP-3114 slaps a player.
         /// </summary>
         public static Event<SlappedEventArgs> Slapped { get; set; } = new();
 
