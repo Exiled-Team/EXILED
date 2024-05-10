@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Pickups
 {
-    using CameraShaking;
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
