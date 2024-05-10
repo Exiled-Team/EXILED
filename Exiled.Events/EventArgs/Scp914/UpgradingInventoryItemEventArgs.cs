@@ -50,12 +50,6 @@ namespace Exiled.Events.EventArgs.Scp914
         }
 
         /// <summary>
-        /// Gets the <see cref="Scp914Controller" /> instance.
-        /// </summary>
-        [Obsolete("Use Scp914::Scp914Controller instead.")]
-        public Scp914Controller Scp914 => API.Features.Scp914.Scp914Controller;
-
-        /// <summary>
         /// Gets or sets SCP-914 working knob setting.
         /// </summary>
         public Scp914KnobSetting KnobSetting { get; set; }
