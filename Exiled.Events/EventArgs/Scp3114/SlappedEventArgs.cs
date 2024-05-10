@@ -38,9 +38,7 @@ namespace Exiled.Events.EventArgs.Scp3114
             AttackResult = attackResult;
         }
 
-        /// <summary>
-        /// Gets the SCP-3114.
-        /// </summary>
+        /// <inheritdoc/>
         public Player Player { get; }
 
         /// <inheritdoc/>
