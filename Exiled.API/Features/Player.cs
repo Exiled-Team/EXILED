@@ -1796,6 +1796,13 @@ namespace Exiled.API.Features
         public bool TryRemoveFriendlyFire(RoleTypeId role) => FriendlyFireMultiplier.Remove(role);
 
         /// <summary>
+        /// Tries to remove a <see cref="IEnumerable{T}"/> of <see cref="RoleTypeId"/> from FriendlyFire rules.
+        /// </summary>
+        /// <param name="roles"> The <see cref="IEnumerable{T}"/> of <see cref="RoleTypeId"/> to remove. </param>
+        /// <returns> Whether or not all roles were removed from FriendlyFire rules successfully.</returns>
+        public bool TryRemoveFriendlyFire(List<RoleTypeId> roles) => roles.All(role => TryRemoveFriendlyFire(role));
+
+        /// <summary>
         /// Tries to remove <see cref="RoleTypeId"/> from FriendlyFire rules.
         /// </summary>
         /// <param name="role"> Role to add. </param>
