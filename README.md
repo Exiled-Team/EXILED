@@ -29,6 +29,7 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
 - [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
 - [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
 - [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
+- [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # Installation
 Installation of EXILED is quite simple. It loads itself through Northwood’s Plugin API. That's why there are two folders inside the ``Exiled.tar.gz`` in release files. ``SCP Secret Laboratory`` contains the necessary files to load EXILED features in ``EXILED`` folder. All you need to do is move these two folders into the appropriate path, which are explained below, and you are done! 
