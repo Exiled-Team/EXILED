@@ -50,20 +50,9 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
         /// </summary>
-        /// <remarks>
-        /// Created only for <see cref="Projectile"/> properly work.
-        /// </remarks>
-        internal Pickup()
-            : base()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Pickup"/> class.
-        /// </summary>
         /// <param name="pickupBase">The base <see cref="ItemPickupBase"/> class.</param>
         internal Pickup(ItemPickupBase pickupBase)
-            : base()
+            : base(pickupBase.gameObject)
         {
             Base = pickupBase;
 
@@ -81,24 +70,8 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Pickup(ItemType type)
+            : this(type.GetItemBase().ServerDropItem())
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
-                return;
-
-            Base = Object.Instantiate(itemBase.PickupDropModel);
-
-            PickupSyncInfo psi = new()
-            {
-                ItemId = type,
-                Serial = ItemSerialGenerator.GenerateNext(),
-                WeightKg = itemBase.Weight,
-            };
-
-            Info = psi;
-
-            BaseToPickup.Add(Base, this);
-
-            InitializeProperties(itemBase);
         }
 
         /// <summary>
@@ -223,13 +196,7 @@ namespace Exiled.API.Features.Pickups
         public PickupSyncInfo Info
         {
             get => Base.NetworkInfo;
-            set
-            {
-                Base.Info = value;
-
-                if (GameObject.activeSelf)
-                    Base.NetworkInfo = value;
-            }
+            set => Base.NetworkInfo = value;
         }
 
         /// <summary>

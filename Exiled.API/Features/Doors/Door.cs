@@ -46,7 +46,7 @@ namespace Exiled.API.Features.Doors
         /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
         /// <param name="rooms">The <see cref="List{T}"/> of <see cref="Features.Room"/>'s for this door.</param>
         internal Door(DoorVariant door, List<Room> rooms)
-            : base()
+            : base(door.gameObject)
         {
             Base = door;
 
@@ -73,11 +73,6 @@ namespace Exiled.API.Features.Doors
         /// Gets the base-game <see cref="DoorVariant"/> corresponding with this door.
         /// </summary>
         public DoorVariant Base { get; }
-
-        /// <summary>
-        /// Gets the door's <see cref="UnityEngine.GameObject"/>.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the door's <see cref="DoorType"/>.
