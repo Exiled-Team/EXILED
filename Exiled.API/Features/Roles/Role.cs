@@ -43,7 +43,7 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="baseRole">the base <see cref="PlayerRoleBase"/>.</param>
         protected Role(PlayerRoleBase baseRole)
-            : base()
+            : base(baseRole.gameObject)
         {
             if (baseRole.TryGetOwner(out ReferenceHub hub))
                 Owner = Player.Get(hub);
@@ -80,9 +80,6 @@ namespace Exiled.API.Features.Roles
         /// Gets the next Human to spawn according to NW logic.
         /// </summary>
         public static RoleTypeId NextHumanSpawn => HumanSpawner.NextHumanRoleToSpawn;
-
-        /// <inheritdoc/>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="Player"/> this role is referring to.

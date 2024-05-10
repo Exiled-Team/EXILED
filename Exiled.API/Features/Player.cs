@@ -99,7 +99,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="referenceHub">The <see cref="global::ReferenceHub"/> of the player to be encapsulated.</param>
         public Player(ReferenceHub referenceHub)
-            : base()
+            : base(referenceHub.gameObject)
         {
             ReferenceHub = referenceHub;
             Items = ItemsValue.AsReadOnly();
@@ -110,7 +110,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> of the player.</param>
         public Player(GameObject gameObject)
-            : base()
+            : base(gameObject)
         {
             ReferenceHub = ReferenceHub.GetHub(gameObject);
             Items = ItemsValue.AsReadOnly();
@@ -254,12 +254,6 @@ namespace Exiled.API.Features
         /// Gets the player's user id.
         /// </summary>
         public string UserId => referenceHub.authManager.UserId;
-
-        /// <summary>
-        /// Gets or sets the player's custom user id.
-        /// </summary>
-        [Obsolete("Remove by NW", true)]
-        public string CustomUserId { get; set; }
 
         /// <summary>
         /// Gets the player's user id without the authentication.
@@ -1129,6 +1123,11 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not the player has agreed to microphone recording.
         /// </summary>
         public bool AgreedToRecording => VoiceChatPrivacySettings.CheckUserFlags(ReferenceHub, VcPrivacyFlags.SettingsSelected | VcPrivacyFlags.AllowRecording | VcPrivacyFlags.AllowMicCapture);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not player will be affected by a flashbang.
+        /// </summary>
+        public bool FlashImmune { get; set; } = false;
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> of spectators that are currently spectating this <see cref="Player"/>.
@@ -2052,7 +2051,8 @@ namespace Exiled.API.Features
                     Inventory.NetworkCurItem = ItemIdentifier.None;
 
                 Inventory.UserInventory.Items.Remove(item.Serial);
-                ItemsValue.Remove(item);
+                typeof(InventoryExtensions).InvokeStaticEvent(nameof(InventoryExtensions.OnItemRemoved), new object[] { ReferenceHub, item.Base, null });
+
                 Inventory.SendItemsNextFrame = true;
             }
 
@@ -2255,34 +2255,28 @@ namespace Exiled.API.Features
         /// <summary>
         /// Kills the player.
         /// </summary>
-        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/>.</param>
-        public void Kill(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.KillPlayer(damageHandlerBase);
-
-        /// <summary>
-        /// Kills the player.
-        /// </summary>
         /// <param name="damageType">The <see cref="DamageType"/> the player has been killed.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(DamageType damageType, string cassieAnnouncement = "")
-        {
-            if ((Role.Side != Side.Scp) && !string.IsNullOrEmpty(cassieAnnouncement))
-                Cassie.Message(cassieAnnouncement);
-
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, -1, cassieAnnouncement));
-        }
+        public void Kill(DamageType damageType, string cassieAnnouncement = "") => Kill(new CustomDamageHandler(this, null, -1, damageType, cassieAnnouncement));
 
         /// <summary>
         /// Kills the player.
         /// </summary>
         /// <param name="deathReason">The reason the player has been killed.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(string deathReason, string cassieAnnouncement = "")
-        {
-            if ((Role.Side != Side.Scp) && !string.IsNullOrEmpty(cassieAnnouncement))
-                Cassie.Message(cassieAnnouncement);
+        public void Kill(string deathReason, string cassieAnnouncement = "") => Kill(new CustomReasonDamageHandler(deathReason, -1, cassieAnnouncement));
 
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, -1, cassieAnnouncement));
-        }
+        /// <summary>
+        /// Kills the player.
+        /// </summary>
+        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/>.</param>
+        public void Kill(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.KillPlayer(damageHandlerBase);
+
+        /// <summary>
+        /// Kills the player.
+        /// </summary>
+        /// <param name="handler">A <see cref="DamageHandler"/> to kill the player with.</param>
+        public void Kill(DamageHandler handler) => ReferenceHub.playerStats.KillPlayer(handler);
 
         /// <summary>
         /// Kills the player and vaporizes the body.
@@ -2515,16 +2509,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Adds an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
-        /// </summary>
-        /// <param name="itemType">The item to be added.</param>
-        /// <param name="identifiers">The attachments to be added to the item.</param>
-        /// <returns>The <see cref="Item"/> given to the player.</returns>
-        [Obsolete("Use AddItem(ItemType) or AddItem(FirearmType, IEnumerable<AttachmentIdentifier>)", true)]
-        public Item AddItem(ItemType itemType, IEnumerable<AttachmentIdentifier> identifiers = null)
-            => itemType.GetFirearmType() is FirearmType.None ? AddItem(itemType) : AddItem(itemType.GetFirearmType(), identifiers);
-
-        /// <summary>
         /// Adds an firearm of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="firearmType">The firearm to be added.</param>
@@ -2573,17 +2557,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Adds the amount of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
-        /// </summary>
-        /// <param name="itemType">The item to be added.</param>
-        /// <param name="amount">The amount of items to be added.</param>
-        /// <param name="identifiers">The attachments to be added to the item.</param>
-        /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
-        [Obsolete("Use AddItem(ItemType, int) or AddItem(FirearmType, int, IEnumerable<AttachmentIdentifier>)", true)]
-        public IEnumerable<Item> AddItem(ItemType itemType, int amount, IEnumerable<AttachmentIdentifier> identifiers)
-            => itemType.GetFirearmType() is FirearmType.None ? AddItem(itemType, amount) : AddItem(itemType.GetFirearmType(), amount, identifiers);
-
-        /// <summary>
         /// Adds the amount of firearms of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="firearmType">The item to be added.</param>
@@ -2619,22 +2592,6 @@ namespace Exiled.API.Features
                 returnedItems.Add(AddItem(type));
 
             ListPool<ItemType>.Pool.Return(enumeratedItems);
-            return returnedItems;
-        }
-
-        /// <summary>
-        /// Adds the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
-        /// </summary>
-        /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
-        /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
-        [Obsolete("Use AddItem(Dictionary<FirearmType, IEnumerable<AttachmentIdentifier>>) instead of this", true)]
-        public IEnumerable<Item> AddItem(Dictionary<ItemType, IEnumerable<AttachmentIdentifier>> items)
-        {
-            List<Item> returnedItems = new(items.Count);
-
-            foreach (KeyValuePair<ItemType, IEnumerable<AttachmentIdentifier>> item in items)
-                returnedItems.Add(AddItem(item.Key, item.Value));
-
             return returnedItems;
         }
 
@@ -2735,8 +2692,6 @@ namespace Exiled.API.Features
 
                 typeof(InventoryExtensions).InvokeStaticEvent(nameof(InventoryExtensions.OnItemAdded), new object[] { ReferenceHub, itemBase, null });
 
-                ItemsValue.Add(item);
-
                 Inventory.SendItemsNextFrame = true;
                 return item;
             }
@@ -2747,23 +2702,6 @@ namespace Exiled.API.Features
 
             return null;
         }
-
-        /// <summary>
-        /// Adds the <paramref name="amount"/> of items to the player's inventory.
-        /// </summary>
-        /// <param name="item">The item to be added.</param>
-        /// <param name="amount">The amount of items to be added.</param>
-        [Obsolete("Removed this method can't be functional")]
-        public void AddItem(Item item, int amount) => _ = item;
-
-        /// <summary>
-        /// Adds the <paramref name="amount"/> of items to the player's inventory.
-        /// </summary>
-        /// <param name="firearm">The firearm to be added.</param>
-        /// <param name="amount">The amount of items to be added.</param>
-        /// <param name="identifiers">The attachments to be added to the item.</param>
-        [Obsolete("Removed this method can't be functional")]
-        public void AddItem(Firearm firearm, int amount, IEnumerable<AttachmentIdentifier> identifiers) => _ = firearm;
 
         /// <summary>
         /// Adds the list of items to the player's inventory.
@@ -3165,13 +3103,6 @@ namespace Exiled.API.Features
             => TryGetEffect(type, out StatusEffectBase statusEffect) && EnableEffect(statusEffect, intensity, duration, addDurationIfActive);
 
         /// <summary>
-        /// Enables a <see cref="Effect">status effect</see> on the player.
-        /// </summary>
-        /// <param name="effect">The <see cref="Effect"/> to enable.</param>
-        [Obsolete("Use SyncEffect(Effect) instead of this")]
-        public void EnableEffect(Effect effect) => SyncEffect(effect);
-
-        /// <summary>
         /// Syncs the <see cref="Effect">status effect</see> on the player.
         /// </summary>
         /// <param name="effect">The <see cref="Effect"/> to sync.</param>
@@ -3225,13 +3156,6 @@ namespace Exiled.API.Features
                     EnableEffect(statusEffect, duration, addDurationIfActive);
             }
         }
-
-        /// <summary>
-        /// Enables a <see cref="IEnumerable{T}"/> of <see cref="Effect"/> on the player.
-        /// </summary>
-        /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="Effect"/> to enable.</param>
-        [Obsolete("Use SyncEffects(IEnumerable<Effect>) instead of this")]
-        public void EnableEffects(IEnumerable<Effect> effects) => SyncEffects(effects);
 
         /// <summary>
         /// Syncs a <see cref="IEnumerable{T}"/> of <see cref="Effect"/> on the player.
@@ -3388,7 +3312,7 @@ namespace Exiled.API.Features
         /// <param name="isActive">Whether or not the tantrum will apply the <see cref="EffectType.Stained"/> effect.</param>
         /// <remarks>If <paramref name="isActive"/> is <see langword="true"/>, the tantrum is moved slightly up from its original position. Otherwise, the collision will not be detected and the slowness will not work.</remarks>
         /// <returns>The <see cref="TantrumHazard"/> instance..</returns>
-        public TantrumHazard PlaceTantrum(bool isActive = true) => Map.PlaceTantrum(Position, isActive);
+        public TantrumHazard PlaceTantrum(bool isActive = true) => TantrumHazard.CreateAndSpawn(Position, isActive);
 
         /// <summary>
         /// Gives a new <see cref="AhpStat">to the player</see>.
