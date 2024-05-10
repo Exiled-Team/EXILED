@@ -35,39 +35,34 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly Dictionary<RoomIdentifier, Room> RoomIdentifierToRoom = new(250, new ComponentsEqualityComparer());
 
-        private GameObject gameObject;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Room"/> class.
         /// </summary>
-        /// <param name="go">The room's <see cref="UnityEngine.GameObject"/>.</param>
-        internal Room(GameObject go)
+        /// <param name="roomIdentifier">The room's <see cref="RoomIdentifier"/>.</param>
+        internal Room(RoomIdentifier roomIdentifier)
+            : base(roomIdentifier.gameObject)
         {
-            gameObject = go;
+            Identifier = roomIdentifier;
+            GameObject = Identifier.gameObject;
 
-            Identifier = gameObject.GetComponent<RoomIdentifier>();
             RoomIdentifierToRoom.Add(Identifier, this);
 
-            Zone = FindZone(gameObject);
+            Zone = FindZone(GameObject);
 #if Debug
             if (Type is RoomType.Unknown)
                 Log.Error($"[ZONETYPE UNKNOWN] {this}");
 #endif
-            Type = FindType(gameObject);
+            Type = FindType(GameObject);
 #if Debug
             if (Type is RoomType.Unknown)
                 Log.Error($"[ROOMTYPE UNKNOWN] {this}");
 #endif
 
-            RoomLightControllersValue.AddRange(gameObject.GetComponentsInChildren<RoomLightController>());
+            RoomLightControllersValue.AddRange(GameObject.GetComponentsInChildren<RoomLightController>());
 
             RoomLightControllers = RoomLightControllersValue.AsReadOnly();
 
-            GameObject.GetComponentsInChildren<BreakableWindow>().ForEach(component =>
-            {
-                Window window = new(component, this);
-                window.Room.WindowsValue.Add(window);
-            });
+            GameObject.GetComponentsInChildren<BreakableWindow>().ForEach(x => WindowsValue.Add(new(x, this)));
 
             if (GameObject.GetComponentInChildren<global::TeslaGate>() is global::TeslaGate tesla)
                 TeslaGate = new TeslaGate(tesla, this);
@@ -82,11 +77,6 @@ namespace Exiled.API.Features
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains all the <see cref="Room"/> instances.
         /// </summary>
         public static new IReadOnlyCollection<Room> List => RoomIdentifierToRoom.Values;
-
-        /// <summary>
-        /// Gets the <see cref="Room"/> <see cref="UnityEngine.GameObject"/>.
-        /// </summary>
-        public override GameObject GameObject => gameObject;
 
         /// <summary>
         /// Gets the <see cref="Room"/> name.
@@ -252,7 +242,7 @@ namespace Exiled.API.Features
         /// <param name="roomIdentifier">The <see cref="Identifier"/> to search with.</param>
         /// <returns>The <see cref="Room"/> of the given identified, if any. Can be <see langword="null"/>.</returns>
         public static Room Get(RoomIdentifier roomIdentifier) => roomIdentifier == null ? null :
-            RoomIdentifierToRoom.TryGetValue(roomIdentifier, out Room room) ? room : null;
+            RoomIdentifierToRoom.TryGetValue(roomIdentifier, out Room room) ? room : new Room(roomIdentifier);
 
         /// <summary>
         /// Gets a <see cref="Room"/> from a given <see cref="RoomIdentifier"/>.
@@ -307,7 +297,7 @@ namespace Exiled.API.Features
             // First try to find the room owner quickly.
             if (!objectInRoom.CompareTag(playerTag))
             {
-                room = objectInRoom.GetComponentInParent<Room>();
+                room = Get(objectInRoom.GetComponentInParent<RoomIdentifier>());
             }
             else
             {

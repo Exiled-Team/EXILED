@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Hazards
 {
+    using Exiled.API.Enums;
     using global::Hazards;
 
     /// <summary>
@@ -28,5 +29,8 @@ namespace Exiled.API.Features.Hazards
         /// Gets the <see cref="SinkholeEnvironmentalHazard"/>.
         /// </summary>
         public new SinkholeEnvironmentalHazard Base { get; }
+
+        /// <inheritdoc />
+        public override HazardType Type { get; } = HazardType.Sinkhole;
     }
 }
