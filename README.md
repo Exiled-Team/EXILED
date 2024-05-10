@@ -29,6 +29,7 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
 - [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
 - [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
 - [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
+- [한국어](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-KR.md)
 - [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # Installation
