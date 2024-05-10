@@ -49,7 +49,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ragdoll">The encapsulated <see cref="BasicRagdoll"/>.</param>
         internal Ragdoll(BasicRagdoll ragdoll)
-            : base()
+            : base(ragdoll.gameObject)
         {
             Base = ragdoll;
             BasicRagdollToRagdoll.Add(ragdoll, this);
@@ -84,11 +84,6 @@ namespace Exiled.API.Features
         /// Gets the <see cref="BasicRagdoll"/> instance of the ragdoll.
         /// </summary>
         public BasicRagdoll Base { get; }
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the ragdoll.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets or sets the ragdoll's <see cref="RagdollData"/>.
