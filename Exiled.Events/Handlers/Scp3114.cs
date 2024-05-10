@@ -82,7 +82,7 @@ namespace Exiled.Events.Handlers
         public static void OnRevealed(RevealedEventArgs ev) => Revealed.InvokeSafely(ev);
 
         /// <summary>
-        /// Called when slapped.
+        /// Called after SCP-3114 slaps a player.
         /// </summary>
         /// <param name="ev">The <see cref="SlappedEventArgs" /> instance.</param>
         public static void OnSlapped(SlappedEventArgs ev) => Slapped.InvokeSafely(ev);
