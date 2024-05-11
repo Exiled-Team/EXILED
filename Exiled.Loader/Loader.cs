@@ -424,7 +424,7 @@ namespace Exiled.Loader
             if (plugin.IgnoreRequiredVersionCheck)
                 return false;
 
-            Version requiredVersion = plugin.RequiredExiledVersion == default ? pluginVersion : pluginVersion;
+            Version requiredVersion = plugin.RequiredExiledVersion == default ? pluginVersion : plugin.RequiredExiledVersion;
             Version actualVersion = Version;
 
             // Check Major version
