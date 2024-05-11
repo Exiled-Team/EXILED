@@ -47,6 +47,7 @@ namespace Exiled.API.Features
     using NorthwoodLib;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.RoleAssign;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
@@ -850,18 +851,11 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the player's health.
-        /// If the health is greater than the <see cref="MaxHealth"/>, the MaxHealth will also be changed to match the health.
         /// </summary>
         public float Health
         {
             get => healthStat.CurValue;
-            set
-            {
-                if (value > MaxHealth)
-                    MaxHealth = value;
-
-                healthStat.CurValue = value;
-            }
+            set => healthStat.CurValue = value;
         }
 
         /// <summary>
@@ -879,17 +873,8 @@ namespace Exiled.API.Features
         /// </summary>
         public float ArtificialHealth
         {
-            get => ActiveArtificialHealthProcesses.FirstOrDefault()?.CurrentAmount ?? 0f;
-            set
-            {
-                if (value > MaxArtificialHealth)
-                    MaxArtificialHealth = value;
-
-                AhpStat.AhpProcess ahp = ActiveArtificialHealthProcesses.FirstOrDefault();
-
-                if (ahp is not null)
-                    ahp.CurrentAmount = value;
-            }
+            get => AhpStat.CurValue;
+            set => AhpStat.CurValue = value;
         }
 
         /// <summary>
@@ -897,18 +882,19 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxArtificialHealth
         {
-            get => ActiveArtificialHealthProcesses.FirstOrDefault()?.Limit ?? 0f;
-            set
-            {
-                if (!ActiveArtificialHealthProcesses.Any())
-                    AddAhp(value);
-
-                AhpStat.AhpProcess ahp = ActiveArtificialHealthProcesses.FirstOrDefault();
-
-                if (ahp is not null)
-                    ahp.Limit = value;
-            }
+            get => AhpStat.MaxValue;
+            set => AhpStat._maxSoFar = value;
         }
+
+        /// <summary>
+        /// Gets the <see cref="AhpStat"/> of the Player.
+        /// </summary>
+        public AhpStat AhpStat => ReferenceHub.playerStats.GetModule<AhpStat>();
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> of all active Artificial Health processes on the player.
+        /// </summary>
+        public List<AhpStat.AhpProcess> ActiveArtificialHealthProcesses => AhpStat._activeProcesses;
 
         /// <summary>
         /// Gets or sets the player's Hume Shield.
@@ -919,11 +905,6 @@ namespace Exiled.API.Features
             get => HumeShieldStat.CurValue;
             set => HumeShieldStat.CurValue = value;
         }
-
-        /// <summary>
-        /// Gets a <see cref="List{T}"/> of all active Artificial Health processes on the player.
-        /// </summary>
-        public List<AhpStat.AhpProcess> ActiveArtificialHealthProcesses => ReferenceHub.playerStats.GetModule<AhpStat>()._activeProcesses;
 
         /// <summary>
         /// Gets the player's <see cref="PlayerStatsSystem.HumeShieldStat"/>.
@@ -1596,6 +1577,29 @@ namespace Exiled.API.Features
         public bool GrantWhitelist(bool isPermanent) => AddToWhitelist(UserId, isPermanent);
 
         /// <summary>
+        /// Gets vision information based on the specified target player and optional mask layer.
+        /// </summary>
+        /// <param name="target">The Player to target.</param>
+        /// <param name="maskLayer">The mask layer to use (default is 0).</param>
+        /// <returns>A <see cref="VisionInformation"/> object containing the provided information.</returns>
+        public VisionInformation GetVisionInformation(Player target, LayerMaskFlags maskLayer = 0) =>
+            VisionInformation.GetVisionInformation(ReferenceHub, CameraTransform, target.Position, target.Role is FpcRole fpc ? fpc.CharacterController.radius : 0, 0, true, true, (int)maskLayer, true);
+
+        /// <summary>
+        /// Gets vision information based on the specified target position and optional parameters.
+        /// </summary>
+        /// <param name="target">The target position as a <see cref="Vector3"/>.</param>
+        /// <param name="radius">The radius to check (default is 0).</param>
+        /// <param name="visionTriggerDistance">The vision trigger distance (default is 0).</param>
+        /// <param name="checkFog">Specifies whether to check fog (default is true).</param>
+        /// <param name="checkLineOfSight">Specifies whether to check Line of Sight (default is true).</param>
+        /// <param name="maskLayer">The mask layer to use (default is 0).</param>
+        /// <param name="checkInDarkness">Specifies whether to check if the player is in darkness (default is true).</param>
+        /// <returns>A <see cref="VisionInformation"/> object based on the provided information.</returns>
+        public VisionInformation GetVisionInformation(Vector3 target, float radius = 0f, float visionTriggerDistance = 0f, bool checkFog = true, bool checkLineOfSight = true, LayerMaskFlags maskLayer = 0, bool checkInDarkness = true) =>
+            VisionInformation.GetVisionInformation(ReferenceHub, CameraTransform, target, radius, visionTriggerDistance, checkFog, checkLineOfSight, (int)maskLayer, checkInDarkness);
+
+        /// <summary>
         /// Tries to add <see cref="RoleTypeId"/> to FriendlyFire rules.
         /// </summary>
         /// <param name="roleToAdd"> Role to add. </param>
@@ -1807,6 +1811,13 @@ namespace Exiled.API.Features
         /// <param name="role"> Role to add. </param>
         /// <returns> Whether or not the item was able to be added. </returns>
         public bool TryRemoveFriendlyFire(RoleTypeId role) => FriendlyFireMultiplier.Remove(role);
+
+        /// <summary>
+        /// Tries to remove a <see cref="IEnumerable{T}"/> of <see cref="RoleTypeId"/> from FriendlyFire rules.
+        /// </summary>
+        /// <param name="roles"> The <see cref="IEnumerable{T}"/> of <see cref="RoleTypeId"/> to remove. </param>
+        /// <returns> Whether or not all roles were removed from FriendlyFire rules successfully.</returns>
+        public bool TryRemoveFriendlyFire(List<RoleTypeId> roles) => roles.All(role => TryRemoveFriendlyFire(role));
 
         /// <summary>
         /// Tries to remove <see cref="RoleTypeId"/> from FriendlyFire rules.
@@ -2233,10 +2244,10 @@ namespace Exiled.API.Features
         /// <param name="overrideMaxHealth">Whether or not healing should exceed their max health.</param>
         public void Heal(float amount, bool overrideMaxHealth = false)
         {
-            if (!overrideMaxHealth)
-                ReferenceHub.playerStats.GetModule<HealthStat>().ServerHeal(amount);
-            else
+            if (overrideMaxHealth)
                 Health += amount;
+            else
+                healthStat.ServerHeal(amount);
         }
 
         /// <summary>
@@ -3147,7 +3158,7 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="EffectType"/> that was given to the player.</returns>
         public EffectType ApplyRandomEffect(EffectCategory category, byte intensity, float duration = 0f, bool addDurationIfActive = false)
         {
-            IEnumerable<EffectType> validEffects = EnumExtensions.QueryEnumValue<EffectType>().Where(effect => effect.GetCategories().HasFlag(category));
+            IEnumerable<EffectType> validEffects = EnumExtensions.QueryValues<EffectType>().Where(effect => effect.GetCategories().HasFlag(category));
             EffectType effectType = validEffects.Random();
 
             EnableEffect(effectType, intensity, duration, addDurationIfActive);

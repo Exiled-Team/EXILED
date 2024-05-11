@@ -7,9 +7,6 @@
 
 namespace Exiled.API.Extensions
 {
-    using System;
-    using System.Collections.Generic;
-
     using UnityEngine;
 
     /// <summary>

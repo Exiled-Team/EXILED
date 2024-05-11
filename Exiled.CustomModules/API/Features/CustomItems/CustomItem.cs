@@ -511,7 +511,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
             {
                 Log.Debug($"Attempting to spawn {Name} at {spawnPoint.Position}.", true);
 
-                if (Loader.Loader.Random.NextDouble() * 100 >= spawnPoint.Chance || (limit > 0 && spawned >= limit))
+                if (spawnPoint.Chance.EvaluateProbability() || (limit > 0 && spawned >= limit))
                     continue;
 
                 spawned++;

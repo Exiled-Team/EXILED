@@ -81,7 +81,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Usable"/>.
         /// </summary>
-        public static Event<UsingItemCompletedEventArgs> UsingItemCompleted { get; set; } = new ();
+        public static Event<UsingConsumableEventArgs> UsingConsumable { get; set; } = new();
 
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Usable"/>.
@@ -606,7 +606,7 @@ namespace Exiled.Events.Handlers
         /// Called before completed using of a usable item.
         /// </summary>
         /// <param name="ev">The <see cref="UsingItemEventArgs"/> instance.</param>
-        public static void OnUsingItemCompleted(UsingItemCompletedEventArgs ev) => UsingItemCompleted.InvokeSafely(ev);
+        public static void OnUsingConsumable(UsingConsumableEventArgs ev) => UsingConsumable.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="API.Features.Player"/> used a <see cref="API.Features.Items.Usable"/> item.
