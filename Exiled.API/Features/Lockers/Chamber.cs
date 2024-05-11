@@ -34,6 +34,7 @@ namespace Exiled.API.Features.Lockers
         /// <param name="chamber"><see cref="LockerChamber"/> instance.</param>
         /// <param name="locker"><see cref="Lockers.Locker"/> where this chamber is located.</param>
         public Chamber(LockerChamber chamber, Locker locker)
+            : base(chamber.gameObject)
         {
             Base = chamber;
             Locker = locker;

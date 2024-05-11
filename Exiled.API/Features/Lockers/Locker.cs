@@ -32,6 +32,7 @@ namespace Exiled.API.Features.Lockers
         /// </summary>
         /// <param name="locker">The <see cref="BaseLocker"/> instance.</param>
         public Locker(BaseLocker locker)
+            : base(locker.gameObject)
         {
             Base = locker;
             Chambers = locker.Chambers.Select(x => new Chamber(x, this)).ToList();
