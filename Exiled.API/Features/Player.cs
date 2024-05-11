@@ -919,11 +919,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="List{T}"/> of all active Artificial Health processes on the player.
-        /// </summary>
-        public List<AhpStat.AhpProcess> ActiveArtificialHealthProcesses => ReferenceHub.playerStats.GetModule<AhpStat>()._activeProcesses;
-
-        /// <summary>
         /// Gets the player's <see cref="CustomHumeShieldStat"/>.
         /// </summary>
         public CustomHumeShieldStat HumeShieldStat => humeShieldStat;
