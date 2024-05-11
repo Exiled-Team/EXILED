@@ -15,6 +15,7 @@ namespace Exiled.API.Features
     using Enums;
     using PlayerRoles;
     using Respawning;
+    using Respawning.NamingRules;
     using UnityEngine;
 
     /// <summary>
@@ -137,6 +138,29 @@ namespace Exiled.API.Features
         /// Gets a <see cref="List{T}"/> of <see cref="Team"/> that have spawn protection.
         /// </summary>
         public static List<Team> ProtectedTeams => SpawnProtected.ProtectedTeams;
+
+        /// <summary>
+        /// Gets a string array of possible names for NTF.
+        /// </summary>
+        public static string[] NtfNamingCodes => NineTailedFoxNamingRule.PossibleCodes;
+
+        /// <summary>
+        /// Generates a queue.
+        /// </summary>
+        /// <param name="team">The team to get queue of.</param>
+        /// <param name="amount">Amount to get.</param>
+        /// <returns>A queue of <see cref="RoleTypeId"/>.</returns>
+        public static Queue<RoleTypeId> GenerateQueue(SpawnableTeamType team, int amount)
+        {
+            Queue<RoleTypeId> queue = new();
+
+            if (!RespawnManager.SpawnableTeams.TryGetValue(team, out SpawnableTeamHandlerBase handler))
+                return queue;
+
+            handler.GenerateQueue(queue, amount);
+
+            return queue;
+        }
 
         /// <summary>
         /// Play an effect when a certain class spawns.
