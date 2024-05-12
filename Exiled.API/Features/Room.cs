@@ -401,6 +401,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Unlocks all the doors in the room.
         /// </summary>
+        /// <seealso cref="Door.UnlockAll()"/>
+        /// <seealso cref="Door.UnlockAll(ZoneType)"/>
+        /// <seealso cref="Door.UnlockAll(IEnumerable{ZoneType})"/>
+        /// <seealso cref="Door.UnlockAll(Func{Door, bool})"/>
         public void UnlockAll()
         {
             foreach (Door door in Doors)

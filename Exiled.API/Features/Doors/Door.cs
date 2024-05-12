@@ -501,7 +501,7 @@ namespace Exiled.API.Features.Doors
         /// <param name="type">The <see cref="ZoneType"/> to affect.</param>
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void LockAll(ZoneType type, float duration, DoorLockType lockType = DoorLockType.Regular079) => Get(type).ForEach(door => door.Lock(lockType, true));
+        public static void LockAll(ZoneType type, float duration, DoorLockType lockType = DoorLockType.Regular079) => Get(type).ForEach(door => door.Lock(duration, lockType, true));
 
         /// <summary>
         /// Temporary locks all <see cref="Door">doors</see> given the specified zones.
@@ -585,13 +585,13 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Change the door lock with the given lock type.
         /// </summary>
-        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
+        /// <param name="lockType">The <see cref="DoorLockType"/> to use.</param>
         public void ChangeLock(DoorLockType lockType) => Base.ServerChangeLock((DoorLockReason)lockType, !LockType.HasFlag(lockType));
 
         /// <summary>
         /// Permanently locks all active locks on the door, and then reverts back any changes after a specified length of time.
         /// </summary>
-        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
+        /// <param name="lockType">The <see cref="DoorLockType"/> of the lockdown.</param>
         /// <param name="updateTheDoorState">A value indicating whether the door state should be modified.</param>
         public void Lock(DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = true)
         {
@@ -611,7 +611,7 @@ namespace Exiled.API.Features.Doors
         /// Temporary locks all active locks on the door, and then reverts back any changes after a specified length of time.
         /// </summary>
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
-        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
+        /// <param name="lockType">The <see cref="DoorLockType"/> of the lockdown.</param>
         /// <param name="updateTheDoorState">A value indicating whether the door state should be modified.</param>
         public void Lock(float time, DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = true)
         {

@@ -348,7 +348,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Unlocks the lift.
         /// </summary>
-        public void Unlock() => Doors.ForEach(x => x.ChangeLock(DoorLockType.None));
+        public void Unlock() => Doors.ForEach(x => x.Unlock());
 
         /// <summary>
         /// Unlocks the lift.
