@@ -5,9 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Items;
-using Exiled.API.Features.Roles;
-
 namespace Exiled.Events
 {
     using System;
@@ -74,15 +71,6 @@ namespace Exiled.Events
             Handlers.Scp049.ActivatingSense += Handlers.Internal.Round.OnActivatingSense;
             Handlers.Player.Verified += Handlers.Internal.Round.OnVerified;
             Handlers.Map.ChangedIntoGrenade += Handlers.Internal.ExplodingGrenade.OnChangedIntoGrenade;
-
-            Handlers.Player.Spawned += ev =>
-            {
-                if (ev.Player.Role.Is(out Scp106Role radio))
-                {
-                    Log.Info(radio.SinkholeCooldownDuration);
-                    radio.SinkholeCooldownDuration = 1;
-                }
-            };
 
             CharacterClassManager.OnRoundStarted += Handlers.Server.OnRoundStarted;
 
