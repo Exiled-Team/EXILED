@@ -435,9 +435,13 @@ namespace Exiled.API.Features.Doors
         /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
         /// <param name="onlyUnbroken">A value indicating whether it filters broken doors.</param>
         /// <returns><see cref="Door"/> object.</returns>
-        public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false) => onlyUnbroken || type is not ZoneType.Unspecified ?
-                Get(x => (x.Room is null || x.Room.Zone.HasFlag(type) || type == ZoneType.Unspecified) && (x is Breakable { IsDestroyed: true } || !onlyUnbroken)).Random() :
-                DoorVariantToDoor.Values.Random();
+        public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
+        {
+            if (onlyUnbroken || type != ZoneType.Unspecified)
+                return Get(x => (x.Room == null || x.Room.Zone.HasFlag(type) || type == ZoneType.Unspecified) && (!onlyUnbroken || !(x is Breakable { IsDestroyed: true }))).Random();
+
+            return DoorVariantToDoor.Values.Random();
+        }
 
         /// <summary>
         /// Permanently locks a <see cref="Door"/> corresponding to the given type.
@@ -598,13 +602,13 @@ namespace Exiled.API.Features.Doors
             ChangeLock(lockType);
 
             if (updateTheDoorState)
-            {
-                DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason)LockType);
-                if (mode is DoorLockMode.CanOpen)
-                    IsOpen = true;
-                else if (mode is DoorLockMode.CanClose)
-                    IsOpen = false;
-            }
+                return;
+
+            DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason)LockType);
+            if (mode is DoorLockMode.CanOpen)
+                IsOpen = true;
+            else if (mode is DoorLockMode.CanClose)
+                IsOpen = false;
         }
 
         /// <summary>
