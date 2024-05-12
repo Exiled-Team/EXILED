@@ -643,9 +643,9 @@ namespace Exiled.API.Features.Items
             Firearm cloneableItem = new(Type)
             {
                 Ammo = Ammo,
+                Recoil = Recoil,
             };
 
-            cloneableItem.Recoil = Recoil;
             cloneableItem.AddAttachment(AttachmentIdentifiers);
 
             return cloneableItem;
