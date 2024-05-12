@@ -301,6 +301,7 @@ namespace Exiled.Installer
 
             return enumerable.First();
         }
+
         private static string GetSizeSuffix(long bytes)
         {
             bytes = Math.Abs(bytes);
