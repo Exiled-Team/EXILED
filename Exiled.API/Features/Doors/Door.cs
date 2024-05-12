@@ -440,6 +440,126 @@ namespace Exiled.API.Features.Doors
                 DoorVariantToDoor.Values.Random();
 
         /// <summary>
+        /// Permanently locks a <see cref="Door"/> corresponding to the given type.
+        /// </summary>
+        /// <param name="type">The door to affect.</param>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
+        public static void Lock(DoorType type, DoorLockType lockType = DoorLockType.Regular079) => Get(type)?.Lock(lockType);
+
+        /// <summary>
+        /// Temporary locks a <see cref="Door"/> corresponding to the given type.
+        /// </summary>
+        /// <param name="type">The door to affect.</param>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
+        public static void Lock(DoorType type, float duration, DoorLockType lockType = DoorLockType.Regular079) => Get(type)?.Lock(duration, lockType);
+
+        /// <summary>
+        /// Unlocks a <see cref="Door"/> corresponding to the specified type.
+        /// </summary>
+        /// <param name="type">The <see cref="DoorType"/>.</param>
+        public static void Unlock(DoorType type) => Get(type)?.Unlock();
+
+        /// <summary>
+        /// Locks a <see cref="Door">doors</see> corresponding to the given type.
+        /// </summary>
+        /// <param name="type">The door to affect.</param>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
+        public static void LockAll(DoorType type, float duration, DoorLockType lockType = DoorLockType.Regular079) => Get(type)?.Lock(duration, lockType);
+
+        /// <summary>
+        /// Permanently locks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
+        public static void LockAll(DoorLockType lockType = DoorLockType.Regular079) => List.ForEach(door => door.Lock(lockType));
+
+        /// <summary>
+        /// Locks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
+        public static void LockAll(float duration, DoorLockType lockType = DoorLockType.Regular079) => List.ForEach(door => door.Lock(duration, lockType, true));
+
+        /// <summary>
+        /// Permanently locks all <see cref="Door">doors</see> given the specified <see cref="ZoneType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ZoneType"/> to affect.</param>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
+        public static void LockAll(ZoneType type, DoorLockType lockType = DoorLockType.Regular079) => Get(type).ForEach(door => door.Lock(lockType, true));
+
+        /// <summary>
+        /// Permanently locks all <see cref="Door">doors</see> given the specified zones.
+        /// </summary>
+        /// <param name="types">The zones to affect.</param>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
+        public static void LockAll(IEnumerable<ZoneType> types, DoorLockType lockType = DoorLockType.Regular079) => Get(types).ForEach(door => door.Lock(lockType, true));
+
+        /// <summary>
+        /// Temporary locks all <see cref="Door">doors</see> given the specified <see cref="ZoneType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ZoneType"/> to affect.</param>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
+        public static void LockAll(ZoneType type, float duration, DoorLockType lockType = DoorLockType.Regular079) => Get(type).ForEach(door => door.Lock(lockType, true));
+
+        /// <summary>
+        /// Temporary locks all <see cref="Door">doors</see> given the specified zones.
+        /// </summary>
+        /// <param name="types">The zones to affect.</param>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
+        public static void LockAll(IEnumerable<ZoneType> types, float duration, DoorLockType lockType = DoorLockType.Regular079) => types.ForEach(t => LockAll(t, duration, lockType));
+
+        /// <summary>
+        /// Permanently locks all <see cref="Door">doors</see> corresponding to the given types.
+        /// </summary>
+        /// <param name="types">The doors to affect.</param>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
+        public static void LockAll(IEnumerable<DoorType> types, DoorLockType lockType = DoorLockType.Regular079) => Get(types).ForEach(door => door.Lock(lockType, true));
+
+        /// <summary>
+        /// Temporary locks all <see cref="Door">doors</see> corresponding to the given types.
+        /// </summary>
+        /// <param name="types">The doors to affect.</param>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
+        public static void LockAll(IEnumerable<DoorType> types, float duration, DoorLockType lockType = DoorLockType.Regular079) => types.ForEach(t => LockAll(t, duration, lockType));
+
+        /// <summary>
+        /// Unlocks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        public static void UnlockAll() => List.ForEach(door => door.Unlock());
+
+        /// <summary>
+        /// Unlocks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="type">The zones to affect.</param>
+        public static void UnlockAll(ZoneType type) => UnlockAll(door => door.Zone.HasFlag(type));
+
+        /// <summary>
+        /// Unlocks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="types">The zones to affect.</param>
+        public static void UnlockAll(params ZoneType[] types) => UnlockAll(door => types.Contains(door.Zone));
+
+        /// <summary>
+        /// Unlocks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="types">The zones to affect.</param>
+        public static void UnlockAll(IEnumerable<ZoneType> types) => UnlockAll(door => types.Contains(door.Zone));
+
+        /// <summary>
+        /// Unlocks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="predicate">The condition to satisfy.</param>
+        public static void UnlockAll(Func<Door, bool> predicate)
+        {
+            foreach (Door door in Get(predicate))
+                door.Unlock();
+        }
+
+        /// <summary>
         /// Interacts with the Door.
         /// </summary>
         /// <param name="player">The player interacting.</param>

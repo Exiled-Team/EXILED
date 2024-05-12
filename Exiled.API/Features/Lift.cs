@@ -175,24 +175,6 @@ namespace Exiled.API.Features
         public ElevatorDoor CurrentDestination => Door.Get(Base.CurrentDestination).As<ElevatorDoor>();
 
         /// <summary>
-        /// Gets or sets the lift's position.
-        /// </summary>
-        public override Vector3 Position
-        {
-            get => Transform.position;
-            set => Transform.position = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the lift's rotation.
-        /// </summary>
-        public override Quaternion Rotation
-        {
-            get => Transform.rotation;
-            set => Transform.rotation = value;
-        }
-
-        /// <summary>
         /// Gets the base <see cref="ElevatorChamber"/>.
         /// </summary>
         public ElevatorChamber Base { get; }
@@ -252,6 +234,90 @@ namespace Exiled.API.Features
         /// <param name="predicate">The condition to satisfy.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains elements that satisfy the condition.</returns>
         public static IEnumerable<Lift> Get(Func<Lift, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Permanently locks an elevator corresponding to the given type.
+        /// </summary>
+        /// <param name="type">The elevator to affect.</param>
+        /// <param name="lockReason">The specified <see cref="DoorLockType"/>.</param>
+        public static void Lock(ElevatorType type, DoorLockType lockReason = DoorLockType.Isolation) => Get(type)?.Lock(lockReason);
+
+        /// <summary>
+        /// Temporary locks an elevator corresponding to the given type.
+        /// </summary>
+        /// <param name="type">The elevator to affect.</param>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="lockReason">The specified <see cref="DoorLockType"/>.</param>
+        public static void Lock(ElevatorType type, float duration, DoorLockType lockReason = DoorLockType.Isolation) => Get(type)?.Lock(duration, lockReason);
+
+        /// <summary>
+        /// Unlocks a lift corresponding to the specified type.
+        /// </summary>
+        /// <param name="type">The <see cref="ElevatorType"/>.</param>
+        public static void Unlock(ElevatorType type) => Get(type)?.Unlock();
+
+        /// <summary>
+        /// Permanently locks all elevators in the facility.
+        /// </summary>
+        /// <param name="lockReason">The specified <see cref="DoorLockType"/>.</param>
+        public static void LockAll(DoorLockType lockReason = DoorLockType.Isolation) => List.ForEach(lift => lift.Lock(lockReason));
+
+        /// <summary>
+        /// Temporary locks all elevators in the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="lockReason">The specified <see cref="DoorLockType"/>.</param>
+        public static void LockAll(float duration, DoorLockType lockReason = DoorLockType.Isolation) => List.ForEach(lift => lift.Lock(duration, lockReason));
+
+        /// <summary>
+        /// Permanently locks all elevators corresponding to the given types.
+        /// </summary>
+        /// <param name="types">The doors to affect.</param>
+        /// <param name="lockReason">The specified <see cref="DoorLockType"/>.</param>
+        public static void LockAll(IEnumerable<ElevatorType> types, DoorLockType lockReason = DoorLockType.Isolation) => types.ForEach(t => Lock(t, lockReason));
+
+        /// <summary>
+        /// Temporary locks all elevators corresponding to the given types.
+        /// </summary>
+        /// <param name="types">The doors to affect.</param>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="lockReason">The specified <see cref="DoorLockType"/>.</param>
+        public static void LockAll(IEnumerable<ElevatorType> types, float duration, DoorLockType lockReason = DoorLockType.Isolation) => types.ForEach(t => Lock(t, duration, lockReason));
+
+        /// <summary>
+        /// Unlocks all lifts in the facility.
+        /// </summary>
+        public static void UnlockAll() => List.ForEach(lift => lift.Unlock());
+
+        /// <summary>
+        /// Unlocks all lifts in the facility.
+        /// </summary>
+        /// <param name="type">The zones to affect.</param>
+        public static void UnlockAll(ZoneType type) => List.ForEach(lift => lift.Doors.Where(door => door.Zone == type).ForEach(door => door.Unlock()));
+
+        /// <summary>
+        /// Unlocks all lifts in the facility.
+        /// </summary>
+        /// <param name="types">The zones to affect.</param>
+        public static void UnlockAll(params ZoneType[] types) => List.ForEach(lift => lift.Doors.Where(door => types.Contains(door.Zone)).ForEach(door => door.Unlock()));
+
+        /// <summary>
+        /// Unlocks all lifts in the facility.
+        /// </summary>
+        /// <param name="types">The zones to affect.</param>
+        public static void UnlockAll(IEnumerable<ZoneType> types) => List.ForEach(lift => lift.Doors.Where(door => types.Contains(door.Zone)).ForEach(door => door.Unlock()));
+
+        /// <summary>
+        /// Unlocks all lifts in the facility.
+        /// </summary>
+        /// <param name="types">The types to affect.</param>
+        public static void UnlockAll(params ElevatorType[] types) => Get(types).ForEach(lift => lift.Unlock());
+
+        /// <summary>
+        /// Unlocks all lifts in the facility.
+        /// </summary>
+        /// <param name="types">The types to affect.</param>
+        public static void UnlockAll(IEnumerable<ElevatorType> types) => Get(types).ForEach(lift => lift.Unlock());
 
         /// <summary>
         /// Tries to start the lift.
