@@ -26,7 +26,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.
         /// </summary>
-        internal static readonly Dictionary<Scp079Generator, Generator> Scp079GeneratorToGenerator = new();
+        internal static readonly Dictionary<Scp079Generator, Generator> Scp079GeneratorToGenerator = new(new ComponentsEqualityComparer());
         private Room room;
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/>.</param>
         internal Generator(Scp079Generator scp079Generator)
-            : base()
+            : base(scp079Generator.gameObject)
         {
             Base = scp079Generator;
             Scp079GeneratorToGenerator.Add(scp079Generator, this);
@@ -55,11 +55,6 @@ namespace Exiled.API.Features
         /// Gets the base <see cref="Scp079Generator"/>.
         /// </summary>
         public Scp079Generator Base { get; }
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the generator.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the generator's <see cref="Room"/>.

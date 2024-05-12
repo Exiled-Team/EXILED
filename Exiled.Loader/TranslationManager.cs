@@ -146,7 +146,7 @@ namespace Exiled.Loader
                 if (translations is null || translations.Count == 0)
                     return false;
 
-                if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
+                if (LoaderPlugin.Config.ConfigType == ConfigType.Merged)
                 {
                     return SaveDefaultTranslation(Serialization.Serializer.Serialize(translations));
                 }
@@ -167,7 +167,7 @@ namespace Exiled.Loader
         /// <returns>Returns the read translations.</returns>
         public static string Read()
         {
-            if (LoaderPlugin.Config.ConfigType != ConfigType.Default)
+            if (LoaderPlugin.Config.ConfigType != ConfigType.Merged)
                 return string.Empty;
 
             try
@@ -191,7 +191,7 @@ namespace Exiled.Loader
         {
             try
             {
-                if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
+                if (LoaderPlugin.Config.ConfigType == ConfigType.Merged)
                 {
                     SaveDefaultTranslation(string.Empty);
                     return true;

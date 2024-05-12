@@ -27,7 +27,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BreakableWindow"/>s and their corresponding <see cref="Window"/>.
         /// </summary>
-        internal static readonly Dictionary<BreakableWindow, Window> BreakableWindowToWindow = new();
+        internal static readonly Dictionary<BreakableWindow, Window> BreakableWindowToWindow = new(20, new ComponentsEqualityComparer());
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window"/> class.
@@ -35,7 +35,7 @@ namespace Exiled.API.Features
         /// <param name="window">The base <see cref="BreakableWindow"/> for this door.</param>
         /// <param name="room">The <see cref="Room"/> for this window.</param>
         internal Window(BreakableWindow window, Room room)
-            : base()
+            : base(window.gameObject)
         {
             BreakableWindowToWindow.Add(window, this);
             Base = window;
@@ -62,11 +62,6 @@ namespace Exiled.API.Features
         /// Gets the base-game <see cref="BreakableWindow"/> for this window.
         /// </summary>
         public BreakableWindow Base { get; }
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the window.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the window's <see cref="UnityEngine.Transform"/>.

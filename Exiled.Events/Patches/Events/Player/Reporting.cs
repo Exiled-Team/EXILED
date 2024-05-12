@@ -1,11 +1,11 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="Reporting.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Server
+namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -26,10 +26,10 @@ namespace Exiled.Events.Patches.Events.Server
 
     /// <summary>
     /// Patches CheaterReport.UserCode_CmdReport__UInt32__String__Byte\u005B\u005D__Boolean(uint, string, byte[], bool) />.
-    /// Adds the <see cref="Server.ReportingCheater" /> and <see cref="Server.LocalReporting" /> events.
+    /// Adds the <see cref="Handlers.Player.ReportingCheater" /> and <see cref="Handlers.Player.LocalReporting" /> events.
     /// </summary>
-    [EventPatch(typeof(Server), nameof(Server.ReportingCheater))]
-    [EventPatch(typeof(Server), nameof(Server.LocalReporting))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ReportingCheater))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.LocalReporting))]
     [HarmonyPatch(typeof(CheaterReport), @"UserCode_CmdReport__UInt32__String__Byte[]__Boolean")]
     internal static class Reporting
     {
@@ -40,8 +40,8 @@ namespace Exiled.Events.Patches.Events.Server
             LocalBuilder evLocalReporting = generator.DeclareLocal(typeof(LocalReportingEventArgs));
             LocalBuilder evReportingCheater = generator.DeclareLocal(typeof(ReportingCheaterEventArgs));
 
-            int offset = -1;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newarr) + offset;
+            int offset = 2;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_S && instruction.operand == (object)4) + offset;
 
             Label ret = generator.DefineLabel();
 
@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Stloc_S, evLocalReporting.LocalIndex),
 
                     // Server.OnLocalReporting(ev)
-                    new(OpCodes.Call, Method(typeof(Server), nameof(Server.OnLocalReporting))),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnLocalReporting))),
 
                     // if (!ev.IsAllowed)
                     //    return;
@@ -117,7 +117,7 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Stloc_S, evReportingCheater.LocalIndex),
 
                     // Server.OnReportingCheater(ev)
-                    new(OpCodes.Call, Method(typeof(Server), nameof(Server.OnReportingCheater))),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnReportingCheater))),
 
                     // if (!ev.IsAllowed)
                     //    return;
