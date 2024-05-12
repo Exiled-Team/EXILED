@@ -146,9 +146,17 @@ namespace Exiled.API.Features.Items
         public FirearmType FirearmType => Type.GetFirearmType();
 
         /// <summary>
-        /// Gets the <see cref="Enums.AmmoType"/> of the firearm.
+        /// Gets or sets the <see cref="Enums.AmmoType"/> of the firearm.
         /// </summary>
-        public AmmoType AmmoType => Base.AmmoType.GetAmmoType();
+        public AmmoType AmmoType
+        {
+            get => Base.AmmoType.GetAmmoType();
+            set
+            {
+                if (Base is AutomaticFirearm automaticFirearm)
+                    automaticFirearm._ammoType = value.GetItemType();
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether the firearm is being aimed.
@@ -676,6 +684,7 @@ namespace Exiled.API.Features.Items
             if (pickup is Pickups.FirearmPickup firearm)
             {
                 MaxAmmo = firearm.MaxAmmo;
+                AmmoType = firearm.AmmoType;
             }
         }
     }

@@ -22,9 +22,6 @@ namespace Exiled.API.Features.Pickups
     /// </summary>
     public class FirearmPickup : Pickup, IWrapper<BaseFirearm>
     {
-        private FirearmType? firearmType;
-        private AmmoType? ammoType;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FirearmPickup"/> class.
         /// </summary>
@@ -53,12 +50,12 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the <see cref="Enums.FirearmType"/> of the firearm.
         /// </summary>
-        public FirearmType FirearmType => firearmType ??= Type.GetFirearmType();
+        public FirearmType FirearmType => Type.GetFirearmType();
 
         /// <summary>
-        /// Gets the <see cref="Enums.AmmoType"/> of the firearm.
+        /// Gets or sets the <see cref="Enums.AmmoType"/> of the firearm.
         /// </summary>
-        public AmmoType AmmoType => ammoType ??= FirearmType.GetWeaponAmmoType();
+        public AmmoType AmmoType { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the pickup is already distributed.
@@ -124,6 +121,7 @@ namespace Exiled.API.Features.Pickups
             if (item is Items.Firearm firearm)
             {
                 MaxAmmo = firearm.MaxAmmo;
+                AmmoType = firearm.AmmoType;
             }
         }
 
@@ -134,6 +132,7 @@ namespace Exiled.API.Features.Pickups
             if (itemBase is FirearmItem firearm)
             {
                 MaxAmmo = firearm.AmmoManagerModule.MaxAmmo;
+                AmmoType = firearm.AmmoType;
             }
         }
     }
