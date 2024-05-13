@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Reporting.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -131,7 +131,8 @@ namespace Exiled.Events.Patches.Events.Player
                 });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
-
+            for (int z = 0; z < newInstructions.Count; z++)
+                Exiled.API.Features.Log.Warn($"[{z}] {newInstructions[z].opcode} {newInstructions[z].operand} - {newInstructions[z].labels.Count}");
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
