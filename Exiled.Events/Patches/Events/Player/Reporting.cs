@@ -40,8 +40,9 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder evLocalReporting = generator.DeclareLocal(typeof(LocalReportingEventArgs));
             LocalBuilder evReportingCheater = generator.DeclareLocal(typeof(ReportingCheaterEventArgs));
 
+            // TODO: FIX THAT             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_S && instruction.operand == (object)4) + offset;
             int offset = 2;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_S && instruction.operand == (object)4) + offset;
+            int index = 153 + offset;
 
             Label ret = generator.DefineLabel();
 
@@ -131,8 +132,7 @@ namespace Exiled.Events.Patches.Events.Player
                 });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
-            for (int z = 0; z < newInstructions.Count; z++)
-                Exiled.API.Features.Log.Warn($"[{z}] {newInstructions[z].opcode} {newInstructions[z].operand} - {newInstructions[z].labels.Count}");
+
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
