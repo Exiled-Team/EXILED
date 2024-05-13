@@ -52,10 +52,10 @@ namespace Exiled.Events.Patches.Events.Player
                     // damage
                     new(OpCodes.Ldarg_1),
 
-                    // DoorDamageType
+                    // doorDamageType
                     new(OpCodes.Ldarg_2),
 
-                    // DamagingDoorEventArgs ev = new(player, this, doorDamageType);
+                    // DamagingDoorEventArgs ev = new(DoorVariant, float, DoorDamageType);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingDoorEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
@@ -69,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingDoorEventArgs), nameof(DamagingDoorEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse, ret),
 
-                    // damage = ev.Handler.Damage;
+                    // damage = ev.Damage;
                     new(OpCodes.Ldloc, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingDoorEventArgs), nameof(DamagingDoorEventArgs.Damage))),
                     new(OpCodes.Starg_S, 1),
