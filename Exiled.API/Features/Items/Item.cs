@@ -13,11 +13,11 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
-
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms.Ammo;
+    using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Jailbird;
     using InventorySystem.Items.Keycards;
     using InventorySystem.Items.MicroHID;
@@ -48,7 +48,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="itemBase">The <see cref="ItemBase"/> to encapsulate.</param>
         public Item(ItemBase itemBase)
-            : base()
+            : base(itemBase.gameObject)
         {
             Base = itemBase;
             BaseToItem.Add(itemBase, this);
@@ -104,11 +104,6 @@ namespace Exiled.API.Features.Items
         /// Gets the <see cref="ItemBase"/> of the item.
         /// </summary>
         public ItemBase Base { get; }
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the item.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.
@@ -168,7 +163,12 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether or not this item emits light.
         /// </summary>
-        public bool IsLightEmitter => Base is ILightEmittingItem;
+        public bool CanEmitLight => this is Firearm firearm ? firearm.HasFlashlight : Base is ILightEmittingItem;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this item is currently imitating light.
+        /// </summary>
+        public bool IsEmittingLight => Base is ILightEmittingItem light && light.IsEmittingLight;
 
         /// <summary>
         /// Gets a value indicating whether or not this item can be used to disarm players.

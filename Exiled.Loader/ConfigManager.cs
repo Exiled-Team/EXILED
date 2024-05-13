@@ -217,7 +217,7 @@ namespace Exiled.Loader
                 if (configs is null || configs.Count == 0)
                     return false;
 
-                if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
+                if (LoaderPlugin.Config.ConfigType == ConfigType.Merged)
                 {
                     return SaveDefaultConfig(Serialization.Serializer.Serialize(configs));
                 }
@@ -238,7 +238,7 @@ namespace Exiled.Loader
         /// <returns>Returns the read configs.</returns>
         public static string Read()
         {
-            if (LoaderPlugin.Config.ConfigType != ConfigType.Default)
+            if (LoaderPlugin.Config.ConfigType != ConfigType.Merged)
                 return string.Empty;
 
             try
@@ -262,7 +262,7 @@ namespace Exiled.Loader
         {
             try
             {
-                if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
+                if (LoaderPlugin.Config.ConfigType == ConfigType.Merged)
                 {
                     SaveDefaultConfig(string.Empty);
                     return true;

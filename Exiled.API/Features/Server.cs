@@ -107,9 +107,18 @@ namespace Exiled.API.Features
         public static ushort Port => ServerStatic.ServerPort;
 
         /// <summary>
-        /// Gets the actual ticks per second of the server.
+        /// Gets the current TPS (Ticks per Second) of the Server.
         /// </summary>
         public static double Tps => Math.Round(1f / Time.smoothDeltaTime);
+
+        /// <summary>
+        /// Gets or sets the max TPS (Ticks per Second) of the Server.
+        /// </summary>
+        public static short MaxTps
+        {
+            get => ServerStatic.ServerTickrate;
+            set => ServerStatic.ServerTickrate = value;
+        }
 
         /// <summary>
         /// Gets the actual frametime of the server.

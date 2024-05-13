@@ -123,6 +123,7 @@ namespace Exiled.Events
             CharacterClassManager.OnRoundStarted -= Handlers.Server.OnRoundStarted;
 
             InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
+            InventorySystem.InventoryExtensions.OnItemRemoved -= Handlers.Player.OnItemRemoved;
 
             RespawnManager.ServerOnRespawned -= Handlers.Server.OnRespawnedTeam;
 
