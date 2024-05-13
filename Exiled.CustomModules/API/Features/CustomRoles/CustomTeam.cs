@@ -109,19 +109,17 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets the amount of time after which any team will be allowed to spawn.
         /// </summary>
-        public virtual float NextSequenceTime => UnityEngine.Random.Range(
-            GameCore.ConfigFile.ServerConfig.GetFloat("minimum_MTF_time_to_spawn", MinNextSequenceTime),
-            GameCore.ConfigFile.ServerConfig.GetFloat("maximum_MTF_time_to_spawn", MaxNextSequenceTime));
+        public virtual float NextSequenceTime => UnityEngine.Random.Range(MinNextSequenceTime, MaxNextSequenceTime);
 
         /// <summary>
         /// Gets or sets the minimum amount time after which any team will be allowed to spawn.
         /// </summary>
-        public virtual float MinNextSequenceTime { get; set; } = 280f;
+        public virtual float MinNextSequenceTime { get; set; } = GameCore.ConfigFile.ServerConfig.GetFloat("minimum_MTF_time_to_spawn", 280f);
 
         /// <summary>
         /// Gets or sets the maximum amount time after which any team will be spawned.
         /// </summary>
-        public virtual float MaxNextSequenceTime { get; set; } = 350f;
+        public virtual float MaxNextSequenceTime { get; set; } = GameCore.ConfigFile.ServerConfig.GetFloat("maximum_MTF_time_to_spawn", 350f);
 
         /// <summary>
         /// Gets the relative spawn probability of the <see cref="CustomTeam"/>.
