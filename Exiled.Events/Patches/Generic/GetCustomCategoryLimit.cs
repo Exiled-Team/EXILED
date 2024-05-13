@@ -14,7 +14,7 @@ namespace Exiled.Events.Patches.Fixes
 
     /// <summary>
     /// Patches the <see cref="InventoryLimits.GetCategoryLimit(ItemCategory, ReferenceHub)"/> delegate.
-    /// Sync <see cref="API.Features.Player.SetAmmoLimit(API.Enums.AmmoType, ushort)"/>.
+    /// Sync <see cref="API.Features.Player.SetCategoryLimit(ItemCategory, sbyte)"/>, .
     /// Changes <see cref="ushort.MaxValue"/> to <see cref="ushort.MinValue"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryLimits), nameof(InventoryLimits.GetCategoryLimit), new Type[] { typeof(ItemCategory), typeof(ReferenceHub), })]
@@ -22,10 +22,10 @@ namespace Exiled.Events.Patches.Fixes
     {
         private int Postfix(API.Features.Player player, int value, ItemType ammotype)
         {
-            if (player?.categoryLimits is null)
+            if (player?.CategoryLimits is null)
                 return value;
 
-            return player.categoryLimits[(int)ammotype] + value - InventoryLimits.GetAmmoLimit(null, ammotype);
+            return player.CategoryLimits[(int)ammotype] + value - InventoryLimits.GetAmmoLimit(null, ammotype);
         }
     }
 }

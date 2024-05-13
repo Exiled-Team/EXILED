@@ -88,12 +88,16 @@ namespace Exiled.API.Features
         /// A list of the player's items.
         /// </summary>
         internal readonly List<Item> ItemsValue = new(8);
-#pragma warning disable SA1307 // Accessible fields should begin with upper-case letter
-#pragma warning disable SA1600 // Elements should be documented
-        internal List<sbyte> categoryLimits;
-        internal List<ServerConfigSynchronizer.AmmoLimit> ammoLimits;
-#pragma warning restore SA1600 // Elements should be documented
-#pragma warning restore SA1307 // Accessible fields should begin with upper-case letter
+
+        /// <summary>
+        /// A list of Category item limit.
+        /// </summary>
+        internal List<sbyte> CategoryLimits;
+
+        /// <summary>
+        /// A list of Ammo limit.
+        /// </summary>
+        internal List<ServerConfigSynchronizer.AmmoLimit> AmmoLimits;
 #pragma warning restore SA1401
 
         private ReferenceHub referenceHub;
@@ -2516,9 +2520,9 @@ namespace Exiled.API.Features
         public void SetAmmoLimit(AmmoType ammotype, ushort value)
         {
             ItemType itemtype = ammotype.GetItemType();
-            int index = ammoLimits.FindIndex(x => x.AmmoType == itemtype);
-            ammoLimits ??= ServerConfigSynchronizer.Singleton.AmmoLimitsSync.ToList();
-            ServerConfigSynchronizer.Singleton.AmmoLimitsSync.AddOperation(SyncList<ServerConfigSynchronizer.AmmoLimit>.Operation.OP_SET, index, ammoLimits[index], new() { Limit = value, AmmoType = itemtype }, false);
+            int index = AmmoLimits.FindIndex(x => x.AmmoType == itemtype);
+            AmmoLimits ??= ServerConfigSynchronizer.Singleton.AmmoLimitsSync.ToList();
+            ServerConfigSynchronizer.Singleton.AmmoLimitsSync.AddOperation(SyncList<ServerConfigSynchronizer.AmmoLimit>.Operation.OP_SET, index, AmmoLimits[index], new() { Limit = value, AmmoType = itemtype }, false);
         }
 
         /// <summary>
@@ -2536,9 +2540,9 @@ namespace Exiled.API.Features
         /// <param name="value">The <see cref="int"/> number that will define the new limit.</param>
         public void SetCategoryLimit(ItemCategory category, sbyte value)
         {
-            categoryLimits ??= ServerConfigSynchronizer.Singleton.CategoryLimits.ToList();
-            categoryLimits[(int)category] = value;
-            ServerConfigSynchronizer.Singleton.CategoryLimits.AddOperation(SyncList<sbyte>.Operation.OP_SET, (int)category, categoryLimits[(int)category], value, false);
+            CategoryLimits ??= ServerConfigSynchronizer.Singleton.CategoryLimits.ToList();
+            CategoryLimits[(int)category] = value;
+            ServerConfigSynchronizer.Singleton.CategoryLimits.AddOperation(SyncList<sbyte>.Operation.OP_SET, (int)category, CategoryLimits[(int)category], value, false);
         }
 
         /// <summary>

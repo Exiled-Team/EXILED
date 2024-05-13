@@ -22,10 +22,10 @@ namespace Exiled.Events.Patches.Fixes
     {
         private int Postfix(API.Features.Player player, int value, ItemType ammotype)
         {
-            if (player?.ammoLimits is null)
+            if (player?.AmmoLimits is null)
                 return value;
 
-            return player.ammoLimits.Find(x => x.AmmoType == ammotype).Limit + value - InventoryLimits.GetAmmoLimit(null, ammotype);
+            return player.AmmoLimits.Find(x => x.AmmoType == ammotype).Limit + value - InventoryLimits.GetAmmoLimit(null, ammotype);
         }
     }
 }

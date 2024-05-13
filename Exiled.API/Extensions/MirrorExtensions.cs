@@ -147,14 +147,18 @@ namespace Exiled.API.Extensions
         /// </summary>
         public static MethodInfo AddOperationMethodInfo => addOperationMethodInfo ??= typeof(SyncList<>).GetMethod("AddOperation", BindingFlags.NonPublic | BindingFlags.Static);
 
-#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
-#pragma warning disable SA1600 // Elements should be documented
+        /// <summary>
+        /// Add an Operation to execute on a <see cref="SyncList{T}"/>.
+        /// </summary>
+        /// <param name="synclist">Only this player can see info.</param>
+        /// <param name="op">Operation to execute.</param>
+        /// <param name="itemIndex">Item index to affect.</param>
+        /// <param name="oldItem">previous item.</param>
+        /// <param name="newItem">new item.</param>
+        /// <param name="checkAccess">Verify if access is authorised.</param>
+        /// <typeparam name="T">A type of <see cref="SyncList{T}"/>.</typeparam>
         public static void AddOperation<T>(this SyncList<T> synclist, SyncList<T>.Operation op, int itemIndex, T oldItem, T newItem, bool checkAccess)
-        {
-            AddOperationMethodInfo.Invoke(synclist, new object[] { op, itemIndex, oldItem, newItem, checkAccess, });
-        }
-#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
-#pragma warning restore SA1600 // Elements should be documented
+            => AddOperationMethodInfo.Invoke(synclist, new object[] { op, itemIndex, oldItem, newItem, checkAccess, });
 
         /// <summary>
         /// Plays a beep sound that only the target <paramref name="player"/> can hear.
