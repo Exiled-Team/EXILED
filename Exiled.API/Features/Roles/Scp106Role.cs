@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Roles
 
     using Exiled.API.Enums;
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.Subroutines;
@@ -23,7 +24,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-106.
     /// </summary>
-    public class Scp106Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp106Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp106Role"/> class.
@@ -107,7 +108,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp106MovementModule"/>.
         /// </summary>
-        public Scp106MovementModule MovementModule { get; }
+        public new Scp106MovementModule MovementModule { get; }
 
         /// <summary>
         /// Gets or sets SCP-106's Vigor Level.

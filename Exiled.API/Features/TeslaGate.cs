@@ -15,7 +15,6 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using Hazards;
-    using MapGeneration;
     using MEC;
     using PlayerRoles;
     using UnityEngine;
@@ -28,9 +27,14 @@ namespace Exiled.API.Features
     public class TeslaGate : GameEntity, IWrapper<BaseTeslaGate>, IWorldSpace
     {
         /// <summary>
+        /// The square distance of the value from <see cref="TeslaGateController.ServerReceiveMessage"/> that check if the player is too far for being shot.
+        /// </summary>
+        public const float SqrDistance = 2.2f * 2.2f;
+
+        /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BaseTeslaGate"/>s and their corresponding <see cref="TeslaGate"/>.
         /// </summary>
-        internal static readonly Dictionary<BaseTeslaGate, TeslaGate> BaseTeslaGateToTeslaGate = new(10);
+        internal static readonly Dictionary<BaseTeslaGate, TeslaGate> BaseTeslaGateToTeslaGate = new(5, new ComponentsEqualityComparer());
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeslaGate"/> class.
@@ -38,7 +42,7 @@ namespace Exiled.API.Features
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
         /// <param name="room">The <see cref="Features.Room"/> for this tesla.</param>
         internal TeslaGate(BaseTeslaGate baseTeslaGate, Room room)
-            : base()
+            : base(baseTeslaGate.gameObject)
         {
             Base = baseTeslaGate;
             BaseTeslaGateToTeslaGate.Add(baseTeslaGate, this);
@@ -75,11 +79,6 @@ namespace Exiled.API.Features
         /// Gets the base <see cref="BaseTeslaGate"/>.
         /// </summary>
         public BaseTeslaGate Base { get; }
-
-        /// <summary>
-        /// Gets the tesla gate's <see cref="UnityEngine.GameObject"/>.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the tesla gate's position.
@@ -266,7 +265,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the hurt range of the tesla gate; otherwise, <see langword="false"/>.</returns>
-        public bool IsPlayerInHurtRange(Player player) => player is not null && Vector3.Distance(Position, player.Position) <= Base.sizeOfTrigger * 2.2f;
+        public bool IsPlayerInHurtRange(Player player) => player is not null && MathExtensions.DistanceSquared(Position, player.Position) <= Base.sizeOfTrigger * Base.sizeOfTrigger * SqrDistance;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="Player"/> is in the idle range of a specific tesla gate.

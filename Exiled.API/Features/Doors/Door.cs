@@ -17,7 +17,6 @@ namespace Exiled.API.Features.Doors
     using Exiled.API.Interfaces;
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
-    using MEC;
     using Mirror;
     using UnityEngine;
 
@@ -38,7 +37,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>'s and their corresponding <see cref="Door"/>.
         /// </summary>
-        internal static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
+        internal static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new(new ComponentsEqualityComparer());
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Door"/> class.
@@ -46,7 +45,7 @@ namespace Exiled.API.Features.Doors
         /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
         /// <param name="rooms">The <see cref="List{T}"/> of <see cref="Features.Room"/>'s for this door.</param>
         internal Door(DoorVariant door, List<Room> rooms)
-            : base()
+            : base(door.gameObject)
         {
             Base = door;
 
@@ -73,11 +72,6 @@ namespace Exiled.API.Features.Doors
         /// Gets the base-game <see cref="DoorVariant"/> corresponding with this door.
         /// </summary>
         public DoorVariant Base { get; }
-
-        /// <summary>
-        /// Gets the door's <see cref="UnityEngine.GameObject"/>.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the door's <see cref="DoorType"/>.
@@ -107,7 +101,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not the door is currently moving.
         /// </summary>
-        public virtual bool IsMoving => ExactState is not(0 or 1);
+        public virtual bool IsMoving => !(IsFullyOpen || IsFullyClosed);
 
         /// <summary>
         /// Gets a value indicating the precise state of the door, from <c>0-1</c>. A value of <c>0</c> indicates the door is fully closed, while a value of <c>1</c> indicates the door is fully open. Values in-between represent the door's animation progress.
@@ -314,6 +308,13 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
+        /// Gets the <see cref="Door"/> belonging to the <see cref="Collider"/>, if any.
+        /// </summary>
+        /// <param name="collider"><see cref="Collider"/>.</param>
+        /// <returns>The <see cref="Door"/> with the given name or <see langword="null"/> if not found.</returns>
+        public static Door Get(Collider collider) => Get(collider.transform.root.gameObject);
+
+        /// <summary>
         /// Gets the door object associated with a specific <see cref="UnityEngine.GameObject"/>, or creates a new one if there isn't one.
         /// </summary>
         /// <param name="gameObject">The base-game <see cref="UnityEngine.GameObject"/>.</param>
@@ -414,7 +415,7 @@ namespace Exiled.API.Features.Doors
         /// <returns>The door closest to the provided position.</returns>
         public static Door GetClosest(Vector3 position, out float distance)
         {
-            Door doorToReturn = List.OrderBy(door => Vector3.Distance(position, door.Position)).FirstOrDefault();
+            Door doorToReturn = List.OrderBy(door => MathExtensions.DistanceSquared(position, door.Position)).FirstOrDefault();
             distance = Vector3.Distance(position, doorToReturn.Position);
             return doorToReturn;
         }
@@ -556,6 +557,12 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
+        /// Interacts with the Door.
+        /// </summary>
+        /// <param name="player">The player interacting.</param>
+        public void Interact(Player player = null) => Base.ServerInteract(player?.ReferenceHub, 0);
+
+        /// <summary>
         /// Makes the door play a beep sound.
         /// </summary>
         /// <param name="beep">The beep sound to play.</param>
@@ -563,11 +570,11 @@ namespace Exiled.API.Features.Doors
         {
             switch (Base)
             {
-                case Interactables.Interobjects.BasicDoor basic:
-                    basic.RpcPlayBeepSound(beep is not DoorBeepType.InteractionAllowed);
+                case Interactables.Interobjects.BasicDoor basic when beep is DoorBeepType.PermissionDenied or DoorBeepType.LockBypassDenied:
+                    basic.RpcPlayBeepSound(beep is DoorBeepType.PermissionDenied);
                     break;
                 case Interactables.Interobjects.CheckpointDoor chkPt:
-                    chkPt.RpcPlayBeepSound((byte)Mathf.Min((int)beep, 3));
+                    chkPt.RpcPlayBeepSound((byte)Mathf.Min((int)beep, 2));
                     break;
             }
         }

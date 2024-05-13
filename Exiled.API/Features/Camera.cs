@@ -134,7 +134,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera079">The base camera.</param>
         internal Camera(Scp079Camera camera079)
-            : base()
+            : base(camera079.gameObject)
         {
             Base = camera079;
             Camera079ToCamera.Add(camera079, this);
@@ -155,11 +155,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>A randomly selected <see cref="Camera"/> object.</returns>
         public static Camera Random => List.Random();
-
-        /// <summary>
-        /// Gets the camera's <see cref="UnityEngine.GameObject"/>.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the base <see cref="Scp079Camera"/>.
@@ -197,13 +192,9 @@ namespace Exiled.API.Features
         public override Vector3 Position => Base.Position;
 
         /// <summary>
-        /// Gets or sets the camera's rotation.
+        /// Gets the camera's rotation.
         /// </summary>
-        public override Quaternion Rotation
-        {
-            get => Base._cameraAnchor.rotation;
-            set => Base._cameraAnchor.rotation = value;
-        }
+        public override Quaternion Rotation => Base._cameraAnchor.rotation;
 
         /// <summary>
         /// Gets the value of the <see cref="Camera"/> zoom.
