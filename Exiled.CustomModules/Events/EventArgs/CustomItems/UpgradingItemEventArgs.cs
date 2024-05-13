@@ -31,7 +31,7 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomItems
         /// <param name="knobSetting"><inheritdoc cref="UpgradingInventoryItemEventArgs.KnobSetting"/></param>
         /// <param name="isAllowed"><inheritdoc cref="UpgradingInventoryItemEventArgs.IsAllowed"/></param>
         public UpgradingItemEventArgs(Player player, ItemBase item, CustomItem customItem, ItemBehaviour itemBehaviour, Scp914KnobSetting knobSetting, bool isAllowed = true)
-            : base(player, item, knobSetting, isAllowed)
+            : base(player, item, knobSetting, Exiled.API.Features.Scp914.GetProcessor(item.ItemTypeId).Base, isAllowed)
         {
             CustomItem = customItem;
             ItemBehaviour = itemBehaviour;
