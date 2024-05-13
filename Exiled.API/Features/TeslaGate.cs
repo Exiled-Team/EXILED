@@ -42,7 +42,7 @@ namespace Exiled.API.Features
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
         /// <param name="room">The <see cref="Features.Room"/> for this tesla.</param>
         internal TeslaGate(BaseTeslaGate baseTeslaGate, Room room)
-            : base()
+            : base(baseTeslaGate.gameObject)
         {
             Base = baseTeslaGate;
             BaseTeslaGateToTeslaGate.Add(baseTeslaGate, this);
@@ -79,11 +79,6 @@ namespace Exiled.API.Features
         /// Gets the base <see cref="BaseTeslaGate"/>.
         /// </summary>
         public BaseTeslaGate Base { get; }
-
-        /// <summary>
-        /// Gets the tesla gate's <see cref="UnityEngine.GameObject"/>.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the tesla gate's position.
