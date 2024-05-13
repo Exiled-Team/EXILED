@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                     // duration
                     new(OpCodes.Ldarg_1),
 
-                    // LosingSignalEventArgs ev = new(ReferenceHub, float, bool)
+                    // LosingSignalEventArgs ev = new(ReferenceHub, float)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LosingSignalEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
@@ -77,14 +77,11 @@ namespace Exiled.Events.Patches.Events.Scp079
 
                     // LostSignalEventArgs ev = new(ReferenceHub, float)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LostSignalEventArgs))[0]),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Scp079.OnLostSignal(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnLostSignal))),
                 });
-            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
