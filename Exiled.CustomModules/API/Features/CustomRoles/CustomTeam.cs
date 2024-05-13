@@ -356,9 +356,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </summary>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
         /// <param name="customTeam">The <see cref="CustomTeam"/> unit to be assigned.</param>
-        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <returns><see langword="true"/> if the player was successfully spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(Pawn player, CustomTeam customTeam, bool isForced = false)
+        public static bool TrySpawn(Pawn player, CustomTeam customTeam)
         {
             if (customTeam is null)
                 return false;
