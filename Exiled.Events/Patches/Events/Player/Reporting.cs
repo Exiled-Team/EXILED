@@ -40,9 +40,8 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder evLocalReporting = generator.DeclareLocal(typeof(LocalReportingEventArgs));
             LocalBuilder evReportingCheater = generator.DeclareLocal(typeof(ReportingCheaterEventArgs));
 
-            // TODO: FIX THAT             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_S && instruction.operand == (object)4) + offset;
             int offset = 2;
-            int index = 153 + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_S && instruction.operand is byte and 4) + offset;
 
             Label ret = generator.DefineLabel();
 
