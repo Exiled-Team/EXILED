@@ -235,6 +235,18 @@ namespace Exiled.API.Features
             AddFakeSyncVar(fieldInfo.DeclaringType!.GetProperty("Network" + fieldInfo.Name), newValue);
 
         /// <summary>
+        /// Adds a new value to <see cref="FakeSyncVars"/>.
+        /// </summary>
+        /// <param name="type">Type where sync var is declared.</param>
+        /// <param name="name">Name of sync var field or property.</param>
+        /// <param name="newValue">The new value that will replace actual one.</param>
+        public static void AddFakeSyncVar(Type type, string name, object newValue)
+        {
+            name = name.Replace(type.Name, string.Empty);
+            AddFakeSyncVar(name.StartsWith("Network") ? type.GetProperty(name) : type.GetProperty("Network" + name), newValue);
+        }
+
+        /// <summary>
         /// Restarts the server, reconnects all players.
         /// </summary>
         /// <seealso cref="RestartRedirect(ushort)"/>

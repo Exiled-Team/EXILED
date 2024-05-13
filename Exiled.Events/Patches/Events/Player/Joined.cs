@@ -50,7 +50,9 @@ namespace Exiled.Events.Patches.Events.Player
                     foreach (KeyValuePair<string, object> kvp in Server.FakeSyncVars)
                     {
                         string propertyName = kvp.Key.Substring(kvp.Key.LastIndexOf('.'));
-                        string typeName = kvp.Key.Replace('.' + propertyName, string.Empty);
+                        string typeName = kvp.Key.Replace(propertyName, string.Empty);
+
+                        propertyName = propertyName.Remove(0, 1);
 
                         Type type = typeof(ReferenceHub).Assembly.GetType(typeName);
 
