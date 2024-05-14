@@ -14,7 +14,6 @@ namespace Exiled.API.Features.DamageHandlers
     using Exiled.API.Features.Pickups;
     using Footprinting;
     using InventorySystem.Items.MicroHID;
-    using InventorySystem.Items.ThrowableProjectiles;
     using Items;
     using PlayerRoles.PlayableScps.Scp096;
     using PlayerRoles.PlayableScps.Scp3114;

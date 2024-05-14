@@ -228,6 +228,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
             Exiled.Events.Handlers.Server.AssigningHumanRoles += OnAssigningHumanRolesInternal;
             Exiled.Events.Handlers.Server.AssigningScpRoles += OnAssigningScpRolesInternal;
             Exiled.Events.Handlers.Server.EndingRound += OnEndingRoundInternal;
+            Exiled.Events.Handlers.Server.SelectingRespawnTeam += OnSelectingRespawnTeamInternal;
             Exiled.Events.Handlers.Server.RespawningTeam += OnRespawningTeamInternal;
             Exiled.Events.Handlers.Server.RespawnedTeam += OnRespawnedTeamInternal;
 
@@ -247,6 +248,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
             Exiled.Events.Handlers.Server.AssigningHumanRoles -= OnAssigningHumanRolesInternal;
             Exiled.Events.Handlers.Server.AssigningScpRoles -= OnAssigningScpRolesInternal;
             Exiled.Events.Handlers.Server.EndingRound -= OnEndingRoundInternal;
+            Exiled.Events.Handlers.Server.SelectingRespawnTeam -= OnSelectingRespawnTeamInternal;
             Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeamInternal;
             Exiled.Events.Handlers.Server.RespawnedTeam -= OnRespawnedTeamInternal;
 

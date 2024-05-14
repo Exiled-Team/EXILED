@@ -93,7 +93,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
                     foreach ((float chance, Vector3 pos) in spawnpoints)
                     {
-                        if (UnityEngine.Random.Range(0f, 101f) <= chance)
+                        if (chance.EvaluateProbability())
                         {
                             outPos = pos;
                             return true;

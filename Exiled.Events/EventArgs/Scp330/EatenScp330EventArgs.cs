@@ -24,10 +24,10 @@ namespace Exiled.Events.EventArgs.Scp330
         /// <param name="player"><inheritdoc cref="Player" />.</param>
         /// <param name="scp330"><inheritdoc cref="Scp330" />.</param>
         /// <param name="candy"><inheritdoc cref="Candy" />.</param>
-        public EatenScp330EventArgs(Player player, Scp330 scp330, ICandy candy)
+        public EatenScp330EventArgs(Player player, Scp330Bag scp330, ICandy candy)
         {
             Player = player;
-            Scp330 = scp330;
+            Scp330 = Item.Get(scp330).As<Scp330>();
             Candy = candy;
         }
 
