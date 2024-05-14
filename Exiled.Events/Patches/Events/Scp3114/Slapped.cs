@@ -65,9 +65,6 @@ namespace Exiled.Events.Patches.Events.Scp3114
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
-                Log.Info($"{newInstructions[z].opcode} {newInstructions[z].operand} : {string.Join(", ", newInstructions[z].labels.Select(x => newInstructions.FindIndex(y => y.operand == (object)x)))}");
-
-            for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
