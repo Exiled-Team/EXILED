@@ -134,7 +134,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera079">The base camera.</param>
         internal Camera(Scp079Camera camera079)
-            : base()
+            : base(camera079.gameObject)
         {
             Base = camera079;
             Camera079ToCamera.Add(camera079, this);
@@ -155,11 +155,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>A randomly selected <see cref="Camera"/> object.</returns>
         public static Camera Random => List.Random();
-
-        /// <summary>
-        /// Gets the camera's <see cref="UnityEngine.GameObject"/>.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the base <see cref="Scp079Camera"/>.
