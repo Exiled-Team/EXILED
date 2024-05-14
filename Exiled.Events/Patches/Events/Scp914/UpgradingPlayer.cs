@@ -189,7 +189,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new[]
                 {
                     // Player.Get(ply)
-                    new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // Item.Get(itemBase2)

@@ -55,8 +55,8 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets or sets the config files distribution type.
         /// </summary>
-        [Description("The config files distribution type (Default, Separated)")]
-        public ConfigType ConfigType { get; set; } = ConfigType.Default;
+        [Description("The config files distribution type (Merged, Separated)")]
+        public ConfigType ConfigType { get; set; } = ConfigType.Separated;
 
         /// <summary>
         /// Gets or sets a value indicating whether testing releases have to be downloaded or not.

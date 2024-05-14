@@ -425,7 +425,7 @@ namespace Exiled.API.Features.Doors
         public static Door GetClosest(Vector3 position, out float distance)
         {
             Door doorToReturn = List.OrderBy(door => MathExtensions.DistanceSquared(position, door.Position)).FirstOrDefault();
-            distance = MathExtensions.DistanceSquared(position, doorToReturn.Position);
+            distance = Vector3.Distance(position, doorToReturn.Position);
             return doorToReturn;
         }
 
