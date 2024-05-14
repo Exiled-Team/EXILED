@@ -19,6 +19,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Roles;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Interfaces;
@@ -57,7 +58,7 @@ namespace Exiled.CustomModules.API.Features
                 if (value == nextKnownTeam)
                     return;
 
-                if (value is SpawnableTeamType spawnableTeamType)
+                if (value is SpawnableTeamType)
                 {
                     nextKnownTeam = value;
                     return;
@@ -112,7 +113,7 @@ namespace Exiled.CustomModules.API.Features
         public void Spawn()
         {
             CustomTeam team = CustomTeam.Get((uint)NextKnownTeam);
-            List<Player> toSpawn = Player.Get(Team.Dead).ToList();
+            List<Player> toSpawn = Player.Get(x => x.Role is SpectatorRole { IsReadyToRespawn: true }).ToList();
             CustomTeam.TrySpawn(toSpawn.Cast<Pawn>(), team);
         }
 
