@@ -27,7 +27,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BreakableWindow"/>s and their corresponding <see cref="Window"/>.
         /// </summary>
-        internal static readonly Dictionary<BreakableWindow, Window> BreakableWindowToWindow = new();
+        internal static readonly Dictionary<BreakableWindow, Window> BreakableWindowToWindow = new(20, new ComponentsEqualityComparer());
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window"/> class.
@@ -35,7 +35,7 @@ namespace Exiled.API.Features
         /// <param name="window">The base <see cref="BreakableWindow"/> for this door.</param>
         /// <param name="room">The <see cref="Room"/> for this window.</param>
         internal Window(BreakableWindow window, Room room)
-            : base()
+            : base(window.gameObject)
         {
             BreakableWindowToWindow.Add(window, this);
             Base = window;
@@ -62,11 +62,6 @@ namespace Exiled.API.Features
         /// Gets the base-game <see cref="BreakableWindow"/> for this window.
         /// </summary>
         public BreakableWindow Base { get; }
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the window.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the window's <see cref="UnityEngine.Transform"/>.
@@ -181,23 +176,21 @@ namespace Exiled.API.Features
         /// <summary>
         /// Break the window.
         /// </summary>
-        public void BreakWindow() => Base.BreakWindow();
+        public void Break() => Base.BreakWindow();
 
         /// <summary>
         /// Damages the window.
         /// </summary>
         /// <param name="amount">The amount of damage to deal.</param>
-        public void DamageWindow(float amount) => Base.ServerDamageWindow(amount);
+        public void Damage(float amount) => Base.ServerDamageWindow(amount);
 
         /// <summary>
         /// Damages the window.
         /// </summary>
         /// <param name="amount">The amount of damage to deal.</param>
         /// <param name="handler">The handler of damage.</param>
-        public void DamageWindow(float amount, DamageHandlerBase handler)
-        {
-            Base.Damage(amount, handler, Vector3.zero);
-        }
+        /// <returns>Whether or not the Window get Damage.</returns>
+        public bool Damage(float amount, DamageHandlerBase handler) => Base.Damage(amount, handler, Vector3.zero);
 
         /// <summary>
         /// Returns the Window in a human-readable format.

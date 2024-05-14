@@ -131,7 +131,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Gets a value indicating whether a player can spawn as this <see cref="CustomRole"/> based on its assigned probability.
         /// </summary>
         /// <returns><see langword="true"/> if the probability condition was satisfied; otherwise, <see langword="false"/>.</returns>
-        public bool CanSpawnByProbability => UnityEngine.Random.Range(0, 101) <= Probability;
+        public bool CanSpawnByProbability => Probability.EvaluateProbability();
 
         /// <summary>
         /// Gets the <see cref="SpawnableTeamType"/> which is being spawned from.

@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Roles
 
     using Exiled.API.Enums;
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.Subroutines;
@@ -23,7 +24,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-106.
     /// </summary>
-    public class Scp106Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp106Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp106Role"/> class.
@@ -107,7 +108,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp106MovementModule"/>.
         /// </summary>
-        public Scp106MovementModule MovementModule { get; }
+        public new Scp106MovementModule MovementModule { get; }
 
         /// <summary>
         /// Gets or sets SCP-106's Vigor Level.
@@ -297,15 +298,16 @@ namespace Exiled.API.Features.Roles
         /// Send a player to the pocket dimension.
         /// </summary>
         /// <param name="player">The <see cref="Player"/>to send.</param>
-        public void CapturePlayer(Player player) // Convert to bool.
+        /// <returns>If the player has been capture in PocketDimension.</returns>
+        public bool CapturePlayer(Player player)
         {
             if (player is null)
-                return;
+                return false;
             Attack._targetHub = player.ReferenceHub;
             DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, AttackDamage, DeathTranslations.PocketDecay);
 
             if (!Attack._targetHub.playerStats.DealDamage(handler))
-                return;
+                return false;
 
             Attack.SendCooldown(Attack._hitCooldown);
             Vigor += VigorCaptureReward;
@@ -313,6 +315,7 @@ namespace Exiled.API.Features.Roles
             Hitmarker.SendHitmarkerDirectly(Attack.Owner, 1f);
 
             player.EnableEffect(EffectType.PocketCorroding);
+            return true;
         }
 
         /// <summary>

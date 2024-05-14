@@ -42,14 +42,14 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BasicRagdoll"/>s and their corresponding <see cref="Ragdoll"/>.
         /// </summary>
-        internal static readonly Dictionary<BasicRagdoll, Ragdoll> BasicRagdollToRagdoll = new(250);
+        internal static readonly Dictionary<BasicRagdoll, Ragdoll> BasicRagdollToRagdoll = new(250, new ComponentsEqualityComparer());
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Ragdoll"/> class.
         /// </summary>
         /// <param name="ragdoll">The encapsulated <see cref="BasicRagdoll"/>.</param>
         internal Ragdoll(BasicRagdoll ragdoll)
-            : base()
+            : base(ragdoll.gameObject)
         {
             Base = ragdoll;
             BasicRagdollToRagdoll.Add(ragdoll, this);
@@ -84,11 +84,6 @@ namespace Exiled.API.Features
         /// Gets the <see cref="BasicRagdoll"/> instance of the ragdoll.
         /// </summary>
         public BasicRagdoll Base { get; }
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the ragdoll.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets or sets the ragdoll's <see cref="RagdollData"/>.
@@ -323,7 +318,7 @@ namespace Exiled.API.Features
         /// <param name="owner">The optional owner of the ragdoll.</param>
         /// <returns>The ragdoll.</returns>
         public static bool TryCreate(RoleTypeId roleType, string name, DamageHandlerBase damageHandler, out Ragdoll ragdoll, Player owner = null)
-            => TryCreate(new(owner?.ReferenceHub ? owner?.ReferenceHub : Server.Host.ReferenceHub, damageHandler, roleType, default, default, name, NetworkTime.time), out ragdoll);
+            => TryCreate(new(owner != null ? owner.ReferenceHub : Server.Host.ReferenceHub, damageHandler, roleType, default, default, name, NetworkTime.time), out ragdoll);
 
         /// <summary>
         /// Creates a new ragdoll.
@@ -363,7 +358,7 @@ namespace Exiled.API.Features
         /// <param name="owner">The optional owner of the ragdoll.</param>
         /// <returns>The ragdoll.</returns>
         public static Ragdoll CreateAndSpawn(RoleTypeId roleType, string name, DamageHandlerBase damageHandler, Vector3 position, Quaternion rotation, Player owner = null)
-            => CreateAndSpawn(new(owner?.ReferenceHub ? owner?.ReferenceHub : Server.Host.ReferenceHub, damageHandler, roleType, position, rotation, name, NetworkTime.time));
+            => CreateAndSpawn(new(owner != null ? owner.ReferenceHub : Server.Host.ReferenceHub, damageHandler, roleType, position, rotation, name, NetworkTime.time));
 
         /// <summary>
         /// Creates and spawns a new ragdoll.

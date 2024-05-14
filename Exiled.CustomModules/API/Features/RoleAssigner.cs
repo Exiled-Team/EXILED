@@ -36,16 +36,16 @@ namespace Exiled.CustomModules.API.Features
     public class RoleAssigner : StaticActor
     {
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before assigning human roles.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before assigning human roles.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<AssigningHumanCustomRolesEventArgs> AssigningHumanCustomRolesDispatcher { get; private set; }
+        public TDynamicEventDispatcher<AssigningHumanCustomRolesEventArgs> AssigningHumanCustomRolesDispatcher { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before assigning SCP roles.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before assigning SCP roles.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<AssigningScpCustomRolesEventArgs> AssigningScpCustomRolesDispatcher { get; private set; }
+        public TDynamicEventDispatcher<AssigningScpCustomRolesEventArgs> AssigningScpCustomRolesDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets all enqueued SCPs.
@@ -117,7 +117,7 @@ namespace Exiled.CustomModules.API.Features
                 EnqueuedHumans.AddRange(array.Cast<object>());
             }
 
-            Events.EventArgs.CustomRoles.AssigningHumanCustomRolesEventArgs ev = new(EnqueuedHumans);
+            AssigningHumanCustomRolesEventArgs ev = new(EnqueuedHumans);
             AssigningHumanCustomRolesDispatcher.InvokeAll(ev);
             EnqueuedHumans = ev.Roles;
 
@@ -163,7 +163,7 @@ namespace Exiled.CustomModules.API.Features
             if (spawnable.Count < targetScpNumber)
                 EnqueuedPlayers.AddRange(chosenPlayers.Select(rh => Player.Get(rh)).Take(targetScpNumber - spawnable.Count));
 
-            Events.EventArgs.CustomRoles.AssigningScpCustomRolesEventArgs ev = new(chosenPlayers, EnqueuedScps);
+            AssigningScpCustomRolesEventArgs ev = new(chosenPlayers, EnqueuedScps);
             AssigningScpCustomRolesDispatcher.InvokeAll(ev);
             EnqueuedScps = ev.Roles;
 

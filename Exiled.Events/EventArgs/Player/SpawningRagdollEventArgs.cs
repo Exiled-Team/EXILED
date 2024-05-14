@@ -8,13 +8,10 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
-
+    using Exiled.API.Features.DamageHandlers;
     using Interfaces;
-
     using PlayerRoles;
     using PlayerRoles.Ragdolls;
-    using PlayerStatsSystem;
-
     using UnityEngine;
 
     /// <summary>
@@ -22,6 +19,8 @@ namespace Exiled.Events.EventArgs.Player
     /// </summary>
     public class SpawningRagdollEventArgs : IPlayerEvent, IDeniableEvent
     {
+        private DamageHandler damageHandler;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SpawningRagdollEventArgs" /> class.
         /// </summary>
@@ -91,12 +90,16 @@ namespace Exiled.Events.EventArgs.Player
         public RagdollData Info { get; set; }
 
         /// <summary>
-        /// Gets or sets the ragdoll's <see cref="PlayerStatsSystem.DamageHandlerBase" />.
+        /// Gets or sets the ragdoll's <see cref="DamageHandler"/>.
         /// </summary>
-        public DamageHandlerBase DamageHandlerBase
+        public DamageHandler DamageHandlerBase
         {
-            get => Info.Handler;
-            set => Info = new RagdollData(Player.ReferenceHub, value, Role, Position, Rotation, Nickname, CreationTime);
+            get => damageHandler ??= new(Player, Info.Handler);
+            set
+            {
+                Info = new RagdollData(Player.ReferenceHub, value, Role, Position, Rotation, Nickname, CreationTime);
+                damageHandler = value;
+            }
         }
 
         /// <summary>

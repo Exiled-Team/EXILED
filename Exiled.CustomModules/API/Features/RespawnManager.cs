@@ -19,6 +19,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Roles;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Interfaces;
@@ -41,10 +42,10 @@ namespace Exiled.CustomModules.API.Features
         private object nextKnownTeam;
 
         /// <summary>
-        /// Gets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired when selecting the next known team.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired when selecting the next known team.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<SelectingCustomTeamRespawnEventArgs> SelectingCustomTeamRespawnDispatcher { get; private set; }
+        public TDynamicEventDispatcher<SelectingCustomTeamRespawnEventArgs> SelectingCustomTeamRespawnDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the next known team.
@@ -57,7 +58,7 @@ namespace Exiled.CustomModules.API.Features
                 if (value == nextKnownTeam)
                     return;
 
-                if (value is SpawnableTeamType spawnableTeamType)
+                if (value is SpawnableTeamType)
                 {
                     nextKnownTeam = value;
                     return;
@@ -112,7 +113,7 @@ namespace Exiled.CustomModules.API.Features
         public void Spawn()
         {
             CustomTeam team = CustomTeam.Get((uint)NextKnownTeam);
-            List<Player> toSpawn = Player.Get(Team.Dead).ToList();
+            List<Player> toSpawn = Player.Get(x => x.Role is SpectatorRole { IsReadyToRespawn: true }).ToList();
             CustomTeam.TrySpawn(toSpawn.Cast<Pawn>(), team);
         }
 
