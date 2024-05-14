@@ -19,10 +19,7 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(AirlockController), nameof(AirlockController.Start))]
     internal class AirlockListAdd
     {
-        private static void Postfix(AirlockController __instance)
-        {
-            _ = new API.Features.Doors.AirlockController(__instance);
-        }
+        private static void Postfix(AirlockController __instance) => API.Features.Doors.AirlockController.Get(__instance);
     }
 
     /// <summary>
@@ -31,9 +28,6 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(AirlockController), nameof(AirlockController.OnDestroy))]
     internal class AirlockListRemove
     {
-        private static void Postfix(AirlockController __instance)
-        {
-            API.Features.Doors.AirlockController.BaseToExiledControllers.Remove(__instance);
-        }
+        private static void Postfix(AirlockController __instance) => API.Features.Doors.AirlockController.BaseToExiledControllers.Remove(__instance);
     }
 }
