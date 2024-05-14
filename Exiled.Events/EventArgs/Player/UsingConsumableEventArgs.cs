@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="UsingItemCompletedEventArgs.cs" company="Exiled Team">
+// <copyright file="UsingConsumableEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -14,18 +14,18 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.Usables;
 
     /// <summary>
-    /// Contains all information before a player uses an item.
+    /// Contains all information before a player consumes a <see cref="API.Features.Items.Consumable"/>.
     /// </summary>
-    public class UsingItemCompletedEventArgs : IPlayerEvent, IDeniableEvent, IUsableEvent
+    public class UsingConsumableEventArgs : IPlayerEvent, IDeniableEvent, IUsableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UsingItemCompletedEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="UsingConsumableEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player who's going to use the item.</param>
         /// <param name="item">
         /// <inheritdoc cref="UsedItemEventArgs.Item" />
         /// </param>
-        public UsingItemCompletedEventArgs(Player player, UsableItem item)
+        public UsingConsumableEventArgs(Player player, UsableItem item)
         {
             Player = player;
             Usable = Item.Get(item) is Usable usable ? usable : null;

@@ -45,18 +45,10 @@ namespace Exiled.API.Features.Items
         /// <remarks>Can be <see cref="FlashlightItem"/> or <see cref="LanternItem"/>.</remarks>
         public new ToggleableLightItemBase Base { get; }
 
-        /// <inheritdoc cref="IsEmittingLight"/>
-        [Obsolete("Use IsEmittingLight instead.")]
-        public bool Active
-        {
-            get => IsEmittingLight;
-            set => IsEmittingLight = value;
-        }
-
         /// <summary>
         /// Gets or sets a value indicating whether the item is emitting light.
         /// </summary>
-        public bool IsEmittingLight
+        public new bool IsEmittingLight
         {
             get => Base.IsEmittingLight;
             set
