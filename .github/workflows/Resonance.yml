@@ -12,7 +12,7 @@ on:
 env:
   EXILED_REFERENCES_URL: https://misaka-zerotwo.github.io/SL-References/Dev.zip
   EXILED_REFERENCES_PATH: ${{ github.workspace }}/References
-  EXILED_DLL_ARCHIVER_URL: https://github.com/Exiled-Team/EXILED-DLL-Archiver/releases/tag/v1.5/download/EXILED-DLL-Archiver.exe
+  EXILED_DLL_ARCHIVER_URL: https://github.com/Exiled-Team/EXILED-DLL-Archiver/releases/download/v1.5/EXILED-DLL-Archiver.exe
 
 jobs:
 
