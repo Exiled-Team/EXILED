@@ -8,9 +8,9 @@
 namespace Exiled.Events.EventArgs.Scp173
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using API.Features;
-
     using Interfaces;
 
     using Scp173Role = API.Features.Roles.Scp173Role;
@@ -29,11 +29,11 @@ namespace Exiled.Events.EventArgs.Scp173
         /// <param name="targets">
         /// <inheritdoc cref="Targets" />
         /// </param>
-        public BlinkingRequestEventArgs(Player player, HashSet<Player> targets)
+        public BlinkingRequestEventArgs(Player player, HashSet<ReferenceHub> targets)
         {
             Player = player;
             Scp173 = player.Role.As<Scp173Role>();
-            Targets = targets;
+            Targets = targets.Select(target => Player.Get(target)).ToList();
         }
 
         /// <summary>

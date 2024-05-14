@@ -5,9 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-#nullable enable
 namespace Exiled.API.Features
 {
+#nullable enable
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -15,16 +15,15 @@ namespace Exiled.API.Features
 
     using CentralAuth;
     using CommandSystem;
-
     using Exiled.API.Enums;
     using Exiled.API.Features.Components;
+    using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
     using Footprinting;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
     using MEC;
     using Mirror;
-
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using RelativePositioning;
@@ -218,12 +217,12 @@ namespace Exiled.API.Features
         /// <param name="position">The position to look at.</param>
         public void LookAt(Vector3 position)
         {
-            if (Role is FpcRole fpc)
-            {
-                Vector3 direction = position - Position;
-                Quaternion quat = Quaternion.LookRotation(direction, Vector3.up);
-                LookAt(quat);
-            }
+            if (Role is not FpcRole)
+                return;
+
+            Vector3 direction = position - Position;
+            Quaternion quat = Quaternion.LookRotation(direction, Vector3.up);
+            LookAt(quat);
         }
 
         /// <summary>
@@ -244,6 +243,19 @@ namespace Exiled.API.Features
             ushort vert = (ushort)Mathf.RoundToInt(Mathf.Clamp(Mathf.Repeat(angles.x + 90f, 360f) - 2f, 0f, 176f) * (ushort.MaxValue / 176f));
 
             fpc.FirstPersonController.FpcModule.MouseLook.ApplySyncValues(hor, vert);
+        }
+
+        /// <summary>
+        /// Forces the NPC to use their current <see cref="Jailbird"/>.
+        /// </summary>
+        /// <returns><see langword="true"/> if the jailbird is used. Else <see langword="false"/>.</returns>
+        public bool UseJailbird()
+        {
+            if (CurrentItem is not Jailbird jailbird)
+                return false;
+
+            jailbird.Base.ServerAttack(null);
+            return true;
         }
 
         /// <summary>
