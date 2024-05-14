@@ -70,6 +70,22 @@ namespace Exiled.API.Features.DamageHandlers
         /// Initializes a new instance of the <see cref="CustomDamageHandler"/> class.
         /// </summary>
         /// <param name="target">The target to be set.</param>
+        /// <param name="damage">The amount of damage to be set.</param>
+        /// <param name="damageType">The <see cref="DamageType"/> to be set.</param>
+        /// <param name="cassieAnnouncement">Cassie announcement to play.</param>
+        public CustomDamageHandler(Player target, float damage, DamageType damageType, string cassieAnnouncement = "")
+            : base(target, attacker: null)
+        {
+            Damage = damage;
+            Type = damageType;
+
+            CustomBase = new DamageHandler(target, attacker: null);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomDamageHandler"/> class.
+        /// </summary>
+        /// <param name="target">The target to be set.</param>
         /// <param name="attacker">The attacker to be set.</param>
         /// <param name="damage">The amount of damage to be set.</param>
         /// <param name="damageType">The <see cref="DamageType"/> to be set.</param>

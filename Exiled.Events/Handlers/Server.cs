@@ -48,11 +48,6 @@ namespace Exiled.Events.Handlers
         public static Event RestartingRound { get; set; } = new();
 
         /// <summary>
-        /// Invoked when a player reports a cheater.
-        /// </summary>
-        public static Event<ReportingCheaterEventArgs> ReportingCheater { get; set; } = new();
-
-        /// <summary>
         /// Invoked before setting up the environment for respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
         public static Event<PreRespawningTeamEventArgs> PreRespawningTeam { get; set; } = new();
@@ -66,11 +61,6 @@ namespace Exiled.Events.Handlers
         /// Invoked before adding an unit name.
         /// </summary>
         public static Event<AddingUnitNameEventArgs> AddingUnitName { get; set; } = new();
-
-        /// <summary>
-        /// Invoked when sending a complaint about a player to the local server administrators.
-        /// </summary>
-        public static Event<LocalReportingEventArgs> LocalReporting { get; set; } = new();
 
         /// <summary>
         /// Invoked before choosing the team to be assigned to a player.
@@ -185,12 +175,6 @@ namespace Exiled.Events.Handlers
         public static void OnRestartingRound() => RestartingRound.InvokeSafely();
 
         /// <summary>
-        /// Called when a player reports a cheater.
-        /// </summary>
-        /// <param name="ev">The <see cref="ReportingCheaterEventArgs"/> instance.</param>
-        public static void OnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(ev);
-
-        /// <summary>
         /// Called before selecting the team that will respawn next.
         /// </summary>
         /// <param name="ev">The <see cref="SelectingRespawnTeamEventArgs"/> instance.</param>
@@ -220,12 +204,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="AddingUnitNameEventArgs"/> instance.</param>
         public static void OnAddingUnitName(AddingUnitNameEventArgs ev) => AddingUnitName.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called when sending a complaint about a player to the local server administrators.
-        /// </summary>
-        /// <param name="ev">The <see cref="LocalReportingEventArgs"/> instance.</param>
-        public static void OnLocalReporting(LocalReportingEventArgs ev) => LocalReporting.InvokeSafely(ev);
 
         /// <summary>
         /// Called before choosing the team to be assigned to a player.

@@ -117,7 +117,7 @@ namespace Exiled.CustomModules.API.Features
                 EnqueuedHumans.AddRange(array.Cast<object>());
             }
 
-            Events.EventArgs.CustomRoles.AssigningHumanCustomRolesEventArgs ev = new(EnqueuedHumans);
+            AssigningHumanCustomRolesEventArgs ev = new(EnqueuedHumans);
             AssigningHumanCustomRolesDispatcher.InvokeAll(ev);
             EnqueuedHumans = ev.Roles;
 
@@ -163,7 +163,7 @@ namespace Exiled.CustomModules.API.Features
             if (spawnable.Count < targetScpNumber)
                 EnqueuedPlayers.AddRange(chosenPlayers.Select(rh => Player.Get(rh)).Take(targetScpNumber - spawnable.Count));
 
-            Events.EventArgs.CustomRoles.AssigningScpCustomRolesEventArgs ev = new(chosenPlayers, EnqueuedScps);
+            AssigningScpCustomRolesEventArgs ev = new(chosenPlayers, EnqueuedScps);
             AssigningScpCustomRolesDispatcher.InvokeAll(ev);
             EnqueuedScps = ev.Roles;
 

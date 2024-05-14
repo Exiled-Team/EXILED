@@ -30,16 +30,13 @@ namespace Exiled.API.Features.Toys
         /// <param name="toyAdminToyBase">The <see cref="AdminToys.AdminToyBase"/> to be wrapped.</param>
         /// <param name="type">The <see cref="AdminToyType"/> of the object.</param>
         internal AdminToy(AdminToyBase toyAdminToyBase, AdminToyType type)
-            : base()
+            : base(toyAdminToyBase.gameObject)
         {
             AdminToyBase = toyAdminToyBase;
             ToyType = type;
 
             Map.ToysValue.Add(this);
         }
-
-        /// <inheritdoc/>
-        public override GameObject GameObject => AdminToyBase.gameObject;
 
         /// <summary>
         /// Gets the original <see cref="AdminToys.AdminToyBase"/>.

@@ -7,7 +7,10 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
+    using InventorySystem;
+    using UnityEngine;
 
     using BaseMicroHID = InventorySystem.Items.MicroHID.MicroHIDPickup;
 
@@ -30,9 +33,8 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="MicroHIDPickup"/> class.
         /// </summary>
         internal MicroHIDPickup()
-            : base(ItemType.MicroHID)
+            : this((BaseMicroHID)ItemType.MicroHID.GetItemBase().ServerDropItem())
         {
-            Base = (BaseMicroHID)((Pickup)this).Base;
         }
 
         /// <summary>
