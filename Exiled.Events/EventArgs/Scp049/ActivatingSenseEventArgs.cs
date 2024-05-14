@@ -54,12 +54,6 @@ namespace Exiled.Events.EventArgs.Scp049
         public float FailedCooldown { get; set; }
 
         /// <summary>
-        /// Gets or sets the cooldown of the ability.
-        /// </summary>
-        [Obsolete("Use FailedCooldown instead of this")]
-        public float Cooldown { get => FailedCooldown; set => FailedCooldown = value; }
-
-        /// <summary>
         /// Gets or sets the duration of the Effect.
         /// </summary>
         public float Duration { get; set; }
