@@ -26,11 +26,6 @@ namespace Exiled.API.Enums
         LockBypassDenied,
 
         /// <summary>
-        /// Interaction denied.
-        /// </summary>
-        InteractionDenied,
-
-        /// <summary>
         /// Interaction allowed.
         /// </summary>
         InteractionAllowed,

@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Handlers
 {
+    using Exiled.API.Features.Pickups;
 #pragma warning disable IDE0079
 #pragma warning disable IDE0060
 #pragma warning disable SA1623 // Property summary documentation should match accessors
@@ -24,6 +25,16 @@ namespace Exiled.Events.Handlers
     /// </summary>
     public class Player
     {
+        /// <summary>
+        /// Invoked when sending a complaint about a player to the local server administrators.
+        /// </summary>
+        public static Event<LocalReportingEventArgs> LocalReporting { get; set; } = new();
+
+        /// <summary>
+        /// Invoked when a player reports a cheater.
+        /// </summary>
+        public static Event<ReportingCheaterEventArgs> ReportingCheater { get; set; } = new();
+
         /// <summary>
         /// Invoked before authenticating a <see cref="API.Features.Player"/>.
         /// </summary>
@@ -70,7 +81,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Usable"/>.
         /// </summary>
-        public static Event<UsingItemCompletedEventArgs> UsingItemCompleted { get; set; } = new ();
+        public static Event<UsingConsumableEventArgs> UsingConsumable { get; set; } = new();
 
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Usable"/>.
@@ -544,6 +555,18 @@ namespace Exiled.Events.Handlers
         public static Event<DisplayingHitmarkerEventArgs> ShowingHitMarker { get; set; } = new();
 
         /// <summary>
+        /// Called when sending a complaint about a player to the local server administrators.
+        /// </summary>
+        /// <param name="ev">The <see cref="LocalReportingEventArgs"/> instance.</param>
+        public static void OnLocalReporting(LocalReportingEventArgs ev) => LocalReporting.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called when a player reports a cheater.
+        /// </summary>
+        /// <param name="ev">The <see cref="ReportingCheaterEventArgs"/> instance.</param>
+        public static void OnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="ReservedSlotsCheckEventArgs"/> instance.</param>
@@ -589,7 +612,7 @@ namespace Exiled.Events.Handlers
         /// Called before completed using of a usable item.
         /// </summary>
         /// <param name="ev">The <see cref="UsingItemEventArgs"/> instance.</param>
-        public static void OnUsingItemCompleted(UsingItemCompletedEventArgs ev) => UsingItemCompleted.InvokeSafely(ev);
+        public static void OnUsingConsumable(UsingConsumableEventArgs ev) => UsingConsumable.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="API.Features.Player"/> used a <see cref="API.Features.Items.Usable"/> item.
@@ -977,7 +1000,15 @@ namespace Exiled.Events.Handlers
         /// <param name="itemBase">The added <see cref="InventorySystem.Items.ItemBase"/>.</param>
         /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
         public static void OnItemAdded(ReferenceHub referenceHub, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase)
-            => ItemAdded.InvokeSafely(new ItemAddedEventArgs(referenceHub, itemBase, pickupBase));
+        {
+            ItemAddedEventArgs ev = new(referenceHub, itemBase, pickupBase);
+
+            ev.Item.ReadPickupInfo(ev.Pickup);
+
+            ev.Player.ItemsValue.Add(ev.Item);
+
+            ItemAdded.InvokeSafely(ev);
+        }
 
         /// <summary>
         /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item removed from their inventory.
@@ -986,7 +1017,14 @@ namespace Exiled.Events.Handlers
         /// <param name="itemBase">The removed <see cref="InventorySystem.Items.ItemBase"/>.</param>
         /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
         public static void OnItemRemoved(ReferenceHub referenceHub, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase)
-            => ItemRemoved.InvokeSafely(new ItemRemovedEventArgs(referenceHub, itemBase, pickupBase));
+        {
+            ItemRemovedEventArgs ev = new(referenceHub, itemBase, pickupBase);
+            ItemRemoved.InvokeSafely(ev);
+
+            ev.Player.ItemsValue.Remove(ev.Item);
+
+            API.Features.Items.Item.BaseToItem.Remove(itemBase);
+        }
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player" /> has an item added to their inventory.
@@ -1143,6 +1181,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DisplayingHitmarkerEventArgs"/> instance.</param>
         public static void OnShowingHitMarker(DisplayingHitmarkerEventArgs ev) => ShowingHitMarker.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> toggles the weapon's flashlight.
+        /// </summary>
+        /// <param name="ev">The <see cref="ToggledWeaponFlashlightEventArgs"/> instance.</param>
+        public static void OnToggledWeaponFlashlight(ToggledWeaponFlashlightEventArgs ev) => ToggledWeaponFlashlight.InvokeSafely(ev);
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.

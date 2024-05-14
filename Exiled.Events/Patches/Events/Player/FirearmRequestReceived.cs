@@ -52,7 +52,6 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(TogglingWeaponFlashlightEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
             LocalBuilder firearm = generator.DeclareLocal(typeof(Firearm));
 
@@ -129,7 +128,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // ReloadedWeapon ev = new(Player, firearm, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ReloadedWeaponEventArgs))[0]),
-                    new(OpCodes.Dup),
 
                     // Player.OnReloadedWeapon(ev)
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnReloadedWeapon))),
@@ -181,7 +179,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // UnloadedWeaponEventArgs ev = new(Player, firearm, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UnloadedWeaponEventArgs))[0]),
-                    new(OpCodes.Dup),
 
                     // Player.OnUnloadedWeapon(ev)
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnUnloadedWeapon))),
@@ -290,8 +287,6 @@ namespace Exiled.Events.Patches.Events.Player
                     // TogglingWeaponFlashlightEventArgs ev = new(Player, firearm, bool, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingWeaponFlashlightEventArgs))[0]),
                     new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Player.OnTogglingWeaponFlashlight(ev)
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnTogglingWeaponFlashlight))),
@@ -323,12 +318,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // TogglingWeaponFlashlightEventArgs ev = new(Player, firearm, bool, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ToggledWeaponFlashlightEventArgs))[0]),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Player.OnToggledWeaponFlashlight(ev)
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.ToggledWeaponFlashlight))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnToggledWeaponFlashlight))),
                 });
 
             offset = -3;
