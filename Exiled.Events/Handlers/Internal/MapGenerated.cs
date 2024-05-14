@@ -65,7 +65,7 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateAttachments()
         {
-            foreach (FirearmType firearmType in Enum.GetValues(typeof(FirearmType)))
+            foreach (FirearmType firearmType in EnumExtensions.QueryValues<FirearmType>())
             {
                 if (firearmType == FirearmType.None)
                     continue;

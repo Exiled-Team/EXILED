@@ -93,7 +93,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
                     foreach ((float chance, Vector3 pos) in spawnpoints)
                     {
-                        if (UnityEngine.Random.Range(0f, 101f) <= chance)
+                        if (chance.EvaluateProbability())
                         {
                             outPos = pos;
                             return true;
@@ -126,7 +126,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets or sets a <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> which should be permanently given to the player.
         /// </summary>
-        protected virtual IEnumerable<EffectType> PermanentEffects { get; set; }
+        protected virtual IEnumerable<Effect> PermanentEffects { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether <see cref="FakeAppearance"/> should be used.
@@ -363,17 +363,13 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return;
             }
 
-            if (Owner.Role.Cast(out FpcRole fpcRole))
-                fpcRole.IsNoclipEnabled = false;
-
             if (Settings.ArtificialHealth > 0f)
                 Owner.AddAhp(Settings.ArtificialHealth, Owner.MaxArtificialHealth, 0, 1, 0);
 
             if (UseFakeAppearance)
                 Owner.ChangeAppearance(FakeAppearance, false);
 
-            if (PermanentEffects is not null)
-                Owner.EnableEffects(PermanentEffects);
+            PermanentEffects?.ForEach(x => Owner.SyncEffect(x));
         }
 
         /// <inheritdoc/>
@@ -390,10 +386,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             if (SustainEffects)
             {
-                foreach (EffectType effect in PermanentEffects)
+                foreach (Effect effect in PermanentEffects)
                 {
-                    if (!Owner.GetEffect(effect).IsEnabled)
-                        Owner.EnableEffect(effect);
+                    Owner.SyncEffect(effect);
                 }
             }
 
@@ -401,7 +396,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             {
                 foreach (EscapeSettings settings in EscapeSettings)
                 {
-                    if (!settings.IsAllowed || Vector3.Distance(Owner.Position, settings.Position) > settings.DistanceThreshold)
+                    if (!settings.IsAllowed || MathExtensions.DistanceSquared(Owner.Position, settings.Position) > settings.DistanceThreshold * settings.DistanceThreshold)
                         continue;
 
                     Events.EventArgs.CustomEscapes.EscapingEventArgs ev = new(Owner.Cast<Pawn>(), settings.Role, settings.CustomRole, UUEscapeScenarioType.None, default);
@@ -539,7 +534,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             List<Player> targets = new();
             foreach (Player pl in Player.Get(predicate))
             {
-                if (Vector3.Distance(pl.Position, Owner.Position) <= distance)
+                if (MathExtensions.DistanceSquared(pl.Position, Owner.Position) <= distance * distance)
                     targets.Add(pl);
             }
 
@@ -559,7 +554,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             players = new();
             foreach (Player pl in Player.Get(predicate))
             {
-                if (Vector3.Distance(pl.Position, Owner.Position) <= distance)
+                if (MathExtensions.DistanceSquared(pl.Position, Owner.Position) <= distance * distance)
                     players.Add(pl);
             }
 

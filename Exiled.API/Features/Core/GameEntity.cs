@@ -34,7 +34,12 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEntity"/> class.
         /// </summary>
-        protected GameEntity() => ActiveInstances.Add(this);
+        /// <param name="gameObject">Gameobject of the Entity.</param>
+        protected GameEntity(GameObject gameObject)
+        {
+            GameObject = gameObject;
+            ActiveInstances.Add(this);
+        }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="GameEntity"/> class.
@@ -88,7 +93,7 @@ namespace Exiled.API.Features.Core
         /// The nearest <see cref="GameEntity" /> within the specified distance, or <see langword="null" /> if no game
         /// entity is found.
         /// </returns>
-        public static GameEntity GetNearestEntity(Vector3 vector, float distance) => GetNearestEntities(vector, distance).OrderBy(p => (vector - p.GameObject.transform.position).sqrMagnitude).FirstOrDefault();
+        public static GameEntity GetNearestEntity(Vector3 vector, float distance) => GetNearestEntities(vector, distance).OrderBy(p => MathExtensions.DistanceSquared(vector, p.GameObject.transform.position)).FirstOrDefault();
 
         /// <summary>
         /// Gets all game entities near the specified <see cref="Vector3" /> within the given distance.
@@ -96,7 +101,7 @@ namespace Exiled.API.Features.Core
         /// <param name="vector">The <see cref="Vector3" /> to compare.</param>
         /// <param name="distance">The maximum distance the game entity can be from the <paramref name="vector" /> to be included.</param>
         /// <returns>The filtered collection of <see cref="GameEntity" /> objects.</returns>
-        public static IEnumerable<GameEntity> GetNearestEntities(Vector3 vector, float distance) => List.Where(p => p.GameObject.transform && (vector - p.GameObject.transform.position).sqrMagnitude <= distance * distance);
+        public static IEnumerable<GameEntity> GetNearestEntities(Vector3 vector, float distance) => List.Where(p => p.GameObject.transform && MathExtensions.DistanceSquared(vector, p.GameObject.transform.position) <= distance * distance);
 
         /// <summary>
         /// Gets the farthest game entity from the specified <see cref="Vector3" /> within the given distance.
@@ -107,7 +112,7 @@ namespace Exiled.API.Features.Core
         /// The farthest <see cref="GameEntity" /> from the specified <paramref name="vector" /> within the given
         /// distance, or <see langword="null" /> if no game entity is found.
         /// </returns>
-        public static GameEntity GetFarthestEntity(Vector3 vector, float distance) => GetFarthestEntities(vector, distance).OrderByDescending(p => (vector - p.GameObject.transform.position).sqrMagnitude).FirstOrDefault();
+        public static GameEntity GetFarthestEntity(Vector3 vector, float distance) => GetFarthestEntities(vector, distance).OrderByDescending(p => MathExtensions.DistanceSquared(vector, p.GameObject.transform.position)).FirstOrDefault();
 
         /// <summary>
         /// Gets all game entities that have a distance greater than the specified distance from the given <see cref="Vector3" />.
@@ -115,7 +120,7 @@ namespace Exiled.API.Features.Core
         /// <param name="vector">The <see cref="Vector3" /> to compare.</param>
         /// <param name="distance">The minimum distance the game entity can be from the <paramref name="vector" /> to be included.</param>
         /// <returns>The filtered collection of <see cref="GameEntity" /> objects.</returns>
-        public static IEnumerable<GameEntity> GetFarthestEntities(Vector3 vector, float distance) => List.Where(p => p.GameObject.transform && (vector - p.GameObject.transform.position).sqrMagnitude >= distance * distance);
+        public static IEnumerable<GameEntity> GetFarthestEntities(Vector3 vector, float distance) => List.Where(p => p.GameObject.transform && MathExtensions.DistanceSquared(vector, p.GameObject.transform.position) >= distance * distance);
 
         /// <summary>
         /// Returns the local space position, based on a world space position.
