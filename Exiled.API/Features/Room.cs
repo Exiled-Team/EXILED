@@ -35,39 +35,34 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly Dictionary<RoomIdentifier, Room> RoomIdentifierToRoom = new(250, new ComponentsEqualityComparer());
 
-        private readonly GameObject gameObject;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Room"/> class.
         /// </summary>
         /// <param name="roomIdentifier">The room's <see cref="RoomIdentifier"/>.</param>
         internal Room(RoomIdentifier roomIdentifier)
+            : base(roomIdentifier.gameObject)
         {
-            gameObject = roomIdentifier.gameObject;
+            Identifier = roomIdentifier;
+            GameObject = Identifier.gameObject;
 
-            Identifier = gameObject.GetComponent<RoomIdentifier>();
             RoomIdentifierToRoom.Add(Identifier, this);
 
-            Zone = FindZone(gameObject);
+            Zone = FindZone(GameObject);
 #if Debug
             if (Type is RoomType.Unknown)
                 Log.Error($"[ZONETYPE UNKNOWN] {this}");
 #endif
-            Type = FindType(gameObject);
+            Type = FindType(GameObject);
 #if Debug
             if (Type is RoomType.Unknown)
                 Log.Error($"[ROOMTYPE UNKNOWN] {this}");
 #endif
 
-            RoomLightControllersValue.AddRange(gameObject.GetComponentsInChildren<RoomLightController>());
+            RoomLightControllersValue.AddRange(GameObject.GetComponentsInChildren<RoomLightController>());
 
             RoomLightControllers = RoomLightControllersValue.AsReadOnly();
 
-            GameObject.GetComponentsInChildren<BreakableWindow>().ForEach(component =>
-            {
-                Window window = new(component, this);
-                window.Room.WindowsValue.Add(window);
-            });
+            GameObject.GetComponentsInChildren<BreakableWindow>().ForEach(x => WindowsValue.Add(new(x, this)));
 
             if (GameObject.GetComponentInChildren<global::TeslaGate>() is global::TeslaGate tesla)
                 TeslaGate = new TeslaGate(tesla, this);
@@ -82,11 +77,6 @@ namespace Exiled.API.Features
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains all the <see cref="Room"/> instances.
         /// </summary>
         public static new IReadOnlyCollection<Room> List => RoomIdentifierToRoom.Values;
-
-        /// <summary>
-        /// Gets the <see cref="Room"/> <see cref="UnityEngine.GameObject"/>.
-        /// </summary>
-        public override GameObject GameObject => gameObject;
 
         /// <summary>
         /// Gets the <see cref="Room"/> name.

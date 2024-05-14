@@ -22,11 +22,13 @@ namespace Exiled.Events.EventArgs.Scp330
         /// Initializes a new instance of the <see cref="EatingScp330EventArgs" /> class.
         /// </summary>
         /// <param name="player"><see cref="Player" />.</param>
+        /// <param name="bag"><inheritdoc cref="Scp330"/></param>
         /// <param name="candy"><see cref="ICandy" />.</param>
         /// <param name="isAllowed"><see cref="IsAllowed" />.</param>
-        public EatingScp330EventArgs(Player player, ICandy candy, bool isAllowed = true)
+        public EatingScp330EventArgs(Player player, Scp330Bag bag, ICandy candy, bool isAllowed = true)
         {
             Player = player;
+            Scp330 = Item.Get(bag).As<Scp330>();
             Candy = candy;
             IsAllowed = isAllowed;
         }

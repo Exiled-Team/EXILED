@@ -48,7 +48,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new[]
                 {
                     // isPermited = FpcNoclip.IsPermitted(referenceHub)
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
+                    new(OpCodes.Stloc_S, isPermited.LocalIndex),
 
                     // Player.Get(hub)
                     new CodeInstruction(OpCodes.Ldloc_0),
@@ -59,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, PropertyGetter(typeof(Player), nameof(Player.IsNoclipEnabled))),
 
                     // isPermited
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Ldloc_S, isPermited.LocalIndex),
 
                     // TogglingNoClipEventArgs ev = new(Player, bool, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingNoClipEventArgs))[0]),
