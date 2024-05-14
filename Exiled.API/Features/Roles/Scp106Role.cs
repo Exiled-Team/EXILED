@@ -110,7 +110,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp106MovementModule"/>.
         /// </summary>
-        public Scp106MovementModule MovementModule { get; }
+        public new Scp106MovementModule MovementModule { get; }
 
         /// <summary>
         /// Gets or sets SCP-106's Vigor Level.

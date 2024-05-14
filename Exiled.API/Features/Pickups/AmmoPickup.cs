@@ -12,6 +12,8 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
+    using InventorySystem;
+    using UnityEngine;
 
     using BaseAmmo = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
 
@@ -36,9 +38,8 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal AmmoPickup(ItemType type)
-            : base(type)
+            : this((BaseAmmo)type.GetItemBase().ServerDropItem())
         {
-            Base = (BaseAmmo)((Pickup)this).Base;
         }
 
         /// <summary>

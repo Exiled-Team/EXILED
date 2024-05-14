@@ -138,9 +138,9 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 OpCode opcode = newInstructions[i].opcode;
                 if (opcode == OpCodes.Stloc_0)
-                    newInstructions[i] = new(OpCodes.Stloc_S, fpcRole.LocalIndex);
+                    newInstructions[i] = new CodeInstruction(OpCodes.Stloc_S, fpcRole.LocalIndex).WithLabels(newInstructions[i].labels);
                 else if (opcode == OpCodes.Ldloc_0)
-                    newInstructions[i] = new(OpCodes.Ldloc_S, fpcRole.LocalIndex);
+                    newInstructions[i] = new CodeInstruction(OpCodes.Ldloc_S, fpcRole.LocalIndex).WithLabels(newInstructions[i].labels);
                 else if (opcode == OpCodes.Ldc_I4_0 && i > customExit)
                     newInstructions[i].opcode = OpCodes.Ldc_I4_5;
             }

@@ -15,9 +15,10 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Interfaces;
 
     using Footprinting;
-
+    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for a high explosive grenade pickup.
@@ -40,9 +41,8 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal GrenadePickup(ItemType type)
-            : base(type)
+            : this((TimedGrenadePickup)type.GetItemBase().ServerDropItem())
         {
-            Base = (TimedGrenadePickup)((Pickup)this).Base;
         }
 
         /// <summary>

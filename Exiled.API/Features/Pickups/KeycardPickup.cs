@@ -10,11 +10,13 @@ namespace Exiled.API.Features.Pickups
     using System.Diagnostics;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
-
+    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Keycards;
+    using UnityEngine;
 
     using BaseKeycard = InventorySystem.Items.Keycards.KeycardPickup;
 
@@ -39,9 +41,8 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal KeycardPickup(ItemType type)
-            : base(type)
+            : this((BaseKeycard)type.GetItemBase().ServerDropItem())
         {
-            Base = (BaseKeycard)((Pickup)this).Base;
         }
 
         /// <summary>

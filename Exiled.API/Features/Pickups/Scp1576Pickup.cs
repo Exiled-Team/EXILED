@@ -9,7 +9,10 @@ namespace Exiled.API.Features.Pickups
 {
     using System.Diagnostics;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
+    using InventorySystem;
+    using UnityEngine;
 
     using BaseScp1576 = InventorySystem.Items.Usables.Scp1576.Scp1576Pickup;
 
@@ -33,9 +36,8 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="Scp1576Pickup"/> class.
         /// </summary>
         internal Scp1576Pickup()
-            : base(ItemType.SCP1576)
+            : this((BaseScp1576)ItemType.SCP1576.GetItemBase().ServerDropItem())
         {
-            Base = (BaseScp1576)((Pickup)this).Base;
         }
 
         /// <summary>

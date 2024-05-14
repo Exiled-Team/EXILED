@@ -88,7 +88,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets SCP-173's movement module.
         /// </summary>
-        public Scp173MovementModule MovementModule { get; }
+        public new Scp173MovementModule MovementModule { get; }
 
         /// <summary>
         /// Gets SCP-173's <see cref="Scp173ObserversTracker"/>.

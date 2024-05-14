@@ -149,6 +149,11 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Resets the Jailbird to normal.
+        /// </summary>
+        public void Reset() => Base.ServerReset();
+
+        /// <summary>
         /// Breaks the Jailbird.
         /// </summary>
         public void Break()
