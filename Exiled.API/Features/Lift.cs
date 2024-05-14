@@ -47,12 +47,12 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="elevator">The <see cref="ElevatorChamber"/> to wrap.</param>
         internal Lift(ElevatorChamber elevator)
-            : base()
+            : base(elevator.gameObject)
         {
             Base = elevator;
             ElevatorChamberToLift.Add(elevator, this);
 
-            internalDoorsList.AddRange(Interactables.Interobjects.ElevatorDoor.AllElevatorDoors[Group]);
+            internalDoorsList.AddRange(Elevator.AllElevatorDoors[Group]);
         }
 
         /// <summary>
@@ -85,11 +85,6 @@ namespace Exiled.API.Features
         /// Gets the lift's name.
         /// </summary>
         public string Name => Group.ToString();
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the lift.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets or sets the lift's <see cref="ElevatorChamber"/> status.
