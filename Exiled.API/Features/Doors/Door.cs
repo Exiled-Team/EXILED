@@ -17,7 +17,6 @@ namespace Exiled.API.Features.Doors
     using Exiled.API.Interfaces;
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
-    using MEC;
     using Mirror;
     using UnityEngine;
 
@@ -46,7 +45,7 @@ namespace Exiled.API.Features.Doors
         /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
         /// <param name="rooms">The <see cref="List{T}"/> of <see cref="Features.Room"/>'s for this door.</param>
         internal Door(DoorVariant door, List<Room> rooms)
-            : base()
+            : base(door.gameObject)
         {
             Base = door;
 
@@ -73,11 +72,6 @@ namespace Exiled.API.Features.Doors
         /// Gets the base-game <see cref="DoorVariant"/> corresponding with this door.
         /// </summary>
         public DoorVariant Base { get; }
-
-        /// <summary>
-        /// Gets the door's <see cref="UnityEngine.GameObject"/>.
-        /// </summary>
-        public override GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the door's <see cref="DoorType"/>.
@@ -314,6 +308,13 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
+        /// Gets the <see cref="Door"/> belonging to the <see cref="Collider"/>, if any.
+        /// </summary>
+        /// <param name="collider"><see cref="Collider"/>.</param>
+        /// <returns>The <see cref="Door"/> with the given name or <see langword="null"/> if not found.</returns>
+        public static Door Get(Collider collider) => Get(collider.transform.root.gameObject);
+
+        /// <summary>
         /// Gets the door object associated with a specific <see cref="UnityEngine.GameObject"/>, or creates a new one if there isn't one.
         /// </summary>
         /// <param name="gameObject">The base-game <see cref="UnityEngine.GameObject"/>.</param>
@@ -415,7 +416,7 @@ namespace Exiled.API.Features.Doors
         public static Door GetClosest(Vector3 position, out float distance)
         {
             Door doorToReturn = List.OrderBy(door => MathExtensions.DistanceSquared(position, door.Position)).FirstOrDefault();
-            distance = MathExtensions.DistanceSquared(position, doorToReturn.Position);
+            distance = Vector3.Distance(position, doorToReturn.Position);
             return doorToReturn;
         }
 
@@ -554,6 +555,12 @@ namespace Exiled.API.Features.Doors
             foreach (Door door in Get(predicate))
                 door.Unlock();
         }
+
+        /// <summary>
+        /// Interacts with the Door.
+        /// </summary>
+        /// <param name="player">The player interacting.</param>
+        public void Interact(Player player = null) => Base.ServerInteract(player?.ReferenceHub, 0);
 
         /// <summary>
         /// Makes the door play a beep sound.

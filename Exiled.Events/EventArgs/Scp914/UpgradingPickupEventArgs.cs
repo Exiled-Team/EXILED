@@ -50,12 +50,6 @@ namespace Exiled.Events.EventArgs.Scp914
         public Pickup Pickup { get; }
 
         /// <summary>
-        /// Gets the <see cref="Scp914Controller" /> instance.
-        /// </summary>
-        [Obsolete("Use Scp914::Scp914Controller instead.")]
-        public Scp914Controller Scp914 => API.Features.Scp914.Scp914Controller;
-
-        /// <summary>
         /// Gets or sets the position the item will be output to.
         /// </summary>
         public Vector3 OutputPosition { get; set; }

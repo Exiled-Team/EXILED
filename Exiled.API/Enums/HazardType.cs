@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ConfigType.cs" company="Exiled Team">
+// <copyright file="HazardType.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,27 +7,31 @@
 
 namespace Exiled.API.Enums
 {
-    using System;
+    using Exiled.API.Features.Hazards;
 
     /// <summary>
-    /// The different types of configuration files distribution.
+    /// Unique identifier for a <see cref="Hazard"/>.
     /// </summary>
-    public enum ConfigType
+    public enum HazardType
     {
         /// <summary>
-        /// Default. Removed in the future.
+        /// SCP-939 amnestic cloud.
         /// </summary>
-        [Obsolete("Separated & Merged exist now.")]
-        Default = Separated,
+        AmnesticCloud,
 
         /// <summary>
-        /// Separated distribution, each plugin will have an individual config file.
+        /// Sinkhole spawned at start of round.
         /// </summary>
-        Separated = 0,
+        Sinkhole,
 
         /// <summary>
-        /// Merged configs, all plugins share a config file.
+        /// SCP-173 tantrum.
         /// </summary>
-        Merged,
+        Tantrum,
+
+        /// <summary>
+        /// Should never happen
+        /// </summary>
+        Unknown,
     }
 }
