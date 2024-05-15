@@ -52,7 +52,7 @@ namespace Exiled.Events.Patches.Generic
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
                 new(OpCodes.Call, PropertyGetter(typeof(Map), nameof(Map.PocketDimensionTeleports))),
-                new(OpCodes.Call, Method(typeof(Enumerable), nameof(Enumerable.ToArray)).MakeGenericMethod(typeof(PocketDimensionGenerator))),
+                new(OpCodes.Call, Method(typeof(Enumerable), nameof(Enumerable.ToArray)).MakeGenericMethod(typeof(PocketDimensionTeleport))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
