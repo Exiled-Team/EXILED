@@ -681,6 +681,7 @@ namespace Exiled.API.Features.Items
         internal override void ReadPickupInfo(Pickup pickup)
         {
             base.ReadPickupInfo(pickup);
+
             if (pickup is Pickups.FirearmPickup firearm)
             {
                 MaxAmmo = firearm.MaxAmmo;
