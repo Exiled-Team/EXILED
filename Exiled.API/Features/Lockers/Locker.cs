@@ -41,7 +41,7 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Gets the list with all <see cref="Locker"/>.
+        /// Gets the all <see cref="Locker"/> instances.
         /// </summary>
         public static new IReadOnlyCollection<Locker> List => BaseToExiledLockers.Values;
 
@@ -49,7 +49,7 @@ namespace Exiled.API.Features.Lockers
         public BaseLocker Base { get; }
 
         /// <summary>
-        /// Gets or sets list of all <see cref="LockerLoot"/> in this locker.
+        /// Gets or sets all <see cref="LockerLoot"/> instances in this locker.
         /// </summary>
         public IEnumerable<LockerLoot> Loot
         {
@@ -58,12 +58,12 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Gets the list with all <see cref="Chambers"/> in this locker.
+        /// Gets the all <see cref="Chambers"/> in this locker.
         /// </summary>
         public IReadOnlyCollection<Chamber> Chambers { get; }
 
         /// <summary>
-        /// Gets or sets a ids if opened chambers.
+        /// Gets or sets an id for manipulating opened chambers.
         /// </summary>
         public ushort OpenedChambers
         {
@@ -72,7 +72,7 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Gets the <see cref="Locker"/> by it's basegame analog.
+        /// Gets the <see cref="Locker"/> given the <see cref="BaseLocker"/> instance.
         /// </summary>
         /// <param name="locker"><see cref="BaseLocker"/> instance.</param>
         /// <returns><see cref="Locker"/> instance.</returns>
@@ -85,17 +85,17 @@ namespace Exiled.API.Features.Lockers
             };
 
         /// <summary>
-        /// Gets the list of <see cref="Locker"/> which matches predicate.
+        /// Gets the all <see cref="Locker"/> instances matching the predicate.
         /// </summary>
         /// <param name="predicate">Predicate to match.</param>
-        /// <returns>List of <see cref="Locker"/> which matches predicate.</returns>
+        /// <returns>All <see cref="Locker"/> instances matching the predicate.</returns>
         public static IEnumerable<Locker> Get(System.Func<Locker, bool> predicate) => List.Where(predicate);
 
         /// <summary>
         /// Interacts with a specific chamber.
         /// </summary>
-        /// <param name="chamber">Chamber. If <see langword="null"/>, will interact with random.</param>
-        /// <param name="player">Player who interacts.</param>
+        /// <param name="chamber">If <see langword="null"/>, the interaction will be randomized.</param>
+        /// <param name="player">The player who interacts.</param>
         public void Interact(Chamber chamber = null, Player player = null)
         {
             chamber ??= Chambers.Random();
@@ -104,7 +104,7 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Fills chamber.
+        /// Fills the chamber.
         /// </summary>
         /// <param name="chamber">Chamber to fill.</param>
         public void FillChamber(Chamber chamber) => Base.FillChamber(chamber.Base);

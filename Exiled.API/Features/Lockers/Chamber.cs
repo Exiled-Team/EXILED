@@ -43,7 +43,7 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Gets the list with all chambers.
+        /// Gets all chambers.
         /// </summary>
         public static new IReadOnlyCollection<Chamber> List => Chambers.Values;
 
@@ -51,7 +51,7 @@ namespace Exiled.API.Features.Lockers
         public LockerChamber Base { get; }
 
         /// <summary>
-        /// Gets or sets a list with all pickups that should be spawned when door will be opened first time.
+        /// Gets or sets all pickups that should be spawned when the door is initially opened.
         /// </summary>
         public IEnumerable<Pickup> ToBeSpawned
         {
@@ -66,7 +66,7 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Gets or sets the list with all pickups in chamber.
+        /// Gets or sets all pickups in the chamber.
         /// </summary>
         public IEnumerable<Pickup> AllPickups
         {
@@ -81,10 +81,10 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Gets or sets the list with all spawnpoints.
+        /// Gets or sets all spawn points.
         /// </summary>
         /// <remarks>
-        /// Will be used if <see cref="UseMultipleSpawnpoints"/> is <see langword="true"/>.
+        /// Used if <see cref="UseMultipleSpawnpoints"/> is set to <see langword="true"/>.
         /// </remarks>
         public IEnumerable<Transform> Spawnpoints
         {
@@ -93,7 +93,7 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Gets or sets the list with <see cref="ItemType"/> which can be spawned in this chamber.
+        /// Gets or sets all the acceptable items which can be spawned in this chamber.
         /// </summary>
         public IEnumerable<ItemType> AcceptableTypes
         {
@@ -111,10 +111,10 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not multiple spawnpoint system should be used.
+        /// Gets or sets a value indicating whether multiple spawn points  should be used.
         /// </summary>
         /// <remarks>
-        /// If true, spawnpoint system will use <see cref="Spawnpoints"/>. Otherwise, <see cref="Spawnpoint"/>.
+        /// If <see langword="true"/>, <see cref="Spawnpoints"/> will be used over <see cref="Spawnpoint"/>.
         /// </remarks>
         public bool UseMultipleSpawnpoints
         {
@@ -123,10 +123,10 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Gets or sets a spawnpoint for items in locker chamber.
+        /// Gets or sets a spawn point for the items in the chamber.
         /// </summary>
         /// <remarks>
-        /// Will be used if <see cref="UseMultipleSpawnpoints"/> is <see langword="false"/>.
+        /// Used if <see cref="UseMultipleSpawnpoints"/> is set to <see langword="false"/>.
         /// </remarks>
         public Transform Spawnpoint
         {
@@ -135,7 +135,7 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not items should be spawned as soon as they are initialised.
+        /// Gets or sets a value indicating whether or not items should be spawned as soon as they are initialized.
         /// </summary>
         public bool InitiallySpawn
         {
@@ -159,12 +159,12 @@ namespace Exiled.API.Features.Lockers
         public Stopwatch CurrentCooldown => Base._stopwatch;
 
         /// <summary>
-        /// Gets a value indicating whether or not the chamber can currently be interacted with.
+        /// Gets a value indicating whether the chamber is interactable.
         /// </summary>
         public bool CanInteract => Base.CanInteract;
 
         /// <summary>
-        /// Gets the locker where this chamber is located.
+        /// Gets the locker where this chamber is located at.
         /// </summary>
         public Locker Locker { get; }
 
@@ -176,7 +176,7 @@ namespace Exiled.API.Features.Lockers
         public void SpawnItem(ItemType type, int amount) => Base.SpawnItem(type, amount);
 
         /// <summary>
-        /// Gets the chamber by it's <see cref="LockerChamber"/>.
+        /// Gets the chamber by its <see cref="LockerChamber"/>.
         /// </summary>
         /// <param name="chamber"><see cref="LockerChamber"/>.</param>
         /// <returns><see cref="Chamber"/>.</returns>
