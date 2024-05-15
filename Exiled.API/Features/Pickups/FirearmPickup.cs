@@ -129,6 +129,7 @@ namespace Exiled.API.Features.Pickups
         protected override void InitializeProperties(ItemBase itemBase)
         {
             base.InitializeProperties(itemBase);
+
             if (itemBase is FirearmItem firearm)
             {
                 MaxAmmo = firearm.AmmoManagerModule.MaxAmmo;
