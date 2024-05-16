@@ -12,19 +12,15 @@ namespace Exiled.Events.EventArgs.Scp939
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information before the footsteps are displayed to SCP-939.
+    /// Contains all information before the footsteps are being shown to SCP-939.
     /// </summary>
     public class PlayingFootstepEventArgs : IScp939Event, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PlayingFootstepEventArgs " /> class.
+        /// Initializes a new instance of the <see cref="PlayingFootstepEventArgs"/> class.
         /// </summary>
-        /// <param name="player">
-        ///     <inheritdoc cref="Player" />
-        /// </param>
-        /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
-        /// </param>
+        /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public PlayingFootstepEventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
@@ -33,7 +29,7 @@ namespace Exiled.Events.EventArgs.Scp939
         }
 
         /// <summary>
-        ///     Gets the player who's controlling SCP-939.
+        /// Gets the player who's controlling SCP-939.
         /// </summary>
         public Player Player { get; }
 
@@ -41,7 +37,7 @@ namespace Exiled.Events.EventArgs.Scp939
         public Scp939Role Scp939 { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the SCP-939 can see the footsteps.
+        /// Gets or sets a value indicating whether footsteps are visible.
         /// </summary>
         public bool IsAllowed { get; set; }
     }
