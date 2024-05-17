@@ -34,12 +34,12 @@ namespace Exiled.Events.Patches.Generic.Scp106API
 
             LocalBuilder scp049Role = generator.DeclareLocal(typeof(Scp106Role));
 
-            // replace "new ScpDamageHandler(base.Owner, 30f, DeathTranslations.PocketDecay);"
+            // replace "new ScpDamageHandler(base.Owner, Scp106Attack._damage, DeathTranslations.PocketDecay);"
             // with
             // Scp106Role scp106Role = Player.Get(this.Owner).Role.As<Scp106Role>()
             // "new ScpDamageHandler(base.Owner, scp106Role.AttackDamage, DeathTranslations.PocketDecay);"
             int offset = 0;
-            int index = newInstructions.FindIndex(instruction => instruction.operand == (object)-1) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.operand == (object)Field(typeof(Scp106Attack), nameof(Scp106Attack._damage))) + offset;
             newInstructions.RemoveAt(index);
 
             newInstructions.InsertRange(
@@ -61,8 +61,8 @@ namespace Exiled.Events.Patches.Generic.Scp106API
             // with
             // Scp106Role scp106Role = Player.Get(this.Owner).Role.As<Scp106Role>()
             // "base.Vigor.VigorAmount += scp106Role.VigorCaptureReward;"
-            offset = 0;
-            index = newInstructions.FindIndex(instruction => instruction.operand == (object)Scp106Attack.VigorCaptureReward) + offset;
+            int offset = 0;
+            int index = newInstructions.FindIndex(instruction => instruction.operand == (object)Scp106Attack.VigorCaptureReward) + offset;
             newInstructions.RemoveAt(index);
 
             newInstructions.InsertRange(
