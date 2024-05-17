@@ -7,21 +7,19 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1313
     using API.Features;
-
     using HarmonyLib;
 
     /// <summary>
-    /// Patches <see cref="PocketDimensionGenerator.PrepTeleports"/>.
+    /// Patches <see cref="RoomManager.GenerateMap(int)"/>.
     /// </summary>
-    [HarmonyPatch(typeof(PocketDimensionGenerator), nameof(PocketDimensionGenerator.PrepTeleports))]
+    [HarmonyPatch(typeof(RoomManager), nameof(RoomManager.GenerateMap))]
     internal class TeleportList
     {
-        private static void Postfix(ref PocketDimensionTeleport[] __result)
+        private static void Postfix()
         {
             Map.TeleportsValue.Clear();
-            Map.TeleportsValue.AddRange(__result);
+            Map.TeleportsValue.AddRange(UnityEngine.Object.FindObjectsOfType<PocketDimensionTeleport>());
         }
     }
 }
