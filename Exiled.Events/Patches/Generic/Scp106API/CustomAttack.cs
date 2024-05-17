@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Generic.Scp106API
             // Scp106Role scp106Role = Player.Get(this.Owner).Role.As<Scp106Role>()
             // "new ScpDamageHandler(base.Owner, scp106Role.AttackDamage, DeathTranslations.PocketDecay);"
             int offset = 0;
-            int index = newInstructions.FindIndex(instruction => instruction.operand == (object)Scp106Attack.AttackDamage) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.operand == (object)-1) + offset;
             newInstructions.RemoveAt(index);
 
             newInstructions.InsertRange(

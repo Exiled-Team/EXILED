@@ -23,12 +23,12 @@ namespace Exiled.Events.Patches.Generic
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PocketDimensionGenerator.GenerateMap(int)"/>.
+    /// Patches <see cref="PocketDimensionGenerator.RandomizeTeleports()"/>.
     /// </summary>
-    [HarmonyPatch(typeof(PocketDimensionGenerator), nameof(PocketDimensionGenerator.GenerateMap))]
+    [HarmonyPatch(typeof(PocketDimensionGenerator), nameof(PocketDimensionGenerator.RandomizeTeleports))]
     internal class TeleportList
     {
-        private static void Postfix()
+        private static void Prefix()
         {
             Map.TeleportsValue.Clear();
             Map.TeleportsValue.AddRange(UnityEngine.Object.FindObjectsOfType<PocketDimensionTeleport>());
