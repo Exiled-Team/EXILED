@@ -323,21 +323,22 @@ namespace Exiled.API.Features
         public static Room Random(ZoneType zoneType = ZoneType.Unspecified) => (zoneType is not ZoneType.Unspecified ? Get(r => r.Zone.HasFlag(zoneType)) : List).Random();
 
         /// <summary>
+        /// Flickers the room's lights off.
+        /// </summary>
+        public void TurnOffLights()
+        {
+            foreach (RoomLightController light in RoomLightControllers)
+            {
+                light.SetLights(false);
+            }
+        }
+
+        /// <summary>
         /// Flickers the room's lights off for a duration.
         /// </summary>
-        /// <param name="duration">Duration in seconds, or -1 for an indefinite duration.</param>
-        public void TurnOffLights(float duration = -1)
+        /// <param name="duration">Duration in seconds.</param>
+        public void TurnOffLights(float duration)
         {
-            if (duration == -1)
-            {
-                foreach (RoomLightController light in RoomLightControllers)
-                {
-                    light.SetLights(false);
-                }
-
-                return;
-            }
-
             foreach (RoomLightController light in RoomLightControllers)
             {
                 light.ServerFlickerLights(duration);
@@ -347,7 +348,20 @@ namespace Exiled.API.Features
         /// <summary>
         /// Locks all the doors in the room.
         /// </summary>
-        /// <param name="duration">Duration in seconds, or <c>-1</c> for permanent lockdown.</param>
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        public void LockDown(DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (Door door in Doors)
+            {
+                door.ChangeLock(lockType);
+                door.IsOpen = false;
+            }
+        }
+
+        /// <summary>
+        /// Locks all the doors in the room.
+        /// </summary>
+        /// <param name="duration">Duration in seconds.</param>
         /// <param name="lockType">DoorLockType of the lockdown.</param>
         public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
@@ -355,18 +369,26 @@ namespace Exiled.API.Features
             {
                 door.ChangeLock(lockType);
                 door.IsOpen = false;
+                door.Unlock(duration, lockType);
             }
-
-            if (duration < 0)
-                return;
-
-            Timing.CallDelayed(duration, UnlockAll);
         }
 
         /// <summary>
         /// Locks all the doors and turns off all lights in the room.
         /// </summary>
-        /// <param name="duration">Duration in seconds, or <c>-1</c> for permanent blackout.</param>
+        /// <param name="lockType">DoorLockType of the blackout.</param>
+        /// <seealso cref="Map.TurnOffAllLights(float, ZoneType)"/>
+        /// <seealso cref="Map.TurnOffAllLights(float, IEnumerable{ZoneType})"/>
+        public void Blackout(DoorLockType lockType = DoorLockType.Regular079)
+        {
+            LockDown(lockType);
+            TurnOffLights();
+        }
+
+        /// <summary>
+        /// Locks all the doors and turns off all lights in the room.
+        /// </summary>
+        /// <param name="duration">Duration in seconds.</param>
         /// <param name="lockType">DoorLockType of the blackout.</param>
         /// <seealso cref="Map.TurnOffAllLights(float, ZoneType)"/>
         /// <seealso cref="Map.TurnOffAllLights(float, IEnumerable{ZoneType})"/>
