@@ -70,6 +70,7 @@ namespace Exiled.API.Extensions
 #pragma warning restore CS0618
             { EffectType.Strangled, typeof(Strangled) },
             { EffectType.Ghostly, typeof(Ghostly) },
+            { EffectType.FogControl, typeof(FogControl) },
         };
 
         /// <summary>
