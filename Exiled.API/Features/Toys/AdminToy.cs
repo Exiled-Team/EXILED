@@ -89,15 +89,6 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether IsStatic.
-        /// </summary>
-        public bool IsStatic
-        {
-            get => AdminToyBase.IsStatic;
-            set => AdminToyBase.IsStatic = value;
-        }
-
-        /// <summary>
         /// Gets the <see cref="AdminToy"/> belonging to the <see cref="AdminToys.AdminToyBase"/>.
         /// </summary>
         /// <param name="adminToyBase">The <see cref="AdminToys.AdminToyBase"/> instance.</param>
