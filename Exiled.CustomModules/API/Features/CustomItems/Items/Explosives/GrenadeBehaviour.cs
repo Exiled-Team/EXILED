@@ -81,7 +81,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
             thrownProjectile.InfoReceivedHook(default, newInfo);
 
             if (thrownProjectile.TryGetComponent(out Rigidbody component))
-                throwable.Base.PropelBody(component, throwable.Base.FullThrowSettings.StartTorque, ThrowableNetworkHandler.GetLimitedVelocity(velocity));
+                throwable.Base.PropelBody(component, throwable.Base.FullThrowSettings.StartTorque, ThrowableNetworkHandler.GetLimitedVelocity(velocity), force, throwable.Base.FullThrowSettings.UpwardsFactor);
 
             thrownProjectile.ServerActivate();
 
