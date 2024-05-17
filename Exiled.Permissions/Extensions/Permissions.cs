@@ -146,7 +146,7 @@ namespace Exiled.Permissions.Extensions
                     inheritedDisabledPerms = Groups.Where(pair => group.Value.Inheritance.Contains(pair.Key))
                         .Aggregate(inheritedDisabledPerms, (current, pair) => current.Union(pair.Value.CombinedDisabledPermissions));
 
-                    group.Value.CombinedPermissions = group.Value.Permissions.Union(inheritedDisabledPerms).ToList();
+                    group.Value.CombinedDisabledPermissions = group.Value.DisabledPermissions.Union(inheritedDisabledPerms).ToList();
 
                     Log.Debug($"{group.Key} permissions loaded.");
                 }
@@ -232,6 +232,9 @@ namespace Exiled.Permissions.Extensions
             const char permSeparator = '.';
             const string allPerms = ".*";
 
+            if (group.CombinedDisabledPermissions.Contains(permission, StringComparison.OrdinalIgnoreCase))
+                return false;
+
             if (permission.Contains(permSeparator))
             {
                 StringBuilder strBuilder = StringBuilderPool.Pool.Get();
@@ -240,7 +243,44 @@ namespace Exiled.Permissions.Extensions
                 bool Check(string source) => group.CombinedPermissions.Contains(source, StringComparison.OrdinalIgnoreCase);
                 bool CheckDisabled(string source) => group.CombinedDisabledPermissions.Contains(source, StringComparison.OrdinalIgnoreCase);
 
-                bool result = false;
+                bool result = group.CombinedPermissions.Contains(allPerms);
+
+                if (!result)
+                {
+                    for (int z = 0; z < seraratedPermissions.Length; z++)
+                    {
+                        if (z != 0)
+                        {
+                            // We need to clear the last ALL_PERMS line
+                            // or it'll be like 'permission.*.subpermission'.
+                            strBuilder.Length -= allPerms.Length;
+
+                            // Separate permission groups by using its separator.
+                            strBuilder.Append(permSeparator);
+                        }
+
+                        strBuilder.Append(seraratedPermissions[z]);
+
+                        // If it's the last index,
+                        // then we don't need to check for all permissions of the subpermission.
+                        if (z == seraratedPermissions.Length - 1)
+                        {
+                            result = Check(strBuilder.ToString());
+                            break;
+                        }
+
+                        strBuilder.Append(allPerms);
+                        if (Check(strBuilder.ToString()))
+                        {
+                            result = true;
+                            break;
+                        }
+                    }
+
+                    if (!result)
+                        return false;
+                }
+
                 for (int z = 0; z < seraratedPermissions.Length; z++)
                 {
                     if (z != 0)
@@ -259,18 +299,14 @@ namespace Exiled.Permissions.Extensions
                     // then we don't need to check for all permissions of the subpermission.
                     if (z == seraratedPermissions.Length - 1)
                     {
-                        result = Check(strBuilder.ToString());
+                        result = !CheckDisabled(strBuilder.ToString());
                         break;
                     }
 
                     strBuilder.Append(allPerms);
-
                     if (CheckDisabled(strBuilder.ToString()))
-                        break;
-
-                    if (Check(strBuilder.ToString()))
                     {
-                        result = true;
+                        result = false;
                         break;
                     }
                 }
