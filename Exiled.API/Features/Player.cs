@@ -1604,13 +1604,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="roleToAdd"> Role to add. </param>
         /// <param name="ffMult"> Friendly fire multiplier. </param>
-        public void SetFriendlyFire(RoleTypeId roleToAdd, float ffMult)
-        {
-            if (FriendlyFireMultiplier.ContainsKey(roleToAdd))
-                FriendlyFireMultiplier[roleToAdd] = ffMult;
-            else
-                FriendlyFireMultiplier.Add(roleToAdd, ffMult);
-        }
+        public void SetFriendlyFire(RoleTypeId roleToAdd, float ffMult) => FriendlyFireMultiplier[roleToAdd] = ffMult;
 
         /// <summary>
         /// Wrapper to call <see cref="SetFriendlyFire(RoleTypeId, float)"/>.
@@ -1923,10 +1917,7 @@ namespace Exiled.API.Features
                 ReferenceHub.serverRoles.SetGroup(group, false, false);
             }
 
-            if (ServerStatic.GetPermissionsHandler()._members.ContainsKey(UserId))
-                ServerStatic.GetPermissionsHandler()._members[UserId] = name;
-            else
-                ServerStatic.GetPermissionsHandler()._members.Add(UserId, name);
+            ServerStatic.GetPermissionsHandler()._members[UserId] = name;
         }
 
         /// <summary>
