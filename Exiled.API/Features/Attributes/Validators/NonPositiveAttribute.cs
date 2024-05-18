@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Attributes.Validators
     using Exiled.API.Interfaces;
 
     /// <summary>
-    /// An attribute to easily manage config values.
+    /// An attribute that validates if the value of the marked property is non-positive.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class NonPositiveAttribute : Attribute, IValidator
