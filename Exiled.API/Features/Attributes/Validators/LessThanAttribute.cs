@@ -22,9 +22,9 @@ namespace Exiled.API.Features.Attributes.Validators
         /// </summary>
         /// <param name="number">A number the value should be less.</param>
         /// <param name="isIncluded">Whether or not <paramref name="number"></paramref> is included.</param>
-        public LessThanAttribute(IComparable number, bool isIncluded = false)
+        public LessThanAttribute(object number, bool isIncluded = false)
         {
-            Number = number;
+            Number = (IComparable)number;
             IsIncluded = isIncluded;
         }
 

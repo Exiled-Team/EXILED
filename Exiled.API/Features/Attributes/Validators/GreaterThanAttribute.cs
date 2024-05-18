@@ -22,9 +22,9 @@ namespace Exiled.API.Features.Attributes.Validators
         /// </summary>
         /// <param name="number">A number the value should be greater.</param>
         /// <param name="isIncluded">Whether or not <paramref name="number"></paramref> is included.</param>
-        public GreaterThanAttribute(IComparable number, bool isIncluded = false)
+        public GreaterThanAttribute(object number, bool isIncluded = false)
         {
-            Number = number;
+            Number = (IComparable)number;
             IsIncluded = isIncluded;
         }
 
