@@ -108,7 +108,7 @@ namespace Exiled.Loader
             try
             {
                 string rawConfigString = Serialization.Serializer.Serialize(rawDeserializedConfig);
-                config = (IConfig)Serialization.Deserializer.Deserialize(rawConfigString, plugin.Config.GetType());
+                config = ValidateConfig(plugin, (IConfig)Serialization.Deserializer.Deserialize(rawConfigString, plugin.Config.GetType()));
                 plugin.Config.CopyProperties(config);
             }
             catch (YamlException yamlException)
@@ -140,7 +140,7 @@ namespace Exiled.Loader
 
             try
             {
-                config = (IConfig)Serialization.Deserializer.Deserialize(File.ReadAllText(plugin.ConfigPath), plugin.Config.GetType());
+                config = ValidateConfig(plugin, (IConfig)Serialization.Deserializer.Deserialize(File.ReadAllText(plugin.ConfigPath), plugin.Config.GetType()));
                 plugin.Config.CopyProperties(config);
             }
             catch (YamlException yamlException)
@@ -149,39 +149,58 @@ namespace Exiled.Loader
                 return plugin.Config;
             }
 
-            Type configType = config.GetType();
-            Type pluginConfigType = plugin.Config.GetType();
+            return config;
+        }
 
-            int validations = 0;
-
-            foreach (PropertyInfo propertyInfo in configType.GetProperties())
+        /// <summary>
+        /// Validates a config.
+        /// </summary>
+        /// <param name="plugin">The plugin which its config will be validated.</param>
+        /// <param name="config">A <see cref="IConfig"/> to validate.</param>
+        /// <returns>Returns a validated config.</returns>
+        public static IConfig ValidateConfig(this IPlugin<IConfig> plugin, IConfig config)
+        {
+            try
             {
-                foreach (Attribute attribute in propertyInfo.GetCustomAttributes())
+                Type configType = config.GetType();
+                Type pluginConfigType = plugin.Config.GetType();
+
+                int validations = 0;
+
+                foreach (PropertyInfo propertyInfo in configType.GetProperties())
                 {
-                    if (attribute is not IValidator validator)
-                        continue;
-
-                    object value = propertyInfo.GetValue(config, null);
-                    object defaultValue = pluginConfigType.GetProperty(propertyInfo.Name)?.GetValue(plugin.Config, null);
-
-                    if (!validator.Validate(value))
+                    foreach (Attribute attribute in propertyInfo.GetCustomAttributes())
                     {
-                        Log.Error($"{plugin.Name} config value {propertyInfo.Name} hasn't passed the validation (attribute ({attribute.GetType().Name})). Default value ({defaultValue}) will be used instead.");
-                        propertyInfo.SetValue(configType, defaultValue);
-                    }
-                    else
-                    {
-                        validations++;
+                        if (attribute is not IValidator validator)
+                            continue;
+
+                        object value = propertyInfo.GetValue(config, null);
+                        object defaultValue = pluginConfigType.GetProperty(propertyInfo.Name)?.GetValue(plugin.Config, null);
+
+                        if (!validator.Validate(value))
+                        {
+                            Log.Error($"{plugin.Name} config value {propertyInfo.Name} ({value}) hasn't passed the validation (attribute ({attribute.GetType().Name})). Default value ({defaultValue}) will be used instead.");
+                            propertyInfo.SetValue(config, defaultValue);
+                        }
+                        else
+                        {
+                            validations++;
+                        }
                     }
                 }
-            }
 
-            if (validations > 0)
+                if (validations > 0)
+                {
+                    Log.Info($"Successfully passed {validations} validations");
+                }
+
+                return config;
+            }
+            catch (Exception e)
             {
-                Log.Debug($"Successfully passed {validations} validations");
+                Log.Error($"An error occured while validation the config of the plugin {plugin.Name}: {e}");
+                return config;
             }
-
-            return config;
         }
 
         /// <summary>
