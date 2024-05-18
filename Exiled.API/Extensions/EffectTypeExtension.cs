@@ -126,7 +126,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="fogControl">The <see cref="FogControl"/> effect.</param>
         /// <param name="fogType">The <see cref="FogType"/> applied.</param>
-        public static void SetFog(this FogControl fogControl, FogType fogType) => fogControl.Intensity = (byte)(fogType + 1);
+        public static void SetFogType(this FogControl fogControl, FogType fogType) => fogControl.Intensity = (byte)(fogType + 1);
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> drains health over time.
