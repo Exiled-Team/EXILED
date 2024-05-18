@@ -39,6 +39,6 @@ namespace Exiled.API.Features.Attributes.Validators
         public bool IsIncluded { get; }
 
         /// <inheritdoc/>
-        public bool Validate(object value) => Number.CompareTo(value) is 1 || (IsIncluded && Number.CompareTo(value) is 0);
+        public bool Validate(object value) => Number.CompareTo(value) is -1 || (IsIncluded && Number.CompareTo(value) is 0);
     }
 }
