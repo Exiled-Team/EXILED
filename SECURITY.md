@@ -5,7 +5,7 @@ Thanks for your intrest in helping EXILED stay secure for all developers & serve
 Once your report has been made, a maintainer may ask for more information or allow you to seek progress reports on patching the reported vulnerability. Please be serious in your reports, this helps the maintainers keep reports clean, understandable, and concise.
 
 ## 📓 Notes
-If a report is regarded as "severe", a public announcment may be made to make developers & operators aware of an exploit and give them steps to patch said exploit. This may be in a form of an update or a configuration change.
+If a report is regarded as "severe", a public announcement may be made to make developers & operators aware of an exploit and give them steps to patch said exploit. This may be in a form of an update or a configuration change.
 
 If you have found a vulnerability with a NuGet package, please make a report with the package developer instead.
 
