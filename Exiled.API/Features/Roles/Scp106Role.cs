@@ -274,6 +274,15 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets or sets how mush damage Scp106 will dealt when attacking a player.
+        /// </summary>
+        public int AttackDamage
+        {
+            get => Attack._damage;
+            set => Attack._damage = value;
+        }
+
+        /// <summary>
         /// Gets or sets the amount of time in between player captures.
         /// </summary>
         public float CaptureCooldown
