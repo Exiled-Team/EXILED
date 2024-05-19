@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
-    using Exiled.API.Features.Core.Modifications;
+    using Exiled.API.Features.Core;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
@@ -29,7 +29,6 @@ namespace Exiled.API.Features.Roles
         private readonly ConstProperty<float> vigorStalkCostStationary = new(Scp106StalkAbility.VigorStalkCostStationary, new[] { typeof(Scp106StalkAbility) });
         private readonly ConstProperty<float> vigorStalkCostMoving = new(Scp106StalkAbility.VigorStalkCostMoving, new[] { typeof(Scp106StalkAbility) });
         private readonly ConstProperty<float> vigorRegeneration = new(Scp106StalkAbility.VigorRegeneration, new[] { typeof(Scp106StalkAbility) });
-        private readonly ConstProperty<double> attackDamage = new(Scp106Attack.AttackDamage, new[] { typeof(Scp106Attack) });
         private readonly ConstProperty<float> corrodingTime = new(Scp106Attack.CorrodingTime, new[] { typeof(Scp106Attack) });
         private readonly ConstProperty<float> vigorCaptureReward = new(Scp106Attack.VigorCaptureReward, new[] { typeof(Scp106Attack) });
         private readonly ConstProperty<float> cooldownReductionReward = new(Scp106Attack.CooldownReductionReward, new[] { typeof(Scp106Attack) });
@@ -217,15 +216,6 @@ namespace Exiled.API.Features.Roles
         {
             get => vigorRegeneration;
             set => vigorRegeneration.Value = value;
-        }
-
-        /// <summary>
-        /// Gets or sets how mush damage Scp106 will dealt when attacking a player.
-        /// </summary>
-        public double AttackDamage
-        {
-            get => attackDamage;
-            set => attackDamage.Value = value;
         }
 
         /// <summary>

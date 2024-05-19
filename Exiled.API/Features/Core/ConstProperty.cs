@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Core.Modifications
+namespace Exiled.API.Features.Core
 {
     using System;
     using System.Collections.Generic;
@@ -115,7 +115,7 @@ namespace Exiled.API.Features.Core.Modifications
         /// <param name="constValue">A game's constant value.</param>
         /// <param name="type">Type where this constant is using.</param>
         /// <returns>The <see cref="ConstProperty{T}"/> instance or <see langword="null"/>.</returns>
-        internal static ConstProperty<T> Get(T constValue, Type type) => List.Find(x => Enumerable.Contains(x.TypesToPatch, type) && typeof(T) == x.ConstantValue.GetType() && EqualityComparer<T>.Default.Equals(constValue, x.ConstantValue));
+        internal static ConstProperty<T> Get(T constValue, Type type) => List.Find(x => x.TypesToPatch.Contains(type) && typeof(T) == x.ConstantValue.GetType() && EqualityComparer<T>.Default.Equals(constValue, x.ConstantValue));
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
         {

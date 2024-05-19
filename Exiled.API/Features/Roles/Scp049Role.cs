@@ -11,7 +11,7 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using CustomPlayerEffects;
-    using Exiled.API.Features.Core.Modifications;
+    using Exiled.API.Features.Core;
     using HarmonyLib;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;

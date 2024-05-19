@@ -9,9 +9,9 @@ namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.API.Interfaces;
-
     using Footprinting;
     using InventorySystem;
     using InventorySystem.Items;
@@ -23,6 +23,8 @@ namespace Exiled.API.Features.Pickups
     /// </summary>
     public class GrenadePickup : Pickup, IWrapper<TimedGrenadePickup>
     {
+        private readonly ConstProperty<double> explosionRadius = new(0.4000000059604645, new[] { typeof(TimedGrenadePickup) });
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GrenadePickup"/> class.
         /// </summary>
@@ -56,6 +58,15 @@ namespace Exiled.API.Features.Pickups
         /// Gets the <see cref="TimedGrenadePickup"/> that this class is encapsulating.
         /// </summary>
         public new TimedGrenadePickup Base { get; }
+
+        /// <summary>
+        /// Gets or sets maximum distance between grenade and explosion to trigger it.
+        /// </summary>
+        public double ExplosionRadius
+        {
+            get => explosionRadius.Value;
+            set => explosionRadius.Value = value;
+        }
 
         /// <summary>
         /// Trigger the grenade to make it Explode.

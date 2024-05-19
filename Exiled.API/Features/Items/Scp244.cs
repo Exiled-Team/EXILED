@@ -8,7 +8,7 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Core.Modifications;
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
     using InventorySystem;
