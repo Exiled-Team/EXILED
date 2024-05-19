@@ -912,7 +912,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's Max amount of Hume Shield.
+        /// Gets or sets the player's maximum amount of Hume Shield.
         /// </summary>
         public float MaxHumeShield
         {
