@@ -1,5 +1,5 @@
 # ❗EXILED Security Reporting❗
-Thanks for your intrest in helping EXILED stay secure for all developers & server operators. If you found a security vulnerability, you can make a report [here!](https://github.com/Exiled-Team/EXILED/security/advisories/new)
+Thanks for your interest in helping EXILED stay secure for all developers & server operators. If you have found a security vulnerability, you can make a report [here!](https://github.com/Exiled-Team/EXILED/security/advisories/new)
 > NOTE: Your reports are confidential and are only seen by repository maintainers. Once a report has been completed, it will be visible for all to see.
 
 Once your report has been made, a maintainer may ask for more information or allow you to seek progress reports on patching the reported vulnerability. Please be serious in your reports, this helps the maintainers keep reports clean, understandable, and concise.
