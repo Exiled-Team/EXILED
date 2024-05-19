@@ -39,7 +39,7 @@ namespace Exiled.API.Features.CustomStats
         }
 
         /// <summary>
-        /// Overiding NW Method to sync Player percentage of Stamina.
+        /// Overriding NW Method to sync Player percentage of Stamina.
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns>the float value sync to server.</returns>
