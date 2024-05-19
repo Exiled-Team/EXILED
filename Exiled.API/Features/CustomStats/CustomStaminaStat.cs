@@ -11,7 +11,7 @@ namespace Exiled.API.Features.CustomStats
     using PlayerStatsSystem;
 
     /// <summary>
-    /// A custom version of <see cref="StaminaStat"/> which allows the player's max amount of Stamina to be changed.
+    /// A custom version of <see cref="StaminaStat"/> which allows the player's maximum amount of Stamina to be changed.
     /// </summary>
     public class CustomStaminaStat : StaminaStat
     {
