@@ -13,6 +13,7 @@ namespace Exiled.API.Extensions
     using System.Linq;
 
     using CustomPlayerEffects;
+    using CustomRendering;
     using Enums;
     using InventorySystem.Items.MarshmallowMan;
     using InventorySystem.Items.Usables.Scp244.Hypothermia;
@@ -71,7 +72,8 @@ namespace Exiled.API.Extensions
 #pragma warning restore CS0618
             { EffectType.Strangled, typeof(Strangled) },
             { EffectType.Ghostly, typeof(Ghostly) },
-        });
+            { EffectType.FogControl, typeof(FogControl) },
+        };
 
         /// <summary>
         /// Gets a dictionary that maps each <see cref="System.Type"/> to its corresponding <see cref="EffectType"/>.
@@ -119,6 +121,13 @@ namespace Exiled.API.Extensions
 
             return true;
         }
+
+        /// <summary>
+        /// Sets the <see cref="FogType"/> of the specified <see cref="FogControl"/>.
+        /// </summary>
+        /// <param name="fogControl">The <see cref="FogControl"/> effect.</param>
+        /// <param name="fogType">The <see cref="FogType"/> applied.</param>
+        public static void SetFogType(this FogControl fogControl, FogType fogType) => fogControl.Intensity = (byte)(fogType + 1);
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> drains health over time.
