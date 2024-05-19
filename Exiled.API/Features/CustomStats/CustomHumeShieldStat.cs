@@ -22,7 +22,7 @@ namespace Exiled.API.Features.CustomStats
         public override float MaxValue => CustomMaxValue == default ? base.MaxValue : CustomMaxValue;
 
         /// <summary>
-        /// Gets or sets the maximum amount of health the player will have.
+        /// Gets or sets the maximum amount of HumeShield the player can have.
         /// </summary>
         public float CustomMaxValue { get; set; }
 
