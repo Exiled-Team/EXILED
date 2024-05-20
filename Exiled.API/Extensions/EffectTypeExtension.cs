@@ -73,7 +73,7 @@ namespace Exiled.API.Extensions
             { EffectType.Strangled, typeof(Strangled) },
             { EffectType.Ghostly, typeof(Ghostly) },
             { EffectType.FogControl, typeof(FogControl) },
-        };
+        });
 
         /// <summary>
         /// Gets a dictionary that maps each <see cref="System.Type"/> to its corresponding <see cref="EffectType"/>.
