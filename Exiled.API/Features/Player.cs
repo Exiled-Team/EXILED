@@ -347,7 +347,7 @@ namespace Exiled.API.Features
             set
             {
                 // NW Client check.
-                if (value != null && value.Contains('<'))
+                if (value is not null && value.Contains('<'))
                 {
                     foreach (string token in value.Split('<'))
                     {
