@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Attributes.Validators
     using Exiled.API.Interfaces;
 
     /// <summary>
-    /// An attribute to easily manage config values.
+    /// An attribute that validates if the value of the marked property is greater than a specified number.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class GreaterThanAttribute : Attribute, IValidator
@@ -20,8 +20,8 @@ namespace Exiled.API.Features.Attributes.Validators
         /// <summary>
         /// Initializes a new instance of the <see cref="GreaterThanAttribute"/> class.
         /// </summary>
-        /// <param name="number">A number the value should be greater.</param>
-        /// <param name="isIncluded">Whether or not <paramref name="number"></paramref> is included.</param>
+        /// <param name="number">The number the marked property should be greater than.</param>
+        /// <param name="isIncluded">Whether or not the comparison in inclusive (includes <see cref="Number"/> as a valid value for the marked property).</param>
         public GreaterThanAttribute(object number, bool isIncluded = false)
         {
             Number = (IComparable)number;
@@ -29,12 +29,13 @@ namespace Exiled.API.Features.Attributes.Validators
         }
 
         /// <summary>
-        /// Gets the number.
+        /// Gets the number that the value of the marked property should be greater than.
         /// </summary>
         public IComparable Number { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not <see cref="Number"/> is included.
+        /// Gets a value indicating whether or not the comparison is inclusive.
+        /// <remarks>If this returns true, <see cref="Number"/> is a valid value for the marked property.</remarks>
         /// </summary>
         public bool IsIncluded { get; }
 
