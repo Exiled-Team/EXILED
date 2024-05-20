@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Doors;
     using Interactables.Interobjects.DoorUtils;
     using MapGeneration;
@@ -126,11 +127,21 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Scp079Role"/> class.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/>.</param>
+        protected internal Scp079Role(UnityEngine.GameObject gameObject)
+            : base(gameObject)
+        {
+        }
+
+        /// <summary>
         /// Gets a list of players who will be turned away from SCP-079's scan.
         /// </summary>
         public static HashSet<Player> TurnedPlayers { get; } = new(20);
 
         /// <inheritdoc/>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public override RoleTypeId Type { get; } = RoleTypeId.Scp079;
 
         /// <inheritdoc/>
@@ -227,13 +238,25 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public Camera Camera
         {
-            get => Camera.Get(Base.CurrentCamera) ?? Camera.Get(CameraType.Hcz079ContChamber);
+            get => Camera.Get(Base.CurrentCamera) ?? Camera.Get(Enums.CameraType.Hcz079ContChamber);
             set => Base._curCamSync.CurrentCamera = value.Base;
+        }
+
+        /// <summary>
+        /// Gets or sets the camera SCP-079 is currently controlling.
+        /// <remarks>This value will return the <c>Hcz079ContChamber</c> Camera if SCP-079's current camera cannot be detected.</remarks>
+        /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
+        public uint CameraId
+        {
+            get => Camera.Id;
+            set => Camera = Camera.Get(value);
         }
 
         /// <summary>
         /// Gets or sets 079s cooldown duration for Tesla.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public float TeslaCooldown
         {
             get => TeslaAbility._cooldown;
@@ -242,8 +265,9 @@ namespace Exiled.API.Features.Roles
 
         /// <summary>
         /// Gets or sets the amount of aux power to be taken when Tesla is powered by 079.
-        /// Note: Will not apply change on client.
+        /// Note: Changes won't be reflected on clients.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public int TeslaUseCost
         {
             get => TeslaAbility._cost;
@@ -253,6 +277,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the multiplier of aux power to regen while speaking.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public float SpeakingRegenMultiplier
         {
             get => SpeakerAbility._regenMultiplier;
@@ -262,6 +287,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the cost for blackout ability.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public int BlackoutCost
         {
             get => BlackoutZoneAbility._cost;
@@ -271,6 +297,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the duration for blackout ability.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public float BlackoutDuration
         {
             get => BlackoutZoneAbility._duration;
@@ -280,6 +307,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the cooldown for blackout ability.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public float BlackoutCooldown
         {
             get => BlackoutZoneAbility._cooldown;
@@ -289,6 +317,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the cost for changing elevator state.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public int ElevatorCost
         {
             get => ElevatorStateChanger._cost;
@@ -298,6 +327,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not SCP-079 can transmit its voice to a speaker.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp079Role))]
         public bool CanTransmit => SpeakerAbility.CanTransmit;
 
         /// <summary>
@@ -327,6 +357,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of experience SCP-079 has.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public int Experience
         {
             get => TierManager.TotalExp;
@@ -336,16 +367,19 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the Current Camera Position.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp079Role))]
         public Vector3 CameraPosition => Base.CameraPosition;
 
         /// <summary>
         /// Gets the relative experience.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp079Role))]
         public float RelativeExperience => TierManager.RelativeExp;
 
         /// <summary>
         /// Gets or sets SCP-079's level.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public int Level
         {
             get => TierManager.AccessTierLevel;
@@ -355,6 +389,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets SCP-079's level index.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public int LevelIndex
         {
             get => TierManager.AccessTierIndex;
@@ -364,6 +399,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets SCP-079's next level threshold.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public int NextLevelThreshold
         {
             get => TierManager.NextLevelThreshold;
@@ -379,6 +415,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets SCP-079's energy.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public float Energy
         {
             get => AuxManager.CurrentAux;
@@ -388,6 +425,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets SCP-079's max energy.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public float MaxEnergy
         {
             get => AuxManager.MaxAux;
@@ -397,6 +435,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets SCP-079's room lockdown cooldown.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public float RoomLockdownCooldown
         {
             get => LockdownRoomAbility.RemainingCooldown;
@@ -410,21 +449,25 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the Remaining Lockdown Duration.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp079Role))]
         public float RemainingLockdownDuration => LockdownRoomAbility.RemainingLockdownDuration;
 
         /// <summary>
         /// Gets the amount of rooms that SCP-079 has blacked out.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp079Role))]
         public int BlackoutCount => BlackoutRoomAbility.RoomsOnCooldown;
 
         /// <summary>
         /// Gets the maximum amount of rooms that SCP-079 can black out at its current <see cref="Level"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp079Role))]
         public int BlackoutCapacity => BlackoutRoomAbility.CurrentCapacity;
 
         /// <summary>
         /// Gets or sets the amount of time until SCP-079 can use its blackout zone ability again.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public float BlackoutZoneCooldown
         {
             get => BlackoutZoneAbility._cooldownTimer.Remaining;
@@ -438,6 +481,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time that SCP-2176 will disable SCP-079 for.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public float Scp2176LostTime
         {
             get => LostSignalHandler._ghostlightLockoutDuration;
@@ -447,16 +491,19 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the Roll Rotation of SCP-079.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp079Role))]
         public float RollRotation => Base.RollRotation;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-079's signal is lost due to SCP-2176.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp079Role))]
         public bool IsLost => LostSignalHandler.Lost;
 
         /// <summary>
         /// Gets or sets a value indicating how much more time SCP-079 will be lost.
         /// </summary>
+        [EProperty(category: nameof(Scp079Role))]
         public float LostTime
         {
             get => LostSignalHandler.RemainingTime;
@@ -466,6 +513,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets SCP-079's energy regeneration speed.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp079Role))]
         public float EnergyRegenerationSpeed => AuxManager.RegenSpeed;
 
         /// <summary>

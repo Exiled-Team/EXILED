@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Core
     using System.Linq;
 
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Interfaces;
     using UnityEngine;
@@ -19,7 +20,8 @@ namespace Exiled.API.Features.Core
     /// <summary>
     /// The base class which defines in-game entities.
     /// </summary>
-    public abstract class GameEntity : TypeCastObject<GameEntity>, IEntity, IWorldSpace
+    [EClass(assetRegistrySearchable: false, allowOnce: false, category: nameof(GameEntity))]
+    public abstract class GameEntity : TypeCastObject<GameEntity>, IEntity, IWorldSpace, IAssetFragment
     {
         /// <summary>
         /// The room's transform.
@@ -28,7 +30,6 @@ namespace Exiled.API.Features.Core
         protected Transform transform;
 #pragma warning restore SA1401
 
-        private static readonly HashSet<GameEntity> ActiveInstances = new();
         private readonly HashSet<EActor> componentsInChildren = new();
 
         /// <summary>
@@ -38,20 +39,20 @@ namespace Exiled.API.Features.Core
         protected GameEntity(GameObject gameObject)
         {
             GameObject = gameObject;
-            ActiveInstances.Add(this);
+            List.Add(this);
         }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="GameEntity"/> class.
         /// </summary>
-        ~GameEntity() => ActiveInstances.Remove(this);
+        ~GameEntity() => List.Remove(this);
 
         /// <summary>
         /// Gets all active <see cref="GameEntity"/> instances.
         /// <para/>
         /// This collection should be used sparingly and only if circumstances require it, due to its potentially large size.
         /// </summary>
-        public static HashSet<GameEntity> List => ActiveInstances;
+        public static HashSet<GameEntity> List { get; } = new();
 
         /// <inheritdoc/>
         public IReadOnlyCollection<EActor> ComponentsInChildren => componentsInChildren;
@@ -69,6 +70,7 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Gets or sets the <see cref="GameEntity"/> position.
         /// </summary>
+        [EProperty(category: nameof(GameEntity))]
         public virtual Vector3 Position
         {
             get => Transform.position;
@@ -78,6 +80,7 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Gets or sets the <see cref="GameEntity"/> rotation.
         /// </summary>
+        [EProperty(category: nameof(GameEntity))]
         public virtual Quaternion Rotation
         {
             get => Transform.rotation;
