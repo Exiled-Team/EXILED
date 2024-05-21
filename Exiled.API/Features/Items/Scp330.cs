@@ -9,14 +9,13 @@ namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
-
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp330;
-
     using UnityEngine;
 
     using Object = UnityEngine.Object;
@@ -85,11 +84,13 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the exposed type. When set to a candy color, the bag will appear as that candy when dropped with the <see cref="Spawn"/> method. Setting it to <see cref="CandyKindID.None"/> results in it looking like a bag.
         /// </summary>
+        [EProperty(category: nameof(Scp330))]
         public CandyKindID ExposedType { get; set; } = CandyKindID.None;
 
         /// <summary>
         /// Gets or sets a index in <see cref="Candies"/> of current selected candy.
         /// </summary>
+        [EProperty(category: nameof(Scp330))]
         public int SelectedCandyId
         {
             get => Base.SelectedCandyId;
