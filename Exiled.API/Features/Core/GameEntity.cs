@@ -381,11 +381,11 @@ namespace Exiled.API.Features.Core
 
         /// <inheritdoc/>
         public T GetComponent<T>()
-            where T : EActor => componentsInChildren.FirstOrDefault(comp => typeof(T) == comp.GetType()).Cast<T>();
+            where T : EActor => componentsInChildren.FirstOrDefault(comp => typeof(T) == comp.GetType())?.Cast<T>();
 
         /// <inheritdoc/>
         public T GetComponent<T>(Type type)
-            where T : EActor => componentsInChildren.FirstOrDefault(comp => type == comp.GetType()).Cast<T>();
+            where T : EActor => componentsInChildren.FirstOrDefault(comp => type == comp.GetType())?.Cast<T>();
 
         /// <inheritdoc/>
         public EActor GetComponent(Type type) => componentsInChildren.FirstOrDefault(comp => type == comp.GetType());
