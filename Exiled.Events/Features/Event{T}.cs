@@ -10,6 +10,7 @@ namespace Exiled.Events.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
@@ -39,6 +40,7 @@ namespace Exiled.Events.Features
         private static readonly Dictionary<Type, IExiledEvent> TypeToEvent = new();
 
         private bool patched;
+        private List<string> subscribedPlugins = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Event{T}"/> class.
@@ -58,6 +60,11 @@ namespace Exiled.Events.Features
         public static IReadOnlyDictionary<Type, IExiledEvent> Dictionary => TypeToEvent;
 
         /// <summary>
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of names of plugins that are subscribed to the inner event.
+        /// </summary>
+        public IReadOnlyCollection<string> SubscribedPlugins => subscribedPlugins;
+
+        /// <summary>
         /// Subscribes a target <see cref="CustomEventHandler{TEventArgs}"/> to the inner event and checks if patching is possible, if dynamic patching is enabled.
         /// </summary>
         /// <param name="event">The <see cref="Event{T}"/> the <see cref="CustomEventHandler{T}"/> will be subscribed to.</param>
@@ -66,6 +73,7 @@ namespace Exiled.Events.Features
         public static Event<T> operator +(Event<T> @event, CustomEventHandler<T> handler)
         {
             @event.Subscribe(handler);
+            @event.subscribedPlugins.Add(Server.PluginAssemblies[Assembly.GetCallingAssembly()].Name);
             return @event;
         }
 
@@ -78,6 +86,7 @@ namespace Exiled.Events.Features
         public static Event<T> operator +(Event<T> @event, CustomAsyncEventHandler<T> asyncEventHandler)
         {
             @event.Subscribe(asyncEventHandler);
+            @event.subscribedPlugins.Add(Server.PluginAssemblies[Assembly.GetCallingAssembly()].Name);
             return @event;
         }
 
@@ -90,6 +99,7 @@ namespace Exiled.Events.Features
         public static Event<T> operator -(Event<T> @event, CustomEventHandler<T> handler)
         {
             @event.Unsubscribe(handler);
+            @event.subscribedPlugins.Remove(Server.PluginAssemblies[Assembly.GetCallingAssembly()].Name);
             return @event;
         }
 
@@ -102,6 +112,7 @@ namespace Exiled.Events.Features
         public static Event<T> operator -(Event<T> @event, CustomAsyncEventHandler<T> asyncEventHandler)
         {
             @event.Unsubscribe(asyncEventHandler);
+            @event.subscribedPlugins.Remove(Server.PluginAssemblies[Assembly.GetCallingAssembly()].Name);
             return @event;
         }
 
