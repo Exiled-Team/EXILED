@@ -42,12 +42,13 @@ namespace Exiled.Events.Commands.PluginManager
             RegisterCommand(Enable.Instance);
             RegisterCommand(Disable.Instance);
             RegisterCommand(Patches.Instance);
+            RegisterCommand(DisplaySubscribed.Instance);
         }
 
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Please, specify a valid subcommand! Available ones: enable, disable, show, patches";
+            response = "Please, specify a valid subcommand! Available ones: enable, disable, show, patches, subscribed";
             return false;
         }
     }
