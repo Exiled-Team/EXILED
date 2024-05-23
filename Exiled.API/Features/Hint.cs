@@ -16,7 +16,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Useful class to save hint configs in a cleaner way.
     /// </summary>
-    [EClass(assetRegistrySearchable: false, category: "Hints", exactName: nameof(Hint))]
+    [EClass(assetRegistrySearchable: false, category: nameof(Hint))]
     public class Hint
     {
         private HintParameter[] parameters;
