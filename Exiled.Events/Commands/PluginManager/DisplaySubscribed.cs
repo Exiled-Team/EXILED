@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Interfaces;
-
 namespace Exiled.Events.Commands.PluginManager
 {
     using System;
@@ -15,6 +13,7 @@ namespace Exiled.Events.Commands.PluginManager
     using System.Reflection;
 
     using CommandSystem;
+    using Exiled.API.Interfaces;
     using Exiled.Permissions.Extensions;
 
     /// <summary>
