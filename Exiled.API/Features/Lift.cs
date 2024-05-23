@@ -14,6 +14,7 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Doors;
     using Exiled.API.Interfaces;
@@ -31,6 +32,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game lift.
     /// </summary>
+    [EClass(assetRegistrySearchable: false, category: nameof(Lift))]
     public class Lift : GameEntity, IWrapper<ElevatorChamber>, IWorldSpace
     {
         /// <summary>
@@ -85,11 +87,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the lift's name.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Lift))]
         public string Name => Group.ToString();
 
         /// <summary>
         /// Gets or sets the lift's <see cref="ElevatorChamber"/> status.
         /// </summary>
+        [EProperty(category: nameof(Lift))]
         public ElevatorSequence Status
         {
             get => Base._curSequence;
@@ -99,11 +103,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="UnityEngine.Bounds"/> representing the space inside the lift.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Lift))]
         public Bounds Bounds => Base.WorldspaceBounds;
 
         /// <summary>
         /// Gets the lift's <see cref="ElevatorType"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Lift))]
         public ElevatorType Type => Group switch
         {
             ElevatorGroup.Scp049 => ElevatorType.Scp049,
@@ -118,26 +124,31 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="ElevatorGroup"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Lift))]
         public ElevatorGroup Group => Base.AssignedGroup;
 
         /// <summary>
         /// Gets a value indicating whether the lift is operative.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Lift))]
         public bool IsOperative => Base.IsReady;
 
         /// <summary>
         /// Gets a value indicating whether the lift is currently moving.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Lift))]
         public bool IsMoving => Status is ElevatorSequence.MovingAway or ElevatorSequence.Arriving;
 
         /// <summary>
         /// Gets a value indicating whether the lift is locked.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Lift))]
         public bool IsLocked => Base.ActiveLocks > 0;
 
         /// <summary>
         /// Gets or sets the <see cref="AnimationTime"/>.
         /// </summary>
+        [EProperty(category: nameof(Lift))]
         public float AnimationTime
         {
             get => Base._animationTime;
@@ -147,26 +158,31 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="RotationTime"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Lift))]
         public float RotationTime => Base._rotationTime;
 
         /// <summary>
         /// Gets the <see cref="DoorOpenTime"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Lift))]
         public float DoorOpenTime => Base._doorOpenTime;
 
         /// <summary>
         /// Gets the <see cref="DoorCloseTime"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Lift))]
         public float DoorCloseTime => Base._doorCloseTime;
 
         /// <summary>
         /// Gets the total <see cref="MoveTime"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Lift))]
         public float MoveTime => AnimationTime + RotationTime + DoorOpenTime + DoorCloseTime;
 
         /// <summary>
         /// Gets the <see cref="CurrentLevel"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Lift))]
         public int CurrentLevel => Base.CurrentLevel;
 
         /// <summary>

@@ -12,32 +12,26 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using DeathAnimations;
-
     using Enums;
-
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
-
     using Mirror;
-
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
-    using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.Ragdolls;
-
     using PlayerStatsSystem;
-
     using UnityEngine;
 
     using BaseScp3114Ragdoll = PlayerRoles.PlayableScps.Scp3114.Scp3114Ragdoll;
-
     using Object = UnityEngine.Object;
 
     /// <summary>
     /// A set of tools to handle the ragdolls more easily.
     /// </summary>
-    public class Ragdoll : GameEntity, IWrapper<BasicRagdoll>, IWorldSpace
+    [EClass(category: nameof(Ragdoll))]
+    public class Ragdoll : GameEntity, IWrapper<BasicRagdoll>
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BasicRagdoll"/>s and their corresponding <see cref="Ragdoll"/>.
@@ -78,6 +72,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the clean up event can be executed.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Ragdoll))]
         public bool AllowCleanUp => NetworkInfo.ExistenceTime < FreezeTime;
 
         /// <summary>
@@ -88,6 +83,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the ragdoll's <see cref="RagdollData"/>.
         /// </summary>
+        [EProperty(category: nameof(Ragdoll))]
         public RagdollData NetworkInfo
         {
             get => Base.NetworkInfo;
@@ -116,11 +112,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the ragdoll has been already cleaned up.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Ragdoll))]
         public bool IsFrozen => Base._frozen;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the ragdoll can be cleaned up.
         /// </summary>
+        [EProperty(category: nameof(Ragdoll))]
         public bool CanBeCleanedUp
         {
             get => IgnoredRagdolls.Contains(Base);
@@ -136,11 +134,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the ragdoll's name.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Ragdoll))]
         public string Name => Base.name;
 
         /// <summary>
         /// Gets or sets the ragdoll's nickname.
         /// </summary>
+        [EProperty(category: nameof(Ragdoll))]
         public string Nickname
         {
             get => NetworkInfo.Nickname;
@@ -150,6 +150,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the ragdoll's existence time.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Ragdoll))]
         public float ExistenceTime => NetworkInfo.ExistenceTime;
 
         /// <summary>
@@ -164,6 +165,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the time that the ragdoll was spawned.
         /// </summary>
+        [EProperty(category: nameof(Ragdoll))]
         public DateTime CreationTime
         {
             get => DateTime.Now - TimeSpan.FromSeconds(NetworkInfo.ExistenceTime);
@@ -177,6 +179,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> of the ragdoll.
         /// </summary>
+        [EProperty(category: nameof(Ragdoll))]
         public RoleTypeId Role
         {
             get => NetworkInfo.RoleType;
@@ -187,11 +190,13 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not the ragdoll has expired and SCP-049 is unable to revive it if was not being targets.
         /// <seealso cref="Roles.Scp049Role.CanResurrect(Ragdoll)"/>
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Ragdoll))]
         public bool IsExpired => NetworkInfo.ExistenceTime > PlayerRoles.PlayableScps.Scp049.Scp049ResurrectAbility.HumanCorpseDuration;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not this ragdoll has been consumed by an SCP-049-2.
         /// </summary>
+        [EProperty(category: nameof(Ragdoll))]
         public bool IsConsumed
         {
             get => ZombieConsumeAbility.ConsumedRagdolls.Contains(Base);
@@ -212,11 +217,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="ZoneType"/> the ragdoll is in.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Ragdoll))]
         public ZoneType Zone => Room.Zone;
 
         /// <summary>
         /// Gets or sets the ragdoll's position.
         /// </summary>
+        [EProperty(category: nameof(Ragdoll))]
         public override Vector3 Position
         {
             get => Transform.position;
@@ -233,6 +240,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the ragdoll's rotation.
         /// </summary>
+        [EProperty(category: nameof(Ragdoll))]
         public override Quaternion Rotation
         {
             get => Base.transform.rotation;
@@ -249,6 +257,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the ragdoll's scale.
         /// </summary>
+        [EProperty(category: nameof(Ragdoll))]
         public Vector3 Scale
         {
             get => Transform.localScale;
@@ -265,6 +274,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the ragdoll's death reason.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Ragdoll))]
         public string DeathReason => DamageHandler.ServerLogsText;
 
         /// <summary>
