@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Interfaces;
+
 namespace Exiled.Events.Commands.PluginManager
 {
     using System;
@@ -18,7 +20,7 @@ namespace Exiled.Events.Commands.PluginManager
     /// <summary>
     /// A command to display plugins that are subscribed to the specific event.
     /// </summary>
-    public class DisplaySubscribed : ICommand
+    public class DisplaySubscribed : ICommand, IPermissionCommand
     {
         /// <summary>
         /// Gets the instance of the command.
@@ -35,13 +37,11 @@ namespace Exiled.Events.Commands.PluginManager
         public string Description { get; } = "Displays plugins that are subscribed to the event.";
 
         /// <inheritdoc/>
+        public string Permission { get; } = "pm.subscribed";
+
+        /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            const string perm = "pm.subscribed";
-
-            if (!sender.CheckPermission(perm, out response))
-                return false;
-
             if (arguments.Count != 1)
             {
                 response = "Usage: pmanager subscribed <handler name> OR pmanager subcribed <handler type>.<handler name>";

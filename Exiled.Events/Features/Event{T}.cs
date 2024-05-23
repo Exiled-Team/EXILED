@@ -72,8 +72,7 @@ namespace Exiled.Events.Features
         /// <returns>The <see cref="Event{T}"/> with the handler subscribed to it.</returns>
         public static Event<T> operator +(Event<T> @event, CustomEventHandler<T> handler)
         {
-            @event.Subscribe(handler);
-            @event.subscribedPlugins.Add(Server.PluginAssemblies[Assembly.GetCallingAssembly()].Name);
+            @event.Subscribe(handler, Assembly.GetCallingAssembly());
             return @event;
         }
 
@@ -85,8 +84,7 @@ namespace Exiled.Events.Features
         /// <returns>The <see cref="Event{T}"/> with the handler added to it.</returns>
         public static Event<T> operator +(Event<T> @event, CustomAsyncEventHandler<T> asyncEventHandler)
         {
-            @event.Subscribe(asyncEventHandler);
-            @event.subscribedPlugins.Add(Server.PluginAssemblies[Assembly.GetCallingAssembly()].Name);
+            @event.Subscribe(asyncEventHandler, Assembly.GetCallingAssembly());
             return @event;
         }
 
@@ -98,8 +96,7 @@ namespace Exiled.Events.Features
         /// <returns>The <see cref="Event{T}"/> with the handler unsubscribed from it.</returns>
         public static Event<T> operator -(Event<T> @event, CustomEventHandler<T> handler)
         {
-            @event.Unsubscribe(handler);
-            @event.subscribedPlugins.Remove(Server.PluginAssemblies[Assembly.GetCallingAssembly()].Name);
+            @event.Unsubscribe(handler, Assembly.GetCallingAssembly());
             return @event;
         }
 
@@ -111,8 +108,7 @@ namespace Exiled.Events.Features
         /// <returns>The <see cref="Event{T}"/> with the handler unsubscribed from it.</returns>
         public static Event<T> operator -(Event<T> @event, CustomAsyncEventHandler<T> asyncEventHandler)
         {
-            @event.Unsubscribe(asyncEventHandler);
-            @event.subscribedPlugins.Remove(Server.PluginAssemblies[Assembly.GetCallingAssembly()].Name);
+            @event.Unsubscribe(asyncEventHandler, Assembly.GetCallingAssembly());
             return @event;
         }
 
@@ -120,7 +116,8 @@ namespace Exiled.Events.Features
         /// Subscribes a target <see cref="CustomEventHandler{T}"/> to the inner event if the conditional is true.
         /// </summary>
         /// <param name="handler">The handler to add.</param>
-        public void Subscribe(CustomEventHandler<T> handler)
+        /// <param name="assembly">Assembly which is subscribing to this event.</param>
+        public void Subscribe(CustomEventHandler<T> handler, Assembly assembly = null)
         {
             Log.Assert(Events.Instance is not null, $"{nameof(Events.Instance)} is null, please ensure you have exiled_events enabled!");
 
@@ -131,13 +128,15 @@ namespace Exiled.Events.Features
             }
 
             InnerEvent += handler;
+            subscribedPlugins.Add(Server.PluginAssemblies[assembly ?? Assembly.GetCallingAssembly()].Name);
         }
 
         /// <summary>
         /// Subscribes a target <see cref="CustomAsyncEventHandler{T}"/> to the inner event if the conditional is true.
         /// </summary>
         /// <param name="handler">The handler to add.</param>
-        public void Subscribe(CustomAsyncEventHandler<T> handler)
+        /// <param name="assembly">Assembly which is subscribing to this event.</param>
+        public void Subscribe(CustomAsyncEventHandler<T> handler, Assembly assembly = null)
         {
             Log.Assert(Events.Instance is not null, $"{nameof(Events.Instance)} is null, please ensure you have exiled_events enabled!");
 
@@ -148,24 +147,29 @@ namespace Exiled.Events.Features
             }
 
             InnerAsyncEvent += handler;
+            subscribedPlugins.Add(Server.PluginAssemblies[assembly ?? Assembly.GetCallingAssembly()].Name);
         }
 
         /// <summary>
         /// Unsubscribes a target <see cref="CustomEventHandler{T}"/> from the inner event if the conditional is true.
         /// </summary>
         /// <param name="handler">The handler to add.</param>
-        public void Unsubscribe(CustomEventHandler<T> handler)
+        /// <param name="assembly">Assembly which is subscribing to this event.</param>
+        public void Unsubscribe(CustomEventHandler<T> handler, Assembly assembly = null)
         {
             InnerEvent -= handler;
+            subscribedPlugins.Remove(Server.PluginAssemblies[assembly ?? Assembly.GetCallingAssembly()].Name);
         }
 
         /// <summary>
         /// Unsubscribes a target <see cref="CustomEventHandler{T}"/> from the inner event if the conditional is true.
         /// </summary>
         /// <param name="handler">The handler to add.</param>
-        public void Unsubscribe(CustomAsyncEventHandler<T> handler)
+        /// <param name="assembly">Assembly which is subscribing to this event.</param>
+        public void Unsubscribe(CustomAsyncEventHandler<T> handler, Assembly assembly = null)
         {
             InnerAsyncEvent -= handler;
+            subscribedPlugins.Remove(Server.PluginAssemblies[assembly ?? Assembly.GetCallingAssembly()].Name);
         }
 
         /// <summary>
