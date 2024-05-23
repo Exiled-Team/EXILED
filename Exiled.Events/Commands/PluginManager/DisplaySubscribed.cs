@@ -14,12 +14,11 @@ namespace Exiled.Events.Commands.PluginManager
 
     using CommandSystem;
     using Exiled.API.Interfaces;
-    using Exiled.Permissions.Extensions;
 
     /// <summary>
     /// A command to display plugins that are subscribed to the specific event.
     /// </summary>
-    public class DisplaySubscribed : ICommand, IPermissionCommand
+    public class DisplaySubscribed : IPermissionCommand
     {
         /// <summary>
         /// Gets the instance of the command.
