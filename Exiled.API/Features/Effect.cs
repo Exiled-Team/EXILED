@@ -10,9 +10,9 @@ namespace Exiled.API.Features
     using System.ComponentModel;
 
     using CustomPlayerEffects;
-
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Interfaces;
 
     /// <summary>
     /// Useful struct to save effect-related configs cleanly.
