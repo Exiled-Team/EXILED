@@ -67,8 +67,12 @@ namespace Exiled.API.Features.Core
             if (entity is not IAssetFragment)
                 return default;
 
-            Dictionary<string, object> gears = new();
             Type type = entity.GetType();
+
+            if (type.GetCustomAttribute<EClassAttribute>() is null)
+                return default;
+
+            Dictionary<string, object> gears = new();
 
             foreach (MemberInfo memberInfo in type.GetMembers())
             {
@@ -110,8 +114,12 @@ namespace Exiled.API.Features.Core
             if (entity is not IAssetFragment)
                 return default;
 
-            Dictionary<string, object> gears = new();
             Type type = entity.GetType();
+
+            if (type.GetCustomAttribute<EClassAttribute>() is null)
+                return default;
+
+            Dictionary<string, object> gears = new();
 
             foreach (MemberInfo memberInfo in type.GetMembers())
             {
