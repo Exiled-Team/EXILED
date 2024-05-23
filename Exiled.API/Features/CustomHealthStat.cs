@@ -8,6 +8,7 @@
 namespace Exiled.API.Features
 {
     using PlayerStatsSystem;
+    using UnityEngine;
 
     /// <summary>
     /// A custom version of <see cref="HealthStat"/> which allows the player's max amount of health to be changed.
@@ -15,7 +16,7 @@ namespace Exiled.API.Features
     public class CustomHealthStat : HealthStat
     {
         /// <inheritdoc/>
-        public override float MaxValue => CustomMaxValue == default ? base.MaxValue : CustomMaxValue;
+        public override float MaxValue => Mathf.Approximately(CustomMaxValue, default) ? base.MaxValue : CustomMaxValue;
 
         /// <summary>
         /// Gets or sets the maximum amount of health the player will have.
