@@ -15,6 +15,7 @@ namespace Exiled.API.Features
 
     using Core;
     using CustomPlayerEffects;
+    using CustomPlayerEffects.Danger;
     using DamageHandlers;
     using Enums;
     using Exiled.API.Features.Attributes;
@@ -401,7 +402,7 @@ namespace Exiled.API.Features
             set
             {
                 // NW Client check.
-                if (value.Contains('<'))
+                if (value is not null && value.Contains('<'))
                 {
                     foreach (string token in value.Split('<'))
                     {
@@ -797,7 +798,7 @@ namespace Exiled.API.Features
                     ReferenceHub.transform.localScale = value;
 
                     foreach (Player target in List)
-                        Server.SendSpawnMessage?.Invoke(null, new object[] { NetworkIdentity, target.Connection });
+                        MirrorExtensions.SendSpawnMessageMethodInfo?.Invoke(null, new object[] { NetworkIdentity, target.Connection });
                 }
                 catch (Exception exception)
                 {
@@ -805,6 +806,16 @@ namespace Exiled.API.Features
                 }
             }
         }
+
+        /// <summary>
+        /// Gets an array of <see cref="DangerStackBase"/>.
+        /// </summary>
+        public DangerStackBase[] Dangers => (GetEffect(EffectType.Scp1853) as Scp1853)?.Dangers;
+
+        /// <summary>
+        /// Gets a list of current <see cref="DangerStackBase"/> the player has.
+        /// </summary>
+        public IEnumerable<DangerStackBase> ActiveDangers => Dangers.Where(d => d.IsActive);
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player's bypass mode is enabled.
