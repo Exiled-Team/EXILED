@@ -13,6 +13,7 @@ namespace Exiled.Events.Commands.PluginManager
     using System.Reflection;
 
     using CommandSystem;
+    using Exiled.API.Features;
     using Exiled.API.Interfaces;
 
     /// <summary>
@@ -68,9 +69,9 @@ namespace Exiled.Events.Commands.PluginManager
             }
 
             object handlerInstance = handler.GetValue(null);
-            IReadOnlyCollection<string> subscribedPlugins = (IReadOnlyCollection<string>)handler.PropertyType.GetProperty("SubscribedPlugins")?.GetValue(handlerInstance);
+            IReadOnlyCollection<Delegate> subscribedPlugins = (IReadOnlyCollection<Delegate>)handler.PropertyType.GetProperty("SubscribedPlugins")?.GetValue(handlerInstance);
 
-            response = $"Subscribed plugins:\n{string.Join("\n -", subscribedPlugins)}";
+            response = $"Subscribed plugins:\n{string.Join("\n -", subscribedPlugins.Select(x => Server.PluginAssemblies[x.Method.DeclaringType?.Assembly].Name))}";
             return true;
         }
     }

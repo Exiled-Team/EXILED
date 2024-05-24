@@ -15,6 +15,7 @@ namespace Exiled.Events.Commands.PluginManager
 
     using CommandSystem;
     using Exiled.API.Features;
+    using Exiled.API.Interfaces;
     using Exiled.Events.Features;
     using Exiled.Permissions.Extensions;
     using NorthwoodLib.Pools;
@@ -71,6 +72,7 @@ namespace Exiled.Events.Commands.PluginManager
             else
             {
                 string name = arguments.At(0);
+                IPlugin<IConfig> plugin = Loader.Loader.GetPlugin(name);
                 sb.AppendLine($"Events to which plugin {name} subscribed:");
 
                 foreach (PropertyInfo handler in typeof(Patches).Assembly.GetTypes().Where(x => x.Namespace != null && x.Namespace.Contains("Exiled.Events.Handlers")).SelectMany(x => x.GetProperties()))
@@ -79,7 +81,7 @@ namespace Exiled.Events.Commands.PluginManager
                         continue;
 
                     object handlerInstance = handler.GetValue(null);
-                    IReadOnlyCollection<string> list = (IReadOnlyCollection<string>)handler.PropertyType.GetProperty("SubscribedPlugins")?.GetValue(handlerInstance);
+                    IReadOnlyCollection<Delegate> list = (IReadOnlyCollection<Delegate>)handler.PropertyType.GetProperty("SubscribedPlugins")?.GetValue(handlerInstance);
 
                     if (list == null)
                     {
@@ -87,7 +89,7 @@ namespace Exiled.Events.Commands.PluginManager
                         continue;
                     }
 
-                    if (list.Contains(name))
+                    if (list.Any(x => x.Method.DeclaringType?.Assembly == plugin.Assembly))
                         sb.AppendLine($"{handler.DeclaringType?.Name}.{handler.Name}");
                 }
             }

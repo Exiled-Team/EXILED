@@ -40,7 +40,6 @@ namespace Exiled.Events.Features
         private static readonly Dictionary<Type, IExiledEvent> TypeToEvent = new();
 
         private bool patched;
-        private List<string> subscribedPlugins = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Event{T}"/> class.
@@ -60,9 +59,19 @@ namespace Exiled.Events.Features
         public static IReadOnlyDictionary<Type, IExiledEvent> Dictionary => TypeToEvent;
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyCollection{T}"/> of names of plugins that are subscribed to the inner event.
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of delegates that are subscribed to the inner event.
         /// </summary>
-        public IReadOnlyCollection<string> SubscribedPlugins => subscribedPlugins;
+        public IReadOnlyCollection<Delegate> SubscribedPlugins
+        {
+            get
+            {
+                List<Delegate> list = InnerEvent?.GetInvocationList().ToList() ?? new List<Delegate>();
+                if (InnerAsyncEvent != null)
+                    list.AddRange(InnerAsyncEvent.GetInvocationList().ToList());
+
+                return list;
+            }
+        }
 
         /// <summary>
         /// Subscribes a target <see cref="CustomEventHandler{TEventArgs}"/> to the inner event and checks if patching is possible, if dynamic patching is enabled.
@@ -127,7 +136,6 @@ namespace Exiled.Events.Features
             }
 
             InnerEvent += handler;
-            subscribedPlugins.Add(Server.PluginAssemblies[handler.Method.DeclaringType?.Assembly!].Name);
         }
 
         /// <summary>
@@ -145,7 +153,6 @@ namespace Exiled.Events.Features
             }
 
             InnerAsyncEvent += handler;
-            subscribedPlugins.Add(Server.PluginAssemblies[handler.Method.DeclaringType?.Assembly!].Name);
         }
 
         /// <summary>
@@ -155,7 +162,6 @@ namespace Exiled.Events.Features
         public void Unsubscribe(CustomEventHandler<T> handler)
         {
             InnerEvent -= handler;
-            subscribedPlugins.Remove(Server.PluginAssemblies[handler.Method.DeclaringType?.Assembly!].Name);
         }
 
         /// <summary>
@@ -165,7 +171,6 @@ namespace Exiled.Events.Features
         public void Unsubscribe(CustomAsyncEventHandler<T> handler)
         {
             InnerAsyncEvent -= handler;
-            subscribedPlugins.Remove(Server.PluginAssemblies[handler.Method.DeclaringType?.Assembly!].Name);
         }
 
         /// <summary>
