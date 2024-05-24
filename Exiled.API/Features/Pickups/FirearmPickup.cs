@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Features.Core.Attributes;
+
 namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
@@ -50,16 +52,19 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the <see cref="Enums.FirearmType"/> of the firearm.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(FirearmPickup))]
         public FirearmType FirearmType => Type.GetFirearmType();
 
         /// <summary>
         /// Gets or sets the <see cref="Enums.AmmoType"/> of the firearm.
         /// </summary>
+        [EProperty(category: nameof(FirearmPickup))]
         public AmmoType AmmoType { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the pickup is already distributed.
         /// </summary>
+        [EProperty(category: nameof(FirearmPickup))]
         public bool IsDistributed
         {
             get => Base.Distributed;
@@ -69,6 +74,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the <see cref="FirearmStatus"/>.
         /// </summary>
+        [EProperty(category: nameof(FirearmPickup))]
         public FirearmStatus Status
         {
             get => Base.NetworkStatus;
@@ -78,6 +84,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets a value indicating how many ammo have this <see cref="FirearmPickup"/>.
         /// </summary>
+        [EProperty(category: nameof(FirearmPickup))]
         public byte Ammo
         {
             get => Base.NetworkStatus.Ammo;
@@ -87,11 +94,13 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the max ammo the Firearm can have.
         /// </summary>
+        [EProperty(category: nameof(FirearmPickup))]
         public byte MaxAmmo { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="FirearmStatusFlags"/>.
         /// </summary>
+        [EProperty(category: nameof(FirearmPickup))]
         public FirearmStatusFlags Flags
         {
             get => Base.NetworkStatus.Flags;
@@ -101,6 +110,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets a value indicating whether the attachment code have this <see cref="FirearmPickup"/>.
         /// </summary>
+        [EProperty(category: nameof(FirearmPickup))]
         public uint Attachments
         {
             get => Base.NetworkStatus.Attachments;

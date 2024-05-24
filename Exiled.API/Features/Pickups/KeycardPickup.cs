@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Features.Core.Attributes;
+
 namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
@@ -45,6 +47,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the <see cref="KeycardPermissions"/> of the keycard.
         /// </summary>
+        [EProperty(category: nameof(KeycardPickup))]
         public KeycardPermissions Permissions { get; set; }
 
         /// <summary>
