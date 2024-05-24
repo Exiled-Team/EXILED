@@ -24,20 +24,12 @@ namespace Exiled.API.Features.Toys
     /// </summary>
     public class Primitive : AdminToy, IWrapper<PrimitiveObjectToy>
     {
-        private bool collidable = true;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Primitive"/> class.
         /// </summary>
         /// <param name="toyAdminToyBase">The <see cref="PrimitiveObjectToy"/> of the toy.</param>
         internal Primitive(PrimitiveObjectToy toyAdminToyBase)
-            : base(toyAdminToyBase, AdminToyType.PrimitiveObject)
-        {
-            Base = toyAdminToyBase;
-
-            Vector3 scale = Base.transform.localScale;
-            collidable = scale.x > 0f || scale.y > 0f || scale.z > 0f;
-        }
+            : base(toyAdminToyBase, AdminToyType.PrimitiveObject) => Base = toyAdminToyBase;
 
         /// <summary>
         /// Gets the base <see cref="PrimitiveObjectToy"/>.
@@ -67,12 +59,26 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public bool Collidable
         {
-            get => collidable;
-            set
-            {
-                collidable = value;
-                RefreshCollidable();
-            }
+            get => Flags.HasFlag(PrimitiveFlags.Collidable);
+            set => Flags = value ? (Flags | PrimitiveFlags.Collidable) : (Flags & ~PrimitiveFlags.Collidable);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the primitive is visible.
+        /// </summary>
+        public bool Visible
+        {
+            get => Flags.HasFlag(PrimitiveFlags.Visible);
+            set => Flags = value ? (Flags | PrimitiveFlags.Visible) : (Flags & ~PrimitiveFlags.Visible);
+        }
+
+        /// <summary>
+        /// Gets or sets the primitive flags.
+        /// </summary>
+        public PrimitiveFlags Flags
+        {
+            get => Base.NetworkPrimitiveFlags;
+            set => Base.NetworkPrimitiveFlags = value;
         }
 
         /// <summary>
@@ -155,6 +161,36 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Creates a new <see cref="Primitive"/>.
         /// </summary>
+        /// <param name="primitiveType">The type of primitive to spawn.</param>
+        /// <param name="flags">The primitive flags.</param>
+        /// <param name="position">The position of the <see cref="Primitive"/>.</param>
+        /// <param name="rotation">The rotation of the <see cref="Primitive"/>.</param>
+        /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
+        /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
+        /// <param name="color">The color of the <see cref="Primitive"/>.</param>
+        /// <returns>The new <see cref="Primitive"/>.</returns>
+        public static Primitive Create(PrimitiveType primitiveType /*= PrimitiveType.Sphere*/, PrimitiveFlags flags, Vector3? position /*= null*/, Vector3? rotation /*= null*/, Vector3? scale /*= null*/, bool spawn /*= true*/, Color? color /*= null*/)
+        {
+            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
+
+            primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
+            primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
+            primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+            primitive.Flags = flags;
+
+            if (spawn)
+                primitive.Spawn();
+
+            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
+            primitive.Base.NetworkPrimitiveType = primitiveType;
+            primitive.Color = color ?? Color.gray;
+
+            return primitive;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Primitive"/>.
+        /// </summary>
         /// <param name="primitiveSettings">The settings of the <see cref="Primitive"/>.</param>
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(PrimitiveSettings primitiveSettings)
@@ -164,6 +200,7 @@ namespace Exiled.API.Features.Toys
             primitive.AdminToyBase.transform.position = primitiveSettings.Position;
             primitive.AdminToyBase.transform.eulerAngles = primitiveSettings.Rotation;
             primitive.AdminToyBase.transform.localScale = primitiveSettings.Scale;
+            primitive.Flags = primitiveSettings.Flags;
 
             if (primitiveSettings.Spawn)
                 primitive.Spawn();
@@ -171,6 +208,7 @@ namespace Exiled.API.Features.Toys
             primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
             primitive.Base.NetworkPrimitiveType = primitiveSettings.PrimitiveType;
             primitive.Color = primitiveSettings.Color;
+            primitive.IsStatic = primitiveSettings.IsStatic;
 
             return primitive;
         }
@@ -184,16 +222,6 @@ namespace Exiled.API.Features.Toys
         {
             AdminToy adminToy = Map.Toys.FirstOrDefault(x => x.AdminToyBase == primitiveObjectToy);
             return adminToy is not null ? adminToy as Primitive : new Primitive(primitiveObjectToy);
-        }
-
-        private void RefreshCollidable()
-        {
-            UnSpawn();
-
-            Vector3 scale = Scale;
-            Base.transform.localScale = Collidable ? new Vector3(Math.Abs(scale.x), Math.Abs(scale.y), Math.Abs(scale.z)) : new Vector3(-Math.Abs(scale.x), -Math.Abs(scale.y), -Math.Abs(scale.z));
-
-            Spawn();
         }
     }
 }

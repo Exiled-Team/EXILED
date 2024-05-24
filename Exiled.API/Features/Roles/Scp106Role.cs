@@ -201,11 +201,6 @@ namespace Exiled.API.Features.Roles
         internal float VigorRegeneration { get; } = Scp106StalkAbility.VigorRegeneration;
 
         /// <summary>
-        /// Gets or sets how mush damage Scp106 will dealt when attacking a player.
-        /// </summary>
-        internal float AttackDamage { get; } = Scp106Attack.AttackDamage;
-
-        /// <summary>
         /// Gets or sets the duration of Corroding effect.
         /// </summary>
         internal float CorrodingTime { get; } = Scp106Attack.CorrodingTime;
@@ -230,6 +225,15 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         internal float HuntersAtlasCostPerMeter { get; } = Scp106HuntersAtlasAbility.CostPerMeter;
 #pragma warning restore SA1623 // Property summary documentation should match accessors
+
+        /// <summary>
+        /// Gets or sets how mush damage Scp106 will dealt when attacking a player.
+        /// </summary>
+        public int AttackDamage
+        {
+            get => Attack._damage;
+            set => Attack._damage = value;
+        }
 
         /// <summary>
         /// Gets or sets the amount of time in between player captures.
