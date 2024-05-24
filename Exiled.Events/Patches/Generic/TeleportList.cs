@@ -9,14 +9,15 @@ namespace Exiled.Events.Patches.Generic
 {
     using API.Features;
     using HarmonyLib;
+    using MapGeneration;
 
     /// <summary>
-    /// Patches <see cref="RoomManager.GenerateMap(int)"/>.
+    /// Patches <see cref="ImageGenerator.GenerateMap(int, string, out string)"/>.
     /// </summary>
-    [HarmonyPatch(typeof(RoomManager), nameof(RoomManager.GenerateMap))]
+    [HarmonyPatch(typeof(ImageGenerator), nameof(ImageGenerator.GenerateMap))]
     internal class TeleportList
     {
-        private static void Postfix()
+        private static void Prefix()
         {
             Map.TeleportsValue.Clear();
             Map.TeleportsValue.AddRange(UnityEngine.Object.FindObjectsOfType<PocketDimensionTeleport>());
