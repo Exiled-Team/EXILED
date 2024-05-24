@@ -12,27 +12,23 @@ namespace Exiled.Events.EventArgs.Map
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information up to spawning Scp244.
+    /// Contains all information up to spawning Scp244.
     /// </summary>
-    public class Scp244SpawningEventArgs : IRoomEvent, IPickupEvent, IDeniableEvent
+    public class Scp244SpawningEventArgs : IRoomEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Scp244SpawningEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="Scp244SpawningEventArgs" /> class.
         /// </summary>
         /// <param name="room">
-        ///     <inheritdoc cref="Room" />
+        /// <inheritdoc cref="Room" />
         /// </param>
         /// <param name="scp244Pickup">
-        ///     <inheritdoc cref="Pickup" />
+        /// <inheritdoc cref="Pickup" />
         /// </param>
-        /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
-        /// </param>
-        public Scp244SpawningEventArgs(Room room, Scp244Pickup scp244Pickup, bool isAllowed = true)
+        public Scp244SpawningEventArgs(Room room, Pickup scp244Pickup)
         {
             Room = room;
-            Pickup = scp244Pickup;
-            IsAllowed = isAllowed;
+            Pickup = scp244Pickup.As<Scp244Pickup>();
         }
 
         /// <summary>
@@ -43,11 +39,11 @@ namespace Exiled.Events.EventArgs.Map
         /// <summary>
         /// Gets a value indicating the pickup being spawning.
         /// </summary>
-        public Pickup Pickup { get; }
+        public Scp244Pickup Pickup { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the item can be spawning.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed { get; set; } = true;
     }
 }

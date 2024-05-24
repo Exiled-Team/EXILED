@@ -7,57 +7,84 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-    using Exiled.API.Features;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-    using HarmonyLib;
-    using InventorySystem.Items;
-    using InventorySystem.Items.Pickups;
-    using InventorySystem.Items.Usables.Scp244;
     using MapGeneration;
-    using Mirror;
     using UnityEngine;
 
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+    using HarmonyLib;
+    using InventorySystem.Items.Pickups;
+    using InventorySystem.Items.Usables.Scp244;
+    using Mirror;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    ///     Patches <see cref="Scp244Spawner.SpawnScp244" />.
-    ///     Adds the <see cref="Handlers.Map.Scp244Spawning" /> event.
+    /// Patches <see cref="Scp244Spawner.SpawnScp244" />.
+    /// Adds the <see cref="Handlers.Map.Scp244Spawning" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.Scp244Spawning))]
     [HarmonyPatch(typeof(Scp244Spawner), nameof(Scp244Spawner.SpawnScp244))]
     internal static class Scp244Spawning
     {
-        private static bool Prefix(ItemBase ib)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (Scp244Spawner.CompatibleRooms.Count == 0 && Random.value > 0.35f)
-                return false;
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            int index = Random.Range(0, Scp244Spawner.CompatibleRooms.Count);
-            Vector3 position = Scp244Spawner.CompatibleRooms[index].transform.TransformPoint(Scp244Spawner.NameToPos[Scp244Spawner.CompatibleRooms[index].Name]);
-            ItemPickupBase itemPickupBase = Object.Instantiate(ib.PickupDropModel, position, Quaternion.identity);
-            itemPickupBase.NetworkInfo = new PickupSyncInfo
+            Label continueLabel = generator.DefineLabel();
+
+            LocalBuilder pickup = generator.DeclareLocal(typeof(ItemPickupBase));
+
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Dup);
+
+            newInstructions.RemoveRange(index, 1);
+
+            int offset = 1;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Dup) + offset;
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                ItemId = ib.ItemTypeId,
-                WeightKg = ib.Weight,
-                Serial = ItemSerialGenerator.GenerateNext(),
-            };
-            Scp244DeployablePickup scp244DeployablePickup = itemPickupBase as Scp244DeployablePickup;
-            if (scp244DeployablePickup != null)
-                scp244DeployablePickup.State = Scp244State.Active;
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, pickup.LocalIndex),
+            });
 
-            Scp244SpawningEventArgs ev = new(Room.Get(Scp244Spawner.CompatibleRooms[index]), Pickup.Get(itemPickupBase).As<Scp244Pickup>());
-            Handlers.Map.OnScp244Spawning(ev);
+            offset = -2;
+            index = newInstructions.FindIndex(i => i.Calls(Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) }))) + offset;
 
-            if (!ev.IsAllowed)
+            newInstructions.InsertRange(index, new[]
             {
-                NetworkServer.Destroy(itemPickupBase.gameObject);
-                return false;
-            }
+                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(Scp244Spawner), nameof(Scp244Spawner.CompatibleRooms))).MoveLabelsFrom(newInstructions[index]),
+                new(OpCodes.Ldloc_0),
+                new(OpCodes.Callvirt, Method(typeof(List<RoomIdentifier>), "get_Item")),
 
-            NetworkServer.Spawn(itemPickupBase.gameObject);
-            Scp244Spawner.CompatibleRooms.RemoveAt(index);
-            return false;
+                new(OpCodes.Ldloc_S, pickup.LocalIndex),
+                new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get), new[] { typeof(ItemPickupBase) })),
+
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(Scp244SpawningEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnScp244Spawning))),
+
+                new(OpCodes.Call, PropertyGetter(typeof(Scp244SpawningEventArgs), nameof(Scp244SpawningEventArgs.IsAllowed))),
+                new(OpCodes.Brtrue_S, continueLabel),
+
+                new(OpCodes.Ldloc_S, pickup.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ItemPickupBase), nameof(ItemPickupBase.gameObject))),
+                new(OpCodes.Call, Method(typeof(NetworkServer), nameof(NetworkServer.Destroy))),
+                new(OpCodes.Ret),
+
+                new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
+                new(OpCodes.Ldloc_S, pickup.LocalIndex),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }
