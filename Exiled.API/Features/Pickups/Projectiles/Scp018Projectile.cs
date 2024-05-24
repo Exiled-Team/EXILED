@@ -5,11 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Core.Attributes;
-
 namespace Exiled.API.Features.Pickups.Projectiles
 {
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
     using InventorySystem;
     using InventorySystem.Items.ThrowableProjectiles;

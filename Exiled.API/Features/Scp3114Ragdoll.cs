@@ -5,10 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Core.Attributes;
-
 namespace Exiled.API.Features
 {
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
     using PlayerRoles;
 
