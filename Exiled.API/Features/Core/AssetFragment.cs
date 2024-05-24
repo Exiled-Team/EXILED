@@ -150,7 +150,7 @@ namespace Exiled.API.Features.Core
         }
 
         /// <summary>
-        /// Recursively extracts and assigns values from an AssetFragment to the target object.
+        /// Recursively extracts and assigns values from an <see cref="AssetFragment"/> to the target object.
         /// </summary>
         /// <param name="target">The target object to which the values will be assigned.</param>
         /// <param name="nextFragment">The AssetFragment containing the values to be assigned.</param>
