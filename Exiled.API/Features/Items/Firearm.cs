@@ -684,6 +684,7 @@ namespace Exiled.API.Features.Items
 
             if (pickup is Pickups.FirearmPickup firearm)
             {
+                Base.OnAdded(firearm.Base);
                 MaxAmmo = firearm.MaxAmmo;
                 AmmoType = firearm.AmmoType;
             }
