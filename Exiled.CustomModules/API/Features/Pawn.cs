@@ -161,8 +161,7 @@ namespace Exiled.CustomModules.API.Features
                 if (IsCustomScp)
                     return true;
 
-                Team? team = Role?.Team;
-                return team.HasValue && team.GetValueOrDefault() == Team.SCPs;
+                return Role?.Team is Team.SCPs;
             }
         }
 

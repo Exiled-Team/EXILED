@@ -64,13 +64,19 @@ namespace Exiled.CustomModules.API.Features
                     return;
                 }
 
+                if (value is CustomTeam customTeam)
+                {
+                    nextKnownTeam = customTeam.Id;
+                    return;
+                }
+
                 if (value is uint id && CustomTeam.TryGet(id, out CustomTeam _))
                 {
                     nextKnownTeam = id;
                     return;
                 }
 
-                throw new ArgumentException("NextKnownTeam only accepts SpawnableTeamType and parsed uint.");
+                throw new ArgumentException("NextKnownTeam only accepts SpawnableTeamType, parsed uint & CustomTeam.");
             }
         }
 

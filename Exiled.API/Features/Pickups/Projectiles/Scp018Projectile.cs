@@ -9,9 +9,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
 {
     using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
-    using InventorySystem;
     using InventorySystem.Items.ThrowableProjectiles;
-    using UnityEngine;
 
     using BaseScp018Projectile = InventorySystem.Items.ThrowableProjectiles.Scp018Projectile;
 

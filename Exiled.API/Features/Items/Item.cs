@@ -17,7 +17,6 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms.Ammo;
-    using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Jailbird;
     using InventorySystem.Items.Keycards;
     using InventorySystem.Items.MicroHID;
@@ -42,6 +41,7 @@ namespace Exiled.API.Features.Items
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
         /// </summary>
         internal static readonly Dictionary<ItemBase, Item> BaseToItem = new(new ComponentsEqualityComparer());
+        private float weight;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
@@ -121,9 +121,13 @@ namespace Exiled.API.Features.Items
         public ItemTierFlags TierFlags => Base.TierFlags;
 
         /// <summary>
-        /// Gets the Weight of the item.
+        /// Gets or sets the Weight of the item.
         /// </summary>
-        public float Weight => Base.Weight;
+        public virtual float Weight
+        {
+            get => weight;
+            set => weight = value;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this item is ammunition.
@@ -372,6 +376,7 @@ namespace Exiled.API.Features.Items
             if (pickup is not null)
             {
                 Scale = pickup.Scale;
+                Weight = pickup.Weight;
             }
         }
     }

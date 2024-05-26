@@ -197,7 +197,7 @@ namespace Exiled.Loader
 
                     Log.Debug($"Instantiated type {type.FullName}");
 
-                    if (CheckPluginRequiredExiledVersion(plugin))
+                    if (CheckPluginRequiredExiledVersion(plugin, assembly.GetReferencedAssemblies()?.FirstOrDefault(x => x?.Name is "Exiled.Loader")?.Version ?? new()))
                         continue;
 
                     if (defaultPlayerClass is not null)
@@ -423,12 +423,12 @@ namespace Exiled.Loader
             return false;
         }
 
-        private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
+        private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin, Version pluginVersion)
         {
             if (plugin.IgnoreRequiredVersionCheck)
                 return false;
 
-            Version requiredVersion = plugin.RequiredExiledVersion;
+            Version requiredVersion = plugin.RequiredExiledVersion == default ? pluginVersion : plugin.RequiredExiledVersion;
             Version actualVersion = Version;
 
             // Check Major version
