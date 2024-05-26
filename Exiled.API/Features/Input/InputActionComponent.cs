@@ -13,7 +13,6 @@ namespace Exiled.API.Features.Input
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Input.EventArgs;

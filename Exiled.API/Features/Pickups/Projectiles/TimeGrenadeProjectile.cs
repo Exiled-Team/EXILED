@@ -9,11 +9,9 @@ namespace Exiled.API.Features.Pickups.Projectiles
 {
     using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
-    using InventorySystem;
     using InventorySystem.Items.ThrowableProjectiles;
 
     using Mirror;
-    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for TimeGrenade.
