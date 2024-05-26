@@ -245,8 +245,8 @@ namespace Exiled.API.Extensions
                 else
                     fpc = playerfpc;
 
-                ushort value;
-                fpc.FpcModule.MouseLook.GetSyncValues(0, out value, out ushort _);
+                ushort value = 0;
+                fpc?.FpcModule.MouseLook.GetSyncValues(0, out value, out ushort _);
                 writer.WriteRelativePosition(player.RelativePosition);
                 writer.WriteUShort(value);
             }
