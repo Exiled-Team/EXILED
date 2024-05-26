@@ -146,9 +146,17 @@ namespace Exiled.API.Features.Items
         public FirearmType FirearmType => Type.GetFirearmType();
 
         /// <summary>
-        /// Gets the <see cref="Enums.AmmoType"/> of the firearm.
+        /// Gets or sets the <see cref="Enums.AmmoType"/> of the firearm.
         /// </summary>
-        public AmmoType AmmoType => Base.AmmoType.GetAmmoType();
+        public AmmoType AmmoType
+        {
+            get => Base.AmmoType.GetAmmoType();
+            set
+            {
+                if (Base is AutomaticFirearm automaticFirearm)
+                    automaticFirearm._ammoType = value.GetItemType();
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether the firearm is being aimed.
@@ -635,10 +643,8 @@ namespace Exiled.API.Features.Items
             Firearm cloneableItem = new(Type)
             {
                 Ammo = Ammo,
+                Recoil = Recoil,
             };
-
-            if (cloneableItem.Base is AutomaticFirearm)
-                cloneableItem.Recoil = Recoil;
 
             cloneableItem.AddAttachment(AttachmentIdentifiers);
 
@@ -669,6 +675,19 @@ namespace Exiled.API.Features.Items
 
             Base._sendStatusNextFrame = true;
             Base._footprintValid = false;
+        }
+
+        /// <inheritdoc/>
+        internal override void ReadPickupInfo(Pickup pickup)
+        {
+            base.ReadPickupInfo(pickup);
+
+            if (pickup is Pickups.FirearmPickup firearm)
+            {
+                Base.OnAdded(firearm.Base);
+                MaxAmmo = firearm.MaxAmmo;
+                AmmoType = firearm.AmmoType;
+            }
         }
     }
 }
