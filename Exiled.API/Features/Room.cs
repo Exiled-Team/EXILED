@@ -93,7 +93,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="ZoneType"/> in which the room is located.
         /// </summary>
-        public ZoneType Zone { get; private set; }
+        public ZoneType Zone { get; private set; } = ZoneType.Unspecified;
 
         /// <summary>
         /// Gets the <see cref="MapGeneration.RoomName"/> enum representing this room.
@@ -110,7 +110,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="RoomType"/>.
         /// </summary>
-        public RoomType Type { get; private set; }
+        public RoomType Type { get; private set; } = RoomType.Unknown;
 
         /// <summary>
         /// Gets a reference to the room's <see cref="RoomIdentifier"/>.
@@ -309,7 +309,7 @@ namespace Exiled.API.Features
             }
 
             // Finally, try for objects that aren't children, like players and pickups.
-            return room ? room : Get(objectInRoom.transform.position);
+            return room ? room : Get(objectInRoom.transform.position) ?? default;
         }
 
         /// <summary>
