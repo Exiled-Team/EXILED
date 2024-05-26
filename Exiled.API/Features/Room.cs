@@ -16,19 +16,16 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Interfaces;
     using MapGeneration;
-    using MEC;
     using Mirror;
     using PlayerRoles.PlayableScps.Scp079;
     using RelativePositioning;
     using UnityEngine;
-    using Utils.NonAllocLINQ;
 
     /// <summary>
     /// The in-game room.
     /// </summary>
-    public class Room : GameEntity, IWorldSpace
+    public class Room : GameEntity
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="RoomIdentifier"/>s and their corresponding <see cref="Room"/>.
@@ -96,7 +93,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="ZoneType"/> in which the room is located.
         /// </summary>
-        public ZoneType Zone { get; private set; } = ZoneType.Unspecified;
+        public ZoneType Zone { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="MapGeneration.RoomName"/> enum representing this room.
@@ -113,7 +110,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="RoomType"/>.
         /// </summary>
-        public RoomType Type { get; private set; } = RoomType.Unknown;
+        public RoomType Type { get; private set; }
 
         /// <summary>
         /// Gets a reference to the room's <see cref="RoomIdentifier"/>.
@@ -312,7 +309,7 @@ namespace Exiled.API.Features
             }
 
             // Finally, try for objects that aren't children, like players and pickups.
-            return room ? room : Get(objectInRoom.transform.position) ?? default;
+            return room ? room : Get(objectInRoom.transform.position);
         }
 
         /// <summary>
