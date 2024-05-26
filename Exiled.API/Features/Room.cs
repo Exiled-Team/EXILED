@@ -16,19 +16,16 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Interfaces;
     using MapGeneration;
-    using MEC;
     using Mirror;
     using PlayerRoles.PlayableScps.Scp079;
     using RelativePositioning;
     using UnityEngine;
-    using Utils.NonAllocLINQ;
 
     /// <summary>
     /// The in-game room.
     /// </summary>
-    public class Room : GameEntity, IWorldSpace
+    public class Room : GameEntity
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="RoomIdentifier"/>s and their corresponding <see cref="Room"/>.

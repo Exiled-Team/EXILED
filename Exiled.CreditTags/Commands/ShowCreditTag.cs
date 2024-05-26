@@ -33,7 +33,7 @@ namespace Exiled.CreditTags.Commands
         {
             CommandSender cmdSender = (CommandSender)sender;
 
-            if (!(Player.Get(cmdSender.SenderId) is Player player))
+            if (!Player.TryGet(sender, out Player player))
             {
                 response = "You cannot use this command while still authenticating.";
                 return false;
