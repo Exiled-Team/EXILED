@@ -13,7 +13,6 @@ namespace Exiled.CustomModules
 
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Generic;
     using Exiled.API.Interfaces;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features;
@@ -120,7 +119,8 @@ namespace Exiled.CustomModules
             base.OnDisabled();
         }
 
-        private void SubscribeEvents()
+        /// <inheritdoc/>
+        protected override void SubscribeEvents()
         {
             PlayerHandler = new();
             ServerHandler = new();
@@ -129,7 +129,8 @@ namespace Exiled.CustomModules
             Exiled.Events.Handlers.Server.RoundStarted += ServerHandler.OnRoundStarted;
         }
 
-        private void UnsubscribeEvents()
+        /// <inheritdoc/>
+        protected override void UnsubscribeEvents()
         {
             Exiled.Events.Handlers.Player.ChangingItem -= PlayerHandler.OnChangingItem;
             Exiled.Events.Handlers.Server.RoundStarted -= ServerHandler.OnRoundStarted;

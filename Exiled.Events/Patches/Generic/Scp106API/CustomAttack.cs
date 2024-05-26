@@ -34,35 +34,12 @@ namespace Exiled.Events.Patches.Generic.Scp106API
 
             LocalBuilder scp049Role = generator.DeclareLocal(typeof(Scp106Role));
 
-            // replace "new ScpDamageHandler(base.Owner, 30f, DeathTranslations.PocketDecay);"
-            // with
-            // Scp106Role scp106Role = Player.Get(this.Owner).Role.As<Scp106Role>()
-            // "new ScpDamageHandler(base.Owner, scp106Role.AttackDamage, DeathTranslations.PocketDecay);"
-            int offset = 0;
-            int index = newInstructions.FindIndex(instruction => instruction.operand == (object)Scp106Attack.AttackDamage) + offset;
-            newInstructions.RemoveAt(index);
-
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
-                {
-                    // Player.Get(base.Owner).Role
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(StandardSubroutine<BaseScp106Role>), nameof(StandardSubroutine<BaseScp106Role>.Owner))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
-
-                    // (Player.Get(base.Owner).Role as Scp106Role).AttackDamage
-                    new(OpCodes.Isinst, typeof(Scp106Role)),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp106Role), nameof(Scp106Role.AttackDamage))),
-                });
-
             // replace "base.Vigor.VigorAmount += 0.3f;"
             // with
             // Scp106Role scp106Role = Player.Get(this.Owner).Role.As<Scp106Role>()
             // "base.Vigor.VigorAmount += scp106Role.VigorCaptureReward;"
-            offset = 0;
-            index = newInstructions.FindIndex(instruction => instruction.operand == (object)Scp106Attack.VigorCaptureReward) + offset;
+            int offset = 0;
+            int index = newInstructions.FindIndex(instruction => instruction.operand == (object)Scp106Attack.VigorCaptureReward) + offset;
             newInstructions.RemoveAt(index);
 
             newInstructions.InsertRange(

@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Structs
 {
+    using AdminToys;
     using UnityEngine;
 
     /// <summary>
@@ -27,6 +28,7 @@ namespace Exiled.API.Structs
         public PrimitiveSettings(PrimitiveType primitiveType, Color color, Vector3 position, Vector3 rotation, Vector3 scale, bool spawn, bool isStatic)
         {
             PrimitiveType = primitiveType;
+            Flags = PrimitiveFlags.Collidable | PrimitiveFlags.Visible;
             Color = color;
             Position = position;
             Rotation = rotation;
@@ -47,6 +49,29 @@ namespace Exiled.API.Structs
         public PrimitiveSettings(PrimitiveType primitiveType, Color color, Vector3 position, Vector3 rotation, Vector3 scale, bool spawn)
         {
             PrimitiveType = primitiveType;
+            Flags = PrimitiveFlags.Collidable | PrimitiveFlags.Visible;
+            Color = color;
+            Position = position;
+            Rotation = rotation;
+            Scale = scale;
+            Spawn = spawn;
+            IsStatic = false;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PrimitiveSettings"/> struct.
+        /// </summary>
+        /// <param name="primitiveType">The type of the primitive.</param>
+        /// <param name="primitiveFlags">The flags of the primitive.</param>
+        /// <param name="color">The color of the primitive.</param>
+        /// <param name="position">The position of the primitive.</param>
+        /// <param name="rotation">The rotation of the primitive.</param>
+        /// <param name="scale">The scale of the primitive.</param>
+        /// <param name="spawn">Whether or not the primitive should be spawned.</param>
+        public PrimitiveSettings(PrimitiveType primitiveType, PrimitiveFlags primitiveFlags, Color color, Vector3 position, Vector3 rotation, Vector3 scale, bool spawn)
+        {
+            PrimitiveType = primitiveType;
+            Flags = primitiveFlags;
             Color = color;
             Position = position;
             Rotation = rotation;
@@ -59,6 +84,11 @@ namespace Exiled.API.Structs
         /// Gets the primitive type.
         /// </summary>
         public PrimitiveType PrimitiveType { get; }
+
+        /// <summary>
+        /// Gets the primitive flags.
+        /// </summary>
+        public PrimitiveFlags Flags { get; }
 
         /// <summary>
         /// Gets the primitive color.
