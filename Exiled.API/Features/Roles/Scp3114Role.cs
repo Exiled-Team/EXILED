@@ -258,7 +258,7 @@ namespace Exiled.API.Features.Roles
         /// Starts the dancing process.
         /// </summary>
         /// <param name="danceType">The requested <see cref="DanceType"/>.</param>
-        public void StatDancing(DanceType danceType) => Dance.SendRpc((x) =>
+        public void StartDancing(DanceType danceType) => Dance.SendRpc((x) =>
         {
             x.IsDancing = true;
             x._serverStartPos = new(Position);
