@@ -128,6 +128,7 @@ namespace Exiled.API.Features.Pickups
             AmmoLimits = armoritem.AmmoLimits;
             CategoryLimits = armoritem.CategoryLimits;
             MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
+        }
 
         /// <inheritdoc/>
         protected override void InitializeProperties(ItemBase itemBase)
