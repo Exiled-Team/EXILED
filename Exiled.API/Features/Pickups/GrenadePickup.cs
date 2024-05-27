@@ -13,10 +13,8 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.API.Interfaces;
     using Footprinting;
-    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
-    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for a high explosive grenade pickup.

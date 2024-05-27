@@ -11,10 +11,8 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
-    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Jailbird;
-    using UnityEngine;
 
     using BaseJailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
 

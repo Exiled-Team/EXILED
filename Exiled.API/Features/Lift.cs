@@ -19,8 +19,6 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Doors;
     using Exiled.API.Interfaces;
     using Interactables.Interobjects;
-    using Interactables.Interobjects.DoorUtils;
-    using MEC;
     using UnityEngine;
 
     using static Interactables.Interobjects.ElevatorChamber;
