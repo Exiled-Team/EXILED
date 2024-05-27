@@ -20,7 +20,6 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Structs;
 
     using Extensions;
-    using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
@@ -684,6 +683,7 @@ namespace Exiled.API.Features.Items
 
             if (pickup is Pickups.FirearmPickup firearm)
             {
+                Base.OnAdded(firearm.Base);
                 MaxAmmo = firearm.MaxAmmo;
                 AmmoType = firearm.AmmoType;
             }
