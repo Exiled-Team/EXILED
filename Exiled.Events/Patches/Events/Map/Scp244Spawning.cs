@@ -60,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Map
             {
                 new CodeInstruction(OpCodes.Ldsfld, Field(typeof(Scp244Spawner), nameof(Scp244Spawner.CompatibleRooms))).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Ldloc_0),
-                new(OpCodes.Callvirt, Method(typeof(List<RoomIdentifier>), "get_Item")),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(List<RoomIdentifier>), "Item")),
 
                 new(OpCodes.Ldloc_S, pickup.LocalIndex),
                 new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get), new[] { typeof(ItemPickupBase) })),
