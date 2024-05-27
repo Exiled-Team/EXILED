@@ -323,5 +323,12 @@ namespace Exiled.API.Extensions
         /// <param name="type">The <see cref="ItemType"/> to check.</param>
         /// <returns><see cref="ItemCategory"/> of the specified <see cref="ItemType"/>.</returns>
         public static ItemCategory GetCategory(this ItemType type) => GetItemBase(type).Category;
+
+        /// <summary>
+        /// Gets the <see cref="ItemCategory"/> of the specified <see cref="ItemBase"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemBase"/> to check.</param>
+        /// <returns><see cref="ItemCategory"/> of the specified <see cref="ItemBase"/>.</returns>
+        public static ItemCategory GetCategory(this ItemBase @base) => @base.Category;
     }
 }
