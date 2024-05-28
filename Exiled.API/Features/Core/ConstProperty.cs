@@ -23,6 +23,7 @@ namespace Exiled.API.Features.Core
     /// <typeparam name="T">Constant type.</typeparam>
     public class ConstProperty<T>
     {
+        private readonly List<MethodInfo> internalPatched = new();
         private bool patched = false;
         private T value;
 
@@ -49,7 +50,7 @@ namespace Exiled.API.Features.Core
         {
             List.Remove(this);
 
-            foreach (MethodInfo methodInfo in TypesToPatch.SelectMany(x => x.GetMethods().Where(y => y.DeclaringType != null && y.DeclaringType == x)))
+            foreach (MethodInfo methodInfo in PatchedMethods)
             {
                 try
                 {
@@ -91,6 +92,11 @@ namespace Exiled.API.Features.Core
         /// Gets a collection of methods that should be skipped when patching.
         /// </summary>
         public MethodInfo[] SkipMethods { get; }
+
+        /// <summary>
+        /// Gets a collection of methods that are patched.
+        /// </summary>
+        public IReadOnlyCollection<MethodInfo> PatchedMethods => internalPatched;
 
         /// <summary>
         /// Gets the <see cref="HarmonyLib.Harmony"/> instance for this constant property.
@@ -180,6 +186,7 @@ namespace Exiled.API.Features.Core
                 try
                 {
                     Harmony.Patch(methodInfo, transpiler: new HarmonyMethod(typeof(ConstProperty<T>), nameof(Transpiler)));
+                    internalPatched.Add(methodInfo);
                 }
                 catch (Exception exception)
                 {
@@ -199,6 +206,7 @@ namespace Exiled.API.Features.Core
                 try
                 {
                     Harmony.Patch(methodInfo, transpiler: new HarmonyMethod(typeof(ConstProperty<T>), nameof(Transpiler)));
+                    internalPatched.Add(methodInfo);
                 }
                 catch (Exception exception)
                 {
