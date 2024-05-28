@@ -13,29 +13,39 @@ namespace Exiled.API.Enums
     public enum DanceType : byte
     {
         /// <summary>
-        /// Dance1
+        /// Break-dance.
         /// </summary>
-        Dance1,
+        BreakDance,
 
         /// <summary>
-        /// Dance2
+        /// Chicken dance.
         /// </summary>
-        Dance2,
+        ChickenDance,
 
         /// <summary>
-        /// Dance3
+        /// The "Running Man" dance.
         /// </summary>
-        Dance3,
+        RunningMan,
 
         /// <summary>
-        /// Dance4
+        /// The "Maraschino" dance.
         /// </summary>
-        Dance4,
+        Maraschino,
 
         /// <summary>
-        /// Dance5
+        /// Twist dance.
         /// </summary>
-        Dance5,
+        Twist,
+
+        /// <summary>
+        /// The "Cabbage Patch" dance.
+        /// </summary>
+        CabbagePatch,
+
+        /// <summary>
+        /// Swing dance.
+        /// </summary>
+        Swing,
 
         /// <summary>
         /// Dance1
