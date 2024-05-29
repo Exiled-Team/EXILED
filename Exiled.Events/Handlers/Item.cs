@@ -59,6 +59,11 @@ namespace Exiled.Events.Handlers
         public static Event<UsingRadioPickupBatteryEventArgs> UsingRadioPickupBattery { get; set; } = new();
 
         /// <summary>
+        /// Invoked before jailbird breaks.
+        /// </summary>
+        public static Event<BreakingJailbirdEventArgs> BreakingJailbird { get; set; } = new();
+
+        /// <summary>
         /// Called before the ammo of an firearm is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingAmmoEventArgs"/> instance.</param>
@@ -105,5 +110,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="UsingRadioPickupBatteryEventArgs"/> instance.</param>
         public static void OnUsingRadioPickupBattery(UsingRadioPickupBatteryEventArgs ev) => UsingRadioPickupBattery.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before jailbird breaks.
+        /// </summary>
+        /// <param name="ev">The <see cref="BreakingJailbirdEventArgs"/> instance.</param>
+        public static void OnBreakingJailbird(BreakingJailbirdEventArgs ev) => BreakingJailbird.InvokeSafely(ev);
     }
 }

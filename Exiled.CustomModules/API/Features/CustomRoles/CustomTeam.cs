@@ -15,6 +15,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Roles;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using HarmonyLib;
@@ -108,19 +109,17 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets the amount of time after which any team will be allowed to spawn.
         /// </summary>
-        public virtual float NextSequenceTime => UnityEngine.Random.Range(
-            GameCore.ConfigFile.ServerConfig.GetFloat("minimum_MTF_time_to_spawn", MinNextSequenceTime),
-            GameCore.ConfigFile.ServerConfig.GetFloat("maximum_MTF_time_to_spawn", MaxNextSequenceTime));
+        public virtual float NextSequenceTime => UnityEngine.Random.Range(MinNextSequenceTime, MaxNextSequenceTime);
 
         /// <summary>
         /// Gets or sets the minimum amount time after which any team will be allowed to spawn.
         /// </summary>
-        public virtual float MinNextSequenceTime { get; set; } = 280f;
+        public virtual float MinNextSequenceTime { get; set; } = GameCore.ConfigFile.ServerConfig.GetFloat("minimum_MTF_time_to_spawn", 280f);
 
         /// <summary>
         /// Gets or sets the maximum amount time after which any team will be spawned.
         /// </summary>
-        public virtual float MaxNextSequenceTime { get; set; } = 350f;
+        public virtual float MaxNextSequenceTime { get; set; } = GameCore.ConfigFile.ServerConfig.GetFloat("maximum_MTF_time_to_spawn", 350f);
 
         /// <summary>
         /// Gets the relative spawn probability of the <see cref="CustomTeam"/>.
@@ -326,11 +325,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Tries to spawn the specified <see cref="CustomTeam"/>.
         /// </summary>
         /// <param name="customTeam">The <see cref="CustomTeam"/> to be spawned.</param>
-        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was successfully spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TryRespawn(CustomTeam customTeam, bool isForced = false)
+        public static bool TryRespawn(CustomTeam customTeam)
         {
-            if (!Player.Get(p => p.IsDead).Any() || customTeam is null)
+            if (!Player.List.Any(x => x.Role is SpectatorRole { IsReadyToRespawn: true }) || customTeam is null)
                 return false;
 
             customTeam.Respawn();
@@ -341,11 +339,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Tries to spawn a <see cref="CustomTeam"/> given the specified id.
         /// </summary>
         /// <param name="id">The specified id.</param>
-        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was successfully spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TryRespawn(uint id, bool isForced = false)
+        public static bool TryRespawn(uint id)
         {
-            if (!Player.Get(p => p.IsDead).Any() || TryGet(id, out CustomTeam customTeam))
+            if (!Player.List.Any(x => x.Role is SpectatorRole { IsReadyToRespawn: true }) || TryGet(id, out CustomTeam customTeam))
                 return false;
 
             customTeam.Respawn();
@@ -357,9 +354,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </summary>
         /// <param name="player">The <see cref="Pawn"/> to be spawned.</param>
         /// <param name="customTeam">The <see cref="CustomTeam"/> unit to be assigned.</param>
-        /// <param name="isForced">Forces the respawn wave regardless any conditions, including tickets.</param>
         /// <returns><see langword="true"/> if the player was successfully spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool TrySpawn(Pawn player, CustomTeam customTeam, bool isForced = false)
+        public static bool TrySpawn(Pawn player, CustomTeam customTeam)
         {
             if (customTeam is null)
                 return false;
