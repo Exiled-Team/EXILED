@@ -228,5 +228,11 @@ namespace Exiled.API.Enums
         /// Makes the player nearly invisible, and allows them to pass through doors.
         /// </summary>
         Ghostly,
+
+        /// <summary>
+        /// Manipulate which fog type the player will have.
+        /// <remarks>You can choose fog with <see cref="CustomRendering.FogType"/> and putting it on intensity.</remarks>
+        /// </summary>
+        FogControl,
     }
 }
