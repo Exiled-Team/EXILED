@@ -2845,6 +2845,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Resets the player's inventory to the provided inventory, clearing any items/ammo it already possess.
+        /// </summary>
+        /// <param name="inventory">The role inventory to add to the inventory.</param>
+        public void ResetInventory(InventoryRoleInfo inventory)
+        {
+            ClearInventory();
+
+            foreach (ItemType item in inventory.Items)
+                AddItem(item);
+
+            foreach (KeyValuePair<ItemType, ushort> ammo in inventory.Ammo)
+                AddAmmo(ammo.Key.GetAmmoType(), ammo.Value);
+        }
+
+        /// <summary>
         /// Clears the player's inventory, including all ammo and items.
         /// </summary>
         /// <param name="destroy">Whether or not to fully destroy the old items.</param>
