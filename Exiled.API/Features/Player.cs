@@ -1588,6 +1588,26 @@ namespace Exiled.API.Features
         public bool GrantWhitelist(bool isPermanent) => AddToWhitelist(UserId, isPermanent);
 
         /// <summary>
+        /// Adds a component to the player.
+        /// </summary>
+        /// <typeparam name="T">The component type to add.</typeparam>
+        public void AddComponent<T>()
+            where T : Component
+            => GameObject.AddComponent<T>();
+
+        /// <summary>
+        /// Removes a component from a player.
+        /// </summary>
+        /// <typeparam name="T">The component type to remove.</typeparam>
+        public void RemoveComponent<T>()
+            where T : Component
+        {
+            Component component = GameObject.GetComponent<T>();
+            if (component != null)
+                UnityEngine.Object.Destroy(component);
+        }
+
+        /// <summary>
         /// Gets vision information based on the specified target player and optional mask layer.
         /// </summary>
         /// <param name="target">The Player to target.</param>
