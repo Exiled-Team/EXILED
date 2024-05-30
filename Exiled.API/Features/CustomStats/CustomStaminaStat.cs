@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using UnityEngine;
+
 namespace Exiled.API.Features.CustomStats
 {
     using Mirror;
@@ -22,6 +24,13 @@ namespace Exiled.API.Features.CustomStats
         /// Gets or sets the maximum amount of stamina the player will have.
         /// </summary>
         public float CustomMaxValue { get; set; }
+
+        /// <summary>
+        /// Clamps a float to fit the current stamina bar.
+        /// </summary>
+        /// <param name="value">The value to clamp.</param>
+        /// <returns>The clamped num.</returns>
+        public float Clamp(float value) => CustomMaxValue == default ? Mathf.Clamp01(value) : Mathf.Clamp(value, 0, MaxValue);
 
         /// <summary>
         /// Overiding NW Method to sync Player percentage of Stamina.
