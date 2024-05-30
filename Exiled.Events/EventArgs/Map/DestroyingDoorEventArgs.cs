@@ -21,10 +21,13 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="doorVariant">
         ///     <inheritdoc cref="DoorVariant" />
         /// </param>
+        /// <param name="doorDamageType">
+        ///     <inheritdoc cref="Interactables.Interobjects.DoorUtils.DoorDamageType" />
+        /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public DestroyingDoorEventArgs(DoorVariant doorVariant, bool isAllowed = true)
+        public DestroyingDoorEventArgs(DoorVariant doorVariant, DoorDamageType doorDamageType, bool isAllowed = true)
         {
             Door = API.Features.Doors.Door.Get(doorVariant);
             IsAllowed = isAllowed;

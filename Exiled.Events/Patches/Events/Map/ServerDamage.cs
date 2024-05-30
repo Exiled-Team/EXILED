@@ -34,6 +34,8 @@ namespace Exiled.Events.Patches.Events.Map
                 return default;
             }
 
+            __result = false;
+
             if (__instance._destroyed || __instance.Network_destroyed)
                 return false;
 
@@ -47,8 +49,7 @@ namespace Exiled.Events.Patches.Events.Map
 
             Handlers.Map.OnDoorDamaging(damagingDoorEventArgs);
 
-            Health = damagingDoorEventArgs.Health;
-            type = damagingDoorEventArgs.DoorDamageType;
+            Health = damagingDoorEventArgs.DamageAmount;
 
             if (!damagingDoorEventArgs.IsAllowed)
                 return false;
@@ -56,20 +57,20 @@ namespace Exiled.Events.Patches.Events.Map
             __instance.RemainingHealth -= Health;
             if (__instance.RemainingHealth <= 0f)
             {
-                DestroyingDoorEventArgs destroyingDoorEventArgs = new(__instance);
+                DestroyingDoorEventArgs destroyingDoorEventArgs = new(__instance, damagingDoorEventArgs.DoorDamageType);
 
                 Handlers.Map.OnDoorDestroying(destroyingDoorEventArgs);
 
                 if (!destroyingDoorEventArgs.IsAllowed)
                 {
-                    __instance.RemainingHealth += Health;
+                    __result = true;
                     return false;
                 }
 
                 __instance.Network_destroyed = true;
                 DoorEvents.TriggerAction(__instance, DoorAction.Destroyed, null);
-                DestroyedDoorEventArgs destroyedDoorEventArgs = new(__instance);
 
+                DestroyedDoorEventArgs destroyedDoorEventArgs = new(__instance, damagingDoorEventArgs.DoorDamageType);
                 Handlers.Map.OnDoorDestroyed(destroyedDoorEventArgs);
             }
 

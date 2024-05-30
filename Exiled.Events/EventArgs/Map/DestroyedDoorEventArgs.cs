@@ -21,14 +21,23 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="doorVariant">
         ///     <inheritdoc cref="DoorVariant" />
         /// </param>
-        public DestroyedDoorEventArgs(DoorVariant doorVariant)
+        /// <param name="doorDamageType">
+        ///     <inheritdoc cref="Interactables.Interobjects.DoorUtils.DoorDamageType" />
+        /// </param>
+        public DestroyedDoorEventArgs(DoorVariant doorVariant, DoorDamageType doorDamageType)
         {
             Door = API.Features.Doors.Door.Get(doorVariant);
+            DamageType = doorDamageType;
         }
 
         /// <summary>
         ///     Gets a value indicating the door that was destroyed.
         /// </summary>
         public API.Features.Doors.Door Door { get; }
+
+        /// <summary>
+        /// Gets the <see cref="DoorDamageType"/>.
+        /// </summary>
+        public DoorDamageType DamageType { get; }
     }
 }
