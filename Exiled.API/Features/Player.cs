@@ -923,12 +923,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's maximum Hume Shield.
+        /// Gets or sets the players maximum Hume Shield.
         /// </summary>
         public float MaxHumeShield
         {
             get => HumeShieldStat.MaxValue;
             set => HumeShieldStat.CustomMaxValue = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the players multiplier for gaining HumeShield.
+        /// </summary>
+        public float HumeShieldRegenerationMultiplier
+        {
+            get => HumeShieldStat.ShieldRegenerationMultiplier;
+            set => HumeShieldStat.ShieldRegenerationMultiplier = value;
         }
 
         /// <summary>
