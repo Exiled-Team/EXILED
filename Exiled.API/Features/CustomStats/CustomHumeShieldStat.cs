@@ -24,7 +24,7 @@ namespace Exiled.API.Features.CustomStats
         /// <summary>
         /// Gets or sets the maximum amount of HumeShield the player can have.
         /// </summary>
-        public float CustomMaxValue { get; set; } = 10000;
+        public float CustomMaxValue { get; set; }
 
         private float ShieldRegeneration => TryGetHsModule(out HumeShieldModuleBase controller) ? controller.HsRegeneration : 0;
 

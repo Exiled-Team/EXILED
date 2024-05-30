@@ -21,7 +21,7 @@ namespace Exiled.API.Features.CustomStats
         /// <summary>
         /// Gets or sets the maximum amount of stamina the player will have.
         /// </summary>
-        public float CustomMaxValue { get; set; } = 10;
+        public float CustomMaxValue { get; set; }
 
         /// <summary>
         /// Overiding NW Method to sync Player percentage of Stamina.
