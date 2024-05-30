@@ -132,7 +132,13 @@ namespace Exiled.API.Features.Pickups
 
             if (itemBase is FirearmItem firearm)
             {
-                MaxAmmo = firearm.AmmoManagerModule.MaxAmmo;
+                MaxAmmo = firearm switch
+                {
+                    AutomaticFirearm autoFirearm => autoFirearm._baseMaxAmmo,
+                    Revolver => 6,
+                    Shotgun shotgun => shotgun._ammoCapacity,
+                    _ => 0
+                };
                 AmmoType = firearm is AutomaticFirearm automaticFirearm ? automaticFirearm._ammoType.GetAmmoType() : firearm.ItemTypeId.GetAmmoType();
             }
         }

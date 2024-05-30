@@ -84,12 +84,17 @@ namespace Exiled.API.Features
         /// <inheritdoc/>
         public virtual void OnEnabled()
         {
+            SubscribeEvents();
             AssemblyInformationalVersionAttribute attribute = Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
             Log.Info($"{Name} v{(Version is not null ? $"{Version.Major}.{Version.Minor}.{Version.Build}" : attribute is not null ? attribute.InformationalVersion : string.Empty)} by {Author} has been enabled!");
         }
 
         /// <inheritdoc/>
-        public virtual void OnDisabled() => Log.Info($"{Name} has been disabled!");
+        public virtual void OnDisabled()
+        {
+            UnsubscribeEvents();
+            Log.Info($"{Name} has been disabled!");
+        }
 
         /// <inheritdoc/>
         public virtual void OnReloaded() => Log.Info($"{Name} has been reloaded!");
@@ -170,6 +175,24 @@ namespace Exiled.API.Features
 
         /// <inheritdoc/>
         public int CompareTo(IPlugin<IConfig> other) => -Priority.CompareTo(other.Priority);
+
+        /// <summary>
+        /// Fired after enabling the plugin.
+        /// <br/>
+        /// Subscribes all events and relative handlers.
+        /// </summary>
+        protected virtual void SubscribeEvents()
+        {
+        }
+
+        /// <summary>
+        /// Fired after disabling the plugin.
+        /// <br/>
+        /// Unsubscribes all events and relative handlers.
+        /// </summary>
+        protected virtual void UnsubscribeEvents()
+        {
+        }
     }
 
     /// <summary>
