@@ -1620,6 +1620,26 @@ namespace Exiled.API.Features
         public bool GrantWhitelist(bool isPermanent) => AddToWhitelist(UserId, isPermanent);
 
         /// <summary>
+        /// Adds a component to the player.
+        /// </summary>
+        /// <typeparam name="T">The component type to add.</typeparam>
+        public void AddComponent<T>()
+            where T : Component
+            => GameObject.AddComponent<T>();
+
+        /// <summary>
+        /// Removes a component from a player.
+        /// </summary>
+        /// <typeparam name="T">The component type to remove.</typeparam>
+        public void RemoveComponent<T>()
+            where T : Component
+        {
+            Component component = GameObject.GetComponent<T>();
+            if (component != null)
+                UnityEngine.Object.Destroy(component);
+        }
+
+        /// <summary>
         /// Gets vision information based on the specified target player and optional mask layer.
         /// </summary>
         /// <param name="target">The Player to target.</param>
@@ -2854,6 +2874,21 @@ namespace Exiled.API.Features
 
             foreach (Item item in newItems)
                 AddItem(item);
+        }
+
+        /// <summary>
+        /// Resets the player's inventory to the provided inventory, clearing any items/ammo it already possess.
+        /// </summary>
+        /// <param name="inventory">The role inventory to add to the inventory.</param>
+        public void ResetInventory(InventoryRoleInfo inventory)
+        {
+            ClearInventory();
+
+            foreach (ItemType item in inventory.Items)
+                AddItem(item);
+
+            foreach (KeyValuePair<ItemType, ushort> ammo in inventory.Ammo)
+                AddAmmo(ammo.Key.GetAmmoType(), ammo.Value);
         }
 
         /// <summary>
