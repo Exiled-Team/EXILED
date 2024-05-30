@@ -7,8 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
-    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
+
     using InventorySystem.Items.MicroHID;
 
     /// <summary>
@@ -37,7 +37,6 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the remaining energy in the MicroHID.
         /// </summary>
-        [EProperty(category: nameof(MicroHid))]
         public float Energy
         {
             get => Base.RemainingEnergy;
@@ -52,7 +51,6 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the <see cref="HidState"/>.
         /// </summary>
-        [EProperty(category: nameof(MicroHid))]
         public HidState State
         {
             get => Base.State;

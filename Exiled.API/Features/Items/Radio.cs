@@ -8,10 +8,12 @@
 namespace Exiled.API.Features.Items
 {
     using Enums;
-    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
+
     using InventorySystem.Items.Radio;
+
     using Structs;
+
     using VoiceChat.Playbacks;
 
     /// <summary>
@@ -45,7 +47,6 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the percentage of the radio's battery, between <c>0-100</c>.
         /// </summary>
-        [EProperty(category: nameof(Radio))]
         public byte BatteryLevel
         {
             get => Base.BatteryPercent;
@@ -55,7 +56,6 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the current <see cref="RadioRange"/>.
         /// </summary>
-        [EProperty(category: nameof(Radio))]
         public RadioRange Range
         {
             get => (RadioRange)Base._rangeId;
@@ -65,7 +65,6 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the <see cref="RadioRangeSettings"/> for the current <see cref="Range"/>.
         /// </summary>
-        [EProperty(category: nameof(Radio))]
         public RadioRangeSettings RangeSettings
         {
             get =>
@@ -87,7 +86,6 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets a value indicating whether the radio is enabled or not.
         /// </summary>
-        [EProperty(category: nameof(Radio))]
         public bool IsEnabled
         {
             get => Base._enabled;
@@ -97,7 +95,6 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether or not the radio is transmitting.
         /// </summary>
-        [EProperty(readOnly: true, category: nameof(Radio))]
         public bool IsTransmitting => PersonalRadioPlayback.IsTransmitting(Owner.ReferenceHub);
 
         /// <summary>

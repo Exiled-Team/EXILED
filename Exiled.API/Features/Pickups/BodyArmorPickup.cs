@@ -11,7 +11,6 @@ namespace Exiled.API.Features.Pickups
     using System.Linq;
 
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
@@ -25,6 +24,9 @@ namespace Exiled.API.Features.Pickups
     /// </summary>
     public class BodyArmorPickup : Pickup, IWrapper<BaseBodyArmor>
     {
+        private int helmetEfficacy;
+        private int vestEfficacy;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BodyArmorPickup"/> class.
         /// </summary>
@@ -52,49 +54,49 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether this item is equippable.
         /// </summary>
-        [EProperty(readOnly: true, category: nameof(BodyArmorPickup))]
         public bool Equippable { get; } = false;
 
         /// <summary>
         /// Gets a value indicating whether this item is holsterable.
         /// </summary>
-        [EProperty(readOnly: true, category: nameof(BodyArmorPickup))]
         public bool Holsterable { get; } = false;
 
         /// <summary>
         /// Gets a value indicating whether or not this is a worn item.
         /// </summary>
-        [EProperty(readOnly: true, category: nameof(BodyArmorPickup))]
         public bool IsWorn { get; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not excess ammo should be removed when the armor is dropped.
         /// </summary>
-        [EProperty(category: nameof(BodyArmorPickup))]
         public bool RemoveExcessOnDrop { get; set; }
 
         /// <summary>
         /// Gets or sets how strong the helmet on the armor is.
         /// </summary>
-        [EProperty(category: nameof(BodyArmorPickup))]
-        public int HelmetEfficacy { get; set; }
+        public int HelmetEfficacy
+        {
+            get => helmetEfficacy;
+            set => helmetEfficacy = value;
+        }
 
         /// <summary>
         /// Gets or sets how strong the vest on the armor is.
         /// </summary>
-        [EProperty(category: nameof(BodyArmorPickup))]
-        public int VestEfficacy { get; set; }
+        public int VestEfficacy
+        {
+            get => vestEfficacy;
+            set => vestEfficacy = value;
+        }
 
         /// <summary>
         /// Gets or sets how much faster stamina will drain when wearing this armor.
         /// </summary>
-        [EProperty(category: nameof(BodyArmorPickup))]
         public float StaminaUseMultiplier { get; set; }
 
         /// <summary>
         /// Gets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
         /// </summary>
-        [EProperty(readOnly: true, category: nameof(BodyArmorPickup))]
         public float MovementSpeedMultiplier { get; private set; }
 
         /// <summary>
@@ -117,34 +119,32 @@ namespace Exiled.API.Features.Pickups
         internal override void ReadItemInfo(Item item)
         {
             base.ReadItemInfo(item);
-
-            if (item is not Armor armoritem)
-                return;
-
-            HelmetEfficacy = armoritem.HelmetEfficacy;
-            VestEfficacy = armoritem.VestEfficacy;
-            RemoveExcessOnDrop = armoritem.RemoveExcessOnDrop;
-            StaminaUseMultiplier = armoritem.StaminaUseMultiplier;
-            AmmoLimits = armoritem.AmmoLimits;
-            CategoryLimits = armoritem.CategoryLimits;
-            MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
+            if (item is Armor armoritem)
+            {
+                helmetEfficacy = armoritem.HelmetEfficacy;
+                vestEfficacy = armoritem.VestEfficacy;
+                RemoveExcessOnDrop = armoritem.RemoveExcessOnDrop;
+                StaminaUseMultiplier = armoritem.StaminaUseMultiplier;
+                AmmoLimits = armoritem.AmmoLimits;
+                CategoryLimits = armoritem.CategoryLimits;
+                MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
+            }
         }
 
         /// <inheritdoc/>
         protected override void InitializeProperties(ItemBase itemBase)
         {
             base.InitializeProperties(itemBase);
-
-            if (itemBase is not BodyArmor armoritem)
-                return;
-
-            HelmetEfficacy = armoritem.HelmetEfficacy;
-            VestEfficacy = armoritem.VestEfficacy;
-            RemoveExcessOnDrop = !armoritem.DontRemoveExcessOnDrop;
-            StaminaUseMultiplier = armoritem._staminaUseMultiplier;
-            AmmoLimits = armoritem.AmmoLimits.Select(limit => (ArmorAmmoLimit)limit);
-            CategoryLimits = armoritem.CategoryLimits;
-            MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
+            if (itemBase is BodyArmor armoritem)
+            {
+                helmetEfficacy = armoritem.HelmetEfficacy;
+                vestEfficacy = armoritem.VestEfficacy;
+                RemoveExcessOnDrop = !armoritem.DontRemoveExcessOnDrop;
+                StaminaUseMultiplier = armoritem._staminaUseMultiplier;
+                AmmoLimits = armoritem.AmmoLimits.Select(limit => (ArmorAmmoLimit)limit);
+                CategoryLimits = armoritem.CategoryLimits;
+                MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
+            }
         }
     }
 }
