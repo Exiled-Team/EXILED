@@ -5,12 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using UnityEngine;
-
 namespace Exiled.API.Features.CustomStats
 {
     using Mirror;
     using PlayerStatsSystem;
+    using UnityEngine;
 
     /// <summary>
     /// A custom version of <see cref="StaminaStat"/> which allows the player's maximum amount of Stamina to be changed.
