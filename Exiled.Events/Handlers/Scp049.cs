@@ -28,11 +28,6 @@ namespace Exiled.Events.Handlers
         public static Event<StartingRecallEventArgs> StartingRecall { get; set; } = new();
 
         /// <summary>
-        /// Invoked before SCP-049 find a target to activate good sense of the doctor.
-        /// </summary>
-        public static Event<FindingTargetEventArgs> FindingTarget { get; set; } = new();
-
-        /// <summary>
         /// Invoked before SCP-049 uses the good sense of the doctor ability.
         /// </summary>
         public static Event<ActivatingSenseEventArgs> ActivatingSense { get; set; } = new();
@@ -58,12 +53,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="StartingRecallEventArgs" /> instance.</param>
         public static void OnStartingRecall(StartingRecallEventArgs ev) => StartingRecall.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before SCP-049 finds a target to activate good sense of the doctor.
-        /// </summary>
-        /// <param name="ev">The <see cref="FindingTargetEventArgs" /> instance.</param>
-        public static void OnFindingTarget(FindingTargetEventArgs ev) => FindingTarget.InvokeSafely(ev);
 
         /// <summary>
         /// Called before SCP-049 starts the good sense of the doctor ability.
