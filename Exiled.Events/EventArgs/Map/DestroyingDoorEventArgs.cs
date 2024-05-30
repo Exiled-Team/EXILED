@@ -30,17 +30,23 @@ namespace Exiled.Events.EventArgs.Map
         public DestroyingDoorEventArgs(DoorVariant doorVariant, DoorDamageType doorDamageType, bool isAllowed = true)
         {
             Door = API.Features.Doors.Door.Get(doorVariant);
+            DamageType = doorDamageType;
             IsAllowed = isAllowed;
         }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether the door can be destroyed.
-        /// </summary>
-        public bool IsAllowed { get; set; }
 
         /// <summary>
         ///     Gets a value indicating the door that will be destroyed.
         /// </summary>
         public API.Features.Doors.Door Door { get; }
+
+        /// <summary>
+        /// Gets the <see cref="DoorDamageType"/>.
+        /// </summary>
+        public DoorDamageType DamageType { get; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the door can be destroyed.
+        /// </summary>
+        public bool IsAllowed { get; set; }
     }
 }
