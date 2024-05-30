@@ -19,8 +19,6 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Serialization;
     using Exiled.API.Features.Serialization.CustomConverters;
-    using Exiled.API.Interfaces;
-    using LiteNetLib.Utils;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NodeDeserializers;
 

@@ -9,8 +9,6 @@ namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
-    using InventorySystem;
-    using UnityEngine;
 
     using BaseMicroHID = InventorySystem.Items.MicroHID.MicroHIDPickup;
 

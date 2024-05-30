@@ -32,7 +32,7 @@ namespace Exiled.API.Features.Doors
     /// <summary>
     /// A wrapper class for <see cref="DoorVariant"/>.
     /// </summary>
-    public class Door : GameEntity, IWrapper<DoorVariant>, IWorldSpace
+    public class Door : GameEntity, IWrapper<DoorVariant>
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>'s and their corresponding <see cref="Door"/>.
@@ -123,6 +123,15 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the door is close.
+        /// </summary>
+        public bool IsClosed
+        {
+            get => !IsOpen;
+            set => IsOpen = !value;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether or not this door is a gate.
         /// </summary>
         public bool IsGate => this is Gate;
@@ -202,12 +211,12 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not the door is locked.
         /// </summary>
-        public bool IsLocked => DoorLockType > 0;
+        public bool IsLocked => LockType > 0;
 
         /// <summary>
         /// Gets or sets the door lock type.
         /// </summary>
-        public DoorLockType DoorLockType
+        public DoorLockType LockType
         {
             get => (DoorLockType)Base.NetworkActiveLocks;
             set
@@ -428,12 +437,10 @@ namespace Exiled.API.Features.Doors
         /// <returns><see cref="Door"/> object.</returns>
         public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
         {
-            List<Door> doors = onlyUnbroken || type is not ZoneType.Unspecified ? Get(x =>
-                        (x.Room is null || x.Room.Zone.HasFlag(type) || type == ZoneType.Unspecified) && (x is Breakable { IsDestroyed: true } || !onlyUnbroken)).
-                    ToList() :
-                DoorVariantToDoor.Values.ToList();
+            if (onlyUnbroken || type != ZoneType.Unspecified)
+                return Get(x => (x.Room == null || x.Room.Zone.HasFlag(type) || type == ZoneType.Unspecified) && (!onlyUnbroken || !(x is Breakable { IsDestroyed: true }))).Random();
 
-            return doors[UnityEngine.Random.Range(0, doors.Count)];
+            return DoorVariantToDoor.Values.Random();
         }
 
         /// <summary>
@@ -498,7 +505,7 @@ namespace Exiled.API.Features.Doors
         /// <param name="type">The <see cref="ZoneType"/> to affect.</param>
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
-        public static void LockAll(ZoneType type, float duration, DoorLockType lockType = DoorLockType.Regular079) => Get(type).ForEach(door => door.Lock(lockType, true));
+        public static void LockAll(ZoneType type, float duration, DoorLockType lockType = DoorLockType.Regular079) => Get(type).ForEach(door => door.Lock(duration, lockType, true));
 
         /// <summary>
         /// Temporary locks all <see cref="Door">doors</see> given the specified zones.
@@ -582,49 +589,37 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Change the door lock with the given lock type.
         /// </summary>
-        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
-        public void ChangeLock(DoorLockType lockType)
-        {
-            if (lockType is DoorLockType.None)
-            {
-                Base.NetworkActiveLocks = 0;
-            }
-            else
-            {
-                DoorLockType locks = DoorLockType;
-                if (locks.HasFlag(lockType))
-                    locks &= ~lockType;
-                else
-                    locks |= lockType;
-
-                Base.NetworkActiveLocks = (ushort)locks;
-            }
-
-            DoorEvents.TriggerAction(Base, IsLocked ? DoorAction.Locked : DoorAction.Unlocked, null);
-        }
+        /// <param name="lockType">The <see cref="DoorLockType"/> to use.</param>
+        public void ChangeLock(DoorLockType lockType) => Base.ServerChangeLock((DoorLockReason)lockType, !LockType.HasFlag(lockType));
 
         /// <summary>
         /// Permanently locks all active locks on the door, and then reverts back any changes after a specified length of time.
         /// </summary>
-        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
-        /// <param name="shouldBeClosed">A value indicating whether the door should be closed.</param>
-        public void Lock(DoorLockType lockType = DoorLockType.Regular079, bool shouldBeClosed = false)
+        /// <param name="lockType">The <see cref="DoorLockType"/> of the lockdown.</param>
+        /// <param name="updateTheDoorState">A value indicating whether the door state should be modified.</param>
+        public void Lock(DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = true)
         {
-            if (shouldBeClosed)
-                IsOpen = false;
-
             ChangeLock(lockType);
+
+            if (updateTheDoorState)
+                return;
+
+            DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason)LockType);
+            if (mode is DoorLockMode.CanOpen)
+                IsOpen = true;
+            else if (mode is DoorLockMode.CanClose)
+                IsOpen = false;
         }
 
         /// <summary>
         /// Temporary locks all active locks on the door, and then reverts back any changes after a specified length of time.
         /// </summary>
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
-        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
-        /// <param name="shouldBeClosed">A value indicating whether the door should be closed.</param>
-        public void Lock(float time, DoorLockType lockType = DoorLockType.Regular079, bool shouldBeClosed = false)
+        /// <param name="lockType">The <see cref="DoorLockType"/> of the lockdown.</param>
+        /// <param name="updateTheDoorState">A value indicating whether the door state should be modified.</param>
+        public void Lock(float time, DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = true)
         {
-            Lock(lockType, shouldBeClosed);
+            Lock(lockType, updateTheDoorState);
             Unlock(time, lockType);
         }
 
@@ -637,7 +632,7 @@ namespace Exiled.API.Features.Doors
         /// Unlocks and clears all active locks on the door after a specified length of time.
         /// </summary>
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
-        /// <param name="flagsToUnlock">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
+        /// <param name="flagsToUnlock">The <see cref="DoorLockType"/> of the lockdown.</param>
         public void Unlock(float time, DoorLockType flagsToUnlock) => DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
 
         /// <summary>
@@ -651,7 +646,7 @@ namespace Exiled.API.Features.Doors
         /// Returns the Door in a human-readable format.
         /// </summary>
         /// <returns>A string containing Door-related data.</returns>
-        public override string ToString() => $"{Type} ({Zone}) [{Room}] *{DoorLockType}* ={RequiredPermissions.RequiredPermissions}=";
+        public override string ToString() => $"{Type} ({Zone}) [{Room}] *{LockType}* ={RequiredPermissions.RequiredPermissions}=";
 
         /// <summary>
         /// Creates the door object associated with a specific <see cref="DoorVariant"/>.

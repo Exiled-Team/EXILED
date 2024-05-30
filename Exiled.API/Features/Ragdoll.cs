@@ -23,7 +23,6 @@ namespace Exiled.API.Features
 
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
-    using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.Ragdolls;
 
     using PlayerStatsSystem;

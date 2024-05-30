@@ -15,6 +15,7 @@ namespace Exiled.API.Features
 
     using Core;
     using CustomPlayerEffects;
+    using CustomPlayerEffects.Danger;
     using DamageHandlers;
     using Enums;
     using Exiled.API.Features.Attributes;
@@ -22,6 +23,7 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Roles;
     using Exiled.API.Interfaces;
@@ -40,7 +42,6 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
-    using MapGeneration.Distributors;
     using MEC;
     using Mirror;
     using Mirror.LiteNetLib4Mirror;
@@ -348,7 +349,7 @@ namespace Exiled.API.Features
             set
             {
                 // NW Client check.
-                if (value.Contains('<'))
+                if (value is not null && value.Contains('<'))
                 {
                     foreach (string token in value.Split('<'))
                     {
@@ -725,7 +726,7 @@ namespace Exiled.API.Features
                     ReferenceHub.transform.localScale = value;
 
                     foreach (Player target in List)
-                        Server.SendSpawnMessage?.Invoke(null, new object[] { NetworkIdentity, target.Connection });
+                        MirrorExtensions.SendSpawnMessageMethodInfo?.Invoke(null, new object[] { NetworkIdentity, target.Connection });
                 }
                 catch (Exception exception)
                 {
@@ -733,6 +734,16 @@ namespace Exiled.API.Features
                 }
             }
         }
+
+        /// <summary>
+        /// Gets an array of <see cref="DangerStackBase"/>.
+        /// </summary>
+        public DangerStackBase[] Dangers => (GetEffect(EffectType.Scp1853) as Scp1853)?.Dangers;
+
+        /// <summary>
+        /// Gets a list of current <see cref="DangerStackBase"/> the player has.
+        /// </summary>
+        public IEnumerable<DangerStackBase> ActiveDangers => Dangers.Where(d => d.IsActive);
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player's bypass mode is enabled.
@@ -1604,13 +1615,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="roleToAdd"> Role to add. </param>
         /// <param name="ffMult"> Friendly fire multiplier. </param>
-        public void SetFriendlyFire(RoleTypeId roleToAdd, float ffMult)
-        {
-            if (FriendlyFireMultiplier.ContainsKey(roleToAdd))
-                FriendlyFireMultiplier[roleToAdd] = ffMult;
-            else
-                FriendlyFireMultiplier.Add(roleToAdd, ffMult);
-        }
+        public void SetFriendlyFire(RoleTypeId roleToAdd, float ffMult) => FriendlyFireMultiplier[roleToAdd] = ffMult;
 
         /// <summary>
         /// Wrapper to call <see cref="SetFriendlyFire(RoleTypeId, float)"/>.
@@ -1923,10 +1928,7 @@ namespace Exiled.API.Features
                 ReferenceHub.serverRoles.SetGroup(group, false, false);
             }
 
-            if (ServerStatic.GetPermissionsHandler()._members.ContainsKey(UserId))
-                ServerStatic.GetPermissionsHandler()._members[UserId] = name;
-            else
-                ServerStatic.GetPermissionsHandler()._members.Add(UserId, name);
+            ServerStatic.GetPermissionsHandler()._members[UserId] = name;
         }
 
         /// <summary>
@@ -3407,6 +3409,9 @@ namespace Exiled.API.Features
                             ? new Vector3(3, 0, 0)
                             : new Vector3(0, 0, 3)));
                     break;
+                case Chamber chamber:
+                    Teleport(chamber.UseMultipleSpawnpoints ? chamber.Spawnpoints.Random().transform.position : chamber.Spawnpoint.transform.position + Vector3.up + offset);
+                    break;
                 case Role role:
                     if (role.Owner is not null)
                         Teleport(role.Owner.Position + offset);
@@ -3442,12 +3447,6 @@ namespace Exiled.API.Features
                     break;
                 case Scp914Controller scp914:
                     Teleport(scp914._knobTransform.position + Vector3.up + offset);
-                    break;
-                case Locker locker:
-                    Teleport(locker.transform.position + Vector3.up + offset);
-                    break;
-                case LockerChamber chamber:
-                    Teleport(chamber._spawnpoint.position + Vector3.up + offset);
                     break;
                 case ElevatorChamber elevator:
                     Teleport(elevator.transform.position + Vector3.up + offset);
@@ -3485,11 +3484,11 @@ namespace Exiled.API.Features
                 nameof(Player) => Random,
                 nameof(Pickup) => Pickup.Random,
                 nameof(Ragdoll) => Ragdoll.Random,
-                nameof(Locker) => Map.GetRandomLocker(),
+                nameof(Lockers.Locker) => Map.GetRandomLocker(),
                 nameof(Generator) => Generator.Random,
                 nameof(Window) => Window.Random,
                 nameof(Scp914) => Scp914.Scp914Controller,
-                nameof(LockerChamber) => Map.GetRandomLocker().Chambers.Random(),
+                nameof(Chamber) => Map.GetRandomLocker().Chambers.Random(),
                 _ => null,
             };
 
