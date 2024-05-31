@@ -33,6 +33,11 @@ namespace Exiled.Events.Patches.Generic
                 sender.RaReply($"{command.Command}#You do not have permissions to use this command. Required permission: {permissionCommand.Permission}", false, true, string.Empty);
                 return false;
             }
+            else if (command is IGamePermissionCommand gamePermissionCommand && !sender.CheckPermission(gamePermissionCommand.Permission))
+            {
+                sender.RaReply($"{command.Command}#You do not have permissions to use this command. Required permission: PlayerPermissions.{gamePermissionCommand.Permission}", false, true, string.Empty);
+                return false;
+            }
 
             return true;
         }
