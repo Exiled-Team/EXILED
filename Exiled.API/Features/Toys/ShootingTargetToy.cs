@@ -47,6 +47,21 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
+        /// Gets the <see cref="ShootingTargetType.ClassD"/> prefab.
+        /// </summary>
+        public static ShootingTarget DBoyTargetPrefab => PrefabHelper.PrefabToGameObject[PrefabType.DBoyTarget].GetComponent<ShootingTarget>();
+
+        /// <summary>
+        /// Gets the <see cref="ShootingTargetType.Binary"/> prefab.
+        /// </summary>
+        public static ShootingTarget BinaryTargetPrefab => PrefabHelper.PrefabToGameObject[PrefabType.BinaryTarget].GetComponent<ShootingTarget>();
+
+        /// <summary>
+        /// Gets the <see cref="ShootingTargetType.Sport"/> prefab.
+        /// </summary>
+        public static ShootingTarget SportTargetPrefab => PrefabHelper.PrefabToGameObject[PrefabType.SportTarget].GetComponent<ShootingTarget>();
+
+        /// <summary>
         /// Gets the base-game <see cref="ShootingTarget"/> for this target.
         /// </summary>
         public ShootingTarget Base { get; }
@@ -160,19 +175,19 @@ namespace Exiled.API.Features.Toys
             {
                 case ShootingTargetType.ClassD:
                     {
-                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(ToysHelper.DboyShootingTargetObject));
+                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(DBoyTargetPrefab));
                         break;
                     }
 
                 case ShootingTargetType.Binary:
                     {
-                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(ToysHelper.BinaryShootingTargetObject));
+                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(BinaryTargetPrefab));
                         break;
                     }
 
                 default:
                     {
-                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(ToysHelper.SportShootingTargetObject));
+                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(SportTargetPrefab));
                         break;
                     }
             }
