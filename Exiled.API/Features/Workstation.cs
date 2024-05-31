@@ -16,6 +16,8 @@ namespace Exiled.API.Features
     using Interactables;
     using InventorySystem.Items.Firearms.Attachments;
     using MapGeneration;
+    using Mirror;
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper for workstation.
@@ -45,6 +47,11 @@ namespace Exiled.API.Features
         /// Gets a list with all <see cref="Workstation"/>.
         /// </summary>
         public static new IReadOnlyCollection<Workstation> List => BaseToWrapper.Values;
+
+        /// <summary>
+        /// Gets the Prefab of Workstation.
+        /// </summary>
+        public static GameObject Prefab => PrefabHelper.PrefabToGameObject.TryGetValue(PrefabType.WorkstationStructure, out GameObject obj) ? obj : null;
 
         /// <inheritdoc/>
         public WorkstationController Base { get; }
@@ -84,6 +91,23 @@ namespace Exiled.API.Features
         /// <param name="workstationController">The <see cref="WorkstationController"/> instance.</param>
         /// <returns>The <see cref="Workstation"/>.</returns>
         public static Workstation Get(WorkstationController workstationController) => BaseToWrapper.TryGetValue(workstationController, out Workstation workstation) ? workstation : new(workstationController);
+
+        /// <summary>
+        /// Spawns a <see cref="Workstation"/>.
+        /// </summary>
+        /// <param name="position">The position to spawn it at.</param>
+        /// <param name="rotation">The rotation to spawn it as.</param>
+        /// <returns>The GameObject of the <see cref="Workstation"/> spawned.</returns>
+        public static Workstation Spawn(Vector3 position, Quaternion rotation = default)
+        {
+            GameObject bench = Object.Instantiate(Prefab);
+            bench.transform.localPosition = position;
+            bench.transform.localRotation = rotation;
+
+            NetworkServer.Spawn(bench);
+
+            return Get(bench.AddComponent<WorkstationController>());
+        }
 
         /// <summary>
         /// Interacts with workstation.
