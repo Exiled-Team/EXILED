@@ -42,17 +42,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Tries to get a <see cref="GameObject"/> of the specified <see cref="PrefabType"/>.
-        /// </summary>
-        /// <param name="prefabType">The prefab type.</param>
-        /// <param name="prefab">The corresponding <see cref="GameObject"/>.</param>
-        /// <returns><see langword="true"/> if a <see cref="GameObject"/> of the specified <see cref="PrefabType"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGetGameObject(PrefabType prefabType, out GameObject prefab)
-        {
-            return Stored.TryGetValue(prefabType, out prefab);
-        }
-
-        /// <summary>
         /// Spawns a prefab on server.
         /// </summary>
         /// <param name="prefabType">The prefab type.</param>
@@ -61,7 +50,7 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="GameObject"/> instantied.</returns>
         public static GameObject Spawn(PrefabType prefabType, Vector3 position = default, Quaternion rotation = default)
         {
-            if (!TryGetGameObject(prefabType, out GameObject gameObject))
+            if (!Stored.TryGetValue(prefabType, out GameObject gameObject))
                 return null;
             GameObject newGameObject = UnityEngine.Object.Instantiate(gameObject, position, rotation);
             NetworkServer.Spawn(newGameObject);
