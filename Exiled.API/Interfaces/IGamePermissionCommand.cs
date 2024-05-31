@@ -10,7 +10,7 @@ namespace Exiled.API.Interfaces
     using CommandSystem;
 
     /// <summary>
-    /// Represents an interface for commands with permissions.
+    /// Represents an interface for commands with game permissions.
     /// </summary>
     public interface IGamePermissionCommand : ICommand
     {
