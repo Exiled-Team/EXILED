@@ -17,6 +17,6 @@ namespace Exiled.API.Interfaces
         /// <summary>
         /// Gets the permissions of a command.
         /// </summary>
-        public PlayerPermissions[] Permission { get; }
+        public PlayerPermissions[] Permissions { get; }
     }
 }
