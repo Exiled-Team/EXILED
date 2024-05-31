@@ -16,7 +16,10 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using MapGeneration.Distributors;
+    using Mirror;
     using UnityEngine;
+
+    using Object = UnityEngine.Object;
 
     /// <summary>
     /// Wrapper class for <see cref="Scp079Generator"/>.
@@ -39,6 +42,11 @@ namespace Exiled.API.Features
             Base = scp079Generator;
             Scp079GeneratorToGenerator.Add(scp079Generator, this);
         }
+
+        /// <summary>
+        /// Gets the prefab.
+        /// </summary>
+        public static GameObject Prefab => PrefabHelper.PrefabToGameObject[PrefabType.GeneratorStructure];
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances.
@@ -214,6 +222,24 @@ namespace Exiled.API.Features
         {
             get => (KeycardPermissions)Base._requiredPermission;
             set => Base._requiredPermission = (Interactables.Interobjects.DoorUtils.KeycardPermissions)value;
+        }
+
+        /// <summary>
+        /// Spawns a <see cref="Generator"/>.
+        /// </summary>
+        /// <param name="position">The position to spawn it at.</param>
+        /// <param name="rotation">The rotation to spawn it as.</param>
+        /// <returns>The Generator that was spawned.</returns>
+        public static Generator Spawn(Vector3 position, Quaternion rotation = default)
+        {
+            Scp079Generator obj = Object.Instantiate(Prefab).AddComponent<Scp079Generator>();
+            Generator gen = Get(obj);
+
+            gen.Position = position;
+            gen.Rotation = rotation;
+
+            NetworkServer.Spawn(gen.GameObject);
+            return gen;
         }
 
         /// <summary>

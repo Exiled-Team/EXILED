@@ -51,7 +51,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the Prefab of Workstation.
         /// </summary>
-        public static GameObject Prefab => PrefabHelper.PrefabToGameObject.TryGetValue(PrefabType.WorkstationStructure, out GameObject obj) ? obj : null;
+        public static GameObject Prefab => PrefabHelper.PrefabToGameObject[PrefabType.WorkstationStructure];
 
         /// <inheritdoc/>
         public WorkstationController Base { get; }
@@ -97,16 +97,18 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="position">The position to spawn it at.</param>
         /// <param name="rotation">The rotation to spawn it as.</param>
-        /// <returns>The GameObject of the <see cref="Workstation"/> spawned.</returns>
+        /// <returns>The Workstation that was spawned.</returns>
         public static Workstation Spawn(Vector3 position, Quaternion rotation = default)
         {
-            GameObject bench = Object.Instantiate(Prefab);
-            bench.transform.localPosition = position;
-            bench.transform.localRotation = rotation;
+            WorkstationController controller = Object.Instantiate(Prefab).AddComponent<WorkstationController>();
+            Workstation workstation = Get(controller);
 
-            NetworkServer.Spawn(bench);
+            workstation.Position = position;
+            workstation.Rotation = rotation;
 
-            return Get(bench.AddComponent<WorkstationController>());
+            NetworkServer.Spawn(controller.gameObject);
+
+            return workstation;
         }
 
         /// <summary>
