@@ -51,7 +51,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the Prefab of Workstation.
         /// </summary>
-        public static GameObject Prefab => PrefabHelper.PrefabToGameObject[PrefabType.WorkstationStructure];
+        public static WorkstationController Prefab => PrefabHelper.PrefabToGameObject[PrefabType.WorkstationStructure].GetComponent<WorkstationController>();
 
         /// <inheritdoc/>
         public WorkstationController Base { get; }
@@ -100,7 +100,7 @@ namespace Exiled.API.Features
         /// <returns>The Workstation that was spawned.</returns>
         public static Workstation Spawn(Vector3 position, Quaternion rotation = default)
         {
-            WorkstationController controller = Object.Instantiate(Prefab).AddComponent<WorkstationController>();
+            WorkstationController controller = Object.Instantiate(Prefab);
             Workstation workstation = Get(controller);
 
             workstation.Position = position;

@@ -38,7 +38,7 @@ namespace Exiled.API.Features.Hazards
         /// <summary>
         /// Gets the tantrum prefab.
         /// </summary>
-        public static GameObject Prefab => PrefabHelper.PrefabToGameObject[PrefabType.TantrumObj];
+        public static TantrumEnvironmentalHazard Prefab => PrefabHelper.PrefabToGameObject[PrefabType.TantrumObj].GetComponent<TantrumEnvironmentalHazard>();
 
         /// <summary>
         /// Gets the <see cref="TantrumEnvironmentalHazard"/>.
@@ -84,7 +84,7 @@ namespace Exiled.API.Features.Hazards
         /// <returns>The <see cref="TantrumHazard"/> instance.</returns>
         public static TantrumHazard CreateAndSpawn(Vector3 position, bool isActive = true)
         {
-            TantrumEnvironmentalHazard tantrum = Object.Instantiate(Prefab).AddComponent<TantrumEnvironmentalHazard>();
+            TantrumEnvironmentalHazard tantrum = Object.Instantiate(Prefab);
 
             if (!isActive)
                 tantrum.SynchronizedPosition = new RelativePosition(position);

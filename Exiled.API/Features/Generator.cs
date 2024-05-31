@@ -46,7 +46,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the prefab.
         /// </summary>
-        public static GameObject Prefab => PrefabHelper.PrefabToGameObject[PrefabType.GeneratorStructure];
+        public static Scp079Generator Prefab => PrefabHelper.PrefabToGameObject[PrefabType.GeneratorStructure].GetComponent<Scp079Generator>();
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances.
@@ -232,7 +232,7 @@ namespace Exiled.API.Features
         /// <returns>The Generator that was spawned.</returns>
         public static Generator Spawn(Vector3 position, Quaternion rotation = default)
         {
-            Scp079Generator obj = Object.Instantiate(Prefab).AddComponent<Scp079Generator>();
+            Scp079Generator obj = Object.Instantiate(Prefab).GetComponent<Scp079Generator>();
             Generator gen = Get(obj);
 
             gen.Position = position;
