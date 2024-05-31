@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Generic
             }
             else if (command is IGamePermissionCommand gamePermissionCommand && !sender.CheckPermission(gamePermissionCommand.Permissions))
             {
-                sender.RaReply($"{command.Command}#You do not have permissions to use this command. Required permission: PlayerPermissions.{gamePermissionCommand.Permission}", false, true, string.Empty);
+                sender.RaReply($"{command.Command}#You do not have permissions to use this command. Required permission: PlayerPermissions: [{string.Join(" ", gamePermissionCommand.Permissions)}]", false, true, string.Empty);
                 return false;
             }
 
