@@ -8,6 +8,7 @@
 namespace Exiled.Events.EventArgs.Scp079
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
     using MapGeneration;

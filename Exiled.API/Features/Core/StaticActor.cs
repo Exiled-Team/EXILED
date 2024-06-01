@@ -42,11 +42,6 @@ namespace Exiled.API.Features.Core
         /// </summary>
         public bool IsDestroyed { get; private set; }
 
-        /// <inheritdoc cref="CreateNewInstance"/>
-        /// <typeparam name="T"><inheritdoc path="/param[@name='type']" cref="CreateNewInstance"/></typeparam>
-        public static StaticActor CreateNewInstance<T>()
-            where T : new() => CreateNewInstance(typeof(T));
-
         /// <summary>
         /// Creates a new instance of the <see cref="StaticActor"/>.
         /// </summary>
@@ -56,10 +51,6 @@ namespace Exiled.API.Features.Core
         {
             EObject @object = CreateDefaultSubobject<StaticActor>(type);
             @object.Name = "__" + type.Name + " (StaticActor)";
-
-            if (Server.Host.GameObject)
-                @object.Base = Server.Host.GameObject;
-
             return @object.Cast<StaticActor>();
         }
 
@@ -69,7 +60,7 @@ namespace Exiled.API.Features.Core
         /// <typeparam name="T">The type of the <see cref="StaticActor"/> to look for.</typeparam>
         /// <returns>The corresponding <see cref="StaticActor"/>, or <see langword="null"/> if not found.</returns>
         public static T Get<T>()
-            where T : StaticActor, new()
+            where T : StaticActor
         {
             foreach (StaticActor actor in FindActiveObjectsOfType<StaticActor>())
             {
@@ -79,7 +70,7 @@ namespace Exiled.API.Features.Core
                 return actor.Cast<T>();
             }
 
-            return CreateNewInstance<T>().Cast<T>();
+            return CreateNewInstance(typeof(T)).Cast<T>();
         }
 
         /// <summary>

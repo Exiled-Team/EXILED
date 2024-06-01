@@ -7,8 +7,8 @@
 
 namespace Exiled.API.Features.Pickups.Projectiles
 {
-    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
+
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -31,8 +31,9 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal EffectGrenadeProjectile(ItemType type)
-            : this((EffectGrenade)type.GetItemBase().ServerDropItem())
+            : base(type)
         {
+            Base = (EffectGrenade)((Pickup)this).Base;
         }
 
         /// <summary>

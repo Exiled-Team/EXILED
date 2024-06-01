@@ -80,10 +80,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         public virtual float Damage
         {
-            get => Base is StandardDamageHandler handler ? handler.Damage : 0f;
+            get => Is(out StandardDamageHandler handler) ? handler.Damage : 0f;
             set
             {
-                if (Base is StandardDamageHandler handler)
+                if (Is(out StandardDamageHandler handler))
                     handler.Damage = value;
             }
         }
@@ -93,10 +93,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         public Vector3 StartVelocity
         {
-            get => Base is StandardDamageHandler handler ? handler.StartVelocity : Vector3.zero;
+            get => Is(out StandardDamageHandler handler) ? handler.StartVelocity : Vector3.zero;
             set
             {
-                if (Base is StandardDamageHandler handler)
+                if (Is(out StandardDamageHandler handler))
                     handler.StartVelocity = value;
             }
         }
@@ -106,10 +106,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         public float DealtHealthDamage
         {
-            get => Base is StandardDamageHandler handler ? handler.DealtHealthDamage : 0f;
+            get => Is(out StandardDamageHandler handler) ? handler.DealtHealthDamage : 0f;
             set
             {
-                if (Base is StandardDamageHandler handler)
+                if (Is(out StandardDamageHandler handler))
                     handler.DealtHealthDamage = value;
             }
         }
@@ -119,10 +119,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         public float AbsorbedAhpDamage
         {
-            get => Base is StandardDamageHandler handler ? handler.AbsorbedAhpDamage : 0f;
+            get => Is(out StandardDamageHandler handler) ? handler.AbsorbedAhpDamage : 0f;
             set
             {
-                if (Base is StandardDamageHandler handler)
+                if (Is(out StandardDamageHandler handler))
                     handler.AbsorbedAhpDamage = value;
             }
         }
@@ -130,16 +130,16 @@ namespace Exiled.API.Features.DamageHandlers
         /// <inheritdoc/>
         public override Action ApplyDamage(Player player)
         {
-            if (Base is not StandardDamageHandler handler)
+            if (!Is(out StandardDamageHandler damageHandler))
                 return player.GetModule<HealthStat>().CurValue > 0f ? Action.Damage : Action.Death;
 
             if (Damage <= 0f)
                 return Action.None;
 
-            handler.ApplyDamage(player.ReferenceHub);
+            damageHandler.ApplyDamage(player.ReferenceHub);
 
             StartVelocity = player.Velocity;
-            handler.StartVelocity.y = Mathf.Max(handler.StartVelocity.y, 0f);
+            As<StandardDamageHandler>().StartVelocity.y = Mathf.Max(damageHandler.StartVelocity.y, 0f);
             AhpStat ahpModule = player.GetModule<AhpStat>();
             HealthStat healthModule = player.GetModule<HealthStat>();
 
@@ -155,7 +155,7 @@ namespace Exiled.API.Features.DamageHandlers
             foreach (StatusEffectBase effect in player.ActiveEffects)
             {
                 if (effect is IDamageModifierEffect damageModifierEffect)
-                    Damage *= damageModifierEffect.GetDamageModifier(Damage, handler, handler.Hitbox);
+                    Damage *= damageModifierEffect.GetDamageModifier(Damage, damageHandler, damageHandler.Hitbox);
             }
 
             // DealtHealthDamage = ahpModule.ServerProcessDamage(Damage);

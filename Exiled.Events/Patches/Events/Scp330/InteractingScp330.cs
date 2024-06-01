@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Core.Generic.Pools;
+    using API.Features.Pools;
 
     using CustomPlayerEffects;
     using Exiled.Events.Attributes;

@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Generic
 
             foreach (KeyValuePair<ElevatorManager.ElevatorGroup, ElevatorChamber> lift in ElevatorManager.SpawnedChambers)
             {
-                Lift.Get(lift.Value);
+                _ = new Lift(lift.Value);
             }
         }
     }

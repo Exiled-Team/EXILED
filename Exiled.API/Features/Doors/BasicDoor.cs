@@ -37,7 +37,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets the list with all SCP-106's colliders.
         /// </summary>
-        public List<Collider> Scp106Colliders => Base.Scp106Colliders;
+        public IEnumerable<Collider> Scp106Colliders => Base.Scp106Colliders;
 
         /// <summary>
         /// Gets or sets the total cooldown before door can be triggered again.

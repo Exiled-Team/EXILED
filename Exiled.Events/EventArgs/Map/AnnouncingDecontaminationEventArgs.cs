@@ -39,9 +39,9 @@ namespace Exiled.Events.EventArgs.Map
         public int Id { get; }
 
         /// <summary>
-        /// Gets the announcement State.
+        /// Gets the announcement id, from 0 to 6.
         /// </summary>
-        public DecontaminationPhase State => (DecontaminationPhase)Id;
+        public DecontaminationState State => (DecontaminationState)Id;
 
         /// <summary>
         /// Gets a value indicating whether the action will be.

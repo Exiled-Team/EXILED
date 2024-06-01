@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Core.Generic.Pools;
+    using API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp330;
 
@@ -42,8 +42,6 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             Label returnLabel = generator.DefineLabel();
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(EatingScp330EventArgs));
-
             newInstructions.InsertRange(
                 index,
                 new[]
@@ -52,9 +50,6 @@ namespace Exiled.Events.Patches.Events.Scp330
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp330Bag), nameof(Scp330Bag.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-
-                    // this
-                    new(OpCodes.Ldarg_0),
 
                     // ICandy
                     new(OpCodes.Ldloc_0),
@@ -65,8 +60,6 @@ namespace Exiled.Events.Patches.Events.Scp330
                     // EatingScp330EventArgs ev = new(player, candy, true)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatingScp330EventArgs))[0]),
                     new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Handlers.Scp330.OnEatingScp330(ev)
                     new(OpCodes.Call, Method(typeof(Scp330), nameof(Scp330.OnEatingScp330))),
@@ -75,11 +68,6 @@ namespace Exiled.Events.Patches.Events.Scp330
                     //  return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(EatingScp330EventArgs), nameof(EatingScp330EventArgs.IsAllowed))),
                     new(OpCodes.Brfalse, returnLabel),
-
-                    // candy = ev.Candy
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(EatingScp330EventArgs), nameof(EatingScp330EventArgs.Candy))),
-                    new(OpCodes.Stloc_0),
                 });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
@@ -95,9 +83,6 @@ namespace Exiled.Events.Patches.Events.Scp330
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp330Bag), nameof(Scp330Bag.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-
-                    // this
-                    new(OpCodes.Ldarg_0),
 
                     // ICandy
                     new(OpCodes.Ldloc_0),

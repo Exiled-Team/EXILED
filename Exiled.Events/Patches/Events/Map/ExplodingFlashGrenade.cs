@@ -13,7 +13,8 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Core.Generic.Pools;
+    using API.Features.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Patches.Generic;
     using HarmonyLib;

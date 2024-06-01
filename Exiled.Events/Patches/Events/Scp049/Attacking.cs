@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp049;
     using HarmonyLib;
@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Scp049
             int offset = -3;
             int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger)))) + offset;
 
-            Label ret = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(
                 index,
@@ -64,10 +64,12 @@ namespace Exiled.Events.Patches.Events.Scp049
                     // if (!ev.IsAllowed)
                     //      return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(AttackingEventArgs), nameof(AttackingEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, ret),
-                });
+                    new(OpCodes.Brtrue_S, continueLabel),
 
-            newInstructions[newInstructions.Count - 1].labels.Add(ret);
+                    new(OpCodes.Ret),
+
+                    new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

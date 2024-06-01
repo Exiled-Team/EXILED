@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="HazardList.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Generic
     {
         [HarmonyPatch(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.Start))]
         [HarmonyPostfix]
-        private static void Adding(EnvironmentalHazard __instance) => Hazard.Get(__instance);
+        private static void Adding(EnvironmentalHazard __instance) => _ = Hazard.Get(__instance);
 
         [HarmonyPatch(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnDestroy))]
         [HarmonyPostfix]

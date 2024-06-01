@@ -20,6 +20,9 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(Scp079Speaker), nameof(Scp079Speaker.OnRegistered))]
     internal class SpeakerInRoom
     {
-        private static void Postfix(Scp079Speaker __instance) => Room.RoomIdentifierToRoom[__instance.Room].SpeakersValue.Add(__instance);
+        private static void Postfix(Scp079Speaker __instance)
+        {
+            Room.RoomIdentifierToRoom[__instance.Room].SpeakersValue.Add(__instance);
+        }
     }
 }
