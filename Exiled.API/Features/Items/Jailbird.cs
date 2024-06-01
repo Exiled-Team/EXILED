@@ -68,12 +68,12 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets or sets the amount of time in seconds that the <see cref="CustomPlayerEffects.Flashed"/> effect will be applied on being hit.
+        /// Gets or sets the amount of time in seconds that the <see cref="CustomPlayerEffects.Concussed"/> effect will be applied on being hit.
         /// </summary>
-        public float FlashDuration
+        public float ConcussionDuration
         {
-            get => Base._hitreg._flashDuration;
-            set => Base._hitreg._flashDuration = value;
+            get => Base._hitreg._concussionDuration;
+            set => Base._hitreg._concussionDuration = value;
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace Exiled.API.Features.Items
             {
                 MeleeDamage = jailbirdPickup.MeleeDamage;
                 ChargeDamage = jailbirdPickup.ChargeDamage;
-                FlashDuration = jailbirdPickup.FlashDuration;
+                ConcussionDuration = jailbirdPickup.ConcussionDuration;
                 Radius = jailbirdPickup.Radius;
             }
         }

@@ -54,9 +54,9 @@ namespace Exiled.API.Features.Pickups
         public float ChargeDamage { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount of time in seconds that the <see cref="CustomPlayerEffects.Flashed"/> effect will be applied on being hit.
+        /// Gets or sets the amount of time in seconds that the <see cref="CustomPlayerEffects.Concussed"/> effect will be applied on being hit.
         /// </summary>
-        public float FlashDuration { get; set; }
+        public float ConcussionDuration { get; set; }
 
         /// <summary>
         /// Gets or sets the radius of the Jailbird's hit register.
@@ -105,7 +105,7 @@ namespace Exiled.API.Features.Pickups
             {
                 MeleeDamage = jailBirditem.MeleeDamage;
                 ChargeDamage = jailBirditem.ChargeDamage;
-                FlashDuration = jailBirditem.FlashDuration;
+                ConcussionDuration = jailBirditem.ConcussionDuration;
                 Radius = jailBirditem.Radius;
             }
         }
@@ -118,7 +118,7 @@ namespace Exiled.API.Features.Pickups
             {
                 MeleeDamage = jailbirdItem._hitreg._damageMelee;
                 ChargeDamage = jailbirdItem._hitreg._damageCharge;
-                FlashDuration = jailbirdItem._hitreg._flashDuration;
+                ConcussionDuration = jailbirdItem._hitreg._concussionDuration;
                 Radius = jailbirdItem._hitreg._hitregRadius;
             }
         }
