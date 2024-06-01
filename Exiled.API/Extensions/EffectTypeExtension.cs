@@ -72,6 +72,7 @@ namespace Exiled.API.Extensions
             { EffectType.Strangled, typeof(Strangled) },
             { EffectType.Ghostly, typeof(Ghostly) },
             { EffectType.FogControl, typeof(FogControl) },
+            { EffectType.Slowness, typeof(Slowness) },
         };
 
         /// <summary>
