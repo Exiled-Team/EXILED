@@ -9,6 +9,7 @@ namespace Exiled.API.Extensions
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
 
     using CustomPlayerEffects;
@@ -26,7 +27,7 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets a dictionary that maps each <see cref="EffectType"/> to its corresponding <see cref="System.Type"/>.
         /// </summary>
-        public static Dictionary<EffectType, Type> EffectTypeToType { get; } = new(35)
+        public static ReadOnlyDictionary<EffectType, Type> EffectTypeToType { get; } = new(new Dictionary<EffectType, Type>(45)
         {
             { EffectType.AmnesiaItems, typeof(AmnesiaItems) },
             { EffectType.AmnesiaVision, typeof(AmnesiaVision) },
@@ -73,12 +74,13 @@ namespace Exiled.API.Extensions
             { EffectType.Ghostly, typeof(Ghostly) },
             { EffectType.FogControl, typeof(FogControl) },
             { EffectType.Slowness, typeof(Slowness) },
-        };
+        });
+
 
         /// <summary>
         /// Gets a dictionary that maps each <see cref="System.Type"/> to its corresponding <see cref="EffectType"/>.
         /// </summary>
-        public static Dictionary<Type, EffectType> TypeToEffectType { get; } = EffectTypeToType.ToDictionary(x => x.Value, y => y.Key);
+        public static ReadOnlyDictionary<Type, EffectType> TypeToEffectType { get; } = new(EffectTypeToType.ToDictionary(x => x.Value, y => y.Key));
 
         /// <summary>
         /// Gets an instance of <see cref="System.Type"/> points to an effect.
