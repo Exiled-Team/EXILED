@@ -11,9 +11,11 @@ namespace Exiled.API.Features.Core
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Interfaces;
+    using Mirror;
     using UnityEngine;
 
     /// <summary>
@@ -121,6 +123,24 @@ namespace Exiled.API.Features.Core
         /// <param name="distance">The minimum distance the game entity can be from the <paramref name="vector" /> to be included.</param>
         /// <returns>The filtered collection of <see cref="GameEntity" /> objects.</returns>
         public static IEnumerable<GameEntity> GetFarthestEntities(Vector3 vector, float distance) => List.Where(p => p.GameObject.transform && MathExtensions.DistanceSquared(vector, p.GameObject.transform.position) >= distance * distance);
+
+        /// <summary>
+        /// Spawns an object based on the arguments.
+        /// </summary>
+        /// <param name="type">The object to spawn.</param>
+        /// <param name="position">The position to spawn at.</param>
+        /// <param name="rotation">The rotation.</param>
+        /// <returns>The newly created GameObject.</returns>
+        public static GameObject Spawn(PrefabType type, Vector3 position, Quaternion rotation)
+        {
+            GameObject obj = UnityEngine.Object.Instantiate(PrefabHelper.PrefabToGameObject[type]);
+
+            obj.transform.position = position;
+            obj.transform.rotation = rotation;
+
+            NetworkServer.Spawn(obj);
+            return obj;
+        }
 
         /// <summary>
         /// Returns the local space position, based on a world space position.
