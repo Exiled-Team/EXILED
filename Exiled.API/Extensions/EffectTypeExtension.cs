@@ -76,7 +76,6 @@ namespace Exiled.API.Extensions
             { EffectType.Slowness, typeof(Slowness) },
         });
 
-
         /// <summary>
         /// Gets a dictionary that maps each <see cref="System.Type"/> to its corresponding <see cref="EffectType"/>.
         /// </summary>
