@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -19,7 +18,6 @@ namespace Exiled.API.Features.Items
     using PlayerRoles;
 
     using Structs;
-    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="BodyArmor"/>.
@@ -68,7 +66,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the Weight of the armor.
         /// </summary>
-        public new float Weight
+        public override float Weight
         {
             get => Base.Weight;
             set => Base._weight = value;
@@ -111,14 +109,9 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets or sets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
+        /// Gets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
         /// </summary>
-        public float MovementSpeedMultiplier
-        {
-            get => Base._movementSpeedMultiplier;
-            [Obsolete("This Setter was causing desync to client", true)]
-            set => _ = value;
-        }
+        public float MovementSpeedMultiplier => Base._movementSpeedMultiplier;
 
         /// <summary>
         /// Gets how much worse <see cref="RoleTypeId.ClassD"/> and <see cref="RoleTypeId.Scientist"/>s are affected by wearing this armor.

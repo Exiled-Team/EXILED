@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Fixes
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.PlayableScps.Subroutines;
@@ -34,7 +34,9 @@ namespace Exiled.Events.Patches.Fixes
             int index = newInstructions.FindLastIndex(x => x.operand == (object)Method(typeof(ScpAttackAbilityBase<Scp3114Role>), nameof(ScpAttackAbilityBase<Scp3114Role>.HasAttackResultFlag))) + offset;
             newInstructions[index].operand = ret;
 
-            newInstructions[newInstructions.Count - 1].labels.Add(ret);
+            offset = 1;
+            index = newInstructions.FindLastIndex(x => x.operand == (object)PropertySetter(typeof(PlayerStatsSystem.StatBase), nameof(PlayerStatsSystem.StatBase.CurValue))) + offset;
+            newInstructions[index].labels.Add(ret);
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 

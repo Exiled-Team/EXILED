@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.EventArgs.Item;
     using HarmonyLib;
     using InventorySystem.Items.Radio;

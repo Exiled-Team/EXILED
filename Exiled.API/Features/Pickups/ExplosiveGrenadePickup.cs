@@ -8,9 +8,9 @@
 namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups.Projectiles;
-
     using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
 
@@ -32,7 +32,7 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="ExplosiveGrenadePickup"/> class.
         /// </summary>
         internal ExplosiveGrenadePickup()
-            : base(ItemType.GrenadeHE)
+            : this((TimedGrenadePickup)ItemType.GrenadeHE.GetItemBase().ServerDropItem())
         {
         }
 

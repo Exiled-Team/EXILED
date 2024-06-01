@@ -8,15 +8,14 @@
 namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
+    using System.Reflection;
 
-    using Exiled.API.Features.Pools;
-
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Generic.Pools;
+    using HarmonyLib;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-
-    using PlayerStatsSystem;
     using RelativePositioning;
-
     using UnityEngine;
 
     /// <summary>
@@ -24,7 +23,10 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public abstract class FpcRole : Role
     {
+        private static FieldInfo enableFallDamageField;
+
         private bool isUsingStamina = true;
+        private RoleTypeId fakeAppearance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FpcRole"/> class.
@@ -47,12 +49,35 @@ namespace Exiled.API.Features.Roles
         public FpcStandardRoleBase FirstPersonController { get; }
 
         /// <summary>
+        /// Gets the <see cref="FirstPersonMovementModule"/>.
+        /// </summary>
+        public FirstPersonMovementModule MovementModule => FirstPersonController.FpcModule;
+
+        /// <summary>
+        /// Gets the <see cref="CharacterController"/>.
+        /// </summary>
+        public CharacterController CharacterController => FirstPersonController.FpcModule.CharController;
+
+        /// <summary>
         /// Gets or sets the player's relative position.
         /// </summary>
         public RelativePosition RelativePosition
         {
             get => FirstPersonController.FpcModule.Motor.ReceivedPosition;
             set => FirstPersonController.FpcModule.Motor.ReceivedPosition = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether if the player should get <see cref="Enums.DamageType.Falldown"/> damage.
+        /// </summary>
+        public bool IsFallDamageEnable
+        {
+            get => FirstPersonController.FpcModule.Motor._enableFallDamage;
+            set
+            {
+                enableFallDamageField ??= AccessTools.Field(typeof(FpcMotor), nameof(FpcMotor._enableFallDamage));
+                enableFallDamageField.SetValue(FirstPersonController.FpcModule.Motor, value);
+            }
         }
 
         /// <summary>
@@ -207,15 +232,20 @@ namespace Exiled.API.Features.Roles
         public bool IsHumeShieldedRole => this is IHumeShieldRole;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player has noclip enabled.
+        /// Gets or sets a value indicating the fake appearance of the player.
         /// </summary>
-        /// <returns><see cref="bool"/> indicating status.</returns>
-        /// <remarks>For permitting a player to enter and exit noclip freely, see <see cref="Player.IsNoclipPermitted"/>.</remarks>
-        /// <seealso cref="Player.IsNoclipPermitted"/>
-        public bool IsNoclipEnabled
+        public RoleTypeId? FakeAppearance
         {
-            get => Owner.ReferenceHub.playerStats.GetModule<AdminFlagsStat>().HasFlag(AdminFlags.Noclip);
-            set => Owner.ReferenceHub.playerStats.GetModule<AdminFlagsStat>().SetFlag(AdminFlags.Noclip, value);
+            get => fakeAppearance;
+            set
+            {
+                fakeAppearance = value.Value;
+
+                if (value.HasValue)
+                    Owner.ChangeAppearance(value.Value);
+                else
+                    Owner.ChangeAppearance(Owner.Role.Type, skipJump: true);
+            }
         }
 
         /// <summary>
