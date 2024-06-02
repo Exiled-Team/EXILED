@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Hazards
     using Exiled.API.Extensions;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp939;
+    using UnityEngine;
 
     using Scp939GameRole = PlayerRoles.PlayableScps.Scp939.Scp939Role;
 
@@ -19,8 +20,6 @@ namespace Exiled.API.Features.Hazards
     /// </summary>
     public class AmnesticCloudHazard : TemporaryHazard
     {
-        private static Scp939AmnesticCloudInstance amnesticCloudPrefab;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AmnesticCloudHazard"/> class.
         /// </summary>
@@ -34,23 +33,14 @@ namespace Exiled.API.Features.Hazards
         }
 
         /// <summary>
-        /// Gets the amnestic cloud prefab.
+        /// Gets the amnestic cloud prefab's type.
         /// </summary>
-        public static Scp939AmnesticCloudInstance AmnesticCloudPrefab
-        {
-            get
-            {
-                if (amnesticCloudPrefab == null)
-                {
-                    Scp939GameRole scp939Role = (Scp939GameRole)RoleTypeId.Scp939.GetRoleBase();
+        public static PrefabType PrefabType => PrefabType.AmnesticCloudHazard;
 
-                    if (scp939Role.SubroutineModule.TryGetSubroutine(out Scp939AmnesticCloudAbility ability))
-                        amnesticCloudPrefab = ability._instancePrefab;
-                }
-
-                return amnesticCloudPrefab;
-            }
-        }
+        /// <summary>
+        /// Gets the amnestic cloud prefab's object.
+        /// </summary>
+        public static GameObject PrefabObject => PrefabHelper.PrefabToGameObject[PrefabType];
 
         /// <inheritdoc cref="Hazard.Base"/>
         public new Scp939AmnesticCloudInstance Base { get; }

@@ -16,6 +16,8 @@ namespace Exiled.API.Features
     using Interactables;
     using InventorySystem.Items.Firearms.Attachments;
     using MapGeneration;
+    using Mirror;
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper for workstation.
@@ -45,6 +47,16 @@ namespace Exiled.API.Features
         /// Gets a list with all <see cref="Workstation"/>.
         /// </summary>
         public static new IReadOnlyCollection<Workstation> List => BaseToWrapper.Values;
+
+        /// <summary>
+        /// Gets the prefab's type.
+        /// </summary>
+        public static PrefabType PrefabType => PrefabType.WorkstationStructure;
+
+        /// <summary>
+        /// Gets the prefab's object.
+        /// </summary>
+        public static GameObject PrefabObject => PrefabHelper.PrefabToGameObject[PrefabType];
 
         /// <inheritdoc/>
         public WorkstationController Base { get; }
@@ -84,6 +96,18 @@ namespace Exiled.API.Features
         /// <param name="workstationController">The <see cref="WorkstationController"/> instance.</param>
         /// <returns>The <see cref="Workstation"/>.</returns>
         public static Workstation Get(WorkstationController workstationController) => BaseToWrapper.TryGetValue(workstationController, out Workstation workstation) ? workstation : new(workstationController);
+
+        /// <summary>
+        /// Spawns a <see cref="Workstation"/>.
+        /// </summary>
+        /// <param name="position">The position to spawn it at.</param>
+        /// <param name="rotation">The rotation to spawn it as.</param>
+        /// <returns>The Workstation that was spawned.</returns>
+        public static Workstation Spawn(Vector3 position, Quaternion rotation = default)
+        {
+            WorkstationController controller = PrefabHelper.Spawn<WorkstationController>(PrefabType, position, rotation);
+            return Get(controller);
+        }
 
         /// <summary>
         /// Interacts with workstation.
