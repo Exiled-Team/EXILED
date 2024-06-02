@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Map
     /// <summary>
     /// Contains all information up to spawning Scp244.
     /// </summary>
-    public class Scp244SpawningEventArgs : IRoomEvent, IDeniableEvent
+    public class Scp244SpawningEventArgs : IRoomEvent, IPickupEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp244SpawningEventArgs" /> class.
@@ -28,7 +28,8 @@ namespace Exiled.Events.EventArgs.Map
         public Scp244SpawningEventArgs(Room room, Pickup scp244Pickup)
         {
             Room = room;
-            Pickup = scp244Pickup.As<Scp244Pickup>();
+            Pickup = scp244Pickup;
+            Scp244Pickup = scp244Pickup.As<Scp244Pickup>();
         }
 
         /// <summary>
@@ -36,10 +37,13 @@ namespace Exiled.Events.EventArgs.Map
         /// </summary>
         public Room Room { get; }
 
+        /// <inheritdoc />
+        public Pickup Pickup { get; }
+
         /// <summary>
         /// Gets a value indicating the pickup being spawning.
         /// </summary>
-        public Scp244Pickup Pickup { get; }
+        public Scp244Pickup Scp244Pickup { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the item can be spawning.
