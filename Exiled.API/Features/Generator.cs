@@ -16,10 +16,7 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using MapGeneration.Distributors;
-    using Mirror;
     using UnityEngine;
-
-    using Object = UnityEngine.Object;
 
     /// <summary>
     /// Wrapper class for <see cref="Scp079Generator"/>.
@@ -44,9 +41,14 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the prefab.
+        /// Gets the prefab's type.
         /// </summary>
-        public static Scp079Generator Prefab => PrefabHelper.PrefabToGameObject[PrefabType.GeneratorStructure].GetComponent<Scp079Generator>();
+        public static PrefabType PrefabType => PrefabType.GeneratorStructure;
+
+        /// <summary>
+        /// Gets the prefab's object.
+        /// </summary>
+        public static GameObject PrefabObject => PrefabHelper.PrefabToGameObject[PrefabType];
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances.
@@ -232,14 +234,8 @@ namespace Exiled.API.Features
         /// <returns>The Generator that was spawned.</returns>
         public static Generator Spawn(Vector3 position, Quaternion rotation = default)
         {
-            Scp079Generator obj = Object.Instantiate(Prefab).GetComponent<Scp079Generator>();
-            Generator gen = Get(obj);
-
-            gen.Position = position;
-            gen.Rotation = rotation;
-
-            NetworkServer.Spawn(gen.GameObject);
-            return gen;
+            Scp079Generator generator = PrefabHelper.Spawn<Scp079Generator>(PrefabType, position, rotation);
+            return Get(generator);
         }
 
         /// <summary>

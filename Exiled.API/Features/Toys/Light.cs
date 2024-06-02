@@ -32,9 +32,14 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets the prefab.
+        /// Gets the light prefab's type.
         /// </summary>
-        public static LightSourceToy Prefab => PrefabHelper.PrefabToGameObject[PrefabType.LightSourceToy].GetComponent<LightSourceToy>();
+        public static PrefabType PrefabType => PrefabType.LightSourceToy;
+
+        /// <summary>
+        /// Gets the light prefab's object.
+        /// </summary>
+        public static GameObject PrefabObject => PrefabHelper.PrefabToGameObject[PrefabType];
 
         /// <summary>
         /// Gets the base <see cref="LightSourceToy"/>.
@@ -99,7 +104,7 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Light"/>.</returns>
         public static Light Create(Vector3? position /*= null*/, Vector3? rotation /*= null*/, Vector3? scale /*= null*/, bool spawn /*= true*/, Color? color /*= null*/)
         {
-            Light light = new(UnityEngine.Object.Instantiate(Prefab));
+            Light light = new(Object.Instantiate(PrefabObject.GetComponent<LightSourceToy>()));
 
             Transform transform = light.Base.transform;
             transform.position = position ?? Vector3.zero;

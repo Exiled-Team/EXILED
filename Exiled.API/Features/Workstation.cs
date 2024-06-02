@@ -49,9 +49,14 @@ namespace Exiled.API.Features
         public static new IReadOnlyCollection<Workstation> List => BaseToWrapper.Values;
 
         /// <summary>
-        /// Gets the Prefab of Workstation.
+        /// Gets the prefab's type.
         /// </summary>
-        public static WorkstationController Prefab => PrefabHelper.PrefabToGameObject[PrefabType.WorkstationStructure].GetComponent<WorkstationController>();
+        public static PrefabType PrefabType => PrefabType.WorkstationStructure;
+
+        /// <summary>
+        /// Gets the prefab's object.
+        /// </summary>
+        public static GameObject PrefabObject => PrefabHelper.PrefabToGameObject[PrefabType];
 
         /// <inheritdoc/>
         public WorkstationController Base { get; }
@@ -100,15 +105,8 @@ namespace Exiled.API.Features
         /// <returns>The Workstation that was spawned.</returns>
         public static Workstation Spawn(Vector3 position, Quaternion rotation = default)
         {
-            WorkstationController controller = Object.Instantiate(Prefab);
-            Workstation workstation = Get(controller);
-
-            workstation.Position = position;
-            workstation.Rotation = rotation;
-
-            NetworkServer.Spawn(controller.gameObject);
-
-            return workstation;
+            WorkstationController controller = PrefabHelper.Spawn<WorkstationController>(PrefabType, position, rotation);
+            return Get(controller);
         }
 
         /// <summary>

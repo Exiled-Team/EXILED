@@ -58,6 +58,24 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Spawns a prefab on server.
+        /// </summary>
+        /// <param name="prefabType">The prefab type.</param>
+        /// <param name="position">The position to spawn the prefab.</param>
+        /// <param name="rotation">The rotation of the prefab.</param>
+        /// <typeparam name="T">The <see cref="Component"/> type.</typeparam>
+        /// <returns>The <see cref="Component"/> instantied.</returns>
+        public static T Spawn<T>(PrefabType prefabType, Vector3 position = default, Quaternion rotation = default)
+            where T : Component
+        {
+            if (!Stored.TryGetValue(prefabType, out GameObject gameObject) || !gameObject.TryGetComponent(out T component))
+                return null;
+            T obj = UnityEngine.Object.Instantiate(component, position, rotation);
+            NetworkServer.Spawn(obj.gameObject);
+            return obj;
+        }
+
+        /// <summary>
         /// Loads all prefabs.
         /// </summary>
         internal static void LoadPrefabs()

@@ -47,19 +47,34 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets the <see cref="ShootingTargetType.ClassD"/> prefab.
+        /// Gets the <see cref="ShootingTargetType.ClassD"/> prefab's type.
         /// </summary>
-        public static ShootingTarget DBoyTargetPrefab => PrefabHelper.PrefabToGameObject[PrefabType.DBoyTarget].GetComponent<ShootingTarget>();
+        public static PrefabType DBoyTargetPrefabType => PrefabType.DBoyTarget;
 
         /// <summary>
-        /// Gets the <see cref="ShootingTargetType.Binary"/> prefab.
+        /// Gets the <see cref="ShootingTargetType.ClassD"/> prefab's object.
         /// </summary>
-        public static ShootingTarget BinaryTargetPrefab => PrefabHelper.PrefabToGameObject[PrefabType.BinaryTarget].GetComponent<ShootingTarget>();
+        public static GameObject DBoyTargetPrefabObject => PrefabHelper.PrefabToGameObject[DBoyTargetPrefabType];
 
         /// <summary>
-        /// Gets the <see cref="ShootingTargetType.Sport"/> prefab.
+        /// Gets the <see cref="ShootingTargetType.Binary"/> prefab's type.
         /// </summary>
-        public static ShootingTarget SportTargetPrefab => PrefabHelper.PrefabToGameObject[PrefabType.SportTarget].GetComponent<ShootingTarget>();
+        public static PrefabType BinaryTargetPrefabType => PrefabType.BinaryTarget;
+
+        /// <summary>
+        /// Gets the <see cref="ShootingTargetType.Binary"/> prefab's object.
+        /// </summary>
+        public static GameObject BinaryTargetPrefabObject => PrefabHelper.PrefabToGameObject[BinaryTargetPrefabType];
+
+        /// <summary>
+        /// Gets the <see cref="ShootingTargetType.Sport"/> prefab's type.
+        /// </summary>
+        public static PrefabType SportTargetPrefabType => PrefabType.SportTarget;
+
+        /// <summary>
+        /// Gets the <see cref="ShootingTargetType.Sport"/> prefab's object.
+        /// </summary>
+        public static GameObject SportTargetPrefabObject => PrefabHelper.PrefabToGameObject[SportTargetPrefabType];
 
         /// <summary>
         /// Gets the base-game <see cref="ShootingTarget"/> for this target.
@@ -169,28 +184,12 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="ShootingTargetToy"/>.</returns>
         public static ShootingTargetToy Create(ShootingTargetType type, Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
         {
-            ShootingTargetToy shootingTargetToy;
-
-            switch (type)
+            ShootingTargetToy shootingTargetToy = type switch
             {
-                case ShootingTargetType.ClassD:
-                    {
-                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(DBoyTargetPrefab));
-                        break;
-                    }
-
-                case ShootingTargetType.Binary:
-                    {
-                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(BinaryTargetPrefab));
-                        break;
-                    }
-
-                default:
-                    {
-                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(SportTargetPrefab));
-                        break;
-                    }
-            }
+                ShootingTargetType.ClassD => new ShootingTargetToy(Object.Instantiate(DBoyTargetPrefabObject.GetComponent<ShootingTarget>())),
+                ShootingTargetType.Binary => new ShootingTargetToy(Object.Instantiate(BinaryTargetPrefabObject.GetComponent<ShootingTarget>())),
+                _ => new ShootingTargetToy(Object.Instantiate(SportTargetPrefabObject.GetComponent<ShootingTarget>()))
+            };
 
             Transform transform = shootingTargetToy.Base.transform;
             transform.position = position ?? Vector3.zero;

@@ -33,9 +33,14 @@ namespace Exiled.API.Features.Hazards
         }
 
         /// <summary>
-        /// Gets the amnestic cloud prefab.
+        /// Gets the amnestic cloud prefab's type.
         /// </summary>
-        public static AmnesticCloudHazard Prefab => PrefabHelper.PrefabToGameObject[PrefabType.AmnesticCloudHazard].GetComponent<AmnesticCloudHazard>();
+        public static PrefabType PrefabType => PrefabType.AmnesticCloudHazard;
+
+        /// <summary>
+        /// Gets the amnestic cloud prefab's object.
+        /// </summary>
+        public static GameObject PrefabObject => PrefabHelper.PrefabToGameObject[PrefabType];
 
         /// <inheritdoc cref="Hazard.Base"/>
         public new Scp939AmnesticCloudInstance Base { get; }

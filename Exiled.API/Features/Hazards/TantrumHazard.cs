@@ -36,9 +36,14 @@ namespace Exiled.API.Features.Hazards
         }
 
         /// <summary>
-        /// Gets the tantrum prefab.
+        /// Gets the tantrum prefab's type.
         /// </summary>
-        public static TantrumEnvironmentalHazard Prefab => PrefabHelper.PrefabToGameObject[PrefabType.TantrumObj].GetComponent<TantrumEnvironmentalHazard>();
+        public static PrefabType PrefabType => PrefabType.TantrumObj;
+
+        /// <summary>
+        /// Gets the tantrum cloud prefab's object.
+        /// </summary>
+        public static GameObject PrefabObject => PrefabHelper.PrefabToGameObject[PrefabType];
 
         /// <summary>
         /// Gets the <see cref="TantrumEnvironmentalHazard"/>.
@@ -84,7 +89,7 @@ namespace Exiled.API.Features.Hazards
         /// <returns>The <see cref="TantrumHazard"/> instance.</returns>
         public static TantrumHazard CreateAndSpawn(Vector3 position, bool isActive = true)
         {
-            TantrumEnvironmentalHazard tantrum = Object.Instantiate(Prefab);
+            TantrumEnvironmentalHazard tantrum = PrefabHelper.Spawn<TantrumEnvironmentalHazard>(PrefabType);
 
             if (!isActive)
                 tantrum.SynchronizedPosition = new RelativePosition(position);
@@ -92,8 +97,6 @@ namespace Exiled.API.Features.Hazards
                 tantrum.SynchronizedPosition = new RelativePosition(position + (Vector3.up * 0.25f));
 
             tantrum._destroyed = !isActive;
-
-            NetworkServer.Spawn(tantrum.gameObject);
 
             return Get(tantrum) as TantrumHazard;
         }
