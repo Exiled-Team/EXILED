@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        /// Gets the room in which the Pickup will be spawning.
+        /// Gets the <see cref="Room"/> which the Pickup will be spawning in.
         /// </summary>
         public Room Room { get; }
 
