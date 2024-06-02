@@ -21,21 +21,22 @@ namespace Exiled.Events.Patches.Generic
 
     /// <summary>
     /// Patches <see cref="ICommand.Execute" />.
-    /// Implements <see cref="IPermissionCommand.Permission" />.
+    /// Implements <see cref="IPermissioned.Permission" />.
     /// </summary>
     [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery))]
     internal class ProcessQuery
     {
         private static bool CheckPermissions(ICommand command, CommandSender sender)
         {
-            if (command is IPermissionCommand permissionCommand && !sender.CheckPermission(permissionCommand.Permission))
+            if (command is IPermissioned permissionedCommand && !sender.CheckPermission(permissionedCommand.Permission))
             {
-                sender.RaReply($"{command.Command}#You do not have permissions to use this command. Required permission: {permissionCommand.Permission}", false, true, string.Empty);
+                sender.RaReply($"{command.Command}#You do not have permissions to use this command. Required permission: {permissionedCommand.Permission}", false, true, string.Empty);
                 return false;
             }
-            else if (command is IGamePermissionCommand gamePermissionCommand && !sender.CheckPermission(gamePermissionCommand.Permissions))
+
+            if (command is IGamePermissioned gamePermissionedCommand && !sender.CheckPermission(gamePermissionedCommand.Permissions))
             {
-                sender.RaReply($"{command.Command}#You do not have permissions to use this command. Required permission: PlayerPermissions: [{string.Join(" ", gamePermissionCommand.Permissions)}]", false, true, string.Empty);
+                sender.RaReply($"{command.Command}#You do not have permissions to use this command. Required permission: PlayerPermissions: [{string.Join(" ", gamePermissionedCommand.Permissions)}]", false, true, string.Empty);
                 return false;
             }
 
