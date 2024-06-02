@@ -15,6 +15,7 @@ namespace Exiled.API.Extensions
     using CustomPlayerEffects;
     using CustomRendering;
     using Enums;
+    using Exiled.API.Features;
     using InventorySystem.Items.MarshmallowMan;
     using InventorySystem.Items.Usables.Scp244.Hypothermia;
     using PlayerRoles.FirstPersonControl;
@@ -154,7 +155,7 @@ namespace Exiled.API.Extensions
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect is a negative effect.</returns>
         /// <seealso cref="IsHarmful(EffectType)"/>
-        public static bool IsNegative(this EffectType effect) => IsHarmful(effect) || (EffectTypeToType.TryGetValue(effect, out Type type) && type.IsSubclassOf(typeof(StatusEffectBase)) && ((StatusEffectBase)Activator.CreateInstance(type)).Classification == StatusEffectBase.EffectClassification.Negative);
+        public static bool IsNegative(this EffectType effect) => IsHarmful(effect) || Server.Host.GetEffect(effect).Classification == StatusEffectBase.EffectClassification.Negative;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> is a positive effect.
@@ -162,7 +163,7 @@ namespace Exiled.API.Extensions
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect is a positive effect.</returns>
         /// <seealso cref="IsHealing(EffectType)"/>
-        public static bool IsPositive(this EffectType effect) => EffectTypeToType.TryGetValue(effect, out Type type) && type.IsSubclassOf(typeof(StatusEffectBase)) && ((StatusEffectBase)Activator.CreateInstance(type)).Classification == StatusEffectBase.EffectClassification.Positive;
+        public static bool IsPositive(this EffectType effect) => Server.Host.GetEffect(effect).Classification == StatusEffectBase.EffectClassification.Positive;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> affects the player's movement speed.
