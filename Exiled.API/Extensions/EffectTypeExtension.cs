@@ -154,10 +154,7 @@ namespace Exiled.API.Extensions
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect is a negative effect.</returns>
         /// <seealso cref="IsHarmful(EffectType)"/>
-        public static bool IsNegative(this EffectType effect) => IsHarmful(effect) || effect is EffectType.AmnesiaItems
-            or EffectType.AmnesiaVision or EffectType.Blinded or EffectType.Burned or EffectType.Concussed or EffectType.Deafened
-            or EffectType.Disabled or EffectType.Ensnared or EffectType.Exhausted or EffectType.Flashed or EffectType.SinkHole
-            or EffectType.Stained or EffectType.InsufficientLighting or EffectType.SoundtrackMute or EffectType.Scanned or EffectType.Slowness;
+        public static bool IsNegative(this EffectType effect) => EffectTypeToType.TryGetValue(effect, out Type type) && type.IsSubclassOf(typeof(StatusEffectBase)) && ((StatusEffectBase)Activator.CreateInstance(type)).Classification == StatusEffectBase.EffectClassification.Negative;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> is a positive effect.
@@ -165,9 +162,7 @@ namespace Exiled.API.Extensions
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect is a positive effect.</returns>
         /// <seealso cref="IsHealing(EffectType)"/>
-        public static bool IsPositive(this EffectType effect) => effect is EffectType.BodyshotReduction or EffectType.DamageReduction
-            or EffectType.Invigorated or EffectType.Invisible or EffectType.MovementBoost or EffectType.RainbowTaste
-            or EffectType.Scp207 or EffectType.Scp1853 or EffectType.Vitality or EffectType.AntiScp207 or EffectType.Ghostly;
+        public static bool IsPositive(this EffectType effect) => EffectTypeToType.TryGetValue(effect, out Type type) && type.IsSubclassOf(typeof(StatusEffectBase)) && ((StatusEffectBase)Activator.CreateInstance(type)).Classification == StatusEffectBase.EffectClassification.Positive;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> affects the player's movement speed.
