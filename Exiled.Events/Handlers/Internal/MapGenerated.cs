@@ -46,6 +46,7 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnMapGenerated()
         {
             Map.ClearCache();
+            PrefabHelper.LoadPrefabs();
 
             // TODO: Fix For (https://trello.com/c/cUwpZDLs/5003-config-teamrespawnqueue-in-configgameplay-is-not-working-as-expected)
             PlayerRoles.RoleAssign.HumanSpawner.Handlers[PlayerRoles.Team.ChaosInsurgency] = new PlayerRoles.RoleAssign.OneRoleHumanSpawner(PlayerRoles.RoleTypeId.ChaosConscript);

@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Pickups
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -35,7 +34,6 @@ namespace Exiled.API.Features.Pickups
     using BaseScp1576Pickup = InventorySystem.Items.Usables.Scp1576.Scp1576Pickup;
     using BaseScp2176Projectile = InventorySystem.Items.ThrowableProjectiles.Scp2176Projectile;
     using BaseScp330Pickup = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
-    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="ItemPickupBase"/>.
@@ -46,6 +44,9 @@ namespace Exiled.API.Features.Pickups
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Items.Item"/>.
         /// </summary>
         internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToPickup = new(new ComponentsEqualityComparer());
+
+        private readonly ConstProperty<double> minPickupTime = new(0.24500000476837158, new[] { typeof(ItemPickupBase) });
+        private readonly ConstProperty<double> weightToTime = new(0.17499999701976776, new[] { typeof(ItemPickupBase) });
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
@@ -260,6 +261,25 @@ namespace Exiled.API.Features.Pickups
         /// Gets a <see cref="API.Features.Lift"/> in which pickup is now. Can be <see langword="null"/>.
         /// </summary>
         public Lift Lift => Lift.Get(Position);
+
+        /// <summary>
+        /// Gets or sets a multiplier to convert weight to time.
+        /// </summary>
+        public double WeightToTime
+        {
+            get => weightToTime;
+            set => weightToTime.Value = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a time to pick up item.
+        /// </summary>
+        /// <remarks><see cref="MinTimeToPick"/> + <see cref="WeightToTime"/> * <see cref="Weight"/> = Picking up time.</remarks>
+        public double MinTimeToPick
+        {
+            get => minPickupTime;
+            set => minPickupTime.Value = value;
+        }
 
         /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.

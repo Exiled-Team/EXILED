@@ -113,8 +113,11 @@ namespace Exiled.Loader
         internal void CheckUpdate()
         {
             using HttpClient client = CreateHttpClient();
-            if (Busy = FindUpdate(client, !File.Exists(Path.Combine(Paths.Dependencies, "Exiled.API.dll")), out NewVersion newVersion))
+            if (FindUpdate(client, out NewVersion newVersion))
+            {
+                Busy = true;
                 Update(client, newVersion);
+            }
         }
 
         /// <summary>
@@ -137,10 +140,9 @@ namespace Exiled.Loader
         /// Finds an update using the client.
         /// </summary>
         /// <param name="client">The HTTP Client.</param>
-        /// <param name="forced">Whether the detection was forced.</param>
         /// <param name="newVersion"> Whether there is a new version of EXILED.</param>
         /// <returns>Whether there is an update.</returns>
-        private bool FindUpdate(HttpClient client, bool forced, out NewVersion newVersion)
+        private bool FindUpdate(HttpClient client, out NewVersion newVersion)
         {
             try
             {
@@ -149,7 +151,7 @@ namespace Exiled.Loader
                 Log.Info($"Found the smallest version of Exiled - {smallestVersion.Library.GetName().Name}:{smallestVersion.Version}");
 
                 TaggedRelease[] releases = TagReleases(client.GetReleases(REPO_ID, new GetReleasesSettings(50, 1)).GetAwaiter().GetResult());
-                if (FindRelease(releases, out Release targetRelease, smallestVersion, forced))
+                if (FindRelease(releases, out Release targetRelease, smallestVersion))
                 {
                     if (!FindAsset(InstallerName, targetRelease, out ReleaseAsset asset))
                     {
@@ -289,9 +291,8 @@ namespace Exiled.Loader
         /// <param name="releases">The list of releases (array).</param>
         /// <param name="release"> The most recent release of Exiled.</param>
         /// <param name="smallestVersion">Finds the smallest version of the Exiled Library.</param>
-        /// <param name="forced">Whether this update was forced or not.</param>
         /// <returns>Whether the specific release was found.</returns>
-        private bool FindRelease(TaggedRelease[] releases, out Release release, ExiledLib smallestVersion, bool forced = false)
+        private bool FindRelease(TaggedRelease[] releases, out Release release, ExiledLib smallestVersion)
         {
             bool includePRE = config.ShouldDownloadTestingReleases || ExiledLib.Any(l => l.Version.PreRelease is not null);
             Version gameVersion = new(GameCore.Version.Major, GameCore.Version.Minor, GameCore.Version.Revision);
@@ -302,7 +303,7 @@ namespace Exiled.Loader
                 if (!taggedRelease.Release.Description.Contains($"[Game Version: {gameVersion}]") || (taggedRelease.Release.PreRelease && !includePRE))
                     continue;
 
-                if (taggedRelease.Version > smallestVersion.Version || forced)
+                if (taggedRelease.Version > smallestVersion.Version)
                 {
                     release = taggedRelease.Release;
                     return true;

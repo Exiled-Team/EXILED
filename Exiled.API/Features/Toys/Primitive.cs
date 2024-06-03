@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Toys
 {
-    using System;
     using System.Linq;
 
     using AdminToys;
@@ -30,6 +29,16 @@ namespace Exiled.API.Features.Toys
         /// <param name="toyAdminToyBase">The <see cref="PrimitiveObjectToy"/> of the toy.</param>
         internal Primitive(PrimitiveObjectToy toyAdminToyBase)
             : base(toyAdminToyBase, AdminToyType.PrimitiveObject) => Base = toyAdminToyBase;
+
+        /// <summary>
+        /// Gets the light prefab's type.
+        /// </summary>
+        public static PrefabType PrefabType => PrefabType.PrimitiveObjectToy;
+
+        /// <summary>
+        /// Gets the light prefab's object.
+        /// </summary>
+        public static GameObject PrefabObject => PrefabHelper.PrefabToGameObject[PrefabType];
 
         /// <summary>
         /// Gets the base <see cref="PrimitiveObjectToy"/>.
@@ -115,7 +124,7 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(Vector3? position /*= null*/, Vector3? rotation /*= null*/, Vector3? scale /*= null*/, bool spawn /*= true*/, Color? color /*= null*/)
         {
-            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
+            Primitive primitive = new(Object.Instantiate(PrefabObject.GetComponent<PrimitiveObjectToy>()));
 
             Transform transform = primitive.Base.transform;
             transform.position = position ?? Vector3.zero;
@@ -143,7 +152,7 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(PrimitiveType primitiveType /*= PrimitiveType.Sphere*/, Vector3? position /*= null*/, Vector3? rotation /*= null*/, Vector3? scale /*= null*/, bool spawn /*= true*/, Color? color /*= null*/)
         {
-            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
+            Primitive primitive = new(Object.Instantiate(PrefabObject.GetComponent<PrimitiveObjectToy>()));
 
             Transform transform = primitive.Base.transform;
             transform.position = position ?? Vector3.zero;
@@ -173,7 +182,7 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(PrimitiveType primitiveType /*= PrimitiveType.Sphere*/, PrimitiveFlags flags, Vector3? position /*= null*/, Vector3? rotation /*= null*/, Vector3? scale /*= null*/, bool spawn /*= true*/, Color? color /*= null*/)
         {
-            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
+            Primitive primitive = new(Object.Instantiate(PrefabObject.GetComponent<PrimitiveObjectToy>()));
 
             primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
             primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
@@ -197,7 +206,7 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(PrimitiveSettings primitiveSettings)
         {
-            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
+            Primitive primitive = new(Object.Instantiate(PrefabObject.GetComponent<PrimitiveObjectToy>()));
 
             Transform transform = primitive.Base.transform;
             transform.position = primitiveSettings.Position;

@@ -15,7 +15,6 @@ namespace Exiled.API.Features.Roles
     using HarmonyLib;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-    using PlayerStatsSystem;
     using RelativePositioning;
     using UnityEngine;
 

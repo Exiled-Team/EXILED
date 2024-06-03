@@ -127,6 +127,7 @@ namespace Exiled.API.Features.Pickups
                 StaminaUseMultiplier = armoritem.StaminaUseMultiplier;
                 AmmoLimits = armoritem.AmmoLimits;
                 CategoryLimits = armoritem.CategoryLimits;
+                MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
             }
         }
 
@@ -142,6 +143,7 @@ namespace Exiled.API.Features.Pickups
                 StaminaUseMultiplier = armoritem._staminaUseMultiplier;
                 AmmoLimits = armoritem.AmmoLimits.Select(limit => (ArmorAmmoLimit)limit);
                 CategoryLimits = armoritem.CategoryLimits;
+                MovementSpeedMultiplier = armoritem._movementSpeedMultiplier;
             }
         }
     }

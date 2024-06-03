@@ -28,12 +28,15 @@ namespace Exiled.CreditTags.Commands
         /// <inheritdoc/>
         public string Description { get; } = "Shows your EXILED Credits tag, if available.";
 
+        /// <inheritdoc />
+        public bool SanitizeResponse { get; }
+
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             CommandSender cmdSender = (CommandSender)sender;
 
-            if (!(Player.Get(cmdSender.SenderId) is Player player))
+            if (!Player.TryGet(sender, out Player player))
             {
                 response = "You cannot use this command while still authenticating.";
                 return false;

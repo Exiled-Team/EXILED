@@ -15,12 +15,10 @@ namespace Exiled.API.Features
     using Decals;
     using Enums;
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Scp914Processors;
     using Exiled.API.Features.Toys;
-    using global::Hazards;
     using InventorySystem;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Pickups;
@@ -28,12 +26,7 @@ namespace Exiled.API.Features
     using Items;
     using LightContainmentZoneDecontamination;
     using MapGeneration;
-    using Mirror;
-    using PlayerRoles;
-    using PlayerRoles.PlayableScps.Scp173;
-    using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.Ragdolls;
-    using RelativePositioning;
     using UnityEngine;
     using Utils;
     using Utils.Networking;
