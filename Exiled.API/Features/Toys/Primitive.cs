@@ -69,7 +69,7 @@ namespace Exiled.API.Features.Toys
         public bool Collidable
         {
             get => Flags.HasFlag(PrimitiveFlags.Collidable);
-            set => Flags = Flags = Flags.SetFlag(PrimitiveFlags.Collidable, value);
+            set => Flags = Flags.SetFlag(PrimitiveFlags.Collidable, value);
         }
 
         /// <summary>
