@@ -10,8 +10,8 @@ namespace Exiled.API.Features.Toys
     using System.Linq;
 
     using AdminToys;
-
     using Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
     using UnityEngine;
@@ -69,7 +69,7 @@ namespace Exiled.API.Features.Toys
         public bool Collidable
         {
             get => Flags.HasFlag(PrimitiveFlags.Collidable);
-            set => Flags = value ? (Flags | PrimitiveFlags.Collidable) : (Flags & ~PrimitiveFlags.Collidable);
+            set => Flags = Flags = Flags.SetFlag(PrimitiveFlags.Collidable, value);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Exiled.API.Features.Toys
         public bool Visible
         {
             get => Flags.HasFlag(PrimitiveFlags.Visible);
-            set => Flags = value ? (Flags | PrimitiveFlags.Visible) : (Flags & ~PrimitiveFlags.Visible);
+            set => Flags = Flags.SetFlag(PrimitiveFlags.Visible, value);
         }
 
         /// <summary>
@@ -94,6 +94,7 @@ namespace Exiled.API.Features.Toys
         /// Creates a new <see cref="Primitive"/>.
         /// </summary>
         /// <param name="primitiveType">The <see cref="PrimitiveType"/> to create.</param>
+        /// <param name="flags">The <see cref="PrimitiveFlags"/> to apply.-.</param>
         /// <param name="color">The color.</param>
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
@@ -101,8 +102,8 @@ namespace Exiled.API.Features.Toys
         /// <param name="spawn">Whether or not the primitive should be spawned.</param>
         /// <param name="isStatic">Whether or not the primitive is static.</param>
         /// <returns>The newly created <see cref="Primitive"/>.</returns>
-        public static Primitive Create(PrimitiveType primitiveType, Color? color = null, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool spawn = true, bool isStatic = false)
-            => Create(new(primitiveType, color, position, rotation, scale, isStatic, spawn));
+        public static Primitive Create(PrimitiveType primitiveType, PrimitiveFlags flags = default, Color? color = null, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool spawn = true, bool isStatic = false)
+            => Create(new(primitiveType, color, position, flags, rotation, scale, isStatic, spawn));
 
         /// <summary>
         /// Creates a new <see cref="Primitive"/>.
