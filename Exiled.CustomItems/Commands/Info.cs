@@ -40,6 +40,9 @@ namespace Exiled.CustomItems.Commands
         /// <inheritdoc/>
         public string Description { get; } = "Gets more information about the specified custom item.";
 
+        /// <inheritdoc />
+        public bool SanitizeResponse { get; }
+
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
