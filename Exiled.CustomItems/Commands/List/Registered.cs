@@ -35,6 +35,9 @@ namespace Exiled.CustomItems.Commands.List
         /// <inheritdoc/>
         public string[] Aliases { get; } = { "r", "reg" };
 
+        /// <inheritdoc />
+        public bool SanitizeResponse { get; }
+
         /// <inheritdoc/>
         public string Description { get; } = "Gets a list of registered custom items.";
 
