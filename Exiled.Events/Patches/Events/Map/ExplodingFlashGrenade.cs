@@ -7,14 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection.Emit;
 
     using API.Features;
     using API.Features.Pools;
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Patches.Generic;
     using HarmonyLib;
@@ -74,8 +71,8 @@ namespace Exiled.Events.Patches.Events.Map
                     continue;
                 if (!IndividualFriendlyFire.CheckFriendlyFirePlayer(instance.PreviousOwner, player.ReferenceHub))
                     continue;
-                // if (!Physics.Linecast(instance.transform.position, player.ReferenceHub.PlayerCameraReference.position, instance._blindingMask))
-                //     continue;
+                if (Physics.Linecast(instance.transform.position, player.ReferenceHub.PlayerCameraReference.position, instance._blindingMask))
+                    continue;
 
                 targetToAffect.Add(player);
             }
