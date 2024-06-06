@@ -66,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Scp106
 
                     // if (!ev.IsAllowed)
                     //    return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(StalkingEventArgs), nameof(StalkingEventArgs.IsAllowed))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ExitStalkingEventArgs), nameof(ExitStalkingEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, returnLabel),
                 });
 
