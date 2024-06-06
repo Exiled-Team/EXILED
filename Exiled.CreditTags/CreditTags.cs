@@ -75,7 +75,9 @@ namespace Exiled.CreditTags
         /// <inheritdoc/>
         public override void OnDisabled()
         {
+            /*
             UnattachHandler();
+            */
 
             base.OnDisabled();
         }
