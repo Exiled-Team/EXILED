@@ -69,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Map
                     continue;
                 if (!ExiledEvents.Instance.Config.CanFlashbangsAffectThrower && instance.PreviousOwner.SameLife(new(referenceHub)))
                     continue;
-                if (!IndividualFriendlyFire.CheckFriendlyFirePlayer(instance.PreviousOwner, player.ReferenceHub))
+                if (!IndividualFriendlyFire.CheckFriendlyFirePlayer(instance.PreviousOwner, player.ReferenceHub) && !instance.PreviousOwner.SameLife(new(referenceHub)))
                     continue;
                 if (Physics.Linecast(instance.transform.position, player.CameraTransform.position, instance._blindingMask))
                     continue;
