@@ -64,8 +64,10 @@ namespace Exiled.CreditTags
         /// <inheritdoc/>
         public override void OnEnabled()
         {
+            /*
             RefreshHandler();
             AttachHandler();
+            */
 
             base.OnEnabled();
         }
