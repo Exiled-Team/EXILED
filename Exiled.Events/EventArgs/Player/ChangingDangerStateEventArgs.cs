@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs.Player
         public DangerStackBase Danger { get; }
 
         /// <summary>
-        /// Gets the type of Danger changing.
+        /// Gets the <see cref="DangerType"/> of Danger changing.
         /// </summary>
         public DangerType Type { get; }
 
