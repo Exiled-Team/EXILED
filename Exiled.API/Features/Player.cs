@@ -15,6 +15,7 @@ namespace Exiled.API.Features
 
     using Core;
     using CustomPlayerEffects;
+    using CustomPlayerEffects.Danger;
     using DamageHandlers;
     using Enums;
     using Exiled.API.Features.Core.Interfaces;
@@ -52,7 +53,6 @@ namespace Exiled.API.Features
     using PlayerRoles.Voice;
     using PlayerStatsSystem;
     using PluginAPI.Core;
-
     using RelativePositioning;
     using RemoteAdmin;
     using Respawning.NamingRules;
@@ -830,6 +830,16 @@ namespace Exiled.API.Features
             get => Role.Base is PlayerRoles.HumanRole humanRole ? humanRole.UnitNameId : byte.MinValue;
             set => _ = Role.Base is PlayerRoles.HumanRole humanRole ? humanRole.UnitNameId = value : _ = value;
         }
+
+        /// <summary>
+        /// Gets an array of <see cref="DangerStackBase"/>.
+        /// </summary>
+        public DangerStackBase[] Dangers => (GetEffect(EffectType.Scp1853) as Scp1853)?.Dangers;
+
+        /// <summary>
+        /// Gets a list of current <see cref="DangerStackBase"/> the player has.
+        /// </summary>
+        public IEnumerable<DangerStackBase> ActiveDangers => Dangers.Where(d => d.IsActive);
 
         /// <summary>
         /// Gets or sets the player's health.
