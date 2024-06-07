@@ -543,7 +543,7 @@ namespace Exiled.Events.Handlers
         public static void OnBanning(BanningEventArgs ev) => Banning.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a players danger state changes.
+        /// Called before a player's danger state changes.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingDangerStateEventArgs"/> instance.</param>
         public static void OnChangingDangerState(ChangingDangerStateEventArgs ev) => ChangingDangerState.InvokeSafely(ev);
