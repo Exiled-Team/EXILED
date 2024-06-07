@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     /// <summary>
-    /// Patch for when player changes danger.
+    /// Adds <see cref="ChangingDangerState"/> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingDangerState))]
     [HarmonyPatch(typeof(DangerStackBase), nameof(DangerStackBase.IsActive), MethodType.Setter)]
@@ -49,10 +49,7 @@ namespace Exiled.Events.Patches.Events.Player
             ChangingDangerStateEventArgs ev = new(Player.Get(__instance.Owner), __instance, type, value);
             Handlers.Player.OnChangingDangerState(ev);
 
-            if (!ev.IsAllowed)
-                return false;
-
-            return true;
+            return ev.IsAllowed;
         }
     }
 }
