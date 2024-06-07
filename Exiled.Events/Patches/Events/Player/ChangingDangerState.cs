@@ -13,7 +13,7 @@
     /// <summary>
     /// Patch for when player changes danger.
     /// </summary>
-    [EventPatch(typeof(DangerStackBase), nameof(DangerStackBase.IsActive))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingDangerState))]
     [HarmonyPatch(typeof(DangerStackBase), nameof(DangerStackBase.IsActive), MethodType.Setter)]
     internal class ChangingDangerState
     {
