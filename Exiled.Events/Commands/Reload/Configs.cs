@@ -20,7 +20,7 @@ namespace Exiled.Events.Commands.Reload
     /// <summary>
     /// The reload configs command.
     /// </summary>
-    public class Configs : ICommand
+    public class Configs : ICommand, IPermissioned
     {
         /// <summary>
         /// Gets static instance of the <see cref="Configs"/> command.
@@ -39,15 +39,12 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc />
         public bool SanitizeResponse { get; }
 
+        /// <inheritdoc />
+        public string Permission { get; } = "ee.reloadconfigs";
+
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("ee.reloadconfigs"))
-            {
-                response = "You can't reload configs, you don't have \"ee.reloadconfigs\" permission.";
-                return false;
-            }
-
             bool haveBeenReloaded = ConfigManager.Reload();
 
             Handlers.Server.OnReloadedConfigs();
