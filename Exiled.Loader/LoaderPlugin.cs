@@ -44,7 +44,7 @@ namespace Exiled.Loader
                 return;
             }
 
-            Log.Info($"Loading EXILED Version: {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}");
+            Log.Info($"Loading EXILED Version: {Assembly.GetExecutingAssembly().GetName().Version}");
 
             Paths.Reload(Config.ExiledDirectoryPath);
 
