@@ -188,13 +188,13 @@ namespace Exiled.API.Extensions
         {
             EffectCategory category = EffectCategory.None;
             if (effect.IsPositive())
-                category.SetFlag(EffectCategory.Positive, true);
+                category.SetFlag(EffectCategory.Positive);
             if (effect.IsNegative())
-                category.SetFlag(EffectCategory.Negative, true);
+                category.SetFlag(EffectCategory.Negative);
             if (effect.IsMovement())
-                category.SetFlag(EffectCategory.Movement, true);
+                category.SetFlag(EffectCategory.Movement);
             if (effect.IsHarmful())
-                category.SetFlag(EffectCategory.Harmful, true);
+                category.SetFlag(EffectCategory.Harmful);
 
             return category;
         }
