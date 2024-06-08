@@ -9,6 +9,8 @@ namespace Exiled.API.Features.Items
 {
     using System;
 
+    using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
     using InventorySystem.Items.Autosync;
@@ -23,6 +25,8 @@ namespace Exiled.API.Features.Items
     /// </summary>
     public class Jailbird : Item, IWrapper<JailbirdItem>
     {
+        private readonly ConstProperty<double> chargeTolerance = new(-0.4000000059604645, new[] { typeof(JailbirdItem) });
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Jailbird"/> class.
         /// </summary>
@@ -49,6 +53,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the amount of damage dealt with a Jailbird melee hit.
         /// </summary>
+        [EProperty(category: nameof(Jailbird))]
         public float MeleeDamage
         {
             get => Base._hitreg._damageMelee;
@@ -58,6 +63,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the amount of damage dealt with a Jailbird charge hit.
         /// </summary>
+        [EProperty(category: nameof(Jailbird))]
         public float ChargeDamage
         {
             get => Base._hitreg._damageCharge;
@@ -67,6 +73,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the amount of time in seconds that the <see cref="CustomPlayerEffects.Flashed"/> effect will be applied on being hit.
         /// </summary>
+        [EProperty(category: nameof(Jailbird))]
         public float FlashDuration
         {
             get => Base._hitreg._flashDuration;
@@ -76,6 +83,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the radius of the Jailbird's hit register.
         /// </summary>
+        [EProperty(category: nameof(Jailbird))]
         public float Radius
         {
             get => Base._hitreg._hitregRadius;
@@ -85,6 +93,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the total amount of damage dealt with the Jailbird.
         /// </summary>
+        [EProperty(category: nameof(Jailbird))]
         public float TotalDamageDealt
         {
             get => Base._hitreg.TotalMeleeDamageDealt;
@@ -94,6 +103,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the number of times the item has been charged and used.
         /// </summary>
+        [EProperty(category: nameof(Jailbird))]
         public int TotalCharges
         {
             get => Base.TotalChargesPerformed;
@@ -103,6 +113,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the <see cref="JailbirdWearState"/> for this item.
         /// </summary>
+        [EProperty(category: nameof(Jailbird))]
         public JailbirdWearState WearState
         {
             get => Base._deterioration.WearState;
@@ -112,6 +123,15 @@ namespace Exiled.API.Features.Items
                 TotalCharges = GetCharge(value);
                 Base._deterioration.RecheckUsage();
             }
+        }
+
+        /// <summary>
+        /// Gets or sets amount of time when Jailbird is charging.
+        /// </summary>
+        public double ChargeTolerance
+        {
+            get => chargeTolerance;
+            set => chargeTolerance.Value = value;
         }
 
         /// <summary>
