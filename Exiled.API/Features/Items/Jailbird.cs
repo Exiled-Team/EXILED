@@ -72,8 +72,8 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public float FlashDuration
         {
-            get => Base._hitreg._flashDuration;
-            set => Base._hitreg._flashDuration = value;
+            get => Base._hitreg._concussionDuration;
+            set => Base._hitreg._concussionDuration = value;
         }
 
         /// <summary>

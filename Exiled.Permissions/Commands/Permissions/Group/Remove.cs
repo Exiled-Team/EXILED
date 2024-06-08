@@ -27,6 +27,9 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         /// <inheritdoc/>
         public string Description { get; } = "Removes a group from permission.";
 
+        /// <inheritdoc />
+        public bool SanitizeResponse { get; }
+
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
