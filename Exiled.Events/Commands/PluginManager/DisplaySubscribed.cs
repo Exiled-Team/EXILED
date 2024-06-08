@@ -19,7 +19,7 @@ namespace Exiled.Events.Commands.PluginManager
     /// <summary>
     /// A command to display plugins that are subscribed to the specific event.
     /// </summary>
-    public class DisplaySubscribed : IPermissionCommand
+    public class DisplaySubscribed : IPermissioned, ICommand
     {
         /// <summary>
         /// Gets the instance of the command.
@@ -34,6 +34,9 @@ namespace Exiled.Events.Commands.PluginManager
 
         /// <inheritdoc/>
         public string Description { get; } = "Displays plugins that are subscribed to the event.";
+
+        /// <inheritdoc/>
+        public bool SanitizeResponse { get; } = true;
 
         /// <inheritdoc/>
         public string Permission { get; } = "pm.subscribed";
