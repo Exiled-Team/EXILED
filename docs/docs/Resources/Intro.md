@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 sidebar_position: 1
 ---
@@ -21,7 +34,7 @@ sidebar_position: 1
 - [IntercomStates](#intercomstates)
 - [BroadcastType](#broadcasttype)
 - [Attachment Names](#attachmentnames)
-- [Spawn Reasons](#spawnreasons)
+- [RoleChangeReason](#rolechangereason)
 - [Prefabs](#prefabs)
 
 ### External resources
@@ -596,11 +609,11 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 </details>
 
-### SpawnReasons
+### RoleChangeReason
 
-<details><summary> <b>Spawn Reasons</b></summary>
+<details><summary> <b>RoleChangeReason</b></summary>
 
-```md title="Latest Updated: 8.9.5.0"
+```md title="Latest Updated: 13.5.5.0"
 [0] None
 [1] RoundStart
 [2] LateJoin
@@ -608,7 +621,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 [4] Died
 [5] Escaped
 [6] Revived
-[7] ForceClass
+[7] RemoteAdmin
 [8] Destroyed
 ```
 

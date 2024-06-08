@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Items;
 
     using Exiled.Events.Attributes;
@@ -23,21 +23,26 @@ namespace Exiled.Events.Patches.Events.Player
 
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms.BasicMessages;
+    using InventorySystem.Items.Firearms.Modules;
     using PluginAPI.Events;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="FirearmBasicMessagesHandler.ServerRequestReceived" />.
-    /// Adds <see cref="Player.ReloadingWeapon" />, <see cref="Player.UnloadingWeapon" />,
+    /// Adds <see cref="Player.ReloadingWeapon" />, <see cref="Player.ReloadedWeapon" />,
+    /// <see cref="Player.UnloadingWeapon" />, <see cref="Player.UnloadedWeapon" /> and
     /// <see cref="Player.DryfiringWeapon" />, <see cref="Player.AimingDownSight" /> and
-    /// <see cref="Player.TogglingWeaponFlashlight" /> events.
+    /// <see cref="Player.TogglingWeaponFlashlight" />, <see cref="Player.ToggledWeaponFlashlight" /> events.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.ReloadingWeapon))]
+    [EventPatch(typeof(Player), nameof(Player.ReloadedWeapon))]
     [EventPatch(typeof(Player), nameof(Player.UnloadingWeapon))]
+    [EventPatch(typeof(Player), nameof(Player.UnloadedWeapon))]
     [EventPatch(typeof(Player), nameof(Player.DryfiringWeapon))]
     [EventPatch(typeof(Player), nameof(Player.AimingDownSight))]
     [EventPatch(typeof(Player), nameof(Player.TogglingWeaponFlashlight))]
+    [EventPatch(typeof(Player), nameof(Player.ToggledWeaponFlashlight))]
     [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerRequestReceived))]
     internal static class FirearmRequestReceived
     {
@@ -45,7 +50,6 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(TogglingWeaponFlashlightEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
             LocalBuilder firearm = generator.DeclareLocal(typeof(Firearm));
 
@@ -106,6 +110,27 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brfalse, returnLabel),
                 });
 
+            offset = 2;
+            index = newInstructions.FindIndex(
+                instruction => instruction.opcode == OpCodes.Callvirt && instruction.operand == (object)Method(typeof(IAmmoManagerModule), nameof(IAmmoManagerModule.ServerTryReload))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // player
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).MoveLabelsFrom(newInstructions[index]),
+
+                    // firearm
+                    new(OpCodes.Ldloc_S, firearm.LocalIndex),
+
+                    // ReloadedWeapon ev = new(Player, firearm, bool)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ReloadedWeaponEventArgs))[0]),
+
+                    // Player.OnReloadedWeapon(ev)
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnReloadedWeapon))),
+                });
+
             offset = -2;
             index = newInstructions.FindIndex(
                 instruction => instruction.opcode == OpCodes.Newobj && (ConstructorInfo)instruction.operand == GetDeclaredConstructors(typeof(PlayerUnloadWeaponEvent))[0]) + offset;
@@ -134,6 +159,27 @@ namespace Exiled.Events.Patches.Events.Player
                     //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(UnloadingWeaponEventArgs), nameof(UnloadingWeaponEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse, returnLabel),
+                });
+
+            offset = 2;
+            index = newInstructions.FindIndex(
+                instruction => instruction.opcode == OpCodes.Callvirt && instruction.operand == (object)Method(typeof(IAmmoManagerModule), nameof(IAmmoManagerModule.ServerTryUnload))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // player
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).MoveLabelsFrom(newInstructions[index]),
+
+                    // firearm
+                    new(OpCodes.Ldloc_S, firearm.LocalIndex),
+
+                    // UnloadedWeaponEventArgs ev = new(Player, firearm, bool)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UnloadedWeaponEventArgs))[0]),
+
+                    // Player.OnUnloadedWeapon(ev)
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnUnloadedWeapon))),
                 });
 
             offset = -2;
@@ -183,10 +229,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // true (adsIn)
                     new(OpCodes.Ldc_I4_1),
 
-                    // false (adsOut)
-                    new(OpCodes.Ldc_I4_0),
-
-                    // AimingDownSightEventArgs ev = new(Player, firearm, bool, bool)
+                    // AimingDownSightEventArgs ev = new(Player, firearm, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AimingDownSightEventArgs))[0]),
 
                     // Player.OnAimingDownSight(ev)
@@ -210,18 +253,16 @@ namespace Exiled.Events.Patches.Events.Player
                     // false (adsIn)
                     new(OpCodes.Ldc_I4_0),
 
-                    // true (adsOut)
-                    new(OpCodes.Ldc_I4_1),
-
-                    // AimingDownSightEventArgs ev = new(Player, firearm, bool, bool)
+                    // AimingDownSightEventArgs ev = new(Player, firearm, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AimingDownSightEventArgs))[0]),
 
                     // Player.OnAimingDownSight(ev)
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnAimingDownSight))),
                 });
 
-            offset = -7;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ceq) + offset;
+            offset = -5;
+            index = newInstructions.FindLastIndex(
+                instruction => instruction.opcode == OpCodes.Newobj && (ConstructorInfo)instruction.operand == GetDeclaredConstructors(typeof(PlayerToggleFlashlightEvent))[0]) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -244,8 +285,6 @@ namespace Exiled.Events.Patches.Events.Player
                     // TogglingWeaponFlashlightEventArgs ev = new(Player, firearm, bool, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingWeaponFlashlightEventArgs))[0]),
                     new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Player.OnTogglingWeaponFlashlight(ev)
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnTogglingWeaponFlashlight))),
@@ -254,13 +293,32 @@ namespace Exiled.Events.Patches.Events.Player
                     //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingWeaponFlashlightEventArgs), nameof(TogglingWeaponFlashlightEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, returnLabel),
+                });
 
-                    // flag = !ev.NewState
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingWeaponFlashlightEventArgs), nameof(TogglingWeaponFlashlightEventArgs.NewState))),
+            offset = 1;
+            index = newInstructions.FindIndex(
+                instruction => instruction.opcode == OpCodes.Callvirt && instruction.operand == (object)PropertySetter(typeof(InventorySystem.Items.Firearms.Firearm), nameof(InventorySystem.Items.Firearms.Firearm.Status))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // player
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
+
+                    // firearm
+                    new(OpCodes.Ldloc_S, firearm.LocalIndex),
+
+                    // !flag
+                    new(OpCodes.Ldloc_S, 8),
                     new(OpCodes.Ldc_I4_0),
                     new(OpCodes.Ceq),
-                    new(OpCodes.Stloc_S, 6),
+
+                    // TogglingWeaponFlashlightEventArgs ev = new(Player, firearm, bool, bool)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ToggledWeaponFlashlightEventArgs))[0]),
+
+                    // Player.OnToggledWeaponFlashlight(ev)
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnToggledWeaponFlashlight))),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);

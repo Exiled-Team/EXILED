@@ -8,13 +8,12 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
-
     using InventorySystem;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp244;
-
     using UnityEngine;
 
     /// <summary>
@@ -22,6 +21,8 @@ namespace Exiled.API.Features.Items
     /// </summary>
     public class Scp244 : Usable, IWrapper<Scp244Item>
     {
+        private readonly ConstProperty<float> dropHeightOffset = new(Scp244Item.DropHeightOffset, new[] { typeof(Scp244Item) });
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp244"/> class.
         /// </summary>
@@ -74,6 +75,15 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <remarks>This does not prevent visual effects.</remarks>
         public float MaxDiameter { get; set; }
+
+        /// <summary>
+        /// Gets or sets an offset for the drop height.
+        /// </summary>
+        public float DropHeightOffset
+        {
+            get => dropHeightOffset;
+            set => dropHeightOffset.Value = value;
+        }
 
         /// <summary>
         /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.

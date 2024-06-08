@@ -10,14 +10,15 @@ namespace Exiled.Events.EventArgs.Player
     using AdminToys;
 
     using API.Features;
+    using API.Features.DamageHandlers;
     using API.Features.Items;
     using API.Features.Toys;
 
     using Interfaces;
 
-    using PlayerStatsSystem;
-
     using UnityEngine;
+
+    using BaseHandler = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
     /// Contains all information before a player damages a shooting target.
@@ -48,14 +49,14 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="isAllowed">
         /// <inheritdoc cref="IsAllowed" />
         /// </param>
-        public DamagingShootingTargetEventArgs(Player player, float damage, float distance, Vector3 hitLocation, ShootingTarget shootingTarget, DamageHandlerBase damageHandler, bool isAllowed = true)
+        public DamagingShootingTargetEventArgs(Player player, float damage, float distance, Vector3 hitLocation, ShootingTarget shootingTarget, BaseHandler damageHandler, bool isAllowed = true)
         {
             Player = player;
             Amount = damage;
             Distance = distance;
             ShootingTarget = ShootingTargetToy.Get(shootingTarget);
             Item = player?.CurrentItem;
-            DamageHandler = (AttackerDamageHandler)damageHandler;
+            DamageHandler = new CustomDamageHandler(player, damageHandler);
             HitLocation = hitLocation;
             IsAllowed = isAllowed;
         }
@@ -66,9 +67,9 @@ namespace Exiled.Events.EventArgs.Player
         public ShootingTargetToy ShootingTarget { get; }
 
         /// <summary>
-        /// Gets the <see cref="AttackerDamageHandler" />.
+        /// Gets the <see cref="CustomDamageHandler" />.
         /// </summary>
-        public AttackerDamageHandler DamageHandler { get; }
+        public CustomDamageHandler DamageHandler { get; }
 
         /// <summary>
         /// Gets the exact world location the bullet impacted the target.
