@@ -27,7 +27,7 @@ namespace Exiled.CustomModules.EventHandlers
 
             if (CustomItem.TryGet(ev.Item, out CustomItem customItem) && customItem.Settings.Cast<ItemSettings>().ShouldMessageOnGban)
                 SpectatorCustomNickname(ev.Player, $"{ev.Player.CustomName} (CustomItem: {customItem.Name})");
-            else if (ev.Player && ev.Player.Cast<Pawn>().CurrentCustomItem)
+            else if (ev.Player && ev.Player.Cast(out Pawn pawn) && pawn.CurrentItem)
                 SpectatorCustomNickname(ev.Player, ev.Player.HasCustomName ? ev.Player.CustomName : string.Empty);
         }
 

@@ -10,10 +10,8 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
-    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Jailbird;
-    using UnityEngine;
 
     using BaseJailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
 
@@ -120,7 +118,7 @@ namespace Exiled.API.Features.Pickups
             {
                 MeleeDamage = jailbirdItem._hitreg._damageMelee;
                 ChargeDamage = jailbirdItem._hitreg._damageCharge;
-                FlashDuration = jailbirdItem._hitreg._flashDuration;
+                FlashDuration = jailbirdItem._hitreg._concussionDuration;
                 Radius = jailbirdItem._hitreg._hitregRadius;
             }
         }
