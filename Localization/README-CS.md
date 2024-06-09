@@ -92,7 +92,7 @@ Některé pluginy však mohou získávat svá konfigurační nastavení z jinýc
 
 Pokud si přejete vytvořit plugin pro EXILED, je to poměrně jednoduché. Pokud byste chtěli více návodů, navštivte prosím naši stránku [Getting Started.](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
 
-Obsáhlejší a aktivně aktualizované tutoriály naleznete na [webové stránce EXILED](https://exiled-team.github.io/EXILED/articles/install.html).
+Obsáhlejší a aktivně aktualizované tutoriály naleznete na [webové stránce EXILED](https://exiled.to).
 
 Při publikování pluginů však dbejte na dodržování těchto pravidel:
 
