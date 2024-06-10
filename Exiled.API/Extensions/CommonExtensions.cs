@@ -25,10 +25,19 @@ namespace Exiled.API.Extensions
         /// <returns>Returns a random value from <see cref="IEnumerable{T}"/>.</returns>
         public static T GetRandomValue<T>(this IEnumerable<T> enumerable)
         {
-            if (enumerable?.ToArray() is not { Length: > 0 } arr)
-                return default;
-            else
-                return arr[Random.Range(0, arr.Length)];
+            T current = default;
+            int count = 0;
+
+            foreach (T element in enumerable)
+            {
+                count++;
+                if (Random.Range(0, count) == 0)
+                {
+                    current = element;
+                }
+            }
+
+            return current;
         }
 
         /// <summary>
