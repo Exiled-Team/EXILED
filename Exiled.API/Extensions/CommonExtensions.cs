@@ -27,7 +27,7 @@ namespace Exiled.API.Extensions
         {
             if (enumerable is null)
                 return default;
-            
+
             T[] array = enumerable.ToArray();
             return array.Length == 0 ? default : array[Random.Range(0, array.Length)];
         }
