@@ -20,6 +20,7 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Toys;
     using global::Hazards;
     using InventorySystem;
+    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
@@ -381,6 +382,26 @@ namespace Exiled.API.Features
             timedGrenadePickup.Position = position;
             timedGrenadePickup.PreviousOwner = (attacker ?? Server.Host).Footprint;
             timedGrenadePickup.ServerFuseEnd();
+        }
+
+        /// <summary>
+        /// Plays a gun sound at the specified position.
+        /// </summary>
+        /// <param name="position">Position to play the sound at.</param>
+        /// <param name="firearmType">The type of firearm to play the sound of.</param>
+        /// <param name="maxDistance">The maximum distance the sound can be heard from.</param>
+        /// <param name="audioClipId">The audio clip ID to play.</param>
+        public static void PlayGunSound(Vector3 position, ItemType firearmType, byte maxDistance = 45, byte audioClipId = 0)
+        {
+            GunAudioMessage msg = new()
+            {
+                Weapon = firearmType,
+                AudioClipId = audioClipId,
+                MaxDistance = maxDistance,
+                ShooterHub = ReferenceHub.HostHub,
+                ShooterPosition = new RelativePosition(position),
+            };
+            msg.SendToAuthenticated();
         }
 
         /// <summary>
