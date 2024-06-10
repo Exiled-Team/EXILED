@@ -23,7 +23,7 @@ namespace Exiled.API.Extensions
         /// <param name="enumerable"><see cref="IEnumerable{T}"/> to be used to get a random value.</param>
         /// <typeparam name="T">Type of <see cref="IEnumerable{T}"/> elements.</typeparam>
         /// <returns>Returns a random value from <see cref="IEnumerable{T}"/>.</returns>
-        public static T GetRandomValue<T>(IEnumerable<T> enumerable)
+        public static T GetRandomValue<T>(this IEnumerable<T> enumerable)
         {
             if (enumerable is null)
                 return default;
@@ -39,7 +39,7 @@ namespace Exiled.API.Extensions
         /// <typeparam name="T">Type of <see cref="IEnumerable{T}"/> elements.</typeparam>
         /// <param name="condition">The condition to require.</param>
         /// <returns>Returns a random value from <see cref="IEnumerable{T}"/>.</returns>
-        public static T GetRandomValue<T>(IEnumerable<T> enumerable, System.Func<T, bool> condition)
+        public static T GetRandomValue<T>(this IEnumerable<T> enumerable, System.Func<T, bool> condition)
         {
             if (enumerable is null)
                 return default;
