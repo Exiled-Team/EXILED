@@ -43,7 +43,7 @@ namespace Exiled.API.Extensions
         {
             if (enumerable is null)
                 return default;
-            
+
             T[] array = enumerable.Where(condition).ToArray();
             return array.Length == 0 ? default : array.GetRandomValue();
         }
