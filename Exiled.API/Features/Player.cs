@@ -1506,6 +1506,26 @@ namespace Exiled.API.Features
         public static void ReloadWhitelist() => WhiteList.Reload();
 
         /// <summary>
+        /// Plays a gun sound at the specified position.
+        /// </summary>
+        /// <param name="position">Position to play the sound at.</param>
+        /// <param name="firearmType">The type of firearm to play the sound of.</param>
+        /// <param name="maxDistance">The maximum distance the sound can be heard from.</param>
+        /// <param name="audioClipId">The audio clip ID to play.</param>
+        public static void PlayGunSound(Vector3 position, ItemType firearmType, byte maxDistance = 45, byte audioClipId = 0)
+        {
+            GunAudioMessage msg = new()
+            {
+                Weapon = firearmType,
+                AudioClipId = audioClipId,
+                MaxDistance = maxDistance,
+                ShooterHub = ReferenceHub.HostHub,
+                ShooterPosition = new RelativePosition(position),
+            };
+            msg.SendToAuthenticated();
+        }
+
+        /// <summary>
         /// Adds the player's UserId to the list of reserved slots.
         /// </summary>
         /// <remarks>This method does not permanently give a user a reserved slot. The slot will be removed if the reserved slots are reloaded.</remarks>
