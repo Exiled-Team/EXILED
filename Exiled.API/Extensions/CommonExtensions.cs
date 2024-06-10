@@ -39,7 +39,7 @@ namespace Exiled.API.Extensions
         /// <typeparam name="T">Type of <see cref="IEnumerable{T}"/> elements.</typeparam>
         /// <param name="condition">The condition to require.</param>
         /// <returns>Returns a random value from <see cref="IEnumerable{T}"/>.</returns>
-        public static T GetRandomValue<T>(IEnumerable<T> enumerable, Func<T, bool> condition)
+        public static T GetRandomValue<T>(IEnumerable<T> enumerable, System.Func<T, bool> condition)
         {
             if (enumerable is null)
                 return default;
