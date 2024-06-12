@@ -40,6 +40,9 @@ namespace Exiled.Events.Commands.ConfigValue
         public string Description { get; } = "Sets a config value";
 
         /// <inheritdoc/>
+        public bool SanitizeResponse { get; }
+
+        /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             const string perm = "cv.set";

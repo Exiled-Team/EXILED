@@ -47,6 +47,11 @@ namespace Exiled.Events.Features
         public string repository { get; set; }
 
         /// <summary>
+        /// Gets or sets name of the file that we should download.
+        /// </summary>
+        public string fileName { get; set; }
+
+        /// <summary>
         /// Returns a verified plugin in a human-readable format.
         /// </summary>
         /// <returns>Human-readable string.</returns>

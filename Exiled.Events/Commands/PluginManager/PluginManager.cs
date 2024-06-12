@@ -43,6 +43,7 @@ namespace Exiled.Events.Commands.PluginManager
             RegisterCommand(Disable.Instance);
             RegisterCommand(Patches.Instance);
             RegisterCommand(Install.Instance);
+            RegisterCommand(Plugins.Instance);
         }
 
         /// <inheritdoc/>

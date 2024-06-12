@@ -5,6 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using Exiled.Events.Features;
+using Utf8Json;
+
 namespace Exiled.Events.Commands.PluginManager
 {
     using System;
@@ -39,6 +44,9 @@ namespace Exiled.Events.Commands.PluginManager
         public string Description { get; } = "Installs a plugin";
 
         /// <inheritdoc/>
+        public bool SanitizeResponse { get; }
+
+        /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             const string perm = "pm.install";
@@ -51,8 +59,43 @@ namespace Exiled.Events.Commands.PluginManager
 
             if (arguments.Count is < 1 or > 4)
             {
-                response = "Please, use: pluginmanager install [PluginAuthor/PluginName] {File Name} {String version} {Dependencies string version}";
+                response = "Please, use: pluginmanager install [PluginAuthor/PluginName OR Verified plugin name] {File Name} {String version} {Dependencies string version}";
                 return false;
+            }
+
+            string downloadPath = string.Empty;
+            string dependenciesPath = string.Empty;
+
+            if (arguments.Count == 1)
+            {
+                List<VerifiedPlugin> list;
+                try
+                {
+                    using HttpClient client = new();
+                    using HttpResponseMessage responseMessage = client.GetAsync("https://exiled.to/api/plugins").Result;
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    list = JsonSerializer.Deserialize<List<VerifiedPlugin>>(res);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex);
+                    response = null;
+                    return false;
+                }
+
+                VerifiedPlugin plugin = list.FirstOrDefault(x => (int.TryParse(arguments.At(0), out int id) && x.id == id) || string.Equals(x.name, arguments.At(0), StringComparison.CurrentCultureIgnoreCase));
+
+                if (plugin == null && !Uri.TryCreate(arguments.At(0), UriKind.RelativeOrAbsolute, out _))
+                {
+                    response = $"There is no verified plugin with such id or name: {arguments.At(0)}";
+                    return false;
+                }
+
+                if (plugin != null)
+                {
+                    downloadPath = plugin.repository + $"/releases/latest/download/{plugin.fileName}";
+                    dependenciesPath = plugin.repository + "/releases/latest/download/dependencies.zip";
+                }
             }
 
             string fileName = arguments.At(0).Split('/')[1];
@@ -69,11 +112,13 @@ namespace Exiled.Events.Commands.PluginManager
                 targetRelease = $"tag/{arguments.At(2)}";
             }
 
-            string downloadPath = $"https://github.com/{arguments.At(0)}/releases/{targetRelease}/download/{fileName}.dll";
+            if (downloadPath == string.Empty)
+                downloadPath = $"https://github.com/{arguments.At(0)}/releases/{targetRelease}/download/{fileName}.dll";
 
             try
             {
                 using WebClient client = new();
+                client.Headers.Add("User-Agent", $"Exiled.Events-{Events.Instance.Version}");
                 client.DownloadFile(downloadPath, Path.Combine(Paths.Plugins, $"{fileName}.dll"));
             }
             catch (WebException webException)
@@ -96,7 +141,8 @@ namespace Exiled.Events.Commands.PluginManager
                 targetRelease = $"tag/{arguments.At(3)}";
             }
 
-            string dependenciesPath = $"https://github.com/{arguments.At(0)}/releases/{targetRelease}/download/dependencies.zip";
+            if (dependenciesPath == string.Empty)
+                dependenciesPath = $"https://github.com/{arguments.At(0)}/releases/{targetRelease}/download/dependencies.zip";
 
             try
             {
