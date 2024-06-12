@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="DangerType.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -15,6 +15,11 @@ namespace Exiled.API.Enums
     public enum DangerType
     {
         /// <summary>
+        /// Used when there's an error.
+        /// </summary>
+        None = -1,
+
+        /// <summary>
         /// Warhead.
         /// </summary>
         Warhead,
@@ -25,7 +30,7 @@ namespace Exiled.API.Enums
         CardiacArrest,
 
         /// <summary>
-        /// Rage Target
+        /// Rage Target.
         /// </summary>
         RageTarget,
 
