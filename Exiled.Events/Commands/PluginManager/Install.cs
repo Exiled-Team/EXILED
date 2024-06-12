@@ -5,24 +5,23 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-using Exiled.Events.Features;
-using Utf8Json;
-
 namespace Exiled.Events.Commands.PluginManager
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.IO.Compression;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
 
     using CommandSystem;
     using Exiled.API.Features;
+    using Exiled.Events.Features;
     using Exiled.Permissions.Extensions;
     using RemoteAdmin;
+    using Utf8Json;
 
     /// <summary>
     /// The command to install plugin.
