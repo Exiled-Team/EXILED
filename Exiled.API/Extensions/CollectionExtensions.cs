@@ -43,7 +43,7 @@ namespace Exiled.API.Extensions
         /// <typeparam name="T">Type of <see cref="IEnumerable{T}"/> elements.</typeparam>
         /// <returns>A random item from the <see cref="IEnumerable{T}"/>.</returns>
         public static T Random<T>(this IEnumerable<T> enumerable) =>
-            (enumerable as T[] ?? enumerable.ToArray()) is { Length: > 0 } arr ? arr[UnityEngine.Random.Range(0, arr.Length)] : default;
+            (enumerable as T[] ?? enumerable?.ToArray()) is { Length: > 0 } arr ? arr[UnityEngine.Random.Range(0, arr.Length)] : default;
 
         /// <summary>
         /// Gets a random item from an <see cref="IEnumerable{T}"/> given a condition.
@@ -53,7 +53,7 @@ namespace Exiled.API.Extensions
         /// <param name="predicate">The specified condition.</param>
         /// <returns>A random item from the <see cref="IEnumerable{T}"/> matching the given condition.</returns>
         public static T Random<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate) =>
-            (enumerable as T[] ?? enumerable.ToArray()) is { Length: > 0 } arr ? arr.Where(predicate).Random() : default;
+            enumerable == null || enumerable.IsEmpty() ? enumerable.Where(predicate).Random() : default;
 
         /// <summary>
         /// Shuffles an <see cref="IEnumerable{T}"/>.
