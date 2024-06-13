@@ -362,9 +362,9 @@ namespace Exiled.API.Features
 
             Ragdoll.BasicRagdollToRagdoll.Clear();
 
-            Firearm.ItemTypeToFirearmInstance.Clear();
-            Firearm.BaseCodesValue.Clear();
-            Firearm.AvailableAttachmentsValue.Clear();
+            Items.Firearm.ItemTypeToFirearmInstance.Clear();
+            Items.Firearm.BaseCodesValue.Clear();
+            Items.Firearm.AvailableAttachmentsValue.Clear();
 
             Locker.BaseToExiledLockers.Clear();
 
