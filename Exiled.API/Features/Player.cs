@@ -3183,6 +3183,32 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets an instance of <see cref="DangerStackBase"/> by <see cref="DangerType"/>.
+        /// </summary>
+        /// <param name="dangerType">The <see cref="DangerType"/>.</param>
+        /// <returns>The <see cref="DangerStackBase"/>.</returns>
+        public DangerStackBase GetDanger(DangerType dangerType)
+        {
+            if (!TryGetEffect(EffectType.Scp1853, out StatusEffectBase scp1853Effect) || !scp1853Effect.IsEnabled)
+                return null;
+
+            return Dangers.FirstOrDefault(danger => danger.TryGetDangerType(out DangerType type) && dangerType == type);
+        }
+
+        /// <summary>
+        /// Tries to get an instance of <see cref="StatusEffectBase"/> by <see cref="EffectType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="EffectType"/>.</param>
+        /// <param name="danger">The <see cref="StatusEffectBase"/>.</param>
+        /// <returns>A bool indicating whether or not the <paramref name="danger"/> was successfully gotten.</returns>
+        public bool TryGetDanger(DangerType type, out DangerStackBase danger)
+        {
+            danger = GetDanger(type);
+
+            return danger is not null;
+        }
+
+        /// <summary>
         /// Opens the report window.
         /// </summary>
         /// <param name="text">The text to send.</param>
