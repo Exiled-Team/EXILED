@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Fixes
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             int offset = 1;
-            int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(Misc), nameof(Misc.MagnitudeIgnoreY)))) + offset;
+            int index = newInstructions.FindLastIndex(x => x.operand == (object)Field(typeof(FpcMotor), nameof(FpcMotor._lastMaxSpeed))) + offset;
 
             newInstructions.Insert(index, new(OpCodes.Call, Method(typeof(Mathf), nameof(Mathf.Abs), new[] { typeof(float) })));
 
