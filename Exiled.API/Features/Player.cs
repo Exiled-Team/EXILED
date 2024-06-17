@@ -832,12 +832,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets an array of <see cref="DangerStackBase"/>.
+        /// Gets an array of <see cref="DangerStackBase"/> if the Scp1853 effect is enabled or an empty array if it is not enabled.
         /// </summary>
-        public DangerStackBase[] Dangers => (GetEffect(EffectType.Scp1853) as Scp1853)?.Dangers;
+        public DangerStackBase[] Dangers
+        {
+            get
+            {
+                if (!TryGetEffect(EffectType.Scp1853, out StatusEffectBase scp1853Effect) || !scp1853Effect.IsEnabled)
+                    return Array.Empty<DangerStackBase>();
+
+                return (scp1853Effect as Scp1853).Dangers;
+            }
+        }
 
         /// <summary>
-        /// Gets a list of current <see cref="DangerStackBase"/> the player has.
+        /// Gets a list of active <see cref="DangerStackBase"/> the player has.
         /// </summary>
         public IEnumerable<DangerStackBase> ActiveDangers => Dangers.Where(d => d.IsActive);
 
@@ -3181,6 +3190,21 @@ namespace Exiled.API.Features
             if (Enum.TryParse(effectName, out EffectType type))
                 ChangeEffectIntensity(type, intensity, duration);
         }
+
+        /// <summary>
+        /// Gets an instance of <see cref="DangerStackBase"/> by <see cref="DangerType"/> if the Scp1853 effect is enabled or null if it is not enabled.
+        /// </summary>
+        /// <param name="dangerType">The <see cref="DangerType"/>.</param>
+        /// <returns>The <see cref="DangerStackBase"/>.</returns>
+        public DangerStackBase GetDanger(DangerType dangerType) => Dangers.FirstOrDefault(danger => danger.TryGetDangerType(out DangerType type) && dangerType == type);
+
+        /// <summary>
+        /// Tries to get an instance of <see cref="StatusEffectBase"/> by <see cref="EffectType"/> (does not work if the Scp1853 effect is not enabled).
+        /// </summary>
+        /// <param name="type">The <see cref="EffectType"/>.</param>
+        /// <param name="danger">The <see cref="StatusEffectBase"/>.</param>
+        /// <returns>A bool indicating whether or not the <paramref name="danger"/> was successfully gotten.</returns>
+        public bool TryGetDanger(DangerType type, out DangerStackBase danger) => (danger = GetDanger(type)) is not null;
 
         /// <summary>
         /// Opens the report window.
