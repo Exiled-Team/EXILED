@@ -158,6 +158,16 @@ namespace Exiled.Events.Handlers
         public static Event<HurtEventArgs> Hurt { get; set; } = new();
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> heals.
+        /// </summary>
+        public static Event<HealingEventArgs> Healing { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> has healed.
+        /// </summary>
+        public static Event<HealedEventArgs> Healed { get; set; } = new();
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> dies.
         /// </summary>
         public static Event<DyingEventArgs> Dying { get; set; } = new();
@@ -1086,6 +1096,10 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="HurtingEventArgs"/> instance. </param>
         public static void OnHurt(HurtEventArgs ev) => Hurt.InvokeSafely(ev);
+
+        public static void OnHealing(HealingEventArgs ev) => Healing.InvokeSafely(ev);
+
+        public static void OnHealed(HealedEventArgs ev) => Healed.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> dies.
