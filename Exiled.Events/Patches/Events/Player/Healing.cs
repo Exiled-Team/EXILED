@@ -49,24 +49,24 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // player = Player.Get(this.Hub);
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(HealthStat), nameof(HealthStat.Hub) ) ),
-                new(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.Get), new Type[] { typeof(ReferenceHub) } ) ),
+                new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(HealthStat), nameof(HealthStat.Hub))),
+                new(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.Get), new Type[] { typeof(ReferenceHub) })),
                 new(OpCodes.Stloc, player.LocalIndex),
 
                 // HealingEventArgs ev = new(Player, amount)
                 new(OpCodes.Ldloc, player),
                 new(OpCodes.Ldarg_1),
-                new(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(HealingEventArgs) )[0] ),
+                new(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(HealingEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // OnHealing(ev)
-                new(OpCodes.Call, AccessTools.Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHealing) ) ),
+                new(OpCodes.Call, AccessTools.Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHealing))),
 
                 // if (!ev.IsAllowed)
                 //   return
-                new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(HealingEventArgs), nameof(HealingEventArgs.IsAllowed) ) ),
+                new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(HealingEventArgs), nameof(HealingEventArgs.IsAllowed))),
                 new(OpCodes.Brtrue_S, continueLabel),
                 new(OpCodes.Pop),
                 new(OpCodes.Pop),
@@ -74,7 +74,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // healAmount = ev.Amount
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
-                new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(HealingEventArgs), nameof(HealingEventArgs.Amount) ) ),
+                new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(HealingEventArgs), nameof(HealingEventArgs.Amount))),
                 new(OpCodes.Starg_S, 1),
             });
 
@@ -85,10 +85,10 @@ namespace Exiled.Events.Patches.Events.Player
                 // HealedEventArgs ev = new(Player, lastAmount)
                 new CodeInstruction(OpCodes.Ldloc_S, player),
                 new CodeInstruction(OpCodes.Ldloc_S, lastHealth),
-                new CodeInstruction(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(HealedEventArgs) )[0] ),
+                new CodeInstruction(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(HealedEventArgs))[0]),
 
                 // OnHealed(ev)
-                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHealed) ) ),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHealed))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
