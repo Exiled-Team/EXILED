@@ -78,7 +78,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Starg_S, 1),
             });
 
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt);
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt) + 1;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
