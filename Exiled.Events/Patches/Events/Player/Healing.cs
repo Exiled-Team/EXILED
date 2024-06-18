@@ -21,8 +21,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// Patches
     /// <see cref="HealthStat.ServerHeal(float)" />.
-    /// Adds the <see cref="Handlers.Player.OnHealing" /> and
-    /// Adds the <see cref="Handlers.Player.OnHealed" /> events.
+    /// Adds the <see cref="Handlers.Player.Healing" /> and
+    /// Adds the <see cref="Handlers.Player.Healed" /> events.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Healing))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Healed))]

@@ -21,13 +21,13 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player">
         /// <inheritdoc cref="Player" />
         /// </param>
-        /// <param name="lastHealth">
+        /// <param name="lastAmount">
         /// <inheritdoc cref="LastAmount" />
         /// </param>
-        public HealedEventArgs(Player player, float lastHealth)
+        public HealedEventArgs(Player player, float lastAmount)
         {
             Player = player;
-            LastAmount = lastHealth;
+            LastAmount = lastAmount;
         }
 
         /// <inheritdoc/>

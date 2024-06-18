@@ -1097,8 +1097,16 @@ namespace Exiled.Events.Handlers
         /// <param name="ev">The <see cref="HurtingEventArgs"/> instance. </param>
         public static void OnHurt(HurtEventArgs ev) => Hurt.InvokeSafely(ev);
 
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> is healed.
+        /// </summary>
+        /// <param name="ev">The <see cref="HealingEventArgs"/> instance. </param>
         public static void OnHealing(HealingEventArgs ev) => Healing.InvokeSafely(ev);
 
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> is healed.
+        /// </summary>
+        /// <param name="ev">The <see cref="HealedEventArgs"/> instance. </param>
         public static void OnHealed(HealedEventArgs ev) => Healed.InvokeSafely(ev);
 
         /// <summary>
