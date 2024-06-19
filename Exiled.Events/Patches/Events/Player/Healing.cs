@@ -78,9 +78,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Starg_S, 1),
             });
 
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt) + 1;
-
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(newInstructions.Count - 1, new CodeInstruction[]
             {
                 // HealedEventArgs ev = new(Player, lastAmount)
                 new CodeInstruction(OpCodes.Ldloc_S, player),
