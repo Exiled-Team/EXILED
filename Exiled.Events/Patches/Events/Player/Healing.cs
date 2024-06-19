@@ -51,10 +51,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(HealthStat), nameof(HealthStat.Hub))),
                 new(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.Get), new Type[] { typeof(ReferenceHub) })),
-                new(OpCodes.Stloc, player.LocalIndex),
+                new(OpCodes.Stloc_S, player.LocalIndex),
 
                 // HealingEventArgs ev = new(Player, amount)
-                new(OpCodes.Ldloc, player),
+                new(OpCodes.Ldloc_S, player),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(HealingEventArgs))[0]),
                 new(OpCodes.Dup),
