@@ -53,7 +53,7 @@ namespace Exiled.API.Extensions
         /// <param name="predicate">The specified condition.</param>
         /// <returns>A random item from the <see cref="IEnumerable{T}"/> matching the given condition.</returns>
         public static T Random<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate) =>
-            enumerable == null || enumerable.IsEmpty() ? enumerable.Where(predicate).Random() : default;
+            enumerable != null ? enumerable.Where(predicate).Random() : default;
 
         /// <summary>
         /// Shuffles an <see cref="IEnumerable{T}"/>.
