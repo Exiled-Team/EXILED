@@ -45,7 +45,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 // lastHealth = get_curValue;
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc, lastHealth.LocalIndex),
+                new(OpCodes.Stloc_S, lastHealth.LocalIndex),
 
                 // player = Player.Get(this.Hub);
                 new(OpCodes.Ldarg_0),
