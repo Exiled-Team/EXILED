@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs.Player
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the player's health.
+        /// Gets or sets the amount of health the player will be healed.
         /// </summary>
         public float Amount { get; set; }
 
