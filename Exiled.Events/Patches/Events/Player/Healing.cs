@@ -81,8 +81,8 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(newInstructions.Count - 1, new CodeInstruction[]
             {
                 // HealedEventArgs ev = new(Player, lastAmount)
-                new CodeInstruction(OpCodes.Ldloc_S, player),
-                new CodeInstruction(OpCodes.Ldloc_S, lastHealth),
+                new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, lastHealth.LocalIndex),
                 new CodeInstruction(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(HealedEventArgs))[0]),
 
                 // OnHealed(ev)
