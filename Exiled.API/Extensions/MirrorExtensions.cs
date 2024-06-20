@@ -190,6 +190,14 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
+        /// Sets the lights of a <paramref name="room"/> to be either on or off, visible only to the <paramref name="target"/> player.
+        /// </summary>
+        /// <param name="room">The room to modify the lights of.</param>
+        /// <param name="target">The player who will see the lights state change.</param>
+        /// <param name="value">The state to set the lights to. True for on, false for off.</param>
+        public static void SetRoomLightsForTargetOnly(this Room room, Player target, bool value) => target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkLightsEnabled), value);
+
+        /// <summary>
         /// Sets <see cref="Player.DisplayNickname"/> of a <paramref name="player"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="target">Only this player can see the name changed.</param>
