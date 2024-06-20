@@ -54,7 +54,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc_S, player.LocalIndex),
 
                 // HealingEventArgs ev = new(Player, amount)
-                new(OpCodes.Ldloc_S, player),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(HealingEventArgs))[0]),
                 new(OpCodes.Dup),
