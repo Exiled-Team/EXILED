@@ -741,16 +741,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets an array of <see cref="DangerStackBase"/>.
-        /// </summary>
-        public DangerStackBase[] Dangers => (GetEffect(EffectType.Scp1853) as Scp1853)?.Dangers;
-
-        /// <summary>
-        /// Gets a list of current <see cref="DangerStackBase"/> the player has.
-        /// </summary>
-        public IEnumerable<DangerStackBase> ActiveDangers => Dangers.Where(d => d.IsActive);
-
-        /// <summary>
         /// Gets or sets a value indicating whether or not the player's bypass mode is enabled.
         /// </summary>
         public bool IsBypassModeEnabled
@@ -868,16 +858,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets an array of <see cref="DangerStackBase"/> if the Scp1853 effect is enabled or an empty array if it is not enabled.
         /// </summary>
-        public DangerStackBase[] Dangers
-        {
-            get
-            {
-                if (!TryGetEffect(EffectType.Scp1853, out StatusEffectBase scp1853Effect) || !scp1853Effect.IsEnabled)
-                    return Array.Empty<DangerStackBase>();
-
-                return (scp1853Effect as Scp1853).Dangers;
-            }
-        }
+        public DangerStackBase[] Dangers => !TryGetEffect(EffectType.Scp1853, out StatusEffectBase scp1853Effect) || !scp1853Effect.IsEnabled ? Array.Empty<DangerStackBase>() : (scp1853Effect as Scp1853).Dangers;
 
         /// <summary>
         /// Gets a list of active <see cref="DangerStackBase"/> the player has.
