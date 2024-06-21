@@ -94,7 +94,7 @@ Mira la documentación o pregúntale al creador del plugin en particular si tien
 
 Si deseas hacer un plugin para EXILED, es bastante fácil. Si prefieres ver algún tipo de tutorial, visita nuestra página de [Primeros Pasos](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md).
 
-Para una guía más comprensible y tutoriales regularmente actualizados, échale un vistazo a [la página de EXILED](https://exiled-team.github.io/EXILED/articles/install.html).
+Para una guía más comprensible y tutoriales regularmente actualizados, échale un vistazo a [la página de EXILED](https://exiled.to).
 
 Asegúrate de seguir estas normas antes de publicar un plugin:
 
