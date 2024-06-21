@@ -10,10 +10,12 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Scp914Processors;
     using global::Scp914;
+    using global::Scp914.Processors;
     using UnityEngine;
 
     /// <summary>
@@ -141,5 +143,12 @@ namespace Exiled.API.Features
         /// <param name="player"><see cref="Player"/> who interacts with Scp914.</param>
         /// <param name="code"><see cref="Scp914InteractCode"/> Interact code.</param>
         public static void Start(Player player = null, Scp914InteractCode code = Scp914InteractCode.Activate) => Scp914Controller.ServerInteract((player ?? Server.Host).ReferenceHub, (byte)code);
+
+        /// <summary>
+        /// Gets the <see cref="Scp914Processor"/> for <paramref name="itemType"/>.
+        /// </summary>
+        /// <param name="itemType">Item for which processor should be returned.</param>
+        /// <returns>The <see cref="Scp914Processor"/> if item has it. Otherwise, <see langword="null"/>.</returns>
+        public static Scp914Processor GetProcessor(ItemType itemType) => Scp914Upgrader.TryGetProcessor(itemType, out Scp914ItemProcessor scp914ItemProcessor) ? Scp914Processor.Get(scp914ItemProcessor) : null;
     }
 }

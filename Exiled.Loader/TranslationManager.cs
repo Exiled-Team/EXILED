@@ -17,9 +17,11 @@ namespace Exiled.Loader
     using API.Interfaces;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
 
     using YamlDotNet.Core;
+
+    using Serialization = API.Features.EConfig;
 
     /// <summary>
     /// Used to handle plugin translations.
@@ -37,7 +39,7 @@ namespace Exiled.Loader
             {
                 Log.Info($"Loading plugin translations... ({LoaderPlugin.Config.ConfigType})");
 
-                Dictionary<string, object> rawDeserializedTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? DictionaryPool<string, object>.Pool.Get();
+                Dictionary<string, object> rawDeserializedTranslations = Serialization.Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? DictionaryPool<string, object>.Pool.Get();
                 SortedDictionary<string, ITranslation> deserializedTranslations = new(StringComparer.Ordinal);
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
@@ -144,12 +146,12 @@ namespace Exiled.Loader
                 if (translations is null || translations.Count == 0)
                     return false;
 
-                if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
+                if (LoaderPlugin.Config.ConfigType == ConfigType.Merged)
                 {
-                    return SaveDefaultTranslation(Loader.Serializer.Serialize(translations));
+                    return SaveDefaultTranslation(Serialization.Serializer.Serialize(translations));
                 }
 
-                return translations.All(plugin => SaveSeparatedTranslation(plugin.Key, Loader.Serializer.Serialize(plugin.Value)));
+                return translations.All(plugin => SaveSeparatedTranslation(plugin.Key, Serialization.Serializer.Serialize(plugin.Value)));
             }
             catch (YamlException yamlException)
             {
@@ -165,7 +167,7 @@ namespace Exiled.Loader
         /// <returns>Returns the read translations.</returns>
         public static string Read()
         {
-            if (LoaderPlugin.Config.ConfigType != ConfigType.Default)
+            if (LoaderPlugin.Config.ConfigType != ConfigType.Merged)
                 return string.Empty;
 
             try
@@ -189,7 +191,7 @@ namespace Exiled.Loader
         {
             try
             {
-                if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
+                if (LoaderPlugin.Config.ConfigType == ConfigType.Merged)
                 {
                     SaveDefaultTranslation(string.Empty);
                     return true;
@@ -214,7 +216,7 @@ namespace Exiled.Loader
         {
             if (rawTranslations is null)
             {
-                rawTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? DictionaryPool<string, object>.Pool.Get();
+                rawTranslations = Serialization.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? DictionaryPool<string, object>.Pool.Get();
             }
 
             if (!rawTranslations.TryGetValue(plugin.Prefix, out object rawDeserializedTranslation))
@@ -227,7 +229,7 @@ namespace Exiled.Loader
 
             try
             {
-                translation = (ITranslation)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(rawDeserializedTranslation), plugin.InternalTranslation.GetType());
+                translation = (ITranslation)Serialization.Deserializer.Deserialize(Serialization.Serializer.Serialize(rawDeserializedTranslation), plugin.InternalTranslation.GetType());
                 plugin.InternalTranslation.CopyProperties(translation);
             }
             catch (YamlException yamlException)
@@ -257,7 +259,7 @@ namespace Exiled.Loader
 
             try
             {
-                translation = (ITranslation)Loader.Deserializer.Deserialize(File.ReadAllText(plugin.TranslationPath), plugin.InternalTranslation.GetType());
+                translation = (ITranslation)Serialization.Deserializer.Deserialize(File.ReadAllText(plugin.TranslationPath), plugin.InternalTranslation.GetType());
                 plugin.InternalTranslation.CopyProperties(translation);
             }
             catch (YamlException yamlException)

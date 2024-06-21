@@ -12,18 +12,16 @@ namespace Exiled.Events.Commands.PluginManager
     using System.Text;
 
     using CommandSystem;
-
+    using Exiled.API.Interfaces;
     using Exiled.Events.Features;
     using Exiled.Permissions.Extensions;
-
     using NorthwoodLib.Pools;
-
     using RemoteAdmin;
 
     /// <summary>
     /// The command to show all the patches done by plugins.
     /// </summary>
-    public sealed class Patches : ICommand
+    public sealed class Patches : ICommand, IPermissioned
     {
         /// <summary>
         /// Gets static instance of the <see cref="Patches"/> command.
@@ -42,16 +40,12 @@ namespace Exiled.Events.Commands.PluginManager
         /// <inheritdoc />
         public bool SanitizeResponse { get; }
 
+        /// <inheritdoc />
+        public string Permission { get; } = "ee.showpatches";
+
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            const string perm = "ee.showpatches";
-            if (!sender.CheckPermission(perm) && (sender is PlayerCommandSender playerSender))
-            {
-                response = $"You can't show the unpatched patches, you don't have \"{perm}\" permissions.";
-                return false;
-            }
-
             StringBuilder sb = StringBuilderPool.Shared.Rent();
 
             sb.AppendLine("All patches:");
