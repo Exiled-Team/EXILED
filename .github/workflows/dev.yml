@@ -48,7 +48,7 @@ jobs:
         Out-File -FilePath ${{ github.env }} -InputObject "PackageFile=$File" -Encoding utf-8 -Append
 
     - name: Upload nuget package
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.PackageFile }}
         path: ${{ env.PackageFile }}
@@ -63,7 +63,7 @@ jobs:
       run: ./packaging.ps1
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: Build Result
         path: bin/Release/Exiled.tar.gz
