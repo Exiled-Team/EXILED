@@ -87,9 +87,17 @@ namespace Exiled.Loader
         public static void LoadPlugins()
         {
             File.Delete(Path.Combine(Paths.Plugins, "Exiled.Updater.dll"));
+            File.Delete(Path.Combine(Paths.Plugins, "Exiled.CustomRoles.dll"));
+            File.Delete(Path.Combine(Paths.Plugins, "Exiled.CustomItems.dll"));
 
             foreach (string assemblyPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
+                if (assemblyPath.Contains("Exiled.CustomRoles") || assemblyPath.Contains("Exiled.CustomItems"))
+                {
+                    File.Delete(assemblyPath);
+                    continue;
+                }
+
                 Assembly assembly = LoadAssembly(assemblyPath);
 
                 if (assembly is null)
