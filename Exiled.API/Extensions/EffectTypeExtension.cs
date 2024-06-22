@@ -155,7 +155,7 @@ namespace Exiled.API.Extensions
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect is a negative effect.</returns>
         /// <seealso cref="IsHarmful(EffectType)"/>
-        public static bool IsNegative(this EffectType effect) => IsHarmful(effect) || GetEffectBase(effect).Classification == StatusEffectBase.EffectClassification.Negative;
+        public static bool IsNegative(this EffectType effect) => IsHarmful(effect) || GetEffectBase(effect).Classification is StatusEffectBase.EffectClassification.Negative;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> is a positive effect.
