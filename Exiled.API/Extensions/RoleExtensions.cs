@@ -81,16 +81,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
         /// <returns><see cref="Team"/>.</returns>
-        public static Team GetTeam(this RoleTypeId roleType) => roleType switch
-        {
-            RoleTypeId.ChaosConscript or RoleTypeId.ChaosMarauder or RoleTypeId.ChaosRepressor or RoleTypeId.ChaosRifleman => Team.ChaosInsurgency,
-            RoleTypeId.Scientist => Team.Scientists,
-            RoleTypeId.ClassD => Team.ClassD,
-            RoleTypeId.Scp049 or RoleTypeId.Scp939 or RoleTypeId.Scp0492 or RoleTypeId.Scp079 or RoleTypeId.Scp096 or RoleTypeId.Scp106 or RoleTypeId.Scp173 or RoleTypeId.Scp3114 => Team.SCPs,
-            RoleTypeId.FacilityGuard or RoleTypeId.NtfCaptain or RoleTypeId.NtfPrivate or RoleTypeId.NtfSergeant or RoleTypeId.NtfSpecialist => Team.FoundationForces,
-            RoleTypeId.Tutorial => Team.OtherAlive,
-            _ => Team.Dead,
-        };
+        public static Team GetTeam(this RoleTypeId roleType) => GetRoleBase(roleType).Team;
 
         /// <summary>
         /// Gets the full name of the given <see cref="RoleTypeId"/>.
@@ -182,7 +173,7 @@ namespace Exiled.API.Extensions
         /// Gets the starting ammo of a <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
-        /// <returns>An <see cref="Array"/> of <see cref="ItemType"/> that the role receives on spawn. Will be empty for classes that do not spawn with ammo.</returns>
+        /// <returns>A dictionary of AmmoType and ushort that the role receives on spawn. Will be empty for classes that do not spawn with ammo.</returns>
         public static Dictionary<AmmoType, ushort> GetStartingAmmo(this RoleTypeId roleType) => roleType.GetStartingInventory().Ammo.ToDictionary(kvp => kvp.Key.GetAmmoType(), kvp => kvp.Value);
     }
 }
