@@ -90,7 +90,7 @@ Nogle plugins kan dog selv hente deres konfigurationsindstillinger fra andre ste
 
 Hvis du ønsker at lave et plugin til EXILED, er det ganske enkelt at gøre det. Hvis du gerne vil have mere vejledning, kan du besøge vores [Start Side](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
 
-For mere omfattende og aktivt opdaterede vejledninger, se [EXILED-webstedet](https://exiled-team.github.io/EXILED/articles/install.html).
+For mere omfattende og aktivt opdaterede vejledninger, se [EXILED-webstedet](https://exiled.to).
 
 Men sørg for at følge disse regler, når du udgiver dine plugins:
 

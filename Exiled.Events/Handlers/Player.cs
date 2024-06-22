@@ -66,6 +66,11 @@ namespace Exiled.Events.Handlers
         public static Event<BannedEventArgs> Banned { get; set; } = new();
 
         /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> is changing danger state.
+        /// </summary>
+        public static Event<ChangingDangerStateEventArgs> ChangingDangerState { get; set; } = new();
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> earns an achievement.
         /// </summary>
         /// <remarks>
@@ -588,6 +593,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="BanningEventArgs"/> instance.</param>
         public static void OnBanning(BanningEventArgs ev) => Banning.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player's danger state changes.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingDangerStateEventArgs"/> instance.</param>
+        public static void OnChangingDangerState(ChangingDangerStateEventArgs ev) => ChangingDangerState.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a player has been banned from the server.

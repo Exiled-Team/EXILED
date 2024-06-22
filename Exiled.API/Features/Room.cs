@@ -186,7 +186,7 @@ namespace Exiled.API.Features
             {
                 foreach (RoomLightController light in RoomLightControllers)
                 {
-                    light.NetworkLightsEnabled = value;
+                    light.NetworkLightsEnabled = !value;
                 }
             }
         }
