@@ -7,9 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection.Emit;
 
     using API.Features;
@@ -67,16 +65,16 @@ namespace Exiled.Events.Patches.Events.Map
             foreach (ReferenceHub referenceHub in ReferenceHub.AllHubs)
             {
                 Player player = Player.Get(referenceHub);
-                if ((instance.transform.position - referenceHub.transform.position).sqrMagnitude <= distance)
+                if ((instance.transform.position - referenceHub.transform.position).sqrMagnitude >= distance)
                     continue;
                 if (!ExiledEvents.Instance.Config.CanFlashbangsAffectThrower && instance.PreviousOwner.SameLife(new(referenceHub)))
                     continue;
-                if (!IndividualFriendlyFire.CheckFriendlyFirePlayer(instance.PreviousOwner, player.ReferenceHub))
+                if (!IndividualFriendlyFire.CheckFriendlyFirePlayer(instance.PreviousOwner, player.ReferenceHub) && !instance.PreviousOwner.SameLife(new(referenceHub)))
                     continue;
-                if (!Physics.Linecast(instance.transform.position, player.Position, instance._blindingMask))
+                if (Physics.Linecast(instance.transform.position, player.CameraTransform.position, instance._blindingMask))
                     continue;
 
-                targetToAffect.Add(Player.Get(referenceHub));
+                targetToAffect.Add(player);
             }
 
             ExplodingGrenadeEventArgs explodingGrenadeEvent = new(Player.Get(instance.PreviousOwner.Hub), instance, targetToAffect);

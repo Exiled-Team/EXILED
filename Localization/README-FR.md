@@ -96,7 +96,7 @@ Cependant, certains plugins peuvent obtenir leurs paramètres de configuration �
 
 Si vous souhaitez créer un plugin pour EXILED, c'est relativement simple à faire. Si vous avez besoin ou souhaitez consulter un tutoriel, suivez les instructions sur notre page [Bien Commencer](https://github.com/Exiled-Team/EXILED/blob/master/Localization/GettingStarted-FR.md).
 
-Pour des tutoriels plus complets et régulièrement mis à jour, consultez [le site d'EXILED](https://exiled-team.github.io/EXILED/articles/install.html).
+Pour des tutoriels plus complets et régulièrement mis à jour, consultez [le site d'EXILED](https://exiled.to).
 
 Mais veuillez faire attention à suivre les règles suivantes lorsque vous publiez vos plugins :
 
