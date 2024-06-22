@@ -92,12 +92,6 @@ namespace Exiled.Loader
 
             foreach (string assemblyPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
-                if (assemblyPath.Contains("Exiled.CustomRoles") || assemblyPath.Contains("Exiled.CustomItems"))
-                {
-                    File.Delete(assemblyPath);
-                    continue;
-                }
-
                 Assembly assembly = LoadAssembly(assemblyPath);
 
                 if (assembly is null)
