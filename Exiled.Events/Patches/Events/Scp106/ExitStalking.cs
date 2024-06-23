@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Scp106
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(StalkingEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(ExitStalkingEventArgs));
 
             Label continueLabel = generator.DefineLabel();
             Label returnLabel = generator.DefineLabel();
@@ -42,9 +42,9 @@ namespace Exiled.Events.Patches.Events.Scp106
                 index,
                 new CodeInstruction[]
                 {
-                    // if (value is true) continue;
+                    // if (value is false) continue;
                     new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Ldc_I4_0),
                     new(OpCodes.Beq_S, continueLabel),
 
                     // Player.Get(this.Owner);
@@ -66,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Scp106
 
                     // if (!ev.IsAllowed)
                     //    return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(StalkingEventArgs), nameof(StalkingEventArgs.IsAllowed))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ExitStalkingEventArgs), nameof(ExitStalkingEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, returnLabel),
                 });
 

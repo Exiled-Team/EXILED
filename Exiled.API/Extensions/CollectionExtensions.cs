@@ -43,7 +43,7 @@ namespace Exiled.API.Extensions
         /// <typeparam name="T">Type of <see cref="IEnumerable{T}"/> elements.</typeparam>
         /// <returns>A random item from the <see cref="IEnumerable{T}"/>.</returns>
         public static T Random<T>(this IEnumerable<T> enumerable) =>
-            enumerable is null || enumerable.Count() == 0 ? default : enumerable.ElementAt(UnityEngine.Random.Range(0, enumerable.Count()));
+            (enumerable as T[] ?? enumerable?.ToArray()) is { Length: > 0 } arr ? arr[UnityEngine.Random.Range(0, arr.Length)] : default;
 
         /// <summary>
         /// Gets a random item from an <see cref="IEnumerable{T}"/> given a condition.
@@ -53,40 +53,7 @@ namespace Exiled.API.Extensions
         /// <param name="predicate">The specified condition.</param>
         /// <returns>A random item from the <see cref="IEnumerable{T}"/> matching the given condition.</returns>
         public static T Random<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate) =>
-            enumerable is null || enumerable.Count() == 0 ? default : enumerable.Where(predicate).Random();
-
-        /// <summary>
-        /// Retrieves a random item from an <see cref="IEnumerable{T}"/>.
-        /// <para>
-        /// <br>Unlike <see cref="Random{T}(IEnumerable{T})"/>, this method optimizes performance</br>
-        /// <br>by pre-allocating memory for an array, resulting in faster computation and iteration.</br>
-        /// </para>
-        /// </summary>
-        /// <typeparam name="T">Type of elements in the <see cref="IEnumerable{T}"/>.</typeparam>
-        /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to select the item from.</param>
-        /// <returns>A randomly selected item from the <see cref="IEnumerable{T}"/>.</returns>
-        public static T RandomAlloc<T>(this IEnumerable<T> enumerable)
-        {
-            T[] array = enumerable as T[] ?? enumerable.ToArray();
-            return !array.Any() ? default : array.ElementAt(UnityEngine.Random.Range(0, array.Length));
-        }
-
-        /// <summary>
-        /// Retrieves a random item from an <see cref="IEnumerable{T}"/> based on a specified condition.
-        /// <para>
-        /// <br>Unlike <see cref="Random{T}(IEnumerable{T}, Func{T, bool})"/>, this method optimizes performance</br>
-        /// <br>by pre-allocating memory for an array, resulting in faster computation and iteration.</br>
-        /// </para>
-        /// </summary>
-        /// <typeparam name="T">Type of elements in the <see cref="IEnumerable{T}"/>.</typeparam>
-        /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to select the item from.</param>
-        /// <param name="predicate">The specified condition for item selection.</param>
-        /// <returns>A randomly selected item from the <see cref="IEnumerable{T}"/> that meets the given condition.</returns>
-        public static T RandomAlloc<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
-        {
-            T[] arr = enumerable.Where(predicate) as T[] ?? enumerable.Where(predicate).ToArray();
-            return !arr.Any() ? default : arr.ElementAt(UnityEngine.Random.Range(0, arr.Length));
-        }
+            enumerable != null ? enumerable.Where(predicate).Random() : default;
 
         /// <summary>
         /// Shuffles an <see cref="IEnumerable{T}"/>.

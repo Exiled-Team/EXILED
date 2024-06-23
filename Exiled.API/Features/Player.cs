@@ -386,7 +386,7 @@ namespace Exiled.API.Features
                     }
                 }
 
-                InfoArea = string.IsNullOrEmpty(value) ? InfoArea & ~PlayerInfoArea.CustomInfo : InfoArea |= PlayerInfoArea.CustomInfo;
+                InfoArea = InfoArea.ModifyFlags(!string.IsNullOrEmpty(value), PlayerInfoArea.CustomInfo);
                 ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
             }
         }
@@ -741,16 +741,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets an array of <see cref="DangerStackBase"/>.
-        /// </summary>
-        public DangerStackBase[] Dangers => (GetEffect(EffectType.Scp1853) as Scp1853)?.Dangers;
-
-        /// <summary>
-        /// Gets a list of current <see cref="DangerStackBase"/> the player has.
-        /// </summary>
-        public IEnumerable<DangerStackBase> ActiveDangers => Dangers.Where(d => d.IsActive);
-
-        /// <summary>
         /// Gets or sets a value indicating whether or not the player's bypass mode is enabled.
         /// </summary>
         public bool IsBypassModeEnabled
@@ -766,13 +756,7 @@ namespace Exiled.API.Features
         public bool IsMuted
         {
             get => VoiceChatMutes.QueryLocalMute(UserId, false);
-            set
-            {
-                if (value)
-                    VoiceChatMuteFlags |= VcMuteFlags.LocalRegular;
-                else
-                    VoiceChatMuteFlags &= ~VcMuteFlags.LocalRegular;
-            }
+            set => VoiceChatMuteFlags = VoiceChatMuteFlags.ModifyFlags(value, VcMuteFlags.LocalRegular);
         }
 
         /// <summary>
@@ -782,13 +766,7 @@ namespace Exiled.API.Features
         public bool IsGlobalMuted
         {
             get => VoiceChatMutes.Mutes.Contains(UserId) && VoiceChatMuteFlags.HasFlag(VcMuteFlags.GlobalRegular);
-            set
-            {
-                if (value)
-                    VoiceChatMuteFlags |= VcMuteFlags.GlobalRegular;
-                else
-                    VoiceChatMuteFlags &= ~VcMuteFlags.GlobalRegular;
-            }
+            set => VoiceChatMuteFlags = VoiceChatMuteFlags.ModifyFlags(value, VcMuteFlags.GlobalRegular);
         }
 
         /// <summary>
@@ -798,13 +776,7 @@ namespace Exiled.API.Features
         public bool IsIntercomMuted
         {
             get => VoiceChatMutes.QueryLocalMute(UserId, true);
-            set
-            {
-                if (value)
-                    VoiceChatMuteFlags |= VcMuteFlags.LocalIntercom;
-                else
-                    VoiceChatMuteFlags &= ~VcMuteFlags.LocalIntercom;
-            }
+            set => VoiceChatMuteFlags = VoiceChatMuteFlags.ModifyFlags(value, VcMuteFlags.LocalIntercom);
         }
 
         /// <summary>
@@ -864,6 +836,16 @@ namespace Exiled.API.Features
             get => Role.Base is PlayerRoles.HumanRole humanRole ? humanRole.UnitNameId : byte.MinValue;
             set => _ = Role.Base is PlayerRoles.HumanRole humanRole ? humanRole.UnitNameId = value : _ = value;
         }
+
+        /// <summary>
+        /// Gets an array of <see cref="DangerStackBase"/> if the Scp1853 effect is enabled or an empty array if it is not enabled.
+        /// </summary>
+        public DangerStackBase[] Dangers => !TryGetEffect(EffectType.Scp1853, out StatusEffectBase scp1853Effect) || !scp1853Effect.IsEnabled ? Array.Empty<DangerStackBase>() : (scp1853Effect as Scp1853).Dangers;
+
+        /// <summary>
+        /// Gets a list of active <see cref="DangerStackBase"/> the player has.
+        /// </summary>
+        public IEnumerable<DangerStackBase> ActiveDangers => Dangers.Where(d => d.IsActive);
 
         /// <summary>
         /// Gets or sets the player's health.
@@ -2606,7 +2588,7 @@ namespace Exiled.API.Features
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
 
                 if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
-                    flags |= FirearmStatusFlags.FlashlightEnabled;
+                    flags.AddFlags(FirearmStatusFlags.FlashlightEnabled);
 
                 firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
@@ -3392,6 +3374,21 @@ namespace Exiled.API.Features
             if (Enum.TryParse(effectName, out EffectType type))
                 ChangeEffectIntensity(type, intensity, duration);
         }
+
+        /// <summary>
+        /// Gets an instance of <see cref="DangerStackBase"/> by <see cref="DangerType"/> if the Scp1853 effect is enabled or null if it is not enabled.
+        /// </summary>
+        /// <param name="dangerType">The <see cref="DangerType"/>.</param>
+        /// <returns>The <see cref="DangerStackBase"/>.</returns>
+        public DangerStackBase GetDanger(DangerType dangerType) => Dangers.FirstOrDefault(danger => danger.TryGetDangerType(out DangerType type) && dangerType == type);
+
+        /// <summary>
+        /// Tries to get an instance of <see cref="StatusEffectBase"/> by <see cref="EffectType"/> (does not work if the Scp1853 effect is not enabled).
+        /// </summary>
+        /// <param name="type">The <see cref="EffectType"/>.</param>
+        /// <param name="danger">The <see cref="StatusEffectBase"/>.</param>
+        /// <returns>A bool indicating whether or not the <paramref name="danger"/> was successfully gotten.</returns>
+        public bool TryGetDanger(DangerType type, out DangerStackBase danger) => (danger = GetDanger(type)) is not null;
 
         /// <summary>
         /// Opens the report window.
