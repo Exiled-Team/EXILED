@@ -91,6 +91,8 @@ namespace Exiled.CustomModules
                 StaticActor.CreateNewInstance<PickupTracker>();
             }
 
+            SubscribeEvents();
+
             base.OnEnabled();
         }
 
@@ -111,6 +113,8 @@ namespace Exiled.CustomModules
             CustomTeam.DisableAll();
             CustomEscape.DisableAll();
             CustomGameMode.DisableAll();
+
+            UnsubscribeEvents();
 
             base.OnDisabled();
         }

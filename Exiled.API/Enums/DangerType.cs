@@ -8,7 +8,6 @@
 namespace Exiled.API.Enums
 {
     using CustomPlayerEffects.Danger;
-    using Exiled.API.Features.Roles;
 
     /// <summary>
     /// A list of Types used by exiled for <see cref="DangerStackBase"/>.
@@ -21,51 +20,43 @@ namespace Exiled.API.Enums
         None = -1,
 
         /// <summary>
-        /// Warhead has been activated but not detonated.
+        /// Warhead.
         /// </summary>
-        /// <remarks>Used for <see cref="WarheadDanger"/>.</remarks>
         Warhead,
 
         /// <summary>
-        /// Has <see cref="EffectType.CardiacArrest"/>.
+        /// Cardiac Arrest.
         /// </summary>
-        /// <remarks>Used for <see cref="CardiacArrestDanger"/>.</remarks>
         CardiacArrest,
 
         /// <summary>
-        /// <see cref="Scp096Role"/> rage target.
+        /// Rage Target.
         /// </summary>
-        /// <remarks>Used for <see cref="RageTargetDanger"/>.</remarks>
         RageTarget,
 
         /// <summary>
-        /// Has <see cref="EffectType.Corroding"/>.
+        /// Corroding.
         /// </summary>
-        /// <remarks>Used for <see cref="CorrodingDanger"/>.</remarks>
         Corroding,
 
         /// <summary>
-        /// Has taken damage.
+        /// Player Damaged.
         /// </summary>
-        /// <remarks>Used for <see cref="PlayerDamagedDanger"/>.</remarks>
         PlayerDamaged,
 
         /// <summary>
-        /// Encountered an SCP
+        /// Scp Encounter.
         /// </summary>
-        /// <remarks>Used for <see cref="ScpEncounterDanger"/>.</remarks>
         ScpEncounter,
 
         /// <summary>
-        /// Encountered <see cref="Scp0492Role"/>.
+        /// Zombie Encounter.
         /// </summary>
-        /// <remarks>Used for <see cref="ZombieEncounterDanger"/>.</remarks>
         ZombieEncounter,
 
         /// <summary>
-        /// Encountered an armed enemy.
+        /// Armed Enemy.
         /// </summary>
-        /// <remarks>Used for <see cref="ArmedEnemyDanger"/>.</remarks>
-        ArmedEnemyEncounter,
+        ArmedEnemy,
     }
 }

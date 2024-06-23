@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-    <PropertyGroup Condition="$(BaseProperties) == '' OR $(BaseProperties) == 'true'">
-        <Authors>Exiled Team</Authors>
-    </PropertyGroup>
+  <PropertyGroup Condition="$(BaseProperties) == '' OR $(BaseProperties) == 'true'">
+    <Authors>Exiled Team</Authors>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="$(BuildProperties) == '' OR $(BuildProperties) == 'true'">
-        <TargetFramework>net48</TargetFramework>
-        <LangVersion>9.0</LangVersion>
-        <PlatformTarget>x64</PlatformTarget>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-        <OutputPath>$(MSBuildThisFileDirectory)\bin\$(Configuration)\</OutputPath>
-    </PropertyGroup>
+  <PropertyGroup Condition="$(BuildProperties) == '' OR $(BuildProperties) == 'true'">
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <PlatformTarget>x64</PlatformTarget>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>$(MSBuildThisFileDirectory)\bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
 
-    <PropertyGroup>
-        <!-- This is the global version and is used for all projects that don't have a version -->
-        <Version Condition="$(Version) == ''">9.0.0-alpha.1</Version>
-        <!-- Enables public beta warning via the PUBLIC_BETA constant -->
-        <PublicBeta>false</PublicBeta>
+  <PropertyGroup>
+    <!-- This is the global version and is used for all projects that don't have a version -->
+    <Version Condition="$(Version) == ''">8.9.6</Version>
+    <!-- Enables public beta warning via the PUBLIC_BETA constant -->
+    <PublicBeta>false</PublicBeta>
 
-        <HarmonyVersion>2.2.2</HarmonyVersion>
-        <StyleCopVersion>1.1.118</StyleCopVersion>
-        <SemanticVersioningVersion>2.0.2</SemanticVersioningVersion>
-        <YamlDotNetVersion>13.7.1</YamlDotNetVersion>
+    <HarmonyVersion>2.2.2</HarmonyVersion>
+    <StyleCopVersion>1.1.118</StyleCopVersion>
+    <SemanticVersioningVersion>2.0.2</SemanticVersioningVersion>
+    <YamlDotNetVersion>13.7.1</YamlDotNetVersion>
 
-        <Copyright>Copyright © $(Authors) 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
-        <RepositoryType>Git</RepositoryType>
-        <RepositoryUrl>https://github.com/Exiled-Team/EXILED</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/Exiled-Team/EXILED</PackageProjectUrl>
-        <PackageLicenseExpression>CC-BY-SA-3.0</PackageLicenseExpression>
+    <Copyright>Copyright © $(Authors) 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
+    <RepositoryType>Git</RepositoryType>
+    <RepositoryUrl>https://github.com/Exiled-Team/EXILED</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Exiled-Team/EXILED</PackageProjectUrl>
+    <PackageLicenseExpression>CC-BY-SA-3.0</PackageLicenseExpression>
 
-        <DefineConstants Condition="$(PublicBeta) == 'true'">$(DefineConstants);PUBLIC_BETA</DefineConstants>
-    </PropertyGroup>
+    <DefineConstants Condition="$(PublicBeta) == 'true'">$(DefineConstants);PUBLIC_BETA</DefineConstants>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <DebugType>Portable</DebugType>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DebugType>Portable</DebugType>
+  </PropertyGroup>
 
-    <!-- Disable warning about disabled generation of xml files on debug build -->
-    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <NoWarn>$(NoWarn);SA0001</NoWarn>
-    </PropertyGroup>
+  <!-- Disable warning about disabled generation of xml files on debug build -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);SA0001</NoWarn>
+  </PropertyGroup>
 
-    <PropertyGroup>
-        <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-    </PropertyGroup>
+  <PropertyGroup>
+      <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
 
 </Project>
