@@ -83,7 +83,7 @@ Ancak, bazı eklentiler kendi başlarına diğer yerlerden yapılandırma/ayarla
 
 Eğer EXILED için bir eklenti yapmak istiyorsanız, bunu yapmak oldukça basittir [Daha fazla bilgi için tıkla!](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
 
-Daha kapsamlı ve sürekli güncellenen öğreticiler için [EXILED websitesine](https://exiled-team.github.io/EXILED/articles/install.html) göz atın.
+Daha kapsamlı ve sürekli güncellenen öğreticiler için [EXILED websitesine](https://exiled.to) göz atın.
 
 Ama pluginlerini herkese açık yaparken bu kuralları takip etmekte fayda var:
 
@@ -150,4 +150,4 @@ Bu nedenle, dinamik güncellemeleri destekleyen eklentilerin bu yönergeleri tak
 
 Her eklentinin dinamik güncellemeleri desteklemesi gerekmez. Eğer dinamik güncellemeleri desteklemeyi planlamıyorsanız, bu tamamen uygun bir durumdur. Sadece yeni bir sürüm oluştururken eklentinizin derleme adını değiştirmekten kaçının. Bu tür durumlarda, sunucu sahiplerinin eklentinizi güncellemek için sunucularını tamamen yeniden başlatmaları gerektiğini bildirin.
 
-çeviri: Enes Batur (@_funnyman_xdxdxd.rofl.) & Dogy (@.dogy69)
+çeviri: Enes Batur (@enesbatursungursiken) & Dogy (@.dogy69)

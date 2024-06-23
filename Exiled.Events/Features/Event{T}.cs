@@ -10,6 +10,7 @@ namespace Exiled.Events.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
@@ -56,6 +57,21 @@ namespace Exiled.Events.Features
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Event{T}"/> which contains all the <see cref="Event{T}"/> instances.
         /// </summary>
         public static IReadOnlyDictionary<Type, IExiledEvent> Dictionary => TypeToEvent;
+
+        /// <summary>
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of delegates that are subscribed to the inner event.
+        /// </summary>
+        public IReadOnlyCollection<Delegate> SubscribedPlugins
+        {
+            get
+            {
+                List<Delegate> list = InnerEvent?.GetInvocationList().ToList() ?? new List<Delegate>();
+                if (InnerAsyncEvent != null)
+                    list.AddRange(InnerAsyncEvent.GetInvocationList().ToList());
+
+                return list;
+            }
+        }
 
         /// <summary>
         /// Subscribes a target <see cref="CustomEventHandler{TEventArgs}"/> to the inner event and checks if patching is possible, if dynamic patching is enabled.
