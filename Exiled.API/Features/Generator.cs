@@ -41,6 +41,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the prefab's type.
+        /// </summary>
+        public static PrefabType PrefabType => PrefabType.GeneratorStructure;
+
+        /// <summary>
+        /// Gets the prefab's object.
+        /// </summary>
+        public static GameObject PrefabObject => PrefabHelper.PrefabToGameObject[PrefabType];
+
+        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances.
         /// </summary>
         public static new IReadOnlyCollection<Generator> List => Scp079GeneratorToGenerator.Values;
@@ -217,6 +227,18 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Spawns a <see cref="Generator"/>.
+        /// </summary>
+        /// <param name="position">The position to spawn it at.</param>
+        /// <param name="rotation">The rotation to spawn it as.</param>
+        /// <returns>The <see cref="Generator"/> that was spawned.</returns>
+        public static Generator Spawn(Vector3 position, Quaternion rotation = default)
+        {
+            Scp079Generator generator = PrefabHelper.Spawn<Scp079Generator>(PrefabType, position, rotation);
+            return Get(generator);
+        }
+
+        /// <summary>
         /// Gets the <see cref="Generator"/> belonging to the <see cref="Scp079Generator"/>, if any.
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/> instance.</param>
@@ -298,10 +320,7 @@ namespace Exiled.API.Features
         {
             Interactables.Interobjects.DoorUtils.KeycardPermissions permission = (Interactables.Interobjects.DoorUtils.KeycardPermissions)flag;
 
-            if (isEnabled)
-                Base._requiredPermission |= permission;
-            else
-                Base._requiredPermission &= ~permission;
+            Base._requiredPermission = Base._requiredPermission.ModifyFlags(isEnabled, permission);
         }
 
         /// <summary>

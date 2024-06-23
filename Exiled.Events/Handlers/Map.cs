@@ -106,6 +106,11 @@ namespace Exiled.Events.Handlers
         public static Event<SpawningTeamVehicleEventArgs> SpawningTeamVehicle { get; set; } = new();
 
         /// <summary>
+        /// Called before spawning Scp244.
+        /// </summary>
+        public static Event<Scp244SpawningEventArgs> Scp244Spawning { get; set; } = new();
+
+        /// <summary>
         /// Called before dealing damage to the door.
         /// </summary>
         public static Event<DamagingDoorEventArgs> DoorDamaging { get; set; } = new();
@@ -253,6 +258,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DamagingDoorEventArgs"/> instance.</param>
         public static void OnDoorDamaging(DamagingDoorEventArgs ev) => DoorDamaging.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before spawning Scp244.
+        /// </summary>
+        /// <param name="ev">The <see cref="Scp244SpawningEventArgs"/> instance.</param>
+        public static void OnScp244Spawning(Scp244SpawningEventArgs ev) => Scp244Spawning.InvokeSafely(ev);
 
         /// <summary>
         /// Called before an item is dropped in the pocket dimension.
