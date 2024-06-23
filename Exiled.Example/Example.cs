@@ -9,7 +9,6 @@ namespace Exiled.Example
 {
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using HarmonyLib;
 
     /// <summary>
     /// The example plugin.
@@ -34,6 +33,8 @@ namespace Exiled.Example
         {
             // Set the instance to the current one
             Instance = this;
+
+            // Create new instance of the event handler
             EventHandler = new();
 
             base.OnEnabled();
@@ -42,6 +43,7 @@ namespace Exiled.Example
         /// <inheritdoc/>
         public override void OnDisabled()
         {
+            // Finishes the event handler
             EventHandler = null;
 
             base.OnDisabled();
