@@ -25,9 +25,10 @@ namespace Exiled.Events.Patches.Events.Scp914
 
     /// <summary>
     /// Patches <see cref="Scp914Controller.ServerInteract" />.
-    /// Adds the <see cref="Scp914.Activating" /> event.
+    /// Adds the <see cref="Scp914.Activating" /> and the <see cref="Scp914.ChangingKnobSetting" /> events.
     /// </summary>
     [EventPatch(typeof(Scp914), nameof(Scp914.Activating))]
+    [EventPatch(typeof(Scp914), nameof(Scp914.ChangingKnobSetting))]
     [HarmonyPatch(typeof(Scp914Controller), nameof(Scp914Controller.ServerInteract))]
     internal static class InteractingEvents
     {
