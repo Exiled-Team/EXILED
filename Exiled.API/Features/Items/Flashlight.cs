@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System;
     using System.Diagnostics;
 
     using Exiled.API.Interfaces;

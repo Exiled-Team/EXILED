@@ -16,13 +16,16 @@ namespace Exiled.API.Features
 
     using Core;
     using CustomPlayerEffects;
+    using CustomPlayerEffects.Danger;
     using DamageHandlers;
     using Enums;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.CustomStats;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Hazards;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Roles;
     using Exiled.API.Interfaces;
@@ -41,7 +44,6 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
-    using MapGeneration.Distributors;
     using MEC;
     using Mirror;
     using Mirror.LiteNetLib4Mirror;
@@ -95,6 +97,8 @@ namespace Exiled.API.Features
 
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
+        private CustomHumeShieldStat humeShieldStat;
+        private CustomStaminaStat staminaStat;
         private Role role;
 
         /// <summary>
@@ -181,6 +185,8 @@ namespace Exiled.API.Features
                 CameraTransform = value.PlayerCameraReference;
 
                 value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[Array.IndexOf(PlayerStats.DefinedModules, typeof(HealthStat))] = healthStat = new CustomHealthStat { Hub = value };
+                value.playerStats._dictionarizedTypes[typeof(HumeShieldStat)] = value.playerStats.StatModules[Array.IndexOf(PlayerStats.DefinedModules, typeof(HumeShieldStat))] = humeShieldStat = new CustomHumeShieldStat { Hub = value };
+                value.playerStats._dictionarizedTypes[typeof(StaminaStat)] = value.playerStats.StatModules[Array.IndexOf(PlayerStats.DefinedModules, typeof(StaminaStat))] = staminaStat = new CustomStaminaStat { Hub = value };
             }
         }
 
@@ -350,7 +356,7 @@ namespace Exiled.API.Features
             set
             {
                 // NW Client check.
-                if (value.Contains('<'))
+                if (value is not null && value.Contains('<'))
                 {
                     foreach (string token in value.Split('<'))
                     {
@@ -382,7 +388,7 @@ namespace Exiled.API.Features
                     }
                 }
 
-                InfoArea = string.IsNullOrEmpty(value) ? InfoArea & ~PlayerInfoArea.CustomInfo : InfoArea |= PlayerInfoArea.CustomInfo;
+                InfoArea = InfoArea.ModifyFlags(!string.IsNullOrEmpty(value), PlayerInfoArea.CustomInfo);
                 ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
             }
         }
@@ -727,7 +733,7 @@ namespace Exiled.API.Features
                     ReferenceHub.transform.localScale = value;
 
                     foreach (Player target in List)
-                        Server.SendSpawnMessage?.Invoke(null, new object[] { NetworkIdentity, target.Connection });
+                        MirrorExtensions.SendSpawnMessageMethodInfo?.Invoke(null, new object[] { NetworkIdentity, target.Connection });
                 }
                 catch (Exception exception)
                 {
@@ -752,13 +758,7 @@ namespace Exiled.API.Features
         public bool IsMuted
         {
             get => VoiceChatMutes.QueryLocalMute(UserId, false);
-            set
-            {
-                if (value)
-                    VoiceChatMuteFlags |= VcMuteFlags.LocalRegular;
-                else
-                    VoiceChatMuteFlags &= ~VcMuteFlags.LocalRegular;
-            }
+            set => VoiceChatMuteFlags = VoiceChatMuteFlags.ModifyFlags(value, VcMuteFlags.LocalRegular);
         }
 
         /// <summary>
@@ -768,13 +768,7 @@ namespace Exiled.API.Features
         public bool IsGlobalMuted
         {
             get => VoiceChatMutes.Mutes.Contains(UserId) && VoiceChatMuteFlags.HasFlag(VcMuteFlags.GlobalRegular);
-            set
-            {
-                if (value)
-                    VoiceChatMuteFlags |= VcMuteFlags.GlobalRegular;
-                else
-                    VoiceChatMuteFlags &= ~VcMuteFlags.GlobalRegular;
-            }
+            set => VoiceChatMuteFlags = VoiceChatMuteFlags.ModifyFlags(value, VcMuteFlags.GlobalRegular);
         }
 
         /// <summary>
@@ -784,13 +778,7 @@ namespace Exiled.API.Features
         public bool IsIntercomMuted
         {
             get => VoiceChatMutes.QueryLocalMute(UserId, true);
-            set
-            {
-                if (value)
-                    VoiceChatMuteFlags |= VcMuteFlags.LocalIntercom;
-                else
-                    VoiceChatMuteFlags &= ~VcMuteFlags.LocalIntercom;
-            }
+            set => VoiceChatMuteFlags = VoiceChatMuteFlags.ModifyFlags(value, VcMuteFlags.LocalIntercom);
         }
 
         /// <summary>
@@ -852,6 +840,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets an array of <see cref="DangerStackBase"/> if the Scp1853 effect is enabled or an empty array if it is not enabled.
+        /// </summary>
+        public DangerStackBase[] Dangers => !TryGetEffect(EffectType.Scp1853, out StatusEffectBase scp1853Effect) || !scp1853Effect.IsEnabled ? Array.Empty<DangerStackBase>() : (scp1853Effect as Scp1853).Dangers;
+
+        /// <summary>
+        /// Gets a list of active <see cref="DangerStackBase"/> the player has.
+        /// </summary>
+        public IEnumerable<DangerStackBase> ActiveDangers => Dangers.Where(d => d.IsActive);
+
+        /// <summary>
         /// Gets or sets the player's health.
         /// </summary>
         public float Health
@@ -909,9 +907,27 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the players maximum Hume Shield.
+        /// </summary>
+        public float MaxHumeShield
+        {
+            get => HumeShieldStat.MaxValue;
+            set => HumeShieldStat.CustomMaxValue = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the players multiplier for gaining HumeShield.
+        /// </summary>
+        public float HumeShieldRegenerationMultiplier
+        {
+            get => HumeShieldStat.ShieldRegenerationMultiplier;
+            set => HumeShieldStat.ShieldRegenerationMultiplier = value;
+        }
+
+        /// <summary>
         /// Gets the player's <see cref="PlayerStatsSystem.HumeShieldStat"/>.
         /// </summary>
-        public HumeShieldStat HumeShieldStat => ReferenceHub.playerStats.GetModule<HumeShieldStat>();
+        public CustomHumeShieldStat HumeShieldStat => humeShieldStat;
 
         /// <summary>
         /// Gets or sets the item in the player's hand. Value will be <see langword="null"/> if the player is not holding anything.
@@ -948,7 +964,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="StaminaStat"/> class.
         /// </summary>
-        public StaminaStat StaminaStat => ReferenceHub.playerStats.GetModule<StaminaStat>();
+        public CustomStaminaStat StaminaStat => staminaStat;
 
         /// <summary>
         /// Gets or sets the amount of stamina the player has.
@@ -958,6 +974,15 @@ namespace Exiled.API.Features
         {
             get => StaminaStat.CurValue;
             set => StaminaStat.CurValue = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the players maximum stamina.
+        /// </summary>
+        public float MaxStamina
+        {
+            get => StaminaStat.MaxValue;
+            set => StaminaStat.CustomMaxValue = value;
         }
 
         /// <summary>
@@ -1589,6 +1614,26 @@ namespace Exiled.API.Features
         public bool GrantWhitelist(bool isPermanent) => AddToWhitelist(UserId, isPermanent);
 
         /// <summary>
+        /// Adds a component to the player.
+        /// </summary>
+        /// <typeparam name="T">The component type to add.</typeparam>
+        public void AddComponent<T>()
+            where T : Component
+            => GameObject.AddComponent<T>();
+
+        /// <summary>
+        /// Removes a component from a player.
+        /// </summary>
+        /// <typeparam name="T">The component type to remove.</typeparam>
+        public void RemoveComponent<T>()
+            where T : Component
+        {
+            Component component = GameObject.GetComponent<T>();
+            if (component != null)
+                UnityEngine.Object.Destroy(component);
+        }
+
+        /// <summary>
         /// Gets vision information based on the specified target player and optional mask layer.
         /// </summary>
         /// <param name="target">The Player to target.</param>
@@ -1616,13 +1661,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="roleToAdd"> Role to add. </param>
         /// <param name="ffMult"> Friendly fire multiplier. </param>
-        public void SetFriendlyFire(RoleTypeId roleToAdd, float ffMult)
-        {
-            if (FriendlyFireMultiplier.ContainsKey(roleToAdd))
-                FriendlyFireMultiplier[roleToAdd] = ffMult;
-            else
-                FriendlyFireMultiplier.Add(roleToAdd, ffMult);
-        }
+        public void SetFriendlyFire(RoleTypeId roleToAdd, float ffMult) => FriendlyFireMultiplier[roleToAdd] = ffMult;
 
         /// <summary>
         /// Wrapper to call <see cref="SetFriendlyFire(RoleTypeId, float)"/>.
@@ -1935,10 +1974,7 @@ namespace Exiled.API.Features
                 ReferenceHub.serverRoles.SetGroup(group, false, false);
             }
 
-            if (ServerStatic.GetPermissionsHandler()._members.ContainsKey(UserId))
-                ServerStatic.GetPermissionsHandler()._members[UserId] = name;
-            else
-                ServerStatic.GetPermissionsHandler()._members.Add(UserId, name);
+            ServerStatic.GetPermissionsHandler()._members[UserId] = name;
         }
 
         /// <summary>
@@ -2564,7 +2600,7 @@ namespace Exiled.API.Features
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
 
                 if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
-                    flags |= FirearmStatusFlags.FlashlightEnabled;
+                    flags.AddFlags(FirearmStatusFlags.FlashlightEnabled);
 
                 firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
@@ -2832,6 +2868,21 @@ namespace Exiled.API.Features
 
             foreach (Item item in newItems)
                 AddItem(item);
+        }
+
+        /// <summary>
+        /// Resets the player's inventory to the provided inventory, clearing any items/ammo it already possess.
+        /// </summary>
+        /// <param name="inventory">The role inventory to add to the inventory.</param>
+        public void ResetInventory(InventoryRoleInfo inventory)
+        {
+            ClearInventory();
+
+            foreach (ItemType item in inventory.Items)
+                AddItem(item);
+
+            foreach (KeyValuePair<ItemType, ushort> ammo in inventory.Ammo)
+                AddAmmo(ammo.Key.GetAmmoType(), ammo.Value);
         }
 
         /// <summary>
@@ -3337,6 +3388,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets an instance of <see cref="DangerStackBase"/> by <see cref="DangerType"/> if the Scp1853 effect is enabled or null if it is not enabled.
+        /// </summary>
+        /// <param name="dangerType">The <see cref="DangerType"/>.</param>
+        /// <returns>The <see cref="DangerStackBase"/>.</returns>
+        public DangerStackBase GetDanger(DangerType dangerType) => Dangers.FirstOrDefault(danger => danger.TryGetDangerType(out DangerType type) && dangerType == type);
+
+        /// <summary>
+        /// Tries to get an instance of <see cref="StatusEffectBase"/> by <see cref="EffectType"/> (does not work if the Scp1853 effect is not enabled).
+        /// </summary>
+        /// <param name="type">The <see cref="EffectType"/>.</param>
+        /// <param name="danger">The <see cref="StatusEffectBase"/>.</param>
+        /// <returns>A bool indicating whether or not the <paramref name="danger"/> was successfully gotten.</returns>
+        public bool TryGetDanger(DangerType type, out DangerStackBase danger) => (danger = GetDanger(type)) is not null;
+
+        /// <summary>
         /// Opens the report window.
         /// </summary>
         /// <param name="text">The text to send.</param>
@@ -3419,6 +3485,9 @@ namespace Exiled.API.Features
                             ? new Vector3(3, 0, 0)
                             : new Vector3(0, 0, 3)));
                     break;
+                case Chamber chamber:
+                    Teleport(chamber.UseMultipleSpawnpoints ? chamber.Spawnpoints.Random().transform.position : chamber.Spawnpoint.transform.position + Vector3.up + offset);
+                    break;
                 case Role role:
                     if (role.Owner is not null)
                         Teleport(role.Owner.Position + offset);
@@ -3454,12 +3523,6 @@ namespace Exiled.API.Features
                     break;
                 case Scp914Controller scp914:
                     Teleport(scp914._knobTransform.position + Vector3.up + offset);
-                    break;
-                case Locker locker:
-                    Teleport(locker.transform.position + Vector3.up + offset);
-                    break;
-                case LockerChamber chamber:
-                    Teleport(chamber._spawnpoint.position + Vector3.up + offset);
                     break;
                 case ElevatorChamber elevator:
                     Teleport(elevator.transform.position + Vector3.up + offset);
@@ -3497,11 +3560,11 @@ namespace Exiled.API.Features
                 nameof(Player) => Random,
                 nameof(Pickup) => Pickup.Random,
                 nameof(Ragdoll) => Ragdoll.Random,
-                nameof(Locker) => Map.GetRandomLocker(),
+                nameof(Lockers.Locker) => Map.GetRandomLocker(),
                 nameof(Generator) => Generator.Random,
                 nameof(Window) => Window.Random,
                 nameof(Scp914) => Scp914.Scp914Controller,
-                nameof(LockerChamber) => Map.GetRandomLocker().Chambers.Random(),
+                nameof(Chamber) => Map.GetRandomLocker().Chambers.Random(),
                 _ => null,
             };
 

@@ -15,23 +15,18 @@ namespace Exiled.API.Features
     using Decals;
     using Enums;
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Hazards;
+    using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Scp914Processors;
     using Exiled.API.Features.Toys;
-    using global::Hazards;
     using InventorySystem;
+    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
     using Items;
     using LightContainmentZoneDecontamination;
     using MapGeneration;
-    using MapGeneration.Distributors;
-    using Mirror;
-    using PlayerRoles;
-    using PlayerRoles.PlayableScps.Scp173;
-    using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.Ragdolls;
     using RelativePositioning;
     using UnityEngine;
@@ -45,11 +40,6 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Map
     {
-        /// <summary>
-        /// A list of <see cref="Locker"/>s on the map.
-        /// </summary>
-        internal static readonly List<Locker> LockersValue = new(35);
-
         /// <summary>
         /// A list of <see cref="PocketDimensionTeleport"/>s on the map.
         /// </summary>
@@ -85,11 +75,6 @@ namespace Exiled.API.Features
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
         /// </summary>
         public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports { get; } = TeleportsValue.AsReadOnly();
-
-        /// <summary>
-        /// Gets all <see cref="Locker"/> objects.
-        /// </summary>
-        public static ReadOnlyCollection<Locker> Lockers { get; } = LockersValue.AsReadOnly();
 
         /// <summary>
         /// Gets all <see cref="AdminToy"/> objects.
@@ -218,7 +203,7 @@ namespace Exiled.API.Features
         /// Gets a random <see cref="Locker"/>.
         /// </summary>
         /// <returns><see cref="Locker"/> object.</returns>
-        public static Locker GetRandomLocker() => Lockers.Random();
+        public static Locker GetRandomLocker() => Locker.List.Random();
 
         /// <summary>
         /// Gets a random <see cref="Pickup"/>.
@@ -349,21 +334,44 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Plays a gun sound at the specified position.
+        /// </summary>
+        /// <param name="position">Position to play the sound at.</param>
+        /// <param name="firearmType">The type of firearm to play the sound of.</param>
+        /// <param name="maxDistance">The maximum distance the sound can be heard from.</param>
+        /// <param name="audioClipId">The audio clip ID to play.</param>
+        public static void PlayGunSound(Vector3 position, ItemType firearmType, byte maxDistance = 45, byte audioClipId = 0)
+        {
+            GunAudioMessage msg = new()
+            {
+                Weapon = firearmType,
+                AudioClipId = audioClipId,
+                MaxDistance = maxDistance,
+                ShooterHub = ReferenceHub.HostHub,
+                ShooterPosition = new RelativePosition(position),
+            };
+            msg.SendToAuthenticated();
+        }
+
+        /// <summary>
         /// Clears the lazy loading game object cache.
         /// </summary>
         internal static void ClearCache()
         {
             Item.BaseToItem.Clear();
 
-            LockersValue.RemoveAll(locker => locker == null);
-
             Ragdoll.BasicRagdollToRagdoll.Clear();
 
-            Firearm.ItemTypeToFirearmInstance.Clear();
-            Firearm.BaseCodesValue.Clear();
-            Firearm.AvailableAttachmentsValue.Clear();
+            Items.Firearm.ItemTypeToFirearmInstance.Clear();
+            Items.Firearm.BaseCodesValue.Clear();
+            Items.Firearm.AvailableAttachmentsValue.Clear();
+
+            Locker.BaseToExiledLockers.Clear();
+
+            Chamber.Chambers.Clear();
 
             Scp914Processor.ProcessorToWrapper.Clear();
+
             Workstation.BaseToWrapper.Clear();
         }
     }

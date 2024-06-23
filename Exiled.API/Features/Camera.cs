@@ -26,7 +26,7 @@ namespace Exiled.API.Features
     /// The in-game Scp079Camera.
     /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class Camera : GameEntity, IWrapper<Scp079Camera>, IWorldSpace
+    public class Camera : GameEntity, IWrapper<Scp079Camera>
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="Scp079Camera"/>s and their corresponding <see cref="Camera"/>.

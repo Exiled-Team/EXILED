@@ -13,7 +13,6 @@ namespace Exiled.API.Features.Toys
 
     using Enums;
     using Exiled.API.Features.Core;
-    using Exiled.API.Interfaces;
     using Footprinting;
     using Mirror;
 
@@ -22,7 +21,7 @@ namespace Exiled.API.Features.Toys
     /// <summary>
     /// A wrapper class for <see cref="AdminToys.AdminToyBase"/>.
     /// </summary>
-    public abstract class AdminToy : GameEntity, IWorldSpace
+    public abstract class AdminToy : GameEntity
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminToy"/> class.
@@ -67,12 +66,21 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
+        /// Gets or sets the position of the <see cref="AdminToy"/>.
+        /// </summary>
+        public new Vector3 Position
+        {
+            get => AdminToyBase.Position;
+            set => AdminToyBase.Position = value;
+        }
+
+        /// <summary>
         /// Gets or sets the scale of the toy.
         /// </summary>
         public Vector3 Scale
         {
-            get => Transform.localScale;
-            set => Transform.localScale = value;
+            get => AdminToyBase.Scale;
+            set => AdminToyBase.Scale = value;
         }
 
         /// <summary>

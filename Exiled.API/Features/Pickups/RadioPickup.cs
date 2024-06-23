@@ -12,8 +12,6 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
-    using InventorySystem;
-    using UnityEngine;
 
     using BaseRadio = InventorySystem.Items.Radio.RadioPickup;
 

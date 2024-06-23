@@ -10,14 +10,13 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Diagnostics;
 
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
-
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp330;
-
     using UnityEngine;
 
     using Object = UnityEngine.Object;
@@ -50,6 +49,8 @@ namespace Exiled.API.Features.Items
     [DebuggerDisplay("Scp-330 Candies.Count = {Candies.Count}")]
     public class Scp330 : Usable, IWrapper<Scp330Bag>
     {
+        private readonly ConstProperty<int> maxCandies = new(Scp330Bag.MaxCandies, new[] { typeof(Scp330Bag) });
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330"/> class.
         /// </summary>
@@ -105,6 +106,15 @@ namespace Exiled.API.Features.Items
                     Serial = Serial,
                 });
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum number of candies in the bag.
+        /// </summary>
+        public int MaxCandies
+        {
+            get => maxCandies;
+            set => maxCandies.Value = value;
         }
 
         /// <summary>

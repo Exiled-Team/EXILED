@@ -24,7 +24,7 @@ namespace Exiled.API.Features
     /// A wrapper class for <see cref="BreakableWindow"/>.
     /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class Window : GameEntity, IWrapper<BreakableWindow>, IWorldSpace
+    public class Window : GameEntity, IWrapper<BreakableWindow>
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BreakableWindow"/>s and their corresponding <see cref="Window"/>.

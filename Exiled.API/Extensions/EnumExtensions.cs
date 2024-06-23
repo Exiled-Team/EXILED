@@ -8,16 +8,12 @@
 namespace Exiled.API.Extensions
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Extensions for Enums.
     /// </summary>
     public static class EnumExtensions
     {
-        private static Dictionary<Type, IEnumerable<object>> storedEnumValues = new();
-
         /// <summary>
         /// Queries an enum and returns their values.
         /// </summary>

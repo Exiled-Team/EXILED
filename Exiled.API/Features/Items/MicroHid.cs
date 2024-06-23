@@ -9,8 +9,8 @@ namespace Exiled.API.Features.Items
 {
     using System.Diagnostics;
 
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
-
     using InventorySystem.Items.MicroHID;
 
     /// <summary>
@@ -19,6 +19,10 @@ namespace Exiled.API.Features.Items
     [DebuggerDisplay("MicroHid")]
     public class MicroHid : Item, IWrapper<MicroHIDItem>
     {
+        private readonly ConstProperty<double> preFire = new(1.7000000476837158, new[] { typeof(MicroHIDItem) });
+        private readonly ConstProperty<double> minTimeToSwitch = new(0.3499999940395355, new[] { typeof(MicroHIDItem) });
+        private readonly ConstProperty<double> powerdownTime = new(3.0999999046325684, new[] { typeof(MicroHIDItem) });
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MicroHid"/> class.
         /// </summary>
@@ -58,6 +62,33 @@ namespace Exiled.API.Features.Items
         {
             get => Base.State;
             set => Base.State = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the time it takes to start firing from the MicroHID.
+        /// </summary>
+        public double PreFireTime
+        {
+            get => preFire.Value;
+            set => preFire.Value = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the time it takes to switch the MicroHID to other mode.
+        /// </summary>
+        public double MinTimeToSwitch
+        {
+            get => minTimeToSwitch.Value;
+            set => minTimeToSwitch.Value = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the time it takes to power down the MicroHID.
+        /// </summary>
+        public double PowerDownTime
+        {
+            get => powerdownTime.Value;
+            set => powerdownTime.Value = value;
         }
 
         /// <summary>

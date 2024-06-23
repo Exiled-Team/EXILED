@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.Doors;
     using Interactables.Interobjects.DoorUtils;
     using MapGeneration;
@@ -36,6 +37,9 @@ namespace Exiled.API.Features.Roles
     [DebuggerDisplay("Scp-079")]
     public class Scp079Role : Role, ISubroutinedScpRole, ISpawnableScp
     {
+        private readonly ConstProperty<float> sameZoneSwitch = new(0.1f, new[] { typeof(Scp079CurrentCameraSync) });
+        private readonly ConstProperty<float> differentZoneSwitch = new(0.98f, new[] { typeof(Scp079CurrentCameraSync) });
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp079Role"/> class.
         /// </summary>
@@ -474,6 +478,24 @@ namespace Exiled.API.Features.Roles
         /// Gets the game <see cref="Scp079GameRole"/>.
         /// </summary>
         public new Scp079GameRole Base { get; }
+
+        /// <summary>
+        /// Gets or sets time it takes for SCP-079 to switch to camera in same zone.
+        /// </summary>
+        public float SameZoneSwitchTime
+        {
+            get => sameZoneSwitch;
+            set => sameZoneSwitch.Value = value;
+        }
+
+        /// <summary>
+        /// Gets or sets time it takes for SCP-079 to switch to camera in other zone.
+        /// </summary>
+        public float DifferentZoneSwitchTime
+        {
+            get => differentZoneSwitch;
+            set => differentZoneSwitch.Value = value;
+        }
 
         /// <summary>
         /// Unlocks all doors that SCP-079 has locked.
