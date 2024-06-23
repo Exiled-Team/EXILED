@@ -42,6 +42,7 @@ namespace Exiled.Events.Commands.PluginManager
             RegisterCommand(Enable.Instance);
             RegisterCommand(Disable.Instance);
             RegisterCommand(Patches.Instance);
+            RegisterCommand(DisplaySubscribed.Instance);
             RegisterCommand(Install.Instance);
             RegisterCommand(Plugins.Instance);
         }
@@ -49,7 +50,7 @@ namespace Exiled.Events.Commands.PluginManager
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Please, specify a valid subcommand! Available ones: enable, disable, show, patches, install";
+            response = "Please, specify a valid subcommand! Available ones: enable, disable, show, patches, install, subscribed";
             return false;
         }
     }
