@@ -342,10 +342,7 @@ namespace Exiled.API.Features
         {
             Interactables.Interobjects.DoorUtils.KeycardPermissions permission = (Interactables.Interobjects.DoorUtils.KeycardPermissions)flag;
 
-            if (isEnabled)
-                Base._requiredPermission |= permission;
-            else
-                Base._requiredPermission &= ~permission;
+            Base._requiredPermission = Base._requiredPermission.ModifyFlags(isEnabled, permission);
         }
 
         /// <summary>

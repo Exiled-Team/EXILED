@@ -439,7 +439,7 @@ namespace Exiled.API.Features
                     }
                 }
 
-                InfoArea = string.IsNullOrEmpty(value) ? InfoArea & ~PlayerInfoArea.CustomInfo : InfoArea |= PlayerInfoArea.CustomInfo;
+                InfoArea = InfoArea.ModifyFlags(!string.IsNullOrEmpty(value), PlayerInfoArea.CustomInfo);
                 ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
             }
         }
@@ -830,13 +830,7 @@ namespace Exiled.API.Features
         public bool IsMuted
         {
             get => VoiceChatMutes.QueryLocalMute(UserId, false);
-            set
-            {
-                if (value)
-                    VoiceChatMuteFlags |= VcMuteFlags.LocalRegular;
-                else
-                    VoiceChatMuteFlags &= ~VcMuteFlags.LocalRegular;
-            }
+            set => VoiceChatMuteFlags = VoiceChatMuteFlags.ModifyFlags(value, VcMuteFlags.LocalRegular);
         }
 
         /// <summary>
@@ -847,13 +841,7 @@ namespace Exiled.API.Features
         public bool IsGlobalMuted
         {
             get => VoiceChatMutes.Mutes.Contains(UserId) && VoiceChatMuteFlags.HasFlag(VcMuteFlags.GlobalRegular);
-            set
-            {
-                if (value)
-                    VoiceChatMuteFlags |= VcMuteFlags.GlobalRegular;
-                else
-                    VoiceChatMuteFlags &= ~VcMuteFlags.GlobalRegular;
-            }
+            set => VoiceChatMuteFlags = VoiceChatMuteFlags.ModifyFlags(value, VcMuteFlags.GlobalRegular);
         }
 
         /// <summary>
@@ -864,13 +852,7 @@ namespace Exiled.API.Features
         public bool IsIntercomMuted
         {
             get => VoiceChatMutes.QueryLocalMute(UserId, true);
-            set
-            {
-                if (value)
-                    VoiceChatMuteFlags |= VcMuteFlags.LocalIntercom;
-                else
-                    VoiceChatMuteFlags &= ~VcMuteFlags.LocalIntercom;
-            }
+            set => VoiceChatMuteFlags = VoiceChatMuteFlags.ModifyFlags(value, VcMuteFlags.LocalIntercom);
         }
 
         /// <summary>
@@ -2716,7 +2698,7 @@ namespace Exiled.API.Features
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
 
                 if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
-                    flags |= FirearmStatusFlags.FlashlightEnabled;
+                    flags.AddFlags(FirearmStatusFlags.FlashlightEnabled);
 
                 firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
