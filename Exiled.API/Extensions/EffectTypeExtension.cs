@@ -15,6 +15,7 @@ namespace Exiled.API.Extensions
     using CustomPlayerEffects;
     using CustomRendering;
     using Enums;
+    using Exiled.API.Features;
     using InventorySystem.Items.MarshmallowMan;
     using InventorySystem.Items.Usables.Scp244.Hypothermia;
     using PlayerRoles.FirstPersonControl;
@@ -73,6 +74,7 @@ namespace Exiled.API.Extensions
             { EffectType.Strangled, typeof(Strangled) },
             { EffectType.Ghostly, typeof(Ghostly) },
             { EffectType.FogControl, typeof(FogControl) },
+            { EffectType.Slowness, typeof(Slowness) },
         });
 
         /// <summary>
@@ -153,10 +155,7 @@ namespace Exiled.API.Extensions
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect is a negative effect.</returns>
         /// <seealso cref="IsHarmful(EffectType)"/>
-        public static bool IsNegative(this EffectType effect) => IsHarmful(effect) || effect is EffectType.AmnesiaItems
-            or EffectType.AmnesiaVision or EffectType.Blinded or EffectType.Burned or EffectType.Concussed or EffectType.Deafened
-            or EffectType.Disabled or EffectType.Ensnared or EffectType.Exhausted or EffectType.Flashed or EffectType.SinkHole
-            or EffectType.Stained or EffectType.InsufficientLighting or EffectType.SoundtrackMute or EffectType.Scanned;
+        public static bool IsNegative(this EffectType effect) => IsHarmful(effect) || GetEffectBase(effect).Classification is StatusEffectBase.EffectClassification.Negative;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> is a positive effect.
@@ -164,9 +163,7 @@ namespace Exiled.API.Extensions
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect is a positive effect.</returns>
         /// <seealso cref="IsHealing(EffectType)"/>
-        public static bool IsPositive(this EffectType effect) => effect is EffectType.BodyshotReduction or EffectType.DamageReduction
-            or EffectType.Invigorated or EffectType.Invisible or EffectType.MovementBoost or EffectType.RainbowTaste
-            or EffectType.Scp207 or EffectType.Scp1853 or EffectType.Vitality or EffectType.AntiScp207 or EffectType.Ghostly;
+        public static bool IsPositive(this EffectType effect) => GetEffectBase(effect).Classification == StatusEffectBase.EffectClassification.Positive;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> affects the player's movement speed.
@@ -183,6 +180,30 @@ namespace Exiled.API.Extensions
         public static bool IsDisplayed(this EffectType effect) => effect.TryGetType(out Type type) && typeof(ISpectatorDataPlayerEffect).IsAssignableFrom(type);
 
         /// <summary>
+        /// Returns the <see cref="StatusEffectBase"/> of the given <paramref name="effect"/>.
+        /// </summary>
+        /// <param name="effect">The <see cref="EffectType"/>.</param>
+        /// <returns>The <see cref="StatusEffectBase"/> of the <see cref="EffectType"/>.</returns>
+        public static StatusEffectBase GetEffectBase(this EffectType effect) => TryGetEffectBase(effect, out StatusEffectBase effectBase) ? effectBase : null;
+
+        /// <summary>
+        /// Tries to get an instance of <see cref="StatusEffectBase"/> of the given <see cref="EffectType"/>.
+        /// </summary>
+        /// <param name="effect">The <see cref="EffectType"/>.</param>
+        /// <param name="effectBase">The <see cref="StatusEffectBase"/> to return.</param>
+        /// <returns><see langword="true"/> if a <see cref="StatusEffectBase"/> is found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGetEffectBase(this EffectType effect, out StatusEffectBase effectBase) => Server.Host.TryGetEffect(effect, out effectBase);
+
+        /// <summary>
+        /// Tries to get an instance of <see cref="StatusEffectBase"/> of the given type <see cref="StatusEffectBase"/>.
+        /// </summary>
+        /// <param name="effectBase">The <see cref="StatusEffectBase"/>.</param>
+        /// <typeparam name="T">The <see cref="StatusEffectBase"/> to get.</typeparam>
+        /// <returns><see langword="true"/> if a <see cref="StatusEffectBase"/> is found; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGetEffectBase<T>(out T effectBase)
+            where T : StatusEffectBase => Server.Host.TryGetEffect(out effectBase);
+
+        /// <summary>
         /// Returns the <see cref="EffectCategory"/> of the given <paramref name="effect"/>.
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
@@ -191,13 +212,13 @@ namespace Exiled.API.Extensions
         {
             EffectCategory category = EffectCategory.None;
             if (effect.IsPositive())
-                category |= EffectCategory.Positive;
+                category.AddFlags(EffectCategory.Positive);
             if (effect.IsNegative())
-                category |= EffectCategory.Negative;
+                category.AddFlags(EffectCategory.Negative);
             if (effect.IsMovement())
-                category |= EffectCategory.Movement;
+                category.AddFlags(EffectCategory.Movement);
             if (effect.IsHarmful())
-                category |= EffectCategory.Harmful;
+                category.AddFlags(EffectCategory.Harmful);
 
             return category;
         }

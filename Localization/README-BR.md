@@ -96,7 +96,7 @@ No entanto, alguns plug-ins podem obter suas configurações de outros locais po
 
 Se você deseja fazer um plug-in ao EXILED, é bem simples de fazê-lo. Se você quiser ver algum tipo de tutorial, visite nosso [Manual de Instruções.](https://github.com/Exiled-Team/EXILED/blob/master/Localization/GettingStarted-BR.md)
 
-Para tutoriais mais abrangentes e ativamente atualizados, consulte [o site da EXILED](https://exiled-team.github.io/EXILED/articles/install.html).
+Para tutoriais mais abrangentes e ativamente atualizados, consulte [o site da EXILED](https://exiled.to).
 
 Mas certifique-se de seguir estas regras ao publicar seus plug-ins:
 

@@ -66,6 +66,11 @@ namespace Exiled.Events.Handlers
         public static Event<BannedEventArgs> Banned { get; set; } = new();
 
         /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> is changing danger state.
+        /// </summary>
+        public static Event<ChangingDangerStateEventArgs> ChangingDangerState { get; set; } = new();
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> earns an achievement.
         /// </summary>
         /// <remarks>
@@ -499,11 +504,6 @@ namespace Exiled.Events.Handlers
         public static Event<DamagingWindowEventArgs> DamagingWindow { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> damage a Door.
-        /// </summary>
-        public static Event<DamagingDoorEventArgs> DamagingDoor { get; set; } = new();
-
-        /// <summary>
         /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
         /// </summary>
         public static Event<ItemAddedEventArgs> ItemAdded { get; set; } = new();
@@ -583,6 +583,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="BanningEventArgs"/> instance.</param>
         public static void OnBanning(BanningEventArgs ev) => Banning.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player's danger state changes.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingDangerStateEventArgs"/> instance.</param>
+        public static void OnChangingDangerState(ChangingDangerStateEventArgs ev) => ChangingDangerState.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a player has been banned from the server.
@@ -1055,12 +1061,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance. </param>
         public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => DamagingWindow.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> damage a window.
-        /// </summary>
-        /// <param name="ev">The <see cref="DamagingDoorEventArgs"/> instance. </param>
-        public static void OnDamagingDoor(DamagingDoorEventArgs ev) => DamagingDoor.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> unlocks a generator.

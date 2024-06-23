@@ -10,15 +10,14 @@ namespace Exiled.Events.Commands.Reload
     using System;
 
     using CommandSystem;
-
+    using Exiled.API.Interfaces;
     using Exiled.Permissions.Extensions;
-
     using Loader;
 
     /// <summary>
     /// The reload remoteadmin command.
     /// </summary>
-    public class RemoteAdmin : ICommand
+    public class RemoteAdmin : ICommand, IPermissioned
     {
         /// <summary>
         /// Gets static instance of the <see cref="RemoteAdmin"/> command.
@@ -34,15 +33,15 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc/>
         public string Description { get; } = "Reloads remote admin configs.";
 
+        /// <inheritdoc />
+        public bool SanitizeResponse { get; }
+
+        /// <inheritdoc />
+        public string Permission { get; } = "ee.reloadremoteadmin";
+
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("ee.reloadremoteadmin"))
-            {
-                response = "You can't reload remote admin configs, you don't have \"ee.reloadremoteadmin\" permission.";
-                return false;
-            }
-
             ConfigManager.ReloadRemoteAdmin();
 
             Handlers.Server.OnReloadedRA();

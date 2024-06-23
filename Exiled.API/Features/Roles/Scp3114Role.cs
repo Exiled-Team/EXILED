@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
@@ -221,6 +222,11 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets or sets the bound dance.
+        /// </summary>
+        internal DanceType DanceType { get; set; }
+
+        /// <summary>
         /// Reset Scp3114 FakeIdentity.
         /// </summary>
         public void ResetIdentity()
@@ -249,8 +255,14 @@ namespace Exiled.API.Features.Roles
         public void StopDancing() => Dance.SendRpc(x => x.IsDancing = false);
 
         /// <summary>
-        /// Starts dancing.
+        /// Starts the dancing process.
         /// </summary>
-        public void StartDanging() => Dance.SendRpc(x => x.IsDancing = true);
+        /// <param name="danceType">The requested <see cref="DanceType"/>.</param>
+        public void StartDancing(DanceType danceType) => Dance.SendRpc((x) =>
+        {
+            x.IsDancing = true;
+            x._serverStartPos = new(Position);
+            DanceType = danceType;
+        });
     }
 }
