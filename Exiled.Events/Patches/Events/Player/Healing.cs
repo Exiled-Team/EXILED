@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldarg_1);
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
                 // lastHealth = get_curValue;
                 new(OpCodes.Dup),
