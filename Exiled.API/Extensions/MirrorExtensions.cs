@@ -154,7 +154,10 @@ namespace Exiled.API.Extensions
                     foreach (MethodInfo method in typeof(SyncList<>).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic))
                     {
                         if (method.Name == "AddOperation")
+                        {
                             addOperationMethodInfo = method;
+                            break;
+                        }
                     }
                 }
 
@@ -173,7 +176,13 @@ namespace Exiled.API.Extensions
         /// <param name="checkAccess">Verify if access is authorised.</param>
         /// <typeparam name="T">A type of <see cref="SyncList{T}"/>.</typeparam>
         public static void AddOperation<T>(this SyncList<T> synclist, SyncList<T>.Operation op, int itemIndex, T oldItem, T newItem, bool checkAccess)
-            => AddOperationMethodInfo.Invoke(synclist, new object[] { op, itemIndex, oldItem, newItem, checkAccess, });
+        {
+            Log.Error(AddOperationMethodInfo is null);
+            Log.Error($"Invoking AddOperation on {synclist.GetType().Name} with method {AddOperationMethodInfo.Name}");
+            Log.Error($"Parameters: op={op.GetType().Name}, itemIndex={itemIndex}, oldItem={oldItem.GetType().Name}, newItem={newItem.GetType().Name}, checkAccess={checkAccess.GetType().Name}");
+
+            AddOperationMethodInfo.Invoke(synclist, new object[] { op, itemIndex, oldItem, newItem, checkAccess, });
+        }
 
         /// <summary>
         /// Plays a beep sound that only the target <paramref name="player"/> can hear.
