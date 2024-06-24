@@ -15,7 +15,6 @@ namespace Exiled.Events.Commands
     /// <summary>
     /// Command for showing current server TPS.
     /// </summary>
-    [CommandHandler(typeof(ClientCommandHandler))]
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class TpsCommand : ICommand
@@ -30,12 +29,20 @@ namespace Exiled.Events.Commands
         public string Description { get; } = "Shows the current TPS.";
 
         /// <inheritdoc/>
-        public bool SanitizeResponse { get; } = default;
+        public bool SanitizeResponse { get; } = false;
 
         /// <inheritdoc />
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = $"{Server.Tps}/{Server.MaxTps}";
+            double diff = Server.Tps / ServerStatic.ServerTickrate;
+            string color = diff switch
+            {
+                > 0.9 => "green",
+                > 0.5 => "yellow",
+                _ => "red"
+            };
+
+            response = $"<color={color}>{Server.Tps}/{Server.MaxTps}</color>";
             return true;
         }
     }
