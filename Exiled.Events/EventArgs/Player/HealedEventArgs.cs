@@ -28,6 +28,7 @@ namespace Exiled.Events.EventArgs.Player
         {
             Player = player;
             LastAmount = lastAmount;
+            HealedAmount = player.Health - lastAmount;
         }
 
         /// <inheritdoc/>
@@ -41,6 +42,6 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets the amount of health healed.
         /// </summary>
-        public float HealedAmount => Player.Health - LastAmount;
+        public float HealedAmount { get; }
     }
 }
