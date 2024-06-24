@@ -9,6 +9,7 @@ namespace Exiled.Events.Patches.Fixes
 {
     using System;
 
+    using Exiled.API.Features;
     using HarmonyLib;
     using InventorySystem.Configs;
 
@@ -18,14 +19,15 @@ namespace Exiled.Events.Patches.Fixes
     /// Changes <see cref="ushort.MaxValue"/> to <see cref="ushort.MinValue"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryLimits), nameof(InventoryLimits.GetCategoryLimit), new Type[] { typeof(ItemCategory), typeof(ReferenceHub), })]
-    internal class GetCustomCategoryLimit
+    internal static class GetCustomCategoryLimit
     {
-        private int Postfix(API.Features.Player player, int value, ItemType ammotype)
+#pragma warning disable SA1313
+        private static void Postfix(ItemCategory category, ReferenceHub player, ref sbyte __result)
         {
-            if (player?.CategoryLimits is null)
-                return value;
+            if (!Player.TryGet(player, out Player ply) || ply.CategoryLimits is null)
+                return;
 
-            return player.CategoryLimits[(int)ammotype] + value - InventoryLimits.GetAmmoLimit(null, ammotype);
+            __result = ply.CategoryLimits[(int)category];
         }
     }
 }

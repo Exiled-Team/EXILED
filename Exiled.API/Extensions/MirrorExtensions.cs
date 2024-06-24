@@ -145,7 +145,22 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets a SyncList{T}.AddOperation's <see cref="MethodInfo"/>.
         /// </summary>
-        public static MethodInfo AddOperationMethodInfo => addOperationMethodInfo ??= typeof(SyncList<>).GetMethod("AddOperation", BindingFlags.NonPublic | BindingFlags.Static);
+        public static MethodInfo AddOperationMethodInfo
+        {
+            get
+            {
+                if (addOperationMethodInfo is null)
+                {
+                    foreach (MethodInfo method in typeof(SyncList<>).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic))
+                    {
+                        if (method.Name == "AddOperation")
+                            addOperationMethodInfo = method;
+                    }
+                }
+
+                return addOperationMethodInfo;
+            }
+        }
 
         /// <summary>
         /// Add an Operation to execute on a <see cref="SyncList{T}"/>.

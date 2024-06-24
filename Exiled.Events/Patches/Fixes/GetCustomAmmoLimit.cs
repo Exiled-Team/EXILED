@@ -9,6 +9,7 @@ namespace Exiled.Events.Patches.Fixes
 {
     using System;
 
+    using Exiled.API.Features;
     using HarmonyLib;
     using InventorySystem.Configs;
 
@@ -17,15 +18,16 @@ namespace Exiled.Events.Patches.Fixes
     /// Sync <see cref="API.Features.Player.SetAmmoLimit(API.Enums.AmmoType, ushort)"/>.
     /// Changes <see cref="ushort.MaxValue"/> to <see cref="ushort.MinValue"/>.
     /// </summary>
-    [HarmonyPatch(typeof(InventoryLimits), nameof(InventoryLimits.GetAmmoLimit), new Type[] { typeof(ItemType), typeof(ReferenceHub), })]
-    internal class GetCustomAmmoLimit
+    [HarmonyPatch(typeof(InventoryLimits), nameof(InventoryLimits.GetAmmoLimit), new Type[] { typeof(ItemType), typeof(ReferenceHub) })]
+    internal static class GetCustomAmmoLimit
     {
-        private int Postfix(API.Features.Player player, int value, ItemType ammotype)
+#pragma warning disable SA1313
+        private static void Postfix(ItemType ammoType, ReferenceHub player, ref ushort __result)
         {
-            if (player?.AmmoLimits is null)
-                return value;
+            if (!Player.TryGet(player, out Player ply) || ply.AmmoLimits is null)
+                return;
 
-            return player.AmmoLimits.Find(x => x.AmmoType == ammotype).Limit + value - InventoryLimits.GetAmmoLimit(null, ammotype);
+            __result = (ushort)(ply.AmmoLimits.Find(x => x.AmmoType == ammoType).Limit + __result - InventoryLimits.GetAmmoLimit(null, ammoType));
         }
     }
 }
