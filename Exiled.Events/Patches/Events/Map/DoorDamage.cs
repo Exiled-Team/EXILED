@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ServerDamage.cs" company="Exiled Team">
+// <copyright file="DoorDamage.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -23,9 +23,9 @@ namespace Exiled.Events.Patches.Events.Map
     [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.DoorDestroying))]
     [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.DoorDamaging))]
     [HarmonyPatch(typeof(BreakableDoor), nameof(BreakableDoor.ServerDamage))]
-    internal static class ServerDamage
+    internal static class DoorDamage
     {
-        private static bool Prefix(BreakableDoor __instance, float Health, DoorDamageType type, bool __result)
+        private static bool Prefix(BreakableDoor __instance, float hp, DoorDamageType type, bool __result)
         {
             if (!NetworkServer.active)
             {
@@ -45,16 +45,16 @@ namespace Exiled.Events.Patches.Events.Map
             if (__instance._brokenPrefab == null || __instance._objectToReplace == null)
                 return false;
 
-            DamagingDoorEventArgs damagingDoorEventArgs = new(__instance, Health, type);
+            DamagingDoorEventArgs damagingDoorEventArgs = new(__instance, hp, type);
 
             Handlers.Map.OnDoorDamaging(damagingDoorEventArgs);
 
-            Health = damagingDoorEventArgs.DamageAmount;
+            hp = damagingDoorEventArgs.DamageAmount;
 
             if (!damagingDoorEventArgs.IsAllowed)
                 return false;
 
-            __instance.RemainingHealth -= Health;
+            __instance.RemainingHealth -= hp;
             if (__instance.RemainingHealth <= 0f)
             {
                 DestroyingDoorEventArgs destroyingDoorEventArgs = new(__instance, damagingDoorEventArgs.DoorDamageType);
