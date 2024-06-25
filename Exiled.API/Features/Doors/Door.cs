@@ -231,7 +231,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a nametag of a door.
         /// </summary>
-        public DoorNametagExtension Nametag => Base.GetComponent<DoorNametagExtension>();
+        public DoorNametagExtension Nametag => Base.GetComponentInParent<DoorNametagExtension>();
 
         /// <summary>
         /// Gets the name of this door.
@@ -538,98 +538,83 @@ namespace Exiled.API.Features.Doors
             };
         }
 
-        private DoorType GetDoorType()
+        private DoorType GetDoorType() => Name switch
         {
-            if (Nametag is null)
+            "914" => Nametag is null ? DoorType.Scp914Door : DoorType.Scp914Gate,
+
+            // Doors contains the DoorNameTagExtension component
+            "CHECKPOINT_LCZ_A" => DoorType.CheckpointLczA,
+            "CHECKPOINT_LCZ_B" => DoorType.CheckpointLczB,
+            "CHECKPOINT_EZ_HCZ_A" => DoorType.CheckpointEzHczA,
+            "CHECKPOINT_EZ_HCZ_B" => DoorType.CheckpointEzHczB,
+            "106_PRIMARY" => DoorType.Scp106Primary,
+            "106_SECONDARY" => DoorType.Scp106Secondary,
+            "ESCAPE_PRIMARY" => DoorType.EscapePrimary,
+            "ESCAPE_SECONDARY" => DoorType.EscapeSecondary,
+            "INTERCOM" => DoorType.Intercom,
+            "NUKE_ARMORY" => DoorType.NukeArmory,
+            "LCZ_ARMORY" => DoorType.LczArmory,
+            "SURFACE_NUKE" => DoorType.NukeSurface,
+            "HID" => DoorType.HID,
+            "HCZ_ARMORY" => DoorType.HczArmory,
+            "096" => DoorType.Scp096,
+            "049_ARMORY" => DoorType.Scp049Armory,
+            "079_ARMORY" => DoorType.Scp079Armory,
+            "GATE_A" => DoorType.GateA,
+            "079_FIRST" => DoorType.Scp079First,
+            "GATE_B" => DoorType.GateB,
+            "079_SECOND" => DoorType.Scp079Second,
+            "SERVERS_BOTTOM" => DoorType.ServersBottom,
+            "173_CONNECTOR" => DoorType.Scp173Connector,
+            "LCZ_WC" => DoorType.LczWc,
+            "HID_RIGHT" => DoorType.HIDRight,
+            "HID_LEFT" => DoorType.HIDLeft,
+            "173_ARMORY" => DoorType.Scp173Armory,
+            "173_GATE" => DoorType.Scp173Gate,
+            "GR18" => DoorType.GR18Gate,
+            "SURFACE_GATE" => DoorType.SurfaceGate,
+            "330" => DoorType.Scp330,
+            "330_CHAMBER" => DoorType.Scp330Chamber,
+            "GR18_INNER" => DoorType.GR18Inner,
+            "939_CRYO" => DoorType.Scp939Cryo,
+            "LCZ_CAFE" => DoorType.LczCafe,
+            "173_BOTTOM" => DoorType.Scp173Bottom,
+
+            // GameObject name
+            "LightContainmentDoor" => DoorType.LightContainmentDoor,
+            "EntrDoor" => DoorType.EntranceDoor,
+            "LCZ" => Room?.Type switch
             {
-                string doorName = GameObject.name.GetBefore(' ');
-                return doorName switch
-                {
-                    "LCZ" => Room?.Type switch
-                    {
-                        RoomType.LczAirlock => (Base.GetComponentInParent<Interactables.Interobjects.AirlockController>() != null) ? DoorType.Airlock : DoorType.LightContainmentDoor,
-                        _ => DoorType.LightContainmentDoor,
-                    },
-                    "HCZ" => DoorType.HeavyContainmentDoor,
-                    "EZ" => DoorType.EntranceDoor,
-                    "Prison" => DoorType.PrisonDoor,
-                    "914" => DoorType.Scp914Door,
-                    "Intercom" => Room?.Type switch
-                    {
-                        RoomType.HczEzCheckpointA => DoorType.CheckpointArmoryA,
-                        RoomType.HczEzCheckpointB => DoorType.CheckpointArmoryB,
-                        _ => DoorType.UnknownDoor,
-                    },
-                    "Unsecured" => Room?.Type switch
-                    {
-                        RoomType.EzCheckpointHallway => DoorType.CheckpointGate,
-                        RoomType.Hcz049 => Position.y < -805 ? DoorType.Scp049Gate : DoorType.Scp173NewGate,
-                        _ => DoorType.UnknownGate,
-                    },
-                    "Elevator" => (Base as Interactables.Interobjects.ElevatorDoor)?.Group switch
-                    {
-                        ElevatorGroup.Nuke => DoorType.ElevatorNuke,
-                        ElevatorGroup.Scp049 => DoorType.ElevatorScp049,
-                        ElevatorGroup.GateB => DoorType.ElevatorGateB,
-                        ElevatorGroup.GateA => DoorType.ElevatorGateA,
-                        ElevatorGroup.LczA01 or ElevatorGroup.LczA02 => DoorType.ElevatorLczA,
-                        ElevatorGroup.LczB01 or ElevatorGroup.LczB02 => DoorType.ElevatorLczB,
-                        _ => DoorType.UnknownElevator,
-                    },
-                    _ => DoorType.UnknownDoor,
-                };
-            }
-
-            return Name.RemoveBracketsOnEndOfName() switch
+                RoomType.LczAirlock => (Base.GetComponentInParent<Interactables.Interobjects.AirlockController>() != null) ? DoorType.Airlock : DoorType.LightContainmentDoor,
+                _ => DoorType.LightContainmentDoor,
+            },
+            "HCZ" => DoorType.HeavyContainmentDoor,
+            "EZ" => DoorType.EntranceDoor,
+            "Prison" => DoorType.PrisonDoor,
+            "Intercom" => Room?.Type switch
             {
-                // Doors contains the DoorNameTagExtension component
-                "CHECKPOINT_LCZ_A" => DoorType.CheckpointLczA,
-                "CHECKPOINT_LCZ_B" => DoorType.CheckpointLczB,
-                "CHECKPOINT_EZ_HCZ_A" => DoorType.CheckpointEzHczA,
-                "CHECKPOINT_EZ_HCZ_B" => DoorType.CheckpointEzHczB,
-                "106_PRIMARY" => DoorType.Scp106Primary,
-                "106_SECONDARY" => DoorType.Scp106Secondary,
-                "ESCAPE_PRIMARY" => DoorType.EscapePrimary,
-                "ESCAPE_SECONDARY" => DoorType.EscapeSecondary,
-                "INTERCOM" => DoorType.Intercom,
-                "NUKE_ARMORY" => DoorType.NukeArmory,
-                "LCZ_ARMORY" => DoorType.LczArmory,
-                "SURFACE_NUKE" => DoorType.NukeSurface,
-                "HID" => DoorType.HID,
-                "HCZ_ARMORY" => DoorType.HczArmory,
-                "096" => DoorType.Scp096,
-                "049_ARMORY" => DoorType.Scp049Armory,
-                "079_ARMORY" => DoorType.Scp079Armory,
-                "914" => DoorType.Scp914Gate,
-                "GATE_A" => DoorType.GateA,
-                "079_FIRST" => DoorType.Scp079First,
-                "GATE_B" => DoorType.GateB,
-                "079_SECOND" => DoorType.Scp079Second,
-                "SERVERS_BOTTOM" => DoorType.ServersBottom,
-                "173_CONNECTOR" => DoorType.Scp173Connector,
-                "LCZ_WC" => DoorType.LczWc,
-                "HID_RIGHT" => DoorType.HIDRight,
-                "HID_LEFT" => DoorType.HIDLeft,
-                "173_ARMORY" => DoorType.Scp173Armory,
-                "173_GATE" => DoorType.Scp173Gate,
-                "GR18" => DoorType.GR18Gate,
-                "SURFACE_GATE" => DoorType.SurfaceGate,
-                "330" => DoorType.Scp330,
-                "330_CHAMBER" => DoorType.Scp330Chamber,
-                "GR18_INNER" => DoorType.GR18Inner,
-                "939_CRYO" => DoorType.Scp939Cryo,
-
-                // Doors spawned by the DoorSpawnPoint component
-                "LCZ_CAFE" => DoorType.LczCafe,
-                "173_BOTTOM" => DoorType.Scp173Bottom,
-
-                // Doors contains the Door component,
-                // also gameobject names
-                "LightContainmentDoor" => DoorType.LightContainmentDoor,
-                "EntrDoor" => DoorType.EntranceDoor,
-
+                RoomType.HczEzCheckpointA => DoorType.CheckpointArmoryA,
+                RoomType.HczEzCheckpointB => DoorType.CheckpointArmoryB,
                 _ => DoorType.UnknownDoor,
-            };
-        }
+            },
+            "Unsecured" => Room?.Type switch
+            {
+                RoomType.EzCheckpointHallway => DoorType.CheckpointGate,
+                RoomType.Hcz049 => Position.y < -805 ? DoorType.Scp049Gate : DoorType.Scp173NewGate,
+                _ => DoorType.UnknownGate,
+            },
+            "Elevator" => (Base as Interactables.Interobjects.ElevatorDoor)?.Group switch
+            {
+                ElevatorGroup.Nuke => DoorType.ElevatorNuke,
+                ElevatorGroup.Scp049 => DoorType.ElevatorScp049,
+                ElevatorGroup.GateB => DoorType.ElevatorGateB,
+                ElevatorGroup.GateA => DoorType.ElevatorGateA,
+                ElevatorGroup.LczA01 or ElevatorGroup.LczA02 => DoorType.ElevatorLczA,
+                ElevatorGroup.LczB01 or ElevatorGroup.LczB02 => DoorType.ElevatorLczB,
+                _ => DoorType.UnknownElevator,
+            },
+
+            _ => DoorType.UnknownDoor,
+        };
     }
 }
