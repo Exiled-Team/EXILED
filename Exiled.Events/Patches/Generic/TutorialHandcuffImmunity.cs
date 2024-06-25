@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Generic
             Label continueLabel = generator.DefineLabel();
             Label skipLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            newInstructions.InsertRange(0, new[]
             {
                 // if (PlayerCuffed.IsHandcuffImmune(DisarmMessage.PlayerToDisarm))
                 //     return;
