@@ -51,6 +51,12 @@ namespace Exiled.Events
         public bool TutorialNotAffectedByScp079Scan { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating whether tutorials can be handcuffed.
+        /// </summary>
+        [Description("Indicates whether tutorials can be handcuffed.")]
+        public bool CanTutorialsBeHandcuffed { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a value indicating whether flashbangs flash original thrower.
         /// </summary>
         [Description("Indicates whether flashbangs flash original thrower.")]
