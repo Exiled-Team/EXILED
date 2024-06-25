@@ -49,6 +49,6 @@ namespace Exiled.Events.Patches.Generic
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
-        private static bool IsHandcuffImmune(ReferenceHub target) => Exiled.Events.Events.Instance.Config.CanTutorialsBeHandcuffed ? false : Player.Get(target)?.Role.Type == RoleTypeId.Tutorial;
+        private static bool IsHandcuffImmune(ReferenceHub target) => Exiled.Events.Events.Instance.Config.CanTutorialBeHandcuffed ? false : Player.Get(target)?.Role.Type == RoleTypeId.Tutorial;
     }
 }
