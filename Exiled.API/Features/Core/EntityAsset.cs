@@ -70,6 +70,9 @@ namespace Exiled.API.Features.Core
             if (classAttribute is null)
                 throw new InvalidOperationException("The target type must be decorated with EClassAttribute to acquire an EntityAsset.");
 
+            if (!Singleton<AssetRegistry>.TryGet(out AssetRegistry _))
+                Singleton<AssetRegistry>.Create(new());
+
             identifier = string.IsNullOrEmpty(identifier) ?
                 string.IsNullOrEmpty(classAttribute.ExactName) ?
                     AssetRegistry.DEFAULT_ASSET_NAME : classAttribute.ExactName : identifier;
@@ -152,6 +155,9 @@ namespace Exiled.API.Features.Core
 
             if (classAttribute is null)
                 throw new InvalidOperationException("The target type must be decorated with EClassAttribute to acquire an EntityAsset.");
+
+            if (!Singleton<AssetRegistry>.TryGet(out AssetRegistry _))
+                Singleton<AssetRegistry>.Create(new());
 
             identifier = string.IsNullOrEmpty(identifier) ?
                 string.IsNullOrEmpty(classAttribute.ExactName) ?

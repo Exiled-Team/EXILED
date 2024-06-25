@@ -40,8 +40,7 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Gets all entity assets stored in the registry.
         /// </summary>
-        /// <returns>All entity assets stored in the registry.</returns>
-        public IEnumerable<EntityAsset> GetAllFromRegistry() => assets;
+        public IEnumerable<EntityAsset> Assets => assets;
 
         /// <summary>
         /// Gets all entity assets stored in the registry with the specified identifier and category.
@@ -52,7 +51,7 @@ namespace Exiled.API.Features.Core
         /// <returns>All entity assets matching the specified identifier and category.</returns>
         public IEnumerable<T> GetAllFromRegistry<T>(string identifier = DEFAULT_ASSET_NAME, string category = DEFAULT_CATEGORY)
         {
-            foreach (EntityAsset entityAsset in GetAllFromRegistry())
+            foreach (EntityAsset entityAsset in Assets)
             {
                 if ((!string.IsNullOrEmpty(category) && entityAsset.Class.Category != category) ||
                     entityAsset.Name != identifier)
@@ -76,7 +75,7 @@ namespace Exiled.API.Features.Core
         /// <returns>The first entity asset matching the specified identifier and category.</returns>
         public T GetFirstFromRegistry<T>(string identifier = DEFAULT_ASSET_NAME, string category = DEFAULT_CATEGORY)
         {
-            foreach (EntityAsset entityAsset in GetAllFromRegistry())
+            foreach (EntityAsset entityAsset in Assets)
             {
                 if ((!string.IsNullOrEmpty(category) && entityAsset.Class.Category != category) ||
                     entityAsset.Name != identifier)
@@ -105,7 +104,7 @@ namespace Exiled.API.Features.Core
         {
             T lastObject = default;
 
-            foreach (EntityAsset entityAsset in GetAllFromRegistry().Reverse())
+            foreach (EntityAsset entityAsset in Assets.Reverse())
             {
                 if ((!string.IsNullOrEmpty(category) && entityAsset.Class.Category != category) ||
                     entityAsset.Name != identifier)
@@ -130,7 +129,7 @@ namespace Exiled.API.Features.Core
         /// <returns>All entity assets matching the specified identifier and category.</returns>
         public IEnumerable<object> GetAllFromRegistry(string identifier = DEFAULT_ASSET_NAME, string category = DEFAULT_CATEGORY)
         {
-            foreach (EntityAsset entityAsset in GetAllFromRegistry())
+            foreach (EntityAsset entityAsset in Assets)
             {
                 if ((!string.IsNullOrEmpty(category) && entityAsset.Class.Category != category) ||
                     entityAsset.Name != identifier)
@@ -148,7 +147,7 @@ namespace Exiled.API.Features.Core
         /// <returns>The first entity asset matching the specified identifier and category.</returns>
         public object GetFirstFromRegistry(string identifier = DEFAULT_ASSET_NAME, string category = DEFAULT_CATEGORY)
         {
-            foreach (EntityAsset entityAsset in GetAllFromRegistry())
+            foreach (EntityAsset entityAsset in Assets)
             {
                 if ((!string.IsNullOrEmpty(category) && entityAsset.Class.Category != category) ||
                     entityAsset.Name != identifier)
@@ -169,7 +168,7 @@ namespace Exiled.API.Features.Core
         public object GetLastFromRegistry(string identifier = DEFAULT_ASSET_NAME, string category = DEFAULT_CATEGORY)
         {
             object lastObject = null;
-            foreach (EntityAsset entityAsset in GetAllFromRegistry())
+            foreach (EntityAsset entityAsset in Assets)
             {
                 if ((!string.IsNullOrEmpty(category) && entityAsset.Class.Category != category) ||
                     entityAsset.Name != identifier)
