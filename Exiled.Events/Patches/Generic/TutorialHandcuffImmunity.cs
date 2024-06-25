@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                // if (PlayerCuffed.IsTutorial(DisarmMessage.PlayerToDisarm))
+                // if (PlayerCuffed.IsHandcuffImmune(DisarmMessage.PlayerToDisarm))
                 //     return;
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldfld, Field(typeof(DisarmMessage), nameof(DisarmMessage.PlayerToDisarm))),
