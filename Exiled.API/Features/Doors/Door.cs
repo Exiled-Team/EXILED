@@ -231,7 +231,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a nametag of a door.
         /// </summary>
-        public DoorNametagExtension Nametag => Base.GetComponentInParent<DoorNametagExtension>();
+        public DoorNametagExtension Nametag => Base.GetComponent<DoorNametagExtension>();
 
         /// <summary>
         /// Gets the name of this door.
@@ -540,6 +540,7 @@ namespace Exiled.API.Features.Doors
 
         private DoorType GetDoorType() => Name switch
         {
+            // 914 is a special case where it can be both the nametag and the gameobject name (depending on if it's one of the doors or the gate)
             "914" => Nametag is null ? DoorType.Scp914Door : DoorType.Scp914Gate,
 
             // Doors contains the DoorNameTagExtension component
