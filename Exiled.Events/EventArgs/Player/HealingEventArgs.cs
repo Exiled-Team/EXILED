@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Invoked before a <see cref="API.Features.Player"/> heals.
+    /// Contains all information before a <see cref="API.Features.Player"/> heals.
     /// </summary>
     public class HealingEventArgs : IPlayerEvent, IDeniableEvent
     {
