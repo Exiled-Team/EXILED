@@ -11,8 +11,6 @@ namespace Exiled.API.Extensions
     using System.Collections.Generic;
     using System.Linq;
 
-    using HarmonyLib;
-
     /// <summary>
     /// A set of extensions for easily interact with collections.
     /// </summary>
