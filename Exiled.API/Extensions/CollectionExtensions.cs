@@ -61,6 +61,8 @@ namespace Exiled.API.Extensions
         /// <typeparam name="T">The type of the elements of <see cref="IEnumerable{T}"/>.</typeparam>
         /// <param name="enumerable">The <see cref="IEnumerable{T}"/>.</param>
         /// <param name="iterations">The amount of times to repeat the shuffle operation.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the <see cref="IEnumerable{T}"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the amount of iterations is less than 1.</exception>
         /// <returns>A shuffled version of the <see cref="IEnumerable{T}"/>.</returns>
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> enumerable, int iterations = 1)
         {
@@ -102,15 +104,8 @@ namespace Exiled.API.Extensions
         /// <param name="enumerable">The original <see cref="IEnumerable{T}"/> to which items will be added.</param>
         /// <param name="collection">The collection of items to add.</param>
         /// <returns>The modified <see cref="IEnumerable{T}"/> after adding the items.</returns>
-        public static IEnumerable<T> AddRange<T>(this IEnumerable<T> enumerable, IEnumerable<T> collection)
-        {
-            IEnumerable<T> result = enumerable;
-
-            foreach (T item in collection)
-                result.AddItem(item);
-
-            return result;
-        }
+        public static IEnumerable<T> AddRange<T>(this IEnumerable<T> enumerable, IEnumerable<T> collection) =>
+            enumerable.Concat(collection);
 
         /// <summary>
         /// Adds a collection of items to an existing array of <typeparamref name="T"/>.
@@ -121,9 +116,7 @@ namespace Exiled.API.Extensions
         /// <returns>The modified array of <typeparamref name="T"/> after adding the items.</returns>
         public static T[] AddRange<T>(this T[] array, IEnumerable<T> collection)
         {
-            foreach (T item in collection)
-                array.AddItem(item);
-
+            array = array.Concat(collection).ToArray();
             return array;
         }
 
@@ -136,9 +129,7 @@ namespace Exiled.API.Extensions
         /// <returns>The modified <see cref="HashSet{T}"/> after adding the items.</returns>
         public static HashSet<T> AddRange<T>(this HashSet<T> hashset, IEnumerable<T> collection)
         {
-            foreach (T item in collection)
-                hashset.Add(item);
-
+            hashset.IntersectWith(collection);
             return hashset;
         }
 
