@@ -127,7 +127,7 @@ namespace Exiled.API.Extensions
         /// <returns>The modified <see cref="HashSet{T}"/> after adding the items.</returns>
         public static HashSet<T> AddRange<T>(this HashSet<T> hashset, IEnumerable<T> collection)
         {
-            hashset.IntersectWith(collection);
+            hashset.UnionWith(collection);
             return hashset;
         }
 
