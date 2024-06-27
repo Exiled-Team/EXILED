@@ -229,6 +229,24 @@ namespace Exiled.Loader
         }
 
         /// <summary>
+        /// Gets an <see cref="Plugin{TConfig}"/> instance.
+        /// </summary>
+        /// <typeparam name="T">A <see cref="Plugin{TConfig}"/> class to get the instance of.</typeparam>
+        /// <returns>Returns the instance of a <see cref="Plugin{TConfig}"/>.</returns>
+        public static T GetPlugin<T>()
+            where T : class, IPlugin<IConfig>
+            => Plugins.First(plugin => plugin is T) as T;
+
+        /// <summary>
+        /// Gets an <see cref="IConfig"/> instance.
+        /// </summary>
+        /// <typeparam name="T">A <see cref="IConfig"/> class to get the instance of.</typeparam>
+        /// <returns>Returns the instance of a <see cref="IConfig"/>.</returns>
+        public static T GetConfig<T>()
+            where T : class, IConfig
+            => Plugins.First(plugin => plugin.Config is T).Config as T;
+
+        /// <summary>
         /// Enables all plugins.
         /// </summary>
         public static void EnablePlugins()
