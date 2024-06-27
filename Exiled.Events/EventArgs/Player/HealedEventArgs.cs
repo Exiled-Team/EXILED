@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Invoked after a <see cref="API.Features.Player"/> has healed.
+    /// Contains all information after a <see cref="API.Features.Player"/> has healed.
     /// </summary>
     public class HealedEventArgs : IPlayerEvent
     {
