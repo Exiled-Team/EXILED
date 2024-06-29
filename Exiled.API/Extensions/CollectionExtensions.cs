@@ -62,7 +62,7 @@ namespace Exiled.API.Extensions
         /// <exception cref="ArgumentNullException">Thrown when the <see cref="IEnumerable{T}"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the amount of iterations is less than 1.</exception>
         /// <returns>A shuffled version of the <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> enumerable, int iterations = 1)
+        public static T[] Shuffle<T>(this IEnumerable<T> enumerable, int iterations = 1)
         {
             if (enumerable is null)
                 throw new ArgumentNullException(nameof(enumerable));
