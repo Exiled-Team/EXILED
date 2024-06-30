@@ -323,7 +323,7 @@ namespace Exiled.API.Features.Core
                 foreach (EProperty property in kvp.Value)
                 {
                     if (typeof(T) == typeof(EProperty))
-                        yield return (T)(object)kvp.Value;
+                        yield return (T)(object)property;
                     else if (property.Entity is T comp)
                         yield return comp;
                 }
