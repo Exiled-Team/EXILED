@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Enums;
@@ -21,6 +22,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Wrapper class for <see cref="Scp079Generator"/>.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Generator : GameEntity, IWrapper<Scp079Generator>
     {
         /// <summary>
@@ -225,6 +227,9 @@ namespace Exiled.API.Features
             get => (KeycardPermissions)Base._requiredPermission;
             set => Base._requiredPermission = (Interactables.Interobjects.DoorUtils.KeycardPermissions)value;
         }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay => $"Room = {Room?.RoomName.ToString() ?? "Unknow"} State = {State} KeycardPermissions = {KeycardPermissions}";
 
         /// <summary>
         /// Spawns a <see cref="Generator"/>.

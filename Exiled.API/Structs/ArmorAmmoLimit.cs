@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Structs
 {
+    using System.Diagnostics;
+
     using Enums;
 
     using Extensions;
@@ -16,6 +18,7 @@ namespace Exiled.API.Structs
     /// <summary>
     /// The limit of a certain <see cref="Enums.AmmoType"/> when wearing a piece of armor.
     /// </summary>
+    [DebuggerDisplay("AmmoType = {AmmoType} Limit = {Limit}")]
     public struct ArmorAmmoLimit
     {
         /// <summary>

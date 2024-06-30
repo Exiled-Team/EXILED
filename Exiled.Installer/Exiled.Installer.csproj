@@ -30,6 +30,10 @@
         <TrimUnusedDependencies>true</TrimUnusedDependencies>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Installer|AnyCPU'">
+      <Optimize>True</Optimize>
+    </PropertyGroup>
+
     <Import Project="../EXILED.props" />
 
     <ItemGroup>

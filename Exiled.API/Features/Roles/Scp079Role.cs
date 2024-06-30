@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -33,6 +34,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-079.
     /// </summary>
+    [DebuggerDisplay("Scp-079")]
     public class Scp079Role : Role, ISubroutinedScpRole, ISpawnableScp
     {
         private readonly ConstProperty<float> sameZoneSwitch = new(0.1f, new[] { typeof(Scp079CurrentCameraSync) });

@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Enums;
@@ -24,6 +25,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game Scp079Camera.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Camera : GameEntity, IWrapper<Scp079Camera>
     {
         /// <summary>
@@ -209,6 +211,9 @@ namespace Exiled.API.Features
             get => Base.IsActive;
             set => Base.IsActive = value;
         }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay => $"Room = {Room?.RoomName.ToString() ?? "Unknow"} Name = {Name} Id = {Id} Used = {IsBeingUsed}";
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the <see cref="Camera"/> instances given a <see cref="IEnumerable{T}"/> of <see cref="Scp079Camera"/>.

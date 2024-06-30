@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Exiled.API.Features.Pickups;
@@ -22,6 +23,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="BodyArmor"/>.
     /// </summary>
+    [DebuggerDisplay("Armor Type = {Type}")]
     public class Armor : Item, IWrapper<BodyArmor>
     {
         /// <summary>

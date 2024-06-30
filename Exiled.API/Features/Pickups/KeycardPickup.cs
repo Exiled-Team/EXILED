@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using System.Diagnostics;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
@@ -19,6 +21,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a Keycard pickup.
     /// </summary>
+    [DebuggerDisplay("Keycard Type = {Type}")]
     public class KeycardPickup : Pickup, IWrapper<BaseKeycard>
     {
         /// <summary>

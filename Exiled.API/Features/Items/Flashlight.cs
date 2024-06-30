@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System.Diagnostics;
+
     using Exiled.API.Interfaces;
     using InventorySystem.Items.ToggleableLights;
     using InventorySystem.Items.ToggleableLights.Flashlight;
@@ -16,6 +18,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapped class for <see cref="ToggleableLightItemBase"/>.
     /// </summary>
+    [DebuggerDisplay("Flashlight")]
     public class Flashlight : Item, IWrapper<ToggleableLightItemBase>
     {
         /// <summary>

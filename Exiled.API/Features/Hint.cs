@@ -8,6 +8,7 @@
 namespace Exiled.API.Features
 {
     using System.ComponentModel;
+    using System.Diagnostics;
 
     using Hints;
 
@@ -16,6 +17,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Useful class to save hint configs in a cleaner way.
     /// </summary>
+    [DebuggerDisplay("Show = {Show} Duration = {Duration}s Content = {Content}")]
     public class Hint
     {
         private HintParameter[] parameters;

@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System.Diagnostics;
+
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
@@ -19,6 +21,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for SCP-244.
     /// </summary>
+    [DebuggerDisplay("Scp-244")]
     public class Scp244 : Usable, IWrapper<Scp244Item>
     {
         private readonly ConstProperty<float> dropHeightOffset = new(Scp244Item.DropHeightOffset, new[] { typeof(Scp244Item) });

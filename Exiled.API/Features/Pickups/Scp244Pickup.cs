@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Pickups
 {
     using System;
+    using System.Diagnostics;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.DamageHandlers;
@@ -19,6 +20,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a SCP-244 pickup.
     /// </summary>
+    [DebuggerDisplay("Scp-244")]
     public class Scp244Pickup : UsablePickup, IWrapper<Scp244DeployablePickup>
     {
         /// <summary>

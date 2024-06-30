@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Items
 {
     using System;
+    using System.Diagnostics;
 
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
@@ -22,6 +23,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapped class for <see cref="JailbirdItem"/>.
     /// </summary>
+    [DebuggerDisplay("Jailbird")]
     public class Jailbird : Item, IWrapper<JailbirdItem>
     {
         private readonly ConstProperty<double> chargeTolerance = new(-0.4000000059604645, new[] { typeof(JailbirdItem) });

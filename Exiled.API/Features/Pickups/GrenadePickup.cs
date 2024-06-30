@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using System.Diagnostics;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
@@ -19,6 +21,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a high explosive grenade pickup.
     /// </summary>
+    [DebuggerDisplay("Grenade")]
     public class GrenadePickup : Pickup, IWrapper<TimedGrenadePickup>
     {
         private readonly ConstProperty<double> explosionRadius = new(0.4000000059604645, new[] { typeof(TimedGrenadePickup) });

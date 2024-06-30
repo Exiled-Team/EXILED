@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System.Diagnostics;
+
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using InventorySystem.Items.MicroHID;
@@ -14,6 +16,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="MicroHIDItem"/>.
     /// </summary>
+    [DebuggerDisplay("MicroHid")]
     public class MicroHid : Item, IWrapper<MicroHIDItem>
     {
         private readonly ConstProperty<double> preFire = new(1.7000000476837158, new[] { typeof(MicroHIDItem) });

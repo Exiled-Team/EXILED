@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using System.Diagnostics;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
@@ -16,6 +18,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a Radio pickup.
     /// </summary>
+    [DebuggerDisplay("Radio")]
     public class RadioPickup : Pickup, IWrapper<BaseRadio>
     {
         /// <summary>

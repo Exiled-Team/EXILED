@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -29,6 +30,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game lift.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Lift : GameEntity, IWrapper<ElevatorChamber>, IWorldSpace
     {
         /// <summary>
@@ -176,6 +178,9 @@ namespace Exiled.API.Features
         /// Gets the base <see cref="ElevatorChamber"/>.
         /// </summary>
         public ElevatorChamber Base { get; }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay => $"Type = {Type} Status = {Status} Level = {CurrentLevel} Lock = {IsLocked}";
 
         /// <summary>
         /// Gets the <see cref="Lift"/> belonging to the <see cref="ElevatorChamber"/>, if any.

@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System.Diagnostics;
+
     using Exiled.API.Enums;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
@@ -18,6 +20,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="KeycardItem"/>.
     /// </summary>
+    [DebuggerDisplay("Keycard")]
     public class Keycard : Item, IWrapper<KeycardItem>
     {
         /// <summary>

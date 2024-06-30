@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Roles
 {
     using System;
+    using System.Diagnostics;
 
     using PlayerRoles;
 
@@ -18,6 +19,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents a spectator.
     /// </summary>
+    [DebuggerDisplay("Spectator")]
     public class SpectatorRole : Role
     {
         /// <summary>

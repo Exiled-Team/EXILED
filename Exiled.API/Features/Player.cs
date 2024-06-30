@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -77,6 +78,7 @@ namespace Exiled.API.Features
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
     [DefaultPlayerClass]
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Player : GameEntity
     {
 #pragma warning disable SA1401
@@ -1182,6 +1184,16 @@ namespace Exiled.API.Features
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
         internal static ConditionalWeakTable<GameObject, Player> UnverifiedPlayers { get; } = new();
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get
+            {
+                string role = Role is null ? "No role" : $"{Role.Name} Hp = {Health}/{MaxHealth}";
+                return $"Id = {Id} Nickname = {Nickname} Role = {role}";
+            }
+        }
 
         /// <summary>
         /// Converts NwPluginAPI player to EXILED player.
