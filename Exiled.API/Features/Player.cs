@@ -2563,7 +2563,10 @@ namespace Exiled.API.Features
             ItemType itemtype = ammotype.GetItemType();
             AmmoLimits ??= ServerConfigSynchronizer.Singleton.AmmoLimitsSync.ToList();
             int index = AmmoLimits.FindIndex(x => x.AmmoType == itemtype);
-            ServerConfigSynchronizer.Singleton.AmmoLimitsSync.AddOperation(SyncList<ServerConfigSynchronizer.AmmoLimit>.Operation.OP_ADD, index, AmmoLimits[index], new() { Limit = value, AmmoType = itemtype }, false);
+            ServerConfigSynchronizer.AmmoLimit newLimit = new() { Limit = value, AmmoType = itemtype };
+
+            ServerConfigSynchronizer.Singleton.AmmoLimitsSync.AddOperation(SyncList<ServerConfigSynchronizer.AmmoLimit>.Operation.OP_SET, index, AmmoLimits[index], newLimit, false);
+            AmmoLimits[index] = newLimit;
         }
 
         /// <summary>
