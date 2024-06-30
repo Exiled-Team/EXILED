@@ -315,8 +315,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             if (Settings.HideInfoArea)
             {
-                Owner.InfoArea &= ~PlayerInfoArea.UnitName;
-                Owner.InfoArea &= ~PlayerInfoArea.Role;
+                Owner.InfoArea = Owner.InfoArea.RemoveFlags(PlayerInfoArea.UnitName, PlayerInfoArea.Role);
             }
 
             if (isHuman && !Settings.PreserveInventory)
@@ -437,8 +436,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             if (Settings.HideInfoArea)
             {
-                Owner.InfoArea |= PlayerInfoArea.UnitName;
-                Owner.InfoArea |= PlayerInfoArea.Role;
+                Owner.InfoArea = Owner.InfoArea.AddFlags(PlayerInfoArea.UnitName, PlayerInfoArea.Role);
             }
 
             Owner.Scale = Vector3.one;

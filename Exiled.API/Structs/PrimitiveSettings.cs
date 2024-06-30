@@ -20,18 +20,19 @@ namespace Exiled.API.Structs
         /// Initializes a new instance of the <see cref="PrimitiveSettings"/> struct.
         /// </summary>
         /// <param name="primitiveType">The type of the primitive.</param>
+        /// <param name="flags">The <see cref="PrimitiveFlags"/> to apply.</param>
         /// <param name="color">The color of the primitive.</param>
         /// <param name="position">The position of the primitive.</param>
         /// <param name="rotation">The rotation of the primitive.</param>
         /// <param name="scale">The scale of the primitive.</param>
         /// <param name="spawn">Whether or not the primitive should be spawned.</param>
         /// <param name="isStatic">Whether or not the primitive should be static.</param>
-        public PrimitiveSettings(PrimitiveType primitiveType, Color? color, Vector3? position, Quaternion? rotation = null, Vector3? scale = null, bool isStatic = false, bool spawn = true)
+        public PrimitiveSettings(PrimitiveType primitiveType, Color? color, Vector3? position, PrimitiveFlags flags = PrimitiveFlags.Visible | PrimitiveFlags.Collidable, Quaternion? rotation = null, Vector3? scale = null, bool isStatic = false, bool spawn = true)
         {
             PrimitiveType = primitiveType;
-            Flags = PrimitiveFlags.Collidable | PrimitiveFlags.Visible;
             Color = color ?? Color.gray;
             Position = position ?? Vector3.one;
+            Flags = flags;
             Rotation = rotation ?? Quaternion.identity;
             Scale = scale ?? Vector3.one;
             IsStatic = isStatic;

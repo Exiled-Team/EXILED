@@ -212,13 +212,13 @@ namespace Exiled.API.Extensions
         {
             EffectCategory category = EffectCategory.None;
             if (effect.IsPositive())
-                category |= EffectCategory.Positive;
+                category.AddFlags(EffectCategory.Positive);
             if (effect.IsNegative())
-                category |= EffectCategory.Negative;
+                category.AddFlags(EffectCategory.Negative);
             if (effect.IsMovement())
-                category |= EffectCategory.Movement;
+                category.AddFlags(EffectCategory.Movement);
             if (effect.IsHarmful())
-                category |= EffectCategory.Harmful;
+                category.AddFlags(EffectCategory.Harmful);
 
             return category;
         }
