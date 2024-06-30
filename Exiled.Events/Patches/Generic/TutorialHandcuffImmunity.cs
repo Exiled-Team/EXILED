@@ -9,8 +9,8 @@ namespace Exiled.Events.Patches.Generic
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.API.Features.Pools;
+    using API.Features;
+    using API.Features.Pools;
     using HarmonyLib;
     using InventorySystem.Disarming;
     using PlayerRoles;
