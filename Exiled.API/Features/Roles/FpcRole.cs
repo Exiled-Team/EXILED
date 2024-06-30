@@ -27,7 +27,7 @@ namespace Exiled.API.Features.Roles
         private static FieldInfo enableFallDamageField;
 
         private bool isUsingStamina = true;
-        private RoleTypeId fakeAppearance;
+        private RoleTypeId? fakeAppearance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FpcRole"/> class.
