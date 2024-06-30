@@ -40,7 +40,6 @@ namespace Exiled.API.Extensions
         private static readonly ReadOnlyDictionary<string, string> ReadOnlyRpcFullNamesValue = new(RpcFullNamesValue);
         private static MethodInfo setDirtyBitsMethodInfoValue;
         private static MethodInfo sendSpawnMessageMethodInfoValue;
-        private static MethodInfo addOperationMethodInfo;
 
         /// <summary>
         /// Gets <see cref="MethodInfo"/> corresponding to <see cref="Type"/>.
@@ -143,29 +142,6 @@ namespace Exiled.API.Extensions
         public static MethodInfo SendSpawnMessageMethodInfo => sendSpawnMessageMethodInfoValue ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
 
         /// <summary>
-        /// Gets a SyncList{T}.AddOperation's <see cref="MethodInfo"/>.
-        /// </summary>
-        public static MethodInfo AddOperationMethodInfo
-        {
-            get
-            {
-                if (addOperationMethodInfo is null)
-                {
-                    foreach (MethodInfo method in typeof(SyncList<>).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic))
-                    {
-                        if (method.Name == "AddOperation")
-                        {
-                            addOperationMethodInfo = method;
-                            break;
-                        }
-                    }
-                }
-
-                return addOperationMethodInfo;
-            }
-        }
-
-        /// <summary>
         /// Add an Operation to execute on a <see cref="SyncList{T}"/>.
         /// </summary>
         /// <param name="synclist">Only this player can see info.</param>
@@ -175,14 +151,7 @@ namespace Exiled.API.Extensions
         /// <param name="newItem">new item.</param>
         /// <param name="checkAccess">Verify if access is authorised.</param>
         /// <typeparam name="T">A type of <see cref="SyncList{T}"/>.</typeparam>
-        public static void AddOperation<T>(this SyncList<T> synclist, SyncList<T>.Operation op, int itemIndex, T oldItem, T newItem, bool checkAccess)
-        {
-            Log.Error(AddOperationMethodInfo is null);
-            Log.Error($"Invoking AddOperation on {synclist.GetType().Name} with method {AddOperationMethodInfo.Name}");
-            Log.Error($"Parameters: op={op.GetType().Name}, itemIndex={itemIndex}, oldItem={oldItem.GetType().Name}, newItem={newItem.GetType().Name}, checkAccess={checkAccess.GetType().Name}");
-
-            AddOperationMethodInfo.Invoke(synclist, new object[] { op, itemIndex, oldItem, newItem, checkAccess, });
-        }
+        public static void AddOperation<T>(this SyncList<T> synclist, SyncList<T>.Operation op, int itemIndex, T oldItem, T newItem, bool checkAccess) => typeof(SyncList<T>).GetMethod("AddOperation", BindingFlags.Instance | BindingFlags.NonPublic)?.Invoke(synclist, new object[] { op, itemIndex, oldItem, newItem, checkAccess });
 
         /// <summary>
         /// Plays a beep sound that only the target <paramref name="player"/> can hear.
