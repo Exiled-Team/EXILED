@@ -10,14 +10,14 @@ namespace Exiled.Events.Commands.Reload
     using System;
 
     using CommandSystem;
-    using Exiled.API.Interfaces;
+
     using Exiled.Events.Handlers;
     using Exiled.Permissions.Extensions;
 
     /// <summary>
     /// The reload permissions command.
     /// </summary>
-    public class Permissions : ICommand, IPermissioned
+    public class Permissions : ICommand
     {
         /// <summary>
         /// Gets static instance of the <see cref="Permissions"/> command.
@@ -36,12 +36,15 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc />
         public bool SanitizeResponse { get; }
 
-        /// <inheritdoc />
-        public string Permission { get; } = "ee.reloadpermissions";
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!sender.CheckPermission("ee.reloadpermissions"))
+            {
+                response = "You can't reload permissions, you don't have \"ee.reloadpermissions\" permission.";
+                return false;
+            }
+
             Exiled.Permissions.Extensions.Permissions.Reload();
             Server.OnReloadedPermissions();
 

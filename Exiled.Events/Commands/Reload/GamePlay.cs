@@ -10,7 +10,7 @@ namespace Exiled.Events.Commands.Reload
     using System;
 
     using CommandSystem;
-    using Exiled.API.Interfaces;
+
     using Exiled.Permissions.Extensions;
 
     using static GameCore.ConfigFile;
@@ -18,7 +18,7 @@ namespace Exiled.Events.Commands.Reload
     /// <summary>
     /// The reload gameplay command.
     /// </summary>
-    public class GamePlay : ICommand, IPermissioned
+    public class GamePlay : ICommand
     {
         /// <summary>
         /// Gets static instance of the <see cref="GamePlay"/> command.
@@ -37,12 +37,15 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc />
         public bool SanitizeResponse { get; }
 
-        /// <inheritdoc />
-        public string Permission { get; } = "ee.reloadgameplay";
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!sender.CheckPermission("ee.reloadgameplay"))
+            {
+                response = "You can't reload gameplay configs, you don't have \"ee.reloadgameplay\" permission.";
+                return false;
+            }
+
             ReloadGameConfigs();
 
             Handlers.Server.OnReloadedGameplay();

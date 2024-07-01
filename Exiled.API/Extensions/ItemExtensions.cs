@@ -12,12 +12,13 @@ namespace Exiled.API.Extensions
     using System.Linq;
 
     using Enums;
+
     using Features.Items;
+
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Pickups;
-    using InventorySystem.Items.ThrowableProjectiles;
     using Structs;
 
     /// <summary>
@@ -52,7 +53,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether or not the <see cref="ItemType"/> is a throwable item.</returns>
-        public static bool IsThrowable(this ItemType type) => GetItemBase<ThrowableItem>(type) != null;
+        public static bool IsThrowable(this ItemType type) => type is ItemType.SCP018 or ItemType.GrenadeHE or ItemType.GrenadeFlash or ItemType.SCP2176;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a medical item.
@@ -120,12 +121,14 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets the maximum ammo of a weapon.
         /// </summary>
-        /// <param name="type">The <see cref="FirearmType">weapon</see> that you want to get maximum of.</param>
+        /// <param name="item">The <see cref="FirearmType">weapon</see> that you want to get maximum of.</param>
         /// <returns>Returns the maximum.</returns>
-        public static byte GetMaxAmmo(this FirearmType type)
+        public static byte GetMaxAmmo(this FirearmType item)
         {
-            InventorySystem.Items.Firearms.Firearm firearm = GetItemBase<InventorySystem.Items.Firearms.Firearm>(type.GetItemType());
-            return firearm is null ? (byte)0 : firearm.AmmoManagerModule.MaxAmmo;
+            if (!InventoryItemLoader.AvailableItems.TryGetValue(item.GetItemType(), out ItemBase itemBase) || itemBase is not InventorySystem.Items.Firearms.Firearm firearm)
+                return 0;
+
+            return firearm.AmmoManagerModule.MaxAmmo;
         }
 
         /// <summary>

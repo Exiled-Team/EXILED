@@ -63,16 +63,6 @@ namespace Exiled.Events.Handlers
         public static Event<RecontainedEventArgs> Recontained { get; set; } = new();
 
         /// <summary>
-        /// Invoked before SCP-079 loses signal.
-        /// </summary>
-        public static Event<LosingSignalEventArgs> LosingSignal { get; set; } = new();
-
-        /// <summary>
-        /// Invoked before SCP-079 loses signal.
-        /// </summary>
-        public static Event<LostSignalEventArgs> LostSignal { get; set; } = new();
-
-        /// <summary>
         /// Invoked before SCP-079 sends a ping.
         /// </summary>
         public static Event<PingingEventArgs> Pinging { get; set; } = new();
@@ -86,11 +76,6 @@ namespace Exiled.Events.Handlers
         /// Invoked before SCP-079 turns off the lights in a zone.
         /// </summary>
         public static Event<ZoneBlackoutEventArgs> ZoneBlackout { get; set; } = new();
-
-        /// <summary>
-        /// Invoked before a target added to the SCP-079 scan.
-        /// </summary>
-        public static Event<AddingScanTargetEventArgs> AddingScanTarget { get; set; } = new();
 
         /// <summary>
         /// Called before SCP-079 switches cameras.
@@ -147,18 +132,6 @@ namespace Exiled.Events.Handlers
         public static void OnRecontained(RecontainedEventArgs ev) => Recontained.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before SCP-079 loses signal.
-        /// </summary>
-        /// <param name="ev">The <see cref="LosingSignalEventArgs" /> instance.</param>
-        public static void OnLosingSignal(LosingSignalEventArgs ev) => LosingSignal.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called after SCP-079 loses signal.
-        /// </summary>
-        /// <param name="ev">The <see cref="LostSignalEventArgs" /> instance.</param>
-        public static void OnLostSignal(LostSignalEventArgs ev) => LostSignal.InvokeSafely(ev);
-
-        /// <summary>
         /// Called before SCP-079 sends a ping.
         /// </summary>
         /// <param name="ev">The <see cref="PingingEventArgs" /> instance.</param>
@@ -175,11 +148,5 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="PingingEventArgs" /> instance.</param>
         public static void OnZoneBlackout(ZoneBlackoutEventArgs ev) => ZoneBlackout.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a player is added to the SCP-079 scan.
-        /// </summary>
-        /// <param name="ev">The <see cref="AddingScanTargetEventArgs" /> instance.</param>
-        public static void OnAddingScanTarget(AddingScanTargetEventArgs ev) => AddingScanTarget.InvokeSafely(ev);
     }
 }

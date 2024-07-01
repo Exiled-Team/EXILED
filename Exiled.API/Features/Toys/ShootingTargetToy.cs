@@ -47,39 +47,14 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets the <see cref="ShootingTargetType.ClassD"/> prefab's type.
-        /// </summary>
-        public static PrefabType DBoyTargetPrefabType => PrefabType.DBoyTarget;
-
-        /// <summary>
-        /// Gets the <see cref="ShootingTargetType.ClassD"/> prefab's object.
-        /// </summary>
-        public static GameObject DBoyTargetPrefabObject => PrefabHelper.PrefabToGameObject[DBoyTargetPrefabType];
-
-        /// <summary>
-        /// Gets the <see cref="ShootingTargetType.Binary"/> prefab's type.
-        /// </summary>
-        public static PrefabType BinaryTargetPrefabType => PrefabType.BinaryTarget;
-
-        /// <summary>
-        /// Gets the <see cref="ShootingTargetType.Binary"/> prefab's object.
-        /// </summary>
-        public static GameObject BinaryTargetPrefabObject => PrefabHelper.PrefabToGameObject[BinaryTargetPrefabType];
-
-        /// <summary>
-        /// Gets the <see cref="ShootingTargetType.Sport"/> prefab's type.
-        /// </summary>
-        public static PrefabType SportTargetPrefabType => PrefabType.SportTarget;
-
-        /// <summary>
-        /// Gets the <see cref="ShootingTargetType.Sport"/> prefab's object.
-        /// </summary>
-        public static GameObject SportTargetPrefabObject => PrefabHelper.PrefabToGameObject[SportTargetPrefabType];
-
-        /// <summary>
         /// Gets the base-game <see cref="ShootingTarget"/> for this target.
         /// </summary>
         public ShootingTarget Base { get; }
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the target.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the bullseye.
@@ -184,17 +159,32 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="ShootingTargetToy"/>.</returns>
         public static ShootingTargetToy Create(ShootingTargetType type, Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
         {
-            ShootingTargetToy shootingTargetToy = type switch
-            {
-                ShootingTargetType.ClassD => new ShootingTargetToy(Object.Instantiate(DBoyTargetPrefabObject.GetComponent<ShootingTarget>())),
-                ShootingTargetType.Binary => new ShootingTargetToy(Object.Instantiate(BinaryTargetPrefabObject.GetComponent<ShootingTarget>())),
-                _ => new ShootingTargetToy(Object.Instantiate(SportTargetPrefabObject.GetComponent<ShootingTarget>()))
-            };
+            ShootingTargetToy shootingTargetToy;
 
-            Transform transform = shootingTargetToy.Base.transform;
-            transform.position = position ?? Vector3.zero;
-            transform.eulerAngles = rotation ?? Vector3.zero;
-            transform.localScale = scale ?? Vector3.one;
+            switch (type)
+            {
+                case ShootingTargetType.ClassD:
+                    {
+                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(ToysHelper.DboyShootingTargetObject));
+                        break;
+                    }
+
+                case ShootingTargetType.Binary:
+                    {
+                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(ToysHelper.BinaryShootingTargetObject));
+                        break;
+                    }
+
+                default:
+                    {
+                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(ToysHelper.SportShootingTargetObject));
+                        break;
+                    }
+            }
+
+            shootingTargetToy.AdminToyBase.transform.position = position ?? Vector3.zero;
+            shootingTargetToy.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
+            shootingTargetToy.AdminToyBase.transform.localScale = scale ?? Vector3.one;
 
             if (spawn)
                 shootingTargetToy.Spawn();

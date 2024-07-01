@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -16,6 +17,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Armor;
     using PlayerRoles;
     using Structs;
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="BodyArmor"/>.
@@ -115,7 +117,7 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
+        /// Gets or sets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Armor))]
         public float MovementSpeedMultiplier => Base._movementSpeedMultiplier;

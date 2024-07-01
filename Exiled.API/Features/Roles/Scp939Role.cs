@@ -13,7 +13,6 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Core.Generic.Pools;
     using PlayerRoles;
-    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
@@ -28,7 +27,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-939.
     /// </summary>
-    public class Scp939Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
+    public class Scp939Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp939Role"/> class.
@@ -288,12 +287,12 @@ namespace Exiled.API.Features.Roles
             switch (ripple)
             {
                 case UsableRippleType.Footstep:
-                    FootstepRippleTrigger._syncPos = new(position);
+                    FootstepRippleTrigger._syncPos = new RelativePosition(position);
                     FootstepRippleTrigger.ServerSendRpc(playerToSend.ReferenceHub);
                     break;
                 case UsableRippleType.FireArm:
                     FirearmRippleTrigger._syncRoleColor = RoleTypeId.ClassD;
-                    FirearmRippleTrigger._syncRipplePos = new(position);
+                    FirearmRippleTrigger._syncRipplePos = new RelativePosition(position);
                     FirearmRippleTrigger.ServerSendRpc(playerToSend.ReferenceHub);
                     break;
             }

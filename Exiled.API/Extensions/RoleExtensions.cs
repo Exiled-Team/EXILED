@@ -12,12 +12,12 @@ namespace Exiled.API.Extensions
     using System.Linq;
 
     using Enums;
-    using Exiled.API.Features.Roles;
     using Exiled.API.Features.Spawn;
     using InventorySystem;
     using InventorySystem.Configs;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
+
     using UnityEngine;
 
     using Team = PlayerRoles.Team;
@@ -56,32 +56,20 @@ namespace Exiled.API.Extensions
         };
 
         /// <summary>
-        /// Gets a random <see cref="RoleTypeId"/> from the specified <see cref="Team"/>.
-        /// </summary>
-        /// <param name="team">The team to get a random of.</param>
-        /// <returns>A random role from the specified team.</returns>
-        public static RoleTypeId GetRandomRole(this Team team) => Role.ShuffledAllRoles.FirstOrDefault(r => GetTeam(r) == team);
-
-        /// <summary>
-        /// Gets a random <see cref="RoleTypeId"/> from the specified <see cref="Side"/>.
-        /// </summary>
-        /// <param name="side">The team to get a random of.</param>
-        /// <returns>A random role from the specified side.</returns>
-        public static RoleTypeId GetRandomRole(this Side side) => Role.ShuffledAllRoles.FirstOrDefault(r => GetSide(r) == side);
-
-        /// <summary>
-        /// Gets a random <see cref="RoleTypeId"/> that matches the condition.
-        /// </summary>
-        /// <param name="func">A function defining the condition for selecting.</param>
-        /// <returns>A random <see cref="RoleTypeId"/>.</returns>
-        public static RoleTypeId GetRandomRole(Func<RoleTypeId, bool> func) => Role.ShuffledAllRoles.FirstOrDefault(r => func(r));
-
-        /// <summary>
         /// Gets the <see cref="Team"/> of the given <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
         /// <returns><see cref="Team"/>.</returns>
-        public static Team GetTeam(this RoleTypeId roleType) => GetRoleBase(roleType).Team;
+        public static Team GetTeam(this RoleTypeId roleType) => roleType switch
+        {
+            RoleTypeId.ChaosConscript or RoleTypeId.ChaosMarauder or RoleTypeId.ChaosRepressor or RoleTypeId.ChaosRifleman => Team.ChaosInsurgency,
+            RoleTypeId.Scientist => Team.Scientists,
+            RoleTypeId.ClassD => Team.ClassD,
+            RoleTypeId.Scp049 or RoleTypeId.Scp939 or RoleTypeId.Scp0492 or RoleTypeId.Scp079 or RoleTypeId.Scp096 or RoleTypeId.Scp106 or RoleTypeId.Scp173 or RoleTypeId.Scp3114 => Team.SCPs,
+            RoleTypeId.FacilityGuard or RoleTypeId.NtfCaptain or RoleTypeId.NtfPrivate or RoleTypeId.NtfSergeant or RoleTypeId.NtfSpecialist => Team.FoundationForces,
+            RoleTypeId.Tutorial => Team.OtherAlive,
+            _ => Team.Dead,
+        };
 
         /// <summary>
         /// Gets the full name of the given <see cref="RoleTypeId"/>.
@@ -153,27 +141,29 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Gets the starting <see cref="InventoryRoleInfo"/> of a <see cref="RoleTypeId"/>.
-        /// </summary>
-        /// <param name="role">The <see cref="RoleTypeId"/>.</param>
-        /// <returns>The <see cref="InventoryRoleInfo"/> that the role receives on spawn. </returns>
-        public static InventoryRoleInfo GetStartingInventory(this RoleTypeId role)
-            => StartingInventories.DefinedInventories.TryGetValue(role, out InventoryRoleInfo info)
-                ? info
-                : new(Array.Empty<ItemType>(), new());
-
-        /// <summary>
         /// Gets the starting items of a <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
         /// <returns>An <see cref="Array"/> of <see cref="ItemType"/> that the role receives on spawn. Will be empty for classes that do not spawn with items.</returns>
-        public static ItemType[] GetStartingItems(this RoleTypeId roleType) => roleType.GetStartingInventory().Items;
+        public static ItemType[] GetStartingInventory(this RoleTypeId roleType)
+        {
+            if (StartingInventories.DefinedInventories.TryGetValue(roleType, out InventoryRoleInfo info))
+                return info.Items;
+
+            return Array.Empty<ItemType>();
+        }
 
         /// <summary>
         /// Gets the starting ammo of a <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
-        /// <returns>A dictionary of AmmoType and ushort that the role receives on spawn. Will be empty for classes that do not spawn with ammo.</returns>
-        public static Dictionary<AmmoType, ushort> GetStartingAmmo(this RoleTypeId roleType) => roleType.GetStartingInventory().Ammo.ToDictionary(kvp => kvp.Key.GetAmmoType(), kvp => kvp.Value);
+        /// <returns>An <see cref="Array"/> of <see cref="ItemType"/> that the role receives on spawn. Will be empty for classes that do not spawn with ammo.</returns>
+        public static Dictionary<AmmoType, ushort> GetStartingAmmo(this RoleTypeId roleType)
+        {
+            if (StartingInventories.DefinedInventories.TryGetValue(roleType, out InventoryRoleInfo info))
+                return info.Ammo.ToDictionary(kvp => kvp.Key.GetAmmoType(), kvp => kvp.Value);
+
+            return new();
+        }
     }
 }

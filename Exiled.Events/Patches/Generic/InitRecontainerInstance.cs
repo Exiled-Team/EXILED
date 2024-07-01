@@ -7,12 +7,17 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using API.Features;
+    using API.Features.Pools;
 
     using HarmonyLib;
 
     using PlayerRoles.PlayableScps.Scp079;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp079Recontainer.Start"/>.
@@ -20,6 +25,23 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(Scp079Recontainer), nameof(Scp079Recontainer.Start))]
     internal class InitRecontainerInstance
     {
-        private static void Postfix(Scp079Recontainer __instance) => Recontainer.Base = __instance;
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            // Recontainer.Base = this;
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, PropertySetter(typeof(Recontainer), nameof(Recontainer.Base))),
+                });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
     }
 }

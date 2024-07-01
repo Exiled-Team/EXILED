@@ -13,10 +13,12 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
+
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp330;
+
     using UnityEngine;
 
     using Object = UnityEngine.Object;
@@ -48,8 +50,6 @@ namespace Exiled.API.Features.Items
     /// </summary>
     public class Scp330 : Usable, IWrapper<Scp330Bag>
     {
-        private readonly ConstProperty<int> maxCandies = new(Scp330Bag.MaxCandies, new[] { typeof(Scp330Bag) });
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330"/> class.
         /// </summary>

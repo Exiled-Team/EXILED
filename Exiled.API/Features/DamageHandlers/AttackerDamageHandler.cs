@@ -41,10 +41,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         public bool ForceFullFriendlyFire
         {
-            get => Base is PlayerStatsSystem.AttackerDamageHandler handler && handler.ForceFullFriendlyFire;
+            get => Is(out PlayerStatsSystem.AttackerDamageHandler handler) && handler.ForceFullFriendlyFire;
             set
             {
-                if (Base is PlayerStatsSystem.AttackerDamageHandler handler)
+                if (Is(out PlayerStatsSystem.AttackerDamageHandler handler))
                     handler.ForceFullFriendlyFire = value;
             }
         }
@@ -54,10 +54,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         public bool IsSuicide
         {
-            get => Base is PlayerStatsSystem.AttackerDamageHandler handler && handler.IsSuicide;
+            get => Is(out PlayerStatsSystem.AttackerDamageHandler handler) && handler.IsSuicide;
             set
             {
-                if (Base is PlayerStatsSystem.AttackerDamageHandler handler)
+                if (Is(out PlayerStatsSystem.AttackerDamageHandler handler))
                     handler.IsSuicide = value;
             }
         }
@@ -65,17 +65,17 @@ namespace Exiled.API.Features.DamageHandlers
         /// <summary>
         /// Gets a value indicating whether the self damage is allowed.
         /// </summary>
-        public bool AllowSelfDamage => Base is PlayerStatsSystem.AttackerDamageHandler handler && handler.AllowSelfDamage;
+        public bool AllowSelfDamage => Is(out PlayerStatsSystem.AttackerDamageHandler handler) && handler.AllowSelfDamage;
 
         /// <summary>
         /// Gets or sets a value indicating whether the damage is friendly fire.
         /// </summary>
         public bool IsFriendlyFire
         {
-            get => Base is PlayerStatsSystem.AttackerDamageHandler handler && handler.IsFriendlyFire;
+            get => Is(out PlayerStatsSystem.AttackerDamageHandler handler) && handler.IsFriendlyFire;
             set
             {
-                if (Base is PlayerStatsSystem.AttackerDamageHandler handler)
+                if (Is(out PlayerStatsSystem.AttackerDamageHandler handler))
                     handler.IsFriendlyFire = value;
             }
         }
@@ -86,11 +86,12 @@ namespace Exiled.API.Features.DamageHandlers
         /// <param name="player">The <see cref="Player"/> to damage.</param>
         public override void ProcessDamage(Player player)
         {
-            if (Base is not PlayerStatsSystem.AttackerDamageHandler)
+            if (!Is(out PlayerStatsSystem.AttackerDamageHandler _))
                 return;
 
             if ((player.IsSpawnProtected && (player != Attacker)) ||
-                (!SpawnProtected.PreventAllDamage && Attacker is not null && Attacker.IsSpawnProtected))
+                (!SpawnProtected.PreventAllDamage &&
+                 Attacker is not null && Attacker.IsSpawnProtected))
             {
                 Damage = 0f;
                 return;

@@ -34,7 +34,7 @@ namespace Exiled.API.Features
         /// <param name="duration">The duration of the broadcast, in seconds.</param>
         /// <param name="show">Whether or not the broadcast should be shown.</param>
         /// <param name="type">The type of the broadcast.</param>
-        public Broadcast(string content, ushort duration = 10, bool show = true, BroadcastFlags type = BroadcastFlags.Normal)
+        public Broadcast(string content, ushort duration = 10, bool show = true, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
         {
             Content = content;
             Duration = duration;

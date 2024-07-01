@@ -17,8 +17,6 @@ namespace Exiled.Events.EventArgs.Player
 
     using Respawning;
 
-    using static Escape;
-
     /// <summary>
     /// Contains all information before a player escapes.
     /// </summary>
@@ -36,12 +34,12 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="escapeScenario">
         /// <inheritdoc cref="EscapeScenario" />
         /// </param>
-        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenarioType escapeScenario)
+        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario)
         {
             Player = player;
             NewRole = newRole;
-            EscapeScenario = (EscapeScenario)escapeScenario;
-            IsAllowed = escapeScenario != EscapeScenario.CustomEscape;
+            EscapeScenario = escapeScenario;
+            IsAllowed = escapeScenario is not EscapeScenario.CustomEscape;
         }
 
         /// <summary>
@@ -59,7 +57,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="respawnTickets">
         /// <inheritdoc cref="RespawnTickets"/>
         /// </param>
-        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenarioType escapeScenario, KeyValuePair<SpawnableTeamType, float> respawnTickets)
+        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario, KeyValuePair<SpawnableTeamType, float> respawnTickets)
             : this(player, newRole, escapeScenario)
         {
             RespawnTickets = respawnTickets;
@@ -83,7 +81,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="ticketsToGrant">
         /// A <see langword="float"/> that <see cref="RespawnTickets"/> will be initialized with.
         /// </param>
-        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenarioType escapeScenario, SpawnableTeamType teamToGrantTickets, float ticketsToGrant)
+        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario, SpawnableTeamType teamToGrantTickets, float ticketsToGrant)
             : this(player, newRole, escapeScenario)
         {
             if (teamToGrantTickets != SpawnableTeamType.None)

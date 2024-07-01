@@ -10,9 +10,9 @@ namespace Exiled.Events.EventArgs.Map
     using System.Collections.Generic;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.Patches.Generic;
 

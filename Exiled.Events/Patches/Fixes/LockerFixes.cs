@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Fixes
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Pools;
 
     using HarmonyLib;
 
@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Fixes
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Call, Method(typeof(LockerFixes), nameof(Helper))),
+                new(OpCodes.Call, Method(typeof(LockerFixes), nameof(LockerFixes.Hepler))),
                 new(OpCodes.Ret),
             });
 
@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Fixes
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
-        private static void Helper(LockerChamber chamber)
+        private static void Hepler(LockerChamber chamber)
         {
             chamber._content.Clear();
 

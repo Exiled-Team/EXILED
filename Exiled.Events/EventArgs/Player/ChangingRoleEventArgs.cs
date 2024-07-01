@@ -11,10 +11,11 @@ namespace Exiled.Events.EventArgs.Player
 
     using API.Enums;
     using API.Features;
-    using Exiled.API.Extensions;
-    using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Pools;
     using Interfaces;
-    using InventorySystem;
+
+    using InventorySystem.Configs;
+
     using PlayerRoles;
 
     /// <summary>
@@ -69,13 +70,17 @@ namespace Exiled.Events.EventArgs.Player
             get => newRole;
             set
             {
-                Items.Clear();
-                Ammo.Clear();
+                if (StartingInventories.DefinedInventories.ContainsKey(value))
+                {
+                    Items.Clear();
+                    Ammo.Clear();
 
-                InventoryRoleInfo inventory = value.GetStartingInventory();
+                    foreach (ItemType itemType in StartingInventories.DefinedInventories[value].Items)
+                        Items.Add(itemType);
 
-                Items.AddRange(inventory.Items);
-                Ammo.AddRange(inventory.Ammo);
+                    foreach (KeyValuePair<ItemType, ushort> ammoPair in StartingInventories.DefinedInventories[value].Ammo)
+                        Ammo.Add(ammoPair.Key, ammoPair.Value);
+                }
 
                 newRole = value;
             }

@@ -7,6 +7,9 @@
 
 namespace Exiled.Events.EventArgs.Server
 {
+    using System;
+
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
     using Respawning;
 

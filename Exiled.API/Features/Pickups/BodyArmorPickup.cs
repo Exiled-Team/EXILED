@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -15,8 +16,11 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
+
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
+
+    using UnityEngine;
 
     using BaseBodyArmor = InventorySystem.Items.Armor.BodyArmorPickup;
 
@@ -43,8 +47,9 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal BodyArmorPickup(ItemType type)
-            : this((BaseBodyArmor)type.GetItemBase().ServerDropItem())
+            : base(type)
         {
+            Base = (BaseBodyArmor)((Pickup)this).Base;
         }
 
         /// <summary>
@@ -134,7 +139,6 @@ namespace Exiled.API.Features.Pickups
                 StaminaUseMultiplier = armoritem.StaminaUseMultiplier;
                 AmmoLimits = armoritem.AmmoLimits;
                 CategoryLimits = armoritem.CategoryLimits;
-                MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
             }
         }
 
@@ -150,7 +154,6 @@ namespace Exiled.API.Features.Pickups
                 StaminaUseMultiplier = armoritem._staminaUseMultiplier;
                 AmmoLimits = armoritem.AmmoLimits.Select(limit => (ArmorAmmoLimit)limit);
                 CategoryLimits = armoritem.CategoryLimits;
-                MovementSpeedMultiplier = armoritem._movementSpeedMultiplier;
             }
         }
     }

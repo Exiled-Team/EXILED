@@ -34,6 +34,23 @@ namespace Exiled.Events.EventArgs.Scp106
         }
 
         /// <summary>
+        /// Gets the <see cref="Scp106StalkAbility"/>.
+        /// </summary>
+        [Obsolete("Use Scp106.StalkAbility instead of this")]
+        public Scp106StalkAbility Scp106StalkAbility => Scp106.StalkAbility;
+
+        /// <summary>
+        /// Gets or sets the current vigor when SCP-106 starts to stalk.
+        /// </summary>
+        public float Vigor
+        {
+            [Obsolete("Use Scp106.Vigor instead of this")]
+            get => Scp106.Vigor;
+            [Obsolete("Use Scp106.Vigor instead of this")]
+            set => Scp106.Vigor = value;
+        }
+
+        /// <summary>
         /// Gets or sets the required minimum vigor to stalk.
         /// </summary>
         public float MinimumVigor { get; set; }

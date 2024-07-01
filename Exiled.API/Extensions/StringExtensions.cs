@@ -14,7 +14,7 @@ namespace Exiled.API.Extensions
     using System.Text;
     using System.Text.RegularExpressions;
 
-    using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Pools;
 
     /// <summary>
     /// A set of extensions for <see cref="string"/>.
@@ -85,31 +85,6 @@ namespace Exiled.API.Extensions
             string snakeCaseString = string.Concat(str.Select((ch, i) => (i > 0) && char.IsUpper(ch) ? "_" + ch.ToString() : ch.ToString())).ToLower();
 
             return shouldReplaceSpecialChars ? Regex.Replace(snakeCaseString, @"[^0-9a-zA-Z_]+", string.Empty) : snakeCaseString;
-        }
-
-        /// <summary>
-        /// Converts a <see cref="string"/> from snake_case convention.
-        /// </summary>
-        /// <param name="str">The string to be converted.</param>
-        /// <returns>Returns the new NotSnakeCase string.</returns>
-        public static string FromSnakeCase(this string str)
-        {
-            string result = string.Empty;
-
-            for (int i = 0; i < str.Length; i++)
-            {
-                if (str[i] == '_')
-                {
-                    result += str[i + 1].ToString().ToUpper();
-                    i++;
-                }
-                else
-                {
-                    result += str[i];
-                }
-            }
-
-            return result;
         }
 
         /// <summary>
