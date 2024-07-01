@@ -14,6 +14,7 @@ namespace Exiled.Loader
     using API.Enums;
     using API.Interfaces;
     using Exiled.API.Features;
+    using YamlDotNet.Core;
 
     /// <summary>
     /// The configs of the loader.
@@ -55,8 +56,20 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets or sets the config files distribution type.
         /// </summary>
-        [Description("The config files distribution type (Merged, Separated)")]
-        public ConfigType ConfigType { get; set; } = ConfigType.Separated;
+        [Description("The config files distribution type (Default, Separated)")]
+        public ConfigType ConfigType { get; set; } = ConfigType.Default;
+
+        /// <summary>
+        /// Gets or sets the quotes wrapper type.
+        /// </summary>
+        [Description("Indicates in which quoted strings in configs will be wrapped (Any, SingleQuoted, DoubleQuoted, Folded, Literal).")]
+        public ScalarStyle ScalarStyle { get; set; } = ScalarStyle.SingleQuoted;
+
+        /// <summary>
+        /// Gets or sets the quotes wrapper type.
+        /// </summary>
+        [Description("Indicates in which quoted strings with multiline in configs will be wrapped (Any, SingleQuoted, DoubleQuoted, Folded, Literal).")]
+        public ScalarStyle MultiLineScalarStyle { get; set; } = ScalarStyle.Literal;
 
         /// <summary>
         /// Gets or sets a value indicating whether testing releases have to be downloaded or not.

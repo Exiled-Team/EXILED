@@ -10,24 +10,23 @@ namespace Exiled.Events.Patches.Events.Scp914
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Core.Generic.Pools;
-    using Exiled.API.Features.Pickups;
-    using Exiled.API.Features.Scp914Processors;
+    using API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp914;
+
     using global::Scp914;
+
     using Handlers;
+
     using HarmonyLib;
-    using InventorySystem.Items.Pickups;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp914Upgrader.ProcessPickup" />.
-    /// Adds the <see cref="Scp914.UpgradingPickup" /> and <see cref="Scp914.UpgradedPickup"/> events.
+    /// Adds the <see cref="Scp914.UpgradingPickup" /> event.
     /// </summary>
     [EventPatch(typeof(Scp914), nameof(Scp914.UpgradingPickup))]
-    [EventPatch(typeof(Scp914), nameof(Scp914.UpgradedPickup))]
     [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPickup))]
     internal static class UpgradingItem
     {
@@ -54,9 +53,6 @@ namespace Exiled.Events.Patches.Events.Scp914
                     // knobSetting
                     new(OpCodes.Ldarg_3),
 
-                    new(OpCodes.Ldloc_0),
-                    new(OpCodes.Call, Method(typeof(Scp914Processor), nameof(Scp914Processor.Get))),
-
                     // UpgradingPickupEventArgs ev = new(pickup, outputPos, knobSetting)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingPickupEventArgs))[0]),
 
@@ -81,24 +77,6 @@ namespace Exiled.Events.Patches.Events.Scp914
                     // setting = ev.KnobSetting
                     new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPickupEventArgs), nameof(UpgradingPickupEventArgs.KnobSetting))),
                     new(OpCodes.Starg_S, 3),
-                });
-
-            newInstructions.InsertRange(
-                newInstructions.Count - 1,
-                new CodeInstruction[]
-                {
-                    // Pickup.Get(itemPickupBase2)
-                    new(OpCodes.Ldloc_3),
-                    new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get), new[] { typeof(ItemPickupBase) })),
-
-                    // knobSetting
-                    new(OpCodes.Ldarg_3),
-
-                    // UpgradedPickupEventArgs ev = new(Pickup, Scp914KnobSetting)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradedPickupEventArgs))[0]),
-
-                    // Scp914.OnUpgradedPickup(ev)
-                    new(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnUpgradedPickup))),
                 });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

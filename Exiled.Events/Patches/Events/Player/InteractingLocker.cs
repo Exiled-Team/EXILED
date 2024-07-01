@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Core.Generic.Pools;
+    using API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -43,6 +43,9 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                    // this
+                    new(OpCodes.Ldarg_0),
+
                     // this.Chambers[colliderId]
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(Locker), nameof(Locker.Chambers))),
@@ -57,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldc_I4_0),
                     new(OpCodes.Ceq),
 
-                    // InteractingLockerEventArgs ev = new(Player, LockerChamber, byte, bool)
+                    // InteractingLockerEventArgs ev = new(Player, Locker, LockerChamber, byte, bool)
                     new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingLockerEventArgs))[0]),
                     new(OpCodes.Dup),
 

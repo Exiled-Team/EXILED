@@ -12,7 +12,6 @@ namespace Exiled.API.Features.Roles
 
     using Exiled.API.Features.Core.Attributes;
     using PlayerRoles;
-    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp096;
     using PlayerRoles.Subroutines;
@@ -23,7 +22,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-096.
     /// </summary>
-    public class Scp096Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
+    public class Scp096Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp096Role"/> class.

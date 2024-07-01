@@ -12,7 +12,7 @@ namespace Exiled.Permissions.Commands.Permissions
 
     using CommandSystem;
 
-    using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Pools;
 
     /// <summary>
     /// Handles commands about permissions.

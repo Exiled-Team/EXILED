@@ -13,15 +13,17 @@ namespace Exiled.API.Features.Roles
     using System.Reflection;
 
     using Enums;
+
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Extensions;
+
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
-    using PlayerRoles.RoleAssign;
+
     using UnityEngine;
 
     using FilmmakerGameRole = PlayerRoles.Filmmaker.FilmmakerRole;
@@ -56,43 +58,12 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="baseRole">the base <see cref="PlayerRoleBase"/>.</param>
         protected Role(PlayerRoleBase baseRole)
-            : base(baseRole.gameObject)
         {
             if (baseRole.TryGetOwner(out ReferenceHub hub))
                 Owner = Player.Get(hub);
 
             Base = baseRole;
         }
-
-        /// <summary>
-        /// Gets an array of all <see cref="RoleTypeId"/>.
-        /// </summary>
-        public static IEnumerable<RoleTypeId> AllRoles { get; } = EnumExtensions.QueryValues<RoleTypeId>();
-
-        /// <summary>
-        /// Gets a shuffled list of all possible <see cref="RoleTypeId"/>.
-        /// </summary>
-        public static IEnumerable<RoleTypeId> ShuffledAllRoles => AllRoles.Shuffle();
-
-        /// <summary>
-        /// Gets a random human <see cref="RoleTypeId"/>.
-        /// </summary>
-        public static RoleTypeId RandomHuman => RoleExtensions.GetRandomRole(r => r.IsHuman());
-
-        /// <summary>
-        /// Gets a random human <see cref="RoleTypeId"/>.
-        /// </summary>
-        public static RoleTypeId RandomScp => Team.SCPs.GetRandomRole();
-
-        /// <summary>
-        /// Gets the next Scp to spawn according to NW logic.
-        /// </summary>
-        public static RoleTypeId NextScpSpawn => ScpSpawner.NextScp;
-
-        /// <summary>
-        /// Gets the next Human to spawn according to NW logic.
-        /// </summary>
-        public static RoleTypeId NextHumanSpawn => HumanSpawner.NextHumanRoleToSpawn;
 
         /// <summary>
         /// Gets the <see cref="Player"/> this role is referring to.
@@ -230,21 +201,6 @@ namespace Exiled.API.Features.Roles
         /// <returns><see langword="true"/> if the values are not equal.</returns>
         public static bool operator !=(RoleTypeId type, Role role) => role != type;
 
-        /// <summary>
-        /// Gets a random <see cref="RoleTypeId"/>.
-        /// </summary>
-        /// <param name="includeNonPlayableRoles">Specifies whether non-playable roles should be included.</param>
-        /// <param name="except">An optional collection of role types to exclude.</param>
-        /// <returns>A random <see cref="RoleTypeId"/>.</returns>
-        public static RoleTypeId Random(bool includeNonPlayableRoles = false, IEnumerable<RoleTypeId> except = null)
-        {
-            IEnumerable<RoleTypeId> roles = includeNonPlayableRoles
-                ? ShuffledAllRoles.Except(except ?? Enumerable.Empty<RoleTypeId>())
-                : ShuffledAllRoles.RemoveSpecified(r => RoleExtensions.GetTeam(r) == Team.Dead).Except(except ?? Enumerable.Empty<RoleTypeId>());
-
-            return roles.FirstOrDefault();
-        }
-
         /// <inheritdoc/>
         public override bool Equals(object obj) => base.Equals(obj);
 
@@ -262,14 +218,14 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleTypeId"/> to be set.</param>
         /// <param name="reason">The <see cref="Enums.SpawnReason"/> defining why the player's role was changed.</param>
-        public virtual void Set(RoleTypeId newRole, SpawnReason reason = null) => Set(newRole, reason ?? Enums.SpawnReason.ForceClass, RoleSpawnFlags.All);
+        public virtual void Set(RoleTypeId newRole, SpawnReason reason = Enums.SpawnReason.ForceClass) => Set(newRole, reason, RoleSpawnFlags.All);
 
-        /// <summary>S
+        /// <summary>
         /// Sets the player's <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleTypeId"/> to be set.</param>
         /// <param name="spawnFlags">The <see cref="RoleSpawnFlags"/> defining player spawn logic.</param>
-        public virtual void Set(RoleTypeId newRole, RoleSpawnFlags spawnFlags) => Owner.RoleManager.ServerSetRole(newRole, Enums.SpawnReason.ForceClass, spawnFlags);
+        public virtual void Set(RoleTypeId newRole, RoleSpawnFlags spawnFlags) => Owner.RoleManager.ServerSetRole(newRole, (RoleChangeReason)Enums.SpawnReason.ForceClass, spawnFlags);
 
         /// <summary>
         /// Sets the player's <see cref="RoleTypeId"/>.
@@ -278,7 +234,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="reason">The <see cref="Enums.SpawnReason"/> defining why the player's role was changed.</param>
         /// <param name="spawnFlags">The <see cref="RoleSpawnFlags"/> defining player spawn logic.</param>
         public virtual void Set(RoleTypeId newRole, SpawnReason reason, RoleSpawnFlags spawnFlags) =>
-            Owner.RoleManager.ServerSetRole(newRole, reason, spawnFlags);
+            Owner.RoleManager.ServerSetRole(newRole, (RoleChangeReason)reason, spawnFlags);
 
         /// <summary>
         /// Creates a role from <see cref="RoleTypeId"/> and <see cref="Player"/>.

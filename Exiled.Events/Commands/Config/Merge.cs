@@ -42,14 +42,14 @@ namespace Exiled.Events.Commands.Config
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (LoaderPlugin.Config.ConfigType == ConfigType.Merged)
+            if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
             {
                 response = "Configs are already merged.";
                 return false;
             }
 
             SortedDictionary<string, IConfig> configs = ConfigManager.LoadSorted(ConfigManager.Read());
-            LoaderPlugin.Config.ConfigType = ConfigType.Merged;
+            LoaderPlugin.Config.ConfigType = ConfigType.Default;
             bool haveBeenSaved = ConfigManager.Save(configs);
             PluginAPI.Loader.AssemblyLoader.InstalledPlugins.FirstOrDefault(x => x.PluginName == "Exiled Loader")?.SaveConfig(new LoaderPlugin(), nameof(LoaderPlugin.Config));
 

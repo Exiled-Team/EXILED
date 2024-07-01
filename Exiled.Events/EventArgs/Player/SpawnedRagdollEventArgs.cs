@@ -8,13 +8,14 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
-    using Exiled.API.Features.DamageHandlers;
+
     using Interfaces;
+
     using PlayerRoles;
     using PlayerRoles.Ragdolls;
-    using UnityEngine;
+    using PlayerStatsSystem;
 
-    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
+    using UnityEngine;
 
     /// <summary>
     /// Contains all information after spawning a player ragdoll.
@@ -41,7 +42,7 @@ namespace Exiled.Events.EventArgs.Player
             Player = player;
             Ragdoll = ragdoll;
             Info = info;
-            DamageHandlerBase = new DamageHandler(player, damageHandlerBase);
+            DamageHandlerBase = damageHandlerBase;
         }
 
         /// <summary>
@@ -77,7 +78,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets the ragdoll's <see cref="PlayerStatsSystem.DamageHandlerBase" />.
         /// </summary>
-        public DamageHandler DamageHandlerBase { get; }
+        public DamageHandlerBase DamageHandlerBase { get; }
 
         /// <summary>
         /// Gets the spawned <see cref="API.Features.Ragdoll"/>.

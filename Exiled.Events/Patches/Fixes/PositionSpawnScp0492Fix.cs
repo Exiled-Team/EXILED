@@ -11,20 +11,20 @@ namespace Exiled.Events.Patches.Fixes
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Core.Generic.Pools;
+    using API.Features.Pools;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using PlayerRoles.PlayableScps.Scp049;
-    using PlayerRoles.Ragdolls;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp049ResurrectAbility.ServerComplete"/> delegate.
-    /// Fix bug where Scp0492 respawn at wrong place partially fix nw bug (https://trello.com/c/T1P333XK/5482-scp049-able-to-revive-old-player-corpse?filter=SCP049).
+    /// Removes useless position setter for Scp0492.
     /// </summary>
     [HarmonyPatch(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.ServerComplete))]
     internal static class PositionSpawnScp0492Fix
@@ -33,21 +33,20 @@ namespace Exiled.Events.Patches.Fixes
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int toRemove = 4;
+            Label continueLabel = generator.DefineLabel();
 
-            const int offset = 1;
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
+            LocalBuilder eventArgs = generator.DeclareLocal(typeof(SpawningEventArgs));
+
+            const int toRemove = 7;
+
+            const int offset = -1;
             int index = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(Component), nameof(Component.transform)))) + offset;
 
-            // replace "ownerHub.transform.position = base.CastRole.FpcModule.Position;"
-            // with "ownerHub.transform.position = base.CurRagdoll.Info.StartPosition;"
+            newInstructions[index + toRemove].MoveLabelsFrom(newInstructions[index]);
+
             newInstructions.RemoveRange(index, toRemove);
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(RagdollAbilityBase<Scp049Role>), nameof(RagdollAbilityBase<Scp049Role>.CurRagdoll))),
-                new(OpCodes.Ldflda, Field(typeof(BasicRagdoll), nameof(BasicRagdoll.Info))),
-                new(OpCodes.Ldfld, Field(typeof(RagdollData), nameof(RagdollData.StartPosition))),
-            });
+
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 

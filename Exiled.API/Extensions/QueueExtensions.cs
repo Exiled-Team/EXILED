@@ -10,7 +10,7 @@ namespace Exiled.API.Extensions
     using System;
     using System.Collections.Generic;
 
-    using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Pools;
 
     /// <summary>
     /// <see cref="Queue{T}"/> extensions.

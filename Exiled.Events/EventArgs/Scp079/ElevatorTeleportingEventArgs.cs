@@ -7,19 +7,18 @@
 
 namespace Exiled.Events.EventArgs.Scp079
 {
-    using API.Features.Doors;
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
-    using MapGeneration;
+    using Interactables.Interobjects;
 
-    using ElevatorDoor = API.Features.Doors.ElevatorDoor;
+    using MapGeneration;
 
     /// <summary>
     /// Contains all information before SCP-079 changes rooms via elevator.
     /// </summary>
-    public class ElevatorTeleportingEventArgs : IScp079Event, IRoomEvent, IDoorEvent, IDeniableEvent
+    public class ElevatorTeleportingEventArgs : IScp079Event, IRoomEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ElevatorTeleportingEventArgs" /> class.
@@ -36,18 +35,19 @@ namespace Exiled.Events.EventArgs.Scp079
         /// <param name="auxiliaryPowerCost">
         /// <inheritdoc cref="AuxiliaryPowerCost" />
         /// </param>
-        public ElevatorTeleportingEventArgs(Player player, RoomIdentifier room, Interactables.Interobjects.ElevatorDoor elevatorDoor, float auxiliaryPowerCost)
+        public ElevatorTeleportingEventArgs(Player player, RoomIdentifier room, ElevatorDoor elevatorDoor, float auxiliaryPowerCost)
         {
             Player = player;
             Scp079 = player.Role.As<Scp079Role>();
             Room = Room.Get(room);
-            ElevatorDoor = Door.Get(elevatorDoor).As<ElevatorDoor>();
-            Lift = ElevatorDoor.Lift;
+            Lift = Lift.Get(elevatorDoor.TargetPanel.AssignedChamber);
             AuxiliaryPowerCost = auxiliaryPowerCost;
             IsAllowed = auxiliaryPowerCost <= Scp079.Energy;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets the player who is controlling SCP-079.
+        /// </summary>
         public Player Player { get; }
 
         /// <inheritdoc/>
@@ -58,21 +58,15 @@ namespace Exiled.Events.EventArgs.Scp079
         /// </summary>
         public float AuxiliaryPowerCost { get; set; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets <see cref="Room" /> SCP-079 is in.
+        /// </summary>
         public Room Room { get; }
 
         /// <summary>
         /// Gets the <see cref="Lift" /> SCP-079 wants to move.
         /// </summary>
         public Lift Lift { get; }
-
-        /// <summary>
-        /// Gets the <see cref="ElevatorDoor" /> SCP-079 wants to move.
-        /// </summary>
-        public ElevatorDoor ElevatorDoor { get; }
-
-        /// <inheritdoc/>
-        public Door Door => ElevatorDoor;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-079 can teleport.

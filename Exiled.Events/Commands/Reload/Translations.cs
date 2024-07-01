@@ -20,7 +20,7 @@ namespace Exiled.Events.Commands.Reload
     /// <summary>
     /// The reload translations command.
     /// </summary>
-    public class Translations : ICommand, IPermissioned
+    public class Translations : ICommand
     {
         /// <summary>
         /// Gets static instance of the <see cref="Translations"/> command.
@@ -39,12 +39,15 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc />
         public bool SanitizeResponse { get; }
 
-        /// <inheritdoc />
-        public string Permission { get; } = "ee.reloadtranslations";
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!sender.CheckPermission("ee.reloadtranslations"))
+            {
+                response = "You can't reload translations, you don't have \"ee.reloadtranslations\" permission.";
+                return false;
+            }
+
             bool haveBeenReloaded = TranslationManager.Reload();
 
             Handlers.Server.OnReloadedTranslations();

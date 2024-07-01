@@ -17,7 +17,7 @@ namespace Exiled.Events.Commands.PluginManager
     /// <summary>
     /// The command to disable a plugin.
     /// </summary>
-    public sealed class Disable : ICommand, IPermissioned
+    public sealed class Disable : ICommand
     {
         /// <summary>
         /// Gets static instance of the <see cref="Disable"/> command.
@@ -36,12 +36,17 @@ namespace Exiled.Events.Commands.PluginManager
         /// <inheritdoc />
         public bool SanitizeResponse { get; }
 
-        /// <inheritdoc />
-        public string Permission { get; } = "pm.disable";
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            const string perm = "pm.disable";
+
+            if (!sender.CheckPermission(perm) && sender is PlayerCommandSender playerSender && !playerSender.FullPermissions)
+            {
+                response = $"You can't disable a plugin, you don't have \"{perm}\" permissions.";
+                return false;
+            }
+
             if (arguments.Count != 1)
             {
                 response = "Please, use: pluginmanager disable <pluginname>";

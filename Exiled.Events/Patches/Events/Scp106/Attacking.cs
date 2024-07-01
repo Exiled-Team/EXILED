@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp106;
     using HarmonyLib;

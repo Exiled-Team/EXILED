@@ -76,9 +76,14 @@ namespace Exiled.Events.EventArgs.Player
         public string Reason { get; set; }
 
         /// <summary>
-        /// Gets the full kick message.
+        /// Gets or sets the full kick message.
         /// </summary>
-        public string FullMessage => startkickmessage + Reason;
+        public string FullMessage
+        {
+            get => startkickmessage + Reason;
+            [Obsolete("this will be remove use Reason instead of FullMessage")]
+            set => Reason = value.StartsWith(startkickmessage) ? value.Remove(0, startkickmessage.Count()) : value;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not action is taken against the target.

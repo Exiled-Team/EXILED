@@ -7,27 +7,19 @@
 
 namespace Exiled.API.Enums
 {
-    using System;
-
     /// <summary>
     /// The different types of configuration files distribution.
     /// </summary>
     public enum ConfigType
     {
         /// <summary>
-        /// Default. Removed in the future.
+        /// Default distribution, every plugin will share the same config file.
         /// </summary>
-        [Obsolete("Separated & Merged exist now.")]
-        Default = Separated,
+        Default,
 
         /// <summary>
         /// Separated distribution, each plugin will have an individual config file.
         /// </summary>
-        Separated = 0,
-
-        /// <summary>
-        /// Merged configs, all plugins share a config file.
-        /// </summary>
-        Merged,
+        Separated,
     }
 }

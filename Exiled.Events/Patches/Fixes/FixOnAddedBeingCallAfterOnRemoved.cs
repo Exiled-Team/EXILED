@@ -11,7 +11,8 @@ namespace Exiled.Events.Patches.Fixes
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Core.Generic.Pools;
+    using API.Features.Pools;
+    using Exiled.API.Features;
     using HarmonyLib;
     using InventorySystem;
     using InventorySystem.Items;

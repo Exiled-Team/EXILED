@@ -9,8 +9,6 @@ namespace Exiled.Loader.Features
 {
     using System;
 
-    using Exiled.API.Extensions;
-
     /// <summary>
     /// A class that contains the different EXILED loader messages.
     /// </summary>
@@ -83,7 +81,7 @@ namespace Exiled.Loader.Features
         /// <returns>The correspondent loader message.</returns>
         public static string GetMessage()
         {
-            if (Loader.Version.ToString().Contains("6.9") || MathExtensions.EvaluateProbability(0.69f))
+            if (Loader.Version.ToString().Contains("6.9") || Loader.Random.NextDouble() <= 0.069)
                 return EasterEgg;
 
             return DateTime.Today.Month switch
