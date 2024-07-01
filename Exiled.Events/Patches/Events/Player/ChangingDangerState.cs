@@ -36,13 +36,13 @@ namespace Exiled.Events.Patches.Events.Player
         {
             DangerType type = __instance.GetDangerType();
             Player owner = Player.Get(__instance.Owner);
-        
+
             if (owner is null || !owner.IsEffectActive<Scp1853>() || value == __instance._isActive)
                 return false;
-        
+
             ChangingDangerStateEventArgs ev = new(owner, __instance, type, value);
             Handlers.Player.OnChangingDangerState(ev);
-        
+
             return ev.IsAllowed;
         }
     }
