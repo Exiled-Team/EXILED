@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using CustomPlayerEffects;
     using CustomPlayerEffects.Danger;
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
@@ -34,11 +35,12 @@ namespace Exiled.Events.Patches.Events.Player
         private static bool Prefix(DangerStackBase __instance, bool value)
         {
             DangerType type = __instance.GetDangerType();
+            Player owner = Player.Get(__instance.Owner);
 
-            if (value == __instance._isActive)
+            if (owner is null || !owner.IsEffectActive<Scp1853>() || value == __instance._isActive)
                 return false;
 
-            ChangingDangerStateEventArgs ev = new(Player.Get(__instance.Owner), __instance, type, value);
+            ChangingDangerStateEventArgs ev = new(owner, __instance, type, value);
             Handlers.Player.OnChangingDangerState(ev);
 
             return ev.IsAllowed;
