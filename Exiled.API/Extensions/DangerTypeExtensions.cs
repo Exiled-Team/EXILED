@@ -32,7 +32,7 @@ namespace Exiled.API.Extensions
             { DangerType.PlayerDamaged, typeof(PlayerDamagedDanger) },
             { DangerType.ScpEncounter, typeof(ScpEncounterDanger) },
             { DangerType.ZombieEncounter, typeof(ZombieEncounterDanger) },
-            { DangerType.ArmedEnemy, typeof(ArmedEnemyDanger) },
+            { DangerType.ArmedEnemyEncounter, typeof(ArmedEnemyDanger) },
         });
 
         /// <summary>

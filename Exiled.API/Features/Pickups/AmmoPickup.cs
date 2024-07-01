@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
 
     using BaseAmmo = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
@@ -45,16 +46,19 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the max ammo.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(AmmoPickup))]
         public int MaxDisplayedAmmo => Base._maxDisplayedValue;
 
         /// <summary>
         /// Gets the <see cref="Enums.AmmoType"/> of the item.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(AmmoPickup))]
         public AmmoType AmmoType => Type.GetAmmoType();
 
         /// <summary>
         /// Gets or Sets the number of ammo.
         /// </summary>
+        [EProperty(category: nameof(AmmoPickup))]
         public ushort Ammo
         {
             get => Base.NetworkSavedAmmo;
