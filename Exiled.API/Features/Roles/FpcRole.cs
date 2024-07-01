@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Roles
     using System.Reflection;
 
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Core.Generic.Pools;
     using HarmonyLib;
     using PlayerRoles;
@@ -27,6 +28,15 @@ namespace Exiled.API.Features.Roles
 
         private bool isUsingStamina = true;
         private RoleTypeId? fakeAppearance;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FpcRole"/> class.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
+        protected internal FpcRole(GameObject gameObject)
+            : base(gameObject)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FpcRole"/> class.
@@ -61,6 +71,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the player's relative position.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public RelativePosition RelativePosition
         {
             get => FirstPersonController.FpcModule.Motor.ReceivedPosition;
@@ -70,6 +81,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets a value indicating whether if the player should get <see cref="Enums.DamageType.Falldown"/> damage.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public bool IsFallDamageEnable
         {
             get => FirstPersonController.FpcModule.Motor._enableFallDamage;
@@ -83,6 +95,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets a value indicating whether if a rotation is detected on the player.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public bool RotationDetected
         {
             get => FirstPersonController.FpcModule.Motor.RotationDetected;
@@ -92,6 +105,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the <see cref="Role"/> walking speed.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public float WalkingSpeed
         {
             get => FirstPersonController.FpcModule.WalkSpeed;
@@ -101,6 +115,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the <see cref="Role"/> sprinting speed.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public float SprintingSpeed
         {
             get => FirstPersonController.FpcModule.SprintSpeed;
@@ -110,6 +125,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the <see cref="Role"/> jumping speed.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public float JumpingSpeed
         {
             get => FirstPersonController.FpcModule.JumpSpeed;
@@ -119,6 +135,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the <see cref="Role"/> crouching speed.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public float CrouchingSpeed
         {
             get => FirstPersonController.FpcModule.CrouchSpeed;
@@ -128,6 +145,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the <see cref="Player"/> velocity.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public Vector3 Velocity
         {
             get => FirstPersonController.FpcModule.Motor.Velocity;
@@ -137,6 +155,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets a value indicating whether if a movement is detected on a <see cref="Player"/>.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public bool MovementDetected
         {
             get => FirstPersonController.FpcModule.Motor.MovementDetected;
@@ -146,16 +165,19 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not the player can send inputs.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(FpcRole))]
         public bool CanSendInputs => FirstPersonController.FpcModule.LockMovement;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player is invisible.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public bool IsInvisible { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player should use stamina system. Resets on death.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public bool IsUsingStamina
         {
             get => isUsingStamina;
@@ -170,11 +192,13 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the stamina usage multiplier. Resets on death.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public float StaminaUsageMultiplier { get; set; } = 1f;
 
         /// <summary>
         /// Gets or sets the stamina regen multiplier. Resets on death.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public float StaminaRegenMultiplier { get; set; } = 1f;
 
         /// <summary>
@@ -185,6 +209,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the player's current <see cref="PlayerMovementState"/>.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public PlayerMovementState MoveState
         {
             get => FirstPersonController.FpcModule.CurrentMovementState;
@@ -194,57 +219,69 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether the <see cref="Player"/> is crouching or not.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(FpcRole))]
         public bool IsCrouching => FirstPersonController.FpcModule.StateProcessor.CrouchPercent > 0;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is on the ground.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(FpcRole))]
         public bool IsGrounded => FirstPersonController.FpcModule.IsGrounded;
 
         /// <summary>
         /// Gets the <see cref="Player"/>'s current movement speed.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(FpcRole))]
         public virtual float MovementSpeed => FirstPersonController.FpcModule.VelocityForState(MoveState, IsCrouching);
 
         /// <summary>
         /// Gets a value indicating whether or not the <see cref="Player"/> is in darkness.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(FpcRole))]
         public bool IsInDarkness => FirstPersonController.InDarkness;
 
         /// <summary>
         /// Gets the <see cref="Player"/>'s vertical rotation.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(FpcRole))]
         public float VerticalRotation => FirstPersonController.VerticalRotation;
 
         /// <summary>
         /// Gets the <see cref="Player"/>'s horizontal rotation.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(FpcRole))]
         public float HorizontalRotation => FirstPersonController.HorizontalRotation;
 
         /// <summary>
         /// Gets a value indicating whether or not the <see cref="Player"/> is AFK.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(FpcRole))]
         public bool IsAfk => FirstPersonController.IsAFK;
 
         /// <summary>
         /// Gets a value indicating whether or not this role is protected by a hume shield.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(FpcRole))]
         public bool IsHumeShieldedRole => this is IHumeShieldRole;
 
         /// <summary>
         /// Gets or sets a value indicating the fake appearance of the player.
         /// </summary>
+        [EProperty(category: nameof(FpcRole))]
         public RoleTypeId? FakeAppearance
         {
             get => fakeAppearance;
             set
             {
-                fakeAppearance = value.Value;
-
-                if (value.HasValue)
-                    Owner.ChangeAppearance(value.Value);
-                else
+                if (!value.HasValue)
+                {
+                    fakeAppearance = Owner.Role.Type;
                     Owner.ChangeAppearance(Owner.Role.Type, skipJump: true);
+                    return;
+                }
+
+                fakeAppearance = value.Value;
+                Owner.ChangeAppearance(value.Value);
             }
         }
 

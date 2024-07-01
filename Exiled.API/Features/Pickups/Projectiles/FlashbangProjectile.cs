@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Pickups.Projectiles
 {
     using Exiled.API.Enums;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
     using InventorySystem;
     using InventorySystem.Items;
@@ -46,6 +47,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the minimum duration of player can take the effect.
         /// </summary>
+        [EProperty(category: nameof(FlashbangProjectile))]
         public float MinimalDurationEffect
         {
             get => Base._minimalEffectDuration;
@@ -55,6 +57,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the additional duration of the <see cref="EffectType.Blinded"/> effect.
         /// </summary>
+        [EProperty(category: nameof(FlashbangProjectile))]
         public float AdditionalBlindedEffect
         {
             get => Base._additionalBlurDuration;
@@ -64,6 +67,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the how much the flashbang going to be intensified when exploding on <see cref="RoomType.Surface"/>.
         /// </summary>
+        [EProperty(category: nameof(FlashbangProjectile))]
         public float SurfaceDistanceIntensifier
         {
             get => Base._surfaceZoneDistanceIntensifier;

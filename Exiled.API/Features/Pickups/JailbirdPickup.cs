@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using InventorySystem.Items;
@@ -46,26 +47,31 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the amount of damage dealt with a Jailbird melee hit.
         /// </summary>
+        [EProperty(category: nameof(JailbirdPickup))]
         public float MeleeDamage { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of damage dealt with a Jailbird charge hit.
         /// </summary>
+        [EProperty(category: nameof(JailbirdPickup))]
         public float ChargeDamage { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of time in seconds that the <see cref="CustomPlayerEffects.Flashed"/> effect will be applied on being hit.
         /// </summary>
+        [EProperty(category: nameof(JailbirdPickup))]
         public float FlashDuration { get; set; }
 
         /// <summary>
         /// Gets or sets the radius of the Jailbird's hit register.
         /// </summary>
+        [EProperty(category: nameof(JailbirdPickup))]
         public float Radius { get; set; }
 
         /// <summary>
         /// Gets or sets the total amount of damage dealt with the Jailbird.
         /// </summary>
+        [EProperty(category: nameof(JailbirdPickup))]
         public float TotalDamageDealt
         {
             get => Base.TotalMelee;
@@ -75,6 +81,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the number of times the item has been charged and used.
         /// </summary>
+        [EProperty(category: nameof(JailbirdPickup))]
         public int TotalCharges
         {
             get => Base.TotalCharges;
@@ -84,6 +91,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the <see cref="JailbirdWearState"/> of the item.
         /// </summary>
+        [EProperty(category: nameof(JailbirdPickup))]
         public JailbirdWearState WearState
         {
             get => Base.NetworkWear;

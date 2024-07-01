@@ -10,13 +10,11 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
-
     using InventorySystem.Items.Armor;
-
     using PlayerRoles;
-
     using Structs;
 
     /// <summary>
@@ -51,21 +49,25 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether this item is equippable.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Armor))]
         public bool Equippable => Base.AllowEquip;
 
         /// <summary>
         /// Gets a value indicating whether this item is holsterable.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Armor))]
         public bool Holsterable => Base.AllowHolster;
 
         /// <summary>
         /// Gets a value indicating whether or not this is a worn item.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Armor))]
         public bool IsWorn => Base.IsWorn;
 
         /// <summary>
         /// Gets or sets the Weight of the armor.
         /// </summary>
+        [EProperty(category: nameof(Armor))]
         public override float Weight
         {
             get => Base.Weight;
@@ -75,6 +77,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets a value indicating whether or not excess ammo should be removed when the armor is dropped.
         /// </summary>
+        [EProperty(category: nameof(Armor))]
         public bool RemoveExcessOnDrop
         {
             get => !Base.DontRemoveExcessOnDrop;
@@ -84,6 +87,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how strong the helmet on the armor is.
         /// </summary>
+        [EProperty(category: nameof(Armor))]
         public int HelmetEfficacy
         {
             get => Base.HelmetEfficacy;
@@ -93,6 +97,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how strong the vest on the armor is.
         /// </summary>
+        [EProperty(category: nameof(Armor))]
         public int VestEfficacy
         {
             get => Base.VestEfficacy;
@@ -102,6 +107,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how much faster stamina will drain when wearing this armor.
         /// </summary>
+        [EProperty(category: nameof(Armor))]
         public float StaminaUseMultiplier
         {
             get => Base._staminaUseMultiplier;
@@ -111,16 +117,19 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Armor))]
         public float MovementSpeedMultiplier => Base._movementSpeedMultiplier;
 
         /// <summary>
         /// Gets how much worse <see cref="RoleTypeId.ClassD"/> and <see cref="RoleTypeId.Scientist"/>s are affected by wearing this armor.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Armor))]
         public float CivilianDownsideMultiplier => Base.CivilianClassDownsidesMultiplier;
 
         /// <summary>
         /// Gets or sets the ammo limit of the wearer when using this armor.
         /// </summary>
+        [EProperty(category: nameof(Armor))]
         public IEnumerable<ArmorAmmoLimit> AmmoLimits
         {
             get => Base.AmmoLimits.Select(limit => (ArmorAmmoLimit)limit);
@@ -130,6 +139,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the item caterory limit of the wearer when using this armor.
         /// </summary>
+        [EProperty(category: nameof(Armor))]
         public IEnumerable<BodyArmor.ArmorCategoryLimitModifier> CategoryLimits
         {
             get => Base.CategoryLimits;

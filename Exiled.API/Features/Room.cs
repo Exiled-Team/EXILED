@@ -25,7 +25,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game room.
     /// </summary>
-    public class Room : GameEntity
+    public sealed class Room : GameEntity
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="RoomIdentifier"/>s and their corresponding <see cref="Room"/>.
@@ -93,7 +93,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="ZoneType"/> in which the room is located.
         /// </summary>
-        public ZoneType Zone { get; private set; } = ZoneType.Unspecified;
+        public ZoneType Zone { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="MapGeneration.RoomName"/> enum representing this room.
@@ -110,7 +110,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="RoomType"/>.
         /// </summary>
-        public RoomType Type { get; private set; } = RoomType.Unknown;
+        public RoomType Type { get; private set; }
 
         /// <summary>
         /// Gets a reference to the room's <see cref="RoomIdentifier"/>.
