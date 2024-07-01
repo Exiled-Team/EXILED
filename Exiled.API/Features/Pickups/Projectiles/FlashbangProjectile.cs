@@ -9,10 +9,8 @@ namespace Exiled.API.Features.Pickups.Projectiles
 {
     using Exiled.API.Enums;
     using Exiled.API.Interfaces;
-    using InventorySystem;
-    using InventorySystem.Items;
+
     using InventorySystem.Items.ThrowableProjectiles;
-    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for FlashbangGrenade.
@@ -33,9 +31,9 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Initializes a new instance of the <see cref="FlashbangProjectile"/> class.
         /// </summary>
         internal FlashbangProjectile()
-            : this((FlashbangGrenade)Object.Instantiate(InventoryItemLoader.AvailableItems[ItemType.GrenadeFlash] as ThrowableItem).Projectile)
+            : base(ItemType.GrenadeFlash)
         {
-            Info = new(ItemType.GrenadeFlash, InventoryItemLoader.AvailableItems[ItemType.GrenadeFlash].Weight, ItemSerialGenerator.GenerateNext());
+            Base = (FlashbangGrenade)((Pickup)this).Base;
         }
 
         /// <summary>

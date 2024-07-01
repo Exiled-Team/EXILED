@@ -10,15 +10,16 @@ namespace Exiled.Events.Commands.Reload
     using System;
 
     using CommandSystem;
-    using Exiled.API.Interfaces;
+
     using Exiled.Events.Handlers;
     using Exiled.Permissions.Extensions;
+
     using Loader;
 
     /// <summary>
     /// The reload plugins command.
     /// </summary>
-    public class Plugins : ICommand, IPermissioned
+    public class Plugins : ICommand
     {
         /// <summary>
         /// Gets static instance of the <see cref="Plugins"/> command.
@@ -37,12 +38,15 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc />
         public bool SanitizeResponse { get; }
 
-        /// <inheritdoc />
-        public string Permission { get; } = "ee.reloadplugins";
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!sender.CheckPermission("ee.reloadplugins"))
+            {
+                response = "You can't reload plugins, you don't have \"ee.reloadplugins\" permission.";
+                return false;
+            }
+
             sender.Respond("Reloading plugins...");
 
             Loader.ReloadPlugins();

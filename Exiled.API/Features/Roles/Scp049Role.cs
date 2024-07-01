@@ -11,8 +11,6 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using CustomPlayerEffects;
-    using Exiled.API.Features.Core;
-    using HarmonyLib;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
@@ -27,15 +25,8 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-049.
     /// </summary>
-    public class Scp049Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
+    public class Scp049Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
     {
-        private readonly ConstProperty<double> callAbilityDuration = new(Scp049CallAbility.EffectDuration, new[] { typeof(Scp049CallAbility) });
-        private readonly ConstProperty<double> callAbilityBaseCooldown = new(Scp049CallAbility.BaseCooldown, new[] { typeof(Scp049CallAbility) });
-        private readonly ConstProperty<double> senseAbilityBaseCooldown = new(Scp049SenseAbility.BaseCooldown, new[] { typeof(Scp049SenseAbility) });
-        private readonly ConstProperty<double> senseAbilityReducedCooldown = new(Scp049SenseAbility.ReducedCooldown, new[] { typeof(Scp049SenseAbility) });
-        private readonly ConstProperty<double> senseAbilityDuration = new(Scp049SenseAbility.EffectDuration, new[] { typeof(Scp049SenseAbility) }, new[] { AccessTools.Method(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.ServerLoseTarget)) });
-        private readonly ConstProperty<double> senseAbilityFailCooldown = new(Scp049SenseAbility.AttemptFailCooldown, new[] { typeof(Scp049SenseAbility) }, new[] { AccessTools.Method(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.ServerProcessCmd)) });
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp049Role"/> class.
         /// </summary>
@@ -127,59 +118,39 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public IEnumerable<Player> DeadZombies => Scp049ResurrectAbility.DeadZombies.Select(x => Player.Get(x));
 
+        // TODO: ReAdd Setter but before making an propper way to overwrite NW constant only when the propperty has been used
+#pragma warning disable SA1623 // Property summary documentation should match accessors
+#pragma warning disable SA1202
         /// <summary>
         /// Gets or sets how mush time the Call Ability will be effective.
         /// </summary>
-        public double CallAbilityDuration
-        {
-            get => callAbilityDuration;
-            set => callAbilityDuration.Value = value;
-        }
+        internal double CallAbilityDuration { get; } = Scp049CallAbility.EffectDuration;
 
         /// <summary>
         /// Gets or sets the Cooldown of the Call Ability.
         /// </summary>
-        public double CallAbilityBaseCooldown
-        {
-            get => callAbilityBaseCooldown;
-            set => callAbilityBaseCooldown.Value = value;
-        }
+        internal double CallAbilityBaseCooldown { get; } = Scp049CallAbility.BaseCooldown;
 
         /// <summary>
         /// Gets or sets the Cooldown of the Sense Ability.
         /// </summary>
-        public double SenseAbilityBaseCooldown
-        {
-            get => senseAbilityBaseCooldown;
-            set => senseAbilityBaseCooldown.Value = value;
-        }
+        internal double SenseAbilityBaseCooldown { get; } = Scp049SenseAbility.BaseCooldown;
 
         /// <summary>
         /// Gets or sets the Cooldown of the Sense Ability when you lost your target.
         /// </summary>
-        public double SenseAbilityReducedCooldown
-        {
-            get => senseAbilityReducedCooldown;
-            set => senseAbilityReducedCooldown.Value = value;
-        }
+        internal double SenseAbilityReducedCooldown { get; } = Scp049SenseAbility.ReducedCooldown;
 
         /// <summary>
         /// Gets or sets the Cooldown of the Sense Ability when it's failed.
         /// </summary>
-        public double SenseAbilityDuration
-        {
-            get => senseAbilityDuration;
-            set => senseAbilityDuration.Value = value;
-        }
+        internal double SenseAbilityDuration { get; } = Scp049SenseAbility.EffectDuration;
 
         /// <summary>
         /// Gets or sets how mush time the Sense Ability will be effective.
         /// </summary>
-        public double SenseAbilityFailCooldown
-        {
-            get => senseAbilityFailCooldown;
-            set => senseAbilityFailCooldown.Value = value;
-        }
+        internal double SenseAbilityFailCooldown { get; } = Scp049SenseAbility.AttemptFailCooldown;
+#pragma warning restore SA1623 // Property summary documentation should match accessors
 
         /// <summary>
         /// Gets all the resurrected players.

@@ -8,7 +8,6 @@
 namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
-    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
 
     using BaseRadio = InventorySystem.Items.Radio.RadioPickup;
@@ -32,8 +31,9 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="RadioPickup"/> class.
         /// </summary>
         internal RadioPickup()
-            : this((BaseRadio)ItemType.Radio.GetItemBase().ServerDropItem())
+            : base(ItemType.Radio)
         {
+            Base = (BaseRadio)((Pickup)this).Base;
         }
 
         /// <summary>

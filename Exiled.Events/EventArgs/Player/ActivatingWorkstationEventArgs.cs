@@ -8,9 +8,12 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
-    using Exiled.API.Enums;
+
     using Interfaces;
+
     using InventorySystem.Items.Firearms.Attachments;
+
+    using static InventorySystem.Items.Firearms.Attachments.WorkstationController;
 
     /// <summary>
     /// Contains all information before a player activates a workstation.
@@ -32,14 +35,14 @@ namespace Exiled.Events.EventArgs.Player
         public ActivatingWorkstationEventArgs(Player player, WorkstationController controller, bool isAllowed = true)
         {
             Player = player;
-            Workstation = Workstation.Get(controller);
+            WorkstationController = controller;
             IsAllowed = isAllowed;
         }
 
         /// <summary>
         /// Gets the workstation.
         /// </summary>
-        public Workstation Workstation { get; }
+        public WorkstationController WorkstationController { get; }
 
         /// <summary>
         /// Gets or sets the workstation status.

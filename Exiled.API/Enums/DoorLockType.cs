@@ -14,6 +14,7 @@ namespace Exiled.API.Enums
     /// <summary>
     /// All possible door locks.
     /// </summary>
+    /// <seealso cref="Door.LockAll(float, DoorLockType)"/>
     /// <seealso cref="Door.ChangeLock(DoorLockType)"/>
     [Flags]
     public enum DoorLockType

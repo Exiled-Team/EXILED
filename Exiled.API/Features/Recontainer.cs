@@ -36,11 +36,6 @@ namespace Exiled.API.Features
         public static bool IsCassieBusy => Base.CassieBusy;
 
         /// <summary>
-        /// Gets a value about how many generator have been activated.
-        /// </summary>
-        public static int EngagedGeneratorCount => Base._prevEngaged;
-
-        /// <summary>
         /// Gets or sets a value indicating whether the containment zone is open.
         /// </summary>
         public static bool IsContainmentZoneOpen
@@ -229,6 +224,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Breaks the glass protecting the activator button.
         /// </summary>
-        public static void Break() => ActivatorWindow.Break();
+        public static void BreakGlass() => ActivatorWindow.BreakWindow();
     }
 }

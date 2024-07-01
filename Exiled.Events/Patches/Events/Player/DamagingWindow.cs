@@ -10,8 +10,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Core.Generic.Pools;
     using API.Features.DamageHandlers;
+    using API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -25,9 +25,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patch the <see cref="BreakableWindow.Damage(float, PlayerStatsSystem.DamageHandlerBase, Vector3)" />.
-    /// Adds the <see cref="Player.DamagingWindow" /> event.
+    /// Adds the <see cref="Player.PlayerDamageWindow" /> event.
     /// </summary>
-    [EventPatch(typeof(Player), nameof(Player.DamagingWindow))]
+    [EventPatch(typeof(Player), nameof(Player.PlayerDamageWindow))]
     [HarmonyPatch(typeof(BreakableWindow), nameof(BreakableWindow.Damage))]
     internal static class DamagingWindow
     {

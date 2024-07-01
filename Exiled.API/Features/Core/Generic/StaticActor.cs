@@ -61,10 +61,6 @@ namespace Exiled.API.Features.Core.Generic
         {
             EObject @object = CreateDefaultSubobject<T>();
             @object.Name = "__" + typeof(T).Name + " (StaticActor)";
-
-            if (Server.Host.GameObject)
-                @object.Base = Server.Host.GameObject;
-
             return @object.Cast<T>();
         }
 

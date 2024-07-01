@@ -10,7 +10,6 @@ namespace Exiled.Events.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
@@ -37,7 +36,7 @@ namespace Exiled.Events.Features
     /// <typeparam name="T">The specified <see cref="EventArgs"/> that the event will use.</typeparam>
     public class Event<T> : IExiledEvent
     {
-        private static readonly Dictionary<Type, IExiledEvent> TypeToEvent = new();
+        private static readonly Dictionary<Type, Event<T>> TypeToEvent = new();
 
         private bool patched;
 
@@ -56,22 +55,7 @@ namespace Exiled.Events.Features
         /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Event{T}"/> which contains all the <see cref="Event{T}"/> instances.
         /// </summary>
-        public static IReadOnlyDictionary<Type, IExiledEvent> Dictionary => TypeToEvent;
-
-        /// <summary>
-        /// Gets a <see cref="IReadOnlyCollection{T}"/> of delegates that are subscribed to the inner event.
-        /// </summary>
-        public IReadOnlyCollection<Delegate> SubscribedPlugins
-        {
-            get
-            {
-                List<Delegate> list = InnerEvent?.GetInvocationList().ToList() ?? new List<Delegate>();
-                if (InnerAsyncEvent != null)
-                    list.AddRange(InnerAsyncEvent.GetInvocationList().ToList());
-
-                return list;
-            }
-        }
+        public static IReadOnlyDictionary<Type, Event<T>> Dictionary => TypeToEvent;
 
         /// <summary>
         /// Subscribes a target <see cref="CustomEventHandler{TEventArgs}"/> to the inner event and checks if patching is possible, if dynamic patching is enabled.
@@ -198,7 +182,7 @@ namespace Exiled.Events.Features
                 }
                 catch (Exception ex)
                 {
-                    EventExceptionLogger.CaptureException(ex, GetType().FullName, handler.Method);
+                    Log.Error($"Method \"{handler.Method.Name}\" of the class \"{handler.Method.ReflectedType.FullName}\" caused an exception when handling the event \"{GetType().FullName}\"\n{ex}");
                 }
             }
         }
@@ -211,31 +195,14 @@ namespace Exiled.Events.Features
 
             foreach (CustomAsyncEventHandler<T> handler in InnerAsyncEvent.GetInvocationList().Cast<CustomAsyncEventHandler<T>>())
             {
-                Timing.RunCoroutine(SafeCoroutineEnumerator(handler(arg), handler));
-            }
-        }
-
-        /// <summary>
-        ///     Runs the coroutine manualy so exceptions can be caught and logged.
-        /// </summary>
-        private IEnumerator<float> SafeCoroutineEnumerator(IEnumerator<float> coroutine, CustomAsyncEventHandler<T> handler)
-        {
-            while (true)
-            {
-                float current;
                 try
                 {
-                    if (!coroutine.MoveNext())
-                        break;
-                    current = coroutine.Current;
+                    Timing.RunCoroutine(handler(arg));
                 }
                 catch (Exception ex)
                 {
                     Log.Error($"Method \"{handler.Method.Name}\" of the class \"{handler.Method.ReflectedType.FullName}\" caused an exception when handling the event \"{GetType().FullName}\"\n{ex}");
-                    yield break;
                 }
-
-                yield return current;
             }
         }
     }

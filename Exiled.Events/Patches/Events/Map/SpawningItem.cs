@@ -10,8 +10,9 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Core.Generic.Pools;
     using API.Features.Doors;
+    using API.Features.Pickups;
+    using API.Features.Pools;
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Map;
@@ -66,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Map
                     new CodeInstruction(OpCodes.Ldc_I4_0).MoveLabelsFrom(newInstructions[lastIndex]),
                     new(OpCodes.Stloc_S, initiallySpawn.LocalIndex),
 
-                    // door = doorNametagExtension.TargetDoor
+                    // door = nametagExtension.TargetDoor
                     new(OpCodes.Ldloc_2),
                     new(OpCodes.Ldfld, Field(typeof(DoorVariantExtension), nameof(DoorVariantExtension.TargetDoor))),
                     new(OpCodes.Stloc_S, door.LocalIndex),
@@ -98,20 +99,22 @@ namespace Exiled.Events.Patches.Events.Map
                     //     goto doorSpawn
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.ShouldInitiallySpawn))),
-                    new(OpCodes.Brfalse_S, doorSpawn),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Ceq),
 
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.TriggerDoor))),
-                    new(OpCodes.Brfalse_S, doorSpawn),
+                    new(OpCodes.Ldnull),
+                    new(OpCodes.Cgt_Un),
+
+                    new(OpCodes.And),
+                    new(OpCodes.Brtrue_S, doorSpawn),
                 });
 
             lastIndex = newInstructions.FindLastIndex(instruction => instruction.IsLdarg(0));
 
             newInstructions[lastIndex].labels.Add(doorSpawn);
 
-            // Replace
-            // "base.RegisterUnspawnedObject(doorNametagExtension.TargetDoor, itemPickupBase.gameObject);"
-            // with "base.RegisterUnspawnedObject(ev.Door.Base, itemPickupBase.gameObject);"
             offset = -1;
             index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldfld) + offset;
 
@@ -119,7 +122,7 @@ namespace Exiled.Events.Patches.Events.Map
 
             newInstructions.InsertRange(index, new[]
             {
-                // ev.Door.Base
+                // door = ev.Door.Base
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.TriggerDoor))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Door), nameof(Door.Base))),

@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Core.Generic.Pools;
+    using API.Features.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
@@ -50,9 +50,6 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, PropertyGetter(typeof(ItemBase), nameof(ItemBase.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                    // this (radioItem)
-                    new(OpCodes.Ldarg_0),
-
                     // (RadioRangeLevel)this._rangeId
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(RadioItem), nameof(RadioItem._rangeId))),
@@ -65,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // ChangingRadioPresetEventArgs ev = new(Player, RadioItem, byte, byte, true)
+                    // ChangingRadioPresetEventArgs ev = new(Player, byte, byte, true)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingRadioPresetEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),

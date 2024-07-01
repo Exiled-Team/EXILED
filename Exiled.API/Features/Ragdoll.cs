@@ -16,7 +16,6 @@ namespace Exiled.API.Features
     using Enums;
 
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
 
     using Mirror;
@@ -36,19 +35,18 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to handle the ragdolls more easily.
     /// </summary>
-    public class Ragdoll : GameEntity, IWrapper<BasicRagdoll>, IWorldSpace
+    public class Ragdoll : IWrapper<BasicRagdoll>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BasicRagdoll"/>s and their corresponding <see cref="Ragdoll"/>.
         /// </summary>
-        internal static readonly Dictionary<BasicRagdoll, Ragdoll> BasicRagdollToRagdoll = new(250, new ComponentsEqualityComparer());
+        internal static readonly Dictionary<BasicRagdoll, Ragdoll> BasicRagdollToRagdoll = new(250);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Ragdoll"/> class.
         /// </summary>
         /// <param name="ragdoll">The encapsulated <see cref="BasicRagdoll"/>.</param>
         internal Ragdoll(BasicRagdoll ragdoll)
-            : base(ragdoll.gameObject)
         {
             Base = ragdoll;
             BasicRagdollToRagdoll.Add(ragdoll, this);
@@ -57,7 +55,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Ragdoll"/> which contains all the <see cref="Ragdoll"/> instances.
         /// </summary>
-        public static new IReadOnlyCollection<Ragdoll> List => BasicRagdollToRagdoll.Values;
+        public static IReadOnlyCollection<Ragdoll> List => BasicRagdollToRagdoll.Values;
 
         /// <summary>
         /// Gets or sets the <see cref="BasicRagdoll"/>s clean up time.
@@ -69,12 +67,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a randomly selected <see cref="Ragdoll"/>.
-        /// </summary>
-        /// <returns>A randomly selected <see cref="Ragdoll"/> object.</returns>
-        public static Ragdoll Random => List.Random();
-
-        /// <summary>
         /// Gets a value indicating whether or not the clean up event can be executed.
         /// </summary>
         public bool AllowCleanUp => NetworkInfo.ExistenceTime < FreezeTime;
@@ -83,6 +75,16 @@ namespace Exiled.API.Features
         /// Gets the <see cref="BasicRagdoll"/> instance of the ragdoll.
         /// </summary>
         public BasicRagdoll Base { get; }
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the ragdoll.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.Transform"/> of the ragdoll.
+        /// </summary>
+        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets or sets the ragdoll's <see cref="RagdollData"/>.
@@ -216,14 +218,14 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the ragdoll's position.
         /// </summary>
-        public override Vector3 Position
+        public Vector3 Position
         {
-            get => Transform.position;
+            get => Base.transform.position;
             set
             {
                 NetworkServer.UnSpawn(GameObject);
 
-                Transform.position = value;
+                Base.transform.position = value;
 
                 NetworkServer.Spawn(GameObject);
             }
@@ -232,14 +234,14 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the ragdoll's rotation.
         /// </summary>
-        public override Quaternion Rotation
+        public Quaternion Rotation
         {
             get => Base.transform.rotation;
             set
             {
                 NetworkServer.UnSpawn(GameObject);
 
-                Transform.rotation = value;
+                Base.transform.rotation = value;
 
                 NetworkServer.Spawn(GameObject);
             }
@@ -250,12 +252,12 @@ namespace Exiled.API.Features
         /// </summary>
         public Vector3 Scale
         {
-            get => Transform.localScale;
+            get => Base.transform.localScale;
             set
             {
                 NetworkServer.UnSpawn(GameObject);
 
-                Transform.localScale = value;
+                Base.transform.localScale = value;
 
                 NetworkServer.Spawn(GameObject);
             }
@@ -317,7 +319,7 @@ namespace Exiled.API.Features
         /// <param name="owner">The optional owner of the ragdoll.</param>
         /// <returns>The ragdoll.</returns>
         public static bool TryCreate(RoleTypeId roleType, string name, DamageHandlerBase damageHandler, out Ragdoll ragdoll, Player owner = null)
-            => TryCreate(new(owner != null ? owner.ReferenceHub : Server.Host.ReferenceHub, damageHandler, roleType, default, default, name, NetworkTime.time), out ragdoll);
+            => TryCreate(new(owner?.ReferenceHub ?? Server.Host.ReferenceHub, damageHandler, roleType, default, default, name, NetworkTime.time), out ragdoll);
 
         /// <summary>
         /// Creates a new ragdoll.
@@ -357,7 +359,7 @@ namespace Exiled.API.Features
         /// <param name="owner">The optional owner of the ragdoll.</param>
         /// <returns>The ragdoll.</returns>
         public static Ragdoll CreateAndSpawn(RoleTypeId roleType, string name, DamageHandlerBase damageHandler, Vector3 position, Quaternion rotation, Player owner = null)
-            => CreateAndSpawn(new(owner != null ? owner.ReferenceHub : Server.Host.ReferenceHub, damageHandler, roleType, position, rotation, name, NetworkTime.time));
+            => CreateAndSpawn(new(owner?.ReferenceHub ?? Server.Host.ReferenceHub, damageHandler, roleType, position, rotation, name, NetworkTime.time));
 
         /// <summary>
         /// Creates and spawns a new ragdoll.

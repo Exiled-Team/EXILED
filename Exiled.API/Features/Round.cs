@@ -11,7 +11,7 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
 
     using Enums;
-    using Exiled.API.Extensions;
+
     using GameCore;
 
     using PlayerRoles;
@@ -23,12 +23,10 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Round
     {
-        private static int targetOffset;
-
         /// <summary>
         /// Gets a list of players who will be ignored from determining round end.
         /// </summary>
-        public static HashSet<Player> IgnoredPlayers { get; } = new(20);
+        public static HashSet<ReferenceHub> IgnoredPlayers { get; } = new(20); // TODO: Replace ReferenceHub to Player remind to change RoundEnd transpiler
 
         /// <summary>
         /// Gets the time elapsed from the start of the round.
@@ -46,7 +44,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the round is started or not.
         /// </summary>
-        public static bool IsStarted => ReferenceHub.LocalHub && ReferenceHub.LocalHub.characterClassManager.RoundStarted;
+        public static bool IsStarted => ReferenceHub.LocalHub?.characterClassManager.RoundStarted ?? false;
 
         /// <summary>
         /// Gets a value indicating whether the round in progress or not.
@@ -182,22 +180,6 @@ namespace Exiled.API.Features
                 }
 
                 return sides;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a visual offset applied to the target counter for SCPs.
-        /// </summary>
-        public static int TargetOffset
-        {
-            get => targetOffset;
-            set
-            {
-                targetOffset = value;
-                foreach (Player player in Player.List)
-                {
-                    player.SendFakeSyncVar(RoundSummary.singleton.netIdentity, typeof(RoundSummary), nameof(RoundSummary.Network_chaosTargetCount), RoundSummary.singleton._chaosTargetCount + TargetOffset);
-                }
             }
         }
 

@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Generic
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Core.Generic.Pools;
+    using API.Features.Pools;
 
     using HarmonyLib;
 

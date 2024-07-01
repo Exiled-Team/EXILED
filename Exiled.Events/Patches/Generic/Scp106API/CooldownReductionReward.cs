@@ -8,9 +8,10 @@
 namespace Exiled.Events.Patches.Generic.Scp106API
 {
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
-    using API.Features.Core.Generic.Pools;
+    using API.Features.Pools;
     using Exiled.API.Features;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp106;

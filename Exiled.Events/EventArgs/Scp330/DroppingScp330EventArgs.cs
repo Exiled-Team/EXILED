@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs.Scp330
     /// <summary>
     /// Contains all information before a player drops a SCP-330 candy.
     /// </summary>
-    public class DroppingScp330EventArgs : IPlayerEvent, IScp330Event, IDeniableEvent
+    public class DroppingScp330EventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DroppingScp330EventArgs" /> class.
@@ -38,11 +38,10 @@ namespace Exiled.Events.EventArgs.Scp330
             Candy = candy;
         }
 
-        /// <inheritdoc/>
-        public Scp330 Scp330 { get; }
-
-        /// <inheritdoc/>
-        public Item Item => Scp330;
+        /// <summary>
+        /// Gets or sets a value representing the <see cref="Item" /> being picked up.
+        /// </summary>
+        public Scp330 Scp330 { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the type of candy drop.

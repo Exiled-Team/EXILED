@@ -10,27 +10,21 @@ namespace Exiled.Events.EventArgs.Player
     using API.Features;
 
     using Exiled.API.Enums;
-    using Exiled.API.Features.Items;
 
     using Interfaces;
-
-    using InventorySystem.Items.Radio;
 
     using static InventorySystem.Items.Radio.RadioMessages;
 
     /// <summary>
     /// Contains all information before radio preset is changed.
     /// </summary>
-    public class ChangingRadioPresetEventArgs : IPlayerEvent, IItemEvent, IDeniableEvent
+    public class ChangingRadioPresetEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingRadioPresetEventArgs" /> class.
         /// </summary>
         /// <param name="player">
         /// <inheritdoc cref="Player" />
-        /// </param>
-        /// <param name="item">
-        /// <inheritdoc cref="Item" />
         /// </param>
         /// <param name="oldValue">
         /// <inheritdoc cref="OldValue" />
@@ -41,10 +35,9 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="isAllowed">
         /// <inheritdoc cref="IsAllowed" />
         /// </param>
-        public ChangingRadioPresetEventArgs(Player player, RadioItem item, RadioRangeLevel oldValue, RadioRangeLevel newValue, bool isAllowed = true)
+        public ChangingRadioPresetEventArgs(Player player, RadioRangeLevel oldValue, RadioRangeLevel newValue, bool isAllowed = true)
         {
             Player = player;
-            Radio = (Radio)Item.Get(item);
             OldValue = (RadioRange)oldValue;
             NewValue = (RadioRange)newValue;
             IsAllowed = isAllowed;
@@ -71,13 +64,5 @@ namespace Exiled.Events.EventArgs.Player
         /// Gets the player who's using the radio.
         /// </summary>
         public Player Player { get; }
-
-        /// <inheritdoc/>
-        public Item Item => Radio;
-
-        /// <summary>
-        /// Gets the <see cref="API.Features.Items.Radio" /> which is being used.
-        /// </summary>
-        public Radio Radio { get; }
     }
 }
