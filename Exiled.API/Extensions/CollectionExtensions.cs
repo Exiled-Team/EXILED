@@ -73,11 +73,7 @@ namespace Exiled.API.Extensions
 
             for (int i = 0; i < iterations; i++)
             {
-                for (int j = array.Length - 1; j > 0; j--)
-                {
-                    int index = UnityEngine.Random.Range(0, j + 1);
-                    (array[j], array[index]) = (array[index], array[j]);
-                }
+                array.ShuffleList();
             }
 
             return array;
