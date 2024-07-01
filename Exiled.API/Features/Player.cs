@@ -2556,17 +2556,26 @@ namespace Exiled.API.Features
         /// This method factors in the armor the player is wearing, as well as server configuration.
         /// For the maximum amount of ammo that can be given regardless of worn armor and server configuration, see <see cref="ServerConfigSynchronizer.AmmoLimit"/>.
         /// </summary>
-        /// <param name="ammotype">The <see cref="AmmoType"/> of the ammo to check.</param>
-        /// <param name="value">The <see cref="ushort"/> number that will define the new limit.</param>
-        public void SetAmmoLimit(AmmoType ammotype, ushort value)
+        /// <param name="ammoType">The <see cref="AmmoType"/> of the ammo to check.</param>
+        /// <param name="limit">The <see cref="ushort"/> number that will define the new limit.</param>
+        public void SetAmmoLimit(AmmoType ammoType, ushort limit)
         {
-            ItemType itemtype = ammotype.GetItemType();
             AmmoLimits ??= ServerConfigSynchronizer.Singleton.AmmoLimitsSync.ToList();
-            int index = AmmoLimits.FindIndex(x => x.AmmoType == itemtype);
-            ServerConfigSynchronizer.AmmoLimit newLimit = new() { Limit = value, AmmoType = itemtype };
 
-            ServerConfigSynchronizer.Singleton.AmmoLimitsSync.AddOperation(SyncList<ServerConfigSynchronizer.AmmoLimit>.Operation.OP_SET, index, AmmoLimits[index], newLimit, false);
-            AmmoLimits[index] = newLimit;
+            ItemType itemType = ammoType.GetItemType();
+            ServerConfigSynchronizer.AmmoLimit ammoLimit = new() { Limit = limit, AmmoType = itemType };
+            int index = AmmoLimits.FindIndex(x => x.AmmoType == itemType);
+
+            AmmoLimits[index] = ammoLimit;
+
+            MirrorExtensions.SendFakeSyncObject(this, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), writer =>
+            {
+                writer.WriteULong(2ul);
+                writer.WriteUInt(1);
+                writer.WriteByte((byte)SyncList<ServerConfigSynchronizer.AmmoLimit>.Operation.OP_SET);
+                writer.WriteInt(index);
+                writer.WriteAmmoLimit(ammoLimit);
+            });
         }
 
         /// <summary>
@@ -2578,15 +2587,32 @@ namespace Exiled.API.Features
             InventorySystem.Configs.InventoryLimits.GetCategoryLimit(category, referenceHub);
 
         /// <summary>
-        /// Set the maximum amount of an <see cref="ItemCategory"/> the player can hold, based on the armor the player is wearing, as well as server configuration.
+        /// Set the maximum amount of an <see cref="ItemCategory"/> the player can hold. Only works with <see cref="ItemCategory.Keycard"/>, <see cref="ItemCategory.Medical"/>, <see cref="ItemCategory.Firearm"/>, <see cref="ItemCategory.Grenade"/> and <see cref="ItemCategory.SCPItem"/>.
         /// </summary>
-        /// <param name="category">The <see cref="ItemCategory"/> to check.</param>
-        /// <param name="value">The <see cref="int"/> number that will define the new limit.</param>
-        public void SetCategoryLimit(ItemCategory category, sbyte value)
+        /// <param name="itemCategory">The <see cref="ItemCategory"/> to check.</param>
+        /// <param name="limit">The <see cref="int"/> number that will define the new limit.</param>
+        public void SetCategoryLimit(ItemCategory itemCategory, sbyte limit)
         {
             CategoryLimits ??= ServerConfigSynchronizer.Singleton.CategoryLimits.ToList();
-            CategoryLimits[(int)category] = value;
-            ServerConfigSynchronizer.Singleton.CategoryLimits.AddOperation(SyncList<sbyte>.Operation.OP_SET, (int)category, CategoryLimits[(int)category], value, false);
+
+            int index = InventorySystem.Configs.InventoryLimits.StandardCategoryLimits.Where(x => x.Value >= 0).OrderBy(x => x.Key).ToList().FindIndex(x => x.Key == itemCategory);
+
+            if (index == -1)
+            {
+                Log.Error($"{nameof(Player)}.{nameof(SetCategoryLimit)}(ItemCategory, sbyte): Cannot set category limit for ItemCategory.{itemCategory}.");
+                return;
+            }
+
+            CategoryLimits[index] = limit;
+
+            MirrorExtensions.SendFakeSyncObject(this, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), writer =>
+            {
+                writer.WriteULong(1ul);
+                writer.WriteUInt(1);
+                writer.WriteByte((byte)SyncList<sbyte>.Operation.OP_SET);
+                writer.WriteInt(index);
+                writer.WriteSByte(limit);
+            });
         }
 
         /// <summary>

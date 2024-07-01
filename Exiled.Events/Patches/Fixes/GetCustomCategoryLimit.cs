@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Fixes
 {
     using System;
+    using System.Linq;
 
     using Exiled.API.Features;
     using HarmonyLib;
@@ -15,7 +16,7 @@ namespace Exiled.Events.Patches.Fixes
 
     /// <summary>
     /// Patches the <see cref="InventoryLimits.GetCategoryLimit(ItemCategory, ReferenceHub)"/> delegate.
-    /// Sync <see cref="API.Features.Player.SetCategoryLimit(ItemCategory, sbyte)"/>, .
+    /// Sync <see cref="Player.SetCategoryLimit(ItemCategory, sbyte)"/>, .
     /// Changes <see cref="ushort.MaxValue"/> to <see cref="ushort.MinValue"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryLimits), nameof(InventoryLimits.GetCategoryLimit), new Type[] { typeof(ItemCategory), typeof(ReferenceHub), })]
@@ -27,7 +28,12 @@ namespace Exiled.Events.Patches.Fixes
             if (!Player.TryGet(player, out Player ply) || ply.CategoryLimits is null)
                 return;
 
-            __result = ply.CategoryLimits[(int)category];
+            int index = InventoryLimits.StandardCategoryLimits.Where(x => x.Value >= 0).OrderBy(x => x.Key).ToList().FindIndex(x => x.Key == category);
+
+            if (index == -1)
+                return;
+
+            __result = ply.CategoryLimits[index];
         }
     }
 }

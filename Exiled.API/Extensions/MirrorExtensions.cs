@@ -142,18 +142,6 @@ namespace Exiled.API.Extensions
         public static MethodInfo SendSpawnMessageMethodInfo => sendSpawnMessageMethodInfoValue ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
 
         /// <summary>
-        /// Add an Operation to execute on a <see cref="SyncList{T}"/>.
-        /// </summary>
-        /// <param name="synclist">Only this player can see info.</param>
-        /// <param name="op">Operation to execute.</param>
-        /// <param name="itemIndex">Item index to affect.</param>
-        /// <param name="oldItem">previous item.</param>
-        /// <param name="newItem">new item.</param>
-        /// <param name="checkAccess">Verify if access is authorised.</param>
-        /// <typeparam name="T">A type of <see cref="SyncList{T}"/>.</typeparam>
-        public static void AddOperation<T>(this SyncList<T> synclist, SyncList<T>.Operation op, int itemIndex, T oldItem, T newItem, bool checkAccess) => typeof(SyncList<T>).GetMethod("AddOperation", BindingFlags.Instance | BindingFlags.NonPublic)?.Invoke(synclist, new object[] { op, itemIndex, oldItem, newItem, checkAccess });
-
-        /// <summary>
         /// Plays a beep sound that only the target <paramref name="player"/> can hear.
         /// </summary>
         /// <param name="player">Target to play sound to.</param>
@@ -419,11 +407,11 @@ namespace Exiled.API.Extensions
         /// <example>
         /// EffectOnlySCP207.
         /// <code>
-        ///  MirrorExtensions.SendCustomSync(player, player.ReferenceHub.networkIdentity, typeof(PlayerEffectsController), (writer) => {
-        ///   writer.WriteUInt64(1ul);                                           // DirtyObjectsBit
-        ///   writer.WriteUInt32(1);                                             // DirtyIndexCount
+        ///  MirrorExtensions.SendFakeSyncObject(player, player.NetworkIdentity, typeof(PlayerEffectsController), (writer) => {
+        ///   writer.WriteULong(1ul);                                            // DirtyObjectsBit
+        ///   writer.WriteUInt(1);                                               // DirtyIndexCount
         ///   writer.WriteByte((byte)SyncList&lt;byte&gt;.Operation.OP_SET);     // Operations
-        ///   writer.WriteUInt32(17);                                            // EditIndex
+        ///   writer.WriteUInt(17);                                              // EditIndex
         ///   writer.WriteByte(1);                                               // Value
         ///  });
         /// </code>
