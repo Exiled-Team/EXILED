@@ -5,20 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-#pragma warning disable SA1402 // File may only contain a single type
-
-namespace Exiled.Events.Patches.Events.Player
-{
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
-
     using CustomPlayerEffects;
     using CustomPlayerEffects.Danger;
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
     using HarmonyLib;

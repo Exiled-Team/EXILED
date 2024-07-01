@@ -44,5 +44,19 @@ namespace Exiled.API.Features.DynamicEvents
         /// Gets the <see cref="TDynamicDelegate{T}"/>'s delegate.
         /// </summary>
         public Action<T> Delegate { get; }
+
+        /// <summary>
+        /// Implicitly converts the <see cref="TDynamicDelegate{T}"/> instance to a <see cref="Action{T}"/>.
+        /// </summary>
+        /// <param name="del">The <see cref="TDynamicDelegate{T}"/> instance.</param>
+        public static implicit operator Action<T>(TDynamicDelegate<T> del) => del.Delegate;
+
+        /// <summary>
+        /// Declares a new <see cref="TDynamicDelegate{T}"/> instance.
+        /// </summary>
+        /// <param name="target"><inheritdoc cref="Target"/></param>
+        /// <param name="delegate"><inheritdoc cref="Delegate"/></param>
+        /// <returns>The new <see cref="TDynamicDelegate{T}"/> instance.</returns>
+        public static TDynamicDelegate<T> DeclareMulticastDelegate(object target, Action<T> @delegate) => new(target, @delegate);
     }
 }

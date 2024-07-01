@@ -13,7 +13,6 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
-
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
@@ -25,7 +24,6 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.ToggleableLights;
-    using InventorySystem.Items.ToggleableLights.Flashlight;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp1576;
     using InventorySystem.Items.Usables.Scp244;
@@ -33,23 +31,24 @@ namespace Exiled.API.Features.Items
     using UnityEngine;
 
     using BaseConsumable = InventorySystem.Items.Usables.Consumable;
-    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="ItemBase"/>.
     /// </summary>
-    public class Item : TypeCastObject<Item>, IWrapper<ItemBase>
+    public class Item : GameEntity, IWrapper<ItemBase>
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
         /// </summary>
-        internal static readonly Dictionary<ItemBase, Item> BaseToItem = new();
+        internal static readonly Dictionary<ItemBase, Item> BaseToItem = new(new ComponentsEqualityComparer());
+        private float weight;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
         /// <param name="itemBase">The <see cref="ItemBase"/> to encapsulate.</param>
         public Item(ItemBase itemBase)
+            : base(itemBase.gameObject)
         {
             Base = itemBase;
             BaseToItem.Add(itemBase, this);
@@ -80,7 +79,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a list of all <see cref="Item"/>'s on the server.
         /// </summary>
-        public static IEnumerable<Item> List => BaseToItem.Values;
+        public static new IEnumerable<Item> List => BaseToItem.Values;
 
         /// <summary>
         /// Gets or sets the unique serial number for the item.
@@ -122,9 +121,13 @@ namespace Exiled.API.Features.Items
         public ItemTierFlags TierFlags => Base.TierFlags;
 
         /// <summary>
-        /// Gets the Weight of the item.
+        /// Gets or sets the Weight of the item.
         /// </summary>
-        public float Weight => Base.Weight;
+        public virtual float Weight
+        {
+            get => weight;
+            set => weight = value;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this item is ammunition.
@@ -164,7 +167,12 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether or not this item emits light.
         /// </summary>
-        public bool IsLightEmitter => Base is ILightEmittingItem;
+        public bool CanEmitLight => this is Firearm firearm ? firearm.HasFlashlight : Base is ILightEmittingItem;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this item is currently imitating light.
+        /// </summary>
+        public bool IsEmittingLight => Base is ILightEmittingItem light && light.IsEmittingLight;
 
         /// <summary>
         /// Gets a value indicating whether or not this item can be used to disarm players.
@@ -218,6 +226,13 @@ namespace Exiled.API.Features.Items
                 _ => new Item(itemBase),
             };
         }
+
+        /// <summary>
+        /// Gets the <see cref="Item"/> given a <see cref="GameObject"/>.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/> to check.</param>
+        /// <returns>The <see cref="Item"/> given the specified <see cref="GameObject"/>.</returns>
+        public static Item Get(GameObject gameObject) => !gameObject || !gameObject.TryGetComponent(out ItemBase ib) ? null : Get(ib);
 
         /// <summary>
         /// Gets the Item belonging to the specified serial.
@@ -361,6 +376,7 @@ namespace Exiled.API.Features.Items
             if (pickup is not null)
             {
                 Scale = pickup.Scale;
+                Weight = pickup.Weight;
             }
         }
     }

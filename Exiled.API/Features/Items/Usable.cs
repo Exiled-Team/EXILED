@@ -11,7 +11,6 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Interfaces;
 
     using InventorySystem;
-    using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables;
 
@@ -59,7 +58,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the weight of the item.
         /// </summary>
-        public new float Weight
+        public override float Weight
         {
             get => Base._weight;
             set => Base._weight = value;

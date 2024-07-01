@@ -33,9 +33,8 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal AmmoPickup(ItemType type)
-            : base(type)
+            : this((BaseAmmo)type.GetItemBase().ServerDropItem())
         {
-            Base = (BaseAmmo)((Pickup)this).Base;
         }
 
         /// <summary>

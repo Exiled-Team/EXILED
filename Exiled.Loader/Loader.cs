@@ -19,16 +19,10 @@ namespace Exiled.Loader
 
     using API.Enums;
     using API.Interfaces;
-
     using CommandSystem.Commands.Shared;
-
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Features;
-    using Features.Configs;
-    using Features.Configs.CustomConverters;
-    using MEC;
-    using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Used to handle plugins.
@@ -86,34 +80,6 @@ namespace Exiled.Loader
         /// Gets plugin dependencies.
         /// </summary>
         public static List<Assembly> Dependencies { get; } = new();
-
-        /// <summary>
-        /// Gets or sets the serializer for configs and translations.
-        /// </summary>
-        public static ISerializer Serializer { get; set; } = new SerializerBuilder()
-            .WithTypeConverter(new VectorsConverter())
-            .WithTypeConverter(new ColorConverter())
-            .WithTypeConverter(new AttachmentIdentifiersConverter())
-            .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
-            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
-            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .IgnoreFields()
-            .DisableAliases()
-            .Build();
-
-        /// <summary>
-        /// Gets or sets the deserializer for configs and translations.
-        /// </summary>
-        public static IDeserializer Deserializer { get; set; } = new DeserializerBuilder()
-            .WithTypeConverter(new VectorsConverter())
-            .WithTypeConverter(new ColorConverter())
-            .WithTypeConverter(new AttachmentIdentifiersConverter())
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
-            .IgnoreFields()
-            .IgnoreUnmatchedProperties()
-            .Build();
 
         /// <summary>
         /// Loads all plugins.
@@ -181,10 +147,14 @@ namespace Exiled.Loader
         /// <returns>Returns the created plugin instance or <see langword="null"/>.</returns>
         public static IPlugin<IConfig> CreatePlugin(Assembly assembly)
         {
+            Type defaultPlayerClass = null;
             try
             {
                 foreach (Type type in assembly.GetTypes())
                 {
+                    if (typeof(Player).IsAssignableFrom(type))
+                        defaultPlayerClass = type;
+
                     if (type.IsAbstract || type.IsInterface)
                     {
                         Log.Debug($"\"{type.FullName}\" is an interface or abstract class, skipping.");
@@ -227,8 +197,16 @@ namespace Exiled.Loader
 
                     Log.Debug($"Instantiated type {type.FullName}");
 
-                    if (CheckPluginRequiredExiledVersion(plugin))
+                    if (CheckPluginRequiredExiledVersion(plugin, assembly.GetReferencedAssemblies()?.FirstOrDefault(x => x?.Name is "Exiled.Loader")?.Version ?? new()))
                         continue;
+
+                    if (defaultPlayerClass is not null)
+                    {
+                        DefaultPlayerClassAttribute dpc = Player.DEFAULT_PLAYER_CLASS.GetCustomAttribute<DefaultPlayerClassAttribute>();
+
+                        if (dpc is not null && !dpc.EnforceAuthority)
+                            Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
+                    }
 
                     return plugin;
                 }
@@ -251,13 +229,32 @@ namespace Exiled.Loader
         }
 
         /// <summary>
+        /// Gets an <see cref="Plugin{TConfig}"/> instance.
+        /// </summary>
+        /// <typeparam name="T">A <see cref="Plugin{TConfig}"/> class to get the instance of.</typeparam>
+        /// <returns>Returns the instance of a <see cref="Plugin{TConfig}"/>.</returns>
+        public static T GetPlugin<T>()
+            where T : class, IPlugin<IConfig>
+            => Plugins.First(plugin => plugin is T) as T;
+
+        /// <summary>
+        /// Gets an <see cref="IConfig"/> instance.
+        /// </summary>
+        /// <typeparam name="T">A <see cref="IConfig"/> class to get the instance of.</typeparam>
+        /// <returns>Returns the instance of a <see cref="IConfig"/>.</returns>
+        public static T GetConfig<T>()
+            where T : class, IConfig
+            => Plugins.First(plugin => plugin.Config is T).Config as T;
+
+        /// <summary>
         /// Enables all plugins.
         /// </summary>
         public static void EnablePlugins()
         {
             List<IPlugin<IConfig>> toLoad = Plugins.ToList();
+            List<IPlugin<IConfig>> toLoad2 = new();
 
-            foreach (IPlugin<IConfig> plugin in toLoad.ToList())
+            foreach (IPlugin<IConfig> plugin in toLoad)
             {
                 try
                 {
@@ -265,7 +262,10 @@ namespace Exiled.Loader
                     {
                         plugin.OnEnabled();
                         plugin.OnRegisteringCommands();
-                        toLoad.Remove(plugin);
+                    }
+                    else
+                    {
+                        toLoad2.Add(plugin);
                     }
 
                     if (plugin.Config.Debug)
@@ -277,7 +277,7 @@ namespace Exiled.Loader
                 }
             }
 
-            foreach (IPlugin<IConfig> plugin in toLoad)
+            foreach (IPlugin<IConfig> plugin in toLoad2)
             {
                 try
                 {
@@ -441,12 +441,12 @@ namespace Exiled.Loader
             return false;
         }
 
-        private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
+        private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin, Version pluginVersion)
         {
             if (plugin.IgnoreRequiredVersionCheck)
                 return false;
 
-            Version requiredVersion = plugin.RequiredExiledVersion;
+            Version requiredVersion = plugin.RequiredExiledVersion == default ? pluginVersion : plugin.RequiredExiledVersion;
             Version actualVersion = Version;
 
             // Check Major version

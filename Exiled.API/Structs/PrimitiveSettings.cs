@@ -8,6 +8,7 @@
 namespace Exiled.API.Structs
 {
     using AdminToys;
+    using Exiled.API.Features.Toys;
     using UnityEngine;
 
     /// <summary>
@@ -19,105 +20,79 @@ namespace Exiled.API.Structs
         /// Initializes a new instance of the <see cref="PrimitiveSettings"/> struct.
         /// </summary>
         /// <param name="primitiveType">The type of the primitive.</param>
+        /// <param name="flags">The <see cref="PrimitiveFlags"/> to apply.</param>
         /// <param name="color">The color of the primitive.</param>
         /// <param name="position">The position of the primitive.</param>
         /// <param name="rotation">The rotation of the primitive.</param>
         /// <param name="scale">The scale of the primitive.</param>
         /// <param name="spawn">Whether or not the primitive should be spawned.</param>
         /// <param name="isStatic">Whether or not the primitive should be static.</param>
-        public PrimitiveSettings(PrimitiveType primitiveType, Color color, Vector3 position, Vector3 rotation, Vector3 scale, bool spawn, bool isStatic)
+        public PrimitiveSettings(PrimitiveType primitiveType, Color? color, Vector3? position, PrimitiveFlags flags = PrimitiveFlags.Visible | PrimitiveFlags.Collidable, Quaternion? rotation = null, Vector3? scale = null, bool isStatic = false, bool spawn = true)
         {
             PrimitiveType = primitiveType;
-            Flags = PrimitiveFlags.Collidable | PrimitiveFlags.Visible;
-            Color = color;
-            Position = position;
-            Rotation = rotation;
-            Scale = scale;
-            Spawn = spawn;
+            Color = color ?? Color.gray;
+            Position = position ?? Vector3.one;
+            Flags = flags;
+            Rotation = rotation ?? Quaternion.identity;
+            Scale = scale ?? Vector3.one;
             IsStatic = isStatic;
+            ShouldSpawn = spawn;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PrimitiveSettings"/> struct.
         /// </summary>
-        /// <param name="primitiveType">The type of the primitive.</param>
-        /// <param name="color">The color of the primitive.</param>
-        /// <param name="position">The position of the primitive.</param>
-        /// <param name="rotation">The rotation of the primitive.</param>
-        /// <param name="scale">The scale of the primitive.</param>
-        /// <param name="spawn">Whether or not the primitive should be spawned.</param>
-        public PrimitiveSettings(PrimitiveType primitiveType, Color color, Vector3 position, Vector3 rotation, Vector3 scale, bool spawn)
+        /// <param name="primitive">The primitive to copy properties of.</param>
+        public PrimitiveSettings(Primitive primitive)
         {
-            PrimitiveType = primitiveType;
-            Flags = PrimitiveFlags.Collidable | PrimitiveFlags.Visible;
-            Color = color;
-            Position = position;
-            Rotation = rotation;
-            Scale = scale;
-            Spawn = spawn;
-            IsStatic = false;
+            PrimitiveType = primitive.Type;
+            Flags = primitive.Flags;
+            Color = primitive.Color;
+            Position = primitive.Position;
+            Rotation = primitive.Rotation;
+            Scale = primitive.Scale;
+            IsStatic = primitive.IsStatic;
+            ShouldSpawn = true;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrimitiveSettings"/> struct.
+        /// Gets or sets the primitive type.
         /// </summary>
-        /// <param name="primitiveType">The type of the primitive.</param>
-        /// <param name="primitiveFlags">The flags of the primitive.</param>
-        /// <param name="color">The color of the primitive.</param>
-        /// <param name="position">The position of the primitive.</param>
-        /// <param name="rotation">The rotation of the primitive.</param>
-        /// <param name="scale">The scale of the primitive.</param>
-        /// <param name="spawn">Whether or not the primitive should be spawned.</param>
-        public PrimitiveSettings(PrimitiveType primitiveType, PrimitiveFlags primitiveFlags, Color color, Vector3 position, Vector3 rotation, Vector3 scale, bool spawn)
-        {
-            PrimitiveType = primitiveType;
-            Flags = primitiveFlags;
-            Color = color;
-            Position = position;
-            Rotation = rotation;
-            Scale = scale;
-            Spawn = spawn;
-            IsStatic = false;
-        }
+        public PrimitiveType PrimitiveType { get; set;  }
 
         /// <summary>
-        /// Gets the primitive type.
+        /// Gets or sets the primitive flags.
         /// </summary>
-        public PrimitiveType PrimitiveType { get; }
+        public PrimitiveFlags Flags { get; set;  }
 
         /// <summary>
-        /// Gets the primitive flags.
+        /// Gets or sets the primitive color.
         /// </summary>
-        public PrimitiveFlags Flags { get; }
+        public Color Color { get; set; }
 
         /// <summary>
-        /// Gets the primitive color.
+        /// Gets or sets the primitive position.
         /// </summary>
-        public Color Color { get; }
+        public Vector3 Position { get; set; }
 
         /// <summary>
-        /// Gets the primitive position.
+        /// Gets or sets the primitive rotation.
         /// </summary>
-        public Vector3 Position { get; }
+        public Quaternion Rotation { get; set; }
 
         /// <summary>
-        /// Gets the primitive rotation.
+        /// Gets or sets the primitive scale.
         /// </summary>
-        public Vector3 Rotation { get; }
+        public Vector3 Scale { get; set; }
 
         /// <summary>
-        /// Gets the primitive scale.
+        /// Gets or sets a value indicating whether or not the primitive should be spawned.
         /// </summary>
-        public Vector3 Scale { get; }
+        public bool IsStatic { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the primitive should be spawned.
+        /// Gets or sets a value indicating whether or not the primitive should be spawned.
         /// </summary>
-        public bool IsStatic { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether or not the primitive should be spawned.
-        /// </summary>
-        public bool Spawn { get; }
+        public bool ShouldSpawn { get; set; }
     }
 }

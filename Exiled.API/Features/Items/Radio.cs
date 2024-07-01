@@ -8,17 +8,19 @@
 namespace Exiled.API.Features.Items
 {
     using Enums;
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
-
     using InventorySystem.Items.Radio;
-
     using Structs;
+    using VoiceChat.Playbacks;
 
     /// <summary>
     /// A wrapper class for <see cref="RadioItem"/>.
     /// </summary>
     public class Radio : Item, IWrapper<RadioItem>
     {
+        private readonly ConstProperty<float> drainMultiplier = new(RadioItem.DrainMultiplier, new[] { typeof(RadioItem) });
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Radio"/> class.
         /// </summary>
@@ -88,6 +90,20 @@ namespace Exiled.API.Features.Items
         {
             get => Base._enabled;
             set => Base._enabled = value;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the radio is transmitting.
+        /// </summary>
+        public bool IsTransmitting => PersonalRadioPlayback.IsTransmitting(Owner.ReferenceHub);
+
+        /// <summary>
+        /// Gets or sets a multiplier for draining radio.
+        /// </summary>
+        public float DrainMultiplier
+        {
+            get => drainMultiplier;
+            set => drainMultiplier.Value = value;
         }
 
         /// <summary>
