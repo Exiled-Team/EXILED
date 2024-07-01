@@ -2568,6 +2568,7 @@ namespace Exiled.API.Features
 
             AmmoLimits[index] = ammoLimit;
 
+            // if (limit == ushort.MinValue) ammoLimit.Limit = ServerConfigSynchronizer.Singleton.AmmoLimitsSync[index].Limit;
             MirrorExtensions.SendFakeSyncObject(this, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), writer =>
             {
                 writer.WriteULong(2ul);

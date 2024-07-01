@@ -27,7 +27,10 @@ namespace Exiled.Events.Patches.Fixes
             if (!Player.TryGet(player, out Player ply) || ply.AmmoLimits is null)
                 return;
 
-            __result = (ushort)(ply.AmmoLimits.Find(x => x.AmmoType == ammoType).Limit + __result - InventoryLimits.GetAmmoLimit(null, ammoType));
+            int index = ply.AmmoLimits.FindIndex(x => x.AmmoType == ammoType);
+
+            if (ply.AmmoLimits.TryGet(index, out ServerConfigSynchronizer.AmmoLimit limit))
+                __result = limit.Limit;
         }
     }
 }

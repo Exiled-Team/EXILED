@@ -33,7 +33,8 @@ namespace Exiled.Events.Patches.Fixes
             if (index == -1)
                 return;
 
-            __result = ply.CategoryLimits[index];
+            if (ply.CategoryLimits.TryGet(index, out sbyte limit) && limit != -1)
+                __result = limit;
         }
     }
 }
