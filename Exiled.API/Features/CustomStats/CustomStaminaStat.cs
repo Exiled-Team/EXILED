@@ -22,7 +22,7 @@ namespace Exiled.API.Features.CustomStats
         /// <summary>
         /// Gets or sets the maximum amount of stamina the player will have.
         /// </summary>
-        public float CustomMaxValue { get; set; } = 2;
+        public float CustomMaxValue { get; set; }
 
         /// <summary>
         /// Clamps a float to fit the current stamina bar.
