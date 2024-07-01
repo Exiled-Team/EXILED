@@ -15,7 +15,6 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
@@ -195,10 +194,10 @@ namespace Exiled.CustomModules.API.Features
                     return;
                 }
 
-                bool isCustomItem = typeof(CustomItem).IsAssignableFrom(value.GetType());
+                bool isCustomItem = value is CustomItem;
                 if (isCustomItem)
                 {
-                    if (!CustomItems.Any(customItem => customItem.GetType() == value.GetType()))
+                    if (CustomItems.All(customItem => customItem.GetType() != value.GetType()))
                     {
                         if (IsInventoryFull)
                             return;
@@ -206,15 +205,18 @@ namespace Exiled.CustomModules.API.Features
                         AddItem(value);
                     }
 
-                    Item customItem = Items.LastOrDefault(i => i.TryGetComponent(out ItemBehaviour behaviour) && behaviour.GetType() == (value as CustomItem).BehaviourComponent);
-                    Inventory.ServerSelectItem(customItem.Serial);
+                    Item customItem = Items.LastOrDefault(i => i.TryGetComponent(out ItemBehaviour behaviour) && behaviour.GetType() == (value as CustomItem)?.BehaviourComponent);
+
+                    if (customItem)
+                        Inventory.ServerSelectItem(customItem.Serial);
+
                     return;
                 }
 
                 if (value is not Item item)
                     return;
 
-                CurrentItem = value as Item;
+                CurrentItem = item;
             }
         }
 
@@ -261,7 +263,7 @@ namespace Exiled.CustomModules.API.Features
         /// <typeparam name="T">The type of the <see cref="PlayerAbility"/>.</typeparam>
         /// <returns><see langword="true"/> if a <see cref="PlayerAbility"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
         public bool HasCustomAbility<T>()
-            where T : PlayerAbility => CustomItems.Any(item => item.GetType() == typeof(T));
+            where T : PlayerAbility => CustomAbilities.Any(ability => ability.GetType() == typeof(T));
 
         /// <summary>
         /// Tries to get the first <see cref="CustomItem"/> of the specified type from the collection of custom items.
@@ -270,7 +272,7 @@ namespace Exiled.CustomModules.API.Features
         /// <param name="customItem">The output parameter that will contain the retrieved <see cref="CustomItem"/>, if found.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomItem"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
         public bool TryGetCustomItem<T>(out T customItem)
-            where T : CustomItem => customItem = CustomItems.FirstOrDefault(item => item.GetType() == typeof(T)).Cast<T>();
+            where T : CustomItem => customItem = CustomItems.FirstOrDefault(item => item.GetType() == typeof(T))?.Cast<T>();
 
         /// <summary>
         /// Tries to get the <see cref="CustomRoles.CustomRole"/> of the specified type from the <see cref="Pawn"/>.
