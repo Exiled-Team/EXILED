@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Fixes
     using System.Reflection.Emit;
 
     using API.Features;
-    using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Core.Generic.Pools;
     using HarmonyLib;
 
     using static HarmonyLib.AccessTools;

@@ -8,9 +8,10 @@
 namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups.Projectiles;
-
     using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
 
@@ -32,23 +33,26 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="FlashGrenadePickup"/> class.
         /// </summary>
         internal FlashGrenadePickup()
-            : base(ItemType.GrenadeFlash)
+            : this((TimedGrenadePickup)ItemType.GrenadeFlash.GetItemBase().ServerDropItem())
         {
         }
 
         /// <summary>
         /// Gets or sets the minimum duration of player can take the effect.
         /// </summary>
+        [EProperty(category: nameof(FlashGrenadePickup))]
         public float MinimalDurationEffect { get; set; }
 
         /// <summary>
         /// Gets or sets the additional duration of the <see cref="EffectType.Blinded"/> effect.
         /// </summary>
+        [EProperty(category: nameof(FlashGrenadePickup))]
         public float AdditionalBlindedEffect { get; set; }
 
         /// <summary>
         /// Gets or sets the how mush the flash grenade going to be intensified when explode at <see cref="RoomType.Surface"/>.
         /// </summary>
+        [EProperty(category: nameof(FlashGrenadePickup))]
         public float SurfaceDistanceIntensifier { get; set; }
 
         /// <inheritdoc/>

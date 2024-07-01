@@ -106,6 +106,41 @@ namespace Exiled.Events.Handlers
         public static Event<SpawningTeamVehicleEventArgs> SpawningTeamVehicle { get; set; } = new();
 
         /// <summary>
+        /// Called before spawning Scp244.
+        /// </summary>
+        public static Event<Scp244SpawningEventArgs> Scp244Spawning { get; set; } = new();
+
+        /// <summary>
+        /// Called before dealing damage to the door.
+        /// </summary>
+        public static Event<DamagingDoorEventArgs> DoorDamaging { get; set; } = new();
+
+        /// <summary>
+        /// Called before destroying the door.
+        /// </summary>
+        public static Event<DestroyingDoorEventArgs> DoorDestroying { get; set; } = new();
+
+        /// <summary>
+        /// Called before destroyed the door.
+        /// </summary>
+        public static Event<DestroyedDoorEventArgs> DoorDestroyed { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before an item is placed in the pocket dimension.
+        /// </summary>
+        public static Event<PlacingPickupIntoPocketDimensionEventArgs> PlacingPickupIntoPocketDimension { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before elevator starts moving.
+        /// </summary>
+        public static Event<ElevatorMovingEventArgs> ElevatorMoving { get; set; } = new();
+
+        /// <summary>
+        /// Invoked after an elevator has arrived.
+        /// </summary>
+        public static Event<ElevatorArrivedEventArgs> ElevatorArrived { get; set; } = new();
+
+        /// <summary>
         /// Called before placing a decal.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingBulletHoleEventArgs"/> instance.</param>
@@ -205,5 +240,47 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SpawningTeamVehicleEventArgs"/> instance.</param>
         public static void OnSpawningTeamVehicle(SpawningTeamVehicleEventArgs ev) => SpawningTeamVehicle.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before destroyed the door.
+        /// </summary>
+        /// <param name="ev">The <see cref="DestroyedDoorEventArgs"/> instance.</param>
+        public static void OnDoorDestroyed(DestroyedDoorEventArgs ev) => DoorDestroyed.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before destroying the door.
+        /// </summary>
+        /// <param name="ev">The <see cref="DestroyingDoorEventArgs"/> instance.</param>
+        public static void OnDoorDestroying(DestroyingDoorEventArgs ev) => DoorDestroying.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before dealing damage to the door.
+        /// </summary>
+        /// <param name="ev">The <see cref="DamagingDoorEventArgs"/> instance.</param>
+        public static void OnDoorDamaging(DamagingDoorEventArgs ev) => DoorDamaging.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before spawning Scp244.
+        /// </summary>
+        /// <param name="ev">The <see cref="Scp244SpawningEventArgs"/> instance.</param>
+        public static void OnScp244Spawning(Scp244SpawningEventArgs ev) => Scp244Spawning.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before an item is dropped in the pocket dimension.
+        /// </summary>
+        /// <param name="ev">The <see cref="PlacingPickupIntoPocketDimensionEventArgs"/> instnace.</param>
+        public static void OnPlacingPickupIntoPocketDimension(PlacingPickupIntoPocketDimensionEventArgs ev) => PlacingPickupIntoPocketDimension.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before elevator starts moving.
+        /// </summary>
+        /// <param name="ev">The <see cref="ElevatorMovingEventArgs"/> instance.</param>
+        public static void OnElevatorMoving(ElevatorMovingEventArgs ev) => ElevatorMoving.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after an elevator has arrived.
+        /// </summary>
+        /// <param name="ev">The <see cref="ElevatorArrivedEventArgs"/> instance.</param>
+        public static void OnElevatorArrived(ElevatorArrivedEventArgs ev) => ElevatorArrived.InvokeSafely(ev);
     }
 }

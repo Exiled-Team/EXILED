@@ -7,8 +7,9 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Items;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables;
@@ -32,40 +33,44 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">.</param>
         internal UsablePickup(ItemType type)
-            : base(type)
+            : this(type.GetItemBase().ServerDropItem())
         {
         }
 
         /// <summary>
         /// Gets or sets how long it takes to use the item.
         /// </summary>
+        [EProperty(category: nameof(UsablePickup))]
         public float UseTime { get; set; }
 
         /// <summary>
         /// Gets or sets how long after using starts a player has to cancel using the item.
         /// </summary>
+        [EProperty(category: nameof(UsablePickup))]
         public float MaxCancellableTime { get; set; }
 
         /// <inheritdoc/>
         internal override void ReadItemInfo(Item item)
         {
             base.ReadItemInfo(item);
-            if (item is Usable usableitem)
-            {
-                UseTime = usableitem.UseTime;
-                MaxCancellableTime = usableitem.MaxCancellableTime;
-            }
+
+            if (item is not Usable usableitem)
+                return;
+
+            UseTime = usableitem.UseTime;
+            MaxCancellableTime = usableitem.MaxCancellableTime;
         }
 
         /// <inheritdoc/>
         protected override void InitializeProperties(ItemBase itemBase)
         {
             base.InitializeProperties(itemBase);
-            if (itemBase is UsableItem usableitem)
-            {
-                UseTime = usableitem.UseTime;
-                MaxCancellableTime = usableitem.MaxCancellableTime;
-            }
+
+            if (itemBase is not UsableItem usableitem)
+                return;
+
+            UseTime = usableitem.UseTime;
+            MaxCancellableTime = usableitem.MaxCancellableTime;
         }
     }
 }

@@ -9,12 +9,12 @@ namespace Exiled.API.Features.Pickups
 {
     using System;
 
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
-    using InventorySystem.Items;
     using InventorySystem.Items.Usables.Scp244;
-
     using UnityEngine;
 
     /// <summary>
@@ -37,9 +37,8 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Scp244Pickup(ItemType type)
-            : base(type)
+            : this((Scp244DeployablePickup)type.GetItemBase().ServerDropItem())
         {
-            Base = (Scp244DeployablePickup)((Pickup)this).Base;
         }
 
         /// <summary>
@@ -50,26 +49,31 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the amount of time this Scp244 has been on the ground.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public TimeSpan Lifetime => Base._lifeTime.Elapsed;
 
         /// <summary>
         /// Gets the speed of <see cref="Scp244Pickup"/>'s too grow.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public float GrowSpeed => Base.GrowSpeed;
 
         /// <summary>
         /// Gets the time for the sphere to finish their expansion.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public float TimeToGrow => Base.TimeToGrow;
 
         /// <summary>
         /// Gets the current size effect of the Scp244's Hypothermia.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public float CurrentDiameter => Base.CurrentDiameter;
 
         /// <summary>
         /// Gets or sets the current size percent of the Scp244's Hypothermia.
         /// </summary>
+        [EProperty(category: nameof(Scp244Pickup))]
         public float CurrentSizePercent
         {
             get => Base.CurrentSizePercent;
@@ -80,6 +84,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the maximum diameter within which SCP-244's hypothermia effect is dealt.
         /// </summary>
         /// <remarks>This does not prevent visual effects.</remarks>
+        [EProperty(category: nameof(Scp244Pickup))]
         public float MaxDiameter
         {
             get => Base.MaxDiameter;
@@ -89,6 +94,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the Scp244's remaining health.
         /// </summary>
+        [EProperty(category: nameof(Scp244Pickup))]
         public float Health
         {
             get => Base._health;
@@ -98,16 +104,19 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether or not this Scp244 is breakable.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public bool IsBreakable => Base.State is Scp244State.Idle or Scp244State.Active;
 
         /// <summary>
         /// Gets a value indicating whether or not this Scp244 is broken.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public bool IsBroken => Base.State is Scp244State.Destroyed;
 
         /// <summary>
         /// Gets or sets the <see cref="Scp244State"/>.
         /// </summary>
+        [EProperty(category: nameof(Scp244Pickup))]
         public Scp244State State
         {
             get => Base.State;
@@ -117,6 +126,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the activation angle, where 1 is a minimum, and -1 it's a maximum activation angle.
         /// </summary>
+        [EProperty(category: nameof(Scp244Pickup))]
         public float ActivationDot
         {
             get => Base._activationDot;
@@ -124,10 +134,10 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Damages the Scp244Pickup.
+        /// Damages the <see cref="Scp244Pickup"/>.
         /// </summary>
         /// <param name="handler">The <see cref="DamageHandler"/> used to deal damage.</param>
-        /// <returns><see langword="true"/> if the the damage has been deal; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the the damage has been dealt; otherwise, <see langword="false"/>.</returns>
         public bool Damage(DamageHandler handler) => Base.Damage(handler.Damage, handler, Vector3.zero);
 
         /// <summary>

@@ -7,7 +7,6 @@
 
 namespace Exiled.Loader
 {
-    using System;
     using System.IO;
     using System.Reflection;
 
@@ -38,12 +37,6 @@ namespace Exiled.Loader
         [PluginPriority(byte.MinValue)]
         public void Enable()
         {
-            if (Config == null)
-            {
-                Log.Error("Loader's config is null. EXILED won't be loaded. Please check your config.");
-                return;
-            }
-
             if (!Config.IsEnabled)
             {
                 Log.Info("EXILED is disabled on this server via config.");

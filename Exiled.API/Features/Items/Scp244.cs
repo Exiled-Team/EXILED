@@ -8,13 +8,13 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
-
     using InventorySystem;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp244;
-
     using UnityEngine;
 
     /// <summary>
@@ -22,6 +22,8 @@ namespace Exiled.API.Features.Items
     /// </summary>
     public class Scp244 : Usable, IWrapper<Scp244Item>
     {
+        private readonly ConstProperty<float> dropHeightOffset = new(Scp244Item.DropHeightOffset, new[] { typeof(Scp244Item) });
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp244"/> class.
         /// </summary>
@@ -53,6 +55,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-244 will spawn primed.
         /// </summary>
+        [EProperty(category: nameof(Scp244))]
         public bool Primed
         {
             get => Base._primed;
@@ -62,18 +65,30 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the Scp244's remaining health.
         /// </summary>
+        [EProperty(category: nameof(Scp244))]
         public float Health { get; set; }
 
         /// <summary>
         /// Gets or sets the activation angle, where 1 is the minimum and -1 is the maximum activation angle.
         /// </summary>
+        [EProperty(category: nameof(Scp244))]
         public float ActivationDot { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum diameter within which SCP-244's hypothermia effect is dealt.
         /// </summary>
         /// <remarks>This does not prevent visual effects.</remarks>
+        [EProperty(category: nameof(Scp244))]
         public float MaxDiameter { get; set; }
+
+        /// <summary>
+        /// Gets or sets an offset for the drop height.
+        /// </summary>
+        public float DropHeightOffset
+        {
+            get => dropHeightOffset;
+            set => dropHeightOffset.Value = value;
+        }
 
         /// <summary>
         /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
