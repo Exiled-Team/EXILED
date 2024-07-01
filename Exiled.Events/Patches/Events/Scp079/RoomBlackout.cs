@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-    using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp079;
     using HarmonyLib;
@@ -33,6 +32,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label returnLabel;
+            Label continueLabel = generator.DefineLabel();
             Label allowedJump = generator.DefineLabel();
             Label jump = generator.DefineLabel();
 
@@ -49,6 +49,11 @@ namespace Exiled.Events.Patches.Events.Scp079
                 index,
                 new CodeInstruction[]
                 {
+                    // if (this._roomController is null) goto continueLabel;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility._roomController))),
+                    new(OpCodes.Brfalse_S, continueLabel),
+
                     // this.Owner
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(StandardSubroutine<Scp079Role>), nameof(StandardSubroutine<Scp079Role>.Owner))),
@@ -58,12 +63,11 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldfld, Field(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility._roomController))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RoomLightController), nameof(RoomLightController.Room))),
 
-                    // (float)this._cost
+                    // this.AbilityCost
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldfld, Field(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility._cost))),
-                    new(OpCodes.Conv_R4),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility.AbilityCost))),
 
-                    // this._duration
+                    // this._blackoutDuration
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility._blackoutDuration))),
 
@@ -93,18 +97,20 @@ namespace Exiled.Events.Patches.Events.Scp079
                     // Scp079.OnRoomBlackout(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnRoomBlackout))),
 
-                    // if (ev.IsAllowed) return;
+                    // if (!ev.IsAllowed) return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(RoomBlackoutEventArgs), nameof(RoomBlackoutEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse, returnLabel),
+
+                    new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
                 });
 
-            // replace "base.AuxManager.CurrentAux -= (float)this._cost;"
+            // replace "base.AuxManager.CurrentAux -= this.AbilityCost;"
             // with
             // "base.AuxManager.CurrentAux -= ev.AuxiliaryPowerCost;"
             offset = -1;
-            index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)Field(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility._cost))) + offset;
+            index = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp079BlackoutRoomAbility), nameof(Scp079BlackoutRoomAbility.AbilityCost)))) + offset;
 
-            newInstructions.RemoveRange(index, 3);
+            newInstructions.RemoveRange(index, 2);
 
             newInstructions.InsertRange(
                 index,

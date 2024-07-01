@@ -40,6 +40,9 @@ namespace Exiled.Events.Commands.PluginManager
         /// <inheritdoc/>
         public string Description { get; } = "Get all plugins, names, authors and versions";
 
+        /// <inheritdoc />
+        public bool SanitizeResponse { get; }
+
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
