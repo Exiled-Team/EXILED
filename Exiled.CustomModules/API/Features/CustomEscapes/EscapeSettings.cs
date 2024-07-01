@@ -9,7 +9,6 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
 {
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
-    using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using PlayerRoles;
     using UnityEngine;

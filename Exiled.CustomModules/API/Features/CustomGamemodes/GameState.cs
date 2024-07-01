@@ -12,9 +12,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.InteropServices.WindowsRuntime;
 
-    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
@@ -26,13 +24,9 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using Exiled.CustomModules.Events.EventArgs.CustomRoles;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
-    using GameCore;
-    using Interactables.Interobjects.DoorUtils;
     using LightContainmentZoneDecontamination;
     using PlayerRoles;
     using Respawning;
-    using UnityStandardAssets.CinematicEffects;
-    using Utils.Networking;
 
     /// <summary>
     /// Represents the state of the game on the server within the custom game mode, derived from <see cref="EActor"/> and implementing <see cref="IAdditiveSettings{T}"/>.

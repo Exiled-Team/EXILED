@@ -19,7 +19,6 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using MonoMod.Utils;
-    using Utils.NonAllocLINQ;
 
     /// <summary>
     /// Abstract class facilitating the seamless management of escaping behavior within the game environment.

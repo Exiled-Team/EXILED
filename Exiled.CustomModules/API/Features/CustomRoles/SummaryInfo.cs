@@ -7,15 +7,8 @@
 
 namespace Exiled.CustomModules.API.Features.CustomRoles
 {
-    using System.Collections.Generic;
-
-    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Interfaces;
-    using Exiled.API.Features.Roles;
-    using Exiled.API.Features.Spawn;
     using PlayerRoles;
 
     /// <summary>

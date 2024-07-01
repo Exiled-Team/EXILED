@@ -7,7 +7,6 @@
 
 namespace Exiled.CustomModules.API.Features.PlayerAbilities
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 

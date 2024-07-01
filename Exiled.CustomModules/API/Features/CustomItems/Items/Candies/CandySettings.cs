@@ -9,7 +9,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
 {
     using System;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features;
     using InventorySystem.Items.Usables.Scp330;
     using UnityEngine;
