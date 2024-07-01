@@ -27,7 +27,6 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Roles;
-    using Exiled.API.Features.Toys;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
     using Extensions;
