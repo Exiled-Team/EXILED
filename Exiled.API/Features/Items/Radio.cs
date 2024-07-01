@@ -11,16 +11,17 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
-
     using InventorySystem.Items.Radio;
-
     using Structs;
+    using VoiceChat.Playbacks;
 
     /// <summary>
     /// A wrapper class for <see cref="RadioItem"/>.
     /// </summary>
     public class Radio : Item, IWrapper<RadioItem>
     {
+        private readonly ConstProperty<float> drainMultiplier = new(RadioItem.DrainMultiplier, new[] { typeof(RadioItem) });
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Radio"/> class.
         /// </summary>

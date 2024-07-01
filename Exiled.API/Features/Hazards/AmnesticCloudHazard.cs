@@ -7,7 +7,13 @@
 
 namespace Exiled.API.Features.Hazards
 {
+    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
+    using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp939;
+    using UnityEngine;
+
+    using Scp939GameRole = PlayerRoles.PlayableScps.Scp939.Scp939Role;
 
     /// <summary>
     /// A wrapper for SCP-939's amnestic cloud.
@@ -26,6 +32,16 @@ namespace Exiled.API.Features.Hazards
             Owner = Player.Get(Ability.Owner);
         }
 
+        /// <summary>
+        /// Gets the amnestic cloud prefab's type.
+        /// </summary>
+        public static PrefabType PrefabType => PrefabType.AmnesticCloudHazard;
+
+        /// <summary>
+        /// Gets the amnestic cloud prefab's object.
+        /// </summary>
+        public static GameObject PrefabObject => PrefabHelper.PrefabToGameObject[PrefabType];
+
         /// <inheritdoc cref="Hazard.Base"/>
         public new Scp939AmnesticCloudInstance Base { get; }
 
@@ -38,6 +54,9 @@ namespace Exiled.API.Features.Hazards
         /// Gets the player who controls SCP-939.
         /// </summary>
         public Player Owner { get; }
+
+        /// <inheritdoc />
+        public override HazardType Type { get; } = HazardType.AmnesticCloud;
 
         /// <summary>
         /// Gets or sets current state of cloud.

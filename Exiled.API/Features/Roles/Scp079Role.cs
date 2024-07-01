@@ -18,6 +18,7 @@ namespace Exiled.API.Features.Roles
     using MapGeneration;
     using Mirror;
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
     using PlayerRoles.PlayableScps.Scp079.Pinging;
@@ -33,8 +34,11 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-079.
     /// </summary>
-    public class Scp079Role : Role, ISubroutinedScpRole
+    public class Scp079Role : Role, ISubroutinedScpRole, ISpawnableScp
     {
+        private readonly ConstProperty<float> sameZoneSwitch = new(0.1f, new[] { typeof(Scp079CurrentCameraSync) });
+        private readonly ConstProperty<float> differentZoneSwitch = new(0.98f, new[] { typeof(Scp079CurrentCameraSync) });
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp079Role"/> class.
         /// </summary>
@@ -49,6 +53,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp079SpeakerAbility subroutine not found in Scp079Role::ctor");
 
             SpeakerAbility = scp079SpeakerAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079ElevatorStateChanger scp079ElevatorStateChanger))
+                Log.Error("Scp079ElevatorStateChanger subroutine not found in Scp079Role::ctor");
+
+            ElevatorStateChanger = scp079ElevatorStateChanger;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079DoorStateChanger scp079DoorAbility))
                 Log.Error("Scp079DoorStateChanger subroutine not found in Scp079Role::ctor");
@@ -113,6 +122,7 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp079ScannerTracker subroutine not found in Scp079Role::ctor");
 
             ScannerTracker = scp079ScannerTracker;
+            ScannerSequence = scp079ScannerTracker._sequence;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079ScannerZoneSelector scp079ScannerZoneSelector))
                 Log.Error("Scp079ScannerZoneSelector subroutine not found in Scp079Role::ctor");
@@ -136,6 +146,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-079's <see cref="Scp079SpeakerAbility"/>.
         /// </summary>
         public Scp079SpeakerAbility SpeakerAbility { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079ElevatorStateChanger"/>.
+        /// </summary>
+        public Scp079ElevatorStateChanger ElevatorStateChanger { get; }
 
         /// <summary>
         /// Gets SCP-079's <see cref="Scp079DoorAbility"/>.
@@ -201,6 +216,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-079's <see cref="Scp079ScannerTracker"/>.
         /// </summary>
         public Scp079ScannerTracker ScannerTracker { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079ScannerSequence"/>.
+        /// </summary>
+        public Scp079ScannerSequence ScannerSequence { get; }
 
         /// <summary>
         /// Gets SCP-079's <see cref="Scp079ScannerZoneSelector"/>.
@@ -372,7 +392,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets SCP-079's next level threshold.
+        /// Gets or sets SCP-079's next level threshold.
         /// </summary>
         [EProperty(category: nameof(Scp079Role))]
         public int NextLevelThreshold
@@ -476,7 +496,7 @@ namespace Exiled.API.Features.Roles
         public bool IsLost => LostSignalHandler.Lost;
 
         /// <summary>
-        /// Gets a value indicating how much more time SCP-079 will be lost.
+        /// Gets or sets a value indicating how much more time SCP-079 will be lost.
         /// </summary>
         [EProperty(category: nameof(Scp079Role))]
         public float LostTime
@@ -497,6 +517,24 @@ namespace Exiled.API.Features.Roles
         public new Scp079GameRole Base { get; }
 
         /// <summary>
+        /// Gets or sets time it takes for SCP-079 to switch to camera in same zone.
+        /// </summary>
+        public float SameZoneSwitchTime
+        {
+            get => sameZoneSwitch;
+            set => sameZoneSwitch.Value = value;
+        }
+
+        /// <summary>
+        /// Gets or sets time it takes for SCP-079 to switch to camera in other zone.
+        /// </summary>
+        public float DifferentZoneSwitchTime
+        {
+            get => differentZoneSwitch;
+            set => differentZoneSwitch.Value = value;
+        }
+
+        /// <summary>
         /// Unlocks all doors that SCP-079 has locked.
         /// </summary>
         public void UnlockAllDoors() => DoorLockChanger.ServerUnlock();
@@ -512,36 +550,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="amount">The amount to grant.</param>
         /// <param name="reason">The reason to grant experience.</param>
-        public void AddExperience(int amount, Scp079HudTranslation reason = Scp079HudTranslation.ExpGainAdminCommand) => TierManager.ServerGrantExperience(amount, reason);
-
-        /// <summary>
-        /// Grants SCP-079 experience.
-        /// </summary>
-        /// <param name="amount">The amount to grant.</param>
-        /// <param name="reason">The reason to grant experience.</param>
         /// <param name="subject">The RoleType of the player that's causing it to happen.</param>
-        public void AddExperience(int amount, Scp079HudTranslation reason, RoleTypeId subject) => TierManager.ServerGrantExperience(amount, reason, subject);
-
-        /// <summary>
-        /// Locks the provided <paramref name="door"/>.
-        /// </summary>
-        /// <param name="door">The door to lock.</param>
-        /// <returns><see langword="true"/> if the door has been lock; otherwise, <see langword="false"/>.</returns>
-        public bool LockDoor(Door door)
-        {
-            if (door is not null)
-            {
-                DoorLockChanger.LockedDoor = door.Base;
-                DoorLockChanger._lockTime = NetworkTime.time;
-                DoorLockChanger.LockedDoor.ServerChangeLock(DoorLockReason.Regular079, true);
-                if (door.Room is not null)
-                    MarkRoom(door.Room);
-                AuxManager.CurrentAux -= DoorLockChanger.GetCostForDoor(DoorAction.Locked, DoorLockChanger.LockedDoor);
-                return true;
-            }
-
-            return false;
-        }
+        public void AddExperience(int amount, Scp079HudTranslation reason = Scp079HudTranslation.ExpGainAdminCommand, RoleTypeId subject = RoleTypeId.None) => TierManager.ServerGrantExperience(amount, reason, subject);
 
         /// <summary>
         /// Locks the provided <paramref name="door"/>.

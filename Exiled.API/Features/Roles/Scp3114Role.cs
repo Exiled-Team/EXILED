@@ -27,7 +27,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-3114.
     /// </summary>
-    public class Scp3114Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp3114Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp3114Role"/> class.
@@ -166,9 +166,14 @@ namespace Exiled.API.Features.Roles
             set
             {
                 if (Ragdoll is null)
-                    return;
+                {
+                    if (!Ragdoll.TryCreate(value, "Ragdoll", new CustomReasonDamageHandler("SCP-3114"), out Ragdoll ragdoll))
+                        return;
+                    Ragdoll = ragdoll;
+                }
 
                 Ragdoll.Role = value;
+                DisguiseStatus = DisguiseStatus.Active;
                 Identity.ServerResendIdentity();
             }
         }
@@ -236,6 +241,11 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets or sets the bound dance.
+        /// </summary>
+        internal DanceType DanceType { get; set; }
+
+        /// <summary>
         /// Reset Scp3114 FakeIdentity.
         /// </summary>
         public void ResetIdentity()
@@ -257,5 +267,21 @@ namespace Exiled.API.Features.Roles
         /// <param name="alreadySpawned">The List of Roles already spawned.</param>
         /// <returns>The Spawn Chance.</returns>
         public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base is ISpawnableScp spawnableScp ? spawnableScp.GetSpawnChance(alreadySpawned) : 0;
+
+        /// <summary>
+        /// Stops dancing.
+        /// </summary>
+        public void StopDancing() => Dance.SendRpc(x => x.IsDancing = false);
+
+        /// <summary>
+        /// Starts the dancing process.
+        /// </summary>
+        /// <param name="danceType">The requested <see cref="DanceType"/>.</param>
+        public void StartDancing(DanceType danceType) => Dance.SendRpc((x) =>
+        {
+            x.IsDancing = true;
+            x._serverStartPos = new(Position);
+            DanceType = danceType;
+        });
     }
 }

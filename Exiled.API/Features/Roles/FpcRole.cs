@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
+    using System.Reflection;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Attributes;
@@ -15,10 +16,7 @@ namespace Exiled.API.Features.Roles
     using HarmonyLib;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-
-    using PlayerStatsSystem;
     using RelativePositioning;
-
     using UnityEngine;
 
     /// <summary>
@@ -26,7 +24,10 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public abstract class FpcRole : Role
     {
+        private static FieldInfo enableFallDamageField;
+
         private bool isUsingStamina = true;
+        private RoleTypeId? fakeAppearance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FpcRole"/> class.
@@ -56,6 +57,16 @@ namespace Exiled.API.Features.Roles
         /// Gets the <see cref="FirstPersonController"/>.
         /// </summary>
         public FpcStandardRoleBase FirstPersonController { get; }
+
+        /// <summary>
+        /// Gets the <see cref="FirstPersonMovementModule"/>.
+        /// </summary>
+        public FirstPersonMovementModule MovementModule => FirstPersonController.FpcModule;
+
+        /// <summary>
+        /// Gets the <see cref="CharacterController"/>.
+        /// </summary>
+        public CharacterController CharacterController => FirstPersonController.FpcModule.CharController;
 
         /// <summary>
         /// Gets or sets the player's relative position.
@@ -254,7 +265,7 @@ namespace Exiled.API.Features.Roles
         public bool IsHumeShieldedRole => this is IHumeShieldRole;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player has noclip enabled.
+        /// Gets or sets a value indicating the fake appearance of the player.
         /// </summary>
         [EProperty(category: nameof(FpcRole))]
         public RoleTypeId? FakeAppearance
