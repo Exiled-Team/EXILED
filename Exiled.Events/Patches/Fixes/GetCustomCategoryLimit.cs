@@ -8,11 +8,11 @@
 namespace Exiled.Events.Patches.Fixes
 {
     using System;
-    using System.Linq;
 
     using Exiled.API.Features;
     using HarmonyLib;
     using InventorySystem.Configs;
+    using UnityEngine;
 
     /// <summary>
     /// Patches the <see cref="InventoryLimits.GetCategoryLimit(ItemCategory, ReferenceHub)"/> delegate.
@@ -25,16 +25,10 @@ namespace Exiled.Events.Patches.Fixes
 #pragma warning disable SA1313
         private static void Postfix(ItemCategory category, ReferenceHub player, ref sbyte __result)
         {
-            if (!Player.TryGet(player, out Player ply) || ply.CategoryLimits is null)
+            if (!Player.TryGet(player, out Player ply) || !ply.CustomCategoryLimits.TryGetValue(category, out sbyte limit))
                 return;
 
-            int index = InventoryLimits.StandardCategoryLimits.Where(x => x.Value >= 0).OrderBy(x => x.Key).ToList().FindIndex(x => x.Key == category);
-
-            if (index == -1)
-                return;
-
-            if (ply.CategoryLimits.TryGet(index, out sbyte limit) && limit != -1)
-                __result = limit;
+            __result = (sbyte)Mathf.Clamp(limit + __result - InventoryLimits.GetCategoryLimit(null, category), sbyte.MinValue, sbyte.MaxValue);
         }
     }
 }

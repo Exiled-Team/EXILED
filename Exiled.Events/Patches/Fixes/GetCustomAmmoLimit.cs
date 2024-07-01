@@ -9,13 +9,15 @@ namespace Exiled.Events.Patches.Fixes
 {
     using System;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using HarmonyLib;
     using InventorySystem.Configs;
+    using UnityEngine;
 
     /// <summary>
     /// Patches the <see cref="InventoryLimits.GetAmmoLimit(ItemType, ReferenceHub)"/> delegate.
-    /// Sync <see cref="API.Features.Player.SetAmmoLimit(API.Enums.AmmoType, ushort)"/>.
+    /// Sync <see cref="Player.SetAmmoLimit(API.Enums.AmmoType, ushort)"/>.
     /// Changes <see cref="ushort.MaxValue"/> to <see cref="ushort.MinValue"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryLimits), nameof(InventoryLimits.GetAmmoLimit), new Type[] { typeof(ItemType), typeof(ReferenceHub) })]
@@ -24,13 +26,10 @@ namespace Exiled.Events.Patches.Fixes
 #pragma warning disable SA1313
         private static void Postfix(ItemType ammoType, ReferenceHub player, ref ushort __result)
         {
-            if (!Player.TryGet(player, out Player ply) || ply.AmmoLimits is null)
+            if (!Player.TryGet(player, out Player ply) || !ply.CustomAmmoLimits.TryGetValue(ammoType.GetAmmoType(), out ushort limit))
                 return;
 
-            int index = ply.AmmoLimits.FindIndex(x => x.AmmoType == ammoType);
-
-            if (ply.AmmoLimits.TryGet(index, out ServerConfigSynchronizer.AmmoLimit limit))
-                __result = limit.Limit;
+            __result = (ushort)Mathf.Clamp(limit + __result - InventoryLimits.GetAmmoLimit(null, ammoType), ushort.MinValue, ushort.MaxValue);
         }
     }
 }
