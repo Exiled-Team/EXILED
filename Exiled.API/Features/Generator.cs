@@ -16,9 +16,7 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
-
     using MapGeneration.Distributors;
-
     using UnityEngine;
 
     /// <summary>
@@ -30,7 +28,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.
         /// </summary>
-        internal static readonly Dictionary<Scp079Generator, Generator> Scp079GeneratorToGenerator = new();
+        internal static readonly Dictionary<Scp079Generator, Generator> Scp079GeneratorToGenerator = new(new ComponentsEqualityComparer());
         private Room room;
 
         /// <summary>
@@ -38,30 +36,37 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/>.</param>
         internal Generator(Scp079Generator scp079Generator)
+            : base(scp079Generator.gameObject)
         {
             Base = scp079Generator;
             Scp079GeneratorToGenerator.Add(scp079Generator, this);
         }
 
         /// <summary>
+        /// Gets the prefab's type.
+        /// </summary>
+        public static PrefabType PrefabType => PrefabType.GeneratorStructure;
+
+        /// <summary>
+        /// Gets the prefab's object.
+        /// </summary>
+        public static GameObject PrefabObject => PrefabHelper.PrefabToGameObject[PrefabType];
+
+        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances.
         /// </summary>
-        public static IReadOnlyCollection<Generator> List => Scp079GeneratorToGenerator.Values;
+        public static new IReadOnlyCollection<Generator> List => Scp079GeneratorToGenerator.Values;
+
+        /// <summary>
+        /// Gets a randomly selected <see cref="Generator"/>.
+        /// </summary>
+        /// <returns>A randomly selected <see cref="Generator"/> object.</returns>
+        public static Generator Random => List.Random();
 
         /// <summary>
         /// Gets the base <see cref="Scp079Generator"/>.
         /// </summary>
         public Scp079Generator Base { get; }
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the generator.
-        /// </summary>
-        public GameObject GameObject => Base.gameObject;
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.Transform"/> of the generator.
-        /// </summary>
-        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the generator's <see cref="Room"/>.
@@ -244,6 +249,18 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Spawns a <see cref="Generator"/>.
+        /// </summary>
+        /// <param name="position">The position to spawn it at.</param>
+        /// <param name="rotation">The rotation to spawn it as.</param>
+        /// <returns>The <see cref="Generator"/> that was spawned.</returns>
+        public static Generator Spawn(Vector3 position, Quaternion rotation = default)
+        {
+            Scp079Generator generator = PrefabHelper.Spawn<Scp079Generator>(PrefabType, position, rotation);
+            return Get(generator);
+        }
+
+        /// <summary>
         /// Gets the <see cref="Generator"/> belonging to the <see cref="Scp079Generator"/>, if any.
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/> instance.</param>
@@ -262,8 +279,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satisfy the condition.</returns>
         public static IEnumerable<Generator> Get(Func<Generator, bool> predicate) => List.Where(predicate);
 
         /// <summary>
@@ -293,8 +310,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Try-get a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <param name="generators">A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satify the condition.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <param name="generators">A <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains elements that satisfy the condition.</param>
         /// <returns>Whether or not at least one generator was found.</returns>
         public static bool TryGet(Func<Generator, bool> predicate, out IEnumerable<Generator> generators)
         {
@@ -325,10 +342,7 @@ namespace Exiled.API.Features
         {
             Interactables.Interobjects.DoorUtils.KeycardPermissions permission = (Interactables.Interobjects.DoorUtils.KeycardPermissions)flag;
 
-            if (isEnabled)
-                Base._requiredPermission |= permission;
-            else
-                Base._requiredPermission &= ~permission;
+            Base._requiredPermission = Base._requiredPermission.ModifyFlags(isEnabled, permission);
         }
 
         /// <summary>

@@ -10,7 +10,6 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Items;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables;
@@ -34,7 +33,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">.</param>
         internal UsablePickup(ItemType type)
-            : base(type)
+            : this(type.GetItemBase().ServerDropItem())
         {
         }
 

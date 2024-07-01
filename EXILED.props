@@ -22,6 +22,7 @@
     <HarmonyVersion>2.2.2</HarmonyVersion>
     <StyleCopVersion>1.1.118</StyleCopVersion>
     <SemanticVersioningVersion>2.0.2</SemanticVersioningVersion>
+    <YamlDotNetVersion>13.7.1</YamlDotNetVersion>
 
     <Copyright>Copyright © $(Authors) 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
     <RepositoryType>Git</RepositoryType>

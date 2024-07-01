@@ -14,9 +14,7 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
-    using InventorySystem.Items;
     using InventorySystem.Items.Usables.Scp244;
-
     using UnityEngine;
 
     /// <summary>
@@ -39,9 +37,8 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Scp244Pickup(ItemType type)
-            : base(type)
+            : this((Scp244DeployablePickup)type.GetItemBase().ServerDropItem())
         {
-            Base = (Scp244DeployablePickup)((Pickup)this).Base;
         }
 
         /// <summary>
@@ -137,10 +134,10 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Damages the Scp244Pickup.
+        /// Damages the <see cref="Scp244Pickup"/>.
         /// </summary>
         /// <param name="handler">The <see cref="DamageHandler"/> used to deal damage.</param>
-        /// <returns><see langword="true"/> if the the damage has been deal; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the the damage has been dealt; otherwise, <see langword="false"/>.</returns>
         public bool Damage(DamageHandler handler) => Base.Damage(handler.Damage, handler, Vector3.zero);
 
         /// <summary>

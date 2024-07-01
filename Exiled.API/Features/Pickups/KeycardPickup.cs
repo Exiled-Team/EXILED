@@ -12,7 +12,6 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Keycards;
 
@@ -38,9 +37,8 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal KeycardPickup(ItemType type)
-            : base(type)
+            : this((BaseKeycard)type.GetItemBase().ServerDropItem())
         {
-            Base = (BaseKeycard)((Pickup)this).Base;
         }
 
         /// <summary>

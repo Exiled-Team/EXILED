@@ -32,9 +32,8 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="MicroHIDPickup"/> class.
         /// </summary>
         internal MicroHIDPickup()
-            : base(ItemType.MicroHID)
+            : this((BaseMicroHID)ItemType.MicroHID.GetItemBase().ServerDropItem())
         {
-            Base = (BaseMicroHID)((Pickup)this).Base;
         }
 
         /// <summary>

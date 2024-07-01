@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using AdminToys;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 

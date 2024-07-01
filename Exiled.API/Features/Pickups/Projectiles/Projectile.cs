@@ -7,19 +7,12 @@
 
 namespace Exiled.API.Features.Pickups.Projectiles
 {
-    using System;
-
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
-    using InventorySystem;
-    using InventorySystem.Items;
-    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
     using UnityEngine;
-
-    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for Projectile.
@@ -41,23 +34,8 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Projectile(ItemType type)
+            : this((ThrownProjectile)type.GetItemBase().ServerDropItem())
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase) || itemBase is not ThrowableItem throwable)
-                return;
-
-            throwable.Projectile.gameObject.SetActive(false);
-            base.Base = Base = Object.Instantiate(throwable.Projectile);
-            throwable.Projectile.gameObject.SetActive(true);
-
-            PickupSyncInfo psi = new()
-            {
-                ItemId = type,
-                Serial = ItemSerialGenerator.GenerateNext(),
-                WeightKg = itemBase.Weight,
-            };
-
-            Info = psi;
-            BaseToPickup.Add(Base, this);
         }
 
         /// <summary>
@@ -92,22 +70,9 @@ namespace Exiled.API.Features.Pickups.Projectiles
             ProjectileType.Scp018 => new Scp018Projectile(),
             ProjectileType.Flashbang => new FlashbangProjectile(),
             ProjectileType.Scp2176 => new Scp2176Projectile(),
-            ProjectileType.FragGrenade => new ExplosionGrenadeProjectile(ItemType.GrenadeHE),
+            ProjectileType.FragGrenade => new ExplosionGrenadeProjectile(),
             _ => throw new System.Exception($"ProjectileType does not contain a valid value : {projectiletype}"),
         };
-
-        /// <summary>
-        /// Spawns a <see cref="Projectile"/>.
-        /// </summary>
-        /// <param name="pickup">The <see cref="Projectile"/> too spawn.</param>
-        /// <param name="position">The position to spawn the <see cref="Projectile"/> at.</param>
-        /// <param name="rotation">The rotation to spawn the <see cref="Projectile"/>.</param>
-        /// <param name="shouldBeActive">Whether the <see cref="Projectile"/> should be in active state after spawn.</param>
-        /// <param name="previousOwner">An optional previous owner of the item.</param>
-        /// <returns>The <see cref="Projectile"/> Spawn.</returns>
-        [Obsolete("Use pickup.Spawn(Vector3, Quaternion, Player) instead of this", true)]
-        public static Projectile Spawn(Projectile pickup, Vector3 position, Quaternion rotation, bool shouldBeActive = true, Player previousOwner = null)
-            => pickup.Spawn(position, rotation, shouldBeActive, previousOwner);
 
         /// <summary>
         /// Creates and spawns a <see cref="Projectile"/>.
