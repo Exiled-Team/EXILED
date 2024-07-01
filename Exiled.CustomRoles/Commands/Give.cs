@@ -43,6 +43,9 @@ namespace Exiled.CustomRoles.Commands
         /// <inheritdoc/>
         public string Description { get; } = "Gives the specified custom role to the indicated player(s).";
 
+        /// <inheritdoc />
+        public bool SanitizeResponse { get; }
+
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

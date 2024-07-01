@@ -119,7 +119,7 @@ namespace Exiled.API.Features.Pickups
             {
                 MeleeDamage = jailbirdItem._hitreg._damageMelee;
                 ChargeDamage = jailbirdItem._hitreg._damageCharge;
-                FlashDuration = jailbirdItem._hitreg._flashDuration;
+                FlashDuration = jailbirdItem._hitreg._concussionDuration;
                 Radius = jailbirdItem._hitreg._hitregRadius;
             }
         }

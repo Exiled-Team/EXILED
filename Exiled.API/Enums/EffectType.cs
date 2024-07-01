@@ -234,5 +234,10 @@ namespace Exiled.API.Enums
         /// <remarks>You can choose fog with <see cref="CustomRendering.FogType"/> and putting it on intensity.</remarks>
         /// </summary>
         FogControl,
+
+        /// <summary>
+        /// <see cref="CustomPlayerEffects.Slowness"/>.
+        /// </summary>
+        Slowness,
     }
 }
