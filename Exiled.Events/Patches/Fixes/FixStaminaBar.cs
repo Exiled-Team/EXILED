@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Fixes
     internal static class FixStaminaBar
     {
 #pragma warning disable SA1313
-        private static bool Prefix(FpcStateProcessor __instance, PlayerMovementState state, PlayerMovementState __result)
+        private static bool Prefix(FpcStateProcessor __instance, PlayerMovementState state, ref PlayerMovementState __result)
 #pragma warning restore SA1313
         {
             if (__instance._stat is not CustomStaminaStat stat)

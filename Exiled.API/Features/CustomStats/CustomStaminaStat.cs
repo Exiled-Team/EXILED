@@ -32,7 +32,7 @@ namespace Exiled.API.Features.CustomStats
         public float Clamp(float value) => CustomMaxValue == default ? Mathf.Clamp01(value) : Mathf.Clamp(value, 0, MaxValue);
 
         /// <summary>
-        /// Overiding NW Method to sync Player percentage of Stamina.
+        /// Overriding NW Method to sync Player percentage of Stamina.
         /// </summary>
         /// <param name="writer">The writer.</param>
         public override void WriteValue(NetworkWriter writer)
