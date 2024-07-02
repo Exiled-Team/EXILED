@@ -403,11 +403,11 @@ namespace Exiled.API.Features.Core
 
         /// <inheritdoc/>
         public T GetComponent<T>()
-            where T : EActor => ComponentsInChildren.FirstOrDefault(comp => typeof(T) == comp.GetType()).Cast<T>();
+            where T : EActor => ComponentsInChildren.FirstOrDefault(comp => typeof(T) == comp.GetType())?.Cast<T>();
 
         /// <inheritdoc/>
         public T GetComponent<T>(Type type)
-            where T : EActor => ComponentsInChildren.FirstOrDefault(comp => type == comp.GetType()).Cast<T>();
+            where T : EActor => ComponentsInChildren.FirstOrDefault(comp => type == comp.GetType())?.Cast<T>();
 
         /// <inheritdoc/>
         public IEnumerable<T> GetComponents<T>() => ComponentsInChildren.Where(comp => typeof(T).IsAssignableFrom(comp.GetType())).Cast<T>();
