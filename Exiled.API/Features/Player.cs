@@ -2590,7 +2590,7 @@ namespace Exiled.API.Features
         /// <param name="ammoType">The <see cref="AmmoType"/> of the ammo to reset.</param>
         public void ResetAmmoLimit(AmmoType ammoType)
         {
-            if (!CustomAmmoLimits.ContainsKey(ammoType))
+            if (!HasCustomAmmoLimit(ammoType))
             {
                 Log.Error($"{nameof(Player)}.{nameof(ResetAmmoLimit)}(AmmoType): AmmoType.{ammoType} does not have a custom limit.");
                 return;
@@ -2683,7 +2683,7 @@ namespace Exiled.API.Features
                 return;
             }
 
-            if (!CustomCategoryLimits.ContainsKey(category))
+            if (!HasCustomCategoryLimit(category))
             {
                 Log.Error($"{nameof(Player)}.{nameof(ResetCategoryLimit)}(ItemCategory): ItemCategory.{category} does not have a custom limit.");
                 return;
