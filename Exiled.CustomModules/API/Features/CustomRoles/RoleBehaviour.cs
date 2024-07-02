@@ -80,7 +80,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             get
             {
                 if (Settings.SpawnProperties is null || Settings.SpawnProperties.IsEmpty)
-                    return RoleExtensions.GetRandomSpawnLocation(Role).Position;
+                    return Role.GetRandomSpawnLocation().Position;
 
                 return Settings.SpawnProperties.StaticSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.StaticSpawnPoints, out Vector3 staticPos) ? staticPos :
                     Settings.SpawnProperties.DynamicSpawnPoints.Count > 0 && EvalSpawnPoint(Settings.SpawnProperties.DynamicSpawnPoints, out Vector3 dynamicPos) ? dynamicPos :
@@ -278,21 +278,28 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             if (Owner.Role != Role)
             {
-                switch (Settings.PreservePosition)
+                if (Settings.SpawnFlags is not RoleSpawnFlags.All)
                 {
-                    case true when Settings.PreserveInventory:
-                        Owner.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.None);
-                        break;
-                    case true:
-                        Owner.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.AssignInventory);
-                        break;
-                    default:
+                    Owner.Role.Set(Role, Settings.SpawnReason, Settings.SpawnFlags);
+                }
+                else
+                {
+                    switch (Settings.PreservePosition)
                     {
-                        if (Settings.PreserveInventory && Owner.IsAlive)
-                            Owner.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.UseSpawnpoint);
-                        else
-                            Owner.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
-                        break;
+                        case true when Settings.PreserveInventory:
+                            Owner.Role.Set(Role, Settings.SpawnReason, RoleSpawnFlags.None);
+                            break;
+                        case true:
+                            Owner.Role.Set(Role, Settings.SpawnReason, RoleSpawnFlags.AssignInventory);
+                            break;
+                        default:
+                        {
+                            if (Settings.PreserveInventory && Owner.IsAlive)
+                                Owner.Role.Set(Role, Settings.SpawnReason, RoleSpawnFlags.UseSpawnpoint);
+                            else
+                                Owner.Role.Set(Role, Settings.SpawnReason, RoleSpawnFlags.All);
+                            break;
+                        }
                     }
                 }
             }
@@ -692,19 +699,18 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     DoAnnounce(announcement);
                     return;
                 }
-                else if (Settings.KilledByCustomRoleAnnouncements.TryGetValue(customRole.Id, out announcement))
-                {
-                    DoAnnounce(announcement);
+
+                if (!Settings.KilledByCustomRoleAnnouncements.TryGetValue(customRole.Id, out announcement))
                     return;
-                }
+
+                DoAnnounce(announcement);
             }
             else
             {
-                if (Settings.KilledByRoleAnnouncements.TryGetValue(ev.Attacker.Role, out announcement))
-                {
-                    DoAnnounce(announcement);
+                if (!Settings.KilledByRoleAnnouncements.TryGetValue(ev.Attacker.Role, out announcement))
                     return;
-                }
+
+                DoAnnounce(announcement);
             }
         }
 
