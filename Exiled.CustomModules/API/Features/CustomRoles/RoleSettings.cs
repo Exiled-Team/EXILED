@@ -109,6 +109,16 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public virtual bool PreservePosition { get; set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="RoleSpawnFlags"/>.
+        /// </summary>
+        public virtual RoleSpawnFlags SpawnFlags { get; set; } = RoleSpawnFlags.All;
+
+        /// <summary>
+        /// Gets or sets the <see cref="SpawnReason"/>.
+        /// </summary>
+        public virtual SpawnReason SpawnReason { get; set; } = SpawnReason.ForceClass;
+
+        /// <summary>
         /// Gets or sets a value indicating whether the <see cref="CustomRole"/> assignment should maintain the player's current inventory.
         /// </summary>
         public virtual bool PreserveInventory { get; set; }

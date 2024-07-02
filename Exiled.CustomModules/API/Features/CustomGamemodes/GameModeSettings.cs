@@ -7,8 +7,6 @@
 
 namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
-    using System;
-
     using Exiled.API.Enums;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;

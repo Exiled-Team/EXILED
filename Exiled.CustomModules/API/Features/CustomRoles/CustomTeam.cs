@@ -14,7 +14,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Roles;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;

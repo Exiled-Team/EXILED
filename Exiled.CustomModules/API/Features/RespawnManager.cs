@@ -15,23 +15,12 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.DynamicEvents;
-    using Exiled.API.Features.Items;
-    using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Roles;
-    using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomRoles;
-    using Exiled.CustomModules.API.Interfaces;
-    using Exiled.CustomModules.Events.EventArgs.CustomItems;
     using Exiled.CustomModules.Events.EventArgs.CustomRoles;
-    using Exiled.CustomModules.Events.EventArgs.Tracking;
-    using Exiled.Events.EventArgs.Map;
-    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
-    using HarmonyLib;
     using PlayerRoles;
-    using PlayerRoles.RoleAssign;
     using Respawning;
 
     /// <summary>

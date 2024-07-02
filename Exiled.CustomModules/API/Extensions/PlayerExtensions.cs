@@ -9,10 +9,12 @@ namespace Exiled.CustomModules.API.Extensions
 {
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.CustomModules.API.Features.CustomRoles;
+    using PlayerRoles;
 
     /// <summary>
     /// A set of extensions for <see cref="Player"/>.
@@ -22,18 +24,36 @@ namespace Exiled.CustomModules.API.Extensions
         /// <inheritdoc cref="CustomRole.Get(Pawn)"/>
         public static CustomRole Get(this Player player) => CustomRole.Get(player.Cast<Pawn>());
 
-        /// <inheritdoc cref="CustomRole.Spawn(Pawn, CustomRole, bool)"/>
-        public static bool Spawn(this Player player, CustomRole customRole, bool shouldKeepPosition = false) => CustomRole.Spawn(player.Cast<Pawn>(), customRole, shouldKeepPosition);
+        /// <inheritdoc cref="CustomRole.Spawn(Pawn, CustomRole, bool, SpawnReason, RoleSpawnFlags)"/>
+        public static bool Spawn(
+            this Player player,
+            CustomRole customRole,
+            bool shouldKeepPosition = false,
+            SpawnReason spawnReason = null,
+            RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All) =>
+            CustomRole.Spawn(player.Cast<Pawn>(), customRole, shouldKeepPosition, spawnReason, roleSpawnFlags);
 
         /// <inheritdoc cref="CustomRole.Spawn{T}(Pawn)"/>
         public static bool Spawn<T>(this Player player)
             where T : CustomRole => CustomRole.Spawn<T>(player.Cast<Pawn>());
 
-        /// <inheritdoc cref="CustomRole.Spawn(Pawn, string, bool)"/>
-        public static bool Spawn(this Player player, string name, bool shouldKeepPosition = false) => CustomRole.Spawn(player.Cast<Pawn>(), name, shouldKeepPosition);
+        /// <inheritdoc cref="CustomRole.Spawn(Pawn, string, bool, SpawnReason, RoleSpawnFlags)"/>
+        public static bool Spawn(
+            this Player player,
+            string name,
+            bool shouldKeepPosition = false,
+            SpawnReason spawnReason = null,
+            RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All) =>
+            CustomRole.Spawn(player.Cast<Pawn>(), name, shouldKeepPosition, spawnReason, roleSpawnFlags);
 
-        /// <inheritdoc cref="CustomRole.Spawn(Pawn, uint, bool)"/>
-        public static bool Spawn(this Player player, uint id, bool shouldKeepPosition = false) => CustomRole.Spawn(player.Cast<Pawn>(), id, shouldKeepPosition);
+        /// <inheritdoc cref="CustomRole.Spawn(Pawn, uint, bool, SpawnReason, RoleSpawnFlags)"/>
+        public static bool Spawn(
+            this Player player,
+            uint id,
+            bool shouldKeepPosition = false,
+            SpawnReason spawnReason = null,
+            RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All) =>
+            CustomRole.Spawn(player.Cast<Pawn>(), id, shouldKeepPosition, spawnReason, roleSpawnFlags);
 
         /// <inheritdoc cref="CustomRole.TrySpawn(Pawn, CustomRole)"/>
         public static bool TrySpawn(this Player player, CustomRole customRole) => CustomRole.TrySpawn(player.Cast<Pawn>(), customRole);
