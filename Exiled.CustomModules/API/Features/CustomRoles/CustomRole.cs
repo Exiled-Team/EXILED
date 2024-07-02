@@ -132,7 +132,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 {
                     foreach (Pawn pawn in list)
                     {
-                        if ((!pawn.HasCustomRole || !Enumerable.Contains(pawn.CustomRole.TeamsOwnership, RequiredTeamToSpawn)) && pawn.Role.Team != RequiredTeamToSpawn)
+                        if ((!pawn.HasCustomRole || !pawn.CustomRole.TeamsOwnership.Contains(RequiredTeamToSpawn)) && pawn.Role.Team != RequiredTeamToSpawn)
                             continue;
 
                         return true;
@@ -310,7 +310,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </summary>
         /// <param name="team">The specified <see cref="Team"/>.</param>
         /// <returns>All <see cref="CustomRole"/> instances belonging to the specified <see cref="Team"/>.</returns>
-        public static IEnumerable<CustomRole> Get(Team team) => List.Where(customRole => RoleExtensions.GetTeam(customRole.Role) == team || Enumerable.Contains(customRole.TeamsOwnership, team));
+        public static IEnumerable<CustomRole> Get(Team team) => List.Where(customRole => RoleExtensions.GetTeam(customRole.Role) == team || customRole.TeamsOwnership.Contains(team));
 
         /// <summary>
         /// Gets all <see cref="CustomRole"/> instances belonging to the specified teams.
@@ -325,7 +325,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </summary>
         /// <param name="teams">The specified teams.</param>
         /// <returns>All <see cref="CustomRole"/> instances belonging to the specified teams.</returns>
-        public static IEnumerable<CustomRole> Get(params Team[] teams) => List.Where(customRole => Enumerable.Contains(teams, RoleExtensions.GetTeam(customRole.Role)));
+        public static IEnumerable<CustomRole> Get(params Team[] teams) => List.Where(customRole => teams.Contains(RoleExtensions.GetTeam(customRole.Role)));
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> given the specified <see cref="Type"/>.
@@ -617,7 +617,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </remarks>
         public static List<CustomRole> EnableAll(Assembly assembly)
         {
-            if (!Enumerable.Contains(CustomModules.Instance.Config.Modules, ModuleType.CustomRoles))
+            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomRoles))
                 throw new Exception("ModuleType::CustomRoles must be enabled in order to load any custom roles");
 
             List<CustomRole> customRoles = new();
