@@ -133,6 +133,16 @@ namespace Exiled.API.Features
         /// A list of the player's items.
         /// </summary>
         internal readonly List<Item> ItemsValue = new(8);
+
+        /// <summary>
+        /// A dictionary of custom item category limits.
+        /// </summary>
+        internal Dictionary<ItemCategory, sbyte> CustomCategoryLimits = new();
+
+        /// <summary>
+        /// A dictionary of custom ammo limits.
+        /// </summary>
+        internal Dictionary<AmmoType, ushort> CustomAmmoLimits = new();
 #pragma warning restore SA1401
 
         private ReferenceHub referenceHub;
@@ -2643,21 +2653,170 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets the maximum amount of ammo the player can hold, given the ammo <see cref="AmmoType"/>.
-        /// This method factors in the armor the player is wearing, as well as server configuration.
-        /// For the maximum amount of ammo that can be given regardless of worn armor and server configuration, see <see cref="ServerConfigSynchronizer.AmmoLimit"/>.
         /// </summary>
         /// <param name="type">The <see cref="AmmoType"/> of the ammo to check.</param>
-        /// <returns>The maximum amount of ammo this player can carry. Guaranteed to be between <c>0</c> and <see cref="ServerConfigSynchronizer.AmmoLimit"/>.</returns>
-        public int GetAmmoLimit(AmmoType type) =>
-            InventorySystem.Configs.InventoryLimits.GetAmmoLimit(type.GetItemType(), referenceHub);
+        /// <param name="ignoreArmor">If the method should ignore the armor the player is wearing.</param>
+        /// <returns>The maximum amount of ammo this player can carry.</returns>
+        public ushort GetAmmoLimit(AmmoType type, bool ignoreArmor = false)
+        {
+            if (ignoreArmor)
+            {
+                if (CustomAmmoLimits.TryGetValue(type, out ushort limit))
+                    return limit;
+
+                ItemType itemType = type.GetItemType();
+                return ServerConfigSynchronizer.Singleton.AmmoLimitsSync.FirstOrDefault(x => x.AmmoType == itemType).Limit;
+            }
+
+            return InventorySystem.Configs.InventoryLimits.GetAmmoLimit(type.GetItemType(), referenceHub);
+        }
+
+        /// <summary>
+        /// Gets the maximum amount of ammo the player can hold, given the ammo <see cref="AmmoType"/>.
+        /// This limit will scale with the armor the player is wearing.
+        /// For armor ammo limits, see <see cref="Armor.AmmoLimits"/>.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> of the ammo to check.</param>
+        /// <param name="limit">The <see cref="ushort"/> number that will define the new limit.</param>
+        public void SetAmmoLimit(AmmoType ammoType, ushort limit)
+        {
+            CustomAmmoLimits[ammoType] = limit;
+
+            ItemType itemType = ammoType.GetItemType();
+            int index = ServerConfigSynchronizer.Singleton.AmmoLimitsSync.FindIndex(x => x.AmmoType == itemType);
+            MirrorExtensions.SendFakeSyncObject(this, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), writer =>
+            {
+                writer.WriteULong(2ul);
+                writer.WriteUInt(1);
+                writer.WriteByte((byte)SyncList<ServerConfigSynchronizer.AmmoLimit>.Operation.OP_SET);
+                writer.WriteInt(index);
+                writer.WriteAmmoLimit(new() { Limit = limit, AmmoType = itemType, });
+            });
+        }
+
+        /// <summary>
+        /// Reset a custom <see cref="AmmoType"/> limit.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> of the ammo to reset.</param>
+        public void ResetAmmoLimit(AmmoType ammoType)
+        {
+            if (!HasCustomAmmoLimit(ammoType))
+            {
+                Log.Error($"{nameof(Player)}.{nameof(ResetAmmoLimit)}(AmmoType): AmmoType.{ammoType} does not have a custom limit.");
+                return;
+            }
+
+            CustomAmmoLimits.Remove(ammoType);
+
+            ItemType itemType = ammoType.GetItemType();
+            int index = ServerConfigSynchronizer.Singleton.AmmoLimitsSync.FindIndex(x => x.AmmoType == itemType);
+            MirrorExtensions.SendFakeSyncObject(this, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), writer =>
+            {
+                writer.WriteULong(2ul);
+                writer.WriteUInt(1);
+                writer.WriteByte((byte)SyncList<ServerConfigSynchronizer.AmmoLimit>.Operation.OP_SET);
+                writer.WriteInt(index);
+                writer.WriteAmmoLimit(ServerConfigSynchronizer.Singleton.AmmoLimitsSync[index]);
+            });
+        }
+
+        /// <summary>
+        /// Check if the player has a custom limit for a specific <see cref="AmmoType"/>.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to check.</param>
+        /// <returns>If the player has a custom limit for the specific <see cref="AmmoType"/>.</returns>
+        public bool HasCustomAmmoLimit(AmmoType ammoType) => CustomAmmoLimits.ContainsKey(ammoType);
 
         /// <summary>
         /// Gets the maximum amount of an <see cref="ItemCategory"/> the player can hold, based on the armor the player is wearing, as well as server configuration.
         /// </summary>
         /// <param name="category">The <see cref="ItemCategory"/> to check.</param>
+        /// <param name="ignoreArmor">If the method should ignore the armor the player is wearing.</param>
         /// <returns>The maximum amount of items in the category that the player can hold.</returns>
-        public int GetCategoryLimit(ItemCategory category) =>
-            InventorySystem.Configs.InventoryLimits.GetCategoryLimit(category, referenceHub);
+        public sbyte GetCategoryLimit(ItemCategory category, bool ignoreArmor = false)
+        {
+            int index = InventorySystem.Configs.InventoryLimits.StandardCategoryLimits.Where(x => x.Value >= 0).OrderBy(x => x.Key).ToList().FindIndex(x => x.Key == category);
+
+            if (ignoreArmor && index != -1)
+            {
+                if (CustomCategoryLimits.TryGetValue(category, out sbyte customLimit))
+                    return customLimit;
+
+                return ServerConfigSynchronizer.Singleton.CategoryLimits[index];
+            }
+
+            sbyte limit = InventorySystem.Configs.InventoryLimits.GetCategoryLimit(category, referenceHub);
+
+            return limit == -1 ? (sbyte)1 : limit;
+        }
+
+        /// <summary>
+        /// Set the maximum amount of an <see cref="ItemCategory"/> the player can hold. Only works with <see cref="ItemCategory.Keycard"/>, <see cref="ItemCategory.Medical"/>, <see cref="ItemCategory.Firearm"/>, <see cref="ItemCategory.Grenade"/> and <see cref="ItemCategory.SCPItem"/>.
+        /// This limit will scale with the armor the player is wearing.
+        /// For armor category limits, see <see cref="Armor.CategoryLimits"/>.
+        /// </summary>
+        /// <param name="category">The <see cref="ItemCategory"/> to check.</param>
+        /// <param name="limit">The <see cref="int"/> number that will define the new limit.</param>
+        public void SetCategoryLimit(ItemCategory category, sbyte limit)
+        {
+            int index = InventorySystem.Configs.InventoryLimits.StandardCategoryLimits.Where(x => x.Value >= 0).OrderBy(x => x.Key).ToList().FindIndex(x => x.Key == category);
+
+            if (index == -1)
+            {
+                Log.Error($"{nameof(Player)}.{nameof(SetCategoryLimit)}(ItemCategory, sbyte): Cannot set category limit for ItemCategory.{category}.");
+                return;
+            }
+
+            CustomCategoryLimits[category] = limit;
+
+            MirrorExtensions.SendFakeSyncObject(this, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), writer =>
+            {
+                writer.WriteULong(1ul);
+                writer.WriteUInt(1);
+                writer.WriteByte((byte)SyncList<sbyte>.Operation.OP_SET);
+                writer.WriteInt(index);
+                writer.WriteSByte(limit);
+            });
+        }
+
+        /// <summary>
+        /// Reset a custom <see cref="ItemCategory"/> limit. Only works with <see cref="ItemCategory.Keycard"/>, <see cref="ItemCategory.Medical"/>, <see cref="ItemCategory.Firearm"/>, <see cref="ItemCategory.Grenade"/> and <see cref="ItemCategory.SCPItem"/>.
+        /// </summary>
+        /// <param name="category">The <see cref="ItemCategory"/> of the category to reset.</param>
+        public void ResetCategoryLimit(ItemCategory category)
+        {
+            int index = InventorySystem.Configs.InventoryLimits.StandardCategoryLimits.Where(x => x.Value >= 0).OrderBy(x => x.Key).ToList().FindIndex(x => x.Key == category);
+
+            if (index == -1)
+            {
+                Log.Error($"{nameof(Player)}.{nameof(ResetCategoryLimit)}(ItemCategory, sbyte): Cannot reset category limit for ItemCategory.{category}.");
+                return;
+            }
+
+            if (!HasCustomCategoryLimit(category))
+            {
+                Log.Error($"{nameof(Player)}.{nameof(ResetCategoryLimit)}(ItemCategory): ItemCategory.{category} does not have a custom limit.");
+                return;
+            }
+
+            CustomCategoryLimits.Remove(category);
+
+            MirrorExtensions.SendFakeSyncObject(this, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), writer =>
+            {
+                writer.WriteULong(1ul);
+                writer.WriteUInt(1);
+                writer.WriteByte((byte)SyncList<sbyte>.Operation.OP_SET);
+                writer.WriteInt(index);
+                writer.WriteSByte(ServerConfigSynchronizer.Singleton.CategoryLimits[index]);
+            });
+        }
+
+        /// <summary>
+        /// Check if the player has a custom limit for a specific <see cref="ItemCategory"/>.
+        /// </summary>
+        /// <param name="category">The <see cref="ItemCategory"/> to check.</param>
+        /// <returns>If the player has a custom limit for the specific <see cref="ItemCategory"/>.</returns>
+        public bool HasCustomCategoryLimit(ItemCategory category) => CustomCategoryLimits.ContainsKey(category);
 
         /// <summary>
         /// Adds an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
