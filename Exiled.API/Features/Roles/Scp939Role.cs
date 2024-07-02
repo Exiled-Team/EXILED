@@ -10,8 +10,8 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Core.Generic.Pools;
-
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
@@ -19,9 +19,8 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
     using PlayerRoles.PlayableScps.Scp939.Ripples;
     using PlayerRoles.Subroutines;
-
+    using PluginAPI.Roles;
     using RelativePositioning;
-
     using UnityEngine;
 
     using Scp939GameRole = PlayerRoles.PlayableScps.Scp939.Scp939Role;
@@ -86,11 +85,21 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Scp939Role"/> class.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
+        protected internal Scp939Role(GameObject gameObject)
+            : base(gameObject)
+        {
+        }
+
+        /// <summary>
         /// Finalizes an instance of the <see cref="Scp939Role"/> class.
         /// </summary>
         ~Scp939Role() => ListPool<Player>.Pool.Return(VisiblePlayers);
 
         /// <inheritdoc/>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public override RoleTypeId Type { get; } = RoleTypeId.Scp939;
 
         /// <inheritdoc/>
@@ -147,6 +156,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-939 can attack again.
         /// </summary>
+        [EProperty(category: nameof(Scp939Role))]
         public float AttackCooldown
         {
             get => ClawAbility.Cooldown.Remaining;
@@ -160,21 +170,25 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not SCP-939 is currently using its focus ability.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp939Role))]
         public bool IsFocused => FocusAbility.TargetState;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-939 is currently lunging.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp939Role))]
         public bool IsLunging => LungeAbility.State is not Scp939LungeState.None;
 
         /// <summary>
         /// Gets SCP-939's <see cref="Scp939LungeState"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp939Role))]
         public Scp939LungeState LungeState => LungeAbility.State;
 
         /// <summary>
         /// Gets or sets the amount of time before SCP-939 can use its amnestic cloud ability again.
         /// </summary>
+        [EProperty(category: nameof(Scp939Role))]
         public float AmnesticCloudCooldown
         {
             get => AmnesticCloudAbility.Cooldown.Remaining;
@@ -188,6 +202,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the duration of the amnestic cloud.
         /// </summary>
+        [EProperty(category: nameof(Scp939Role))]
         public float AmnesticCloudDuration
         {
             get => AmnesticCloudAbility.Duration.Remaining;
@@ -201,6 +216,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-939 can use any of its mimicry abilities again.
         /// </summary>
+        [EProperty(category: nameof(Scp939Role))]
         public float MimicryCooldown
         {
             get => EnvironmentalMimicry.Cooldown.Remaining;
@@ -214,16 +230,19 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating the amount of voices that SCP-939 has saved.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp939Role))]
         public int SavedVoices => MimicryRecorder.SavedVoices.Count;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-939 has a placed mimic point.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp939Role))]
         public bool MimicryPointActive => MimicPointController.Active;
 
         /// <summary>
         /// Gets a value indicating the position of SCP-939's mimic point. May be <see langword="null"/> if <see cref="MimicryPointActive"/> is <see langword="false"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp939Role))]
         public Vector3? MimicryPointPosition => MimicPointController.Active ? MimicPointController.MimicPointTransform.position : null;
 
         /// <summary>

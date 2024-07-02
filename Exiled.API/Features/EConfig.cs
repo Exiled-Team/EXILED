@@ -166,8 +166,6 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="EConfig"/> object.</returns>
         public static EConfig? Load(Type type, ConfigAttribute? attribute = null)
         {
-            object? config = null;
-
             try
             {
                 attribute ??= type.GetCustomAttribute<ConfigAttribute>();
@@ -175,16 +173,11 @@ namespace Exiled.API.Features
                     return null;
 
                 ConstructorInfo? constructor = type.GetConstructor(Type.EmptyTypes);
-                if (constructor is not null)
-                {
-                    config = constructor.Invoke(null)!;
-                }
-                else
-                {
-                    object value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null)!;
-                    if (value is not null)
-                        config = value;
-                }
+                object? config = constructor is not null ?
+                    constructor.Invoke(null)!
+                    : Array.Find(
+                        type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public),
+                        property => property.PropertyType == type)?.GetValue(null)!;
 
                 if (config is null)
                 {
@@ -199,31 +192,29 @@ namespace Exiled.API.Features
                 {
                     if (string.IsNullOrEmpty(attribute.Folder))
                     {
-                        Log.Warn($"The folder of the object of type {config!.GetType()} ({wrapper.Name}) has not been set. It's not possible to determine the parent config which it belongs to, hence it won't be read.");
+                        Log.Warn($"The folder of the object of type {config.GetType()} ({wrapper.Name}) has not been set. It's not possible to determine the parent config which it belongs to, hence it won't be read.");
 
                         return null;
                     }
-                    else
-                    {
-                        wrapper!.Folder = attribute.Folder;
-                    }
+
+                    wrapper.Folder = attribute.Folder;
                 }
 
                 if (string.IsNullOrEmpty(wrapper.Name))
                 {
                     if (string.IsNullOrEmpty(attribute.Name))
                     {
-                        wrapper!.Name = config.GetType().Name;
+                        wrapper.Name = config.GetType().Name;
                         Log.Warn($"The config's name of the object of type {config.GetType()} has not been set. The object's type name ({config.GetType().Name}) will be used instead.");
                     }
                     else
                     {
-                        wrapper!.Name = attribute.Name;
+                        wrapper.Name = attribute.Name;
                     }
                 }
 
                 ConfigsValue.Add(wrapper);
-                if (!wrapper!.Name!.Contains(".yml"))
+                if (!wrapper.Name!.Contains(".yml"))
                     wrapper.Name += ".yml";
 
                 if (wrapper.Folder is not null)
@@ -235,7 +226,7 @@ namespace Exiled.API.Features
                             Directory.CreateDirectory(path);
 
                         Load(wrapper, wrapper.AbsolutePath!);
-                        wrapper!.data!.Add(wrapper);
+                        wrapper.data.Add(wrapper);
                         MainConfigsValue.Add(wrapper);
 
                         Dictionary<EConfig, string> localCache = new(Cache);
@@ -288,7 +279,7 @@ namespace Exiled.API.Features
                 if (string.IsNullOrEmpty(cfg.Folder) || cfg.Folder != config.Folder)
                     continue;
 
-                cfg.data!.Add(config);
+                cfg.data.Add(config);
             }
 
             Load(config, path);
@@ -348,14 +339,13 @@ namespace Exiled.API.Features
 
             string? path = GetPath<T>();
             PropertyInfo? propertyInfo = param.Base!.GetType().GetProperty(name);
-            if (propertyInfo is not null)
-            {
-                propertyInfo.SetValue(param, value);
-                File.WriteAllText(path ?? throw new InvalidOperationException(), Serializer.Serialize(param));
 
-                if (path is not null)
-                    this.CopyProperties(Deserializer.Deserialize(File.ReadAllText(path), GetType()));
-            }
+            if (propertyInfo is null)
+                return;
+
+            propertyInfo.SetValue(param, value);
+            File.WriteAllText(path ?? throw new InvalidOperationException(), Serializer.Serialize(param));
+            this.CopyProperties(Deserializer.Deserialize(File.ReadAllText(path), GetType()));
         }
     }
 }

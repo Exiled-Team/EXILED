@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
 {
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
     using InventorySystem.Items.ThrowableProjectiles;
     using UnityEngine;
@@ -45,6 +46,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets the <see cref="Enums.ProjectileType"/> of the item.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Projectile))]
         public ProjectileType ProjectileType => Type.GetProjectileType();
 
         /// <summary>

@@ -11,6 +11,8 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Attributes;
+    using Exiled.API.Features.Core.Interfaces;
     using Hints;
 
     using static global::Broadcast;
@@ -18,7 +20,8 @@ namespace Exiled.API.Features
     /// <summary>
     /// Useful class to save text display configs in a cleaner way.
     /// </summary>
-    public class TextDisplay : TypeCastObject<TextDisplay>
+    [EClass(category: nameof(TextDisplay))]
+    public class TextDisplay : TypeCastObject<TextDisplay>, IAssetFragment
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextDisplay"/> class.
@@ -47,24 +50,28 @@ namespace Exiled.API.Features
         /// Gets or sets the <see cref="TextDisplay"/> content.
         /// </summary>
         [Description("The text display content")]
+        [EProperty(category: nameof(TextDisplay))]
         public string Content { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TextDisplay"/> duration.
         /// </summary>
         [Description("The text display duration")]
+        [EProperty(category: nameof(TextDisplay))]
         public ushort Duration { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="TextDisplay"/> should be shown or not.
         /// </summary>
         [Description("Indicates whether the text display should be shown or not")]
+        [EProperty(category: nameof(TextDisplay))]
         public bool CanBeDisplayed { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TextChannelType"/>.
         /// </summary>
         [Description("The text display channel to be used to display the content")]
+        [EProperty(category: nameof(TextDisplay))]
         public TextChannelType Channel { get; set; }
 
         /// <summary>
@@ -108,7 +115,7 @@ namespace Exiled.API.Features
             {
                 player.HintDisplay.Show(new TextHint(
                     Content,
-                    args[0] is HintParameter[] hintParameters ? hintParameters : new HintParameter[] { new StringHintParameter(Content) },
+                    args[0] as HintParameter[] ?? new HintParameter[] { new StringHintParameter(Content) },
                     args.Length > 1 && args[1] is HintEffect[] hintEffects ? hintEffects : null,
                     Duration));
 
@@ -144,7 +151,7 @@ namespace Exiled.API.Features
             {
                 player.HintDisplay.Show(new TextHint(
                     Content,
-                    args[0] is HintParameter[] hintParameters ? hintParameters : new HintParameter[] { new StringHintParameter(Content) },
+                    args[0] as HintParameter[] ?? new HintParameter[] { new StringHintParameter(Content) },
                     args.Length > 1 && args[1] is HintEffect[] hintEffects ? hintEffects : null,
                     Duration));
 

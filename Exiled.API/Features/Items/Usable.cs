@@ -7,13 +7,12 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
-
     using InventorySystem;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables;
-
     using UnityEngine;
 
     /// <summary>
@@ -48,16 +47,19 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether this item is equippable.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Usable))]
         public bool Equippable => Base.AllowEquip;
 
         /// <summary>
         /// Gets a value indicating whether this item is holsterable.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Usable))]
         public bool Holsterable => Base.AllowHolster;
 
         /// <summary>
         /// Gets or sets the weight of the item.
         /// </summary>
+        [EProperty(category: nameof(Usable))]
         public override float Weight
         {
             get => Base._weight;
@@ -67,11 +69,13 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether the item is currently being used.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Usable))]
         public bool IsUsing => Base.IsUsing;
 
         /// <summary>
         /// Gets or sets how long it takes to use the item.
         /// </summary>
+        [EProperty(category: nameof(Usable))]
         public float UseTime
         {
             get => Base.UseTime;
@@ -81,6 +85,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how long after using starts a player has to cancel using the item.
         /// </summary>
+        [EProperty(category: nameof(Usable))]
         public float MaxCancellableTime
         {
             get => Base.MaxCancellableTime;
@@ -90,6 +95,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the cooldown between repeated uses of this item.
         /// </summary>
+        [EProperty(category: nameof(Usable))]
         public float RemainingCooldown
         {
             get => UsableItemsController.GlobalItemCooldowns.TryGetValue(Serial, out float value) ? value : -1;
@@ -99,6 +105,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets all the cooldown between uses of this item.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Usable))]
         public float PlayerGetCooldown => UsableItemsController.GetCooldown(Serial, Base, UsableItemsController.GetHandler(Base.Owner));
 
         /// <summary>
