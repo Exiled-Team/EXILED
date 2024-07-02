@@ -407,11 +407,11 @@ namespace Exiled.API.Extensions
         /// <example>
         /// EffectOnlySCP207.
         /// <code>
-        ///  MirrorExtensions.SendCustomSync(player, player.ReferenceHub.networkIdentity, typeof(PlayerEffectsController), (writer) => {
-        ///   writer.WriteUInt64(1ul);                                           // DirtyObjectsBit
-        ///   writer.WriteUInt32(1);                                             // DirtyIndexCount
+        ///  MirrorExtensions.SendFakeSyncObject(player, player.NetworkIdentity, typeof(PlayerEffectsController), (writer) => {
+        ///   writer.WriteULong(1ul);                                            // DirtyObjectsBit
+        ///   writer.WriteUInt(1);                                               // DirtyIndexCount
         ///   writer.WriteByte((byte)SyncList&lt;byte&gt;.Operation.OP_SET);     // Operations
-        ///   writer.WriteUInt32(17);                                            // EditIndex
+        ///   writer.WriteUInt(17);                                              // EditIndex
         ///   writer.WriteByte(1);                                               // Value
         ///  });
         /// </code>

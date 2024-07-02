@@ -11,12 +11,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
     using System.Linq;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Scp330;
-    using UnityEngine;
 
     /// <summary>
     /// Represents the base class for custom candies behaviors.
