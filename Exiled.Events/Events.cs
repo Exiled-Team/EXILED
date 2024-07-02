@@ -8,6 +8,7 @@
 namespace Exiled.Events
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
@@ -16,8 +17,8 @@ namespace Exiled.Events
     using API.Features;
     using CentralAuth;
     using Exiled.API.Interfaces;
+    using Exiled.Events.Attributes;
     using Exiled.Events.Features;
-    using HarmonyLib;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables;
     using PlayerRoles.Ragdolls;
@@ -45,6 +46,26 @@ namespace Exiled.Events
         /// Gets the <see cref="Features.Patcher"/> used to employ all patches.
         /// </summary>
         public Patcher Patcher { get; private set; }
+
+        /// <summary>
+        /// Registers all events from the calling assembly based on <see cref="EventAttribute"/>.
+        /// </summary>
+        public static void RegisterAttributeEvents()
+        {
+            foreach (Type type in System.Reflection.Assembly.GetCallingAssembly().GetTypes())
+            {
+                foreach (MethodBase method in type.GetMethods())
+                {
+                    IEnumerable<EventAttribute> attributes = method.GetCustomAttributes<EventAttribute>();
+
+                    foreach (EventAttribute att in attributes)
+                    {
+                        if (!att.CheckCondition)
+                            continue;
+                    }
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public override void OnEnabled()
