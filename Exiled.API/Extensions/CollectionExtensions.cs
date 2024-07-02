@@ -11,8 +11,6 @@ namespace Exiled.API.Extensions
     using System.Collections.Generic;
     using System.Linq;
 
-    using HarmonyLib;
-
     /// <summary>
     /// A set of extensions for easily interact with collections.
     /// </summary>
@@ -43,7 +41,7 @@ namespace Exiled.API.Extensions
         /// <typeparam name="T">Type of <see cref="IEnumerable{T}"/> elements.</typeparam>
         /// <returns>A random item from the <see cref="IEnumerable{T}"/>.</returns>
         public static T Random<T>(this IEnumerable<T> enumerable) =>
-            (enumerable as T[] ?? enumerable?.ToArray()) is { Length: > 0 } arr ? arr[UnityEngine.Random.Range(0, arr.Length)] : default;
+            (enumerable as IList<T> ?? enumerable?.ToArray()) is { Count: > 0 } arr ? arr[UnityEngine.Random.Range(0, arr.Count)] : default;
 
         /// <summary>
         /// Gets a random item from an <see cref="IEnumerable{T}"/> given a condition.
@@ -61,6 +59,8 @@ namespace Exiled.API.Extensions
         /// <typeparam name="T">The type of the elements of <see cref="IEnumerable{T}"/>.</typeparam>
         /// <param name="enumerable">The <see cref="IEnumerable{T}"/>.</param>
         /// <param name="iterations">The amount of times to repeat the shuffle operation.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the <see cref="IEnumerable{T}"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the amount of iterations is less than 1.</exception>
         /// <returns>A shuffled version of the <see cref="IEnumerable{T}"/>.</returns>
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> enumerable, int iterations = 1)
         {
@@ -70,7 +70,12 @@ namespace Exiled.API.Extensions
                 throw new ArgumentOutOfRangeException(nameof(iterations));
 
             T[] array = enumerable.ToArray();
-            array.Shuffle(iterations);
+
+            for (int i = 0; i < iterations; i++)
+            {
+                array.ShuffleList();
+            }
+
             return array;
         }
 
@@ -102,15 +107,8 @@ namespace Exiled.API.Extensions
         /// <param name="enumerable">The original <see cref="IEnumerable{T}"/> to which items will be added.</param>
         /// <param name="collection">The collection of items to add.</param>
         /// <returns>The modified <see cref="IEnumerable{T}"/> after adding the items.</returns>
-        public static IEnumerable<T> AddRange<T>(this IEnumerable<T> enumerable, IEnumerable<T> collection)
-        {
-            IEnumerable<T> result = enumerable;
-
-            foreach (T item in collection)
-                result.AddItem(item);
-
-            return result;
-        }
+        public static IEnumerable<T> AddRange<T>(this IEnumerable<T> enumerable, IEnumerable<T> collection) =>
+            enumerable.Concat(collection);
 
         /// <summary>
         /// Adds a collection of items to an existing array of <typeparamref name="T"/>.
@@ -121,9 +119,7 @@ namespace Exiled.API.Extensions
         /// <returns>The modified array of <typeparamref name="T"/> after adding the items.</returns>
         public static T[] AddRange<T>(this T[] array, IEnumerable<T> collection)
         {
-            foreach (T item in collection)
-                array.AddItem(item);
-
+            array = array.Concat(collection).ToArray();
             return array;
         }
 
@@ -136,9 +132,7 @@ namespace Exiled.API.Extensions
         /// <returns>The modified <see cref="HashSet{T}"/> after adding the items.</returns>
         public static HashSet<T> AddRange<T>(this HashSet<T> hashset, IEnumerable<T> collection)
         {
-            foreach (T item in collection)
-                hashset.Add(item);
-
+            hashset.UnionWith(collection);
             return hashset;
         }
 
