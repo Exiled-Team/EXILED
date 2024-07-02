@@ -8,7 +8,6 @@
 namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
 {
     using System;
-    using System.ComponentModel;
 
     using Exiled.API.Extensions;
     using Exiled.CustomModules.API.Features.CustomItems.Items;

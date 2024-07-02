@@ -16,8 +16,6 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
     using Exiled.API.Features.Pickups;
     using Exiled.CustomModules.API.Features.CustomAbilities;
 
-    using Utils.NonAllocLINQ;
-
     /// <summary>
     /// Represents a base class for custom abilities associated with a specific <see cref="Pickup"/>.
     /// </summary>

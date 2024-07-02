@@ -692,7 +692,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return true;
             }
 
-            if (!CustomRole.TryGet(ev.Role, out CustomRole role))
+            if (!TryGet(ev.Role, out CustomRole role))
                 return false;
 
             if (role.Id != Id)
@@ -801,7 +801,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return;
             }
 
-            if (!CustomRole.TryGet(ev.Role, out CustomRole role))
+            if (!TryGet(ev.Role, out CustomRole role))
                 return;
 
             if (role.Id != Id)

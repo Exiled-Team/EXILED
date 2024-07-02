@@ -351,7 +351,7 @@ namespace Exiled.CustomModules.API.Features
         {
             if (role is RoleTypeId roleType)
             {
-                Role.Set(roleType);
+                Role.Set(roleType, preservePlayerPosition ? RoleSpawnFlags.AssignInventory : RoleSpawnFlags.All);
                 return;
             }
 

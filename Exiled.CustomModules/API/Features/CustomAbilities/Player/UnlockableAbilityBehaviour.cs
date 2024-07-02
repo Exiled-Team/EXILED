@@ -8,7 +8,6 @@
 namespace Exiled.CustomModules.API.Features.PlayerAbilities
 {
     using Exiled.API.Features;
-    using Exiled.API.Features.Core;
     using Exiled.CustomModules.API.Features.CustomAbilities;
 
     /// <summary>
