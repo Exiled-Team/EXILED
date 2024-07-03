@@ -37,7 +37,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Scp244Pickup(ItemType type)
-            : this((Scp244DeployablePickup)type.GetItemBase().ServerDropItem())
+            : base(type)
         {
         }
 

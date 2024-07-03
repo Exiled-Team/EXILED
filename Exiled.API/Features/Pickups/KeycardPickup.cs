@@ -37,7 +37,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal KeycardPickup(ItemType type)
-            : this((BaseKeycard)type.GetItemBase().ServerDropItem())
+            : base(type)
         {
         }
 
