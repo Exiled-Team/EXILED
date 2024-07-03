@@ -70,7 +70,6 @@ namespace Exiled.Events.EventArgs.Player
             set
             {
                 Items.Clear();
-                Ammo.Clear();
 
                 InventoryRoleInfo inventory = value.GetStartingInventory();
 
