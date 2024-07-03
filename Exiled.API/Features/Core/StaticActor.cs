@@ -63,7 +63,7 @@ namespace Exiled.API.Features.Core
             if (Server.Host?.GameObject)
                 @object.Base = Server.Host.GameObject;
             else
-                Timing.RunCoroutine(AddHostObject_Internal(@object));
+                Timing.RunCoroutine(@object.AddHostObject_Internal());
 
             return @object.Cast<StaticActor>();
         }
@@ -210,12 +210,5 @@ namespace Exiled.API.Features.Core
         /// The default approach is delete the duplicated component.
         /// </remarks>
         protected virtual void NotifyInstanceRepeated() => Destroy(GetComponent<StaticActor>());
-
-        private static IEnumerator<float> AddHostObject_Internal(EObject @object)
-        {
-            yield return Timing.WaitUntilTrue(() => Server.Host != null);
-
-            @object.Base = Server.Host.GameObject;
-        }
     }
 }

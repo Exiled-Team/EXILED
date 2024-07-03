@@ -13,9 +13,8 @@ namespace Exiled.API.Features.Core
     using System.Reflection;
 
     using Exiled.API.Features.Core.Attributes;
-
     using Exiled.API.Features.Core.Generic.Pools;
-
+    using MEC;
     using UnityEngine;
 
     /// <summary>
@@ -782,6 +781,17 @@ namespace Exiled.API.Features.Core
 
         /// <inheritdoc/>
         public override bool Equals(object other) => other is not null && other is EObject && other == this;
+
+        /// <summary>
+        /// Waits until the server host object is available and then sets the base game object.
+        /// </summary>
+        /// <returns>An IEnumerator representing the asynchronous operation.</returns>
+        protected internal IEnumerator<float> AddHostObject_Internal()
+        {
+            yield return Timing.WaitUntilTrue(() => Server.Host != null);
+
+            Base = Server.Host.GameObject;
+        }
 
         /// <inheritdoc cref="Destroy()"/>
         protected virtual void Destroy(bool destroying)
