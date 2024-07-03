@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Roles
 {
     using PlayerRoles;
+    using UnityEngine;
 
     using OverwatchGameRole = PlayerRoles.Spectating.OverwatchRole;
 
@@ -24,6 +25,15 @@ namespace Exiled.API.Features.Roles
             : base(baseRole)
         {
             Base = baseRole;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OverwatchRole"/> class.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
+        protected internal OverwatchRole(GameObject gameObject)
+            : base(gameObject)
+        {
         }
 
         /// <inheritdoc/>

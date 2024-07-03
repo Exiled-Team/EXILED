@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Pickups
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.API.Interfaces;
     using InventorySystem;
@@ -38,6 +39,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for <see cref="ItemPickupBase"/>.
     /// </summary>
+    [EClass(category: nameof(Pickup))]
     public class Pickup : GameEntity, IWrapper<ItemPickupBase>, IWorldSpace
     {
         /// <summary>
@@ -112,6 +114,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the unique serial number for the item.
         /// </summary>
+        [EProperty(category: nameof(Pickup))]
         public ushort Serial
         {
             get => Base.Info.Serial;
@@ -125,6 +128,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the pickup's scale value.
         /// </summary>
+        [EProperty(category: nameof(Pickup))]
         public Vector3 Scale
         {
             get => GameObject.transform.localScale;
@@ -146,6 +150,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the weight of the item.
         /// </summary>
         /// <seealso cref="PickupTime"/>
+        [EProperty(category: nameof(Pickup))]
         public float Weight
         {
             get => Info.WeightKg;
@@ -162,6 +167,7 @@ namespace Exiled.API.Features.Pickups
         /// <remarks>Notes: Changing this value will change the item's <see cref="Weight"/>. This does not account for status effects such as <see cref="Enums.EffectType.Hypothermia"/>; see <see cref="PickupTimeForPlayer(Player)"/> to account for status effects.</remarks>
         /// <seealso cref="Weight"/>
         /// <seealso cref="PickupTimeForPlayer(Player)"/>
+        [EProperty(category: nameof(Pickup))]
         public float PickupTime
         {
             get => ItemPickupBase.MinimalPickupTime + (ItemPickupBase.WeightToTime * Weight);
@@ -176,11 +182,13 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Pickup))]
         public ItemType Type => Base.NetworkInfo.ItemId;
 
         /// <summary>
         /// Gets or sets a value indicating whether the pickup is locked (can't be picked up).
         /// </summary>
+        [EProperty(category: nameof(Pickup))]
         public bool IsLocked
         {
             get => Info.Locked;
@@ -194,6 +202,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the pickup information.
         /// </summary>
+        [EProperty(category: nameof(Pickup))]
         public PickupSyncInfo Info
         {
             get => Base.NetworkInfo;
@@ -213,6 +222,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets a value indicating whether the pickup is currently in use.
         /// </summary>
+        [EProperty(category: nameof(Pickup))]
         public bool InUse
         {
             get => Info.InUse;
@@ -227,6 +237,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the pickup position.
         /// </summary>
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
+        [EProperty(category: nameof(Pickup))]
         public override Vector3 Position
         {
             get => Base.Position;
@@ -236,6 +247,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the relative position of the pickup.
         /// </summary>
+        [EProperty(category: nameof(Pickup))]
         public RelativePosition RelativePosition
         {
             get => new(Room.Transform.TransformPoint(Position));
@@ -246,6 +258,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the pickup rotation.
         /// </summary>
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
+        [EProperty(category: nameof(Pickup))]
         public override Quaternion Rotation
         {
             get => Base.Rotation;
@@ -255,6 +268,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether this pickup is spawned.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Pickup))]
         public bool IsSpawned { get; internal set; }
 
         /// <summary>

@@ -10,9 +10,12 @@ namespace Exiled.API.Features.Roles
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using Enums;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Attributes;
+    using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Extensions;
@@ -36,8 +39,18 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines the class for role-related classes.
     /// </summary>
+    [EClass(allowOnce: true, category: nameof(Role))]
     public abstract class Role : GameEntity, IWrapper<PlayerRoleBase>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Role"/> class.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
+        protected internal Role(GameObject gameObject)
+            : base(gameObject)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Role"/> class.
         /// </summary>
@@ -89,6 +102,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public abstract RoleTypeId Type { get; }
 
         /// <summary>
@@ -99,51 +113,61 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="RoleChangeReason"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public RoleChangeReason SpawnReason => Base.ServerSpawnReason;
 
         /// <summary>
         /// Gets the <see cref="RoleSpawnFlags"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public RoleSpawnFlags SpawnFlags => Base.ServerSpawnFlags;
 
         /// <summary>
         /// Gets the <see cref="PlayerRoles.Team"/> of this <see cref="Role"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public Team Team => Base.Team;
 
         /// <summary>
         /// Gets the <see cref="Enums.Side"/> of this <see cref="Role"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public Side Side => Team.GetSide();
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Color"/> of this <see cref="Role"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public Color Color => Base.RoleColor;
 
         /// <summary>
         /// Gets the <see cref="Role"/> full name.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public string Name => Base.RoleName;
 
         /// <summary>
         /// Gets the last time the <see cref="Role"/> was active.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public TimeSpan ActiveTime => TimeSpan.FromSeconds(Base.ActiveTime);
 
         /// <summary>
         /// Gets a value indicating whether or not this role represents a dead role.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public bool IsDead => Team is Team.Dead;
 
         /// <summary>
         /// Gets a value indicating whether or not this role represents a living role.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public bool IsAlive => !IsDead;
 
         /// <summary>
         /// Gets a value indicating whether or not this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public bool IsValid => Owner != null && Owner.IsConnected && Base == Owner.RoleManager.CurrentRole;
 
         /// <summary>

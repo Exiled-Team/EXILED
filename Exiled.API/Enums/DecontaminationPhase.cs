@@ -21,32 +21,32 @@ namespace Exiled.API.Enums
         Start,
 
         /// <summary>
-        /// It's remain 10 minutes.
+        /// It's 10 minutes remaining.
         /// </summary>
         Remain10Minutes,
 
         /// <summary>
-        /// It's remain 5 minutes.
+        /// It's 5 minutes remaining.
         /// </summary>
         Remain5Minutes,
 
         /// <summary>
-        /// It's remain 1 minutes.
+        /// It's 1 minute remaining.
         /// </summary>
         Remain1Minute,
 
         /// <summary>
-        /// It's remain 30 seconds.
+        /// It's 30 seconds remaining.
         /// </summary>
         Countdown,
 
         /// <summary>
-        /// All doors is closed lock.
+        /// All doors are closed and lock.
         /// </summary>
         Lockdown,
 
         /// <summary>
-        /// The decontamination has been done.
+        /// The decontamination has finished.
         /// </summary>
         Finish,
     }

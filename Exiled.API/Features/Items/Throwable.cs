@@ -7,12 +7,11 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.API.Interfaces;
-
     using InventorySystem.Items.ThrowableProjectiles;
-
     using UnityEngine;
 
     /// <summary>
@@ -58,6 +57,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the amount of time it takes to pull the pin.
         /// </summary>
+        [EProperty(category: nameof(Throwable))]
         public float PinPullTime
         {
             get => Base._pinPullTime;
@@ -67,6 +67,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets a value indicating whether players can pickup grenade after throw.
         /// </summary>
+        [EProperty(category: nameof(Throwable))]
         public bool Repickable
         {
             get => Base._repickupable;

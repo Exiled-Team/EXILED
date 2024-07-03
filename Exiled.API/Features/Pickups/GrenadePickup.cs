@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.API.Interfaces;
     using Footprinting;
@@ -45,6 +46,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets how long the fuse will last.
         /// </summary>
+        [EProperty(category: nameof(GrenadePickup))]
         public float FuseTime { get; set; }
 
         /// <summary>

@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Roles
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Attributes;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
@@ -74,6 +75,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public override RoleTypeId Type { get; } = RoleTypeId.Scp106;
 
         /// <inheritdoc/>
@@ -122,6 +124,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets SCP-106's Vigor Level.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public float Vigor
         {
             get => VigorAbility.VigorAmount;
@@ -131,6 +134,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-106 is currently submerged.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public bool IsSubmerged
         {
             get => Base.IsSubmerged;
@@ -140,41 +144,49 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 can activate teslas.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public bool CanActivateTesla => Base.CanActivateShock;
 
         /// <summary>
         /// Gets a value indicating whether if SCP-106 <see cref="Scp106StalkAbility"/> can be cleared.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public bool CanStopStalk => StalkAbility.CanBeCleared;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently slow down by a door.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public bool IsSlowdown => MovementModule._slowndownTarget is < 1;
 
         /// <summary>
         /// Gets a value indicating the current time of the sinkhole.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public float SinkholeCurrentTime => SinkholeController.ElapsedToggle;
 
         /// <summary>
         /// Gets a value indicating the normalized state of the sinkhole.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public float SinkholeNormalizedState => SinkholeController.NormalizedState;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently in the middle of an animation.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public bool IsDuringAnimation => SinkholeController.IsDuringAnimation;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 sinkhole is hidden.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public bool IsSinkholeHidden => SinkholeController.IsHidden;
 
         /// <summary>
         /// Gets or sets a value indicating whether the current sinkhole state.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public bool SinkholeState
         {
             get => SinkholeController.State;
@@ -184,12 +196,15 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the sinkhole target duration.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public float SinkholeTargetDuration => SinkholeController.TargetDuration;
 
         /// <summary>
         /// Gets the speed multiplier of the sinkhole.
         /// </summary>
         public float SinkholeSpeedMultiplier => SinkholeController.SpeedMultiplier;
+
+        // TODO: ReAdd Setter but before making an propper way to overwrite NW constant only when the propperty has been used
 
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when being stationary.
@@ -266,6 +281,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets how mush damage Scp106 will dealt when attacking a player.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public int AttackDamage
         {
             get => Attack._damage;
@@ -275,6 +291,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time in between player captures.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public float CaptureCooldown
         {
             get => Attack._hitCooldown;
@@ -288,6 +305,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the Sinkhole cooldown.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public float RemainingSinkholeCooldown
         {
             get => SinkholeController.Cooldown.Remaining;
@@ -301,6 +319,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-106 will enter his stalking mode.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public bool IsStalking
         {
             get => StalkAbility.IsActive;
@@ -345,7 +364,7 @@ namespace Exiled.API.Features.Roles
             if (player is null)
                 return false;
             Attack._targetHub = player.ReferenceHub;
-            DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, (float)AttackDamage, DeathTranslations.PocketDecay);
+            DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, AttackDamage, DeathTranslations.PocketDecay);
 
             if (!Attack._targetHub.playerStats.DealDamage(handler))
                 return false;

@@ -303,7 +303,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
 
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
         {
-            if (ev.Reason == SpawnReason.Escaped)
+            if (ev.Reason.Equals(SpawnReason.Escaped))
                 return;
 
             foreach (Item item in ev.Player.Items.ToList())
@@ -399,9 +399,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
                 return;
 
             OnPickingUp(ev);
-
-            if (!ev.IsAllowed)
-                return;
         }
 
         private void OnInternalItemAdded(ItemAddedEventArgs ev)

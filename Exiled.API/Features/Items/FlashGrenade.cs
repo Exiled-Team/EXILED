@@ -8,13 +8,12 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Enums;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
-
     using UnityEngine;
 
     using Object = UnityEngine.Object;
@@ -52,6 +51,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the minimum duration of player can take the effect.
         /// </summary>
+        [EProperty(category: nameof(FlashGrenade))]
         public float MinimalDurationEffect
         {
             get => Projectile.MinimalDurationEffect;
@@ -61,6 +61,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the additional duration of the <see cref="EffectType.Blinded"/> effect.
         /// </summary>
+        [EProperty(category: nameof(FlashGrenade))]
         public float AdditionalBlindedEffect
         {
             get => Projectile.AdditionalBlindedEffect;
@@ -70,6 +71,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the how mush the flash grenade going to be intensified when explode at <see cref="RoomType.Surface"/>.
         /// </summary>
+        [EProperty(category: nameof(FlashGrenade))]
         public float SurfaceDistanceIntensifier
         {
             get => Projectile.SurfaceDistanceIntensifier;
@@ -79,6 +81,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how long the fuse will last.
         /// </summary>
+        [EProperty(category: nameof(FlashGrenade))]
         public float FuseTime
         {
             get => Projectile.FuseTime;
