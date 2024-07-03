@@ -8,10 +8,8 @@
 namespace Exiled.API.Features.Core
 {
     using System;
-    using System.Collections.Generic;
 
     using Exiled.API.Features;
-    using MEC;
 
     /// <summary>
     /// This is a generic Singleton implementation for components.
@@ -57,14 +55,8 @@ namespace Exiled.API.Features.Core
         public static StaticActor CreateNewInstance(Type type)
         {
             EObject @object = CreateDefaultSubobject<StaticActor>(type);
-
             @object.Name = "__" + type.Name + " (StaticActor)";
-
-            if (Server.Host?.GameObject)
-                @object.Base = Server.Host.GameObject;
-            else
-                Timing.RunCoroutine(@object.AddHostObject_Internal());
-
+            @object.SearchForHostObjectIfNull = true;
             return @object.Cast<StaticActor>();
         }
 
