@@ -74,24 +74,22 @@ namespace Exiled.CustomModules
             }
 
             if (Config.Modules.Contains(ModuleType.CustomRoles) && Config.UseDefaultRoleAssigner)
-                StaticActor.CreateNewInstance<RoleAssigner>();
+                StaticActor.Get<RoleAssigner>();
 
             if (Config.Modules.Contains(ModuleType.CustomTeams) && Config.UseDefaultRespawnManager)
-                StaticActor.CreateNewInstance<RespawnManager>();
+                StaticActor.Get<RespawnManager>();
 
             if (Config.Modules.Contains(ModuleType.CustomGameModes))
-                World.CreateNewInstance();
+                World.Get();
 
             if (Config.Modules.Contains(ModuleType.CustomAbilities))
-                StaticActor.CreateNewInstance<AbilityTracker>();
+                StaticActor.Get<AbilityTracker>();
 
             if (Config.Modules.Contains(ModuleType.CustomItems))
             {
-                StaticActor.CreateNewInstance<ItemTracker>();
-                StaticActor.CreateNewInstance<PickupTracker>();
+                StaticActor.Get<ItemTracker>();
+                StaticActor.Get<PickupTracker>();
             }
-
-            SubscribeEvents();
 
             base.OnEnabled();
         }
@@ -113,8 +111,6 @@ namespace Exiled.CustomModules
             CustomTeam.DisableAll();
             CustomEscape.DisableAll();
             CustomGameMode.DisableAll();
-
-            UnsubscribeEvents();
 
             base.OnDisabled();
         }

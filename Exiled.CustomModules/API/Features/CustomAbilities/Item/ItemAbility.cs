@@ -15,8 +15,6 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
     using Exiled.API.Features.Items;
     using Exiled.CustomModules.API.Features.CustomAbilities;
 
-    using Utils.NonAllocLINQ;
-
     /// <summary>
     /// Represents a base class for custom abilities associated with a specific <see cref="Item"/>.
     /// </summary>

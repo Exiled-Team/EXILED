@@ -91,12 +91,6 @@ namespace Exiled.API.Features.Core.Generic
         public static implicit operator EnumClass<TSource, TObject>(TSource value) => values[value];
 
         /// <summary>
-        /// Implicitly converts the <see cref="EnumClass{TSource, TObject}"/> to <typeparamref name="TObject"/>.
-        /// </summary>
-        /// <param name="value">The value to convert.</param>
-        public static implicit operator TObject(EnumClass<TSource, TObject> value) => value;
-
-        /// <summary>
         /// Casts the specified <paramref name="value"/> to the corresponding type.
         /// </summary>
         /// <param name="value">The enum value to be cast.</param>
@@ -108,11 +102,7 @@ namespace Exiled.API.Features.Core.Generic
         /// </summary>
         /// <param name="values">The enum values to be cast.</param>
         /// <returns>The cast object.</returns>
-        public static IEnumerable<TObject> Cast(IEnumerable<TSource> values)
-        {
-            foreach (TSource value in values)
-                yield return EnumClass<TSource, TObject>.values[value];
-        }
+        public static IEnumerable<TObject> Cast(IEnumerable<TSource> values) => values.Select(value => EnumClass<TSource, TObject>.values[value]);
 
         /// <summary>
         /// Retrieves an array of the values of the constants in a specified <see cref="EnumClass{TSource, TObject}"/>.
@@ -170,13 +160,7 @@ namespace Exiled.API.Features.Core.Generic
         /// </summary>
         /// <param name="obj">The object to be parsed.</param>
         /// <returns>The corresponding <typeparamref name="TObject"/> object instance, or <see langword="null"/> if not found.</returns>
-        public static TObject Parse(string obj)
-        {
-            foreach (TObject value in values.Values.Where(value => string.Compare(value.Name, obj, true) == 0))
-                return value;
-
-            return null;
-        }
+        public static TObject Parse(string obj) => values.Values.FirstOrDefault(value => string.Compare(value.Name, obj, StringComparison.OrdinalIgnoreCase) == 0);
 
         /// <summary>
         /// Converts the <see cref="EnumClass{TSource, TObject}"/> instance to a human-readable <see cref="string"/> representation.

@@ -51,10 +51,11 @@ namespace Exiled.API.Features.Core
         /// Creates a new instance of the <see cref="StaticActor"/>.
         /// </summary>
         /// <param name="type">The type of the <see cref="StaticActor"/>.</param>
-        /// <returns>The created <see cref="StaticActor"/> instance, or <see langword="null"/> if not found.</returns>
+        /// <returns>The created or already existing <see cref="StaticActor"/> instance.</returns>
         public static StaticActor CreateNewInstance(Type type)
         {
             EObject @object = CreateDefaultSubobject<StaticActor>(type);
+
             @object.Name = "__" + type.Name + " (StaticActor)";
 
             if (Server.Host.GameObject)
@@ -125,19 +126,19 @@ namespace Exiled.API.Features.Core
         {
             base.PostInitialize();
 
-            if (Get(GetType()))
+            if (Get(GetType()) != this)
             {
                 Log.Warn($"Found a duplicated instance of a StaticActor with type {GetType().Name} in the Actor {Name} that will be ignored");
                 NotifyInstanceRepeated();
                 return;
             }
 
-            if (!IsInitialized)
-            {
-                Log.Debug($"Start() StaticActor with type {GetType().Name} in the Actor {Name}");
-                PostInitialize_Static();
-                IsInitialized = true;
-            }
+            if (IsInitialized)
+                return;
+
+            Log.Debug($"Start() StaticActor with type {GetType().Name} in the Actor {Name}");
+            PostInitialize_Static();
+            IsInitialized = true;
         }
 
         /// <inheritdoc/>

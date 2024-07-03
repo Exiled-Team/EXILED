@@ -79,7 +79,7 @@ namespace Exiled.API.Features.Core.Generic
         {
             base.PostInitialize();
 
-            if (FindExistingInstance())
+            if (FindExistingInstance() && Get() != this)
             {
                 Log.Warn($"Found a duplicated instance of a StaticActor with type {GetType().Name} in the Actor {Name} that will be ignored");
                 NotifyInstanceRepeated();
@@ -158,6 +158,10 @@ namespace Exiled.API.Features.Core.Generic
         /// <remarks>
         /// The default approach is delete the duplicated component.
         /// </remarks>
-        protected virtual void NotifyInstanceRepeated() => Destroy(GetComponent<T>());
+        protected virtual void NotifyInstanceRepeated()
+        {
+            if (TryGetComponent(out T comp))
+                comp.Destroy();
+        }
     }
 }
