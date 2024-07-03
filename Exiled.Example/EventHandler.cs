@@ -21,7 +21,6 @@ namespace Exiled.Example
         public EventHandler()
         {
             Exiled.Events.Handlers.Player.Verified += OnVerified;
-            Exiled.Events.Handlers.Player.Spawned += OnSpawned;
         }
 
         /// <summary>
@@ -32,14 +31,6 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Player.Verified -= OnVerified;
         }
 
-        private void OnVerified(VerifiedEventArgs ev)
-        {
-        }
-
-        private void OnSpawned(SpawnedEventArgs ev)
-        {
-            ev.Player.HumeShield = 0;
-            ev.Player.MaxHumeShield = 0;
-        }
+        private void OnVerified(VerifiedEventArgs ev) => Log.Info($"{ev.Player} has joined the server!");
     }
 }
