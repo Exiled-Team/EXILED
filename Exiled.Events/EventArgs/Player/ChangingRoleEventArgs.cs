@@ -8,6 +8,7 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using API.Enums;
     using API.Features;
@@ -75,7 +76,7 @@ namespace Exiled.Events.EventArgs.Player
                 InventoryRoleInfo inventory = value.GetStartingInventory();
 
                 Items.AddRange(inventory.Items);
-                Ammo.AddRange(inventory.Ammo);
+                Ammo = inventory.Ammo;
 
                 newRole = value;
             }
@@ -89,7 +90,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets the base ammo values for the new role.
         /// </summary>
-        public Dictionary<ItemType, ushort> Ammo { get; } = DictionaryPool<ItemType, ushort>.Pool.Get();
+        public Dictionary<ItemType, ushort> Ammo { get; private set; } = DictionaryPool<ItemType, ushort>.Pool.Get();
 
         /// <summary>
         /// Gets or sets a value indicating whether the inventory will be preserved or not.
