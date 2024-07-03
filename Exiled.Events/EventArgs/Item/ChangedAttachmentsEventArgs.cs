@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs.Item
             Firearm = firearm;
             Player = Firearm.Owner;
             OldAttachmentIdentifiers = Firearm.AttachmentIdentifiers;
-            NewAttachmentIdentifiers = Firearm.FirearmType.GetAttachmentIdentifiers(code).ToList();
+            NewAttachmentIdentifiers = Firearm.FirearmType.GetAttachmentIdentifiers(code);
             OldAttachmentsCode = code;
             NewAttachmentsCode = firearm.Base.GetCurrentAttachmentsCode();
         }
