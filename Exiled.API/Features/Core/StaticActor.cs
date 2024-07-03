@@ -54,7 +54,8 @@ namespace Exiled.API.Features.Core
         /// <returns>The created or already existing <see cref="StaticActor"/> instance.</returns>
         public static StaticActor CreateNewInstance(Type type)
         {
-            EObject @object = Get(type) ?? CreateDefaultSubobject<StaticActor>(type);
+            EObject @object = CreateDefaultSubobject<StaticActor>(type);
+
             @object.Name = "__" + type.Name + " (StaticActor)";
 
             if (Server.Host.GameObject)
