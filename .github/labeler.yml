@@ -1,0 +1,28 @@
+Documentation:
+- changed-files:
+  - any-glob-to-any-file: docs/**
+
+NuGet:
+- changed-files:
+  - any-glob-to-any-file: '**/*.nuspec'
+
+Scripts: # Add the 'Scripts' label
+- changed-files:
+  - any-glob-to-any-file: '**/*.ps1' # Windows
+  - any-glob-to-any-file: '**/*.sh' # Linux
+
+Events: # Add the 'Events' label
+- changed-files:
+  - any-glob-to-any-file: Exiled.Events/** # Any Modifications to events
+
+API: # Add the 'API' label
+- changed-files:
+  - any-glob-to-any-file: Exiled.API/** # Any modifications to the API
+
+CustomModules: # Add the 'CustomModules' label
+- changed-files:
+  - any-glob-to-any-file: Exiled.CustomModules/** # Any modifications to CustomModules
+
+Installer: # Add the 'Installer' label
+- changed-files:
+  - any-glob-to-any-file: Exiled.Installer/** # Any modifications to the Installer
