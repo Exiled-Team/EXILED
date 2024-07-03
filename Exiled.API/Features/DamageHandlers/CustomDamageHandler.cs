@@ -56,7 +56,7 @@ namespace Exiled.API.Features.DamageHandlers
                 else if (Attacker.CurrentItem is not null && Attacker.CurrentItem.Type.IsWeapon() && baseHandler is BaseFirearmHandler)
                     CustomBase = new FirearmDamageHandler(Attacker.CurrentItem, target, baseHandler);
                 else
-                    CustomBase = new DamageHandler(target, Attacker);
+                    CustomBase = new DamageHandler(target, baseHandler);
             }
             else
             {
