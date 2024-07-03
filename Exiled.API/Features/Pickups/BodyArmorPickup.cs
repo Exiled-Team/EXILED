@@ -43,7 +43,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal BodyArmorPickup(ItemType type)
-            : this((BaseBodyArmor)type.GetItemBase().ServerDropItem())
+            : base(type)
         {
         }
 

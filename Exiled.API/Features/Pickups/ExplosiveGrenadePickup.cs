@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="ExplosiveGrenadePickup"/> class.
         /// </summary>
         internal ExplosiveGrenadePickup()
-            : this((TimedGrenadePickup)ItemType.GrenadeHE.GetItemBase().ServerDropItem())
+            : base(ItemType.GrenadeHE)
         {
         }
 

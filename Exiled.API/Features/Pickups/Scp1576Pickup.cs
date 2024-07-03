@@ -31,7 +31,7 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="Scp1576Pickup"/> class.
         /// </summary>
         internal Scp1576Pickup()
-            : this((BaseScp1576)ItemType.SCP1576.GetItemBase().ServerDropItem())
+            : base(ItemType.SCP1576)
         {
         }
 
