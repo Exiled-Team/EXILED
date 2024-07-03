@@ -39,32 +39,35 @@ namespace Exiled.Events.EventArgs.Item
         {
             Firearm = firearm;
             Player = Firearm.Owner;
-            CurrentAttachmentIdentifiers = firearm.AttachmentIdentifiers;
-            NewAttachmentIdentifiers = firearm.FirearmType.GetAttachmentIdentifiers(code).ToList();
-            CurrentCode = firearm.Base.GetCurrentAttachmentsCode();
-            NewCode = code;
             IsAllowed = isAllowed;
+            OldAttachmentIdentifiers = firearm.AttachmentIdentifiers;
+            OldAttachmentsCode = firearm.Base.GetCurrentAttachmentsCode();
+            NewAttachmentsCode = code;
         }
 
         /// <summary>
-        /// Gets the old <see cref="AttachmentIdentifier" />.
+        /// Gets the old <see cref="AttachmentIdentifier" /> list.
         /// </summary>
-        public IEnumerable<AttachmentIdentifier> CurrentAttachmentIdentifiers { get; }
+        public IEnumerable<AttachmentIdentifier> OldAttachmentIdentifiers { get; }
 
         /// <summary>
-        /// Gets or sets the new <see cref="AttachmentIdentifier" />.
+        /// Gets or sets the new <see cref="AttachmentIdentifier" /> list.
         /// </summary>
         public List<AttachmentIdentifier> NewAttachmentIdentifiers { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="CurrentAttachmentIdentifiers" /> code.
+        /// Gets the <see cref="OldAttachmentIdentifiers" /> code.
         /// </summary>
-        public uint CurrentCode { get; }
+        public uint OldAttachmentsCode { get; }
 
         /// <summary>
-        /// Gets the <see cref="NewAttachmentIdentifiers" /> code.
+        /// Gets or sets the <see cref="NewAttachmentIdentifiers" /> code.
         /// </summary>
-        public uint NewCode { get; }
+        public uint NewAttachmentsCode
+        {
+            get => NewAttachmentIdentifiers.GetAttachmentsCode();
+            set => NewAttachmentIdentifiers = Firearm.FirearmType.GetAttachmentIdentifiers(value).ToList();
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the attachments can be changed.

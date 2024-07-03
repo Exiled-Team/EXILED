@@ -17,54 +17,52 @@ namespace Exiled.Events.EventArgs.Item
     using Exiled.API.Extensions;
 
     using Interfaces;
-    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
 
-    using BaseFirearm = InventorySystem.Items.Firearms.Firearm;
     using Firearm = API.Features.Items.Firearm;
 
     /// <summary>
-    ///     Contains all information after changing item attachments.
+    /// Contains all information after changing item attachments.
     /// </summary>
     public class ChangedAttachmentsEventArgs : IPlayerEvent, IFirearmEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ChangedAttachmentsEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ChangedAttachmentsEventArgs" /> class.
         /// </summary>
-        /// <param name="basefirearm"><inheritdoc cref="Firearm"/></param>
-        /// <param name="code"><inheritdoc cref="OldCode"/></param>
-        public ChangedAttachmentsEventArgs(BaseFirearm basefirearm, uint code)
+        /// <param name="firearm"><inheritdoc cref="Firearm"/></param>
+        /// <param name="code"><inheritdoc cref="OldAttachmentsCode"/></param>
+        public ChangedAttachmentsEventArgs(Firearm firearm, uint code)
         {
-            Firearm = Item.Get(basefirearm).As<Firearm>();
+            Firearm = firearm;
             Player = Firearm.Owner;
             OldAttachmentIdentifiers = Firearm.AttachmentIdentifiers;
             NewAttachmentIdentifiers = Firearm.FirearmType.GetAttachmentIdentifiers(code).ToList();
-            OldCode = code;
-            NewCode = basefirearm.GetCurrentAttachmentsCode();
+            OldAttachmentsCode = code;
+            NewAttachmentsCode = firearm.Base.GetCurrentAttachmentsCode();
         }
 
         /// <summary>
-        ///     Gets the old <see cref="AttachmentIdentifier" />.
+        /// Gets the old <see cref="AttachmentIdentifier" /> list.
         /// </summary>
         public IEnumerable<AttachmentIdentifier> OldAttachmentIdentifiers { get; }
 
         /// <summary>
-        ///     Gets or sets the new <see cref="AttachmentIdentifier" />.
+        ///     Gets or sets the new <see cref="AttachmentIdentifier" /> list.
         /// </summary>
-        public List<AttachmentIdentifier> NewAttachmentIdentifiers { get; set; }
+        public IEnumerable<AttachmentIdentifier> NewAttachmentIdentifiers { get; set; }
 
         /// <summary>
-        ///     Gets the <see cref="OldAttachmentIdentifiers" /> code.
+        /// Gets the <see cref="OldAttachmentIdentifiers" /> code.
         /// </summary>
-        public uint OldCode { get; }
+        public uint OldAttachmentsCode { get; }
 
         /// <summary>
-        ///     Gets the <see cref="NewAttachmentIdentifiers" /> code.
+        /// Gets the <see cref="NewAttachmentIdentifiers" /> code.
         /// </summary>
-        public uint NewCode { get; }
+        public uint NewAttachmentsCode { get; }
 
         /// <summary>
-        ///     Gets the <see cref="API.Features.Items.Firearm" /> which as been modified.
+        /// Gets the <see cref="API.Features.Items.Firearm" /> which has been modified.
         /// </summary>
         public Firearm Firearm { get; }
 
@@ -72,7 +70,7 @@ namespace Exiled.Events.EventArgs.Item
         public Item Item => Firearm;
 
         /// <summary>
-        ///     Gets the <see cref="API.Features.Player" /> who's changed attachments.
+        /// Gets the <see cref="API.Features.Player" /> who's changed attachments.
         /// </summary>
         public Player Player { get; }
     }
