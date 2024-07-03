@@ -9,7 +9,6 @@ namespace Exiled.API.Features.Core.Generic
 {
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
-    using MEC;
 
     /// <summary>
     /// This is a generic Singleton implementation for components.
@@ -62,12 +61,7 @@ namespace Exiled.API.Features.Core.Generic
         {
             EObject @object = CreateDefaultSubobject<T>();
             @object.Name = "__" + typeof(T).Name + " (StaticActor)";
-
-            if (Server.Host?.GameObject)
-                @object.Base = Server.Host.GameObject;
-            else
-                Timing.RunCoroutine(@object.AddHostObject_Internal());
-
+            @object.SearchForHostObjectIfNull = true;
             return @object.Cast<T>();
         }
 
@@ -82,7 +76,8 @@ namespace Exiled.API.Features.Core.Generic
         {
             base.PostInitialize();
 
-            if (FindExistingInstance() && Get() != this)
+            T instance = FindExistingInstance();
+            if (instance is not null && instance != this)
             {
                 Log.Warn($"Found a duplicated instance of a StaticActor with type {GetType().Name} in the Actor {Name} that will be ignored");
                 NotifyInstanceRepeated();
