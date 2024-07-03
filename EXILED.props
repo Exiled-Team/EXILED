@@ -15,7 +15,7 @@
 
     <PropertyGroup>
         <!-- This is the global version and is used for all projects that don't have a version -->
-        <Version Condition="$(Version) == ''">9.0.0-alpha.4</Version>
+        <Version Condition="$(Version) == ''">9.0.0-alpha.5</Version>
         <!-- Enables public beta warning via the PUBLIC_BETA constant -->
         <PublicBeta>false</PublicBeta>
 
