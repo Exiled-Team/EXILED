@@ -35,7 +35,3 @@ GitHub_Actions: # Add the 'GitHub' label
 - changed-files:
   - any-glob-to-any-file: .github/** # Any modifications to github related files
 
-Localization: # Add the 'Localization' label
-- changed-files:
-  - any-glob-to-any-file: Localization/** # Any modifications to Localization
-
