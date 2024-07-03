@@ -11,15 +11,12 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using System.Diagnostics;
 
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Warhead;
     using MEC;
     using PlayerRoles;
-    using UnityStandardAssets.CinematicEffects;
-    using Utf8Json.Resolvers.Internal;
 
     /// <summary>
     /// Represents the state of an individual player within the custom game mode, derived from <see cref="EPlayerBehaviour"/>.

@@ -347,21 +347,23 @@ namespace Exiled.CustomModules.API.Features
         /// </summary>
         /// <param name="role">The role to be set.</param>
         /// <param name="preservePlayerPosition">A value indicating whether the <see cref="Pawn"/> should be spawned in the same position.</param>
-        public void SetRole(object role, bool preservePlayerPosition = false)
+        /// <param name="spawnReason">The <see cref="SpawnReason"/> to be set.</param>
+        /// <param name="roleSpawnFlags">The <see cref="RoleSpawnFlags"/> to be set.</param>
+        public void SetRole(object role, bool preservePlayerPosition = false, SpawnReason spawnReason = null, RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All)
         {
             if (role is RoleTypeId roleType)
             {
-                Role.Set(roleType);
+                Role.Set(roleType, roleSpawnFlags is not RoleSpawnFlags.All ? roleSpawnFlags : preservePlayerPosition ? RoleSpawnFlags.AssignInventory : RoleSpawnFlags.All);
                 return;
             }
 
             if (role is uint id)
-                CustomRole.Spawn(this, id, preservePlayerPosition);
+                CustomRole.Spawn(this, id, preservePlayerPosition, spawnReason, roleSpawnFlags);
 
             try
             {
                 uint uuId = (uint)role;
-                CustomRole.Spawn(this, uuId, preservePlayerPosition);
+                CustomRole.Spawn(this, uuId, preservePlayerPosition, spawnReason, roleSpawnFlags);
             }
             catch
             {

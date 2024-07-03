@@ -18,7 +18,6 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
-    using Unity.Collections.LowLevel.Unsafe;
 
     /// <summary>
     /// Represents a custom game mode in the system, derived from <see cref="CustomModule"/> and implementing <see cref="IAdditiveBehaviours"/>.
