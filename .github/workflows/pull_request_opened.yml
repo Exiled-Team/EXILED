@@ -1,0 +1,17 @@
+name: Pull Request Opened
+
+on:
+  pull_request:
+    types: 
+      - opened
+  workflow_dispatch:
+
+jobs:
+  set-labels:
+    runs-on: ubuntu-latest
+    steps:            
+    - name: Labeler
+      uses: actions/labeler@v5.0.0
+      with:
+        repo-token: ${{ github.token }}
+        configuration-path: .github/labeler.yml
