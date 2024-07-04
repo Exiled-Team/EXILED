@@ -11,13 +11,17 @@ Scripts: # Add the 'Scripts' label
   - any-glob-to-any-file: '**/*.ps1' # Windows
   - any-glob-to-any-file: '**/*.sh' # Linux
 
-Events: # Add the 'Events' label
+regarding-events: # Add the 'Events' label
 - changed-files:
   - any-glob-to-any-file: Exiled.Events/** # Any Modifications to events
 
-API: # Add the 'API' label
+regarding-api: # Add the 'API' label
 - changed-files:
   - any-glob-to-any-file: Exiled.API/** # Any modifications to the API
+
+regarding-transpiler: # Add the 'transpiler' label
+- changed-files:
+  - any-glob-to-any-file: Exiled.Events/Patches/**/* # Any modifications to transpiler files
 
 CustomModules: # Add the 'CustomModules' label
 - changed-files:
