@@ -18,8 +18,10 @@ namespace Exiled.API.Features.CustomStats
     /// </summary>
     public class CustomHumeShieldStat : HumeShieldStat
     {
+        private const float DefaultCustomValue = -1;
+
         /// <inheritdoc/>
-        public override float MaxValue => CustomMaxValue == default ? base.MaxValue : CustomMaxValue;
+        public override float MaxValue => CustomMaxValue == DefaultCustomValue ? base.MaxValue : CustomMaxValue;
 
         /// <summary>
         /// Gets or sets the multiplier for gaining HumeShield.
@@ -29,14 +31,14 @@ namespace Exiled.API.Features.CustomStats
         /// <summary>
         /// Gets or sets the maximum amount of HumeShield the player can have.
         /// </summary>
-        public float CustomMaxValue { get; set; }
+        public float CustomMaxValue { get; set; } = DefaultCustomValue;
 
         private float ShieldRegeneration => TryGetHsModule(out HumeShieldModuleBase controller) ? controller.HsRegeneration * ShieldRegenerationMultiplier : 0;
 
         /// <inheritdoc/>
         public override void Update()
         {
-            if (MaxValue == default)
+            if (MaxValue == DefaultCustomValue)
             {
                 base.Update();
                 return;
@@ -66,13 +68,7 @@ namespace Exiled.API.Features.CustomStats
                 if (CurValue >= MaxValue)
                     return;
                 CurValue = Mathf.MoveTowards(CurValue, MaxValue, delta);
-                return;
             }
-
-            if (CurValue <= 0)
-                return;
-
-            CurValue += delta;
         }
     }
 }
