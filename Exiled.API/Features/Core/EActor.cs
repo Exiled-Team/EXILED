@@ -34,7 +34,7 @@ namespace Exiled.API.Features.Core
 
         private readonly HashSet<EActor> componentsInChildren = HashSetPool<EActor>.Pool.Get();
         private CoroutineHandle serverTick;
-        private bool canEverTick;
+        private bool canEverTick = true;
         private float fixedTickRate;
 
         /// <summary>
@@ -44,10 +44,9 @@ namespace Exiled.API.Features.Core
             : base()
         {
             IsEditable = true;
-            CanEverTick = true;
             fixedTickRate = DEFAULT_FIXED_TICK_RATE;
             PostInitialize();
-            Timing.CallDelayed(fixedTickRate, () => OnBeginPlay());
+            Timing.CallDelayed(fixedTickRate, OnBeginPlay);
             Timing.CallDelayed(fixedTickRate * 2, () => serverTick = Timing.RunCoroutine(ServerTick()));
         }
 

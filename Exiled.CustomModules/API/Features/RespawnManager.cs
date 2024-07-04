@@ -47,25 +47,20 @@ namespace Exiled.CustomModules.API.Features
                 if (value == nextKnownTeam)
                     return;
 
-                if (value is SpawnableTeamType)
+                switch (value)
                 {
-                    nextKnownTeam = value;
-                    return;
+                    case SpawnableTeamType:
+                        nextKnownTeam = value;
+                        return;
+                    case CustomTeam customTeam:
+                        nextKnownTeam = customTeam.Id;
+                        return;
+                    case uint id when CustomTeam.TryGet(id, out CustomTeam _):
+                        nextKnownTeam = id;
+                        return;
+                    default:
+                        throw new ArgumentException("NextKnownTeam only accepts SpawnableTeamType, parsed uint & CustomTeam.");
                 }
-
-                if (value is CustomTeam customTeam)
-                {
-                    nextKnownTeam = customTeam.Id;
-                    return;
-                }
-
-                if (value is uint id && CustomTeam.TryGet(id, out CustomTeam _))
-                {
-                    nextKnownTeam = id;
-                    return;
-                }
-
-                throw new ArgumentException("NextKnownTeam only accepts SpawnableTeamType, parsed uint & CustomTeam.");
             }
         }
 
@@ -82,7 +77,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets all enqueued roles.
         /// </summary>
-        public List<object> EnqueuedRoles { get; }
+        public List<object> EnqueuedRoles { get; } = new();
 
         /// <summary>
         /// Forces the spawn of a wave of the specified team.
@@ -175,32 +170,29 @@ namespace Exiled.CustomModules.API.Features
                 return;
             }
 
-            if (NextKnownTeam is null)
-                NextKnownTeam = ev.Team;
+            NextKnownTeam ??= ev.Team;
         }
 
         private void OnPreRespawningTeam(PreRespawningTeamEventArgs ev)
         {
             PreviousKnownTeam = NextKnownTeam;
 
-            if (NextKnownTeam is not SpawnableTeamType team)
+            if (NextKnownTeam is SpawnableTeamType team)
+                return;
+
+            CustomTeam customTeam = CustomTeam.Get((uint)NextKnownTeam);
+            if (!customTeam)
+                return;
+
+            if (customTeam.TeamsOwnership.Any(t => t == (ev.NextKnownTeam is SpawnableTeamType.ChaosInsurgency ? Team.ChaosInsurgency : Team.FoundationForces)))
             {
-                CustomTeam customTeam = CustomTeam.Get((uint)NextKnownTeam);
-
-                if (!customTeam)
-                    return;
-
-                if (customTeam.TeamsOwnership.Any(t => t == (ev.NextKnownTeam is SpawnableTeamType.ChaosInsurgency ? Team.ChaosInsurgency : Team.FoundationForces)))
-                {
-                    ev.MaxWaveSize = customTeam.Size;
-                    return;
-                }
-
-                ev.IsAllowed = false;
-                Spawn();
-                Respawning.RespawnManager.Singleton.RestartSequence();
+                ev.MaxWaveSize = customTeam.Size;
                 return;
             }
+
+            ev.IsAllowed = false;
+            Spawn();
+            Respawning.RespawnManager.Singleton.RestartSequence();
         }
 
         private void OnRespawningTeam(RespawningTeamEventArgs ev)
@@ -231,16 +223,15 @@ namespace Exiled.CustomModules.API.Features
 
             EnqueuedRoles.RemoveRange(ev.SpawnQueue.Count - 1, EnqueuedRoles.Count - ev.SpawnQueue.Count);
 
-            if (captain is not null)
-            {
-                EnqueuedRoles.Add(captain);
-                captain = null;
-            }
+            if (captain is null)
+                return;
+
+            EnqueuedRoles.Add(captain);
         }
 
         private void OnDeployingTeamRole(DeployingTeamRoleEventArgs ev)
         {
-            if (NextKnownTeam is SpawnableTeamType team)
+            if (NextKnownTeam is SpawnableTeamType)
             {
                 object role = EnqueuedRoles.Random();
 

@@ -38,7 +38,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal FirearmPickup(ItemType type)
-            : this((BaseFirearm)type.GetItemBase().ServerDropItem())
+            : base(type)
         {
             IsDistributed = true;
         }

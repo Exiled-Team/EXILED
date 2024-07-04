@@ -89,6 +89,7 @@ namespace Exiled.Loader
             File.Delete(Path.Combine(Paths.Plugins, "Exiled.Updater.dll"));
             File.Delete(Path.Combine(Paths.Plugins, "Exiled.CustomRoles.dll"));
             File.Delete(Path.Combine(Paths.Plugins, "Exiled.CustomItems.dll"));
+            File.Delete(Path.Combine(Paths.Dependencies, "Exiled.API.dll"));
 
             foreach (string assemblyPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {

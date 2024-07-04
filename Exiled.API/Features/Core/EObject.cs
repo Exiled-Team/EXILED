@@ -13,9 +13,8 @@ namespace Exiled.API.Features.Core
     using System.Reflection;
 
     using Exiled.API.Features.Core.Attributes;
-
     using Exiled.API.Features.Core.Generic.Pools;
-
+    using MEC;
     using UnityEngine;
 
     /// <summary>
@@ -25,6 +24,8 @@ namespace Exiled.API.Features.Core
     {
         private static readonly Dictionary<Type, List<string>> RegisteredTypesValue = new();
         private bool destroyedValue;
+        private bool searchForHostObjectIfNull;
+        private CoroutineHandle addHostObjectInternalHandle;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EObject"/> class.
@@ -76,6 +77,31 @@ namespace Exiled.API.Features.Core
         /// Gets a value indicating whether the <see cref="EObject"/> is being destroyed.
         /// </summary>
         public bool IsDestroying { get; private set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to search for the <see cref="Server.Host"/> object
+        /// when both <see cref="Server.Host"/> and <see cref="Base"/> are null.
+        /// <br/>
+        /// If found, assigns it to <see cref="Base"/>.
+        /// </summary>
+        public bool SearchForHostObjectIfNull
+        {
+            get => searchForHostObjectIfNull;
+            set
+            {
+                if (value == searchForHostObjectIfNull)
+                    return;
+
+                if (addHostObjectInternalHandle.IsRunning)
+                    Timing.KillCoroutines(addHostObjectInternalHandle);
+
+                searchForHostObjectIfNull = value;
+                if (!searchForHostObjectIfNull)
+                    return;
+
+                addHostObjectInternalHandle = Timing.RunCoroutine(AddHostObject_Internal());
+            }
+        }
 
         /// <summary>
         /// Gets all the active <see cref="EObject"/> instances.
@@ -782,6 +808,17 @@ namespace Exiled.API.Features.Core
 
         /// <inheritdoc/>
         public override bool Equals(object other) => other is not null && other is EObject && other == this;
+
+        /// <summary>
+        /// Waits until the server host object is available and then sets the base game object.
+        /// </summary>
+        /// <returns>An IEnumerator representing the asynchronous operation.</returns>
+        protected internal IEnumerator<float> AddHostObject_Internal()
+        {
+            yield return Timing.WaitUntilTrue(() => Server.Host != null);
+
+            Base = Server.Host.GameObject;
+        }
 
         /// <inheritdoc cref="Destroy()"/>
         protected virtual void Destroy(bool destroying)

@@ -73,8 +73,24 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Pickup(ItemType type)
-            : this(type.GetItemBase().ServerDropItem())
+            : base(type.GetItemBase().gameObject)
         {
+            ItemBase itemBase = type.GetItemBase();
+
+            Base = Object.Instantiate(itemBase.PickupDropModel);
+
+            PickupSyncInfo psi = new()
+            {
+                ItemId = type,
+                Serial = ItemSerialGenerator.GenerateNext(),
+                WeightKg = itemBase.Weight,
+            };
+
+            Info = psi;
+
+            BaseToPickup.Add(Base, this);
+
+            InitializeProperties(itemBase);
         }
 
         /// <summary>

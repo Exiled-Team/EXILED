@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">.</param>
         internal UsablePickup(ItemType type)
-            : this(type.GetItemBase().ServerDropItem())
+            : base(type)
         {
         }
 
