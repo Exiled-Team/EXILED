@@ -177,10 +177,10 @@ namespace Exiled.CustomModules.API.Features
         /// <returns><see langword="true"/> if the pickup was restored successfully; otherwise, <see langword="false"/>.</returns>
         public virtual bool Restore(ushort serial, Item item)
         {
-            if (!item || !TrackedItemSerials.ContainsKey(serial))
+            if (!item || !TrackedItemSerials.TryGetValue(serial, out HashSet<T> itemSerial))
                 return false;
 
-            foreach (T behaviour in TrackedItemSerials[serial])
+            foreach (T behaviour in itemSerial)
             {
                 if (behaviour is not EActor component)
                     continue;
@@ -200,10 +200,10 @@ namespace Exiled.CustomModules.API.Features
         /// <returns><see langword="true"/> if the pickup was restored successfully; otherwise, <see langword="false"/>.</returns>
         public virtual bool Restore(Pickup pickup)
         {
-            if (!pickup || !TrackedPickupSerials.ContainsKey(pickup.Serial))
+            if (!pickup || !TrackedPickupSerials.TryGetValue(pickup.Serial, out HashSet<T> serial))
                 return false;
 
-            foreach (T behaviour in TrackedPickupSerials[pickup.Serial])
+            foreach (T behaviour in serial)
             {
                 if (behaviour is not EActor component)
                     continue;
@@ -224,10 +224,11 @@ namespace Exiled.CustomModules.API.Features
         /// <returns><see langword="true"/> if the pickup was restored successfully; otherwise, <see langword="false"/>.</returns>
         public virtual bool Restore(Pickup pickup, Item item)
         {
-            if (!pickup || !item || !TrackedPickupSerials.ContainsKey(pickup.Serial) || !TrackedItemSerials.ContainsKey(item.Serial))
+            if (!pickup || !item || !TrackedPickupSerials.ContainsKey(pickup.Serial) ||
+                !TrackedItemSerials.TryGetValue(item.Serial, out HashSet<T> serial))
                 return false;
 
-            foreach (T behaviour in TrackedItemSerials[item.Serial])
+            foreach (T behaviour in serial)
             {
                 if (behaviour is not EActor component)
                     continue;
@@ -418,7 +419,7 @@ namespace Exiled.CustomModules.API.Features
         /// Handles the event when an item is added.
         /// </summary>
         /// <param name="ev">The <see cref="ItemAddedEventArgs"/> containing information about the added item.</param>
-        internal void OnItemAdded(ItemAddedEventArgs ev) => Restore(ev.Pickup.Serial, ev.Item);
+        internal void OnItemAdded(ItemAddedEventArgs ev) => Restore(ev.Pickup, ev.Item);
 
         /// <summary>
         /// Handles the event when a tracked item or pickup is removed from a player's inventory.
