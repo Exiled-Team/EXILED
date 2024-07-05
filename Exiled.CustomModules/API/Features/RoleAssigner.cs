@@ -122,7 +122,7 @@ namespace Exiled.CustomModules.API.Features
                 HumanSpawner.AssignHumanRoleToRandomPlayer((RoleTypeId)EnqueuedHumans[j]);
         }
 
-        /// <summary>RoleTypeId
+        /// <summary>
         /// Spawns SCPs based on the target SCP number.
         /// </summary>
         /// <param name="targetScpNumber">The target number of SCPs to spawn.</param>
