@@ -100,6 +100,7 @@ namespace Exiled.CustomModules.API.Features
             // Unless the custom roles are enough to cover the entire queue, some default roles will be selected.
             int num = hubs.Count() - spawnable.Count;
             RoleTypeId[] array = num > 0 ? new RoleTypeId[num] : null;
+            HumanSpawner._queueLength = num;
 
             if (array is not null)
             {
@@ -121,7 +122,7 @@ namespace Exiled.CustomModules.API.Features
                 HumanSpawner.AssignHumanRoleToRandomPlayer((RoleTypeId)EnqueuedHumans[j]);
         }
 
-        /// <summary>RoleTypeId
+        /// <summary>
         /// Spawns SCPs based on the target SCP number.
         /// </summary>
         /// <param name="targetScpNumber">The target number of SCPs to spawn.</param>
