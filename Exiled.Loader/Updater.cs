@@ -23,6 +23,9 @@ namespace Exiled.Loader
     using Exiled.Loader.GHApi.Settings;
     using Exiled.Loader.Models;
     using ServerOutput;
+    using Utf8Json;
+
+    using Paths = PluginAPI.Helpers.Paths;
 
 #pragma warning disable SA1310 // Field names should not contain underscore
 
@@ -42,14 +45,6 @@ namespace Exiled.Loader
 
         private Updater(Config cfg) => config = cfg;
 
-        private enum Stage
-        {
-            Free,
-            Start,
-            Installing,
-            Installed,
-        }
-
         /// <summary>
         /// Gets the updater instance.
         /// </summary>
@@ -60,6 +55,26 @@ namespace Exiled.Loader
         /// </summary>
         internal bool Busy { get; private set; }
 
+        private static string Folder => File.Exists($"{Paths.GlobalPlugins.Plugins}/Exiled.Loader.dll") ? "global" : Server.Port.ToString();
+
+        private static string InstallerName
+        {
+            get
+            {
+                if (PlatformId == PlatformID.Win32NT)
+                    return INSTALLER_ASSET_NAME_WIN;
+
+                if (PlatformId == PlatformID.Unix)
+                    return INSTALLER_ASSET_NAME_LINUX;
+
+                Log.Error("Can't determine your OS platform");
+                Log.Error($"OSDesc: {RuntimeInformation.OSDescription}");
+                Log.Error($"OSArch: {RuntimeInformation.OSArchitecture}");
+
+                return null;
+            }
+        }
+
         private IEnumerable<ExiledLib> ExiledLib =>
             from Assembly a in AppDomain.CurrentDomain.GetAssemblies()
             let name = a.GetName().Name
@@ -67,31 +82,6 @@ namespace Exiled.Loader
             !(config.ExcludeAssemblies?.Contains(name, StringComparison.OrdinalIgnoreCase) ?? false) &&
             name != Assembly.GetExecutingAssembly().GetName().Name
             select new ExiledLib(a);
-
-        private string Folder => File.Exists($"{PluginAPI.Helpers.Paths.GlobalPlugins.Plugins}/Exiled.Loader.dll") ? "global" : Server.Port.ToString();
-
-        private string InstallerName
-        {
-            get
-            {
-                if (PlatformId == PlatformID.Win32NT)
-                {
-                    return INSTALLER_ASSET_NAME_WIN;
-                }
-                else if (PlatformId == PlatformID.Unix)
-                {
-                    return INSTALLER_ASSET_NAME_LINUX;
-                }
-                else
-                {
-                    Log.Error("Can't determine your OS platform");
-                    Log.Error($"OSDesc: {RuntimeInformation.OSDescription}");
-                    Log.Error($"OSArch: {RuntimeInformation.OSArchitecture}");
-
-                    return null;
-                }
-            }
-        }
 
         /// <summary>
         /// Initializes the updater.
@@ -171,7 +161,7 @@ namespace Exiled.Loader
                     Log.Info("No new versions found, you're using the most recent version of Exiled!");
                 }
             }
-            catch (Utf8Json.JsonParsingException)
+            catch (JsonParsingException)
             {
                 Log.Error("Encountered GitHub rate limit, unable to check and download the latest version of Exiled.");
             }
@@ -219,7 +209,7 @@ namespace Exiled.Loader
                     FileName = installerPath,
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                    Arguments = $"--exit {(Folder == "global" ? string.Empty : $"--target-port {Folder}")} --target-version {newVersion.Release.TagName} --appdata \"{Paths.AppData}\" --exiled \"{Path.Combine(Paths.Exiled, "..")}\"",
+                    Arguments = $"--exit {(Folder == "global" ? string.Empty : $"--target-port {Folder}")} --target-version {newVersion.Release.TagName} --appdata \"{API.Features.Paths.AppData}\" --exiled \"{Path.Combine(API.Features.Paths.Exiled, "..")}\"",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     StandardErrorEncoding = ProcessEncoding,
@@ -234,14 +224,14 @@ namespace Exiled.Loader
                     return;
                 }
 
-                installerProcess.OutputDataReceived += (s, args) =>
+                installerProcess.OutputDataReceived += (_, args) =>
                 {
                     if (!string.IsNullOrEmpty(args.Data))
                         Log.Debug($"[Installer] {args.Data}");
                 };
                 installerProcess.BeginOutputReadLine();
 
-                installerProcess.ErrorDataReceived += (s, args) =>
+                installerProcess.ErrorDataReceived += (_, args) =>
                 {
                     if (!string.IsNullOrEmpty(args.Data))
                         Log.Error($"[Installer] {args.Data}");
@@ -261,7 +251,7 @@ namespace Exiled.Loader
                 }
                 else
                 {
-                    Log.Error($"Installer error occured.");
+                    Log.Error("Installer error occured.");
                 }
             }
             catch (Exception ex)
@@ -296,18 +286,14 @@ namespace Exiled.Loader
         {
             bool includePRE = config.ShouldDownloadTestingReleases || ExiledLib.Any(l => l.Version.PreRelease is not null);
             Version gameVersion = new(GameCore.Version.Major, GameCore.Version.Minor, GameCore.Version.Revision);
-            for (int z = 0; z < releases.Length; z++)
+            foreach (TaggedRelease taggedRelease in releases)
             {
-                TaggedRelease taggedRelease = releases[z];
-
-                if (!taggedRelease.Release.Description.Contains($"[Game Version: {gameVersion}]") || (taggedRelease.Release.PreRelease && !includePRE))
+                if ((config.ShouldDownloadTestingReleases && !taggedRelease.Release.Description.Contains($"[Game Version: {gameVersion}]")) ||
+                    (taggedRelease.Release.PreRelease && !includePRE) || taggedRelease.Version <= smallestVersion.Version)
                     continue;
 
-                if (taggedRelease.Version > smallestVersion.Version)
-                {
-                    release = taggedRelease.Release;
-                    return true;
-                }
+                release = taggedRelease.Release;
+                return true;
             }
 
             release = default;

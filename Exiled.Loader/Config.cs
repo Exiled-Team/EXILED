@@ -65,6 +65,12 @@ namespace Exiled.Loader
         public bool ShouldDownloadTestingReleases { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the game version should be validated before downloading the release.
+        /// </summary>
+        [Description("Indicates whether the game version should be validated before downloading the release.")]
+        public bool ValidateGameVersionBeforeDownloading { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets which assemblies should be excluded from the update.
         /// </summary>
         [Description("Indicates which assemblies should be excluded from the updater.")]
