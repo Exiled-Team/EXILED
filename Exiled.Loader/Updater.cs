@@ -288,8 +288,10 @@ namespace Exiled.Loader
             Version gameVersion = new(GameCore.Version.Major, GameCore.Version.Minor, GameCore.Version.Revision);
             foreach (TaggedRelease taggedRelease in releases)
             {
-                if ((config.ShouldDownloadTestingReleases && !taggedRelease.Release.Description.Contains($"[Game Version: {gameVersion}]")) ||
-                    (taggedRelease.Release.PreRelease && !includePRE) || taggedRelease.Version <= smallestVersion.Version)
+                if (config.ValidateGameVersionBeforeDownloading && !taggedRelease.Release.Description.Contains($"[Game Version: {gameVersion}]"))
+                    continue;
+
+                if ((taggedRelease.Release.PreRelease && !includePRE) || taggedRelease.Version <= smallestVersion.Version)
                     continue;
 
                 release = taggedRelease.Release;
