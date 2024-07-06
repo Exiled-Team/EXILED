@@ -33,8 +33,9 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Initializes a new instance of the <see cref="Scp018Projectile"/> class.
         /// </summary>
         internal Scp018Projectile()
-            : this((BaseScp018Projectile)ItemType.SCP018.GetItemBase().ServerDropItem())
+            : base(ItemType.SCP018)
         {
+            Base = (BaseScp018Projectile)((Pickup)this).Base;
         }
 
         /// <summary>

@@ -40,7 +40,7 @@ namespace Exiled.API.Features.Pickups
     /// A wrapper class for <see cref="ItemPickupBase"/>.
     /// </summary>
     [EClass(category: nameof(Pickup))]
-    public class Pickup : GameEntity, IWrapper<ItemPickupBase>, IWorldSpace
+    public class Pickup : GameEntity, IWrapper<ItemPickupBase>
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Items.Item"/>.
