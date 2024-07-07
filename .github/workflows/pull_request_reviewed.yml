@@ -1,0 +1,29 @@
+name: Rename Pull Request Labels
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  configure-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - if: github.event.review.state == 'approved'
+        name: Set Label When Approved
+        uses: TobKed/label-when-approved-action@v1.3
+        with:
+          # The GITHUB_TOKEN secret of the repository
+          token: ${{ github.token }}
+          label: approved
+          require_committers_approval: true
+          comment: >
+            Hey!
+            Your pull request has been approved & will be merged soon.
+
+            > NOTE: If you make another commit, the reviews will be invalidated.
+            
+                
