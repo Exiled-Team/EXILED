@@ -36,7 +36,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
         public virtual bool ExplodeOnCollision { get; set; }
 
         /// <summary>
-        /// Gets or sets the time in seconds before the grenade explodes.
+        /// Gets or sets a value indicating the length of grenade's fuse in seconds.
         /// </summary>
         public virtual float FuseTime { get; set; }
     }
