@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Map
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
-    /// Contains all information for when the server is turning a pickup into a live grenade.
+    /// Contains all information before a pickup grenade is changed into a live grenade.
     /// </summary>
     public class ChangingIntoGrenadeEventArgs : IDeniableEvent, IPickupEvent
     {
