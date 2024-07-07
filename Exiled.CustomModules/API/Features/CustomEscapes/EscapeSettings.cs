@@ -84,6 +84,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
 
         /// <summary>
         /// Gets or sets the role to be given when escaping.
+        /// Will override the <see cref="CustomRole"/> if set.
         /// </summary>
         public RoleTypeId Role { get; set; }
 
