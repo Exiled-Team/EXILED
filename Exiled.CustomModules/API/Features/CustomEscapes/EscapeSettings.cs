@@ -78,7 +78,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether specific escape settings are enabled.
+        /// Gets or sets a value indicating whether the specific settings are enabled.
         /// </summary>
         public bool IsAllowed { get; set; }
 
@@ -93,7 +93,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public CustomRole CustomRole { get; set; }
 
         /// <summary>
-        /// Gets or sets the position where the settings will be triggered.
+        /// Gets or sets the position where the specific settings will be triggered.
         /// </summary>
         public Vector3 Position { get; set; }
 
