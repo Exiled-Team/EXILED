@@ -31,12 +31,12 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets a value that determines if the grenade should explode immediately when contacting any surface.
+        /// Gets or sets a value indicating whether the grenade should explode on collision.
         /// </summary>
         public virtual bool ExplodeOnCollision { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating how long the grenade's fuse time should be.
+        /// Gets or sets the time in seconds before the grenade explodes.
         /// </summary>
         public virtual float FuseTime { get; set; }
     }
