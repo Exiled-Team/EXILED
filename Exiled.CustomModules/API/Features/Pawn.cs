@@ -32,7 +32,7 @@ namespace Exiled.CustomModules.API.Features
     /// <summary>
     /// Represents an in-game player by encapsulating a <see cref="ReferenceHub"/>, providing an extended feature set through the <see cref="Pawn"/> class.
     /// <para>
-    /// The <see cref="Pawn"/> class enhances the functionality of the base <see cref="Player"/> class, introducing additional features and capabilities.
+    /// The <see cref="Pawn"/> class enhances the functionality of the base <see cref="Player"/> class by providing additional features and capabilities related to <see cref="CustomModules"/>.
     /// <br>This class is designed to be used seamlessly alongside existing methods that expect a <see cref="Player"/> as a parameter, allowing for compatibility with the existing codebase.</br>
     /// <para>The use of nullable context is enabled to prevent users from inadvertently passing or interacting with <see langword="null"/> references.</para>
     /// </para>
@@ -165,16 +165,16 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Gets the global role of the pawn.
+        /// Gets the <see cref="Role"/> or <see cref="CustomRoles.CustomRole"/> of the pawn.
         /// <para/>
-        /// It will return a <see cref="CustomRoles.CustomRole"/> if available, or the <see cref="Role"/> if null.
+        /// <returns><see cref="CustomRoles.CustomRole"/> if available; otherwise, the standard <see cref="Role"/></returns>
         /// </summary>
         public object GlobalRole => CustomRole ? CustomRole : Role;
 
         /// <summary>
-        /// Gets the global items associated with the pawn.
+        /// Gets the <see cref="Item"/>s and <see cref="CustomItem"/>s associated with the pawn.
         /// <para/>
-        /// It will return a combination of standard <see cref="Item"/>s and <see cref="CustomItem"/>s.
+        /// <returns>A combination of <see cref="Item"/>s and <see cref="CustomItem"/>s</returns>
         /// </summary>
         public IEnumerable<object> GlobalItems => Items.Cast<object>().Concat(CustomItems);
 
@@ -221,14 +221,14 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the pawn is any custom SCP.
+        /// Gets a value indicating whether the pawn is a custom SCP.
         /// </summary>
         public bool IsCustomScp => CustomRole && CustomRole.IsScp;
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="object"/> containing all custom items in the pawn's inventory.
+        /// Gets a <see cref="IEnumerable{T}"/> of all <see cref="CustomItem"/>s in the pawn's inventory.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="object"/> which contains all found custom items.</returns>
+        /// <returns>A <see cref="IEnumerable{T}"/> of all <see cref="CustomItem"/>s in the pawn's inventory.</returns>
         public IEnumerable<CustomItem> CustomItems
         {
             get
@@ -244,13 +244,13 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="EffectType"/>.
+        /// Gets a <see cref="IEnumerable{T}"/> of all <see cref="EffectType"/>s.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="EffectType"/>.</returns>
+        /// <returns>A <see cref="IEnumerable{T}"/> of all <see cref="EffectType"/>s.</returns>
         public IEnumerable<EffectType> EffectTypes { get; } = EnumExtensions.QueryValues<EffectType>();
 
         /// <summary>
-        /// Gets a value indicating whether the pawn has the <see cref="CustomItem"/> of the specified type.
+        /// Gets a value indicating whether the pawn has a <see cref="CustomItem"/> of the specified type.
         /// </summary>
         /// <typeparam name="T">The type of the <see cref="CustomItem"/>.</typeparam>
         /// <returns><see langword="true"/> if a <see cref="CustomItem"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
@@ -258,7 +258,7 @@ namespace Exiled.CustomModules.API.Features
             where T : CustomItem => CustomItems.Any(item => item.GetType() == typeof(T));
 
         /// <summary>
-        /// Gets a value indicating whether the pawn has the <see cref="PlayerAbility"/> of the specified type.
+        /// Gets a value indicating whether the pawn has a <see cref="PlayerAbility"/> of the specified type.
         /// </summary>
         /// <typeparam name="T">The type of the <see cref="PlayerAbility"/>.</typeparam>
         /// <returns><see langword="true"/> if a <see cref="PlayerAbility"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
@@ -266,10 +266,10 @@ namespace Exiled.CustomModules.API.Features
             where T : PlayerAbility => CustomAbilities.Any(ability => ability.GetType() == typeof(T));
 
         /// <summary>
-        /// Tries to get the first <see cref="CustomItem"/> of the specified type from the collection of custom items.
+        /// Tries to get the first <see cref="CustomItem"/> of the specified type from the pawn's inventory.
         /// </summary>
-        /// <typeparam name="T">The type of the <see cref="CustomItem"/> to retrieve.</typeparam>
-        /// <param name="customItem">The output parameter that will contain the retrieved <see cref="CustomItem"/>, if found.</param>
+        /// <typeparam name="T">The type of the <see cref="CustomItem"/> to get.</typeparam>
+        /// <param name="customItem">The output parameter that will contain the <see cref="CustomItem"/>, if found.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomItem"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
         public bool TryGetCustomItem<T>(out T customItem)
             where T : CustomItem => customItem = CustomItems.FirstOrDefault(item => item.GetType() == typeof(T))?.Cast<T>();
@@ -277,17 +277,17 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Tries to get the <see cref="CustomRoles.CustomRole"/> of the specified type from the <see cref="Pawn"/>.
         /// </summary>
-        /// <typeparam name="T">The type of the <see cref="CustomRoles.CustomRole"/> to retrieve.</typeparam>
+        /// <typeparam name="T">The type of the <see cref="CustomRoles.CustomRole"/>.</typeparam>
         /// <param name="customRole">The output parameter that will contain the retrieved <see cref="CustomRoles.CustomRole"/>, if found.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomRoles.CustomRole"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
         public bool TryGetCustomRole<T>(out T customRole)
             where T : CustomRole => CustomRole.Is(out customRole);
 
         /// <summary>
-        /// Tries to get the <see cref="CustomAbility{T}"/> of the specified type from the player's abilities.
+        /// Tries to get the <see cref="CustomAbility{T}"/> of the specified type from the pawn's abilities.
         /// </summary>
-        /// <typeparam name="T">The type of the <see cref="CustomAbility{T}"/> to retrieve.</typeparam>
-        /// <param name="customAbility">The output parameter that will contain the retrieved <see cref="CustomAbility{T}"/>, if found.</param>
+        /// <typeparam name="T">The type of the <see cref="CustomAbility{T}"/> to get.</typeparam>
+        /// <param name="customAbility">The output parameter that will contain the <see cref="CustomAbility{T}"/>, if found.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomAbility{T}"/> of the specified type was found; otherwise, <see langword="false"/>.</returns>
         public bool TryGetCustomAbility<T>(out T customAbility)
             where T : PlayerAbility => CustomAbilities.FirstOrDefault(ability => ability.GetType() == typeof(T)).Is(out customAbility);
@@ -295,7 +295,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Add an <see cref="Item"/> or <see cref="CustomItem"/> of the specified type to the pawn's inventory.
         /// </summary>
-        /// <param name="item">The item to be added.</param>
+        /// <param name="item">The item to add. Can be an <see cref="Item"/>, <see cref="ItemType"/>, <see cref="CustomItem"/>, as well as <see cref="CustomItem"/>'s <see cref="CustomItem.Name"/>, or <see cref="CustomItem.Id"/>.</param>
         /// <returns><see langword="true"/> if the item has been given to the pawn; otherwise, <see langword="false"/>.</returns>
         public bool AddItem(object item)
         {
@@ -330,9 +330,10 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Adds a <see cref="IEnumerable{T}"/> of <see cref="object"/> containing all the custom items to the pawn's inventory.
+        /// Adds a collection of <see cref="Item"/> and <see cref="CustomItem"/> to the pawn's inventory.
         /// </summary>
-        /// <param name="customItems">The custom items to be added.</param>
+        /// <param name="customItems">The custom items to add.</param>
+        /// <seealso cref="AddItem(object)"/>
         public void AddItem(IEnumerable<object> customItems)
         {
             foreach (object customItemType in customItems)
@@ -345,7 +346,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Sets the pawn's role.
         /// </summary>
-        /// <param name="role">The role to be set.</param>
+        /// <param name="role">The role to set. Can be a <see cref="RoleTypeId"/> or a <see cref="uint"/> representing a custom role's <see cref="CustomRole.Id"/>.</param>
         /// <param name="preservePlayerPosition">A value indicating whether the <see cref="Pawn"/> should be spawned in the same position.</param>
         /// <param name="spawnReason">The <see cref="SpawnReason"/> to be set.</param>
         /// <param name="roleSpawnFlags">The <see cref="RoleSpawnFlags"/> to be set.</param>
@@ -371,10 +372,7 @@ namespace Exiled.CustomModules.API.Features
             }
         }
 
-        /// <summary>
-        /// Safely drops an item.
-        /// </summary>
-        /// <param name="item">The item to be dropped.</param>
+        /// <inheritdoc cref="Player.DropItem(Item)"/>
         public new void DropItem(Item item)
         {
             if (TryGetCustomItem(out CustomItem customItem))
@@ -388,17 +386,17 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Gets the ammo count of a specified custom ammo in a pawn's inventory.
+        /// Gets the amount of a specified custom ammo in a pawn's ammo box.
         /// </summary>
         /// <param name="customAmmoType">The custom ammo to be searched for in the pawn's inventory.</param>
-        /// <returns>The specified custom ammo count.</returns>
+        /// <returns>The amount of the specified custom ammo in the pawn's inventory.</returns>
         public ushort GetAmmo(uint customAmmoType) => (ushort)(customAmmoBox.TryGetValue(customAmmoType, out ushort amount) ? amount : 0);
 
         /// <summary>
-        /// Adds an amount of custom ammo to the pawn's ammo box.
+        /// Adds custom ammo to the pawn's ammo box.
         /// </summary>
         /// <param name="id">The type of the custom ammo.</param>
-        /// <param name="amount">The amount to be added.</param>
+        /// <param name="amount">The amount to add.</param>
         /// <returns><see langword="true"/> if the specified amount of ammo was given entirely or partially; otherwise, <see langword="false"/>.</returns>
         public bool AddAmmo(uint id, ushort amount)
         {
@@ -432,10 +430,10 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Removes an amount of custom ammo from the pawn's ammo box.
+        /// Removes custom ammo from the pawn's ammo box.
         /// </summary>
         /// <param name="id">The type of the custom ammo.</param>
-        /// <param name="amount">The amount to be removed.</param>
+        /// <param name="amount">The amount to remove.</param>
         /// <returns><see langword="true"/> if the specified amount of ammo was removed entirely or partially; otherwise, <see langword="false"/>.</returns>
         public bool RemoveAmmo(uint id, ushort amount)
         {
@@ -459,10 +457,10 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Sets the amount of a specified custom ammo to the pawn's inventory.
+        /// Sets the amount of a specified custom ammo in the pawn's ammo box.
         /// </summary>
         /// <param name="id">The type of the custom ammo.</param>
-        /// <param name="amount">The amount of ammo to be set.</param>
+        /// <param name="amount">The amount to set.</param>
         public void SetAmmo(uint id, ushort amount)
         {
             if (customAmmoBox.TryAdd(id, amount))
