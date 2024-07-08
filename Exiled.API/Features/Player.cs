@@ -3693,10 +3693,9 @@ namespace Exiled.API.Features
         /// <param name="efficacy">Percent of incoming damage absorbed by this stat.</param>
         /// <param name="sustain">The number of seconds to delay the start of the decay.</param>
         /// <param name="persistant">Whether or not the process is removed when the value hits 0.</param>
-        public void AddAhp(float amount, float limit = 75f, float decay = 1.2f, float efficacy = 0.7f, float sustain = 0f, bool persistant = false)
-        {
-            AhpStat.ServerAddProcess(amount, limit, decay, efficacy, sustain, persistant);
-        }
+        /// <returns>The <see cref="AhpStat.AhpProcess"/> that was added.</returns>
+        public AhpStat.AhpProcess AddAhp(float amount, float limit = 75f, float decay = 1.2f, float efficacy = 0.7f, float sustain = 0f, bool persistant = false)
+            => AhpStat.ServerAddProcess(amount, limit, decay, efficacy, sustain, persistant);
 
         /// <summary>
         /// Reconnects the player to the server. Can be used to redirect them to another server on a different port but same IP.

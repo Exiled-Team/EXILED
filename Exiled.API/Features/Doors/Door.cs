@@ -597,7 +597,16 @@ namespace Exiled.API.Features.Doors
         /// Change the door lock with the given lock type.
         /// </summary>
         /// <param name="lockType">The <see cref="DoorLockType"/> to use.</param>
-        public void ChangeLock(DoorLockType lockType) => Base.ServerChangeLock((DoorLockReason)lockType, !LockType.HasFlag(lockType));
+        public void ChangeLock(DoorLockType lockType)
+        {
+            if (lockType == DoorLockType.None)
+            {
+                Base.NetworkActiveLocks = (ushort)DoorLockReason.None;
+                return;
+            }
+
+            Base.ServerChangeLock((DoorLockReason)lockType, !LockType.HasFlag(lockType));
+        }
 
         /// <summary>
         /// Permanently locks all active locks on the door, and then reverts back any changes after a specified length of time.
@@ -633,7 +642,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Unlocks and clears all active locks on the door.
         /// </summary>
-        public void Unlock() => Base.NetworkActiveLocks = (ushort)DoorLockReason.None;
+        public void Unlock() => ChangeLock(DoorLockType.None);
 
         /// <summary>
         /// Unlocks and clears all active locks on the door after a specified length of time.
