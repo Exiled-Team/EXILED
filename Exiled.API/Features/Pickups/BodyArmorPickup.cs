@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Pickups
     using System.Linq;
 
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
@@ -56,16 +57,19 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether this item is equippable.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(BodyArmorPickup))]
         public bool Equippable { get; } = false;
 
         /// <summary>
         /// Gets a value indicating whether this item is holsterable.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(BodyArmorPickup))]
         public bool Holsterable { get; } = false;
 
         /// <summary>
         /// Gets a value indicating whether or not this is a worn item.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(BodyArmorPickup))]
         public bool IsWorn { get; } = true;
 
         /// <summary>
@@ -76,6 +80,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets how strong the helmet on the armor is.
         /// </summary>
+        [EProperty(category: nameof(BodyArmorPickup))]
         public int HelmetEfficacy
         {
             get => helmetEfficacy;
@@ -85,6 +90,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets how strong the vest on the armor is.
         /// </summary>
+        [EProperty(category: nameof(BodyArmorPickup))]
         public int VestEfficacy
         {
             get => vestEfficacy;
@@ -94,6 +100,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets how much faster stamina will drain when wearing this armor.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(BodyArmorPickup))]
         public float StaminaUseMultiplier { get; set; }
 
         /// <summary>

@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Items
     using System.Linq;
 
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
     using InventorySystem;
@@ -35,6 +36,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="ItemBase"/>.
     /// </summary>
+    [EClass(category: nameof(Item))]
     public class Item : GameEntity, IWrapper<ItemBase>
     {
         /// <summary>
@@ -84,6 +86,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the unique serial number for the item.
         /// </summary>
+        [EProperty(category: nameof(Item))]
         public ushort Serial
         {
             get => Base.ItemSerial;
@@ -93,11 +96,13 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether if the item are in an inventory.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsInInventory => Owner != Server.Host && Owner.HasItem(this);
 
         /// <summary>
         /// Gets or sets the scale for the item.
         /// </summary>
+        [EProperty(category: nameof(Item))]
         public Vector3 Scale { get; set; } = Vector3.one;
 
         /// <summary>
@@ -108,21 +113,25 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public ItemType Type => Base.ItemTypeId;
 
         /// <summary>
         /// Gets the <see cref="ItemCategory"/> of the item.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public ItemCategory Category => Base.Category;
 
         /// <summary>
         /// Gets the <see cref="ItemTierFlags"/> of the item.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public ItemTierFlags TierFlags => Base.TierFlags;
 
         /// <summary>
         /// Gets or sets the Weight of the item.
         /// </summary>
+        [EProperty(category: nameof(Item))]
         public virtual float Weight
         {
             get => weight;
@@ -132,51 +141,61 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether or not this item is ammunition.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsAmmo => this is Ammo;
 
         /// <summary>
         /// Gets a value indicating whether or not this item is armor.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsArmor => this is Armor;
 
         /// <summary>
         /// Gets a value indicating whether or not this item is a keycard.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsKeycard => this is Keycard;
 
         /// <summary>
         /// Gets a value indicating whether or not this item will be destroy when being used.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsConsumable => this is Consumable;
 
         /// <summary>
         /// Gets a value indicating whether or not this item is a throwable item.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsThrowable => this is Throwable;
 
         /// <summary>
         /// Gets a value indicating whether or not this item can be used by a player.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsUsable => this is Usable;
 
         /// <summary>
         /// Gets a value indicating whether or not this item is a weapon.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsWeapon => this is Firearm;
 
         /// <summary>
         /// Gets a value indicating whether or not this item emits light.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public bool CanEmitLight => this is Firearm firearm ? firearm.HasFlashlight : Base is ILightEmittingItem;
 
         /// <summary>
         /// Gets a value indicating whether or not this item is currently imitating light.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsEmittingLight => Base is ILightEmittingItem light && light.IsEmittingLight;
 
         /// <summary>
         /// Gets a value indicating whether or not this item can be used to disarm players.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsDisarmer => Base is IDisarmingItem;
 
         /// <summary>

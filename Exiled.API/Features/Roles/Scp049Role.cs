@@ -13,6 +13,7 @@ namespace Exiled.API.Features.Roles
 
     using CustomPlayerEffects;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Attributes;
     using HarmonyLib;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
@@ -76,6 +77,7 @@ namespace Exiled.API.Features.Roles
         public static HashSet<Player> TurnedPlayers { get; } = new(20);
 
         /// <inheritdoc/>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public override RoleTypeId Type { get; } = RoleTypeId.Scp049;
 
         /// <inheritdoc/>
@@ -107,11 +109,13 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not SCP-049 is currently reviving a player.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp049Role))]
         public bool IsRecalling => ResurrectAbility.IsInProgress;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-049's "Doctor's Call" ability is currently active.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp049Role))]
         public bool IsCallActive => CallAbility.IsMarkerShown;
 
         /// <summary>
@@ -191,6 +195,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-049 can use its Doctor's Call ability again.
         /// </summary>
+        [EProperty(category: nameof(Scp049Role))]
         public float CallCooldown
         {
             get => CallAbility.Cooldown.Remaining;
@@ -204,6 +209,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-049 can use its Good Sense of the Doctor ability again.
         /// </summary>
+        [EProperty(category: nameof(Scp049Role))]
         public float GoodSenseCooldown
         {
             get => SenseAbility.Cooldown.Remaining;
@@ -217,6 +223,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-049 can attack again.
         /// </summary>
+        [EProperty(category: nameof(Scp049Role))]
         public float RemainingAttackCooldown
         {
             get => AttackAbility.Cooldown.Remaining;
@@ -230,6 +237,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the duration of the <see cref="Scp049CallAbility"/>.
         /// </summary>
+        [EProperty(category: nameof(Scp049Role))]
         public float RemainingCallDuration
         {
             get => CallAbility.Duration.Remaining;
@@ -243,6 +251,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the duration of the <see cref="Scp049SenseAbility"/>.
         /// </summary>
+        [EProperty(category: nameof(Scp049Role))]
         public float RemainingGoodSenseDuration
         {
             get => SenseAbility.Duration.Remaining;
@@ -256,6 +265,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the distance of the Sense Ability.
         /// </summary>
+        [EProperty(category: nameof(Scp049Role))]
         public float SenseDistance
         {
             get => SenseAbility._distanceThreshold;

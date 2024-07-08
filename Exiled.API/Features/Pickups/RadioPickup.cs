@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Pickups
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
 
     using BaseRadio = InventorySystem.Items.Radio.RadioPickup;
@@ -47,6 +48,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the Radio Battery Level.
         /// </summary>
+        [EProperty(category: nameof(RadioPickup))]
         public float BatteryLevel
         {
             get => Base.SavedBattery;
@@ -56,6 +58,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the <see cref="RadioRange"/>.
         /// </summary>
+        [EProperty(category: nameof(RadioPickup))]
         public RadioRange Range
         {
             get => (RadioRange)Base.NetworkSavedRange;
@@ -65,6 +68,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets a value indicating whether the radio is active.
         /// </summary>
+        [EProperty(category: nameof(RadioPickup))]
         public bool IsEnabled
         {
             get => Base.NetworkSavedEnabled;

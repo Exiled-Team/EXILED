@@ -63,6 +63,8 @@ namespace Exiled.API.Features.Doors
             if (Type is DoorType.Unknown)
                 Log.Error($"[DOORTYPE UNKNOWN] {this}");
 #endif
+
+            ParentCheckpointDoor = Get(Base.GetComponentInParent<Interactables.Interobjects.CheckpointDoor>());
         }
 
         /// <summary>
@@ -161,7 +163,12 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a value indicating whether or not this door is subdoor belonging to a checkpoint.
         /// </summary>
-        public bool IsPartOfCheckpoint => List.Any(x => x is Checkpoint checkpoint && checkpoint.Subdoors.Contains(this));
+        public bool IsPartOfCheckpoint => ParentCheckpointDoor is not null;
+
+        /// <summary>
+        /// Gets the checkpoint door the door is belonging to, or null if the door doesn't belong to a checkpoint.
+        /// </summary>
+        public Door ParentCheckpointDoor { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.

@@ -7,7 +7,10 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
     using System.Diagnostics;
+
+    using Exiled.API.Features.Core.Attributes;
 
     using Exiled.API.Interfaces;
     using InventorySystem.Items.ToggleableLights;
@@ -49,6 +52,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets a value indicating whether the item is emitting light.
         /// </summary>
+        [EProperty(category: nameof(Flashlight))]
         public new bool IsEmittingLight
         {
             get => Base.IsEmittingLight;
@@ -62,6 +66,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets time since level loaded when player will be able to change <see cref="IsEmittingLight"/> again.
         /// </summary>
+        [EProperty(category: nameof(Flashlight))]
         public float NextAllowedTime
         {
             get => Base.NextAllowedTime;

@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Roles
     using System.Diagnostics;
     using System.Linq;
 
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Hazards;
     using Mirror;
     using PlayerRoles;
@@ -72,11 +73,21 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Scp173Role"/> class.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
+        protected internal Scp173Role(GameObject gameObject)
+            : base(gameObject)
+        {
+        }
+
+        /// <summary>
         /// Gets a list of players who will be turned away from SCP-173.
         /// </summary>
         public static HashSet<Player> TurnedPlayers { get; } = new(20);
 
         /// <inheritdoc/>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public override RoleTypeId Type { get; } = RoleTypeId.Scp173;
 
         /// <inheritdoc/>
@@ -123,6 +134,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-173 can use breakneck speed again.
         /// </summary>
+        [EProperty(category: nameof(Scp173Role))]
         public float RemainingBreakneckCooldown
         {
             get => BreakneckSpeedsAbility.Cooldown.Remaining;
@@ -136,6 +148,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-173 can place a tantrum.
         /// </summary>
+        [EProperty(category: nameof(Scp173Role))]
         public float RemainingTantrumCooldown
         {
             get => TantrumAbility.Cooldown.Remaining;
@@ -149,6 +162,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not SCP-173 is currently being viewed by one or more players.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp173Role))]
         public bool IsObserved => ObserversTracker.IsObserved;
 
         /// <summary>
@@ -159,16 +173,19 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets SCP-173's max move speed.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp173Role))]
         public float MaxMovementSpeed => MovementModule.MaxMovementSpeed;
 
         /// <summary>
         /// Gets the SCP-173's movement speed.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp173Role))]
         public override float MovementSpeed => MovementModule.ServerSpeed;
 
         /// <summary>
         /// Gets or sets SCP-173's simulated stare. SCP-173 will be treated as though it is being looked at while this value is greater than <c>0</c>.
         /// </summary>
+        [EProperty(category: nameof(Scp173Role))]
         public float SimulatedStare
         {
             get => ObserversTracker.SimulatedStare;
@@ -178,6 +195,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-173 is able to blink.
         /// </summary>
+        [EProperty(category: nameof(Scp173Role))]
         public bool BlinkReady
         {
             get => BlinkTimer.AbilityReady;
@@ -202,6 +220,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-173 can blink.
         /// </summary>
+        [EProperty(category: nameof(Scp173Role))]
         public float BlinkCooldown
         {
             get => BlinkTimer.RemainingBlinkCooldown;
@@ -216,11 +235,13 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating the max distance that SCP-173 can move in a blink. Factors in <see cref="BreakneckActive"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp173Role))]
         public float BlinkDistance => TeleportAbility.EffectiveBlinkDistance;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-173's breakneck speed is active.
         /// </summary>
+        [EProperty(category: nameof(Scp173Role))]
         public bool BreakneckActive
         {
             get => BreakneckSpeedsAbility.IsActive;

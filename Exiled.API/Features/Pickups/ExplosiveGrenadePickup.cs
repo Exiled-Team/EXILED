@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Pickups
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups.Projectiles;
     using InventorySystem.Items;
@@ -42,26 +43,31 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the maximum radius of the grenade.
         /// </summary>
+        [EProperty(category: nameof(ExplosiveGrenadePickup))]
         public float MaxRadius { get; set; }
 
         /// <summary>
         /// Gets or sets the multiplier for damage against <see cref="Side.Scp"/> players.
         /// </summary>
+        [EProperty(category: nameof(ExplosiveGrenadePickup))]
         public float ScpDamageMultiplier { get; set; }
 
         /// <summary>
         /// Gets or sets how long the <see cref="EffectType.Burned"/> effect will last.
         /// </summary>
+        [EProperty(category: nameof(ExplosiveGrenadePickup))]
         public float BurnDuration { get; set; }
 
         /// <summary>
         /// Gets or sets how long the <see cref="EffectType.Deafened"/> effect will last.
         /// </summary>
+        [EProperty(category: nameof(ExplosiveGrenadePickup))]
         public float DeafenDuration { get; set; }
 
         /// <summary>
         /// Gets or sets how long the <see cref="EffectType.Concussed"/> effect will last.
         /// </summary>
+        [EProperty(category: nameof(ExplosiveGrenadePickup))]
         public float ConcussDuration { get; set; }
 
         /// <inheritdoc/>

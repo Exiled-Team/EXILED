@@ -10,14 +10,15 @@ namespace Exiled.API.Features
     using System.ComponentModel;
     using System.Diagnostics;
 
+    using Exiled.API.Features.Core.Attributes;
     using Hints;
-
     using YamlDotNet.Serialization;
 
     /// <summary>
     /// Useful class to save hint configs in a cleaner way.
     /// </summary>
     [DebuggerDisplay("Show = {Show} Duration = {Duration}s Content = {Content}")]
+    [EClass(assetRegistrySearchable: false, category: nameof(Hint))]
     public class Hint
     {
         private HintParameter[] parameters;
@@ -43,7 +44,7 @@ namespace Exiled.API.Features
             Content = content;
             Duration = duration;
             Show = show;
-            Parameters = parameters is null ? new HintParameter[] { new StringHintParameter(Content) } : parameters;
+            Parameters = parameters ?? new HintParameter[] { new StringHintParameter(Content) };
             Effects = effects;
         }
 
@@ -51,18 +52,21 @@ namespace Exiled.API.Features
         /// Gets or sets the hint content.
         /// </summary>
         [Description("The hint content")]
+        [EProperty(registrySearchable: true, category: nameof(Hint))]
         public string Content { get; set; }
 
         /// <summary>
         /// Gets or sets the hint duration.
         /// </summary>
         [Description("The hint duration")]
+        [EProperty(registrySearchable: true, category: nameof(Hint))]
         public float Duration { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the hint should be shown or not.
         /// </summary>
         [Description("Indicates whether the hint should be shown or not")]
+        [EProperty(registrySearchable: true, category: nameof(Hint))]
         public bool Show { get; set; }
 
         /// <summary>

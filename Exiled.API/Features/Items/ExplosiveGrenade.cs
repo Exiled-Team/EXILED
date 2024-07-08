@@ -10,10 +10,9 @@ namespace Exiled.API.Features.Items
     using System.Diagnostics;
 
     using Enums;
-
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
@@ -56,6 +55,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the maximum radius of the grenade.
         /// </summary>
+        [EProperty(category: nameof(ExplosiveGrenade))]
         public float MaxRadius
         {
             get => Projectile.MaxRadius;
@@ -65,6 +65,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the multiplier for damage against <see cref="Side.Scp"/> players.
         /// </summary>
+        [EProperty(category: nameof(ExplosiveGrenade))]
         public float ScpDamageMultiplier
         {
             get => Projectile.ScpDamageMultiplier;
@@ -74,6 +75,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how long the <see cref="EffectType.Burned"/> effect will last.
         /// </summary>
+        [EProperty(category: nameof(ExplosiveGrenade))]
         public float BurnDuration
         {
             get => Projectile.BurnDuration;
@@ -83,6 +85,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how long the <see cref="EffectType.Deafened"/> effect will last.
         /// </summary>
+        [EProperty(category: nameof(ExplosiveGrenade))]
         public float DeafenDuration
         {
             get => Projectile.DeafenDuration;
@@ -92,6 +95,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how long the <see cref="EffectType.Concussed"/> effect will last.
         /// </summary>
+        [EProperty(category: nameof(ExplosiveGrenade))]
         public float ConcussDuration
         {
             get => Projectile.ConcussDuration;
@@ -101,6 +105,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how long the fuse will last.
         /// </summary>
+        [EProperty(category: nameof(ExplosiveGrenade))]
         public float FuseTime
         {
             get => Projectile.FuseTime;

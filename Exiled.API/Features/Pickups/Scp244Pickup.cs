@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Pickups
     using System.Diagnostics;
 
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
@@ -50,26 +51,31 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the amount of time this Scp244 has been on the ground.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public TimeSpan Lifetime => Base._lifeTime.Elapsed;
 
         /// <summary>
         /// Gets the speed of <see cref="Scp244Pickup"/>'s too grow.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public float GrowSpeed => Base.GrowSpeed;
 
         /// <summary>
         /// Gets the time for the sphere to finish their expansion.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public float TimeToGrow => Base.TimeToGrow;
 
         /// <summary>
         /// Gets the current size effect of the Scp244's Hypothermia.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public float CurrentDiameter => Base.CurrentDiameter;
 
         /// <summary>
         /// Gets or sets the current size percent of the Scp244's Hypothermia.
         /// </summary>
+        [EProperty(category: nameof(Scp244Pickup))]
         public float CurrentSizePercent
         {
             get => Base.CurrentSizePercent;
@@ -80,6 +86,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the maximum diameter within which SCP-244's hypothermia effect is dealt.
         /// </summary>
         /// <remarks>This does not prevent visual effects.</remarks>
+        [EProperty(category: nameof(Scp244Pickup))]
         public float MaxDiameter
         {
             get => Base.MaxDiameter;
@@ -89,6 +96,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the Scp244's remaining health.
         /// </summary>
+        [EProperty(category: nameof(Scp244Pickup))]
         public float Health
         {
             get => Base._health;
@@ -98,16 +106,19 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether or not this Scp244 is breakable.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public bool IsBreakable => Base.State is Scp244State.Idle or Scp244State.Active;
 
         /// <summary>
         /// Gets a value indicating whether or not this Scp244 is broken.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public bool IsBroken => Base.State is Scp244State.Destroyed;
 
         /// <summary>
         /// Gets or sets the <see cref="Scp244State"/>.
         /// </summary>
+        [EProperty(category: nameof(Scp244Pickup))]
         public Scp244State State
         {
             get => Base.State;
@@ -117,6 +128,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the activation angle, where 1 is a minimum, and -1 it's a maximum activation angle.
         /// </summary>
+        [EProperty(category: nameof(Scp244Pickup))]
         public float ActivationDot
         {
             get => Base._activationDot;

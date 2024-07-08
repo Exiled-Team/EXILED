@@ -11,11 +11,13 @@ namespace Exiled.API.Features.Roles
     using System.Diagnostics;
     using System.Linq;
 
+    using Exiled.API.Features.Core.Attributes;
     using PlayerRoles;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp096;
     using PlayerRoles.Subroutines;
+    using UnityEngine;
 
     using Scp096GameRole = PlayerRoles.PlayableScps.Scp096.Scp096Role;
 
@@ -68,11 +70,21 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Scp096Role"/> class.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
+        protected internal Scp096Role(GameObject gameObject)
+            : base(gameObject)
+        {
+        }
+
+        /// <summary>
         /// Gets a list of players who will be turned away from SCP-096.
         /// </summary>
         public static HashSet<Player> TurnedPlayers { get; } = new(20);
 
         /// <inheritdoc/>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public override RoleTypeId Type { get; } = RoleTypeId.Scp096;
 
         /// <inheritdoc/>
@@ -114,26 +126,31 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating SCP-096's ability state.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp096Role))]
         public Scp096AbilityState AbilityState => Base.StateController.AbilityState;
 
         /// <summary>
         /// Gets a value indicating SCP-096's rage state.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp096Role))]
         public Scp096RageState RageState => Base.StateController.RageState;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-096 can receive targets.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp096Role))]
         public bool CanReceiveTargets => RageCycleAbility._targetsTracker.CanReceiveTargets;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-096 can attack.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp096Role))]
         public bool AttackPossible => AttackAbility.AttackPossible;
 
         /// <summary>
         /// Gets or sets the Charge Ability Cooldown.
         /// </summary>
+        [EProperty(category: nameof(Scp096Role))]
         public float ChargeCooldown
         {
             get => ChargeAbility.Cooldown.Remaining;
@@ -147,6 +164,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the Charge Ability duration.
         /// </summary>
+        [EProperty(category: nameof(Scp096Role))]
         public float RemainingChargeDuration
         {
             get => ChargeAbility.Duration.Remaining;
@@ -160,6 +178,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-096 can be enraged again.
         /// </summary>
+        [EProperty(category: nameof(Scp096Role))]
         public float EnrageCooldown
         {
             get => RageCycleAbility._activationTime.Remaining;
@@ -173,6 +192,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets enraged time left.
         /// </summary>
+        [EProperty(category: nameof(Scp096Role))]
         public float EnragedTimeLeft
         {
             get => RageManager.EnragedTimeLeft;
@@ -186,6 +206,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets enraged time left.
         /// </summary>
+        [EProperty(category: nameof(Scp096Role))]
         public float TotalEnrageTime
         {
             get => RageManager.TotalRageTime;
@@ -199,6 +220,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets a value indicating whether the TryNotToCry ability is active.
         /// </summary>
+        [EProperty(category: nameof(Scp096Role))]
         public bool TryNotToCryActive
         {
             get => TryNotToCryAbility.IsActive;

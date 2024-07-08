@@ -9,19 +9,16 @@ namespace Exiled.API.Features.Items
 {
     using System.Diagnostics;
 
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
-
     using UnityEngine;
 
     using BaseScp018Projectile = InventorySystem.Items.ThrowableProjectiles.Scp018Projectile;
-
     using Object = UnityEngine.Object;
-
     using Scp018Projectile = Pickups.Projectiles.Scp018Projectile;
 
     /// <summary>
@@ -59,6 +56,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the time for SCP-018 not to ignore the friendly fire.
         /// </summary>
+        [EProperty(category: nameof(Scp018))]
         public float FriendlyFireTime
         {
             get => Projectile.FriendlyFireTime;
@@ -68,6 +66,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how long the fuse will last.
         /// </summary>
+        [EProperty(category: nameof(Scp018))]
         public float FuseTime
         {
             get => Projectile.FuseTime;

@@ -11,41 +11,36 @@ namespace Exiled.API.Features
     using System.Diagnostics;
 
     using CustomPlayerEffects;
-
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Interfaces;
+
     using YamlDotNet.Serialization;
 
     /// <summary>
-    /// Useful class to save effect-related configs cleanly.
+    /// Useful struct to save effect-related configs cleanly.
     /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class Effect
+    public struct Effect
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Effect"/> class.
-        /// </summary>
-        public Effect()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Effect"/> class.
+        /// Initializes a new instance of the <see cref="Effect"/> struct.
         /// </summary>
         /// <param name="statusEffectBase">Get all the information of the effect>.</param>
         public Effect(StatusEffectBase statusEffectBase)
         {
             if (!statusEffectBase.TryGetEffectType(out EffectType effect))
-                Log.Error($"EffectType not found please report to Exiled BugReport : {statusEffectBase}");
+                Log.Error($"EffectType not found please report to Exiled: {statusEffectBase}");
 
             Type = effect;
             Duration = statusEffectBase.Duration;
             Intensity = statusEffectBase.Intensity;
             IsEnabled = statusEffectBase.IsEnabled;
+            AddDurationIfActive = false;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Effect"/> class.
+        /// Initializes a new instance of the <see cref="Effect"/> struct.
         /// </summary>
         /// <param name="type">The type of the effect>.</param>
         /// <param name="duration">The duration of the effect, in seconds.</param>
@@ -82,7 +77,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the effect will add duration onto the effect if already active or not.
         /// </summary>
-        [Description("If the effect is already active, setting to true will add this duration onto the effect.")]
+        [Description("Indicates whether the effect will add duration onto the effect if already active or not")]
         public bool AddDurationIfActive { get; set; }
 
         /// <summary>
