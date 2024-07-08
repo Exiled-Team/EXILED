@@ -130,7 +130,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
 
         /// <summary>
         /// Fired before receiving a throwing request with a custom grenade.
-        /// <seealso cref="ThrowingRequestEventArgs"/>
         /// </summary>
         /// <param name="ev"><see cref="ThrowingRequestEventArgs"/>.</param>
         protected virtual void OnThrowingRequest(ThrowingRequestEventArgs ev)
@@ -147,7 +146,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
 
         /// <summary>
         /// Fired before a custom grenade explodes.
-        /// <seealso cref="ExplodingGrenadeEventArgs"/>
         /// </summary>
         /// <param name="ev"><see cref="ExplodingGrenadeEventArgs"/>.</param>
         protected virtual void OnExploding(ExplodingGrenadeEventArgs ev)
@@ -155,8 +153,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
         }
 
         /// <summary>
-        /// Fired after a pickup grenade was changed into a live grenade by an explosion.
-        /// <seealso cref="ChangedIntoGrenadeEventArgs"/>
+        /// Fired after a custom <see cref="GrenadePickup"/> was changed into a live grenade by an explosion.
         /// </summary>
         /// <param name="ev"><see cref="ChangedIntoGrenadeEventArgs"/>.</param>
         protected virtual void OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs ev)

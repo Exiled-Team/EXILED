@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Map
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
-    /// Contains all information after a pickup grenade was changed into a live grenade.
+    /// Contains all information after a <see cref="GrenadePickup"/> was changed into a live grenade by an explosion.
     /// </summary>
     public class ChangedIntoGrenadeEventArgs : IExiledEvent
     {
