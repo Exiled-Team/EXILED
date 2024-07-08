@@ -27,7 +27,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     using UnityEngine;
 
     /// <summary>
-    /// A class to easily manage item behavior.
+    /// A class to customize item behaviour.
     /// </summary>
     public abstract class CustomItem : CustomModule, IAdditiveBehaviour
     {
@@ -47,27 +47,27 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 #pragma warning restore SA1202 // Elements should be ordered by access
 
         /// <summary>
-        /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomItem"/>'s.
+        /// Gets all registered <see cref="CustomItem"/>s.
         /// </summary>
         public static IEnumerable<CustomItem> List => Registered;
 
         /// <summary>
-        /// Gets all Items and their respective <see cref="CustomItem"/>.
+        /// Gets all custom items and their respective <see cref="CustomItem"/> instance.
         /// </summary>
         public static IReadOnlyDictionary<Item, CustomItem> ItemManager => ItemsValue;
 
         /// <summary>
-        /// Gets all Pickups and their respective <see cref="CustomItem"/>.
+        /// Gets all custom pickups and their respective <see cref="CustomItem"/> instance.
         /// </summary>
         public static IReadOnlyDictionary<Pickup, CustomItem> PickupManager => PickupValue;
 
         /// <summary>
-        /// Gets all pickups belonging to a <see cref="CustomItem"/>.
+        /// Gets all pickups that are <see cref="CustomItem"/>s.
         /// </summary>
         public static HashSet<Pickup> CustomItemsUnhold => PickupManager.Keys.ToHashSet();
 
         /// <summary>
-        /// Gets all items belonging to a <see cref="CustomItem"/>.
+        /// Gets all items that are <see cref="CustomItem"/>s.
         /// </summary>
         public static HashSet<Item> CustomItemsHolded => ItemManager.Keys.ToHashSet();
 
@@ -92,7 +92,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public override bool IsEnabled { get; }
 
         /// <summary>
-        /// Gets the <see cref="CustomItem"/>'s description.
+        /// Gets the description. It can be is used in hints when the item is selected.
         /// </summary>
         public virtual string Description { get; }
 
@@ -117,12 +117,12 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public virtual bool IsRegistered => Registered.Contains(this);
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all pickup owning this <see cref="Pickup"/>.
+        /// Gets all <see cref="Pickup"/> instances of this <see cref="CustomItem"/>.
         /// </summary>
         public IEnumerable<Pickup> Pickups => PickupManager.Where(x => x.Value.Id == Id).Select(x => x.Key);
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Item"/> containing all item owning this <see cref="CustomItem"/>.
+        /// Gets all <see cref="Item"/> instances of this <see cref="CustomItem"/>.
         /// </summary>
         public IEnumerable<Item> Items => ItemsValue.Where(x => x.Value.Id == Id).Select(x => x.Key);
 
@@ -134,33 +134,33 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public static CustomItem Get(object id) => id is uint or UUCustomItemType ? Get((uint)id) : null;
 
         /// <summary>
-        /// Retrieves a <see cref="CustomItem"/> instance based on the specified custom item id.
+        /// Gets a <see cref="CustomItem"/> instance based on the specified custom item id.
         /// </summary>
-        /// <param name="id">The custom item id to retrieve.</param>
-        /// <returns>The retrieved <see cref="CustomItem"/> instance if found and enabled; otherwise, <see langword="null"/>.</returns>
+        /// <param name="id">The id of the custom item to get.</param>
+        /// <returns>The <see cref="CustomItem"/> instance if found and enabled; otherwise, <see langword="null"/>.</returns>
         public static CustomItem Get(uint id) => IdLookupTable[id];
 
         /// <summary>
-        /// Retrieves a <see cref="CustomItem"/> instance based on the specified item name.
+        /// Gets a <see cref="CustomItem"/> instance based on the specified item name.
         /// </summary>
-        /// <param name="name">The name of the custom item to retrieve.</param>
-        /// <returns>The retrieved <see cref="CustomItem"/> instance if found; otherwise, <see langword="null"/>.</returns>
+        /// <param name="name">The name of the custom item to get.</param>
+        /// <returns>The <see cref="CustomItem"/> instance if found; otherwise, <see langword="null"/>.</returns>
         public static CustomItem Get(string name) => NameLookupTable[name];
 
         /// <summary>
-        /// Retrieves a <see cref="CustomItem"/> instance based on the specified type.
+        /// Gets a <see cref="CustomItem"/> instance based on the specified type.
         /// </summary>
-        /// <param name="type">The type to retrieve the custom item for.</param>
-        /// <returns>The retrieved <see cref="CustomItem"/> instance if found and enabled; otherwise, <see langword="null"/>.</returns>
+        /// <param name="type">The type to get the custom item for.</param>
+        /// <returns>The <see cref="CustomItem"/> instance if found and enabled; otherwise, <see langword="null"/>.</returns>
         public static CustomItem Get(Type type) =>
             typeof(CustomItem).IsAssignableFrom(type) ? TypeLookupTable[type] :
             typeof(ItemBehaviour).IsAssignableFrom(type) ? BehaviourLookupTable[type] : null;
 
         /// <summary>
-        /// Retrieves a <see cref="CustomItem"/> instance based on the specified <see cref="Item"/> instance.
+        /// Gets a <see cref="CustomItem"/> instance based on the specified <see cref="Item"/> instance.
         /// </summary>
-        /// <param name="item">The <see cref="Item"/> instance to retrieve the custom item from.</param>
-        /// <returns>The retrieved <see cref="CustomItem"/> instance if found; otherwise, <see langword="null"/>.</returns>
+        /// <param name="item">The <see cref="Item"/> instance to get the custom item from.</param>
+        /// <returns>The <see cref="CustomItem"/> instance if found; otherwise, <see langword="null"/>.</returns>
         public static CustomItem Get(Item item)
         {
             CustomItem customItem = default;
@@ -177,17 +177,17 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         }
 
         /// <summary>
-        /// Retrieves a <see cref="CustomItem"/> instance based on the specified <see cref="Pickup"/> instance.
+        /// Gets a <see cref="CustomItem"/> instance based on the specified <see cref="Pickup"/> instance.
         /// </summary>
-        /// <param name="item">The <see cref="Pickup"/> instance to retrieve the custom item from.</param>
-        /// <returns>The retrieved <see cref="CustomItem"/> instance if found; otherwise, <see langword="null"/>.</returns>
-        public static CustomItem Get(Pickup item)
+        /// <param name="pickup">The <see cref="Pickup"/> instance to get the custom item from.</param>
+        /// <returns>The <see cref="CustomItem"/> instance if found; otherwise, <see langword="null"/>.</returns>
+        public static CustomItem Get(Pickup pickup)
         {
             CustomItem customItem = default;
 
             foreach (KeyValuePair<Pickup, CustomItem> kvp in PickupManager)
             {
-                if (kvp.Key != item)
+                if (kvp.Key != pickup)
                     continue;
 
                 customItem = kvp.Value;
@@ -197,7 +197,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         }
 
         /// <summary>
-        /// Attempts to retrieve a <see cref="CustomItem"/> based on the provided id or <see cref="UUCustomItemType"/>.
+        /// Attempts to get a <see cref="CustomItem"/> based on the provided id or <see cref="UUCustomItemType"/>.
         /// </summary>
         /// <param name="id">The id or <see cref="UUCustomItemType"/> of the custom item.</param>
         /// <param name="customItem">When this method returns, contains the <see cref="CustomItem"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
@@ -205,42 +205,42 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public static bool TryGet(object id, out CustomItem customItem) => customItem = Get(id);
 
         /// <summary>
-        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified custom item id.
+        /// Tries to get a <see cref="CustomItem"/> instance based on the specified custom item id.
         /// </summary>
-        /// <param name="id">The custom item id to retrieve.</param>
-        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
-        /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
+        /// <param name="id">The id of the custom item to get.</param>
+        /// <param name="customItem">The <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if successful; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(uint id, out CustomItem customItem) => customItem = Get(id);
 
         /// <summary>
-        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified item name.
+        /// Tries to get a <see cref="CustomItem"/> instance based on the specified item name.
         /// </summary>
-        /// <param name="name">The name of the custom item to retrieve.</param>
-        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
-        /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
+        /// <param name="name">The name of the custom item to get.</param>
+        /// <param name="customItem">The <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if successful; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(string name, out CustomItem customItem) => customItem = Get(name);
 
         /// <summary>
-        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified <see cref="Item"/> instance.
+        /// Tries to get a <see cref="CustomItem"/> instance based on the specified <see cref="Item"/> instance.
         /// </summary>
-        /// <param name="item">The <see cref="Item"/> instance to retrieve the custom item for.</param>
-        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
-        /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
+        /// <param name="item">The <see cref="Item"/> instance to get the custom item from.</param>
+        /// <param name="customItem">The <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if successful; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(Item item, out CustomItem customItem) => customItem = Get(item);
 
         /// <summary>
-        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified <see cref="Pickup"/> instance.
+        /// Tries to get a <see cref="CustomItem"/> instance based on the specified <see cref="Pickup"/> instance.
         /// </summary>
-        /// <param name="pickup">The <see cref="Pickup"/> instance to retrieve the custom item for.</param>
-        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
-        /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
+        /// <param name="pickup">The <see cref="Pickup"/> instance to get the custom item from.</param>
+        /// <param name="customItem">The <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if successful; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(Pickup pickup, out CustomItem customItem) => customItem = Get(pickup);
 
         /// <summary>
-        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified type.
+        /// Tries to get a <see cref="CustomItem"/> instance based on the specified type.
         /// </summary>
-        /// <param name="type">The type to retrieve the custom item for.</param>
-        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
+        /// <param name="type">The type to get the custom item for.</param>
+        /// <param name="customItem">The <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(Type type, out CustomItem customItem) => customItem = Get(type);
 
@@ -370,7 +370,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// </summary>
         /// <param name="assembly">The assembly to enable the items from.</param>
         /// <returns>
-        /// A <see cref="List{T}"/> of <see cref="CustomItem"/> containing all the enabled custom items.
+        /// A <see cref="List{T}"/> of all the enabled custom items.
         /// </returns>
         /// <remarks>
         /// This method dynamically enables all custom items found in the calling assembly. Custom items
@@ -408,7 +408,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// Disables all the custom items present in the assembly.
         /// </summary>
         /// <returns>
-        /// A <see cref="List{T}"/> of <see cref="CustomItem"/> containing all the disabled custom items.
+        /// A <see cref="List{T}"/> of all the disabled custom items.
         /// </returns>
         /// <remarks>
         /// This method dynamically disables all custom items found in the calling assembly that were
