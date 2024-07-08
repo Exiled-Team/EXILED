@@ -71,8 +71,6 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (!ev.IsAllowed)
                     //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingNoClipEventArgs), nameof(TogglingNoClipEventArgs.IsAllowed))),
-                    new(OpCodes.Ldc_I4_0),
-                    new(OpCodes.Ceq),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
