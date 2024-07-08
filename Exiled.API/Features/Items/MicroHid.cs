@@ -17,7 +17,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="MicroHIDItem"/>.
     /// </summary>
-    [DebuggerDisplay("MicroHid")]
+    [DebuggerDisplay("MicroHID")]
     public class MicroHid : Item, IWrapper<MicroHIDItem>
     {
         private readonly ConstProperty<double> preFire = new(1.7000000476837158, new[] { typeof(MicroHIDItem) });

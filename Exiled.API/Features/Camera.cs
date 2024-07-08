@@ -213,7 +213,7 @@ namespace Exiled.API.Features
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"Room = {Room?.RoomName.ToString() ?? "Unknow"} Name = {Name} Id = {Id} Used = {IsBeingUsed}";
+        private string DebuggerDisplay => $"Room = {Room?.RoomName.ToString() ?? "Unknown"} Name = {Name} Id = {Id} Used = {IsBeingUsed}";
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the <see cref="Camera"/> instances given a <see cref="IEnumerable{T}"/> of <see cref="Scp079Camera"/>.

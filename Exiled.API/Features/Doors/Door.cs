@@ -298,7 +298,7 @@ namespace Exiled.API.Features.Doors
         internal List<Room> RoomsValue { get; } = new List<Room>();
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"Room = {Room?.RoomName.ToString() ?? "Unknow"} Type = {Type} Open = {IsOpen}";
+        private string DebuggerDisplay => $"Room = {Room?.RoomName.ToString() ?? "Unknown"} Type = {Type} Open = {IsOpen}";
 
         /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.

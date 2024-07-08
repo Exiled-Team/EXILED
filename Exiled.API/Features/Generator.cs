@@ -251,7 +251,7 @@ namespace Exiled.API.Features
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"Room = {Room?.RoomName.ToString() ?? "Unknow"} State = {State} KeycardPermissions = {KeycardPermissions}";
+        private string DebuggerDisplay => $"Room = {Room?.RoomName.ToString() ?? "Unknown"} State = {State} KeycardPermissions = {KeycardPermissions}";
 
         /// <summary>
         /// Spawns a <see cref="Generator"/>.
