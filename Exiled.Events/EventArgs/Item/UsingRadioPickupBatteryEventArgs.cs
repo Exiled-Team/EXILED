@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs.Item
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all information before radio pickup battery drains.
+    /// Invoked before draining a <see cref="RadioPickup"/>'s battery.
     /// </summary>
     public class UsingRadioPickupBatteryEventArgs : IDeniableEvent, IPickupEvent
     {

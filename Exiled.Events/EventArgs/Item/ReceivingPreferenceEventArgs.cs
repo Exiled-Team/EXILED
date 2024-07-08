@@ -19,7 +19,8 @@ namespace Exiled.Events.EventArgs.Item
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before receiving a preference.
+    /// Contains all information before receiving firearm attachment preferences from a player.
+    /// Preferences are used as a default value when player receives a newly created firearm, for example, when spawning.
     /// </summary>
     public class ReceivingPreferenceEventArgs : IPlayerEvent, IDeniableEvent
     {

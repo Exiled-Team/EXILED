@@ -21,7 +21,7 @@ namespace Exiled.Events.EventArgs.Item
     using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
-    /// Contains all information before changing item attachments.
+    /// Contains all information before <see cref="Exiled.API.Features.Items.Firearm"/> attachments are changed.
     /// </summary>
     public class ChangingAttachmentsEventArgs : IPlayerEvent, IDeniableEvent, IFirearmEvent
     {

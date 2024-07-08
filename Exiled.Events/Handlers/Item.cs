@@ -9,8 +9,11 @@ namespace Exiled.Events.Handlers
 {
 #pragma warning disable SA1623 // Property summary documentation should match accessors
 
-    using Exiled.Events.EventArgs.Item;
+    using System.Collections.Generic;
 
+    using Exiled.API.Features.Pickups;
+    using Exiled.API.Structs;
+    using Exiled.Events.EventArgs.Item;
     using Exiled.Events.Features;
 
     /// <summary>
@@ -19,27 +22,28 @@ namespace Exiled.Events.Handlers
     public static class Item
     {
         /// <summary>
-        /// Invoked before the ammo of an firearm are changed.
+        /// Invoked before firearm ammo count is changed.
         /// </summary>
         public static Event<ChangingAmmoEventArgs> ChangingAmmo { get; set; } = new ();
 
         /// <summary>
-        /// Invoked before item attachments are changed.
+        /// Invoked before firearm attachments are changed.
         /// </summary>
         public static Event<ChangingAttachmentsEventArgs> ChangingAttachments { get; set; } = new();
 
         /// <summary>
-        /// Invoked after item attachments are changed.
+        /// Invoked after firearm attachments were changed.
         /// </summary>
         public static Event<ChangedAttachmentsEventArgs> ChangedAttachments { get; set; } = new();
 
         /// <summary>
-        /// Invoked before receiving a preference.
+        /// Invoked before receiving firearm attachment preferences from a player.
+        /// Preferences are used as a default value when player receives a newly created firearm, for example, when spawning.
         /// </summary>
         public static Event<ReceivingPreferenceEventArgs> ReceivingPreference { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a keycard interacts with a door.
+        /// Invoked before a thrown <see cref="KeycardPickup"/> interacts with a door.
         /// </summary>
         public static Event<KeycardInteractingEventArgs> KeycardInteracting { get; set; } = new();
 
@@ -49,46 +53,47 @@ namespace Exiled.Events.Handlers
         public static Event<SwingingEventArgs> Swinging { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Items.Jailbird"/> is charged.
+        /// Invoked before a <see cref="API.Features.Items.Jailbird"/> charged attack.
         /// </summary>
         public static Event<ChargingJailbirdEventArgs> ChargingJailbird { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a radio pickup is draining battery.
+        /// Invoked before draining a <see cref="RadioPickup"/>'s battery.
         /// </summary>
         public static Event<UsingRadioPickupBatteryEventArgs> UsingRadioPickupBattery { get; set; } = new();
 
         /// <summary>
-        /// Invoked before jailbird breaks.
+        /// Invoked before a jailbird breaks.
         /// </summary>
         public static Event<BreakingJailbirdEventArgs> BreakingJailbird { get; set; } = new();
 
         /// <summary>
-        /// Called before the ammo of an firearm is changed.
+        /// Called before firearm ammo count is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingAmmoEventArgs"/> instance.</param>
         public static void OnChangingAmmo(ChangingAmmoEventArgs ev) => ChangingAmmo.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before item attachments are changed.
+        /// Called before firearm attachments are changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs" /> instance.</param>
         public static void OnChangingAttachments(ChangingAttachmentsEventArgs ev) => ChangingAttachments.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after item attachments are changed.
+        /// Invoked after firearm attachments were changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs" /> instance.</param>
         public static void OnChangedAttachments(ChangedAttachmentsEventArgs ev) => ChangedAttachments.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before receiving a preference.
+        /// Invoked before receiving firearm attachment preferences from a player.
+        /// Preferences are used as a default value when player receives a newly created firearm, for example, when spawning.
         /// </summary>
         /// <param name="ev">The <see cref="ReceivingPreferenceEventArgs" /> instance.</param>
         public static void OnReceivingPreference(ReceivingPreferenceEventArgs ev) => ReceivingPreference.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before keycard interacts with a door.
+        /// Invoked before a thrown <see cref="KeycardPickup"/> interacts with a door.
         /// </summary>
         /// <param name="ev">The <see cref="KeycardInteractingEventArgs"/> instance.</param>
         public static void OnKeycardInteracting(KeycardInteractingEventArgs ev) => KeycardInteracting.InvokeSafely(ev);
@@ -100,19 +105,19 @@ namespace Exiled.Events.Handlers
         public static void OnSwinging(SwingingEventArgs ev) => Swinging.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Items.Jailbird"/> is charged.
+        /// Invoked before a <see cref="API.Features.Items.Jailbird"/> charged attack.
         /// </summary>
         /// <param name="ev">The <see cref="ChargingJailbirdEventArgs"/> instance.</param>
         public static void OnChargingJailbird(ChargingJailbirdEventArgs ev) => ChargingJailbird.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before radio pickup is draining battery.
+        /// Invoked before draining a <see cref="RadioPickup"/>'s battery.
         /// </summary>
         /// <param name="ev">The <see cref="UsingRadioPickupBatteryEventArgs"/> instance.</param>
         public static void OnUsingRadioPickupBattery(UsingRadioPickupBatteryEventArgs ev) => UsingRadioPickupBattery.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before jailbird breaks.
+        /// Invoked before a jailbird breaks.
         /// </summary>
         /// <param name="ev">The <see cref="BreakingJailbirdEventArgs"/> instance.</param>
         public static void OnBreakingJailbird(BreakingJailbirdEventArgs ev) => BreakingJailbird.InvokeSafely(ev);

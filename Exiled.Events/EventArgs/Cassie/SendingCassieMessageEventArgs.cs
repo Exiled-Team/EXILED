@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs.Cassie
     using Interfaces;
 
     /// <summary>
-    /// Contains all the information after sending a C.A.S.S.I.E. message.
+    /// Contains all the information before sending a C.A.S.S.I.E. message.
     /// </summary>
     public class SendingCassieMessageEventArgs : IDeniableEvent
     {

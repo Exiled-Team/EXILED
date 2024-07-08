@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Item
     using InventorySystem.Items.Jailbird;
 
     /// <summary>
-    /// Contains all information before jailbird breaks.
+    /// Contains all information before a jailbird breaks.
     /// </summary>
     public class BreakingJailbirdEventArgs : IItemEvent, IDeniableEvent
     {

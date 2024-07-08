@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Item
     using BaseKeycardPickup = InventorySystem.Items.Keycards.KeycardPickup;
 
     /// <summary>
-    /// Contains all information before a keycard interacts with a door.
+    /// Contains all information before a thrown <see cref="KeycardPickup"/> interacts with a door.
     /// </summary>
     public class KeycardInteractingEventArgs : IPlayerEvent, IDeniableEvent, IDoorEvent, IPickupEvent
     {
