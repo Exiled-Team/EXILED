@@ -121,7 +121,7 @@ namespace Exiled.API.Features.Core
         /// <returns>A <see cref="Type"/> matching the type name or <see langword="null"/> if not found.</returns>
         public static Type GetObjectTypeByName(string typeName)
         {
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
             {
                 if (type.Name != typeName || type.BaseType != typeof(EObject))
                     continue;
@@ -145,7 +145,7 @@ namespace Exiled.API.Features.Core
             if (matching is not null)
                 return matching;
 
-            foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (Type t in Assembly.GetCallingAssembly().GetTypes())
             {
                 if (t.Name != typeof(T).Name)
                     continue;
@@ -178,7 +178,7 @@ namespace Exiled.API.Features.Core
             if (matching is not null)
                 return matching;
 
-            foreach (Type t in Assembly.GetExecutingAssembly().GetTypes()
+            foreach (Type t in Assembly.GetCallingAssembly().GetTypes()
                 .Where(item => item.BaseType == typeof(EObject) || item.IsSubclassOf(typeof(EObject))))
             {
                 if (t.Name != type.Name)
@@ -236,8 +236,8 @@ namespace Exiled.API.Features.Core
         {
             Type[] assemblyTypes =
                 ignoreAbstractTypes ?
-                Assembly.GetExecutingAssembly().GetTypes().Where(t => !t.IsAbstract).ToArray() :
-                Assembly.GetExecutingAssembly().GetTypes();
+                Assembly.GetCallingAssembly().GetTypes().Where(t => !t.IsAbstract).ToArray() :
+                Assembly.GetCallingAssembly().GetTypes();
 
             List<int> matches = new();
             matches.AddRange(assemblyTypes.Select(type => LevenshteinDistance(type.Name, name)));
