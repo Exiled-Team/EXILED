@@ -7,9 +7,6 @@
 
 namespace Exiled.Example
 {
-    using CustomPlayerEffects;
-    using Exiled.API.Enums;
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Player;
 
@@ -24,7 +21,6 @@ namespace Exiled.Example
         public EventHandler()
         {
             Exiled.Events.Handlers.Player.Verified += OnVerified;
-            Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaiting;
         }
 
         /// <summary>
@@ -33,21 +29,6 @@ namespace Exiled.Example
         ~EventHandler()
         {
             Exiled.Events.Handlers.Player.Verified -= OnVerified;
-        }
-
-        private void OnWaiting()
-        {
-            foreach (EffectType type in EnumExtensions.QueryValues<EffectType>())
-            {
-                if (type.TryGetEffectBase(out StatusEffectBase effect))
-                {
-                    Log.Info(effect);
-                }
-                else
-                {
-                    Log.Error(type);
-                }
-            }
         }
 
         private void OnVerified(VerifiedEventArgs ev) => Log.Info($"{ev.Player} has joined the server!");
