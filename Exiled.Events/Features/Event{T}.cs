@@ -216,7 +216,7 @@ namespace Exiled.Events.Features
         }
 
         /// <summary>
-        ///     Runs the coroutine manualy so exceptions can be caught and logged.
+        ///     Runs the coroutine manually so exceptions can be caught and logged.
         /// </summary>
         private IEnumerator<float> SafeCoroutineEnumerator(IEnumerator<float> coroutine, CustomAsyncEventHandler<T> handler)
         {
