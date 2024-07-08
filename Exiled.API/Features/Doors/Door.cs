@@ -293,7 +293,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a <see cref="List{T}"/> containing all <see cref="Features.Room"/>'s that are connected with <see cref="Door"/>.
         /// </summary>
-        internal List<Room> RoomsValue { get; } = new List<Room>();
+        internal List<Room> RoomsValue { get; } = new();
 
         /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
@@ -604,11 +604,11 @@ namespace Exiled.API.Features.Doors
         /// </summary>
         /// <param name="lockType">The <see cref="DoorLockType"/> of the lockdown.</param>
         /// <param name="updateTheDoorState">A value indicating whether the door state should be modified.</param>
-        public void Lock(DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = true)
+        public void Lock(DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = false)
         {
             ChangeLock(lockType);
 
-            if (updateTheDoorState)
+            if (!updateTheDoorState)
                 return;
 
             DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason)LockType);
@@ -624,7 +624,7 @@ namespace Exiled.API.Features.Doors
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
         /// <param name="lockType">The <see cref="DoorLockType"/> of the lockdown.</param>
         /// <param name="updateTheDoorState">A value indicating whether the door state should be modified.</param>
-        public void Lock(float time, DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = true)
+        public void Lock(float time, DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = false)
         {
             Lock(lockType, updateTheDoorState);
             Unlock(time, lockType);
@@ -633,7 +633,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Unlocks and clears all active locks on the door.
         /// </summary>
-        public void Unlock() => ChangeLock(DoorLockType.None);
+        public void Unlock() => Base.NetworkActiveLocks = (ushort)DoorLockReason.None;
 
         /// <summary>
         /// Unlocks and clears all active locks on the door after a specified length of time.
