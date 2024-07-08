@@ -18,12 +18,12 @@ namespace Exiled.Events.Handlers
 #pragma warning disable SA1623 // Property summary documentation should match accessors
 
         /// <summary>
-        /// Invoked before sending a cassie message.
+        /// Invoked before sending a C.A.S.S.I.E. message.
         /// </summary>
         public static Event<SendingCassieMessageEventArgs> SendingCassieMessage { get; set; } = new();
 
         /// <summary>
-        /// Called before sending a cassie message.
+        /// Called before sending a C.A.S.S.I.E. message.
         /// </summary>
         /// <param name="ev">The <see cref="SendingCassieMessageEventArgs" /> instance.</param>
         public static void OnSendingCassieMessage(SendingCassieMessageEventArgs ev) => SendingCassieMessage.InvokeSafely(ev);
