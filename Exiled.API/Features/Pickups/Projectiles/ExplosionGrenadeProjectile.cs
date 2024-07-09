@@ -35,8 +35,9 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Initializes a new instance of the <see cref="ExplosionGrenadeProjectile"/> class.
         /// </summary>
         internal ExplosionGrenadeProjectile()
-            : this((ExplosionGrenade)Object.Instantiate(InventoryItemLoader.AvailableItems[ItemType.GrenadeHE] as ThrowableItem).Projectile)
+            : base(ItemType.GrenadeHE)
         {
+            Base = (ExplosionGrenade)((Pickup)this).Base;
             Info = new(ItemType.GrenadeHE, InventoryItemLoader.AvailableItems[ItemType.GrenadeHE].Weight, ItemSerialGenerator.GenerateNext());
         }
 

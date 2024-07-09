@@ -967,7 +967,15 @@ namespace Exiled.API.Features
         public float ArtificialHealth
         {
             get => AhpStat.CurValue;
-            set => AhpStat.CurValue = value;
+            set
+            {
+                AhpStat.AhpProcess ahp = ActiveArtificialHealthProcesses.FirstOrDefault();
+
+                if (ahp is not null)
+                    ahp.CurrentAmount = value;
+                else
+                    AddAhp(value);
+            }
         }
 
         /// <summary>
@@ -1113,6 +1121,11 @@ namespace Exiled.API.Features
         /// Gets the current <see cref="Features.Lift"/> the player is in. Can be <see langword="null"/>.
         /// </summary>
         public Lift Lift => Lift.Get(Position);
+
+        /// <summary>
+        /// Gets all effects from the player, including non active ones.
+        /// </summary>
+        public IEnumerable<StatusEffectBase> AllEffects => referenceHub.playerEffectsController.AllEffects;
 
         /// <summary>
         /// Gets all currently active <see cref="StatusEffectBase">effects</see>.
@@ -3682,11 +3695,9 @@ namespace Exiled.API.Features
         /// <param name="efficacy">Percent of incoming damage absorbed by this stat.</param>
         /// <param name="sustain">The number of seconds to delay the start of the decay.</param>
         /// <param name="persistant">Whether or not the process is removed when the value hits 0.</param>
-        public void AddAhp(float amount, float limit = 75f, float decay = 1.2f, float efficacy = 0.7f, float sustain = 0f, bool persistant = false)
-        {
-            ReferenceHub.playerStats.GetModule<AhpStat>()
-                .ServerAddProcess(amount, limit, decay, efficacy, sustain, persistant);
-        }
+        /// <returns>The <see cref="AhpStat.AhpProcess"/> that was added.</returns>
+        public AhpStat.AhpProcess AddAhp(float amount, float limit = 75f, float decay = 1.2f, float efficacy = 0.7f, float sustain = 0f, bool persistant = false)
+            => AhpStat.ServerAddProcess(amount, limit, decay, efficacy, sustain, persistant);
 
         /// <summary>
         /// Reconnects the player to the server. Can be used to redirect them to another server on a different port but same IP.

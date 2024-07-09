@@ -246,7 +246,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="flickerableLightController">The <see cref="RoomLightController"/> to search with.</param>
         /// <returns>The <see cref="Room"/> of the given identified, if any. Can be <see langword="null"/>.</returns>
-        public static Room Get(RoomLightController flickerableLightController) => flickerableLightController.GetComponentInParent<Room>();
+        public static Room Get(RoomLightController flickerableLightController) => List.FirstOrDefault(r => r.RoomLightControllers.Contains(flickerableLightController));
 
         /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="Vector3"/>.

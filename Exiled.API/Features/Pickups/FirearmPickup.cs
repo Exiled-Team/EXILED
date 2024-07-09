@@ -40,6 +40,7 @@ namespace Exiled.API.Features.Pickups
         internal FirearmPickup(ItemType type)
             : base(type)
         {
+            Base = (BaseFirearm)((Pickup)this).Base;
             IsDistributed = true;
         }
 

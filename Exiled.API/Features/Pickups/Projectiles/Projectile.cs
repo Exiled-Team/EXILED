@@ -34,8 +34,9 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Projectile(ItemType type)
-            : this((ThrownProjectile)type.GetItemBase().ServerDropItem())
+            : base(type)
         {
+            Base = (ThrownProjectile)((Pickup)this).Base;
         }
 
         /// <summary>
