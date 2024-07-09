@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Components
     using Mirror;
 
     /// <summary>
-    /// A fake network connection.
+    /// A fake network connection used for <see cref="Npc"/>.
     /// </summary>
     public class FakeConnection : NetworkConnectionToClient
     {
