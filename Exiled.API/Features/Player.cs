@@ -973,6 +973,8 @@ namespace Exiled.API.Features
 
                 if (ahp is not null)
                     ahp.CurrentAmount = value;
+                else
+                    AddAhp(value);
             }
         }
 
