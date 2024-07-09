@@ -39,6 +39,7 @@ namespace Exiled.API.Features.Pickups
         internal KeycardPickup(ItemType type)
             : base(type)
         {
+            Base = (BaseKeycard)((Pickup)this).Base;
         }
 
         /// <summary>
@@ -56,20 +57,22 @@ namespace Exiled.API.Features.Pickups
         internal override void ReadItemInfo(Item item)
         {
             base.ReadItemInfo(item);
-            if (item is Keycard keycarditem)
-            {
-                Permissions = keycarditem.Permissions;
-            }
+
+            if (item is not Keycard keycarditem)
+                return;
+
+            Permissions = keycarditem.Permissions;
         }
 
         /// <inheritdoc/>
         protected override void InitializeProperties(ItemBase itemBase)
         {
             base.InitializeProperties(itemBase);
-            if (itemBase is KeycardItem keycardItem)
-            {
-                Permissions = (KeycardPermissions)keycardItem.Permissions;
-            }
+
+            if (itemBase is not KeycardItem keycardItem)
+                return;
+
+            Permissions = (KeycardPermissions)keycardItem.Permissions;
         }
     }
 }

@@ -37,6 +37,7 @@ namespace Exiled.API.Features.Pickups
         internal JailbirdPickup()
             : base(ItemType.Jailbird)
         {
+            Base = (BaseJailbirdPickup)((Pickup)this).Base;
         }
 
         /// <summary>
