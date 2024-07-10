@@ -632,7 +632,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 if (!customRole.IsEnabled)
                     continue;
 
-                if (customRole.TryRegister(attribute))
+                if (customRole.TryRegister(assembly, attribute))
                     customRoles.Add(customRole);
             }
 
@@ -905,9 +905,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Tries to register a <see cref="CustomRole"/>.
         /// </summary>
+        /// <param name="assembly">The assembly to try and register from.</param>
         /// <param name="attribute">The specified <see cref="CustomRoleAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomRole"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(CustomRoleAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, CustomRoleAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {
@@ -927,7 +928,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     return false;
                 }
 
-                EObject.RegisterObjectType(BehaviourComponent, Name);
+                EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
                 Registered.Add(this);
 
                 TypeLookupTable.TryAdd(GetType(), this);
