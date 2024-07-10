@@ -225,7 +225,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
                     continue;
                 }
 
-                if (customGameMode.TryRegister(attribute))
+                if (customGameMode.TryRegister(assembly, attribute))
                     customGameModes.Add(customGameMode);
             }
 
@@ -252,9 +252,10 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <summary>
         /// Tries to register a <see cref="CustomGameMode"/>.
         /// </summary>
+        /// <param name="assembly">The assembly to register <see cref="CustomGameMode"/> from.</param>
         /// <param name="attribute">The specified <see cref="CustomGameModeAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomGameMode"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(CustomGameModeAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, CustomGameModeAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {
@@ -275,7 +276,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
                 }
 
                 foreach (Type t in BehaviourComponents)
-                    EObject.RegisterObjectType(t, typeof(GameState).IsAssignableFrom(t) ? $"GameState-{Name}" : typeof(PlayerState).IsAssignableFrom(t) ? $"PlayerState-{Name}" : Name);
+                    EObject.RegisterObjectType(t, typeof(GameState).IsAssignableFrom(t) ? $"GameState-{Name}" : typeof(PlayerState).IsAssignableFrom(t) ? $"PlayerState-{Name}" : Name, assembly);
 
                 Registered.Add(this);
 
