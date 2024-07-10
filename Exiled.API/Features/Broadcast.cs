@@ -10,9 +10,8 @@ namespace Exiled.API.Features
     using System.ComponentModel;
     using System.Diagnostics;
 
-    using YamlDotNet.Serialization;
-
     using Exiled.API.Features.Core.Attributes;
+    using YamlDotNet.Serialization;
 
     using static global::Broadcast;
 
