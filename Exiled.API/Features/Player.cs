@@ -932,7 +932,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets an array of <see cref="DangerStackBase"/> if the Scp1853 effect is enabled or an empty array if it is not enabled.
         /// </summary>
-        public DangerStackBase[] Dangers => !TryGetEffect(EffectType.Scp1853, out StatusEffectBase scp1853Effect) || !scp1853Effect.IsEnabled ? Array.Empty<DangerStackBase>() : (scp1853Effect as Scp1853).Dangers;
+        public DangerStackBase[] Dangers => !TryGetEffect(out Scp1853 scp1853Effect) || !scp1853Effect.IsEnabled ? Array.Empty<DangerStackBase>() : scp1853Effect.Dangers;
 
         /// <summary>
         /// Gets a list of active <see cref="DangerStackBase"/> the player has.
