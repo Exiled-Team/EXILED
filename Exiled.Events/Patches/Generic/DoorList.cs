@@ -36,7 +36,10 @@ namespace Exiled.Events.Patches.Generic
             Door door = Door.Create(__instance, rooms);
 
             foreach (Room room in rooms)
+            {
                 room.DoorsValue.Add(door);
+                room.RoomsValue.AddRange(rooms.Where(r => r != room));
+            }
 
             if (door.Is(out CheckpointDoor checkpoint))
             {

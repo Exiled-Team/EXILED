@@ -66,6 +66,7 @@ namespace Exiled.API.Features
 
             Windows = WindowsValue.AsReadOnly();
             Doors = DoorsValue.AsReadOnly();
+            Rooms = RoomsValue.AsReadOnly();
             Speakers = SpeakersValue.AsReadOnly();
             Cameras = CamerasValue.AsReadOnly();
         }
@@ -156,6 +157,11 @@ namespace Exiled.API.Features
         public IReadOnlyList<RoomLightController> RoomLightControllers { get; private set; }
 
         /// <summary>
+        /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="Room"/> around the <see cref="Room"/>.
+        /// </summary>
+        public IReadOnlyList<Room> Rooms { get; private set; }
+
+        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> in the <see cref="Room"/>.
         /// </summary>
         public IEnumerable<Pickup> Pickups => Pickup.List.Where(pickup => FindParentRoom(pickup.GameObject) == this);
@@ -225,6 +231,11 @@ namespace Exiled.API.Features
         /// Gets a <see cref="List{T}"/> containing all known <see cref="RoomLightController"/>s in that <see cref="Room"/>.
         /// </summary>
         internal List<RoomLightController> RoomLightControllersValue { get; } = new();
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all known <see cref="Room"/>s around that <see cref="Room"/>.
+        /// </summary>
+        internal List<Room> RoomsValue { get; } = new();
 
         /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="RoomType"/>.
