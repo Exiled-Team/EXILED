@@ -112,15 +112,16 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(PrimitiveSettings primitiveSettings)
         {
-            Primitive primitive = new(Object.Instantiate(PrefabObject.GetComponent<PrimitiveObjectToy>()));
-
-            primitive.Type = primitiveSettings.PrimitiveType;
-            primitive.Position = primitiveSettings.Position;
-            primitive.Rotation = primitiveSettings.Rotation;
-            primitive.Scale = primitiveSettings.Scale;
-            primitive.Flags = primitiveSettings.Flags;
-            primitive.Color = primitiveSettings.Color;
-            primitive.IsStatic = primitiveSettings.IsStatic;
+            Primitive primitive = new(Object.Instantiate(PrefabObject.GetComponent<PrimitiveObjectToy>()))
+            {
+                Type = primitiveSettings.PrimitiveType,
+                Position = primitiveSettings.Position,
+                Rotation = primitiveSettings.Rotation,
+                Scale = primitiveSettings.Scale,
+                Flags = primitiveSettings.Flags,
+                Color = primitiveSettings.Color,
+                IsStatic = primitiveSettings.IsStatic,
+            };
 
             if (primitiveSettings.ShouldSpawn)
                 primitive.Spawn();
