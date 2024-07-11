@@ -9,20 +9,11 @@ namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1313
 #pragma warning disable SA1402
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
-
     using API.Features;
-
-    using Exiled.API.Features.Core.Generic.Pools;
 
     using HarmonyLib;
 
     using MapGeneration;
-
-    using UnityEngine;
-
-    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="RoomIdentifier.Awake"/>.
