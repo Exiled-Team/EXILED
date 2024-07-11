@@ -13,7 +13,7 @@ namespace Exiled.Example
     public sealed class Translation : ITranslation
     {
         /// <summary>
-        /// Some Text That Goes In Your Translations Configuration File.
+        /// Gets or Sets Some Text That Goes In Your Translations Configuration File.
         /// </summary>
         public string ExampleTranslation { get; set; } = "Example Translation Text";
     }
