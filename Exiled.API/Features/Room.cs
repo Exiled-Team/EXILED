@@ -66,7 +66,7 @@ namespace Exiled.API.Features
 
             Windows = WindowsValue.AsReadOnly();
             Doors = DoorsValue.AsReadOnly();
-            Rooms = RoomsValue.AsReadOnly();
+            NearestRooms = NearestRoomsValue.AsReadOnly();
             Speakers = SpeakersValue.AsReadOnly();
             Cameras = CamerasValue.AsReadOnly();
         }
