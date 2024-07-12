@@ -119,7 +119,7 @@ namespace Exiled.Installer
 
                 if (!downloadResult.IsSuccessStatusCode)
                 {
-                    Console.WriteLine(Resources.Program_MainSafe_Status_code_is_not_success, downloadResult.StatusCode.ToString());
+                    Console.WriteLine(Resources.Program_MainSafe_Status_code_is_not_success, await downloadResult.Content.ReadAsStringAsync());
                     return;
                 }
 
