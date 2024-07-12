@@ -159,7 +159,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="Room"/> around the <see cref="Room"/>.
         /// </summary>
-        public IReadOnlyList<Room> Rooms { get; private set; }
+        public IReadOnlyList<Room> NearestRooms { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> in the <see cref="Room"/>.
