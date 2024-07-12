@@ -15,7 +15,7 @@ jobs:
     - name: Labeler
       uses: actions/labeler@v5.0.0
       with:
-        repo-token: ${{ github.token }}
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
         configuration-path: .github/labeler.yml
         sync-labels: true
 
@@ -31,8 +31,8 @@ jobs:
       uses: octokit/request-action@v2.x
       with:
         route: GET /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}
-        mediaType: '{"format": "full"}'
-        headers: '{"X-GitHub-Api-Version": "2022-11-28"}'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Update PR Title
       env:
