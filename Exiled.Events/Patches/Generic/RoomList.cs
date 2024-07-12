@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Generic
             room.CamerasValue.Clear();
             room.SpeakersValue.Clear();
             room.RoomLightControllersValue.Clear();
-            room.RoomsValue.Clear();
+            room.NearestRoomsValue.Clear();
             Room.RoomIdentifierToRoom.Remove(__instance);
         }
     }
