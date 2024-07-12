@@ -1,0 +1,75 @@
+name: Pull Request Opened
+
+on:
+  pull_request:
+    types: 
+      - opened
+      - labeled
+      - unlabeled
+  workflow_dispatch:
+
+jobs:
+  set-labels:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Labeler
+      uses: actions/labeler@v5.0.0
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        configuration-path: .github/labeler.yml
+        sync-labels: true
+
+  update-pr-title:
+    runs-on: ubuntu-latest
+    needs: set-labels
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: Get PR Info
+      id: get_pr
+      uses: octokit/request-action@v2.x
+      with:
+        route: GET /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update PR Title
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        PR_TITLE=$(jq -r '.title' <<<"${{ steps.get_pr.outputs.data }}")
+        PR_LABELS=$(jq -r '.labels | map(.name) | join(",")' <<<"${{ steps.get_pr.outputs.data }}")
+        PREFIX=""
+
+        if [[ "$PR_LABELS" == *"Documentation"* ]]; then
+          PREFIX="[Docs]"
+        elif [[ "$PR_LABELS" == *"NuGet"* ]]; then
+          PREFIX="[NuGet]"
+        elif [[ "$PR_LABELS" == *"Scripts"* ]]; then
+          PREFIX="[Scripts]"
+        elif [[ "$PR_LABELS" == *"regarding-events"* ]]; then
+          PREFIX="[Events]"
+        elif [[ "$PR_LABELS" == *"regarding-api"* ]]; then
+          PREFIX="[API]"
+        elif [[ "$PR_LABELS" == *"regarding-transpiler"* ]]; then
+          PREFIX="[Transpiler]"
+        elif [[ "$PR_LABELS" == *"CustomModules"* ]]; then
+          PREFIX="[CustomModules]"
+        elif [[ "$PR_LABELS" == *"Installer"* ]]; then
+          PREFIX="[Installer]"
+        elif [[ "$PR_LABELS" == *"Localization"* ]]; then
+          PREFIX="[Localization]"
+        elif [[ "$PR_LABELS" == *"GitHub_Actions"* ]]; then
+          PREFIX="[GitHub]"
+        fi
+
+        NEW_TITLE="$PREFIX $PR_TITLE"
+        
+        if [[ "$NEW_TITLE" != "$PR_TITLE" ]]; then
+          curl -X PATCH \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }} \
+            -d "{\"title\":\"$NEW_TITLE\"}"
+        fi
