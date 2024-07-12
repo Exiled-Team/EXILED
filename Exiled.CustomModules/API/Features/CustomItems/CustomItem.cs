@@ -64,7 +64,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <summary>
         /// Gets all pickups belonging to a <see cref="CustomItem"/>.
         /// </summary>
-        public static IEnumerable<Pickup> CustomPickups => PickupManager.Keys.ToHashSet();
+        public static IEnumerable<Pickup> CustomPickups => PickupManager.Keys;
 
         /// <summary>
         /// Gets all items belonging to a <see cref="CustomItem"/>.
