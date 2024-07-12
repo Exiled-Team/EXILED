@@ -80,6 +80,7 @@ namespace Exiled.CustomModules.API.Features
         public virtual void SpawnHumans(Team[] queue, int queueLength)
         {
             HumanRolesQueue = queue;
+            HumanSpawner._queueLength = queueLength;
             EnqueuedHumans.Clear();
 
             IEnumerable<CustomRole> customRoles = CustomRole.Get(FilterHumans);
@@ -100,7 +101,9 @@ namespace Exiled.CustomModules.API.Features
             // Unless the custom roles are enough to cover the entire queue, some default roles will be selected.
             int num = hubs.Count() - spawnable.Count;
             RoleTypeId[] array = num > 0 ? new RoleTypeId[num] : null;
-            HumanSpawner._queueLength = num;
+
+            if (HumanSpawner._queueLength == 0 && (HumanSpawner._queueLength = num) == 0)
+                return;
 
             if (array is not null)
             {
