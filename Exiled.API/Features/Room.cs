@@ -235,7 +235,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="List{T}"/> containing all known <see cref="Room"/>s around that <see cref="Room"/>.
         /// </summary>
-        internal List<Room> RoomsValue { get; } = new();
+        internal List<Room> NearestRoomsValue { get; } = new();
 
         /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="RoomType"/>.
