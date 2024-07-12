@@ -38,8 +38,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        PR_TITLE=$(jq -r '.title' <<<"${{ steps.get_pr.outputs.data }}")
-        PR_LABELS=$(jq -r '.labels | map(.name) | join(",")' <<<"${{ steps.get_pr.outputs.data }}")
+        PR_TITLE=$(echo '${{ steps.get_pr.outputs.data }}' | jq -r '.title')
+        PR_LABELS=$(echo '${{ steps.get_pr.outputs.data }}' | jq -r '.labels | map(.name) | join(",")')
         PREFIX=""
 
         if [[ "$PR_LABELS" == *"Documentation"* ]]; then
