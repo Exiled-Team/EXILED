@@ -116,6 +116,13 @@ namespace Exiled.Installer
                 httpClient.DefaultRequestHeaders.Add("User-Agent", Header);
 
                 using HttpResponseMessage downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);
+
+                if (!downloadResult.IsSuccessStatusCode)
+                {
+                    Console.WriteLine(Resources.Program_MainSafe_Status_code_is_not_success, await downloadResult.Content.ReadAsStringAsync());
+                    return;
+                }
+
                 using Stream downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
                 using GZipInputStream gzInputStream = new(downloadArchiveStream);
