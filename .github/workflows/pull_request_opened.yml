@@ -43,13 +43,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        echo "Debug: Fetching PR title and labels"
-
         PR_TITLE=$(jq -r '.title' <<< "${{ steps.get_pr.outputs.data }}")
         PR_LABELS="${{ steps.extract_labels.outputs.labels }}"
-
-        echo "PR_TITLE: $PR_TITLE"
-        echo "PR_LABELS: $PR_LABELS"
 
         PREFIX=""
 
