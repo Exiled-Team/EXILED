@@ -192,6 +192,6 @@
     <value>Exiled folder: {0}</value>
   </data>
   <data name="Program_MainSafe_Status_code_is_not_success" xml:space="preserve">
-      <value>Status code is not success: {0}. The release won't be installed. Most likely it happened because of the rate limit. You can expand the number of allowed requests per hour by specifying a GitHub token</value>
+      <value>There was an error while trying to download the latest release: {0}. EXILED has not been installed. This may be occurring due to a rate limit by GitHub. You can provide a GitHub token to ignore this limit and try again.</value>
   </data>
 </root>
