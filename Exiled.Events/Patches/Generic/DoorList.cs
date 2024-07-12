@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Generic
             foreach (Room room in rooms)
             {
                 room.DoorsValue.Add(door);
-                room.RoomsValue.AddRange(rooms.Where(r => r != room));
+                room.NearestRoomsValue.AddRange(rooms.Where(r => r != room));
             }
 
             if (door.Is(out CheckpointDoor checkpoint))
