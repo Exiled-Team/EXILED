@@ -171,14 +171,17 @@ namespace Exiled.API.Features.Core
         /// </summary>
         /// <param name="type">The type to register.</param>
         /// <param name="name">The name of the registered type.</param>
+        /// <param name="assembly">The assembly to register object types in.</param>
         /// <returns>The registered <see cref="Type"/>.</returns>
-        public static Type RegisterObjectType(Type type, string name)
+        public static Type RegisterObjectType(Type type, string name, Assembly assembly = null)
         {
+            assembly ??= Assembly.GetCallingAssembly();
+
             Type matching = GetObjectTypeFromRegisteredTypes(type, name);
             if (matching is not null)
                 return matching;
 
-            foreach (Type t in Assembly.GetCallingAssembly().GetTypes()
+            foreach (Type t in assembly.GetTypes()
                 .Where(item => item.BaseType == typeof(EObject) || item.IsSubclassOf(typeof(EObject))))
             {
                 if (t.Name != type.Name)

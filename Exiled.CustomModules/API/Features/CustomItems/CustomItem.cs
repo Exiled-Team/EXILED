@@ -394,7 +394,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                 if (!customItem.IsEnabled)
                     continue;
 
-                if (customItem.TryRegister(attribute))
+                if (customItem.TryRegister(assembly, attribute))
                     customItems.Add(customItem);
             }
 
@@ -614,9 +614,10 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <summary>
         /// Tries to register a <see cref="CustomItem"/>.
         /// </summary>
+        /// <param name="assembly">The assembly to register items from.</param>
         /// <param name="attribute">The specified <see cref="CustomItemAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomItem"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(CustomItemAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, CustomItemAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {
@@ -636,7 +637,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                     return false;
                 }
 
-                EObject.RegisterObjectType(BehaviourComponent, Name);
+                EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
                 Registered.Add(this);
 
                 TypeLookupTable.TryAdd(GetType(), this);
