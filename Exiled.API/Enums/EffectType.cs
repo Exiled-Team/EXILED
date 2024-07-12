@@ -10,6 +10,9 @@ namespace Exiled.API.Enums
     using System;
 
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Items;
+
+    using InventorySystem.Items.Usables;
 
     /// <summary>
     /// Status effects as enum.
@@ -19,122 +22,127 @@ namespace Exiled.API.Enums
     public enum EffectType
     {
         /// <summary>
-        /// This EffectType do not exist it's only use when not found or error.
+        /// This enum member is used when there is no effect, similar to <see langword="null"/>.
         /// </summary>
         None,
 
         /// <summary>
-        /// The player isn't able to open their inventory or reload a weapon.
+        /// Prevents the player from opening their inventory, reloading weapons, and using certain items.
+        /// Caused by <see cref="PlayerRoles.PlayableScps.Scp939.Scp939AmnesticCloudAbility"/>.
         /// </summary>
         AmnesiaItems,
 
         /// <summary>
-        /// The player isn't able to see properly.
+        /// Prevents the player from seeing SCP-939.
+        /// Caused by <see cref="PlayerRoles.PlayableScps.Scp939.Scp939AmnesticCloudAbility"/>
         /// </summary>
         AmnesiaVision,
 
         /// <summary>
-        /// Drains the player's stamina and then health.
+        /// Every 0.5s drains 5% of the player's stamina, or deals 2 damage if stamina is drained.
         /// </summary>
         Asphyxiated,
 
         /// <summary>
-        /// Damages the player over time.
+        /// Drains health every 5 seconds, starting at 20 and halving each time down to a minimum of 2.
         /// </summary>
         Bleeding,
 
         /// <summary>
-        /// Blurs the player's screen.
+        /// Blurs player's screen.
         /// </summary>
         Blinded,
 
         /// <summary>
-        /// Increases damage the player receives. Does not apply any standalone damage.
+        /// Increases damage the player receives by 20%. Does not cause any damage by itself.
         /// </summary>
         Burned,
 
         /// <summary>
-        /// Blurs the player's screen while rotating.
+        /// Blurs player's screen when rotating.
         /// </summary>
         Concussed,
 
         /// <summary>
-        /// Effect given to player after being hurt by SCP-106.
+        /// Slowly drains health and stamina. Allows SCP-106 to teleport the player to pocket dimension.
+        /// Caused by <see cref="PlayerRoles.PlayableScps.Scp106.Scp106Attack"/>.
         /// </summary>
         Corroding,
 
         /// <summary>
-        /// Deafens the player.
+        /// Muffles player's hearing.
         /// </summary>
         Deafened,
 
         /// <summary>
-        /// Removes 10% of the player's health per second.
+        /// Drains 10% of player's health every second.
         /// </summary>
         Decontaminating,
 
         /// <summary>
-        /// Slows down the player's movement.
+        /// Reduces movement speed by 20%.
         /// </summary>
         Disabled,
 
         /// <summary>
-        /// Prevents the player from moving.
+        /// Completely prevents the player from moving.
         /// </summary>
         Ensnared,
 
         /// <summary>
-        /// Halves the player's maximum stamina and stamina regeneration rate.
+        /// Halves stamina maximum value and regeneration rate.
         /// </summary>
         Exhausted,
 
         /// <summary>
-        /// Flashes the player.
+        /// Flashes the player, making them completely unable to see.
+        /// <seealso cref="FlashGrenade"/>
         /// </summary>
         Flashed,
 
         /// <summary>
-        /// Drains the player's health while sprinting.
+        /// Drains health while sprinting at the rate of 2/s.
         /// </summary>
         Hemorrhage,
 
         /// <summary>
-        /// Reduces the player's FOV, gives infinite stamina and gives the effect of underwater sound.
+        /// Reduces FOV, gives infinite stamina and muffled hearing effect.
         /// </summary>
         Invigorated,
 
         /// <summary>
-        /// Reduces damage taken by body shots.
+        /// Reduces damage dealt by body shots.
         /// </summary>
         BodyshotReduction,
 
         /// <summary>
-        /// Damages the player every 5 seconds, starting low and increasing over time.
+        /// Drains health every 5 seconds, starting at 2 and doubling each time up to a maximum of 20.
         /// </summary>
         Poisoned,
 
         /// <summary>
-        /// Increases the speed of the player while also draining health.
+        /// Increases the movement speed at the cost of draining health based on how fast the player is moving.
         /// </summary>
         Scp207,
 
         /// <summary>
         /// Makes the player invisible.
+        /// Caused by <see cref="Scp268"/>
         /// </summary>
         Invisible,
 
         /// <summary>
-        /// Slows down the player's movement with the SCP-106 sinkhole effect.
+        /// Reduces movement speed with the SCP-106 sinkhole effect.
         /// </summary>
         SinkHole,
 
         /// <summary>
-        /// Reduces overall damage taken.
+        /// Reduces damage taken by 0.5% for each intensity level.
         /// </summary>
         DamageReduction,
 
         /// <summary>
-        /// Increases movement speed.
+        /// Increases movement speed by 1% for each intensity level.
         /// </summary>
         MovementBoost,
 
@@ -144,12 +152,12 @@ namespace Exiled.API.Enums
         RainbowTaste,
 
         /// <summary>
-        /// Drops the player's current item, disables interaction with objects, and deals damage while effect is active.
+        /// Drops current item, disables interaction with objects, and deals damage while effect is active.
         /// </summary>
         SeveredHands,
 
         /// <summary>
-        /// Prevents the player from sprinting and reduces movement speed by 20%.
+        /// Prevents from sprinting and reduces movement speed by 20%.
         /// </summary>
         Stained,
 
@@ -159,17 +167,18 @@ namespace Exiled.API.Enums
         Vitality,
 
         /// <summary>
-        /// Cause the player to slowly take damage, reduces bullet accuracy, and increases item pickup time.
+        /// Slowly drains health, reduces bullet accuracy, and increases item pickup time.
         /// </summary>
         Hypothermia,
 
         /// <summary>
-        /// Increases the player's motor function, causing the player to reduce the weapon draw time, reload spead, item pickup speed, and medical item usage.
+        /// Reduce the weapon draw time, increases the speed of reloading, item pickup, and consumable use.
         /// </summary>
         Scp1853,
 
         /// <summary>
-        /// Effect given to player after being hurt by SCP-049.
+        /// Drain the player's health at a rate of 8 per second, and allows SCP-049 to one-shot the player.
+        /// Caused SCP-049.
         /// </summary>
         CardiacArrest,
 
@@ -179,42 +188,43 @@ namespace Exiled.API.Enums
         InsufficientLighting,
 
         /// <summary>
-        /// Disable ambient sound.
+        /// Disables ambient sound.
         /// </summary>
         SoundtrackMute,
 
         /// <summary>
-        /// Protects players from enemy damage if the config is enabled.
+        /// Protects from enemy damage if spawn protection is enabled in configs.
         /// </summary>
         SpawnProtected,
 
         /// <summary>
-        /// Make Scp106 able to see you when he is in the ground (stalking), causes the player's screens to become monochromatic when seeing Scp106, and instantly killed if attacked by Scp106.
+        /// Makes SCP-106 able to see the player when he is in the ground (stalking), causes player's screen to become monochromatic when seeing SCP-106, and instantly die if attacked by Scp106.
         /// </summary>
         Traumatized,
 
         /// <summary>
-        /// It slows down the player, providing a passive health regeneration and saving the player from death once.
+        /// Reduces movement speed, regenerates health, and prevents the player from dying once.
         /// </summary>
         AntiScp207,
 
         /// <summary>
-        /// The effect that SCP-079 gives the scanned player with the Breach Scanner.
+        /// Makes SCP-079 able to see the player on the map.
+        /// Caused by SCP-079's Breach Scanner ability.
         /// </summary>
         Scanned,
 
         /// <summary>
-        /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed. The amount of damage recieved increases the longer the effect is applied.
+        /// Teleports to the pocket dimension and drains player's health until they escape or die. The damage increases over time.
         /// </summary>
         PocketCorroding,
 
         /// <summary>
-        /// Reduces walking sound by 10%.
+        /// Reduces walking sound by 10% for each intensity level.
         /// </summary>
         SilentWalk,
 
         /// <summary>
-        /// Makes you a marshmallow guy.
+        /// Turns the player into a marshmallow guy.
         /// </summary>
         [Obsolete("Not functional in-game")]
         Marshmallow,
@@ -230,13 +240,14 @@ namespace Exiled.API.Enums
         Ghostly,
 
         /// <summary>
-        /// Manipulate wish Fog player will have.
-        /// <remarks>You can choose fog with <see cref="CustomRendering.FogType"/> and putting it on intensity.</remarks>
+        /// Modifies which type of fog the player sees.
+        /// <remarks>You can choose the <see cref="CustomRendering.FogType"/> and put it in intensity.</remarks>
         /// </summary>
         FogControl,
 
         /// <summary>
-        /// <see cref="CustomPlayerEffects.Slowness"/>.
+        /// Reduces movement speed by 1% for each intensity level.
+        /// Can make the player move backwards if the intensity is over 100.
         /// </summary>
         Slowness,
     }
