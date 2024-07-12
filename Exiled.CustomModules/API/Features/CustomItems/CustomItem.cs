@@ -92,7 +92,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         public override bool IsEnabled { get; }
 
         /// <summary>
-        /// Gets the description. It can be is used in hints when the item is selected.
+        /// Gets the description. It can then be used in <see cref="ItemSettings"/>.<see cref="ItemSettings.SelectedText"/>.
         /// </summary>
         public virtual string Description { get; }
 
