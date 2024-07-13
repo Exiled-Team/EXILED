@@ -44,9 +44,6 @@ namespace Exiled.CustomModules.API.Features
             get => nextKnownTeam;
             set
             {
-                if (value == nextKnownTeam)
-                    return;
-
                 switch (value)
                 {
                     case SpawnableTeamType:
@@ -177,14 +174,16 @@ namespace Exiled.CustomModules.API.Features
         {
             PreviousKnownTeam = NextKnownTeam;
 
-            if (NextKnownTeam is SpawnableTeamType team)
+            if (NextKnownTeam is null or SpawnableTeamType)
                 return;
 
             CustomTeam customTeam = CustomTeam.Get((uint)NextKnownTeam);
-            if (!customTeam)
+            if (customTeam is null)
                 return;
 
-            if (customTeam.TeamsOwnership.Any(t => t == (ev.NextKnownTeam is SpawnableTeamType.ChaosInsurgency ? Team.ChaosInsurgency : Team.FoundationForces)))
+            if (customTeam.TeamsOwnership.Any(t =>
+                    t == (ev.NextKnownTeam is SpawnableTeamType.ChaosInsurgency ?
+                        Team.ChaosInsurgency : Team.FoundationForces)))
             {
                 ev.MaxWaveSize = customTeam.Size;
                 return;
@@ -192,7 +191,7 @@ namespace Exiled.CustomModules.API.Features
 
             ev.IsAllowed = false;
             Spawn();
-            Respawning.RespawnManager.Singleton.RestartSequence();
+            Respawning.RespawnManager.Singleton?.RestartSequence();
         }
 
         private void OnRespawningTeam(RespawningTeamEventArgs ev)
