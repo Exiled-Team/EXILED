@@ -53,7 +53,7 @@ L'installazione di EXILED è piuttosto semplice. Si carica tramite l'API del plu
       Premi Win + R e scrivi  `%appdata%`
 
 ### Installazione plugins
-Con questo, EXILED dovrebbe ora essere installato e attivo la prossima volta che avvierai il tuo server. Tieni presente che EXILED da solo farà quasi nulla, quindi assicurati di ottenere nuovi plugin dal nostro **[server Discord](https://discord.gg/PyUkWTg)**
+Con questo, EXILED dovrebbe ora essere installato e attivo la prossima volta che avvierai il tuo server. Tieni presente che EXILED da solo farà quasi nulla, quindi assicurati di ottenere nuovi plugin dal nostro **[server Discord](https://discord.gg/exiledreboot)**
 - Per installare un plugin, semplicemente:
   - Scarica un plugin dalla [*loro* releases page](https://i.imgur.com/u34wgPD.jpg) (**DEVE essere un `.dll`!**)
   - Spostalo su: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (sposta qui premendo Win + R, quindi scrivendo `%appdata%`)
@@ -77,7 +77,7 @@ Con questo, EXILED dovrebbe ora essere installato e attivo la prossima volta che
   - Sposta la cartella **`SCP Secret Laboratory`** su **``~/.config``**. *Nota: Questa cartella andare su ``~/.config``, e ***NON*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Installazione plugins
-Con questo, EXILED dovrebbe ora essere installato e attivo la prossima volta che avvierai il tuo server. Tieni presente che EXILED da solo farà quasi nulla, quindi assicurati di ottenere nuovi plugin dal nostro **[server Discord](https://discord.gg/PyUkWTg)**
+Con questo, EXILED dovrebbe ora essere installato e attivo la prossima volta che avvierai il tuo server. Tieni presente che EXILED da solo farà quasi nulla, quindi assicurati di ottenere nuovi plugin dal nostro **[server Discord](https://discord.gg/exiledreboot)**
 - Per installare un plugin, semplicemente:
   - Scarica un plugin dalla [*loro* releases page](https://i.imgur.com/u34wgPD.jpg) (**DEVE essere un `.dll`!**)
   - Spostalo su: ``~/.config/EXILED/Plugins`` (se utilizzi SSH come root, cerca il file .config corretto che si troverà su `/home/(SCP Server User)`)
