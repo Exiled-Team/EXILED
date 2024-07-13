@@ -51,7 +51,7 @@ Hvis du vælger at bruge installationsprogrammet, vil det, hvis det køres korre
       Tryk på Win + R og skriv `%appdata%`.
 
 ### Installation af plugins
-Det var det, EXILED skulle nu være installeret og aktiv, næste gang du starter din server op. Bemærk, at EXILED i sig selv næsten ikke gør noget, så sørg for at hente nye plugins fra **[vores Discord-server](https://discord.gg/PyUkWTg)**.
+Det var det, EXILED skulle nu være installeret og aktiv, næste gang du starter din server op. Bemærk, at EXILED i sig selv næsten ikke gør noget, så sørg for at hente nye plugins fra **[vores Discord-server](https://discord.gg/exiledreboot)**.
 - For at installere et plugin skal du blot:
   - Download et plugin fra [*deres* udgivelsesside](https://i.imgur.com/u34wgPD.jpg) (**det SKAL være en `.dll`!**)  - Flyt det til: ``C:\Users\(Your_User)\AppData\Roaming\EXILED\Plugins`` (flyt den hertil ved at trykke Win + R, og skriv derefter `%appdata%`)
 
@@ -74,7 +74,7 @@ Det var det, EXILED skulle nu være installeret og aktiv, næste gang du starter
   - Flyt mappen **`SCP Secret Laboratory`** til **`~/.config``**. *Bemærk: Denne mappe skal være i ``~/.config``, og ***IKKE*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Installation af plugins
-Det var det, EXILED skulle nu være installeret og aktiv, næste gang du starter din server op. Bemærk, at EXILED i sig selv næsten ikke gør noget, så sørg for at hente nye plugins fra **[vores Discord-server](https://discord.gg/PyUkWTg)**.
+Det var det, EXILED skulle nu være installeret og aktiv, næste gang du starter din server op. Bemærk, at EXILED i sig selv næsten ikke gør noget, så sørg for at hente nye plugins fra **[vores Discord-server](https://discord.gg/exiledreboot)**.
 - For at installere et plugin skal du blot:
   - Download et plugin fra [*deres* udgivelsesside](https://i.imgur.com/u34wgPD.jpg) (**det SKAL være en `.dll`!**)
   - Flyt det til: ``~/.config/EXILED/Plugins`` (hvis du bruger din SSH som root, så søg efter den korrekte `.config`, som vil være inde i `/home/(SCP Server Bruger)`)
