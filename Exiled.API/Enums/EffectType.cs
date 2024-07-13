@@ -46,7 +46,7 @@ namespace Exiled.API.Enums
         Asphyxiated,
 
         /// <summary>
-        /// Drains health every 5 seconds, starting at 20 and halving each time down to a minimum of 2.
+        /// Deals damage every 5 seconds, starting at 20 and halving each time down to a minimum of 2.
         /// </summary>
         Bleeding,
 
@@ -66,7 +66,7 @@ namespace Exiled.API.Enums
         Concussed,
 
         /// <summary>
-        /// Slowly drains health and stamina. Allows SCP-106 to teleport the player to pocket dimension.
+        /// Slowly drains stamina and health. Allows SCP-106 to teleport the player to pocket dimension.
         /// Caused by <see cref="PlayerRoles.PlayableScps.Scp106.Scp106Attack"/>.
         /// </summary>
         Corroding,
@@ -77,7 +77,7 @@ namespace Exiled.API.Enums
         Deafened,
 
         /// <summary>
-        /// Drains 10% of player's health every second.
+        /// Every second deals damage equal to 10% of player role's maximum health. Custom <see cref="Exiled.API.Features.Player.MaxHealth"/> values are ignored by this effect.
         /// </summary>
         Decontaminating,
 
@@ -103,7 +103,7 @@ namespace Exiled.API.Enums
         Flashed,
 
         /// <summary>
-        /// Drains health while sprinting at the rate of 2/s.
+        /// Deals 2 damage every second while sprinting.
         /// </summary>
         Hemorrhage,
 
@@ -118,7 +118,7 @@ namespace Exiled.API.Enums
         BodyshotReduction,
 
         /// <summary>
-        /// Drains health every 5 seconds, starting at 2 and doubling each time up to a maximum of 20.
+        /// Deals damage every 5 seconds, starting at 2 and doubling each time up to a maximum of 20.
         /// </summary>
         Poisoned,
 
@@ -171,7 +171,7 @@ namespace Exiled.API.Enums
         Vitality,
 
         /// <summary>
-        /// Slowly drains health, reduces bullet accuracy, and increases item pickup time.
+        /// Slowly deals damage, reduces bullet accuracy, and increases item pickup time.
         /// </summary>
         Hypothermia,
 
@@ -218,7 +218,7 @@ namespace Exiled.API.Enums
         Scanned,
 
         /// <summary>
-        /// Teleports to the pocket dimension and drains player's health until they escape or die. The damage increases over time.
+        /// Teleports to the pocket dimension and deals increasing damage player's health until they escape or die.
         /// </summary>
         PocketCorroding,
 
