@@ -85,9 +85,7 @@ namespace Exiled.API.Structs
         /// </summary>
         public Vector3 Scale { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the primitive should be spawned.
-        /// </summary>
+        /// <inheritdoc cref="AdminToy.IsStatic"/>
         public bool IsStatic { get; set; }
 
         /// <summary>

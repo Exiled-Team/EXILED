@@ -48,7 +48,7 @@ namespace Exiled.API.Features.Toys
         public AdminToyType ToyType { get; }
 
         /// <summary>
-        /// Gets or sets who spawn the Primitive AdminToy.
+        /// Gets or sets the <see cref="Player"/> who spawned the toy.
         /// </summary>
         public Player Player
         {
@@ -66,7 +66,7 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets the position of the <see cref="AdminToy"/>.
+        /// Gets or sets the position of the toy.
         /// </summary>
         public new Vector3 Position
         {
@@ -84,11 +84,9 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets the movement smoothing value of the toy.
-        /// <para>
-        /// Higher values reflect smoother movements.
-        /// <br /> - 60 is an ideal value.
-        /// </para>
+        /// Gets or sets the movement smoothing of toy transform updates.
+        /// Higher values reflect smoother transitions.
+        /// 60 is the ideal value.
         /// </summary>
         public byte MovementSmoothing
         {
@@ -97,7 +95,8 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether IsStatic.
+        /// Gets or sets a value indicating whether the toy is static.
+        /// Setting this value to true will skip network position updates, which helps to improve performance at the cost of not being able to move the toy.
         /// </summary>
         public bool IsStatic
         {
@@ -113,12 +112,12 @@ namespace Exiled.API.Features.Toys
         public static AdminToy Get(AdminToyBase adminToyBase) => Map.Toys.FirstOrDefault(x => x.AdminToyBase == adminToyBase);
 
         /// <summary>
-        /// Spawns the toy into the game. Use <see cref="UnSpawn"/> to remove it.
+        /// Spawns the toy into the game. Use <see cref="UnSpawn"/> or <see cref="Destroy"/> to remove it.
         /// </summary>
         public void Spawn() => NetworkServer.Spawn(AdminToyBase.gameObject);
 
         /// <summary>
-        /// Removes the toy from the game. Use <see cref="Spawn"/> to bring it back.
+        /// Removes the toy without destroying it. Use <see cref="Spawn"/> to spawn it back.
         /// </summary>
         public void UnSpawn() => NetworkServer.UnSpawn(AdminToyBase.gameObject);
 
