@@ -29,7 +29,7 @@ namespace Exiled.Events.Commands.ExiledReboot
         public string Command { get; } = "reboot";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new[] { "ack, exboot" };
+        public string[] Aliases { get; } = new[] { "ack", "exboot" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Enables Exiled Reboot.";
