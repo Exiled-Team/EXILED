@@ -9,8 +9,9 @@ namespace Exiled.API.Features.Pickups
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
-
     using InventorySystem.Items.Usables.Scp330;
 
     using BaseScp330 = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
@@ -47,6 +48,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the exposed <see cref="CandyKindID"/>.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp330Pickup))]
         public CandyKindID ExposedCandy
         {
             get => Base.NetworkExposedCandy;

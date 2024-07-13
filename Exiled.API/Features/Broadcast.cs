@@ -9,9 +9,14 @@ namespace Exiled.API.Features
 {
     using System.ComponentModel;
 
+    using Exiled.API.Features.Core.Attributes;
+
+    using static global::Broadcast;
+
     /// <summary>
     /// Useful class to save broadcast configs in a cleaner way.
     /// </summary>
+    [EClass(assetRegistrySearchable: false, category: nameof(Broadcast))]
     public class Broadcast
     {
         /// <summary>
@@ -29,7 +34,7 @@ namespace Exiled.API.Features
         /// <param name="duration">The duration of the broadcast, in seconds.</param>
         /// <param name="show">Whether or not the broadcast should be shown.</param>
         /// <param name="type">The type of the broadcast.</param>
-        public Broadcast(string content, ushort duration = 10, bool show = true, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
+        public Broadcast(string content, ushort duration = 10, bool show = true, BroadcastFlags type = BroadcastFlags.Normal)
         {
             Content = content;
             Duration = duration;
@@ -41,24 +46,28 @@ namespace Exiled.API.Features
         /// Gets or sets the broadcast content.
         /// </summary>
         [Description("The broadcast content")]
+        [EProperty(registrySearchable: false, category: nameof(Broadcast))]
         public string Content { get; set; }
 
         /// <summary>
         /// Gets or sets the broadcast duration.
         /// </summary>
         [Description("The broadcast duration")]
+        [EProperty(registrySearchable: false, category: nameof(Broadcast))]
         public ushort Duration { get; set; }
 
         /// <summary>
         /// Gets or sets the broadcast type.
         /// </summary>
         [Description("The broadcast type")]
-        public global::Broadcast.BroadcastFlags Type { get; set; }
+        [EProperty(registrySearchable: false, category: nameof(Broadcast))]
+        public BroadcastFlags Type { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the broadcast should be shown or not.
         /// </summary>
         [Description("Indicates whether the broadcast should be shown or not")]
+        [EProperty(registrySearchable: false, category: nameof(Broadcast))]
         public bool Show { get; set; }
 
         /// <summary>

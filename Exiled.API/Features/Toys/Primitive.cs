@@ -7,12 +7,11 @@
 
 namespace Exiled.API.Features.Toys
 {
-    using System;
     using System.Linq;
 
     using AdminToys;
-
     using Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
     using UnityEngine;
@@ -30,6 +29,16 @@ namespace Exiled.API.Features.Toys
         /// <param name="toyAdminToyBase">The <see cref="PrimitiveObjectToy"/> of the toy.</param>
         internal Primitive(PrimitiveObjectToy toyAdminToyBase)
             : base(toyAdminToyBase, AdminToyType.PrimitiveObject) => Base = toyAdminToyBase;
+
+        /// <summary>
+        /// Gets the light prefab's type.
+        /// </summary>
+        public static PrefabType PrefabType => PrefabType.PrimitiveObjectToy;
+
+        /// <summary>
+        /// Gets the light prefab's object.
+        /// </summary>
+        public static GameObject PrefabObject => PrefabHelper.PrefabToGameObject[PrefabType];
 
         /// <summary>
         /// Gets the base <see cref="PrimitiveObjectToy"/>.
@@ -60,7 +69,7 @@ namespace Exiled.API.Features.Toys
         public bool Collidable
         {
             get => Flags.HasFlag(PrimitiveFlags.Collidable);
-            set => Flags = value ? (Flags | PrimitiveFlags.Collidable) : (Flags & ~PrimitiveFlags.Collidable);
+            set => Flags = Flags.ModifyFlags(value, PrimitiveFlags.Collidable);
         }
 
         /// <summary>
@@ -69,7 +78,7 @@ namespace Exiled.API.Features.Toys
         public bool Visible
         {
             get => Flags.HasFlag(PrimitiveFlags.Visible);
-            set => Flags = value ? (Flags | PrimitiveFlags.Visible) : (Flags & ~PrimitiveFlags.Visible);
+            set => Flags = Flags.ModifyFlags(value, PrimitiveFlags.Visible);
         }
 
         /// <summary>
@@ -84,109 +93,17 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Creates a new <see cref="Primitive"/>.
         /// </summary>
-        /// <param name="position">The position of the <see cref="Primitive"/>.</param>
-        /// <param name="rotation">The rotation of the <see cref="Primitive"/>.</param>
-        /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
-        /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
-        /// <returns>The new <see cref="Primitive"/>.</returns>
-        public static Primitive Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
-            => Create(position, rotation, scale, spawn, null);
-
-        /// <summary>
-        /// Creates a new <see cref="Primitive"/>.
-        /// </summary>
-        /// <param name="primitiveType">The type of primitive to spawn.</param>
-        /// <param name="position">The position of the <see cref="Primitive"/>.</param>
-        /// <param name="rotation">The rotation of the <see cref="Primitive"/>.</param>
-        /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
-        /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
-        /// <returns>The new <see cref="Primitive"/>.</returns>
-        public static Primitive Create(PrimitiveType primitiveType = PrimitiveType.Sphere, Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
-            => Create(primitiveType, position, rotation, scale, spawn, null);
-
-        /// <summary>
-        /// Creates a new <see cref="Primitive"/>.
-        /// </summary>
-        /// <param name="position">The position of the <see cref="Primitive"/>.</param>
-        /// <param name="rotation">The rotation of the <see cref="Primitive"/>.</param>
-        /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
-        /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
-        /// <param name="color">The color of the <see cref="Primitive"/>.</param>
-        /// <returns>The new <see cref="Primitive"/>.</returns>
-        public static Primitive Create(Vector3? position /*= null*/, Vector3? rotation /*= null*/, Vector3? scale /*= null*/, bool spawn /*= true*/, Color? color /*= null*/)
-        {
-            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
-
-            primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
-            primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
-            primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
-
-            if (spawn)
-                primitive.Spawn();
-
-            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
-            primitive.Color = color ?? Color.gray;
-
-            return primitive;
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="Primitive"/>.
-        /// </summary>
-        /// <param name="primitiveType">The type of primitive to spawn.</param>
-        /// <param name="position">The position of the <see cref="Primitive"/>.</param>
-        /// <param name="rotation">The rotation of the <see cref="Primitive"/>.</param>
-        /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
-        /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
-        /// <param name="color">The color of the <see cref="Primitive"/>.</param>
-        /// <returns>The new <see cref="Primitive"/>.</returns>
-        public static Primitive Create(PrimitiveType primitiveType /*= PrimitiveType.Sphere*/, Vector3? position /*= null*/, Vector3? rotation /*= null*/, Vector3? scale /*= null*/, bool spawn /*= true*/, Color? color /*= null*/)
-        {
-            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
-
-            primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
-            primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
-            primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
-
-            if (spawn)
-                primitive.Spawn();
-
-            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
-            primitive.Base.NetworkPrimitiveType = primitiveType;
-            primitive.Color = color ?? Color.gray;
-
-            return primitive;
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="Primitive"/>.
-        /// </summary>
-        /// <param name="primitiveType">The type of primitive to spawn.</param>
-        /// <param name="flags">The primitive flags.</param>
-        /// <param name="position">The position of the <see cref="Primitive"/>.</param>
-        /// <param name="rotation">The rotation of the <see cref="Primitive"/>.</param>
-        /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
-        /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
-        /// <param name="color">The color of the <see cref="Primitive"/>.</param>
-        /// <returns>The new <see cref="Primitive"/>.</returns>
-        public static Primitive Create(PrimitiveType primitiveType /*= PrimitiveType.Sphere*/, PrimitiveFlags flags, Vector3? position /*= null*/, Vector3? rotation /*= null*/, Vector3? scale /*= null*/, bool spawn /*= true*/, Color? color /*= null*/)
-        {
-            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
-
-            primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
-            primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
-            primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
-            primitive.Flags = flags;
-
-            if (spawn)
-                primitive.Spawn();
-
-            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
-            primitive.Base.NetworkPrimitiveType = primitiveType;
-            primitive.Color = color ?? Color.gray;
-
-            return primitive;
-        }
+        /// <param name="primitiveType">The <see cref="PrimitiveType"/> to create.</param>
+        /// <param name="flags">The <see cref="PrimitiveFlags"/> to apply.-.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="rotation">The rotation.</param>
+        /// <param name="scale">The size of the primitive.</param>
+        /// <param name="isStatic">Whether or not the primitive is static.</param>
+        /// <param name="spawn">Whether or not the primitive should be spawned.</param>
+        /// <returns>The newly created <see cref="Primitive"/>.</returns>
+        public static Primitive Create(PrimitiveType primitiveType, PrimitiveFlags flags = default, Color? color = null, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool isStatic = false, bool spawn = true)
+            => Create(new(primitiveType, color, position, flags, rotation, scale, isStatic, spawn));
 
         /// <summary>
         /// Creates a new <see cref="Primitive"/>.
@@ -195,20 +112,19 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(PrimitiveSettings primitiveSettings)
         {
-            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
+            Primitive primitive = new(Object.Instantiate(PrefabObject.GetComponent<PrimitiveObjectToy>()))
+            {
+                Type = primitiveSettings.PrimitiveType,
+                Position = primitiveSettings.Position,
+                Rotation = primitiveSettings.Rotation,
+                Scale = primitiveSettings.Scale,
+                Flags = primitiveSettings.Flags,
+                Color = primitiveSettings.Color,
+                IsStatic = primitiveSettings.IsStatic,
+            };
 
-            primitive.AdminToyBase.transform.position = primitiveSettings.Position;
-            primitive.AdminToyBase.transform.eulerAngles = primitiveSettings.Rotation;
-            primitive.AdminToyBase.transform.localScale = primitiveSettings.Scale;
-            primitive.Flags = primitiveSettings.Flags;
-
-            if (primitiveSettings.Spawn)
+            if (primitiveSettings.ShouldSpawn)
                 primitive.Spawn();
-
-            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
-            primitive.Base.NetworkPrimitiveType = primitiveSettings.PrimitiveType;
-            primitive.Color = primitiveSettings.Color;
-            primitive.IsStatic = primitiveSettings.IsStatic;
 
             return primitive;
         }

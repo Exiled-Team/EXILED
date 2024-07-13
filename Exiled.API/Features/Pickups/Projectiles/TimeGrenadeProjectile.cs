@@ -7,10 +7,10 @@
 
 namespace Exiled.API.Features.Pickups.Projectiles
 {
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
-
     using InventorySystem.Items.ThrowableProjectiles;
-
     using Mirror;
 
     /// <summary>
@@ -46,11 +46,13 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets a value indicating whether the grenade has already exploded.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(TimeGrenadeProjectile))]
         public bool IsAlreadyDetonated => Base._alreadyDetonated;
 
         /// <summary>
         /// Gets or sets FuseTime.
         /// </summary>
+        [EProperty(category: nameof(TimeGrenadeProjectile))]
         public float FuseTime
         {
             get => Base._fuseTime;
@@ -65,6 +67,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets a value indicating whether the greande is active.
         /// </summary>
+        [EProperty(category: nameof(TimeGrenadeProjectile))]
         public bool IsActive
         {
             get => Base.TargetTime != 0.0;

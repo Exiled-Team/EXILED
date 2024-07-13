@@ -51,7 +51,7 @@ namespace Exiled.API.Features.Core.Generic
         /// Converts the given <see cref="Singleton{T}"/> instance into <typeparamref name="T"/>.
         /// </summary>
         /// <param name="instance">The <see cref="Singleton{T}"/> instance to convert.</param>
-        public static implicit operator T(Singleton<T> instance) => instance.Value;
+        public static implicit operator T(Singleton<T> instance) => instance?.Value;
 
         /// <summary>
         /// Tries to get the relative value.

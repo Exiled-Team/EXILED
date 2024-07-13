@@ -13,9 +13,8 @@ namespace Exiled.API.Features.Core
     using System.Reflection;
 
     using Exiled.API.Features.Core.Attributes;
-
-    using Exiled.API.Features.Pools;
-
+    using Exiled.API.Features.Core.Generic.Pools;
+    using MEC;
     using UnityEngine;
 
     /// <summary>
@@ -25,6 +24,8 @@ namespace Exiled.API.Features.Core
     {
         private static readonly Dictionary<Type, List<string>> RegisteredTypesValue = new();
         private bool destroyedValue;
+        private bool searchForHostObjectIfNull;
+        private CoroutineHandle addHostObjectInternalHandle;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EObject"/> class.
@@ -73,15 +74,39 @@ namespace Exiled.API.Features.Core
         public bool IsEditable { get; set; }
 
         /// <summary>
+        /// Gets a value indicating whether the <see cref="EObject"/> is being destroyed.
+        /// </summary>
+        public bool IsDestroying { get; private set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to search for the <see cref="Server.Host"/> object
+        /// when both <see cref="Server.Host"/> and <see cref="Base"/> are null.
+        /// <br/>
+        /// If found, assigns it to <see cref="Base"/>.
+        /// </summary>
+        public bool SearchForHostObjectIfNull
+        {
+            get => searchForHostObjectIfNull;
+            set
+            {
+                if (value == searchForHostObjectIfNull)
+                    return;
+
+                if (addHostObjectInternalHandle.IsRunning)
+                    Timing.KillCoroutines(addHostObjectInternalHandle);
+
+                searchForHostObjectIfNull = value;
+                if (!searchForHostObjectIfNull)
+                    return;
+
+                addHostObjectInternalHandle = Timing.RunCoroutine(AddHostObject_Internal());
+            }
+        }
+
+        /// <summary>
         /// Gets all the active <see cref="EObject"/> instances.
         /// </summary>
         internal static List<EObject> InternalObjects { get; } = new();
-
-        /// <summary>
-        /// Implicitly converts the given <see cref="EObject"/> instance to a <see cref="bool"/>.
-        /// </summary>
-        /// <param name="object">Whether the <see cref="EObject"/> instance exists.</param>
-        public static implicit operator bool(EObject @object) => @object != null;
 
         /// <summary>
         /// Implicitly converts the given <see cref="EObject"/> instance to a <see cref="string"/>.
@@ -96,7 +121,7 @@ namespace Exiled.API.Features.Core
         /// <returns>A <see cref="Type"/> matching the type name or <see langword="null"/> if not found.</returns>
         public static Type GetObjectTypeByName(string typeName)
         {
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
             {
                 if (type.Name != typeName || type.BaseType != typeof(EObject))
                     continue;
@@ -120,7 +145,7 @@ namespace Exiled.API.Features.Core
             if (matching is not null)
                 return matching;
 
-            foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (Type t in Assembly.GetCallingAssembly().GetTypes())
             {
                 if (t.Name != typeof(T).Name)
                     continue;
@@ -146,14 +171,17 @@ namespace Exiled.API.Features.Core
         /// </summary>
         /// <param name="type">The type to register.</param>
         /// <param name="name">The name of the registered type.</param>
+        /// <param name="assembly">The assembly to register object types in.</param>
         /// <returns>The registered <see cref="Type"/>.</returns>
-        public static Type RegisterObjectType(Type type, string name)
+        public static Type RegisterObjectType(Type type, string name, Assembly assembly = null)
         {
+            assembly ??= Assembly.GetCallingAssembly();
+
             Type matching = GetObjectTypeFromRegisteredTypes(type, name);
             if (matching is not null)
                 return matching;
 
-            foreach (Type t in Assembly.GetExecutingAssembly().GetTypes()
+            foreach (Type t in assembly.GetTypes()
                 .Where(item => item.BaseType == typeof(EObject) || item.IsSubclassOf(typeof(EObject))))
             {
                 if (t.Name != type.Name)
@@ -211,8 +239,8 @@ namespace Exiled.API.Features.Core
         {
             Type[] assemblyTypes =
                 ignoreAbstractTypes ?
-                Assembly.GetExecutingAssembly().GetTypes().Where(t => !t.IsAbstract).ToArray() :
-                Assembly.GetExecutingAssembly().GetTypes();
+                Assembly.GetCallingAssembly().GetTypes().Where(t => !t.IsAbstract).ToArray() :
+                Assembly.GetCallingAssembly().GetTypes();
 
             List<int> matches = new();
             matches.AddRange(assemblyTypes.Select(type => LevenshteinDistance(type.Name, name)));
@@ -328,7 +356,9 @@ namespace Exiled.API.Features.Core
         public static EObject CreateDefaultSubobject(Type type, params object[] parameters)
         {
             BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-            EObject @object = Activator.CreateInstance(type, flags, null, parameters, null) is not EObject outer ? null : outer;
+#pragma warning disable IDE0019 // Use pattern matching
+            EObject @object = Activator.CreateInstance(type, flags, null, parameters, null) as EObject;
+#pragma warning restore IDE0019 // Use pattern matching
 
             // Do not use implicit bool conversion as @object may be null
             if (@object != null)
@@ -389,15 +419,15 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Creates a new instance of the <see cref="EObject"/> class.
         /// </summary>
-        /// <typeparam name="T">The <see cref="EObject"/> type.</typeparam>
+        /// <typeparam name="T">The cast <see cref="EObject"/> type.</typeparam>
+        /// <param name="type">The <see cref="EObject"/> type.</param>
         /// <param name="gameObject"><inheritdoc cref="Base"/></param>
         /// <param name="name">The name to be given to the new <see cref="EObject"/> instance.</param>
-        /// <param name="parameters">The parameters to initialize the object.</param>
         /// <returns>The new <see cref="EObject"/> instance.</returns>
-        public static T CreateDefaultSubobject<T>(GameObject gameObject, string name, params object[] parameters)
+        public static T CreateDefaultSubobject<T>(Type type, GameObject gameObject, string name)
             where T : EObject
         {
-            object newObj = CreateDefaultSubobject<T>(parameters);
+            object newObj = CreateDefaultSubobject<T>(type);
             if (newObj is not T outer)
                 return null;
 
@@ -409,15 +439,15 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Creates a new instance of the <see cref="EObject"/> class.
         /// </summary>
-        /// <typeparam name="T">The cast <see cref="EObject"/> type.</typeparam>
-        /// <param name="type">The <see cref="EObject"/> type.</param>
+        /// <typeparam name="T">The <see cref="EObject"/> type.</typeparam>
         /// <param name="gameObject"><inheritdoc cref="Base"/></param>
         /// <param name="name">The name to be given to the new <see cref="EObject"/> instance.</param>
+        /// <param name="parameters">The parameters to initialize the object.</param>
         /// <returns>The new <see cref="EObject"/> instance.</returns>
-        public static T CreateDefaultSubobject<T>(Type type, GameObject gameObject, string name)
+        public static T CreateDefaultSubobject<T>(GameObject gameObject, string name, params object[] parameters)
             where T : EObject
         {
-            object newObj = CreateDefaultSubobject<T>(type);
+            object newObj = CreateDefaultSubobject<T>(parameters);
             if (newObj is not T outer)
                 return null;
 
@@ -517,7 +547,7 @@ namespace Exiled.API.Features.Core
         /// Finds the active <see cref="EObject"/> instances of type <typeparamref name="T"/> filtered based on a predicate.
         /// </summary>
         /// <typeparam name="T">The <typeparamref name="T"/> type to look for.</typeparam>
-        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
         /// <returns>The corresponding active <typeparamref name="T"/> <see cref="EObject"/>.</returns>
         public static T FindActiveObjectOfType<T>(Func<EObject, bool> predicate)
             where T : EObject
@@ -535,7 +565,7 @@ namespace Exiled.API.Features.Core
         /// Finds all the active <see cref="EObject"/> instances of type <typeparamref name="T"/> filtered based on a predicate.
         /// </summary>
         /// <typeparam name="T">The <typeparamref name="T"/> type to look for.</typeparam>
-        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
         /// <returns>A <typeparamref name="T"/>[] containing all the matching results.</returns>
         public static T[] FindActiveObjectsOfType<T>(Func<EObject, bool> predicate)
             where T : EObject
@@ -611,7 +641,7 @@ namespace Exiled.API.Features.Core
         /// </summary>
         /// <typeparam name="T">The <typeparamref name="T"/> type to look for.</typeparam>
         /// <param name="type">The <see cref="EObject"/> type.</param>
-        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
         /// <returns>A <typeparamref name="T"/>[] containing all the matching results.</returns>
         public static T[] FindActiveObjectsOfType<T>(Type type, Func<EObject, bool> predicate)
             where T : EObject
@@ -651,8 +681,8 @@ namespace Exiled.API.Features.Core
         /// Finds all the active <see cref="EObject"/> instances of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type to look for.</typeparam>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <typeparamref name="T"/>[] containing all the elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <typeparamref name="T"/>[] containing all the elements that satisfy the condition.</returns>
         public static T[] FindActiveObjectsOfType<T>(Func<object, bool> predicate)
             where T : EObject
         {
@@ -670,8 +700,8 @@ namespace Exiled.API.Features.Core
         /// Finds all the active <see cref="EObject"/> instances of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type to look for.</typeparam>
-        /// <param name="predicate">The condition to satify.</param>
-        /// <returns>A <typeparamref name="T"/>[] containing all the elements that satify the condition.</returns>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <returns>A <typeparamref name="T"/>[] containing all the elements that satisfy the condition.</returns>
         public static T[] FindActiveObjectsOfType<T>(Func<T, bool> predicate)
             where T : EObject
         {
@@ -782,13 +812,25 @@ namespace Exiled.API.Features.Core
         /// <inheritdoc/>
         public override bool Equals(object other) => other is not null && other is EObject && other == this;
 
+        /// <summary>
+        /// Waits until the server host object is available and then sets the base game object.
+        /// </summary>
+        /// <returns>An IEnumerator representing the asynchronous operation.</returns>
+        protected internal IEnumerator<float> AddHostObject_Internal()
+        {
+            yield return Timing.WaitUntilTrue(() => Server.Host != null);
+
+            Base = Server.Host.GameObject;
+        }
+
         /// <inheritdoc cref="Destroy()"/>
         protected virtual void Destroy(bool destroying)
         {
-            if (!destroyedValue)
+            if (!destroyedValue && !IsDestroying)
             {
                 if (destroying)
                 {
+                    IsDestroying = true;
                     OnBeginDestroy();
                     InternalObjects.Remove(this);
                 }

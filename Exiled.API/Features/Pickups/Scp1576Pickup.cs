@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
 
     using BaseScp1576 = InventorySystem.Items.Usables.Scp1576.Scp1576Pickup;
