@@ -56,7 +56,7 @@ Si vous choisissez d'utiliser l'installateur, il se chargera, s'il est exécuté
       Appuyez sur Win + R et tapez `%appdata%`
 
 ### Installation de plugin
-C'est tout, EXILED devrait maintenant être installé et actif la prochaine fois que vous démarrez votre serveur. Notez qu'EXILED par lui-même ne fera presque rien, alors assurez-vous d'obtenir de nouveaux plugins depuis **[notre serveur Discord](https://discord.gg/PyUkWTg)**
+C'est tout, EXILED devrait maintenant être installé et actif la prochaine fois que vous démarrez votre serveur. Notez qu'EXILED par lui-même ne fera presque rien, alors assurez-vous d'obtenir de nouveaux plugins depuis **[notre serveur Discord](https://discord.gg/exiledreboot)**
 - Pour installer un plugin, il suffit de :
   - Télécharger un plugin depuis [*sa page de release*](https://i.imgur.com/u34wgPD.jpg) (**il DOIT s'agir d'un fichier `.dll`!**)
   - Déplacer vers: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (pour y accéder, appuyez sur Win + R, puis écrivez `%appdata%`)
@@ -80,7 +80,7 @@ C'est tout, EXILED devrait maintenant être installé et actif la prochaine fois
   - Déplacez le dossier **`SCP Secret Laboratory`** vers **``~/.config``**. *Remarque : Ce dossier doit être placé dans ``~/.config``, et ***NON*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Installation de plugins
-C'est tout, EXILED devrait maintenant être installé et actif la prochaine fois que vous démarrez votre serveur. Notez qu'EXILED par lui-même ne fera presque rien, alors assurez-vous d'obtenir des plugins depuis **[depuis notre serveur Discord](https://discord.gg/PyUkWTg)**
+C'est tout, EXILED devrait maintenant être installé et actif la prochaine fois que vous démarrez votre serveur. Notez qu'EXILED par lui-même ne fera presque rien, alors assurez-vous d'obtenir des plugins depuis **[depuis notre serveur Discord](https://discord.gg/exiledreboot)**
 - Pour installer un plugin, simplement :
   - Téléchargez un plugin depuis [*sa page de release*](https://i.imgur.com/u34wgPD.jpg) (**il DOIT s'agir d'un fichier `.dll`!**)
   - Déplacez-le vers: ``~/.config/EXILED/Plugins`` (si vous utilisez SSH en tant que root, alors recherchez le `.config` correct qui sera à l'intérieur de `/home/(SCP Server User)`)
