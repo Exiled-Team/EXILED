@@ -34,6 +34,7 @@ namespace Exiled.API.Features.Pickups
         internal MicroHIDPickup()
             : base(ItemType.MicroHID)
         {
+            Base = (BaseMicroHID)((Pickup)this).Base;
         }
 
         /// <summary>

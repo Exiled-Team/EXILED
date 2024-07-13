@@ -33,6 +33,7 @@ namespace Exiled.API.Features.Pickups
         internal Scp1576Pickup()
             : base(ItemType.SCP1576)
         {
+            Base = (BaseScp1576)((Pickup)this).Base;
         }
 
         /// <summary>

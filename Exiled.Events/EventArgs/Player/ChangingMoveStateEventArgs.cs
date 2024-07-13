@@ -36,6 +36,7 @@ namespace Exiled.Events.EventArgs.Player
         {
             Player = player;
             OldState = oldState;
+            NewState = newState;
         }
 
         /// <summary>

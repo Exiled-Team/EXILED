@@ -100,11 +100,11 @@ namespace Exiled.API.Features.Toys
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
         /// <param name="scale">The size of the primitive.</param>
-        /// <param name="spawn">Whether the primitive should be spawned.</param>
         /// <param name="isStatic">Whether the primitive should be static.</param>
+        /// <param name="spawn">Whether the primitive should be spawned.</param>
         /// <seealso cref="AdminToy.IsStatic"/>
         /// <returns>The newly created <see cref="Primitive"/>.</returns>
-        public static Primitive Create(PrimitiveType primitiveType, PrimitiveFlags flags = default, Color? color = null, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool spawn = true, bool isStatic = false)
+        public static Primitive Create(PrimitiveType primitiveType, PrimitiveFlags flags = default, Color? color = null, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool isStatic = false, bool spawn = true)
             => Create(new(primitiveType, color, position, flags, rotation, scale, isStatic, spawn));
 
         /// <summary>
@@ -114,15 +114,16 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(PrimitiveSettings primitiveSettings)
         {
-            Primitive primitive = new(Object.Instantiate(PrefabObject.GetComponent<PrimitiveObjectToy>()));
-
-            primitive.Type = primitiveSettings.PrimitiveType;
-            primitive.Position = primitiveSettings.Position;
-            primitive.Rotation = primitiveSettings.Rotation;
-            primitive.Scale = primitiveSettings.Scale;
-            primitive.Flags = primitiveSettings.Flags;
-            primitive.Color = primitiveSettings.Color;
-            primitive.IsStatic = primitiveSettings.IsStatic;
+            Primitive primitive = new(Object.Instantiate(PrefabObject.GetComponent<PrimitiveObjectToy>()))
+            {
+                Type = primitiveSettings.PrimitiveType,
+                Position = primitiveSettings.Position,
+                Rotation = primitiveSettings.Rotation,
+                Scale = primitiveSettings.Scale,
+                Flags = primitiveSettings.Flags,
+                Color = primitiveSettings.Color,
+                IsStatic = primitiveSettings.IsStatic,
+            };
 
             if (primitiveSettings.ShouldSpawn)
                 primitive.Spawn();

@@ -69,10 +69,20 @@ namespace Exiled.API.Features.Roles
         public CharacterController CharacterController => FirstPersonController.FpcModule.CharController;
 
         /// <summary>
-        /// Gets or sets the player's relative position.
+        /// Gets or sets the player's relative position as perceived by the server.
         /// </summary>
         [EProperty(category: nameof(FpcRole))]
         public RelativePosition RelativePosition
+        {
+            get => new(Position);
+            set => Position = value.Position;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's relative position as perceived by the client.
+        /// </summary>
+        [EProperty(category: nameof(FpcRole))]
+        public RelativePosition ClientRelativePosition
         {
             get => FirstPersonController.FpcModule.Motor.ReceivedPosition;
             set => FirstPersonController.FpcModule.Motor.ReceivedPosition = value;

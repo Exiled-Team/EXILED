@@ -13,7 +13,7 @@ namespace Exiled.Example
     /// <summary>
     /// The example plugin.
     /// </summary>
-    public class Example : Plugin<Config>
+    public class Example : Plugin<Config, Translation>
     {
         /// <summary>
         /// Gets the only existing instance of this plugin.

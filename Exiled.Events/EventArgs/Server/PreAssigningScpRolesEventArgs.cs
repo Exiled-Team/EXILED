@@ -7,16 +7,12 @@
 
 namespace Exiled.Events.EventArgs.Server
 {
-    using API.Enums;
-
     using Interfaces;
-
-    using PlayerRoles;
 
     /// <summary>
     /// Contains all information before setting up the environment for the assignment of SCP roles.
     /// </summary>
-    public class PreAssigningScpRolesEventArgs : IExiledEvent, IDeniableEvent
+    public class PreAssigningScpRolesEventArgs : IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PreAssigningScpRolesEventArgs" /> class.

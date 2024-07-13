@@ -155,7 +155,7 @@ namespace Exiled.API.Features
         {
             foreach (RoomLightController controller in RoomLightController.Instances)
             {
-                Room room = controller.GetComponentInParent<Room>();
+                Room room = Room.Get(controller);
                 if (room == null)
                     continue;
 

@@ -632,7 +632,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 if (!customRole.IsEnabled)
                     continue;
 
-                if (customRole.TryRegister(attribute))
+                if (customRole.TryRegister(assembly, attribute))
                     customRoles.Add(customRole);
             }
 
@@ -905,42 +905,41 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Tries to register a <see cref="CustomRole"/>.
         /// </summary>
+        /// <param name="assembly">The assembly to try and register from.</param>
         /// <param name="attribute">The specified <see cref="CustomRoleAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomRole"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(CustomRoleAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, CustomRoleAttribute attribute = null)
         {
-            if (!Registered.Contains(this))
+            if (Registered.Contains(this))
             {
-                if (attribute is not null && Id == 0)
-                {
-                    if (attribute.Id != 0)
-                        Id = attribute.Id;
-                    else
-                        throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
-                }
-
-                CustomRole duplicate = Registered.FirstOrDefault(x => x.Id == Id || x.Name == Name || x.BehaviourComponent == BehaviourComponent);
-                if (duplicate)
-                {
-                    Log.Warn($"Unable to register {Name}. Another role with the same ID, Name or Behaviour Component already exists: {duplicate.Name}");
-
-                    return false;
-                }
-
-                EObject.RegisterObjectType(BehaviourComponent, Name);
-                Registered.Add(this);
-
-                TypeLookupTable.TryAdd(GetType(), this);
-                BehaviourLookupTable.TryAdd(BehaviourComponent, this);
-                IdLookupTable.TryAdd(Id, this);
-                NameLookupTable.TryAdd(Name, this);
-
-                return true;
+                Log.Warn($"Unable to register {Name}. Role already exists.");
+                return false;
             }
 
-            Log.Warn($"Unable to register {Name}. Role already exists.");
+            if (attribute is not null && Id == 0)
+            {
+                if (attribute.Id != 0)
+                    Id = attribute.Id;
+                else
+                    throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
+            }
 
-            return false;
+            CustomRole duplicate = Registered.FirstOrDefault(x => x.Id == Id || x.Name == Name || x.BehaviourComponent == BehaviourComponent);
+            if (duplicate)
+            {
+                Log.Warn($"Unable to register {Name}. Another role with the same ID, Name or Behaviour Component already exists: {duplicate.Name}");
+                return false;
+            }
+
+            EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
+            Registered.Add(this);
+
+            TypeLookupTable.TryAdd(GetType(), this);
+            BehaviourLookupTable.TryAdd(BehaviourComponent, this);
+            IdLookupTable.TryAdd(Id, this);
+            NameLookupTable.TryAdd(Name, this);
+
+            return true;
         }
 
         /// <summary>

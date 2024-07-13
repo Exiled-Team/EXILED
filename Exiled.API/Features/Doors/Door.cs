@@ -293,7 +293,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a <see cref="List{T}"/> containing all <see cref="Features.Room"/>'s that are connected with <see cref="Door"/>.
         /// </summary>
-        internal List<Room> RoomsValue { get; } = new List<Room>();
+        internal List<Room> RoomsValue { get; } = new();
 
         /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
@@ -597,18 +597,27 @@ namespace Exiled.API.Features.Doors
         /// Change the door lock with the given lock type.
         /// </summary>
         /// <param name="lockType">The <see cref="DoorLockType"/> to use.</param>
-        public void ChangeLock(DoorLockType lockType) => Base.ServerChangeLock((DoorLockReason)lockType, !LockType.HasFlag(lockType));
+        public void ChangeLock(DoorLockType lockType)
+        {
+            if (lockType == DoorLockType.None)
+            {
+                Base.NetworkActiveLocks = (ushort)DoorLockReason.None;
+                return;
+            }
+
+            Base.ServerChangeLock((DoorLockReason)lockType, !LockType.HasFlag(lockType));
+        }
 
         /// <summary>
         /// Permanently locks all active locks on the door, and then reverts back any changes after a specified length of time.
         /// </summary>
         /// <param name="lockType">The <see cref="DoorLockType"/> of the lockdown.</param>
         /// <param name="updateTheDoorState">A value indicating whether the door state should be modified.</param>
-        public void Lock(DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = true)
+        public void Lock(DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = false)
         {
             ChangeLock(lockType);
 
-            if (updateTheDoorState)
+            if (!updateTheDoorState)
                 return;
 
             DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason)LockType);
@@ -624,7 +633,7 @@ namespace Exiled.API.Features.Doors
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
         /// <param name="lockType">The <see cref="DoorLockType"/> of the lockdown.</param>
         /// <param name="updateTheDoorState">A value indicating whether the door state should be modified.</param>
-        public void Lock(float time, DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = true)
+        public void Lock(float time, DoorLockType lockType = DoorLockType.AdminCommand, bool updateTheDoorState = false)
         {
             Lock(lockType, updateTheDoorState);
             Unlock(time, lockType);

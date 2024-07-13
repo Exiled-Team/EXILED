@@ -50,4 +50,4 @@ public void SomeMethod()
     })
 }
 ```
-It is ***strongly*** recommended that you do some googling, or ask around **[in the EXILED Discord server](https://discord.gg/PyUkWTg)** if you are unfamiliar with MEC and would like to learn more, get advice, or need help. Questions, no matter how 'stupid' they are, will always be answered as helpfully and clearly as possible for plugin developers to excel. Better code is better for everyone.
+It is ***strongly*** recommended that you do some googling, or ask around **[in the EXILED Discord server](https://discord.gg/exiledreboot)** if you are unfamiliar with MEC and would like to learn more, get advice, or need help. Questions, no matter how 'stupid' they are, will always be answered as helpfully and clearly as possible for plugin developers to excel. Better code is better for everyone.
