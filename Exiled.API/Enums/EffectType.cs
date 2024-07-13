@@ -5,12 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+
 namespace Exiled.API.Enums
 {
     using System;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Roles;
 
     using InventorySystem.Items.Usables;
 
@@ -111,7 +113,7 @@ namespace Exiled.API.Enums
         Invigorated,
 
         /// <summary>
-        /// Reduces damage dealt by body shots.
+        /// Reduces damage taken from body shots.
         /// </summary>
         BodyshotReduction,
 
@@ -126,9 +128,11 @@ namespace Exiled.API.Enums
         Scp207,
 
         /// <summary>
-        /// Makes the player invisible.
-        /// Caused by <see cref="Scp268"/>
+        /// Makes invisible with SCP-268 purple vignette effect.
         /// </summary>
+        /// <remarks>
+        /// You can also hide a player using <see cref="FpcRole"/>.<see cref="FpcRole.IsInvisible"/> or <see cref="FpcRole.IsInvisibleFor"/>
+        /// </remarks>
         Invisible,
 
         /// <summary>
