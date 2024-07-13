@@ -5,7 +5,7 @@
 <a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
 <img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
 ![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
-<a href="https://discord.gg/PyUkWTg">
+<a href="https://discord.gg/exiledreboot">
     <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
 </a>    
 
@@ -42,7 +42,7 @@ EXILED - низкоуровневый фреймворк для серверов
     Нажмите Win + R и введите `%appdata%`.
 
 ### Установка плагинов Windows
-Вот и все, теперь EXILED должен быть установлен и активен при следующей загрузке вашего сервера. Обратите внимание, что EXILED сам по себе почти ничего не делает, поэтому обязательно получайте новые плагины с **[нашего сервера Discord](https://discord.gg/PyUkWTg)**.
+Вот и все, теперь EXILED должен быть установлен и активен при следующей загрузке вашего сервера. Обратите внимание, что EXILED сам по себе почти ничего не делает, поэтому обязательно получайте новые плагины с **[нашего сервера Discord](https://discord.gg/exiledreboot)**.
 - Чтобы установить плагин, просто:
   - Скачайте плагин с [*их* страницы релизов](https://i.imgur.com/u34wgPD.jpg) (**он ДОЛЖЕН быть `.dll`!**)
   - Переместите его в: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (переместите его сюда, нажав Win + R, а затем написав `%appdata%`)
@@ -66,7 +66,7 @@ EXILED - низкоуровневый фреймворк для серверов
 - Переместите папку **`EXILED`** в **``~/.config``**. *Примечание: Эта папка должна находиться в ``~/.config``, и ***НЕ В*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
 
 ### Устaновка плагинов Linux
-Вот и все, теперь EXILED будет установлен и активен при следующей загрузке вашего сервера. Обратите внимание, что EXILED сам по себе почти ничего не делает, поэтому обязательно получайте новые плагины с **[нашего сервера Discord](https://discord.gg/PyUkWTg)**.
+Вот и все, теперь EXILED будет установлен и активен при следующей загрузке вашего сервера. Обратите внимание, что EXILED сам по себе почти ничего не делает, поэтому обязательно получайте новые плагины с **[нашего сервера Discord](https://discord.gg/exiledreboot)**.
 - Чтобы установить плагин, просто:
   - Скачайте плагин с [*их* страницы релизов](https://i.imgur.com/u34wgPD.jpg) (**он ДОЛЖЕН быть `.dll`!**)
   - Переместите его в: ``~/.config/EXILED/Plugins`` (если вы используете SSH как root, то ищите нужный `.config`, который будет находиться в `/home/(SCP Server User)``)
