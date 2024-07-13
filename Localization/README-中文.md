@@ -61,7 +61,7 @@ EXILED的安装十分简单。因为是用NW插件API来将自身载入，你会
   - 移动 **``SCP Secret Laboratory``** 文件到 **``~/.config``** (SSH指令例子: **`mv SCP Secret Laboratory ~/.config/`**).
 
 # 安装插件
-现在EXILED已经安装好了，并会在下次你启动你的服务器时随之启动。请注意EXILED本身基本不会做出任何事情，所以来 **[我们的Discord服务器](https://discord.gg/PyUkWTg)** 获取最新的插件吧。
+现在EXILED已经安装好了，并会在下次你启动你的服务器时随之启动。请注意EXILED本身基本不会做出任何事情，所以来 **[我们的Discord服务器](https://discord.gg/exiledreboot)** 获取最新的插件吧。
 - 想要安装插件，只需要:
   - 从[**插件仓库**的Releases页面](https://i.imgur.com/u34wgPD.jpg)中下载DLL文件。(**它必须是个`.dll`!**)
 ## Windows
