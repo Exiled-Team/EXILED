@@ -41,21 +41,6 @@
         <Reference Include="YamlDotNet" HintPath="$(EXILED_REFERENCES)\YamlDotNet.dll" Private="false" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="Interfaces\IRepNotify.cs" />
-      <Compile Remove="Features\Serialization\UnderscoredNamingConvention.cs" />
-      <Compile Remove="Features\Serialization\CommentGatheringTypeInspector.cs" />
-      <Compile Remove="Features\Core\Interfaces\IAdditiveSettingsCollection.cs" />
-      <Compile Remove="Features\Core\Interfaces\IAdditiveProperty.cs" />
-      <Compile Remove="Features\Core\Generic\ReplicatedRef.cs" />
-      <Compile Remove="Features\Attributes\Validators\LessThanAttribute.cs" />
-      <Compile Remove="Extensions\CollectionExtensions.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Features\Core\Behaviours\" />
-    </ItemGroup>
-
     <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
         <PostBuildEvent>if not "$(EXILED_DEV_PLUGINAPI_REFERENCE)"=="" copy /y "$(OutputPath)$(AssemblyName).dll" "$(EXILED_DEV_PLUGINAPI_REFERENCE)\dependencies\" &amp;&amp; if not "$(EXILED_DEV_REFERENCES)"=="" copy /y "$(OutputPath)$(AssemblyName).dll" "$(EXILED_DEV_REFERENCES)\Plugins\dependencies\"</PostBuildEvent>
     </PropertyGroup>
