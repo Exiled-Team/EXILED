@@ -52,7 +52,7 @@ Pokud se rozhodnete použít instalační program, postará se při správném s
       Stiskněte Win + R a napište `%appdata%`
 
 ### Instalace pluginů
-To je vše, EXILED by nyní měl být nainstalován a aktivní při příštím spuštění serveru. Pozor, EXILED sám o sobě neudělá téměř nic, takže se ujistěte, že si stáhnete nové pluginy z **[našeho serveru Discord](https://discord.gg/PyUkWTg)**.
+To je vše, EXILED by nyní měl být nainstalován a aktivní při příštím spuštění serveru. Pozor, EXILED sám o sobě neudělá téměř nic, takže se ujistěte, že si stáhnete nové pluginy z **[našeho serveru Discord](https://discord.gg/exiledreboot)**.
 - Chcete-li nainstalovat plugin, jednoduše:
   - Stáhněte si plugin z [*jeho* stránky vydání](https://i.imgur.com/u34wgPD.jpg) (**MUSÍ být `.dll`!**)
   - Přesuňte jej do: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (dostaňte se sem stiskem Win + R, a pak psaním `%appdata%`)
@@ -76,7 +76,7 @@ To je vše, EXILED by nyní měl být nainstalován a aktivní při příštím 
   - Přesuňte **`SCP Secret Laboratory`** složku do **``~/.config``**. *Poznámka: Tuto složku je třeba umístit do ``~/.config``, a ***NE*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Instalace pluginů
-To je vše, EXILED by nyní měl být nainstalován a aktivní při příštím spuštění serveru. Pozor, EXILED sám o sobě neudělá téměř nic, takže se ujistěte, že si stáhnete nové pluginy z **[našeho serveru Discord](https://discord.gg/PyUkWTg)**.
+To je vše, EXILED by nyní měl být nainstalován a aktivní při příštím spuštění serveru. Pozor, EXILED sám o sobě neudělá téměř nic, takže se ujistěte, že si stáhnete nové pluginy z **[našeho serveru Discord](https://discord.gg/exiledreboot)**.
 - Chcete-li nainstalovat plugin, jednoduše:
   - Stáhněte si plugin z [*jeho* stránky vydání](https://i.imgur.com/u34wgPD.jpg) (**MUSÍ být `.dll`!**)
   - Přesuňte jej do ``~/.config/EXILED/Plugins`` (pokud používáte SSH jako root, musíte najít správný `.config` který bude uvnitř `/home/(SCP Server Uživatel)`)
