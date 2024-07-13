@@ -7,12 +7,14 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using Exiled.API.Features.Core.Attributes;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
     using PlayerRoles.Ragdolls;
     using PlayerRoles.Subroutines;
+    using UnityEngine;
 
     /// <summary>
     /// Defines a role that represents SCP-049-2.
@@ -45,7 +47,17 @@ namespace Exiled.API.Features.Roles
             ConsumeAbility = zombieConsumeAbility492;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Scp0492Role"/> class.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
+        protected internal Scp0492Role(GameObject gameObject)
+            : base(gameObject)
+        {
+        }
+
         /// <inheritdoc/>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public override RoleTypeId Type { get; } = RoleTypeId.Scp0492;
 
         /// <inheritdoc/>
@@ -72,6 +84,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of times this SCP-049-2 has been resurrected.
         /// </summary>
+        [EProperty(category: nameof(Scp0492Role))]
         public int ResurrectNumber
         {
             get => Scp049ResurrectAbility.GetResurrectionsNumber(Owner.ReferenceHub);
@@ -81,11 +94,13 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the SCP-049-2 attack damage.
         /// </summary>
+        [EProperty(category: nameof(Scp0492Role))]
         public float AttackDamage => AttackAbility.DamageAmount;
 
         /// <summary>
         /// Gets or sets a value indicating the amount of time to simulate SCP-049-2's Bloodlust ability.
         /// </summary>
+        [EProperty(category: nameof(Scp0492Role))]
         public float SimulatedStare
         {
             get => BloodlustAbility.SimulatedStare;
@@ -95,11 +110,13 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not SCP-049-2 is currently pursuing a target (Bloodlust ability).
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp0492Role))]
         public bool BloodlustActive => BloodlustAbility.LookingAtTarget;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-049-2 is consuming a ragdoll.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp0492Role))]
         public bool IsConsuming => ConsumeAbility.IsInProgress;
 
         /// <summary>
@@ -110,6 +127,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the amount of time in between SCP-049-2 attacks.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp0492Role))]
         public float AttackCooldown => AttackAbility.BaseCooldown;
 
         /// <summary>

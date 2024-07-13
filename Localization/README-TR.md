@@ -5,7 +5,7 @@
 <a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
 <img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
 ![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
-<a href="https://discord.gg/PyUkWTg">
+<a href="https://discord.gg/exiledreboot">
     <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
 </a>    
 
@@ -43,7 +43,7 @@ Eğer kurulum programını kullanmayı seçerseniz ve doğru bir şekilde çalı
       Win + R tuşlarına basın ve `%appdata%` yazın.
 
 ### Eklenti İndirme
-Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığında aktif olmalıdır. Unutmayın ki EXILED kendi başına neredeyse hiçbir şey yapmaz, bu yüzden yeni eklentileri **[Discord](https://discord.gg/PyUkWTg)** sunucumuzdan almayı unutmayın.
+Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığında aktif olmalıdır. Unutmayın ki EXILED kendi başına neredeyse hiçbir şey yapmaz, bu yüzden yeni eklentileri **[Discord](https://discord.gg/exiledreboot)** sunucumuzdan almayı unutmayın.
 - Bir Eklenti indirmek için aşağıdaki talimatları okuyun:
   - Bir eklentiyi indirmek için [*Onun* releases (yayınlanma) sayfasına gidin](https://i.imgur.com/u34wgPD.jpg) (**`.dll` UZANTILI OLMALIDIR**)
   - İndirdiğiniz eklentiyi: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins``'dizinine taşıyın (Win + R Tuşlarına basarak `%appdata%` yazarak buraya taşıyabilirsiniz)
@@ -67,7 +67,7 @@ Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığın
   - **`SCP Secret Laboratory`** Klasörünü **``~/.config``**'e taşı. *Not: Bu klasör ``~/.config``'nin içine gitmelidir,  ``~/.config/SCP Secret Laboratory``**'nin içine değil!** (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Eklenti Indirme
-Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığında aktif olmalıdır. Unutmayın ki EXILED kendi başına neredeyse hiçbir şey yapamaz, bu yüzden yeni eklentileri **[Discord](https://discord.gg/PyUkWTg)** sunucumuzdan almayı unutmayın.
+Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığında aktif olmalıdır. Unutmayın ki EXILED kendi başına neredeyse hiçbir şey yapamaz, bu yüzden yeni eklentileri **[Discord](https://discord.gg/exiledreboot)** sunucumuzdan almayı unutmayın.
 - Bir Eklenti indirmek için aşağıdaki talimatları okuyun:
   - Bir eklentiyi indirmek için [*Onun* releases (yayınlanma) sayfasına gidin](https://i.imgur.com/u34wgPD.jpg) (**`.dll` UZANTILI OLMALIDIR**)
   - İndirdiğiniz Eklentiyi: ``~/.config/EXILED/Plugins``'dizininine taşıyın (eğer SSH'i root olarak kullanıyor iseniz, o zaman doğru `.config`'i `/home/(SCP Server kullanıcısı)` dizininin içinde arayın.)

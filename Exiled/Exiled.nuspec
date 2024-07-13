@@ -6,7 +6,7 @@
     <title>EXILED</title>
     <version>$version$</version>
     <authors>The Exiled Team</authors>
-    <owners>Galaxy119</owners>
+    <owners>Exiled Team</owners>
     <copyright>Copyright © Exiled Team 2020 - $year$</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <repository type="Git" url="https://github.com/Exiled-Team/EXILED" />
@@ -14,7 +14,7 @@
     <projectUrl>https://github.com/Exiled-Team/EXILED</projectUrl>
     <icon>images\Exiled_Icon.jpg</icon>
     <description>Plugin framework for SCP: Secret Laboratory.</description>
-
+    <readme>README.md</readme>
     <dependencies>
       <group targetFramework="net48" />
     </dependencies>
@@ -43,12 +43,11 @@
     <file src="..\bin\Release\Exiled.CreditTags.dll" target="lib\net48" />
     <file src="..\bin\Release\Exiled.CreditTags.xml" target="lib\net48" />
 
-    <file src="..\bin\Release\Exiled.CustomItems.dll" target="lib\net48" />
-    <file src="..\bin\Release\Exiled.CustomItems.xml" target="lib\net48" />
-
-    <file src="..\bin\Release\Exiled.CustomRoles.dll" target="lib\net48" />
-    <file src="..\bin\Release\Exiled.CustomRoles.xml" target="lib\net48" />
-    <!-- Project files -->
+    <file src="..\bin\Release\Exiled.CustomModules.dll" target="lib\net48" />
+    <file src="..\bin\Release\Exiled.CustomModules.xml" target="lib\net48" />
+    
+    <!-- README -->
+    <file src="..\readme.md" target="readme.md" />
 
     <!-- Icon -->
     <file src="..\assets\Exiled_Icon.jpg" target="images" />

@@ -12,8 +12,8 @@ namespace Exiled.Events.Handlers.Internal
     using System.Linq;
 
     using API.Features;
+    using API.Features.Core.Generic.Pools;
     using API.Features.Items;
-    using API.Features.Pools;
     using API.Structs;
 
     using Exiled.API.Enums;
@@ -46,6 +46,7 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnMapGenerated()
         {
             Map.ClearCache();
+            PrefabHelper.LoadPrefabs();
 
             // TODO: Fix For (https://trello.com/c/cUwpZDLs/5003-config-teamrespawnqueue-in-configgameplay-is-not-working-as-expected)
             PlayerRoles.RoleAssign.HumanSpawner.Handlers[PlayerRoles.Team.ChaosInsurgency] = new PlayerRoles.RoleAssign.OneRoleHumanSpawner(PlayerRoles.RoleTypeId.ChaosConscript);
@@ -65,7 +66,7 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateAttachments()
         {
-            foreach (FirearmType firearmType in Enum.GetValues(typeof(FirearmType)))
+            foreach (FirearmType firearmType in EnumExtensions.QueryValues<FirearmType>())
             {
                 if (firearmType == FirearmType.None)
                     continue;

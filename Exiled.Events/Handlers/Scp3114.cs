@@ -9,7 +9,6 @@ namespace Exiled.Events.Handlers
 {
 #pragma warning disable SA1623 // Property summary documentation should match accessors
 
-    using Exiled.Events.EventArgs.Scp244;
     using Exiled.Events.EventArgs.Scp3114;
     using Exiled.Events.Features;
 
@@ -39,6 +38,11 @@ namespace Exiled.Events.Handlers
         public static Event<RevealedEventArgs> Revealed { get; set; } = new();
 
         /// <summary>
+        /// Invoked after SCP-3114 slaps a player.
+        /// </summary>
+        public static Event<SlappedEventArgs> Slapped { get; set; } = new();
+
+        /// <summary>
         /// Invoked before reveals.
         /// </summary>
         public static Event<RevealingEventArgs> Revealing { get; set; } = new();
@@ -47,6 +51,16 @@ namespace Exiled.Events.Handlers
         /// Invoked before sending any SCP-3114 voicelines.
         /// </summary>
         public static Event<VoiceLinesEventArgs> VoiceLines { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before SCP-3314 changes its dancing status.
+        /// </summary>
+        public static Event<DancingEventArgs> Dancing { get; set; } = new();
+
+        /// <summary>
+        /// Invoked before strangling a player.
+        /// </summary>
+        public static Event<StranglingEventArgs> Strangling { get; set; } = new();
 
         /// <summary>
         /// Called before diguising.
@@ -73,6 +87,12 @@ namespace Exiled.Events.Handlers
         public static void OnRevealed(RevealedEventArgs ev) => Revealed.InvokeSafely(ev);
 
         /// <summary>
+        /// Called after SCP-3114 slaps a player.
+        /// </summary>
+        /// <param name="ev">The <see cref="SlappedEventArgs" /> instance.</param>
+        public static void OnSlapped(SlappedEventArgs ev) => Slapped.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before revealing.
         /// </summary>
         /// <param name="ev">The <see cref="RevealingEventArgs" /> instance.</param>
@@ -83,5 +103,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="VoiceLinesEventArgs" /> instance.</param>
         public static void OnVoiceLines(VoiceLinesEventArgs ev) => VoiceLines.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-3314 changes its dancing status.
+        /// </summary>
+        /// <param name="ev">The <see cref="DancingEventArgs"/> instance.</param>
+        public static void OnDancing(DancingEventArgs ev) => Dancing.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before strangling a player.
+        /// </summary>
+        /// <param name="ev">The <see cref="StranglingEventArgs"/> instance.</param>
+        public static void OnStrangling(StranglingEventArgs ev) => Strangling.InvokeSafely(ev);
     }
 }

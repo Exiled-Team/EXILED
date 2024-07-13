@@ -7,7 +7,9 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using Exiled.API.Features.Core.Attributes;
     using PlayerRoles;
+    using UnityEngine;
 
     using NoneGameRole = PlayerRoles.NoneRole;
 
@@ -25,7 +27,17 @@ namespace Exiled.API.Features.Roles
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NoneRole"/> class.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
+        protected internal NoneRole(GameObject gameObject)
+            : base(gameObject)
+        {
+        }
+
         /// <inheritdoc/>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public override RoleTypeId Type { get; } = RoleTypeId.None;
     }
 }

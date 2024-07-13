@@ -7,7 +7,6 @@
 
 namespace Exiled.Loader
 {
-    using System;
     using System.IO;
     using System.Reflection;
 
@@ -29,6 +28,11 @@ namespace Exiled.Loader
         /// </summary>
         [PluginConfig]
         public static Config Config;
+
+        /// <summary>
+        /// The temporary Exiled Reboot state.
+        /// </summary>
+        public static bool TempReboot;
 #pragma warning restore SA1401
 
         /// <summary>

@@ -11,18 +11,14 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1402
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection.Emit;
 
     using API.Features;
 
     using Exiled.API.Features.Doors;
-    using Exiled.API.Features.Pools;
 
     using HarmonyLib;
 
     using Interactables.Interobjects.DoorUtils;
-
-    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="DoorVariant.RegisterRooms"/>.
@@ -40,7 +36,10 @@ namespace Exiled.Events.Patches.Generic
             Door door = Door.Create(__instance, rooms);
 
             foreach (Room room in rooms)
+            {
                 room.DoorsValue.Add(door);
+                room.NearestRoomsValue.AddRange(rooms.Where(r => r != room));
+            }
 
             if (door.Is(out CheckpointDoor checkpoint))
             {
