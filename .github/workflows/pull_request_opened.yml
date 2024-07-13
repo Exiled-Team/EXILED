@@ -64,8 +64,6 @@ jobs:
           PREFIX="[CustomModules]"
         elif [[ "$PR_LABELS" == *"Installer"* ]]; then
           PREFIX="[Installer]"
-        elif [[ "$PR_LABELS" == *"Localization"* ]]; then
-          PREFIX="[Localization]"
         elif [[ "$PR_LABELS" == *"GitHub_Actions"* ]]; then
           PREFIX="[GitHub]"
         fi
