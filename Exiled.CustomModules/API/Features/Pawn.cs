@@ -30,16 +30,13 @@ namespace Exiled.CustomModules.API.Features
     using UnityEngine;
 
     /// <summary>
-    /// Represents an in-game player by encapsulating a <see cref="ReferenceHub"/>, providing an extended feature set through the <see cref="Pawn"/> class.
+    /// <see cref="CustomModules"/> version of <see cref="Player"/> with additional features.
+    /// <para>Can be obtained by casting a <see cref="Player"/> object: <c>Pawn pawn = player.As<![CDATA[<Pawn>]]>()</c>.</para>
     /// <para>
-    /// The <see cref="Pawn"/> class enhances the functionality of the base <see cref="Player"/> class by providing additional features and capabilities related to <see cref="CustomModules"/>.
-    /// <br>This class is designed to be used seamlessly alongside existing methods that expect a <see cref="Player"/> as a parameter, allowing for compatibility with the existing codebase.</br>
-    /// <para>The use of nullable context is enabled to prevent users from inadvertently passing or interacting with <see langword="null"/> references.</para>
+    /// The <see cref="Pawn"/> class adds new functionality to the base <see cref="Player"/> class, while still being compatible with existing methods that expect a <see cref="Player"/> as a parameter,
+    /// allowing for compatibility with the existing codebase.
     /// </para>
-    /// <remarks>
-    /// Developers can leverage the enhanced functionality provided by the <see cref="Pawn"/> class while benefiting from the familiar interface of the <see cref="Player"/> class.
-    /// <br>It serves as a comprehensive representation of an in-game entity, encapsulating the associated <see cref="ReferenceHub"/> with an expanded set of features.</br>
-    /// </remarks>
+    /// <para>The use of nullable context is enabled to prevent users from inadvertently passing or interacting with <see langword="null"/> references.</para>
     /// </summary>
     [DefaultPlayerClass(enforceAuthority: false)]
     public class Pawn : Player
