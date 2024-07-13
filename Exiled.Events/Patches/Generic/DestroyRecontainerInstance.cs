@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Generic
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
 
     using HarmonyLib;
 
@@ -25,23 +25,6 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(Scp079Recontainer), nameof(Scp079Recontainer.OnDestroy))]
     internal class DestroyRecontainerInstance
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-
-            // Recontainer.Base = null;
-            newInstructions.InsertRange(
-                0,
-                new CodeInstruction[]
-                {
-                    new(OpCodes.Ldnull),
-                    new(OpCodes.Call, PropertySetter(typeof(Recontainer), nameof(Recontainer.Base))),
-                });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Pool.Return(newInstructions);
-        }
+        private static void Postfix() => Recontainer.Base = null;
     }
 }

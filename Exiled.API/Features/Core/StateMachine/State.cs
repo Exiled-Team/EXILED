@@ -14,7 +14,6 @@ namespace Exiled.API.Features.Core.StateMachine
 
     using Exiled.API.Features;
     using Exiled.API.Features.Core.Attributes;
-    using UnityEngine;
 
     /// <summary>
     /// The base class which handles in-context states.
@@ -223,7 +222,7 @@ namespace Exiled.API.Features.Core.StateMachine
         /// <inheritdoc/>
         public virtual void OnEnter(StateController stateController)
         {
-            if (stateController.CurrentState != this)
+            if (!Equals(stateController.CurrentState, this))
             {
                 throw new InvalidOperationException($"{nameof(State)}::{nameof(OnEnter)} - State mismatch: ({stateController.CurrentState})/({this})\n" +
                     $"Are you trying to invoke this method from outside the {nameof(StateController)} environment?");
@@ -236,7 +235,7 @@ namespace Exiled.API.Features.Core.StateMachine
         /// <inheritdoc/>
         public virtual void OnExit(StateController stateController)
         {
-            if (stateController.PreviousState != this)
+            if (!Equals(stateController.PreviousState, this))
             {
                 throw new InvalidOperationException($"{nameof(State)}::{nameof(OnExit)} - State mismatch: ({stateController.PreviousState})/({this})\n" +
                     $"Are you trying to invoke this method from outside the {nameof(StateController)} environment?");

@@ -10,13 +10,14 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Attributes;
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
-    using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.Subroutines;
     using PlayerStatsSystem;
-
     using UnityEngine;
 
     using Scp106GameRole = PlayerRoles.PlayableScps.Scp106.Scp106Role;
@@ -24,8 +25,17 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-106.
     /// </summary>
-    public class Scp106Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp106Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole, ISpawnableScp
     {
+        private readonly ConstProperty<float> vigorStalkCostStationary = new(Scp106StalkAbility.VigorStalkCostStationary, new[] { typeof(Scp106StalkAbility) });
+        private readonly ConstProperty<float> vigorStalkCostMoving = new(Scp106StalkAbility.VigorStalkCostMoving, new[] { typeof(Scp106StalkAbility) });
+        private readonly ConstProperty<float> vigorRegeneration = new(Scp106StalkAbility.VigorRegeneration, new[] { typeof(Scp106StalkAbility) });
+        private readonly ConstProperty<float> corrodingTime = new(Scp106Attack.CorrodingTime, new[] { typeof(Scp106Attack) });
+        private readonly ConstProperty<float> vigorCaptureReward = new(Scp106Attack.VigorCaptureReward, new[] { typeof(Scp106Attack) });
+        private readonly ConstProperty<float> cooldownReductionReward = new(Scp106Attack.CooldownReductionReward, new[] { typeof(Scp106Attack) });
+        private readonly ConstProperty<double> sinkholeCooldownDuration = new(Scp106SinkholeController.CooldownDuration, new[] { typeof(Scp106SinkholeController) });
+        private readonly ConstProperty<float> huntersAtlasCostPerMeter = new(Scp106HuntersAtlasAbility.CostPerMeter, new[] { typeof(Scp106HuntersAtlasAbility) });
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp106Role"/> class.
         /// </summary>
@@ -65,6 +75,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public override RoleTypeId Type { get; } = RoleTypeId.Scp106;
 
         /// <inheritdoc/>
@@ -108,11 +119,12 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp106MovementModule"/>.
         /// </summary>
-        public Scp106MovementModule MovementModule { get; }
+        public new Scp106MovementModule MovementModule { get; }
 
         /// <summary>
         /// Gets or sets SCP-106's Vigor Level.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public float Vigor
         {
             get => VigorAbility.VigorAmount;
@@ -122,6 +134,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-106 is currently submerged.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public bool IsSubmerged
         {
             get => Base.IsSubmerged;
@@ -131,41 +144,49 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 can activate teslas.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public bool CanActivateTesla => Base.CanActivateShock;
 
         /// <summary>
         /// Gets a value indicating whether if SCP-106 <see cref="Scp106StalkAbility"/> can be cleared.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public bool CanStopStalk => StalkAbility.CanBeCleared;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently slow down by a door.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public bool IsSlowdown => MovementModule._slowndownTarget is < 1;
 
         /// <summary>
         /// Gets a value indicating the current time of the sinkhole.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public float SinkholeCurrentTime => SinkholeController.ElapsedToggle;
 
         /// <summary>
         /// Gets a value indicating the normalized state of the sinkhole.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public float SinkholeNormalizedState => SinkholeController.NormalizedState;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently in the middle of an animation.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public bool IsDuringAnimation => SinkholeController.IsDuringAnimation;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 sinkhole is hidden.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public bool IsSinkholeHidden => SinkholeController.IsHidden;
 
         /// <summary>
         /// Gets or sets a value indicating whether the current sinkhole state.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public bool SinkholeState
         {
             get => SinkholeController.State;
@@ -175,6 +196,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the sinkhole target duration.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(Scp106Role))]
         public float SinkholeTargetDuration => SinkholeController.TargetDuration;
 
         /// <summary>
@@ -183,52 +205,83 @@ namespace Exiled.API.Features.Roles
         public float SinkholeSpeedMultiplier => SinkholeController.SpeedMultiplier;
 
         // TODO: ReAdd Setter but before making an propper way to overwrite NW constant only when the propperty has been used
-#pragma warning disable SA1623 // Property summary documentation should match accessors
-#pragma warning disable SA1202
+
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when being stationary.
         /// </summary>
-        internal float VigorStalkCostStationary { get; } = Scp106StalkAbility.VigorStalkCostStationary;
+        public float VigorStalkCostStationary
+        {
+            get => vigorStalkCostStationary;
+            set => vigorStalkCostStationary.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when moving.
         /// </summary>
-        internal float VigorStalkCostMoving { get; } = Scp106StalkAbility.VigorStalkCostMoving;
+        public float VigorStalkCostMoving
+        {
+            get => vigorStalkCostMoving;
+            set => vigorStalkCostMoving.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets how mush vigor will be regenerate while moving per seconds.
         /// </summary>
-        internal float VigorRegeneration { get; } = Scp106StalkAbility.VigorRegeneration;
+        public float VigorRegeneration
+        {
+            get => vigorRegeneration;
+            set => vigorRegeneration.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets the duration of Corroding effect.
         /// </summary>
-        internal float CorrodingTime { get; } = Scp106Attack.CorrodingTime;
+        public float CorrodingTime
+        {
+            get => corrodingTime;
+            set => corrodingTime.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets how mush vigor Scp106 will gain when being reward for having caught a player.
         /// </summary>
-        internal float VigorCaptureReward { get; } = Scp106Attack.VigorCaptureReward;
+        public float VigorCaptureReward
+        {
+            get => vigorCaptureReward;
+            set => vigorCaptureReward.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets how mush reduction cooldown Scp106 will gain when being reward for having caught a player.
         /// </summary>
-        internal float CooldownReductionReward { get; } = Scp106Attack.CooldownReductionReward;
+        public float CooldownReductionReward
+        {
+            get => cooldownReductionReward;
+            set => cooldownReductionReward.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets the cooldown duration of it's Sinkhole ability's.
         /// </summary>
-        internal float SinkholeCooldownDuration { get; } = Scp106SinkholeController.CooldownDuration;
+        public double SinkholeCooldownDuration
+        {
+            get => sinkholeCooldownDuration;
+            set => sinkholeCooldownDuration.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets how mush vigor it's ability Hunter Atlas will cost per meter.
         /// </summary>
-        internal float HuntersAtlasCostPerMeter { get; } = Scp106HuntersAtlasAbility.CostPerMeter;
-#pragma warning restore SA1623 // Property summary documentation should match accessors
+        public float HuntersAtlasCostPerMeter
+        {
+            get => huntersAtlasCostPerMeter;
+            set => huntersAtlasCostPerMeter.Value = value;
+        }
 
         /// <summary>
         /// Gets or sets how mush damage Scp106 will dealt when attacking a player.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public int AttackDamage
         {
             get => Attack._damage;
@@ -238,6 +291,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time in between player captures.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public float CaptureCooldown
         {
             get => Attack._hitCooldown;
@@ -251,6 +305,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the Sinkhole cooldown.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public float RemainingSinkholeCooldown
         {
             get => SinkholeController.Cooldown.Remaining;
@@ -264,6 +319,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-106 will enter his stalking mode.
         /// </summary>
+        [EProperty(category: nameof(Scp106Role))]
         public bool IsStalking
         {
             get => StalkAbility.IsActive;
@@ -302,15 +358,16 @@ namespace Exiled.API.Features.Roles
         /// Send a player to the pocket dimension.
         /// </summary>
         /// <param name="player">The <see cref="Player"/>to send.</param>
-        public void CapturePlayer(Player player) // Convert to bool.
+        /// <returns>If the player has been capture in PocketDimension.</returns>
+        public bool CapturePlayer(Player player)
         {
             if (player is null)
-                return;
+                return false;
             Attack._targetHub = player.ReferenceHub;
             DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, AttackDamage, DeathTranslations.PocketDecay);
 
             if (!Attack._targetHub.playerStats.DealDamage(handler))
-                return;
+                return false;
 
             Attack.SendCooldown(Attack._hitCooldown);
             Vigor += VigorCaptureReward;
@@ -318,6 +375,7 @@ namespace Exiled.API.Features.Roles
             Hitmarker.SendHitmarkerDirectly(Attack.Owner, 1f);
 
             player.EnableEffect(EffectType.PocketCorroding);
+            return true;
         }
 
         /// <summary>
