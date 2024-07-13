@@ -56,7 +56,7 @@ Se você optar por usar o instalador, se executado corretamente, ele cuidará de
       Pressione Win + R e digite `%appdata%`
 
 ### Instalando plug-ins
-É isso, o EXILED agora deve estar instalado e ativo na próxima vez que você inicializar seu servidor. Observe que o EXILED sozinho não fará quase nada, portanto, certifique-se de obter novos plug-ins no **[nosso servidor do Discord](https://discord.gg/PyUkWTg)**
+É isso, o EXILED agora deve estar instalado e ativo na próxima vez que você inicializar seu servidor. Observe que o EXILED sozinho não fará quase nada, portanto, certifique-se de obter novos plug-ins no **[nosso servidor do Discord](https://discord.gg/exiledreboot)**
 - Para instalar um plug-in, basta:
   - Baixar um plug-in da [página de lançamentos *deles*](https://i.imgur.com/u34wgPD.jpg) (**DEVE ser um `.dll`!**)
   - Mova-o para: ``C:\Users\%NomeDoUsuário%\AppData\Roaming\EXILED\Plugins`` (mova-se para cá pressionando Win + R e, em seguida, escrevendo `%appdata%`)
@@ -80,7 +80,7 @@ Se você optar por usar o instalador, se executado corretamente, ele cuidará de
   - Mova a pasta **`SCP Secret Laboratory`** para **``~/.config``**. *Nota: Esta pasta precisa ir ao diretório ``~/.config``, e ***NÃO*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Instalando plug-ins
-É isso, o EXILED agora deve estar instalado e ativo na próxima vez que você inicializar seu servidor. Observe que o EXILED sozinho não fará quase nada, portanto, certifique-se de obter novos plug-ins no **[nosso servidor do Discord](https://discord.gg/PyUkWTg)**
+É isso, o EXILED agora deve estar instalado e ativo na próxima vez que você inicializar seu servidor. Observe que o EXILED sozinho não fará quase nada, portanto, certifique-se de obter novos plug-ins no **[nosso servidor do Discord](https://discord.gg/exiledreboot)**
 - Para instalar um plug-in, basta:
   - Baixar um plug-in da [página de lançamento *deles*](https://i.imgur.com/u34wgPD.jpg) (**DEVE ser um `.dll`!**)
   - Mova-o para: ``~/.config/EXILED/Plugins`` (se você utiliza SSH como root, então procure pela `.config` correta, que estará dentro de `/home/(Usuário do Servidor de SCP)`)
