@@ -111,6 +111,9 @@ namespace Exiled.Loader
                 if (plugin is null)
                     continue;
 
+                if (!LoaderPlugin.Config.Reboot && plugin.Name != "Exiled.Events")
+                    continue;
+
                 AssemblyInformationalVersionAttribute attribute = plugin.Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
 
                 Log.Info($"Loaded plugin {plugin.Name}@{(plugin.Version is not null ? $"{plugin.Version.Major}.{plugin.Version.Minor}.{plugin.Version.Build}" : attribute is not null ? attribute.InformationalVersion : string.Empty)}");
@@ -385,6 +388,8 @@ namespace Exiled.Loader
 
                 thread.Start();
             }
+
+            ServerConsole.AddLog("Exiled support has ended. For updates and new releases, join us at discord.gg/exiledreboot!", ConsoleColor.DarkRed);
 
             if (!LoaderPlugin.Config.ShouldLoadOutdatedExiled &&
                 !GameCore.Version.CompatibilityCheck(
