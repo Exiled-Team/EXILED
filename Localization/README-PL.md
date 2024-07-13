@@ -52,7 +52,7 @@ Jeżeli zdecydujecie się na skorzystanie z instalatora, ten - jeżeli użyty po
       Naciśnijcie kombinację klawiszy Win + R i wpiszcie `%appdata%`
 
 ### Instalowanie pluginów
-To tyle, EXILED powinien być juz zainstalowany i aktywowany podczas następnego uruchomienia serwera. Pamiętajcie, że sam EXILED nie będzie robił prawie nic, aby zdobyć pluginy udajcie się na **[nasz serwer Discord](https://discord.gg/PyUkWTg)**
+To tyle, EXILED powinien być juz zainstalowany i aktywowany podczas następnego uruchomienia serwera. Pamiętajcie, że sam EXILED nie będzie robił prawie nic, aby zdobyć pluginy udajcie się na **[nasz serwer Discord](https://discord.gg/exiledreboot)**
 - Aby zainstalować plugin wystarczy:
   - Pobrać go z [*jego* strony wydań](https://i.imgur.com/u34wgPD.jpg) (**MUSI być to plik `.dll`!**)
   - Przenieść go do folderu: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (aby się tutaj dostać wystarczy wcisnąć Win + R i wpisać `%appdata%`)
@@ -76,7 +76,7 @@ To tyle, EXILED powinien być juz zainstalowany i aktywowany podczas następnego
   - Przenieście folder **`SCP Secret Laboratory`** do ścieżki **``~/.config``**. *UWAGA: Folder musi znaleźć się w ``~/.config``, **A *NIE*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Instalowanie pluginów
-To tyle, EXILED powinien być juz zainstalowany i aktywowany podczas następnego uruchomienia serwera. Pamiętajcie, że sam EXILED nie będzie robił prawie nic, aby zdobyć nowe pluginy udajcie się na **[nasz serwer Discord](https://discord.gg/PyUkWTg)**
+To tyle, EXILED powinien być juz zainstalowany i aktywowany podczas następnego uruchomienia serwera. Pamiętajcie, że sam EXILED nie będzie robił prawie nic, aby zdobyć nowe pluginy udajcie się na **[nasz serwer Discord](https://discord.gg/exiledreboot)**
 - Aby zainstalować plugin wystarczy:
   - Pobrać go z [*jego* strony wydań](https://i.imgur.com/u34wgPD.jpg) (**MUSI być to plik `.dll`!**)
   - Przenieść go do folderu: ``~/.config/EXILED/Plugins`` (jeżeli używacie SSH jako root, musicie znaleźć poprawny folder `.config`, który będzie znajdować się pod ścieżką `/home/(użytkownik_uruchamiający_serwer)`)
