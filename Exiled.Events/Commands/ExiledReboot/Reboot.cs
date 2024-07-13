@@ -40,8 +40,6 @@ namespace Exiled.Events.Commands.ExiledReboot
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            LoaderPlugin.TempReboot = true;
-            Loader.ReloadPlugins();
             response = "Exiled Reboot has been enabled. Logs will be suppressed until the next round. To permanently disable them, set the 'Reboot' config to true. Join our new Discord at discord.gg/exiledreboot for updates.";
             return true;
         }

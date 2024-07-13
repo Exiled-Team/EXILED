@@ -15,7 +15,7 @@
 
   <PropertyGroup>
     <!-- This is the global version and is used for all projects that don't have a version -->
-    <Version Condition="$(Version) == ''">8.9.7</Version>
+    <Version Condition="$(Version) == ''">8.9.8</Version>
     <!-- Enables public beta warning via the PUBLIC_BETA constant -->
     <PublicBeta>false</PublicBeta>
 
@@ -27,7 +27,7 @@
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/Exiled-Team/EXILED</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Exiled-Team/EXILED</PackageProjectUrl>
-    <PackageLicenseExpression>CC-BY-SA-3.0</PackageLicenseExpression>
+    <PackageLicenseExpression>AGPL v3</PackageLicenseExpression>
 
     <DefineConstants Condition="$(PublicBeta) == 'true'">$(DefineConstants);PUBLIC_BETA</DefineConstants>
   </PropertyGroup>
