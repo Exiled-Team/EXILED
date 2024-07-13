@@ -83,7 +83,7 @@ namespace Exiled.API.Features
         public static DateTime NextTeamTime => DateTime.UtcNow.AddSeconds(TimeUntilSpawnWave.TotalSeconds);
 
         /// <summary>
-        /// Gets a value indicating whether or not a team is currently being spawned or the animations are playing for a team.
+        /// Gets a value indicating whether a team is currently being spawned or the animations are playing for a team.
         /// </summary>
         public static bool IsSpawning => RespawnManager.Singleton._curSequence is RespawnManager.RespawnSequencePhase.PlayingEntryAnimations or RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
 
@@ -108,7 +108,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not spawn protection is enabled.
+        /// Gets or sets a value indicating whether spawn protection is enabled.
         /// </summary>
         public static bool ProtectionEnabled
         {
@@ -126,7 +126,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not spawn protected players can shoot.
+        /// Gets or sets a value indicating whether spawn protected players can shoot.
         /// </summary>
         public static bool ProtectedCanShoot
         {
@@ -203,7 +203,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Summons the <see cref="Side.ChaosInsurgency"/> van.
         /// </summary>
-        /// <param name="playMusic">Whether or not to play the Chaos Insurgency spawn music.</param>
+        /// <param name="playMusic">Whether to play the Chaos Insurgency spawn music.</param>
         public static void SummonChaosInsurgencyVan(bool playMusic = true)
         {
             PlayEffects(playMusic ? new[]
@@ -242,7 +242,7 @@ namespace Exiled.API.Features
         /// Forces a spawn of the given <see cref="SpawnableTeamType"/>.
         /// </summary>
         /// <param name="team">The <see cref="SpawnableTeamType"/> to spawn.</param>
-        /// <param name="playEffects">Whether or not effects will be played with the spawn.</param>
+        /// <param name="playEffects">Whether effects will be played with the spawn.</param>
         public static void ForceWave(SpawnableTeamType team, bool playEffects = false)
         {
             if (playEffects)

@@ -177,7 +177,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the lights in this room are currently off.
+        /// Gets or sets a value indicating whether the lights in this room are currently off.
         /// </summary>
         public bool AreLightsOff
         {

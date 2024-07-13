@@ -105,7 +105,7 @@ namespace Exiled.API.Features.Roles
         public Scp049SenseAbility SenseAbility { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-049 is currently reviving a player.
+        /// Gets a value indicating whether SCP-049 is currently reviving a player.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp049Role))]
         public bool IsRecalling => ResurrectAbility.IsInProgress;

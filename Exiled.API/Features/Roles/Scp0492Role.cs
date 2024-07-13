@@ -108,7 +108,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-049-2 is currently pursuing a target (Bloodlust ability).
+        /// Gets a value indicating whether SCP-049-2 is currently pursuing a target (Bloodlust ability).
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp0492Role))]
         public bool BloodlustActive => BloodlustAbility.LookingAtTarget;

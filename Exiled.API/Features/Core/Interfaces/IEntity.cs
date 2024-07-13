@@ -254,7 +254,7 @@ namespace Exiled.API.Features.Core.Interfaces
         /// Checks if the <see cref="IEntity"/> has an active component.
         /// </summary>
         /// <typeparam name="T">The <see cref="EActor"/> to look for.</typeparam>
-        /// <param name="depthInheritance">A value indicating whether or not subclasses should be considered.</param>
+        /// <param name="depthInheritance">A value indicating whether subclasses should be considered.</param>
         /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
         public abstract bool HasComponent<T>(bool depthInheritance = false);
 
@@ -262,7 +262,7 @@ namespace Exiled.API.Features.Core.Interfaces
         /// Checks if the <see cref="IEntity"/> has an active component.
         /// </summary>
         /// <param name="type">The <see cref="EActor"/> to look for.</param>
-        /// <param name="depthInheritance">A value indicating whether or not subclasses should be considered.</param>
+        /// <param name="depthInheritance">A value indicating whether subclasses should be considered.</param>
         /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
         public abstract bool HasComponent(Type type, bool depthInheritance = false);
     }

@@ -134,7 +134,7 @@ namespace Exiled.API.Features.Roles
         public Scp096RageState RageState => Base.StateController.RageState;
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-096 can receive targets.
+        /// Gets a value indicating whether SCP-096 can receive targets.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp096Role))]
         public bool CanReceiveTargets => RageCycleAbility._targetsTracker.CanReceiveTargets;

@@ -42,7 +42,7 @@ namespace Exiled.API.Features
         /// <param name="duration">The duration of the effect, in seconds.</param>
         /// <param name="intensity">The intensity of the effect.</param>
         /// <param name="addDurationIfActive">Whether the effect will add duration onto the effect if already active or not.</param>
-        /// <param name="isEnabled">Whether or not the effect should be enabled.</param>
+        /// <param name="isEnabled">Whether the effect should be enabled.</param>
         public Effect(EffectType type, float duration, byte intensity = 1, bool addDurationIfActive = false, bool isEnabled = true)
         {
             Type = type;

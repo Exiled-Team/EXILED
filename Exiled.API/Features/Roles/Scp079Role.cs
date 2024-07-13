@@ -320,7 +320,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-079 can transmit its voice to a speaker.
+        /// Gets a value indicating whether SCP-079 can transmit its voice to a speaker.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp079Role))]
         public bool CanTransmit => SpeakerAbility.CanTransmit;

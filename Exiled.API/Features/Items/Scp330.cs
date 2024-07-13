@@ -162,7 +162,7 @@ namespace Exiled.API.Features.Items
         /// Removes a specific candy from the bag.
         /// </summary>
         /// <param name="type">The <see cref="CandyKindID"/> to be removed.</param>
-        /// <param name="removeAll">Whether or not to only remove all matching candy. (If <see langword="true"/>, all candies of the given type are removed).</param>
+        /// <param name="removeAll">Whether to only remove all matching candy. (If <see langword="true"/>, all candies of the given type are removed).</param>
         /// <returns>The total amount of candies that were removed from the bag.</returns>
         public int RemoveCandy(CandyKindID type, bool removeAll = false)
         {

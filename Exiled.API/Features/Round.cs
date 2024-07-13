@@ -205,7 +205,7 @@ namespace Exiled.API.Features
         /// Restarts the round with custom settings.
         /// </summary>
         /// <param name="fastRestart">
-        /// Indicates whether or not it'll be a fast restart.
+        /// Indicates whether it'll be a fast restart.
         /// If it's a fast restart, then players won't be reconnected from
         /// the server; otherwise, they will.
         /// </param>
@@ -245,9 +245,9 @@ namespace Exiled.API.Features
         /// Forces the round to end, regardless of which factions are alive.
         /// </summary>
         /// <param name="forceEnd">
-        /// Indicates whether or not it'll force the restart with no check if it's locked.
+        /// Indicates whether it'll force the restart with no check if it's locked.
         /// </param>
-        /// <returns>A <see cref="bool"/> describing whether or not the round was successfully ended.</returns>
+        /// <returns>A <see cref="bool"/> describing whether the round was successfully ended.</returns>
         public static bool EndRound(bool forceEnd = false)
         {
             if (RoundSummary.singleton.KeepRoundOnOne && Player.Dictionary.Count < 2 && !forceEnd)

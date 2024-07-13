@@ -378,7 +378,7 @@ namespace Exiled.API.Features
         public void ChangeLock(DoorLockType lockReason) => Doors.ForEach(x => x.ChangeLock(lockReason));
 
         /// <summary>
-        /// Returns whether or not the provided <see cref="Vector3">position</see> is inside the lift.
+        /// Returns whether the provided <see cref="Vector3">position</see> is inside the lift.
         /// </summary>
         /// <param name="point">The position.</param>
         /// <returns><see langword="true"/> if the point is inside the elevator. Otherwise, <see langword="false"/>.</returns>

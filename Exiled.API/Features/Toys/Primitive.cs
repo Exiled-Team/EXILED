@@ -99,8 +99,8 @@ namespace Exiled.API.Features.Toys
         /// <param name="position">The position.</param>
         /// <param name="rotation">The rotation.</param>
         /// <param name="scale">The size of the primitive.</param>
-        /// <param name="spawn">Whether or not the primitive should be spawned.</param>
-        /// <param name="isStatic">Whether or not the primitive is static.</param>
+        /// <param name="spawn">Whether the primitive should be spawned.</param>
+        /// <param name="isStatic">Whether the primitive is static.</param>
         /// <returns>The newly created <see cref="Primitive"/>.</returns>
         public static Primitive Create(PrimitiveType primitiveType, PrimitiveFlags flags = default, Color? color = null, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool spawn = true, bool isStatic = false)
             => Create(new(primitiveType, color, position, flags, rotation, scale, isStatic, spawn));

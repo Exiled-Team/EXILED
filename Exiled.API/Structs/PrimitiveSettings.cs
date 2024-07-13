@@ -25,8 +25,8 @@ namespace Exiled.API.Structs
         /// <param name="position">The position of the primitive.</param>
         /// <param name="rotation">The rotation of the primitive.</param>
         /// <param name="scale">The scale of the primitive.</param>
-        /// <param name="spawn">Whether or not the primitive should be spawned.</param>
-        /// <param name="isStatic">Whether or not the primitive should be static.</param>
+        /// <param name="spawn">Whether the primitive should be spawned.</param>
+        /// <param name="isStatic">Whether the primitive should be static.</param>
         public PrimitiveSettings(PrimitiveType primitiveType, Color? color, Vector3? position, PrimitiveFlags flags = PrimitiveFlags.Visible | PrimitiveFlags.Collidable, Quaternion? rotation = null, Vector3? scale = null, bool isStatic = false, bool spawn = true)
         {
             PrimitiveType = primitiveType;
@@ -86,12 +86,12 @@ namespace Exiled.API.Structs
         public Vector3 Scale { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the primitive should be spawned.
+        /// Gets or sets a value indicating whether the primitive should be spawned.
         /// </summary>
         public bool IsStatic { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the primitive should be spawned.
+        /// Gets or sets a value indicating whether the primitive should be spawned.
         /// </summary>
         public bool ShouldSpawn { get; set; }
     }

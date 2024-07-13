@@ -36,7 +36,7 @@ namespace Exiled.API.Features
         /// <param name="duration">The duration of the hint, in seconds.</param>
         /// <param name="parameters">The hint parameters.</param>
         /// <param name="effects">The hint effects.</param>
-        /// <param name="show">Whether or not the hint should be shown.</param>
+        /// <param name="show">Whether the hint should be shown.</param>
         public Hint(string content, float duration = 3, bool show = true, HintParameter[] parameters = null, HintEffect[] effects = null)
         {
             Content = content;

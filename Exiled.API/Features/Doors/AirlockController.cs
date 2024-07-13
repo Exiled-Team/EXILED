@@ -54,7 +54,7 @@ namespace Exiled.API.Features.Doors
         public Door DoorB => Door.Get(Base._doorB);
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not both subdoors are locked.
+        /// Gets or sets a value indicating whether both subdoors are locked.
         /// </summary>
         public bool DoorsLocked
         {

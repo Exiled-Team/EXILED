@@ -48,7 +48,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
+        /// Gets all <see cref="Window"/> instances.
         /// </summary>
         public static new IReadOnlyCollection<Window> List => BreakableWindowToWindow.Values;
 
@@ -84,12 +84,12 @@ namespace Exiled.API.Features
         public ZoneType Zone => Room.Zone;
 
         /// <summary>
-        /// Gets a value indicating whether or not this window is breakable.
+        /// Gets a value indicating whether this window is breakable.
         /// </summary>
         public bool IsBreakable => !Base.isBroken;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not this window is broken.
+        /// Gets or sets a value indicating whether this window is broken.
         /// </summary>
         public bool IsBroken
         {
@@ -107,7 +107,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not this window can be broken by SCP.
+        /// Gets or sets a value indicating whether this window can be broken by SCP.
         /// </summary>
         public bool DisableScpDamage
         {
@@ -116,7 +116,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not this window is broken.
+        /// Gets or sets a value indicating whether this window is broken.
         /// </summary>
         public BreakableWindow.BreakableWindowStatus SyncStatus
         {
@@ -154,7 +154,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="breakableWindow">The <see cref="BreakableWindow"/> instance.</param>
         /// <param name="window">A <see cref="Window"/> or <see langword="null"/> if not found.</param>
-        /// <returns>Whether or not a window was found.</returns>
+        /// <returns>Whether a window was found.</returns>
         public static bool TryGet(BreakableWindow breakableWindow, out Window window)
         {
             window = Get(breakableWindow);
@@ -166,7 +166,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="predicate">The condition to satisfy.</param>
         /// <param name="windows">A <see cref="IEnumerable{T}"/> of <see cref="Window"/> which contains elements that satisfy the condition.</param>
-        /// <returns>Whether or not at least one window was found.</returns>
+        /// <returns>Whether at least one window was found.</returns>
         public static bool TryGet(Func<Window, bool> predicate, out IEnumerable<Window> windows)
         {
             windows = Get(predicate);
@@ -189,7 +189,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="amount">The amount of damage to deal.</param>
         /// <param name="handler">The handler of damage.</param>
-        /// <returns>Whether or not the Window get Damage.</returns>
+        /// <returns>Whether the window got damaged.</returns>
         public bool Damage(float amount, DamageHandlerBase handler) => Base.Damage(amount, handler, Vector3.zero);
 
         /// <summary>

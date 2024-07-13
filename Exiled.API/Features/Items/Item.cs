@@ -139,43 +139,43 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not this item is ammunition.
+        /// Gets a value indicating whether this item is ammunition.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsAmmo => this is Ammo;
 
         /// <summary>
-        /// Gets a value indicating whether or not this item is armor.
+        /// Gets a value indicating whether this item is armor.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsArmor => this is Armor;
 
         /// <summary>
-        /// Gets a value indicating whether or not this item is a keycard.
+        /// Gets a value indicating whether this item is a keycard.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsKeycard => this is Keycard;
 
         /// <summary>
-        /// Gets a value indicating whether or not this item will be destroy when being used.
+        /// Gets a value indicating whether this item will be destroy when being used.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsConsumable => this is Consumable;
 
         /// <summary>
-        /// Gets a value indicating whether or not this item is a throwable item.
+        /// Gets a value indicating whether this item is a throwable item.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsThrowable => this is Throwable;
 
         /// <summary>
-        /// Gets a value indicating whether or not this item can be used by a player.
+        /// Gets a value indicating whether this item can be used by a player.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsUsable => this is Usable;
 
         /// <summary>
-        /// Gets a value indicating whether or not this item is a weapon.
+        /// Gets a value indicating whether this item is a weapon.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsWeapon => this is Firearm;

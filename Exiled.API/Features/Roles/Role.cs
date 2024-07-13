@@ -153,7 +153,7 @@ namespace Exiled.API.Features.Roles
         public TimeSpan ActiveTime => TimeSpan.FromSeconds(Base.ActiveTime);
 
         /// <summary>
-        /// Gets a value indicating whether or not this role represents a dead role.
+        /// Gets a value indicating whether this role represents a dead role.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Role))]
         public bool IsDead => Team is Team.Dead;

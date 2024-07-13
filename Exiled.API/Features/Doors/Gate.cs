@@ -41,7 +41,7 @@ namespace Exiled.API.Features.Doors
         public IEnumerable<Transform> PryPositions => Base.PryPositions;
 
         /// <summary>
-        /// Gets a value indicating whether or not the door is fully closed.
+        /// Gets a value indicating whether the door is fully closed.
         /// </summary>
         public override bool IsFullyClosed => base.IsFullyClosed && RemainingPryCooldown <= 0;
 
@@ -51,7 +51,7 @@ namespace Exiled.API.Features.Doors
         public override bool IsFullyOpen => base.IsFullyOpen || (Base is Timed173PryableDoor && ExactState is 0.5845918f);
 
         /// <summary>
-        /// Gets a value indicating whether or not the door is currently moving.
+        /// Gets a value indicating whether the door is currently moving.
         /// </summary>
         public override bool IsMoving => base.IsMoving || RemainingPryCooldown > 0;
 

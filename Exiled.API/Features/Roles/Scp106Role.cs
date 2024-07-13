@@ -132,7 +132,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-106 is currently submerged.
+        /// Gets or sets a value indicating whether SCP-106 is currently submerged.
         /// </summary>
         [EProperty(category: nameof(Scp106Role))]
         public bool IsSubmerged

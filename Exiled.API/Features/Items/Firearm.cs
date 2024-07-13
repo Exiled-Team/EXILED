@@ -189,7 +189,7 @@ namespace Exiled.API.Features.Items
         public bool CanSeeThroughDark => FlashlightEnabled || NightVisionEnabled;
 
         /// <summary>
-        /// Gets a value indicating whether or not the firearm is automatic.
+        /// Gets a value indicating whether the firearm is automatic.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Firearm))]
         public bool IsAutomatic => Base is AutomaticFirearm;

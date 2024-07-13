@@ -264,7 +264,7 @@ namespace Exiled.API.Features
         public Hint CurrentHint { get; internal set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is viewing a hint.
+        /// Gets a value indicating whether the player is viewing a hint.
         /// </summary>
         [EProperty(readOnly: true, category: HINTS_CATEGORY)]
         public bool HasHint => CurrentHint != null;
@@ -353,7 +353,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is verified.
+        /// Gets a value indicating whether the player is verified.
         /// </summary>
         /// <remarks>
         /// This is always <see langword="false"/> if <c>online_mode</c> is set to <see langword="false"/>.
@@ -361,12 +361,12 @@ namespace Exiled.API.Features
         public bool IsVerified { get; internal set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is a NPC.
+        /// Gets or sets a value indicating whether the player is a NPC.
         /// </summary>
         public bool IsNPC { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player has an active CustomName.
+        /// Gets a value indicating whether the player has an active CustomName.
         /// </summary>
         public bool HasCustomName => ReferenceHub.nicknameSync.HasCustomName;
 
@@ -476,7 +476,7 @@ namespace Exiled.API.Features
         public Dictionary<string, object> SessionVariables { get; } = DictionaryPool<string, object>.Pool.Get();
 
         /// <summary>
-        /// Gets a value indicating whether or not the player has Do Not Track (DNT) enabled. If this value is <see langword="true"/>, data about the player unrelated to server security shouldn't be stored.
+        /// Gets a value indicating whether the player has Do Not Track (DNT) enabled. If this value is <see langword="true"/>, data about the player unrelated to server security shouldn't be stored.
         /// </summary>
         public bool DoNotTrack => ReferenceHub.authManager.DoNotTrack;
 
@@ -486,14 +486,14 @@ namespace Exiled.API.Features
         public bool IsConnected => GameObject != null;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player has a reserved slot.
+        /// Gets a value indicating whether the player has a reserved slot.
         /// </summary>
         /// <seealso cref="GiveReservedSlot(bool)"/>
         /// <seealso cref="AddReservedSlot(string, bool)"/>
         public bool HasReservedSlot => ReservedSlot.HasReservedSlot(UserId, out _);
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is in whitelist.
+        /// Gets a value indicating whether the player is in whitelist.
         /// </summary>
         /// <remarks>It will always return <see langword="true"/> if a whitelist is disabled on the server.</remarks>
         /// <seealso cref="GrantWhitelist(bool)"/>
@@ -501,12 +501,12 @@ namespace Exiled.API.Features
         public bool IsWhitelisted => WhiteList.IsWhitelisted(UserId);
 
         /// <summary>
-        /// Gets a value indicating whether or not the player has Remote Admin access.
+        /// Gets a value indicating whether the player has Remote Admin access.
         /// </summary>
         public bool RemoteAdminAccess => ReferenceHub.serverRoles.RemoteAdmin;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player has Admin Chat access.
+        /// Gets a value indicating whether the player has Admin Chat access.
         /// </summary>
         public bool AdminChatAccess => ReferenceHub.serverRoles.AdminChatPerms;
 
@@ -516,7 +516,7 @@ namespace Exiled.API.Features
         public byte KickPower => ReferenceHub.serverRoles.KickPower;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player's overwatch is enabled.
+        /// Gets or sets a value indicating whether the player's overwatch is enabled.
         /// </summary>
         [EProperty(category: ROLES_CATEGORY)]
         public bool IsOverwatchEnabled
@@ -526,7 +526,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is allowed to enter noclip mode.
+        /// Gets or sets a value indicating whether the player is allowed to enter noclip mode.
         /// </summary>
         /// <remarks>For forcing the player into noclip mode, see <see cref="IsNoclipEnabled"/>.</remarks>
         /// <seealso cref="IsNoclipEnabled"/>

@@ -54,7 +54,7 @@ namespace Exiled.API.Features
         public static Transform Transform => GameIntercom._singleton.transform;
 
         /// <summary>
-        /// Gets a value indicating whether or not the intercom is currently being used.
+        /// Gets a value indicating whether the intercom is currently being used.
         /// </summary>
         public static bool InUse => State is IntercomState.InUse or IntercomState.Starting;
 
@@ -85,7 +85,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Plays the intercom's sound.
         /// </summary>
-        /// <param name="isStarting">Sets a value indicating whether or not the sound is the intercom's start speaking sound.</param>
+        /// <param name="isStarting">Whether the sound is the intercom's start or end sound.</param>
         public static void PlaySound(bool isStarting) => GameIntercom._singleton.RpcPlayClip(isStarting);
 
         /// <summary>

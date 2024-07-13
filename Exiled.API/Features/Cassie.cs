@@ -38,7 +38,7 @@ namespace Exiled.API.Features
         public static NineTailedFoxAnnouncer Announcer => NineTailedFoxAnnouncer.singleton;
 
         /// <summary>
-        /// Gets a value indicating whether or not C.A.S.S.I.E is currently announcing. Does not include decontamination or Alpha Warhead Messages.
+        /// Gets a value indicating whether the C.A.S.S.I.E is currently announcing. Does not include decontamination or Alpha Warhead Messages.
         /// </summary>
         public static bool IsSpeaking => Announcer.queue.Count != 0;
 
@@ -172,14 +172,14 @@ namespace Exiled.API.Features
         public static void Clear() => RespawnEffectsController.ClearQueue();
 
         /// <summary>
-        /// Gets a value indicating whether or not the given word is a valid C.A.S.S.I.E word.
+        /// Gets a value indicating whether the given word is a valid C.A.S.S.I.E word.
         /// </summary>
         /// <param name="word">The word to check.</param>
         /// <returns><see langword="true"/> if the word is valid; otherwise, <see langword="false"/>.</returns>
         public static bool IsValid(string word) => Announcer.voiceLines.Any(line => line.apiName.ToUpper() == word.ToUpper());
 
         /// <summary>
-        /// Gets a value indicating whether or not the given sentence is all valid C.A.S.S.I.E word.
+        /// Gets a value indicating whether the given sentence is all valid C.A.S.S.I.E word.
         /// </summary>
         /// <param name="sentence">The sentence to check.</param>
         /// <returns><see langword="true"/> if the sentence is valid; otherwise, <see langword="false"/>.</returns>
