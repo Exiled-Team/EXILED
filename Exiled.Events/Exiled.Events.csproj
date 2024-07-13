@@ -38,26 +38,6 @@
         <Reference Include="YamlDotNet" HintPath="$(EXILED_REFERENCES)\YamlDotNet.dll" Private="false" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="Patches\Events\Player\UsingConsumable.cs" />
-      <Compile Remove="Patches\Events\Player\ShowingHitMarker.cs" />
-      <Compile Remove="Patches\Events\Map\Scp244Spawning.cs" />
-      <Compile Remove="Patches\Events\Map\ElevatorMovingAndArrived.cs" />
-      <Compile Remove="EventArgs\Server\PreRespawningTeamEventArgs.cs" />
-      <Compile Remove="EventArgs\Server\DeployingHumanRoleEventArgs.cs" />
-      <Compile Remove="EventArgs\Scp173\AddingObserverEventArgs.cs" />
-      <Compile Remove="EventArgs\Scp079\LostSignalEventArgs.cs" />
-      <Compile Remove="EventArgs\Scp079\AddingScanTargetEventArgs.cs" />
-      <Compile Remove="EventArgs\Map\ElevatorMovingEventArgs.cs" />
-      <Compile Remove="EventArgs\Map\ElevatorArrivedEventArgs.cs" />
-      <Compile Remove="EventArgs\Map\DestroyingDoorEventArgs.cs" />
-      <Compile Remove="EventArgs\Map\DestroyedDoorEventArgs.cs" />
-      <Compile Remove="EventArgs\Map\DamagingDoorEventArgs.cs" />
-      <Compile Remove="Commands\PluginManager\Plugins.cs" />
-      <Compile Remove="Commands\ConfigValue\Set.cs" />
-      <Compile Remove="Commands\ConfigValue\Get.cs" />
-    </ItemGroup>
-
     <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
         <PostBuildEvent>if not "$(EXILED_DEV_REFERENCES)"=="" copy /y "$(OutputPath)$(AssemblyName).dll" "$(EXILED_DEV_REFERENCES)\Plugins\"</PostBuildEvent>
     </PropertyGroup>
