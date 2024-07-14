@@ -39,6 +39,7 @@ namespace Exiled.API.Features.Pickups
         internal Scp244Pickup(ItemType type)
             : base(type)
         {
+            Base = (Scp244DeployablePickup)((Pickup)this).Base;
         }
 
         /// <summary>

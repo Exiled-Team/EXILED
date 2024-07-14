@@ -197,7 +197,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                 if (!customEscape.IsEnabled)
                     continue;
 
-                if (customEscape.TryRegister(attribute))
+                if (customEscape.TryRegister(assembly, attribute))
                     customEscapes.Add(customEscape);
             }
 
@@ -353,9 +353,10 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Tries to register a <see cref="CustomEscape"/>.
         /// </summary>
+        /// <param name="assembly">The assembly to register <see cref="CustomEscape"/> from..</param>
         /// <param name="attribute">The specified <see cref="CustomEscapeAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomEscape"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(CustomEscapeAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, CustomEscapeAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {
@@ -377,7 +378,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
 
                 AllScenariosInternal.AddRange(Scenarios);
 
-                EObject.RegisterObjectType(BehaviourComponent, Name);
+                EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
                 Registered.Add(this);
 
                 TypeLookupTable.TryAdd(GetType(), this);

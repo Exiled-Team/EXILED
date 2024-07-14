@@ -36,6 +36,7 @@ namespace Exiled.API.Features.Pickups
         internal AmmoPickup(ItemType type)
             : base(type)
         {
+            Base = (BaseAmmo)((Pickup)this).Base;
         }
 
         /// <summary>

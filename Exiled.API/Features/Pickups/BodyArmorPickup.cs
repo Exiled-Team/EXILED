@@ -45,6 +45,7 @@ namespace Exiled.API.Features.Pickups
         internal BodyArmorPickup(ItemType type)
             : base(type)
         {
+            Base = (BaseBodyArmor)((Pickup)this).Base;
         }
 
         /// <summary>

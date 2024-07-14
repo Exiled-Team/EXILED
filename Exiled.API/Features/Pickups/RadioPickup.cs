@@ -35,6 +35,7 @@ namespace Exiled.API.Features.Pickups
         internal RadioPickup()
             : base(ItemType.Radio)
         {
+            Base = (BaseRadio)((Pickup)this).Base;
         }
 
         /// <summary>

@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.EventArgs.Server
 {
-    using API.Enums;
-
     using Interfaces;
 
     using PlayerRoles;
@@ -16,7 +14,7 @@ namespace Exiled.Events.EventArgs.Server
     /// <summary>
     /// Contains all information before setting up the environment for the assignment of human roles.
     /// </summary>
-    public class PreAssigningHumanRolesEventArgs : IExiledEvent, IDeniableEvent
+    public class PreAssigningHumanRolesEventArgs : IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PreAssigningHumanRolesEventArgs" /> class.

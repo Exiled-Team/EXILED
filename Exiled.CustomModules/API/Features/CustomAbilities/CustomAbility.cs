@@ -496,7 +496,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
                 if (!customAbility.IsEnabled)
                     continue;
 
-                if (customAbility.TryRegister(attribute))
+                if (customAbility.TryRegister(assembly, attribute))
                     customAbilities.Add(customAbility);
             }
 
@@ -587,9 +587,10 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <summary>
         /// Tries to register a <see cref="CustomAbility{T}"/>.
         /// </summary>
+        /// <param name="assembly">The assembly to register <see cref="CustomAbility{T}"/> from.</param>
         /// <param name="attribute">The specified <see cref="CustomAbilityAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomAbility{T}"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(CustomAbilityAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, CustomAbilityAttribute attribute = null)
         {
             if (!UnorderedRegistered.Contains(this))
             {
@@ -604,7 +605,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
                     return false;
                 }
 
-                EObject.RegisterObjectType(BehaviourComponent, Name);
+                EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
                 UnorderedRegistered.Add(this);
 
                 TypeLookupTable.TryAdd(GetType(), this);

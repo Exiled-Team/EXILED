@@ -31,7 +31,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the grenade should explode on collision.
+        /// Gets or sets a value indicating whether the grenade should explode immediately when contacting any surface.
         /// </summary>
         public virtual bool ExplodeOnCollision { get; set; }
 
