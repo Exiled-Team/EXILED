@@ -27,7 +27,7 @@
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/Exiled-Team/EXILED</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Exiled-Team/EXILED</PackageProjectUrl>
-    <PackageLicenseExpression>AGPL v3</PackageLicenseExpression>
+    <PackageLicenseExpression>CC-BY-SA 3.0</PackageLicenseExpression>
 
     <DefineConstants Condition="$(PublicBeta) == 'true'">$(DefineConstants);PUBLIC_BETA</DefineConstants>
   </PropertyGroup>
