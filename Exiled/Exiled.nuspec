@@ -5,7 +5,7 @@
     <id>EXILED</id>
     <title>EXILED</title>
     <version>$version$</version>
-    <authors>The Exiled Team</authors>
+    <authors>Exiled Team</authors>
     <owners>Exiled Team</owners>
     <copyright>Copyright © Exiled Team 2020 - $year$</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -46,9 +46,6 @@
     <file src="..\bin\Release\Exiled.CustomModules.dll" target="lib\net48" />
     <file src="..\bin\Release\Exiled.CustomModules.xml" target="lib\net48" />
     
-    <!-- README -->
-    <file src="..\readme.md" target="readme.md" />
-
     <!-- Icon -->
     <file src="..\assets\Exiled_Icon.jpg" target="images" />
   </files>
