@@ -46,6 +46,9 @@
     <file src="..\bin\Release\Exiled.CustomModules.dll" target="lib\net48" />
     <file src="..\bin\Release\Exiled.CustomModules.xml" target="lib\net48" />
     
+    <!-- README -->
+    <file src="..\README.md" target="README.md" />
+
     <!-- Icon -->
     <file src="..\assets\Exiled_Icon.jpg" target="images" />
   </files>
