@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs.Warhead
         /// Initializes a new instance of the <see cref="StartingEventArgs" /> class.
         /// </summary>
         /// <param name="player">The player who's going to start the warhead.</param>
-        /// <param name="isAuto">Indicating whether or not the nuke was set off automatically.</param>
+        /// <param name="isAuto">Indicating whether the nuke was set off automatically.</param>
         /// <param name="isAllowed">Indicating whether the event can be executed or not.</param>
         public StartingEventArgs(Player player, bool isAuto, bool isAllowed = true)
             : base(player, isAllowed)

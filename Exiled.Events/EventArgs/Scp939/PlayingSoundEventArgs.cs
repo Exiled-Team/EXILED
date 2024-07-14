@@ -27,7 +27,7 @@ namespace Exiled.Events.EventArgs.Scp939
         /// The sound that is being played.
         /// </param>
         /// <param name="isReady">
-        /// Whether or not SCP-939's environmental mimicry cooldown is ready.
+        /// Whether SCP-939's environmental mimicry cooldown is ready.
         /// </param>
         /// <param name="cooldown">
         /// The cooldown of the environmental mimicry.

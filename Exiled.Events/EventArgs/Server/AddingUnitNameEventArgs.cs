@@ -20,7 +20,7 @@ namespace Exiled.Events.EventArgs.Server
         /// Initializes a new instance of the <see cref="AddingUnitNameEventArgs"/> class.
         /// </summary>
         /// <param name="unitNamingRule">The generated unit name.</param>
-        /// <param name="isAllowed">The value indicating whether or not the unit name can be added.</param>
+        /// <param name="isAllowed">The value indicating whether the unit name can be added.</param>
         public AddingUnitNameEventArgs(UnitNamingRule unitNamingRule, bool isAllowed = true)
         {
             UnitNamingRule = unitNamingRule;

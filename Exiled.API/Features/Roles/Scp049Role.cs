@@ -390,31 +390,31 @@ namespace Exiled.API.Features.Roles
         public int GetResurrectionCount(Player player) => player is not null ? Scp049ResurrectAbility.GetResurrectionsNumber(player.ReferenceHub) : 0;
 
         /// <summary>
-        /// Returns a <see langword="bool"/> indicating whether or not the ragdoll can be resurrected by SCP-049.
+        /// Returns a <see langword="bool"/> indicating whether the ragdoll can be resurrected by SCP-049.
         /// </summary>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if the body can be revived; otherwise, <see langword="false"/>.</returns>
         public bool CanResurrect(BasicRagdoll ragdoll) => ragdoll != null && ResurrectAbility.CheckRagdoll(ragdoll);
 
         /// <summary>
-        /// Returns a <see langword="bool"/> indicating whether or not the ragdoll can be resurrected by SCP-049.
+        /// Returns a <see langword="bool"/> indicating whether the ragdoll can be resurrected by SCP-049.
         /// </summary>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if the body can be revived; otherwise, <see langword="false"/>.</returns>
         public bool CanResurrect(Ragdoll ragdoll) => ragdoll is not null && ResurrectAbility.CheckRagdoll(ragdoll.Base);
 
         /// <summary>
-        /// Returns a <see langword="bool"/> indicating whether or not SCP-049 is close enough to a ragdoll to revive it.
+        /// Returns a <see langword="bool"/> indicating whether SCP-049 is close enough to a ragdoll to revive it.
         /// </summary>
-        /// <remarks>This method only returns whether or not SCP-049 is close enough to the body to revive it; the body may have expired. Make sure to check <see cref="CanResurrect(BasicRagdoll)"/> to ensure the body can be revived.</remarks>
+        /// <remarks>This method only returns whether SCP-049 is close enough to the body to revive it; the body may have expired. Make sure to check <see cref="CanResurrect(BasicRagdoll)"/> to ensure the body can be revived.</remarks>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to revive the body; otherwise, <see langword="false"/>.</returns>
         public bool IsInRecallRange(BasicRagdoll ragdoll) => ragdoll != null && ResurrectAbility.IsCloseEnough(Owner.Position, ragdoll.transform.position);
 
         /// <summary>
-        /// Returns a <see langword="bool"/> indicating whether or not SCP-049 is close enough to a ragdoll to revive it.
+        /// Returns a <see langword="bool"/> indicating whether SCP-049 is close enough to a ragdoll to revive it.
         /// </summary>
-        /// <remarks>This method only returns whether or not SCP-049 is close enough to the body to revive it; the body may have expired. Make sure to check <see cref="CanResurrect(Ragdoll)"/> to ensure the body can be revived.</remarks>
+        /// <remarks>This method only returns whether SCP-049 is close enough to the body to revive it; the body may have expired. Make sure to check <see cref="CanResurrect(Ragdoll)"/> to ensure the body can be revived.</remarks>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to revive the body; otherwise, <see langword="false"/>.</returns>
         public bool IsInRecallRange(Ragdoll ragdoll) => ragdoll is not null && IsInRecallRange(ragdoll.Base);

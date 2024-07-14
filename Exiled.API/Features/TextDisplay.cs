@@ -36,7 +36,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="content">The content of the text display.</param>
         /// <param name="duration">The duration of the text display, in seconds.</param>
-        /// <param name="canBeDisplayed">Whether or not the text display should be displayed.</param>
+        /// <param name="canBeDisplayed">Whether the text display should be displayed.</param>
         /// <param name="channel">The text channel to be used to display the content.</param>
         public TextDisplay(string content, ushort duration = 10, bool canBeDisplayed = true, TextChannelType channel = TextChannelType.None)
         {

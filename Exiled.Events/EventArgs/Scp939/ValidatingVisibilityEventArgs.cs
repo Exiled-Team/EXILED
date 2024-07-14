@@ -26,7 +26,7 @@ namespace Exiled.Events.EventArgs.Scp939
         ///     The target being shown to SCP-939.
         /// </param>
         /// <param name="isAllowed">
-        ///     Whether or not SCP-939 is allowed to view the player.
+        ///     Whether SCP-939 is allowed to view the player.
         /// </param>
         public ValidatingVisibilityEventArgs(ReferenceHub player, ReferenceHub target, bool isAllowed)
         {

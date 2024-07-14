@@ -23,10 +23,10 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="state">
-        /// Whether or not SCP-939 is attempting to place an amnestic cloud.
+        /// Whether SCP-939 is attempting to place an amnestic cloud.
         /// </param>
         /// <param name="isReady">
-        /// Whether or not the cooldown is ready.
+        /// Whether the cooldown is ready.
         /// </param>
         /// <param name="cooldown">
         /// SCP-939's amnestic cloud cooldown.

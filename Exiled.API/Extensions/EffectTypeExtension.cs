@@ -95,7 +95,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/> enum.</param>
         /// <param name="type">The type found with the corresponding EffecType.</param>
-        /// <returns>Whether or not the effectType has been found.</returns>
+        /// <returns>Whether the effectType has been found.</returns>
         public static bool TryGetType(this EffectType effect, out Type type)
             => EffectTypeToType.TryGetValue(effect, out type);
 
@@ -112,7 +112,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="statusEffectBase">The <see cref="StatusEffectBase"/> enum.</param>
         /// <param name="effect">The effect found.</param>
-        /// <returns>Whether or not the effect has been found.</returns>
+        /// <returns>Whether the effect has been found.</returns>
         public static bool TryGetEffectType(this StatusEffectBase statusEffectBase, out EffectType effect)
         {
             if (statusEffectBase == null || !TypeToEffectType.TryGetValue(statusEffectBase.GetType(), out effect))
@@ -132,51 +132,51 @@ namespace Exiled.API.Extensions
         public static void SetFogType(this FogControl fogControl, FogType fogType) => fogControl.Intensity = (byte)(fogType + 1);
 
         /// <summary>
-        /// Returns whether or not the provided <paramref name="effect"/> drains health over time.
+        /// Returns whether the provided <paramref name="effect"/> drains health over time.
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
-        /// <returns>Whether or not the effect drains health over time.</returns>
+        /// <returns>Whether the effect drains health over time.</returns>
         /// <seealso cref="IsHealing(EffectType)"/>
         public static bool IsHarmful(this EffectType effect) => effect is EffectType.Asphyxiated or EffectType.Bleeding
             or EffectType.Corroding or EffectType.Decontaminating or EffectType.Hemorrhage or EffectType.Hypothermia
             or EffectType.Poisoned or EffectType.Scp207 or EffectType.SeveredHands or EffectType.Strangled;
 
         /// <summary>
-        /// Returns whether or not the provided <paramref name="effect"/> heals a player.
+        /// Returns whether the provided <paramref name="effect"/> heals a player.
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
-        /// <returns>Whether or not the effect heals.</returns>
+        /// <returns>Whether the effect heals.</returns>
         /// <seealso cref="IsHarmful(EffectType)"/>
         public static bool IsHealing(this EffectType effect) => effect.TryGetType(out Type type) && typeof(IHealablePlayerEffect).IsAssignableFrom(type);
 
         /// <summary>
-        /// Returns whether or not the provided <paramref name="effect"/> is a negative effect.
+        /// Returns whether the provided <paramref name="effect"/> is a negative effect.
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
-        /// <returns>Whether or not the effect is a negative effect.</returns>
+        /// <returns>Whether the effect is a negative effect.</returns>
         /// <seealso cref="IsHarmful(EffectType)"/>
         public static bool IsNegative(this EffectType effect) => IsHarmful(effect) || GetEffectBase(effect)?.Classification is StatusEffectBase.EffectClassification.Negative;
 
         /// <summary>
-        /// Returns whether or not the provided <paramref name="effect"/> is a positive effect.
+        /// Returns whether the provided <paramref name="effect"/> is a positive effect.
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
-        /// <returns>Whether or not the effect is a positive effect.</returns>
+        /// <returns>Whether the effect is a positive effect.</returns>
         /// <seealso cref="IsHealing(EffectType)"/>
         public static bool IsPositive(this EffectType effect) => GetEffectBase(effect)?.Classification == StatusEffectBase.EffectClassification.Positive;
 
         /// <summary>
-        /// Returns whether or not the provided <paramref name="effect"/> affects the player's movement speed.
+        /// Returns whether the provided <paramref name="effect"/> affects the player's movement speed.
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
-        /// <returns>Whether or not the effect modifies the player's movement speed.</returns>
+        /// <returns>Whether the effect modifies the player's movement speed.</returns>
         public static bool IsMovement(this EffectType effect) => effect.TryGetType(out Type type) && typeof(IMovementSpeedModifier).IsAssignableFrom(type);
 
         /// <summary>
-        /// Returns whether or not the provided <paramref name="effect"/> is displayed to spectators as text.
+        /// Returns whether the provided <paramref name="effect"/> is displayed to spectators as text.
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
-        /// <returns>Whether or not the effect is displayed to spectators as text.</returns>
+        /// <returns>Whether the effect is displayed to spectators as text.</returns>
         public static bool IsDisplayed(this EffectType effect) => effect.TryGetType(out Type type) && typeof(ISpectatorDataPlayerEffect).IsAssignableFrom(type);
 
         /// <summary>

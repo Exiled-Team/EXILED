@@ -254,7 +254,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Places a Tantrum (SCP-173's ability) under the player.
         /// </summary>
-        /// <param name="failIfObserved">Whether or not to place the tantrum if SCP-173 is currently being viewed.</param>
+        /// <param name="failIfObserved">Whether to place the tantrum if SCP-173 is currently being viewed.</param>
         /// <param name="cooldown">The cooldown until SCP-173 can place a tantrum again. Set to <c>0</c> to not affect the cooldown.</param>
         /// <returns>The <see cref="TantrumHazard"/> instance, or <see langword="null"/> if it cannot be placed.</returns>
         public TantrumHazard PlaceTantrum(bool failIfObserved = false, float cooldown = 0)

@@ -76,7 +76,7 @@ namespace Exiled.Events.EventArgs.Scp079
 
         /// <summary>
         /// Gets or sets a value indicating whether SCP-079 can teleport.
-        /// Defaults to a <see cref="bool" /> describing whether or not SCP-079 has enough auxiliary power to teleport.
+        /// Defaults to a <see cref="bool" /> describing whether SCP-079 has enough auxiliary power to teleport.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

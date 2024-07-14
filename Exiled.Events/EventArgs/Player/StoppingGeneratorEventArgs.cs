@@ -21,7 +21,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         /// <param name="player">The player who's flipping the switch.</param>
         /// <param name="generator">The <see cref="Scp079Generator" /> instance.</param>
-        /// <param name="isAllowed">Indicates whether or not the switch of the generator can be flipped.</param>
+        /// <param name="isAllowed">Indicates whether the switch of the generator can be flipped.</param>
         public StoppingGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true)
         {
             Player = player;

@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Attributes.Validators
         /// Initializes a new instance of the <see cref="GreaterThanAttribute"/> class.
         /// </summary>
         /// <param name="number">The number the marked property should be greater than.</param>
-        /// <param name="isIncluded">Whether or not the comparison in inclusive (includes <see cref="Number"/> as a valid value for the marked property).</param>
+        /// <param name="isIncluded">Whether the comparison in inclusive (includes <see cref="Number"/> as a valid value for the marked property).</param>
         public GreaterThanAttribute(object number, bool isIncluded = false)
         {
             Number = (IComparable)number;

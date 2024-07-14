@@ -21,7 +21,7 @@ namespace Exiled.Events.EventArgs.Scp096
         /// </summary>
         /// <param name="player">The player who's controlling SCP-096.</param>
         /// <param name="shouldClearEnragedTimeLeft"><inheritdoc cref="ShouldClearEnragedTimeLeft"/></param>
-        /// <param name="isAllowed">Indicates whether or not SCP-096 can calm down.</param>
+        /// <param name="isAllowed">Indicates whether SCP-096 can calm down.</param>
         public CalmingDownEventArgs(Player player, bool shouldClearEnragedTimeLeft, bool isAllowed = true)
         {
             Player = player;

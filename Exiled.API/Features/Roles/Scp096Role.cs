@@ -266,21 +266,21 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Ends SCP-096's enrage cycle.
         /// </summary>
-        /// <param name="clearTime">Whether or not to clear the remaining enrage time.</param>
+        /// <param name="clearTime">Whether to clear the remaining enrage time.</param>
         public void Calm(bool clearTime = true) => RageManager.ServerEndEnrage(clearTime);
 
         /// <summary>
-        /// Returns whether or not the provided <paramref name="player"/> is a target of SCP-096.
+        /// Returns whether the provided <paramref name="player"/> is a target of SCP-096.
         /// </summary>
         /// <param name="player">The player to check.</param>
-        /// <returns>Whether or not the player is a target of SCP-096.</returns>
+        /// <returns>Whether the player is a target of SCP-096.</returns>
         public bool HasTarget(Player player) => player is not null && TargetsTracker.HasTarget(player.ReferenceHub);
 
         /// <summary>
-        /// Returns whether or not the provided <paramref name="player"/> is observed by SCP-096.
+        /// Returns whether the provided <paramref name="player"/> is observed by SCP-096.
         /// </summary>
         /// <param name="player">The player to check.</param>
-        /// <returns>Whether or not the player is observed.</returns>
+        /// <returns>Whether the player is observed.</returns>
         public bool IsObserved(Player player) => player is not null && TargetsTracker.IsObservedBy(player.ReferenceHub);
 
         /// <summary>

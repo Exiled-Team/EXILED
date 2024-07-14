@@ -53,7 +53,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="danger">The <see cref="DangerType"/> enum.</param>
         /// <param name="type">The type found with the corresponding DangerType.</param>
-        /// <returns>Whether or not the type has been found.</returns>
+        /// <returns>Whether the type has been found.</returns>
         public static bool TryGetType(this DangerType danger, out Type type)
             => DangerTypeToType.TryGetValue(danger, out type);
 
@@ -70,7 +70,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="dangerStackBase">The <see cref="DangerStackBase"/> enum.</param>
         /// <param name="danger">The danger type found.</param>
-        /// <returns>Whether or not the danger has been found.</returns>
+        /// <returns>Whether the danger has been found.</returns>
         public static bool TryGetDangerType(this DangerStackBase dangerStackBase, out DangerType danger)
         {
             if (dangerStackBase == null || !TypeToDangerType.TryGetValue(dangerStackBase.GetType(), out danger))
