@@ -45,7 +45,7 @@ namespace Exiled.Events.EventArgs.Map
         public Quaternion Rotation { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the decal can be placed.
+        /// Gets or sets a value indicating whether the decal can be placed.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 

@@ -25,12 +25,12 @@ namespace Exiled.API.Interfaces
         public float MaxHealth { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not door is destroyed.
+        /// Gets or sets a value indicating whether door is destroyed.
         /// </summary>
         public bool IsDestroyed { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not this door is breakable.
+        /// Gets a value indicating whether this door is breakable.
         /// </summary>
         public bool IsBreakable { get; }
 

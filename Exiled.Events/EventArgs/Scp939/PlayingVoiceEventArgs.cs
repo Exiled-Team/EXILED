@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs.Scp939
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-939 can play the stolen voice.
+        /// Gets or sets a value indicating whether SCP-939 can play the stolen voice.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 

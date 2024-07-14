@@ -45,12 +45,12 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the coin is landing on tails.
+        /// Gets or sets a value indicating whether the coin is landing on tails.
         /// </summary>
         public bool IsTails { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the coin can be flipped.
+        /// Gets or sets a value indicating whether the coin can be flipped.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

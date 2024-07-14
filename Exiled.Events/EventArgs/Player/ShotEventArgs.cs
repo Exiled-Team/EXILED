@@ -94,7 +94,7 @@ namespace Exiled.Events.EventArgs.Player
         public Player Target { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the shot can hurt the target.
+        /// Gets or sets a value indicating whether the shot can hurt the target.
         /// </summary>
         public bool CanHurt { get; set; } = true;
     }

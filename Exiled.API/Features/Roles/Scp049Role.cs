@@ -111,7 +111,7 @@ namespace Exiled.API.Features.Roles
         public bool IsRecalling => ResurrectAbility.IsInProgress;
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-049's "Doctor's Call" ability is currently active.
+        /// Gets a value indicating whether SCP-049's "Doctor's Call" ability is currently active.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp049Role))]
         public bool IsCallActive => CallAbility.IsMarkerShown;

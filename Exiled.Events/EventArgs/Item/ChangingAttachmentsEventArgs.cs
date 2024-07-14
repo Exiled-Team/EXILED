@@ -70,7 +70,7 @@ namespace Exiled.Events.EventArgs.Item
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the attachments can be changed.
+        /// Gets or sets a value indicating whether the attachments can be changed.
         /// </summary>
         public bool IsAllowed { get; set; }
 

@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs.Scp939
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-939 can play the sound.
+        /// Gets or sets a value indicating whether SCP-939 can play the sound.
         /// </summary>
         /// <remarks>This will default to <see langword="false"/> if <see cref="IsReady"/> is <see langword="false"/>. In this case, setting it to <see langword="true"/> will override the cooldown.</remarks>
         public bool IsAllowed { get; set; }
@@ -57,7 +57,7 @@ namespace Exiled.Events.EventArgs.Scp939
         public EnvMimicrySequence Sound { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-939's environmental mimicry cooldown is ready.
+        /// Gets a value indicating whether SCP-939's environmental mimicry cooldown is ready.
         /// </summary>
         public bool IsReady { get; }
 

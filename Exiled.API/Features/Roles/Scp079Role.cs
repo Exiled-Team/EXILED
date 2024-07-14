@@ -490,7 +490,7 @@ namespace Exiled.API.Features.Roles
         public float RollRotation => Base.RollRotation;
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-079's signal is lost due to SCP-2176.
+        /// Gets a value indicating whether SCP-079's signal is lost due to SCP-2176.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp079Role))]
         public bool IsLost => LostSignalHandler.Lost;

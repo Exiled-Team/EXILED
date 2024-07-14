@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs.Player
         public Vector3 TeleportPosition { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can successfully escape the pocket dimension.
+        /// Gets or sets a value indicating whether the player can successfully escape the pocket dimension.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs.Player
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can cancelling the use of item.
+        /// Gets or sets a value indicating whether the player can cancelling the use of item.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs.Scp106
         public Vector3 Position { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-106 can teleport using a portal.
+        /// Gets or sets a value indicating whether SCP-106 can teleport using a portal.
         /// </summary>
         public bool IsAllowed { get; set; }
 

@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public float Duration { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-079 is allowed to lose its signal here.
+        /// Gets or sets a value indicating whether SCP-079 is allowed to lose its signal here.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

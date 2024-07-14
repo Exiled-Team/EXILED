@@ -544,7 +544,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player has noclip enabled.
+        /// Gets or sets a value indicating whether the player has noclip enabled.
         /// </summary>
         /// <returns><see cref="bool"/> indicating status.</returns>
         /// <remarks>For permitting a player to enter and exit noclip freely, see <see cref="IsNoclipPermitted"/>.</remarks>
@@ -688,28 +688,28 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is cuffed.
+        /// Gets a value indicating whether the player is cuffed.
         /// </summary>
         /// <remarks>Players can be cuffed without another player being the cuffer.</remarks>
         public bool IsCuffed => Inventory.IsDisarmed();
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is reloading a weapon.
+        /// Gets a value indicating whether the player is reloading a weapon.
         /// </summary>
         public bool IsReloading => CurrentItem is Firearm firearm && !firearm.Base.AmmoManagerModule.Standby;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is aiming with a weapon.
+        /// Gets a value indicating whether the player is aiming with a weapon.
         /// </summary>
         public bool IsAimingDownWeapon => CurrentItem is Firearm firearm && firearm.Aiming;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player has enabled weapon's flashlight module.
+        /// Gets a value indicating whether the player has enabled weapon's flashlight module.
         /// </summary>
         public bool HasFlashlightModuleEnabled => CurrentItem is Firearm firearm && firearm.FlashlightEnabled;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is jumping.
+        /// Gets a value indicating whether the player is jumping.
         /// </summary>
         public bool IsJumping => Role is FpcRole fpc && fpc.FirstPersonController.FpcModule.Motor.IsJumping;
 
@@ -739,57 +739,57 @@ namespace Exiled.API.Features
         public uint NetId => ReferenceHub.netId;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is the host.
+        /// Gets a value indicating whether the player is the host.
         /// </summary>
         public bool IsHost => ReferenceHub.isLocalPlayer;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is alive.
+        /// Gets a value indicating whether the player is alive.
         /// </summary>
         [EProperty(readOnly: true, category: ROLES_CATEGORY)]
         public bool IsAlive => !IsDead;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is dead.
+        /// Gets a value indicating whether the player is dead.
         /// </summary>
         [EProperty(readOnly: true, category: ROLES_CATEGORY)]
         public bool IsDead => Role?.IsDead ?? false;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleTypeId"/> is any NTF rank.
+        /// Gets a value indicating whether the player's <see cref="RoleTypeId"/> is any NTF rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
         [EProperty(readOnly: true, category: ROLES_CATEGORY)]
         public bool IsNTF => Role?.Team is Team.FoundationForces;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleTypeId"/> is any Chaos rank.
+        /// Gets a value indicating whether the player's <see cref="RoleTypeId"/> is any Chaos rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
         [EProperty(readOnly: true, category: ROLES_CATEGORY)]
         public bool IsCHI => Role?.Team is Team.ChaosInsurgency;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleTypeId"/> is any SCP.
+        /// Gets a value indicating whether the player's <see cref="RoleTypeId"/> is any SCP.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
         [EProperty(readOnly: true, category: ROLES_CATEGORY)]
         public bool IsScp => Role?.Team is Team.SCPs;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleTypeId"/> is any human rank.
+        /// Gets a value indicating whether the player's <see cref="RoleTypeId"/> is any human rank.
         /// </summary>
         [EProperty(readOnly: true, category: ROLES_CATEGORY)]
         public bool IsHuman => Role is not null && Role.Is(out HumanRole _);
 
         /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleTypeId"/> is equal to <see cref="RoleTypeId.Tutorial"/>.
+        /// Gets a value indicating whether the player's <see cref="RoleTypeId"/> is equal to <see cref="RoleTypeId.Tutorial"/>.
         /// </summary>
         [EProperty(readOnly: true, category: ROLES_CATEGORY)]
         public bool IsTutorial => Role?.Type is RoleTypeId.Tutorial;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player's friendly fire is enabled.
+        /// Gets a value indicating whether the player's friendly fire is enabled.
         /// <br>This property only determines if this player can deal damage to players on the same team;</br>
         /// <br>This player can be damaged by other players on their own team even if this property is <see langword="false"/>.</br>
         /// </summary>
@@ -823,7 +823,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player's bypass mode is enabled.
+        /// Gets or sets a value indicating whether the player's bypass mode is enabled.
         /// </summary>
         [EProperty(category: ROLES_CATEGORY)]
         public bool IsBypassModeEnabled
@@ -833,7 +833,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is muted.
+        /// Gets or sets a value indicating whether the player is muted.
         /// </summary>
         /// <remarks>This property will NOT persistently mute and unmute the player. For persistent mutes, see <see cref="Mute(bool)"/> and <see cref="UnMute(bool)"/>.</remarks>
         [EProperty(category: INFO_CATEGORY)]
@@ -844,7 +844,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is global muted.
+        /// Gets or sets a value indicating whether the player is global muted.
         /// </summary>
         /// <remarks>This property will NOT persistently mute and unmute the player. For persistent mutes, see <see cref="Mute(bool)"/> and <see cref="UnMute(bool)"/>.</remarks>
         [EProperty(category: INFO_CATEGORY)]
@@ -855,7 +855,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is intercom muted.
+        /// Gets or sets a value indicating whether the player is intercom muted.
         /// </summary>
         /// <remarks>This property will NOT persistently mute and unmute the player. For persistent mutes, see <see cref="Mute(bool)"/> and <see cref="UnMute(bool)"/>.</remarks>
         [EProperty(category: INFO_CATEGORY)]
@@ -866,7 +866,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is speaking.
+        /// Gets a value indicating whether the player is speaking.
         /// </summary>
         public bool IsSpeaking => VoiceModule != null && VoiceModule.IsSpeaking;
 
@@ -899,12 +899,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is transmitting on a Radio.
+        /// Gets a value indicating whether the player is transmitting on a Radio.
         /// </summary>
         public bool IsTransmitting => PersonalRadioPlayback.IsTransmitting(ReferenceHub);
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player has godmode enabled.
+        /// Gets or sets a value indicating whether the player has godmode enabled.
         /// </summary>
         [EProperty(category: ROLES_CATEGORY)]
         public bool IsGodModeEnabled
@@ -1084,7 +1084,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the staff bypass is enabled.
+        /// Gets a value indicating whether the staff bypass is enabled.
         /// </summary>
         public bool IsStaffBypassEnabled => ReferenceHub.authManager.BypassBansFlagSet;
 
@@ -1177,7 +1177,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player's badge is hidden.
+        /// Gets or sets a value indicating whether the player's badge is hidden.
         /// </summary>
         [EProperty(category: INFO_CATEGORY)]
         public bool BadgeHidden
@@ -1193,23 +1193,23 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is Northwood staff.
+        /// Gets a value indicating whether the player is Northwood staff.
         /// </summary>
         public bool IsNorthwoodStaff => ReferenceHub.authManager.NorthwoodStaff;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is a global moderator.
+        /// Gets a value indicating whether the player is a global moderator.
         /// </summary>
         public bool IsGlobalModerator => ReferenceHub.authManager.RemoteAdminGlobalAccess;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is in the pocket dimension.
+        /// Gets a value indicating whether the player is in the pocket dimension.
         /// </summary>
         [EProperty(readOnly: true, category: WORLDSPACE_CATEGORY)]
         public bool IsInPocketDimension => CurrentRoom && CurrentRoom.Type is RoomType.Pocket;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player should use stamina system.
+        /// Gets or sets a value indicating whether the player should use stamina system.
         /// </summary>
         [EProperty(category: STATS_CATEGORY)]
         public bool IsUsingStamina { get; set; } = true;
@@ -1226,13 +1226,13 @@ namespace Exiled.API.Features
         public IReadOnlyCollection<Item> Items { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player's inventory is empty.
+        /// Gets a value indicating whether the player's inventory is empty.
         /// </summary>
         [EProperty(readOnly: true, category: INVENTORY_CATEGORY)]
         public bool IsInventoryEmpty => Items.Count is 0;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player's inventory is full.
+        /// Gets a value indicating whether the player's inventory is full.
         /// </summary>
         [EProperty(readOnly: true, category: INVENTORY_CATEGORY)]
         public bool IsInventoryFull => Items.Count >= Inventory.MaxSlots;
@@ -1257,12 +1257,12 @@ namespace Exiled.API.Features
         public bool IsScp173Observer => Player.List.Any(x => x.Role is Roles.Scp173Role scp173Role && scp173Role.ObservingPlayers.Contains(x));
 
         /// <summary>
-        /// Gets a value indicating whether or not the player has agreed to microphone recording.
+        /// Gets a value indicating whether the player has agreed to microphone recording.
         /// </summary>
         public bool AgreedToRecording => VoiceChatPrivacySettings.CheckUserFlags(ReferenceHub, VcPrivacyFlags.SettingsSelected | VcPrivacyFlags.AllowRecording | VcPrivacyFlags.AllowMicCapture);
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not player will be affected by a flashbang.
+        /// Gets or sets a value indicating whether player will be affected by a flashbang.
         /// </summary>
         [EProperty(category: EFFECTS_CATEGORY)]
         public bool FlashImmune { get; set; } = false;
@@ -1283,7 +1283,7 @@ namespace Exiled.API.Features
         public Footprint Footprint => new(ReferenceHub);
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is spawn protected.
+        /// Gets or sets a value indicating whether the player is spawn protected.
         /// </summary>
         [EProperty(category: INFO_CATEGORY)]
         public bool IsSpawnProtected
@@ -2202,7 +2202,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The <see cref="Item"/> to remove.</param>
         /// <param name="destroy">Whether or not to destroy the item.</param>
-        /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
+        /// <returns>a value indicating whether the <see cref="Item"/> was removed.</returns>
         public bool RemoveItem(Item item, bool destroy = true)
         {
             if (!ItemsValue.Contains(item))
@@ -2244,7 +2244,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="serial">The <see cref="Item"/> serial to remove.</param>
         /// <param name="destroy">Whether or not to destroy the item.</param>
-        /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
+        /// <returns>a value indicating whether the <see cref="Item"/> was removed.</returns>
         public bool RemoveItem(ushort serial, bool destroy = true) => Items.SingleOrDefault(item => item.Serial == serial) is Item item && RemoveItem(item, destroy);
 
         /// <summary>
@@ -2297,7 +2297,7 @@ namespace Exiled.API.Features
         /// Removes the held <see cref="ItemBase"/> from the player's inventory.
         /// </summary>
         /// <param name="destroy">Whether or not to destroy the item.</param>
-        /// <returns>Returns a value indicating whether or not the <see cref="ItemBase"/> was removed.</returns>
+        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed.</returns>
         public bool RemoveHeldItem(bool destroy = true) => RemoveItem(CurrentItem, destroy);
 
         /// <summary>

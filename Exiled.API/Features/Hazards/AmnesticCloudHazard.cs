@@ -104,7 +104,7 @@ namespace Exiled.API.Features.Hazards
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not hazard is active or not.
+        /// Gets or sets a value indicating whether hazard is active or not.
         /// </summary>
         public bool TargetState
         {

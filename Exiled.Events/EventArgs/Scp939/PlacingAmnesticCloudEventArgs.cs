@@ -45,17 +45,17 @@ namespace Exiled.Events.EventArgs.Scp939
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-939 can place an amnestic cloud.
+        /// Gets or sets a value indicating whether SCP-939 can place an amnestic cloud.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-939 is ready to place its amnestic cloud.
+        /// Gets a value indicating whether SCP-939 is ready to place its amnestic cloud.
         /// </summary>
         public bool State { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-939's amnestic cloud cooldown is ready.
+        /// Gets or sets a value indicating whether SCP-939's amnestic cloud cooldown is ready.
         /// </summary>
         public bool IsReady { get; set; }
 

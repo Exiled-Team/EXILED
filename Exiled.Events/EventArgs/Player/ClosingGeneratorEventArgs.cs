@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the generator door can be closed.
+        /// Gets or sets a value indicating whether the generator door can be closed.
         /// </summary>
         public bool IsAllowed { get; set; }
 

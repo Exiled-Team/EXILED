@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs.Scp096
         public Scp096Role Scp096 { get; }
 
         /// <summary>
-        /// Gets or Sets a value indicating whether or not the gate can be pried open by SCP-096.
+        /// Gets or Sets a value indicating whether the gate can be pried open by SCP-096.
         /// </summary>
         public bool IsAllowed { get; set; }
 

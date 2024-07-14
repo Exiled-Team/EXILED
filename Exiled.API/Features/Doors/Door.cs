@@ -216,7 +216,7 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the door is locked.
+        /// Gets a value indicating whether the door is locked.
         /// </summary>
         public bool IsLocked => LockType > 0;
 

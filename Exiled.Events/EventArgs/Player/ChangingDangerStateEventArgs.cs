@@ -50,12 +50,12 @@ namespace Exiled.Events.EventArgs.Player
         public DangerType Type { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the danger is being activated.
+        /// Gets a value indicating whether the danger is being activated.
         /// </summary>
         public bool IsActivating { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the danger is ending.
+        /// Gets a value indicating whether the danger is ending.
         /// </summary>
         public bool IsEnding => !IsActivating;
 

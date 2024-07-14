@@ -114,7 +114,7 @@ namespace Exiled.API.Features.Roles
         public bool BloodlustActive => BloodlustAbility.LookingAtTarget;
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-049-2 is consuming a ragdoll.
+        /// Gets a value indicating whether SCP-049-2 is consuming a ragdoll.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp0492Role))]
         public bool IsConsuming => ConsumeAbility.IsInProgress;

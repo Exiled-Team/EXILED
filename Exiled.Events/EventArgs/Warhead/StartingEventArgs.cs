@@ -27,7 +27,7 @@ namespace Exiled.Events.EventArgs.Warhead
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the nuke was set off automatically.
+        /// Gets or sets a value indicating whether the nuke was set off automatically.
         /// </summary>
         public bool IsAuto { get; set; }
     }

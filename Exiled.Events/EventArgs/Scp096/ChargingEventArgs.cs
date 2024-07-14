@@ -41,7 +41,7 @@ namespace Exiled.Events.EventArgs.Scp096
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-096 can charge.
+        /// Gets or sets a value indicating whether SCP-096 can charge.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

@@ -51,7 +51,7 @@ namespace Exiled.Events.EventArgs.Item
         public Door Door { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the keycard can interact with the door.
+        /// Gets or sets a value indicating whether the keycard can interact with the door.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

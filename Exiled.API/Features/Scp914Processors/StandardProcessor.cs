@@ -80,7 +80,7 @@ namespace Exiled.API.Features.Scp914Processors
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not item which has <see cref="InventorySystem.Items.IUpgradeTrigger"/> will execute method for updating.
+        /// Gets or sets a value indicating whether item which has <see cref="InventorySystem.Items.IUpgradeTrigger"/> will execute method for updating.
         /// </summary>
         public bool FireTrigger
         {

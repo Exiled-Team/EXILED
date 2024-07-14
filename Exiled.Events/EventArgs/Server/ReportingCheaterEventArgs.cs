@@ -59,7 +59,7 @@ namespace Exiled.Events.EventArgs.Player
         public string Reason { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the report will be sent.
+        /// Gets or sets a value indicating whether the report will be sent.
         /// </summary>
         public bool IsAllowed { get; set; }
 

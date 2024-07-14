@@ -54,7 +54,7 @@ namespace Exiled.API.Features.Hazards
         public override HazardType Type { get; } = HazardType.Tantrum;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not sizzle should be played.
+        /// Gets or sets a value indicating whether sizzle should be played.
         /// </summary>
         public bool PlaySizzle
         {

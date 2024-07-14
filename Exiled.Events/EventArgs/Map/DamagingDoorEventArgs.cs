@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the door can take damage.
+        ///     Gets or sets a value indicating whether the door can take damage.
         /// </summary>
         public bool IsAllowed { get; set; }
 

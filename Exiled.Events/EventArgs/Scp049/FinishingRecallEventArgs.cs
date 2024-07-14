@@ -60,7 +60,7 @@ namespace Exiled.Events.EventArgs.Scp049
         public Ragdoll Ragdoll { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can be revived.
+        /// Gets or sets a value indicating whether the player can be revived.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

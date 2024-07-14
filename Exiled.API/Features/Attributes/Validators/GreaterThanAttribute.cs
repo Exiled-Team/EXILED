@@ -34,7 +34,7 @@ namespace Exiled.API.Features.Attributes.Validators
         public IComparable Number { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the comparison is inclusive.
+        /// Gets a value indicating whether the comparison is inclusive.
         /// <remarks>If this returns true, <see cref="Number"/> is a valid value for the marked property.</remarks>
         /// </summary>
         public bool IsIncluded { get; }

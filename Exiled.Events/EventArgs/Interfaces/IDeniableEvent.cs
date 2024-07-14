@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs.Interfaces
     public interface IDeniableEvent : IExiledEvent
     {
         /// <summary>
-        /// Gets or sets a value indicating whether or not the event is allowed to continue.
+        /// Gets or sets a value indicating whether the event is allowed to continue.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

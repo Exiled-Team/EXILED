@@ -87,7 +87,7 @@ namespace Exiled.API.Features.Hazards
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not hazard is active.
+        /// Gets a value indicating whether hazard is active.
         /// </summary>
         public bool IsActive => Base.IsActive;
 

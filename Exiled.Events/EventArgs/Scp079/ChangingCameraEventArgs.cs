@@ -58,7 +58,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public Camera Camera { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-079 can switch cameras.
+        /// Gets or sets a value indicating whether SCP-079 can switch cameras.
         /// <para>Defaults to a value describing whether or not SCP-079 has enough auxiliary power to switch.</para>
         /// <br>Can be set to <see langword="true" /> to allow a switch regardless of SCP-079's auxiliary power amount.</br>
         /// </summary>

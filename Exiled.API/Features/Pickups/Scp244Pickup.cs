@@ -102,13 +102,13 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not this Scp244 is breakable.
+        /// Gets a value indicating whether this Scp244 is breakable.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public bool IsBreakable => Base.State is Scp244State.Idle or Scp244State.Active;
 
         /// <summary>
-        /// Gets a value indicating whether or not this Scp244 is broken.
+        /// Gets a value indicating whether this Scp244 is broken.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp244Pickup))]
         public bool IsBroken => Base.State is Scp244State.Destroyed;

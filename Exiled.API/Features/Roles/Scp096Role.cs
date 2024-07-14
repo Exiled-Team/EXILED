@@ -140,7 +140,7 @@ namespace Exiled.API.Features.Roles
         public bool CanReceiveTargets => RageCycleAbility._targetsTracker.CanReceiveTargets;
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-096 can attack.
+        /// Gets a value indicating whether SCP-096 can attack.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp096Role))]
         public bool AttackPossible => AttackAbility.AttackPossible;

@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs.Map
         public SpawnableTeamType Team { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the vehicle can be spawned.
+        /// Gets or sets a value indicating whether the vehicle can be spawned.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

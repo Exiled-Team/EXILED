@@ -37,12 +37,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is aiming down sight in.
+        /// Gets a value indicating whether the player is aiming down sight in.
         /// </summary>
         public bool AdsIn { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is aiming down sight out.
+        /// Gets a value indicating whether the player is aiming down sight out.
         /// </summary>
         public bool AdsOut => !AdsIn;
 

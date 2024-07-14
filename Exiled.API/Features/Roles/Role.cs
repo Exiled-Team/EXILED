@@ -159,13 +159,13 @@ namespace Exiled.API.Features.Roles
         public bool IsDead => Team is Team.Dead;
 
         /// <summary>
-        /// Gets a value indicating whether or not this role represents a living role.
+        /// Gets a value indicating whether this role represents a living role.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Role))]
         public bool IsAlive => !IsDead;
 
         /// <summary>
-        /// Gets a value indicating whether or not this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
+        /// Gets a value indicating whether this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Role))]
         public bool IsValid => Owner != null && Owner.IsConnected && Base == Owner.RoleManager.CurrentRole;

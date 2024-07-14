@@ -163,19 +163,19 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player can send inputs.
+        /// Gets a value indicating whether the player can send inputs.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(FpcRole))]
         public bool CanSendInputs => FirstPersonController.FpcModule.LockMovement;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is invisible.
+        /// Gets or sets a value indicating whether the player is invisible.
         /// </summary>
         [EProperty(category: nameof(FpcRole))]
         public bool IsInvisible { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player should use stamina system. Resets on death.
+        /// Gets or sets a value indicating whether the player should use stamina system. Resets on death.
         /// </summary>
         [EProperty(category: nameof(FpcRole))]
         public bool IsUsingStamina
@@ -223,7 +223,7 @@ namespace Exiled.API.Features.Roles
         public bool IsCrouching => FirstPersonController.FpcModule.StateProcessor.CrouchPercent > 0;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is on the ground.
+        /// Gets a value indicating whether the player is on the ground.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(FpcRole))]
         public bool IsGrounded => FirstPersonController.FpcModule.IsGrounded;
@@ -235,7 +235,7 @@ namespace Exiled.API.Features.Roles
         public virtual float MovementSpeed => FirstPersonController.FpcModule.VelocityForState(MoveState, IsCrouching);
 
         /// <summary>
-        /// Gets a value indicating whether or not the <see cref="Player"/> is in darkness.
+        /// Gets a value indicating whether the <see cref="Player"/> is in darkness.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(FpcRole))]
         public bool IsInDarkness => FirstPersonController.InDarkness;
@@ -253,13 +253,13 @@ namespace Exiled.API.Features.Roles
         public float HorizontalRotation => FirstPersonController.HorizontalRotation;
 
         /// <summary>
-        /// Gets a value indicating whether or not the <see cref="Player"/> is AFK.
+        /// Gets a value indicating whether the <see cref="Player"/> is AFK.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(FpcRole))]
         public bool IsAfk => FirstPersonController.IsAFK;
 
         /// <summary>
-        /// Gets a value indicating whether or not this role is protected by a hume shield.
+        /// Gets a value indicating whether this role is protected by a hume shield.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(FpcRole))]
         public bool IsHumeShieldedRole => this is IHumeShieldRole;

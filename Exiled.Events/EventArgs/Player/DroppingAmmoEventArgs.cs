@@ -55,7 +55,7 @@ namespace Exiled.Events.EventArgs.Player
         public ushort Amount { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the ammo can be dropped.
+        /// Gets or sets a value indicating whether the ammo can be dropped.
         /// </summary>
         public bool IsAllowed
         {

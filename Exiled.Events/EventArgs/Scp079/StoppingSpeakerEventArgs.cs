@@ -50,7 +50,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public Room Room { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-079 can stop using the speaker.
+        /// Gets or sets a value indicating whether SCP-079 can stop using the speaker.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

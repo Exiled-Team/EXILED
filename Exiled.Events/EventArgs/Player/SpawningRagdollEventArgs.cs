@@ -103,7 +103,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the ragdoll can be spawned.
+        /// Gets or sets a value indicating whether the ragdoll can be spawned.
         /// </summary>
         public bool IsAllowed { get; set; }
 

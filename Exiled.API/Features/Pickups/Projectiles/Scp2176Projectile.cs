@@ -43,7 +43,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         public new BaseScp2176Projectile Base { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-2176 has shattered.
+        /// Gets a value indicating whether SCP-2176 has shattered.
         /// </summary>
         [EProperty(category: nameof(Scp2176Projectile))]
         public bool IsAlreadyTriggered => Base._hasTriggered;

@@ -41,7 +41,7 @@ namespace Exiled.Events.EventArgs.Player
         public PocketDimensionTeleport Teleporter { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player dies by failing the pocket dimension escape.
+        /// Gets or sets a value indicating whether the player dies by failing the pocket dimension escape.
         /// </summary>
         public bool IsAllowed { get; set; }
 

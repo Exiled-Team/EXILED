@@ -112,7 +112,7 @@ namespace Exiled.Events.EventArgs.Player
         public KeyValuePair<SpawnableTeamType, float> RespawnTickets { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can escape.
+        /// Gets or sets a value indicating whether the player can escape.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

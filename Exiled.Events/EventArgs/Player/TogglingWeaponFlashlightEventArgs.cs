@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs.Player
         public bool NewState { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the weapon's flashlight can be toggled.
+        /// Gets or sets a value indicating whether the weapon's flashlight can be toggled.
         /// </summary>
         public bool IsAllowed { get; set; }
 

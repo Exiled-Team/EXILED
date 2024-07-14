@@ -37,12 +37,12 @@ namespace Exiled.Events.EventArgs.Scp939
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-939 can focus.
+        /// Gets or sets a value indicating whether SCP-939 can focus.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-939 is currently focusing or un-focusing.
+        /// Gets a value indicating whether SCP-939 is currently focusing or un-focusing.
         /// </summary>
         public bool State { get; }
 

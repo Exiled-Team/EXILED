@@ -65,13 +65,13 @@ namespace Exiled.API.Features.Pickups
         public bool Holsterable { get; } = false;
 
         /// <summary>
-        /// Gets a value indicating whether or not this is a worn item.
+        /// Gets a value indicating whether this is a worn item.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(BodyArmorPickup))]
         public bool IsWorn { get; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not excess ammo should be removed when the armor is dropped.
+        /// Gets or sets a value indicating whether excess ammo should be removed when the armor is dropped.
         /// </summary>
         public bool RemoveExcessOnDrop { get; set; }
 

@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public int NewLevel { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the level is successfully granted.
+        /// Gets or sets a value indicating whether the level is successfully granted.
         /// </summary>
         public bool IsAllowed { get; set; }
 

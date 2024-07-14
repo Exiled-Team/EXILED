@@ -56,12 +56,12 @@ namespace Exiled.Events.EventArgs.Scp096
         public Player Target { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the target was being target cause of looking it's face.
+        /// Gets a value indicating whether the target was being target cause of looking it's face.
         /// </summary>
         public bool IsLooking { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the target is allowed to be added.
+        /// Gets or sets a value indicating whether the target is allowed to be added.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

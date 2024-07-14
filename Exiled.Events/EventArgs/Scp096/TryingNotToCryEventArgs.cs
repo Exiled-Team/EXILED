@@ -58,7 +58,7 @@ namespace Exiled.Events.EventArgs.Scp096
         public GameObject GameObject { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-096 can try not to cry.
+        /// Gets or sets a value indicating whether SCP-096 can try not to cry.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

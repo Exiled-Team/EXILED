@@ -82,7 +82,7 @@ namespace Exiled.Events.EventArgs.Item
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the attachments preference is allowed.
+        /// Gets or sets a value indicating whether the attachments preference is allowed.
         /// </summary>
         public bool IsAllowed { get; set; }
 

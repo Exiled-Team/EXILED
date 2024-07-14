@@ -181,19 +181,19 @@ namespace Exiled.API.Features.Items
         public bool IsWeapon => this is Firearm;
 
         /// <summary>
-        /// Gets a value indicating whether or not this item emits light.
+        /// Gets a value indicating whether this item emits light.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Item))]
         public bool CanEmitLight => this is Firearm firearm ? firearm.HasFlashlight : Base is ILightEmittingItem;
 
         /// <summary>
-        /// Gets a value indicating whether or not this item is currently imitating light.
+        /// Gets a value indicating whether this item is currently imitating light.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsEmittingLight => Base is ILightEmittingItem light && light.IsEmittingLight;
 
         /// <summary>
-        /// Gets a value indicating whether or not this item can be used to disarm players.
+        /// Gets a value indicating whether this item can be used to disarm players.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Item))]
         public bool IsDisarmer => Base is IDisarmingItem;

@@ -59,7 +59,7 @@ namespace Exiled.Events.EventArgs.Scp049
         public float Duration { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the server will send 049 information on the recall.
+        /// Gets or sets a value indicating whether the server will send 049 information on the recall.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

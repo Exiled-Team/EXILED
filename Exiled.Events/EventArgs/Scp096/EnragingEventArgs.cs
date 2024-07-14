@@ -50,7 +50,7 @@ namespace Exiled.Events.EventArgs.Scp096
         public float InitialDuration { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-096 can be enraged.
+        /// Gets or sets a value indicating whether SCP-096 can be enraged.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

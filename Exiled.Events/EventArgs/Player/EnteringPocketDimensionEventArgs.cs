@@ -41,7 +41,7 @@ namespace Exiled.Events.EventArgs.Player
         public Player Scp106 { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can enter the pocket dimension.
+        /// Gets or sets a value indicating whether the player can enter the pocket dimension.
         /// </summary>
         public bool IsAllowed { get; set; }
 

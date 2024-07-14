@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs.Map
         public Pickup Pickup { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the item will be initially spawned.
+        /// Gets or sets a value indicating whether the item will be initially spawned.
         /// </summary>
         public bool ShouldInitiallySpawn { get; set; }
 
@@ -57,7 +57,7 @@ namespace Exiled.Events.EventArgs.Map
         public Door TriggerDoor { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the item can be spawned.
+        /// Gets or sets a value indicating whether the item can be spawned.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

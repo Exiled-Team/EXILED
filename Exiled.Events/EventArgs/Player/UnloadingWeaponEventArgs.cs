@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the weapon can be unloaded.
+        /// Gets or sets a value indicating whether the weapon can be unloaded.
         /// </summary>
         public bool IsAllowed { get; set; }
 
