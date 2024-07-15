@@ -7,6 +7,7 @@
 
 namespace Exiled.CustomModules.API.Features.CustomEscapes
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
 
@@ -18,7 +19,6 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomRoles;
-
     using PlayerRoles;
 
     /// <summary>
@@ -65,22 +65,28 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            if (CustomEscape.TryGet(GetType(), out CustomEscape customEscape))
-                CustomEscape = customEscape;
+            if (Config is not null)
+            {
+                foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
+                {
+                    PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
+                    targetInfo?.SetValue(Settings, propertyInfo.GetValue(Config, null));
+                }
+            }
 
             CustomRole customRole = Owner.Cast<Pawn>().CustomRole;
-            Settings = customRole && !customRole.EscapeSettings.IsEmpty() ? customRole.EscapeSettings : CustomEscape.Settings;
-
-            if (Config is null)
-                return;
-
-            foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
+            if (CustomEscape.TryGet(GetType(), out CustomEscape customEscape) && customEscape.Settings is List<EscapeSettings> settings)
             {
-                PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
-                if (targetInfo is null)
-                    continue;
+                CustomEscape = customEscape;
 
-                targetInfo.SetValue(Settings, propertyInfo.GetValue(Config, null));
+                if (Config is null)
+                    Settings = customRole && !customRole.EscapeSettings.IsEmpty() ? customRole.EscapeSettings : settings;
+            }
+
+            if (CustomEscape is null || Settings is null)
+            {
+                Log.Error($"Custom escape ({GetType().Name}) has invalid configuration.");
+                Destroy();
             }
         }
 
