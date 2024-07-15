@@ -26,6 +26,7 @@ namespace Exiled.Events.EventArgs.Server
         {
             ClassList = classList;
             LeadingTeam = (LeadingTeam)leadingTeam;
+            IsAllowed = isAllowed;
             IsForceEnded = isForceEnded;
         }
 
