@@ -28,6 +28,8 @@ namespace Exiled.CustomModules.API.Features
     /// </summary>
     public class RoleAssigner : StaticActor
     {
+        private int currentIndex = 0;
+
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before assigning human roles.
         /// </summary>
@@ -59,6 +61,24 @@ namespace Exiled.CustomModules.API.Features
         /// Gets or sets the human roles queue.
         /// </summary>
         public Team[] HumanRolesQueue { get; protected set; } = { };
+
+        /// <summary>
+        /// Gets the next human role to spawn from the Queue.
+        /// </summary>
+        public RoleTypeId NextHumanRoleToSpawn
+        {
+            get
+            {
+                if (HumanRolesQueue == null || HumanRolesQueue.Length == 0)
+                    throw new InvalidOperationException("Failed to get next role to spawn, queue has no human roles or is null.");
+                Team human = HumanRolesQueue[currentIndex % HumanRolesQueue.Length];
+                currentIndex++;
+
+                IHumanSpawnHandler humanSpawnHandler = GetHumanSpawnHandler(human);
+
+                return humanSpawnHandler?.NextRole ?? RoleTypeId.ClassD;
+            }
+        }
 
         /// <summary>
         /// Gets a filter to retrieve all available human custom roles.
@@ -108,7 +128,7 @@ namespace Exiled.CustomModules.API.Features
             if (array is not null)
             {
                 for (int i = 0; i < num; i++)
-                    array[i] = HumanSpawner.NextHumanRoleToSpawn;
+                    array[i] = NextHumanRoleToSpawn;
 
                 array.ShuffleList();
                 EnqueuedHumans.AddRange(array.Cast<object>());
@@ -331,6 +351,17 @@ namespace Exiled.CustomModules.API.Features
                 return;
 
             customRole.ForceSpawn(ev.Player.Cast<Pawn>(), true);
+        }
+
+        private IHumanSpawnHandler GetHumanSpawnHandler(Team team)
+        {
+            return team switch
+            {
+                Team.ClassD => new OneRoleHumanSpawner(RoleTypeId.ClassD),
+                Team.FoundationForces => new OneRoleHumanSpawner(RoleTypeId.FacilityGuard),
+                Team.Scientists => new OneRoleHumanSpawner(RoleTypeId.Scientist),
+                _ => null
+            };
         }
     }
 }
