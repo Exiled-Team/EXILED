@@ -35,6 +35,7 @@ namespace Exiled.Events.EventArgs.Server
             MaxWaveSize = maxRespawn;
             NextKnownTeam = nextKnownTeam;
             SpawnQueue = new();
+            SpawnableTeam.GenerateQueue(SpawnQueue, players.Count);
             IsAllowed = isAllowed;
         }
 
@@ -57,6 +58,12 @@ namespace Exiled.Events.EventArgs.Server
         /// Gets or sets the RoleTypeId spawn queue.
         /// </summary>
         public Queue<RoleTypeId> SpawnQueue { get; set; }
+
+        /// <summary>
+        /// Gets the current spawnable team.
+        /// </summary>
+        public SpawnableTeamHandlerBase SpawnableTeam
+            => RespawnManager.SpawnableTeams.TryGetValue(NextKnownTeam, out SpawnableTeamHandlerBase @base) ? @base : null;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the spawn can occur.
