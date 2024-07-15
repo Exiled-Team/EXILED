@@ -42,6 +42,9 @@ namespace Exiled.API.Features.Pickups
         {
             Base = (BaseFirearm)((Pickup)this).Base;
             IsDistributed = true;
+
+            if (type is ItemType.ParticleDisruptor && Status.Ammo <= 0)
+                Status = new FirearmStatus(5, FirearmStatusFlags.MagazineInserted, 0);
         }
 
         /// <summary>
