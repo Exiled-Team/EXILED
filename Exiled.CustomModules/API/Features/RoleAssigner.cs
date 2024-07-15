@@ -102,6 +102,7 @@ namespace Exiled.CustomModules.API.Features
             HumanRolesQueue = queue;
             HumanSpawner._queueLength = queueLength;
             EnqueuedHumans.Clear();
+            currentIndex = 0;
 
             IEnumerable<CustomRole> customRoles = CustomRole.Get(FilterHumans);
             List<uint> spawnable = GetCustomRolesByProbability(customRoles).ToList();
