@@ -47,6 +47,7 @@ namespace Exiled.Events.Patches.Events.Scp914
 
             Label returnLabel = generator.DefineLabel();
 
+            LocalBuilder curSetting = generator.DeclareLocal(typeof(Scp914KnobSetting));
             LocalBuilder ev = generator.DeclareLocal(typeof(UpgradingPlayerEventArgs));
 
             // Move labels from override - 3 position (Right after a branch)
@@ -106,6 +107,10 @@ namespace Exiled.Events.Patches.Events.Scp914
                     new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.KnobSetting))),
                     new(OpCodes.Starg_S, 4),
 
+                    // curSetting = setting;
+                    new(OpCodes.Ldarg_S, 4),
+                    new(OpCodes.Stloc_S, curSetting.LocalIndex),
+
                     // ev.Player.Teleport(ev.OutputPosition);
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.Player))),
@@ -127,6 +132,10 @@ namespace Exiled.Events.Patches.Events.Scp914
                 continueIndex,
                 new CodeInstruction[]
                 {
+                    // setting = curSetting
+                    new(OpCodes.Ldloc_S, curSetting.LocalIndex),
+                    new(OpCodes.Starg_S, 4),
+
                     // Player.Get(ply)
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
