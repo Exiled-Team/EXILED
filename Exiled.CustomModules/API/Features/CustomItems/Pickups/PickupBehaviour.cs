@@ -7,7 +7,6 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
 {
-    using System;
     using System.Linq;
     using System.Reflection;
 
@@ -48,22 +47,10 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
         /// <inheritdoc/>
         public PickupSettings Settings { get; set; }
 
-        /// <summary>
-        /// Gets or sets the item's configs.
-        /// </summary>
-        public virtual EConfig Config { get; set; }
-
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            if (Config is not null)
-            {
-                foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
-                {
-                    PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
-                    targetInfo?.SetValue(Settings, propertyInfo.GetValue(Config, null));
-                }
-            }
+            ImplementConfigs();
 
             if (CustomItem.TryGet(GetType(), out CustomItem customItem) && customItem.Settings is PickupSettings pickupSettings)
             {
@@ -76,6 +63,14 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
                 Log.Error($"Custom pickup ({GetType().Name}) has invalid configuration.");
                 Destroy();
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
+        {
+            targetInfo?.SetValue(
+                typeof(ItemSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
+                propertyInfo.GetValue(Config, null));
         }
 
         /// <summary>

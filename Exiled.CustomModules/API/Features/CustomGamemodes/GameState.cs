@@ -19,6 +19,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Roles;
+    using Exiled.API.Interfaces;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.Events.EventArgs.CustomRoles;
@@ -92,12 +93,15 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            if (Config is not null)
+            if (Config is not null && Config.GetType().GetInterfaces().Contains(typeof(IConfig)))
             {
+                Type inType = GetType();
                 foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
                 {
-                    PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
-                    targetInfo?.SetValue(Settings, propertyInfo.GetValue(Config, null));
+                    PropertyInfo targetInfo = inType.GetProperty(propertyInfo.Name);
+                    targetInfo?.SetValue(
+                        typeof(GameModeSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
+                        propertyInfo.GetValue(Config, null));
                 }
             }
 
