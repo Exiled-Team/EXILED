@@ -223,35 +223,35 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (CustomTeam.TryGet(Owner.Cast<Pawn>(), out CustomTeam customTeam))
                 CustomTeam = customTeam;
 
-            if (CustomRole.TryGet(GetType(), out CustomRole customRole))
+            if (Config is not null)
             {
-                CustomRole = customRole;
-                Settings = CustomRole.Settings;
-
-                Owner.UniqueRole = CustomRole.Name;
-                Owner.TryAddCustomRoleFriendlyFire(Name, Settings.FriendlyFireMultiplier);
-
-                if (CustomRole.EscapeBehaviourComponent is not null)
+                foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
                 {
-                    Owner.AddComponent(CustomRole.EscapeBehaviourComponent);
-                    useCustomEscape = true;
+                    PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
+
+                    targetInfo?.SetValue(
+                        typeof(RoleSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings :
+                        typeof(InventoryManager).IsAssignableFrom(targetInfo.DeclaringType) ? Inventory :
+                        throw new TypeLoadException(),
+                        propertyInfo.GetValue(Config, null));
                 }
             }
 
+            if (!CustomRole.TryGet(GetType(), out CustomRole customRole))
+                throw new Exception($"Couldn't find any CustomRole belonging to the {GetType().Name} instance.");
+
+            CustomRole = customRole;
+
             if (Config is null)
-                return;
+                Settings = CustomRole.Settings;
 
-            foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
+            Owner.UniqueRole = CustomRole.Name;
+            Owner.TryAddCustomRoleFriendlyFire(Name, Settings.FriendlyFireMultiplier);
+
+            if (CustomRole.EscapeBehaviourComponent is not null)
             {
-                PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
-                if (targetInfo is null)
-                    continue;
-
-                targetInfo.SetValue(
-                    typeof(RoleSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings :
-                    typeof(InventoryManager).IsAssignableFrom(targetInfo.DeclaringType) ? Inventory :
-                    throw new TypeLoadException(),
-                    propertyInfo.GetValue(Config, null));
+                Owner.AddComponent(CustomRole.EscapeBehaviourComponent);
+                useCustomEscape = true;
             }
         }
 
