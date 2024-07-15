@@ -13,9 +13,11 @@ namespace Exiled.Events.Patches.Events.Scp914
     using API.Features;
     using API.Features.Core.Generic.Pools;
     using API.Features.Items;
+    using Exiled.API.Features.Scp914Processors;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp914;
     using global::Scp914;
+    using global::Scp914.Processors;
     using HarmonyLib;
     using InventorySystem.Items;
     using PlayerRoles.FirstPersonControl;
@@ -45,7 +47,6 @@ namespace Exiled.Events.Patches.Events.Scp914
 
             Label returnLabel = generator.DefineLabel();
 
-            LocalBuilder curSetting = generator.DeclareLocal(typeof(Scp914KnobSetting));
             LocalBuilder ev = generator.DeclareLocal(typeof(UpgradingPlayerEventArgs));
 
             // Move labels from override - 3 position (Right after a branch)
@@ -105,10 +106,6 @@ namespace Exiled.Events.Patches.Events.Scp914
                     new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.KnobSetting))),
                     new(OpCodes.Starg_S, 4),
 
-                    // curSetting = setting;
-                    new(OpCodes.Ldarg_S, 4),
-                    new(OpCodes.Stloc_S, curSetting.LocalIndex),
-
                     // ev.Player.Teleport(ev.OutputPosition);
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.Player))),
@@ -117,27 +114,19 @@ namespace Exiled.Events.Patches.Events.Scp914
                     new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Teleport), new[] { typeof(Vector3) })),
                 });
 
-            // Find InventoryUpgrade, and set position there.
-            index = newInstructions.FindIndex(
-                instruction => instruction.LoadsField(Field(typeof(Scp914Upgrader), nameof(Scp914Upgrader.OnInventoryItemUpgraded))));
-
             Label continueLabel = generator.DefineLabel();
 
-            // Find iterator jump by going -3 from leave_s
-            int continueIndex = newInstructions.FindIndex(index, instruction => instruction.opcode == OpCodes.Leave_S) - 3;
+            const int continueOffset = -4;
 
-            newInstructions[continueIndex].labels.Add(continueLabel);
+            // Find the call of InventoryItemUpgraded
+            int continueIndex = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(Scp914ItemProcessor), nameof(Scp914ItemProcessor.OnInventoryItemUpgraded)))) + continueOffset;
 
             LocalBuilder ev2 = generator.DeclareLocal(typeof(UpgradingInventoryItemEventArgs));
 
             newInstructions.InsertRange(
-                index,
+                continueIndex,
                 new CodeInstruction[]
                 {
-                    // setting = curSetting
-                    new(OpCodes.Ldloc_S, curSetting.LocalIndex),
-                    new(OpCodes.Starg_S, 4),
-
                     // Player.Get(ply)
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
@@ -157,6 +146,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                     // UpgradingInventoryItemEventArgs ev = new(player, itemBase, setting, processor)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingInventoryItemEventArgs))[0]),
                     new(OpCodes.Dup),
+
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev2.LocalIndex),
 
@@ -170,6 +160,7 @@ namespace Exiled.Events.Patches.Events.Scp914
 
                     // loading ev2 2 times
                     new(OpCodes.Ldloc_S, ev2.LocalIndex),
+
                     new(OpCodes.Dup),
 
                     // setting = ev.KnobSetting
@@ -178,6 +169,7 @@ namespace Exiled.Events.Patches.Events.Scp914
 
                     // processor = ev.Processor
                     new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingInventoryItemEventArgs), nameof(UpgradingInventoryItemEventArgs.Processor))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp914Processor), nameof(Scp914Processor.Base))),
                     new(OpCodes.Stloc_S, 9),
                 });
 
@@ -207,6 +199,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(continueLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
