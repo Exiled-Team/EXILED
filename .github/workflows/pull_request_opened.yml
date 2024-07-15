@@ -4,18 +4,18 @@ on:
   pull_request:
     types: 
       - opened
-      - labeled
-      - unlabeled
+      - reopened
       - edited
+      - synchronize
   workflow_dispatch:
 
 jobs:
   set-labels:
     runs-on: ubuntu-latest
-    steps:
+    steps:            
     - name: Labeler
       uses: actions/labeler@v5.0.0
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        repo-token: ${{ github.token }}
         configuration-path: .github/labeler.yml
         sync-labels: true
