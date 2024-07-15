@@ -321,8 +321,16 @@ namespace Exiled.API.Features
         /// </summary>
         /// <typeparam name="T">The type of the data to be read.</typeparam>
         /// <returns>The corresponding <typeparamref name="T"/> instance or <see langword="null"/> if not found.</returns>
-        public EConfig? Read<T>()
-            where T : class => data.FirstOrDefault(data => data.Base!.GetType() == typeof(T));
+        public T? Read<T>()
+            where T : class
+        {
+            EConfig? t = Get<T>();
+
+            if (t is null)
+                return default;
+
+            return t.data.FirstOrDefault(data => data.Base!.GetType() == typeof(T)) as T ?? default;
+        }
 
         /// <summary>
         /// Writes a new value contained in the specified config of type <typeparamref name="T"/>.
@@ -333,12 +341,12 @@ namespace Exiled.API.Features
         public void Write<T>(string name, object value)
             where T : class
         {
-            EConfig? param = Read<T>();
+            T? param = Read<T>();
             if (param is null)
                 return;
 
             string? path = GetPath<T>();
-            PropertyInfo? propertyInfo = param.Base!.GetType().GetProperty(name);
+            PropertyInfo? propertyInfo = param.GetType().GetProperty(name);
 
             if (propertyInfo is null)
                 return;
