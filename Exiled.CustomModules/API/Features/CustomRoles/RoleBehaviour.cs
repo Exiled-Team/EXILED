@@ -68,11 +68,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public virtual RoleSettings Settings { get; set; }
 
         /// <summary>
-        /// Gets or sets the role's configs.
-        /// </summary>
-        public virtual EConfig Config { get; set; }
-
-        /// <summary>
         /// Gets a random spawn point based on existing settings.
         /// </summary>
         public Vector3 SpawnPoint
@@ -220,21 +215,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
+            ImplementConfigs();
+
             if (CustomTeam.TryGet(Owner.Cast<Pawn>(), out CustomTeam customTeam))
                 CustomTeam = customTeam;
-
-            if (Config is not null)
-            {
-                foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
-                {
-                    PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
-                    targetInfo?.SetValue(
-                        typeof(RoleSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings :
-                        typeof(InventoryManager).IsAssignableFrom(targetInfo.DeclaringType) ? Inventory :
-                        throw new TypeLoadException(),
-                        propertyInfo.GetValue(Config, null));
-                }
-            }
 
             if (CustomRole.TryGet(GetType(), out CustomRole customRole) && customRole.Settings is RoleSettings settings)
             {
@@ -259,6 +243,16 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 Owner.AddComponent(CustomRole.EscapeBehaviourComponent);
                 useCustomEscape = true;
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
+        {
+            targetInfo?.SetValue(
+                typeof(RoleSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings :
+                typeof(InventoryManager).IsAssignableFrom(targetInfo.DeclaringType) ? Inventory :
+                this,
+                propertyInfo.GetValue(Config, null));
         }
 
         /// <inheritdoc/>

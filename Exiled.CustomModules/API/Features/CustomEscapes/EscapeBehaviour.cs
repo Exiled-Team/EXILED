@@ -7,7 +7,6 @@
 
 namespace Exiled.CustomModules.API.Features.CustomEscapes
 {
-    using System;
     using System.Collections.Generic;
     using System.Reflection;
 
@@ -41,11 +40,6 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public virtual List<EscapeSettings> Settings { get; set; }
 
         /// <summary>
-        /// Gets or sets the escape's configs.
-        /// </summary>
-        public virtual object Config { get; set; }
-
-        /// <summary>
         /// Gets the current escape scenario.
         /// </summary>
         protected virtual byte CurrentScenario => CalculateEscapeScenario();
@@ -65,14 +59,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            if (Config is not null)
-            {
-                foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
-                {
-                    PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
-                    targetInfo?.SetValue(Settings, propertyInfo.GetValue(Config, null));
-                }
-            }
+            ImplementConfigs();
 
             CustomRole customRole = Owner.Cast<Pawn>().CustomRole;
             if (CustomEscape.TryGet(GetType(), out CustomEscape customEscape) && customEscape.Settings is List<EscapeSettings> settings)
@@ -88,6 +75,14 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                 Log.Error($"Custom escape ({GetType().Name}) has invalid configuration.");
                 Destroy();
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
+        {
+            targetInfo?.SetValue(
+                typeof(List<EscapeSettings>).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
+                propertyInfo.GetValue(Config, null));
         }
 
         /// <inheritdoc/>

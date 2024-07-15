@@ -7,7 +7,6 @@
 
 namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
-    using System;
     using System.Reflection;
 
     using Exiled.API.Features;
@@ -40,22 +39,10 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// </summary>
         public AbilitySettings Settings { get; set; }
 
-        /// <summary>
-        /// Gets or sets the ability's configs.
-        /// </summary>
-        public virtual EConfig Config { get; set; }
-
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            if (Config is not null)
-            {
-                foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
-                {
-                    PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
-                    targetInfo?.SetValue(Settings, propertyInfo.GetValue(Config, null));
-                }
-            }
+            ImplementConfigs();
 
             if (CustomAbility<TEntity>.TryGet(GetType(), out CustomAbility<TEntity> customAbility) &&
                 customAbility.Settings is AbilitySettings settings)
@@ -71,6 +58,14 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
                 Log.Error($"Custom ability ({GetType().Name}) has invalid configuration.");
                 Destroy();
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
+        {
+            targetInfo?.SetValue(
+                typeof(AbilitySettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
+                propertyInfo.GetValue(Config, null));
         }
 
         /// <inheritdoc/>

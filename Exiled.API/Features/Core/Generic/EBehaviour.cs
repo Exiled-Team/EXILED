@@ -7,7 +7,12 @@
 
 namespace Exiled.API.Features.Core.Generic
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+
     using Exiled.API.Features.Core;
+    using Exiled.API.Interfaces;
 
     /// <summary>
     /// <see cref="EBehaviour{T}"/> is a versatile component designed to enhance the functionality of various entities.
@@ -38,6 +43,11 @@ namespace Exiled.API.Features.Core.Generic
         /// of such scenarios by the derived classes.
         /// </summary>
         public virtual bool DisposeOnNullOwner { get; protected set; } = true;
+
+        /// <summary>
+        /// Gets or sets the behaviour's configs.
+        /// </summary>
+        public virtual EConfig Config { get; set; }
 
         /// <summary>
         /// Abstract method to find and set the owner of the current object.
@@ -80,6 +90,29 @@ namespace Exiled.API.Features.Core.Generic
 
             if (!Owner && DisposeOnNullOwner)
                 return;
+        }
+
+        /// <summary>
+        /// Implements the behaviour's configs by copying properties from the config object to the current instance.
+        /// </summary>
+        protected virtual void ImplementConfigs()
+        {
+            if (Config is null || !Config.GetType().GetInterfaces().Contains(typeof(IConfig)))
+                return;
+
+            Type inType = GetType();
+            foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
+                ApplyConfig(propertyInfo, inType.GetProperty(propertyInfo.Name));
+        }
+
+        /// <summary>
+        /// Applies a configuration property value from the source property to the target property.
+        /// </summary>
+        /// <param name="propertyInfo">The source property from the config object.</param>
+        /// <param name="targetInfo">The target property in the current instance.</param>
+        protected virtual void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
+        {
+            targetInfo?.SetValue(this, propertyInfo.GetValue(Config, null));
         }
 
         /// <summary>

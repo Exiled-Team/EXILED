@@ -7,6 +7,7 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Items
 {
+    using System;
     using System.Linq;
     using System.Reflection;
 
@@ -20,12 +21,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Interfaces;
     using Exiled.CustomModules.Events.EventArgs.CustomItems;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp914;
-
     using MEC;
-
     using PlayerRoles;
 
     /// <summary>
@@ -103,11 +103,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         public ItemSettings Settings { get; set; }
 
         /// <summary>
-        /// Gets or sets the item's configs.
-        /// </summary>
-        public virtual EConfig Config { get; set; }
-
-        /// <summary>
         /// Gets the item's owner.
         /// </summary>
         public Player ItemOwner => Owner.Owner;
@@ -115,14 +110,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            if (Config is not null)
-            {
-                foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
-                {
-                    PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
-                    targetInfo?.SetValue(Settings, propertyInfo.GetValue(Config, null));
-                }
-            }
+            ImplementConfigs();
 
             if (CustomItem.TryGet(GetType(), out CustomItem customItem) && customItem.Settings is ItemSettings itemSettings)
             {
@@ -135,6 +123,14 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
                 Log.Error($"Custom item ({GetType().Name}) has invalid configuration.");
                 Destroy();
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
+        {
+            targetInfo?.SetValue(
+                typeof(ItemSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
+                propertyInfo.GetValue(Config, null));
         }
 
         /// <summary>
