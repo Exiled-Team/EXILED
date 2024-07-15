@@ -668,8 +668,18 @@ namespace Exiled.API.Features
         public Role Role
         {
             get => role ??= Role.Create(RoleManager.CurrentRole);
-            internal set => role = value;
+            internal set
+            {
+                PreviousRole = role;
+                role = value;
+            }
         }
+
+        /// <summary>
+        /// Gets the previous player's role.
+        /// </summary>
+        [EProperty(readOnly: true, category: ROLES_CATEGORY)]
+        public Role PreviousRole { get; private set; }
 
         /// <summary>
         /// Gets or sets the player's SCP preferences.
