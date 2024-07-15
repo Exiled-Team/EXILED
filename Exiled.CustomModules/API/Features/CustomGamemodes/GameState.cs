@@ -62,7 +62,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <summary>
         /// Gets or sets the <see cref="GameState"/>'s config.
         /// </summary>
-        public object Config { get; set; }
+        public EConfig Config { get; set; }
 
         /// <summary>
         /// Gets all <see cref="PlayerState"/> instances.
@@ -92,21 +92,27 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            if (CustomGameMode.TryGet(GetType(), out CustomGameMode customGameMode))
+            if (Config is not null)
+            {
+                foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
+                {
+                    PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
+                    targetInfo?.SetValue(Settings, propertyInfo.GetValue(Config, null));
+                }
+            }
+
+            if (CustomGameMode.TryGet(GetType(), out CustomGameMode customGameMode) && customGameMode.Settings is GameModeSettings settings)
+            {
                 CustomGameMode = customGameMode;
 
-            Settings = CustomGameMode.Settings;
+                if (Config is null)
+                    Settings = settings;
+            }
 
-            if (Config is null)
-                return;
-
-            foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
+            if (CustomGameMode is null || Settings is null)
             {
-                PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
-                if (targetInfo is null)
-                    continue;
-
-                targetInfo.SetValue(Settings, propertyInfo.GetValue(Config, null));
+                Log.Error($"Custom game mode ({GetType().Name}) has invalid configuration.");
+                Destroy();
             }
         }
 

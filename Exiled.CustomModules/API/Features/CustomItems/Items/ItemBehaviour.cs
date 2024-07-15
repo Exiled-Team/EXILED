@@ -105,7 +105,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         /// <summary>
         /// Gets or sets the item's configs.
         /// </summary>
-        public virtual object Config { get; set; }
+        public virtual EConfig Config { get; set; }
 
         /// <summary>
         /// Gets the item's owner.
@@ -115,6 +115,15 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
+            if (Config is not null)
+            {
+                foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
+                {
+                    PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
+                    targetInfo?.SetValue(Settings, propertyInfo.GetValue(Config, null));
+                }
+            }
+
             if (CustomItem.TryGet(GetType(), out CustomItem customItem) && customItem.Settings is ItemSettings itemSettings)
             {
                 CustomItem = customItem;
@@ -125,18 +134,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
             {
                 Log.Error($"Custom item ({GetType().Name}) has invalid configuration.");
                 Destroy();
-            }
-
-            if (Config is null)
-                return;
-
-            foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
-            {
-                PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
-                if (targetInfo is null)
-                    continue;
-
-                targetInfo.SetValue(Settings, propertyInfo.GetValue(Config, null));
             }
         }
 

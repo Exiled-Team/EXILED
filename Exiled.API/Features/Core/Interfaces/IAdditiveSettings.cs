@@ -24,6 +24,6 @@ namespace Exiled.API.Features.Core.Interfaces
         /// <summary>
         /// Gets or sets the configs.
         /// </summary>
-        public object Config { get; set; }
+        public EConfig Config { get; set; }
     }
 }
