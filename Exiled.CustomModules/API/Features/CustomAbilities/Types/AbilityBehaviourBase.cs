@@ -68,7 +68,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
 
             if (customAbility is null || Settings is null)
             {
-                Log.Error($"Custom item ({GetType().Name}) has invalid configuration.");
+                Log.Error($"Custom ability ({GetType().Name}) has invalid configuration.");
                 Destroy();
             }
         }
