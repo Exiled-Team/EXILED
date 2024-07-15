@@ -92,11 +92,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
                     foreach ((float chance, Vector3 pos) in spawnpoints)
                     {
-                        if (chance.EvaluateProbability())
-                        {
-                            outPos = pos;
-                            return true;
-                        }
+                        if (!chance.EvaluateProbability())
+                            continue;
+
+                        outPos = pos;
+                        return true;
                     }
 
                     return false;
