@@ -70,7 +70,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets or sets the role's configs.
         /// </summary>
-        public virtual object Config { get; set; }
+        public virtual EConfig Config { get; set; }
 
         /// <summary>
         /// Gets a random spawn point based on existing settings.
@@ -92,11 +92,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
                     foreach ((float chance, Vector3 pos) in spawnpoints)
                     {
-                        if (chance.EvaluateProbability())
-                        {
-                            outPos = pos;
-                            return true;
-                        }
+                        if (!chance.EvaluateProbability())
+                            continue;
+
+                        outPos = pos;
+                        return true;
                     }
 
                     return false;
@@ -228,7 +228,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
                 {
                     PropertyInfo targetInfo = Config.GetType().GetProperty(propertyInfo.Name);
-
                     targetInfo?.SetValue(
                         typeof(RoleSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings :
                         typeof(InventoryManager).IsAssignableFrom(targetInfo.DeclaringType) ? Inventory :
@@ -237,13 +236,20 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 }
             }
 
-            if (!CustomRole.TryGet(GetType(), out CustomRole customRole))
-                throw new Exception($"Couldn't find any CustomRole belonging to the {GetType().Name} instance.");
+            if (CustomRole.TryGet(GetType(), out CustomRole customRole) && customRole.Settings is RoleSettings settings)
+            {
+                CustomRole = customRole;
 
-            CustomRole = customRole;
+                if (Config is null)
+                    Settings = settings;
+            }
 
-            if (Config is null)
-                Settings = CustomRole.Settings;
+            if (CustomRole is null || Settings is null)
+            {
+                Log.Error($"Custom role ({GetType().Name}) has invalid configuration.");
+                Destroy();
+                return;
+            }
 
             Owner.UniqueRole = CustomRole.Name;
             Owner.TryAddCustomRoleFriendlyFire(Name, Settings.FriendlyFireMultiplier);
