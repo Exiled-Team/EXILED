@@ -102,8 +102,8 @@ namespace Exiled.API.Features.Toys
         /// <param name="isStatic">Whether or not the primitive is static.</param>
         /// <param name="spawn">Whether or not the primitive should be spawned.</param>
         /// <returns>The newly created <see cref="Primitive"/>.</returns>
-        public static Primitive Create(PrimitiveType primitiveType, PrimitiveFlags flags = default, Color? color = null, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool isStatic = false, bool spawn = true)
-            => Create(new(primitiveType, color, position, flags, rotation, scale, isStatic, spawn));
+        public static Primitive Create(PrimitiveType primitiveType, PrimitiveFlags flags = PrimitiveFlags.Visible | PrimitiveFlags.Collidable, Color? color = null, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool isStatic = false, bool spawn = true)
+            => Create(new(primitiveType, flags, color, position, rotation, scale, isStatic, spawn));
 
         /// <summary>
         /// Creates a new <see cref="Primitive"/>.
@@ -112,15 +112,16 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(PrimitiveSettings primitiveSettings)
         {
-            Primitive primitive = new(Object.Instantiate(PrefabObject.GetComponent<PrimitiveObjectToy>()));
-
-            primitive.Base.NetworkPrimitiveType = primitiveSettings.PrimitiveType;
-            primitive.AdminToyBase.transform.position = primitiveSettings.Position;
-            primitive.AdminToyBase.transform.rotation = primitiveSettings.Rotation;
-            primitive.AdminToyBase.transform.localScale = primitiveSettings.Scale;
-            primitive.Flags = primitiveSettings.Flags;
-            primitive.Color = primitiveSettings.Color;
-            primitive.IsStatic = primitiveSettings.IsStatic;
+            Primitive primitive = new(Object.Instantiate(PrefabObject.GetComponent<PrimitiveObjectToy>()))
+            {
+                Type = primitiveSettings.PrimitiveType,
+                Flags = primitiveSettings.Flags,
+                Color = primitiveSettings.Color,
+                Position = primitiveSettings.Position,
+                Rotation = primitiveSettings.Rotation,
+                Scale = primitiveSettings.Scale,
+                IsStatic = primitiveSettings.IsStatic,
+            };
 
             if (primitiveSettings.ShouldSpawn)
                 primitive.Spawn();

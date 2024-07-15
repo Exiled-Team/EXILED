@@ -70,8 +70,8 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public new Vector3 Position
         {
-            get => AdminToyBase.Position;
-            set => AdminToyBase.Position = value;
+            get => AdminToyBase.transform.position;
+            set => AdminToyBase.transform.position = value;
         }
 
         /// <summary>
@@ -79,8 +79,8 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public Vector3 Scale
         {
-            get => AdminToyBase.Scale;
-            set => AdminToyBase.Scale = value;
+            get => AdminToyBase.transform.localScale;
+            set => AdminToyBase.transform.localScale = value;
         }
 
         /// <summary>
