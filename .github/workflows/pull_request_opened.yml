@@ -10,6 +10,9 @@ on:
 
 jobs:
   set-labels:
+    permissions:
+      pull-requests: write
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: Labeler
