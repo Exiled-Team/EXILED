@@ -58,7 +58,7 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
                 return false;
             }
 
-            if (!(uint.TryParse(arguments.At(0), out uint id) && CustomItem.TryGet(id, out CustomItem? item)) &&
+            if (!(uint.TryParse(arguments.At(0), out uint id) && CustomItem.TryGet(id, out CustomItem item)) &&
                 !CustomItem.TryGet(arguments.At(0), out item))
             {
                 response = $"{arguments.At(0)} is not a valid custom item.";

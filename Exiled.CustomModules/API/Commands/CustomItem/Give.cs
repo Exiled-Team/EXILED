@@ -59,7 +59,7 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
                 return false;
             }
 
-            if (!CustomItem.TryGet(arguments.At(0), out CustomItem? item))
+            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item))
             {
                 response = $"Custom item {arguments.At(0)} not found!";
                 return false;
