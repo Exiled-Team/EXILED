@@ -47,7 +47,7 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not door is destroyed.
+        /// Gets or sets a value indicating whether door is destroyed.
         /// </summary>
         public bool IsDestroyed
         {
@@ -56,7 +56,7 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not this door is breakable.
+        /// Gets a value indicating whether this door is breakable.
         /// </summary>
         public bool IsBreakable => !IsDestroyed;
 

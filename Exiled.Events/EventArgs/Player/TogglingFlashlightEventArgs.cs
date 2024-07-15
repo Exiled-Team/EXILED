@@ -49,12 +49,12 @@ namespace Exiled.Events.EventArgs.Player
         public Item Item => Flashlight;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the flashlight should be on.
+        /// Gets or sets a value indicating whether the flashlight should be on.
         /// </summary>
         public bool NewState { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can toggle the flashlight.
+        /// Gets or sets a value indicating whether the player can toggle the flashlight.
         /// </summary>
         public bool IsAllowed
         {

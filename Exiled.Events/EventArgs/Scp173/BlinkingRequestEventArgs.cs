@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs.Scp173
         public IReadOnlyCollection<Player> Targets { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is allowed to blink.
+        /// Gets or sets a value indicating whether the player is allowed to blink.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 

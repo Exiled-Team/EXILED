@@ -127,7 +127,7 @@ namespace Exiled.Events.EventArgs.Map
         public EffectGrenadeProjectile Projectile { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the grenade can be thrown.
+        /// Gets or sets a value indicating whether the grenade can be thrown.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 

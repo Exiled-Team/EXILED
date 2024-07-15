@@ -160,7 +160,7 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the target is in sync mode.
+        /// Gets or sets a value indicating whether the target is in sync mode.
         /// </summary>
         public bool IsSynced
         {
@@ -224,7 +224,7 @@ namespace Exiled.API.Features.Toys
         /// <param name="damage">The damage to be dealt.</param>
         /// <param name="damageHandler">The <see cref="DamageHandlerBase"/> dealing the damage.</param>
         /// <param name="exactHit">The exact location of the hit.</param>
-        /// <returns>Whether or not the damage was sent.</returns>
+        /// <returns>Whether the damage was sent.</returns>
         public bool Damage(float damage, DamageHandlerBase damageHandler, Vector3 exactHit) => Base.Damage(damage, damageHandler, exactHit);
     }
 }

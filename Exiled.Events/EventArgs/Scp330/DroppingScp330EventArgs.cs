@@ -45,12 +45,12 @@ namespace Exiled.Events.EventArgs.Scp330
         public Item Item => Scp330;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the type of candy drop.
+        /// Gets or sets a value indicating whether the type of candy drop.
         /// </summary>
         public CandyKindID Candy { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can interact with SCP-330.
+        /// Gets or sets a value indicating whether the player can interact with SCP-330.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 

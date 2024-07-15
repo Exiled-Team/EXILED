@@ -58,7 +58,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public float AuxiliaryPowerCost { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-079 can interact with the tesla gate.
+        /// Gets or sets a value indicating whether SCP-079 can interact with the tesla gate.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

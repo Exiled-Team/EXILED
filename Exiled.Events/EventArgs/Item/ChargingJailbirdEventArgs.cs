@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Item
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all information before a player charges a <see cref="Jailbird"/>.
+    /// Contains all information before a <see cref="API.Features.Items.Jailbird"/> charged attack.
     /// </summary>
     public class ChargingJailbirdEventArgs : IPlayerEvent, IItemEvent, IDeniableEvent
     {
@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs.Item
         public Item Item { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the Jailbird can be charged.
+        /// Gets or sets a value indicating whether the Jailbird can be charged.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

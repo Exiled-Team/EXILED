@@ -21,7 +21,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         /// <param name="player">The player who's closing the generator.</param>
         /// <param name="generator">The <see cref="Scp079Generator" /> instance.</param>
-        /// <param name="isAllowed">Indicates whether or not the generator can be closed.</param>
+        /// <param name="isAllowed">Indicates whether the generator can be closed.</param>
         public ClosingGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true)
         {
             Player = player;
@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the generator door can be closed.
+        /// Gets or sets a value indicating whether the generator door can be closed.
         /// </summary>
         public bool IsAllowed { get; set; }
 

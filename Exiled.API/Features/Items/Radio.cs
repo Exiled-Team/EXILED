@@ -98,7 +98,7 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the radio is transmitting.
+        /// Gets a value indicating whether the radio is transmitting.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Radio))]
         public bool IsTransmitting => PersonalRadioPlayback.IsTransmitting(Owner.ReferenceHub);

@@ -23,10 +23,10 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <inheritdoc cref="Player" />
         /// </param>
         /// <param name="state">
-        /// Whether or not SCP-939 is attempting to place an amnestic cloud.
+        /// Whether SCP-939 is attempting to place an amnestic cloud.
         /// </param>
         /// <param name="isReady">
-        /// Whether or not the cooldown is ready.
+        /// Whether the cooldown is ready.
         /// </param>
         /// <param name="cooldown">
         /// SCP-939's amnestic cloud cooldown.
@@ -45,17 +45,17 @@ namespace Exiled.Events.EventArgs.Scp939
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-939 can place an amnestic cloud.
+        /// Gets or sets a value indicating whether SCP-939 can place an amnestic cloud.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-939 is ready to place its amnestic cloud.
+        /// Gets a value indicating whether SCP-939 is ready to place its amnestic cloud.
         /// </summary>
         public bool State { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-939's amnestic cloud cooldown is ready.
+        /// Gets or sets a value indicating whether SCP-939's amnestic cloud cooldown is ready.
         /// </summary>
         public bool IsReady { get; set; }
 

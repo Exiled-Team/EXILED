@@ -60,7 +60,7 @@ namespace Exiled.Events.EventArgs.Scp173
         public AbilityCooldown Cooldown { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the tantrum can be placed.
+        /// Gets or sets a value indicating whether the tantrum can be placed.
         /// </summary>
         public bool IsAllowed { get; set; }
 

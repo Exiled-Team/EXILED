@@ -78,7 +78,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public double Cooldown { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-079 can black out the room.
+        /// Gets or sets a value indicating whether SCP-079 can black out the room.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs.Item
         public Item Item { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the item can be swung.
+        /// Gets or sets a value indicating whether the item can be swung.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

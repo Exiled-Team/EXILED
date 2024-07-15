@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the pickup was thrown.
+        /// Gets or sets a value indicating whether the pickup was thrown.
         /// </summary>
         public bool WasThrown { get; set; }
 

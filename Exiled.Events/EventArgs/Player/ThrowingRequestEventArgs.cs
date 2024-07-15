@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
-    /// Contains all information before receving a throwing request.
+    /// Contains all information before receiving a throwing request.
     /// </summary>
     public class ThrowingRequestEventArgs : IPlayerEvent, IItemEvent
     {

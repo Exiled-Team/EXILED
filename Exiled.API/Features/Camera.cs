@@ -202,7 +202,7 @@ namespace Exiled.API.Features
         public float Zoom => Base.ZoomAxis.CurrentZoom;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not this camera is being used by SCP-079.
+        /// Gets or sets a value indicating whether this camera is being used by SCP-079.
         /// </summary>
         public bool IsBeingUsed
         {

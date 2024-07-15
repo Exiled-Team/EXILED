@@ -29,7 +29,7 @@ namespace Exiled.CreditTags.Features
         public string Result { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not it was successful.
+        /// Gets a value indicating whether it was successful.
         /// </summary>
         public bool Success { get; private set; }
 
@@ -39,7 +39,7 @@ namespace Exiled.CreditTags.Features
         public HttpStatusCode Code { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the request was successful.
+        /// Gets a value indicating whether the request was successful.
         /// </summary>
         public bool Done => done;
 

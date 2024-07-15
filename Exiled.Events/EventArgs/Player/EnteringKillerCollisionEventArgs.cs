@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs.Player
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is killed by killer collision.
+        /// Gets or sets a value indicating whether the player is killed by killer collision.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

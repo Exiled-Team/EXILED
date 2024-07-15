@@ -76,12 +76,12 @@ namespace Exiled.Events.Handlers
         public static Event Generated { get; set; } = new();
 
         /// <summary>
-        /// Invoked before the server changes a pickup into a grenade, when triggered by an explosion.
+        /// Invoked before a <see cref="GrenadePickup"/> is changed into a live grenade by an explosion.
         /// </summary>
         public static Event<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the server changes a pickup into a grenade, when triggered by an explosion.
+        /// Invoked after a <see cref="GrenadePickup"/> was changed into a live grenade by an explosion.
         /// </summary>
         public static Event<ChangedIntoGrenadeEventArgs> ChangedIntoGrenade { get; set; } = new();
 
@@ -206,13 +206,13 @@ namespace Exiled.Events.Handlers
         public static void OnGenerated() => Generated.InvokeSafely();
 
         /// <summary>
-        /// Called before the server changes a <see cref="Pickup"/> into a live Grenade when hit by an explosion.
+        /// Called before a <see cref="GrenadePickup"/> is changed into a live grenade by an explosion.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingIntoGrenadeEventArgs"/> instance.</param>
         public static void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev) => ChangingIntoGrenade.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after the server changes a <see cref="Pickup"/> into a live Grenade when hit by an explosion.
+        /// Called after a <see cref="GrenadePickup"/> was changed into a live grenade by an explosion.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingIntoGrenadeEventArgs"/> instance.</param>
         public static void OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs ev) => ChangedIntoGrenade.InvokeSafely(ev);

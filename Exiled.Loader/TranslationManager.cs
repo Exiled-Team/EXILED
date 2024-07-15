@@ -74,7 +74,7 @@ namespace Exiled.Loader
         /// Loads the translations of a plugin based on the actual distribution.
         /// </summary>
         /// <param name="plugin">The plugin which its translation has to be loaded.</param>
-        /// <param name="rawTranslations">The raw translations to check whether or not the plugin already has a translation config.</param>
+        /// <param name="rawTranslations">The raw translations to check whether the plugin already has a translation config.</param>
         /// <returns>The <see cref="ITranslation"/> of the desired plugin.</returns>
         public static ITranslation LoadTranslation(this IPlugin<IConfig> plugin, Dictionary<string, object> rawTranslations = null) => LoaderPlugin.Config.ConfigType switch
         {
@@ -210,7 +210,7 @@ namespace Exiled.Loader
         /// Loads the translations of a plugin based on the default distribution.
         /// </summary>
         /// <param name="plugin">The plugin which its translation has to be loaded.</param>
-        /// <param name="rawTranslations">The raw translations to check whether or not the plugin already has a translation config.</param>
+        /// <param name="rawTranslations">The raw translations to check whether the plugin already has a translation config.</param>
         /// <returns>The <see cref="ITranslation"/> of the desired plugin.</returns>
         private static ITranslation LoadDefaultTranslation(this IPlugin<IConfig> plugin, Dictionary<string, object> rawTranslations)
         {

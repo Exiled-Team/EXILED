@@ -62,7 +62,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public int Amount { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the experience is successfully granted.
+        /// Gets or sets a value indicating whether the experience is successfully granted.
         /// </summary>
         public bool IsAllowed { get; set; }
 

@@ -34,7 +34,7 @@ namespace Exiled.API.Features.Scp914Processors
         public new FirearmItemProcessor Base { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not magazine should be refilled.
+        /// Gets or sets a value indicating whether magazine should be refilled.
         /// </summary>
         public bool RefillAmmo
         {

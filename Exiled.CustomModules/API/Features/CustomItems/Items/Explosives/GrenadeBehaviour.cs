@@ -34,7 +34,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
     /// </remarks>
     public abstract class GrenadeBehaviour : ItemBehaviour
     {
-        /// <inheritdoc cref="ItemBehaviour.Settings"/>.
+        /// <inheritdoc cref="ItemBehaviour.Settings"/>
         public GrenadeSettings GrenadeSettings => Settings.Cast<GrenadeSettings>();
 
         /// <inheritdoc cref="EBehaviour{T}.Owner"/>
@@ -43,13 +43,13 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
         /// <summary>
         /// Throw the custom grenade object.
         /// </summary>
-        /// <param name="position">The <see cref="Vector3"/> position to throw at.</param>
+        /// <param name="position">The <see cref="Vector3"/> position to throw from.</param>
         /// <param name="force">The amount of force to throw with.</param>
         /// <param name="weight">The <see cref="float"/> weight of the Grenade.</param>
         /// <param name="fuseTime">The <see cref="float"/> fuse time of the grenade.</param>
         /// <param name="grenadeType">The <see cref="ItemType"/> of the grenade to spawn.</param>
         /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
-        /// <returns>The spawned <see cref="Pickup"/>.</returns>
+        /// <returns>The spawned grenade <see cref="Pickup"/>.</returns>
         public virtual Pickup Throw(Vector3 position, float force, float weight, float fuseTime = 3f, ItemType grenadeType = ItemType.GrenadeHE, Player player = null)
         {
             if (!player)
@@ -129,7 +129,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
         }
 
         /// <summary>
-        /// Handles tracking thrown requests by custom grenades.
+        /// Fired before receiving a throwing request with a custom grenade.
         /// </summary>
         /// <param name="ev"><see cref="ThrowingRequestEventArgs"/>.</param>
         protected virtual void OnThrowingRequest(ThrowingRequestEventArgs ev)
@@ -137,7 +137,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
         }
 
         /// <summary>
-        /// Handles tracking thrown custom grenades.
+        /// Fired after a custom grenade is thrown.
         /// </summary>
         /// <param name="ev"><see cref="ThrownProjectileEventArgs"/>.</param>
         protected virtual void OnThrownProjectile(ThrownProjectileEventArgs ev)
@@ -145,7 +145,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
         }
 
         /// <summary>
-        /// Handles tracking exploded custom grenades.
+        /// Fired before a custom grenade explodes.
         /// </summary>
         /// <param name="ev"><see cref="ExplodingGrenadeEventArgs"/>.</param>
         protected virtual void OnExploding(ExplodingGrenadeEventArgs ev)
@@ -153,7 +153,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
         }
 
         /// <summary>
-        /// Handles the tracking of custom grenade pickups that are changed into live grenades by a frag grenade explosion.
+        /// Fired after a custom <see cref="GrenadePickup"/> was changed into a live grenade by an explosion.
         /// </summary>
         /// <param name="ev"><see cref="ChangedIntoGrenadeEventArgs"/>.</param>
         protected virtual void OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs ev)

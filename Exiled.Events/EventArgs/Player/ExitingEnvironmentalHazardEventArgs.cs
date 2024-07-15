@@ -38,7 +38,7 @@ namespace Exiled.Events.EventArgs.Player
         public Hazard Hazard { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player should be affected by the environmental hazard.
+        /// Gets or sets a value indicating whether the player should be affected by the environmental hazard.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

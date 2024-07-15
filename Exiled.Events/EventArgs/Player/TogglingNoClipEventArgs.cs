@@ -41,12 +41,12 @@ namespace Exiled.Events.EventArgs.Player
         public Player Player { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the noclip mode will be enabled or not.
+        /// Gets a value indicating whether the noclip mode will be enabled or not.
         /// </summary>
         public bool IsEnabled { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can toggle noclip.
+        /// Gets or sets a value indicating whether the player can toggle noclip.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

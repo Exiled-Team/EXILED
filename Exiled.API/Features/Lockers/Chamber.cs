@@ -135,7 +135,7 @@ namespace Exiled.API.Features.Lockers
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not items should be spawned as soon as they are initialized.
+        /// Gets or sets a value indicating whether items should be spawned as soon as they are initialized.
         /// </summary>
         public bool InitiallySpawn
         {

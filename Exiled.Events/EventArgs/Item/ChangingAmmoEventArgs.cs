@@ -23,13 +23,13 @@ namespace Exiled.Events.EventArgs.Item
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingAmmoEventArgs"/> class.
         /// </summary>
-        /// <param name="basefirearm"><inheritdoc cref="Firearm"/></param>
+        /// <param name="baseFirearm"><inheritdoc cref="Firearm"/></param>
         /// <param name="oldStatus"><inheritdoc cref="OldAmmo"/></param>
         /// <param name="newStatus"><inheritdoc cref="NewAmmo"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingAmmoEventArgs(BaseFirearm basefirearm, FirearmStatus oldStatus, FirearmStatus newStatus, bool isAllowed = true)
+        public ChangingAmmoEventArgs(BaseFirearm baseFirearm, FirearmStatus oldStatus, FirearmStatus newStatus, bool isAllowed = true)
         {
-            Firearm = Item.Get(basefirearm).As<Firearm>();
+            Firearm = Item.Get(baseFirearm).As<Firearm>();
             Player = Firearm.Owner;
             OldStatus = oldStatus;
             NewStatus = newStatus;
@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs.Item
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="API.Features.Items.Firearm"/> the ammo type is being changed to.
+        /// Gets the <see cref="API.Features.Items.Firearm"/> whose ammo is being changed.
         /// </summary>
         public Firearm Firearm { get; }
 
@@ -50,22 +50,22 @@ namespace Exiled.Events.EventArgs.Item
         public Item Item => Firearm;
 
         /// <summary>
-        /// Gets the old status.
+        /// Gets the old firearm status.
         /// </summary>
         public FirearmStatus OldStatus { get; }
 
         /// <summary>
-        /// Gets the old ammo.
+        /// Gets the old ammo count of the firearm.
         /// </summary>
         public byte OldAmmo => OldStatus.Ammo;
 
         /// <summary>
-        /// Gets or sets the new status to be used by the firearm.
+        /// Gets or sets the new status that will be used by the firearm.
         /// </summary>
         public FirearmStatus NewStatus { get; set; }
 
         /// <summary>
-        /// Gets or sets the new ammo to be used by the firearm.
+        /// Gets or sets the new ammo count of the firearm.
         /// </summary>
         public byte NewAmmo
         {
@@ -74,7 +74,7 @@ namespace Exiled.Events.EventArgs.Item
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the ammo can be changed.
+        /// Gets or sets a value indicating whether the ammo can be changed.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

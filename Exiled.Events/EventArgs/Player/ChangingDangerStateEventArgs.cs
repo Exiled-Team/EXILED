@@ -23,9 +23,9 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player">The player changing danger.</param>
         /// <param name="danger">The <see cref="DangerStackBase"/>.</param>
         /// <param name="type">The <see cref="DangerType"/>.</param>
-        /// <param name="activating">Whether or not the danger is being activated. If false it is ending.</param>
+        /// <param name="activating">Whether the danger is being activated. If false it is ending.</param>
         /// <param name="encounteredPlayer">The player that has been encountered if the danger is an encounter or null if it isn't.</param>
-        /// <param name="isAllowed">Whether or not it is allowed to activate/deactivate.</param>
+        /// <param name="isAllowed">Whether it is allowed to activate/deactivate.</param>
         public ChangingDangerStateEventArgs(Player player, DangerStackBase danger, DangerType type, bool activating, Player encounteredPlayer = null, bool isAllowed = true)
         {
             Player = player;
@@ -50,12 +50,12 @@ namespace Exiled.Events.EventArgs.Player
         public DangerType Type { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the danger is being activated.
+        /// Gets a value indicating whether the danger is being activated.
         /// </summary>
         public bool IsActivating { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the danger is ending.
+        /// Gets a value indicating whether the danger is ending.
         /// </summary>
         public bool IsEnding => !IsActivating;
 

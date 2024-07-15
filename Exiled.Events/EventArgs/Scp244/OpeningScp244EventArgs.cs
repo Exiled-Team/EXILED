@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs.Scp244
         public Scp244Pickup Pickup { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can open SCP-244.
+        /// Gets or sets a value indicating whether the player can open SCP-244.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

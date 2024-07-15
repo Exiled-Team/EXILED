@@ -78,12 +78,13 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether escaping is allowed.
+        /// Gets or sets a value indicating whether the specific settings are enabled.
         /// </summary>
         public bool IsAllowed { get; set; }
 
         /// <summary>
         /// Gets or sets the role to be given when escaping.
+        /// Will override the <see cref="CustomRole"/> if set.
         /// </summary>
         public RoleTypeId Role { get; set; }
 
@@ -93,12 +94,12 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public CustomRole CustomRole { get; set; }
 
         /// <summary>
-        /// Gets or sets the escape position.
+        /// Gets or sets the position where the specific settings will be triggered.
         /// </summary>
         public Vector3 Position { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum allowable distance for applying the specified settings.
+        /// Gets or sets the distance threshold from the <see cref="Position"/> to trigger the settings.
         /// </summary>
         public float DistanceThreshold { get; set; }
     }

@@ -34,17 +34,17 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is in hurting range.
+        /// Gets or sets a value indicating whether the player is in hurting range.
         /// </summary>
         public bool IsInHurtingRange { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player will cause the tesla going to be idle.
+        /// Gets or sets a value indicating whether the player will cause the tesla going to be idle.
         /// </summary>
         public bool IsInIdleRange { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player will cause the tesla going to be activated.
+        /// Gets or sets a value indicating whether the player will cause the tesla going to be activated.
         /// </summary>
         public bool IsTriggerable { get; set; }
 
@@ -59,12 +59,12 @@ namespace Exiled.Events.EventArgs.Player
         public TeslaGate Tesla { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player will be detected by the tesla.
+        /// Gets or sets a value indicating whether the player will be detected by the tesla.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the tesla will be deactivated.
+        /// Gets or sets a value indicating whether the tesla will be deactivated.
         /// </summary>
         public bool DisableTesla { get; set; }
     }

@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs.Cassie
     using Interfaces;
 
     /// <summary>
-    /// Contains all the information after sending a C.A.S.S.I.E. message.
+    /// Contains all the information before sending a C.A.S.S.I.E. message.
     /// </summary>
     public class SendingCassieMessageEventArgs : IDeniableEvent
     {
@@ -41,17 +41,17 @@ namespace Exiled.Events.EventArgs.Cassie
         public string Words { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the message should be held.
+        /// Gets or sets a value indicating whether the message should be held.
         /// </summary>
         public bool MakeHold { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the message should make noise.
+        /// Gets or sets a value indicating whether the message should have background noise and begin with a bell ring sound.
         /// </summary>
         public bool MakeNoise { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the message can be sent.
+        /// Gets or sets a value indicating whether the message can be sent.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

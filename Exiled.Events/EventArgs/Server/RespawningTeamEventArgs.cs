@@ -59,7 +59,7 @@ namespace Exiled.Events.EventArgs.Server
         public Queue<RoleTypeId> SpawnQueue { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the spawn can occur.
+        /// Gets or sets a value indicating whether the spawn can occur.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

@@ -153,19 +153,19 @@ namespace Exiled.API.Features.Roles
         public TimeSpan ActiveTime => TimeSpan.FromSeconds(Base.ActiveTime);
 
         /// <summary>
-        /// Gets a value indicating whether or not this role represents a dead role.
+        /// Gets a value indicating whether this role represents a dead role.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Role))]
         public bool IsDead => Team is Team.Dead;
 
         /// <summary>
-        /// Gets a value indicating whether or not this role represents a living role.
+        /// Gets a value indicating whether this role represents a living role.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Role))]
         public bool IsAlive => !IsDead;
 
         /// <summary>
-        /// Gets a value indicating whether or not this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
+        /// Gets a value indicating whether this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Role))]
         public bool IsValid => Owner != null && Owner.IsConnected && Base == Owner.RoleManager.CurrentRole;
@@ -183,7 +183,7 @@ namespace Exiled.API.Features.Roles
         public static implicit operator RoleTypeId(Role role) => role?.Type ?? RoleTypeId.None;
 
         /// <summary>
-        /// Returns whether or not 2 roles are the same.
+        /// Returns whether 2 roles are the same.
         /// </summary>
         /// <param name="left">The role.</param>
         /// <param name="right">The other role.</param>
@@ -191,7 +191,7 @@ namespace Exiled.API.Features.Roles
         public static bool operator ==(Role left, Role right) => left?.Equals(right) ?? right is null;
 
         /// <summary>
-        /// Returns whether or not the two roles are different.
+        /// Returns whether the two roles are different.
         /// </summary>
         /// <param name="left">The role.</param>
         /// <param name="right">The other role.</param>
@@ -199,7 +199,7 @@ namespace Exiled.API.Features.Roles
         public static bool operator !=(Role left, Role right) => !(left == right);
 
         /// <summary>
-        /// Returns whether or not the role has the same RoleTypeId as the given <paramref name="typeId"/>.
+        /// Returns whether the role has the same RoleTypeId as the given <paramref name="typeId"/>.
         /// </summary>
         /// <param name="role">The <see cref="Role"/>.</param>
         /// <param name="typeId">The <see cref="RoleTypeId"/>.</param>
@@ -207,7 +207,7 @@ namespace Exiled.API.Features.Roles
         public static bool operator ==(Role role, RoleTypeId typeId) => role?.Type == typeId;
 
         /// <summary>
-        /// Returns whether or not the role has a different RoleTypeId as the given <paramref name="typeId"/>.
+        /// Returns whether the role has a different RoleTypeId as the given <paramref name="typeId"/>.
         /// </summary>
         /// <param name="role">The <see cref="Role"/>.</param>
         /// <param name="typeId">The <see cref="RoleTypeId"/>.</param>
@@ -215,7 +215,7 @@ namespace Exiled.API.Features.Roles
         public static bool operator !=(Role role, RoleTypeId typeId) => !(role == typeId);
 
         /// <summary>
-        /// Returns whether or not the role has the same RoleTypeId as the given <paramref name="type"/>.
+        /// Returns whether the role has the same RoleTypeId as the given <paramref name="type"/>.
         /// </summary>
         /// <param name="type">The <see cref="RoleTypeId"/>.</param>
         /// <param name="role">The <see cref="Role"/>.</param>
@@ -223,7 +223,7 @@ namespace Exiled.API.Features.Roles
         public static bool operator ==(RoleTypeId type, Role role) => role == type;
 
         /// <summary>
-        /// Returns whether or not the role has a different RoleTypeId as the given <paramref name="type"/>.
+        /// Returns whether the role has a different RoleTypeId as the given <paramref name="type"/>.
         /// </summary>
         /// <param name="type">The <see cref="RoleTypeId"/>.</param>
         /// <param name="role">The <see cref="Role"/>.</param>

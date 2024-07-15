@@ -49,7 +49,7 @@ namespace Exiled.Events.EventArgs.Player
         public WorkstationStatus NewStatus { get; set; } = WorkstationStatus.PoweringDown;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the workstation can be deactivated.
+        /// Gets or sets a value indicating whether the workstation can be deactivated.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

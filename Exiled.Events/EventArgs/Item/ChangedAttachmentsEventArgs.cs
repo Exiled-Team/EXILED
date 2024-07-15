@@ -22,7 +22,7 @@ namespace Exiled.Events.EventArgs.Item
     using Firearm = API.Features.Items.Firearm;
 
     /// <summary>
-    /// Contains all information after changing item attachments.
+    /// Contains all information after <see cref="Exiled.API.Features.Items.Firearm"/> attachments were changed.
     /// </summary>
     public class ChangedAttachmentsEventArgs : IPlayerEvent, IFirearmEvent
     {

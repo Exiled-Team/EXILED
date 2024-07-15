@@ -158,7 +158,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-173 is currently being viewed by one or more players.
+        /// Gets a value indicating whether SCP-173 is currently being viewed by one or more players.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp173Role))]
         public bool IsObserved => ObserversTracker.IsObserved;
@@ -191,7 +191,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-173 is able to blink.
+        /// Gets or sets a value indicating whether SCP-173 is able to blink.
         /// </summary>
         [EProperty(category: nameof(Scp173Role))]
         public bool BlinkReady
@@ -237,7 +237,7 @@ namespace Exiled.API.Features.Roles
         public float BlinkDistance => TeleportAbility.EffectiveBlinkDistance;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-173's breakneck speed is active.
+        /// Gets or sets a value indicating whether SCP-173's breakneck speed is active.
         /// </summary>
         [EProperty(category: nameof(Scp173Role))]
         public bool BreakneckActive
@@ -254,7 +254,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Places a Tantrum (SCP-173's ability) under the player.
         /// </summary>
-        /// <param name="failIfObserved">Whether or not to place the tantrum if SCP-173 is currently being viewed.</param>
+        /// <param name="failIfObserved">Whether to place the tantrum if SCP-173 is currently being viewed.</param>
         /// <param name="cooldown">The cooldown until SCP-173 can place a tantrum again. Set to <c>0</c> to not affect the cooldown.</param>
         /// <returns>The <see cref="TantrumHazard"/> instance, or <see langword="null"/> if it cannot be placed.</returns>
         public TantrumHazard PlaceTantrum(bool failIfObserved = false, float cooldown = 0)

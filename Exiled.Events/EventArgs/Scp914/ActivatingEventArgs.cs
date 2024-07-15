@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs.Scp914
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-914 can be activated.
+        /// Gets or sets a value indicating whether SCP-914 can be activated.
         /// </summary>
         public bool IsAllowed { get; set; }
 

@@ -16,7 +16,7 @@ namespace Exiled.API.Interfaces
         /// Validates a config value.
         /// </summary>
         /// <param name="value">A value to validate.</param>
-        /// <returns>Returns whether or not config value is correct.</returns>
+        /// <returns>Returns whether config value is correct.</returns>
         bool Validate(object value);
     }
 }

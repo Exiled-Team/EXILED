@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs.Scp049
         public Player Target { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not target can be attacked.
+        /// Gets or sets a value indicating whether target can be attacked.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

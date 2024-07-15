@@ -30,7 +30,7 @@ namespace Exiled.API.Features.Hazards
         public new BaseHazard Base { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not hazard is destroyed.
+        /// Gets or sets a value indicating whether hazard is destroyed.
         /// </summary>
         public bool IsDestroyed
         {

@@ -106,7 +106,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the shot can be fired.
+        /// Gets or sets a value indicating whether the shot can be fired.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

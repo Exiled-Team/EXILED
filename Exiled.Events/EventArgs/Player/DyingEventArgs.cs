@@ -58,7 +58,7 @@ namespace Exiled.Events.EventArgs.Player
         public CustomDamageHandler DamageHandler { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can be killed.
+        /// Gets or sets a value indicating whether the player can be killed.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 

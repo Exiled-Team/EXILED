@@ -77,7 +77,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-018 can injure teammates.
+        /// Gets a value indicating whether SCP-018 can injure teammates.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp018Projectile))]
         public bool IgnoreFriendlyFire => Base.IgnoreFriendlyFire;

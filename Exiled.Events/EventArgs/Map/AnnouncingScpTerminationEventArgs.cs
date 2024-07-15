@@ -69,7 +69,7 @@ namespace Exiled.Events.EventArgs.Map
         public CustomDamageHandler DamageHandler { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the SCP termination will be announced by C.A.S.S.I.E.
+        /// Gets or sets a value indicating whether the SCP termination will be announced by C.A.S.S.I.E.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

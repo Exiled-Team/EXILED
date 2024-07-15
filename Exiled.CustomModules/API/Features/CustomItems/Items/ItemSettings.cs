@@ -45,7 +45,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         public override Vector3 Scale { get; set; } = Vector3.one;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not this item causes things to happen that may be considered hacks, and thus be shown to global moderators as being present in a player's inventory when they gban them.
+        /// Gets or sets a value indicating whether this item causes things to happen that may be considered hacks, and thus be shown to global moderators as being present in a player's inventory when they gban them.
         /// </summary>
         public virtual bool ShouldMessageOnGban { get; set; }
 

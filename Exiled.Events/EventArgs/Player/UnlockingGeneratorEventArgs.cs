@@ -38,7 +38,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the generator can be unlocked.
+        /// Gets or sets a value indicating whether the generator can be unlocked.
         /// </summary>
         public bool IsAllowed { get; set; }
 

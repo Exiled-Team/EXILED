@@ -38,7 +38,7 @@ namespace Exiled.Events.EventArgs.Scp106
         public Scp106Role Scp106 { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-106 can stalk.
+        /// Gets or sets a value indicating whether SCP-106 can stalk.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs.Scp173
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can use breakneck speeds.
+        /// Gets or sets a value indicating whether the player can use breakneck speeds.
         /// </summary>
         public bool IsAllowed { get; set; }
 

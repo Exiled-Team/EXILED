@@ -44,11 +44,11 @@ namespace Exiled.API.Features
         public bool IsGlobal { get; }
 
         /// <summary>
-        /// Gets whether or not the provided hex color code can be used in badges.
+        /// Checks if the provided hex color can be used in badges.
         /// </summary>
         /// <param name="hex">The hex color code, including the <c>#</c>.</param>
         /// <param name="colorType">If the method returns <see langword="true"/>, this will be an enum representing the hex code. If the method returns <see langword="false"/>, this will be <see langword="null"/>.</param>
-        /// <returns>Whether or not the provided hex color code can be used in badges.</returns>
+        /// <returns>Whether the provided hex color code can be used in badges.</returns>
         public static bool IsValidColor(string hex, out Misc.PlayerInfoColorTypes? colorType)
         {
             foreach (KeyValuePair<Misc.PlayerInfoColorTypes, string> option in Misc.AllowedColors)

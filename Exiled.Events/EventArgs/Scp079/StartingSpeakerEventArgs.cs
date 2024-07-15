@@ -59,7 +59,7 @@ namespace Exiled.Events.EventArgs.Scp079
         public float AuxiliaryPowerCost { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-079 can use the speaker.
+        /// Gets or sets a value indicating whether SCP-079 can use the speaker.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

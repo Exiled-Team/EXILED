@@ -21,7 +21,7 @@ namespace Exiled.Events.EventArgs.Item
     using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
-    /// Contains all information before changing item attachments.
+    /// Contains all information before <see cref="Exiled.API.Features.Items.Firearm"/> attachments are changed.
     /// </summary>
     public class ChangingAttachmentsEventArgs : IPlayerEvent, IDeniableEvent, IFirearmEvent
     {
@@ -70,7 +70,7 @@ namespace Exiled.Events.EventArgs.Item
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the attachments can be changed.
+        /// Gets or sets a value indicating whether the attachments can be changed.
         /// </summary>
         public bool IsAllowed { get; set; }
 
