@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="FeatureGroup.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -10,12 +10,13 @@ namespace Exiled.Events.Extra
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Collections;
 
     using Events;
     using Exiled.API.Features;
 
     /// <summary>
-    /// A feature group for a plugin.
+    /// Represents a group of features for a plugin, managing event handlers and coroutines.
     /// </summary>
     public class FeatureGroup
     {
@@ -25,7 +26,7 @@ namespace Exiled.Events.Extra
         public static readonly Dictionary<string, FeatureGroup> Features = new();
 
         /// <summary>
-        /// The key for this feature group.
+        /// The key identifying this feature group.
         /// </summary>
 #pragma warning disable SA1401
         public readonly string Key;
@@ -33,7 +34,7 @@ namespace Exiled.Events.Extra
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureGroup"/> class.
-        /// Create a new feature group and add it to the dictionary.
+        /// Adds the feature group to the dictionary.
         /// </summary>
         /// <param name="key">The key the feature group should be identified by.</param>
         public FeatureGroup(string key)
@@ -43,27 +44,27 @@ namespace Exiled.Events.Extra
         }
 
         /// <summary>
-        /// Gets the EventGroup handling registration.
+        /// Gets the <see cref="EventGroup"/> handling registration of event handlers.
         /// </summary>
         public EventGroup EventGroup { get; } = new();
 
         /// <summary>
-        /// Gets a list of events pertaining to the EventGroup.
+        /// Gets the list of events pertaining to the <see cref="EventGroup"/>.
         /// </summary>
         public List<object> Events { get; private set; } = new();
 
         /// <summary>
-        /// Gets a list of MEC coroutines added to this FeatureGroup.
+        /// Gets the list of MEC coroutines added to this <see cref="FeatureGroup"/>.
         /// </summary>
         public List<Func<IEnumerator<float>>> Coroutines { get; } = new();
 
         /// <summary>
-        /// Gets a value indicating whether the features in this group are registered or not.
+        /// Gets a value indicating whether the features in this group are registered.
         /// </summary>
         public bool IsRegistered { get; private set; }
 
         /// <summary>
-        /// Register all supplied features.
+        /// Registers all supplied features.
         /// </summary>
         public void Register()
         {
@@ -92,8 +93,8 @@ namespace Exiled.Events.Extra
         /// <summary>
         /// Supplies a list of events to this feature group.
         /// </summary>
-        /// <param name="classes">A params list that contains all event classes wanting to be added.</param>
-        /// <returns>Itself.</returns>
+        /// <param name="classes">A params list that contains all event classes to be added.</param>
+        /// <returns>The current instance of <see cref="FeatureGroup"/>.</returns>
         public FeatureGroup Supply(params object[] classes)
         {
             Events = Events.Concat(classes).ToList();
@@ -103,8 +104,8 @@ namespace Exiled.Events.Extra
         /// <summary>
         /// Supplies a coroutine to this feature group.
         /// </summary>
-        /// <param name="function">The coroutine that should be added.</param>
-        /// <returns>Itself.</returns>
+        /// <param name="function">The coroutine to be added.</param>
+        /// <returns>The current instance of <see cref="FeatureGroup"/>.</returns>
         public FeatureGroup Supply(Func<IEnumerator<float>> function)
         {
             Coroutines.Add(function);
@@ -112,10 +113,10 @@ namespace Exiled.Events.Extra
         }
 
         /// <summary>
-        /// Supplies coroutines to this feature group.
+        /// Supplies multiple coroutines to this feature group.
         /// </summary>
-        /// <param name="functions">The coroutines that should be added.</param>
-        /// <returns>Itself.</returns>
+        /// <param name="functions">The coroutines to be added.</param>
+        /// <returns>The current instance of <see cref="FeatureGroup"/>.</returns>
         public FeatureGroup Supply(params Func<IEnumerator<float>>[] functions)
         {
             foreach (Func<IEnumerator<float>> function in functions)
