@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs.Scp939
     using API.Features;
     using Exiled.API.Features.Roles;
     using Interfaces;
+    using UnityEngine;
 
     /// <summary>
     /// Contains all information before the footsteps are being shown to SCP-939.
@@ -20,10 +21,14 @@ namespace Exiled.Events.EventArgs.Scp939
         /// Initializes a new instance of the <see cref="PlayingFootstepEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="target"><inheritdoc cref="Target"/></param>
+        /// <param name="ripplePosition"><inheritdoc cref="RipplePosition"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public PlayingFootstepEventArgs(Player player, bool isAllowed = true)
+        public PlayingFootstepEventArgs(ReferenceHub player, ReferenceHub target, Vector3 ripplePosition, bool isAllowed = true)
         {
-            Player = player;
+            Player = Player.Get(player);
+            Target = Player.Get(target);
+            RipplePosition = ripplePosition;
             Scp939 = Player.Role.As<Scp939Role>();
             IsAllowed = isAllowed;
         }
@@ -32,6 +37,16 @@ namespace Exiled.Events.EventArgs.Scp939
         /// Gets the player who's controlling SCP-939.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        /// Gets the player that triggered the ripple.
+        /// </summary>
+        public Player Target { get; }
+
+        /// <summary>
+        /// Gets or sets the position of the ripple.
+        /// </summary>
+        public Vector3 RipplePosition { get; set; }
 
         /// <inheritdoc/>
         public Scp939Role Scp939 { get; }

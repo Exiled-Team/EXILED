@@ -17,6 +17,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     using HarmonyLib;
     using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.PlayableScps.Scp939.Ripples;
+    using RelativePositioning;
 
     using static HarmonyLib.AccessTools;
 
@@ -33,48 +34,52 @@ namespace Exiled.Events.Patches.Events.Scp939
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label returnLabel = generator.DefineLabel();
-            Label continueLabel = generator.DefineLabel();
 
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Callvirt && i.Calls(PropertyGetter(typeof(CharacterModel), nameof(CharacterModel.OwnerHub))));
-            index += -7;
+            LocalBuilder ev = generator.DeclareLocal(typeof(PlayingFootstepEventArgs));
 
-            newInstructions.RemoveRange(index, 7);
+            const int offset = 2;
+
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Brfalse_S) + offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                // if (base.CheckVisibility(model.OwnerHub))
-                //    return;
+                // StandardSubroutine<>.Owner
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(FootstepRippleTrigger), nameof(FootstepRippleTrigger.Owner))),
+
+                // model.OwnerHub
                 new(OpCodes.Ldarg_1),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(CharacterModel), nameof(CharacterModel.OwnerHub))),
-                new(OpCodes.Call, Method(typeof(RippleTriggerBase), nameof(RippleTriggerBase.CheckVisibility), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(AnimatedCharacterModel), nameof(AnimatedCharacterModel.OwnerHub))),
 
-                new(OpCodes.Brfalse_S, continueLabel),
-                new(OpCodes.Ret),
-                new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
+                // position2
+                new(OpCodes.Ldloc_2),
 
-                // Player player = Player.Get(hub);
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(CharacterModel), nameof(CharacterModel.OwnerHub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-
-                // true;
+                // true
                 new(OpCodes.Ldc_I4_1),
 
-                // PlayingFootstepEventArgs ev = (player, true);
+                // new PlayingFootstepÈventArgs(player, target, ripplePosition, isAllowed)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlayingFootstepEventArgs))[0]),
                 new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                // Handlers.Scp939.OnPlayingFootstep(ev);
+                // Scp939.OnPlayingFootstep(ev)
                 new(OpCodes.Call, Method(typeof(Scp939), nameof(Scp939.OnPlayingFootstep))),
 
-                // if (!IsAllowed)
-                //      return;
+                // if (!ev.IsAllowed) return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(PlayingFootstepEventArgs), nameof(PlayingFootstepEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
+            });
 
-                // var for _syncPlayer
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_1),
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldloc_2);
+
+            newInstructions.RemoveRange(index, 1);
+
+            newInstructions.InsertRange(index, new CodeInstruction[]
+            {
+                // Load PlayingFootstepEventArgs, override the value of new RelativePosition() to use the event property.
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(PlayingFootstepEventArgs), nameof(PlayingFootstepEventArgs.RipplePosition))),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
