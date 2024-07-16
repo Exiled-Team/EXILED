@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs.Warhead
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets the player who's interacting the warhead button in surface.
+        /// Gets the player who's interacting with the Warhead button in surface.
         /// </summary>
         public Player Player { get; }
     }
