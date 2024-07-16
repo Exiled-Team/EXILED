@@ -224,7 +224,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             {
                 CustomRole = customRole;
 
-                if (Config is null)
+                if (customRole is null || customRole.Config is null)
                     Settings = settings;
             }
 
