@@ -42,8 +42,8 @@ namespace Exiled.Events.Patches.Events.Warhead
 
             Label thisFunctionLabel = generator.DefineLabel();
 
-            // ButtonInteractEventArgs ev = new(Player.Get(PlayerInteract._hub), bool)
-            // Warhead.OnButtonInteract(ev)
+            // SurfaceButtonInteractEventArgs ev = new SurfaceButtonInteractEventArgs(Player.Get(PlayerInteract._hub), bool)
+            // Warhead.OnSurfaceButtonInteract(ev)
             // if (!ev.IsAllowed)
             // return;
             newInstructions.InsertRange(
@@ -51,13 +51,25 @@ namespace Exiled.Events.Patches.Events.Warhead
                 new[]
                 {
                     new CodeInstruction(OpCodes.Ldarg_0),
+
+                    // PlayerInteract._hub
                     new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerInteract), "_hub")),
+
+                    // Player.Get(PlayerInteract._hub)
                     new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
                     new CodeInstruction(OpCodes.Ldc_I4_1),
+
+                    // new ButtonInteractEventArgs(Player.Get(PlayerInteract._hub), bool)
                     new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(SurfaceButtonInteractEventArgs))[0]),
                     new CodeInstruction(OpCodes.Dup),
+
+                    // Warhead.OnSurfaceButtonInteract(ev)
                     new CodeInstruction(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnSurfaceButtonInteract))),
                     new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SurfaceButtonInteractEventArgs), nameof(SurfaceButtonInteractEventArgs.IsAllowed))),
+
+                    // if (!ev.IsAllowed)
+                    // return;
                     new CodeInstruction(chckDis_instruction),
                     new CodeInstruction(OpCodes.Ret),
                 });
