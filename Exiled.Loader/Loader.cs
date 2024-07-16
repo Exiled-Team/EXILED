@@ -407,6 +407,7 @@ namespace Exiled.Loader
             LoadDependencies();
             LoadPlugins();
 
+            EConfig.LoadAll();
             ConfigManager.Reload();
             TranslationManager.Reload();
 

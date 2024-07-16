@@ -26,6 +26,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using MEC;
     using PlayerRoles;
     using Respawning;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Abstract base class providing a foundation for custom role management, integrating seamlessly with various game behaviors.
@@ -76,52 +77,136 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets the <see cref="CustomRole"/>'s <see cref="Type"/>.
         /// </summary>
+        [YamlIgnore]
         public abstract Type BehaviourComponent { get; }
 
         /// <summary>
-        /// Gets the <see cref="CustomRole"/>'s name.
+        /// Gets or sets the <see cref="CustomRole"/>'s name.
         /// </summary>
-        public override string Name { get; }
+        public override string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomRole"/>'s id.
         /// </summary>
-        public override uint Id { get; protected set; }
+        public override uint Id { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomRole"/> is enabled.
+        /// Gets or sets the <see cref="CustomRole"/>'s description.
         /// </summary>
-        public override bool IsEnabled { get; }
+        public virtual string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="CustomRole"/> is enabled.
+        /// </summary>
+        public override bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="CustomRole"/>'s <see cref="RoleTypeId"/>.
+        /// </summary>
+        public virtual RoleTypeId Role { get; set; }
+
+        /// <summary>
+        /// Gets or sets the relative spawn chance of the <see cref="CustomRole"/>.
+        /// </summary>
+        public virtual int Probability { get; set; }
+
+        /// <summary>
+        /// Gets or sets the required <see cref="Team"/> that players must belong to in order to allow the <see cref="CustomRole"/> to spawn.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the required alive team to be eligible for spawning in the <see cref="CustomRole"/>.
+        /// </remarks>
+        public virtual Team RequiredTeamToSpawn { get; set; } = Team.Dead;
+
+        /// <summary>
+        /// Gets or sets the required <see cref="RoleTypeId"/> that players must have to allow the <see cref="CustomRole"/> to spawn.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the required role type for players to be eligible for spawning in the <see cref="CustomRole"/>.
+        /// </remarks>
+        public virtual RoleTypeId RequiredRoleToSpawn { get; set; } = RoleTypeId.None;
+
+        /// <summary>
+        /// Gets or sets the required custom team that players must belong to in order to allow the <see cref="CustomRole"/> to spawn.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the required alive custom team to be eligible for spawning in the <see cref="CustomRole"/>.
+        /// </remarks>
+        public virtual uint RequiredCustomTeamToSpawn { get; set; }
+
+        /// <summary>
+        /// Gets or sets the required <see cref="CustomRole"/> that players must have to allow the <see cref="CustomRole"/> to spawn.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the required custom role for players to be eligible for spawning in the <see cref="CustomRole"/>.
+        /// </remarks>
+        public virtual uint RequiredCustomRoleToSpawn { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="RoleSettings"/>.
+        /// </summary>
+        public virtual RoleSettings Settings { get; set; } = RoleSettings.Default;
+
+        /// <summary>
+        /// Gets or sets the <see cref="CustomEscapes.EscapeSettings"/>.
+        /// </summary>
+        public virtual List<EscapeSettings> EscapeSettings { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets a value representing the maximum instances of the <see cref="CustomRole"/> that can be automatically assigned.
+        /// </summary>
+        public virtual int MaxInstances { get; set; }
+
+        /// <summary>
+        /// Gets or sets the required teams for this <see cref="CustomRole"/> to win.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the teams the <see cref="CustomRole"/> belongs to.
+        /// </remarks>
+        public virtual Team[] TeamsOwnership { get; set; } = { };
+
+        /// <summary>
+        /// Gets or sets the <see cref="SpawnableTeamType"/> from which to retrieve players for assigning the <see cref="CustomRole"/>.
+        /// </summary>
+        public virtual SpawnableTeamType AssignFromTeam { get; set; } = SpawnableTeamType.None;
+
+        /// <summary>
+        /// Gets or sets the <see cref="RoleTypeId"/> from which to retrieve players for assigning the <see cref="CustomRole"/>.
+        /// </summary>
+        public virtual RoleTypeId AssignFromRole { get; set; }
+
+        /// <summary>
+        /// Gets or sets all roles to override, preventing the specified roles to spawn.
+        /// </summary>
+        public virtual RoleTypeId[] OverrideScps { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="CustomRole"/> should be treated as a separate team unit.
+        /// </summary>
+        public virtual bool IsTeamUnit { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="CustomRole"/> should be considered an SCP.
+        /// </summary>
+        public virtual bool IsScp { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether a player can spawn as this <see cref="CustomRole"/> based on its assigned probability.
         /// </summary>
         /// <returns><see langword="true"/> if the probability condition was satisfied; otherwise, <see langword="false"/>.</returns>
+        [YamlIgnore]
         public bool CanSpawnByProbability => Probability.EvaluateProbability();
 
         /// <summary>
         /// Gets all instances of this <see cref="CustomRole"/>.
         /// </summary>
+        [YamlIgnore]
         public int Instances { get; private set; }
-
-        /// <summary>
-        /// Gets the <see cref="CustomRole"/>'s description.
-        /// </summary>
-        public virtual string Description { get; }
-
-        /// <summary>
-        /// Gets the <see cref="CustomRole"/>'s <see cref="RoleTypeId"/>.
-        /// </summary>
-        public virtual RoleTypeId Role { get; }
-
-        /// <summary>
-        /// Gets the relative spawn chance of the <see cref="CustomRole"/>.
-        /// </summary>
-        public virtual int Probability { get; }
 
         /// <summary>
         /// Gets a value indicating whether the role can spawn given a condition.
         /// </summary>
+        [YamlIgnore]
         public virtual bool EvaluateConditions
         {
             get
@@ -160,94 +245,16 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Gets the required <see cref="Team"/> that players must belong to in order to allow the <see cref="CustomRole"/> to spawn.
-        /// </summary>
-        /// <remarks>
-        /// This property specifies the required alive team to be eligible for spawning in the <see cref="CustomRole"/>.
-        /// </remarks>
-        public virtual Team RequiredTeamToSpawn => Team.Dead;
-
-        /// <summary>
-        /// Gets the required <see cref="RoleTypeId"/> that players must have to allow the <see cref="CustomRole"/> to spawn.
-        /// </summary>
-        /// <remarks>
-        /// This property specifies the required role type for players to be eligible for spawning in the <see cref="CustomRole"/>.
-        /// </remarks>
-        public virtual RoleTypeId RequiredRoleToSpawn => RoleTypeId.None;
-
-        /// <summary>
-        /// Gets the required custom team that players must belong to in order to allow the <see cref="CustomRole"/> to spawn.
-        /// </summary>
-        /// <remarks>
-        /// This property specifies the required alive custom team to be eligible for spawning in the <see cref="CustomRole"/>.
-        /// </remarks>
-        public virtual uint RequiredCustomTeamToSpawn { get; }
-
-        /// <summary>
-        /// Gets the required <see cref="CustomRole"/> that players must have to allow the <see cref="CustomRole"/> to spawn.
-        /// </summary>
-        /// <remarks>
-        /// This property specifies the required custom role for players to be eligible for spawning in the <see cref="CustomRole"/>.
-        /// </remarks>
-        public virtual uint RequiredCustomRoleToSpawn { get; }
-
-        /// <summary>
-        /// Gets the <see cref="RoleSettings"/>.
-        /// </summary>
-        public virtual RoleSettings Settings { get; } = RoleSettings.Default;
-
-        /// <summary>
-        /// Gets the <see cref="CustomEscapes.EscapeSettings"/>.
-        /// </summary>
-        public virtual List<EscapeSettings> EscapeSettings { get; } = new();
-
-        /// <summary>
         /// Gets the <see cref="CustomEscape"/>'s <see cref="Type"/>.
         /// </summary>
+        [YamlIgnore]
         public virtual Type EscapeBehaviourComponent { get; }
-
-        /// <summary>
-        /// Gets a value representing the maximum instances of the <see cref="CustomRole"/> that can be automatically assigned.
-        /// </summary>
-        public virtual int MaxInstances => IsScp ? 1 : -1;
-
-        /// <summary>
-        /// Gets the required teams for this <see cref="CustomRole"/> to win.
-        /// </summary>
-        /// <remarks>
-        /// This property specifies the teams the <see cref="CustomRole"/> belongs to.
-        /// </remarks>
-        public virtual Team[] TeamsOwnership { get; } = { };
-
-        /// <summary>
-        /// Gets the <see cref="SpawnableTeamType"/> from which to retrieve players for assigning the <see cref="CustomRole"/>.
-        /// </summary>
-        public virtual SpawnableTeamType AssignFromTeam => SpawnableTeamType.None;
-
-        /// <summary>
-        /// Gets the <see cref="RoleTypeId"/> from which to retrieve players for assigning the <see cref="CustomRole"/>.
-        /// </summary>
-        public virtual RoleTypeId AssignFromRole { get; }
-
-        /// <summary>
-        /// Gets all roles to override, preventing the specified roles to spawn.
-        /// </summary>
-        public virtual RoleTypeId[] OverrideScps { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomRole"/> should be treated as a separate team unit.
-        /// </summary>
-        public virtual bool IsTeamUnit { get; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="CustomRole"/> is registered.
         /// </summary>
+        [YamlIgnore]
         public virtual bool IsRegistered => Registered.Contains(this);
-
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomRole"/> should be considered an SCP.
-        /// </summary>
-        public virtual bool IsScp { get; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pawn"/> containing all players owning this <see cref="CustomRole"/>.
@@ -598,7 +605,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </returns>
         /// <remarks>
         /// This method dynamically enables all custom roles found in the calling assembly. Custom roles
-        /// must be marked with the <see cref="CustomRoleAttribute"/> to be considered for enabling. If
+        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling. If
         /// a custom role is enabled successfully, it is added to the returned list.
         /// </remarks>
         public static List<CustomRole> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
@@ -612,7 +619,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </returns>
         /// <remarks>
         /// This method dynamically enables all custom roles found in the calling assembly. Custom roles
-        /// must be marked with the <see cref="CustomRoleAttribute"/> to be considered for enabling. If
+        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling. If
         /// a custom role is enabled successfully, it is added to the returned list.
         /// </remarks>
         public static List<CustomRole> EnableAll(Assembly assembly)
@@ -623,11 +630,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             List<CustomRole> customRoles = new();
             foreach (Type type in assembly.GetTypes())
             {
-                CustomRoleAttribute attribute = type.GetCustomAttribute<CustomRoleAttribute>();
+                ModuleIdentifierAttribute attribute = type.GetCustomAttribute<ModuleIdentifierAttribute>();
                 if (!typeof(CustomRole).IsAssignableFrom(type) || attribute is null)
                     continue;
 
                 CustomRole customRole = Activator.CreateInstance(type) as CustomRole;
+                customRole.DeserializeModule();
 
                 if (!customRole.IsEnabled)
                     continue;
@@ -906,9 +914,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Tries to register a <see cref="CustomRole"/>.
         /// </summary>
         /// <param name="assembly">The assembly to try and register from.</param>
-        /// <param name="attribute">The specified <see cref="CustomRoleAttribute"/>.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomRole"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, CustomRoleAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (Registered.Contains(this))
             {

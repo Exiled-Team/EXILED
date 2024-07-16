@@ -7,6 +7,8 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Items
 {
+    using Exiled.CustomModules.API.Features.Generic;
+
     /// <summary>
     /// The actor which handles all tracking-related tasks for items.
     /// </summary>
