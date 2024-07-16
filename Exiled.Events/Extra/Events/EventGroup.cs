@@ -57,7 +57,7 @@ namespace Exiled.Events.Extra.Events
 
             List<MethodInfo> methodInfos = methods.ToList();
             Log.Warn($"Beginning event handlers, total of {methodInfos.Count} found");
-            
+
             foreach (MethodInfo method in methodInfos)
             {
                 Type eventType = method.GetParameters().First().ParameterType;
