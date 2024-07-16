@@ -39,7 +39,7 @@ namespace Exiled.Events.Extra
         /// <param name="coroutines">A list of tuples containing coroutines and their unique keys.</param>
         public static void StartCoroutines(params (Func<IEnumerator<float>> coroutine, string key)[] coroutines)
         {
-            foreach ((Func<IEnumerator<float>> coroutine, string key) in coroutines) 
+            foreach ((Func<IEnumerator<float>> coroutine, string key) in coroutines)
                 StartCoroutine(coroutine, key);
         }
 
