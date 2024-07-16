@@ -300,7 +300,23 @@ namespace Exiled.CustomModules.API.Features
             if (!File.Exists(FilePath))
             {
                 Log.Info($"{GetType().Name} module configuration not found. Creating a new configuration file.");
-                Config = ModulePointer.Get(this);
+
+                if (File.Exists(PointerPath))
+                {
+                    try
+                    {
+                        Config = EConfig.Deserializer.Deserialize<ModulePointer>(File.ReadAllText(PointerPath));
+                    }
+                    catch
+                    {
+                        Config = ModulePointer.Get(this);
+                    }
+                }
+                else
+                {
+                    Config = ModulePointer.Get(this);
+                }
+
                 SerializeModule();
                 return;
             }
