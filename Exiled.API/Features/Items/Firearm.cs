@@ -117,7 +117,7 @@ namespace Exiled.API.Features.Items
         [EProperty(category: nameof(Firearm))]
         public byte MaxAmmo
         {
-            get => Base.AmmoManagerModule.MaxAmmo;
+            get => Base.AmmoManagerModule?.MaxAmmo ?? 0;
             set
             {
                 switch (Base.AmmoManagerModule)
