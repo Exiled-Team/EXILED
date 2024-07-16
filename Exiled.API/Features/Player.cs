@@ -994,8 +994,17 @@ namespace Exiled.API.Features
         [EProperty(category: STATS_CATEGORY)]
         public float MaxArtificialHealth
         {
-            get => AhpStat.MaxValue;
-            set => AhpStat._maxSoFar = value;
+            get => ActiveArtificialHealthProcesses.FirstOrDefault()?.Limit ?? 0f;
+            set
+            {
+                if (!ActiveArtificialHealthProcesses.Any())
+                    AddAhp(value);
+
+                AhpStat.AhpProcess ahp = ActiveArtificialHealthProcesses.FirstOrDefault();
+
+                if (ahp is not null)
+                    ahp.Limit = value;
+            }
         }
 
         /// <summary>
