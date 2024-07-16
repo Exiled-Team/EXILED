@@ -70,17 +70,6 @@ namespace Exiled.Events.Patches.Events.Scp939
                 new(OpCodes.Brfalse_S, returnLabel),
             });
 
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldloc_2);
-
-            newInstructions.RemoveRange(index, 1);
-
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Load PlayingFootstepEventArgs, override the value of new RelativePosition() to use the event property.
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PlayingFootstepEventArgs), nameof(PlayingFootstepEventArgs.RipplePosition))),
-            });
-
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             foreach (CodeInstruction instruction in newInstructions)

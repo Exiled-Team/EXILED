@@ -44,9 +44,9 @@ namespace Exiled.Events.EventArgs.Scp939
         public Player Target { get; }
 
         /// <summary>
-        /// Gets or sets the position of the ripple.
+        /// Gets the position of the ripple.
         /// </summary>
-        public Vector3 RipplePosition { get; set; }
+        public Vector3 RipplePosition { get; }
 
         /// <inheritdoc/>
         public Scp939Role Scp939 { get; }
