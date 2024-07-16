@@ -17,7 +17,6 @@ namespace Exiled.Events.Patches.Events.Scp939
     using HarmonyLib;
     using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.PlayableScps.Scp939.Ripples;
-    using RelativePositioning;
 
     using static HarmonyLib.AccessTools;
 
