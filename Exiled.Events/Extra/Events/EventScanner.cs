@@ -11,6 +11,7 @@ namespace Exiled.Events.Extra.Events
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using EventArgs.Interfaces;
     using Features;
     using Handlers;
@@ -21,7 +22,7 @@ namespace Exiled.Events.Extra.Events
     public static class EventScanner
     {
         /// <summary>
-        /// Gets a dictionary of event types and their corresponding event instances.
+        /// Gets or sets a dictionary of event types and their corresponding event instances.
         /// </summary>
         private static Dictionary<Type, object> EventTypes { get; set; }
 
