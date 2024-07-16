@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs.Warhead
     using Interfaces;
 
     /// <summary>
-    /// Contains all information before a player interacts the Warhead button in surface.
+    /// Contains all information before a player interacts with the Warhead button in surface.
     /// </summary>
     public class SurfaceButtonInteractEventArgs : IPlayerEvent, IDeniableEvent
     {
