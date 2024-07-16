@@ -467,7 +467,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             List<CustomTeam> customTeams = new();
             foreach (Type type in assembly.GetTypes())
             {
-                CustomTeamAttribute attribute = type.GetCustomAttribute<CustomTeamAttribute>();
+                ModuleIdentifierAttribute attribute = type.GetCustomAttribute<ModuleIdentifierAttribute>();
                 if (type.BaseType != typeof(CustomTeam) || attribute is null)
                     continue;
 
@@ -688,9 +688,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Tries to register a <see cref="CustomTeam"/>.
         /// </summary>
-        /// <param name="attribute">The specified <see cref="CustomTeamAttribute"/>.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(CustomTeamAttribute attribute = null)
+        internal bool TryRegister(ModuleIdentifierAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {

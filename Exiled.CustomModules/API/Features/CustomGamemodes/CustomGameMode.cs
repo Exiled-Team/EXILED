@@ -214,7 +214,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
             List<CustomGameMode> customGameModes = new();
             foreach (Type type in assembly.GetTypes())
             {
-                CustomGameModeAttribute attribute = type.GetCustomAttribute<CustomGameModeAttribute>();
+                ModuleIdentifierAttribute attribute = type.GetCustomAttribute<ModuleIdentifierAttribute>();
                 if (!typeof(CustomGameMode).IsAssignableFrom(type) || attribute is null)
                     continue;
 
@@ -259,9 +259,9 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// Tries to register a <see cref="CustomGameMode"/>.
         /// </summary>
         /// <param name="assembly">The assembly to register <see cref="CustomGameMode"/> from.</param>
-        /// <param name="attribute">The specified <see cref="CustomGameModeAttribute"/>.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomGameMode"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, CustomGameModeAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {

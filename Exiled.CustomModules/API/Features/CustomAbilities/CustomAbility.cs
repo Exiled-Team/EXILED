@@ -488,7 +488,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
             List<CustomAbility<T>> customAbilities = new();
             foreach (Type type in assembly.GetTypes())
             {
-                CustomAbilityAttribute attribute = type.GetCustomAttribute<CustomAbilityAttribute>();
+                ModuleIdentifierAttribute attribute = type.GetCustomAttribute<ModuleIdentifierAttribute>();
                 if (!typeof(CustomAbility<T>).IsAssignableFrom(type) || attribute is null)
                     continue;
 
@@ -590,9 +590,9 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Tries to register a <see cref="CustomAbility{T}"/>.
         /// </summary>
         /// <param name="assembly">The assembly to register <see cref="CustomAbility{T}"/> from.</param>
-        /// <param name="attribute">The specified <see cref="CustomAbilityAttribute"/>.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomAbility{T}"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, CustomAbilityAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!UnorderedRegistered.Contains(this))
             {

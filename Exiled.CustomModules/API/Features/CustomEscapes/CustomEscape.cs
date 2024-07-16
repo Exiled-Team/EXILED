@@ -190,7 +190,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
             List<CustomEscape> customEscapes = new();
             foreach (Type type in assembly.GetTypes())
             {
-                CustomEscapeAttribute attribute = type.GetCustomAttribute<CustomEscapeAttribute>();
+                ModuleIdentifierAttribute attribute = type.GetCustomAttribute<ModuleIdentifierAttribute>();
                 if (!typeof(CustomEscape).IsAssignableFrom(type) || attribute is null)
                     continue;
 
@@ -357,9 +357,9 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// Tries to register a <see cref="CustomEscape"/>.
         /// </summary>
         /// <param name="assembly">The assembly to register <see cref="CustomEscape"/> from..</param>
-        /// <param name="attribute">The specified <see cref="CustomEscapeAttribute"/>.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomEscape"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, CustomEscapeAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {

@@ -370,7 +370,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// </returns>
         /// <remarks>
         /// This method dynamically enables all custom items found in the calling assembly. Custom items
-        /// must be marked with the <see cref="CustomItemAttribute"/> to be considered for enabling. If
+        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling. If
         /// a custom item is enabled successfully, it is added to the returned list.
         /// </remarks>
         public static List<CustomItem> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
@@ -384,7 +384,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// </returns>
         /// <remarks>
         /// This method dynamically enables all custom items found in the calling assembly. Custom items
-        /// must be marked with the <see cref="CustomItemAttribute"/> to be considered for enabling. If
+        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling. If
         /// a custom item is enabled successfully, it is added to the returned list.
         /// </remarks>
         public static List<CustomItem> EnableAll(Assembly assembly)
@@ -395,7 +395,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
             List<CustomItem> customItems = new();
             foreach (Type type in assembly.GetTypes())
             {
-                CustomItemAttribute attribute = type.GetCustomAttribute<CustomItemAttribute>();
+                ModuleIdentifierAttribute attribute = type.GetCustomAttribute<ModuleIdentifierAttribute>();
                 if (!typeof(CustomItem).IsAssignableFrom(type) || attribute is null)
                     continue;
 
@@ -626,9 +626,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// Tries to register a <see cref="CustomItem"/>.
         /// </summary>
         /// <param name="assembly">The assembly to register items from.</param>
-        /// <param name="attribute">The specified <see cref="CustomItemAttribute"/>.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomItem"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, CustomItemAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {

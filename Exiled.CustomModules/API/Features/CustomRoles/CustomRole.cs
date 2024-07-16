@@ -605,7 +605,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </returns>
         /// <remarks>
         /// This method dynamically enables all custom roles found in the calling assembly. Custom roles
-        /// must be marked with the <see cref="CustomRoleAttribute"/> to be considered for enabling. If
+        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling. If
         /// a custom role is enabled successfully, it is added to the returned list.
         /// </remarks>
         public static List<CustomRole> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
@@ -619,7 +619,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </returns>
         /// <remarks>
         /// This method dynamically enables all custom roles found in the calling assembly. Custom roles
-        /// must be marked with the <see cref="CustomRoleAttribute"/> to be considered for enabling. If
+        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling. If
         /// a custom role is enabled successfully, it is added to the returned list.
         /// </remarks>
         public static List<CustomRole> EnableAll(Assembly assembly)
@@ -630,7 +630,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             List<CustomRole> customRoles = new();
             foreach (Type type in assembly.GetTypes())
             {
-                CustomRoleAttribute attribute = type.GetCustomAttribute<CustomRoleAttribute>();
+                ModuleIdentifierAttribute attribute = type.GetCustomAttribute<ModuleIdentifierAttribute>();
                 if (!typeof(CustomRole).IsAssignableFrom(type) || attribute is null)
                     continue;
 
@@ -914,9 +914,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Tries to register a <see cref="CustomRole"/>.
         /// </summary>
         /// <param name="assembly">The assembly to try and register from.</param>
-        /// <param name="attribute">The specified <see cref="CustomRoleAttribute"/>.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomRole"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, CustomRoleAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (Registered.Contains(this))
             {
