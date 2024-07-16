@@ -11,9 +11,9 @@ namespace Exiled.Events.Patches.Events.Scp939
     using System.Reflection.Emit;
 
     using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
-
     using HarmonyLib;
     using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.PlayableScps.Scp939.Ripples;
@@ -24,6 +24,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     /// Patches <see cref="FootstepRippleTrigger.OnFootstepPlayed" />
     /// to add the <see cref="Scp939.PlayingFootstep" /> event.
     /// </summary>
+    [EventPatch(typeof(Scp939), nameof(Scp939.PlayingFootstep))]
     [HarmonyPatch(typeof(FootstepRippleTrigger), nameof(FootstepRippleTrigger.OnFootstepPlayed))]
     internal static class PlayingFootstep
     {
