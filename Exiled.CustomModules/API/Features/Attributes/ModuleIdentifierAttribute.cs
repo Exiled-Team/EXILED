@@ -9,8 +9,6 @@ namespace Exiled.CustomModules.API.Features.Attributes
 {
     using System;
 
-    using Exiled.CustomModules.API.Features.CustomGameModes;
-
     /// <summary>
     /// This attribute determines whether the class which is being applied to should identify a <see cref="CustomModule"/>.
     /// </summary>

@@ -19,6 +19,11 @@ namespace Exiled.CustomModules.API.Features
     public abstract class ModulePointer : TypeCastObject<ModulePointer>
     {
         /// <summary>
+        /// Gets or sets the module's id the <see cref="ModulePointer"/> is pointing to.
+        /// </summary>
+        public abstract uint Id { get; set; }
+
+        /// <summary>
         /// Gets the module pointer for the specified custom module and assembly.
         /// </summary>
         /// <param name="customModule">The custom module to get the pointer for.</param>
@@ -32,18 +37,33 @@ namespace Exiled.CustomModules.API.Features
             foreach (Type type in assembly.GetTypes())
             {
                 ModuleIdentifierAttribute moduleIdentifier = type.GetCustomAttribute<ModuleIdentifierAttribute>();
-                if (moduleIdentifier == null || moduleIdentifier.Id != customModule.Id)
+                if (moduleIdentifier == null)
                     continue;
 
+                bool isPointing = moduleIdentifier.Id > 0 && moduleIdentifier.Id == customModule.Id;
                 if (typeof(ModulePointer).IsAssignableFrom(type))
                 {
+                    ModulePointer modulePointer;
                     if (type.IsGenericTypeDefinition)
                     {
                         Type constructedType = type.MakeGenericType(customModuleType);
-                        return Activator.CreateInstance(constructedType) as ModulePointer;
+                        modulePointer = Activator.CreateInstance(constructedType) as ModulePointer;
+                    }
+                    else
+                    {
+                        modulePointer = Activator.CreateInstance(type) as ModulePointer;
                     }
 
-                    return Activator.CreateInstance(type) as ModulePointer;
+                    if (isPointing)
+                    {
+                        modulePointer.Id = moduleIdentifier.Id;
+                        return modulePointer;
+                    }
+
+                    if (modulePointer.Id != customModule.Id)
+                        continue;
+
+                    return modulePointer;
                 }
             }
 
