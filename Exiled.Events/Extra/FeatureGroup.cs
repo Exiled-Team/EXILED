@@ -10,7 +10,6 @@ namespace Exiled.Events.Extra
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Collections;
 
     using Events;
     using Exiled.API.Features;
