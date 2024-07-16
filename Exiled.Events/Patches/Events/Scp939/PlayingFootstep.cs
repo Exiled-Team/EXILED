@@ -34,8 +34,6 @@ namespace Exiled.Events.Patches.Events.Scp939
 
             Label returnLabel = generator.DefineLabel();
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(PlayingFootstepEventArgs));
-
             const int offset = 2;
 
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Brfalse_S) + offset;
@@ -59,8 +57,6 @@ namespace Exiled.Events.Patches.Events.Scp939
                 // new PlayingFootstepÈventArgs(player, target, ripplePosition, isAllowed)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlayingFootstepEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Scp939.OnPlayingFootstep(ev)
                 new(OpCodes.Call, Method(typeof(Scp939), nameof(Scp939.OnPlayingFootstep))),
