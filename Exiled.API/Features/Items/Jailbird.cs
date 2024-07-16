@@ -141,7 +141,7 @@ namespace Exiled.API.Features.Items
         /// <returns>The amount of damage associated with the specified wear state.</returns>
         public float GetDamage(JailbirdWearState wearState)
         {
-            foreach (Keyframe keyframe in Base._deterioration._chargesToWearState.keys)
+            foreach (Keyframe keyframe in Base._deterioration._damageToWearState.keys)
             {
                 if (Base._deterioration.FloatToState(keyframe.value) == wearState)
                     return keyframe.time;
