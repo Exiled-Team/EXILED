@@ -10,6 +10,7 @@ namespace Exiled.Events.Extra
     using System;
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
+
     using MEC;
 
     /// <summary>
