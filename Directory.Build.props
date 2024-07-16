@@ -8,4 +8,9 @@
     <ItemGroup>
         <AdditionalFiles Include="$(MSBuildThisFileDirectory)\stylecop.json"/>
     </ItemGroup>
+
+    <PropertyGroup>
+        <!-- Define the EXILED_REFERENCES property -->
+        <EXILED_REFERENCES>C:\Users\theDevJade\Useful\assemblies</EXILED_REFERENCES>
+    </PropertyGroup>
 </Project>

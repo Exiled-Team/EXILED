@@ -12,9 +12,9 @@ namespace Exiled.Events.Extra.Events
     using System.Linq;
     using System.Reflection;
 
-    using Exiled.Events.EventArgs.Interfaces;
-    using Exiled.Events.Features;
-    using Exiled.Events.Handlers;
+    using EventArgs.Interfaces;
+    using Features;
+    using Handlers;
 
     /// <summary>
     /// A utility class that scans for all available events.

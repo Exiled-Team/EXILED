@@ -27,7 +27,7 @@ namespace Exiled.Events.Extra
         /// <param name="key">A unique key to identify the coroutine. Defaults to the name of the caller method.</param>
         public static void StartCoroutine(Func<IEnumerator<float>> coroutine, string key)
         {
-            if (key != null && RunningCoroutines.ContainsKey(key))
+            if (RunningCoroutines.ContainsKey(key))
                 StopCoroutine(key);
             CoroutineHandle handle = Timing.RunCoroutine(coroutine());
             RunningCoroutines[key!] = handle;
@@ -39,7 +39,7 @@ namespace Exiled.Events.Extra
         /// <param name="coroutines">A list of tuples containing coroutines and their unique keys.</param>
         public static void StartCoroutines(params (Func<IEnumerator<float>> coroutine, string key)[] coroutines)
         {
-            foreach (var (coroutine, key) in coroutines) StartCoroutine(coroutine, key);
+            foreach ((Func<IEnumerator<float>> coroutine, string key) in coroutines) StartCoroutine(coroutine, key);
         }
 
         /// <summary>
@@ -48,11 +48,10 @@ namespace Exiled.Events.Extra
         /// <param name="key">The unique key of the coroutine to stop.</param>
         public static void StopCoroutine(string key)
         {
-            if (RunningCoroutines.TryGetValue(key, out CoroutineHandle handle))
-            {
-                Timing.KillCoroutines(handle);
-                RunningCoroutines.Remove(key);
-            }
+            if (!RunningCoroutines.TryGetValue(key, out CoroutineHandle handle))
+                return;
+            Timing.KillCoroutines(handle);
+            RunningCoroutines.Remove(key);
         }
 
         /// <summary>
