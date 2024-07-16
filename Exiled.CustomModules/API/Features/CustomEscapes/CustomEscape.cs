@@ -19,6 +19,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using MonoMod.Utils;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Abstract class facilitating the seamless management of escaping behavior within the game environment.
@@ -56,34 +57,35 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public static IReadOnlyDictionary<Player, CustomEscape> Manager => PlayersValue;
 
         /// <summary>
-        /// Gets the <see cref="CustomEscape"/>'s name.
+        /// Gets or sets the <see cref="CustomEscape"/>'s name.
         /// </summary>
-        public override string Name { get; }
+        public override string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="CustomEscape"/>'s id.
+        /// Gets or sets or sets the <see cref="CustomEscape"/>'s id.
         /// </summary>
-        public override uint Id { get; protected set; }
+        public override uint Id { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomEscape"/> is enabled.
+        /// Gets or sets a value indicating whether the <see cref="CustomEscape"/> is enabled.
         /// </summary>
-        public override bool IsEnabled { get; }
+        public override bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets the <see cref="CustomEscape"/>'s <see cref="Type"/>.
         /// </summary>
+        [YamlIgnore]
         public virtual Type BehaviourComponent { get; }
 
         /// <summary>
-        /// Gets all <see cref="Hint"/>'s to be displayed based on the relative <see cref="UUEscapeScenarioType"/>.
+        /// Gets or sets all <see cref="Hint"/>'s to be displayed based on the relative <see cref="UUEscapeScenarioType"/>.
         /// </summary>
-        public virtual Dictionary<byte, Hint> Scenarios { get; } = new();
+        public virtual Dictionary<byte, Hint> Scenarios { get; set; } = new();
 
         /// <summary>
-        /// Gets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape settings.
+        /// Gets or sets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape settings.
         /// </summary>
-        public virtual List<EscapeSettings> Settings { get; } = new() { EscapeSettings.Default, };
+        public virtual List<EscapeSettings> Settings { get; set; } = new() { EscapeSettings.Default, };
 
         /// <summary>
         /// Gets a <see cref="CustomEscape"/> based on the provided id or <see cref="UUCustomEscapeType"/>.
@@ -167,7 +169,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="type">The <see cref="Type"/> to search for.</param>
         /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out CustomEscape customEscape) => customEscape = Get(type.GetType());
+        public static bool TryGet(Type type, out CustomEscape customEscape) => customEscape = Get(type);
 
         /// <summary>
         /// Enables all the custom escapes present in the assembly.
@@ -193,6 +195,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                     continue;
 
                 CustomEscape customEscape = Activator.CreateInstance(type) as CustomEscape;
+                customEscape.DeserializeModule();
 
                 if (!customEscape.IsEnabled)
                     continue;

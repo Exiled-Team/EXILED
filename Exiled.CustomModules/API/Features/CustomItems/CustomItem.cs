@@ -25,6 +25,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
     using UnityEngine;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// A class to easily manage item behavior.
@@ -49,81 +50,90 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomItem"/>'s.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<CustomItem> List => Registered;
 
         /// <summary>
         /// Gets all Items and their respective <see cref="CustomItem"/>.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<Item, CustomItem> ItemManager => ItemsValue;
 
         /// <summary>
         /// Gets all Pickups and their respective <see cref="CustomItem"/>.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<Pickup, CustomItem> PickupManager => PickupValue;
 
         /// <summary>
         /// Gets all pickups belonging to a <see cref="CustomItem"/>.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<Pickup> CustomPickups => PickupManager.Keys;
 
         /// <summary>
         /// Gets all items belonging to a <see cref="CustomItem"/>.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<Item> CustomItems => ItemManager.Keys;
 
         /// <summary>
         /// Gets the <see cref="CustomItem"/>'s <see cref="Type"/>.
         /// </summary>
+        [YamlIgnore]
         public virtual Type BehaviourComponent { get; }
 
         /// <summary>
-        /// Gets the <see cref="CustomItem"/>'s name.
+        /// Gets or sets the <see cref="CustomItem"/>'s name.
         /// </summary>
-        public override string Name { get; }
+        public override string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomItem"/>'s id.
         /// </summary>
-        public override uint Id { get; protected set; }
+        public override uint Id { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomItem"/> is enabled.
+        /// Gets or sets a value indicating whether the <see cref="CustomItem"/> is enabled.
         /// </summary>
-        public override bool IsEnabled { get; }
+        public override bool IsEnabled { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="CustomItem"/>'s description.
+        /// Gets or sets the <see cref="CustomItem"/>'s description.
         /// </summary>
-        public virtual string Description { get; }
+        public virtual string Description { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="CustomItem"/>'s <see cref="global::ItemType"/>.
+        /// Gets or sets the <see cref="CustomItem"/>'s <see cref="global::ItemType"/>.
         /// </summary>
-        public virtual ItemType ItemType { get; }
+        public virtual ItemType ItemType { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="CustomItem"/>'s <see cref="global::ItemCategory"/>.
+        /// Gets or sets the <see cref="CustomItem"/>'s <see cref="global::ItemCategory"/>.
         /// </summary>
-        public virtual ItemCategory ItemCategory { get; }
+        public virtual ItemCategory ItemCategory { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="Settings"/>.
+        /// Gets or sets the <see cref="Settings"/>.
         /// </summary>
-        public virtual Settings Settings { get; }
+        public virtual Settings Settings { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="CustomItem"/> is registered.
         /// </summary>
+        [YamlIgnore]
         public virtual bool IsRegistered => Registered.Contains(this);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all pickup owning this <see cref="Pickup"/>.
         /// </summary>
+        [YamlIgnore]
         public IEnumerable<Pickup> Pickups => PickupManager.Where(x => x.Value.Id == Id).Select(x => x.Key);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Item"/> containing all item owning this <see cref="CustomItem"/>.
         /// </summary>
+        [YamlIgnore]
         public IEnumerable<Item> Items => ItemsValue.Where(x => x.Value.Id == Id).Select(x => x.Key);
 
         /// <summary>
@@ -390,6 +400,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                     continue;
 
                 CustomItem customItem = Activator.CreateInstance(type) as CustomItem;
+                customItem.DeserializeModule();
 
                 if (!customItem.IsEnabled)
                     continue;
