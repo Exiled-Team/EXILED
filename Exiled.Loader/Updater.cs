@@ -23,6 +23,9 @@ namespace Exiled.Loader
     using Exiled.Loader.GHApi.Settings;
     using Exiled.Loader.Models;
     using ServerOutput;
+    using Utf8Json;
+
+    using Paths = PluginAPI.Helpers.Paths;
 
 #pragma warning disable SA1310 // Field names should not contain underscore
 
@@ -31,7 +34,7 @@ namespace Exiled.Loader
     /// </summary>
     internal sealed class Updater
     {
-        private const long REPOID = 231269519;
+        private const long REPO_ID = 231269519;
         private const string INSTALLER_ASSET_NAME_LINUX = "Exiled.Installer-Linux";
         private const string INSTALLER_ASSET_NAME_WIN = "Exiled.Installer-Win.exe";
 
@@ -41,14 +44,6 @@ namespace Exiled.Loader
         private readonly Config config;
 
         private Updater(Config cfg) => config = cfg;
-
-        private enum Stage
-        {
-            Free,
-            Start,
-            Installing,
-            Installed,
-        }
 
         /// <summary>
         /// Gets the updater instance.
@@ -60,6 +55,26 @@ namespace Exiled.Loader
         /// </summary>
         internal bool Busy { get; private set; }
 
+        private static string Folder => File.Exists($"{Paths.GlobalPlugins.Plugins}/Exiled.Loader.dll") ? "global" : Server.Port.ToString();
+
+        private static string InstallerName
+        {
+            get
+            {
+                if (PlatformId == PlatformID.Win32NT)
+                    return INSTALLER_ASSET_NAME_WIN;
+
+                if (PlatformId == PlatformID.Unix)
+                    return INSTALLER_ASSET_NAME_LINUX;
+
+                Log.Error("Can't determine your OS platform");
+                Log.Error($"OSDesc: {RuntimeInformation.OSDescription}");
+                Log.Error($"OSArch: {RuntimeInformation.OSArchitecture}");
+
+                return null;
+            }
+        }
+
         private IEnumerable<ExiledLib> ExiledLib =>
             from Assembly a in AppDomain.CurrentDomain.GetAssemblies()
             let name = a.GetName().Name
@@ -67,31 +82,6 @@ namespace Exiled.Loader
             !(config.ExcludeAssemblies?.Contains(name, StringComparison.OrdinalIgnoreCase) ?? false) &&
             name != Assembly.GetExecutingAssembly().GetName().Name
             select new ExiledLib(a);
-
-        private string Folder => File.Exists($"{PluginAPI.Helpers.Paths.GlobalPlugins.Plugins}/Exiled.Loader.dll") ? "global" : Server.Port.ToString();
-
-        private string InstallerName
-        {
-            get
-            {
-                if (PlatformId == PlatformID.Win32NT)
-                {
-                    return INSTALLER_ASSET_NAME_WIN;
-                }
-                else if (PlatformId == PlatformID.Unix)
-                {
-                    return INSTALLER_ASSET_NAME_LINUX;
-                }
-                else
-                {
-                    Log.Error("Can't determine your OS platform");
-                    Log.Error($"OSDesc: {RuntimeInformation.OSDescription}");
-                    Log.Error($"OSArch: {RuntimeInformation.OSArchitecture}");
-
-                    return null;
-                }
-            }
-        }
 
         /// <summary>
         /// Initializes the updater.
@@ -113,8 +103,11 @@ namespace Exiled.Loader
         internal void CheckUpdate()
         {
             using HttpClient client = CreateHttpClient();
-            if (Busy = FindUpdate(client, !File.Exists(Path.Combine(Paths.Dependencies, "Exiled.API.dll")), out NewVersion newVersion))
+            if (FindUpdate(client, out NewVersion newVersion))
+            {
+                Busy = true;
                 Update(client, newVersion);
+            }
         }
 
         /// <summary>
@@ -136,11 +129,10 @@ namespace Exiled.Loader
         /// <summary>
         /// Finds an update using the client.
         /// </summary>
-        /// <param name="client"> is the HTTP Client.</param>
-        /// <param name="forced"> if the detection was forced.</param>
-        /// <param name="newVersion"> if there is a new version of EXILED.</param>
-        /// <returns>Returns true if there is an update, otherwise false.</returns>
-        private bool FindUpdate(HttpClient client, bool forced, out NewVersion newVersion)
+        /// <param name="client">The HTTP Client.</param>
+        /// <param name="newVersion"> Whether there is a new version of EXILED.</param>
+        /// <returns>Whether there is an update.</returns>
+        private bool FindUpdate(HttpClient client, out NewVersion newVersion)
         {
             try
             {
@@ -148,8 +140,8 @@ namespace Exiled.Loader
 
                 Log.Info($"Found the smallest version of Exiled - {smallestVersion.Library.GetName().Name}:{smallestVersion.Version}");
 
-                TaggedRelease[] releases = TagReleases(client.GetReleases(REPOID, new GetReleasesSettings(50, 1)).GetAwaiter().GetResult());
-                if (FindRelease(releases, out Release targetRelease, smallestVersion, forced))
+                TaggedRelease[] releases = TagReleases(client.GetReleases(REPO_ID, new GetReleasesSettings(50, 1)).GetAwaiter().GetResult());
+                if (FindRelease(releases, out Release targetRelease, smallestVersion))
                 {
                     if (!FindAsset(InstallerName, targetRelease, out ReleaseAsset asset))
                     {
@@ -158,7 +150,7 @@ namespace Exiled.Loader
                     }
                     else
                     {
-                        Log.Info($"Found asset - Name: {asset.Name} | Size: {asset.Size} Download: {asset.BrowserDownloadUrl}");
+                        Log.Info($"Found asset - Name: {asset.Name} | Size: {asset.Size} | Download: {asset.BrowserDownloadUrl}");
                         newVersion = new NewVersion(targetRelease, asset);
                         return true;
                     }
@@ -169,9 +161,9 @@ namespace Exiled.Loader
                     Log.Info("No new versions found, you're using the most recent version of Exiled!");
                 }
             }
-            catch (Utf8Json.JsonParsingException)
+            catch (JsonParsingException)
             {
-                Log.Error("Encountered GitHub ratelimit, unable to check and download the latest version of Exiled.");
+                Log.Error("Encountered GitHub rate limit, unable to check and download the latest version of Exiled.");
             }
             catch (Exception ex)
             {
@@ -185,8 +177,8 @@ namespace Exiled.Loader
         /// <summary>
         /// Updates the client's version of Exiled.
         /// </summary>
-        /// <param name="client"> is the HTTP Client.</param>
-        /// <param name="newVersion"> is the updated version of Exiled.</param>
+        /// <param name="client">The HTTP Client.</param>
+        /// <param name="newVersion">The updated version of Exiled.</param>
         private void Update(HttpClient client, NewVersion newVersion)
         {
             try
@@ -217,7 +209,7 @@ namespace Exiled.Loader
                     FileName = installerPath,
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                    Arguments = $"--exit {(Folder == "global" ? string.Empty : $"--target-port {Folder}")} --target-version {newVersion.Release.TagName} --appdata \"{Paths.AppData}\" --exiled \"{Path.Combine(Paths.Exiled, "..")}\"",
+                    Arguments = $"--exit {(Folder == "global" ? string.Empty : $"--target-port {Folder}")} --target-version {newVersion.Release.TagName} --appdata \"{API.Features.Paths.AppData}\" --exiled \"{Path.Combine(API.Features.Paths.Exiled, "..")}\"",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     StandardErrorEncoding = ProcessEncoding,
@@ -232,14 +224,14 @@ namespace Exiled.Loader
                     return;
                 }
 
-                installerProcess.OutputDataReceived += (s, args) =>
+                installerProcess.OutputDataReceived += (_, args) =>
                 {
                     if (!string.IsNullOrEmpty(args.Data))
                         Log.Debug($"[Installer] {args.Data}");
                 };
                 installerProcess.BeginOutputReadLine();
 
-                installerProcess.ErrorDataReceived += (s, args) =>
+                installerProcess.ErrorDataReceived += (_, args) =>
                 {
                     if (!string.IsNullOrEmpty(args.Data))
                         Log.Error($"[Installer] {args.Data}");
@@ -259,7 +251,7 @@ namespace Exiled.Loader
                 }
                 else
                 {
-                    Log.Error($"Installer error occured.");
+                    Log.Error("Installer error occured.");
                 }
             }
             catch (Exception ex)
@@ -272,7 +264,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the releases of Exiled.
         /// </summary>
-        /// <param name="releases"> gets the array of releases that has been made.</param>
+        /// <param name="releases">Gets the array of releases that has been made.</param>
         /// <returns>The last item in the array, which is the newest version of Exiled.</returns>
         private TaggedRelease[] TagReleases(Release[] releases)
         {
@@ -284,28 +276,26 @@ namespace Exiled.Loader
         }
 
         /// <summary>
-        /// Is able to find the release specificed.
+        /// Finds the latest release.
         /// </summary>
-        /// <param name="releases"> is the list of releases (array).</param>
-        /// <param name="release"> is the most recent release of Exiled.</param>
-        /// <param name="smallestVersion"> finds the smallest version of the Exiled Library.</param>
-        /// <param name="forced"> if this update was forced or not.</param>
-        /// <returns>the if the specific release was found or not.</returns>
-        private bool FindRelease(TaggedRelease[] releases, out Release release, ExiledLib smallestVersion, bool forced = false)
+        /// <param name="releases">The list of releases (array).</param>
+        /// <param name="release"> The most recent release of Exiled.</param>
+        /// <param name="smallestVersion">Finds the smallest version of the Exiled Library.</param>
+        /// <returns>Whether the specific release was found.</returns>
+        private bool FindRelease(TaggedRelease[] releases, out Release release, ExiledLib smallestVersion)
         {
             bool includePRE = config.ShouldDownloadTestingReleases || ExiledLib.Any(l => l.Version.PreRelease is not null);
-
-            for (int z = 0; z < releases.Length; z++)
+            Version gameVersion = new(GameCore.Version.Major, GameCore.Version.Minor, GameCore.Version.Revision);
+            foreach (TaggedRelease taggedRelease in releases)
             {
-                TaggedRelease taggedRelease = releases[z];
-                if (taggedRelease.Release.PreRelease && !includePRE)
+                if (config.ValidateGameVersionBeforeDownloading && !taggedRelease.Release.Description.Contains($"[Game Version: {gameVersion}]"))
                     continue;
 
-                if (taggedRelease.Version > smallestVersion.Version || forced)
-                {
-                    release = taggedRelease.Release;
-                    return true;
-                }
+                if ((taggedRelease.Release.PreRelease && !includePRE) || taggedRelease.Version <= smallestVersion.Version)
+                    continue;
+
+                release = taggedRelease.Release;
+                return true;
             }
 
             release = default;
@@ -315,10 +305,10 @@ namespace Exiled.Loader
         /// <summary>
         /// Finds the specified asset.
         /// </summary>
-        /// <param name="assetName"> passes in the specified asset name.</param>
-        /// <param name="release"> passes in the release version.</param>
-        /// <param name="asset"> is the asset that is tied to the release.</param>
-        /// <returns>if it was able to find the asset or not.</returns>
+        /// <param name="assetName">Passes in the specified asset name.</param>
+        /// <param name="release">Passes in the release version.</param>
+        /// <param name="asset">The asset that is tied to the release.</param>
+        /// <returns>Whether it was able to find the asset.</returns>
         private bool FindAsset(string assetName, Release release, out ReleaseAsset asset)
         {
             for (int z = 0; z < release.Assets.Length; z++)

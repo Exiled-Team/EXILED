@@ -42,15 +42,21 @@ namespace Exiled.API.Features.Core
         /// </summary>
         public bool IsDestroyed { get; private set; }
 
+        /// <inheritdoc cref="CreateNewInstance"/>
+        /// <typeparam name="T"><inheritdoc path="/param[@name='type']" cref="CreateNewInstance"/></typeparam>
+        public static StaticActor CreateNewInstance<T>()
+            where T : new() => CreateNewInstance(typeof(T));
+
         /// <summary>
         /// Creates a new instance of the <see cref="StaticActor"/>.
         /// </summary>
         /// <param name="type">The type of the <see cref="StaticActor"/>.</param>
-        /// <returns>The created <see cref="StaticActor"/> instance, or <see langword="null"/> if not found.</returns>
+        /// <returns>The created or already existing <see cref="StaticActor"/> instance.</returns>
         public static StaticActor CreateNewInstance(Type type)
         {
             EObject @object = CreateDefaultSubobject<StaticActor>(type);
             @object.Name = "__" + type.Name + " (StaticActor)";
+            @object.SearchForHostObjectIfNull = true;
             return @object.Cast<StaticActor>();
         }
 
@@ -60,7 +66,7 @@ namespace Exiled.API.Features.Core
         /// <typeparam name="T">The type of the <see cref="StaticActor"/> to look for.</typeparam>
         /// <returns>The corresponding <see cref="StaticActor"/>, or <see langword="null"/> if not found.</returns>
         public static T Get<T>()
-            where T : StaticActor
+            where T : StaticActor, new()
         {
             foreach (StaticActor actor in FindActiveObjectsOfType<StaticActor>())
             {
@@ -70,7 +76,7 @@ namespace Exiled.API.Features.Core
                 return actor.Cast<T>();
             }
 
-            return CreateNewInstance(typeof(T)).Cast<T>();
+            return CreateNewInstance<T>().Cast<T>();
         }
 
         /// <summary>
@@ -116,19 +122,19 @@ namespace Exiled.API.Features.Core
         {
             base.PostInitialize();
 
-            if (Get(GetType()))
+            if (Get(GetType()) != this)
             {
                 Log.Warn($"Found a duplicated instance of a StaticActor with type {GetType().Name} in the Actor {Name} that will be ignored");
                 NotifyInstanceRepeated();
                 return;
             }
 
-            if (!IsInitialized)
-            {
-                Log.Debug($"Start() StaticActor with type {GetType().Name} in the Actor {Name}");
-                PostInitialize_Static();
-                IsInitialized = true;
-            }
+            if (IsInitialized)
+                return;
+
+            Log.Debug($"Start() StaticActor with type {GetType().Name} in the Actor {Name}");
+            PostInitialize_Static();
+            IsInitialized = true;
         }
 
         /// <inheritdoc/>

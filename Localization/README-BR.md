@@ -5,7 +5,7 @@
 <a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
 <img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
 ![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
-<a href="https://discord.gg/PyUkWTg">
+<a href="https://discord.gg/exiledreboot">
     <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
 </a>    
 
@@ -56,7 +56,7 @@ Se você optar por usar o instalador, se executado corretamente, ele cuidará de
       Pressione Win + R e digite `%appdata%`
 
 ### Instalando plug-ins
-É isso, o EXILED agora deve estar instalado e ativo na próxima vez que você inicializar seu servidor. Observe que o EXILED sozinho não fará quase nada, portanto, certifique-se de obter novos plug-ins no **[nosso servidor do Discord](https://discord.gg/PyUkWTg)**
+É isso, o EXILED agora deve estar instalado e ativo na próxima vez que você inicializar seu servidor. Observe que o EXILED sozinho não fará quase nada, portanto, certifique-se de obter novos plug-ins no **[nosso servidor do Discord](https://discord.gg/exiledreboot)**
 - Para instalar um plug-in, basta:
   - Baixar um plug-in da [página de lançamentos *deles*](https://i.imgur.com/u34wgPD.jpg) (**DEVE ser um `.dll`!**)
   - Mova-o para: ``C:\Users\%NomeDoUsuário%\AppData\Roaming\EXILED\Plugins`` (mova-se para cá pressionando Win + R e, em seguida, escrevendo `%appdata%`)
@@ -80,7 +80,7 @@ Se você optar por usar o instalador, se executado corretamente, ele cuidará de
   - Mova a pasta **`SCP Secret Laboratory`** para **``~/.config``**. *Nota: Esta pasta precisa ir ao diretório ``~/.config``, e ***NÃO*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Instalando plug-ins
-É isso, o EXILED agora deve estar instalado e ativo na próxima vez que você inicializar seu servidor. Observe que o EXILED sozinho não fará quase nada, portanto, certifique-se de obter novos plug-ins no **[nosso servidor do Discord](https://discord.gg/PyUkWTg)**
+É isso, o EXILED agora deve estar instalado e ativo na próxima vez que você inicializar seu servidor. Observe que o EXILED sozinho não fará quase nada, portanto, certifique-se de obter novos plug-ins no **[nosso servidor do Discord](https://discord.gg/exiledreboot)**
 - Para instalar um plug-in, basta:
   - Baixar um plug-in da [página de lançamento *deles*](https://i.imgur.com/u34wgPD.jpg) (**DEVE ser um `.dll`!**)
   - Mova-o para: ``~/.config/EXILED/Plugins`` (se você utiliza SSH como root, então procure pela `.config` correta, que estará dentro de `/home/(Usuário do Servidor de SCP)`)
@@ -96,7 +96,7 @@ No entanto, alguns plug-ins podem obter suas configurações de outros locais po
 
 Se você deseja fazer um plug-in ao EXILED, é bem simples de fazê-lo. Se você quiser ver algum tipo de tutorial, visite nosso [Manual de Instruções.](https://github.com/Exiled-Team/EXILED/blob/master/Localization/GettingStarted-BR.md)
 
-Para tutoriais mais abrangentes e ativamente atualizados, consulte [o site da EXILED](https://exiled-team.github.io/EXILED/articles/install.html).
+Para tutoriais mais abrangentes e ativamente atualizados, consulte [o site da EXILED](https://exiled.to).
 
 Mas certifique-se de seguir estas regras ao publicar seus plug-ins:
 

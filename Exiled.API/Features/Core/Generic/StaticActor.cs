@@ -61,6 +61,7 @@ namespace Exiled.API.Features.Core.Generic
         {
             EObject @object = CreateDefaultSubobject<T>();
             @object.Name = "__" + typeof(T).Name + " (StaticActor)";
+            @object.SearchForHostObjectIfNull = true;
             return @object.Cast<T>();
         }
 
@@ -75,7 +76,8 @@ namespace Exiled.API.Features.Core.Generic
         {
             base.PostInitialize();
 
-            if (FindExistingInstance())
+            T instance = FindExistingInstance();
+            if (instance is not null && instance != this)
             {
                 Log.Warn($"Found a duplicated instance of a StaticActor with type {GetType().Name} in the Actor {Name} that will be ignored");
                 NotifyInstanceRepeated();
@@ -154,6 +156,10 @@ namespace Exiled.API.Features.Core.Generic
         /// <remarks>
         /// The default approach is delete the duplicated component.
         /// </remarks>
-        protected virtual void NotifyInstanceRepeated() => Destroy(GetComponent<T>());
+        protected virtual void NotifyInstanceRepeated()
+        {
+            if (TryGetComponent(out T comp))
+                comp.Destroy();
+        }
     }
 }

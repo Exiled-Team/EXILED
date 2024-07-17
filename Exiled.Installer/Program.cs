@@ -116,6 +116,13 @@ namespace Exiled.Installer
                 httpClient.DefaultRequestHeaders.Add("User-Agent", Header);
 
                 using HttpResponseMessage downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);
+
+                if (!downloadResult.IsSuccessStatusCode)
+                {
+                    Console.WriteLine(Resources.Program_MainSafe_Status_code_is_not_success, await downloadResult.Content.ReadAsStringAsync());
+                    return;
+                }
+
                 using Stream downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
                 using GZipInputStream gzInputStream = new(downloadArchiveStream);
@@ -168,7 +175,7 @@ namespace Exiled.Installer
             return builder.ToString().Trim('\r', '\n');
         }
 
-        private static string FormatAsset(ReleaseAsset a) => $"ID: {a.Id} | NAME: {a.Name} | SIZE: {a.Size} | URL: {a.Url} | DownloadURL: {a.BrowserDownloadUrl}";
+        private static string FormatAsset(ReleaseAsset a) => $"ID: {a.Id} | NAME: {a.Name} | SIZE: {a.Size} ({GetSizeSuffix(a.Size)}) | URL: {a.Url} | DownloadURL: {a.BrowserDownloadUrl}";
 
         private static void ResolvePath(string filePath, string folderPath, out string path) => path = Path.Combine(folderPath, filePath);
 
@@ -300,6 +307,18 @@ namespace Exiled.Installer
             }
 
             return enumerable.First();
+        }
+
+        private static string GetSizeSuffix(long bytes)
+        {
+            bytes = Math.Abs(bytes);
+
+            long unit = 1024;
+            if (bytes < unit)
+                return $"{bytes} B";
+
+            int exp = (int)Math.Log(bytes, unit);
+            return $"{bytes / Math.Pow(unit, exp):F2} {"KMG"[exp - 1]}B";
         }
     }
 }

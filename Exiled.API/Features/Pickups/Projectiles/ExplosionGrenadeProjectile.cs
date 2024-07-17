@@ -8,11 +8,13 @@
 namespace Exiled.API.Features.Pickups.Projectiles
 {
     using Exiled.API.Enums;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
-
+    using InventorySystem;
+    using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
-
     using PlayerRoles;
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for ExplosionGrenade.
@@ -32,11 +34,11 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplosionGrenadeProjectile"/> class.
         /// </summary>
-        /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
-        internal ExplosionGrenadeProjectile(ItemType type)
-            : base(type)
+        internal ExplosionGrenadeProjectile()
+            : base(ItemType.GrenadeHE)
         {
             Base = (ExplosionGrenade)((Pickup)this).Base;
+            Info = new(ItemType.GrenadeHE, InventoryItemLoader.AvailableItems[ItemType.GrenadeHE].Weight, ItemSerialGenerator.GenerateNext());
         }
 
         /// <summary>
@@ -47,6 +49,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the maximum radius of the ExplosionGrenade.
         /// </summary>
+        [EProperty(category: nameof(ExplosionGrenadeProjectile))]
         public float MaxRadius
         {
             get => Base._maxRadius;
@@ -56,6 +59,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the minimum duration of player can take the effect.
         /// </summary>
+        [EProperty(category: nameof(ExplosionGrenadeProjectile))]
         public float MinimalDurationEffect
         {
             get => Base._minimalDuration;
@@ -65,6 +69,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the maximum duration of the <see cref="EffectType.Burned"/> effect.
         /// </summary>
+        [EProperty(category: nameof(ExplosionGrenadeProjectile))]
         public float BurnDuration
         {
             get => Base._burnedDuration;
@@ -74,6 +79,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the maximum duration of the <see cref="EffectType.Deafened"/> effect.
         /// </summary>
+        [EProperty(category: nameof(ExplosionGrenadeProjectile))]
         public float DeafenDuration
         {
             get => Base._deafenedDuration;
@@ -83,6 +89,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the maximum duration of the <see cref="EffectType.Concussed"/> effect.
         /// </summary>
+        [EProperty(category: nameof(ExplosionGrenadeProjectile))]
         public float ConcussDuration
         {
             get => Base._concussedDuration;
@@ -92,6 +99,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the damage of the <see cref="Team.SCPs"/> going to get.
         /// </summary>
+        [EProperty(category: nameof(ExplosionGrenadeProjectile))]
         public float ScpDamageMultiplier
         {
             get => Base._scpDamageMultiplier;

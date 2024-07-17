@@ -9,18 +9,21 @@ namespace Exiled.Events
 {
     using System;
     using System.Diagnostics;
+    using System.Linq;
+    using System.Reflection;
 
     using API.Enums;
     using API.Features;
     using CentralAuth;
+    using Exiled.API.Interfaces;
     using Exiled.Events.Features;
     using HarmonyLib;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables;
-
     using PlayerRoles.Ragdolls;
     using PlayerRoles.RoleAssign;
     using PluginAPI.Events;
+    using Respawning;
     using UnityEngine.SceneManagement;
 
     /// <summary>
@@ -74,6 +77,8 @@ namespace Exiled.Events
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
             InventorySystem.InventoryExtensions.OnItemRemoved += Handlers.Player.OnItemRemoved;
 
+            RespawnManager.ServerOnRespawned += Handlers.Server.OnRespawnedTeam;
+
             RagdollManager.OnRagdollSpawned += Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
             ItemPickupBase.OnPickupAdded += Handlers.Internal.PickupEvent.OnSpawnedPickup;
@@ -81,6 +86,19 @@ namespace Exiled.Events
             ServerConsole.ReloadServerName();
 
             EventManager.RegisterEvents<Handlers.Player>(this);
+
+            foreach (Type type in typeof(IEnumClass).Assembly.GetTypes().Where(x => x.GetInterface(nameof(IEnumClass)) == typeof(IEnumClass)))
+            {
+                FieldInfo[] fieldInfos = type.GetFields();
+
+                if (fieldInfos.All(x => !x.IsInitOnly))
+                    continue;
+
+                foreach (FieldInfo field in fieldInfos.Where(x => x.IsStatic))
+                {
+                    field.GetValue(null);
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -93,6 +111,7 @@ namespace Exiled.Events
             SceneManager.sceneUnloaded -= Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Internal.MapGenerated.OnMapGenerated;
             UsableItemsController.ServerOnUsingCompleted -= Handlers.Internal.Round.OnServerOnUsingCompleted;
+
             Handlers.Server.WaitingForPlayers -= Handlers.Internal.Round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound -= Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted -= Handlers.Internal.Round.OnRoundStarted;
@@ -105,6 +124,8 @@ namespace Exiled.Events
 
             InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
             InventorySystem.InventoryExtensions.OnItemRemoved -= Handlers.Player.OnItemRemoved;
+
+            RespawnManager.ServerOnRespawned -= Handlers.Server.OnRespawnedTeam;
 
             RagdollManager.OnRagdollSpawned -= Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved -= Handlers.Internal.RagdollList.OnRemovedRagdoll;

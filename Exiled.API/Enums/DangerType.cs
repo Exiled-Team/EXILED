@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="DangerType.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -8,6 +8,7 @@
 namespace Exiled.API.Enums
 {
     using CustomPlayerEffects.Danger;
+    using Exiled.API.Features.Roles;
 
     /// <summary>
     /// A list of Types used by exiled for <see cref="DangerStackBase"/>.
@@ -15,43 +16,56 @@ namespace Exiled.API.Enums
     public enum DangerType
     {
         /// <summary>
-        /// Warhead.
+        /// Used when there's an error.
         /// </summary>
+        None = -1,
+
+        /// <summary>
+        /// Warhead has been activated but not detonated.
+        /// </summary>
+        /// <remarks>Used for <see cref="WarheadDanger"/>.</remarks>
         Warhead,
 
         /// <summary>
-        /// Cardiac Arrest.
+        /// Has <see cref="EffectType.CardiacArrest"/>.
         /// </summary>
+        /// <remarks>Used for <see cref="CardiacArrestDanger"/>.</remarks>
         CardiacArrest,
 
         /// <summary>
-        /// Rage Target
+        /// <see cref="Scp096Role"/> rage target.
         /// </summary>
+        /// <remarks>Used for <see cref="RageTargetDanger"/>.</remarks>
         RageTarget,
 
         /// <summary>
-        /// Corroding.
+        /// Has <see cref="EffectType.Corroding"/>.
         /// </summary>
+        /// <remarks>Used for <see cref="CorrodingDanger"/>.</remarks>
         Corroding,
 
         /// <summary>
-        /// Player Damaged.
+        /// Has taken damage.
         /// </summary>
+        /// <remarks>Used for <see cref="PlayerDamagedDanger"/>.</remarks>
         PlayerDamaged,
 
         /// <summary>
-        /// Scp Encounter.
+        /// Encountered an SCP
         /// </summary>
+        /// <remarks>Used for <see cref="ScpEncounterDanger"/>.</remarks>
         ScpEncounter,
 
         /// <summary>
-        /// Zombie Encounter.
+        /// Encountered <see cref="Scp0492Role"/>.
         /// </summary>
+        /// <remarks>Used for <see cref="ZombieEncounterDanger"/>.</remarks>
         ZombieEncounter,
 
         /// <summary>
-        /// Armed Enemy.
+        /// Encountered an armed enemy.
         /// </summary>
-        ArmedEnemy,
+        /// <remarks>Used for <see cref="ArmedEnemyDanger"/>.</remarks>
+        ArmedEnemyEncounter,
     }
 }

@@ -7,8 +7,8 @@
 
 namespace Exiled.API.Features.Pickups.Projectiles
 {
+    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
-
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>

@@ -16,20 +16,16 @@ namespace Exiled.API.Extensions
     using System.Text;
 
     using Features;
-    using Features.Pools;
-
+    using Features.Core.Generic.Pools;
     using InventorySystem.Items.Firearms;
-
     using Mirror;
-
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PlayerRoles.Subroutines;
     using PlayerRoles.Voice;
     using RelativePositioning;
-
     using Respawning;
-
     using UnityEngine;
 
     /// <summary>
@@ -188,11 +184,15 @@ namespace Exiled.API.Extensions
         /// <param name="room">Room to modify.</param>
         /// <param name="target">Only this player can see room color.</param>
         /// <param name="color">Color to set.</param>
-        public static void SetRoomColorForTargetOnly(this Room room, Player target, Color color)
-        {
-            target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkOverrideColor), color);
-            target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkOverrideColor), true);
-        }
+        public static void SetRoomColorForTargetOnly(this Room room, Player target, Color color) => target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkOverrideColor), color);
+
+        /// <summary>
+        /// Sets the lights of a <paramref name="room"/> to be either on or off, visible only to the <paramref name="target"/> player.
+        /// </summary>
+        /// <param name="room">The room to modify the lights of.</param>
+        /// <param name="target">The player who will see the lights state change.</param>
+        /// <param name="value">The state to set the lights to. True for on, false for off.</param>
+        public static void SetRoomLightsForTargetOnly(this Room room, Player target, bool value) => target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkLightsEnabled), value);
 
         /// <summary>
         /// Sets <see cref="Intercom.DisplayText"/> that only the <paramref name="target"/> player can see.
@@ -221,17 +221,6 @@ namespace Exiled.API.Extensions
         public static void SetName(this Player target, Player player, string name)
         {
             target.SendFakeSyncVar(player.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), name);
-        }
-
-        /// <summary>
-        /// Sets <see cref="Room"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
-        /// </summary>
-        /// <param name="room">Room to modify.</param>
-        /// <param name="target">Only this player can see room color.</param>
-        /// <param name="multiplier">Light intensity multiplier to set.</param>
-        [Obsolete("This features has been remove by NW", true)]
-        public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier)
-        {
         }
 
         /// <summary>
@@ -437,11 +426,11 @@ namespace Exiled.API.Extensions
         /// <example>
         /// EffectOnlySCP207.
         /// <code>
-        ///  MirrorExtensions.SendCustomSync(player, player.ReferenceHub.networkIdentity, typeof(PlayerEffectsController), (writer) => {
-        ///   writer.WriteUInt64(1ul);                                           // DirtyObjectsBit
-        ///   writer.WriteUInt32(1);                                             // DirtyIndexCount
+        ///  MirrorExtensions.SendFakeSyncObject(player, player.NetworkIdentity, typeof(PlayerEffectsController), (writer) => {
+        ///   writer.WriteULong(1ul);                                            // DirtyObjectsBit
+        ///   writer.WriteUInt(1);                                               // DirtyIndexCount
         ///   writer.WriteByte((byte)SyncList&lt;byte&gt;.Operation.OP_SET);     // Operations
-        ///   writer.WriteUInt32(17);                                            // EditIndex
+        ///   writer.WriteUInt(17);                                              // EditIndex
         ///   writer.WriteByte(1);                                               // Value
         ///  });
         /// </code>
@@ -478,6 +467,26 @@ namespace Exiled.API.Extensions
                 player.Connection.Send(objectDestroyMessage, 0);
                 SendSpawnMessageMethodInfo.Invoke(null, new object[] { identity, player.Connection });
             }
+        }
+
+        /// <summary>
+        /// Sends a <see cref="SubroutineMessage"/>.
+        /// </summary>
+        /// <param name="subroutineBase">Base <see cref="SubroutineBase"/> instance.</param>
+        /// <param name="applyingChanges">Action that will apply needed changes to a <paramref name="subroutineBase"/>.</param>
+        /// <param name="toAll">Should message be sent to everybody or to <see cref="SubroutineBase.Role"/> only.</param>
+        /// <typeparam name="T">A type of <see cref="SubroutineBase"/>.</typeparam>
+        public static void SendRpc<T>(this T subroutineBase, Action<T> applyingChanges, bool toAll = true)
+            where T : SubroutineBase
+        {
+            applyingChanges(subroutineBase);
+
+            SubroutineMessage msg = new(subroutineBase, true);
+
+            if (toAll)
+                NetworkServer.SendToAll(msg);
+            else
+                subroutineBase.Role._lastOwner.connectionToClient.Send(msg);
         }
 
         // Get components index in identity.(private)

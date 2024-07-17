@@ -5,7 +5,7 @@
 <a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
 <img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
 ![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
-<a href="https://discord.gg/PyUkWTg">
+<a href="https://discord.gg/exiledreboot">
     <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
 </a>    
 
@@ -52,7 +52,7 @@ Pokud se rozhodnete použít instalační program, postará se při správném s
       Stiskněte Win + R a napište `%appdata%`
 
 ### Instalace pluginů
-To je vše, EXILED by nyní měl být nainstalován a aktivní při příštím spuštění serveru. Pozor, EXILED sám o sobě neudělá téměř nic, takže se ujistěte, že si stáhnete nové pluginy z **[našeho serveru Discord](https://discord.gg/PyUkWTg)**.
+To je vše, EXILED by nyní měl být nainstalován a aktivní při příštím spuštění serveru. Pozor, EXILED sám o sobě neudělá téměř nic, takže se ujistěte, že si stáhnete nové pluginy z **[našeho serveru Discord](https://discord.gg/exiledreboot)**.
 - Chcete-li nainstalovat plugin, jednoduše:
   - Stáhněte si plugin z [*jeho* stránky vydání](https://i.imgur.com/u34wgPD.jpg) (**MUSÍ být `.dll`!**)
   - Přesuňte jej do: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins`` (dostaňte se sem stiskem Win + R, a pak psaním `%appdata%`)
@@ -76,7 +76,7 @@ To je vše, EXILED by nyní měl být nainstalován a aktivní při příštím 
   - Přesuňte **`SCP Secret Laboratory`** složku do **``~/.config``**. *Poznámka: Tuto složku je třeba umístit do ``~/.config``, a ***NE*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Instalace pluginů
-To je vše, EXILED by nyní měl být nainstalován a aktivní při příštím spuštění serveru. Pozor, EXILED sám o sobě neudělá téměř nic, takže se ujistěte, že si stáhnete nové pluginy z **[našeho serveru Discord](https://discord.gg/PyUkWTg)**.
+To je vše, EXILED by nyní měl být nainstalován a aktivní při příštím spuštění serveru. Pozor, EXILED sám o sobě neudělá téměř nic, takže se ujistěte, že si stáhnete nové pluginy z **[našeho serveru Discord](https://discord.gg/exiledreboot)**.
 - Chcete-li nainstalovat plugin, jednoduše:
   - Stáhněte si plugin z [*jeho* stránky vydání](https://i.imgur.com/u34wgPD.jpg) (**MUSÍ být `.dll`!**)
   - Přesuňte jej do ``~/.config/EXILED/Plugins`` (pokud používáte SSH jako root, musíte najít správný `.config` který bude uvnitř `/home/(SCP Server Uživatel)`)
@@ -92,7 +92,7 @@ Některé pluginy však mohou získávat svá konfigurační nastavení z jinýc
 
 Pokud si přejete vytvořit plugin pro EXILED, je to poměrně jednoduché. Pokud byste chtěli více návodů, navštivte prosím naši stránku [Getting Started.](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
 
-Obsáhlejší a aktivně aktualizované tutoriály naleznete na [webové stránce EXILED](https://exiled-team.github.io/EXILED/articles/install.html).
+Obsáhlejší a aktivně aktualizované tutoriály naleznete na [webové stránce EXILED](https://exiled.to).
 
 Při publikování pluginů však dbejte na dodržování těchto pravidel:
 

@@ -14,7 +14,6 @@ namespace Exiled.Loader
     using API.Enums;
     using API.Interfaces;
     using Exiled.API.Features;
-    using YamlDotNet.Core;
 
     /// <summary>
     /// The configs of the loader.
@@ -56,26 +55,20 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets or sets the config files distribution type.
         /// </summary>
-        [Description("The config files distribution type (Default, Separated)")]
-        public ConfigType ConfigType { get; set; } = ConfigType.Default;
-
-        /// <summary>
-        /// Gets or sets the quotes wrapper type.
-        /// </summary>
-        [Description("Indicates in which quoted strings in configs will be wrapped (Any, SingleQuoted, DoubleQuoted, Folded, Literal).")]
-        public ScalarStyle ScalarStyle { get; set; } = ScalarStyle.SingleQuoted;
-
-        /// <summary>
-        /// Gets or sets the quotes wrapper type.
-        /// </summary>
-        [Description("Indicates in which quoted strings with multiline in configs will be wrapped (Any, SingleQuoted, DoubleQuoted, Folded, Literal).")]
-        public ScalarStyle MultiLineScalarStyle { get; set; } = ScalarStyle.Literal;
+        [Description("The config files distribution type (Merged, Separated)")]
+        public ConfigType ConfigType { get; set; } = ConfigType.Separated;
 
         /// <summary>
         /// Gets or sets a value indicating whether testing releases have to be downloaded or not.
         /// </summary>
         [Description("Indicates whether testing releases have to be downloaded or not.")]
         public bool ShouldDownloadTestingReleases { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the game version should be validated before downloading the release.
+        /// </summary>
+        [Description("Indicates whether the game version should be validated before downloading the release.")]
+        public bool ValidateGameVersionBeforeDownloading { get; set; } = false;
 
         /// <summary>
         /// Gets or sets which assemblies should be excluded from the update.

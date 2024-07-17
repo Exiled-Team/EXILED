@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
     using PlayerRoles;
 
@@ -15,6 +16,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A wrapper for SCP-3114 ragdolls.
     /// </summary>
+    [EClass(category: nameof(Scp3114Ragdoll))]
     public class Scp3114Ragdoll : Ragdoll, IWrapper<BaseScp3114Ragdoll>
     {
         /// <summary>
@@ -33,6 +35,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the role that the corpse is disguised as.
         /// </summary>
+        [EProperty(category: nameof(Scp3114Ragdoll))]
         public RoleTypeId DisguiseRole
         {
             get => Base._disguiseRole;
@@ -42,6 +45,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the delay between when SCP-3114 can disguise this corpse.
         /// </summary>
+        [EProperty(category: nameof(Scp3114Ragdoll))]
         public float RevealDelay
         {
             get => Base._revealDelay;
@@ -51,6 +55,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the time required to reveal this corpse.
         /// </summary>
+        [EProperty(category: nameof(Scp3114Ragdoll))]
         public float RevealDuration
         {
             get => Base._revealDuration;
@@ -60,6 +65,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the current time of revealing this corpse.
         /// </summary>
+        [EProperty(category: nameof(Scp3114Ragdoll))]
         public float RevealElapsed
         {
             get => Base._revealElapsed;
@@ -69,6 +75,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether or not this corpse will trigger animation.
         /// </summary>
+        [EProperty(category: nameof(Scp3114Ragdoll))]
         public bool IsPlayingAnimation
         {
             get => Base._playingAnimation;

@@ -5,7 +5,7 @@
 <a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
 <img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
 ![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
-<a href="https://discord.gg/PyUkWTg">
+<a href="https://discord.gg/exiledreboot">
     <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
 </a>    
 
@@ -43,7 +43,7 @@ Eğer kurulum programını kullanmayı seçerseniz ve doğru bir şekilde çalı
       Win + R tuşlarına basın ve `%appdata%` yazın.
 
 ### Eklenti İndirme
-Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığında aktif olmalıdır. Unutmayın ki EXILED kendi başına neredeyse hiçbir şey yapmaz, bu yüzden yeni eklentileri **[Discord](https://discord.gg/PyUkWTg)** sunucumuzdan almayı unutmayın.
+Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığında aktif olmalıdır. Unutmayın ki EXILED kendi başına neredeyse hiçbir şey yapmaz, bu yüzden yeni eklentileri **[Discord](https://discord.gg/exiledreboot)** sunucumuzdan almayı unutmayın.
 - Bir Eklenti indirmek için aşağıdaki talimatları okuyun:
   - Bir eklentiyi indirmek için [*Onun* releases (yayınlanma) sayfasına gidin](https://i.imgur.com/u34wgPD.jpg) (**`.dll` UZANTILI OLMALIDIR**)
   - İndirdiğiniz eklentiyi: ``C:\Users\%UserName%\AppData\Roaming\EXILED\Plugins``'dizinine taşıyın (Win + R Tuşlarına basarak `%appdata%` yazarak buraya taşıyabilirsiniz)
@@ -67,7 +67,7 @@ Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığın
   - **`SCP Secret Laboratory`** Klasörünü **``~/.config``**'e taşı. *Not: Bu klasör ``~/.config``'nin içine gitmelidir,  ``~/.config/SCP Secret Laboratory``**'nin içine değil!** (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Eklenti Indirme
-Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığında aktif olmalıdır. Unutmayın ki EXILED kendi başına neredeyse hiçbir şey yapamaz, bu yüzden yeni eklentileri **[Discord](https://discord.gg/PyUkWTg)** sunucumuzdan almayı unutmayın.
+Bu kadar, EXILED şimdi sunucunuzda kuruldu ve bir sonraki sunucu başladığında aktif olmalıdır. Unutmayın ki EXILED kendi başına neredeyse hiçbir şey yapamaz, bu yüzden yeni eklentileri **[Discord](https://discord.gg/exiledreboot)** sunucumuzdan almayı unutmayın.
 - Bir Eklenti indirmek için aşağıdaki talimatları okuyun:
   - Bir eklentiyi indirmek için [*Onun* releases (yayınlanma) sayfasına gidin](https://i.imgur.com/u34wgPD.jpg) (**`.dll` UZANTILI OLMALIDIR**)
   - İndirdiğiniz Eklentiyi: ``~/.config/EXILED/Plugins``'dizininine taşıyın (eğer SSH'i root olarak kullanıyor iseniz, o zaman doğru `.config`'i `/home/(SCP Server kullanıcısı)` dizininin içinde arayın.)
@@ -83,7 +83,7 @@ Ancak, bazı eklentiler kendi başlarına diğer yerlerden yapılandırma/ayarla
 
 Eğer EXILED için bir eklenti yapmak istiyorsanız, bunu yapmak oldukça basittir [Daha fazla bilgi için tıkla!](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
 
-Daha kapsamlı ve sürekli güncellenen öğreticiler için [EXILED websitesine](https://exiled-team.github.io/EXILED/articles/install.html) göz atın.
+Daha kapsamlı ve sürekli güncellenen öğreticiler için [EXILED websitesine](https://exiled.to) göz atın.
 
 Ama pluginlerini herkese açık yaparken bu kuralları takip etmekte fayda var:
 
@@ -150,4 +150,4 @@ Bu nedenle, dinamik güncellemeleri destekleyen eklentilerin bu yönergeleri tak
 
 Her eklentinin dinamik güncellemeleri desteklemesi gerekmez. Eğer dinamik güncellemeleri desteklemeyi planlamıyorsanız, bu tamamen uygun bir durumdur. Sadece yeni bir sürüm oluştururken eklentinizin derleme adını değiştirmekten kaçının. Bu tür durumlarda, sunucu sahiplerinin eklentinizi güncellemek için sunucularını tamamen yeniden başlatmaları gerektiğini bildirin.
 
-çeviri: Enes Batur (@_funnyman_xdxdxd.rofl.) & Dogy (@.dogy69)
+çeviri: Enes Batur (@enesbatursungursiken) & Dogy (@.dogy69)

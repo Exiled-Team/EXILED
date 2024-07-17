@@ -12,14 +12,11 @@ namespace Exiled.Events.Patches.Generic
     using HarmonyLib;
 
     /// <summary>
-    /// Patches <see cref="TeslaGateController.Start"/>.
+    /// Patches <see cref="TeslaGateController.Awake"/>.
     /// </summary>
-    [HarmonyPatch(typeof(TeslaGateController), nameof(TeslaGateController.Start))]
+    [HarmonyPatch(typeof(TeslaGateController), nameof(TeslaGateController.Awake))]
     internal class TeslaList
     {
-        private static void Postfix()
-        {
-            TeslaGate.BaseTeslaGateToTeslaGate.Clear();
-        }
+        private static void Postfix() => TeslaGate.BaseTeslaGateToTeslaGate.Clear();
     }
 }
