@@ -25,6 +25,8 @@ namespace Exiled.API.Extensions
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PlayerRoles.Voice;
+    using PluginAPI.Core;
     using RelativePositioning;
 
     using Respawning;
@@ -191,6 +193,26 @@ namespace Exiled.API.Extensions
         {
             target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkOverrideColor), color);
             target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkOverrideColor), true);
+        }
+
+        /// <summary>
+        /// Sets <see cref="Intercom.DisplayText"/> that only the <paramref name="target"/> player can see.
+        /// </summary>
+        /// <param name="target">Only this player can see Display Text.</param>
+        /// <param name="text">Text displayed to the player</param>
+        public static void SetIntercomDisplayTextForTargetOnly(this Player target, string text)
+        {
+            target.SendFakeSyncVar(IntercomDisplay._singleton.netIdentity, typeof(IntercomDisplay), nameof(IntercomDisplay.Network_overrideText), text);
+        }
+
+        /// <summary>
+        /// Resync <see cref="Intercom.DisplayText"/> for the <paramref name="target"/> player.
+        /// </summary>
+        /// <param name="target">Only this player can see Display Text.</param>
+        /// <param name="text">Text displayed to the player</param>
+        public static void ResetIntercomDisplayTextForTargetOnly(this Player target)
+        {
+            ResyncSyncVar(IntercomDisplay._singleton.netIdentity, typeof(IntercomDisplay), nameof(IntercomDisplay.Network_overrideText));
         }
 
         /// <summary>
