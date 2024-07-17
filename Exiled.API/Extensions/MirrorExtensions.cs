@@ -210,7 +210,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="target">Only this player can see Display Text.</param>
         /// <param name="text">Text displayed to the player</param>
-        public static void ResetIntercomDisplayTextForTargetOnly(this Player target)
+        public static void ResetIntercomDisplayTextForTargetOnly()
         {
             ResyncSyncVar(IntercomDisplay._singleton.netIdentity, typeof(IntercomDisplay), nameof(IntercomDisplay.Network_overrideText));
         }
