@@ -202,6 +202,7 @@ namespace Exiled.API.Extensions
         /// <param name="target">Only this player can see Display Text.</param>
         /// <param name="text">Text displayed to the player.</param>
         public static void SetIntercomDisplayTextForTargetOnly(this Player target, string text) => target.SendFakeSyncVar(IntercomDisplay._singleton.netIdentity, typeof(IntercomDisplay), nameof(IntercomDisplay.Network_overrideText), text);
+
         /// <summary>
         /// Resync <see cref="EIntercom.DisplayText"/>.
         /// </summary>
