@@ -10,8 +10,8 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using System;
     using System.Diagnostics;
 
+    using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Warhead;
@@ -19,7 +19,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using PlayerRoles;
 
     /// <summary>
-    /// Represents the state of an individual player within the custom game mode, derived from <see cref="EPlayerBehaviour"/>.
+    /// Represents the state of an individual player within the custom game mode, derived from <see cref="ModuleBehaviour{T}"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -29,7 +29,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     /// It serves as a base class for defining player-specific actions and responses within the context of the custom game mode.
     /// </para>
     /// </remarks>
-    public abstract class PlayerState : EPlayerBehaviour
+    public abstract class PlayerState : ModuleBehaviour<Player>
     {
         private bool isActive;
         private CoroutineHandle onReadyHandle;
