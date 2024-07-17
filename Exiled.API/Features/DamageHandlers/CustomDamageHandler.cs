@@ -95,12 +95,19 @@ namespace Exiled.API.Features.DamageHandlers
             Damage = damage;
             Type = damageType;
 
-            Firearm firearm = new(ItemType.GunAK)
+            if (attacker is not null)
             {
-                Base = { Owner = attacker.ReferenceHub },
-            };
+                Firearm firearm = new(ItemType.GunAK)
+                {
+                    Base = { Owner = attacker.ReferenceHub },
+                };
 
-            CustomBase = new FirearmDamageHandler(firearm, target, new BaseFirearmHandler(firearm.Base, damage));
+                CustomBase = new FirearmDamageHandler(firearm, target, new BaseFirearmHandler(firearm.Base, damage));
+
+                return;
+            }
+
+            CustomBase = new DamageHandler(target, attacker: null);
         }
 
         /// <summary>
