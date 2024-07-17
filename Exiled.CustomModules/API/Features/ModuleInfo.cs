@@ -58,12 +58,12 @@ namespace Exiled.CustomModules.API.Features
 
 #pragma warning disable SA1310
         /// <summary>
-        /// The registration handler callback.
+        /// Callback method for enabling all instances of the module.
         /// </summary>
         public Action<Assembly> EnableAll_Callback;
 
         /// <summary>
-        /// The registration handler callback.
+        /// Callback method for disabling all instances of the module.
         /// </summary>
         public Action<Assembly> DisableAll_Callback;
 #pragma warning restore SA1310
