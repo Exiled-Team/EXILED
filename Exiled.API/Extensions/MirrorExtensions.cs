@@ -26,7 +26,6 @@ namespace Exiled.API.Extensions
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
     using PlayerRoles.Voice;
-    using PluginAPI.Core;
     using RelativePositioning;
 
     using Respawning;
