@@ -7,12 +7,11 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Pickups;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
-
     using UnityEngine;
 
     using Scp2176Projectile = Pickups.Projectiles.Scp2176Projectile;
@@ -50,6 +49,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how long the fuse will last.
         /// </summary>
+        [EProperty(category: nameof(Scp2176))]
         public float FuseTime
         {
             get => Projectile.FuseTime;

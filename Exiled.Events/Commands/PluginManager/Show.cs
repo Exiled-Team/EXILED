@@ -12,19 +12,15 @@ namespace Exiled.Events.Commands.PluginManager
     using System.Linq;
     using System.Text;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using API.Interfaces;
 
     using CommandSystem;
 
-    using Exiled.Permissions.Extensions;
-
-    using RemoteAdmin;
-
     /// <summary>
     /// The command to show all plugins.
     /// </summary>
-    public sealed class Show : ICommand
+    public sealed class Show : ICommand, IPermissioned
     {
         /// <summary>
         /// Gets static instance of the <see cref="Show"/> command.
@@ -43,17 +39,12 @@ namespace Exiled.Events.Commands.PluginManager
         /// <inheritdoc />
         public bool SanitizeResponse { get; }
 
+        /// <inheritdoc />
+        public string Permission { get; } = "pm.showplugins";
+
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            const string perm = "pm.showplugins";
-
-            if (!sender.CheckPermission(perm) && sender is PlayerCommandSender playerSender && !playerSender.FullPermissions)
-            {
-                response = $"You can't get a list of all plugins, you don't have \"{perm}\" permissions.";
-                return false;
-            }
-
             StringBuilder sb = StringBuilderPool.Pool.Get();
 
             // Append a new line to start the response on a new line

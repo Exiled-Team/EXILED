@@ -1,0 +1,15 @@
+name: Auto Assigner
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign Author
+        uses: technote-space/assign-author@v1.3.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}

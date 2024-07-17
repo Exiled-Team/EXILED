@@ -8,9 +8,10 @@
 namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Keycards;
 
@@ -44,6 +45,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the <see cref="KeycardPermissions"/> of the keycard.
         /// </summary>
+        [EProperty(category: nameof(KeycardPickup))]
         public KeycardPermissions Permissions { get; set; }
 
         /// <summary>
@@ -55,20 +57,22 @@ namespace Exiled.API.Features.Pickups
         internal override void ReadItemInfo(Item item)
         {
             base.ReadItemInfo(item);
-            if (item is Keycard keycarditem)
-            {
-                Permissions = keycarditem.Permissions;
-            }
+
+            if (item is not Keycard keycarditem)
+                return;
+
+            Permissions = keycarditem.Permissions;
         }
 
         /// <inheritdoc/>
         protected override void InitializeProperties(ItemBase itemBase)
         {
             base.InitializeProperties(itemBase);
-            if (itemBase is KeycardItem keycardItem)
-            {
-                Permissions = (KeycardPermissions)keycardItem.Permissions;
-            }
+
+            if (itemBase is not KeycardItem keycardItem)
+                return;
+
+            Permissions = (KeycardPermissions)keycardItem.Permissions;
         }
     }
 }

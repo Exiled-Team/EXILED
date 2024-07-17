@@ -2,12 +2,16 @@ user:
   default: true
   inheritance: [ ]
   permissions:
-    - testplugin.user
+    - testplugin.*
+  disabled_permissions:
+    - testplugin.moderator
 
 owner:
   inheritance: [ ]
   permissions:
     - .*
+  disabled_permissions:
+    - testplugin.user
 
 admin:
   inheritance:
@@ -15,8 +19,12 @@ admin:
   permissions:
     - testplugin.admin
     - testplugin.*
+  disabled_permissions:
+    - testplugin.moderator
 
 moderator:
   inheritance: [ ]
   permissions:
     - testplugin.moderator
+  disabled_permissions:
+    - testplugin.*

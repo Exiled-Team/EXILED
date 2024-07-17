@@ -7,8 +7,9 @@
 
 namespace Exiled.API.Features.Pickups.Projectiles
 {
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
-
     using InventorySystem.Items.ThrowableProjectiles;
 
     using BaseScp2176Projectile = InventorySystem.Items.ThrowableProjectiles.Scp2176Projectile;
@@ -45,11 +46,13 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets a value indicating whether or not SCP-2176 has shattered.
         /// </summary>
+        [EProperty(category: nameof(Scp2176Projectile))]
         public bool IsAlreadyTriggered => Base._hasTriggered;
 
         /// <summary>
         /// Gets or sets a value indicating whether SCP-2176's next collision will make the dropped sound effect.
         /// </summary>
+        [EProperty(category: nameof(Scp2176Projectile))]
         public bool DropSound
         {
             get => Base.Network_playedDropSound;

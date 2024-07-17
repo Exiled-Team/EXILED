@@ -5,7 +5,7 @@
 <a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
 <img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
 ![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
-<a href="https://discord.gg/PyUkWTg">
+<a href="https://discord.gg/exiledreboot">
     <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
 </a>
 
@@ -62,7 +62,7 @@ EXILED의 설치 과정은 상당히 간단합니다. 노스우드의 Plugin API
 
 ### 플러그인 설치
 
-자, 이제 모든 설치가 완료되었습니다! EXILED는 이제 설치되었고 다음 서버 구동시 활성화 될 것입니다. EXILED 자체로는 아무것도 하지 않습니다. **[저희의 디스코드 서버](https://discord.gg/PyUkWTg)** 에서 새롭고 재미있는 플러그인을 찾아보세요!
+자, 이제 모든 설치가 완료되었습니다! EXILED는 이제 설치되었고 다음 서버 구동시 활성화 될 것입니다. EXILED 자체로는 아무것도 하지 않습니다. **[저희의 디스코드 서버](https://discord.gg/exiledreboot)** 에서 새롭고 재미있는 플러그인을 찾아보세요!
 
 - 플러그인을 설치하려면:
   - [_플러그인의_ 릴리즈 페이지](https://i.imgur.com/u34wgPD.jpg)에서 플러그인을 다운로드하세요. (**무조건 `.dll` 파일 형식이어야 합니다!**)
@@ -90,7 +90,7 @@ EXILED의 설치 과정은 상당히 간단합니다. 노스우드의 Plugin API
 
 ### 플러그인 설치
 
-자, 이제 모든 설치가 완료되었습니다! EXILED는 이제 설치되었고 다음 서버 구동시 활성화 될 것입니다. EXILED 자체로는 아무것도 하지 않습니다. **[저희의 디스코드 서버](https://discord.gg/PyUkWTg)** 에서 새롭고 재미있는 플러그인을 찾아보세요!
+자, 이제 모든 설치가 완료되었습니다! EXILED는 이제 설치되었고 다음 서버 구동시 활성화 될 것입니다. EXILED 자체로는 아무것도 하지 않습니다. **[저희의 디스코드 서버](https://discord.gg/exiledreboot)** 에서 새롭고 재미있는 플러그인을 찾아보세요!
 
 - 플러그인을 설치하려면:
   - [_플러그인의_ 릴리즈 페이지](https://i.imgur.com/u34wgPD.jpg)에서 플러그인을 다운로드하세요. (**무조건 `.dll` 파일 형식이어야 합니다!**)
@@ -108,7 +108,7 @@ EXILED 자체도 몇 가지 설정을 가지고 있습니다. 이 설정들은 �
 
 만약 EXILED 플러그인을 만들고 싶다면, 사실 간단합니다. 튜토리얼을 원한다면 [여기 (영어)](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md)를 읽어주세요.
 
-좀 더 상세하고 자주 업데이트 되는 튜토리얼을 원한다면, [EXILED 웹사이트](https://exiled-team.github.io/EXILED/articles/install.html)를 방문해보세요.
+좀 더 상세하고 자주 업데이트 되는 튜토리얼을 원한다면, [EXILED 웹사이트](https://exiled.to)를 방문해보세요.
 
 하지만 플러그인을 만들기 전에, 몇 가지 주의사항을 알아두세요:
 
@@ -146,7 +146,7 @@ public IEnumerator<float> MyCoroutine()
 }
 ```
 
-MEC과 익숙치 않거나, 더 배우고 싶거나, 조언을 좀 받고 싶고나, 도움이 필요하다면 구글링을 좀 하거나 디스코드에서 물어보는 것이 **_매우_** 추천됩니다. 질문들은 얼마나 '수준 낮은지' 와 상관없이, 플러그인 개발자분들에게 추진력을 실어주기 위해 항상 최대한 호의적이고 깔끔하게 답변될 것입니다. 더 좋은 코드는 모두에게 좋은 것이니까요!
+MEC과 익숙치 않거나, 더 배우고 싶거나, 조언을 좀 받고 싶나, 도움이 필요하다면 구글링을 좀 하거나 디스코드에서 물어보는 것이 **_매우_** 추천됩니다. 질문들은 얼마나 '수준 낮은지' 와 상관없이, 플러그인 개발자분들에게 추진력을 실어주기 위해 항상 최대한 호의적이고 깔끔하게 답변될 것입니다. 더 좋은 코드는 모두에게 좋은 것이니까요!
 
 ### 동적 리로드
 
@@ -176,3 +176,4 @@ _새로운_ 어셈블리들이라는 것에 주목해주세요. 만약 똑같은
 
 모든 플러그인이 동적 리로딩을 지원하지 않아도 됩니다. 만약 동적 리로딩을 지원하지 않기로 생각했다면, 진짜 괜찮아요. :)
 플러그인의 어셈블리 버전을 바꾸는 것을 피하시고, 서버 주인분들에게 플러그인을 업데이트하기 위해 서버를 재시작하라고 요청하세요.
+    

@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Toys
     using AdminToys;
 
     using Enums;
-    using Exiled.API.Interfaces;
+    using Exiled.API.Features.Core;
     using Footprinting;
     using Mirror;
 
@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Toys
     /// <summary>
     /// A wrapper class for <see cref="AdminToys.AdminToyBase"/>.
     /// </summary>
-    public abstract class AdminToy : IWorldSpace
+    public abstract class AdminToy : GameEntity
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminToy"/> class.
@@ -29,6 +29,7 @@ namespace Exiled.API.Features.Toys
         /// <param name="toyAdminToyBase">The <see cref="AdminToys.AdminToyBase"/> to be wrapped.</param>
         /// <param name="type">The <see cref="AdminToyType"/> of the object.</param>
         internal AdminToy(AdminToyBase toyAdminToyBase, AdminToyType type)
+            : base(toyAdminToyBase.gameObject)
         {
             AdminToyBase = toyAdminToyBase;
             ToyType = type;
@@ -65,21 +66,12 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets the position of the toy.
+        /// Gets or sets the position of the <see cref="AdminToy"/>.
         /// </summary>
-        public Vector3 Position
+        public new Vector3 Position
         {
             get => AdminToyBase.transform.position;
             set => AdminToyBase.transform.position = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the rotation of the toy.
-        /// </summary>
-        public Quaternion Rotation
-        {
-            get => AdminToyBase.transform.rotation;
-            set => AdminToyBase.transform.rotation = value;
         }
 
         /// <summary>

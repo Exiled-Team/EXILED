@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
+    using API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Item;
 
@@ -34,24 +34,20 @@ namespace Exiled.Events.Patches.Events.Item
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int offset = 3;
+            const int offset = 2;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse_S) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingAmmoEventArgs));
-            LocalBuilder ammo = generator.DeclareLocal(typeof(byte));
 
-            Label cdc = generator.DefineLabel();
-            Label jmp = generator.DefineLabel();
-            Label jcc = generator.DefineLabel();
-
-            newInstructions[index].labels.Add(cdc);
+            Label ret = generator.DefineLabel();
+            Label jump = generator.DefineLabel();
 
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
                     // value.Ammo
-                    new(OpCodes.Ldarg_1),
+                    new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
 
                     // this._status.Ammo
@@ -60,77 +56,47 @@ namespace Exiled.Events.Patches.Events.Item
                     new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
 
                     // if (value.Ammo == this._status.Ammo)
-                    //   goto cdc;
+                    //   goto jump;
                     new(OpCodes.Ceq),
-                    new(OpCodes.Brtrue_S, cdc),
+                    new(OpCodes.Brtrue_S, jump),
 
                     // this
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Dup),
 
-                    // this._status
+                    // this._status (oldStatus)
                     new(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm._status))),
 
-                    // this.Ammo
-                    new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
-
-                    // value.Ammo
+                    // value (newStatus)
                     new(OpCodes.Ldarg_1),
-                    new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
 
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // ChangingDurabilityEventArgs ev = new(ItemBase, byte, byte, bool)
+                    // ChangingAmmoEventArgs ev = new(BaseFirearm, FirearmStatus, FirearmStatus, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingAmmoEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                    // Item.ChangingAmmoEventArgs(ev)
+                    // Item.OnChangingAmmo(ev)
                     new(OpCodes.Call, Method(typeof(Item), nameof(Item.OnChangingAmmo))),
 
-                    // if (ev.Firearm == null)
-                    //   goto cdc;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAmmoEventArgs), nameof(ChangingAmmoEventArgs.Firearm))),
-                    new(OpCodes.Brfalse_S, cdc),
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-
                     // if (!ev.IsAllowed)
-                    //   goto jmp;
+                    //   return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAmmoEventArgs), nameof(ChangingAmmoEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, jmp),
+                    new(OpCodes.Brfalse_S, ret),
 
-                    // ev.NewDurability
-                    // goto jcc;
+                    // value = ev.NewStatus;
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAmmoEventArgs), nameof(ChangingAmmoEventArgs.NewAmmo))),
-                    new(OpCodes.Stloc_S, ammo.LocalIndex),
-                    new(OpCodes.Br_S, jcc),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAmmoEventArgs), nameof(ChangingAmmoEventArgs.NewStatus))),
+                    new(OpCodes.Starg_S, 1),
 
-                    // ev.OldAmmo
-                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(jmp),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAmmoEventArgs), nameof(ChangingAmmoEventArgs.OldAmmo))),
-                    new(OpCodes.Stloc_S, ammo.LocalIndex),
-
-                    // this
-                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(jcc),
-
-                    // ammo
-                    new(OpCodes.Ldloc_S, ammo.LocalIndex),
-
-                    // value.Flags
-                    new(OpCodes.Ldarg_1),
-                    new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Flags))),
-
-                    // value.Attachments
-                    new(OpCodes.Ldarg_1),
-                    new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Attachments))),
-
-                    // this.value = new(byte, FirearmStatusFlags, uint)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(FirearmStatus))[0]),
-                    new(OpCodes.Stfld, Field(typeof(Firearm), nameof(Firearm._status))),
+                    // jump:
+                    new CodeInstruction(OpCodes.Nop).WithLabels(jump),
                 });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

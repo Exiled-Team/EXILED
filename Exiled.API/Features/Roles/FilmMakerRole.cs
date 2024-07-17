@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using Exiled.API.Features.Core.Attributes;
     using PlayerRoles;
     using UnityEngine;
 
@@ -27,12 +28,23 @@ namespace Exiled.API.Features.Roles
             Base = filmmakerRole;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilmMakerRole"/> class.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
+        protected internal FilmMakerRole(GameObject gameObject)
+            : base(gameObject)
+        {
+        }
+
         /// <inheritdoc/>
+        [EProperty(readOnly: true, category: nameof(Role))]
         public override RoleTypeId Type { get; } = RoleTypeId.Filmmaker;
 
         /// <summary>
         /// Gets or sets the filmmaker's camera rotation.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(FilmMakerRole))]
         public Quaternion CameraRotation
         {
             get => Base.CameraRotation;

@@ -8,7 +8,9 @@
 namespace Exiled.Loader.GHApi.Models
 {
     using System;
+    using System.Net.Http;
     using System.Runtime.Serialization;
+    using System.Threading.Tasks;
 
     using Utf8Json;
 
@@ -48,6 +50,13 @@ namespace Exiled.Loader.GHApi.Models
         public readonly ReleaseAsset[] Assets;
 
         /// <summary>
+        /// The release's description.
+        /// </summary>
+        public readonly string Description;
+
+        private const string URL = "https://api.github.com/repos/Exiled-Team/EXILED/releases/tags/";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Release"/> struct.
         /// </summary>
         /// <param name="id"><inheritdoc cref="Id"/></param>
@@ -63,6 +72,20 @@ namespace Exiled.Loader.GHApi.Models
             PreRelease = prerelease;
             CreatedAt = created_at;
             Assets = assets;
+            Description = string.Empty;
+
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = client.GetAsync(URL + TagName).GetAwaiter().GetResult();
+
+                if (!response.IsSuccessStatusCode)
+                    return;
+
+                string responseBody = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                int startIndex = responseBody.IndexOf("\"body\":") + "\"body\":".Length;
+                int endIndex = responseBody.IndexOf("\"draft\":") - 2;
+                Description = responseBody.Substring(startIndex, endIndex - startIndex);
+            }
         }
     }
 }

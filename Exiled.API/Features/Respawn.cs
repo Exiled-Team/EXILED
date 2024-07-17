@@ -15,6 +15,7 @@ namespace Exiled.API.Features
     using Enums;
     using PlayerRoles;
     using Respawning;
+    using Respawning.NamingRules;
     using UnityEngine;
 
     /// <summary>
@@ -139,6 +140,29 @@ namespace Exiled.API.Features
         public static List<Team> ProtectedTeams => SpawnProtected.ProtectedTeams;
 
         /// <summary>
+        /// Gets a string array of possible names for NTF.
+        /// </summary>
+        public static string[] NtfNamingCodes => NineTailedFoxNamingRule.PossibleCodes;
+
+        /// <summary>
+        /// Generates a queue.
+        /// </summary>
+        /// <param name="team">The team to get queue of.</param>
+        /// <param name="amount">Amount to get.</param>
+        /// <returns>A queue of <see cref="RoleTypeId"/>.</returns>
+        public static Queue<RoleTypeId> GenerateQueue(SpawnableTeamType team, int amount)
+        {
+            Queue<RoleTypeId> queue = new();
+
+            if (!RespawnManager.SpawnableTeams.TryGetValue(team, out SpawnableTeamHandlerBase handler))
+                return queue;
+
+            handler.GenerateQueue(queue, amount);
+
+            return queue;
+        }
+
+        /// <summary>
         /// Play an effect when a certain class spawns.
         /// </summary>
         /// <param name="effect">The effect to be played.</param>
@@ -157,7 +181,12 @@ namespace Exiled.API.Features
         public static void PlayEffects(byte[] effects)
         {
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
-                controller?.RpcPlayEffects(effects);
+            {
+                if (!controller)
+                    continue;
+
+                controller.RpcPlayEffects(effects);
+            }
         }
 
         /// <summary>
@@ -177,17 +206,15 @@ namespace Exiled.API.Features
         /// <param name="playMusic">Whether or not to play the Chaos Insurgency spawn music.</param>
         public static void SummonChaosInsurgencyVan(bool playMusic = true)
         {
-            PlayEffects(
-                playMusic
-                    ? new[]
-                    {
-                        RespawnEffectType.PlayChaosInsurgencyMusic,
-                        RespawnEffectType.SummonChaosInsurgencyVan,
-                    }
-                    : new[]
-                    {
-                        RespawnEffectType.SummonChaosInsurgencyVan,
-                    });
+            PlayEffects(playMusic ? new[]
+                {
+                    RespawnEffectType.PlayChaosInsurgencyMusic,
+                    RespawnEffectType.SummonChaosInsurgencyVan,
+                }
+                : new[]
+                {
+                    RespawnEffectType.SummonChaosInsurgencyVan,
+                });
         }
 
         /// <summary>

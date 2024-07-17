@@ -7,18 +7,16 @@
 
 namespace Exiled.API.Features.Pickups
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
-
-    using UnityEngine;
 
     using BaseBodyArmor = InventorySystem.Items.Armor.BodyArmorPickup;
 
@@ -58,16 +56,19 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether this item is equippable.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(BodyArmorPickup))]
         public bool Equippable { get; } = false;
 
         /// <summary>
         /// Gets a value indicating whether this item is holsterable.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(BodyArmorPickup))]
         public bool Holsterable { get; } = false;
 
         /// <summary>
         /// Gets a value indicating whether or not this is a worn item.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(BodyArmorPickup))]
         public bool IsWorn { get; } = true;
 
         /// <summary>
@@ -78,6 +79,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets how strong the helmet on the armor is.
         /// </summary>
+        [EProperty(category: nameof(BodyArmorPickup))]
         public int HelmetEfficacy
         {
             get => helmetEfficacy;
@@ -87,6 +89,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets how strong the vest on the armor is.
         /// </summary>
+        [EProperty(category: nameof(BodyArmorPickup))]
         public int VestEfficacy
         {
             get => vestEfficacy;
@@ -96,6 +99,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets how much faster stamina will drain when wearing this armor.
         /// </summary>
+        [EProperty(readOnly: true, category: nameof(BodyArmorPickup))]
         public float StaminaUseMultiplier { get; set; }
 
         /// <summary>
@@ -131,6 +135,7 @@ namespace Exiled.API.Features.Pickups
                 StaminaUseMultiplier = armoritem.StaminaUseMultiplier;
                 AmmoLimits = armoritem.AmmoLimits;
                 CategoryLimits = armoritem.CategoryLimits;
+                MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
             }
         }
 
@@ -146,6 +151,7 @@ namespace Exiled.API.Features.Pickups
                 StaminaUseMultiplier = armoritem._staminaUseMultiplier;
                 AmmoLimits = armoritem.AmmoLimits.Select(limit => (ArmorAmmoLimit)limit);
                 CategoryLimits = armoritem.CategoryLimits;
+                MovementSpeedMultiplier = armoritem._movementSpeedMultiplier;
             }
         }
     }
