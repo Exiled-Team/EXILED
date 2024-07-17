@@ -59,59 +59,74 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="CustomAbility{T}"/> containing all the registered custom abilites.
         /// </summary>
+        [YamlIgnore]
         protected static readonly List<CustomAbility<T>> UnorderedRegistered = new();
 
         /// <summary>
         /// A <see cref="Dictionary{TKey, TValue}"/> containing all the registered custom abilites ordered by their <see cref="GameEntity"/> type.
         /// </summary>
+        [YamlIgnore]
         protected static readonly Dictionary<Type, HashSet<CustomAbility<T>>> Registered = new();
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="CustomAbility{T}"/> containing all the registered custom abilites.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<Type, HashSet<CustomAbility<T>>> List => Registered;
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> containing all the registered custom abilites.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<CustomAbility<T>> UnorderedList => UnorderedRegistered;
 
         /// <summary>
         /// Gets all entities and all their respective <see cref="CustomAbility{T}"/>'s.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<object, HashSet<CustomAbility<T>>> Manager => EntitiesValue;
 
         /// <summary>
         /// Gets all entities belonging to a <see cref="CustomAbility{T}"/>.
         /// </summary>
+        [YamlIgnore]
         public static HashSet<object> Entities => EntitiesValue.Keys.ToHashSet();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before adding an ability.
         /// </summary>
         [DynamicEventDispatcher]
+        [YamlIgnore]
         public static TDynamicEventDispatcher<AddingAbilityEventArgs<T>> AddingAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after adding an ability.
         /// </summary>
         [DynamicEventDispatcher]
+        [YamlIgnore]
         public static TDynamicEventDispatcher<AddedAbilityEventArgs<T>> AddedAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before removing an ability.
         /// </summary>
         [DynamicEventDispatcher]
+        [YamlIgnore]
         public static TDynamicEventDispatcher<RemovingAbilityEventArgs<T>> RemovingAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after removing an ability.
         /// </summary>
         [DynamicEventDispatcher]
+        [YamlIgnore]
         public static TDynamicEventDispatcher<RemovedAbilityEventArgs<T>> RemovedAbilityDispatcher { get; set; }
 
         /// <inheritdoc/>
-        public Type BehaviourComponent { get; protected set; }
+        [YamlIgnore]
+        public override ModulePointer Config { get; set; }
+
+        /// <inheritdoc/>
+        [YamlIgnore]
+        public abstract Type BehaviourComponent { get; }
 
         /// <summary>
         /// Gets the ability's settings.
@@ -482,7 +497,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> which contains all the enabled custom abilities.</returns>
         public static IEnumerable<CustomAbility<T>> EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomAbilities))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomAbilities))
                 throw new Exception("ModuleType::CustomAbilities must be enabled in order to load any custom abilities");
 
             List<CustomAbility<T>> customAbilities = new();

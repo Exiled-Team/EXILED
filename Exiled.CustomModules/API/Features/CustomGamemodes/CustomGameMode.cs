@@ -71,7 +71,12 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> containing all <see cref="CustomGameMode"/>'s.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<CustomGameMode> List => Registered;
+
+        /// <inheritdoc/>
+        [YamlIgnore]
+        public override ModulePointer Config { get; set; }
 
         /// <inheritdoc/>
         public override string Name { get; set; }
@@ -208,7 +213,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomGameMode"/> containing all enabled custom game modes.</returns>
         public static List<CustomGameMode> EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomGameModes))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomGameModes))
                 throw new Exception("ModuleType::CustomGameModes must be enabled in order to load any custom game modes");
 
             List<CustomGameMode> customGameModes = new();

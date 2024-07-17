@@ -77,11 +77,15 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         [YamlIgnore]
         public static IEnumerable<Item> CustomItems => ItemManager.Keys;
 
+        /// <inheritdoc/>
+        [YamlIgnore]
+        public override ModulePointer Config { get; set; }
+
         /// <summary>
         /// Gets the <see cref="CustomItem"/>'s <see cref="Type"/>.
         /// </summary>
         [YamlIgnore]
-        public virtual Type BehaviourComponent { get; }
+        public abstract Type BehaviourComponent { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomItem"/>'s name.
@@ -389,7 +393,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// </remarks>
         public static List<CustomItem> EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomItems))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomItems))
                 throw new Exception("ModuleType::CustomItems must be enabled in order to load any custom items");
 
             List<CustomItem> customItems = new();

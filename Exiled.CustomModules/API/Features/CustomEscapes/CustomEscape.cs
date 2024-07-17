@@ -44,17 +44,24 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomEscape"/>'s.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<CustomEscape> List => Registered;
 
         /// <summary>
         /// Gets all existing <see cref="Hint"/>'s to be displayed based on the relative <see cref="UUEscapeScenarioType"/>.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<byte, Hint> AllScenarios => AllScenariosInternal;
 
         /// <summary>
         /// Gets all players and their respective <see cref="CustomEscape"/>.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<Player, CustomEscape> Manager => PlayersValue;
+
+        /// <inheritdoc/>
+        [YamlIgnore]
+        public override ModulePointer Config { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomEscape"/>'s name.
@@ -184,7 +191,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all enabled custom escapes.</returns>
         public static List<CustomEscape> EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomEscapes))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomEscapes))
                 throw new Exception("ModuleType::CustomEscapes must be enabled in order to load any custom escapes");
 
             List<CustomEscape> customEscapes = new();
