@@ -11,6 +11,7 @@ namespace Exiled.CustomModules
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
@@ -30,20 +31,13 @@ namespace Exiled.CustomModules
     /// </summary>
     public class CustomModules : Plugin<Config>
     {
-        private static readonly Dictionary<ModuleType, Action<Assembly>> ModulesLoader = new()
-        {
-            { ModuleType.CustomItems, asm => CustomItem.EnableAll(asm) },
-            { ModuleType.CustomRoles, asm => CustomRole.EnableAll(asm) },
-            { ModuleType.CustomAbilities, asm => CustomAbility<GameEntity>.EnableAll(asm) },
-            { ModuleType.CustomTeams, asm => CustomTeam.EnableAll(asm) },
-            { ModuleType.CustomEscapes, asm => CustomEscape.EnableAll(asm) },
-            { ModuleType.CustomGameModes, asm => CustomGameMode.EnableAll(asm) },
-        };
-
         /// <summary>
         /// Gets a static reference to the plugin's instance.
         /// </summary>
         public static CustomModules Instance { get; private set; }
+
+        /// <inheritdoc/>
+        public override PluginPriority Priority => PluginPriority.Last;
 
         /// <summary>
         /// Gets the <see cref="EventHandlers.PlayerHandler"/>.
@@ -60,32 +54,28 @@ namespace Exiled.CustomModules
         /// </summary>
         /// <param name="module">The module to check.</param>
         /// <returns><see langword="true"/> if the module is loaded; otherwise, <see langword="false"/>.</returns>
-        public static bool IsModuleLoaded(ModuleType module) => Instance.Config.Modules.Contains(module);
+        public static bool IsModuleLoaded(UUModuleType module) => Instance.Config.Modules.Contains(module);
 
         /// <inheritdoc/>
         public override void OnEnabled()
         {
             Instance = this;
 
-            if (Config.UseAutomaticModulesLoader)
-            {
-                foreach (IPlugin<IConfig> plugin in Exiled.Loader.Loader.Plugins)
-                    Config.Modules.ForEach(module => ModulesLoader[module](plugin.Assembly));
-            }
+            CustomModule.LoadAll();
 
-            if (Config.Modules.Contains(ModuleType.CustomRoles) && Config.UseDefaultRoleAssigner)
+            if (Config.Modules.Contains(UUModuleType.CustomRoles) && Config.UseDefaultRoleAssigner)
                 StaticActor.Get<RoleAssigner>();
 
-            if (Config.Modules.Contains(ModuleType.CustomTeams) && Config.UseDefaultRespawnManager)
+            if (Config.Modules.Contains(UUModuleType.CustomTeams) && Config.UseDefaultRespawnManager)
                 StaticActor.Get<RespawnManager>();
 
-            if (Config.Modules.Contains(ModuleType.CustomGameModes))
+            if (Config.Modules.Contains(UUModuleType.CustomGameModes))
                 World.Get();
 
-            if (Config.Modules.Contains(ModuleType.CustomAbilities))
+            if (Config.Modules.Contains(UUModuleType.CustomAbilities))
                 StaticActor.Get<AbilityTracker>();
 
-            if (Config.Modules.Contains(ModuleType.CustomItems))
+            if (Config.Modules.Contains(UUModuleType.CustomItems))
             {
                 StaticActor.Get<ItemTracker>();
                 StaticActor.Get<PickupTracker>();
