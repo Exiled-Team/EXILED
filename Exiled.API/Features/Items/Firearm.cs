@@ -26,7 +26,6 @@ namespace Exiled.API.Features.Items
     using UnityEngine;
 
     using BaseFirearm = InventorySystem.Items.Firearms.Firearm;
-    using BaseMicroHid = InventorySystem.Items.MicroHID.MicroHIDItem;
 
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.Firearms.Firearm"/>.
