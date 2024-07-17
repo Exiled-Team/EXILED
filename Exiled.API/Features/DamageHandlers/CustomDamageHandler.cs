@@ -103,11 +103,11 @@ namespace Exiled.API.Features.DamageHandlers
                 };
 
                 CustomBase = new FirearmDamageHandler(firearm, target, new BaseFirearmHandler(firearm.Base, damage));
+
+                return;
             }
-            else
-            {
-                CustomBase = new DamageHandler(target, attacker: null);
-            }
+
+            CustomBase = new DamageHandler(target, attacker: null);
         }
 
         /// <summary>
