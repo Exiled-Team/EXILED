@@ -49,12 +49,14 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired when a module gets enabled.
         /// </summary>
+        [YamlIgnore]
         [DynamicEventDispatcher]
         public static TDynamicEventDispatcher<ModuleInfo> OnEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired when a module gets disabled.
         /// </summary>
+        [YamlIgnore]
         [DynamicEventDispatcher]
         public static TDynamicEventDispatcher<ModuleInfo> OnDisabled { get; set; }
 
