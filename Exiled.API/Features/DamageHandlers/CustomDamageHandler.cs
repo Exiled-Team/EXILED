@@ -49,7 +49,7 @@ namespace Exiled.API.Features.DamageHandlers
         public CustomDamageHandler(Player target, BaseHandler baseHandler)
             : base(target, baseHandler)
         {
-            if (Attacker)
+            if (Attacker is not null)
             {
                 if (baseHandler is BaseScpDamageHandler)
                     CustomBase = new ScpDamageHandler(target, baseHandler);
