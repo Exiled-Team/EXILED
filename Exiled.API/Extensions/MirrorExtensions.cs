@@ -206,10 +206,8 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Resync <see cref="Intercom.DisplayText"/> for the <paramref name="target"/> player.
+        /// Resync <see cref="Intercom.DisplayText"/>
         /// </summary>
-        /// <param name="target">Only this player can see Display Text.</param>
-        /// <param name="text">Text displayed to the player</param>
         public static void ResetIntercomDisplayText()
         {
             ResyncSyncVar(IntercomDisplay._singleton.netIdentity, typeof(IntercomDisplay), nameof(IntercomDisplay.Network_overrideText));
