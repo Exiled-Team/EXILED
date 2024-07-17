@@ -26,6 +26,7 @@ namespace Exiled.API.Features.Items
     using UnityEngine;
 
     using BaseFirearm = InventorySystem.Items.Firearms.Firearm;
+    using BaseMicroHid = InventorySystem.Items.MicroHID.MicroHIDItem;
 
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.Firearms.Firearm"/>.
@@ -696,12 +697,14 @@ namespace Exiled.API.Features.Items
         {
             base.ReadPickupInfo(pickup);
 
-            if (pickup is Pickups.FirearmPickup firearm)
-            {
-                Base.OnAdded(firearm.Base);
+            if (pickup is not Pickups.FirearmPickup firearm)
+                return;
+
+            Base.OnAdded(firearm.Base);
+            AmmoType = firearm.AmmoType;
+
+            if (Base is not ParticleDisruptor)
                 MaxAmmo = firearm.MaxAmmo;
-                AmmoType = firearm.AmmoType;
-            }
         }
     }
 }
