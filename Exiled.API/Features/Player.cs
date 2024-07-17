@@ -2468,7 +2468,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="damageType">The <see cref="DamageType"/> the player has been killed.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(DamageType damageType, string cassieAnnouncement = "") => Kill(new CustomDamageHandler(this, null, -1, damageType, cassieAnnouncement));
+        public void Kill(DamageType damageType, string cassieAnnouncement = "") =>
+            Kill(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, -1, cassieAnnouncement));
 
         /// <summary>
         /// Kills the player.
