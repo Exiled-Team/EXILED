@@ -199,18 +199,11 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="target">Only this player can see Display Text.</param>
         /// <param name="text">Text displayed to the player</param>
-        public static void SetIntercomDisplayTextForTargetOnly(this Player target, string text)
-        {
-            target.SendFakeSyncVar(IntercomDisplay._singleton.netIdentity, typeof(IntercomDisplay), nameof(IntercomDisplay.Network_overrideText), text);
-        }
-
+        public static void SetIntercomDisplayTextForTargetOnly(this Player target, string text) => target.SendFakeSyncVar(IntercomDisplay._singleton.netIdentity, typeof(IntercomDisplay), nameof(IntercomDisplay.Network_overrideText), text);
         /// <summary>
         /// Resync <see cref="Intercom.DisplayText"/>
         /// </summary>
-        public static void ResetIntercomDisplayText()
-        {
-            ResyncSyncVar(IntercomDisplay._singleton.netIdentity, typeof(IntercomDisplay), nameof(IntercomDisplay.Network_overrideText));
-        }
+        public static void ResetIntercomDisplayText() => ResyncSyncVar(IntercomDisplay._singleton.netIdentity, typeof(IntercomDisplay), nameof(IntercomDisplay.Network_overrideText));
 
         /// <summary>
         /// Sets <see cref="Player.DisplayNickname"/> of a <paramref name="player"/> that only the <paramref name="target"/> player can see.
