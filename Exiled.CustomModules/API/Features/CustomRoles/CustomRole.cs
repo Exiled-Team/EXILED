@@ -51,28 +51,37 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired before a player changes role.
         /// </summary>
         [DynamicEventDispatcher]
+        [YamlIgnore]
         public static TDynamicEventDispatcher<ChangingCustomRoleEventArgs> ChangingCustomRoleDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after a player changes role.
         /// </summary>
         [DynamicEventDispatcher]
+        [YamlIgnore]
         public static TDynamicEventDispatcher<ChangedCustomRoleEventArgs> ChangedCustomRoleDispatcher { get; set; }
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomRole"/>'s.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<CustomRole> List => Registered;
 
         /// <summary>
         /// Gets all players and their respective <see cref="CustomRole"/>.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<Pawn, CustomRole> Manager => PlayersValue;
 
         /// <summary>
         /// Gets all players belonging to a <see cref="CustomRole"/>.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<Pawn> Players => PlayersValue.Keys.ToHashSet();
+
+        /// <inheritdoc/>
+        [YamlIgnore]
+        public override ModulePointer Config { get; set; }
 
         /// <summary>
         /// Gets the <see cref="CustomRole"/>'s <see cref="Type"/>.
@@ -624,7 +633,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </remarks>
         public static List<CustomRole> EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomRoles))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomRoles))
                 throw new Exception("ModuleType::CustomRoles must be enabled in order to load any custom roles");
 
             List<CustomRole> customRoles = new();

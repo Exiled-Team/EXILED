@@ -61,6 +61,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         [YamlIgnore]
         public static IEnumerable<Player> Players => PlayersValue.Keys.ToHashSet();
 
+        /// <inheritdoc/>
+        [YamlIgnore]
+        public override ModulePointer Config { get; set; }
+
         /// <summary>
         /// Gets or sets the name of the <see cref="CustomTeam"/>.
         /// </summary>
@@ -461,7 +465,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomTeam"/> which contains all the enabled custom teams.</returns>
         public static IEnumerable<CustomTeam> EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomTeams))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomTeams))
                 throw new Exception("ModuleType::CustomTeams must be enabled in order to load any custom teams");
 
             List<CustomTeam> customTeams = new();

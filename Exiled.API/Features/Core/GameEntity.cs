@@ -13,6 +13,7 @@ namespace Exiled.API.Features.Core
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Attributes;
+    using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Interfaces;
     using UnityEngine;
@@ -56,6 +57,11 @@ namespace Exiled.API.Features.Core
 
         /// <inheritdoc/>
         public IReadOnlyCollection<EActor> ComponentsInChildren => componentsInChildren;
+
+        /// <summary>
+        /// Gets all entity's <see cref="EBehaviour{T}"/>'s.
+        /// </summary>
+        public IEnumerable<EBehaviour<GameEntity>> Behaviours => GetComponents<EBehaviour<GameEntity>>();
 
         /// <summary>
         /// Gets or sets the <see cref="GameEntity"/>'s <see cref="UnityEngine.GameObject"/>.
@@ -246,7 +252,7 @@ namespace Exiled.API.Features.Core
 
             if (string.IsNullOrEmpty(name))
             {
-                if (!TryGetComponent<T>(out comp))
+                if (!TryGetComponent(out comp))
                     return null;
 
                 comp.Base = null;
@@ -254,7 +260,7 @@ namespace Exiled.API.Features.Core
                 return comp;
             }
 
-            foreach (EActor actor in GetComponents<T>())
+            foreach (T actor in GetComponents<T>())
             {
                 if (actor.Name != name)
                     continue;
@@ -273,7 +279,7 @@ namespace Exiled.API.Features.Core
 
             if (string.IsNullOrEmpty(name))
             {
-                if (!TryGetComponent<T>(out comp) || comp != actor)
+                if (!TryGetComponent(out comp) || comp != actor)
                     return null;
 
                 comp.Base = null;
@@ -281,7 +287,7 @@ namespace Exiled.API.Features.Core
                 return comp;
             }
 
-            foreach (EActor component in GetComponents<T>())
+            foreach (T component in GetComponents<T>())
             {
                 if (component.Name != name && component == actor)
                     continue;
