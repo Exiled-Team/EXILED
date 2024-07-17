@@ -54,6 +54,7 @@ namespace Exiled.API.Features.Items
         {
             Base = itemBase;
             BaseToItem.Add(itemBase, this);
+            weight = itemBase.Weight;
 
             if (Base.ItemSerial is 0 && itemBase.Owner != null)
             {
