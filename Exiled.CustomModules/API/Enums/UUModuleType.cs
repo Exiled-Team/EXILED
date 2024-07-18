@@ -12,7 +12,7 @@ namespace Exiled.CustomModules.API.Enums
     /// <summary>
     /// Enumerates the available module types.
     /// </summary>
-    public class UUModuleType : UniqueUnmanagedEnumClass<uint, UUCustomRoleType>
+    public class UUModuleType : UniqueUnmanagedEnumClass<uint, UUModuleType>
     {
         /// <summary>
         /// Custom items module.
