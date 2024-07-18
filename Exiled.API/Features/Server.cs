@@ -181,6 +181,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the List of player currently whitelisted.
+        /// </summary>
+        public static HashSet<string> UsersWhitelisted => WhiteList.Users;
+
+        /// <summary>
         /// Gets a value indicating whether or not this server is verified.
         /// </summary>
         public static bool IsVerified => CustomNetworkManager.IsVerified;

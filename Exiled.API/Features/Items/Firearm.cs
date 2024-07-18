@@ -696,12 +696,14 @@ namespace Exiled.API.Features.Items
         {
             base.ReadPickupInfo(pickup);
 
-            if (pickup is Pickups.FirearmPickup firearm)
-            {
-                Base.OnAdded(firearm.Base);
+            if (pickup is not Pickups.FirearmPickup firearm)
+                return;
+
+            Base.OnAdded(firearm.Base);
+            AmmoType = firearm.AmmoType;
+
+            if (Base is not ParticleDisruptor)
                 MaxAmmo = firearm.MaxAmmo;
-                AmmoType = firearm.AmmoType;
-            }
         }
     }
 }
