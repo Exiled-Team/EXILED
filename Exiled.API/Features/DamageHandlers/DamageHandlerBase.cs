@@ -101,8 +101,8 @@ namespace Exiled.API.Features.DamageHandlers
                 {
                     DeathTranslation translation = DeathTranslations.TranslationsById[handler.TranslationId];
 
-                    if (DamageTypeExtensions.TranslationIdConversion.ContainsKey(translation.Id))
-                        return damageType = DamageTypeExtensions.TranslationIdConversion[translation.Id];
+                    if (DamageTypeExtensions.TranslationIdConversion.TryGetValue(translation.Id, out DamageType value))
+                        return damageType = value;
 
                     Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}:" +
                              $"No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}." +
