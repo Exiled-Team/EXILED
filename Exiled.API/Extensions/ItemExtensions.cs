@@ -21,6 +21,8 @@ namespace Exiled.API.Extensions
     using InventorySystem.Items.ThrowableProjectiles;
     using Structs;
 
+    using Firearm = Features.Items.Firearm;
+
     /// <summary>
     /// A set of extensions for <see cref="ItemType"/>.
     /// </summary>

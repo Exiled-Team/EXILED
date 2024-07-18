@@ -12,7 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-
+    using System.Text;
     using Core;
     using CustomPlayerEffects;
     using CustomPlayerEffects.Danger;
@@ -59,6 +59,7 @@ namespace Exiled.API.Features
     using PluginAPI.Core;
     using RelativePositioning;
     using RemoteAdmin;
+    using Respawning;
     using Respawning.NamingRules;
     using RoundRestarting;
     using UnityEngine;
@@ -74,6 +75,7 @@ namespace Exiled.API.Features
     using Firearm = Items.Firearm;
     using FirearmPickup = Pickups.FirearmPickup;
     using HumanRole = Roles.HumanRole;
+    using PHumanRole = PlayerRoles.HumanRole;
 
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
@@ -3963,7 +3965,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">Player that will desync the CustomName.</param>
         /// <param name="name">Nickname to set.</param>
-        public void SetName(Player target, string name) => target.SendFakeSyncVar(NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), name);
+        public void SetNameForTargetOnly(Player target, string name) => target.SendFakeSyncVar(NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), name);
 
         /// <summary>
         /// Change <see cref="Player"/> character model for appearance.
@@ -3984,19 +3986,18 @@ namespace Exiled.API.Features
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public void ChangeAppearance(RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
         {
-            if (ReferenceHub.gameObject == null || !type.TryGetRoleBase(out PlayerRoleBase roleBase))
+            if (ReferenceHub.gameObject == null || !RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))
                 return;
-
-            bool isRisky = type.GetTeam() is Team.Dead || IsDead;
+            bool isRisky = type.GetRoleBase().Team is Team.Dead || IsDead;
 
             NetworkWriterPooled writer = NetworkWriterPool.Get();
             writer.WriteUShort(38952);
             writer.WriteUInt(NetId);
             writer.WriteRoleType(type);
 
-            if (roleBase is HumanRole humanRole && humanRole.UsesUnitNames)
+            if (roleBase is PHumanRole humanRole && humanRole.UsesUnitNames)
             {
-                if (Role.Base is not HumanRole)
+                if (Role.Base is not PHumanRole)
                     isRisky = true;
                 writer.WriteByte(unitId);
             }
@@ -4035,6 +4036,55 @@ namespace Exiled.API.Features
             // To counter a bug that makes the player invisible until they move after changing their appearance, we will teleport them upwards slightly to force a new position update for all clients.
             if (!skipJump)
                 Position += Vector3.up * 0.25f;
+        }
+
+        /// <summary>
+        /// Send CASSIE announcement that only <see cref="Player"/> can hear.
+        /// </summary>
+        /// <param name="player">Target to send.</param>
+        /// <param name="words">Announcement words.</param>
+        /// <param name="makeHold">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isHeld.</param>
+        /// <param name="makeNoise">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isNoisy.</param>
+        /// <param name="isSubtitles">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isSubtitles.</param>
+        public void PlayCassieAnnouncement(string words, bool makeHold = false, bool makeNoise = true, bool isSubtitles = false)
+        {
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if (controller != null)
+                {
+                    MirrorExtensions.SendFakeTargetRpc(ReferenceHub, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise, isSubtitles);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Send CASSIE announcement with custom subtitles for translation that only <see cref="Player"/> can hear and see it.
+        /// </summary>
+        /// <param name="player">Target to send.</param>
+        /// <param name="words">The message to be reproduced.</param>
+        /// <param name="translation">The translation should be show in the subtitles.</param>
+        /// <param name="makeHold">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isHeld.</param>
+        /// <param name="makeNoise">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isNoisy.</param>
+        /// <param name="isSubtitles">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isSubtitles.</param>
+        public void MessageTranslated(string words, string translation, bool makeHold = false, bool makeNoise = true, bool isSubtitles = true)
+        {
+            StringBuilder announcement = StringBuilderPool.Pool.Get();
+
+            string[] cassies = words.Split('\n');
+            string[] translations = translation.Split('\n');
+
+            for (int i = 0; i < cassies.Length; i++)
+                announcement.Append($"{translations[i].Replace(' ', ' ')}<size=0> {cassies[i]} </size><split>");
+
+            string message = StringBuilderPool.Pool.ToStringReturn(announcement);
+
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if (controller != null)
+                {
+                    MirrorExtensions.SendFakeTargetRpc(ReferenceHub, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), message, makeHold, makeNoise, isSubtitles);
+                }
+            }
         }
 
         /// <summary>
