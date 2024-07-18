@@ -1,12 +1,13 @@
 name: Auto Assigner
-
 on:
   pull_request:
     types:
       - opened
-
 jobs:
   auto-assign:
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Assign Author
