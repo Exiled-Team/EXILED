@@ -418,12 +418,12 @@ namespace Exiled.API.Features.Core
 
         /// <inheritdoc/>
         public bool HasComponent<T>(bool depthInheritance = false) => depthInheritance
-            ? componentsInChildren.Any(comp => typeof(T).IsAssignableFrom(comp.GetType()))
+            ? componentsInChildren.Any(comp => comp is T)
             : componentsInChildren.Any(comp => typeof(T) == comp.GetType());
 
         /// <inheritdoc/>
         public bool HasComponent(Type type, bool depthInheritance = false) => depthInheritance
-            ? componentsInChildren.Any(comp => type.IsAssignableFrom(comp.GetType()))
+            ? componentsInChildren.Any(type.IsInstanceOfType)
             : componentsInChildren.Any(comp => type == comp.GetType());
     }
 }
