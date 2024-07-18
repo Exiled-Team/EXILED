@@ -43,5 +43,10 @@ namespace Exiled.CustomModules.API.Enums
         /// Custom game modes module.
         /// </summary>
         public static readonly UUModuleType CustomGameModes = new();
+
+        /// <summary>
+        /// Custom hints' module.
+        /// </summary>
+        public static readonly UUModuleType CustomHints = new();
     }
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<docs>
+	<displays>
+		<members name="roles">
+			<Roles>
+				<example>
+					This example shows how <see cref="Roles"/> can be used to perform bitfield operations with <see cref="RoleTypeId"/>s.
+					<code>
+						// the | (pipe) is the bitwise OR operator
+						// it combines the bits of all of the provided fields
+						// 1010 | 1100 -> 1110
+						Roles roles = Roles.CivilianRoles | Roles.FacilityGuard | Roles.ScpsNo0492; // all things that can spawn in at the start of the game
+
+						// using RueI.Extensions.HasFlagFast because it is much quicker
+						roles.HasFlagFast(Roles.ChaosRifleman); // -> false
+						roles.HasFlagFast(Roles.Scientist); // -> true
+					</code>
+				</example>
+			</Roles>
+		</members>
+		<members name="display">
+			<Display>
+				<example>
+					This example demonstrates creating and using a <see cref="Display"/>.
+					<code>
+						Display display = new(referenceHub); // Create a new display from a ReferenceHub
+
+						SetElement helloElem = new(300, zIndex: 10, "hello").AddTo(display);	
+						SetElement worldElem = new(250, zIndex: 10, "world").AddTo(display);
+
+						display.Update(); // Update the display
+					</code>
+				</example>
+			</Display>
+		</members>
+	</displays>
+	<members name="parser">
+		<Parser>
+			<example>
+				This example demonstrates creating and using a <see cref="ParserBuilder"/>.
+				<code>
+					Parser builder = new ParserBuilder()
+						.ImportFrom(Constants.DefaultParser)
+						.AddTag&lt;MyCustomTag&gt;(); <!-- .AddTag<MyCustomTag>(); -->
+						.Build();
+					
+					builder.Parse("hello world!")
+				</code>
+			</example>
+		</Parser>
+	</members>
+</docs>

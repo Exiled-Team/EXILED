@@ -39,11 +39,11 @@ namespace Exiled.API.Features
         /// <param name="show">Whether or not the hint should be shown.</param>
         public Hint(string content, float duration = 3, bool show = true, HintParameter[] parameters = null, HintEffect[] effects = null)
         {
-            Content = content;
-            Duration = duration;
-            Show = show;
-            Parameters = parameters ?? new HintParameter[] { new StringHintParameter(Content) };
-            Effects = effects;
+            this.Content = content;
+            this.Duration = duration;
+            this.Show = show;
+            this.Parameters = parameters ?? new HintParameter[] { new StringHintParameter(this.Content) };
+            this.Effects = effects;
         }
 
         /// <summary>
@@ -73,8 +73,8 @@ namespace Exiled.API.Features
         [YamlIgnore]
         public HintParameter[] Parameters
         {
-            get => parameters ??= new HintParameter[] { new StringHintParameter(Content) };
-            set => parameters = value;
+            get => this.parameters ??= new HintParameter[] { new StringHintParameter(this.Content) };
+            set => this.parameters = value;
         }
 
         /// <summary>
@@ -87,6 +87,6 @@ namespace Exiled.API.Features
         /// Returns the hint in a human-readable format.
         /// </summary>
         /// <returns>A string containing hint-related data.</returns>
-        public override string ToString() => $"({Content}) {Duration}";
+        public override string ToString() => $"({this.Content}) {this.Duration}";
     }
 }

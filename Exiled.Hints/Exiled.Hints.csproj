@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <AssemblyName>Exiled.Hints</AssemblyName>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Configurations>Debug;Release;Installer</Configurations>
+        <Platforms>AnyCPU</Platforms>
+        <TargetFramework>net48</TargetFramework>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Exiled.API\Exiled.API.csproj" />
+        <ProjectReference Include="..\Exiled.CustomModules/Exiled.CustomModules.csproj" />
+        <ProjectReference Include="..\RueI\RueI.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="Assembly-CSharp" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll" Private="false" />
+        <Reference Include="Assembly-CSharp-firstpass" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="false" />
+        <Reference Include="CommandSystem.Core" HintPath="$(EXILED_REFERENCES)\CommandSystem.Core.dll" Private="false" />
+        <Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll" Private="false" />
+        <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
+        <Reference Include="NorthwoodLib" HintPath="$(EXILED_REFERENCES)\NorthwoodLib.dll" Private="false" />
+        <Reference Include="PluginAPI" HintPath="$(EXILED_REFERENCES)\PluginAPI.dll" Private="false" />
+        <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
+        <Reference Include="YamlDotNet" HintPath="$(EXILED_REFERENCES)\YamlDotNet.dll" Private="false" />
+        <Reference Include="System.Collections.Immutable">
+            <HintPath>$(EXILED_REFERENCES)\System.Collections.Immutable.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Properties\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\Resources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
+    </ItemGroup>
+
+    <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+        <PostBuildEvent>if not "$(EXILED_DEV_REFERENCES)"=="" copy /y "$(OutputPath)$(AssemblyName).dll" "$(EXILED_DEV_REFERENCES)\Plugins\"</PostBuildEvent>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
+        <PostBuildEvent>if [[ ! -z "$EXILED_DEV_REFERENCES" ]]; then cp "$(OutputPath)$(AssemblyName).dll" "$EXILED_DEV_REFERENCES/Plugins/"; fi</PostBuildEvent>
+    </PropertyGroup>
+
+</Project>

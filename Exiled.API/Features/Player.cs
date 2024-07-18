@@ -282,7 +282,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Hints.HintDisplay"/> of the player.
         /// </summary>
-        public HintDisplay HintDisplay { get; private set; }
+        public Hints.HintDisplay HintDisplay { get; private set; }
 
         /// <summary>
         /// Gets the player's <see cref="InventorySystem.Inventory"/>.
