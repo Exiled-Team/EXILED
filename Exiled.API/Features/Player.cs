@@ -976,7 +976,7 @@ namespace Exiled.API.Features
         [EProperty(category: STATS_CATEGORY)]
         public float ArtificialHealth
         {
-            get => AhpStat.CurValue;
+            get => ActiveArtificialHealthProcesses.FirstOrDefault()?.CurrentAmount ?? 0f;
             set
             {
                 AhpStat.AhpProcess ahp = ActiveArtificialHealthProcesses.FirstOrDefault();
@@ -994,8 +994,16 @@ namespace Exiled.API.Features
         [EProperty(category: STATS_CATEGORY)]
         public float MaxArtificialHealth
         {
-            get => AhpStat.MaxValue;
-            set => AhpStat._maxSoFar = value;
+            get => ActiveArtificialHealthProcesses.FirstOrDefault()?.Limit ?? 0f;
+            set
+            {
+                AhpStat.AhpProcess ahp = ActiveArtificialHealthProcesses.FirstOrDefault();
+
+                if (ahp is not null)
+                    ahp.Limit = value;
+                else
+                    AddAhp(value, value);
+            }
         }
 
         /// <summary>
@@ -2460,7 +2468,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="damageType">The <see cref="DamageType"/> the player has been killed.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(DamageType damageType, string cassieAnnouncement = "") => Kill(new CustomDamageHandler(this, null, -1, damageType, cassieAnnouncement));
+        public void Kill(DamageType damageType, string cassieAnnouncement = "") =>
+            Kill(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, -1, cassieAnnouncement));
 
         /// <summary>
         /// Kills the player.

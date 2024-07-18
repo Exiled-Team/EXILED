@@ -13,7 +13,6 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Enums;
@@ -24,10 +23,10 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     /// Represents the base class for custom escape behaviors.
     /// </summary>
     /// <remarks>
-    /// This class extends <see cref="EPlayerBehaviour"/> and implements <see cref="IAdditiveSettingsCollection{T}"/>.
+    /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IAdditiveSettingsCollection{T}"/>.
     /// <br/>It serves as the foundation for creating custom escape behaviors associated with in-game player actions.
     /// </remarks>
-    public abstract class EscapeBehaviour : EPlayerBehaviour, IAdditiveSettingsCollection<EscapeSettings>
+    public abstract class EscapeBehaviour : ModuleBehaviour<Player>, IAdditiveSettingsCollection<EscapeSettings>
     {
         /// <summary>
         /// Gets the relative <see cref="CustomEscapes.CustomEscape"/>.

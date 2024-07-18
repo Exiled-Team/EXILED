@@ -19,6 +19,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using MonoMod.Utils;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Abstract class facilitating the seamless management of escaping behavior within the game environment.
@@ -43,47 +44,55 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomEscape"/>'s.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<CustomEscape> List => Registered;
 
         /// <summary>
         /// Gets all existing <see cref="Hint"/>'s to be displayed based on the relative <see cref="UUEscapeScenarioType"/>.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<byte, Hint> AllScenarios => AllScenariosInternal;
 
         /// <summary>
         /// Gets all players and their respective <see cref="CustomEscape"/>.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<Player, CustomEscape> Manager => PlayersValue;
 
-        /// <summary>
-        /// Gets the <see cref="CustomEscape"/>'s name.
-        /// </summary>
-        public override string Name { get; }
+        /// <inheritdoc/>
+        [YamlIgnore]
+        public override ModulePointer Config { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="CustomEscape"/>'s id.
+        /// Gets or sets the <see cref="CustomEscape"/>'s name.
         /// </summary>
-        public override uint Id { get; protected set; }
+        public override string Name { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomEscape"/> is enabled.
+        /// Gets or sets or sets the <see cref="CustomEscape"/>'s id.
         /// </summary>
-        public override bool IsEnabled { get; }
+        public override uint Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="CustomEscape"/> is enabled.
+        /// </summary>
+        public override bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets the <see cref="CustomEscape"/>'s <see cref="Type"/>.
         /// </summary>
+        [YamlIgnore]
         public virtual Type BehaviourComponent { get; }
 
         /// <summary>
-        /// Gets all <see cref="Hint"/>'s to be displayed based on the relative <see cref="UUEscapeScenarioType"/>.
+        /// Gets or sets all <see cref="Hint"/>'s to be displayed based on the relative <see cref="UUEscapeScenarioType"/>.
         /// </summary>
-        public virtual Dictionary<byte, Hint> Scenarios { get; } = new();
+        public virtual Dictionary<byte, Hint> Scenarios { get; set; } = new();
 
         /// <summary>
-        /// Gets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape settings.
+        /// Gets or sets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape settings.
         /// </summary>
-        public virtual List<EscapeSettings> Settings { get; } = new() { EscapeSettings.Default, };
+        public virtual List<EscapeSettings> Settings { get; set; } = new() { EscapeSettings.Default, };
 
         /// <summary>
         /// Gets a <see cref="CustomEscape"/> based on the provided id or <see cref="UUCustomEscapeType"/>.
@@ -167,7 +176,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="type">The <see cref="Type"/> to search for.</param>
         /// <param name="customEscape">The found <see cref="CustomEscape"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomEscape"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out CustomEscape customEscape) => customEscape = Get(type.GetType());
+        public static bool TryGet(Type type, out CustomEscape customEscape) => customEscape = Get(type);
 
         /// <summary>
         /// Enables all the custom escapes present in the assembly.
@@ -182,17 +191,18 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all enabled custom escapes.</returns>
         public static List<CustomEscape> EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomEscapes))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomEscapes))
                 throw new Exception("ModuleType::CustomEscapes must be enabled in order to load any custom escapes");
 
             List<CustomEscape> customEscapes = new();
             foreach (Type type in assembly.GetTypes())
             {
-                CustomEscapeAttribute attribute = type.GetCustomAttribute<CustomEscapeAttribute>();
+                ModuleIdentifierAttribute attribute = type.GetCustomAttribute<ModuleIdentifierAttribute>();
                 if (!typeof(CustomEscape).IsAssignableFrom(type) || attribute is null)
                     continue;
 
                 CustomEscape customEscape = Activator.CreateInstance(type) as CustomEscape;
+                customEscape.DeserializeModule();
 
                 if (!customEscape.IsEnabled)
                     continue;
@@ -354,9 +364,9 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// Tries to register a <see cref="CustomEscape"/>.
         /// </summary>
         /// <param name="assembly">The assembly to register <see cref="CustomEscape"/> from..</param>
-        /// <param name="attribute">The specified <see cref="CustomEscapeAttribute"/>.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomEscape"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, CustomEscapeAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {

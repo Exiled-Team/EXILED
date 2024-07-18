@@ -43,6 +43,11 @@ namespace Exiled.Events.Handlers
         public static Event<DetonatingEventArgs> Detonating { get; set; } = new();
 
         /// <summary>
+        /// Invoked before player interacting with the warhead button in surface.
+        /// </summary>
+        public static Event<SurfaceButtonInteractEventArgs> SurfaceButtonInteract { get; set; } = new();
+
+        /// <summary>
         /// Called before stopping the warhead.
         /// </summary>
         /// <param name="ev">The <see cref="StoppingEventArgs" /> instance.</param>
@@ -70,5 +75,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DetonatingEventArgs"/> instance.</param>
         public static void OnDetonating(DetonatingEventArgs ev) => Detonating.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before interacting the warhead button in surface.
+        /// </summary>
+        /// <param name="ev">The <see cref="DetonatingEventArgs"/> instance.</param>
+        public static void OnSurfaceButtonInteract(SurfaceButtonInteractEventArgs ev) => SurfaceButtonInteract.InvokeSafely(ev);
     }
 }

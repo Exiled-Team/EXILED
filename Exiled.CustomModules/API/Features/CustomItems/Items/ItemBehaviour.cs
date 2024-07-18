@@ -7,7 +7,6 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Items
 {
-    using System;
     using System.Linq;
     using System.Reflection;
 
@@ -16,12 +15,10 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Interfaces;
     using Exiled.CustomModules.Events.EventArgs.CustomItems;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp914;
@@ -32,10 +29,10 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
     /// Represents the base class for custom item behaviors.
     /// </summary>
     /// <remarks>
-    /// This class extends <see cref="EItemBehaviour"/> and implements <see cref="IItemBehaviour"/> and <see cref="IAdditiveSettings{T}"/>.
+    /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IItemBehaviour"/> and <see cref="IAdditiveSettings{T}"/>.
     /// <br/>It provides a foundation for creating custom behaviors associated with in-game items.
     /// </remarks>
-    public abstract class ItemBehaviour : EItemBehaviour, IItemBehaviour, IAdditiveSettings<ItemSettings>
+    public abstract class ItemBehaviour : ModuleBehaviour<Item>, IItemBehaviour, IAdditiveSettings<ItemSettings>
     {
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item changes role.

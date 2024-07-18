@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="EventScanner.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -21,22 +21,28 @@ namespace Exiled.Events.Extra.Events
     /// </summary>
     public static class EventScanner
     {
+        /// <summary>
+        /// Gets or sets a dictionary of event types and their corresponding event instances.
+        /// </summary>
         private static Dictionary<Type, object> EventTypes { get; set; }
 
         /// <summary>
-        /// Retrieve event types.
+        /// Retrieves all available event types and their corresponding instances.
         /// </summary>
-        /// <returns>Returns all event types.</returns>
+        /// <returns>A dictionary containing event types as keys and their corresponding instances as values.</returns>
         public static Dictionary<Type, object> Get()
         {
             if (EventTypes != null)
                 return EventTypes;
+
             EventTypes = new Dictionary<Type, object>();
             ScanEvents();
-
             return EventTypes;
         }
 
+        /// <summary>
+        /// Scans the assembly for event types and populates the <see cref="EventTypes"/> dictionary.
+        /// </summary>
         private static void ScanEvents()
         {
             Assembly exiledHandlersAssembly = typeof(Player).Assembly;
@@ -54,6 +60,7 @@ namespace Exiled.Events.Extra.Events
                     if (!field.FieldType.IsGenericType ||
                         field.FieldType.GetGenericTypeDefinition() != typeof(Event<>))
                         continue;
+
                     Type genericType = field.FieldType.GetGenericArguments().FirstOrDefault();
                     if (genericType != null && typeof(System.EventArgs).IsAssignableFrom(genericType))
                         EventTypes[genericType] = field.GetValue(null);
@@ -64,6 +71,7 @@ namespace Exiled.Events.Extra.Events
                     if (!property.PropertyType.IsGenericType ||
                         property.PropertyType.GetGenericTypeDefinition() != typeof(Event<>))
                         continue;
+
                     Type genericType = property.PropertyType.GetGenericArguments().FirstOrDefault();
                     if (genericType != null && typeof(IExiledEvent).IsAssignableFrom(genericType))
                         EventTypes[genericType] = property.GetValue(null);

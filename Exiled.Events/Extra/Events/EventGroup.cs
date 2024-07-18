@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="EventGroup.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -23,15 +23,14 @@ namespace Exiled.Events.Extra.Events
         private readonly List<Tuple<Delegate, object, MethodInfo>> dynamicHandlers = new();
 
         /// <summary>
-        /// Gets a value indicating whether events added have been registered or not.
+        /// Gets a value indicating whether events have been registered.
         /// </summary>
-        // ReSharper disable once MemberCanBePrivate.Global
         public bool IsHandlerAdded { get; private set; }
 
         /// <summary>
-        /// Register all methods in each class with [Listener] attribute.
+        /// Registers all methods in the specified instances marked with <see cref="ListenerAttribute"/>.
         /// </summary>
-        /// <param name="classes">The instances of classes with Listeners that should be registered.</param>
+        /// <param name="classes">The instances of classes containing listener methods to be registered.</param>
         public void AddEvents(params object[] classes)
         {
             foreach (object @class in classes)
@@ -39,7 +38,7 @@ namespace Exiled.Events.Extra.Events
         }
 
         /// <summary>
-        /// Remove all active event handlers in this event group.
+        /// Unregisters all currently active event handlers in this event group.
         /// </summary>
         public void RemoveEvents()
         {
@@ -47,16 +46,18 @@ namespace Exiled.Events.Extra.Events
         }
 
         /// <summary>
-        /// Register all methods in class with [Listener] attribute.
+        /// Registers all methods in the specified instance that have the [Listener] attribute.
         /// </summary>
-        /// <param name="instance">The instance of a class with Listeners that should be registered.</param>
+        /// <param name="instance">The instance containing listener methods to be registered.</param>
         public void AddEventHandlers(object instance)
         {
             IEnumerable<MethodInfo> methods = instance.GetType()
                 .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
                 .Where(m => m.GetCustomAttributes(typeof(ListenerAttribute), false).Length > 0);
+
             List<MethodInfo> methodInfos = methods.ToList();
-            Log.Warn($"Beginning event handlers, total of {methodInfos.Count()} found");
+            Log.Warn($"Beginning event handlers, total of {methodInfos.Count} found");
+
             foreach (MethodInfo method in methodInfos)
             {
                 Type eventType = method.GetParameters().First().ParameterType;
@@ -72,6 +73,9 @@ namespace Exiled.Events.Extra.Events
             IsHandlerAdded = true;
         }
 
+        /// <summary>
+        /// Unregisters all event handlers that were previously registered.
+        /// </summary>
         private void RemoveEventHandlers()
         {
             if (!IsHandlerAdded)

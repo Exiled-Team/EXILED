@@ -21,10 +21,10 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomAbilities.Settings;
-    using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
     using HarmonyLib;
     using Utils.NonAllocLINQ;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Abstract base class serving as a foundation for custom abilities associated with a specific <see cref="GameEntity"/>.
@@ -59,59 +59,74 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="CustomAbility{T}"/> containing all the registered custom abilites.
         /// </summary>
+        [YamlIgnore]
         protected static readonly List<CustomAbility<T>> UnorderedRegistered = new();
 
         /// <summary>
         /// A <see cref="Dictionary{TKey, TValue}"/> containing all the registered custom abilites ordered by their <see cref="GameEntity"/> type.
         /// </summary>
+        [YamlIgnore]
         protected static readonly Dictionary<Type, HashSet<CustomAbility<T>>> Registered = new();
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyList{T}"/> of <see cref="CustomAbility{T}"/> containing all the registered custom abilites.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<Type, HashSet<CustomAbility<T>>> List => Registered;
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> containing all the registered custom abilites.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<CustomAbility<T>> UnorderedList => UnorderedRegistered;
 
         /// <summary>
         /// Gets all entities and all their respective <see cref="CustomAbility{T}"/>'s.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<object, HashSet<CustomAbility<T>>> Manager => EntitiesValue;
 
         /// <summary>
         /// Gets all entities belonging to a <see cref="CustomAbility{T}"/>.
         /// </summary>
+        [YamlIgnore]
         public static HashSet<object> Entities => EntitiesValue.Keys.ToHashSet();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before adding an ability.
         /// </summary>
         [DynamicEventDispatcher]
+        [YamlIgnore]
         public static TDynamicEventDispatcher<AddingAbilityEventArgs<T>> AddingAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after adding an ability.
         /// </summary>
         [DynamicEventDispatcher]
+        [YamlIgnore]
         public static TDynamicEventDispatcher<AddedAbilityEventArgs<T>> AddedAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before removing an ability.
         /// </summary>
         [DynamicEventDispatcher]
+        [YamlIgnore]
         public static TDynamicEventDispatcher<RemovingAbilityEventArgs<T>> RemovingAbilityDispatcher { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after removing an ability.
         /// </summary>
         [DynamicEventDispatcher]
+        [YamlIgnore]
         public static TDynamicEventDispatcher<RemovedAbilityEventArgs<T>> RemovedAbilityDispatcher { get; set; }
 
         /// <inheritdoc/>
-        public Type BehaviourComponent { get; protected set; }
+        [YamlIgnore]
+        public override ModulePointer Config { get; set; }
+
+        /// <inheritdoc/>
+        [YamlIgnore]
+        public abstract Type BehaviourComponent { get; }
 
         /// <summary>
         /// Gets the ability's settings.
@@ -119,28 +134,29 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         public virtual AbilitySettings Settings { get; } = AbilitySettings.Default;
 
         /// <summary>
-        /// Gets the <see cref="CustomAbility{T}"/>'s name.
+        /// Gets or sets the <see cref="CustomAbility{T}"/>'s name.
         /// </summary>
-        public override string Name { get; }
+        public override string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomAbility{T}"/>'s id.
         /// </summary>
-        public override uint Id { get; protected set; }
+        public override uint Id { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the ability is enabled.
+        /// Gets or sets a value indicating whether the ability is enabled.
         /// </summary>
-        public override bool IsEnabled { get; }
+        public override bool IsEnabled { get; set; }
 
         /// <summary>
-        /// Gets the description of the ability.
+        /// Gets or sets the description of the ability.
         /// </summary>
-        public virtual string Description { get; }
+        public virtual string Description { get; set; }
 
         /// <summary>
         /// Gets the reflected generic type.
         /// </summary>
+        [YamlIgnore]
         protected Type ReflectedGenericType => reflectedGenericType ??= GetType().GetGenericArguments()[0];
 
         /// <summary>
@@ -225,7 +241,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <param name="type">The type to search for.</param>
         /// <param name="customAbility">The found <see cref="CustomAbility{T}"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomAbility{T}"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out CustomAbility<T> customAbility) => customAbility = Get(type.GetType());
+        public static bool TryGet(Type type, out CustomAbility<T> customAbility) => customAbility = Get(type);
 
         /// <summary>
         /// Tries to get a <see cref="CustomAbility{T}"/> given the specified type of <see cref="CustomAbility{T}"/>.
@@ -481,17 +497,18 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> which contains all the enabled custom abilities.</returns>
         public static IEnumerable<CustomAbility<T>> EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomAbilities))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomAbilities))
                 throw new Exception("ModuleType::CustomAbilities must be enabled in order to load any custom abilities");
 
             List<CustomAbility<T>> customAbilities = new();
             foreach (Type type in assembly.GetTypes())
             {
-                CustomAbilityAttribute attribute = type.GetCustomAttribute<CustomAbilityAttribute>();
+                ModuleIdentifierAttribute attribute = type.GetCustomAttribute<ModuleIdentifierAttribute>();
                 if (!typeof(CustomAbility<T>).IsAssignableFrom(type) || attribute is null)
                     continue;
 
                 CustomAbility<T> customAbility = Activator.CreateInstance(type) as CustomAbility<T>;
+                customAbility.DeserializeModule();
 
                 if (!customAbility.IsEnabled)
                     continue;
@@ -588,9 +605,9 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Tries to register a <see cref="CustomAbility{T}"/>.
         /// </summary>
         /// <param name="assembly">The assembly to register <see cref="CustomAbility{T}"/> from.</param>
-        /// <param name="attribute">The specified <see cref="CustomAbilityAttribute"/>.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomAbility{T}"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, CustomAbilityAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!UnorderedRegistered.Contains(this))
             {

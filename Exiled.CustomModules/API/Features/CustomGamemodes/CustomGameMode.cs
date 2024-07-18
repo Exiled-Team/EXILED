@@ -18,6 +18,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Represents a custom game mode in the system, derived from <see cref="CustomModule"/> and implementing <see cref="IAdditiveBehaviours"/>.
@@ -70,41 +71,50 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> containing all <see cref="CustomGameMode"/>'s.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<CustomGameMode> List => Registered;
 
         /// <inheritdoc/>
-        public override string Name { get; }
+        [YamlIgnore]
+        public override ModulePointer Config { get; set; }
 
         /// <inheritdoc/>
-        public override uint Id { get; protected set; }
+        public override string Name { get; set; }
 
         /// <inheritdoc/>
-        public override bool IsEnabled { get; }
+        public override uint Id { get; set; }
 
         /// <inheritdoc/>
+        public override bool IsEnabled { get; set; }
+
+        /// <inheritdoc/>
+        [YamlIgnore]
         public virtual Type[] BehaviourComponents { get; }
 
         /// <summary>
-        /// Gets the <see cref="GameModeSettings"/>.
+        /// Gets or sets the <see cref="GameModeSettings"/>.
         /// </summary>
-        public virtual GameModeSettings Settings { get; }
+        public virtual GameModeSettings Settings { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the game mode can start automatically based on the configured probability, if automatic.
         /// </summary>
         /// <returns><see langword="true"/> if the game mode can start automatically; otherwise, <see langword="false"/>.</returns>
+        [YamlIgnore]
         public bool CanStartAuto => Settings.Automatic && Settings.AutomaticProbability.EvaluateProbability();
 
         /// <summary>
         /// Gets the type of the game state.
         /// </summary>
         /// <returns>The type of the game state if found; otherwise, <see langword="null"/>.</returns>
+        [YamlIgnore]
         public Type GameState => BehaviourComponents.FirstOrDefault(comp => typeof(GameState).IsAssignableFrom(comp));
 
         /// <summary>
         /// Gets the types of the player states.
         /// </summary>
         /// <returns>The types of the player states if found; otherwise, empty.</returns>
+        [YamlIgnore]
         public IEnumerable<Type> PlayerStates => BehaviourComponents.Where(comp => typeof(PlayerState).IsAssignableFrom(comp));
 
         /// <summary>
@@ -188,7 +198,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <param name="type">The <see cref="Type"/> to search for.</param>
         /// <param name="customGameMode">The found <see cref="CustomGameMode"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomGameMode"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out CustomGameMode customGameMode) => customGameMode = Get(type.GetType());
+        public static bool TryGet(Type type, out CustomGameMode customGameMode) => customGameMode = Get(type);
 
         /// <summary>
         /// Enables all the custom game modes present in the assembly.
@@ -203,17 +213,18 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomGameMode"/> containing all enabled custom game modes.</returns>
         public static List<CustomGameMode> EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomGameModes))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomGameModes))
                 throw new Exception("ModuleType::CustomGameModes must be enabled in order to load any custom game modes");
 
             List<CustomGameMode> customGameModes = new();
             foreach (Type type in assembly.GetTypes())
             {
-                CustomGameModeAttribute attribute = type.GetCustomAttribute<CustomGameModeAttribute>();
+                ModuleIdentifierAttribute attribute = type.GetCustomAttribute<ModuleIdentifierAttribute>();
                 if (!typeof(CustomGameMode).IsAssignableFrom(type) || attribute is null)
                     continue;
 
                 CustomGameMode customGameMode = Activator.CreateInstance(type) as CustomGameMode;
+                customGameMode.DeserializeModule();
 
                 if (!customGameMode.IsEnabled)
                     continue;
@@ -253,9 +264,9 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// Tries to register a <see cref="CustomGameMode"/>.
         /// </summary>
         /// <param name="assembly">The assembly to register <see cref="CustomGameMode"/> from.</param>
-        /// <param name="attribute">The specified <see cref="CustomGameModeAttribute"/>.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomGameMode"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, CustomGameModeAttribute attribute = null)
+        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {
