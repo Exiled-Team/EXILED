@@ -1,8 +1,10 @@
 name: Auto Assigner
+
 on:
   pull_request:
     types:
       - opened
+
 jobs:
   auto-assign:
     permissions:
