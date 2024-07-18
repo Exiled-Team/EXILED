@@ -100,14 +100,14 @@ namespace Exiled.API.Features
         public static void Timeout() => State = IntercomState.Cooldown;
 
         /// <summary>
-        /// Sets <see cref="EIntercom.DisplayText"/> that only the <paramref name="target"/> player can see.
+        /// Sets <see cref="DisplayText"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="target">Only this player can see Display Text.</param>
         /// <param name="text">Text displayed to the player.</param>
         public static void SetIntercomDisplayTextForTargetOnly(this Player target, string text) => target.SendFakeSyncVar(IntercomDisplay._singleton.netIdentity, typeof(IntercomDisplay), nameof(IntercomDisplay.Network_overrideText), text);
 
         /// <summary>
-        /// Resync <see cref="EIntercom.DisplayText"/>.
+        /// Resync <see cref="DisplayText"/>.
         /// </summary>
         public static void ResetIntercomDisplayText() => MirrorExtensions.ResyncSyncVar(IntercomDisplay._singleton.netIdentity, typeof(IntercomDisplay), nameof(IntercomDisplay.Network_overrideText));
     }

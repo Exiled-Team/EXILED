@@ -13,6 +13,7 @@ namespace Exiled.API.Features
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Text;
+
     using Core;
     using CustomPlayerEffects;
     using CustomPlayerEffects.Danger;
@@ -3736,7 +3737,7 @@ namespace Exiled.API.Features
             Connection.Send(new RoundRestartMessage(roundRestartType, delay, newPort, reconnect, false));
         }
 
-        /// <inheritdoc cref="MirrorExtensions.PlayGunSound(Player, Vector3, ItemType, byte, byte)"/>
+        /// <inheritdoc cref="PlayGunSound(Vector3, ItemType, byte, byte)"/>
         public void PlayGunSound(ItemType type, byte volume, byte audioClipId = 0) =>
             PlayGunSound(Position, type, volume, audioClipId);
 
@@ -3953,17 +3954,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Set <see cref="Player.CustomInfo"/> on the <paramref name="target"/> player that only the <paramref name="player"/> can see.
+        /// Set <see cref="CustomInfo"/> to the player that only <paramref name="target"/> can see.
         /// </summary>
-        /// <param name="player">Only this player can see info.</param>
         /// <param name="target">Target to set info.</param>
         /// <param name="info">Setting info.</param>
         public void SetPlayerInfoForTargetOnly(Player target, string info) => MirrorExtensions.SendFakeTargetRpc(ReferenceHub, target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_customPlayerInfoString), info);
 
         /// <summary>
-        /// Sets <see cref="Player.DisplayNickname"/> of the player that only the <paramref name="target"/> player can see.
+        /// Set <see cref="DisplayNickname"/> to the player that only <paramref name="target"/> can see.
         /// </summary>
-        /// <param name="player">Player that will desync the CustomName.</param>
+        /// <param name="target">Target to set info.</param>
         /// <param name="name">Nickname to set.</param>
         public void SetNameForTargetOnly(Player target, string name) => target.SendFakeSyncVar(NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), name);
 
@@ -4041,7 +4041,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Send CASSIE announcement that only <see cref="Player"/> can hear.
         /// </summary>
-        /// <param name="player">Target to send.</param>
         /// <param name="words">Announcement words.</param>
         /// <param name="makeHold">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isHeld.</param>
         /// <param name="makeNoise">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isNoisy.</param>
@@ -4060,7 +4059,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Send CASSIE announcement with custom subtitles for translation that only <see cref="Player"/> can hear and see it.
         /// </summary>
-        /// <param name="player">Target to send.</param>
         /// <param name="words">The message to be reproduced.</param>
         /// <param name="translation">The translation should be show in the subtitles.</param>
         /// <param name="makeHold">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isHeld.</param>
