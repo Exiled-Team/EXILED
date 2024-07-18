@@ -91,9 +91,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
                 {
                     AutomaticAmmoManager aam => aam.ChamberedAmount,
                     TubularMagazineAmmoManager tmam => tmam.ChamberedRounds,
-                    PumpAction pa => pa.ChamberedRounds,
                     _ => 0,
                 };
+
+                if (chamberSize <= 0 && Firearm.Base.ActionModule is PumpAction pumpAction)
+                    chamberSize = pumpAction.ChamberedRounds;
 
                 ammoType = ammoItemType.IsAmmo() ? ammoItemType.GetAmmoType() : Firearm.AmmoType;
             }
