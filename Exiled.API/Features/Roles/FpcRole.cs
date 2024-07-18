@@ -9,7 +9,6 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
     using System.Reflection;
-
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Core.Generic.Pools;

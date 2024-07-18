@@ -12,13 +12,17 @@ namespace Exiled.API.Extensions
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Features;
     using Features.Items;
     using InventorySystem;
     using InventorySystem.Items;
+    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
+    using RelativePositioning;
     using Structs;
+    using UnityEngine;
 
     /// <summary>
     /// A set of extensions for <see cref="ItemType"/>.
@@ -320,5 +324,27 @@ namespace Exiled.API.Extensions
         /// <param name="type">The <see cref="ItemType"/> to check.</param>
         /// <returns><see cref="ItemCategory"/> of the specified <see cref="ItemType"/>.</returns>
         public static ItemCategory GetCategory(this ItemType type) => GetItemBase(type).Category;
+
+        /// <summary>
+        /// Plays a gun sound that only the <paramref name="player"/> can hear.
+        /// </summary>
+        /// <param name="player">Target to play.</param>
+        /// <param name="position">Position to play on.</param>
+        /// <param name="itemType">Weapon' sound to play.</param>
+        /// <param name="volume">Sound's volume to set.</param>
+        /// <param name="audioClipId">GunAudioMessage's audioClipId to set (default = 0).</param>
+        public static void PlayGunSound(this Player player, Vector3 position, ItemType itemType, byte volume, byte audioClipId = 0)
+        {
+            GunAudioMessage message = new()
+            {
+                Weapon = itemType,
+                AudioClipId = audioClipId,
+                MaxDistance = volume,
+                ShooterHub = player.ReferenceHub,
+                ShooterPosition = new RelativePosition(position),
+            };
+
+            player.Connection.Send(message);
+        }
     }
 }
