@@ -51,6 +51,7 @@ namespace Exiled.API.Features
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps;
+    using PlayerRoles.PlayableScps.Scp049.Zombies;
     using PlayerRoles.RoleAssign;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
@@ -3735,7 +3736,7 @@ namespace Exiled.API.Features
 
         /// <inheritdoc cref="MirrorExtensions.PlayGunSound(Player, Vector3, ItemType, byte, byte)"/>
         public void PlayGunSound(ItemType type, byte volume, byte audioClipId = 0) =>
-            ItemExtensions.PlayGunSound(this, Position, type, volume, audioClipId);
+            PlayGunSound(Position, type, volume, audioClipId);
 
         /// <inheritdoc cref="Map.PlaceBlood(Vector3, Vector3)"/>
         public void PlaceBlood(Vector3 direction) => Map.PlaceBlood(Position, direction);
@@ -3921,6 +3922,119 @@ namespace Exiled.API.Features
         {
             RankName = rankName;
             RankColor = rankColor;
+        }
+
+        /// <summary>
+        /// Plays a beep sound that only the player can hear.
+        /// </summary>
+        public void PlayBeepSound() => MirrorExtensions.SendFakeTargetRpc(ReferenceHub, ReferenceHub.HostHub.networkIdentity, typeof(AmbientSoundPlayer), nameof(AmbientSoundPlayer.RpcPlaySound), 7);
+
+        /// <summary>
+        /// Plays a gun sound that only the target can hear.
+        /// </summary>
+        /// <param name="position">Position to play on.</param>
+        /// <param name="itemType">Weapon' sound to play.</param>
+        /// <param name="volume">Sound's volume to set.</param>
+        /// <param name="audioClipId">GunAudioMessage's audioClipId to set (default = 0).</param>
+        public void PlayGunSound(Vector3 position, ItemType itemType, byte volume, byte audioClipId = 0)
+        {
+            GunAudioMessage message = new()
+            {
+                Weapon = itemType,
+                AudioClipId = audioClipId,
+                MaxDistance = volume,
+                ShooterHub = ReferenceHub,
+                ShooterPosition = new RelativePosition(position),
+            };
+
+            Connection.Send(message);
+        }
+
+        /// <summary>
+        /// Set <see cref="Player.CustomInfo"/> on the <paramref name="target"/> player that only the <paramref name="player"/> can see.
+        /// </summary>
+        /// <param name="player">Only this player can see info.</param>
+        /// <param name="target">Target to set info.</param>
+        /// <param name="info">Setting info.</param>
+        public void SetPlayerInfoForTargetOnly(Player target, string info) => MirrorExtensions.SendFakeTargetRpc(ReferenceHub, target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_customPlayerInfoString), info);
+
+        /// <summary>
+        /// Sets <see cref="Player.DisplayNickname"/> of the player that only the <paramref name="target"/> player can see.
+        /// </summary>
+        /// <param name="player">Player that will desync the CustomName.</param>
+        /// <param name="name">Nickname to set.</param>
+        public void SetName(Player target, string name) => target.SendFakeSyncVar(NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), name);
+
+        /// <summary>
+        /// Change <see cref="Player"/> character model for appearance.
+        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
+        /// </summary>
+        /// <param name="type">Model type.</param>
+        /// <param name="skipJump">Whether or not to skip the little jump that works around an invisibility issue.</param>
+        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
+        public void ChangeAppearance(RoleTypeId type, bool skipJump = false, byte unitId = 0) => ChangeAppearance(type, List.Where(x => x.ReferenceHub != ReferenceHub), skipJump, unitId);
+
+        /// <summary>
+        /// Change <see cref="Player"/> character model for appearance.
+        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
+        /// </summary>
+        /// <param name="type">Model type.</param>
+        /// <param name="playersToAffect">The players who should see the changed appearance.</param>
+        /// <param name="skipJump">Whether or not to skip the little jump that works around an invisibility issue.</param>
+        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
+        public void ChangeAppearance(RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
+        {
+            if (ReferenceHub.gameObject == null || !type.TryGetRoleBase(out PlayerRoleBase roleBase))
+                return;
+
+            bool isRisky = type.GetTeam() is Team.Dead || IsDead;
+
+            NetworkWriterPooled writer = NetworkWriterPool.Get();
+            writer.WriteUShort(38952);
+            writer.WriteUInt(NetId);
+            writer.WriteRoleType(type);
+
+            if (roleBase is HumanRole humanRole && humanRole.UsesUnitNames)
+            {
+                if (Role.Base is not HumanRole)
+                    isRisky = true;
+                writer.WriteByte(unitId);
+            }
+
+            if (roleBase is FpcStandardRoleBase fpc)
+            {
+                if (Role.Base is not FpcStandardRoleBase playerfpc)
+                    isRisky = true;
+                else
+                    fpc = playerfpc;
+
+                ushort value = 0;
+                fpc?.FpcModule.MouseLook.GetSyncValues(0, out value, out ushort _);
+                writer.WriteRelativePosition(RelativePosition);
+                writer.WriteUShort(value);
+            }
+
+            if (roleBase is ZombieRole)
+            {
+                if (Role.Base is not ZombieRole)
+                    isRisky = true;
+
+                writer.WriteUShort((ushort)Mathf.Clamp(Mathf.CeilToInt(MaxHealth), ushort.MinValue, ushort.MaxValue));
+            }
+
+            foreach (Player target in playersToAffect)
+            {
+                if (target.ReferenceHub != ReferenceHub || !isRisky)
+                    target.Connection.Send(writer.ToArraySegment());
+                else
+                    Log.Error($"Prevent Seld-Desync of {Nickname} with {type}");
+            }
+
+            NetworkWriterPool.Return(writer);
+
+            // To counter a bug that makes the player invisible until they move after changing their appearance, we will teleport them upwards slightly to force a new position update for all clients.
+            if (!skipJump)
+                Position += Vector3.up * 0.25f;
         }
 
         /// <summary>

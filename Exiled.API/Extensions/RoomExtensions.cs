@@ -84,21 +84,5 @@ namespace Exiled.API.Extensions
             ZoneType.Other => FacilityZone.Other,
             _ => FacilityZone.Other,
         };
-
-        /// <summary>
-        /// Sets <see cref="Room.Color"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
-        /// </summary>
-        /// <param name="room">Room to modify.</param>
-        /// <param name="target">Only this player can see room color.</param>
-        /// <param name="color">Color to set.</param>
-        public static void SetRoomColorForTargetOnly(this Room room, Player target, Color color) => target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkOverrideColor), color);
-
-        /// <summary>
-        /// Sets the lights of a <paramref name="room"/> to be either on or off, visible only to the <paramref name="target"/> player.
-        /// </summary>
-        /// <param name="room">The room to modify the lights of.</param>
-        /// <param name="target">The player who will see the lights state change.</param>
-        /// <param name="value">The state to set the lights to. True for on, false for off.</param>
-        public static void SetRoomLightsForTargetOnly(this Room room, Player target, bool value) => target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkLightsEnabled), value);
     }
 }

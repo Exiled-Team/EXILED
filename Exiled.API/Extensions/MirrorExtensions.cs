@@ -215,6 +215,37 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
+        /// Send fake values to client's <see cref="ClientRpcAttribute"/>.
+        /// </summary>
+        /// <param name="target">Target to send.</param>
+        /// <param name="behaviorOwner"><see cref="NetworkIdentity"/> of object that owns <see cref="NetworkBehaviour"/>.</param>
+        /// <param name="targetType"><see cref="NetworkBehaviour"/>'s type.</param>
+        /// <param name="rpcName">Property name starting with Rpc.</param>
+        /// <param name="values">Values of send to target.</param>
+        public static void SendFakeTargetRpc(ReferenceHub target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
+        {
+            if (target.gameObject == null)
+                return;
+
+            NetworkWriterPooled writer = NetworkWriterPool.Get();
+
+            foreach (object value in values)
+                WriterExtensions[value.GetType()].Invoke(null, new[] { writer, value });
+
+            RpcMessage msg = new()
+            {
+                netId = behaviorOwner.netId,
+                componentIndex = (byte)GetComponentIndex(behaviorOwner, targetType),
+                functionHash = (ushort)RpcFullNames[$"{targetType.Name}.{rpcName}"].GetStableHashCode(),
+                payload = writer.ToArraySegment(),
+            };
+
+            target.connectionToClient.Send(msg);
+
+            NetworkWriterPool.Return(writer);
+        }
+
+        /// <summary>
         /// Send fake values to client's <see cref="SyncObject"/>.
         /// </summary>
         /// <param name="target">Target to send.</param>
