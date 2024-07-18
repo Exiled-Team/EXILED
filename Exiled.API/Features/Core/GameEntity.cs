@@ -397,13 +397,13 @@ namespace Exiled.API.Features.Core
         public EActor GetComponent(Type type) => componentsInChildren.FirstOrDefault(comp => type == comp.GetType());
 
         /// <inheritdoc/>
-        public IEnumerable<T> GetComponents<T>() => componentsInChildren.Where(comp => typeof(T).IsAssignableFrom(comp.GetType())).Cast<T>();
+        public IEnumerable<T> GetComponents<T>() => componentsInChildren.Where(comp => comp is T).Cast<T>();
 
         /// <inheritdoc/>
-        public IEnumerable<T> GetComponents<T>(Type type) => componentsInChildren.Where(comp => typeof(T).IsAssignableFrom(comp.GetType())).Cast<T>();
+        public IEnumerable<T> GetComponents<T>(Type type) => componentsInChildren.Where(comp => comp is T).Cast<T>();
 
         /// <inheritdoc/>
-        public IEnumerable<EActor> GetComponents(Type type) => componentsInChildren.Where(comp => type.IsAssignableFrom(comp.GetType()));
+        public IEnumerable<EActor> GetComponents(Type type) => componentsInChildren.Where(type.IsInstanceOfType);
 
         /// <inheritdoc/>
         public bool TryGetComponent<T>(out T component)
