@@ -23,7 +23,6 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
-    using RelativePositioning;
     using UnityEngine;
 
     using BaseFirearm = InventorySystem.Items.Firearms.Firearm;
