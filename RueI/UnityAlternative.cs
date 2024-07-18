@@ -59,12 +59,6 @@ public abstract class UnityAlternative
     public abstract void LogDebug(string message);
 
     /// <summary>
-    /// Loads all patches.
-    /// </summary>
-    /// <param name="harmony">The <see cref="Harmony"/> instance to use.</param>
-    public abstract void PatchAll(Harmony harmony);
-
-    /// <summary>
     /// Performs an async operation.
     /// </summary>
     /// <param name="span">How long until the action should be ran.</param>
@@ -106,9 +100,6 @@ public class NonUnityProvider : UnityAlternative
 
     /// <inheritdoc/>
     public override void LogDebug(string message) => Console.WriteLine($"DEBUG: {message}");
-
-    /// <inheritdoc/>
-    public override void PatchAll(Harmony harmony) => Console.WriteLine("Faux loading patches");
 
     /// <inheritdoc/>
     public override IAsyncOperation PerformAsync(TimeSpan span, Action action) => new TaskAsyncOperation(span, action);
@@ -174,9 +165,6 @@ public class UnityProvider : UnityAlternative
 
     /// <inheritdoc/>
     public override void LogDebug(string message) => ServerConsole.AddLog(message, ConsoleColor.Magenta);
-
-    /// <inheritdoc/>
-    public override void PatchAll(Harmony harmony) => harmony.PatchAll(typeof(RueIMain).Assembly);
 
     /// <inheritdoc/>
     public override IAsyncOperation PerformAsync(TimeSpan span, Action action) => new MECAsyncOperation(span, action);
