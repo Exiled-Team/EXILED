@@ -306,8 +306,16 @@ namespace Exiled.CustomModules.API.Features
                 if (type.BaseType != typeof(CustomModule) || Loader.Any(m => m.Type == type))
                     continue;
 
-                MethodInfo enableAll = type.GetMethod(ModuleInfo.ENABLE_ALL_CALLBACK, ModuleInfo.SIGNATURE_BINDINGS);
-                MethodInfo disableAll = type.GetMethod(ModuleInfo.DISABLE_ALL_CALLBACK, ModuleInfo.SIGNATURE_BINDINGS);
+                IEnumerable<MethodInfo> rhMethods = type.GetMethods(ModuleInfo.SIGNATURE_BINDINGS)
+                    .Where(m =>
+                    {
+                        ParameterInfo[] mParams = m.GetParameters();
+                        return m.Name is ModuleInfo.ENABLE_ALL_CALLBACK or ModuleInfo.DISABLE_ALL_CALLBACK &&
+                               mParams.Length == 1 && mParams.Any(p => p.ParameterType == typeof(Assembly));
+                    }).ToArray();
+
+                MethodInfo enableAll = rhMethods.FirstOrDefault(m => m.Name is ModuleInfo.ENABLE_ALL_CALLBACK);
+                MethodInfo disableAll = rhMethods.FirstOrDefault(m => m.Name is ModuleInfo.DISABLE_ALL_CALLBACK);
 
                 if (enableAll is null)
                 {
