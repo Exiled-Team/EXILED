@@ -28,6 +28,8 @@ namespace Exiled.API.Extensions
     using Respawning;
     using UnityEngine;
 
+    using EIntercom = Exiled.API.Features.Intercom;
+
     /// <summary>
     /// A set of extensions for <see cref="Mirror"/> Networking.
     /// </summary>
@@ -195,13 +197,14 @@ namespace Exiled.API.Extensions
         public static void SetRoomLightsForTargetOnly(this Room room, Player target, bool value) => target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkLightsEnabled), value);
 
         /// <summary>
-        /// Sets <see cref="Intercom.DisplayText"/> that only the <paramref name="target"/> player can see.
+        /// Sets <see cref="EIntercom.DisplayText"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="target">Only this player can see Display Text.</param>
-        /// <param name="text">Text displayed to the player</param>
+        /// <param name="text">Text displayed to the player.</param>
         public static void SetIntercomDisplayTextForTargetOnly(this Player target, string text) => target.SendFakeSyncVar(IntercomDisplay._singleton.netIdentity, typeof(IntercomDisplay), nameof(IntercomDisplay.Network_overrideText), text);
+
         /// <summary>
-        /// Resync <see cref="Intercom.DisplayText"/>
+        /// Resync <see cref="EIntercom.DisplayText"/>.
         /// </summary>
         public static void ResetIntercomDisplayText() => ResyncSyncVar(IntercomDisplay._singleton.netIdentity, typeof(IntercomDisplay), nameof(IntercomDisplay.Network_overrideText));
 
