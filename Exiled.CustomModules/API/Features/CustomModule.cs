@@ -309,9 +309,8 @@ namespace Exiled.CustomModules.API.Features
                     .Where(m =>
                     {
                         ParameterInfo[] mParams = m.GetParameters();
-                        return m.Name is ModuleInfo.ENABLE_ALL_CALLBACK or ModuleInfo.DISABLE_ALL_CALLBACK &&
-                               mParams.Length == 1 && mParams.Any(p => p.ParameterType == typeof(Assembly));
-                    }).ToArray();
+                        return (m.Name is ModuleInfo.ENABLE_ALL_CALLBACK && mParams.Any(p => p.ParameterType == typeof(Assembly))) || m.Name is ModuleInfo.DISABLE_ALL_CALLBACK;
+                    });
 
                 MethodInfo enableAll = rhMethods.FirstOrDefault(m => m.Name is ModuleInfo.ENABLE_ALL_CALLBACK);
                 MethodInfo disableAll = rhMethods.FirstOrDefault(m => m.Name is ModuleInfo.DISABLE_ALL_CALLBACK);
