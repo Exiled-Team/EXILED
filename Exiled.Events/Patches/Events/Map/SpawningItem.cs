@@ -63,7 +63,7 @@ namespace Exiled.Events.Patches.Events.Map
                     // initiallySpawn
                     new(OpCodes.Ldloc_S, initiallySpawn.LocalIndex),
 
-                    // SpawningItemEventArgs ev = new(ItemPickupBase, initiallySpawn, door)
+                    // SpawningItemEventArgs ev = new(ItemPickupBase, initiallySpawn)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningItemEventArgs))[0]),
                     new(OpCodes.Dup),
 
