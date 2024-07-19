@@ -9,7 +9,7 @@ on:
       - master
 
 env:
-  EXILED_REFERENCES_URL: https://misaka-zerotwo.github.io/SL-References/Master.zip
+  EXILED_REFERENCES_URL: https:/cdn.exiled.to/Dev.zip
   EXILED_REFERENCES_PATH: ${{ github.workspace }}/References
 
 jobs:
