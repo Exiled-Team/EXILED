@@ -23,8 +23,13 @@ Všechny EXILED eventy jsou kódovány pomocí Harmony, což znamená, že ke sv
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
 - [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
-- [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
+- [Italiano](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-IT.md)
 - [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
+- [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
+- [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
+- [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
+- [한국어](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-KR.md)
+- [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # Instalace
 Instalace EXILED je poměrně jednoduchá. Načítá se prostřednictvím rozhraní NW Plugin API. Proto jsou uvnitř archivu ``Exiled.tar.gz`` ve vydaných verzích EXILED dvě složky. Složka ``SCP Secret Laboratory`` obsahuje soubory potřebné k načtení funkcí EXILED ve složce ``EXILED``. Vzhledem k tomu stačí tyto dvě složky přesunout do příslušné cesty, která je vysvětlena níže, a je hotovo!
@@ -90,7 +95,7 @@ Některé pluginy však mohou získávat svá konfigurační nastavení z jinýc
 
 # Pro vývojáře
 
-Pokud si přejete vytvořit plugin pro EXILED, je to poměrně jednoduché. Pokud byste chtěli více návodů, navštivte prosím naši stránku [Getting Started.](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
+Pokud si přejete vytvořit plugin pro EXILED, je to poměrně jednoduché. Pokud byste chtěli více návodů, navštivte prosím naši stránku [Getting Started.](https://exiled.to/Archive/GettingStarted).
 
 Obsáhlejší a aktivně aktualizované tutoriály naleznete na [webové stránce EXILED](https://exiled.to).
 

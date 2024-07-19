@@ -24,9 +24,13 @@ Tutti gli eventi di EXILED sono scritti con Harmony, il che significa che non è
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
 - [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
-- [Italiano](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-IT.md)
 - [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
 - [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
+- [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
+- [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
+- [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
+- [한국어](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-KR.md)
+- [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # Installation
 L'installazione di EXILED è piuttosto semplice. Si carica tramite l'API del plugin NW. Per questo motivo, ci sono due cartelle all'interno del file  ``Exiled.tar.gz `` nei file di rilascio.  ``SCP Secret Laboratory `` contiene i file necessari per caricare le funzionalità di EXILED nella cartella  ``EXILED ``. Detto questo, tutto ciò che devi fare è spostare queste due cartelle nel percorso appropriato, che viene spiegato di seguito, ed è fatto!
@@ -91,7 +95,7 @@ Tuttavia, alcuni plugin possono ottenere le loro impostazioni di configurazione 
 
 # Per gli Sviluppatori
 
-Se desideri creare un Plugin per EXILED, è piuttosto semplice farlo. Se vuoi un tutorial più dettagliato, visita la nostra [Pagina di Inizio](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
+Se desideri creare un Plugin per EXILED, è piuttosto semplice farlo. Se vuoi un tutorial più dettagliato, visita la nostra [Pagina di Inizio](https://exiled.to/Archive/GettingStarted).
 
 Per tutorial più completi e costantemente aggiornati, consulta [il sito web di EXILED](https://exiled.to).
 

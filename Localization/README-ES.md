@@ -21,11 +21,16 @@ Todos los eventos de EXILED están hechos con Harmony, lo que significa que no e
 # READMEs Traducidas
 - [Русский](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-Русский.md)
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
-- [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
 - [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
+- [Italiano](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-IT.md)
 - [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
 - [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
+- [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
+- [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
+- [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
+- [한국어](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-KR.md)
+- [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # Instalación
 La instalación de EXILED es, en realidad, muy simple. Se carga por sí solo por la API de plugins de NW. Por este motivo hay dos carpetas en ``Exiled.tar.gz`` en el apartado de descarga. ``SCP Secret Laboratory`` contiene los archivos necesarios para cargar los recursos de la carpeta ``EXILED``. Con eso dicho, lo único que se debe hacer es mover estas carpetas al sitio adecuado, que se explican debajo, ¡y listo!
@@ -92,7 +97,7 @@ Mira la documentación o pregúntale al creador del plugin en particular si tien
 
 # Para desarrolladores
 
-Si deseas hacer un plugin para EXILED, es bastante fácil. Si prefieres ver algún tipo de tutorial, visita nuestra página de [Primeros Pasos](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md).
+Si deseas hacer un plugin para EXILED, es bastante fácil. Si prefieres ver algún tipo de tutorial, visita nuestra página de [Primeros Pasos](https://exiled.to/Archive/GettingStarted).
 
 Para una guía más comprensible y tutoriales regularmente actualizados, échale un vistazo a [la página de EXILED](https://exiled.to).
 

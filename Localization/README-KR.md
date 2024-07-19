@@ -17,7 +17,6 @@ EXILED는 SCP: 비밀 연구소 서버들을 위한 고급 플러그인 프레�
 - 둘째로, 프레임워크가 관련된 모든 코드가 서버 어셈블리 밖에서 작동되기 때문에, 만약 작은 업데이트가 존재하더라도, 프레임워크에는 아주 작은 영향을 미치게 됩니다. 이로 하여금 계속되는 업데이트와의 호환성이 (거의) 보장되며, 업데이트를 _필요할 때_ 할 수 있습니다.
 
 # 번역본
-
 - [Русский](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-Русский.md)
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
@@ -29,7 +28,7 @@ EXILED는 SCP: 비밀 연구소 서버들을 위한 고급 플러그인 프레�
 - [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
 - [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
 - [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
-- [한국어](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-KR.md)
+- [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # EXILED 설치하기
 
@@ -106,7 +105,7 @@ EXILED 자체도 몇 가지 설정을 가지고 있습니다. 이 설정들은 �
 
 # 개발자들을 위한 정보
 
-만약 EXILED 플러그인을 만들고 싶다면, 사실 간단합니다. 튜토리얼을 원한다면 [여기 (영어)](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md)를 읽어주세요.
+만약 EXILED 플러그인을 만들고 싶다면, 사실 간단합니다. 튜토리얼을 원한다면 [여기 (영어)](https://exiled.to/Archive/GettingStarted)를 읽어주세요.
 
 좀 더 상세하고 자주 업데이트 되는 튜토리얼을 원한다면, [EXILED 웹사이트](https://exiled.to)를 방문해보세요.
 

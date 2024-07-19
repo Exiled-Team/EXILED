@@ -27,8 +27,9 @@ EXILED est un framework de plugins de haut niveau pour les serveurs SCP: Secret 
 - [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
 - [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
 - [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
-- [Deutsch](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
-- [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
+- [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
+- [한국어](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-KR.md)
+- [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # Installation
 L'installation d'EXILED est assez simple. Il se charge via la PluginAPI de Northwood. C'est pourquoi il y a deux dossiers à l'intérieur de l'archive ``Exiled.tar.gz`` dans les fichiers de release. ``SCP Secret Laboratory`` contient les fichiers nécessaires pour charger les fonctionnalités EXILED dans le dossier ``EXILED`` . Tout ce que vous avez à faire est de déplacer ces deux dossiers dans le chemin approprié, qui est expliqué ci-dessous, et vous avez terminé !
@@ -94,7 +95,7 @@ Cependant, certains plugins peuvent obtenir leurs paramètres de configuration �
 
 # Pour les Développeurs
 
-Si vous souhaitez créer un plugin pour EXILED, c'est relativement simple à faire. Si vous avez besoin ou souhaitez consulter un tutoriel, suivez les instructions sur notre page [Bien Commencer](https://github.com/Exiled-Team/EXILED/blob/master/Localization/GettingStarted-FR.md).
+Si vous souhaitez créer un plugin pour EXILED, c'est relativement simple à faire. Si vous avez besoin ou souhaitez consulter un tutoriel, suivez les instructions sur notre page [Bien Commencer](https://exiled.to/Archive/GettingStarted).
 
 Pour des tutoriels plus complets et régulièrement mis à jour, consultez [le site d'EXILED](https://exiled.to).
 

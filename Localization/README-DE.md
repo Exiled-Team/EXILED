@@ -27,6 +27,9 @@ Alle EXILED-EVENTS sind mit Harmony programmiert, was bedeutet, dass sie keine d
 - [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
 - [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
 - [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
+- [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
+- [한국어](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-KR.md)
+- [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # Installation
 Die Installation von EXILED ist ziemlich einfach. Es lädt sich selbst über Northwoods Plugin API. Deshalb gibt es zwei Ordner in den ``Exiled.tar.gz`` Release-Dateien. ``SCP Secret Laboratory`` enthält die notwendigen Dateien, um EXILED-Funktionen im ``EXILED`` Ordner zu laden. Alles, was Sie tun müssen, ist, diese beiden Ordner in den entsprechenden Pfad zu verschieben, der unten erklärt wird, und Sie sind fertig!
@@ -94,7 +97,7 @@ Einige Plugins erhalten jedoch ihre Konfigurationseinstellungen aus anderen Stan
 
 # Für Entwickler/Developmer
 
-Wenn Sie ein Plugin für EXILED erstellen möchten, ist es ziemlich einfach. Wenn Sie mehr ein Tutorial möchten, besuchen Sie bitte unsere [Getting Started Seite.](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
+Wenn Sie ein Plugin für EXILED erstellen möchten, ist es ziemlich einfach. Wenn Sie mehr ein Tutorial möchten, besuchen Sie bitte unsere [Getting Started Seite.](https://exiled.to/Archive/GettingStarted).
 
 Für umfassendere und aktuell gehaltene Tutorials siehe [die EXILED-Website](https://exiled.to).
 

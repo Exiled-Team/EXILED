@@ -22,13 +22,14 @@ Todos os eventos do EXILED são codificados com Harmony, o que significa que nã
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
-- [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
 - [Italiano](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-IT.md)
 - [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
 - [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
 - [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
 - [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
 - [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
+- [한국어](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-KR.md)
+- [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # Instalação
 A instalação do EXILED é bastante simples. Ele se carrega por meio da API de plug-in da NW. É por isso que existem duas pastas dentro de ``Exiled.tar.gz`` nos arquivos de lançamento. ``SCP Secret Laboratory`` contém os arquivos necessários para carregar os recursos do EXILED na pasta ``EXILED``. Com isso dito, tudo o que você precisa fazer é mover essas duas pastas para o caminho adequado que é explicado abaixo, e pronto!
@@ -94,7 +95,7 @@ No entanto, alguns plug-ins podem obter suas configurações de outros locais po
 
 # Para Desenvolvedores
 
-Se você deseja fazer um plug-in ao EXILED, é bem simples de fazê-lo. Se você quiser ver algum tipo de tutorial, visite nosso [Manual de Instruções.](https://github.com/Exiled-Team/EXILED/blob/master/Localization/GettingStarted-BR.md)
+Se você deseja fazer um plug-in ao EXILED, é bem simples de fazê-lo. Se você quiser ver algum tipo de tutorial, visite nosso [Manual de Instruções.](https://exiled.to/Archive/GettingStarted)
 
 Para tutoriais mais abrangentes e ativamente atualizados, consulte [o site da EXILED](https://exiled.to).
 

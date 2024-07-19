@@ -81,7 +81,7 @@ Ancak, bazı eklentiler kendi başlarına diğer yerlerden yapılandırma/ayarla
 
 # Geliştiriciler için
 
-Eğer EXILED için bir eklenti yapmak istiyorsanız, bunu yapmak oldukça basittir [Daha fazla bilgi için tıkla!](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
+Eğer EXILED için bir eklenti yapmak istiyorsanız, bunu yapmak oldukça basittir [Daha fazla bilgi için tıkla!](https://exiled.to/Archive/GettingStarted).
 
 Daha kapsamlı ve sürekli güncellenen öğreticiler için [EXILED websitesine](https://exiled.to) göz atın.
 

@@ -21,10 +21,15 @@ Wszystkie zdarzenia EXILED'a są zaprogromowane za pomocą Harmony, co oznacza �
 - [Русский](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-Русский.md)
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
-- [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
 - [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
+- [Italiano](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-IT.md)
 - [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
 - [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
+- [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
+- [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
+- [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
+- [한국어](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-KR.md)
+- [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # Instalacja
 Instalacja EXILED'a może wydawać się bardziej skomplikowana i wymagająca niż innych framework'ów ale tak naprawdę jest to całkiem proste.
@@ -90,7 +95,7 @@ Niektóre pluginy mogą brać swoje configi z innych miejsc, wyżej wymieniona l
 
 # Dla programistów
 
-Tworzenie pluginów za pomocą EXILED'a jest całkiem proste. Jeżeli chcecie dowiedzieć się więcej na ten temat odwiedźcie naszą stronę [dla początkujących](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md).
+Tworzenie pluginów za pomocą EXILED'a jest całkiem proste. Jeżeli chcecie dowiedzieć się więcej na ten temat odwiedźcie naszą stronę [dla początkujących](https://exiled.to/Archive/GettingStarted).
 
 Aby uzyskać dokładniejsze i bardziej aktualne poradniki odwiedźcie [stronę EXILED'a](https://exiled.to).
 

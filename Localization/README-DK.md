@@ -25,7 +25,11 @@ Alle EXILED-hændelser er kodet med Harmony, hvilket betyder, at de ikke kræver
 - [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
 - [Italiano](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-IT.md)
 - [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
-- [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
+- [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
+- [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
+- [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
+- [한국어](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-KR.md)
+- [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # Installation
 Installation af EXILED er ganske enkel. Den indlæser sig selv gennem NW Plugin API. Det er derfor, der er to mapper inde i ``Exiled.tar.gz`` i udgivelsesfiler. ``SCP Secret Laboratory`` indeholder de nødvendige filer til at indlæse EXILED-funktioner i ``EXILED``-mappen. Når det er sagt, er alt, hvad du skal gøre, at flytte disse to mapper til den rette sti, som er forklaret nedenfor, og du er færdig! 
@@ -88,7 +92,7 @@ Nogle plugins kan dog selv hente deres konfigurationsindstillinger fra andre ste
 
 # For udviklere
 
-Hvis du ønsker at lave et plugin til EXILED, er det ganske enkelt at gøre det. Hvis du gerne vil have mere vejledning, kan du besøge vores [Start Side](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
+Hvis du ønsker at lave et plugin til EXILED, er det ganske enkelt at gøre det. Hvis du gerne vil have mere vejledning, kan du besøge vores [Start Side](https://exiled.to/Archive/GettingStarted).
 
 For mere omfattende og aktivt opdaterede vejledninger, se [EXILED-webstedet](https://exiled.to).
 
