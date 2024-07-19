@@ -27,10 +27,8 @@ namespace Exiled.Permissions.Commands.Permissions
         /// <inheritdoc/>
         public string Description { get; } = "Reloads all permissions";
 
-#pragma warning disable SA1648 // InheritDocMustBeUsedWithInheritingClass
-        /// <inheritdoc/>
+        /// <inheritdoc cref="SanitizeResponse" />
         public bool SanitizeResponse { get; }
-#pragma warning restore SA1648 // InheritDocMustBeUsedWithInheritingClass
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
