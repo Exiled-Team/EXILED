@@ -487,15 +487,13 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <summary>
         /// Enables all the custom abilities present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> which contains all the enabled custom abilities.</returns>
-        public static IEnumerable<CustomAbility<T>> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
 
         /// <summary>
         /// Enables all the custom abilities present in the assembly.
         /// </summary>
         /// <param name="assembly">The assembly to enable the abilities from.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> which contains all the enabled custom abilities.</returns>
-        public static IEnumerable<CustomAbility<T>> EnableAll(Assembly assembly)
+        public static void EnableAll(Assembly assembly)
         {
             if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomAbilities))
                 throw new Exception("ModuleType::CustomAbilities must be enabled in order to load any custom abilities");
@@ -519,22 +517,17 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
 
             if (customAbilities.Count != Registered.Count)
                 Log.Info($"{customAbilities.Count()} custom abilities have been successfully registered!");
-
-            return customAbilities;
         }
 
         /// <summary>
         /// Disables all the custom abilities present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility{T}"/> which contains all the disabled custom abilities.</returns>
-        public static IEnumerable<CustomAbility<T>> DisableAll()
+        public static void DisableAll()
         {
             List<CustomAbility<T>> customAbilities = new();
             customAbilities.AddRange(UnorderedRegistered.Where(ability => ability.TryUnregister()));
 
             Log.Info($"{customAbilities.Count()} custom abilities have been successfully unregistered!");
-
-            return customAbilities;
         }
 
         /// <summary>
