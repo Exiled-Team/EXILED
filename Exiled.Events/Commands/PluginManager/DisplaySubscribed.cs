@@ -35,7 +35,7 @@ namespace Exiled.Events.Commands.PluginManager
         /// <inheritdoc/>
         public string Description { get; } = "Displays plugins that are subscribed to the event.";
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="SanitizeResponse" />
         public bool SanitizeResponse { get; } = true;
 
         /// <inheritdoc/>

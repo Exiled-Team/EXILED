@@ -36,7 +36,7 @@ namespace Exiled.Events.Commands.Config
         /// <inheritdoc/>
         public string Description { get; } = "Merges your configs into the default config distribution.";
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="SanitizeResponse" />
         public bool SanitizeResponse { get; }
 
         /// <inheritdoc/>

@@ -30,7 +30,7 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc/>
         public string Description { get; } = "Reload all configs and plugins.";
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="SanitizeResponse" />
         public bool SanitizeResponse { get; }
 
         /// <inheritdoc/>

@@ -29,7 +29,7 @@ namespace Exiled.Example.Commands
         /// <inheritdoc/>
         public string Description { get; } = "A simple test command.";
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="SanitizeResponse" />
         public bool SanitizeResponse { get; }
 
         /// <inheritdoc/>

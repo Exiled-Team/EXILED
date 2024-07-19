@@ -27,7 +27,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         /// <inheritdoc/>
         public string Description { get; } = "Adds a group to a permission.";
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="SanitizeResponse" />
         public bool SanitizeResponse { get; }
 
         /// <inheritdoc/>
