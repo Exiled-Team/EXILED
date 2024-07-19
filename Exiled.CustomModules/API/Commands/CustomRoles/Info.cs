@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Info.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -37,9 +37,6 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
 
         /// <inheritdoc/>
         public string Description { get; } = "Gets more information about the specified custom role.";
-
-        /// <inheritdoc cref="SanitizeResponse" />
-        public bool SanitizeResponse { get; } = true;
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
