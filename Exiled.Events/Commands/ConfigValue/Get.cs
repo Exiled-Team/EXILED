@@ -36,7 +36,7 @@ namespace Exiled.Events.Commands.ConfigValue
         /// <inheritdoc/>
         public string Description { get; } = "Gets a config value";
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="SanitizeResponse" />
         public bool SanitizeResponse { get; }
 
         /// <inheritdoc/>
