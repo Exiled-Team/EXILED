@@ -328,7 +328,7 @@ namespace Exiled.CustomModules.API.Features
                 }
 
                 if (Delegate.CreateDelegate(typeof(Action<Assembly>), enableAll) is not Action<Assembly> enableAllCallback ||
-                    Delegate.CreateDelegate(typeof(Action<Assembly>), disableAll) is not Action<Assembly> disableAllCallback)
+                    Delegate.CreateDelegate(typeof(Action), disableAll) is not Action disableAllCallback)
                     continue;
 
                 ModuleInfo moduleInfo = new()
