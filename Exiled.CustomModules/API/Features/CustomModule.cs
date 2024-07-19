@@ -327,15 +327,14 @@ namespace Exiled.CustomModules.API.Features
                     continue;
                 }
 
-                if (Delegate.CreateDelegate(typeof(Action<Assembly>), enableAll) is not Action<Assembly> enableAllCallback ||
-                    Delegate.CreateDelegate(typeof(Action), disableAll) is not Action disableAllCallback)
-                    continue;
+                Action<Assembly> enableAllAction = Delegate.CreateDelegate(typeof(Action<Assembly>), enableAll) as Action<Assembly>;
+                Action disableAllAction = Delegate.CreateDelegate(typeof(Action), disableAll) as Action;
 
                 ModuleInfo moduleInfo = new()
                 {
                     Type = type,
-                    EnableAll_Callback = enableAllCallback,
-                    DisableAll_Callback = disableAllCallback,
+                    EnableAll_Callback = enableAllAction,
+                    DisableAll_Callback = disableAllAction,
                     IsCurrentlyLoaded = false,
                     ModuleType = FindClosestModuleType(type, moduleTypeValuesInfo),
                 };
