@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="/assets/logo.svg" alt="Logo" width="50px" />
+  <img src="/assets/logo.svg" alt="Logo" width="96px" />
 </div>
 <h1 align="center">EXILED - EXtended In-runtime Library for External Development</h1>
 <div align="center">
