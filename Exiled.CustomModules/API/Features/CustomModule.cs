@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Extensions;
+
 namespace Exiled.CustomModules.API.Features
 {
     using System;
@@ -289,7 +291,7 @@ namespace Exiled.CustomModules.API.Features
             UUModuleType FindClosestModuleType(Type t, IEnumerable<FieldInfo> source)
             {
                 List<int> matches = new();
-                matches.AddRange(source.Select(f => LevenshteinDistance(f.Name, t.Name)));
+                matches.AddRange(source.Select(f => f.Name.LevenshteinDistance(t.Name)));
                 return source.ElementAt(matches.IndexOf(matches.Min())).GetValue(null) as UUModuleType;
             }
 
@@ -306,8 +308,16 @@ namespace Exiled.CustomModules.API.Features
                 if (type.BaseType != typeof(CustomModule) || Loader.Any(m => m.Type == type))
                     continue;
 
-                MethodInfo enableAll = type.GetMethod(ModuleInfo.ENABLE_ALL_CALLBACK, ModuleInfo.SIGNATURE_BINDINGS);
-                MethodInfo disableAll = type.GetMethod(ModuleInfo.DISABLE_ALL_CALLBACK, ModuleInfo.SIGNATURE_BINDINGS);
+                IEnumerable<MethodInfo> rhMethods = type.GetMethods(ModuleInfo.SIGNATURE_BINDINGS)
+                    .Where(m =>
+                    {
+                        ParameterInfo[] mParams = m.GetParameters();
+                        return m.Name is ModuleInfo.ENABLE_ALL_CALLBACK or ModuleInfo.DISABLE_ALL_CALLBACK &&
+                               mParams.Length == 1 && mParams.Any(p => p.ParameterType == typeof(Assembly));
+                    }).ToArray();
+
+                MethodInfo enableAll = rhMethods.FirstOrDefault(m => m.Name is ModuleInfo.ENABLE_ALL_CALLBACK);
+                MethodInfo disableAll = rhMethods.FirstOrDefault(m => m.Name is ModuleInfo.DISABLE_ALL_CALLBACK);
 
                 if (enableAll is null)
                 {
@@ -480,44 +490,6 @@ namespace Exiled.CustomModules.API.Features
                         .ForEach(mod => mod.InvokeCallback(shouldLoad ? ModuleInfo.ENABLE_ALL_CALLBACK : ModuleInfo.DISABLE_ALL_CALLBACK, plugin.Assembly));
                 }
             }
-        }
-
-        private static int LevenshteinDistance(string source, string target)
-        {
-            if (string.IsNullOrEmpty(source))
-                return string.IsNullOrEmpty(target) ? 0 : target.Length;
-
-            if (string.IsNullOrEmpty(target))
-                return source.Length;
-
-            if (source.Length > target.Length)
-                (source, target) = (target, source);
-
-            int m = target.Length;
-            int n = source.Length;
-            int[,] distance = new int[2, m + 1];
-
-            for (int j = 1; j <= m; j++)
-                distance[0, j] = j;
-
-            int currentRow = 0;
-            for (int i = 1; i <= n; ++i)
-            {
-                currentRow = i & 1;
-                distance[currentRow, 0] = i;
-                int previousRow = currentRow ^ 1;
-                for (int j = 1; j <= m; j++)
-                {
-                    int cost = target[j - 1] == source[i - 1] ? 0 : 1;
-                    distance[currentRow, j] = Math.Min(
-                        Math.Min(
-                            distance[previousRow, j] + 1,
-                            distance[currentRow, j - 1] + 1),
-                        distance[previousRow, j - 1] + cost);
-                }
-            }
-
-            return distance[currentRow, m];
         }
 
         private void CopyProperties(CustomModule source)
