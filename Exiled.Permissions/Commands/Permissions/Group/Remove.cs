@@ -27,8 +27,10 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         /// <inheritdoc/>
         public string Description { get; } = "Removes a group from permission.";
 
-        /// <inheritdoc />
+#pragma warning disable SA1648 // InheritDocMustBeUsedWithInheritingClass
+        /// <inheritdoc/>
         public bool SanitizeResponse { get; }
+#pragma warning restore SA1648 // InheritDocMustBeUsedWithInheritingClass
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
