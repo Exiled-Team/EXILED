@@ -33,9 +33,11 @@ namespace Exiled.Events.Patches.Events.Map
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             LocalBuilder initiallySpawn = generator.DeclareLocal(typeof(bool));
+            LocalBuilder ev = generator.DeclareLocal(typeof(SpawningItemEventArgs));
 
             Label skip = generator.DefineLabel();
             Label returnLabel = generator.DefineLabel();
+            Label doorSpawn = generator.DefineLabel();
 
             int lastIndex = newInstructions.FindLastIndex(instruction => instruction.IsLdarg(0));
 
@@ -66,6 +68,8 @@ namespace Exiled.Events.Patches.Events.Map
                     // SpawningItemEventArgs ev = new(ItemPickupBase, initiallySpawn)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningItemEventArgs))[0]),
                     new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Map.OnSpawningItem(ev)
                     new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnSpawningItem))),
@@ -74,7 +78,17 @@ namespace Exiled.Events.Patches.Events.Map
                     //     return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, returnLabel),
+
+                    // if (!ev.ShouldInitiallySpawn)
+                    //     goto doorSpawn
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.ShouldInitiallySpawn))),
+                    new(OpCodes.Brfalse_S, doorSpawn),
                 });
+
+            lastIndex = newInstructions.FindLastIndex(instruction => instruction.IsLdarg(0));
+
+            newInstructions[lastIndex].labels.Add(doorSpawn);
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
