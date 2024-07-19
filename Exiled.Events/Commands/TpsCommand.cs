@@ -28,7 +28,7 @@ namespace Exiled.Events.Commands
         /// <inheritdoc />
         public string Description { get; } = "Shows the current TPS.";
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="SanitizeResponse" />
         public bool SanitizeResponse { get; } = false;
 
         /// <inheritdoc />

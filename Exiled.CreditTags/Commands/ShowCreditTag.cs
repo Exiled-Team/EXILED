@@ -28,7 +28,7 @@ namespace Exiled.CreditTags.Commands
         /// <inheritdoc/>
         public string Description { get; } = "Shows your EXILED Credits tag, if available.";
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="SanitizeResponse" />
         public bool SanitizeResponse { get; }
 
         /// <inheritdoc/>

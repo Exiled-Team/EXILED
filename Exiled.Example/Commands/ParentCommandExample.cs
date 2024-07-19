@@ -76,7 +76,7 @@ namespace Exiled.Example.Commands
         /// <inheritdoc />
         public string Description { get; } = "YOUR DESC";
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="SanitizeResponse" />
         public bool SanitizeResponse { get; }
 
         /// <inheritdoc />

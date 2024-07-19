@@ -27,7 +27,7 @@ namespace Exiled.Permissions.Commands.Permissions
         /// <inheritdoc/>
         public string Description { get; } = "Reloads all permissions";
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="SanitizeResponse" />
         public bool SanitizeResponse { get; }
 
         /// <inheritdoc/>

@@ -34,7 +34,7 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc/>
         public string Description { get; } = "Reloads all plugins.";
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="SanitizeResponse" />
         public bool SanitizeResponse { get; }
 
         /// <inheritdoc />
