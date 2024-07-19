@@ -22,8 +22,6 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Enums;
     using YamlDotNet.Serialization;
 
-    using static Exiled.API.Extensions.CollectionExtensions;
-
     /// <summary>
     /// Represents a marker class for custom modules.
     /// </summary>

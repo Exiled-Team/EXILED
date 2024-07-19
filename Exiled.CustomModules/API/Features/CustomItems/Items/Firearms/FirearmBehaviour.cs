@@ -246,7 +246,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
             if (ammoType is not AmmoType.None)
                 unscaledAmmoAmount = ev.Player.GetAmmo(ammoType);
             else if (itemType is not ItemType.None)
-                unscaledAmmoAmount = (ushort)ev.Player.Items.Where(i => !Check(i) && i.Type == itemType).Count();
+                unscaledAmmoAmount = (ushort)ev.Player.Items.Count(i => !Check(i) && i.Type == itemType);
             else if (customAmmoType > 0)
                 unscaledAmmoAmount = ev.Player.Cast<Pawn>().GetAmmo(customAmmoType);
 

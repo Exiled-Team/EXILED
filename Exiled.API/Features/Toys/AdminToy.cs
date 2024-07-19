@@ -10,18 +10,18 @@ namespace Exiled.API.Features.Toys
     using System.Linq;
 
     using AdminToys;
-
     using Enums;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.Core.Interfaces;
+    using Exiled.API.Interfaces;
     using Footprinting;
     using Mirror;
-
     using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="AdminToys.AdminToyBase"/>.
     /// </summary>
-    public abstract class AdminToy : GameEntity
+    public abstract class AdminToy : TypeCastObject<GameEntity>, IWorldSpace, IAssetFragment
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminToy"/> class.
@@ -29,10 +29,11 @@ namespace Exiled.API.Features.Toys
         /// <param name="toyAdminToyBase">The <see cref="AdminToys.AdminToyBase"/> to be wrapped.</param>
         /// <param name="type">The <see cref="AdminToyType"/> of the object.</param>
         internal AdminToy(AdminToyBase toyAdminToyBase, AdminToyType type)
-            : base(toyAdminToyBase.gameObject)
         {
             AdminToyBase = toyAdminToyBase;
             ToyType = type;
+            GameObject = toyAdminToyBase.gameObject;
+            Transform = toyAdminToyBase.transform;
 
             Map.ToysValue.Add(this);
         }
@@ -48,6 +49,11 @@ namespace Exiled.API.Features.Toys
         public AdminToyType ToyType { get; }
 
         /// <summary>
+        /// Gets the <see cref="AdminToyBase"/>'s <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public GameObject GameObject { get; }
+
+        /// <summary>
         /// Gets or sets who spawn the Primitive AdminToy.
         /// </summary>
         public Player Player
@@ -55,6 +61,11 @@ namespace Exiled.API.Features.Toys
             get => Player.Get(Footprint);
             set => Footprint = value.Footprint;
         }
+
+        /// <summary>
+        /// Gets the <see cref="AdminToyBase"/>'s <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform { get; }
 
         /// <summary>
         /// Gets or sets the Footprint of the player who spawned the AdminToy.
@@ -68,10 +79,19 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Gets or sets the position of the <see cref="AdminToy"/>.
         /// </summary>
-        public new Vector3 Position
+        public Vector3 Position
         {
-            get => AdminToyBase.transform.position;
-            set => AdminToyBase.transform.position = value;
+            get => Transform.position;
+            set => Transform.position = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the rotation of the <see cref="AdminToy"/>.
+        /// </summary>
+        public Quaternion Rotation
+        {
+            get => Transform.rotation;
+            set => Transform.rotation = value;
         }
 
         /// <summary>
@@ -79,8 +99,8 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public Vector3 Scale
         {
-            get => AdminToyBase.transform.localScale;
-            set => AdminToyBase.transform.localScale = value;
+            get => Transform.localScale;
+            set => Transform.localScale = value;
         }
 
         /// <summary>
@@ -97,7 +117,7 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether IsStatic.
+        /// Gets or sets a value indicating whether the <see cref="AdminToy"/> should be network updated.
         /// </summary>
         public bool IsStatic
         {
