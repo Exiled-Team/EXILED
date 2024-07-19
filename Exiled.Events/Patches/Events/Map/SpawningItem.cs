@@ -50,10 +50,6 @@ namespace Exiled.Events.Patches.Events.Map
                     new CodeInstruction(OpCodes.Ldc_I4_1).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Stloc_S, initiallySpawn.LocalIndex),
 
-                    // door = null
-                    /*new(OpCodes.Ldnull),
-                    new(OpCodes.Stloc_S, door.LocalIndex),*/
-
                     // goto skip
                     new(OpCodes.Br_S, skip),
 
