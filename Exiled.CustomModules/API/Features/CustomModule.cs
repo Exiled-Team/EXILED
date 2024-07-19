@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Extensions;
-
 namespace Exiled.CustomModules.API.Features
 {
     using System;
@@ -15,6 +13,7 @@ namespace Exiled.CustomModules.API.Features
     using System.Linq;
     using System.Reflection;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
