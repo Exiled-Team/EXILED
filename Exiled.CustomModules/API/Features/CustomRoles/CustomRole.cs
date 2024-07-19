@@ -609,29 +609,22 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Enables all the custom roles present in the assembly.
         /// </summary>
-        /// <returns>
-        /// A <see cref="List{T}"/> of <see cref="CustomRole"/> containing all the enabled custom roles.
-        /// </returns>
         /// <remarks>
         /// This method dynamically enables all custom roles found in the calling assembly. Custom roles
         /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling. If
         /// a custom role is enabled successfully, it is added to the returned list.
         /// </remarks>
-        public static List<CustomRole> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
 
         /// <summary>
         /// Enables all the custom roles present in the assembly.
         /// </summary>
         /// <param name="assembly">The assembly to enable the roles from.</param>
-        /// <returns>
-        /// A <see cref="List{T}"/> of <see cref="CustomRole"/> containing all the enabled custom roles.
-        /// </returns>
         /// <remarks>
         /// This method dynamically enables all custom roles found in the calling assembly. Custom roles
-        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling. If
-        /// a custom role is enabled successfully, it is added to the returned list.
+        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling.
         /// </remarks>
-        public static List<CustomRole> EnableAll(Assembly assembly)
+        public static void EnableAll(Assembly assembly)
         {
             if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomRoles))
                 throw new Exception("ModuleType::CustomRoles must be enabled in order to load any custom roles");
@@ -655,28 +648,21 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             if (customRoles.Count != Registered.Count)
                 Log.Info($"{customRoles.Count} custom roles have been successfully registered!");
-
-            return customRoles;
         }
 
         /// <summary>
         /// Disables all the custom roles present in the assembly.
         /// </summary>
-        /// <returns>
-        /// A <see cref="List{T}"/> of <see cref="CustomRole"/> containing all the disabled custom roles.
-        /// </returns>
         /// <remarks>
         /// This method dynamically disables all custom roles found in the calling assembly that were
-        /// previously registered. If a custom role is disabled successfully, it is added to the returned list.
+        /// previously registered.
         /// </remarks>
-        public static List<CustomRole> DisableAll()
+        public static void DisableAll()
         {
             List<CustomRole> customRoles = new();
             customRoles.AddRange(Registered.Where(customRole => customRole.TryUnregister()));
 
             Log.Info($"{customRoles.Count} custom roles have been successfully unregistered!");
-
-            return customRoles;
         }
 
         /// <summary>

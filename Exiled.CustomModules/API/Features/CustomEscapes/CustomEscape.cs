@@ -181,15 +181,13 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Enables all the custom escapes present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all enabled custom escapes.</returns>
-        public static List<CustomEscape> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
 
         /// <summary>
         /// Enables all the custom escapes present in the assembly.
         /// </summary>
         /// <param name="assembly">The assembly to enable the escapes from.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all enabled custom escapes.</returns>
-        public static List<CustomEscape> EnableAll(Assembly assembly)
+        public static void EnableAll(Assembly assembly)
         {
             if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomEscapes))
                 throw new Exception("ModuleType::CustomEscapes must be enabled in order to load any custom escapes");
@@ -213,22 +211,17 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
 
             if (customEscapes.Count() != List.Count())
                 Log.Info($"{customEscapes.Count()} custom escapes have been successfully registered!");
-
-            return customEscapes;
         }
 
         /// <summary>
         /// Disables all the custom escapes present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomEscape"/> containing all disabled custom escapes.</returns>
-        public static List<CustomEscape> DisableAll()
+        public static void DisableAll()
         {
             List<CustomEscape> customEscapes = new();
             customEscapes.AddRange(List.Where(customEscape => customEscape.TryUnregister()));
 
             Log.Info($"{customEscapes.Count()} custom escapes have been successfully unregistered!");
-
-            return customEscapes;
         }
 
         /// <summary>

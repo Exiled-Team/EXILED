@@ -203,15 +203,13 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <summary>
         /// Enables all the custom game modes present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomGameMode"/> containing all enabled custom game modes.</returns>
-        public static List<CustomGameMode> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
 
         /// <summary>
         /// Enables all the custom game modes present in the assembly.
         /// </summary>
         /// <param name="assembly">The assembly to enable the game modes from.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomGameMode"/> containing all enabled custom game modes.</returns>
-        public static List<CustomGameMode> EnableAll(Assembly assembly)
+        public static void EnableAll(Assembly assembly)
         {
             if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomGameModes))
                 throw new Exception("ModuleType::CustomGameModes must be enabled in order to load any custom game modes");
@@ -229,7 +227,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
                 if (!customGameMode.IsEnabled)
                     continue;
 
-                if (customGameMode.BehaviourComponents.Count(comp => typeof(GameState).IsAssignableFrom(comp)) != 1 || customGameMode.PlayerStates.Count() <= 0)
+                if (customGameMode.BehaviourComponents.Count(comp => typeof(GameState).IsAssignableFrom(comp)) != 1 || !customGameMode.PlayerStates.Any())
                 {
                     Log.Error($"Failed to load the custom game mode.\n" +
                               $"The game mode \"{customGameMode.Name}\" should have exactly one GameState component and at least one PlayerState component defined.");
@@ -242,22 +240,17 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
 
             if (customGameModes.Count() != Registered.Count)
                 Log.Info($"{customGameModes.Count()} custom game modes have been successfully registered!");
-
-            return customGameModes;
         }
 
         /// <summary>
         /// Disables all the custom game modes present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomGameMode"/> containing disabled custom game modes.</returns>
-        public static List<CustomGameMode> DisableAll()
+        public static void DisableAll()
         {
             List<CustomGameMode> customGameModes = new();
             customGameModes.AddRange(List.Where(customGameMode => customGameMode.TryUnregister()));
 
             Log.Info($"{customGameModes.Count()} custom game modes have been successfully unregistered!");
-
-            return customGameModes;
         }
 
         /// <summary>

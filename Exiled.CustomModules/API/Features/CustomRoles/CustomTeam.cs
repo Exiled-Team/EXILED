@@ -455,15 +455,13 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Enables all the custom teams present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomTeam"/> which contains all the enabled custom teams.</returns>
-        public static IEnumerable<CustomTeam> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
 
         /// <summary>
         /// Enables all the custom teams present in the assembly.
         /// </summary>
         /// <param name="assembly">The assembly to enable the teams from.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomTeam"/> which contains all the enabled custom teams.</returns>
-        public static IEnumerable<CustomTeam> EnableAll(Assembly assembly)
+        public static void EnableAll(Assembly assembly)
         {
             if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomTeams))
                 throw new Exception("ModuleType::CustomTeams must be enabled in order to load any custom teams");
@@ -487,22 +485,17 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             if (customTeams.Count() != Registered.Count())
                 Log.SendRaw($"{customTeams.Count()} custom teams have been successfully registered!", ConsoleColor.Cyan);
-
-            return customTeams;
         }
 
         /// <summary>
         /// Disables all the custom teams present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomTeam"/> which contains all the disabled custom teams.</returns>
-        public static IEnumerable<CustomTeam> DisableAll()
+        public static void DisableAll()
         {
             List<CustomTeam> customTeams = new();
             customTeams.AddRange(Registered.Where(customTeam => customTeam.TryUnregister()));
 
             Log.SendRaw($"{customTeams.Count()} custom teams have been successfully unregistered!", ConsoleColor.Cyan);
-
-            return customTeams;
         }
 
         /// <summary>
