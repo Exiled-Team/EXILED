@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  EXILED_REFERENCES_URL: https:/cdn.exiled.to/Dev.zip
+  EXILED_REFERENCES_URL: https://cdn.exiled.to/Dev.zip
   EXILED_REFERENCES_PATH: ${{ github.workspace }}/References
   EXILED_DLL_ARCHIVER_URL: https://github.com/Exiled-Team/EXILED-DLL-Archiver/releases/latest/download/EXILED-DLL-Archiver.exe
 
