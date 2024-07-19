@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="../assets/logo.svg" alt="Logo" width="50px" />
+  <img src="../assets/logo.svg" alt="Logo" width="96px" />
 </div>
 <h1 align="center">EXILED - EXtended In-runtime Library for External Development</h1>
 <div align="center">
@@ -19,6 +19,7 @@
     <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Discord" />
   </a>
 </div>
+<br />
 
 EXILED, SCP: Secret Laboratory sunucuları için yüksek düzeyde bir Framework yani bir Yazılım iskeleti'dir. Geliştiricilere oyun kodunu değiştirmek veya kendi fonksiyonlarını eklemek için kullanabilecekleri bir olay sistemi sunar. Tüm EXILED eventleri(olayları) Harmony kullanılarak oluşturulmuştur, bu da demek oluyor ki eventlerin(olayların) işlevsel olabilmesi için doğrudan sunucu kodunu değiştirmenize gerek yoktur ve bu durum 2 avantaj sağlar:
 

@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="../assets/logo.svg" alt="Logo" width="50px" />
+  <img src="../assets/logo.svg" alt="Logo" width="96px" />
 </div>
 <h1 align="center">EXILED - EXtended In-runtime Library for External Development</h1>
 <div align="center">
@@ -19,6 +19,7 @@
     <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Discord" />
   </a>
 </div>
+<br />
 
 EXILED是一个用于SCP: 秘密实验室服务器的高级插件框架。 它为开发者提供了一个可以改变游戏代码或实现其自己的功能的事件系统。
 所有的EXILED事件都基于Harmony，意味着它不需要直接修改程序集来生效，使得其拥有两个独特的优点。

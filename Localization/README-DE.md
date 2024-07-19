@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="../assets/logo.svg" alt="Logo" width="50px" />
+  <img src="../assets/logo.svg" alt="Logo" width="96px" />
 </div>
 <h1 align="center">EXILED - EXtended In-runtime Library for External Development</h1>
 <div align="center">
@@ -19,6 +19,7 @@
     <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Discord" />
   </a>
 </div>
+<br />
 
 EXILED ist ein hochrangiges Plugin-Framework für SCP: Secret Laboratory Server. Es bietet ein Event System, in das Entwickler einhaken können, um Spielcodes zu manipulieren oder zu ändern oder ihre eigenen Funktionen zu implementieren.
 Alle EXILED-EVENTS sind mit Harmony programmiert, was bedeutet, dass sie keine direkte Bearbeitung der Serverassemblies benötigen, um zu funktionieren, was zwei einzigartige Vorteile ermöglicht.
