@@ -42,10 +42,11 @@ namespace Exiled.Events.Patches.Events.Scp3114
 
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
 
-            // Remove Scp3114Disguise::CastRole::IsDisguised = true;
+            // Removes Scp3114Disguise::CastRole::Disguised = true
             newInstructions.RemoveRange(index, 4);
 
-            index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(Scp3114RagdollToBonesConverter), nameof(Scp3114RagdollToBonesConverter.ServerConvertNew)))) - 3;
+            const int offset = -3;
+            index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(Scp3114RagdollToBonesConverter), nameof(Scp3114RagdollToBonesConverter.ServerConvertNew)))) + offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
@@ -64,28 +65,12 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 new(OpCodes.Call, Method(typeof(Ragdoll), nameof(Ragdoll.Get), new[] { typeof(DynamicRagdoll) })),
                 new(OpCodes.Stloc_S, ragdoll.LocalIndex),
 
+                // HandleEvent(Scp3114Disguise, player, ragdoll)
+                new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldloc_S, player.LocalIndex),
                 new(OpCodes.Ldloc_S, ragdoll.LocalIndex),
-
-                // true
-                new(OpCodes.Ldc_I4_1),
-
-                // DisguisingEventArgs args = new(player, ragdoll, true)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DisguisingEventArgs))[0]),
-                new(OpCodes.Dup),
-
-                // Scp3114::OnDisguising(args)
-                new(OpCodes.Call, Method(typeof(Scp3114), nameof(Scp3114.OnDisguising))),
-
-                // if (!args.IsAllowed) return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DisguisingEventArgs), nameof(DisguisingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, retLabel),
-
-                // Scp3114Disguise::CastRole::IsDisguised = true;
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Scp3114Disguise), nameof(Scp3114Disguise.Owner))),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Callvirt, PropertySetter(typeof(Scp3114Role), nameof(Scp3114Role.Disguised))),
+                new(OpCodes.Call, Method(typeof(Disguising), nameof(HandleEvent))),
+                new (OpCodes.Brtrue_S, retLabel),
             });
 
             // Call DisguisedEventArgs
@@ -107,6 +92,18 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 yield return codeInstruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+
+        private static bool HandleEvent(Scp3114Disguise disguise, Player player, Ragdoll ragdoll)
+        {
+            DisguisingEventArgs args = new(player, ragdoll, true);
+            Scp3114.OnDisguising(args);
+
+            if (!args.IsAllowed)
+                return true;
+
+            disguise.CastRole.Disguised = true;
+            return false;
         }
     }
 }
