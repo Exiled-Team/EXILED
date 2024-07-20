@@ -65,7 +65,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Callback method for disabling all instances of the module.
         /// </summary>
-        public Action<Assembly> DisableAll_Callback;
+        public Action DisableAll_Callback;
 #pragma warning restore SA1310
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Exiled.CustomModules.API.Features
             }
 
             CustomModule.OnDisabled.InvokeAll(this);
-            DisableAll_Callback(assembly ?? Assembly.GetCallingAssembly());
+            DisableAll_Callback();
         }
     }
 }

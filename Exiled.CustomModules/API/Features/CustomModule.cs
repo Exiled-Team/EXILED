@@ -22,8 +22,6 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Enums;
     using YamlDotNet.Serialization;
 
-    using static Exiled.API.Extensions.CollectionExtensions;
-
     /// <summary>
     /// Represents a marker class for custom modules.
     /// </summary>
@@ -311,9 +309,8 @@ namespace Exiled.CustomModules.API.Features
                     .Where(m =>
                     {
                         ParameterInfo[] mParams = m.GetParameters();
-                        return m.Name is ModuleInfo.ENABLE_ALL_CALLBACK or ModuleInfo.DISABLE_ALL_CALLBACK &&
-                               mParams.Length == 1 && mParams.Any(p => p.ParameterType == typeof(Assembly));
-                    }).ToArray();
+                        return (m.Name is ModuleInfo.ENABLE_ALL_CALLBACK && mParams.Any(p => p.ParameterType == typeof(Assembly))) || m.Name is ModuleInfo.DISABLE_ALL_CALLBACK;
+                    });
 
                 MethodInfo enableAll = rhMethods.FirstOrDefault(m => m.Name is ModuleInfo.ENABLE_ALL_CALLBACK);
                 MethodInfo disableAll = rhMethods.FirstOrDefault(m => m.Name is ModuleInfo.DISABLE_ALL_CALLBACK);
@@ -330,15 +327,14 @@ namespace Exiled.CustomModules.API.Features
                     continue;
                 }
 
-                if (Delegate.CreateDelegate(typeof(Action<Assembly>), enableAll) is not Action<Assembly> enableAllCallback ||
-                    Delegate.CreateDelegate(typeof(Action<Assembly>), disableAll) is not Action<Assembly> disableAllCallback)
-                    continue;
+                Action<Assembly> enableAllAction = Delegate.CreateDelegate(typeof(Action<Assembly>), enableAll) as Action<Assembly>;
+                Action disableAllAction = Delegate.CreateDelegate(typeof(Action), disableAll) as Action;
 
                 ModuleInfo moduleInfo = new()
                 {
                     Type = type,
-                    EnableAll_Callback = enableAllCallback,
-                    DisableAll_Callback = disableAllCallback,
+                    EnableAll_Callback = enableAllAction,
+                    DisableAll_Callback = disableAllAction,
                     IsCurrentlyLoaded = false,
                     ModuleType = FindClosestModuleType(type, moduleTypeValuesInfo),
                 };

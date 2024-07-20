@@ -30,12 +30,12 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
         /// <para/>
         /// Automatic firearms won't be affected.
         /// </summary>
-        public byte FireRate { get; set; }
+        public virtual byte FireRate { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Enums.FiringMode"/>.
         /// </summary>
-        public FiringMode FiringMode { get; set; }
+        public virtual FiringMode FiringMode { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the firearm can shoot.

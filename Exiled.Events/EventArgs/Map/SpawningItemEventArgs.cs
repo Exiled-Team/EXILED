@@ -7,10 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
-    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
-    using Interactables.Interobjects.DoorUtils;
     using InventorySystem.Items.Pickups;
 
     /// <summary>
@@ -27,13 +25,9 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="shouldInitiallySpawn">
         /// <inheritdoc cref="ShouldInitiallySpawn" />
         /// </param>
-        /// <param name="door">
-        /// <inheritdoc cref="Door" />
-        /// </param>
-        public SpawningItemEventArgs(ItemPickupBase pickupBase, bool shouldInitiallySpawn, DoorVariant door)
+        public SpawningItemEventArgs(ItemPickupBase pickupBase, bool shouldInitiallySpawn)
         {
             Pickup = Pickup.Get(pickupBase);
-            TriggerDoor = Door.Get(door);
             ShouldInitiallySpawn = shouldInitiallySpawn;
         }
 
@@ -46,15 +40,6 @@ namespace Exiled.Events.EventArgs.Map
         /// Gets or sets a value indicating whether or not the item will be initially spawned.
         /// </summary>
         public bool ShouldInitiallySpawn { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating the trigger door for pickup.
-        /// </summary>
-        /// <remarks>
-        /// Works only when <see cref="ShouldInitiallySpawn"/> is false.
-        /// null when <see cref="ShouldInitiallySpawn"/> is true.
-        /// </remarks>
-        public Door TriggerDoor { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the item can be spawned.
