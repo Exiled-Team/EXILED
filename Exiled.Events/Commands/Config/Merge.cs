@@ -36,9 +36,6 @@ namespace Exiled.Events.Commands.Config
         /// <inheritdoc/>
         public string Description { get; } = "Merges your configs into the default config distribution.";
 
-        /// <inheritdoc />
-        public bool SanitizeResponse { get; }
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

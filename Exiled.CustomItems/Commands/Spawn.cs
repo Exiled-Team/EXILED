@@ -42,9 +42,6 @@ namespace Exiled.CustomItems.Commands
         /// <inheritdoc/>
         public string Description { get; } = "Spawn an item at the specified Spawn Location, coordinates, or at the designated player's feet.";
 
-        /// <inheritdoc />
-        public bool SanitizeResponse { get; }
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

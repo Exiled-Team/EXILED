@@ -41,9 +41,6 @@ namespace Exiled.CustomItems.Commands.List
         /// <inheritdoc/>
         public string Description { get; } = "Gets a list of custom items actually inside of players' inventories.";
 
-        /// <inheritdoc />
-        public bool SanitizeResponse { get; }
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

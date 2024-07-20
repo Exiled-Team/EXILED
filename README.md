@@ -6,7 +6,7 @@
 <img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
 ![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
 <a href="https://discord.gg/exiledreboot">
-    <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
+    <img src="https://img.shields.io/discord/1261714360854646905?style=for-the-badge&logo=discord" alt="Chat on Discord">
 </a>    
 
 </div>
