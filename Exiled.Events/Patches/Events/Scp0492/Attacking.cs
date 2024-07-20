@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Scp0492
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="ScpAttackAbilityBase{T}.ServerPerformAttack" />.
+    /// Patches <see cref="ScpAttackAbilityBase{T}.DamagePlayer" />.
     /// Adds the <see cref="Handlers.Scp0492.Attacking" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.Attacking))]
@@ -66,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Scp0492
                 new(OpCodes.Callvirt, PropertyGetter(typeof(AttackingEventArgs), nameof(AttackingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, retLabel),
 
-                // damage = ev.Damage
+                // damage = args.Damage
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(AttackingEventArgs), nameof(AttackingEventArgs.Damage))),
                 new(OpCodes.Starg_S, 2),
