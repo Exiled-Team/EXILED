@@ -31,9 +31,6 @@ namespace Exiled.CustomRoles.Commands
         /// <inheritdoc/>
         public string Description { get; } = "Use your custom roles special ability, if available.";
 
-        /// <inheritdoc />
-        public bool SanitizeResponse { get; }
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

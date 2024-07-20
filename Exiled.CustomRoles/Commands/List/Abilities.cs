@@ -30,9 +30,6 @@ namespace Exiled.CustomRoles.Commands.List
         public string Description => "Lists all abilities on the server.";
 
         /// <inheritdoc />
-        public bool SanitizeResponse { get; }
-
-        /// <inheritdoc />
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("customroles.list.abilities"))

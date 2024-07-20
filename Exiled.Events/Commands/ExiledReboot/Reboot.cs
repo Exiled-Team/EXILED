@@ -34,9 +34,6 @@ namespace Exiled.Events.Commands.ExiledReboot
         /// <inheritdoc/>
         public string Description { get; } = "Enables Exiled Reboot.";
 
-        /// <inheritdoc />
-        public bool SanitizeResponse { get; }
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

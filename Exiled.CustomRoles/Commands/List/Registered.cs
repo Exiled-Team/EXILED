@@ -38,9 +38,6 @@ namespace Exiled.CustomRoles.Commands.List
         /// <inheritdoc/>
         public string Description { get; } = "Gets a list of registered custom roles.";
 
-        /// <inheritdoc />
-        public bool SanitizeResponse { get; }
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
