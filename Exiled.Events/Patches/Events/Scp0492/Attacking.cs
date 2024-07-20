@@ -43,9 +43,11 @@ namespace Exiled.Events.Patches.Events.Scp0492
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ScpAttackAbilityBase<ZombieRole>), nameof(ScpAttackAbilityBase<ZombieRole>.Owner))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                // Player::Get(hub)
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                // damage
                 new(OpCodes.Ldarg_2),
 
                 // true
