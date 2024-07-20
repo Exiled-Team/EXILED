@@ -27,9 +27,6 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         /// <inheritdoc/>
         public string Description { get; } = "Adds a group to a permission.";
 
-        /// <inheritdoc cref="SanitizeResponse" />
-        public bool SanitizeResponse { get; }
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

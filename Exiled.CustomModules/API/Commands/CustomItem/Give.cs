@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Give.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -40,9 +40,6 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
 
         /// <inheritdoc/>
         public string Description { get; } = "Gives a custom item.";
-
-        /// <inheritdoc cref="SanitizeResponse" />
-        public bool SanitizeResponse { get; } = true;
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
