@@ -21,6 +21,8 @@ namespace Exiled.Events.Patches.Events.Scp3114
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
     /// Patches <see cref="Scp3114Disguise.ServerComplete()" />.
     /// Adds the <see cref="Scp3114.Disguising" /> and <see cref="Scp3114.Disguised" /> events.
@@ -35,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label retLabel = generator.DefineLabel();
-            LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
             LocalBuilder ragdoll = generator.DeclareLocal(typeof(Ragdoll));
 
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
@@ -52,7 +54,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Scp3114Disguise), nameof(Scp3114Disguise.Owner))),
 
                 // Player::Get(Scp3114Disguise::Owner)
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Stloc_S, player.LocalIndex),
 
                 // curRagdoll
