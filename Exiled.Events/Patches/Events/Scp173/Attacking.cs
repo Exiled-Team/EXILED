@@ -15,7 +15,6 @@ namespace Exiled.Events.Patches.Events.Scp173
     using Exiled.Events.EventArgs.Scp173;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp173;
-    using PluginAPI.Events;
 
     using static HarmonyLib.AccessTools;
 
@@ -36,8 +35,8 @@ namespace Exiled.Events.Patches.Events.Scp173
             Label retLabel = generator.DefineLabel();
 
             // Let's locate the first instruction after the first return
-            const int offset = 4;
-            int index = newInstructions.FindIndex(instruction => instruction.OperandIs(GetDeclaredConstructors(typeof(Scp173SnapPlayerEvent))[0])) + offset;
+            const int offset = -3;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
 
             // Insert the new instructions in the index location
             newInstructions.InsertRange(index, new CodeInstruction[]
@@ -50,6 +49,7 @@ namespace Exiled.Events.Patches.Events.Scp173
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // Player::Get(Scp173SnapAbility::_targetHub)
+                new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(Scp173SnapAbility), nameof(Scp173SnapAbility._targetHub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 

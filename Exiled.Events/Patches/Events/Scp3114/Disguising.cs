@@ -64,6 +64,9 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 new(OpCodes.Call, Method(typeof(Ragdoll), nameof(Ragdoll.Get), new[] { typeof(DynamicRagdoll) })),
                 new(OpCodes.Stloc_S, ragdoll.LocalIndex),
 
+                new(OpCodes.Ldloc_S, player.LocalIndex),
+                new(OpCodes.Ldloc_S, ragdoll.LocalIndex),
+
                 // true
                 new(OpCodes.Ldc_I4_1),
 
@@ -85,8 +88,7 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 new(OpCodes.Callvirt, PropertySetter(typeof(Scp3114Role), nameof(Scp3114Role.Disguised))),
             });
 
-            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
-
+            // Call DisguisedEventArgs
             newInstructions.InsertRange(newInstructions.Count - 1, new CodeInstruction[]
             {
                 new(OpCodes.Ldloc_S, player.LocalIndex),
@@ -98,6 +100,8 @@ namespace Exiled.Events.Patches.Events.Scp3114
                 // Scp3114::OnDisguised(args)
                 new(OpCodes.Call, Method(typeof(Scp3114), nameof(Scp3114.OnDisguised))),
             });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
             foreach (CodeInstruction codeInstruction in newInstructions)
                 yield return codeInstruction;
