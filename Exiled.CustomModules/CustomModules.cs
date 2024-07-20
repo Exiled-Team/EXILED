@@ -7,14 +7,9 @@
 
 namespace Exiled.CustomModules
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
-    using Exiled.API.Interfaces;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.API.Features.CustomAbilities;
@@ -54,7 +49,7 @@ namespace Exiled.CustomModules
         /// </summary>
         /// <param name="module">The module to check.</param>
         /// <returns><see langword="true"/> if the module is loaded; otherwise, <see langword="false"/>.</returns>
-        public static bool IsModuleLoaded(UUModuleType module) => Instance.Config.Modules.Contains(module);
+        public static bool IsModuleLoaded(UUModuleType module) => Instance.Config.Modules.Contains(module.Name);
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -63,19 +58,19 @@ namespace Exiled.CustomModules
 
             CustomModule.LoadAll();
 
-            if (Config.Modules.Contains(UUModuleType.CustomRoles) && Config.UseDefaultRoleAssigner)
+            if (Config.Modules.Contains(UUModuleType.CustomRoles.Name) && Config.UseDefaultRoleAssigner)
                 StaticActor.Get<RoleAssigner>();
 
-            if (Config.Modules.Contains(UUModuleType.CustomTeams) && Config.UseDefaultRespawnManager)
+            if (Config.Modules.Contains(UUModuleType.CustomTeams.Name) && Config.UseDefaultRespawnManager)
                 StaticActor.Get<RespawnManager>();
 
-            if (Config.Modules.Contains(UUModuleType.CustomGameModes))
+            if (Config.Modules.Contains(UUModuleType.CustomGameModes.Name))
                 World.Get();
 
-            if (Config.Modules.Contains(UUModuleType.CustomAbilities))
+            if (Config.Modules.Contains(UUModuleType.CustomAbilities.Name))
                 StaticActor.Get<AbilityTracker>();
 
-            if (Config.Modules.Contains(UUModuleType.CustomItems))
+            if (Config.Modules.Contains(UUModuleType.CustomItems.Name))
             {
                 StaticActor.Get<ItemTracker>();
                 StaticActor.Get<PickupTracker>();

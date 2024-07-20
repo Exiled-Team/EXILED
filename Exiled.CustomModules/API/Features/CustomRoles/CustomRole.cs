@@ -626,7 +626,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </remarks>
         public static void EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomRoles))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomRoles.Name))
                 throw new Exception("ModuleType::CustomRoles must be enabled in order to load any custom roles");
 
             List<CustomRole> customRoles = new();

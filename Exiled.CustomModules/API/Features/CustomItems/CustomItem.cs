@@ -385,7 +385,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// </remarks>
         public static void EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomItems))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomItems.Name))
                 throw new Exception("ModuleType::CustomItems must be enabled in order to load any custom items");
 
             List<CustomItem> customItems = new();
