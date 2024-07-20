@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Spawn.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -40,9 +40,6 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
 
         /// <inheritdoc/>
         public string Description { get; } = "Spawn an item at the specified Spawn Location, coordinates, or at the designated player's feet.";
-
-        /// <inheritdoc cref="SanitizeResponse" />
-        public bool SanitizeResponse { get; } = true;
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

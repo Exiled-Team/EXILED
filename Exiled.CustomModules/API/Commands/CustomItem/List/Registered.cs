@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Registered.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -34,9 +34,6 @@ namespace Exiled.CustomModules.API.Commands.CustomItem.List
 
         /// <inheritdoc/>
         public string[] Aliases { get; } = { "r", "reg" };
-
-        /// <inheritdoc cref="SanitizeResponse" />
-        public bool SanitizeResponse { get; } = true;
 
         /// <inheritdoc/>
         public string Description { get; } = "Gets a list of registered custom items.";

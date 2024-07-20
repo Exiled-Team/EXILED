@@ -40,9 +40,6 @@ namespace Exiled.Events.Commands.PluginManager
         /// <inheritdoc/>
         public string Description { get; } = "Returns information about all patches (whether they are patched or not)";
 
-        /// <inheritdoc cref="SanitizeResponse" />
-        public bool SanitizeResponse { get; }
-
         /// <inheritdoc />
         public string Permission { get; } = "ee.showpatches";
 
