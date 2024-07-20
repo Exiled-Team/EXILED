@@ -79,6 +79,7 @@ namespace Exiled.Events.Patches.Events.Scp096
                 new(OpCodes.Callvirt, PropertyGetter(typeof(AttackingEventArgs), nameof(AttackingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, retLabel),
 
+                // SetFieldValues(Scp096HitHandler, args)
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Call, Method(typeof(Attacking), nameof(SetFieldValues))),
