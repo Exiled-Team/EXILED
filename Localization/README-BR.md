@@ -16,7 +16,7 @@
     <img src="https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev?style=for-the-badge&logo=git" alt="Commits" />
   </a>
   <a href="https://discord.gg/exiledreboot" target="_blank">
-    <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Discord" />
+    <img src="https://img.shields.io/discord/1261714360854646905?style=for-the-badge&logo=discord" alt="Discord" />
   </a>
 </div>
 <br />
