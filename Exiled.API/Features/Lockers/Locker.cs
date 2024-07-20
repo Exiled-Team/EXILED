@@ -37,7 +37,8 @@ namespace Exiled.API.Features.Lockers
             Base = locker;
             Chambers = locker.Chambers.Select(x => new Chamber(x, this)).ToList();
 
-            BaseToExiledLockers.Add(locker, this);
+            if (!BaseToExiledLockers.ContainsKey(locker))
+                BaseToExiledLockers.Add(locker, this);
         }
 
         /// <summary>
