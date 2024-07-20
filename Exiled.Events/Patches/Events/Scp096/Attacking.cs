@@ -7,16 +7,14 @@
 
 namespace Exiled.Events.Patches.Events.Scp096
 {
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
-
-    using Exiled.API.Features.Core.Generic.Pools;
+#pragma warning disable SA1313
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp096;
     using HarmonyLib;
+    using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp096;
 
-    using static HarmonyLib.AccessTools;
+    using UnityEngine;
 
     using Player = Exiled.API.Features.Player;
 
@@ -28,88 +26,61 @@ namespace Exiled.Events.Patches.Events.Scp096
     [HarmonyPatch(typeof(Scp096HitHandler), nameof(Scp096HitHandler.ProcessHits))]
     internal static class Attacking
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(Scp096HitHandler __instance, ref Scp096HitResult __result, int count)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            Scp096HitResult scp096HitResult = Scp096HitResult.None;
+            Player scpPlayer = Player.Get(__instance._scpRole._lastOwner);
 
-            Label retLabel = generator.DefineLabel();
-            LocalBuilder ev = generator.DeclareLocal(typeof(AttackingEventArgs));
-
-            int offset = -3;
-            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(Scp096TargetsTracker), nameof(Scp096TargetsTracker.HasTarget), new[] { typeof(ReferenceHub) }))) + offset;
-
-            // Insert the new instructions in the index location
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            for (int i = 0; i < count; i++)
             {
-                // Scp096HitHandler::_scpRole::_lastOwner
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp096HitHandler), nameof(Scp096HitHandler._scpRole))),
-                new(OpCodes.Ldfld, Field(typeof(Scp096Role), nameof(Scp096Role._lastOwner))),
+                Collider collider = Scp096HitHandler.Hits[i];
+                __instance.CheckDoorHit(collider);
 
-                // Player::Get(Scp096HitHandler::_scpRole::_lastOwner)
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                if (!collider.TryGetComponent(out IDestructible destructible))
+                    continue;
 
-                // targetHub
-                new(OpCodes.Ldloc_S, 7),
+                int layerMask = (int)Scp096HitHandler.SolidObjectMask & ~(1 << collider.gameObject.layer);
 
-                // Player::Get(targetHub)
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                if (Physics.Linecast(__instance._scpRole.CameraPosition, destructible.CenterOfMass, layerMask) || !__instance._hitNetIDs.Add(destructible.NetworkId))
+                    continue;
 
-                // Scp096HitHandler::_humanTargetDamage
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp096HitHandler), nameof(Scp096HitHandler._humanTargetDamage))),
+                if (destructible is BreakableWindow breakableWindow)
+                {
+                    if (!__instance.DealDamage(breakableWindow, __instance._windowDamage))
+                        continue;
 
-                // Scp096HitHandler::_humanNontargetDamage
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp096HitHandler), nameof(Scp096HitHandler._humanNontargetDamage))),
+                    scp096HitResult |= Scp096HitResult.Window;
+                    continue;
+                }
 
-                // true
-                new(OpCodes.Ldc_I4_1),
+                if (destructible is not HitboxIdentity hitBoxIdentity || !HitboxIdentity.IsEnemy(Team.SCPs, hitBoxIdentity.TargetHub.GetTeam()))
+                    continue;
 
-                // AttackingEventArgs args = new(player, target, _humanTargetDamage, _humanNontargetDamage, true)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AttackingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
+                Player target = Player.Get(hitBoxIdentity.TargetHub);
+                bool isTarget = __instance._targetCounter.HasTarget(target.ReferenceHub);
 
-                // Scp096::OnAttacking(args)
-                new(OpCodes.Call, Method(typeof(Handlers.Scp096), nameof(Handlers.Scp096.OnAttacking))),
+                AttackingEventArgs args = new(scpPlayer, target, __instance._humanTargetDamage, __instance._humanNontargetDamage, true);
+                Handlers.Scp096.OnAttacking(args);
 
-                // if (!args.IsAllowed) return
-                new(OpCodes.Callvirt, PropertyGetter(typeof(AttackingEventArgs), nameof(AttackingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, retLabel),
-            });
+                if (!args.IsAllowed)
+                    continue;
 
-            // Removes this._humanNontargetDamage from the if check
-            offset = -1;
-            index = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Scp096HitHandler), nameof(Scp096HitHandler._humanNontargetDamage)))) + offset;
+                float damage = isTarget ? args.HumanDamage : args.NonTargetDamage;
 
-            newInstructions.RemoveRange(index, 2);
+                if (!__instance.DealDamage(hitBoxIdentity, damage))
+                    continue;
 
-            // Replace this._humanNontargetDamage with AttackingEventArgs::NonTargetDamage
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(AttackingEventArgs), nameof(AttackingEventArgs.NonTargetDamage))),
-            });
+                scp096HitResult |= Scp096HitResult.Human;
+                if (!target.IsAlive)
+                {
+                    scp096HitResult |= Scp096HitResult.Lethal;
+                }
+            }
 
-            // Removes this._humanTargetDamage from the if check
-            index = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Scp096HitHandler), nameof(Scp096HitHandler._humanTargetDamage)))) + offset;
-            newInstructions.RemoveRange(index, 2);
+            __instance.HitResult |= scp096HitResult;
+            __result = scp096HitResult;
 
-            // Replace this._humanTargetDamage with AttackingEventArgs::HumanDamage
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(AttackingEventArgs), nameof(AttackingEventArgs.HumanDamage))),
-            });
-
-            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
-
-            foreach (CodeInstruction instruction in newInstructions)
-                yield return instruction;
-
-            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+            return false;
         }
     }
 }
