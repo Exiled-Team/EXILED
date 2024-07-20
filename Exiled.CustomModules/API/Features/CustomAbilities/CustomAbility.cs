@@ -495,7 +495,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <param name="assembly">The assembly to enable the abilities from.</param>
         public static void EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomAbilities))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomAbilities.Name))
                 throw new Exception("ModuleType::CustomAbilities must be enabled in order to load any custom abilities");
 
             List<CustomAbility<T>> customAbilities = new();

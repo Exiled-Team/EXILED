@@ -463,7 +463,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="assembly">The assembly to enable the teams from.</param>
         public static void EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomTeams))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomTeams.Name))
                 throw new Exception("ModuleType::CustomTeams must be enabled in order to load any custom teams");
 
             List<CustomTeam> customTeams = new();

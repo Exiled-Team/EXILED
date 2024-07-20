@@ -12,6 +12,8 @@ namespace Exiled.CustomModules.API.Features
     using System.Linq;
     using System.Reflection;
 
+    using Exiled.CustomModules.API.Enums;
+
     /// <summary>
     /// A struct containing all information about a module.
     /// </summary>
@@ -54,7 +56,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// The module identifier.
         /// </summary>
-        public uint ModuleType;
+        public UUModuleType ModuleType;
 
 #pragma warning disable SA1310
         /// <summary>

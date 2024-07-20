@@ -481,7 +481,7 @@ namespace Exiled.CustomModules.API.Features
                 foreach (IPlugin<IConfig> plugin in Exiled.Loader.Loader.Plugins)
                 {
                     ModuleInfo.AllModules
-                        .Where(moduleInfo => config.Modules.Any(m => m == moduleInfo.ModuleType))
+                        .Where(moduleInfo => config.Modules.Any(m => m == moduleInfo.ModuleType.Name))
                         .ForEach(mod => mod.InvokeCallback(shouldLoad ? ModuleInfo.ENABLE_ALL_CALLBACK : ModuleInfo.DISABLE_ALL_CALLBACK, plugin.Assembly));
                 }
             }
