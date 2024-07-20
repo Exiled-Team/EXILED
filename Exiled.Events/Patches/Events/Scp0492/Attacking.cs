@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp0492
     /// Adds the <see cref="Handlers.Scp0492.Attacking" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.Attacking))]
-    [HarmonyPatch(typeof(ScpAttackAbilityBase<ZombieRole>), nameof(ScpAttackAbilityBase<ZombieRole>.ServerPerformAttack))]
+    [HarmonyPatch(typeof(ScpAttackAbilityBase<ZombieRole>), nameof(ScpAttackAbilityBase<ZombieRole>.DamagePlayer))]
     internal static class Attacking
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -34,21 +34,19 @@ namespace Exiled.Events.Patches.Events.Scp0492
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label retLabel = generator.DefineLabel();
+            LocalBuilder ev = generator.DeclareLocal(typeof(AttackingEventArgs));
 
-            const int offset = -4;
-            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Add)))) + offset;
-
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
                 // Player::Get(ScpAttackAbilityBase<ZombieRole>::Owner)
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ScpAttackAbilityBase<ZombieRole>), nameof(ScpAttackAbilityBase<ZombieRole>.Owner))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // Player::Get(hitboxIdentity)
-                new(OpCodes.Ldloc_3),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(HitboxIdentity), nameof(HitboxIdentity.TargetHub))),
+                new(OpCodes.Ldarg_1),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                new(OpCodes.Ldarg_2),
 
                 // true
                 new(OpCodes.Ldc_I4_1),
@@ -56,6 +54,8 @@ namespace Exiled.Events.Patches.Events.Scp0492
                 // AttackingEventArgs args = new(player, target, true)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AttackingEventArgs))[0]),
                 new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Scp0492::OnAttacking(args)
                 new(OpCodes.Call, Method(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.OnAttacking))),
@@ -63,6 +63,11 @@ namespace Exiled.Events.Patches.Events.Scp0492
                 // if (!args.IsAllowed) return
                 new(OpCodes.Callvirt, PropertyGetter(typeof(AttackingEventArgs), nameof(AttackingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, retLabel),
+
+                // damage = ev.Damage
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(AttackingEventArgs), nameof(AttackingEventArgs.Damage))),
+                new(OpCodes.Starg_S, 2),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);

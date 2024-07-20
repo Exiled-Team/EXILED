@@ -21,12 +21,14 @@ namespace Exiled.Events.EventArgs.Scp0492
         /// </summary>
         /// <param name="player"><see cref="Player"/>.</param>
         /// <param name="target"><see cref="Target"/>.</param>
+        /// <param name="damage"><see cref="Damage"/>.</param>
         /// <param name="isAllowed"><see cref="IsAllowed"/>.</param>
-        public AttackingEventArgs(Player player, Player target, bool isAllowed = true)
+        public AttackingEventArgs(Player player, Player target, float damage, bool isAllowed = true)
         {
             Player = player;
             Scp0492 = Player.Role.As<Scp0492Role>();
             Target = target;
+            Damage = damage;
             IsAllowed = isAllowed;
         }
 
@@ -40,6 +42,11 @@ namespace Exiled.Events.EventArgs.Scp0492
         /// Gets the player that is going to damaged by a SCP-0492.
         /// </summary>
         public Player Target { get; }
+
+        /// <summary>
+        /// Gets or sets the damage of the attack.
+        /// </summary>
+        public float Damage { get; set; }
 
         /// <inheritdoc/>
         public bool IsAllowed { get; set; }
