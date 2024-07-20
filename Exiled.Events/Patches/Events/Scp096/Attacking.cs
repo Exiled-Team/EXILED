@@ -80,20 +80,24 @@ namespace Exiled.Events.Patches.Events.Scp096
                 new(OpCodes.Brfalse_S, retLabel),
             });
 
+            // Removes this._humanNontargetDamage from the if check
             offset = -1;
             index = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Scp096HitHandler), nameof(Scp096HitHandler._humanNontargetDamage)))) + offset;
 
             newInstructions.RemoveRange(index, 2);
 
+            // Replace this._humanNontargetDamage with AttackingEventArgs::NonTargetDamage
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(AttackingEventArgs), nameof(AttackingEventArgs.NonTargetDamage))),
             });
 
+            // Removes this._humanTargetDamage from the if check
             index = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Scp096HitHandler), nameof(Scp096HitHandler._humanTargetDamage)))) + offset;
             newInstructions.RemoveRange(index, 2);
 
+            // Replace this._humanTargetDamage with AttackingEventArgs::HumanDamage
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
