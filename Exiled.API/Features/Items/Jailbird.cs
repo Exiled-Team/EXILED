@@ -83,7 +83,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the amount of time in seconds that the <see cref="CustomPlayerEffects.Concussed"/> effect will be applied on being hit.
         /// </summary>
-        [EProperty(category: nameof(ConcussionDuration))]
+        [EProperty(category: nameof(Jailbird))]
         public float ConcussionDuration
         {
             get => Base._hitreg._concussionDuration;
