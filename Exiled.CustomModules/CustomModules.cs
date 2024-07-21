@@ -72,7 +72,6 @@ namespace Exiled.CustomModules
         {
             PlayerHandler = new();
             ServerHandler = new();
-            Log.Error($"Config is null? {Config is null}");
             RegistrationHandler = new(Config);
 
             Exiled.Events.Handlers.Player.ChangingItem += PlayerHandler.OnChangingItem;
