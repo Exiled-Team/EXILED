@@ -35,8 +35,6 @@ namespace Exiled.Events.Patches.Events.Player
             player.IsVerified = true;
             player.RawUserId = player.UserId.GetRawUserId();
 
-            Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) connected with the IP: {player.IPAddress}", ConsoleColor.Green);
-
             Handlers.Player.OnVerified(new VerifiedEventArgs(player));
         }
     }
