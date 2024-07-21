@@ -19,8 +19,8 @@ namespace Exiled.Events.EventArgs.Scp3114
         /// <summary>
         /// Initializes a new instance of the <see cref="StranglingEventArgs" /> class.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> instance which this is being instantiated from.</param>
-        /// <param name="target">The <see cref="API.Features.Player"/> being targeted.</param>
+        /// <param name="player"><see cref="Player"/>.</param>
+        /// <param name="target"><see cref="Target"/>.</param>
         /// <param name="isAllowed"><see cref="IsAllowed"/>.</param>
         public StranglingEventArgs(Player player, Player target, bool isAllowed = true)
         {
