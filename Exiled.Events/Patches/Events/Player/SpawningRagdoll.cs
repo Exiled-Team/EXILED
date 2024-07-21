@@ -14,12 +14,9 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
-
     using HarmonyLib;
     using PlayerRoles.Ragdolls;
-
     using PlayerStatsSystem;
-
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
@@ -39,118 +36,66 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            Label ret = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(SpawningRagdollEventArgs));
-            LocalBuilder newRagdoll = generator.DeclareLocal(typeof(Ragdoll));
-            LocalBuilder localScale = generator.DeclareLocal(typeof(Vector3));
-            LocalBuilder evScale = generator.DeclareLocal(typeof(Vector3));
-            LocalBuilder targetScale = generator.DeclareLocal(typeof(Vector3));
 
-            int offset = 0;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.Calls(PropertySetter(typeof(BasicRagdoll), nameof(BasicRagdoll.NetworkInfo))));
 
-            // remove
-            // "basicRagdoll.NetworkInfo = new RagdollData(owner, handler, transform.localPosition, transform.localRotation);"
-            newInstructions.RemoveRange(index, 9);
-
-            // replace with
             newInstructions.InsertRange(index, new[]
             {
-                // hub
-                new CodeInstruction(OpCodes.Ldarg_0),
-
-                // handler
-                new(OpCodes.Ldarg_1),
-
-                // ragdollRole.transform.localPosition
-                new(OpCodes.Ldloc_2),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.localPosition))),
-
-                // ragdollRole.transform.localRotation
-                new(OpCodes.Ldloc_2),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.localRotation))),
-
-                // new RagdollInfo(ReferenceHub, DamageHandlerBase, Vector3, Quaternion)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RagdollData))[0]),
-
                 // true
                 new(OpCodes.Ldc_I4_1),
 
-                // SpawningRagdollEventArgs ev = new(RagdollInfo, DamageHandlerBase, bool)
+                // SpawningRagdollEventArgs args = new(RagdollInfo, bool)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningRagdollEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                // Player.OnSpawningRagdoll(ev)
+                // Player::OnSpawningRagdoll(args)
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnSpawningRagdoll))),
 
-                // if (!ev.IsAllowed)
-                //    return;
+                // if (!args.IsAllowed)
+                // {
+                //     Object.Destroy(gameObject);
+                //     return null;
+                // }
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, ret),
+                new(OpCodes.Brtrue_S, continueLabel),
 
-                // basicRagdoll.NetworkInfo = ev.Info
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Info))),
-                new(OpCodes.Call, PropertySetter(typeof(BasicRagdoll), nameof(BasicRagdoll.NetworkInfo))),
+                new(OpCodes.Pop),
+                new(OpCodes.Call, Method(typeof(Object), nameof(Object.Destroy), new[] { typeof(Object) })),
+                new(OpCodes.Ldnull),
+                new(OpCodes.Ret),
 
-                // new Vector3()
-                new(OpCodes.Ldloca_S, targetScale.LocalIndex),
-                new(OpCodes.Initobj, typeof(Vector3)),
-
-                // localScale = ragdoll.gameObject.transform.localScale
-                new(OpCodes.Ldloc_1),
+                // ragdoll transform
+                new CodeInstruction(OpCodes.Ldloc_1).WithLabels(continueLabel),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(BasicRagdoll), nameof(BasicRagdoll.gameObject))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(GameObject), nameof(GameObject.transform))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.localScale))),
-                new(OpCodes.Stloc_S, localScale.LocalIndex),
 
-                // evScale = ev.Scale
+                // ragdoll localScale
+                new(OpCodes.Dup),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.localScale))),
+
+                // SpawningRagdollEventArgs::Scale
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Scale))),
-                new(OpCodes.Stloc_S, evScale.LocalIndex),
 
-                // targetScale.x = evScale.x * localScale.x
-                new(OpCodes.Ldloca_S, targetScale.LocalIndex),
-                new(OpCodes.Ldloc_S, evScale.LocalIndex),
-                new(OpCodes.Ldfld, Field(typeof(Vector3), nameof(Vector3.x))),
-                new(OpCodes.Ldloc_S, localScale.LocalIndex),
-                new(OpCodes.Ldfld, Field(typeof(Vector3), nameof(Vector3.x))),
-                new(OpCodes.Mul),
-                new(OpCodes.Stfld, Field(typeof(Vector3), nameof(Vector3.x))),
+                // newScale = Vector3::Scale(ragdollScale, SpawningRagdollEventArgs::Scale);
+                new(OpCodes.Call, Method(typeof(Vector3), nameof(Vector3.Scale), new[] { typeof(Vector3), typeof(Vector3) })),
 
-                // targetScale.y = evScale.y * localScale.y
-                new(OpCodes.Ldloca_S, targetScale.LocalIndex),
-                new(OpCodes.Ldloc_S, evScale.LocalIndex),
-                new(OpCodes.Ldfld, Field(typeof(Vector3), nameof(Vector3.y))),
-                new(OpCodes.Ldloc_S, localScale.LocalIndex),
-                new(OpCodes.Ldfld, Field(typeof(Vector3), nameof(Vector3.y))),
-                new(OpCodes.Mul),
-                new(OpCodes.Stfld, Field(typeof(Vector3), nameof(Vector3.y))),
-
-                // targetScale.z = evScale.z * localScale.z
-                new(OpCodes.Ldloca_S, targetScale.LocalIndex),
-                new(OpCodes.Ldloc_S, evScale.LocalIndex),
-                new(OpCodes.Ldfld, Field(typeof(Vector3), nameof(Vector3.z))),
-                new(OpCodes.Ldloc_S, localScale.LocalIndex),
-                new(OpCodes.Ldfld, Field(typeof(Vector3), nameof(Vector3.z))),
-                new(OpCodes.Mul),
-                new(OpCodes.Stfld, Field(typeof(Vector3), nameof(Vector3.z))),
-
-                // ragdoll.gameObject.transform.localScale = targetScale
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(BasicRagdoll), nameof(BasicRagdoll.gameObject))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(GameObject), nameof(GameObject.transform))),
-                new(OpCodes.Ldloc_S, targetScale.LocalIndex),
+                // BasicRagdoll::gameObject::transform::localScale = targetScale
                 new(OpCodes.Callvirt, PropertySetter(typeof(Transform), nameof(Transform.localScale))),
+
+                // load ragdollInfo
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Info))),
             });
 
             newInstructions.InsertRange(newInstructions.Count - 2, new CodeInstruction[]
             {
-                // ev.Player
+                // SpawningRagdollEventArgs::Player
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Player))),
 
@@ -171,10 +116,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnSpawnedRagdoll))),
             });
 
-            newInstructions[newInstructions.Count - 1].labels.Add(ret);
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+            foreach (CodeInstruction instruction in newInstructions)
+                yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
