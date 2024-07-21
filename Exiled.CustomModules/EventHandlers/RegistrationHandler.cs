@@ -26,7 +26,7 @@ namespace Exiled.CustomModules.EventHandlers
         /// <summary>
         /// Initializes a new instance of the <see cref="RegistrationHandler"/> class.
         /// </summary>
-        /// <param name="inConfig">The <see cref="CustomModules.Config"/> instance.</param>
+        /// <param name="inConfig">The configuration instance.</param>
         internal RegistrationHandler(Config inConfig) => config = inConfig;
 
         /// <summary>
