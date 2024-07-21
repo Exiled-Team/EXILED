@@ -51,7 +51,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the round in progress or not.
         /// </summary>
-        public static bool InProgress => ReferenceHub.LocalHub is not null && RoundSummary.RoundInProgress();
+        public static bool InProgress => ReferenceHub.LocalHub != null && RoundSummary.RoundInProgress();
 
         /// <summary>
         /// Gets a value indicating whether the round is ended or not.
