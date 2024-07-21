@@ -45,6 +45,11 @@ namespace Exiled.CustomModules
         internal ServerHandler ServerHandler { get; private set; }
 
         /// <summary>
+        /// Gets the <see cref="EventHandlers.RegistrationHandler"/>.
+        /// </summary>
+        internal RegistrationHandler RegistrationHandler { get; private set; }
+
+        /// <summary>
         /// Gets a value indicating whether the specified module is loaded.
         /// </summary>
         /// <param name="module">The module to check.</param>
@@ -56,48 +61,17 @@ namespace Exiled.CustomModules
         {
             Instance = this;
 
-            CustomModule.LoadAll();
-
-            if (Config.Modules.Contains(UUModuleType.CustomRoles.Name) && Config.UseDefaultRoleAssigner)
-                StaticActor.Get<RoleAssigner>();
-
-            if (Config.Modules.Contains(UUModuleType.CustomTeams.Name) && Config.UseDefaultRespawnManager)
-                StaticActor.Get<RespawnManager>();
-
-            if (Config.Modules.Contains(UUModuleType.CustomGameModes.Name))
-                World.Get();
-
-            if (Config.Modules.Contains(UUModuleType.CustomAbilities.Name))
-                StaticActor.Get<AbilityTracker>();
-
-            if (Config.Modules.Contains(UUModuleType.CustomItems.Name))
-            {
-                StaticActor.Get<ItemTracker>();
-                StaticActor.Get<PickupTracker>();
-            }
-
             base.OnEnabled();
+
+            CustomModule.LoadAll();
         }
 
         /// <inheritdoc/>
         public override void OnDisabled()
         {
-            World.Get().Destroy();
-
-            StaticActor.Get<RoleAssigner>()?.Destroy();
-            StaticActor.Get<RespawnManager>()?.Destroy();
-            StaticActor.Get<AbilityTracker>()?.Destroy();
-            StaticActor.Get<ItemTracker>()?.Destroy();
-            StaticActor.Get<PickupTracker>()?.Destroy();
-
-            CustomItem.DisableAll();
-            CustomRole.DisableAll();
-            CustomAbility<GameEntity>.DisableAll();
-            CustomTeam.DisableAll();
-            CustomEscape.DisableAll();
-            CustomGameMode.DisableAll();
-
             base.OnDisabled();
+
+            CustomModule.UnloadAll();
         }
 
         /// <inheritdoc/>
@@ -105,9 +79,12 @@ namespace Exiled.CustomModules
         {
             PlayerHandler = new();
             ServerHandler = new();
+            RegistrationHandler = new(Config);
 
             Exiled.Events.Handlers.Player.ChangingItem += PlayerHandler.OnChangingItem;
             Exiled.Events.Handlers.Server.RoundStarted += ServerHandler.OnRoundStarted;
+            CustomModule.OnEnabled += RegistrationHandler.OnModuleEnabled;
+            CustomModule.OnDisabled += RegistrationHandler.OnModuleDisabled;
         }
 
         /// <inheritdoc/>
@@ -115,9 +92,12 @@ namespace Exiled.CustomModules
         {
             Exiled.Events.Handlers.Player.ChangingItem -= PlayerHandler.OnChangingItem;
             Exiled.Events.Handlers.Server.RoundStarted -= ServerHandler.OnRoundStarted;
+            CustomModule.OnEnabled.UnbindAll();
+            CustomModule.OnDisabled.UnbindAll();
 
             PlayerHandler = null;
             ServerHandler = null;
+            RegistrationHandler = null;
         }
     }
 }

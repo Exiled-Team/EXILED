@@ -117,7 +117,7 @@ namespace Exiled.API.Features.DynamicEvents
         /// <returns>The left-hand <see cref="TDynamicEventDispatcher{T}"/> operator.</returns>
         public static TDynamicEventDispatcher<T> operator -(TDynamicEventDispatcher<T> left, TDynamicEventDispatcher<T> right)
         {
-            foreach ((KeyValuePair<object, List<Action<T>>> kvp, Action<T> action) in right.BoundDelegates
+            foreach ((KeyValuePair<object, List<Action<T>>> kvp, Action<T> _) in right.BoundDelegates
                 .SelectMany(kvp => kvp.Value.Select(action => (kvp, action))))
                 left.Unbind(kvp.Key);
 
@@ -131,10 +131,10 @@ namespace Exiled.API.Features.DynamicEvents
         /// <param name="del">The delegate to be bound.</param>
         public virtual void Bind(object obj, Action<T> del)
         {
-            if (!boundDelegates.ContainsKey(obj))
-                boundDelegates.Add(obj, new List<Action<T>>() { del });
+            if (!boundDelegates.TryGetValue(obj, out List<Action<T>> @delegate))
+                boundDelegates.Add(obj, new List<Action<T>> { del });
             else
-                boundDelegates[obj].Add(del);
+                @delegate.Add(del);
         }
 
         /// <summary>
@@ -150,10 +150,10 @@ namespace Exiled.API.Features.DynamicEvents
         /// <param name="del">The delegate to be unbound.</param>
         public virtual void Unbind(object obj, Action<T> del)
         {
-            if (!boundDelegates.ContainsKey(obj))
+            if (!boundDelegates.TryGetValue(obj, out List<Action<T>> @delegate))
                 return;
 
-            boundDelegates[obj].Remove(del);
+            @delegate.Remove(del);
         }
 
         /// <summary>
