@@ -43,7 +43,6 @@ namespace Exiled.API.Features.Items
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
         /// </summary>
         internal static readonly Dictionary<ItemBase, Item> BaseToItem = new(new ComponentsEqualityComparer());
-        private float weight;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
@@ -53,7 +52,6 @@ namespace Exiled.API.Features.Items
             : base(itemBase.gameObject)
         {
             Base = itemBase;
-            weight = itemBase.Weight;
             BaseToItem.Add(itemBase, this);
 
             if (Base.ItemSerial is 0 && itemBase.Owner != null)
@@ -130,14 +128,10 @@ namespace Exiled.API.Features.Items
         public ItemTierFlags TierFlags => Base.TierFlags;
 
         /// <summary>
-        /// Gets or sets the Weight of the item.
+        /// Gets the Weight of the item.
         /// </summary>
         [EProperty(category: nameof(Item))]
-        public virtual float Weight
-        {
-            get => weight;
-            set => weight = value;
-        }
+        public float Weight => Base.Weight;
 
         /// <summary>
         /// Gets a value indicating whether or not this item is ammunition.
@@ -394,10 +388,7 @@ namespace Exiled.API.Features.Items
         internal virtual void ReadPickupInfo(Pickup pickup)
         {
             if (pickup is not null)
-            {
                 Scale = pickup.Scale;
-                Weight = pickup.Weight;
-            }
         }
     }
 }
