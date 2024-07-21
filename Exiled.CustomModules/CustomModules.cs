@@ -83,8 +83,8 @@ namespace Exiled.CustomModules
 
             Exiled.Events.Handlers.Player.ChangingItem += PlayerHandler.OnChangingItem;
             Exiled.Events.Handlers.Server.RoundStarted += ServerHandler.OnRoundStarted;
-            CustomModule.OnEnabled += RegistrationHandler.OnModuleEnabled;
-            CustomModule.OnDisabled += RegistrationHandler.OnModuleDisabled;
+            CustomModule.OnEnabled.Bind(RegistrationHandler, RegistrationHandler.OnModuleEnabled);
+            CustomModule.OnDisabled.Bind(RegistrationHandler, RegistrationHandler.OnModuleDisabled);
         }
 
         /// <inheritdoc/>
