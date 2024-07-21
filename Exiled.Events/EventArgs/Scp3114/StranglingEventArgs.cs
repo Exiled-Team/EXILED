@@ -17,17 +17,11 @@ namespace Exiled.Events.EventArgs.Scp3114
     public class StranglingEventArgs : IScp3114Event, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="StranglingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="StranglingEventArgs" /> class.
         /// </summary>
-        /// <param name="player">
-        ///     The <see cref="Player"/> instance which this is being instantiated from.
-        /// </param>
-        /// <param name="target">
-        ///     The <see cref="API.Features.Player"/> being targeted.
-        /// </param>
-        /// <param name="isAllowed">
-        ///     <see cref="IsAllowed"/>.
-        /// </param>
+        /// <param name="player">The <see cref="Player"/> instance which this is being instantiated from.</param>
+        /// <param name="target">The <see cref="API.Features.Player"/> being targeted.</param>
+        /// <param name="isAllowed"><see cref="IsAllowed"/>.</param>
         public StranglingEventArgs(Player player, Player target, bool isAllowed = true)
         {
             Player = player;
@@ -37,16 +31,13 @@ namespace Exiled.Events.EventArgs.Scp3114
         }
 
         /// <inheritdoc/>
-        /// <summary>
-        ///     The <see cref="Player"/> who is Scp-3114.
-        /// </summary>
         public Player Player { get; }
 
         /// <inheritdoc/>
         public Scp3114Role Scp3114 { get; }
 
         /// <summary>
-        ///     Gets the <see cref="Player"/> being strangled.
+        /// Gets the <see cref="Player"/> being strangled.
         /// </summary>
         public Player Target { get; }
 
