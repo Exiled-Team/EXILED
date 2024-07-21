@@ -182,7 +182,7 @@ namespace Exiled.API.Features.Toys
         /// <param name="scale">The scale of the <see cref="ShootingTargetToy"/>.</param>
         /// <param name="spawn">Whether the <see cref="ShootingTargetToy"/> should be initially spawned.</param>
         /// <returns>The new <see cref="ShootingTargetToy"/>.</returns>
-        public static ShootingTargetToy Create(ShootingTargetType type, Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
+        public static ShootingTargetToy Create(ShootingTargetType type, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool spawn = true)
         {
             ShootingTargetToy shootingTargetToy = type switch
             {
@@ -191,10 +191,9 @@ namespace Exiled.API.Features.Toys
                 _ => new ShootingTargetToy(Object.Instantiate(SportTargetPrefabObject.GetComponent<ShootingTarget>()))
             };
 
-            Transform transform = shootingTargetToy.Base.transform;
-            transform.position = position ?? Vector3.zero;
-            transform.eulerAngles = rotation ?? Vector3.zero;
-            transform.localScale = scale ?? Vector3.one;
+            shootingTargetToy.Position = position ?? Vector3.zero;
+            shootingTargetToy.Rotation = rotation ?? Quaternion.identity;
+            shootingTargetToy.Scale = scale ?? Vector3.one;
 
             if (spawn)
                 shootingTargetToy.Spawn();

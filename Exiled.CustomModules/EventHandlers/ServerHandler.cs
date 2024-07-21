@@ -8,6 +8,8 @@
 namespace Exiled.CustomModules.EventHandlers
 {
     using Exiled.API.Features;
+    using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.API.Features.CustomItems;
 
     /// <summary>
@@ -15,9 +17,14 @@ namespace Exiled.CustomModules.EventHandlers
     /// </summary>
     internal sealed class ServerHandler
     {
+        private ModuleInfo CustomItemsModuleInfo { get; } = ModuleInfo.Get(UUModuleType.CustomItems.Name);
+
         /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnRoundStarted"/>
         public void OnRoundStarted()
         {
+            if (!CustomItemsModuleInfo.IsCurrentlyLoaded)
+                return;
+
             foreach (CustomItem customItem in CustomItem.List)
                 customItem.SpawnAll();
         }

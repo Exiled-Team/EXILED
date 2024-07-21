@@ -413,6 +413,7 @@ namespace Exiled.CustomModules.API.Features
         public void SerializeModule()
         {
             Directory.CreateDirectory(ParentPath);
+            Directory.CreateDirectory(ChildPath);
 
             if (File.Exists(FilePath) && File.Exists(PointerPath))
             {
