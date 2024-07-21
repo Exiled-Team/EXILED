@@ -47,8 +47,8 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToPickup = new(new ComponentsEqualityComparer());
 
-        private readonly ConstProperty<double> minPickupTime = new(0.24500000476837158, new[] { typeof(ItemPickupBase) });
-        private readonly ConstProperty<double> weightToTime = new(0.17499999701976776, new[] { typeof(ItemPickupBase) });
+        private readonly ConstProperty<double> minPickupTime = new(0.245d, new[] { typeof(ItemPickupBase) });
+        private readonly ConstProperty<double> weightToTime = new(0.175d, new[] { typeof(ItemPickupBase) });
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
@@ -611,10 +611,7 @@ namespace Exiled.API.Features.Pickups
         internal virtual void ReadItemInfo(Items.Item item)
         {
             if (item is not null)
-            {
                 Scale = item.Scale;
-                Weight = item.Weight;
-            }
         }
 
         /// <summary>

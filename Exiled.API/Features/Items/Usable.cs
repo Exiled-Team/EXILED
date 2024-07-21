@@ -60,7 +60,7 @@ namespace Exiled.API.Features.Items
         /// Gets or sets the weight of the item.
         /// </summary>
         [EProperty(category: nameof(Usable))]
-        public override float Weight
+        public new float Weight
         {
             get => Base._weight;
             set => Base._weight = value;

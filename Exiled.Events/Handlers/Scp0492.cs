@@ -33,6 +33,11 @@ namespace Exiled.Events.Handlers
         public static Event<ConsumingCorpseEventArgs> ConsumingCorpse { get; set; } = new();
 
         /// <summary>
+        /// Called before 049-2 damages someone.
+        /// </summary>
+        public static Event<AttackingEventArgs> Attacking { get; set; } = new();
+
+        /// <summary>
         /// Called before a player triggers the bloodlust effect for 049-2.
         /// </summary>
         /// <param name="ev">The <see cref="TriggeringBloodlustEventArgs"/> instance.</param>
@@ -49,5 +54,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev"><inheritdoc cref="ConsumingCorpseEventArgs"/> instance.</param>
         public static void OnConsumingCorpse(ConsumingCorpseEventArgs ev) => ConsumingCorpse.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invokes before 049-2 hits someone.
+        /// </summary>
+        /// <param name="ev"><inheritdoc cref="AttackingEventArgs"/> instance.</param>
+        public static void OnAttacking(AttackingEventArgs ev) => Attacking.InvokeSafely(ev);
     }
 }
