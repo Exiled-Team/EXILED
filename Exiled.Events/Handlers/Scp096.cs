@@ -48,6 +48,11 @@ namespace Exiled.Events.Handlers
         public static Event<TryingNotToCryEventArgs> TryingNotToCry { get; set; } = new();
 
         /// <summary>
+        /// Invoked before SCP-096 damages someone.
+        /// </summary>
+        public static Event<AttackingEventArgs> Attacking { get; set; } = new();
+
+        /// <summary>
         /// Called before SCP-096 is enraged.
         /// </summary>
         /// <param name="ev">The <see cref="EnragingEventArgs" /> instance.</param>
@@ -82,5 +87,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="TryingNotToCryEventArgs" /> instance.</param>
         public static void OnTryingNotToCry(TryingNotToCryEventArgs ev) => TryingNotToCry.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-096 damages someone.
+        /// </summary>
+        /// <param name="ev">The <see cref="AttackingEventArgs"/> instance.</param>
+        public static void OnAttacking(AttackingEventArgs ev) => Attacking.InvokeSafely(ev);
     }
 }
