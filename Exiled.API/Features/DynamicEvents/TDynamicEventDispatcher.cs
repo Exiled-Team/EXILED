@@ -131,6 +131,12 @@ namespace Exiled.API.Features.DynamicEvents
         /// <param name="del">The delegate to be bound.</param>
         public virtual void Bind(object obj, Action<T> del)
         {
+            if (obj is null)
+            {
+                Log.Warn($"Couldn't subscribe to the delegate {del.Method.Name} due to null instance.");
+                return;
+            }
+
             if (!boundDelegates.TryGetValue(obj, out List<Action<T>> @delegate))
                 boundDelegates.Add(obj, new List<Action<T>> { del });
             else

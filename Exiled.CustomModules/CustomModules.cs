@@ -9,16 +9,9 @@ namespace Exiled.CustomModules
 {
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.API.Features.Core;
+    using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features;
-    using Exiled.CustomModules.API.Features.CustomAbilities;
-    using Exiled.CustomModules.API.Features.CustomEscapes;
-    using Exiled.CustomModules.API.Features.CustomGameModes;
-    using Exiled.CustomModules.API.Features.CustomItems;
-    using Exiled.CustomModules.API.Features.CustomItems.Items;
-    using Exiled.CustomModules.API.Features.CustomItems.Pickups;
-    using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.EventHandlers;
 
     /// <summary>
@@ -83,8 +76,8 @@ namespace Exiled.CustomModules
 
             Exiled.Events.Handlers.Player.ChangingItem += PlayerHandler.OnChangingItem;
             Exiled.Events.Handlers.Server.RoundStarted += ServerHandler.OnRoundStarted;
-            CustomModule.OnEnabled += RegistrationHandler.OnModuleEnabled;
-            CustomModule.OnDisabled += RegistrationHandler.OnModuleDisabled;
+
+            DynamicEventManager.CreateFromTypeInstance(RegistrationHandler);
         }
 
         /// <inheritdoc/>
@@ -92,8 +85,8 @@ namespace Exiled.CustomModules
         {
             Exiled.Events.Handlers.Player.ChangingItem -= PlayerHandler.OnChangingItem;
             Exiled.Events.Handlers.Server.RoundStarted -= ServerHandler.OnRoundStarted;
-            CustomModule.OnEnabled.UnbindAll();
-            CustomModule.OnDisabled.UnbindAll();
+
+            DynamicEventManager.DestroyFromTypeInstance(RegistrationHandler);
 
             PlayerHandler = null;
             ServerHandler = null;
