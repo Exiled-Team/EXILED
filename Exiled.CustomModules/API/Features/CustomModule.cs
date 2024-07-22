@@ -89,7 +89,7 @@ namespace Exiled.CustomModules.API.Features
             get
             {
                 // Type-Module
-                if (!string.IsNullOrEmpty(serializableParentName))
+                if (string.IsNullOrEmpty(serializableParentName))
                     serializableParentName = $"{GetType().Name}-Module";
 
                 return serializableParentName;
@@ -122,7 +122,7 @@ namespace Exiled.CustomModules.API.Features
             {
                 // Name.yml
                 if (string.IsNullOrEmpty(serializableFileName))
-                    serializableFileName = $"{Name}.yml";
+                    serializableFileName = $"{ChildName}.yml";
 
                 return serializableFileName;
             }
@@ -302,7 +302,7 @@ namespace Exiled.CustomModules.API.Features
             IEnumerable<FieldInfo> moduleTypeValuesInfo = runtime_ModuleType.GetFields(BindingFlags.Static | BindingFlags.Public).Where(f => f.GetValue(null) is UUModuleType);
             foreach (Type type in assembly.GetTypes())
             {
-                if (type.BaseType != typeof(CustomModule) || Loader.Any(m => m.Type == type))
+                if (type.IsAbstract || type.BaseType != typeof(CustomModule) || Loader.Any(m => m.Type == type))
                     continue;
 
                 IEnumerable<MethodInfo> rhMethods = type.GetMethods(ModuleInfo.SIGNATURE_BINDINGS)
@@ -412,7 +412,14 @@ namespace Exiled.CustomModules.API.Features
         /// <exception cref="ArgumentNullException">Thrown when <see cref="ChildPath"/> is null.</exception>
         public void SerializeModule()
         {
+            if (string.IsNullOrEmpty(Name))
+            {
+                Log.Error($"{GetType().Name}::Name property was not defined. A module must define a name, or it won't load.");
+                return;
+            }
+
             Directory.CreateDirectory(ParentPath);
+            Directory.CreateDirectory(ChildPath);
 
             if (File.Exists(FilePath) && File.Exists(PointerPath))
             {
@@ -430,6 +437,12 @@ namespace Exiled.CustomModules.API.Features
         /// </summary>
         public void DeserializeModule()
         {
+            if (string.IsNullOrEmpty(Name))
+            {
+                Log.ErrorWithContext($"{GetType().Name}::Name property was not defined. A module must define a name, or it won't load.", Log.CONTEXT_CRITICAL);
+                return;
+            }
+
             if (!File.Exists(FilePath))
             {
                 Log.Info($"{GetType().Name} module configuration not found. Creating a new configuration file.");
@@ -454,7 +467,7 @@ namespace Exiled.CustomModules.API.Features
                 return;
             }
 
-            CustomModule deserializedModule = EConfig.Deserializer.Deserialize<CustomModule>(File.ReadAllText(FilePath));
+            CustomModule deserializedModule = EConfig.Deserializer.Deserialize(File.ReadAllText(FilePath), GetType()) as CustomModule;
             CopyProperties(deserializedModule);
 
             foreach (string file in Directory.GetFiles(ChildPath))
@@ -481,7 +494,7 @@ namespace Exiled.CustomModules.API.Features
                 foreach (IPlugin<IConfig> plugin in Exiled.Loader.Loader.Plugins)
                 {
                     ModuleInfo.AllModules
-                        .Where(moduleInfo => config.Modules.Any(m => m == moduleInfo.ModuleType))
+                        .Where(moduleInfo => config.Modules.Any(m => m == moduleInfo.ModuleType.Name))
                         .ForEach(mod => mod.InvokeCallback(shouldLoad ? ModuleInfo.ENABLE_ALL_CALLBACK : ModuleInfo.DISABLE_ALL_CALLBACK, plugin.Assembly));
                 }
             }

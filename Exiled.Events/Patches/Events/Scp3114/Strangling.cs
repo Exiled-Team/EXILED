@@ -28,40 +28,61 @@ namespace Exiled.Events.Patches.Events.Scp3114
     /// </summary>
     [EventPatch(typeof(Scp3114), nameof(Scp3114.Strangling))]
     [HarmonyPatch(typeof(Scp3114Strangle), nameof(Scp3114Strangle.ProcessAttackRequest))]
-    internal class Strangling
+    internal static class Strangling
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instruction, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instruction);
-            Label retLabel = generator.DefineLabel();
-            LocalBuilder ev = generator.DeclareLocal(typeof(StranglingEventArgs));
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int offset = 0;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldloc_3) + offset;
+            Label retLabel = generator.DefineLabel();
+            Label jumpLabel = generator.DefineLabel();
+
+            int index = newInstructions.FindIndex(i => i.LoadsField(Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController)))) - 1;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_0),
+                // Scp3114Strangle::Owner
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Scp3114Strangle), nameof(Scp3114Strangle.Owner))),
+
+                // Player::Get(Scp3114Strangle::Owner)
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_3),
+
+                // hub
+                new(OpCodes.Ldloc_0),
+
+                // Player::Get(hub)
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                // true
+                new(OpCodes.Ldc_I4_1),
+
+                // StranglingEventArgs args = new(player, hub);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StranglingEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp3114), nameof(Handlers.Scp3114.OnStrangling))),
-                new(OpCodes.Stloc, ev.LocalIndex),
+
+                // Scp3114::OnStrangling(args);
+                new(OpCodes.Call, Method(typeof(Scp3114), nameof(Scp3114.OnStrangling))),
+
+                // if (args.IsAllowed) goto jumpLabel
                 new(OpCodes.Callvirt, PropertyGetter(typeof(StranglingEventArgs), nameof(StranglingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, retLabel),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(StranglingEventArgs), nameof(StranglingEventArgs.StrangleTarget))),
-                new(OpCodes.Stloc_3),
+                new(OpCodes.Brtrue_S, jumpLabel),
+
+                // return strangleTarget = null
+                new(OpCodes.Ldloca_S, 4),
+                new(OpCodes.Initobj, typeof(Scp3114Strangle.StrangleTarget?)),
+                new(OpCodes.Ldloc_S, 4),
+                new(OpCodes.Stloc_S, 4),
+                new(OpCodes.Leave, retLabel),
+
+                // jumpLabel
+                new CodeInstruction(OpCodes.Nop).WithLabels(jumpLabel),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+            foreach (CodeInstruction instruction in newInstructions)
+                yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }

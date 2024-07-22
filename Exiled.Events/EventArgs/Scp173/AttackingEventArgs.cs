@@ -1,31 +1,31 @@
 // -----------------------------------------------------------------------
-// <copyright file="StranglingEventArgs.cs" company="Exiled Team">
+// <copyright file="AttackingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Scp3114
+namespace Exiled.Events.EventArgs.Scp173
 {
-    using Exiled.API.Features;
+    using API.Features;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all information before strangling a player.
+    /// Contains all information before a Scp-173 snaps a player neck.
     /// </summary>
-    public class StranglingEventArgs : IScp3114Event, IDeniableEvent
+    public class AttackingEventArgs : IScp173Event, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StranglingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="AttackingEventArgs" /> class.
         /// </summary>
         /// <param name="player"><see cref="Player"/>.</param>
         /// <param name="target"><see cref="Target"/>.</param>
         /// <param name="isAllowed"><see cref="IsAllowed"/>.</param>
-        public StranglingEventArgs(Player player, Player target, bool isAllowed = true)
+        public AttackingEventArgs(Player player, Player target, bool isAllowed = true)
         {
             Player = player;
-            Scp3114 = Player.Role.As<Scp3114Role>();
+            Scp173 = Player.Role.As<Scp173Role>();
             Target = target;
             IsAllowed = isAllowed;
         }
@@ -34,10 +34,10 @@ namespace Exiled.Events.EventArgs.Scp3114
         public Player Player { get; }
 
         /// <inheritdoc/>
-        public Scp3114Role Scp3114 { get; }
+        public Scp173Role Scp173 { get; }
 
         /// <summary>
-        /// Gets the <see cref="Player"/> being strangled.
+        /// Gets the player that is going to be snapped.
         /// </summary>
         public Player Target { get; }
 

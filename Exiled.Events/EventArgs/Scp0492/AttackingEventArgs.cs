@@ -1,32 +1,34 @@
 // -----------------------------------------------------------------------
-// <copyright file="StranglingEventArgs.cs" company="Exiled Team">
+// <copyright file="AttackingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Scp3114
+namespace Exiled.Events.EventArgs.Scp0492
 {
-    using Exiled.API.Features;
+    using API.Features;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    /// Contains all information before strangling a player.
+    /// Contains all information before a Scp-0492 attacks a player.
     /// </summary>
-    public class StranglingEventArgs : IScp3114Event, IDeniableEvent
+    public class AttackingEventArgs : IScp0492Event, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StranglingEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="AttackingEventArgs" /> class.
         /// </summary>
         /// <param name="player"><see cref="Player"/>.</param>
         /// <param name="target"><see cref="Target"/>.</param>
+        /// <param name="damage"><see cref="Damage"/>.</param>
         /// <param name="isAllowed"><see cref="IsAllowed"/>.</param>
-        public StranglingEventArgs(Player player, Player target, bool isAllowed = true)
+        public AttackingEventArgs(Player player, Player target, float damage, bool isAllowed = true)
         {
             Player = player;
-            Scp3114 = Player.Role.As<Scp3114Role>();
+            Scp0492 = Player.Role.As<Scp0492Role>();
             Target = target;
+            Damage = damage;
             IsAllowed = isAllowed;
         }
 
@@ -34,12 +36,17 @@ namespace Exiled.Events.EventArgs.Scp3114
         public Player Player { get; }
 
         /// <inheritdoc/>
-        public Scp3114Role Scp3114 { get; }
+        public Scp0492Role Scp0492 { get; }
 
         /// <summary>
-        /// Gets the <see cref="Player"/> being strangled.
+        /// Gets the player that is going to damaged by a SCP-0492.
         /// </summary>
         public Player Target { get; }
+
+        /// <summary>
+        /// Gets or sets the damage of the attack.
+        /// </summary>
+        public float Damage { get; set; }
 
         /// <inheritdoc/>
         public bool IsAllowed { get; set; }

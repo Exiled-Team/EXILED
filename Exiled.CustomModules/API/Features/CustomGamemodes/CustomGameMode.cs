@@ -211,7 +211,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <param name="assembly">The assembly to enable the game modes from.</param>
         public static void EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomGameModes))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomGameModes.Name))
                 throw new Exception("ModuleType::CustomGameModes must be enabled in order to load any custom game modes");
 
             List<CustomGameMode> customGameModes = new();
