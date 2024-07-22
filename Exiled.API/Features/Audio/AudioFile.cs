@@ -19,6 +19,13 @@ namespace Exiled.API.Features.Audio
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioFile"/> class.
         /// </summary>
+        public AudioFile()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AudioFile"/> class.
+        /// </summary>
         /// <param name="filePath"><see cref="FilePath"/>.</param>
         /// <param name="enabled"><see cref="Enabled"/>.</param>
         /// <param name="loop"><see cref="Loop"/>.</param>
