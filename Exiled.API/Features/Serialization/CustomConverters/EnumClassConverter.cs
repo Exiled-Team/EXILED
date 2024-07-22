@@ -40,18 +40,15 @@ namespace Exiled.API.Features.Serialization.CustomConverters
         /// <exception cref="InvalidOperationException">Thrown if no private parameterless constructor is found.</exception>
         public object ReadYaml(IParser parser, Type type)
         {
-            // Read YAML data into a dictionary or custom object
             IDeserializer deserializer = new DeserializerBuilder().Build();
             Dictionary<string, object> yamlData = deserializer.Deserialize<Dictionary<string, object>>(parser);
 
-            // Create an instance using the private constructor
             ConstructorInfo constructor = type.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
             if (constructor == null)
                 throw new InvalidOperationException("No private constructor found");
 
             object instance = constructor.Invoke(null);
 
-            // Apply YAML data to the instance
             ApplyYamlData(instance, yamlData);
 
             return instance;
@@ -68,19 +65,14 @@ namespace Exiled.API.Features.Serialization.CustomConverters
 
         private void ApplyYamlData(object instance, Dictionary<string, object> yamlData)
         {
-            // Get the type of the instance
             Type type = instance.GetType();
 
-            // Iterate over each property in the dictionary
             foreach (KeyValuePair<string, object> kvp in yamlData)
             {
-                // Find the property by name
                 PropertyInfo property = type.GetProperty(kvp.Key, BindingFlags.Public | BindingFlags.Instance);
 
-                // If the property exists and is writable, set its value
                 if (property != null && property.CanWrite)
                 {
-                    // Convert the value to the property's type
                     object value = Convert.ChangeType(kvp.Value, property.PropertyType);
                     property.SetValue(instance, value);
                 }
