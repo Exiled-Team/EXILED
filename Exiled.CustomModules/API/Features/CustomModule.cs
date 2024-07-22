@@ -20,6 +20,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Interfaces;
     using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.Attributes;
     using YamlDotNet.Serialization;
 
     /// <summary>
@@ -443,6 +444,8 @@ namespace Exiled.CustomModules.API.Features
                 return;
             }
 
+            DynamicEventManager.CreateFromTypeInstance(this);
+
             if (!File.Exists(FilePath))
             {
                 Log.Info($"{GetType().Name} module configuration not found. Creating a new configuration file.");
@@ -484,6 +487,29 @@ namespace Exiled.CustomModules.API.Features
                     continue;
                 }
             }
+        }
+
+        /// <summary>
+        /// Tries to register a <see cref="CustomModule"/>.
+        /// </summary>
+        /// <param name="assembly">The assembly to register <see cref="CustomModule"/> from.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
+        /// <returns><see langword="true"/> if the <see cref="CustomModule"/> was registered; otherwise, <see langword="false"/>.</returns>
+        protected virtual bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
+        {
+            DynamicEventManager.CreateFromTypeInstance(this);
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to unregister a <see cref="CustomModule"/>.
+        /// </summary>
+        /// <returns><see langword="true"/> if the <see cref="CustomModule"/> was unregistered; otherwise, <see langword="false"/>.</returns>
+        protected virtual bool TryUnregister()
+        {
+            EObject.UnregisterObjectType(Name);
+            DynamicEventManager.DestroyFromTypeInstance(this);
+            return true;
         }
 
         private static void AutomaticModulesLoaderState(bool shouldLoad)

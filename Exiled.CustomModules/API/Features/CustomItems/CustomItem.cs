@@ -617,7 +617,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <param name="assembly">The assembly to register items from.</param>
         /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomItem"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
+        protected override bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {
@@ -640,6 +640,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                 EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
                 Registered.Add(this);
 
+                base.TryRegister(assembly, attribute);
+
                 TypeLookupTable.TryAdd(GetType(), this);
                 BehaviourLookupTable.TryAdd(BehaviourComponent, this);
                 IdLookupTable.TryAdd(Id, this);
@@ -657,7 +659,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// Tries to unregister a <see cref="CustomItem"/>.
         /// </summary>
         /// <returns><see langword="true"/> if the <see cref="CustomItem"/> was unregistered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryUnregister()
+        protected override bool TryUnregister()
         {
             if (!Registered.Contains(this))
             {
@@ -668,6 +670,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 
             EObject.UnregisterObjectType(BehaviourComponent);
             Registered.Remove(this);
+
+            base.TryUnregister();
 
             TypeLookupTable.Remove(GetType());
             BehaviourLookupTable.Remove(BehaviourComponent);

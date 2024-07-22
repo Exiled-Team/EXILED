@@ -52,14 +52,14 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </summary>
         [DynamicEventDispatcher]
         [YamlIgnore]
-        public static TDynamicEventDispatcher<ChangingCustomRoleEventArgs> ChangingCustomRoleDispatcher { get; set; }
+        public static TDynamicEventDispatcher<ChangingCustomRoleEventArgs> ChangingCustomRoleDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after a player changes role.
         /// </summary>
         [DynamicEventDispatcher]
         [YamlIgnore]
-        public static TDynamicEventDispatcher<ChangedCustomRoleEventArgs> ChangedCustomRoleDispatcher { get; set; }
+        public static TDynamicEventDispatcher<ChangedCustomRoleEventArgs> ChangedCustomRoleDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomRole"/>'s.
@@ -268,6 +268,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pawn"/> containing all players owning this <see cref="CustomRole"/>.
         /// </summary>
+        [YamlIgnore]
         public IEnumerable<Pawn> Owners => Player.Get(x => TryGet(x.Cast<Pawn>(), out CustomRole customRole) && customRole.Id == Id).Cast<Pawn>();
 
         /// <summary>
@@ -682,7 +683,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </remarks>
         public bool Spawn(Pawn player, bool preservePosition = false, SpawnReason spawnReason = null, RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All)
         {
-            if (player.IsAlive)
+            if (player is null || player.IsAlive)
                 return false;
 
             ChangingCustomRoleEventArgs changingCustomRole = new(player, Id);
@@ -803,11 +804,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return;
 
             player = changingCustomRole.Player.Cast<Pawn>();
-            if (changingCustomRole.Role is RoleTypeId rId)
-            {
-                player.SetRole(rId, preservePosition, spawnReason, roleSpawnFlags);
-                return;
-            }
 
             if (!TryGet(changingCustomRole.Role, out CustomRole role))
                 return;
@@ -911,7 +907,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="assembly">The assembly to try and register from.</param>
         /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomRole"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
+        protected override bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (Registered.Contains(this))
             {
@@ -937,6 +933,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
             Registered.Add(this);
 
+            base.TryRegister(assembly, attribute);
+
             TypeLookupTable.TryAdd(GetType(), this);
             BehaviourLookupTable.TryAdd(BehaviourComponent, this);
             IdLookupTable.TryAdd(Id, this);
@@ -949,7 +947,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Tries to unregister a <see cref="CustomRole"/>.
         /// </summary>
         /// <returns><see langword="true"/> if the <see cref="CustomRole"/> was unregistered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryUnregister()
+        protected override bool TryUnregister()
         {
             if (!Registered.Contains(this))
             {
@@ -960,6 +958,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             EObject.UnregisterObjectType(BehaviourComponent);
             Registered.Remove(this);
+
+            base.TryUnregister();
 
             TypeLookupTable.Remove(GetType());
             BehaviourLookupTable.Remove(BehaviourComponent);
