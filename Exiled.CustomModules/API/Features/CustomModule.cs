@@ -439,7 +439,7 @@ namespace Exiled.CustomModules.API.Features
         {
             if (string.IsNullOrEmpty(Name))
             {
-                Log.Error($"{GetType().Name}::Name property was not defined. A module must define a name, or it won't load.");
+                Log.ErrorWithContext($"{GetType().Name}::Name property was not defined. A module must define a name, or it won't load.", Log.CONTEXT_CRITICAL);
                 return;
             }
 
