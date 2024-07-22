@@ -17,6 +17,7 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Log
     {
+#pragma warning disable SA1310
         /// <summary>
         /// Represents critical context, used for critical errors and issues.
         /// </summary>
@@ -66,6 +67,7 @@ namespace Exiled.API.Features
         /// Represents I/O context, used for input/output operations and issues.
         /// </summary>
         public const string CONTEXT_IO = "IO";
+#pragma warning restore
 
         /// <summary>
         /// Gets a <see cref="HashSet{T}"/> of plugin assemblies that have debug logs enabled.
