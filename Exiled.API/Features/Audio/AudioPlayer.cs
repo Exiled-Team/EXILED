@@ -15,13 +15,16 @@ namespace Exiled.API.Features.Audio
     using Exiled.API.Features.Audio.EventArgs;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.DynamicEvents;
+    using MEC;
     using Mirror;
 
     /// <summary>
     /// Represents a NPC that can play audios.
     /// </summary>
-    public class AudioPlayer : GameEntity // TODO: Play, Stop Handle & Update Methods
+    public class AudioPlayer : GameEntity // TODO: Stop Handle & Update Methods
     {
+        private CoroutineHandle playbackHandler;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioPlayer"/> class.
         /// </summary>
@@ -126,7 +129,43 @@ namespace Exiled.API.Features.Audio
             if (audioFile == null)
                 return;
 
+            if (!audioFile.Enabled || !IsOggFile(audioFile))
+                return;
+
             AudioQueue.Add(audioFile);
+        }
+
+        /// <summary>
+        /// Enqueue an audio file.
+        /// </summary>
+        /// <param name="pathToFile">The audio file to enqueue.</param>
+        public void Enqueue(string pathToFile)
+        {
+            if (string.IsNullOrEmpty(pathToFile))
+                return;
+
+            if (!IsOggFile(pathToFile))
+                return;
+
+            AudioQueue.Add(new AudioFile(pathToFile));
+        }
+
+        /// <summary>
+        /// Plays a specific audio from the queue.
+        /// </summary>
+        /// <param name="queuePosition">The position of the audio in the queue.</param>
+        /// <remarks>If the queue position is not specified, the first audio in the queue will be played.</remarks>
+        public void Play(int queuePosition = -1)
+        {
+            if (AudioQueue.Count == 0)
+                return;
+
+            CurrentAudio = queuePosition == -1 ? AudioQueue.First() : AudioQueue.ElementAt(queuePosition);
+
+            AudioQueue.Remove(CurrentAudio);
+
+            if (playbackHandler.IsRunning)
+                return;
         }
 
         /// <summary>
@@ -146,6 +185,9 @@ namespace Exiled.API.Features.Audio
         /// </summary>
         public void Destroy()
         {
+            if (playbackHandler.IsRunning)
+                Timing.KillCoroutines(playbackHandler);
+
             Dictionary.Remove(Owner);
 
             NetworkServer.RemovePlayerForConnection(Owner.Connection, true);
