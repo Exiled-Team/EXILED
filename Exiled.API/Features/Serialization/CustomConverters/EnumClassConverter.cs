@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Serialization.CustomConverters
     using Exiled.API.Features.Core.Generic;
     using Exiled.API.Interfaces;
     using YamlDotNet.Core;
+    using YamlDotNet.Core.Events;
     using YamlDotNet.Serialization;
 
     /// <summary>
@@ -40,6 +41,9 @@ namespace Exiled.API.Features.Serialization.CustomConverters
         /// <exception cref="InvalidOperationException">Thrown if no private parameterless constructor is found.</exception>
         public object ReadYaml(IParser parser, Type type)
         {
+            if (parser.Current is StreamStart)
+                parser.MoveNext();
+
             IDeserializer deserializer = new DeserializerBuilder().Build();
             Dictionary<string, object> yamlData = deserializer.Deserialize<Dictionary<string, object>>(parser);
 
