@@ -65,6 +65,15 @@ namespace Exiled.API.Enums
         /// </summary>
         public static readonly SpawnReason ForceClass = new((RoleChangeReason)9);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpawnReason"/> class.
+        /// Required for YAML deserialization.
+        /// </summary>
+        private SpawnReason()
+            : base()
+        {
+        }
+
         private SpawnReason(RoleChangeReason value)
             : base(value)
         {
