@@ -15,6 +15,7 @@ namespace Exiled.API.Features.Core.Generic
     using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Interfaces;
     using LiteNetLib.Utils;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// A class which allows <see cref="Enum"/> implicit conversions.
@@ -31,16 +32,27 @@ namespace Exiled.API.Features.Core.Generic
 
         private string name;
 
+        static EnumClass()
+        {
+            values = new SortedList<TSource, TObject>();
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumClass{TSource, TObject}"/> class.
         /// </summary>
         /// <param name="value">The value of the enum item.</param>
         protected EnumClass(TSource value)
         {
-            values ??= new();
-
             Value = value;
             values.Add(value, (TObject)this);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnumClass{TSource, TObject}"/> class.
+        /// Required for YAML deserialization.
+        /// </summary>
+        protected EnumClass()
+        {
         }
 
         /// <summary>
@@ -51,11 +63,13 @@ namespace Exiled.API.Features.Core.Generic
         /// <summary>
         /// Gets the value of the enum item.
         /// </summary>
-        public TSource Value { get; }
+        [YamlMember(Alias = "value")]
+        public TSource Value { get; private set; }
 
         /// <summary>
         /// Gets the name determined from reflection.
         /// </summary>
+        [YamlMember(Alias = "name")]
         public string Name
         {
             get
@@ -76,6 +90,7 @@ namespace Exiled.API.Features.Core.Generic
                 isDefined = true;
                 return name;
             }
+            private set => name = value;
         }
 
         /// <summary>
