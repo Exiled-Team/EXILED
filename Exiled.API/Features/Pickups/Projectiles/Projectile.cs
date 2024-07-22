@@ -84,7 +84,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <param name="shouldBeActive">Whether the <see cref="Projectile"/> should be in active state after spawn.</param>
         /// <param name="previousOwner">An optional previous owner of the item.</param>
         /// <returns>The <see cref="Projectile"/>. See documentation of <see cref="Pickup.Create(ItemType)"/> for more information on casting.</returns>
-        public static Projectile CreateAndSpawn(ProjectileType type, Vector3 position, Quaternion rotation, bool shouldBeActive = true, Player previousOwner = null) => Create(type).Spawn(position, rotation, shouldBeActive, previousOwner);
+        public static Projectile CreateAndSpawn(ProjectileType type, Vector3 position, Quaternion? rotation = null, bool shouldBeActive = true, Player previousOwner = null) => Create(type).Spawn(position, rotation, shouldBeActive, previousOwner);
 
         /// <summary>
         /// Activates the current <see cref="Projectile"/>.
@@ -99,10 +99,10 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <param name="shouldBeActive">Whether the <see cref="Projectile"/> should be in active state after spawn.</param>
         /// <param name="previousOwner">An optional previous owner of the item.</param>
         /// <returns>The spawned <see cref="Projectile"/>.</returns>
-        public Projectile Spawn(Vector3 position, Quaternion rotation, bool shouldBeActive = true, Player previousOwner = null)
+        public Projectile Spawn(Vector3 position, Quaternion? rotation = null, bool shouldBeActive = true, Player previousOwner = null)
         {
             Position = position;
-            Rotation = rotation;
+            Rotation = rotation ?? Quaternion.identity;
             PreviousOwner = previousOwner;
             Spawn();
 
