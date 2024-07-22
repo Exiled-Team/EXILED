@@ -8,13 +8,10 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
-
     using Interfaces;
-
     using PlayerRoles;
     using PlayerRoles.Ragdolls;
     using PlayerStatsSystem;
-
     using UnityEngine;
 
     /// <summary>
@@ -91,7 +88,7 @@ namespace Exiled.Events.EventArgs.Player
         public RagdollData Info { get; set; }
 
         /// <summary>
-        /// Gets or sets the ragdoll's <see cref="PlayerStatsSystem.DamageHandlerBase" />.
+        /// Gets or sets the ragdoll's <see cref="PlayerStatsSystem.DamageHandlerBase"/>.
         /// </summary>
         public DamageHandlerBase DamageHandlerBase
         {
