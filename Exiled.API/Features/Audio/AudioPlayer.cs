@@ -72,25 +72,25 @@ namespace Exiled.API.Features.Audio
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired before selecting an audio file.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<SelectingAudioEventArgs> SelectingAudio { get; set; }
+        public static TDynamicEventDispatcher<SelectingAudioEventArgs> SelectingAudio { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after selecting an audio file.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<AudioSelectedEventArgs> AudioSelected { get; set; }
+        public static TDynamicEventDispatcher<AudioSelectedEventArgs> AudioSelected { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handlers all delegates to be fired before starting to play an audio file.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<StartPlayingAudioEventArgs> StartPlaying { get; set; }
+        public static TDynamicEventDispatcher<StartPlayingAudioEventArgs> StartPlaying { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handlers all delegates to be fired after finishing and audio file.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<AudioFinishedEventArgs> AudioFinished { get; set; }
+        public static TDynamicEventDispatcher<AudioFinishedEventArgs> AudioFinished { get; set; } = new();
 
         /// <summary>
         /// Gets the NPC linked to this <see cref="AudioPlayer"/>.
@@ -169,7 +169,7 @@ namespace Exiled.API.Features.Audio
             if (audioFile == null)
                 return;
 
-            if (!audioFile.Enabled || !IsOggFile(audioFile))
+            if (!audioFile.IsEnabled || !IsOggFile(audioFile))
                 return;
 
             if (queuePosition == -1)
@@ -266,7 +266,7 @@ namespace Exiled.API.Features.Audio
             ShouldStop = false;
             Finished = false;
 
-            if (audioFile.Loop)
+            if (audioFile.IsLooping)
                 AudioQueue.Add(audioFile);
 
             Log.Debug("Starting Audio Playback");
@@ -335,7 +335,7 @@ namespace Exiled.API.Features.Audio
 
             Log.Debug("Audio Finished");
 
-            if (!DestroyWhenFinishing && audioFile.Loop)
+            if (!DestroyWhenFinishing && audioFile.IsLooping)
             {
                 Play(-1);
                 yield break;

@@ -27,15 +27,15 @@ namespace Exiled.API.Features.Audio
         /// Initializes a new instance of the <see cref="AudioFile"/> class.
         /// </summary>
         /// <param name="filePath"><see cref="FilePath"/>.</param>
-        /// <param name="enabled"><see cref="Enabled"/>.</param>
-        /// <param name="loop"><see cref="Loop"/>.</param>
+        /// <param name="isEnabled"><see cref="IsEnabled"/>.</param>
+        /// <param name="isLooping"><see cref="IsLooping"/>.</param>
         /// <param name="volume"><see cref="Volume"/>.</param>
         /// <param name="channel"><see cref="Channel"/>.</param>
-        public AudioFile(string filePath, bool enabled = true, bool loop = false, int volume = 100, VoiceChatChannel channel = VoiceChatChannel.Intercom)
+        public AudioFile(string filePath, bool isEnabled = true, bool isLooping = false, int volume = 100, VoiceChatChannel channel = VoiceChatChannel.Intercom)
         {
             FilePath = filePath;
-            Enabled = enabled;
-            Loop = loop;
+            IsEnabled = isEnabled;
+            IsLooping = isLooping;
             Volume = volume;
             Channel = channel;
         }
@@ -50,13 +50,13 @@ namespace Exiled.API.Features.Audio
         /// Gets or sets a value indicating whether this audio file is enabled or not.
         /// </summary>
         [Description("Indicates if the audio file is enabled or not.")]
-        public bool Enabled { get; set; }
+        public bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether if the audio that is being played should be looped or not.
         /// </summary>
         [Description("Indicates if the audio file that is being played should be looped or not.")]
-        public bool Loop { get; set; }
+        public bool IsLooping { get; set; }
 
         /// <summary>
         /// Gets or sets value the volume of the audio.
