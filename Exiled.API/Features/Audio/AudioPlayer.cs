@@ -33,6 +33,8 @@ namespace Exiled.API.Features.Audio
 
         private CoroutineHandle playbackHandler;
 
+        private CoroutineHandle playbackUpdater;
+
         private MemoryStream memoryStream;
 
         private VorbisReader vorbisReader;
@@ -229,6 +231,9 @@ namespace Exiled.API.Features.Audio
             if (playbackHandler.IsRunning)
                 Timing.KillCoroutines(playbackHandler);
 
+            if (playbackUpdater.IsRunning)
+                Timing.KillCoroutines(playbackUpdater);
+
             Dictionary.Remove(Owner);
 
             NetworkServer.RemovePlayerForConnection(Owner.Connection, true);
@@ -304,7 +309,7 @@ namespace Exiled.API.Features.Audio
 
             Log.Debug($"Playing {audioFile.FilePath}");
 
-            Timing.RunCoroutine(UpdatePlayback(audioFile));
+            playbackUpdater = Timing.RunCoroutine(UpdatePlayback(audioFile));
 
             samplesPerSecond = VoiceChatSettings.SampleRate * VoiceChatSettings.Channels;
             sendBuffer = new float[(samplesPerSecond / 5) + 1920];
@@ -348,6 +353,8 @@ namespace Exiled.API.Features.Audio
             AudioFinished.InvokeAll(audioFinishedEventArgs);
 
             CurrentAudio = null;
+
+            Timing.KillCoroutines(playbackUpdater);
 
             if (DestroyWhenFinishing)
                 Destroy();
