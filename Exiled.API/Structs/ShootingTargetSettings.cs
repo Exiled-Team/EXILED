@@ -23,7 +23,7 @@ namespace Exiled.API.Structs
         /// <param name="position">The position of the shooting target.</param>
         /// <param name="rotation">The rotation of the shooting target.</param>
         /// <param name="scale">The scale of the shooting target.</param>
-        /// <param name="spawn">Whether or not the shooting target should be spawned.</param>
+        /// <param name="spawn">Whether or not the shooting target should be initially spawned.</param>
         public ShootingTargetSettings(ShootingTargetType targetType, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool spawn = true)
         {
             ShootingTargetType = targetType;
@@ -49,7 +49,7 @@ namespace Exiled.API.Structs
         /// <summary>
         /// Gets or sets the shooting target type.
         /// </summary>
-        public ShootingTargetType ShootingTargetType { get; set;  }
+        public ShootingTargetType ShootingTargetType { get; set; }
 
         /// <summary>
         /// Gets or sets the shooting target position.

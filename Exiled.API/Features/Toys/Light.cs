@@ -26,10 +26,7 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         /// <param name="lightSourceToy">The <see cref="LightSourceToy"/> of the toy.</param>
         internal Light(LightSourceToy lightSourceToy)
-            : base(lightSourceToy, AdminToyType.LightSource)
-        {
-            Base = lightSourceToy;
-        }
+            : base(lightSourceToy, AdminToyType.LightSource) => Base = lightSourceToy;
 
         /// <summary>
         /// Gets the light prefab's type.
@@ -89,8 +86,8 @@ namespace Exiled.API.Features.Toys
         /// <param name="rotation">The rotation of the <see cref="Light"/>.</param>
         /// <param name="scale">The scale of the <see cref="Light"/>.</param>
         /// <param name="color">The color of the <see cref="Light"/>.</param>
-        /// <param name="spawn">Whether the <see cref="Light"/> should be initially spawned.</param>
-        /// <returns>The new <see cref="Light"/>.</returns>
+        /// <param name="spawn">Whether or not the <see cref="Light"/> should be initially spawned.</param>
+        /// <returns>The newly created <see cref="Light"/>.</returns>
         public static Light Create(Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, Color? color = null, bool spawn = true)
             => Create(new(position, rotation, scale, color, spawn));
 

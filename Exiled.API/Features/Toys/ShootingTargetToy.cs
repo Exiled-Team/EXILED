@@ -146,20 +146,6 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets the size scale of the target.
-        /// </summary>
-        public new Vector3 Scale
-        {
-            get => GameObject.transform.localScale;
-            set
-            {
-                NetworkServer.UnSpawn(GameObject);
-                GameObject.transform.localScale = value;
-                NetworkServer.Spawn(GameObject);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether or not the target is in sync mode.
         /// </summary>
         public bool IsSynced
@@ -180,8 +166,8 @@ namespace Exiled.API.Features.Toys
         /// <param name="position">The position of the <see cref="ShootingTargetToy"/>.</param>
         /// <param name="rotation">The rotation of the <see cref="ShootingTargetToy"/>.</param>
         /// <param name="scale">The scale of the <see cref="ShootingTargetToy"/>.</param>
-        /// <param name="spawn">Whether the <see cref="ShootingTargetToy"/> should be initially spawned.</param>
-        /// <returns>The new <see cref="ShootingTargetToy"/>.</returns>
+        /// <param name="spawn">Whether or not the <see cref="ShootingTargetToy"/> should be initially spawned.</param>
+        /// <returns>The newly created <see cref="ShootingTargetToy"/>.</returns>
         public static ShootingTargetToy Create(ShootingTargetType type, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool spawn = true)
             => Create(new(type, position, rotation, scale, spawn));
 
@@ -194,9 +180,9 @@ namespace Exiled.API.Features.Toys
         {
             ShootingTargetToy shootingTargetToy = targetSettings.ShootingTargetType switch
             {
-                ShootingTargetType.ClassD => new ShootingTargetToy(Object.Instantiate(DBoyTargetPrefabObject.GetComponent<ShootingTarget>())),
-                ShootingTargetType.Binary => new ShootingTargetToy(Object.Instantiate(BinaryTargetPrefabObject.GetComponent<ShootingTarget>())),
-                _ => new ShootingTargetToy(Object.Instantiate(SportTargetPrefabObject.GetComponent<ShootingTarget>()))
+                ShootingTargetType.ClassD => new(Object.Instantiate(DBoyTargetPrefabObject.GetComponent<ShootingTarget>())),
+                ShootingTargetType.Binary => new(Object.Instantiate(BinaryTargetPrefabObject.GetComponent<ShootingTarget>())),
+                _ => new(Object.Instantiate(SportTargetPrefabObject.GetComponent<ShootingTarget>()))
             };
 
             shootingTargetToy.Position = targetSettings.Position;

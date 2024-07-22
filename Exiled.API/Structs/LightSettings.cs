@@ -21,7 +21,7 @@ namespace Exiled.API.Structs
         /// <param name="rotation">The rotation of the light.</param>
         /// <param name="scale">The scale of the light.</param>
         /// <param name="color">The color of the light.</param>
-        /// <param name="spawn">Whether or not the light should be spawned.</param>
+        /// <param name="spawn">Whether or not the light should be initially spawned.</param>
         public LightSettings(Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, Color? color = null, bool spawn = true)
         {
             Position = position ?? Vector3.one;
