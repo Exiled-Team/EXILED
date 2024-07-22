@@ -13,7 +13,6 @@ namespace Exiled.API.Features.Audio
 
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Audio.EventArgs;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.DynamicEvents;
     using MEC;
     using Mirror;
@@ -27,13 +26,11 @@ namespace Exiled.API.Features.Audio
     /// <summary>
     /// Represents a NPC that can play audios.
     /// </summary>
-    public class AudioPlayer : GameEntity
+    public class AudioPlayer : MonoBehaviour
     {
         private readonly Queue<float> streamBuffer = new();
 
         private CoroutineHandle playbackHandler;
-
-        private CoroutineHandle playbackUpdater;
 
         private MemoryStream memoryStream;
 
@@ -48,17 +45,6 @@ namespace Exiled.API.Features.Audio
         private float[] readBuffer;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AudioPlayer"/> class.
-        /// </summary>
-        /// <param name="npc">The npc that will be able to play audio.</param>
-        private AudioPlayer(Npc npc)
-            : base(npc.GameObject)
-        {
-            Owner = npc;
-            Dictionary.Add(npc, this);
-        }
-
-        /// <summary>
         /// Gets all the audio players present in the server in the form of dictionary.
         /// </summary>
         public static Dictionary<Npc, AudioPlayer> Dictionary { get; } = new();
@@ -66,7 +52,7 @@ namespace Exiled.API.Features.Audio
         /// <summary>
         /// Gets all the audio players present in the server in the form of list.
         /// </summary>
-        public static new IEnumerable<AudioPlayer> List => Dictionary.Values.ToList();
+        public static IEnumerable<AudioPlayer> List => Dictionary.Values.ToList();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired before selecting an audio file.
@@ -95,7 +81,7 @@ namespace Exiled.API.Features.Audio
         /// <summary>
         /// Gets the NPC linked to this <see cref="AudioPlayer"/>.
         /// </summary>
-        public Npc Owner { get; }
+        public Npc Owner { get; private set; }
 
         /// <summary>
         /// Gets the current audio queue of the Audio player instance.
@@ -122,6 +108,8 @@ namespace Exiled.API.Features.Audio
 
         private OpusEncoder Encoder { get; } = new(OpusApplicationType.Voip);
 
+        private byte[] EncodedBytes { get; } = new byte[512];
+
         /// <summary>
         /// Gets the audio player of the specified npc or creates one for it.
         /// </summary>
@@ -129,7 +117,15 @@ namespace Exiled.API.Features.Audio
         /// <returns>The Audio Player instance of the npc.</returns>
         public static AudioPlayer GetOrCreate(Npc npc)
         {
-            return Dictionary.TryGetValue(npc, out AudioPlayer player) ? player : new AudioPlayer(npc);
+            if (Dictionary.TryGetValue(npc, out AudioPlayer player))
+                return player;
+
+            player = npc.GameObject.AddComponent<AudioPlayer>();
+            player.Owner = npc;
+
+            Dictionary.Add(npc, player);
+
+            return player;
         }
 
         /// <summary>
@@ -231,9 +227,6 @@ namespace Exiled.API.Features.Audio
             if (playbackHandler.IsRunning)
                 Timing.KillCoroutines(playbackHandler);
 
-            if (playbackUpdater.IsRunning)
-                Timing.KillCoroutines(playbackUpdater);
-
             Dictionary.Remove(Owner);
 
             NetworkServer.RemovePlayerForConnection(Owner.Connection, true);
@@ -278,7 +271,7 @@ namespace Exiled.API.Features.Audio
 
             if (!IsMonoFile())
             {
-                Log.Debug("The Current audio file is not valid, audio files must be Mono to be played");
+                Log.Error("The Current audio file is not valid, audio files must be Mono to be played");
 
                 if (AudioQueue.Count >= 1)
                     Play(0);
@@ -286,9 +279,9 @@ namespace Exiled.API.Features.Audio
                 yield break;
             }
 
-            if (CheckSampleRate())
+            if (!CheckSampleRate())
             {
-                Log.Debug("The Current audio file is not valid, audio files must have a samplerate of 48000 Hz");
+                Log.Error("The Current audio file is not valid, audio files must have a samplerate of 48000 Hz");
 
                 if (AudioQueue.Count >= 1)
                     Play(0);
@@ -308,8 +301,6 @@ namespace Exiled.API.Features.Audio
             }
 
             Log.Debug($"Playing {audioFile.FilePath}");
-
-            playbackUpdater = Timing.RunCoroutine(UpdatePlayback(audioFile));
 
             samplesPerSecond = VoiceChatSettings.SampleRate * VoiceChatSettings.Channels;
             sendBuffer = new float[(samplesPerSecond / 5) + 1920];
@@ -354,51 +345,40 @@ namespace Exiled.API.Features.Audio
 
             CurrentAudio = null;
 
-            Timing.KillCoroutines(playbackUpdater);
-
             if (DestroyWhenFinishing)
                 Destroy();
         }
 
-        private IEnumerator<float> UpdatePlayback(AudioFile audioFile)
+        private void Update()
         {
-            if (Owner is null)
-                yield break;
-
-            if (!ShouldPlay || streamBuffer.Count == 0)
-                yield return Timing.WaitForSeconds(1f);
+            if (Owner is null || streamBuffer.Count is 0 || !ShouldPlay)
+                return;
 
             allowedSamples += Time.deltaTime * samplesPerSecond;
             int samplesToCopy = Mathf.Min(Mathf.FloorToInt(allowedSamples), streamBuffer.Count);
-
-            Log.Debug($"Step 1: {samplesToCopy}");
 
             if (samplesToCopy > 0)
             {
                 for (int i = 0; i < samplesToCopy; i++)
                 {
-                    PlaybackBuffer.Write(streamBuffer.Dequeue() * (audioFile.Volume / 100f));
+                    PlaybackBuffer.Write(streamBuffer.Dequeue() * (CurrentAudio.Volume / 100f));
                 }
             }
-
-            Log.Debug($"Step 2: {samplesToCopy}");
 
             allowedSamples -= samplesToCopy;
 
             while (PlaybackBuffer.Length >= 480)
             {
                 PlaybackBuffer.ReadTo(sendBuffer, 480L, 0L);
-                int encodedData = Encoder.Encode(sendBuffer, new byte[512], 480);
+                int encodedData = Encoder.Encode(sendBuffer, EncodedBytes, 480);
 
                 foreach (Player player in Player.List)
                 {
-                    if (player.Connection is null || !player.IsVerified || player == Server.Host)
+                    if (player.Connection is null || !player.IsVerified)
                         continue;
 
-                    player.Connection.Send(new VoiceMessage(Owner.ReferenceHub, audioFile.Channel, new byte[512], encodedData, false));
+                    player.Connection.Send(new VoiceMessage(Owner.ReferenceHub, CurrentAudio.Channel, EncodedBytes, encodedData, false));
                 }
-
-                yield return Timing.WaitForOneFrame;
             }
         }
     }
