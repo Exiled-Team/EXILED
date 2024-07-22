@@ -67,6 +67,11 @@ namespace Exiled.API.Features
         /// Represents I/O context, used for input/output operations and issues.
         /// </summary>
         public const string CONTEXT_IO = "IO";
+
+        /// <summary>
+        /// Represents serialization context, used for de/serialize operations and issues.
+        /// </summary>
+        public const string CONTEXT_SERIALIZATION = "SERIALIZATION";
 #pragma warning restore
 
         /// <summary>
