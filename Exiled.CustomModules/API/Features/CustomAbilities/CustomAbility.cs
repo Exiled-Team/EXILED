@@ -97,28 +97,28 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// </summary>
         [DynamicEventDispatcher]
         [YamlIgnore]
-        public static TDynamicEventDispatcher<AddingAbilityEventArgs<T>> AddingAbilityDispatcher { get; set; }
+        public static TDynamicEventDispatcher<AddingAbilityEventArgs<T>> AddingAbilityDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after adding an ability.
         /// </summary>
         [DynamicEventDispatcher]
         [YamlIgnore]
-        public static TDynamicEventDispatcher<AddedAbilityEventArgs<T>> AddedAbilityDispatcher { get; set; }
+        public static TDynamicEventDispatcher<AddedAbilityEventArgs<T>> AddedAbilityDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before removing an ability.
         /// </summary>
         [DynamicEventDispatcher]
         [YamlIgnore]
-        public static TDynamicEventDispatcher<RemovingAbilityEventArgs<T>> RemovingAbilityDispatcher { get; set; }
+        public static TDynamicEventDispatcher<RemovingAbilityEventArgs<T>> RemovingAbilityDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired after removing an ability.
         /// </summary>
         [DynamicEventDispatcher]
         [YamlIgnore]
-        public static TDynamicEventDispatcher<RemovedAbilityEventArgs<T>> RemovedAbilityDispatcher { get; set; }
+        public static TDynamicEventDispatcher<RemovedAbilityEventArgs<T>> RemovedAbilityDispatcher { get; set; } = new();
 
         /// <inheritdoc/>
         [YamlIgnore]
@@ -600,7 +600,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <param name="assembly">The assembly to register <see cref="CustomAbility{T}"/> from.</param>
         /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomAbility{T}"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
+        protected override bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!UnorderedRegistered.Contains(this))
             {
@@ -617,6 +617,8 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
 
                 EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
                 UnorderedRegistered.Add(this);
+
+                base.TryRegister(assembly, attribute);
 
                 TypeLookupTable.TryAdd(GetType(), this);
                 BehaviourLookupTable.TryAdd(BehaviourComponent, this);
@@ -640,7 +642,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// Tries to unregister a <see cref="CustomAbility{T}"/>.
         /// </summary>
         /// <returns><see langword="true"/> if the <see cref="CustomAbility{T}"/> was unregistered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryUnregister()
+        protected override bool TryUnregister()
         {
             if (!UnorderedList.Contains(this))
             {
@@ -649,7 +651,8 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
                 return false;
             }
 
-            EObject.UnregisterObjectType(Name);
+            base.TryUnregister();
+
             UnorderedRegistered.Remove(this);
             Registered[ReflectedGenericType].Remove(this);
             TypeLookupTable.Remove(GetType());

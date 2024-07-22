@@ -479,7 +479,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 if (!customTeam.IsEnabled)
                     continue;
 
-                if (customTeam.TryRegister(attribute))
+                if (customTeam.TryRegister(assembly, attribute))
                     customTeams.Add(customTeam);
             }
 
@@ -685,9 +685,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Tries to register a <see cref="CustomTeam"/>.
         /// </summary>
+        /// <param name="assembly">Unused parameter.</param>
         /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(ModuleIdentifierAttribute attribute = null)
+        protected override bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {
@@ -717,6 +718,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 }
 
                 Registered.Add(this);
+
+                base.TryRegister(assembly, attribute);
+
                 TypeLookupTable.TryAdd(GetType(), this);
                 IdLookupTable.TryAdd(Id, this);
                 NameLookupTable.TryAdd(Name, this);
@@ -733,7 +737,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Tries to register a <see cref="CustomTeam"/>.
         /// </summary>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was unregistered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryUnregister()
+        protected override bool TryUnregister()
         {
             if (!Registered.Contains(this))
             {
@@ -743,6 +747,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             }
 
             Registered.Remove(this);
+
+            base.TryUnregister();
+
             TypeLookupTable.Remove(GetType());
             IdLookupTable.Remove(Id);
             NameLookupTable.Remove(Name);

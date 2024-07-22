@@ -259,7 +259,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <param name="assembly">The assembly to register <see cref="CustomGameMode"/> from.</param>
         /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomGameMode"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
+        protected override bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {
@@ -284,6 +284,8 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
 
                 Registered.Add(this);
 
+                base.TryRegister(assembly, attribute);
+
                 TypeLookupTable.TryAdd(GetType(), this);
                 BehavioursLookupTable.TryAdd(BehaviourComponents, this);
                 IdLookupTable.TryAdd(Id, this);
@@ -301,7 +303,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// Tries to unregister a <see cref="CustomGameMode"/>.
         /// </summary>
         /// <returns><see langword="true"/> if the <see cref="CustomGameMode"/> was unregistered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryUnregister()
+        protected override bool TryUnregister()
         {
             if (!Registered.Contains(this))
             {
@@ -312,6 +314,8 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
 
             BehaviourComponents.ForEach(comp => EObject.UnregisterObjectType(comp));
             Registered.Remove(this);
+
+            base.TryUnregister();
 
             TypeLookupTable.Remove(GetType());
             BehavioursLookupTable.Remove(BehaviourComponents);
