@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Toys
 
     using Enums;
     using Exiled.API.Interfaces;
-
+    using Exiled.API.Structs;
     using Mirror;
 
     using PlayerStatsSystem;
@@ -183,19 +183,27 @@ namespace Exiled.API.Features.Toys
         /// <param name="spawn">Whether the <see cref="ShootingTargetToy"/> should be initially spawned.</param>
         /// <returns>The new <see cref="ShootingTargetToy"/>.</returns>
         public static ShootingTargetToy Create(ShootingTargetType type, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool spawn = true)
+            => Create(new(type, position, rotation, scale, spawn));
+
+        /// <summary>
+        /// Creates a new <see cref="ShootingTargetToy"/>.
+        /// </summary>
+        /// <param name="targetSettings">The settings of the <see cref="ShootingTargetToy"/>.</param>
+        /// <returns>The new <see cref="ShootingTargetToy"/>.</returns>
+        public static ShootingTargetToy Create(ShootingTargetSettings targetSettings)
         {
-            ShootingTargetToy shootingTargetToy = type switch
+            ShootingTargetToy shootingTargetToy = targetSettings.ShootingTargetType switch
             {
                 ShootingTargetType.ClassD => new ShootingTargetToy(Object.Instantiate(DBoyTargetPrefabObject.GetComponent<ShootingTarget>())),
                 ShootingTargetType.Binary => new ShootingTargetToy(Object.Instantiate(BinaryTargetPrefabObject.GetComponent<ShootingTarget>())),
                 _ => new ShootingTargetToy(Object.Instantiate(SportTargetPrefabObject.GetComponent<ShootingTarget>()))
             };
 
-            shootingTargetToy.Position = position ?? Vector3.zero;
-            shootingTargetToy.Rotation = rotation ?? Quaternion.identity;
-            shootingTargetToy.Scale = scale ?? Vector3.one;
+            shootingTargetToy.Position = targetSettings.Position;
+            shootingTargetToy.Rotation = targetSettings.Rotation;
+            shootingTargetToy.Scale = targetSettings.Scale;
 
-            if (spawn)
+            if (targetSettings.ShouldSpawn)
                 shootingTargetToy.Spawn();
 
             return shootingTargetToy;

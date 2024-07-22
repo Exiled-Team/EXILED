@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Toys
 
     using Enums;
     using Exiled.API.Interfaces;
-
+    using Exiled.API.Structs;
     using UnityEngine;
 
     /// <summary>
@@ -92,16 +92,24 @@ namespace Exiled.API.Features.Toys
         /// <param name="spawn">Whether the <see cref="Light"/> should be initially spawned.</param>
         /// <returns>The new <see cref="Light"/>.</returns>
         public static Light Create(Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, Color? color = null, bool spawn = true)
+            => Create(new(position, rotation, scale, color, spawn));
+
+        /// <summary>
+        /// Creates a new <see cref="Light"/>.
+        /// </summary>
+        /// <param name="lightSettings">The settings of the <see cref="Light"/>.</param>
+        /// <returns>The new <see cref="Light"/>.</returns>
+        public static Light Create(LightSettings lightSettings)
         {
             Light light = new(Object.Instantiate(PrefabObject.GetComponent<LightSourceToy>()))
             {
-                Position = position ?? Vector3.zero,
-                Rotation = rotation ?? Quaternion.identity,
-                Scale = scale ?? Vector3.one,
-                Color = color ?? Color.gray,
+                Position = lightSettings.Position,
+                Rotation = lightSettings.Rotation,
+                Scale = lightSettings.Scale,
+                Color = lightSettings.Color,
             };
 
-            if (spawn)
+            if (lightSettings.ShouldSpawn)
                 light.Spawn();
 
             return light;
