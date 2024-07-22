@@ -79,6 +79,12 @@ namespace Exiled.API.Features.Audio
         public static TDynamicEventDispatcher<AudioSelectedEventArgs> AudioSelected { get; set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handlers all delegates to be fired before starting to play an audio file.
+        /// </summary>
+        [DynamicEventDispatcher]
+        public static TDynamicEventDispatcher<StartPlayingAudioEventArgs> StartPlaying { get; set; }
+
+        /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handlers all delegates to be fired after finishing and audio file.
         /// </summary>
         [DynamicEventDispatcher]
@@ -285,6 +291,17 @@ namespace Exiled.API.Features.Audio
                 yield break;
             }
 
+            StartPlayingAudioEventArgs startPlayingAudioEventArgs = new(this, audioFile, true);
+            StartPlaying.InvokeAll(startPlayingAudioEventArgs);
+
+            if (!startPlayingAudioEventArgs.IsAllowed)
+            {
+                if (AudioQueue.Count >= 1)
+                    Play(0);
+
+                yield break;
+            }
+
             Log.Debug($"Playing {audioFile.FilePath}");
 
             Timing.RunCoroutine(UpdatePlayback(audioFile));
@@ -326,6 +343,9 @@ namespace Exiled.API.Features.Audio
             }
 
             Finished = true;
+
+            AudioFinishedEventArgs audioFinishedEventArgs = new(this, audioFile);
+            AudioFinished.InvokeAll(audioFinishedEventArgs);
 
             CurrentAudio = null;
 
