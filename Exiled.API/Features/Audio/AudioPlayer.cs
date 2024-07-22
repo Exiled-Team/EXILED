@@ -17,13 +17,33 @@ namespace Exiled.API.Features.Audio
     using Exiled.API.Features.DynamicEvents;
     using MEC;
     using Mirror;
+    using NVorbis;
+    using UnityEngine;
+    using VoiceChat;
+    using VoiceChat.Codec;
+    using VoiceChat.Codec.Enums;
+    using VoiceChat.Networking;
 
     /// <summary>
     /// Represents a NPC that can play audios.
     /// </summary>
-    public class AudioPlayer : GameEntity // TODO: Stop Handle & Update Methods
+    public class AudioPlayer : GameEntity
     {
+        private readonly Queue<float> streamBuffer = new();
+
         private CoroutineHandle playbackHandler;
+
+        private MemoryStream memoryStream;
+
+        private VorbisReader vorbisReader;
+
+        private float allowedSamples;
+
+        private int samplesPerSecond;
+
+        private float[] sendBuffer;
+
+        private float[] readBuffer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioPlayer"/> class.
@@ -84,6 +104,16 @@ namespace Exiled.API.Features.Audio
         /// </summary>
         public bool DestroyWhenFinishing { get; set; } = false;
 
+        private bool Finished { get; set; }
+
+        private bool ShouldStop { get; set; }
+
+        private bool ShouldPlay { get; set; }
+
+        private PlaybackBuffer PlaybackBuffer { get; } = new();
+
+        private OpusEncoder Encoder { get; } = new(OpusApplicationType.Voip);
+
         /// <summary>
         /// Gets the audio player of the specified npc or creates one for it.
         /// </summary>
@@ -124,7 +154,9 @@ namespace Exiled.API.Features.Audio
         /// Enqueue an audio file.
         /// </summary>
         /// <param name="audioFile">The audio file to enqueue.</param>
-        public void Enqueue(AudioFile audioFile)
+        /// <param name="queuePosition">The position to insert the audio in the queue.</param>
+        /// <remarks>If the queue position is not specified, the audio file will be inserted at the end of the queue.</remarks>
+        public void Enqueue(AudioFile audioFile, int queuePosition = -1)
         {
             if (audioFile == null)
                 return;
@@ -132,22 +164,10 @@ namespace Exiled.API.Features.Audio
             if (!audioFile.Enabled || !IsOggFile(audioFile))
                 return;
 
-            AudioQueue.Add(audioFile);
-        }
-
-        /// <summary>
-        /// Enqueue an audio file.
-        /// </summary>
-        /// <param name="pathToFile">The audio file to enqueue.</param>
-        public void Enqueue(string pathToFile)
-        {
-            if (string.IsNullOrEmpty(pathToFile))
-                return;
-
-            if (!IsOggFile(pathToFile))
-                return;
-
-            AudioQueue.Add(new AudioFile(pathToFile));
+            if (queuePosition == -1)
+                AudioQueue.Add(audioFile);
+            else
+                AudioQueue.Insert(queuePosition, audioFile);
         }
 
         /// <summary>
@@ -155,17 +175,32 @@ namespace Exiled.API.Features.Audio
         /// </summary>
         /// <param name="queuePosition">The position of the audio in the queue.</param>
         /// <remarks>If the queue position is not specified, the first audio in the queue will be played.</remarks>
-        public void Play(int queuePosition = -1)
+        public void Play(int queuePosition = 0)
         {
             if (AudioQueue.Count == 0)
                 return;
 
-            CurrentAudio = queuePosition == -1 ? AudioQueue.First() : AudioQueue.ElementAt(queuePosition);
+            CurrentAudio = queuePosition == 0 ? AudioQueue.First() : AudioQueue.ElementAt(queuePosition);
 
-            AudioQueue.Remove(CurrentAudio);
+            SelectingAudioEventArgs selectingAudioEventArgs = new(this, CurrentAudio, true);
+            SelectingAudio.InvokeAll(selectingAudioEventArgs);
+
+            if (!selectingAudioEventArgs.IsAllowed)
+            {
+                AudioQueue.Remove(CurrentAudio);
+                CurrentAudio = null;
+                return;
+            }
 
             if (playbackHandler.IsRunning)
                 return;
+
+            AudioQueue.Remove(CurrentAudio);
+
+            AudioSelectedEventArgs audioSelectedEventArgs = new(this, CurrentAudio);
+            AudioSelected.InvokeAll(audioSelectedEventArgs);
+
+            playbackHandler = Timing.RunCoroutine(AudioPlayback(CurrentAudio));
         }
 
         /// <summary>
@@ -177,7 +212,7 @@ namespace Exiled.API.Features.Audio
             if (clearQueue)
                 AudioQueue.Clear();
 
-            // TODO: Handle Audio Stop Here.
+            ShouldStop = true;
         }
 
         /// <summary>
@@ -191,6 +226,153 @@ namespace Exiled.API.Features.Audio
             Dictionary.Remove(Owner);
 
             NetworkServer.RemovePlayerForConnection(Owner.Connection, true);
+        }
+
+        private bool IsMonoFile()
+        {
+            if (vorbisReader.Channels < 2)
+                return true;
+
+            vorbisReader.Dispose();
+            memoryStream.Dispose();
+
+            return false;
+        }
+
+        private bool CheckSampleRate()
+        {
+            if (vorbisReader.SampleRate is 48000)
+                return true;
+
+            vorbisReader.Dispose();
+            memoryStream.Dispose();
+
+            return false;
+        }
+
+        private IEnumerator<float> AudioPlayback(AudioFile audioFile)
+        {
+            ShouldStop = false;
+            Finished = false;
+
+            if (audioFile.Loop)
+                AudioQueue.Add(audioFile);
+
+            Log.Debug("Starting Audio Playback");
+
+            memoryStream = new MemoryStream(File.ReadAllBytes(audioFile.FilePath));
+            memoryStream.Seek(0, SeekOrigin.Begin);
+
+            vorbisReader = new VorbisReader(memoryStream);
+
+            if (!IsMonoFile())
+            {
+                Log.Debug("The Current audio file is not valid, audio files must be Mono to be played");
+
+                if (AudioQueue.Count >= 1)
+                    Play(0);
+
+                yield break;
+            }
+
+            if (CheckSampleRate())
+            {
+                Log.Debug("The Current audio file is not valid, audio files must have a samplerate of 48000 Hz");
+
+                if (AudioQueue.Count >= 1)
+                    Play(0);
+
+                yield break;
+            }
+
+            Log.Debug($"Playing {audioFile.FilePath}");
+
+            Timing.RunCoroutine(UpdatePlayback(audioFile));
+
+            samplesPerSecond = VoiceChatSettings.SampleRate * VoiceChatSettings.Channels;
+            sendBuffer = new float[(samplesPerSecond / 5) + 1920];
+            readBuffer = new float[(samplesPerSecond / 5) + 1920];
+
+            while (vorbisReader.ReadSamples(readBuffer, 0, readBuffer.Length) > 0)
+            {
+                if (ShouldStop)
+                {
+                    vorbisReader.SeekTo(vorbisReader.TotalSamples - 1);
+                    ShouldStop = false;
+                }
+
+                while (streamBuffer.Count >= readBuffer.Length)
+                {
+                    ShouldPlay = true;
+                    yield return Timing.WaitForOneFrame;
+                }
+
+                foreach (float t in readBuffer)
+                    streamBuffer.Enqueue(t);
+            }
+
+            Log.Debug("Audio Finished");
+
+            if (!DestroyWhenFinishing && audioFile.Loop)
+            {
+                Play(-1);
+                yield break;
+            }
+
+            if (!DestroyWhenFinishing && AudioQueue.Count >= 1)
+            {
+                Finished = true;
+                Play();
+            }
+
+            Finished = true;
+
+            CurrentAudio = null;
+
+            if (DestroyWhenFinishing)
+                Destroy();
+        }
+
+        private IEnumerator<float> UpdatePlayback(AudioFile audioFile)
+        {
+            if (Owner is null)
+                yield break;
+
+            if (!ShouldPlay || streamBuffer.Count == 0)
+                yield return Timing.WaitForSeconds(1f);
+
+            allowedSamples += Time.deltaTime * samplesPerSecond;
+            int samplesToCopy = Mathf.Min(Mathf.FloorToInt(allowedSamples), streamBuffer.Count);
+
+            Log.Debug($"Step 1: {samplesToCopy}");
+
+            if (samplesToCopy > 0)
+            {
+                for (int i = 0; i < samplesToCopy; i++)
+                {
+                    PlaybackBuffer.Write(streamBuffer.Dequeue() * (audioFile.Volume / 100f));
+                }
+            }
+
+            Log.Debug($"Step 2: {samplesToCopy}");
+
+            allowedSamples -= samplesToCopy;
+
+            while (PlaybackBuffer.Length >= 480)
+            {
+                PlaybackBuffer.ReadTo(sendBuffer, 480L, 0L);
+                int encodedData = Encoder.Encode(sendBuffer, new byte[512], 480);
+
+                foreach (Player player in Player.List)
+                {
+                    if (player.Connection is null || !player.IsVerified || player == Server.Host)
+                        continue;
+
+                    player.Connection.Send(new VoiceMessage(Owner.ReferenceHub, audioFile.Channel, new byte[512], encodedData, false));
+                }
+
+                yield return Timing.WaitForOneFrame;
+            }
         }
     }
 }
