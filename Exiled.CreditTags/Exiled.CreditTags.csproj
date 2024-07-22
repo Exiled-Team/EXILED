@@ -8,7 +8,7 @@
         <BaseProperties>false</BaseProperties>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <NoWarn>$(NoWarn);CS1591;SA1600</NoWarn>
-        <Configurations>Debug;Release;Installer</Configurations>
+        <Configurations>Debug;Release;Optimized;Installer</Configurations>
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
