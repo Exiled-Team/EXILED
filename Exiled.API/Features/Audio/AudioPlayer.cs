@@ -94,6 +94,11 @@ namespace Exiled.API.Features.Audio
         public AudioFile CurrentAudio { get; private set; }
 
         /// <summary>
+        /// Gets the type of the audio player (If the audio player is playing audios from files it will be File, if the audio player is inactive, it will be None).
+        /// </summary>
+        public AudioPlayerType PlayerType { get; private set; } = AudioPlayerType.None;
+
+        /// <summary>
         /// Gets or sets a value indicating whether the audio player instance should be destroyed when finishing the current audio.
         /// </summary>
         public bool DestroyWhenFinishing { get; set; } = false;
@@ -203,6 +208,8 @@ namespace Exiled.API.Features.Audio
 
             AudioSelectedEventArgs audioSelectedEventArgs = new(this, CurrentAudio);
             AudioSelected.InvokeAll(audioSelectedEventArgs);
+
+            PlayerType = AudioPlayerType.File;
 
             playbackHandler = Timing.RunCoroutine(AudioPlayback(CurrentAudio));
         }
@@ -344,6 +351,7 @@ namespace Exiled.API.Features.Audio
             AudioFinished.InvokeAll(audioFinishedEventArgs);
 
             CurrentAudio = null;
+            PlayerType = AudioPlayerType.None;
 
             if (DestroyWhenFinishing)
                 Destroy();
