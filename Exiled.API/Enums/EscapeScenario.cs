@@ -46,6 +46,11 @@ namespace Exiled.API.Enums
         /// </summary>
         public static readonly EscapeScenario CustomEscape = new((EscapeScenarioType)5);
 
+        private EscapeScenario()
+            : base()
+        {
+        }
+
         private EscapeScenario(EscapeScenarioType value)
             : base(value)
         {
