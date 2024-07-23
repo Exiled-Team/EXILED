@@ -136,7 +136,7 @@ namespace Exiled.API.Features.Audio
         /// <summary>
         /// Checks if the audio file is .ogg.
         /// </summary>
-        /// <param name="audioFile">The <see cref="AudioFile"/>to check.</param>
+        /// <param name="audioFile">The <see cref="AudioFile"/> to check.</param>
         /// <returns>If the audio file is .ogg or not.</returns>
         public bool IsOggFile(AudioFile audioFile)
         {
