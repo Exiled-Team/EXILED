@@ -3774,7 +3774,7 @@ namespace Exiled.API.Features
                 case TeslaGate teslaGate:
                     Teleport(
                         teslaGate.Position + offset + Vector3.up +
-                        (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
+                        (teslaGate.Room.Transform.rotation == Quaternion.identity
                             ? new Vector3(3, 0, 0)
                             : new Vector3(0, 0, 3)));
                     break;

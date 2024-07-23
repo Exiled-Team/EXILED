@@ -254,9 +254,9 @@ namespace Exiled.API.Features
         /// <param name="position">The position to spawn it at.</param>
         /// <param name="rotation">The rotation to spawn it as.</param>
         /// <returns>The <see cref="Generator"/> that was spawned.</returns>
-        public static Generator Spawn(Vector3 position, Quaternion rotation = default)
+        public static Generator Spawn(Vector3 position, Quaternion? rotation = null)
         {
-            Scp079Generator generator = PrefabHelper.Spawn<Scp079Generator>(PrefabType, position, rotation);
+            Scp079Generator generator = PrefabHelper.Spawn<Scp079Generator>(PrefabType, position, rotation ?? Quaternion.identity);
             return Get(generator);
         }
 
