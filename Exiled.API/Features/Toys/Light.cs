@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Toys
 
     using Enums;
     using Exiled.API.Interfaces;
-
+    using Exiled.API.Structs;
     using UnityEngine;
 
     /// <summary>
@@ -26,10 +26,7 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         /// <param name="lightSourceToy">The <see cref="LightSourceToy"/> of the toy.</param>
         internal Light(LightSourceToy lightSourceToy)
-            : base(lightSourceToy, AdminToyType.LightSource)
-        {
-            Base = lightSourceToy;
-        }
+            : base(lightSourceToy, AdminToyType.LightSource) => Base = lightSourceToy;
 
         /// <summary>
         /// Gets the light prefab's type.
@@ -89,19 +86,27 @@ namespace Exiled.API.Features.Toys
         /// <param name="rotation">The rotation of the <see cref="Light"/>.</param>
         /// <param name="scale">The scale of the <see cref="Light"/>.</param>
         /// <param name="color">The color of the <see cref="Light"/>.</param>
-        /// <param name="spawn">Whether the <see cref="Light"/> should be initially spawned.</param>
-        /// <returns>The new <see cref="Light"/>.</returns>
+        /// <param name="spawn">Whether or not the <see cref="Light"/> should be initially spawned.</param>
+        /// <returns>The newly created <see cref="Light"/>.</returns>
         public static Light Create(Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, Color? color = null, bool spawn = true)
+            => Create(new(position, rotation, scale, color, spawn));
+
+        /// <summary>
+        /// Creates a new <see cref="Light"/>.
+        /// </summary>
+        /// <param name="lightSettings">The settings of the <see cref="Light"/>.</param>
+        /// <returns>The new <see cref="Light"/>.</returns>
+        public static Light Create(LightSettings lightSettings)
         {
             Light light = new(Object.Instantiate(PrefabObject.GetComponent<LightSourceToy>()))
             {
-                Position = position ?? Vector3.zero,
-                Rotation = rotation ?? Quaternion.identity,
-                Scale = scale ?? Vector3.one,
-                Color = color ?? Color.gray,
+                Position = lightSettings.Position,
+                Rotation = lightSettings.Rotation,
+                Scale = lightSettings.Scale,
+                Color = lightSettings.Color,
             };
 
-            if (spawn)
+            if (lightSettings.ShouldSpawn)
                 light.Spawn();
 
             return light;
