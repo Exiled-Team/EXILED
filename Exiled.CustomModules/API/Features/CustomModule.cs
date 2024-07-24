@@ -5,10 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Serialization;
-using Exiled.API.Features.Serialization.CustomConverters;
-using YamlDotNet.Serialization.NodeDeserializers;
-
 namespace Exiled.CustomModules.API.Features
 {
     using System;
@@ -22,10 +18,13 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.DynamicEvents;
+    using Exiled.API.Features.Serialization;
+    using Exiled.API.Features.Serialization.CustomConverters;
     using Exiled.API.Interfaces;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using YamlDotNet.Serialization;
+    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Represents a marker class for custom modules.
@@ -212,6 +211,41 @@ namespace Exiled.CustomModules.API.Features
                 return modulePointerPath;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the serializer for custom modules.
+        /// </summary>
+        private static ISerializer ModuleSerializer { get; set; } = new SerializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new ColorConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithTypeConverter(new EnumClassConverter())
+            .WithTypeConverter(new PrivateConstructorConverter())
+            .WithTypeConverter(new CustomModuleSerializer())
+            .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
+            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
+            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .IgnoreFields()
+            .DisableAliases()
+            .Build();
+
+        /// <summary>
+        /// Gets or sets the deserializer for custom modules.
+        /// </summary>
+        private static IDeserializer ModuleDeserializer { get; set; } = new DeserializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new ColorConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithTypeConverter(new EnumClassConverter())
+            .WithTypeConverter(new PrivateConstructorConverter())
+            .WithTypeConverter(new CustomModuleSerializer())
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .WithDuplicateKeyChecking()
+            .IgnoreFields()
+            .IgnoreUnmatchedProperties()
+            .Build();
 
         /// <summary>
         /// Compares two operands: <see cref="CustomModule"/> and <see cref="object"/>.
@@ -410,41 +444,6 @@ namespace Exiled.CustomModules.API.Features
         /// </summary>
         /// <returns>The 32-bit signed hash code of the current object instance.</returns>
         public override int GetHashCode() => base.GetHashCode();
-
-        /// <summary>
-        /// Gets or sets the serializer for custom modules.
-        /// </summary>
-        private static ISerializer ModuleSerializer { get; set; } = new SerializerBuilder()
-            .WithTypeConverter(new VectorsConverter())
-            .WithTypeConverter(new ColorConverter())
-            .WithTypeConverter(new AttachmentIdentifiersConverter())
-            .WithTypeConverter(new EnumClassConverter())
-            .WithTypeConverter(new PrivateConstructorConverter())
-            .WithTypeConverter(new CustomModuleSerializer())
-            .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
-            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
-            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .IgnoreFields()
-            .DisableAliases()
-            .Build();
-
-        /// <summary>
-        /// Gets or sets the deserializer for custom modules.
-        /// </summary>
-        private static IDeserializer ModuleDeserializer { get; set; } = new DeserializerBuilder()
-            .WithTypeConverter(new VectorsConverter())
-            .WithTypeConverter(new ColorConverter())
-            .WithTypeConverter(new AttachmentIdentifiersConverter())
-            .WithTypeConverter(new EnumClassConverter())
-            .WithTypeConverter(new PrivateConstructorConverter())
-            .WithTypeConverter(new CustomModuleSerializer())
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
-            .WithDuplicateKeyChecking()
-            .IgnoreFields()
-            .IgnoreUnmatchedProperties()
-            .Build();
 
         /// <summary>
         /// Serializes the current module to a file specified by <see cref="ChildPath"/>.
