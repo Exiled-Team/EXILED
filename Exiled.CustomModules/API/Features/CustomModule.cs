@@ -412,7 +412,7 @@ namespace Exiled.CustomModules.API.Features
         public override int GetHashCode() => base.GetHashCode();
 
         /// <summary>
-        /// Gets or sets the serializer for configs and translations.
+        /// Gets or sets the serializer for custom modules.
         /// </summary>
         private static ISerializer ModuleSerializer { get; set; } = new SerializerBuilder()
             .WithTypeConverter(new VectorsConverter())
@@ -430,7 +430,7 @@ namespace Exiled.CustomModules.API.Features
             .Build();
 
         /// <summary>
-        /// Gets or sets the deserializer for configs and translations.
+        /// Gets or sets the deserializer for custom modules.
         /// </summary>
         private static IDeserializer ModuleDeserializer { get; set; } = new DeserializerBuilder()
             .WithTypeConverter(new VectorsConverter())

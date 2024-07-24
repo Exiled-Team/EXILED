@@ -46,7 +46,7 @@ namespace Exiled.CustomModules.API.Features
             Type genericArgument = type.GetGenericArguments()[0];
             MethodInfo method = GetType().GetMethod(nameof(WriteYamlGeneric), BindingFlags.NonPublic | BindingFlags.Instance);
             MethodInfo genericMethod = method?.MakeGenericMethod(genericArgument);
-            genericMethod?.Invoke(this, new[] { ref emitter, ref value });
+            genericMethod?.Invoke(this, new[] { emitter, value });
         }
 
         private void WriteYamlGeneric<TType>(IEmitter emitter, object value)
