@@ -12,5 +12,13 @@ namespace Exiled.API.Features.Audio
     /// </summary>
     public class AudioStream : AudioPlayer
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AudioStream"/> class.
+        /// </summary>
+        /// <param name="npc">The npc that will be allowed to play audios from urls.</param>
+        internal AudioStream(Npc npc)
+            : base(npc)
+        {
+        }
     }
 }
