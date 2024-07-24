@@ -5,6 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Features.Serialization;
+using Exiled.API.Features.Serialization.CustomConverters;
+using YamlDotNet.Serialization.NodeDeserializers;
+
 namespace Exiled.CustomModules.API.Features
 {
     using System;
@@ -408,6 +412,41 @@ namespace Exiled.CustomModules.API.Features
         public override int GetHashCode() => base.GetHashCode();
 
         /// <summary>
+        /// Gets or sets the serializer for configs and translations.
+        /// </summary>
+        private static ISerializer ModuleSerializer { get; set; } = new SerializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new ColorConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithTypeConverter(new EnumClassConverter())
+            .WithTypeConverter(new PrivateConstructorConverter())
+            .WithTypeConverter(new CustomModuleSerializer())
+            .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
+            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
+            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .IgnoreFields()
+            .DisableAliases()
+            .Build();
+
+        /// <summary>
+        /// Gets or sets the deserializer for configs and translations.
+        /// </summary>
+        private static IDeserializer ModuleDeserializer { get; set; } = new DeserializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new ColorConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithTypeConverter(new EnumClassConverter())
+            .WithTypeConverter(new PrivateConstructorConverter())
+            .WithTypeConverter(new CustomModuleSerializer())
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .WithDuplicateKeyChecking()
+            .IgnoreFields()
+            .IgnoreUnmatchedProperties()
+            .Build();
+
+        /// <summary>
         /// Serializes the current module to a file specified by <see cref="ChildPath"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException">Thrown when <see cref="ChildPath"/> is null.</exception>
@@ -424,13 +463,13 @@ namespace Exiled.CustomModules.API.Features
 
             if (File.Exists(FilePath) && File.Exists(PointerPath))
             {
-                File.WriteAllText(FilePath, EConfig.Serializer.Serialize(this));
-                File.WriteAllText(PointerPath, EConfig.Serializer.Serialize(Config));
+                File.WriteAllText(FilePath, ModuleSerializer.Serialize(this));
+                File.WriteAllText(PointerPath, ModuleSerializer.Serialize(Config));
                 return;
             }
 
-            File.WriteAllText(FilePath ?? throw new ArgumentNullException(nameof(FilePath)), EConfig.Serializer.Serialize(this));
-            File.WriteAllText(PointerPath ?? throw new ArgumentNullException(nameof(PointerPath)), EConfig.Serializer.Serialize(Config));
+            File.WriteAllText(FilePath ?? throw new ArgumentNullException(nameof(FilePath)), ModuleSerializer.Serialize(this));
+            File.WriteAllText(PointerPath ?? throw new ArgumentNullException(nameof(PointerPath)), ModuleSerializer.Serialize(Config));
         }
 
         /// <summary>
@@ -454,7 +493,7 @@ namespace Exiled.CustomModules.API.Features
                 {
                     try
                     {
-                        Config = EConfig.Deserializer.Deserialize<ModulePointer>(File.ReadAllText(PointerPath));
+                        Config = ModuleDeserializer.Deserialize<ModulePointer>(File.ReadAllText(PointerPath));
                     }
                     catch
                     {
@@ -470,7 +509,7 @@ namespace Exiled.CustomModules.API.Features
                 return;
             }
 
-            CustomModule deserializedModule = EConfig.Deserializer.Deserialize(File.ReadAllText(FilePath), GetType()) as CustomModule;
+            CustomModule deserializedModule = ModuleDeserializer.Deserialize(File.ReadAllText(FilePath), GetType()) as CustomModule;
             CopyProperties(deserializedModule);
 
             foreach (string file in Directory.GetFiles(ChildPath))
@@ -480,7 +519,7 @@ namespace Exiled.CustomModules.API.Features
 
                 try
                 {
-                    Config = EConfig.Deserializer.Deserialize<ModulePointer>(File.ReadAllText(file));
+                    Config = ModuleDeserializer.Deserialize<ModulePointer>(File.ReadAllText(file));
                 }
                 catch
                 {
