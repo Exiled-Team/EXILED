@@ -70,17 +70,16 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
 
                 if (arguments.Count == 1)
                 {
-                    if (sender is PlayerCommandSender playerCommandSender)
+                    Pawn player = Player.Get(arguments.At(1)).Cast<Pawn>();
+                    if (player is null)
                     {
-                        Pawn player = Player.Get(playerCommandSender).Cast<Pawn>();
-
-                        role.Spawn(player);
-                        response = $"{role.Name} given to {player.Nickname}.";
-                        return true;
+                        response = "Player not found";
+                        return false;
                     }
 
-                    response = "Failed to provide a valid player.";
-                    return false;
+                    role.Spawn(player);
+                    response = $"{role.Name} given to {player.Nickname}.";
+                    return true;
                 }
 
                 string identifier = string.Join(" ", arguments.Skip(1));
