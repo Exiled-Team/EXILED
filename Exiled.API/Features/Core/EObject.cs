@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Core
     using System.Linq;
     using System.Reflection;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Core.Generic.Pools;
     using MEC;
@@ -243,7 +244,7 @@ namespace Exiled.API.Features.Core
                 Assembly.GetCallingAssembly().GetTypes();
 
             List<int> matches = new();
-            matches.AddRange(assemblyTypes.Select(type => LevenshteinDistance(type.Name, name)));
+            matches.AddRange(assemblyTypes.Select(type => type.Name.LevenshteinDistance(name)));
             return assemblyTypes[matches.IndexOf(matches.Min())];
         }
 
@@ -783,7 +784,7 @@ namespace Exiled.API.Features.Core
         public static T FindMostAppropriateEntry<T>(string name, IEnumerable<T> source)
         {
             List<int> matches = new();
-            matches.AddRange(source.Select(type => LevenshteinDistance(type.GetType().Name, name)));
+            matches.AddRange(source.Select(type => type.GetType().Name.LevenshteinDistance(name)));
             return source.ElementAt(matches.IndexOf(matches.Min()));
         }
 
@@ -852,44 +853,6 @@ namespace Exiled.API.Features.Core
         /// </summary>
         protected virtual void OnDestroyed()
         {
-        }
-
-        private static int LevenshteinDistance(string source, string target)
-        {
-            if (string.IsNullOrEmpty(source))
-                return string.IsNullOrEmpty(target) ? 0 : target.Length;
-
-            if (string.IsNullOrEmpty(target))
-                return source.Length;
-
-            if (source.Length > target.Length)
-                (source, target) = (target, source);
-
-            int m = target.Length;
-            int n = source.Length;
-            int[,] distance = new int[2, m + 1];
-
-            for (int j = 1; j <= m; j++)
-                distance[0, j] = j;
-
-            int currentRow = 0;
-            for (int i = 1; i <= n; ++i)
-            {
-                currentRow = i & 1;
-                distance[currentRow, 0] = i;
-                int previousRow = currentRow ^ 1;
-                for (int j = 1; j <= m; j++)
-                {
-                    int cost = target[j - 1] == source[i - 1] ? 0 : 1;
-                    distance[currentRow, j] = Math.Min(
-                        Math.Min(
-                            distance[previousRow, j] + 1,
-                            distance[currentRow, j - 1] + 1),
-                        distance[previousRow, j - 1] + cost);
-                }
-            }
-
-            return distance[currentRow, m];
         }
     }
 }

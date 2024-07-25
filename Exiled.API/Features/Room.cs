@@ -25,7 +25,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game room.
     /// </summary>
-    public sealed class Room : GameEntity
+    public class Room : GameEntity
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="RoomIdentifier"/>s and their corresponding <see cref="Room"/>.
@@ -423,6 +423,20 @@ namespace Exiled.API.Features
         /// Resets the room color to default.
         /// </summary>
         public void ResetColor() => Color = Color.clear;
+
+        /// <summary>
+        /// Sets <see cref="Color"/> of the room that only the <paramref name="target"/> player can see.
+        /// </summary>
+        /// <param name="target">Only this player can see room color.</param>
+        /// <param name="color">Color to set.</param>
+        public void SetColorForTargetOnly(Player target, Color color) => target.SendFakeSyncVar(RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkOverrideColor), color);
+
+        /// <summary>
+        /// Sets the lights of the room to be either on or off, visible only to the <paramref name="target"/> player.
+        /// </summary>
+        /// <param name="target">The player who will see the lights state change.</param>
+        /// <param name="value">The state to set the lights to. True for on, false for off.</param>
+        public void SetLightsForTargetOnly(Player target, bool value) => target.SendFakeSyncVar(RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkLightsEnabled), value);
 
         /// <summary>
         /// Returns the Room in a human-readable format.

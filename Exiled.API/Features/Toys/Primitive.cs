@@ -93,17 +93,17 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Creates a new <see cref="Primitive"/>.
         /// </summary>
-        /// <param name="primitiveType">The <see cref="PrimitiveType"/> to create.</param>
-        /// <param name="flags">The <see cref="PrimitiveFlags"/> to apply.-.</param>
-        /// <param name="color">The color.</param>
-        /// <param name="position">The position.</param>
-        /// <param name="rotation">The rotation.</param>
-        /// <param name="scale">The size of the primitive.</param>
-        /// <param name="isStatic">Whether or not the primitive is static.</param>
-        /// <param name="spawn">Whether or not the primitive should be spawned.</param>
+        /// <param name="primitiveType">The <see cref="PrimitiveType"/> of the <see cref="Primitive"/>.</param>
+        /// <param name="flags">The <see cref="PrimitiveFlags"/> of the <see cref="Primitive"/>.</param>
+        /// <param name="color">The color of the <see cref="Primitive"/>.</param>
+        /// <param name="position">The position of the <see cref="Primitive"/>.</param>
+        /// <param name="rotation">The rotation of the <see cref="Primitive"/>.</param>
+        /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
+        /// <param name="isStatic">Whether or not the <see cref="Primitive"/> is static.</param>
+        /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
         /// <returns>The newly created <see cref="Primitive"/>.</returns>
-        public static Primitive Create(PrimitiveType primitiveType, PrimitiveFlags flags = default, Color? color = null, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool isStatic = false, bool spawn = true)
-            => Create(new(primitiveType, color, position, flags, rotation, scale, isStatic, spawn));
+        public static Primitive Create(PrimitiveType primitiveType, PrimitiveFlags flags = PrimitiveFlags.Visible | PrimitiveFlags.Collidable, Color? color = null, Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, bool isStatic = false, bool spawn = true)
+            => Create(new(primitiveType, flags, color, position, rotation, scale, isStatic, spawn));
 
         /// <summary>
         /// Creates a new <see cref="Primitive"/>.
@@ -112,15 +112,16 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(PrimitiveSettings primitiveSettings)
         {
-            Primitive primitive = new(Object.Instantiate(PrefabObject.GetComponent<PrimitiveObjectToy>()));
-
-            primitive.Base.NetworkPrimitiveType = primitiveSettings.PrimitiveType;
-            primitive.AdminToyBase.transform.position = primitiveSettings.Position;
-            primitive.AdminToyBase.transform.rotation = primitiveSettings.Rotation;
-            primitive.AdminToyBase.transform.localScale = primitiveSettings.Scale;
-            primitive.Flags = primitiveSettings.Flags;
-            primitive.Color = primitiveSettings.Color;
-            primitive.IsStatic = primitiveSettings.IsStatic;
+            Primitive primitive = new(Object.Instantiate(PrefabObject.GetComponent<PrimitiveObjectToy>()))
+            {
+                Type = primitiveSettings.PrimitiveType,
+                Flags = primitiveSettings.Flags,
+                Color = primitiveSettings.Color,
+                Position = primitiveSettings.Position,
+                Rotation = primitiveSettings.Rotation,
+                Scale = primitiveSettings.Scale,
+                IsStatic = primitiveSettings.IsStatic,
+            };
 
             if (primitiveSettings.ShouldSpawn)
                 primitive.Spawn();

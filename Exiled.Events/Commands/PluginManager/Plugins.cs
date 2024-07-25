@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Plugins.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -36,9 +36,6 @@ namespace Exiled.Events.Commands.PluginManager
 
         /// <inheritdoc/>
         public string Description { get; } = "Gets a list of all verified plugins.";
-
-        /// <inheritdoc/>
-        public bool SanitizeResponse { get; }
 
         /// <inheritdoc/>
         public string Permission { get; } = "pm.plugins";

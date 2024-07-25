@@ -91,9 +91,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
                 {
                     AutomaticAmmoManager aam => aam.ChamberedAmount,
                     TubularMagazineAmmoManager tmam => tmam.ChamberedRounds,
-                    PumpAction pa => pa.ChamberedRounds,
                     _ => 0,
                 };
+
+                if (chamberSize <= 0 && Firearm.Base.ActionModule is PumpAction pumpAction)
+                    chamberSize = pumpAction.ChamberedRounds;
 
                 ammoType = ammoItemType.IsAmmo() ? ammoItemType.GetAmmoType() : Firearm.AmmoType;
             }
@@ -244,7 +246,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
             if (ammoType is not AmmoType.None)
                 unscaledAmmoAmount = ev.Player.GetAmmo(ammoType);
             else if (itemType is not ItemType.None)
-                unscaledAmmoAmount = (ushort)ev.Player.Items.Where(i => !Check(i) && i.Type == itemType).Count();
+                unscaledAmmoAmount = (ushort)ev.Player.Items.Count(i => !Check(i) && i.Type == itemType);
             else if (customAmmoType > 0)
                 unscaledAmmoAmount = ev.Player.Cast<Pawn>().GetAmmo(customAmmoType);
 

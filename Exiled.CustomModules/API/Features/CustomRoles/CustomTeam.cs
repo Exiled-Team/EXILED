@@ -21,6 +21,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using PlayerRoles;
     using Respawning;
     using Respawning.NamingRules;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Abstract base class representing a custom team, providing a foundational structure for custom team management.
@@ -45,56 +46,63 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> which contains all registered <see cref="CustomTeam"/>'s.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<CustomTeam> List => Registered;
 
         /// <summary>
         /// Gets all players and their respective <see cref="CustomTeam"/>.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<Player, CustomTeam> Manager => PlayersValue;
 
         /// <summary>
         /// Gets all players belonging to a <see cref="CustomTeam"/>.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<Player> Players => PlayersValue.Keys.ToHashSet();
 
+        /// <inheritdoc/>
+        [YamlIgnore]
+        public override ModulePointer Config { get; set; }
+
         /// <summary>
-        /// Gets the name of the <see cref="CustomTeam"/>.
+        /// Gets or sets the name of the <see cref="CustomTeam"/>.
         /// </summary>
-        public override string Name { get; }
+        public override string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomTeam"/>'s id.
         /// </summary>
-        public override uint Id { get; protected set; }
+        public override uint Id { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomTeam"/> is enabled.
+        /// Gets or sets a value indicating whether the <see cref="CustomTeam"/> is enabled.
         /// </summary>
-        public override bool IsEnabled => true;
+        public override bool IsEnabled { get; set; }
 
         /// <summary>
-        /// Gets the display name of the <see cref="CustomTeam"/>.
+        /// Gets or sets the display name of the <see cref="CustomTeam"/>.
         /// </summary>
         /// <remarks>
         /// The display name is used to represent the <see cref="CustomTeam"/> in user interfaces and other visual contexts.
         /// </remarks>
-        public virtual string DisplayName { get; }
+        public virtual string DisplayName { get; set; }
 
         /// <summary>
-        /// Gets the display color of the <see cref="Name"/>.
+        /// Gets or sets the display color of the <see cref="Name"/>.
         /// </summary>
         /// <remarks>
         /// The display color is the visual representation of the name color in user interfaces and other visual contexts.
         /// </remarks>
-        public virtual string DisplayColor { get; }
+        public virtual string DisplayColor { get; set; }
 
         /// <summary>
-        /// Gets the size of the <see cref="CustomTeam"/>.
+        /// Gets or sets the size of the <see cref="CustomTeam"/>.
         /// </summary>
         /// <remarks>
         /// The size indicates the maximum number of players that can be part of this <see cref="CustomTeam"/>.
         /// </remarks>
-        public virtual int Size { get; }
+        public virtual int Size { get; set; }
 
         /// <summary>
         /// Gets or sets a collection of ids representing all custom roles offered as units.
@@ -103,12 +111,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// This property provides access to a curated collection of <see cref="uint"/> objects, encapsulating all available custom role  within the context of units.
         /// <br/>The collection is designed to be both queried and modified as needed to accommodate dynamic scenarios within the game architecture.
         /// </remarks>
-        public virtual IEnumerable<uint> Units { get; protected set; } = new uint[] { };
-
-        /// <summary>
-        /// Gets the amount of time after which any team will be allowed to spawn.
-        /// </summary>
-        public virtual float NextSequenceTime => UnityEngine.Random.Range(MinNextSequenceTime, MaxNextSequenceTime);
+        public virtual IEnumerable<uint> Units { get; set; } = new uint[] { };
 
         /// <summary>
         /// Gets or sets the minimum amount time after which any team will be allowed to spawn.
@@ -121,40 +124,85 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         public virtual float MaxNextSequenceTime { get; set; } = GameCore.ConfigFile.ServerConfig.GetFloat("maximum_MTF_time_to_spawn", 350f);
 
         /// <summary>
-        /// Gets the relative spawn probability of the <see cref="CustomTeam"/>.
+        /// Gets or sets the relative spawn probability of the <see cref="CustomTeam"/>.
         /// </summary>
-        public virtual int Probability { get; }
+        public virtual int Probability { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="SpawnableTeamType"/> which is being spawned from.
+        /// </summary>
+        public virtual SpawnableTeamType[] SpawnableFromTeams { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="CustomTeam"/> is configured to use respawn tickets.
+        /// </summary>
+        /// <remarks>
+        /// If set to <c>true</c>, the <see cref="CustomTeam"/> utilizes a ticket system for player respawns.
+        /// </remarks>
+        public virtual bool UseTickets { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current number of respawn tickets available for the <see cref="CustomTeam"/>.
+        /// </summary>
+        /// <remarks>
+        /// This property represents the remaining number of respawn tickets that can be used by the <see cref="CustomTeam"/>.
+        /// </remarks>
+        public virtual uint Tickets { get; set; }
+
+        /// <summary>
+        /// Gets or sets the required <see cref="Team"/> that players must belong to in order to allow the <see cref="CustomTeam"/> to spawn.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the required alive team to be eligible for spawning in the <see cref="CustomTeam"/>.
+        /// </remarks>
+        public virtual Team RequiredTeamToSpawn { get; set; } = Team.Dead;
+
+        /// <summary>
+        /// Gets or sets the required <see cref="RoleTypeId"/> that players must have to allow the <see cref="CustomTeam"/> to spawn.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the required role type for players to be eligible for spawning in the <see cref="CustomTeam"/>.
+        /// </remarks>
+        public virtual RoleTypeId RequiredRoleToSpawn { get; set; } = RoleTypeId.None;
+
+        /// <summary>
+        /// Gets or sets the required custom team that players must belong to in order to allow the <see cref="CustomTeam"/> to spawn.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the required alive custom team to be eligible for spawning in the <see cref="CustomTeam"/>.
+        /// </remarks>
+        public virtual uint RequiredCustomTeamToSpawn { get; set; }
+
+        /// <summary>
+        /// Gets or sets the required <see cref="CustomRole"/> that players must have to allow the <see cref="CustomTeam"/> to spawn.
+        /// </summary>
+        /// <remarks>
+        /// This property specifies the required custom role for players to be eligible for spawning in the <see cref="CustomTeam"/>.
+        /// </remarks>
+        public virtual uint RequiredCustomRoleToSpawn { get; set; }
+
+        /// <summary>
+        /// Gets or sets the teams the <see cref="CustomTeam"/> belongs to.
+        /// </summary>
+        public virtual Team[] TeamsOwnership { get; set; } = { };
+
+        /// <summary>
+        /// Gets the amount of time after which any team will be allowed to spawn.
+        /// </summary>
+        [YamlIgnore]
+        public virtual float NextSequenceTime => UnityEngine.Random.Range(MinNextSequenceTime, MaxNextSequenceTime);
 
         /// <summary>
         /// Gets a value indicating whether a player can spawn as this <see cref="CustomRole"/> based on its assigned probability.
         /// </summary>
         /// <returns><see langword="true"/> if the probability condition was satisfied; otherwise, <see langword="false"/>.</returns>
+        [YamlIgnore]
         public bool CanSpawnByProbability => Probability.EvaluateProbability();
-
-        /// <summary>
-        /// Gets the <see cref="SpawnableTeamType"/> which is being spawned from.
-        /// </summary>
-        public virtual SpawnableTeamType[] SpawnableFromTeams { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomTeam"/> is configured to use respawn tickets.
-        /// </summary>
-        /// <remarks>
-        /// If set to <c>true</c>, the <see cref="CustomTeam"/> utilizes a ticket system for player respawns.
-        /// </remarks>
-        public virtual bool UseTickets { get; }
-
-        /// <summary>
-        /// Gets the current number of respawn tickets available for the <see cref="CustomTeam"/>.
-        /// </summary>
-        /// <remarks>
-        /// This property represents the remaining number of respawn tickets that can be used by the <see cref="CustomTeam"/>.
-        /// </remarks>
-        public virtual uint Tickets { get; }
 
         /// <summary>
         /// Gets a value indicating whether the team can spawn given a condition.
         /// </summary>
+        [YamlIgnore]
         public virtual bool EvaluateConditions
         {
             get
@@ -193,48 +241,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Gets the required <see cref="Team"/> that players must belong to in order to allow the <see cref="CustomTeam"/> to spawn.
-        /// </summary>
-        /// <remarks>
-        /// This property specifies the required alive team to be eligible for spawning in the <see cref="CustomTeam"/>.
-        /// </remarks>
-        public virtual Team RequiredTeamToSpawn => Team.Dead;
-
-        /// <summary>
-        /// Gets the required <see cref="RoleTypeId"/> that players must have to allow the <see cref="CustomTeam"/> to spawn.
-        /// </summary>
-        /// <remarks>
-        /// This property specifies the required role type for players to be eligible for spawning in the <see cref="CustomTeam"/>.
-        /// </remarks>
-        public virtual RoleTypeId RequiredRoleToSpawn => RoleTypeId.None;
-
-        /// <summary>
-        /// Gets the required custom team that players must belong to in order to allow the <see cref="CustomTeam"/> to spawn.
-        /// </summary>
-        /// <remarks>
-        /// This property specifies the required alive custom team to be eligible for spawning in the <see cref="CustomTeam"/>.
-        /// </remarks>
-        public virtual uint RequiredCustomTeamToSpawn { get; }
-
-        /// <summary>
-        /// Gets the required <see cref="CustomRole"/> that players must have to allow the <see cref="CustomTeam"/> to spawn.
-        /// </summary>
-        /// <remarks>
-        /// This property specifies the required custom role for players to be eligible for spawning in the <see cref="CustomTeam"/>.
-        /// </remarks>
-        public virtual uint RequiredCustomRoleToSpawn { get; }
-
-        /// <summary>
-        /// Gets the teams the <see cref="CustomTeam"/> belongs to.
-        /// </summary>
-        public virtual Team[] TeamsOwnership { get; } = { };
-
-        /// <summary>
         /// Gets a value indicating whether the <see cref="CustomTeam"/> is registered.
         /// </summary>
         /// <remarks>
         /// If set to <c>true</c>, the <see cref="CustomTeam"/> is successfully registered.
         /// </remarks>
+        [YamlIgnore]
         public bool IsRegistered => Registered.Contains(this);
 
         /// <summary>
@@ -243,6 +255,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <remarks>
         /// This property returns a collection of players associated with the <see cref="CustomTeam"/>.
         /// </remarks>
+        [YamlIgnore]
         public IEnumerable<Player> Owners => PlayersValue.Where(x => x.Value == this).Select(x => x.Key);
 
         /// <summary>
@@ -251,6 +264,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <remarks>
         /// This property returns a randomly selected <see cref="CustomRole"/> from the available <see cref="Units"/>.
         /// </remarks>
+        [YamlIgnore]
         public CustomRole RandomUnit => CustomRole.Get(Units.Random());
 
         /// <summary>
@@ -441,53 +455,47 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Enables all the custom teams present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomTeam"/> which contains all the enabled custom teams.</returns>
-        public static IEnumerable<CustomTeam> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
 
         /// <summary>
         /// Enables all the custom teams present in the assembly.
         /// </summary>
         /// <param name="assembly">The assembly to enable the teams from.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomTeam"/> which contains all the enabled custom teams.</returns>
-        public static IEnumerable<CustomTeam> EnableAll(Assembly assembly)
+        public static void EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomTeams))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomTeams.Name))
                 throw new Exception("ModuleType::CustomTeams must be enabled in order to load any custom teams");
 
             List<CustomTeam> customTeams = new();
             foreach (Type type in assembly.GetTypes())
             {
-                CustomTeamAttribute attribute = type.GetCustomAttribute<CustomTeamAttribute>();
+                ModuleIdentifierAttribute attribute = type.GetCustomAttribute<ModuleIdentifierAttribute>();
                 if (type.BaseType != typeof(CustomTeam) || attribute is null)
                     continue;
 
                 CustomTeam customTeam = Activator.CreateInstance(type) as CustomTeam;
+                customTeam.DeserializeModule();
 
                 if (!customTeam.IsEnabled)
                     continue;
 
-                if (customTeam.TryRegister(attribute))
+                if (customTeam.TryRegister(assembly, attribute))
                     customTeams.Add(customTeam);
             }
 
             if (customTeams.Count() != Registered.Count())
                 Log.SendRaw($"{customTeams.Count()} custom teams have been successfully registered!", ConsoleColor.Cyan);
-
-            return customTeams;
         }
 
         /// <summary>
         /// Disables all the custom teams present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomTeam"/> which contains all the disabled custom teams.</returns>
-        public static IEnumerable<CustomTeam> DisableAll()
+        public static void DisableAll()
         {
             List<CustomTeam> customTeams = new();
             customTeams.AddRange(Registered.Where(customTeam => customTeam.TryUnregister()));
 
             Log.SendRaw($"{customTeams.Count()} custom teams have been successfully unregistered!", ConsoleColor.Cyan);
-
-            return customTeams;
         }
 
         /// <summary>
@@ -677,9 +685,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Tries to register a <see cref="CustomTeam"/>.
         /// </summary>
-        /// <param name="attribute">The specified <see cref="CustomTeamAttribute"/>.</param>
+        /// <param name="assembly">Unused parameter.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(CustomTeamAttribute attribute = null)
+        protected override bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {
@@ -709,6 +718,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 }
 
                 Registered.Add(this);
+
+                base.TryRegister(assembly, attribute);
+
                 TypeLookupTable.TryAdd(GetType(), this);
                 IdLookupTable.TryAdd(Id, this);
                 NameLookupTable.TryAdd(Name, this);
@@ -725,7 +737,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Tries to register a <see cref="CustomTeam"/>.
         /// </summary>
         /// <returns><see langword="true"/> if the <see cref="CustomTeam"/> was unregistered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryUnregister()
+        protected override bool TryUnregister()
         {
             if (!Registered.Contains(this))
             {
@@ -735,6 +747,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             }
 
             Registered.Remove(this);
+
+            base.TryUnregister();
+
             TypeLookupTable.Remove(GetType());
             IdLookupTable.Remove(Id);
             NameLookupTable.Remove(Name);

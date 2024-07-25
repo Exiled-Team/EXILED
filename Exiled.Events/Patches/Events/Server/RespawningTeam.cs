@@ -42,7 +42,6 @@ namespace Exiled.Events.Patches.Events.Server
             LocalBuilder respawningEv = generator.DeclareLocal(typeof(RespawningTeamEventArgs));
             LocalBuilder deployingEv = generator.DeclareLocal(typeof(DeployingTeamRoleEventArgs));
 
-            Label continueLabel = generator.DefineLabel();
             Label ret = generator.DefineLabel();
             Label jne = generator.DefineLabel();
 
@@ -65,7 +64,7 @@ namespace Exiled.Events.Patches.Events.Server
                 new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnPreRespawningTeam))),
 
                 // if (!preRespawningEv.IsAllowed)
-                // goto ret
+                // goto ret;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(PreRespawningTeamEventArgs), nameof(PreRespawningTeamEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
 
@@ -115,11 +114,11 @@ namespace Exiled.Events.Patches.Events.Server
                 new(OpCodes.Call, Method(typeof(Server), nameof(Server.OnRespawningTeam))),
 
                 // if (respawningEv.IsAllowed)
-                //    goto continueLabel;
+                //    goto ret;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue_S, continueLabel),
+                new(OpCodes.Brfalse_S, ret),
 
-                new CodeInstruction(OpCodes.Ldloc_S, respawningEv.LocalIndex).WithLabels(continueLabel),
+                new(OpCodes.Ldloc_S, respawningEv.LocalIndex),
                 new(OpCodes.Dup),
 
                 // list = GetHubs(ev.Players)

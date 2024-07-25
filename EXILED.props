@@ -15,7 +15,7 @@
 
     <PropertyGroup>
         <!-- This is the global version and is used for all projects that don't have a version -->
-        <Version Condition="$(Version) == ''">9.0.0-alpha.13</Version>
+        <Version Condition="$(Version) == ''">9.0.0-alpha.19</Version>
         <!-- Enables public beta warning via the PUBLIC_BETA constant -->
         <PublicBeta>false</PublicBeta>
 
@@ -37,6 +37,14 @@
       <None Include="$(MSBuildProjectDirectory)\README.md" Pack="true" PackagePath="\" Condition="Exists('$(MSBuildProjectDirectory)\README.md')"/>
     </ItemGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Optimized'">
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -47,6 +55,7 @@
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);SA0001</NoWarn>
+        <DebugType>embedded</DebugType>
     </PropertyGroup>
 
     <PropertyGroup>

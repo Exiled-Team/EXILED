@@ -38,9 +38,6 @@ namespace Exiled.Events.Commands.PluginManager
         public string Description { get; } = "Enable a plugin";
 
         /// <inheritdoc />
-        public bool SanitizeResponse { get; }
-
-        /// <inheritdoc />
         public string Permission { get; } = "pm.enable";
 
         /// <inheritdoc/>

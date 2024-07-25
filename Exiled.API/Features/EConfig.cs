@@ -51,6 +51,8 @@ namespace Exiled.API.Features
             .WithTypeConverter(new VectorsConverter())
             .WithTypeConverter(new ColorConverter())
             .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithTypeConverter(new EnumClassConverter())
+            .WithTypeConverter(new PrivateConstructorConverter())
             .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
             .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
             .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
@@ -66,6 +68,8 @@ namespace Exiled.API.Features
             .WithTypeConverter(new VectorsConverter())
             .WithTypeConverter(new ColorConverter())
             .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithTypeConverter(new EnumClassConverter())
+            .WithTypeConverter(new PrivateConstructorConverter())
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
             .WithDuplicateKeyChecking()
@@ -237,7 +241,7 @@ namespace Exiled.API.Features
                     }
 
                     Cache.Add(wrapper, wrapper.AbsolutePath!);
-                    if (!Directory.Exists(path) || !MainConfigsValue.Any(cfg => cfg.Folder == wrapper.Folder))
+                    if (!Directory.Exists(path) || MainConfigsValue.All(cfg => cfg.Folder != wrapper.Folder))
                         return wrapper;
                 }
 
@@ -331,6 +335,13 @@ namespace Exiled.API.Features
 
             return t.data.FirstOrDefault(data => data.Base!.GetType() == typeof(T)) as T ?? default;
         }
+
+        /// <summary>
+        /// Reads the base data object of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the data to be read.</typeparam>
+        /// <returns>The corresponding <typeparamref name="T"/> instance or <see langword="null"/> if not found.</returns>
+        public T? BaseAs<T>() => Base is not T t ? default : t;
 
         /// <summary>
         /// Writes a new value contained in the specified config of type <typeparamref name="T"/>.

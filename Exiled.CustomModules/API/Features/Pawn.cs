@@ -15,7 +15,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Core.Behaviours;
+    using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
     using Exiled.CustomModules.API.Features.CustomAbilities;
@@ -74,9 +74,9 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Gets all pawn's <see cref="EPlayerBehaviour"/>'s.
+        /// Gets all pawn's <see cref="ModuleBehaviour{T}"/>'s.
         /// </summary>
-        public IEnumerable<EPlayerBehaviour> Behaviours => GetComponents<EPlayerBehaviour>();
+        public IEnumerable<ModuleBehaviour<Player>> ModuleBehaviours => GetComponents<ModuleBehaviour<Player>>();
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.CustomRole"/>.

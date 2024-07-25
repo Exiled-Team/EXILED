@@ -54,8 +54,6 @@ namespace Exiled.CustomModules
         /// Gets or sets all modules to be loaded.
         /// </summary>
         [Description("The modules to be loaded.")]
-        public ModuleType[] Modules { get; set; } = new ModuleType[]
-        {
-        };
+        public string[] Modules { get; set; } = { };
     }
 }

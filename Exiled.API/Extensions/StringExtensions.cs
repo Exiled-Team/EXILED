@@ -24,42 +24,47 @@ namespace Exiled.API.Extensions
         private static readonly SHA256 Sha256 = SHA256.Create();
 
         /// <summary>
-        /// Compute the distance between two <see cref="string"/>.
+        /// Computes the distance between two <see cref="string"/>.
         /// </summary>
-        /// <param name="firstString">The first string to be compared.</param>
-        /// <param name="secondString">The second string to be compared.</param>
-        /// <returns>Returns the distance between the two strings.</returns>
-        public static int GetDistance(this string firstString, string secondString)
+        /// <param name="source">The first string to be compared.</param>
+        /// <param name="target">The second string to be compared.</param>
+        /// <returns>The distance between the two strings.</returns>
+        public static int LevenshteinDistance(this string source, string target)
         {
-            int n = firstString.Length;
-            int m = secondString.Length;
-            int[,] d = new int[n + 1, m + 1];
+            if (string.IsNullOrEmpty(source))
+                return string.IsNullOrEmpty(target) ? 0 : target.Length;
 
-            if (n == 0)
-                return m;
+            if (string.IsNullOrEmpty(target))
+                return source.Length;
 
-            if (m == 0)
-                return n;
+            if (source.Length > target.Length)
+                (source, target) = (target, source);
 
-            for (int i = 0; i <= n; d[i, 0] = i++)
+            int m = target.Length;
+            int n = source.Length;
+            int[,] distance = new int[2, m + 1];
+
+            for (int j = 1; j <= m; j++)
+                distance[0, j] = j;
+
+            int currentRow = 0;
+            for (int i = 1; i <= n; ++i)
             {
-            }
-
-            for (int j = 0; j <= m; d[0, j] = j++)
-            {
-            }
-
-            for (int i = 1; i <= n; i++)
-            {
+                currentRow = i & 1;
+                distance[currentRow, 0] = i;
+                int previousRow = currentRow ^ 1;
                 for (int j = 1; j <= m; j++)
                 {
-                    int cost = secondString[j - 1] == firstString[i - 1] ? 0 : 1;
-
-                    d[i, j] = Math.Min(Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1), d[i - 1, j - 1] + cost);
+                    int cost = target[j - 1] == source[i - 1] ? 0 : 1;
+                    distance[currentRow, j] = Math.Min(
+                        Math.Min(
+                            distance[previousRow, j] + 1,
+                            distance[currentRow, j - 1] + 1),
+                        distance[previousRow, j - 1] + cost);
                 }
             }
 
-            return d[n, m];
+            return distance[currentRow, m];
         }
 
         /// <summary>

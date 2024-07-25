@@ -16,6 +16,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Features.Roles;
     using Exiled.API.Features.Spawn;
     using PlayerRoles;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// A tool to easily setup roles.
@@ -26,11 +27,13 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Gets the default <see cref="RoleSettings"/> values.
         /// <para>It refers to the base-game human roles behavior.</para>
         /// </summary>
+        [YamlIgnore]
         public static RoleSettings Default { get; } = new();
 
         /// <summary>
         /// Gets the SCP preset referring to the base-game SCPs behavior.
         /// </summary>
+        [YamlIgnore]
         public static RoleSettings ScpPreset { get; } = new()
         {
             CanHurtScps = false,

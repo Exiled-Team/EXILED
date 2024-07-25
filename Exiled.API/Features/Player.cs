@@ -12,6 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+    using System.Text;
 
     using Core;
     using CustomPlayerEffects;
@@ -51,6 +52,7 @@ namespace Exiled.API.Features
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps;
+    using PlayerRoles.PlayableScps.Scp049.Zombies;
     using PlayerRoles.RoleAssign;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
@@ -58,6 +60,7 @@ namespace Exiled.API.Features
     using PluginAPI.Core;
     using RelativePositioning;
     using RemoteAdmin;
+    using Respawning;
     using Respawning.NamingRules;
     using RoundRestarting;
     using UnityEngine;
@@ -73,6 +76,7 @@ namespace Exiled.API.Features
     using Firearm = Items.Firearm;
     using FirearmPickup = Pickups.FirearmPickup;
     using HumanRole = Roles.HumanRole;
+    using PHumanRole = PlayerRoles.HumanRole;
 
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
@@ -976,7 +980,7 @@ namespace Exiled.API.Features
         [EProperty(category: STATS_CATEGORY)]
         public float ArtificialHealth
         {
-            get => AhpStat.CurValue;
+            get => ActiveArtificialHealthProcesses.FirstOrDefault()?.CurrentAmount ?? 0f;
             set
             {
                 AhpStat.AhpProcess ahp = ActiveArtificialHealthProcesses.FirstOrDefault();
@@ -994,8 +998,16 @@ namespace Exiled.API.Features
         [EProperty(category: STATS_CATEGORY)]
         public float MaxArtificialHealth
         {
-            get => AhpStat.MaxValue;
-            set => AhpStat._maxSoFar = value;
+            get => ActiveArtificialHealthProcesses.FirstOrDefault()?.Limit ?? 0f;
+            set
+            {
+                AhpStat.AhpProcess ahp = ActiveArtificialHealthProcesses.FirstOrDefault();
+
+                if (ahp is not null)
+                    ahp.Limit = value;
+                else
+                    AddAhp(value, value);
+            }
         }
 
         /// <summary>
@@ -2449,6 +2461,8 @@ namespace Exiled.API.Features
             usableItem.Base.Owner = referenceHub;
             usableItem.Base.ServerOnUsingCompleted();
 
+            typeof(UsableItemsController).InvokeStaticEvent(nameof(UsableItemsController.ServerOnUsingCompleted), new object[] { referenceHub, usableItem.Base });
+
             if (usableItem.Base is not null)
                 usableItem.Destroy();
 
@@ -2460,7 +2474,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="damageType">The <see cref="DamageType"/> the player has been killed.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(DamageType damageType, string cassieAnnouncement = "") => Kill(new CustomDamageHandler(this, null, -1, damageType, cassieAnnouncement));
+        public void Kill(DamageType damageType, string cassieAnnouncement = "") =>
+            Kill(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, -1, cassieAnnouncement));
 
         /// <summary>
         /// Kills the player.
@@ -3724,9 +3739,9 @@ namespace Exiled.API.Features
             Connection.Send(new RoundRestartMessage(roundRestartType, delay, newPort, reconnect, false));
         }
 
-        /// <inheritdoc cref="MirrorExtensions.PlayGunSound(Player, Vector3, ItemType, byte, byte)"/>
+        /// <inheritdoc cref="PlayGunSound(Vector3, ItemType, byte, byte)"/>
         public void PlayGunSound(ItemType type, byte volume, byte audioClipId = 0) =>
-            MirrorExtensions.PlayGunSound(this, Position, type, volume, audioClipId);
+            PlayGunSound(Position, type, volume, audioClipId);
 
         /// <inheritdoc cref="Map.PlaceBlood(Vector3, Vector3)"/>
         public void PlaceBlood(Vector3 direction) => Map.PlaceBlood(Position, direction);
@@ -3759,7 +3774,7 @@ namespace Exiled.API.Features
                 case TeslaGate teslaGate:
                     Teleport(
                         teslaGate.Position + offset + Vector3.up +
-                        (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
+                        (teslaGate.Room.Transform.rotation == Quaternion.identity
                             ? new Vector3(3, 0, 0)
                             : new Vector3(0, 0, 3)));
                     break;
@@ -3912,6 +3927,164 @@ namespace Exiled.API.Features
         {
             RankName = rankName;
             RankColor = rankColor;
+        }
+
+        /// <summary>
+        /// Plays a beep sound that only the player can hear.
+        /// </summary>
+        public void PlayBeepSound() => MirrorExtensions.SendFakeTargetRpc(ReferenceHub, ReferenceHub.HostHub.networkIdentity, typeof(AmbientSoundPlayer), nameof(AmbientSoundPlayer.RpcPlaySound), 7);
+
+        /// <summary>
+        /// Plays a gun sound that only the target can hear.
+        /// </summary>
+        /// <param name="position">Position to play on.</param>
+        /// <param name="itemType">Weapon' sound to play.</param>
+        /// <param name="volume">Sound's volume to set.</param>
+        /// <param name="audioClipId">GunAudioMessage's audioClipId to set (default = 0).</param>
+        public void PlayGunSound(Vector3 position, ItemType itemType, byte volume, byte audioClipId = 0)
+        {
+            GunAudioMessage message = new()
+            {
+                Weapon = itemType,
+                AudioClipId = audioClipId,
+                MaxDistance = volume,
+                ShooterHub = ReferenceHub,
+                ShooterPosition = new RelativePosition(position),
+            };
+
+            Connection.Send(message);
+        }
+
+        /// <summary>
+        /// Set <see cref="CustomInfo"/> to the player that only <paramref name="target"/> can see.
+        /// </summary>
+        /// <param name="target">Target to set info.</param>
+        /// <param name="info">Setting info.</param>
+        public void SetPlayerInfoForTargetOnly(Player target, string info) => MirrorExtensions.SendFakeTargetRpc(ReferenceHub, target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_customPlayerInfoString), info);
+
+        /// <summary>
+        /// Set <see cref="DisplayNickname"/> to the player that only <paramref name="target"/> can see.
+        /// </summary>
+        /// <param name="target">Target to set info.</param>
+        /// <param name="name">Nickname to set.</param>
+        public void SetNameForTargetOnly(Player target, string name) => target.SendFakeSyncVar(NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), name);
+
+        /// <summary>
+        /// Change <see cref="Player"/> character model for appearance.
+        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
+        /// </summary>
+        /// <param name="type">Model type.</param>
+        /// <param name="skipJump">Whether or not to skip the little jump that works around an invisibility issue.</param>
+        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
+        public void ChangeAppearance(RoleTypeId type, bool skipJump = false, byte unitId = 0) => ChangeAppearance(type, List.Where(x => x.ReferenceHub != ReferenceHub), skipJump, unitId);
+
+        /// <summary>
+        /// Change <see cref="Player"/> character model for appearance.
+        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
+        /// </summary>
+        /// <param name="type">Model type.</param>
+        /// <param name="playersToAffect">The players who should see the changed appearance.</param>
+        /// <param name="skipJump">Whether or not to skip the little jump that works around an invisibility issue.</param>
+        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
+        public void ChangeAppearance(RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
+        {
+            if (ReferenceHub.gameObject == null || !RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))
+                return;
+            bool isRisky = type.GetRoleBase().Team is Team.Dead || IsDead;
+
+            NetworkWriterPooled writer = NetworkWriterPool.Get();
+            writer.WriteUShort(38952);
+            writer.WriteUInt(NetId);
+            writer.WriteRoleType(type);
+
+            if (roleBase is PHumanRole humanRole && humanRole.UsesUnitNames)
+            {
+                if (Role.Base is not PHumanRole)
+                    isRisky = true;
+                writer.WriteByte(unitId);
+            }
+
+            if (roleBase is FpcStandardRoleBase fpc)
+            {
+                if (Role.Base is not FpcStandardRoleBase playerfpc)
+                    isRisky = true;
+                else
+                    fpc = playerfpc;
+
+                ushort value = 0;
+                fpc?.FpcModule.MouseLook.GetSyncValues(0, out value, out ushort _);
+                writer.WriteRelativePosition(RelativePosition);
+                writer.WriteUShort(value);
+            }
+
+            if (roleBase is ZombieRole)
+            {
+                if (Role.Base is not ZombieRole)
+                    isRisky = true;
+
+                writer.WriteUShort((ushort)Mathf.Clamp(Mathf.CeilToInt(MaxHealth), ushort.MinValue, ushort.MaxValue));
+            }
+
+            foreach (Player target in playersToAffect)
+            {
+                if (target.ReferenceHub != ReferenceHub || !isRisky)
+                    target.Connection.Send(writer.ToArraySegment());
+                else
+                    Log.Error($"Prevent Seld-Desync of {Nickname} with {type}");
+            }
+
+            NetworkWriterPool.Return(writer);
+
+            // To counter a bug that makes the player invisible until they move after changing their appearance, we will teleport them upwards slightly to force a new position update for all clients.
+            if (!skipJump)
+                Position += Vector3.up * 0.25f;
+        }
+
+        /// <summary>
+        /// Send CASSIE announcement that only <see cref="Player"/> can hear.
+        /// </summary>
+        /// <param name="words">Announcement words.</param>
+        /// <param name="makeHold">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isHeld.</param>
+        /// <param name="makeNoise">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isNoisy.</param>
+        /// <param name="isSubtitles">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isSubtitles.</param>
+        public void PlayCassieAnnouncement(string words, bool makeHold = false, bool makeNoise = true, bool isSubtitles = false)
+        {
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if (controller != null)
+                {
+                    MirrorExtensions.SendFakeTargetRpc(ReferenceHub, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise, isSubtitles);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Send CASSIE announcement with custom subtitles for translation that only <see cref="Player"/> can hear and see it.
+        /// </summary>
+        /// <param name="words">The message to be reproduced.</param>
+        /// <param name="translation">The translation should be show in the subtitles.</param>
+        /// <param name="makeHold">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isHeld.</param>
+        /// <param name="makeNoise">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isNoisy.</param>
+        /// <param name="isSubtitles">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isSubtitles.</param>
+        public void SendCassieAnnouncement(string words, string translation, bool makeHold = false, bool makeNoise = true, bool isSubtitles = true)
+        {
+            StringBuilder announcement = StringBuilderPool.Pool.Get();
+
+            string[] cassies = words.Split('\n');
+            string[] translations = translation.Split('\n');
+
+            for (int i = 0; i < cassies.Length; i++)
+                announcement.Append($"{translations[i].Replace(' ', ' ')}<size=0> {cassies[i]} </size><split>");
+
+            string message = StringBuilderPool.Pool.ToStringReturn(announcement);
+
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if (controller != null)
+                {
+                    MirrorExtensions.SendFakeTargetRpc(ReferenceHub, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), message, makeHold, makeNoise, isSubtitles);
+                }
+            }
         }
 
         /// <summary>

@@ -271,11 +271,11 @@ namespace Exiled.API.Features.Items
         /// <param name="rotation">The <see cref="Quaternion"/> rotation to give the item.</param>
         /// <param name="spawn">Whether the <see cref="Scp330Pickup"/> should be initially spawned.</param>
         /// <returns>The created <see cref="Pickup"/>.</returns>
-        public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
+        public override Pickup CreatePickup(Vector3 position, Quaternion? rotation = null, bool spawn = true)
         {
             PickupSyncInfo info = new(Type, Weight, Serial);
 
-            InventorySystem.Items.Usables.Scp330.Scp330Pickup ipb = (InventorySystem.Items.Usables.Scp330.Scp330Pickup)InventoryExtensions.ServerCreatePickup(Base, info, position, rotation);
+            InventorySystem.Items.Usables.Scp330.Scp330Pickup ipb = (InventorySystem.Items.Usables.Scp330.Scp330Pickup)InventoryExtensions.ServerCreatePickup(Base, info, position, rotation ?? Quaternion.identity);
 
             Base.OnRemoved(ipb);
 

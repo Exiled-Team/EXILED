@@ -13,7 +13,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Behaviours;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Pickups;
@@ -25,10 +24,10 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
     /// Represents the base class for custom pickup behaviors.
     /// </summary>
     /// <remarks>
-    /// This class extends <see cref="EPickupBehaviour"/> and implements <see cref="IPickupBehaviour"/> and <see cref="IAdditiveSettings{T}"/>.
+    /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IPickupBehaviour"/> and <see cref="IAdditiveSettings{T}"/>.
     /// <br/>It provides a foundation for creating custom behaviors associated with in-game pickup.
     /// </remarks>
-    public abstract class PickupBehaviour : EPickupBehaviour, IPickupBehaviour, IAdditiveSettings<PickupSettings>
+    public abstract class PickupBehaviour : ModuleBehaviour<Pickup>, IPickupBehaviour, IAdditiveSettings<PickupSettings>
     {
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before the pickup is gets picked up.

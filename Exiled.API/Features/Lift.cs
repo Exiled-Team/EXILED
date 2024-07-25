@@ -39,9 +39,9 @@ namespace Exiled.API.Features
         internal static readonly Dictionary<ElevatorChamber, Lift> ElevatorChamberToLift = new(8, new ComponentsEqualityComparer());
 
         /// <summary>
-        /// Internal list that contains all ElevatorDoor for current group.
+        /// Internal list that contains all BaseElevatorDoor for current group.
         /// </summary>
-        private readonly List<ElevatorDoor> internalDoorsList = ListPool<ElevatorDoor>.Pool.Get();
+        private readonly List<BaseElevatorDoor> internalDoorsList = ListPool<BaseElevatorDoor>.Pool.Get();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Lift"/> class.
@@ -53,13 +53,13 @@ namespace Exiled.API.Features
             Base = elevator;
             ElevatorChamberToLift.Add(elevator, this);
 
-            internalDoorsList.AddRange(BaseElevatorDoor.AllElevatorDoors[Group].Select(x => Door.Get(x).As<ElevatorDoor>()));
+            internalDoorsList.AddRange(BaseElevatorDoor.AllElevatorDoors[Group]);
         }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="Lift"/> class.
         /// </summary>
-        ~Lift() => ListPool<ElevatorDoor>.Pool.Return(internalDoorsList);
+        ~Lift() => ListPool<BaseElevatorDoor>.Pool.Return(internalDoorsList);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances.
@@ -75,7 +75,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value of the internal doors list.
         /// </summary>
-        public IReadOnlyList<ElevatorDoor> Doors => internalDoorsList;
+        public IReadOnlyList<ElevatorDoor> Doors => internalDoorsList.Select(x => Door.Get(x).As<ElevatorDoor>()).ToList();
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.

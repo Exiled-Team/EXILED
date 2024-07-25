@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Get.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -35,9 +35,6 @@ namespace Exiled.Events.Commands.ConfigValue
 
         /// <inheritdoc/>
         public string Description { get; } = "Gets a config value";
-
-        /// <inheritdoc/>
-        public bool SanitizeResponse { get; }
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

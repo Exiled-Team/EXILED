@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Install.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -41,9 +41,6 @@ namespace Exiled.Events.Commands.PluginManager
 
         /// <inheritdoc/>
         public string Description { get; } = "Installs a plugin";
-
-        /// <inheritdoc/>
-        public bool SanitizeResponse { get; }
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

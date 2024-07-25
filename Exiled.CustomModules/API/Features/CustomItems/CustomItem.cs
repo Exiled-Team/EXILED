@@ -25,6 +25,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
     using UnityEngine;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// A class to easily manage item behavior.
@@ -49,81 +50,94 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomItem"/>'s.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<CustomItem> List => Registered;
 
         /// <summary>
         /// Gets all Items and their respective <see cref="CustomItem"/>.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<Item, CustomItem> ItemManager => ItemsValue;
 
         /// <summary>
         /// Gets all Pickups and their respective <see cref="CustomItem"/>.
         /// </summary>
+        [YamlIgnore]
         public static IReadOnlyDictionary<Pickup, CustomItem> PickupManager => PickupValue;
 
         /// <summary>
         /// Gets all pickups belonging to a <see cref="CustomItem"/>.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<Pickup> CustomPickups => PickupManager.Keys;
 
         /// <summary>
         /// Gets all items belonging to a <see cref="CustomItem"/>.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<Item> CustomItems => ItemManager.Keys;
+
+        /// <inheritdoc/>
+        [YamlIgnore]
+        public override ModulePointer Config { get; set; }
 
         /// <summary>
         /// Gets the <see cref="CustomItem"/>'s <see cref="Type"/>.
         /// </summary>
-        public virtual Type BehaviourComponent { get; }
+        [YamlIgnore]
+        public abstract Type BehaviourComponent { get; }
 
         /// <summary>
-        /// Gets the <see cref="CustomItem"/>'s name.
+        /// Gets or sets the <see cref="CustomItem"/>'s name.
         /// </summary>
-        public override string Name { get; }
+        public override string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomItem"/>'s id.
         /// </summary>
-        public override uint Id { get; protected set; }
+        public override uint Id { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="CustomItem"/> is enabled.
+        /// Gets or sets a value indicating whether the <see cref="CustomItem"/> is enabled.
         /// </summary>
-        public override bool IsEnabled { get; }
+        public override bool IsEnabled { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="CustomItem"/>'s description.
+        /// Gets or sets the <see cref="CustomItem"/>'s description.
         /// </summary>
-        public virtual string Description { get; }
+        public virtual string Description { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="CustomItem"/>'s <see cref="global::ItemType"/>.
+        /// Gets or sets the <see cref="CustomItem"/>'s <see cref="global::ItemType"/>.
         /// </summary>
-        public virtual ItemType ItemType { get; }
+        public virtual ItemType ItemType { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="CustomItem"/>'s <see cref="global::ItemCategory"/>.
+        /// Gets or sets the <see cref="CustomItem"/>'s <see cref="global::ItemCategory"/>.
         /// </summary>
-        public virtual ItemCategory ItemCategory { get; }
+        public virtual ItemCategory ItemCategory { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="Settings"/>.
+        /// Gets or sets the <see cref="Settings"/>.
         /// </summary>
-        public virtual Settings Settings { get; }
+        public virtual Settings Settings { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="CustomItem"/> is registered.
         /// </summary>
+        [YamlIgnore]
         public virtual bool IsRegistered => Registered.Contains(this);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> containing all pickup owning this <see cref="Pickup"/>.
         /// </summary>
+        [YamlIgnore]
         public IEnumerable<Pickup> Pickups => PickupManager.Where(x => x.Value.Id == Id).Select(x => x.Key);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Item"/> containing all item owning this <see cref="CustomItem"/>.
         /// </summary>
+        [YamlIgnore]
         public IEnumerable<Item> Items => ItemsValue.Where(x => x.Value.Id == Id).Select(x => x.Key);
 
         /// <summary>
@@ -355,41 +369,34 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <summary>
         /// Enables all the custom items present in the assembly.
         /// </summary>
-        /// <returns>
-        /// A <see cref="List{T}"/> of <see cref="CustomItem"/> containing all the enabled custom items.
-        /// </returns>
         /// <remarks>
         /// This method dynamically enables all custom items found in the calling assembly. Custom items
-        /// must be marked with the <see cref="CustomItemAttribute"/> to be considered for enabling. If
-        /// a custom item is enabled successfully, it is added to the returned list.
+        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling.
         /// </remarks>
-        public static List<CustomItem> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
 
         /// <summary>
         /// Enables all the custom items present in the assembly.
         /// </summary>
         /// <param name="assembly">The assembly to enable the items from.</param>
-        /// <returns>
-        /// A <see cref="List{T}"/> of <see cref="CustomItem"/> containing all the enabled custom items.
-        /// </returns>
         /// <remarks>
         /// This method dynamically enables all custom items found in the calling assembly. Custom items
-        /// must be marked with the <see cref="CustomItemAttribute"/> to be considered for enabling. If
-        /// a custom item is enabled successfully, it is added to the returned list.
+        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling.
         /// </remarks>
-        public static List<CustomItem> EnableAll(Assembly assembly)
+        public static void EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(ModuleType.CustomItems))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomItems.Name))
                 throw new Exception("ModuleType::CustomItems must be enabled in order to load any custom items");
 
             List<CustomItem> customItems = new();
             foreach (Type type in assembly.GetTypes())
             {
-                CustomItemAttribute attribute = type.GetCustomAttribute<CustomItemAttribute>();
+                ModuleIdentifierAttribute attribute = type.GetCustomAttribute<ModuleIdentifierAttribute>();
                 if (!typeof(CustomItem).IsAssignableFrom(type) || attribute is null)
                     continue;
 
                 CustomItem customItem = Activator.CreateInstance(type) as CustomItem;
+                customItem.DeserializeModule();
 
                 if (!customItem.IsEnabled)
                     continue;
@@ -400,28 +407,21 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 
             if (customItems.Count != Registered.Count)
                 Log.Info($"{customItems.Count} custom items have been successfully registered!");
-
-            return customItems;
         }
 
         /// <summary>
         /// Disables all the custom items present in the assembly.
         /// </summary>
-        /// <returns>
-        /// A <see cref="List{T}"/> of <see cref="CustomItem"/> containing all the disabled custom items.
-        /// </returns>
         /// <remarks>
         /// This method dynamically disables all custom items found in the calling assembly that were
-        /// previously registered. If a custom item is disabled successfully, it is added to the returned list.
+        /// previously registered.
         /// </remarks>
-        public static List<CustomItem> DisableAll()
+        public static void DisableAll()
         {
             List<CustomItem> customItems = new();
             customItems.AddRange(Registered.Where(customItem => customItem.TryUnregister()));
 
             Log.Info($"{customItems.Count} custom items have been successfully unregistered!");
-
-            return customItems;
         }
 
         /// <summary>
@@ -615,9 +615,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// Tries to register a <see cref="CustomItem"/>.
         /// </summary>
         /// <param name="assembly">The assembly to register items from.</param>
-        /// <param name="attribute">The specified <see cref="CustomItemAttribute"/>.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomItem"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, CustomItemAttribute attribute = null)
+        protected override bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {
@@ -640,6 +640,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                 EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
                 Registered.Add(this);
 
+                base.TryRegister(assembly, attribute);
+
                 TypeLookupTable.TryAdd(GetType(), this);
                 BehaviourLookupTable.TryAdd(BehaviourComponent, this);
                 IdLookupTable.TryAdd(Id, this);
@@ -657,7 +659,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// Tries to unregister a <see cref="CustomItem"/>.
         /// </summary>
         /// <returns><see langword="true"/> if the <see cref="CustomItem"/> was unregistered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryUnregister()
+        protected override bool TryUnregister()
         {
             if (!Registered.Contains(this))
             {
@@ -668,6 +670,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 
             EObject.UnregisterObjectType(BehaviourComponent);
             Registered.Remove(this);
+
+            base.TryUnregister();
 
             TypeLookupTable.Remove(GetType());
             BehaviourLookupTable.Remove(BehaviourComponent);

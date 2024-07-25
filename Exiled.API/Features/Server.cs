@@ -181,6 +181,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the List of player currently whitelisted.
+        /// </summary>
+        public static HashSet<string> WhitelistedPlayers => WhiteList.Users;
+
+        /// <summary>
         /// Gets a value indicating whether or not this server is verified.
         /// </summary>
         public static bool IsVerified => CustomNetworkManager.IsVerified;
@@ -266,6 +271,14 @@ namespace Exiled.API.Features
         /// </summary>
         /// <seealso cref="ShutdownRedirect(ushort)"/>
         public static void Shutdown() => global::Shutdown.Quit();
+
+        /// <summary>
+        /// Shutdowns the server, disconnects all players.
+        /// </summary>
+        /// <param name="quit">Indicates whether to terminate the application after shutting down the server.</param>
+        /// <param name="suppressShutdownBroadcast">Indicates whether to suppress the broadcast notification about the shutdown.</param>
+        /// <seealso cref="ShutdownRedirect(ushort)"/>
+        public static void Shutdown(bool quit, bool suppressShutdownBroadcast = false) => global::Shutdown.Quit(quit, suppressShutdownBroadcast);
 
         /// <summary>
         /// Redirects players to a server on another port, restarts the current server.

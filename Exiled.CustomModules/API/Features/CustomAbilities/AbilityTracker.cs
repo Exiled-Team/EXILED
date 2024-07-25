@@ -7,6 +7,8 @@
 
 namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
+    using Exiled.CustomModules.API.Features.Generic;
+
     /// <summary>
     /// The actor which handles all tracking-related tasks for item abilities.
     /// </summary>

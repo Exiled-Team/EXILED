@@ -63,7 +63,7 @@ namespace Exiled.API.Features.Items
             if (Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.Flashlight))
                 firearmStatusFlags.AddFlags(FirearmStatusFlags.FlashlightEnabled);
 
-            Base.Status = new(Base.AmmoManagerModule.MaxAmmo, firearmStatusFlags, Base.GetCurrentAttachmentsCode());
+            Base.Status = new(MaxAmmo, firearmStatusFlags, Base.GetCurrentAttachmentsCode());
         }
 
         /// <inheritdoc cref="BaseCodesValue"/>.
@@ -117,7 +117,7 @@ namespace Exiled.API.Features.Items
         [EProperty(category: nameof(Firearm))]
         public byte MaxAmmo
         {
-            get => Base.AmmoManagerModule.MaxAmmo;
+            get => Base.AmmoManagerModule?.MaxAmmo ?? 0;
             set
             {
                 switch (Base.AmmoManagerModule)
@@ -696,12 +696,14 @@ namespace Exiled.API.Features.Items
         {
             base.ReadPickupInfo(pickup);
 
-            if (pickup is Pickups.FirearmPickup firearm)
-            {
-                Base.OnAdded(firearm.Base);
+            if (pickup is not Pickups.FirearmPickup firearm)
+                return;
+
+            Base.OnAdded(firearm.Base);
+            AmmoType = firearm.AmmoType;
+
+            if (Base is not ParticleDisruptor)
                 MaxAmmo = firearm.MaxAmmo;
-                AmmoType = firearm.AmmoType;
-            }
         }
     }
 }

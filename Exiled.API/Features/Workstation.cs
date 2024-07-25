@@ -103,9 +103,9 @@ namespace Exiled.API.Features
         /// <param name="position">The position to spawn it at.</param>
         /// <param name="rotation">The rotation to spawn it as.</param>
         /// <returns>The Workstation that was spawned.</returns>
-        public static Workstation Spawn(Vector3 position, Quaternion rotation = default)
+        public static Workstation Spawn(Vector3 position, Quaternion? rotation = null)
         {
-            WorkstationController controller = PrefabHelper.Spawn<WorkstationController>(PrefabType, position, rotation);
+            WorkstationController controller = PrefabHelper.Spawn<WorkstationController>(PrefabType, position, rotation ?? Quaternion.identity);
             return Get(controller);
         }
 

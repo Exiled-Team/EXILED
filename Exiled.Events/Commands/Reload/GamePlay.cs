@@ -35,9 +35,6 @@ namespace Exiled.Events.Commands.Reload
         public string Description { get; } = "Reloads gameplay configs.";
 
         /// <inheritdoc />
-        public bool SanitizeResponse { get; }
-
-        /// <inheritdoc />
         public string Permission { get; } = "ee.reloadgameplay";
 
         /// <inheritdoc/>

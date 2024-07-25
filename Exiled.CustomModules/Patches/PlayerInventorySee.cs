@@ -12,11 +12,10 @@ namespace Exiled.CustomModules.Patches
     using System.Reflection.Emit;
 
     using CommandSystem.Commands.RemoteAdmin;
-
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Features.Items;
     using Exiled.CustomModules.API.Features.CustomItems;
-
     using HarmonyLib;
     using InventorySystem.Items;
 
@@ -26,6 +25,7 @@ namespace Exiled.CustomModules.Patches
     /// Patches <see cref="PlayerInventoryCommand.Execute"/>.
     /// Adds the CustomItem support.
     /// </summary>
+    [PatchGroup(nameof(CustomItem))]
     [HarmonyPatch(typeof(PlayerInventoryCommand), nameof(PlayerInventoryCommand.Execute))]
     public class PlayerInventorySee
     {

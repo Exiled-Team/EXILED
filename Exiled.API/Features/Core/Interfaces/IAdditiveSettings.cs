@@ -7,12 +7,10 @@
 
 namespace Exiled.API.Features.Core.Interfaces
 {
-    using Exiled.API.Features.Core.Behaviours;
-
     /// <summary>
     /// Defines additive settings set up through user-defined properties.
     /// </summary>
-    /// <typeparam name="T">The <see cref="EPlayerBehaviour"/> type.</typeparam>
+    /// <typeparam name="T">The <see cref="IAdditiveProperty"/> type.</typeparam>
     public interface IAdditiveSettings<T> : IAdditivePipe
         where T : IAdditiveProperty
     {
@@ -20,10 +18,5 @@ namespace Exiled.API.Features.Core.Interfaces
         /// Gets or sets the <typeparamref name="T"/> settings.
         /// </summary>
         public T Settings { get; set; }
-
-        /// <summary>
-        /// Gets or sets the configs.
-        /// </summary>
-        public EConfig Config { get; set; }
     }
 }

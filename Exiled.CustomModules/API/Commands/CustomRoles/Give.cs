@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Give.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -42,9 +42,6 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
         /// <inheritdoc/>
         public string Description { get; } = "Gives the specified custom role to the indicated player(s).";
 
-        /// <inheritdoc cref="SanitizeResponse" />
-        public bool SanitizeResponse { get; } = true;
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -70,16 +67,17 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
 
                 if (arguments.Count == 1)
                 {
-                    Pawn player = Player.Get(arguments.At(1)).Cast<Pawn>();
-                    if (player is null)
+                    if (sender is PlayerCommandSender playerCommandSender)
                     {
-                        response = "Player not found";
-                        return false;
+                        Pawn player = Player.Get(playerCommandSender).Cast<Pawn>();
+
+                        role.Spawn(player);
+                        response = $"{role.Name} given to {player.Nickname}.";
+                        return true;
                     }
 
-                    role.Spawn(player);
-                    response = $"{role.Name} given to {player.Nickname}.";
-                    return true;
+                    response = "Failed to provide a valid player.";
+                    return false;
                 }
 
                 string identifier = string.Join(" ", arguments.Skip(1));

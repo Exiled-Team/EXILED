@@ -4,7 +4,7 @@
     <PropertyGroup>
         <AssemblyName>Exiled.API</AssemblyName>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <Configurations>Debug;Release;Installer</Configurations>
+        <Configurations>Debug;Release;Optimized;Installer</Configurations>
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 

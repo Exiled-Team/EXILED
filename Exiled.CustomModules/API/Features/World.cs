@@ -43,14 +43,14 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets the <see cref="CustomGameModes.GameState"/>.
         /// <para/>
-        /// Requires <see cref="ModuleType.CustomGameModes"/> to be enabled.
+        /// Requires <see cref="UUModuleType.CustomGameModes"/> to be enabled.
         /// </summary>
         public GameState GameState => gameState ??= GetComponent<GameState>();
 
         /// <summary>
         /// Gets or sets the dequeue rate, expressed in seconds.
         /// <para/>
-        /// Requires <see cref="ModuleType.CustomGameModes"/> to be enabled.
+        /// Requires <see cref="UUModuleType.CustomGameModes"/> to be enabled.
         /// <para/>
         /// If enqueued, the game mode will be continuously evaluated until it starts or the enqueued game mode changes.
         /// <br/>
@@ -62,14 +62,14 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets the enqueued game mode.
         /// <para/>
-        /// Requires <see cref="ModuleType.CustomGameModes"/> to be enabled.
+        /// Requires <see cref="UUModuleType.CustomGameModes"/> to be enabled.
         /// </summary>
         public uint EnqueuedGameMode => enqueuedGameMode.Id;
 
         /// <summary>
         /// Gets or sets the running game mode.
         /// <para/>
-        /// Requires <see cref="ModuleType.CustomGameModes"/> to be enabled.
+        /// Requires <see cref="UUModuleType.CustomGameModes"/> to be enabled.
         /// </summary>
         public uint RunningGameMode { get; protected internal set; }
 
@@ -88,7 +88,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Enqueues a custom game mode for execution.
         /// <para/>
-        /// Requires <see cref="ModuleType.CustomGameModes"/> to be enabled.
+        /// Requires <see cref="UUModuleType.CustomGameModes"/> to be enabled.
         /// </summary>
         /// <param name="customGameMode">The custom game mode to enqueue.</param>
         /// <param name="continuously">Whether to continuously enqueue the game mode.</param>
@@ -107,7 +107,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Enqueues a custom game mode by its ID for execution.
         /// <para/>
-        /// Requires <see cref="ModuleType.CustomGameModes"/> to be enabled.
+        /// Requires <see cref="UUModuleType.CustomGameModes"/> to be enabled.
         /// </summary>
         /// <param name="id">The ID of the custom game mode to enqueue.</param>
         /// <param name="continuously">Whether to continuously enqueue the game mode.</param>
@@ -122,7 +122,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Clears the current game mode queue.
         /// <para/>
-        /// Requires <see cref="ModuleType.CustomGameModes"/> to be enabled.
+        /// Requires <see cref="UUModuleType.CustomGameModes"/> to be enabled.
         /// </summary>
         public virtual void ClearQueue()
         {
@@ -138,7 +138,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Starts the execution of the enqueued game mode.
         /// <para/>
-        /// Requires <see cref="ModuleType.CustomGameModes"/> to be enabled.
+        /// Requires <see cref="UUModuleType.CustomGameModes"/> to be enabled.
         /// </summary>
         /// <param name="customGameMode">The custom game mode to start.</param>
         /// <param name="isForced">Whether to force-start the game mode.</param>
@@ -193,14 +193,14 @@ namespace Exiled.CustomModules.API.Features
         {
             base.SubscribeEvents();
 
-            if (CustomModules.IsModuleLoaded(ModuleType.CustomRoles))
+            if (CustomModules.IsModuleLoaded(UUModuleType.CustomRoles))
             {
                 CustomRole.ChangedCustomRoleDispatcher.Bind(this, OnChangedCustomRole);
 
                 Exiled.Events.Handlers.Server.EndingRound += OnEndingRound;
             }
 
-            if (CustomModules.IsModuleLoaded(ModuleType.CustomGameModes))
+            if (CustomModules.IsModuleLoaded(UUModuleType.CustomGameModes))
             {
                 Exiled.Events.Handlers.Server.RoundStarted += OnRoundStarted;
             }
@@ -211,14 +211,14 @@ namespace Exiled.CustomModules.API.Features
         {
             base.UnsubscribeEvents();
 
-            if (CustomModules.IsModuleLoaded(ModuleType.CustomRoles))
+            if (CustomModules.IsModuleLoaded(UUModuleType.CustomRoles))
             {
                 CustomRole.ChangedCustomRoleDispatcher.Unbind(this);
 
                 Exiled.Events.Handlers.Server.EndingRound -= OnEndingRound;
             }
 
-            if (CustomModules.IsModuleLoaded(ModuleType.CustomGameModes))
+            if (CustomModules.IsModuleLoaded(UUModuleType.CustomGameModes))
             {
                 Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStarted;
             }
