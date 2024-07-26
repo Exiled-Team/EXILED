@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.CustomModules.API.Features.Generic;
+
 namespace Exiled.CustomModules.API.Features
 {
     using System;
@@ -221,7 +223,6 @@ namespace Exiled.CustomModules.API.Features
             .WithTypeConverter(new AttachmentIdentifiersConverter())
             .WithTypeConverter(new EnumClassConverter())
             .WithTypeConverter(new PrivateConstructorConverter())
-            .WithTypeConverter(new CustomModuleSerializer())
             .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
             .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
             .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
@@ -239,9 +240,8 @@ namespace Exiled.CustomModules.API.Features
             .WithTypeConverter(new AttachmentIdentifiersConverter())
             .WithTypeConverter(new EnumClassConverter())
             .WithTypeConverter(new PrivateConstructorConverter())
-            .WithTypeConverter(new CustomModuleSerializer())
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .WithNodeDeserializer(inner => new CustomModuleDeserializer(), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
             .WithDuplicateKeyChecking()
             .IgnoreFields()
             .IgnoreUnmatchedProperties()
