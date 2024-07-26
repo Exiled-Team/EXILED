@@ -1,7 +1,7 @@
 # EXILED - EXtended In-runtime Library for External Development
 
 ![EXILED CI](https://github.com/Exiled-Team/EXILED/workflows/EXILED%20CI/badge.svg?branch=2.0.0)
-![GitHub Release](https://img.shields.io/github/release/galaxy119/EXILED/all.svg?style=flat)
+![GitHub Release](https://img.shields.io/github/release/Exiled-Team/EXILED/all.svg?style=flat)
 ![Github All Releases](https://img.shields.io/github/downloads/galaxy119/EXILED/total.svg?style=flat) 
 <a href="https://discord.gg/835XQcCCVv">
   <img src="https://img.shields.io/discord/1261714360854646905?logo=discord" alt="Chat on Discord">
