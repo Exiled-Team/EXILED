@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.CustomModules.API.Features.Generic;
-
 namespace Exiled.CustomModules.API.Features
 {
     using System;
