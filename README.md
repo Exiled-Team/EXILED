@@ -1,6 +1,6 @@
 # EXILED - EXtended In-runtime Library for External Development
 
-![EXILED CI](https://github.com/Exiled-Team/EXILED/workflows/EXILED%20CI/badge.svg?branch=2.0.0)
+![EXILED CI](https://github.com/Exiled-Team/EXILED/workflows/EXILED%20CI/badge.svg?branch=exiled-3.0)
 <a href="https://github.com/Exiled-Team/EXILED/releases">
   <img src="https://img.shields.io/github/release/Exiled-Team/EXILED/all.svg?style=flat" alt="GitHub Releases">
 </a>
