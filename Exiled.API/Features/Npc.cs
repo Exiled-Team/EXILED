@@ -237,7 +237,7 @@ namespace Exiled.API.Features
             if (rotation.eulerAngles.z != 0f)
                 rotation = Quaternion.LookRotation(rotation * Vector3.forward, Vector3.up);
 
-            Vector2 angles = new Vector2(-rotation.eulerAngles.x, rotation.eulerAngles.y);
+            Vector2 angles = new(-rotation.eulerAngles.x, rotation.eulerAngles.y);
 
             ushort hor = (ushort)Mathf.RoundToInt(Mathf.Repeat(angles.y, 360f) * (ushort.MaxValue / 360f));
             ushort vert = (ushort)Mathf.RoundToInt(Mathf.Clamp(Mathf.Repeat(angles.x + 90f, 360f) - 2f, 0f, 176f) * (ushort.MaxValue / 176f));
@@ -270,7 +270,7 @@ namespace Exiled.API.Features
             if (!firearm.Base.ActionModule.ServerAuthorizeShot())
                 return false;
 
-            ShotMessage message = new ShotMessage()
+            ShotMessage message = new()
             {
                 ShooterCameraRotation = CameraTransform.rotation,
                 ShooterPosition = new RelativePosition(Transform.position),

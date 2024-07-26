@@ -74,7 +74,7 @@ namespace Exiled.Loader.GHApi.Models
             Assets = assets;
             Description = string.Empty;
 
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new())
             {
                 HttpResponseMessage response = client.GetAsync(URL + TagName).GetAwaiter().GetResult();
 

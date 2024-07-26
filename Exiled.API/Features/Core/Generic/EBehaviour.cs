@@ -26,6 +26,14 @@ namespace Exiled.API.Features.Core.Generic
         where T : GameEntity
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="EBehaviour{T}"/> class.
+        /// </summary>
+        protected EBehaviour()
+            : base()
+        {
+        }
+
+        /// <summary>
         /// Gets or sets the owner of the <see cref="EBehaviour{T}"/>.
         /// </summary>
         public virtual T Owner { get; protected set; }

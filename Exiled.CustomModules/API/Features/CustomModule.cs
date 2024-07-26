@@ -213,9 +213,9 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the serializer for custom modules.
+        /// Gets the serializer for custom modules.
         /// </summary>
-        private static ISerializer ModuleSerializer { get; set; } = new SerializerBuilder()
+        private static ISerializer ModuleSerializer { get; } = new SerializerBuilder()
             .WithTypeConverter(new VectorsConverter())
             .WithTypeConverter(new ColorConverter())
             .WithTypeConverter(new AttachmentIdentifiersConverter())
@@ -230,16 +230,16 @@ namespace Exiled.CustomModules.API.Features
             .Build();
 
         /// <summary>
-        /// Gets or sets the deserializer for custom modules.
+        /// Gets the deserializer for custom modules.
         /// </summary>
-        private static IDeserializer ModuleDeserializer { get; set; } = new DeserializerBuilder()
+        private static IDeserializer ModuleDeserializer { get; } = new DeserializerBuilder()
             .WithTypeConverter(new VectorsConverter())
             .WithTypeConverter(new ColorConverter())
             .WithTypeConverter(new AttachmentIdentifiersConverter())
             .WithTypeConverter(new EnumClassConverter())
             .WithTypeConverter(new PrivateConstructorConverter())
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithNodeDeserializer(inner => new CustomModuleDeserializer(), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .WithNodeDeserializer(_ => new CustomModuleDeserializer(), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
             .WithDuplicateKeyChecking()
             .IgnoreFields()
             .IgnoreUnmatchedProperties()

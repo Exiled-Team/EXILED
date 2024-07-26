@@ -356,10 +356,8 @@ namespace Exiled.API.Features.Core
         /// <returns>The new <see cref="EObject"/> instance.</returns>
         public static EObject CreateDefaultSubobject(Type type, params object[] parameters)
         {
-            BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-#pragma warning disable IDE0019 // Use pattern matching
+            const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
             EObject @object = Activator.CreateInstance(type, flags, null, parameters, null) as EObject;
-#pragma warning restore IDE0019 // Use pattern matching
 
             // Do not use implicit bool conversion as @object may be null
             if (@object != null)
