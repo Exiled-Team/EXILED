@@ -6,10 +6,9 @@
 </a>
 ![Github All Downloads](https://img.shields.io/github/downloads/Exiled-Team/EXILED/total.svg?style=flat)
 ![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev)
-<a href="https://discord.gg/PyUkWTg">
-  <img src="https://img.shields.io/discord/656673194693885975?logo=discord" alt="Chat on Discord">
+<a href="https://discord.gg/835XQcCCVv">
+  <img src="https://img.shields.io/discord/1261714360854646905?logo=discord" alt="Chat on Discord">
 </a>
-
 
 EXILED is a high-level plugin framework for SCP: Secret Laboratory servers. It offers an event system for developers to hook into in order to manipulate or change game code or implement their own functions.
 All EXILED events are coded with Harmony, meaning they require no direct editing of server assemblies to function, which allows for two unique benefits.
