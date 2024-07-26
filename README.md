@@ -1,6 +1,6 @@
 # EXILED - EXtended In-runtime Library for External Development
 
-Join our [[Discord](https://discord.gg/PyUkWTg)]!
+Join our [[Discord](https://discord.gg/835XQcCCVv)]!
 
 EXILED is a low-level plugin framework for SCP: Secret Laboratory servers. It offers an event system for developers to hook in order to manipulate or change game code, or implement their own functions.
 All EXILED events are coded with Harmony, meaning they require no direct editing of server Assemblies to function, which allows for two unique benefits.
