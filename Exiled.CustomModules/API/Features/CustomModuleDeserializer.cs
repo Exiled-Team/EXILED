@@ -26,7 +26,7 @@ namespace Exiled.CustomModules.API.Features
         /// <inheritdoc />
         public bool Deserialize(IParser parser, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer, out object value)
         {
-            if (IsCustomModule(expectedType))
+            if (expectedType.IsAssignableFrom(typeof(CustomModule)))
                 return DeserializeModule(parser, expectedType, nestedObjectDeserializer, out value);
 
             if (expectedType.IsAssignableFrom(typeof(RoleSettings)))
@@ -107,24 +107,6 @@ namespace Exiled.CustomModules.API.Features
             parser.Consume<MappingEnd>();
             value = roleSettings;
             return true;
-        }
-
-        /// <summary>
-        /// Checks whether the given type is a custom module.
-        /// </summary>
-        /// <param name="type">The given type.</param>
-        /// <returns>Whether the given type is a custom module.</returns>
-        internal static bool IsCustomModule(Type type)
-        {
-            while (type is not null)
-            {
-                if (type.IsAssignableFrom(typeof(CustomModule)))
-                    return true;
-
-                type = type.BaseType;
-            }
-
-            return false;
         }
     }
 }
