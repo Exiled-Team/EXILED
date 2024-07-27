@@ -118,7 +118,7 @@ namespace Exiled.Events.Handlers.Internal
 
             for (; ;)
             {
-                ServerConsole.AddLog("Exiled support has ended. For updates and new releases, join us at discord.gg/exiledreboot!", ConsoleColor.DarkRed);
+                ServerConsole.AddLog("Exiled support has ended. For updates and new releases, join us at https://exiled.to/discord!", ConsoleColor.DarkRed);
                 ServerConsole.AddLog("Exiled Reboot will not load plugins until you acknowledge this message by setting the 'Reboot' Loader config to true.", ConsoleColor.DarkRed);
                 ServerConsole.AddLog("Run the commands 'exiled reboot', 'exiled ack' or 'exiled exboot' to temporary suppress the logs.", ConsoleColor.DarkRed);
 
