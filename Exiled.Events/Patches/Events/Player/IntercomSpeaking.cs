@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Reflection.Emit;
 
     using API.Features.Core.Generic.Pools;

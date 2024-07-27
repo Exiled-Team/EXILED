@@ -7,16 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Server
 {
-    using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
-
-    using API.Enums;
-    using API.Features;
     using Interfaces;
-    using PlayerRoles;
-    using PlayerRoles.RoleAssign;
     using Respawning;
 
     /// <summary>

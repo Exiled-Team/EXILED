@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System;
-
     using Exiled.API.Features.Core.Attributes;
 
     using Exiled.API.Interfaces;

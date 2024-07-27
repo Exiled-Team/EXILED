@@ -8,7 +8,6 @@
 namespace Exiled.Events.EventArgs.Item
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     using API.Features;
     using API.Features.Items;

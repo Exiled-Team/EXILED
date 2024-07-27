@@ -11,7 +11,6 @@ namespace Exiled.Events.Commands.Reload
 
     using CommandSystem;
     using Exiled.API.Interfaces;
-    using Exiled.Permissions.Extensions;
     using Loader;
 
     /// <summary>

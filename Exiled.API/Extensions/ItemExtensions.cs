@@ -15,7 +15,6 @@ namespace Exiled.API.Extensions
     using Features.Items;
     using InventorySystem;
     using InventorySystem.Items;
-    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;

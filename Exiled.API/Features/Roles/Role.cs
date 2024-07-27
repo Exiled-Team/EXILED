@@ -10,12 +10,10 @@ namespace Exiled.API.Features.Roles
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using Enums;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Attributes;
-    using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Extensions;

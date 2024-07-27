@@ -8,13 +8,10 @@
 namespace Exiled.CustomModules.Events.EventArgs.CustomItems
 {
     using Exiled.API.Features;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Items;
     using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
     using Exiled.Events.EventArgs.Player;
-
-    using InventorySystem.Items;
 
     using PlayerRoles;
 

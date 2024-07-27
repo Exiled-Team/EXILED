@@ -7,7 +7,6 @@
 
 namespace Exiled.CustomModules.API.Features.Deserializers.Inheritables
 {
-    using System;
     using System.Reflection;
 
     using Exiled.CustomModules.API.Features.CustomRoles;

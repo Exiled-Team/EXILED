@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.EventArgs.Scp914
 {
-    using System;
-
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Scp914Processors;
     using Exiled.Events.EventArgs.Interfaces;

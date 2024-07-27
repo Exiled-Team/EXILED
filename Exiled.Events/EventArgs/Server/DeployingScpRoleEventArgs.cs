@@ -9,10 +9,6 @@ namespace Exiled.Events.EventArgs.Server
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-
-    using API.Enums;
-    using API.Features;
 
     using Interfaces;
 

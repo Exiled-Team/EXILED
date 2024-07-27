@@ -8,9 +8,7 @@
 namespace Exiled.API.Extensions
 {
     using Exiled.API.Enums;
-    using Exiled.API.Features;
     using MapGeneration;
-    using UnityEngine;
 
     /// <summary>
     /// A set of extensions for <see cref="RoomType"/> and <see cref="ZoneType"/>.

@@ -15,8 +15,6 @@ namespace Exiled.Events.Patches.Generic.Scp079API
 
     using static HarmonyLib.AccessTools;
 
-    using Scp049Role = API.Features.Roles.Scp049Role;
-
     /// <summary>
     /// Patches <see cref="RoundSummary.ServerOnRespawned(Respawning.SpawnableTeamType, List{ReferenceHub})"/>.
     /// Adds the <see cref="RoundSummary.RespawnTargetMultiplier" /> as NW config.

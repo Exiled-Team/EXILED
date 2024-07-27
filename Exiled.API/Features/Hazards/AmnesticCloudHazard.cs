@@ -8,12 +8,8 @@
 namespace Exiled.API.Features.Hazards
 {
     using Exiled.API.Enums;
-    using Exiled.API.Extensions;
-    using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp939;
     using UnityEngine;
-
-    using Scp939GameRole = PlayerRoles.PlayableScps.Scp939.Scp939Role;
 
     /// <summary>
     /// A wrapper for SCP-939's amnestic cloud.

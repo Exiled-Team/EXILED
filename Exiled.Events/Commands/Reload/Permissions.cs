@@ -12,7 +12,6 @@ namespace Exiled.Events.Commands.Reload
     using CommandSystem;
     using Exiled.API.Interfaces;
     using Exiled.Events.Handlers;
-    using Exiled.Permissions.Extensions;
 
     /// <summary>
     /// The reload permissions command.

@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.EventArgs.Scp914
 {
-    using System;
-
     using API.Features;
     using API.Features.Items;
     using Exiled.API.Features.Scp914Processors;

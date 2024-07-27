@@ -7,17 +7,11 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
-
     using API.Features;
-    using API.Features.Core.Generic.Pools;
 
     using HarmonyLib;
 
     using PlayerRoles.PlayableScps.Scp079;
-
-    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp079Recontainer.OnDestroy"/>.

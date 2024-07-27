@@ -8,7 +8,6 @@
 namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
-    using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;

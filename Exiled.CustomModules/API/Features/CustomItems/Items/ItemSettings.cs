@@ -8,7 +8,6 @@
 namespace Exiled.CustomModules.API.Features.CustomItems.Items
 {
     using Exiled.API.Features;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Spawn;
 
     using UnityEngine;

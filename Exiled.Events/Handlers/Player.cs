@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.API.Features.Pickups;
 #pragma warning disable IDE0079
 #pragma warning disable IDE0060
 #pragma warning disable SA1623 // Property summary documentation should match accessors

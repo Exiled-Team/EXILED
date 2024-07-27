@@ -9,10 +9,7 @@ namespace Exiled.Events.Patches.Fixes
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
-
-    using API.Features;
     using API.Features.Core.Generic.Pools;
-    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 

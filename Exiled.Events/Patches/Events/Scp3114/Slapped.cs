@@ -8,10 +8,7 @@
 namespace Exiled.Events.Patches.Events.Scp3114
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection.Emit;
-
-    using Exiled.API.Features;
     using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Scp3114;

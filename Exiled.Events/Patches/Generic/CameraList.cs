@@ -9,21 +9,12 @@ namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1402
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
-
     using API.Features;
-
-    using Exiled.API.Features.Core.Generic.Pools;
 
     using HarmonyLib;
 
-    using MapGeneration;
-
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
-
-    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp079InteractableBase.OnRegistered"/>.

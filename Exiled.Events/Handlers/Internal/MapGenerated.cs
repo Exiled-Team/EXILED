@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Handlers.Internal
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 

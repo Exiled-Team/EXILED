@@ -12,8 +12,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Core.Generic.Pools;
-
-    using Exiled.API.Features.Roles;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 

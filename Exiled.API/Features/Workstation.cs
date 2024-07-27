@@ -16,7 +16,6 @@ namespace Exiled.API.Features
     using Interactables;
     using InventorySystem.Items.Firearms.Attachments;
     using MapGeneration;
-    using Mirror;
     using UnityEngine;
 
     /// <summary>

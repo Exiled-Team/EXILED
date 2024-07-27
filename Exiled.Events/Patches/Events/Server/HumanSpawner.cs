@@ -15,7 +15,6 @@ namespace Exiled.Events.Patches.Events.Server
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Server;
     using HarmonyLib;
-    using Respawning;
 
     using static HarmonyLib.AccessTools;
 

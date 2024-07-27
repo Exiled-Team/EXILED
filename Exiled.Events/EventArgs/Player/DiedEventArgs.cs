@@ -13,8 +13,6 @@ namespace Exiled.Events.EventArgs.Player
     using Interfaces;
 
     using PlayerRoles;
-
-    using CustomAttackerHandler = API.Features.DamageHandlers.AttackerDamageHandler;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>

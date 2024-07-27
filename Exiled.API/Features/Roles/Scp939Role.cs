@@ -19,7 +19,6 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
     using PlayerRoles.PlayableScps.Scp939.Ripples;
     using PlayerRoles.Subroutines;
-    using PluginAPI.Roles;
     using RelativePositioning;
     using UnityEngine;
 

@@ -17,9 +17,7 @@ namespace Exiled.Events.Commands.PluginManager
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using Exiled.Events.Features;
-    using Exiled.Permissions.Extensions;
     using NorthwoodLib.Pools;
-    using RemoteAdmin;
 
     /// <summary>
     /// The command to show all the patches done by plugins.

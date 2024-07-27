@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.EventArgs.Scp049
 {
-    using System;
-
     using API.Features;
     using Exiled.Events.EventArgs.Interfaces;
 

@@ -11,8 +11,6 @@ namespace Exiled.Events.Commands.PluginManager
 
     using API.Interfaces;
     using CommandSystem;
-    using Exiled.Permissions.Extensions;
-    using RemoteAdmin;
 
     /// <summary>
     /// The command to disable a plugin.

@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Pickups
 {
-    using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Interfaces;
 

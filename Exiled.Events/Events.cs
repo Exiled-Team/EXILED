@@ -17,7 +17,6 @@ namespace Exiled.Events
     using CentralAuth;
     using Exiled.API.Interfaces;
     using Exiled.Events.Features;
-    using HarmonyLib;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables;
     using PlayerRoles.Ragdolls;

@@ -7,10 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Server
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Features.Core.Generic.Pools;
@@ -19,11 +16,8 @@ namespace Exiled.Events.Patches.Events.Server
     using Exiled.Events.Handlers;
     using HarmonyLib;
     using Respawning;
-    using Respawning.NamingRules;
 
     using static HarmonyLib.AccessTools;
-
-    using Player = API.Features.Player;
 
     /// <summary>
     /// Patch the <see cref="RespawnManager.RestartSequence"/>.

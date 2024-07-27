@@ -8,10 +8,7 @@
 namespace Exiled.CustomModules.Events.EventArgs.CustomRoles
 {
     using System.Collections.Generic;
-
-    using API.Enums;
     using Exiled.Events.EventArgs.Interfaces;
-    using PlayerRoles;
 
     /// <summary>
     /// Contains all information before assigning human roles.

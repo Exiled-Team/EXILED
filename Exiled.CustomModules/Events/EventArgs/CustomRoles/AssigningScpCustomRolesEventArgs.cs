@@ -9,12 +9,8 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomRoles
 {
     using System.Collections.Generic;
     using System.Linq;
-
-    using API.Enums;
-    using API.Features;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
-    using PlayerRoles;
 
     /// <summary>
     /// Contains all information before assigning SCP roles.

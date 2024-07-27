@@ -10,7 +10,6 @@ namespace Exiled.CustomModules
     using System.ComponentModel;
 
     using Exiled.API.Interfaces;
-    using Exiled.CustomModules.API.Enums;
 
     /// <summary>
     /// The plugin's config.

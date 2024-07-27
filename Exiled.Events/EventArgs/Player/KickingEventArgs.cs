@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
-    using System;
-    using System.Linq;
     using System.Reflection;
 
     using API.Features;

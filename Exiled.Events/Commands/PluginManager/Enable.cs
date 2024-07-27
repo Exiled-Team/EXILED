@@ -15,8 +15,6 @@ namespace Exiled.Events.Commands.PluginManager
     using API.Interfaces;
     using CommandSystem;
     using Exiled.API.Features;
-    using Exiled.Permissions.Extensions;
-    using RemoteAdmin;
 
     /// <summary>
     /// The command to enable a plugin.

@@ -9,16 +9,9 @@ namespace Exiled.API.Features.Hazards
 {
     using CustomPlayerEffects;
     using Exiled.API.Enums;
-    using Exiled.API.Extensions;
     using global::Hazards;
-    using Mirror;
-    using PlayerRoles;
-    using PlayerRoles.PlayableScps.Scp173;
     using RelativePositioning;
     using UnityEngine;
-
-    using Object = UnityEngine.Object;
-    using Scp173GameRole = PlayerRoles.PlayableScps.Scp173.Scp173Role;
 
     /// <summary>
     /// A wrapper for <see cref="TantrumEnvironmentalHazard"/>.
