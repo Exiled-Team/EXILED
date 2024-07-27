@@ -3928,6 +3928,34 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Sends to the player a Fake Change Scene.
+        /// </summary>
+        /// <param name="newSceneName">The new Scene the client will load.</param>
+        public void SendFakeSceneLoading(string newSceneName)
+        {
+            SceneMessage message = new()
+            {
+                sceneName = newSceneName,
+            };
+
+            Connection.Send(message);
+        }
+
+        /// <summary>
+        /// Sends to the player a Fake Change Scene.
+        /// </summary>
+        /// <param name="newSceneName">The new Scene the client will load.</param>
+        public void SendFakeSceneLoading(ScenesType newSceneName)
+        {
+            SceneMessage message = new()
+            {
+                sceneName = newSceneName.ToString(),
+            };
+
+            Connection.Send(message);
+        }
+
+        /// <summary>
         /// Plays a beep sound that only the player can hear.
         /// </summary>
         public void PlayBeepSound() => MirrorExtensions.SendFakeTargetRpc(ReferenceHub, ReferenceHub.HostHub.networkIdentity, typeof(AmbientSoundPlayer), nameof(AmbientSoundPlayer.RpcPlaySound), 7);

@@ -10,7 +10,7 @@ namespace Exiled.API.Features
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-
+    using Exiled.API.Enums;
     using GameCore;
 
     using Interfaces;
@@ -325,6 +325,34 @@ namespace Exiled.API.Features
 
             result = default;
             return false;
+        }
+
+        /// <summary>
+        /// Emulation of the method SCP:SL uses to change scene.
+        /// </summary>
+        /// <param name="newSceneName">The new Scene the client will load.</param>
+        public static void ChangeSceneToAllClients(string newSceneName)
+        {
+            SceneMessage message = new()
+            {
+                sceneName = newSceneName,
+            };
+
+            NetworkServer.SendToAll(message);
+        }
+
+        /// <summary>
+        /// Emulation of the method SCP:SL uses to change scene.
+        /// </summary>
+        /// <param name="scene">The new Scene the client will load.</param>
+        public static void ChangeSceneToAllClients(ScenesType scene)
+        {
+            SceneMessage message = new()
+            {
+                sceneName = scene.ToString(),
+            };
+
+            NetworkServer.SendToAll(message);
         }
     }
 }
