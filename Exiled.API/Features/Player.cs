@@ -3945,15 +3945,7 @@ namespace Exiled.API.Features
         /// Sends to the player a Fake Change Scene.
         /// </summary>
         /// <param name="newSceneName">The new Scene the client will load.</param>
-        public void SendFakeSceneLoading(ScenesType newSceneName)
-        {
-            SceneMessage message = new()
-            {
-                sceneName = newSceneName.ToString(),
-            };
-
-            Connection.Send(message);
-        }
+        public void SendFakeSceneLoading(ScenesType newSceneName) => SendFakeSceneLoading(newSceneName.ToString());
 
         /// <summary>
         /// Plays a beep sound that only the player can hear.
