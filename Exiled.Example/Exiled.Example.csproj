@@ -13,6 +13,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Exiled.API\Exiled.API.csproj" />
+        <ProjectReference Include="..\Exiled.CustomModules\Exiled.CustomModules.csproj" />
         <ProjectReference Include="..\Exiled.Events\Exiled.Events.csproj" />
     </ItemGroup>
 

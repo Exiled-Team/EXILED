@@ -37,8 +37,24 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IAdditiveSettings{T}"/>.
     /// <br/>It provides a foundation for creating custom behaviors associated with in-game player roles.
     /// </remarks>
-    public abstract class RoleBehaviour : ModuleBehaviour<Player>, IAdditiveSettings<RoleSettings>
+    public class RoleBehaviour : ModuleBehaviour<Player>, IAdditiveSettings<RoleSettings>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoleBehaviour"/> class.
+        /// </summary>
+        protected RoleBehaviour()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoleBehaviour"/> class.
+        /// </summary>
+        /// <param name="gameObject">owner's gameobject.</param>
+        protected RoleBehaviour(GameObject gameObject)
+            : base(gameObject)
+        {
+        }
+
         private Vector3 lastPosition;
         private RoleTypeId fakeAppearance;
         private bool isHuman;
