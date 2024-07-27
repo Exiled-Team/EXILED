@@ -43,7 +43,7 @@ namespace Exiled.API.Features.Hazards
         /// <summary>
         /// Gets the list of all hazards.
         /// </summary>
-        public static new IReadOnlyCollection<Hazard> List => EnvironmentalHazardToHazard.Values;
+        public static IReadOnlyCollection<Hazard> List => EnvironmentalHazardToHazard.Values;
 
         /// <summary>
         /// Gets the <see cref="EnvironmentalHazard"/>.

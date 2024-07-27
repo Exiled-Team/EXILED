@@ -97,7 +97,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> which contains all the <see cref="Pickup"/> instances.
         /// </summary>
-        public static new IEnumerable<Pickup> List => BaseToPickup.Values;
+        public static IEnumerable<Pickup> List => BaseToPickup.Values;
 
         /// <summary>
         /// Gets a randomly selected <see cref="Pickup"/>.

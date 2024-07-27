@@ -11,8 +11,6 @@ namespace Exiled.API.Features.Toys
 
     using AdminToys;
     using Enums;
-    using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Interfaces;
     using Footprinting;
     using Mirror;
@@ -21,7 +19,7 @@ namespace Exiled.API.Features.Toys
     /// <summary>
     /// A wrapper class for <see cref="AdminToys.AdminToyBase"/>.
     /// </summary>
-    public abstract class AdminToy : TypeCastObject<GameEntity>, IWorldSpace, IAssetFragment
+    public abstract class AdminToy : IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminToy"/> class.

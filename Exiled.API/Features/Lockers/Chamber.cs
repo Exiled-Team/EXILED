@@ -46,7 +46,7 @@ namespace Exiled.API.Features.Lockers
         /// <summary>
         /// Gets all chambers.
         /// </summary>
-        public static new IReadOnlyCollection<Chamber> List => Chambers.Values;
+        public static IReadOnlyCollection<Chamber> List => Chambers.Values;
 
         /// <inheritdoc/>
         public LockerChamber Base { get; }

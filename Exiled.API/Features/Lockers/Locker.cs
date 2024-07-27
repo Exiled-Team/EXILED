@@ -44,7 +44,7 @@ namespace Exiled.API.Features.Lockers
         /// <summary>
         /// Gets the all <see cref="Locker"/> instances.
         /// </summary>
-        public static new IReadOnlyCollection<Locker> List => BaseToExiledLockers.Values;
+        public static IReadOnlyCollection<Locker> List => BaseToExiledLockers.Values;
 
         /// <inheritdoc/>
         public BaseLocker Base { get; }

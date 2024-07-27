@@ -68,7 +68,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
-        public static new IReadOnlyCollection<Door> List => DoorVariantToDoor.Values;
+        public static IReadOnlyCollection<Door> List => DoorVariantToDoor.Values;
 
         /// <summary>
         /// Gets the base-game <see cref="DoorVariant"/> corresponding with this door.
@@ -203,6 +203,20 @@ namespace Exiled.API.Features.Doors
         }
 
         /// <summary>
+        /// Gets or sets the door's rotation.
+        /// </summary>
+        public override Quaternion Rotation
+        {
+            get => Transform.rotation;
+            set
+            {
+                NetworkServer.UnSpawn(GameObject);
+                Transform.rotation = value;
+                NetworkServer.Spawn(GameObject);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not SCP-106 can walk through the door.
         /// </summary>
         public bool AllowsScp106
@@ -255,20 +269,6 @@ namespace Exiled.API.Features.Doors
         {
             get => Base.RequiredPermissions;
             set => Base.RequiredPermissions = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the door's rotation.
-        /// </summary>
-        public override Quaternion Rotation
-        {
-            get => Transform.rotation;
-            set
-            {
-                NetworkServer.UnSpawn(GameObject);
-                Transform.rotation = value;
-                NetworkServer.Spawn(GameObject);
-            }
         }
 
         /// <summary>

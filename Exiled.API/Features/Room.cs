@@ -74,7 +74,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains all the <see cref="Room"/> instances.
         /// </summary>
-        public static new IReadOnlyCollection<Room> List => RoomIdentifierToRoom.Values;
+        public static IReadOnlyCollection<Room> List => RoomIdentifierToRoom.Values;
 
         /// <summary>
         /// Gets the <see cref="Room"/> name.

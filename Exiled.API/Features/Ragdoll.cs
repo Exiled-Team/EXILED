@@ -52,7 +52,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Ragdoll"/> which contains all the <see cref="Ragdoll"/> instances.
         /// </summary>
-        public static new IReadOnlyCollection<Ragdoll> List => BasicRagdollToRagdoll.Values;
+        public static IReadOnlyCollection<Ragdoll> List => BasicRagdollToRagdoll.Values;
 
         /// <summary>
         /// Gets or sets the <see cref="BasicRagdoll"/>s clean up time.
@@ -230,9 +230,7 @@ namespace Exiled.API.Features
             set
             {
                 NetworkServer.UnSpawn(GameObject);
-
                 Transform.position = value;
-
                 NetworkServer.Spawn(GameObject);
             }
         }
@@ -247,9 +245,7 @@ namespace Exiled.API.Features
             set
             {
                 NetworkServer.UnSpawn(GameObject);
-
                 Transform.rotation = value;
-
                 NetworkServer.Spawn(GameObject);
             }
         }
@@ -264,9 +260,7 @@ namespace Exiled.API.Features
             set
             {
                 NetworkServer.UnSpawn(GameObject);
-
                 Transform.localScale = value;
-
                 NetworkServer.Spawn(GameObject);
             }
         }

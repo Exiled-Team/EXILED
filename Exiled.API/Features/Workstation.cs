@@ -46,7 +46,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list with all <see cref="Workstation"/>.
         /// </summary>
-        public static new IReadOnlyCollection<Workstation> List => BaseToWrapper.Values;
+        public static IReadOnlyCollection<Workstation> List => BaseToWrapper.Values;
 
         /// <summary>
         /// Gets the prefab's type.
