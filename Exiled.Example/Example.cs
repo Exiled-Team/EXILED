@@ -9,6 +9,7 @@ namespace Exiled.Example
 {
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.CustomModules.API.Features.CustomRoles;
 
     /// <summary>
     /// The example plugin.
@@ -37,6 +38,7 @@ namespace Exiled.Example
             // Create new instance of the event handler
             EventHandler = new();
 
+            CustomRole.EnableAll();
             base.OnEnabled();
         }
 

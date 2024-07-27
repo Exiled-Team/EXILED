@@ -202,16 +202,15 @@ namespace Exiled.Loader
                 foreach (Type type in assembly.GetTypes())
                 {
                     if (type.BaseType == typeof(Player) || type.IsSubclassOf(typeof(Player)))
-                    {
-                        Log.ErrorWithContext(type.Name);
                         defaultPlayerClass = type;
-                    }
 
-                    DefaultPlayerClassAttribute dpc = Player.DEFAULT_PLAYER_CLASS.GetCustomAttribute<DefaultPlayerClassAttribute>();
-                    if (Player.DEFAULT_PLAYER_CLASS != typeof(Player) && !dpc.EnforceAuthority && defaultPlayerClass is not null)
+                    DefaultPlayerClassAttribute dpc = type.GetCustomAttribute<DefaultPlayerClassAttribute>();
+
+                    // To fix. dcp.Enforce don't have to be set true under CustomModules::Pawn. *testing purpose*
+                    if (Player.DEFAULT_PLAYER_CLASS == typeof(Player) && dpc is not null && dpc.EnforceAuthority && defaultPlayerClass is not null)
                     {
-                        if (Player.DEFAULT_PLAYER_CLASS == typeof(Player) && dpc.EnforceAuthority)
-                            Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
+                        Log.DebugWithContext("Changing default player class to " + defaultPlayerClass.Name);
+                        Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
                     }
                 }
 

@@ -357,7 +357,16 @@ namespace Exiled.API.Features.Core
         public static EObject CreateDefaultSubobject(Type type, params object[] parameters)
         {
             const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-            EObject @object = Activator.CreateInstance(type, flags, null, parameters, null) as EObject;
+            EObject @object = null;
+            if (type.GetConstructors().Length == 0)
+            {
+                @object = InitializeBaseType(type, parameters);
+            }
+            else
+            {
+                @object = Activator.CreateInstance(type, flags, null, parameters, null) as EObject;
+            }
+
 
             // Do not use implicit bool conversion as @object may be null
             if (@object != null)
@@ -369,6 +378,61 @@ namespace Exiled.API.Features.Core
             }
 
             throw new NullReferenceException($"Couldn't create an EObject instance of type {type.Name}.");
+        }
+
+        /// <summary>
+        /// InitializeBaseType if 0 constructors are found.
+        /// </summary>
+        /// <typeparam name="T">Generic Type.</typeparam>
+        /// <returns>EObject.</returns>
+        public static T InitializeBaseType<T>()
+            where T : EObject
+        {
+            return InitializeBaseType(typeof(T)).Cast<T>();
+        }
+
+        /// <summary>
+        /// InitializeBaseType if 0 constructors are found.
+        /// </summary>
+        /// <param name="type">type.</param>
+        /// <param name="parameters">constructors parameters.</param>
+        /// <returns>EObject</returns>
+        /// <exception cref="InvalidOperationException">If the class isn't a subclass of EObject.</exception>
+        public static EObject InitializeBaseType(Type type, params object[] parameters)
+        {
+            const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+            if (type.BaseType != typeof(EObject) && !type.IsSubclassOf(typeof(EObject)) && type != typeof(EObject))
+                throw new InvalidOperationException("The requested type is not a subclass of EObject.");
+
+            // Get the base type of T
+            Type baseType = type.BaseType;
+
+            if (baseType == null)
+            {
+                throw new InvalidOperationException("The requested type does not have a base type.");
+            }
+
+            // Get the constructors of the base type
+            ConstructorInfo[] constructors = baseType.GetConstructors(flags);
+
+            if (constructors.Length == 0)
+            {
+                throw new InvalidOperationException("The base type does not have public constructors.");
+            }
+
+            // Here we assume you want to use the default constructor if available
+            ConstructorInfo constructor = Array.Find(constructors, c => c.GetParameters().Length == 0);
+
+            if (constructor == null)
+            {
+                throw new InvalidOperationException("The base type does not have a parameterless constructor.");
+            }
+
+            // Create an instance of the base type
+            object baseInstance = constructor.Invoke(null);
+
+            // Return the instance as the requested type
+            return baseInstance as EObject;
         }
 
         /// <summary>
