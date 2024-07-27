@@ -201,8 +201,6 @@ namespace Exiled.Loader
 
                 foreach (Type type in assembly.GetTypes())
                 {
-                    Log.ErrorWithContext($"dpc is null? {defaultPlayerClass is null}");
-
                     if (type.BaseType == typeof(Player) || type.IsSubclassOf(typeof(Player)))
                     {
                         Log.ErrorWithContext(type.Name);
@@ -215,8 +213,6 @@ namespace Exiled.Loader
                         if (Player.DEFAULT_PLAYER_CLASS == typeof(Player) && dpc.EnforceAuthority)
                             Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
                     }
-
-                    Log.ErrorWithContext($"dpc is null? {defaultPlayerClass is null}");
                 }
 
                 return plugin;
