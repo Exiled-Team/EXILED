@@ -34,6 +34,15 @@ namespace Exiled.API.Features.Core.Generic
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="EBehaviour{T}"/> class.
+        /// </summary>
+        /// <param name="gameObject">The base <see cref="GameObject"/>.</param>
+        protected EBehaviour(GameObject gameObject = null)
+            : base(gameObject)
+        {
+        }
+
+        /// <summary>
         /// Gets or sets the owner of the <see cref="EBehaviour{T}"/>.
         /// </summary>
         public virtual T Owner { get; protected set; }
@@ -77,9 +86,16 @@ namespace Exiled.API.Features.Core.Generic
         {
             base.PostInitialize();
 
+            Log.InfoWithContext($"EBehaviour::{nameof(PostInitialize)}");
+
             FindOwner();
+
+            Log.InfoWithContext($"EBehaviour::{nameof(FindOwner)}");
+
             if (!Owner && DisposeOnNullOwner)
             {
+                Log.InfoWithContext($"Destroying Behaviour");
+
                 Destroy();
                 return;
             }

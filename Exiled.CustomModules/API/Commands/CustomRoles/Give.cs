@@ -58,13 +58,13 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
                     return false;
                 }
 
-                if (!CustomRole.TryGet(arguments.At(0), out CustomRole role) || role is null)
+                if (!CustomRole.TryGet(uint.Parse(arguments.At(0)), out CustomRole role) || role is null)
                 {
                     response = $"Custom role {arguments.At(0)} not found!";
                     return false;
                 }
 
-                if (arguments.Count == 1)
+                if (arguments.Count == 2)
                 {
                     Pawn player = Player.Get(arguments.At(1)).Cast<Pawn>();
 

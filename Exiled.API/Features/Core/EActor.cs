@@ -454,12 +454,12 @@ namespace Exiled.API.Features.Core
 
         /// <inheritdoc/>
         public bool HasComponent<T>(bool depthInheritance = false) => depthInheritance
-            ? ComponentsInChildren.Any(comp => typeof(T).IsAssignableFrom(comp.GetType()))
+            ? ComponentsInChildren.Any(comp => comp is T)
             : ComponentsInChildren.Any(comp => typeof(T) == comp.GetType());
 
         /// <inheritdoc/>
         public bool HasComponent(Type type, bool depthInheritance = false) => depthInheritance
-            ? ComponentsInChildren.Any(comp => type.IsAssignableFrom(comp.GetType()))
+            ? ComponentsInChildren.Any(type.IsInstanceOfType)
             : ComponentsInChildren.Any(comp => type == comp.GetType());
 
         /// <summary>
@@ -467,6 +467,7 @@ namespace Exiled.API.Features.Core
         /// </summary>
         protected virtual void PostInitialize()
         {
+            Log.InfoWithContext(nameof(PostInitialize));
         }
 
         /// <summary>
