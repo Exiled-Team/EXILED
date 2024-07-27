@@ -9,10 +9,9 @@ namespace Exiled.Events.EventArgs.Server
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using API.Features;
-
     using Interfaces;
-
     using PlayerRoles;
 
     /// <summary>

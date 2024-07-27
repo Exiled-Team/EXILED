@@ -11,8 +11,8 @@ namespace Exiled.Events.EventArgs.Player
     using API.Features.DamageHandlers;
 
     using Interfaces;
-
     using PlayerRoles;
+
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>

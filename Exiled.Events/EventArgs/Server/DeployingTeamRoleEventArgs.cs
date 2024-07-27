@@ -8,10 +8,9 @@
 namespace Exiled.Events.EventArgs.Server
 {
     using System;
+
     using API.Features;
-
     using Interfaces;
-
     using PlayerRoles;
 
     /// <summary>

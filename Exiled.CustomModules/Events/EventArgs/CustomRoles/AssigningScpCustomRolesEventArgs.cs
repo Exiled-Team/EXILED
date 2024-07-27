@@ -9,6 +9,7 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomRoles
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
 

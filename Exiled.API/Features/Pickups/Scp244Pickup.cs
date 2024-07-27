@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Pickups
 {
     using System;
+
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;

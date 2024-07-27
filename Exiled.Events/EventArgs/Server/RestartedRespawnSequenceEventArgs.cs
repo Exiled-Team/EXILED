@@ -8,6 +8,7 @@
 namespace Exiled.Events.EventArgs.Server
 {
     using System.Diagnostics;
+
     using Interfaces;
     using Respawning;
 
