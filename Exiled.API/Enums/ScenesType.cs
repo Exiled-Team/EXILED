@@ -14,28 +14,28 @@ namespace Exiled.API.Enums
     {
 
         /// <summary>
-        /// The scene both the server and player have and its the facility itself
+        /// The facility itself.
         /// </summary>
         Facility,
 
         /// <summary>
-        /// The current main menu (Only Client-Side)
+        /// The current main menu.
         /// ! Will cause crash when trying joining servers !
         /// </summary>
         NewMainMenu,
 
         /// <summary>
-        /// The old menu (Only Client-Side)
+        /// The old main menu
         /// </summary>
         MainMenuRemastered,
 
         /// <summary>
-        /// The old server screen (Only Client-Side)
+        /// The old server list.
         /// </summary>
         FastMenu,
 
         /// <summary>
-        /// Its Loading screen at the start of the game.
+        /// The loading Screen.
         /// ! Will cause crash when trying joining servers !
         /// </summary>
         PreLoader,
