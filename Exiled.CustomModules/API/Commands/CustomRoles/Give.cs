@@ -54,19 +54,25 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
 
                 if (arguments.Count == 0)
                 {
-                    response = "give <Custom role name/Custom role ID> [Nickname/PlayerID/UserID/all/*]";
+                    response = "give <Custom role ID> [Nickname/PlayerID/UserID/all/*]";
                     return false;
                 }
 
-                if (!CustomRole.TryGet(arguments.At(0), out CustomRole role) || role is null)
+                if (!uint.TryParse(arguments.At(0), out uint id))
+                {
+                    response = "Invalid custom role ID";
+                    return false;
+                }
+
+                if (!CustomRole.TryGet(id, out CustomRole role) || role is null)
                 {
                     response = $"Custom role {arguments.At(0)} not found!";
                     return false;
                 }
 
-                if (arguments.Count == 1)
+                if (arguments.Count == 2)
                 {
-                    Pawn player = Player.Get(arguments.At(1)).Cast<Pawn>();
+                    Player player = Player.Get(arguments.At(1));
 
                     if (player is null)
                     {
@@ -74,7 +80,8 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
                         return false;
                     }
 
-                    role.Spawn(player);
+                    Pawn pwn = new(player.ReferenceHub);
+                    role.Spawn(pwn);
                     response = $"{role.Name} given to {player.Nickname}.";
                     return true;
                 }

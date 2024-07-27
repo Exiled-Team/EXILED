@@ -83,21 +83,21 @@ namespace Exiled.CustomModules.API.Features
         /// <para/>
         /// Can be <see langword="null"/>.
         /// </summary>
-        public CustomRole CustomRole => roleBehaviour.CustomRole;
+        public CustomRole CustomRole => roleBehaviour?.CustomRole;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.CustomTeam"/>.
         /// <para/>
         /// Can be <see langword="null"/>.
         /// </summary>
-        public CustomTeam CustomTeam => roleBehaviour.CustomTeam;
+        public CustomTeam CustomTeam => roleBehaviour?.CustomTeam;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomEscapes.CustomEscape"/>.
         /// <para/>
         /// Can be <see langword="null"/>.
         /// </summary>
-        public CustomEscape CustomEscape => escapeBehaviour.CustomEscape;
+        public CustomEscape CustomEscape => escapeBehaviour?.CustomEscape;
 
         /// <summary>
         /// Gets the pawn's current <see cref="CustomItem"/>.

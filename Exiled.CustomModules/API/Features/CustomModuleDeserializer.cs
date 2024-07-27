@@ -28,7 +28,7 @@ namespace Exiled.CustomModules.API.Features
             }
 
             bool parserStatus = false;
-            foreach (var moduleDelegate in ParserContext.Delegates.TakeWhile(_ => !parserStatus))
+            foreach (ParserContext.ModuleDelegate moduleDelegate in ParserContext.Delegates.TakeWhile(_ => !parserStatus))
             {
                 parserStatus = moduleDelegate.Invoke(new ParserContext(parser, expectedType, nestedObjectDeserializer), out value);
             }
