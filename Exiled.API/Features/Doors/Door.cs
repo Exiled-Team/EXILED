@@ -297,7 +297,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets the door's <see cref="ZoneType"/>.
         /// </summary>
-        public ZoneType Zone => Room ? Room.Zone : ZoneType.Unspecified;
+        public ZoneType Zone => Room?.Zone ?? ZoneType.Unspecified;
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> containing all <see cref="Features.Room"/>'s that are connected with <see cref="Door"/>.

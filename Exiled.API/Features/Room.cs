@@ -13,9 +13,9 @@ namespace Exiled.API.Features
 
     using Enums;
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Interfaces;
     using MapGeneration;
     using Mirror;
     using PlayerRoles.PlayableScps.Scp079;
@@ -25,7 +25,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game room.
     /// </summary>
-    public class Room : GameEntity
+    public class Room : IWrapper<RoomIdentifier>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="RoomIdentifier"/>s and their corresponding <see cref="Room"/>.
@@ -37,12 +37,10 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="roomIdentifier">The room's <see cref="RoomIdentifier"/>.</param>
         internal Room(RoomIdentifier roomIdentifier)
-            : base(roomIdentifier.gameObject)
         {
-            Identifier = roomIdentifier;
-            GameObject = Identifier.gameObject;
+            Base = roomIdentifier;
 
-            RoomIdentifierToRoom.Add(Identifier, this);
+            RoomIdentifierToRoom.Add(Base, this);
 
             Zone = FindZone(GameObject);
 #if Debug
@@ -77,6 +75,21 @@ namespace Exiled.API.Features
         public static IReadOnlyCollection<Room> List => RoomIdentifierToRoom.Values;
 
         /// <summary>
+        /// Gets a reference to the room's <see cref="RoomIdentifier"/>.
+        /// </summary>
+        public RoomIdentifier Base { get; }
+
+        /// <summary>
+        /// Gets the room's <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the room's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
         /// Gets the <see cref="Room"/> name.
         /// </summary>
         public string Name => GameObject.name;
@@ -84,12 +97,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Room"/>'s position.
         /// </summary>
-        public override Vector3 Position => Transform.position;
+        public Vector3 Position => Transform.position;
 
         /// <summary>
         /// Gets the <see cref="Room"/>'s rotation.
         /// </summary>
-        public override Quaternion Rotation => Transform.rotation;
+        public Quaternion Rotation => Transform.rotation;
 
         /// <summary>
         /// Gets the <see cref="ZoneType"/> in which the room is located.
@@ -101,22 +114,17 @@ namespace Exiled.API.Features
         /// </summary>
         /// <remarks>This property is the internal <see cref="MapGeneration.RoomName"/> of the room. For the actual string of the Room's name, see <see cref="Name"/>.</remarks>
         /// <seealso cref="Name"/>
-        public RoomName RoomName => Identifier.Name;
+        public RoomName RoomName => Base.Name;
 
         /// <summary>
         /// Gets the room's <see cref="MapGeneration.RoomShape"/>.
         /// </summary>
-        public RoomShape RoomShape => Identifier.Shape;
+        public RoomShape RoomShape => Base.Shape;
 
         /// <summary>
         /// Gets the <see cref="RoomType"/>.
         /// </summary>
         public RoomType Type { get; private set; }
-
-        /// <summary>
-        /// Gets a reference to the room's <see cref="RoomIdentifier"/>.
-        /// </summary>
-        public RoomIdentifier Identifier { get; private set; }
 
         /// <summary>
         /// Gets a reference to the <see cref="global::TeslaGate"/> in the room, or <see langword="null"/> if this room does not contain one.
@@ -245,9 +253,9 @@ namespace Exiled.API.Features
         public static Room Get(RoomType roomType) => Get(room => room.Type == roomType).FirstOrDefault();
 
         /// <summary>
-        /// Gets a <see cref="Room"/> from a given <see cref="Identifier"/>.
+        /// Gets a <see cref="Room"/> from a given <see cref="Base"/>.
         /// </summary>
-        /// <param name="roomIdentifier">The <see cref="Identifier"/> to search with.</param>
+        /// <param name="roomIdentifier">The <see cref="Base"/> to search with.</param>
         /// <returns>The <see cref="Room"/> of the given identified, if any. Can be <see langword="null"/>.</returns>
         public static Room Get(RoomIdentifier roomIdentifier) => roomIdentifier == null ? null :
             RoomIdentifierToRoom.TryGetValue(roomIdentifier, out Room room) ? room : new Room(roomIdentifier);
@@ -320,7 +328,7 @@ namespace Exiled.API.Features
             }
 
             // Finally, try for objects that aren't children, like players and pickups.
-            return room ? room : Get(objectInRoom.transform.position) ?? default;
+            return room ?? Get(objectInRoom.transform.position) ?? default;
         }
 
         /// <summary>

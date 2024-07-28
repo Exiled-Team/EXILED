@@ -187,7 +187,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's <see cref="ZoneType"/>.
         /// </summary>
-        public ZoneType Zone => Room ? Room.Zone : ZoneType.Unspecified;
+        public ZoneType Zone => Room?.Zone ?? ZoneType.Unspecified;
 
         /// <summary>
         /// Gets the camera's <see cref="CameraType"/>.

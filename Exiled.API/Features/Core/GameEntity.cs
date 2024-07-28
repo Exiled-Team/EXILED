@@ -15,22 +15,14 @@ namespace Exiled.API.Features.Core
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Core.Interfaces;
-    using Exiled.API.Interfaces;
     using UnityEngine;
 
     /// <summary>
     /// The base class which defines in-game entities.
     /// </summary>
     [EClass(assetRegistrySearchable: false, allowOnce: false, category: nameof(GameEntity))]
-    public abstract class GameEntity : TypeCastObject<GameEntity>, IEntity, IWorldSpace, IAssetFragment
+    public abstract class GameEntity : TypeCastObject<GameEntity>, IEntity, IAssetFragment
     {
-        /// <summary>
-        /// The room's transform.
-        /// </summary>
-#pragma warning disable SA1401
-        protected Transform transform;
-#pragma warning restore SA1401
-
         private readonly HashSet<EActor> componentsInChildren = new();
 
         /// <summary>
@@ -51,45 +43,6 @@ namespace Exiled.API.Features.Core
         /// Gets or sets the <see cref="GameEntity"/>'s <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         public virtual GameObject GameObject { get; protected set; }
-
-        /// <summary>
-        /// Gets the <see cref="GameEntity"/> <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public virtual Transform Transform => transform ? transform : transform = GameObject.transform;
-
-        /// <summary>
-        /// Gets or sets the <see cref="GameEntity"/> position.
-        /// </summary>
-        [EProperty(category: nameof(GameEntity))]
-        public virtual Vector3 Position
-        {
-            get => Transform.position;
-            set => Transform.position = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="GameEntity"/> rotation.
-        /// </summary>
-        [EProperty(category: nameof(GameEntity))]
-        public virtual Quaternion Rotation
-        {
-            get => Transform.rotation;
-            set => Transform.rotation = value;
-        }
-
-        /// <summary>
-        /// Returns the local space position, based on a world space position.
-        /// </summary>
-        /// <param name="position">World position.</param>
-        /// <returns>Local position, based on the GameEntity.</returns>
-        public Vector3 LocalPosition(Vector3 position) => Transform.InverseTransformPoint(position);
-
-        /// <summary>
-        /// Returns the World position, based on a local space position.
-        /// </summary>
-        /// <param name="offset">Local position.</param>
-        /// <returns>World position, based on the GameEntity.</returns>
-        public Vector3 WorldPosition(Vector3 offset) => Transform.TransformPoint(offset);
 
         /// <inheritdoc/>
         public T AddComponent<T>(string name = "")

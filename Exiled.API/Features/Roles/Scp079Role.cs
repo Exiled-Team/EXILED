@@ -599,14 +599,14 @@ namespace Exiled.API.Features.Roles
         public void MarkRoom(Room room)
         {
             if (room is not null)
-                RewardManager.MarkRoom(room.Identifier);
+                RewardManager.MarkRoom(room.Base);
         }
 
         /// <summary>
         /// Marks a array of rooms as being modified by SCP-079 (granting experience if a kill happens in the room).
         /// </summary>
         /// <param name="rooms">The Array of Rooms to mark.</param>
-        public void MarkRooms(IEnumerable<Room> rooms) => RewardManager.MarkRooms(rooms.Select(x => x.Identifier).ToArray());
+        public void MarkRooms(IEnumerable<Room> rooms) => RewardManager.MarkRooms(rooms.Select(x => x.Base).ToArray());
 
         /// <summary>
         /// Removes a marked room.
@@ -614,8 +614,8 @@ namespace Exiled.API.Features.Roles
         /// <param name="room">The room to remove.</param>
         public void UnmarkRoom(Room room)
         {
-            if (room is not null && RewardManager._markedRooms.ContainsKey(room.Identifier))
-                RewardManager._markedRooms.Remove(room.Identifier);
+            if (room is not null && RewardManager._markedRooms.ContainsKey(room.Base))
+                RewardManager._markedRooms.Remove(room.Base);
         }
 
         /// <summary>

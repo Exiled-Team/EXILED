@@ -342,7 +342,7 @@ namespace Exiled.API.Features.Roles
             if (Room.Get(position) is not Room room)
                 return false;
 
-            HuntersAtlasAbility._syncRoom = room.Identifier;
+            HuntersAtlasAbility._syncRoom = room.Base;
             HuntersAtlasAbility._syncPos = position;
 
             if (Vigor < cost)

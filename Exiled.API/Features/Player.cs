@@ -83,7 +83,7 @@ namespace Exiled.API.Features
     /// </summary>
     [EClass(category: nameof(Player))]
     [DefaultPlayerClass]
-    public class Player : GameEntity
+    public class Player : GameEntity, IWorldSpace
     {
 #pragma warning disable SA1310
         /// <summary>
@@ -258,7 +258,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="ReferenceHub"/>'s <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public override Transform Transform => ReferenceHub.transform;
+        public Transform Transform => ReferenceHub.transform;
 
         /// <summary>
         /// Gets the hint currently watched by the player.
@@ -594,7 +594,7 @@ namespace Exiled.API.Features
         /// <seealso cref="Teleport(Vector3)"/>
         /// <seealso cref="Teleport(object)"/>
         [EProperty(category: WORLDSPACE_CATEGORY)]
-        public override Vector3 Position
+        public Vector3 Position
         {
             get => Transform.position;
             set => ReferenceHub.TryOverridePosition(value, Vector3.zero);
@@ -616,7 +616,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>Returns the direction the player is looking at.</returns>
         [EProperty(category: WORLDSPACE_CATEGORY)]
-        public override Quaternion Rotation
+        public Quaternion Rotation
         {
             get => Transform.rotation;
             set => ReferenceHub.TryOverridePosition(Position, value.eulerAngles - Transform.eulerAngles);
@@ -1137,7 +1137,7 @@ namespace Exiled.API.Features
         /// Gets the current zone the player is in.
         /// </summary>
         [EProperty(readOnly: true, category: WORLDSPACE_CATEGORY)]
-        public ZoneType Zone => CurrentRoom ? CurrentRoom.Zone : ZoneType.Unspecified;
+        public ZoneType Zone => CurrentRoom?.Zone ?? ZoneType.Unspecified;
 
         /// <summary>
         /// Gets the current <see cref="Features.Lift"/> the player is in. Can be <see langword="null"/>.
@@ -1241,7 +1241,7 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not the player is in the pocket dimension.
         /// </summary>
         [EProperty(readOnly: true, category: WORLDSPACE_CATEGORY)]
-        public bool IsInPocketDimension => CurrentRoom && CurrentRoom.Type is RoomType.Pocket;
+        public bool IsInPocketDimension => CurrentRoom?.Type is RoomType.Pocket;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player should use stamina system.
@@ -3792,9 +3792,6 @@ namespace Exiled.API.Features
                         Teleport(item.Owner.Position + offset);
                     else
                         Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid item teleport (item is missing Owner).");
-                    break;
-                case GameEntity entity:
-                    Teleport(entity.Position + Vector3.up + offset);
                     break;
                 case IPosition positionObject:
                     Teleport(positionObject.Position + Vector3.up + offset);
