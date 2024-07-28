@@ -48,11 +48,11 @@ namespace Exiled.CustomModules.API.Features.Deserializers
             Assembly assembly = typeof(ModuleParser).Assembly;
 
             // Get all types that inherit from ModuleParser
-            var moduleParserTypes = assembly.GetTypes()
+            IEnumerable<Type> moduleParserTypes = assembly.GetTypes()
                 .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(ModuleParser)));
 
             // Instantiate each type with no parameters
-            foreach (var type in moduleParserTypes)
+            foreach (Type type in moduleParserTypes)
             {
                 Log.Info(type.Name);
                 Activator.CreateInstance(type);
