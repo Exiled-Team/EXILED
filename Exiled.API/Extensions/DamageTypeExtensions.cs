@@ -38,6 +38,7 @@ namespace Exiled.API.Extensions
             { DeathTranslations.Scp939Lunge, DamageType.Scp939 },
             { DeathTranslations.Scp939Other, DamageType.Scp939 },
             { DeathTranslations.Scp3114Slap, DamageType.Scp3114 },
+            { DeathTranslations.CardiacArrest, DamageType.CardiacArrest },
             { DeathTranslations.Tesla, DamageType.Tesla },
             { DeathTranslations.Unknown, DamageType.Unknown },
             { DeathTranslations.Warhead, DamageType.Warhead },

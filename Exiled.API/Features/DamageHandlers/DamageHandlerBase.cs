@@ -134,7 +134,7 @@ namespace Exiled.API.Features.DamageHandlers
                         Scp049DamageHandler.AttackType.Scp0492 => DamageType.Scp0492,
                         _ => DamageType.Unknown,
                     },
-                    _ => throw new InvalidOperationException("Unknown damage type."),
+                    _ => DamageType.Unknown,
                 };
             }
 
