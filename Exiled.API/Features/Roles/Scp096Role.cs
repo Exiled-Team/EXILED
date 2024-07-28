@@ -16,7 +16,6 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp096;
     using PlayerRoles.Subroutines;
-    using UnityEngine;
 
     using Scp096GameRole = PlayerRoles.PlayableScps.Scp096.Scp096Role;
 
@@ -65,15 +64,6 @@ namespace Exiled.API.Features.Roles
                 Log.Error("ChargeAbility not found in Scp096Role::ctor");
 
             ChargeAbility = scp096ChargeAbility;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Scp096Role"/> class.
-        /// </summary>
-        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
-        protected internal Scp096Role(GameObject gameObject)
-            : base(gameObject)
-        {
         }
 
         /// <summary>

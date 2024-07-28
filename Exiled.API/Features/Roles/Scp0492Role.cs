@@ -14,7 +14,6 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.PlayableScps.Scp049.Zombies;
     using PlayerRoles.Ragdolls;
     using PlayerRoles.Subroutines;
-    using UnityEngine;
 
     /// <summary>
     /// Defines a role that represents SCP-049-2.
@@ -45,15 +44,6 @@ namespace Exiled.API.Features.Roles
                 Log.Error("ZombieConsumeAbility subroutine not found in Scp0492Role::ctor");
 
             ConsumeAbility = zombieConsumeAbility492;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Scp0492Role"/> class.
-        /// </summary>
-        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
-        protected internal Scp0492Role(GameObject gameObject)
-            : base(gameObject)
-        {
         }
 
         /// <inheritdoc/>

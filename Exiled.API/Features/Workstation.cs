@@ -11,7 +11,6 @@ namespace Exiled.API.Features
     using System.Diagnostics;
 
     using Exiled.API.Enums;
-    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using Interactables;
     using InventorySystem.Items.Firearms.Attachments;
@@ -21,7 +20,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A wrapper for workstation.
     /// </summary>
-    public class Workstation : GameEntity, IWrapper<WorkstationController>
+    public class Workstation : IWrapper<WorkstationController>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> with <see cref="WorkstationController"/> and <see cref="Workstation"/>.
@@ -35,7 +34,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="controller">The <see cref="WorkstationController"/> instance.</param>
         public Workstation(WorkstationController controller)
-            : base(controller.gameObject)
         {
             Base = controller;
 
@@ -57,8 +55,30 @@ namespace Exiled.API.Features
         /// </summary>
         public static GameObject PrefabObject => PrefabHelper.PrefabToGameObject[PrefabType];
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets the base <see cref="WorkstationController"/>.
+        /// </summary>
         public WorkstationController Base { get; }
+
+        /// <summary>
+        /// Gets the workstation's <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the workstation's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
+        /// Gets the workstation position.
+        /// </summary>
+        public Vector3 Position => Transform.position;
+
+        /// <summary>
+        /// Gets the workstation rotation.
+        /// </summary>
+        public Quaternion Rotation => Transform.rotation;
 
         /// <summary>
         /// Gets or sets a current working status.

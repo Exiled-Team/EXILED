@@ -23,7 +23,7 @@ namespace Exiled.API.Features
     /// Wrapper class for <see cref="Scp079Generator"/>.
     /// </summary>
     [EClass(category: nameof(Generator))]
-    public class Generator : GameEntity, IWrapper<Scp079Generator>
+    public class Generator : IWrapper<Scp079Generator>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.
@@ -36,7 +36,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/>.</param>
         internal Generator(Scp079Generator scp079Generator)
-            : base(scp079Generator.gameObject)
         {
             Base = scp079Generator;
             Scp079GeneratorToGenerator.Add(scp079Generator, this);
@@ -67,6 +66,16 @@ namespace Exiled.API.Features
         /// Gets the base <see cref="Scp079Generator"/>.
         /// </summary>
         public Scp079Generator Base { get; }
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the generator.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.Transform"/> of the generator.
+        /// </summary>
+        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the generator's <see cref="Room"/>.
@@ -230,13 +239,13 @@ namespace Exiled.API.Features
         /// Gets the generator position.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Generator))]
-        public override Vector3 Position => Transform.position;
+        public Vector3 Position => Transform.position;
 
         /// <summary>
         /// Gets the generator rotation.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Generator))]
-        public override Quaternion Rotation => Transform.rotation;
+        public Quaternion Rotation => Transform.rotation;
 
         /// <summary>
         /// Gets or sets the required permissions to interact with the generator.

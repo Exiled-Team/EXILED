@@ -31,7 +31,7 @@ namespace Exiled.API.Features
     /// A set of tools to handle the ragdolls more easily.
     /// </summary>
     [EClass(category: nameof(Ragdoll))]
-    public class Ragdoll : GameEntity, IWrapper<BasicRagdoll>
+    public class Ragdoll : IWrapper<BasicRagdoll>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BasicRagdoll"/>s and their corresponding <see cref="Ragdoll"/>.
@@ -43,7 +43,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ragdoll">The encapsulated <see cref="BasicRagdoll"/>.</param>
         internal Ragdoll(BasicRagdoll ragdoll)
-            : base(ragdoll.gameObject)
         {
             Base = ragdoll;
             BasicRagdollToRagdoll.Add(ragdoll, this);
@@ -79,6 +78,16 @@ namespace Exiled.API.Features
         /// Gets the <see cref="BasicRagdoll"/> instance of the ragdoll.
         /// </summary>
         public BasicRagdoll Base { get; }
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the ragdoll.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.Transform"/> of the ragdoll.
+        /// </summary>
+        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets or sets the ragdoll's <see cref="RagdollData"/>.
@@ -224,7 +233,7 @@ namespace Exiled.API.Features
         /// Gets or sets the ragdoll's position.
         /// </summary>
         [EProperty(category: nameof(Ragdoll))]
-        public override Vector3 Position
+        public Vector3 Position
         {
             get => Transform.position;
             set
@@ -239,7 +248,7 @@ namespace Exiled.API.Features
         /// Gets or sets the ragdoll's rotation.
         /// </summary>
         [EProperty(category: nameof(Ragdoll))]
-        public override Quaternion Rotation
+        public Quaternion Rotation
         {
             get => Base.transform.rotation;
             set

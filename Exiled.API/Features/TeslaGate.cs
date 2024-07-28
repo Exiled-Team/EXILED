@@ -12,7 +12,6 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using Hazards;
     using MEC;
@@ -24,7 +23,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game tesla gate.
     /// </summary>
-    public class TeslaGate : GameEntity, IWrapper<BaseTeslaGate>, IWorldSpace
+    public class TeslaGate : IWrapper<BaseTeslaGate>, IWorldSpace
     {
         /// <summary>
         /// The square distance of the value from <see cref="TeslaGateController.ServerReceiveMessage"/> that check if the player is too far for being shot.
@@ -42,7 +41,6 @@ namespace Exiled.API.Features
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
         /// <param name="room">The <see cref="Features.Room"/> for this tesla.</param>
         internal TeslaGate(BaseTeslaGate baseTeslaGate, Room room)
-            : base(baseTeslaGate.gameObject)
         {
             Base = baseTeslaGate;
             BaseTeslaGateToTeslaGate.Add(baseTeslaGate, this);
@@ -81,14 +79,24 @@ namespace Exiled.API.Features
         public BaseTeslaGate Base { get; }
 
         /// <summary>
+        /// Gets the tesla gate's <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the tesla gate's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
         /// Gets the tesla gate's position.
         /// </summary>
-        public override Vector3 Position => Transform.position;
+        public Vector3 Position => Transform.position;
 
         /// <summary>
         /// Gets the tesla gate's rotation.
         /// </summary>
-        public override Quaternion Rotation => Quaternion.Euler(Base.localRotation);
+        public Quaternion Rotation => Quaternion.Euler(Base.localRotation);
 
         /// <summary>
         /// Gets the tesla gate's <see cref="Features.Room"/> which is located in.

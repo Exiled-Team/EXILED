@@ -12,7 +12,6 @@ namespace Exiled.API.Features.Lockers
     using System.Linq;
 
     using Exiled.API.Enums;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
     using MapGeneration.Distributors;
@@ -21,7 +20,7 @@ namespace Exiled.API.Features.Lockers
     /// <summary>
     /// A wrapper for <see cref="LockerChamber"/>.
     /// </summary>
-    public class Chamber : GameEntity, IWrapper<LockerChamber>
+    public class Chamber : IWrapper<LockerChamber>, IWorldSpace
     {
         /// <summary>
         /// <see cref="Dictionary{TKey,TValue}"/> with <see cref="LockerChamber"/> and <see cref="Chamber"/>.
@@ -34,7 +33,6 @@ namespace Exiled.API.Features.Lockers
         /// <param name="chamber"><see cref="LockerChamber"/> instance.</param>
         /// <param name="locker"><see cref="Lockers.Locker"/> where this chamber is located.</param>
         public Chamber(LockerChamber chamber, Locker locker)
-            : base(chamber.gameObject)
         {
             Base = chamber;
             Locker = locker;
@@ -48,8 +46,30 @@ namespace Exiled.API.Features.Lockers
         /// </summary>
         public static IReadOnlyCollection<Chamber> List => Chambers.Values;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets the base <see cref="LockerChamber"/>.
+        /// </summary>
         public LockerChamber Base { get; }
+
+        /// <summary>
+        /// Gets the chamber's <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the chamber's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
+        /// Gets the chamber position.
+        /// </summary>
+        public Vector3 Position => Transform.position;
+
+        /// <summary>
+        /// Gets the chamber rotation.
+        /// </summary>
+        public Quaternion Rotation => Transform.rotation;
 
         /// <summary>
         /// Gets or sets all pickups that should be spawned when the door is initially opened.

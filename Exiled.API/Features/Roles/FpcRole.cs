@@ -31,15 +31,6 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Initializes a new instance of the <see cref="FpcRole"/> class.
         /// </summary>
-        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
-        protected internal FpcRole(GameObject gameObject)
-            : base(gameObject)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FpcRole"/> class.
-        /// </summary>
         /// <param name="baseRole">the base <see cref="PlayerRoleBase"/>.</param>
         protected FpcRole(FpcStandardRoleBase baseRole)
             : base(baseRole)
@@ -68,20 +59,10 @@ namespace Exiled.API.Features.Roles
         public CharacterController CharacterController => FirstPersonController.FpcModule.CharController;
 
         /// <summary>
-        /// Gets or sets the player's relative position as perceived by the server.
-        /// </summary>
-        [EProperty(category: nameof(FpcRole))]
-        public RelativePosition RelativePosition
-        {
-            get => new(Position);
-            set => Position = value.Position;
-        }
-
-        /// <summary>
         /// Gets or sets the player's relative position as perceived by the client.
         /// </summary>
         [EProperty(category: nameof(FpcRole))]
-        public RelativePosition ClientRelativePosition
+        public RelativePosition RelativePosition
         {
             get => FirstPersonController.FpcModule.Motor.ReceivedPosition;
             set => FirstPersonController.FpcModule.Motor.ReceivedPosition = value;

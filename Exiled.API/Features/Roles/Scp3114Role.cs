@@ -18,7 +18,6 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.PlayableScps.Scp3114;
     using PlayerRoles.Subroutines;
     using PlayerStatsSystem;
-    using UnityEngine;
 
     using static PlayerRoles.PlayableScps.Scp3114.Scp3114Identity;
 
@@ -79,15 +78,6 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp3114VoiceLines not found in Scp3114Role::ctor");
 
             VoiceLines = scp3114VoiceLines;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Scp3114Role"/> class.
-        /// </summary>
-        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
-        protected internal Scp3114Role(GameObject gameObject)
-            : base(gameObject)
-        {
         }
 
         /// <inheritdoc/>
@@ -280,7 +270,7 @@ namespace Exiled.API.Features.Roles
         public void StartDancing(DanceType danceType) => Dance.SendRpc((x) =>
         {
             x.IsDancing = true;
-            x._serverStartPos = new(Position);
+            x._serverStartPos = new(Base._lastOwner.transform.position);
             DanceType = danceType;
         });
     }

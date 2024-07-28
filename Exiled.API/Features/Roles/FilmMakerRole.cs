@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="FilmMakerRole.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -26,15 +26,6 @@ namespace Exiled.API.Features.Roles
             : base(filmmakerRole)
         {
             Base = filmmakerRole;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FilmMakerRole"/> class.
-        /// </summary>
-        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
-        protected internal FilmMakerRole(GameObject gameObject)
-            : base(gameObject)
-        {
         }
 
         /// <inheritdoc/>

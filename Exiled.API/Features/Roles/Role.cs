@@ -38,23 +38,13 @@ namespace Exiled.API.Features.Roles
     /// Defines the class for role-related classes.
     /// </summary>
     [EClass(allowOnce: true, category: nameof(Role))]
-    public abstract class Role : GameEntity, IWrapper<PlayerRoleBase>
+    public abstract class Role : TypeCastObject<Role>, IWrapper<PlayerRoleBase>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Role"/> class.
-        /// </summary>
-        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
-        protected internal Role(GameObject gameObject)
-            : base(gameObject)
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Role"/> class.
         /// </summary>
         /// <param name="baseRole">the base <see cref="PlayerRoleBase"/>.</param>
         protected Role(PlayerRoleBase baseRole)
-            : base(baseRole.gameObject)
         {
             if (baseRole.TryGetOwner(out ReferenceHub hub))
                 Owner = Player.Get(hub);

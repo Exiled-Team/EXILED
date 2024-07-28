@@ -40,7 +40,7 @@ namespace Exiled.API.Features.Pickups
     /// A wrapper class for <see cref="ItemPickupBase"/>.
     /// </summary>
     [EClass(category: nameof(Pickup))]
-    public class Pickup : GameEntity, IWrapper<ItemPickupBase>
+    public class Pickup : TypeCastObject<Pickup>, IWrapper<ItemPickupBase>, IWorldSpace
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Items.Item"/>.
@@ -55,7 +55,6 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="pickupBase">The base <see cref="ItemPickupBase"/> class.</param>
         internal Pickup(ItemPickupBase pickupBase)
-            : base(pickupBase.gameObject)
         {
             Base = pickupBase;
 
@@ -73,12 +72,10 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Pickup(ItemType type)
-            : base(type.GetItemBase().gameObject)
         {
             ItemBase itemBase = type.GetItemBase();
 
             Base = Object.Instantiate(itemBase.PickupDropModel);
-            GameObject = Base.gameObject;
 
             PickupSyncInfo psi = new()
             {
@@ -104,6 +101,16 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <returns>A randomly selected <see cref="Pickup"/> object.</returns>
         public static Pickup Random => BaseToPickup.Random().Value;
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.Transform"/> of the Pickup.
+        /// </summary>
+        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Rigidbody"/> of the Pickup.
@@ -255,7 +262,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion?, Player)"/>
         [EProperty(category: nameof(Pickup))]
-        public override Vector3 Position
+        public Vector3 Position
         {
             get => Base.Position;
             set => Base.Position = value;
@@ -276,7 +283,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion?, Player)"/>
         [EProperty(category: nameof(Pickup))]
-        public override Quaternion Rotation
+        public Quaternion Rotation
         {
             get => Base.Rotation;
             set => Base.Rotation = value;

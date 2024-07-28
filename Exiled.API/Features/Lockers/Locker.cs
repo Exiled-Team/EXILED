@@ -11,16 +11,16 @@ namespace Exiled.API.Features.Lockers
     using System.Linq;
 
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
     using MapGeneration.Distributors;
+    using UnityEngine;
 
     using BaseLocker = MapGeneration.Distributors.Locker;
 
     /// <summary>
     /// Represents a basic locker.
     /// </summary>
-    public class Locker : GameEntity, IWrapper<BaseLocker>
+    public class Locker : IWrapper<BaseLocker>, IWorldSpace
     {
         /// <summary>
         /// <see cref="Dictionary{TKey,TValue}"/> with <see cref="BaseLocker"/> and <see cref="Locker"/>.
@@ -32,7 +32,6 @@ namespace Exiled.API.Features.Lockers
         /// </summary>
         /// <param name="locker">The <see cref="BaseLocker"/> instance.</param>
         public Locker(BaseLocker locker)
-            : base(locker.gameObject)
         {
             Base = locker;
             Chambers = locker.Chambers.Select(x => new Chamber(x, this)).ToList();
@@ -46,8 +45,30 @@ namespace Exiled.API.Features.Lockers
         /// </summary>
         public static IReadOnlyCollection<Locker> List => BaseToExiledLockers.Values;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets the base <see cref="BaseLocker"/>.
+        /// </summary>
         public BaseLocker Base { get; }
+
+        /// <summary>
+        /// Gets the locker's <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the locker's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
+        /// Gets the locker position.
+        /// </summary>
+        public Vector3 Position => Transform.position;
+
+        /// <summary>
+        /// Gets the locker rotation.
+        /// </summary>
+        public Quaternion Rotation => Transform.rotation;
 
         /// <summary>
         /// Gets or sets all <see cref="LockerLoot"/> instances in this locker.

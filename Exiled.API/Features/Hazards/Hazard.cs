@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Hazards
     /// <summary>
     /// A wrapper for <see cref="EnvironmentalHazard"/>.
     /// </summary>
-    public class Hazard : GameEntity, IWrapper<EnvironmentalHazard>
+    public class Hazard : TypeCastObject<Hazard>, IWrapper<EnvironmentalHazard>
     {
         /// <summary>
         /// <see cref="Dictionary{TKey,TValue}"/> with <see cref="EnvironmentalHazard"/> to it's <see cref="Hazard"/>.
@@ -33,7 +33,6 @@ namespace Exiled.API.Features.Hazards
         /// </summary>
         /// <param name="hazard">The <see cref="EnvironmentalHazard"/> instance.</param>
         public Hazard(EnvironmentalHazard hazard)
-            : base(hazard.gameObject)
         {
             Base = hazard;
 
@@ -108,7 +107,7 @@ namespace Exiled.API.Features.Hazards
         /// <summary>
         /// Gets or sets the position.
         /// </summary>
-        public override Vector3 Position
+        public Vector3 Position
         {
             get => Base.SourcePosition;
             set => Base.SourcePosition = value;

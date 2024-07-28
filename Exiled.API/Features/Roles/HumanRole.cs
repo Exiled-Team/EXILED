@@ -11,7 +11,6 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles;
     using Respawning;
     using Respawning.NamingRules;
-    using UnityEngine;
 
     using HumanGameRole = PlayerRoles.HumanRole;
 
@@ -28,15 +27,6 @@ namespace Exiled.API.Features.Roles
             : base(baseRole)
         {
             Base = baseRole;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HumanRole"/> class.
-        /// </summary>
-        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
-        protected internal HumanRole(GameObject gameObject)
-            : base(gameObject)
-        {
         }
 
         /// <inheritdoc/>

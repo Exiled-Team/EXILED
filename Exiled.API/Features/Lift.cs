@@ -31,7 +31,7 @@ namespace Exiled.API.Features
     /// The in-game lift.
     /// </summary>
     [EClass(assetRegistrySearchable: false, category: nameof(Lift))]
-    public class Lift : GameEntity, IWrapper<ElevatorChamber>, IWorldSpace
+    public class Lift : IWrapper<ElevatorChamber>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="ElevatorChamber"/>s and their corresponding <see cref="Lift"/>.
@@ -48,7 +48,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="elevator">The <see cref="ElevatorChamber"/> to wrap.</param>
         internal Lift(ElevatorChamber elevator)
-            : base(elevator.gameObject)
         {
             Base = elevator;
             ElevatorChamberToLift.Add(elevator, this);
@@ -71,6 +70,39 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns><see cref="Lift"/> object.</returns>
         public static Lift Random => List.Random();
+
+        /// <summary>
+        /// Gets the base <see cref="ElevatorChamber"/>.
+        /// </summary>
+        public ElevatorChamber Base { get; }
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the lift.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the lift's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
+        /// Gets or sets the lift's position.
+        /// </summary>
+        public Vector3 Position
+        {
+            get => Transform.position;
+            set => Transform.position = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the lift's rotation.
+        /// </summary>
+        public Quaternion Rotation
+        {
+            get => Transform.rotation;
+            set => Transform.rotation = value;
+        }
 
         /// <summary>
         /// Gets a value of the internal doors list.
@@ -187,11 +219,6 @@ namespace Exiled.API.Features
         /// Gets the <see cref="CurrentDestination"/>.
         /// </summary>
         public ElevatorDoor CurrentDestination => Door.Get(Base.CurrentDestination).As<ElevatorDoor>();
-
-        /// <summary>
-        /// Gets the base <see cref="ElevatorChamber"/>.
-        /// </summary>
-        public ElevatorChamber Base { get; }
 
         /// <summary>
         /// Gets the <see cref="Lift"/> belonging to the <see cref="ElevatorChamber"/>, if any.

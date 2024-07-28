@@ -37,7 +37,7 @@ namespace Exiled.API.Features.Items
     /// A wrapper class for <see cref="ItemBase"/>.
     /// </summary>
     [EClass(category: nameof(Item))]
-    public class Item : GameEntity, IWrapper<ItemBase>
+    public class Item : TypeCastObject<Item>, IWrapper<ItemBase>
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
@@ -49,7 +49,6 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="itemBase">The <see cref="ItemBase"/> to encapsulate.</param>
         public Item(ItemBase itemBase)
-            : base(itemBase.gameObject)
         {
             Base = itemBase;
             BaseToItem.Add(itemBase, this);

@@ -9,7 +9,6 @@ namespace Exiled.API.Features.Roles
 {
     using Exiled.API.Features.Core.Attributes;
     using PlayerRoles;
-    using UnityEngine;
 
     using NoneGameRole = PlayerRoles.NoneRole;
 
@@ -24,15 +23,6 @@ namespace Exiled.API.Features.Roles
         /// <param name="baseRole">the base <see cref="NoneGameRole"/>.</param>
         internal NoneRole(PlayerRoleBase baseRole)
             : base(baseRole)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NoneRole"/> class.
-        /// </summary>
-        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
-        protected internal NoneRole(GameObject gameObject)
-            : base(gameObject)
         {
         }
 

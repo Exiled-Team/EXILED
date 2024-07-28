@@ -30,15 +30,6 @@ namespace Exiled.API.Features.Roles
             Base = baseRole;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SpectatorRole"/> class.
-        /// </summary>
-        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
-        protected internal SpectatorRole(GameObject gameObject)
-            : base(gameObject)
-        {
-        }
-
         /// <inheritdoc/>
         [EProperty(readOnly: true, category: nameof(Role))]
         public override RoleTypeId Type => RoleTypeId.Spectator;

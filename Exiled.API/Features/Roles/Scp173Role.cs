@@ -71,15 +71,6 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Scp173Role"/> class.
-        /// </summary>
-        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
-        protected internal Scp173Role(GameObject gameObject)
-            : base(gameObject)
-        {
-        }
-
-        /// <summary>
         /// Gets a list of players who will be turned away from SCP-173.
         /// </summary>
         public static HashSet<Player> TurnedPlayers { get; } = new(20);

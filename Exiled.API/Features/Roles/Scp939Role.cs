@@ -84,15 +84,6 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Scp939Role"/> class.
-        /// </summary>
-        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
-        protected internal Scp939Role(GameObject gameObject)
-            : base(gameObject)
-        {
-        }
-
-        /// <summary>
         /// Finalizes an instance of the <see cref="Scp939Role"/> class.
         /// </summary>
         ~Scp939Role() => ListPool<Player>.Pool.Return(VisiblePlayers);
