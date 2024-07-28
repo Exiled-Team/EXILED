@@ -15,6 +15,7 @@ namespace Exiled.API.Features.Core.Generic
     using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Interfaces;
     using LiteNetLib.Utils;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// A class which allows <see cref="Enum"/> implicit conversions.
@@ -31,14 +32,25 @@ namespace Exiled.API.Features.Core.Generic
 
         private string name;
 
+        static EnumClass()
+        {
+            values = new SortedList<TSource, TObject>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnumClass{TSource, TObject}"/> class.
+        /// Required for YAML deserialization.
+        /// </summary>
+        protected EnumClass()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumClass{TSource, TObject}"/> class.
         /// </summary>
         /// <param name="value">The value of the enum item.</param>
         protected EnumClass(TSource value)
         {
-            values ??= new();
-
             Value = value;
             values.Add(value, (TObject)this);
         }
@@ -46,16 +58,19 @@ namespace Exiled.API.Features.Core.Generic
         /// <summary>
         /// Gets all <typeparamref name="TObject"/> object instances.
         /// </summary>
+        [YamlIgnore]
         public static IEnumerable<TObject> Values => values.Values;
 
         /// <summary>
         /// Gets the value of the enum item.
         /// </summary>
-        public TSource Value { get; }
+        [YamlIgnore]
+        public TSource Value { get; private set; }
 
         /// <summary>
         /// Gets the name determined from reflection.
         /// </summary>
+        [YamlMember(Alias = "name")]
         public string Name
         {
             get
@@ -76,6 +91,19 @@ namespace Exiled.API.Features.Core.Generic
                 isDefined = true;
                 return name;
             }
+
+            private set
+            {
+                TObject obj = Parse(value);
+                if (obj is null)
+                {
+                    Log.ErrorWithContext($"The enum class ({GetType().Name}) requires a valid name. The current name will remain unchanged.", Log.CONTEXT_SERIALIZATION);
+                    return;
+                }
+
+                Value = obj.Value;
+                name = value;
+            }
         }
 
         /// <summary>
@@ -83,6 +111,12 @@ namespace Exiled.API.Features.Core.Generic
         /// </summary>
         /// <param name="value">The value to convert.</param>
         public static implicit operator TSource(EnumClass<TSource, TObject> value) => value.Value;
+
+        /// <summary>
+        /// Implicitly converts the <see cref="EnumClass{TSource, TObject}"/> to <see cref="string"/>.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        public static implicit operator string(EnumClass<TSource, TObject> value) => value.Name;
 
         /// <summary>
         /// Implicitly converts the <typeparamref name="TSource"/> to <see cref="EnumClass{TSource, TObject}"/>.

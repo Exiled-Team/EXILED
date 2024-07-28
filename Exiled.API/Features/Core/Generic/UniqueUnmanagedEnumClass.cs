@@ -108,7 +108,7 @@ namespace Exiled.API.Features.Core.Generic
         /// Implicitly converts the <see cref="UniqueUnmanagedEnumClass{TSource, TObject}"/> to <typeparamref name="TObject"/>.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        public static implicit operator TObject(UniqueUnmanagedEnumClass<TSource, TObject> value) => value;
+        public static implicit operator TObject(UniqueUnmanagedEnumClass<TSource, TObject> value) => values[value];
 
         /// <summary>
         /// Casts the specified <paramref name="value"/> to the corresponding type.
@@ -208,7 +208,7 @@ namespace Exiled.API.Features.Core.Generic
         /// <returns>The corresponding <typeparamref name="TObject"/> object instance, or <see langword="null"/> if not found.</returns>
         public static TObject Parse(string obj)
         {
-            foreach (TObject value in values.Values.Where(value => string.Compare(value.Name, obj, true) == 0))
+            foreach (TObject value in values.Values.Where(value => string.Compare(value.Name, obj, StringComparison.OrdinalIgnoreCase) == 0))
                 return value;
 
             return null;

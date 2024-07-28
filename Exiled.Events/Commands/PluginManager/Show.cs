@@ -36,9 +36,6 @@ namespace Exiled.Events.Commands.PluginManager
         /// <inheritdoc/>
         public string Description { get; } = "Get all plugins, names, authors and versions";
 
-        /// <inheritdoc cref="SanitizeResponse" />
-        public bool SanitizeResponse { get; }
-
         /// <inheritdoc />
         public string Permission { get; } = "pm.showplugins";
 

@@ -40,7 +40,8 @@ namespace Exiled.API.Features.Core
         protected GameEntity(GameObject gameObject)
         {
             GameObject = gameObject;
-            List.Add(this);
+
+            // List.Add(this);
         }
 
         /// <summary>

@@ -26,6 +26,14 @@ namespace Exiled.CustomModules.API.Features
         where TEntity : GameEntity
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleBehaviour{T}"/> class.
+        /// </summary>
+        protected ModuleBehaviour()
+            : base()
+        {
+        }
+
+        /// <summary>
         /// Gets or sets the behaviour's configs.
         /// </summary>
         public virtual ModulePointer Config { get; set; }

@@ -17,7 +17,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     /// <summary>
     /// Defines the contract for config features related to custom entities.
     /// </summary>
-    public abstract class Settings : TypeCastObject<Settings>, IAdditiveProperty
+    public class Settings : TypeCastObject<Settings>, IAdditiveProperty
     {
         /// <summary>
         /// Gets or sets the custom entity's <see cref="global::ItemType"/>.

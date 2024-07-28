@@ -72,7 +72,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DisplayingHitmarkerEventArgs), nameof(DisplayingHitmarkerEventArgs.Size))),
                 new(OpCodes.Starg_S, 1),
 
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DisplayingHitmarkerEventArgs), nameof(DisplayingHitmarkerEventArgs.PlayAudio))),
                 new(OpCodes.Starg_S, 2),
             });

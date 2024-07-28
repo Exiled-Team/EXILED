@@ -48,6 +48,11 @@ namespace Exiled.Events.Handlers
         public static Event<RemoveObserverEventArgs> RemoveObserver { get; set; } = new();
 
         /// <summary>
+        /// Invoked before SCP-173 snaps a player neck.
+        /// </summary>
+        public static Event<AttackingEventArgs> Attacking { get; set; } = new();
+
+        /// <summary>
         /// Called before players near SCP-173 blink.
         /// </summary>
         /// <param name="ev">The <see cref="BlinkingEventArgs" /> instance.</param>
@@ -82,5 +87,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="AddingObserverEventArgs" /> instance.</param>
         public static void OnRemoveObserver(RemoveObserverEventArgs ev) => RemoveObserver.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-173 snaps a player neck.
+        /// </summary>
+        /// <param name="ev">The <see cref="AttackingEventArgs"/> instance.</param>
+        public static void OnAttacking(AttackingEventArgs ev) => Attacking.InvokeSafely(ev);
     }
 }

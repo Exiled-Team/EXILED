@@ -9,6 +9,7 @@ namespace Exiled.CustomModules.EventHandlers
 {
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.API.Features.CustomItems;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
@@ -19,10 +20,12 @@ namespace Exiled.CustomModules.EventHandlers
     /// </summary>
     internal sealed class PlayerHandler
     {
+        private ModuleInfo CustomItemsModuleInfo { get; } = ModuleInfo.Get(UUModuleType.CustomItems.Name);
+
         /// <inheritdoc cref="ChangingItemEventArgs"/>
         public void OnChangingItem(ChangingItemEventArgs ev)
         {
-            if (!ev.IsAllowed)
+            if (!ev.IsAllowed || !CustomItemsModuleInfo.IsCurrentlyLoaded)
                 return;
 
             if (CustomItem.TryGet(ev.Item, out CustomItem customItem) && customItem.Settings.Cast<ItemSettings>().ShouldMessageOnGban)

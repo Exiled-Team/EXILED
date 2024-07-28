@@ -166,7 +166,7 @@ namespace Exiled.API.Features.Doors
         /// <summary>
         /// Gets the checkpoint door the door is belonging to, or null if the door doesn't belong to a checkpoint.
         /// </summary>
-        public Door ParentCheckpointDoor { get; }
+        public Door ParentCheckpointDoor { get; internal set; }
 
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.

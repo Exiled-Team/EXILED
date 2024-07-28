@@ -18,9 +18,13 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.DynamicEvents;
+    using Exiled.API.Features.Serialization;
+    using Exiled.API.Features.Serialization.CustomConverters;
     using Exiled.API.Interfaces;
     using Exiled.CustomModules.API.Enums;
+    using Exiled.CustomModules.API.Features.Attributes;
     using YamlDotNet.Serialization;
+    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Represents a marker class for custom modules.
@@ -89,7 +93,7 @@ namespace Exiled.CustomModules.API.Features
             get
             {
                 // Type-Module
-                if (!string.IsNullOrEmpty(serializableParentName))
+                if (string.IsNullOrEmpty(serializableParentName))
                     serializableParentName = $"{GetType().Name}-Module";
 
                 return serializableParentName;
@@ -122,7 +126,7 @@ namespace Exiled.CustomModules.API.Features
             {
                 // Name.yml
                 if (string.IsNullOrEmpty(serializableFileName))
-                    serializableFileName = $"{Name}.yml";
+                    serializableFileName = $"{ChildName}.yml";
 
                 return serializableFileName;
             }
@@ -207,6 +211,39 @@ namespace Exiled.CustomModules.API.Features
                 return modulePointerPath;
             }
         }
+
+        /// <summary>
+        /// Gets the serializer for custom modules.
+        /// </summary>
+        private static ISerializer ModuleSerializer { get; } = new SerializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new ColorConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithTypeConverter(new EnumClassConverter())
+            .WithTypeConverter(new PrivateConstructorConverter())
+            .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
+            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
+            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .IgnoreFields()
+            .DisableAliases()
+            .Build();
+
+        /// <summary>
+        /// Gets the deserializer for custom modules.
+        /// </summary>
+        private static IDeserializer ModuleDeserializer { get; } = new DeserializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new ColorConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithTypeConverter(new EnumClassConverter())
+            .WithTypeConverter(new PrivateConstructorConverter())
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .WithNodeDeserializer(_ => new CustomModuleDeserializer(), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .WithDuplicateKeyChecking()
+            .IgnoreFields()
+            .IgnoreUnmatchedProperties()
+            .Build();
 
         /// <summary>
         /// Compares two operands: <see cref="CustomModule"/> and <see cref="object"/>.
@@ -302,16 +339,15 @@ namespace Exiled.CustomModules.API.Features
             IEnumerable<FieldInfo> moduleTypeValuesInfo = runtime_ModuleType.GetFields(BindingFlags.Static | BindingFlags.Public).Where(f => f.GetValue(null) is UUModuleType);
             foreach (Type type in assembly.GetTypes())
             {
-                if (type.BaseType != typeof(CustomModule) || Loader.Any(m => m.Type == type))
+                if (type.IsAbstract || type.BaseType != typeof(CustomModule) || Loader.Any(m => m.Type == type))
                     continue;
 
                 IEnumerable<MethodInfo> rhMethods = type.GetMethods(ModuleInfo.SIGNATURE_BINDINGS)
                     .Where(m =>
                     {
                         ParameterInfo[] mParams = m.GetParameters();
-                        return m.Name is ModuleInfo.ENABLE_ALL_CALLBACK or ModuleInfo.DISABLE_ALL_CALLBACK &&
-                               mParams.Length == 1 && mParams.Any(p => p.ParameterType == typeof(Assembly));
-                    }).ToArray();
+                        return (m.Name is ModuleInfo.ENABLE_ALL_CALLBACK && mParams.Any(p => p.ParameterType == typeof(Assembly))) || m.Name is ModuleInfo.DISABLE_ALL_CALLBACK;
+                    });
 
                 MethodInfo enableAll = rhMethods.FirstOrDefault(m => m.Name is ModuleInfo.ENABLE_ALL_CALLBACK);
                 MethodInfo disableAll = rhMethods.FirstOrDefault(m => m.Name is ModuleInfo.DISABLE_ALL_CALLBACK);
@@ -328,15 +364,14 @@ namespace Exiled.CustomModules.API.Features
                     continue;
                 }
 
-                if (Delegate.CreateDelegate(typeof(Action<Assembly>), enableAll) is not Action<Assembly> enableAllCallback ||
-                    Delegate.CreateDelegate(typeof(Action<Assembly>), disableAll) is not Action<Assembly> disableAllCallback)
-                    continue;
+                Action<Assembly> enableAllAction = Delegate.CreateDelegate(typeof(Action<Assembly>), enableAll) as Action<Assembly>;
+                Action disableAllAction = Delegate.CreateDelegate(typeof(Action), disableAll) as Action;
 
                 ModuleInfo moduleInfo = new()
                 {
                     Type = type,
-                    EnableAll_Callback = enableAllCallback,
-                    DisableAll_Callback = disableAllCallback,
+                    EnableAll_Callback = enableAllAction,
+                    DisableAll_Callback = disableAllAction,
                     IsCurrentlyLoaded = false,
                     ModuleType = FindClosestModuleType(type, moduleTypeValuesInfo),
                 };
@@ -414,17 +449,24 @@ namespace Exiled.CustomModules.API.Features
         /// <exception cref="ArgumentNullException">Thrown when <see cref="ChildPath"/> is null.</exception>
         public void SerializeModule()
         {
-            Directory.CreateDirectory(ParentPath);
-
-            if (File.Exists(FilePath) && File.Exists(PointerPath))
+            if (string.IsNullOrEmpty(Name))
             {
-                File.WriteAllText(FilePath, EConfig.Serializer.Serialize(this));
-                File.WriteAllText(PointerPath, EConfig.Serializer.Serialize(Config));
+                Log.Error($"{GetType().Name}::Name property was not defined. A module must define a name, or it won't load.");
                 return;
             }
 
-            File.WriteAllText(FilePath ?? throw new ArgumentNullException(nameof(FilePath)), EConfig.Serializer.Serialize(this));
-            File.WriteAllText(PointerPath ?? throw new ArgumentNullException(nameof(PointerPath)), EConfig.Serializer.Serialize(Config));
+            Directory.CreateDirectory(ParentPath);
+            Directory.CreateDirectory(ChildPath);
+
+            if (File.Exists(FilePath) && File.Exists(PointerPath))
+            {
+                File.WriteAllText(FilePath, ModuleSerializer.Serialize(this));
+                File.WriteAllText(PointerPath, ModuleSerializer.Serialize(Config));
+                return;
+            }
+
+            File.WriteAllText(FilePath ?? throw new ArgumentNullException(nameof(FilePath)), ModuleSerializer.Serialize(this));
+            File.WriteAllText(PointerPath ?? throw new ArgumentNullException(nameof(PointerPath)), ModuleSerializer.Serialize(Config));
         }
 
         /// <summary>
@@ -432,6 +474,14 @@ namespace Exiled.CustomModules.API.Features
         /// </summary>
         public void DeserializeModule()
         {
+            if (string.IsNullOrEmpty(Name))
+            {
+                Log.ErrorWithContext($"{GetType().Name}::Name property was not defined. A module must define a name, or it won't load.", Log.CONTEXT_CRITICAL);
+                return;
+            }
+
+            DynamicEventManager.CreateFromTypeInstance(this);
+
             if (!File.Exists(FilePath))
             {
                 Log.Info($"{GetType().Name} module configuration not found. Creating a new configuration file.");
@@ -440,7 +490,7 @@ namespace Exiled.CustomModules.API.Features
                 {
                     try
                     {
-                        Config = EConfig.Deserializer.Deserialize<ModulePointer>(File.ReadAllText(PointerPath));
+                        Config = ModuleDeserializer.Deserialize<ModulePointer>(File.ReadAllText(PointerPath));
                     }
                     catch
                     {
@@ -456,7 +506,7 @@ namespace Exiled.CustomModules.API.Features
                 return;
             }
 
-            CustomModule deserializedModule = EConfig.Deserializer.Deserialize<CustomModule>(File.ReadAllText(FilePath));
+            CustomModule deserializedModule = ModuleDeserializer.Deserialize(File.ReadAllText(FilePath), GetType()) as CustomModule;
             CopyProperties(deserializedModule);
 
             foreach (string file in Directory.GetFiles(ChildPath))
@@ -466,13 +516,36 @@ namespace Exiled.CustomModules.API.Features
 
                 try
                 {
-                    Config = EConfig.Deserializer.Deserialize<ModulePointer>(File.ReadAllText(file));
+                    Config = ModuleDeserializer.Deserialize<ModulePointer>(File.ReadAllText(file));
                 }
                 catch
                 {
                     continue;
                 }
             }
+        }
+
+        /// <summary>
+        /// Tries to register a <see cref="CustomModule"/>.
+        /// </summary>
+        /// <param name="assembly">The assembly to register <see cref="CustomModule"/> from.</param>
+        /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
+        /// <returns><see langword="true"/> if the <see cref="CustomModule"/> was registered; otherwise, <see langword="false"/>.</returns>
+        protected virtual bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
+        {
+            DynamicEventManager.CreateFromTypeInstance(this);
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to unregister a <see cref="CustomModule"/>.
+        /// </summary>
+        /// <returns><see langword="true"/> if the <see cref="CustomModule"/> was unregistered; otherwise, <see langword="false"/>.</returns>
+        protected virtual bool TryUnregister()
+        {
+            EObject.UnregisterObjectType(Name);
+            DynamicEventManager.DestroyFromTypeInstance(this);
+            return true;
         }
 
         private static void AutomaticModulesLoaderState(bool shouldLoad)
@@ -483,7 +556,7 @@ namespace Exiled.CustomModules.API.Features
                 foreach (IPlugin<IConfig> plugin in Exiled.Loader.Loader.Plugins)
                 {
                     ModuleInfo.AllModules
-                        .Where(moduleInfo => config.Modules.Any(m => m == moduleInfo.ModuleType))
+                        .Where(moduleInfo => config.Modules.Any(m => m == moduleInfo.ModuleType.Name))
                         .ForEach(mod => mod.InvokeCallback(shouldLoad ? ModuleInfo.ENABLE_ALL_CALLBACK : ModuleInfo.DISABLE_ALL_CALLBACK, plugin.Assembly));
                 }
             }

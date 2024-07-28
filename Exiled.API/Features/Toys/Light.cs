@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Toys
 
     using Enums;
     using Exiled.API.Interfaces;
-
+    using Exiled.API.Structs;
     using UnityEngine;
 
     /// <summary>
@@ -26,10 +26,7 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         /// <param name="lightSourceToy">The <see cref="LightSourceToy"/> of the toy.</param>
         internal Light(LightSourceToy lightSourceToy)
-            : base(lightSourceToy, AdminToyType.LightSource)
-        {
-            Base = lightSourceToy;
-        }
+            : base(lightSourceToy, AdminToyType.LightSource) => Base = lightSourceToy;
 
         /// <summary>
         /// Gets the light prefab's type.
@@ -88,22 +85,29 @@ namespace Exiled.API.Features.Toys
         /// <param name="position">The position of the <see cref="Light"/>.</param>
         /// <param name="rotation">The rotation of the <see cref="Light"/>.</param>
         /// <param name="scale">The scale of the <see cref="Light"/>.</param>
-        /// <param name="spawn">Whether the <see cref="Light"/> should be initially spawned.</param>
         /// <param name="color">The color of the <see cref="Light"/>.</param>
+        /// <param name="spawn">Whether or not the <see cref="Light"/> should be initially spawned.</param>
+        /// <returns>The newly created <see cref="Light"/>.</returns>
+        public static Light Create(Vector3? position = null, Quaternion? rotation = null, Vector3? scale = null, Color? color = null, bool spawn = true)
+            => Create(new(position, rotation, scale, color, spawn));
+
+        /// <summary>
+        /// Creates a new <see cref="Light"/>.
+        /// </summary>
+        /// <param name="lightSettings">The settings of the <see cref="Light"/>.</param>
         /// <returns>The new <see cref="Light"/>.</returns>
-        public static Light Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true, Color? color = null)
+        public static Light Create(LightSettings lightSettings)
         {
-            Light light = new(Object.Instantiate(PrefabObject.GetComponent<LightSourceToy>()));
+            Light light = new(Object.Instantiate(PrefabObject.GetComponent<LightSourceToy>()))
+            {
+                Position = lightSettings.Position,
+                Rotation = lightSettings.Rotation,
+                Scale = lightSettings.Scale,
+                Color = lightSettings.Color,
+            };
 
-            Transform transform = light.Base.transform;
-            transform.position = position ?? Vector3.zero;
-            transform.eulerAngles = rotation ?? Vector3.zero;
-            transform.localScale = scale ?? Vector3.one;
-
-            if (spawn)
+            if (lightSettings.ShouldSpawn)
                 light.Spawn();
-
-            light.Color = color ?? Color.gray;
 
             return light;
         }

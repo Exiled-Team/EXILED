@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Give.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -17,7 +17,6 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
     using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.Permissions.Extensions;
-    using RemoteAdmin;
 
     /// <summary>
     /// The command to give a role to player(s).
@@ -41,9 +40,6 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
 
         /// <inheritdoc/>
         public string Description { get; } = "Gives the specified custom role to the indicated player(s).";
-
-        /// <inheritdoc cref="SanitizeResponse" />
-        public bool SanitizeResponse { get; } = true;
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -70,17 +66,17 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
 
                 if (arguments.Count == 1)
                 {
-                    if (sender is PlayerCommandSender playerCommandSender)
-                    {
-                        Pawn player = Player.Get(playerCommandSender).Cast<Pawn>();
+                    Pawn player = Player.Get(arguments.At(1)).Cast<Pawn>();
 
-                        role.Spawn(player);
-                        response = $"{role.Name} given to {player.Nickname}.";
-                        return true;
+                    if (player is null)
+                    {
+                        response = "Player not found";
+                        return false;
                     }
 
-                    response = "Failed to provide a valid player.";
-                    return false;
+                    role.Spawn(player);
+                    response = $"{role.Name} given to {player.Nickname}.";
+                    return true;
                 }
 
                 string identifier = string.Join(" ", arguments.Skip(1));

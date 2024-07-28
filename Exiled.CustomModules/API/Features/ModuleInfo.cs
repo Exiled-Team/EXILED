@@ -12,6 +12,8 @@ namespace Exiled.CustomModules.API.Features
     using System.Linq;
     using System.Reflection;
 
+    using Exiled.CustomModules.API.Enums;
+
     /// <summary>
     /// A struct containing all information about a module.
     /// </summary>
@@ -54,7 +56,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// The module identifier.
         /// </summary>
-        public uint ModuleType;
+        public UUModuleType ModuleType;
 
 #pragma warning disable SA1310
         /// <summary>
@@ -65,7 +67,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Callback method for disabling all instances of the module.
         /// </summary>
-        public Action<Assembly> DisableAll_Callback;
+        public Action DisableAll_Callback;
 #pragma warning restore SA1310
 
         /// <summary>
@@ -114,7 +116,7 @@ namespace Exiled.CustomModules.API.Features
             }
 
             CustomModule.OnDisabled.InvokeAll(this);
-            DisableAll_Callback(assembly ?? Assembly.GetCallingAssembly());
+            DisableAll_Callback();
         }
     }
 }

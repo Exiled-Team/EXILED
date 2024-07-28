@@ -369,31 +369,23 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <summary>
         /// Enables all the custom items present in the assembly.
         /// </summary>
-        /// <returns>
-        /// A <see cref="List{T}"/> of <see cref="CustomItem"/> containing all the enabled custom items.
-        /// </returns>
         /// <remarks>
         /// This method dynamically enables all custom items found in the calling assembly. Custom items
-        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling. If
-        /// a custom item is enabled successfully, it is added to the returned list.
+        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling.
         /// </remarks>
-        public static List<CustomItem> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
 
         /// <summary>
         /// Enables all the custom items present in the assembly.
         /// </summary>
         /// <param name="assembly">The assembly to enable the items from.</param>
-        /// <returns>
-        /// A <see cref="List{T}"/> of <see cref="CustomItem"/> containing all the enabled custom items.
-        /// </returns>
         /// <remarks>
         /// This method dynamically enables all custom items found in the calling assembly. Custom items
-        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling. If
-        /// a custom item is enabled successfully, it is added to the returned list.
+        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling.
         /// </remarks>
-        public static List<CustomItem> EnableAll(Assembly assembly)
+        public static void EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomItems))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomItems.Name))
                 throw new Exception("ModuleType::CustomItems must be enabled in order to load any custom items");
 
             List<CustomItem> customItems = new();
@@ -415,28 +407,21 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 
             if (customItems.Count != Registered.Count)
                 Log.Info($"{customItems.Count} custom items have been successfully registered!");
-
-            return customItems;
         }
 
         /// <summary>
         /// Disables all the custom items present in the assembly.
         /// </summary>
-        /// <returns>
-        /// A <see cref="List{T}"/> of <see cref="CustomItem"/> containing all the disabled custom items.
-        /// </returns>
         /// <remarks>
         /// This method dynamically disables all custom items found in the calling assembly that were
-        /// previously registered. If a custom item is disabled successfully, it is added to the returned list.
+        /// previously registered.
         /// </remarks>
-        public static List<CustomItem> DisableAll()
+        public static void DisableAll()
         {
             List<CustomItem> customItems = new();
             customItems.AddRange(Registered.Where(customItem => customItem.TryUnregister()));
 
             Log.Info($"{customItems.Count} custom items have been successfully unregistered!");
-
-            return customItems;
         }
 
         /// <summary>
@@ -632,7 +617,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <param name="assembly">The assembly to register items from.</param>
         /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomItem"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
+        protected override bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {
@@ -655,6 +640,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                 EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
                 Registered.Add(this);
 
+                base.TryRegister(assembly, attribute);
+
                 TypeLookupTable.TryAdd(GetType(), this);
                 BehaviourLookupTable.TryAdd(BehaviourComponent, this);
                 IdLookupTable.TryAdd(Id, this);
@@ -672,7 +659,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// Tries to unregister a <see cref="CustomItem"/>.
         /// </summary>
         /// <returns><see langword="true"/> if the <see cref="CustomItem"/> was unregistered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryUnregister()
+        protected override bool TryUnregister()
         {
             if (!Registered.Contains(this))
             {
@@ -683,6 +670,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 
             EObject.UnregisterObjectType(BehaviourComponent);
             Registered.Remove(this);
+
+            base.TryUnregister();
 
             TypeLookupTable.Remove(GetType());
             BehaviourLookupTable.Remove(BehaviourComponent);

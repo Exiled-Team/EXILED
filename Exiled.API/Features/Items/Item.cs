@@ -43,7 +43,6 @@ namespace Exiled.API.Features.Items
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
         /// </summary>
         internal static readonly Dictionary<ItemBase, Item> BaseToItem = new(new ComponentsEqualityComparer());
-        private float weight;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
@@ -54,7 +53,6 @@ namespace Exiled.API.Features.Items
         {
             Base = itemBase;
             BaseToItem.Add(itemBase, this);
-            weight = itemBase.Weight;
 
             if (Base.ItemSerial is 0 && itemBase.Owner != null)
             {
@@ -130,14 +128,10 @@ namespace Exiled.API.Features.Items
         public ItemTierFlags TierFlags => Base.TierFlags;
 
         /// <summary>
-        /// Gets or sets the Weight of the item.
+        /// Gets the Weight of the item.
         /// </summary>
         [EProperty(category: nameof(Item))]
-        public virtual float Weight
-        {
-            get => weight;
-            set => weight = value;
-        }
+        public float Weight => Base.Weight;
 
         /// <summary>
         /// Gets a value indicating whether or not this item is ammunition.
@@ -294,7 +288,7 @@ namespace Exiled.API.Features.Items
         public static Item Create(ItemType type, Player owner = null) => type switch
         {
             ItemType.SCP268 => new Usable(type),
-            ItemType.Adrenaline or ItemType.Medkit or ItemType.Painkillers or ItemType.SCP500 or ItemType.SCP207 or ItemType.SCP1853 => new Consumable(type),
+            ItemType.Adrenaline or ItemType.Medkit or ItemType.Painkillers or ItemType.SCP500 or ItemType.SCP207 or ItemType.AntiSCP207 or ItemType.SCP1853 => new Consumable(type),
             ItemType.SCP244a or ItemType.SCP244b => new Scp244(type),
             ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39 => new Ammo(type),
             ItemType.Flashlight or ItemType.Lantern => new Flashlight(type),
@@ -332,11 +326,11 @@ namespace Exiled.API.Features.Items
         /// <param name="rotation">The rotation of the item.</param>
         /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
         /// <returns>The created <see cref="Pickup"/>.</returns>
-        public virtual Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
+        public virtual Pickup CreatePickup(Vector3 position, Quaternion? rotation = null, bool spawn = true)
         {
             PickupSyncInfo info = new(Type, Weight, Serial);
 
-            ItemPickupBase ipb = InventoryExtensions.ServerCreatePickup(Base, info, position, rotation);
+            ItemPickupBase ipb = InventoryExtensions.ServerCreatePickup(Base, info, position, rotation ?? Quaternion.identity);
 
             Base.OnRemoved(ipb);
 
@@ -394,10 +388,7 @@ namespace Exiled.API.Features.Items
         internal virtual void ReadPickupInfo(Pickup pickup)
         {
             if (pickup is not null)
-            {
                 Scale = pickup.Scale;
-                Weight = pickup.Weight;
-            }
         }
     }
 }

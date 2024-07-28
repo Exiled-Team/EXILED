@@ -275,30 +275,27 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 }
             }
 
-            if (Owner.Role != Role)
+            if (Settings.SpawnFlags is not RoleSpawnFlags.All)
             {
-                if (Settings.SpawnFlags is not RoleSpawnFlags.All)
+                Owner.Role.Set(Role, Settings.SpawnReason, Settings.SpawnFlags);
+            }
+            else
+            {
+                switch (Settings.PreservePosition)
                 {
-                    Owner.Role.Set(Role, Settings.SpawnReason, Settings.SpawnFlags);
-                }
-                else
-                {
-                    switch (Settings.PreservePosition)
+                    case true when Settings.PreserveInventory:
+                        Owner.Role.Set(Role, Settings.SpawnReason, RoleSpawnFlags.None);
+                        break;
+                    case true:
+                        Owner.Role.Set(Role, Settings.SpawnReason, RoleSpawnFlags.AssignInventory);
+                        break;
+                    default:
                     {
-                        case true when Settings.PreserveInventory:
-                            Owner.Role.Set(Role, Settings.SpawnReason, RoleSpawnFlags.None);
-                            break;
-                        case true:
-                            Owner.Role.Set(Role, Settings.SpawnReason, RoleSpawnFlags.AssignInventory);
-                            break;
-                        default:
-                        {
-                            if (Settings.PreserveInventory && Owner.IsAlive)
-                                Owner.Role.Set(Role, Settings.SpawnReason, RoleSpawnFlags.UseSpawnpoint);
-                            else
-                                Owner.Role.Set(Role, Settings.SpawnReason, RoleSpawnFlags.All);
-                            break;
-                        }
+                        if (Settings.PreserveInventory && Owner.IsAlive)
+                            Owner.Role.Set(Role, Settings.SpawnReason, RoleSpawnFlags.UseSpawnpoint);
+                        else
+                            Owner.Role.Set(Role, Settings.SpawnReason, RoleSpawnFlags.All);
+                        break;
                     }
                 }
             }

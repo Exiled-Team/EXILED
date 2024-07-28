@@ -94,7 +94,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public DamageHandler DamageHandlerBase
         {
-            get => damageHandler ??= new(Player, Info.Handler);
+            get => damageHandler ??= new DamageHandler(Player, Info.Handler);
             set
             {
                 Info = new RagdollData(Player.ReferenceHub, value, Role, Position, Rotation, Nickname, CreationTime);

@@ -153,11 +153,9 @@ namespace Exiled.Loader
             Type defaultPlayerClass = null;
             try
             {
+                IPlugin<IConfig> plugin = null;
                 foreach (Type type in assembly.GetTypes())
                 {
-                    if (typeof(Player).IsAssignableFrom(type))
-                        defaultPlayerClass = type;
-
                     if (type.IsAbstract || type.IsInterface)
                     {
                         Log.Debug($"\"{type.FullName}\" is an interface or abstract class, skipping.");
@@ -171,8 +169,6 @@ namespace Exiled.Loader
                     }
 
                     Log.Debug($"Loading type {type.FullName}");
-
-                    IPlugin<IConfig> plugin = null;
 
                     ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
                     if (constructor is not null)
@@ -194,7 +190,6 @@ namespace Exiled.Loader
                     if (plugin is null)
                     {
                         Log.Error($"{type.FullName} is a valid plugin, but it cannot be instantiated! It either doesn't have a public default constructor without any arguments or a static property of the {type.FullName} type!");
-
                         continue;
                     }
 
@@ -202,17 +197,25 @@ namespace Exiled.Loader
 
                     if (CheckPluginRequiredExiledVersion(plugin, assembly.GetReferencedAssemblies()?.FirstOrDefault(x => x?.Name is "Exiled.Loader")?.Version ?? new()))
                         continue;
+                }
 
-                    if (defaultPlayerClass is not null)
+                foreach (Type type in assembly.GetTypes())
+                {
+                    if (type.BaseType == typeof(Player) || type.IsSubclassOf(typeof(Player)))
                     {
-                        DefaultPlayerClassAttribute dpc = Player.DEFAULT_PLAYER_CLASS.GetCustomAttribute<DefaultPlayerClassAttribute>();
-
-                        if (dpc is not null && !dpc.EnforceAuthority)
-                            Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
+                        Log.ErrorWithContext(type.Name);
+                        defaultPlayerClass = type;
                     }
 
-                    return plugin;
+                    DefaultPlayerClassAttribute dpc = Player.DEFAULT_PLAYER_CLASS.GetCustomAttribute<DefaultPlayerClassAttribute>();
+                    if (Player.DEFAULT_PLAYER_CLASS != typeof(Player) && !dpc.EnforceAuthority && defaultPlayerClass is not null)
+                    {
+                        if (Player.DEFAULT_PLAYER_CLASS == typeof(Player) && dpc.EnforceAuthority)
+                            Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
+                    }
                 }
+
+                return plugin;
             }
             catch (ReflectionTypeLoadException reflectionTypeLoadException)
             {

@@ -203,17 +203,15 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <summary>
         /// Enables all the custom game modes present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomGameMode"/> containing all enabled custom game modes.</returns>
-        public static List<CustomGameMode> EnableAll() => EnableAll(Assembly.GetCallingAssembly());
+        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
 
         /// <summary>
         /// Enables all the custom game modes present in the assembly.
         /// </summary>
         /// <param name="assembly">The assembly to enable the game modes from.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomGameMode"/> containing all enabled custom game modes.</returns>
-        public static List<CustomGameMode> EnableAll(Assembly assembly)
+        public static void EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomGameModes))
+            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomGameModes.Name))
                 throw new Exception("ModuleType::CustomGameModes must be enabled in order to load any custom game modes");
 
             List<CustomGameMode> customGameModes = new();
@@ -229,7 +227,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
                 if (!customGameMode.IsEnabled)
                     continue;
 
-                if (customGameMode.BehaviourComponents.Count(comp => typeof(GameState).IsAssignableFrom(comp)) != 1 || customGameMode.PlayerStates.Count() <= 0)
+                if (customGameMode.BehaviourComponents.Count(comp => typeof(GameState).IsAssignableFrom(comp)) != 1 || !customGameMode.PlayerStates.Any())
                 {
                     Log.Error($"Failed to load the custom game mode.\n" +
                               $"The game mode \"{customGameMode.Name}\" should have exactly one GameState component and at least one PlayerState component defined.");
@@ -242,22 +240,17 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
 
             if (customGameModes.Count() != Registered.Count)
                 Log.Info($"{customGameModes.Count()} custom game modes have been successfully registered!");
-
-            return customGameModes;
         }
 
         /// <summary>
         /// Disables all the custom game modes present in the assembly.
         /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomGameMode"/> containing disabled custom game modes.</returns>
-        public static List<CustomGameMode> DisableAll()
+        public static void DisableAll()
         {
             List<CustomGameMode> customGameModes = new();
             customGameModes.AddRange(List.Where(customGameMode => customGameMode.TryUnregister()));
 
             Log.Info($"{customGameModes.Count()} custom game modes have been successfully unregistered!");
-
-            return customGameModes;
         }
 
         /// <summary>
@@ -266,7 +259,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <param name="assembly">The assembly to register <see cref="CustomGameMode"/> from.</param>
         /// <param name="attribute">The specified <see cref="ModuleIdentifierAttribute"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="CustomGameMode"/> was registered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
+        protected override bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
             if (!Registered.Contains(this))
             {
@@ -291,6 +284,8 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
 
                 Registered.Add(this);
 
+                base.TryRegister(assembly, attribute);
+
                 TypeLookupTable.TryAdd(GetType(), this);
                 BehavioursLookupTable.TryAdd(BehaviourComponents, this);
                 IdLookupTable.TryAdd(Id, this);
@@ -308,7 +303,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// Tries to unregister a <see cref="CustomGameMode"/>.
         /// </summary>
         /// <returns><see langword="true"/> if the <see cref="CustomGameMode"/> was unregistered; otherwise, <see langword="false"/>.</returns>
-        internal bool TryUnregister()
+        protected override bool TryUnregister()
         {
             if (!Registered.Contains(this))
             {
@@ -319,6 +314,8 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
 
             BehaviourComponents.ForEach(comp => EObject.UnregisterObjectType(comp));
             Registered.Remove(this);
+
+            base.TryUnregister();
 
             TypeLookupTable.Remove(GetType());
             BehavioursLookupTable.Remove(BehaviourComponents);

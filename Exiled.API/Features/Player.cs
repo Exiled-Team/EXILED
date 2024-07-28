@@ -2461,6 +2461,8 @@ namespace Exiled.API.Features
             usableItem.Base.Owner = referenceHub;
             usableItem.Base.ServerOnUsingCompleted();
 
+            typeof(UsableItemsController).InvokeStaticEvent(nameof(UsableItemsController.ServerOnUsingCompleted), new object[] { referenceHub, usableItem.Base });
+
             if (usableItem.Base is not null)
                 usableItem.Destroy();
 
@@ -2893,7 +2895,7 @@ namespace Exiled.API.Features
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
 
                 if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
-                    flags.AddFlags(FirearmStatusFlags.FlashlightEnabled);
+                    flags = flags.AddFlags(FirearmStatusFlags.FlashlightEnabled);
 
                 firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
@@ -3772,7 +3774,7 @@ namespace Exiled.API.Features
                 case TeslaGate teslaGate:
                     Teleport(
                         teslaGate.Position + offset + Vector3.up +
-                        (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
+                        (teslaGate.Room.Transform.rotation == Quaternion.identity
                             ? new Vector3(3, 0, 0)
                             : new Vector3(0, 0, 3)));
                     break;
@@ -3926,26 +3928,6 @@ namespace Exiled.API.Features
             RankName = rankName;
             RankColor = rankColor;
         }
-
-        /// <summary>
-        /// Sends to the player a Fake Change Scene.
-        /// </summary>
-        /// <param name="newSceneName">The new Scene the client will load.</param>
-        public void SendFakeSceneLoading(string newSceneName)
-        {
-            SceneMessage message = new()
-            {
-                sceneName = newSceneName,
-            };
-
-            Connection.Send(message);
-        }
-
-        /// <summary>
-        /// Sends to the player a Fake Change Scene.
-        /// </summary>
-        /// <param name="newSceneName">The new Scene the client will load.</param>
-        public void SendFakeSceneLoading(ScenesType newSceneName) => SendFakeSceneLoading(newSceneName.ToString());
 
         /// <summary>
         /// Plays a beep sound that only the player can hear.
@@ -4104,6 +4086,25 @@ namespace Exiled.API.Features
                 }
             }
         }
+        
+                /// Sends to the player a Fake Change Scene.
+        /// </summary>
+        /// <param name="newSceneName">The new Scene the client will load.</param>
+        public void SendFakeSceneLoading(string newSceneName)
+        {
+            SceneMessage message = new()
+            {
+                sceneName = newSceneName,
+            };
+
+            Connection.Send(message);
+        }
+
+        /// <summary>
+        /// Sends to the player a Fake Change Scene.
+        /// </summary>
+        /// <param name="newSceneName">The new Scene the client will load.</param>
+        public void SendFakeSceneLoading(ScenesType newSceneName) => SendFakeSceneLoading(newSceneName.ToString());
 
         /// <summary>
         /// Converts the player in a human-readable format.
