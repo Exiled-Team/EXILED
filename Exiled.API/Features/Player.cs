@@ -2895,7 +2895,7 @@ namespace Exiled.API.Features
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
 
                 if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
-                    flags.AddFlags(FirearmStatusFlags.FlashlightEnabled);
+                    flags = flags.AddFlags(FirearmStatusFlags.FlashlightEnabled);
 
                 firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
