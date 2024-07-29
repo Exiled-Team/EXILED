@@ -24,7 +24,7 @@ namespace Exiled.API.Enums
         NewMainMenu,
 
         /// <summary>
-        /// The old main menu
+        /// The old main menu.
         /// </summary>
         MainMenuRemastered,
 
@@ -40,7 +40,7 @@ namespace Exiled.API.Enums
         PreLoader,
 
         /// <summary>
-        /// A black menu before loading the <see cref="NewMainMenu"/>
+        /// A black menu before loading the <see cref="NewMainMenu"/>.
         /// </summary>
         Loader,
     }
