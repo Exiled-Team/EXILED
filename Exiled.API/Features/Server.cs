@@ -213,7 +213,7 @@ namespace Exiled.API.Features
         public static Dictionary<string, object> SessionVariables { get; } = new();
 
         /// <summary>
-        /// Gets or sets a list with all fake SyncVar that will be applied to player ass soon as he connects.
+        /// Gets or sets a list with all fake SyncVar that will be applied to player as soon as he connects.
         /// <para>
         /// As string argument use a full name of Network property ('full type name'.'property name').
         /// As object argument use value that will be used instead of a current value.
