@@ -128,6 +128,11 @@ namespace Exiled.API.Features
 
 #pragma warning disable SA1401
         /// <summary>
+        /// The default role behaviour class.
+        /// </summary>
+        public static Type DEFAULT_ROLE_BEHAVIOUR = null;
+
+        /// <summary>
         /// The default player class.
         /// </summary>
         internal static Type DEFAULT_PLAYER_CLASS = typeof(Player);

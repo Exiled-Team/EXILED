@@ -39,22 +39,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// </remarks>
     public class RoleBehaviour : ModuleBehaviour<Player>, IAdditiveSettings<RoleSettings>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoleBehaviour"/> class.
-        /// </summary>
-        protected RoleBehaviour()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoleBehaviour"/> class.
-        /// </summary>
-        /// <param name="gameObject">owner's gameobject.</param>
-        protected RoleBehaviour(GameObject gameObject)
-            : base(gameObject)
-        {
-        }
-
         private Vector3 lastPosition;
         private RoleTypeId fakeAppearance;
         private bool isHuman;
@@ -251,7 +235,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             }
 
             Owner.UniqueRole = CustomRole.Name;
-            Owner.TryAddCustomRoleFriendlyFire(Name, Settings.FriendlyFireMultiplier);
+            //Owner.TryAddCustomRoleFriendlyFire(Name, Settings.FriendlyFireMultiplier);
 
             if (CustomRole.EscapeBehaviourComponent is not null)
             {
@@ -275,11 +259,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             base.PostInitialize();
 
-            Log.InfoWithContext("Pre-Adjust");
-
             AdjustAdditivePipe();
-
-            Log.InfoWithContext("Post-Adjust");
 
             wasNoClipPermitted = Owner.IsNoclipPermitted;
             isHuman = !CustomRole.IsScp;
@@ -290,8 +270,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
                 if (Role is RoleTypeId.None)
                 {
-                    Log.InfoWithContext("Role is none");
-
                     Destroy();
                     return;
                 }
@@ -299,14 +277,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             if (Settings.SpawnFlags is not RoleSpawnFlags.All)
             {
-                Log.InfoWithContext("Is not RSF ALL");
-
                 Owner.Role.Set(Role, Settings.SpawnReason, Settings.SpawnFlags);
             }
             else
             {
-                Log.InfoWithContext("Is RSF ALL");
-
                 switch (Settings.PreservePosition)
                 {
                     case true when Settings.PreserveInventory:
@@ -384,8 +358,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             if (!Owner)
             {
-                Log.InfoWithContext("Owner is null RB");
-
                 Destroy();
                 return;
             }
@@ -407,8 +379,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             // Must be refactored (performance issues)
             if ((Settings.UseDefaultRoleOnly && (Owner.Role != Role)) || (!Settings.DynamicRoles.IsEmpty() && !Settings.DynamicRoles.Contains(Owner.Role)))
             {
-                Log.InfoWithContext("Tick check failed");
-
                 Destroy();
                 return;
             }
