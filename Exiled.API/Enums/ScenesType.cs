@@ -12,7 +12,6 @@ namespace Exiled.API.Enums
     /// </summary>
     public enum ScenesType
     {
-
         /// <summary>
         /// The facility itself.
         /// </summary>
