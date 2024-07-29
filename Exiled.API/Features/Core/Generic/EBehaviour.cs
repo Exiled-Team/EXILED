@@ -23,7 +23,7 @@ namespace Exiled.API.Features.Core.Generic
     /// to extend and customize their functionality. It provides a modular and extensible architecture for enhancing gameplay elements.
     /// </remarks>
     public abstract class EBehaviour<T> : EActor
-        where T : GameEntity
+        where T : Player
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EBehaviour{T}"/> class.
