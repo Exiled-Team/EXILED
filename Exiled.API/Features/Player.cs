@@ -4086,8 +4086,9 @@ namespace Exiled.API.Features
                 }
             }
         }
-        
-                /// Sends to the player a Fake Change Scene.
+
+        /// <summary>
+        /// Sends to the player a Fake Change Scene.
         /// </summary>
         /// <param name="newSceneName">The new Scene the client will load.</param>
         public void SendFakeSceneLoading(string newSceneName)
