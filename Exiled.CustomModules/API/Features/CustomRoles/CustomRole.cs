@@ -627,9 +627,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </remarks>
         public static void EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomRoles.Name))
+            if (!CustomModules.Instance.Config.Modules.Contains("CustomRoles"))
                 throw new Exception("ModuleType::CustomRoles must be enabled in order to load any custom roles");
 
+            Player.DEFAULT_ROLE_BEHAVIOUR = typeof(RoleBehaviour);
             List<CustomRole> customRoles = new();
             foreach (Type type in assembly.GetTypes())
             {
@@ -743,66 +744,40 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             ChangingCustomRoleEventArgs ev = new(player, Id);
             ChangingCustomRoleDispatcher.InvokeAll(ev);
 
-            Log.InfoWithContext("ForceSpawn 1");
-
             if (!ev.IsAllowed)
                 return;
-
-
-            Log.InfoWithContext("ForceSpawn 2");
 
             player = ev.Player.Cast<Pawn>();
             if (ev.Role is RoleTypeId rId)
             {
-                Log.InfoWithContext("ForceSpawn 2.1");
-
                 player.SetRole(rId);
                 return;
             }
 
-            Log.InfoWithContext("ForceSpawn 3");
-
             if (!TryGet(ev.Role, out CustomRole role))
                 return;
 
-            Log.InfoWithContext("ForceSpawn 4");
-
-
             if (role.Id != Id)
             {
-                Log.InfoWithContext("ForceSpawn 4.1");
-
                 role.ForceSpawn(player);
                 return;
             }
-
-            Log.InfoWithContext("ForceSpawn 5");
-
 
             object prevRole = player.CustomRole ? player.CustomRole.Id : player.Role.Type;
             Remove(player);
             PlayersValue.Add(player, this);
 
-            Log.InfoWithContext("ForceSpawn 6");
-
-
             if (!player.IsAlive)
             {
-                Log.InfoWithContext("ForceSpawn 7");
-
                 ForceSpawn_Internal(player, false);
                 ChangedCustomRoleEventArgs @event = new(player, prevRole);
                 ChangedCustomRoleDispatcher.InvokeAll(@event);
                 return;
             }
 
-            Log.InfoWithContext("ForceSpawn 8");
-
             player.Role.Set(RoleTypeId.Spectator, SpawnReason.Respawn);
             Timing.CallDelayed(0.1f, () =>
             {
-                Log.InfoWithContext("ForceSpawn 9");
-
                 ForceSpawn_Internal(player, false);
                 ChangedCustomRoleEventArgs @event = new(player, prevRole);
                 ChangedCustomRoleDispatcher.InvokeAll(@event);
@@ -999,7 +974,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             Instances += 1;
             RoleBehaviour roleBehaviour = EObject.CreateDefaultSubobject<EActor>(BehaviourComponent, $"ECS-{Name}").Cast<RoleBehaviour>();
-            Log.InfoWithContext($"RB is null? {roleBehaviour is null}");
             roleBehaviour.Settings.PreservePosition = preservePosition;
 
             spawnReason ??= SpawnReason.ForceClass;
@@ -1010,7 +984,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 roleBehaviour.Settings.SpawnFlags = roleSpawnFlags;
 
             EActor ea = player.AddComponent(roleBehaviour);
-            Log.InfoWithContext($"ea is null? {ea is null}");
         }
     }
 }

@@ -86,16 +86,10 @@ namespace Exiled.API.Features.Core.Generic
         {
             base.PostInitialize();
 
-            Log.InfoWithContext($"EBehaviour::{nameof(PostInitialize)}");
-
             FindOwner();
-
-            Log.InfoWithContext($"EBehaviour::{nameof(FindOwner)}");
 
             if (!Owner && DisposeOnNullOwner)
             {
-                Log.InfoWithContext($"Destroying Behaviour");
-
                 Destroy();
                 return;
             }

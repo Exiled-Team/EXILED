@@ -62,12 +62,12 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Gets or sets the name of the <see cref="EObject"/> instance.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the tag of the <see cref="EObject"/> instance.
         /// </summary>
-        public string Tag { get; set; }
+        public string Tag { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="EObject"/> values can be edited.
@@ -357,16 +357,13 @@ namespace Exiled.API.Features.Core
         public static EObject CreateDefaultSubobject(Type type, params object[] parameters)
         {
             const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-            EObject @object = null;
-            if (type.GetConstructors().Length == 0)
-            {
-                @object = InitializeBaseType(type, parameters);
-            }
-            else
-            {
-                @object = Activator.CreateInstance(type, flags, null, parameters, null) as EObject;
-            }
+            EObject @object = Activator.CreateInstance(type, flags, null, null, null) as EObject;
 
+            if (@object is not null && Player.DEFAULT_ROLE_BEHAVIOUR is not null && type.BaseType == Player.DEFAULT_ROLE_BEHAVIOUR)
+            {
+                @object.Base = parameters[0] as GameObject;
+                @object.Cast<EActor>().ComponentInitialize();
+            }
 
             // Do not use implicit bool conversion as @object may be null
             if (@object != null)
@@ -918,3 +915,4 @@ namespace Exiled.API.Features.Core
         }
     }
 }
+

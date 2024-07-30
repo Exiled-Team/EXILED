@@ -199,6 +199,7 @@ namespace Exiled.Loader
                         continue;
                 }
 
+                bool foundAuthority = false;
                 foreach (Type type in assembly.GetTypes())
                 {
                     if (type.BaseType == typeof(Player) || type.IsSubclassOf(typeof(Player)))
@@ -206,11 +207,17 @@ namespace Exiled.Loader
 
                     DefaultPlayerClassAttribute dpc = type.GetCustomAttribute<DefaultPlayerClassAttribute>();
 
-                    // To fix. dcp.Enforce don't have to be set true under CustomModules::Pawn. *testing purpose*
-                    if (Player.DEFAULT_PLAYER_CLASS == typeof(Player) && dpc is not null && dpc.EnforceAuthority && defaultPlayerClass is not null)
+                    if (Player.DEFAULT_PLAYER_CLASS == typeof(Player) && dpc is not null && defaultPlayerClass is not null)
                     {
-                        Log.DebugWithContext("Changing default player class to " + defaultPlayerClass.Name);
-                        Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
+                        if (dpc.EnforceAuthority)
+                        {
+                            Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
+                            foundAuthority = true;
+                        }
+                        else if (!dpc.EnforceAuthority && !foundAuthority)
+                        {
+                            Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
+                        }
                     }
                 }
 

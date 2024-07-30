@@ -45,9 +45,6 @@ namespace Exiled.API.Features.Core
         {
             IsEditable = true;
             fixedTickRate = DEFAULT_FIXED_TICK_RATE;
-            PostInitialize();
-            Timing.CallDelayed(fixedTickRate, OnBeginPlay);
-            Timing.CallDelayed(fixedTickRate * 2, () => serverTick = Timing.RunCoroutine(ServerTick()));
         }
 
         /// <summary>
@@ -463,11 +460,20 @@ namespace Exiled.API.Features.Core
             : ComponentsInChildren.Any(comp => type == comp.GetType());
 
         /// <summary>
+        /// Called when the <see cref="EActor"/> is initialized.
+        /// </summary>
+        public void ComponentInitialize()
+        {
+            PostInitialize();
+            Timing.CallDelayed(fixedTickRate, OnBeginPlay);
+            Timing.CallDelayed(fixedTickRate * 2, () => serverTick = Timing.RunCoroutine(ServerTick()));
+        }
+
+        /// <summary>
         /// Fired after the <see cref="EActor"/> instance is created.
         /// </summary>
         protected virtual void PostInitialize()
         {
-            Log.InfoWithContext(nameof(PostInitialize));
         }
 
         /// <summary>
@@ -486,7 +492,6 @@ namespace Exiled.API.Features.Core
             if (DestroyNextTick)
             {
                 Destroy();
-                return;
             }
         }
 
