@@ -40,6 +40,10 @@ namespace Exiled.API.Features.Core.Generic
             values ??= new();
             TypeCode code = Convert.GetTypeCode(typeof(TSource).GetField("MinValue").GetValue(null));
 
+            // @Nao If the value is not an Uxxxxx it will get an overflow. Like if it use an Int16, Byte or SByte
+            // Maybe use a long for nextValue and do "nextValue = typeof(TSource).GetField("MinValue").GetValue(null)"
+            // it also be a struct containing only unmanged struct. The best solution is proably to
+            // look for upper version of the framwork to resolve this with the new numeric interfaces.
             if (code is TypeCode.UInt16 or TypeCode.UInt32 or TypeCode.UInt64)
                 nextValue = 0;
 
@@ -53,6 +57,9 @@ namespace Exiled.API.Features.Core.Generic
                 while (values.ContainsKey(value));
 
                 Value = value;
+
+                // @nao If the value is register when a new instance is created.
+                // Maybe put the ctor in protected to avoid exteranal code (outisde the enum) to create new values
                 values.Add(value, (TObject)this);
             }
         }
@@ -285,7 +292,7 @@ namespace Exiled.API.Features.Core.Generic
         /// </returns>
         public int Compare(TObject x, TObject y) => x == null ? -1 : y == null ? 1 : x.Value.CompareTo(y.Value);
 
-/// <inheritdoc/>
+        /// <inheritdoc/>
         TypeCode IConvertible.GetTypeCode() => Value.GetTypeCode();
 
         /// <inheritdoc/>
