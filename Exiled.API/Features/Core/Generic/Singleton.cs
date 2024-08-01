@@ -19,6 +19,9 @@ namespace Exiled.API.Features.Core.Generic
     public sealed class Singleton<T> : TypeCastObject<T>
         where T : class
     {
+        // @Nao, this is not realy a singleton if you have mutliple value.
+        // NB: each Singleton<T> ave a new instance of dictionary.
+        // exemple Singleton<int>.Instance is not the same Singleton<bool>.Instance
         private static readonly Dictionary<T, Singleton<T>> Instances = new();
 
         /// <summary>
@@ -35,6 +38,8 @@ namespace Exiled.API.Features.Core.Generic
         /// <summary>
         /// Finalizes an instance of the <see cref="Singleton{T}"/> class.
         /// </summary>
+        // @Nao Probably never call, it self reference. Maybe an future issue doing memory leek
+        // it will get call only after the instance get remove form Instances
         ~Singleton() => Instances.Remove(Value);
 
         /// <summary>
@@ -59,6 +64,10 @@ namespace Exiled.API.Features.Core.Generic
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="instance">The object instance.</param>
         /// <returns><see langword="true"/> if the object instance is not null and can be casted as the specified type; otherwise, <see langword="false"/>.</returns>
+        // @nao It will return the Instance.
+        // But with this curent class definition you can register derived class of T.
+        // They can be registred but not retrived. Also why make this method generic if this not to get
+        // other value than the instance.
         public static bool TryGet<TObject>(out TObject instance)
             where TObject : class => (instance = Instance as TObject) is not null;
 
@@ -72,13 +81,7 @@ namespace Exiled.API.Features.Core.Generic
         /// <returns><see langword="true"/> if the instance was destroyed; otherwise, <see langword="false"/>.</returns>
         public static bool Destroy(T @object)
         {
-            if (Instances.TryGetValue(@object, out Singleton<T> _))
-            {
-                Instances[@object] = null;
-                return Instances.Remove(@object);
-            }
-
-            return false;
+            return Instances.Remove(@object);
         }
     }
 }

@@ -4072,6 +4072,7 @@ namespace Exiled.API.Features
         /// <param name="makeHold">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isHeld.</param>
         /// <param name="makeNoise">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isNoisy.</param>
         /// <param name="isSubtitles">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isSubtitles.</param>
+        // @Nao, why not inherit the documentation for the param ?
         public void SendCassieAnnouncement(string words, string translation, bool makeHold = false, bool makeNoise = true, bool isSubtitles = true)
         {
             StringBuilder announcement = StringBuilderPool.Pool.Get();

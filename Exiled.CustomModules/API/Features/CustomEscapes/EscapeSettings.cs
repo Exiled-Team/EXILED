@@ -74,7 +74,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
             Role = role;
             CustomRole = CustomRole.Get(customRole);
             Position = position == default ? DefaultPosition : position;
-            DistanceThreshold = distanceThreshold == DefaultMaxDistanceTolerance ? DefaultMaxDistanceTolerance : distanceThreshold;
+            DistanceThreshold = distanceThreshold;
         }
 
         /// <summary>

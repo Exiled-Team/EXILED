@@ -23,6 +23,7 @@ namespace Exiled.API.Features.Core.Generic
     /// </summary>
     /// <typeparam name="TSource">The type of the <see langword="unmanaged"/> source object to handle the instance of.</typeparam>
     /// <typeparam name="TObject">The type of the child object to handle the instance of.</typeparam>
+    // @Nao you can use Comparer<NonComparable>.Default, it will result as using the IComparable<TObject>.Compare
     public abstract class UnmanagedEnumClass<TSource, TObject> : IComparable, IEquatable<TObject>, IComparable<TObject>, IComparer<TObject>, IConvertible, IEnumClass
         where TSource : unmanaged, IComparable, IFormattable, IConvertible, IComparable<TSource>, IEquatable<TSource>
         where TObject : UnmanagedEnumClass<TSource, TObject>
@@ -256,6 +257,7 @@ namespace Exiled.API.Features.Core.Generic
         /// Zero This instance occurs in the same position in the sort order as other.
         /// Greater than zero This instance follows other in the sort order.
         /// </returns>
+        // @Nao if x and y is null it should return, 0.
         public int CompareTo(object obj) =>
             obj == null ? -1 : obj is TSource value ? Value.CompareTo(value) : obj is TObject derived ? Value.CompareTo(derived.Value) : -1;
 
@@ -272,6 +274,8 @@ namespace Exiled.API.Features.Core.Generic
         /// Zero This instance occurs in the same position in the sort order as other.
         /// Greater than zero This instance follows other in the sort order.
         /// </returns>
+        // @Nao if x and y is equal to null it should return, 0.
+        // Maybe use the default comparator, it handle it by default and if needed it can be replaced by a custom one.
         public int Compare(TObject x, TObject y) => x == null ? -1 : y == null ? 1 : x.Value.CompareTo(y.Value);
 
         /// <inheritdoc/>
