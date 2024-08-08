@@ -28,7 +28,7 @@ namespace Exiled.CustomModules.API.Features.Deserializers
         /// </summary>
         protected ModuleParser()
         {
-            ParserContext.Delegates.Add(this.Delegate);
+            ParserContext.Delegates.Add(Delegate);
         }
 
         /// <summary>
@@ -99,9 +99,9 @@ namespace Exiled.CustomModules.API.Features.Deserializers
             Type expectedType,
             Func<IParser, Type, object> nestedObjectDeserializer)
         {
-            this.Parser = parser;
-            this.ExpectedType = expectedType;
-            this.NestedObjectDeserializer = nestedObjectDeserializer;
+            Parser = parser;
+            ExpectedType = expectedType;
+            NestedObjectDeserializer = nestedObjectDeserializer;
         }
 
         /// <summary>
