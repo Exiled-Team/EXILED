@@ -178,37 +178,49 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Evaluates the specified conditions affecting the round's ending conditions.
         /// </summary>
-        /// <returns>The corresponding evaluation.</returns>
+        /// <returns>
+        /// <see langword="false"/> if the round should continue.
+        /// <br/>Otherwise, <see langword="true"/> if the round can end.
+        /// All other condition need to be <see langword="true"/> to end the round.
+        /// </returns>
         public virtual bool EvaluateEndingConditions()
         {
-            if (CustomRole.TeamsOwnership.Length == 1)
-                return true;
-
-            SummaryInfo summaryInfo = World.Get().SummaryInfo;
-
-            if (CustomRole.TeamsOwnership.Contains(Team.SCPs) && summaryInfo.FoundationForces <= 0 && summaryInfo.ChaosInsurgency <= 0)
-                return true;
-
-            if (CustomRole.TeamsOwnership.Any(team => team is Team.ClassD or Team.ChaosInsurgency) && summaryInfo.FoundationForces <= 0 && summaryInfo.Anomalies <= 0)
-                return true;
-
-            if (CustomRole.TeamsOwnership.Any(team => team is Team.FoundationForces or Team.Scientists) && summaryInfo.ChaosInsurgency <= 0 && summaryInfo.Anomalies <= 0)
-                return true;
-
-            if (CustomRole.TeamsOwnership.IsEmpty())
+            SummaryInfo summaryInfo;
+            switch (CustomRole.TeamsOwnership.Length)
             {
-                int uniqueFaction = 0;
-                if (summaryInfo.FoundationForces > 0)
-                    ++uniqueFaction;
-                if (summaryInfo.ChaosInsurgency > 0)
-                    ++uniqueFaction;
-                if (summaryInfo.Anomalies > 0)
-                    ++uniqueFaction;
+                case 0:
+                    summaryInfo = World.Get().SummaryInfo;
+                    int uniqueFaction = 0;
+                    if (summaryInfo.FoundationForces > 0)
+                        ++uniqueFaction;
+                    if (summaryInfo.ChaosInsurgency > 0)
+                        ++uniqueFaction;
+                    if (summaryInfo.Anomalies > 0)
+                        ++uniqueFaction;
+                    return uniqueFaction <= 1;
 
-                return uniqueFaction <= 1;
+                case 1: return true;
+
+                default:
+                    // @Nao, i mouve repeted code here to see better
+                    // For me this following condition are always true.
+                    // Expete if it existe a case where there is -1 Chaos
+                    summaryInfo = World.Get().SummaryInfo;
+
+                    bool hasChaos = summaryInfo.ChaosInsurgency <= 0;
+                    bool hasFondtion = summaryInfo.FoundationForces <= 0;
+                    bool hasScp = summaryInfo.ChaosInsurgency <= 0;
+
+                    if (CustomRole.TeamsOwnership.Contains(Team.SCPs) && hasFondtion && hasChaos)
+                        return true; // @Nao Why true, that mean the round can end, but if there is some fondation left, the round should not end...
+
+                    if (CustomRole.TeamsOwnership.Any(team => team is Team.ClassD or Team.ChaosInsurgency) && hasFondtion && hasScp)
+                        return true;
+
+                    if (CustomRole.TeamsOwnership.Any(team => team is Team.FoundationForces or Team.Scientists) && hasChaos && hasScp)
+                        return true;
+                    return false;
             }
-
-            return false;
         }
 
         /// <inheritdoc/>

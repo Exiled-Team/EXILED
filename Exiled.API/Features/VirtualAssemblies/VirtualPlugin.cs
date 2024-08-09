@@ -175,7 +175,7 @@ namespace Exiled.API.Features.VirtualAssemblies
                     continue;
 
                 VirtualPlugin vp = Activator.CreateInstance(type) as VirtualPlugin;
-                vp.TryRegister(type.GetCustomAttribute(typeof(VirtualPluginAttribute)) as VirtualPluginAttribute);
+                vp.TryRegister(type.GetCustomAttribute<VirtualPluginAttribute>());
                 vps.Add(vp);
             }
 

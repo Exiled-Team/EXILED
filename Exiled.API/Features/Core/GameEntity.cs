@@ -45,11 +45,6 @@ namespace Exiled.API.Features.Core
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="GameEntity"/> class.
-        /// </summary>
-        ~GameEntity() => List.Remove(this);
-
-        /// <summary>
         /// Gets all active <see cref="GameEntity"/> instances.
         /// <para/>
         /// This collection should be used sparingly and only if circumstances require it, due to its potentially large size.

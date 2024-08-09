@@ -23,6 +23,9 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Respawn
     {
+        private const string MtfChopperGameObjectName = "Chopper";
+        private const string ChaosVanGameObjectName = "CIVanArrive";
+
         private static GameObject ntfHelicopterGameObject;
         private static GameObject chaosCarGameObject;
 
@@ -34,7 +37,7 @@ namespace Exiled.API.Features
             get
             {
                 if (ntfHelicopterGameObject == null)
-                    ntfHelicopterGameObject = GameObject.Find("Chopper");
+                    ntfHelicopterGameObject = GameObject.Find(MtfChopperGameObjectName);
 
                 return ntfHelicopterGameObject;
             }
@@ -48,7 +51,7 @@ namespace Exiled.API.Features
             get
             {
                 if (chaosCarGameObject == null)
-                    chaosCarGameObject = GameObject.Find("CIVanArrive");
+                    chaosCarGameObject = GameObject.Find(ChaosVanGameObjectName);
 
                 return chaosCarGameObject;
             }

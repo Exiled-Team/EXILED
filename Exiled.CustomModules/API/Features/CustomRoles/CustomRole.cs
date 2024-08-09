@@ -239,8 +239,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     {
                         if (pawn.Role == RequiredRoleToSpawn)
                         {
-                            if ((RoleExtensions.GetTeam(RequiredRoleToSpawn) is Team.SCPs && !pawn.IsScp) ||
-                                (RoleExtensions.GetTeam(RequiredRoleToSpawn) is not Team.SCPs && pawn.IsScp))
+                            if ((RoleExtensions.GetTeam(RequiredRoleToSpawn) is Team.SCPs) != pawn.IsScp)
                                 continue;
 
                             return true;

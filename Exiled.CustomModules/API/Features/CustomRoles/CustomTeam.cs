@@ -35,6 +35,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// </remarks>
     public abstract class CustomTeam : CustomModule
     {
+        private const string VanilaConfigMtfMinTime = "minimum_MTF_time_to_spawn";
+        private const string VanilaConfigMtfMaxTime = "maximum_MTF_time_to_spawn";
+
         private static readonly Dictionary<Player, CustomTeam> PlayersValue = new();
         private static readonly List<CustomTeam> Registered = new();
         private static readonly Dictionary<Type, CustomTeam> TypeLookupTable = new();
@@ -111,17 +114,18 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// This property provides access to a curated collection of <see cref="uint"/> objects, encapsulating all available custom role  within the context of units.
         /// <br/>The collection is designed to be both queried and modified as needed to accommodate dynamic scenarios within the game architecture.
         /// </remarks>
+        // @Nao, adding the possiblity to have custom roles
         public virtual IEnumerable<uint> Units { get; set; } = new uint[] { };
 
         /// <summary>
         /// Gets or sets the minimum amount time after which any team will be allowed to spawn.
         /// </summary>
-        public virtual float MinNextSequenceTime { get; set; } = GameCore.ConfigFile.ServerConfig.GetFloat("minimum_MTF_time_to_spawn", 280f);
+        public virtual float MinNextSequenceTime { get; set; } = GameCore.ConfigFile.ServerConfig.GetFloat(VanilaConfigMtfMinTime, 280f);
 
         /// <summary>
         /// Gets or sets the maximum amount time after which any team will be spawned.
         /// </summary>
-        public virtual float MaxNextSequenceTime { get; set; } = GameCore.ConfigFile.ServerConfig.GetFloat("maximum_MTF_time_to_spawn", 350f);
+        public virtual float MaxNextSequenceTime { get; set; } = GameCore.ConfigFile.ServerConfig.GetFloat(VanilaConfigMtfMaxTime, 350f);
 
         /// <summary>
         /// Gets or sets the relative spawn probability of the <see cref="CustomTeam"/>.
@@ -226,8 +230,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     {
                         if (pawn.Role == RequiredRoleToSpawn)
                         {
-                            if ((RoleExtensions.GetTeam(RequiredRoleToSpawn) is Team.SCPs && !pawn.IsScp) ||
-                                (RoleExtensions.GetTeam(RequiredRoleToSpawn) is not Team.SCPs && pawn.IsScp))
+                            if ((RoleExtensions.GetTeam(RequiredRoleToSpawn) is Team.SCPs) != pawn.IsScp)
                                 continue;
 
                             return true;
