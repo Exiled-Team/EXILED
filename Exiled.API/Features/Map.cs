@@ -354,6 +354,18 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Spawns a Mice inside the <see cref="RoomType.EzShelter"/>.
+        /// </summary>
+        /// <param name="mice">Amount of mice you want to spawn</param>
+        public static void PlaceMice(byte mice = 1)
+        {
+            SqueakSpawner squeakSpawner = UnityEngine.Object.FindObjectOfType<SqueakSpawner>();
+
+            squeakSpawner.NetworksyncSpawn = mice;
+            squeakSpawner.SyncMouseSpawn(0, squeakSpawner.NetworksyncSpawn);
+        }
+
+        /// <summary>
         /// Clears the lazy loading game object cache.
         /// </summary>
         internal static void ClearCache()
