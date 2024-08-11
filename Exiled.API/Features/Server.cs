@@ -12,7 +12,7 @@ namespace Exiled.API.Features
     using System.Reflection;
 
     using Exiled.API.Enums;
-
+    using Exiled.API.Extensions;
     using GameCore;
 
     using Interfaces;
@@ -356,5 +356,25 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scene">The new Scene the client will load.</param>
         public static void ChangeSceneToAllClients(ScenesType scene) => ChangeSceneToAllClients(scene.ToString());
+
+        /// <summary>
+        /// Scales object for all the players.
+        /// </summary>
+        /// <param name="identity">The <see cref="NetworkIdentity"/> to move.</param>
+        /// <param name="scale">The scale to change.</param>
+        public static void ScaleNetworkIdentityObject(NetworkIdentity identity, Vector3 scale)
+        {
+            identity.gameObject.transform.localScale = scale;
+            ObjectDestroyMessage objectDestroyMessage = new()
+            {
+                netId = identity.netId,
+            };
+
+            foreach (Player ply in Player.List)
+            {
+                ply.Connection.Send(objectDestroyMessage, 0);
+                MirrorExtensions.SendSpawnMessageMethodInfo?.Invoke(null, new object[] { identity, ply.Connection });
+            }
+        }
     }
 }
