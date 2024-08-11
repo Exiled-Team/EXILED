@@ -51,6 +51,7 @@ namespace Exiled.API.Features
         internal static readonly List<AdminToy> ToysValue = new();
 
         private static AmbientSoundPlayer ambientSoundPlayer;
+        private static SqueakSpawner squeakSpawner;
 
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
@@ -98,6 +99,11 @@ namespace Exiled.API.Features
         /// Gets the <see cref="global::AmbientSoundPlayer"/>.
         /// </summary>
         public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer ??= ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>();
+
+        /// <summary>
+        /// Gets the <see cref="global::SqueakSpawner"/>.
+        /// </summary>
+        public static SqueakSpawner SqueakSpawner => squeakSpawner ??= Object.FindObjectOfType<SqueakSpawner>();
 
         /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
@@ -356,13 +362,14 @@ namespace Exiled.API.Features
         /// <summary>
         /// Spawns a Mice inside the <see cref="RoomType.EzShelter"/>.
         /// </summary>
-        /// <param name="mice">Amount of mice you want to spawn.</param>
+        /// <param name="mice">The type of mice you want to spawn..</param>
         public static void SpawnMice(byte mice = 1)
         {
-            SqueakSpawner squeakSpawner = UnityEngine.Object.FindObjectOfType<SqueakSpawner>();
+            if (mice > SqueakSpawner.mice.Length)
+                new OverflowException($"The mice type are from 1 to {SqueakSpawner.mice.Length}");
 
-            squeakSpawner.NetworksyncSpawn = mice;
-            squeakSpawner.SyncMouseSpawn(0, squeakSpawner.NetworksyncSpawn);
+            SqueakSpawner.NetworksyncSpawn = mice;
+            SqueakSpawner.SyncMouseSpawn(0, SqueakSpawner.NetworksyncSpawn);
         }
 
         /// <summary>
