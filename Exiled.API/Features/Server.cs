@@ -358,7 +358,7 @@ namespace Exiled.API.Features
         public static void ChangeSceneToAllClients(ScenesType scene) => ChangeSceneToAllClients(scene.ToString());
 
         /// <summary>
-        /// Moves object for all the players.
+        /// Moves an object for all players.
         /// </summary>
         /// <param name="identity">The <see cref="NetworkIdentity"/> to move.</param>
         /// <param name="pos">The position to change.</param>
