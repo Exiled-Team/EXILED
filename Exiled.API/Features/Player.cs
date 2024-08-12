@@ -4108,7 +4108,7 @@ namespace Exiled.API.Features
         public void SendFakeSceneLoading(ScenesType newSceneName) => SendFakeSceneLoading(newSceneName.ToString());
 
         /// <summary>
-        /// Moves object for the player.
+        /// Moves an object for the player.
         /// </summary>
         /// <param name="identity">The <see cref="Mirror.NetworkIdentity"/> to move.</param>
         /// <param name="pos">The position to change.</param>
