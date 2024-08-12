@@ -360,7 +360,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Spawns a Mice inside the <see cref="RoomType.EzShelter"/>.
+        /// Spawns mice inside the <see cref="RoomType.EzShelter"/>.
         /// </summary>
         /// <param name="mice">The type of mice you want to spawn..</param>
         public static void SpawnMice(byte mice = 1)
