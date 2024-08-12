@@ -366,7 +366,7 @@ namespace Exiled.API.Features
         public static void SpawnMice(byte mice = 1)
         {
             if (mice > SqueakSpawner.mice.Length)
-                new OverflowException($"The mice type are from 1 to {SqueakSpawner.mice.Length}");
+                throw new OverflowException($"Mouse type must be between 1 and {SqueakSpawner.mice.Length}.");
 
             SqueakSpawner.NetworksyncSpawn = mice;
             SqueakSpawner.SyncMouseSpawn(0, SqueakSpawner.NetworksyncSpawn);
