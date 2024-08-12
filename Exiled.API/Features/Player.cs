@@ -4108,7 +4108,7 @@ namespace Exiled.API.Features
         public void SendFakeSceneLoading(ScenesType newSceneName) => SendFakeSceneLoading(newSceneName.ToString());
 
         /// <summary>
-        /// Scale object for the player.
+        /// Scales an object for the specified player.
         /// </summary>
         /// <param name="identity">The <see cref="Mirror.NetworkIdentity"/> to scale.</param>
         /// <param name="scale">The scale the object needs to be.</param>
