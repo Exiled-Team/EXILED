@@ -4111,7 +4111,7 @@ namespace Exiled.API.Features
         /// Scales an object for the specified player.
         /// </summary>
         /// <param name="identity">The <see cref="Mirror.NetworkIdentity"/> to scale.</param>
-        /// <param name="scale">The scale the object needs to be.</param>
+        /// <param name="scale">The scale the object needs to be set to.</param>
         public void ScaleNetworkIdentityObject(NetworkIdentity identity, Vector3 scale)
         {
             identity.gameObject.transform.localScale = scale;
