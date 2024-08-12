@@ -358,7 +358,7 @@ namespace Exiled.API.Features
         public static void ChangeSceneToAllClients(ScenesType scene) => ChangeSceneToAllClients(scene.ToString());
 
         /// <summary>
-        /// Scales object for all the players.
+        /// Scales an object for all players.
         /// </summary>
         /// <param name="identity">The <see cref="Mirror.NetworkIdentity"/> to scale.</param>
         /// <param name="scale">The scale the object needs to be set to.</param>
