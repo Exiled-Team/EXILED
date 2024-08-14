@@ -378,10 +378,11 @@ namespace Exiled.API.Features.Core
         }
 
         /// <summary>
-        /// InitializeBaseType if 0 constructors are found.
+        /// Initializes an instance of the specified generic type <typeparamref name="T"/>.
+        /// If no constructors are found, the base type is initialized.
         /// </summary>
-        /// <typeparam name="T">Generic Type.</typeparam>
-        /// <returns>EObject.</returns>
+        /// <typeparam name="T">The type that inherits from <see cref="EObject"/>.</typeparam>
+        /// <returns>An instance of the specified type <typeparamref name="T"/>.</returns>
         public static T InitializeBaseType<T>()
             where T : EObject
         {
@@ -389,12 +390,15 @@ namespace Exiled.API.Features.Core
         }
 
         /// <summary>
-        /// InitializeBaseType if 0 constructors are found.
+        /// Initializes an instance of the specified type.
+        /// If no constructors are found, the base type is initialized.
         /// </summary>
-        /// <param name="type">type.</param>
-        /// <param name="parameters">constructors parameters.</param>
-        /// <returns>EObject</returns>
-        /// <exception cref="InvalidOperationException">If the class isn't a subclass of EObject.</exception>
+        /// <param name="type">The type to be initialized.</param>
+        /// <param name="parameters">Constructor parameters for the type.</param>
+        /// <returns>An instance of the specified <see cref="EObject"/> type.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown if the provided <paramref name="type"/> is not a subclass of <see cref="EObject"/>.
+        /// </exception>
         public static EObject InitializeBaseType(Type type, params object[] parameters)
         {
             const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;

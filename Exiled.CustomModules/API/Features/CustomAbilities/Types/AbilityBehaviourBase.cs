@@ -11,7 +11,6 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
 
     using Exiled.API.Features;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Features.CustomAbilities.Settings;

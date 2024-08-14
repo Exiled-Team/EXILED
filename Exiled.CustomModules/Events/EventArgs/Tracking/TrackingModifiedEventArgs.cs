@@ -9,7 +9,6 @@ namespace Exiled.CustomModules.Events.EventArgs.Tracking
 {
     using System.Collections.Generic;
 
-    using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.API.Interfaces;
     using Exiled.Events.EventArgs.Interfaces;
 

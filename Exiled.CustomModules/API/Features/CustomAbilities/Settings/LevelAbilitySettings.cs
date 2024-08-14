@@ -8,9 +8,6 @@
 namespace Exiled.CustomModules.API.Features.CustomAbilities.Settings
 {
     using Exiled.API.Features;
-    using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Interfaces;
-    using Exiled.CustomModules.API.Features.CustomRoles;
 
     /// <summary>
     /// Represents the base class for player-specific ability behaviors.

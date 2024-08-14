@@ -39,22 +39,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// </remarks>
     public class RoleBehaviour : ModuleBehaviour<Player>, IAdditiveSettings<RoleSettings>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoleBehaviour"/> class.
-        /// </summary>
-        protected RoleBehaviour()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoleBehaviour"/> class.
-        /// </summary>
-        /// <param name="gameObject">owner's gameobject.</param>
-        protected RoleBehaviour(GameObject gameObject)
-            : base(gameObject)
-        {
-        }
-
         private Vector3 lastPosition;
         private RoleTypeId fakeAppearance;
         private bool isHuman;
@@ -251,8 +235,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             }
 
             Owner.UniqueRole = CustomRole.Name;
-            //Owner.TryAddCustomRoleFriendlyFire(Name, Settings.FriendlyFireMultiplier);
 
+            // TODO: Owner.TryAddCustomRoleFriendlyFire(Name, Settings.FriendlyFireMultiplier);
             if (CustomRole.EscapeBehaviourComponent is not null)
             {
                 Owner.AddComponent(CustomRole.EscapeBehaviourComponent);
@@ -664,8 +648,20 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnSearchPickupRequest(SearchingPickupEventArgs)"/>
         protected virtual void PickingUpItemBehavior(SearchingPickupEventArgs ev)
         {
+            if (ev.Pickup is null)
+            {
+                Log.Error("Pickup is null");
+            }
+
+            Log.InfoWithContext($"{ev.Player} is trying to pick up {ev.Pickup.Type}");
+
             if (!Check(ev.Player) || Settings.CanPickupItems)
+            {
+                Log.InfoWithContext($"{ev.Player} is not {CustomRole.Name} or can pick up items as {CustomRole.Name}");
                 return;
+            }
+
+            Log.InfoWithContext($"{ev.Player} cannot pick up items");
 
             ev.IsAllowed = false;
         }
@@ -763,8 +759,21 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEnteringPocketDimension(EnteringPocketDimensionEventArgs)"/>
         protected virtual void DroppingItemBehavior(DroppingItemEventArgs ev)
         {
+            if (ev.Item is null)
+            {
+                Log.Error("Item is null");
+            }
+
+            Log.InfoWithContext($"{ev.Player} is trying to drop {ev.Item.Type}");
+
+            Log.WarnWithContext(Settings.CanDropItems);
             if (!Check(ev.Player) || Settings.CanDropItems)
+            {
+                Log.InfoWithContext($"{ev.Player} is not {CustomRole.Name} or can drop items as {CustomRole.Name}");
                 return;
+            }
+
+            Log.InfoWithContext($"{ev.Player} cannot drop items");
 
             ev.IsAllowed = false;
         }
