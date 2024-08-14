@@ -318,9 +318,7 @@ namespace Exiled.CustomModules.API.Features
         /// <param name="shouldBeEnabled">Determines whether the loaded modules should be enabled after loading.</param>
         public static void Load(Assembly assembly = null, bool shouldBeEnabled = false)
         {
-            Log.InfoWithContext($"Using defined assembly? {assembly is null}");
             assembly ??= Assembly.GetCallingAssembly();
-            Log.InfoWithContext($"{assembly.GetName().Name}");
 
             UUModuleType FindClosestModuleType(Type t, IEnumerable<FieldInfo> source)
             {
@@ -331,7 +329,6 @@ namespace Exiled.CustomModules.API.Features
 
             Type runtime_ModuleType = assembly.GetTypes().FirstOrDefault(t => !t.IsAbstract && typeof(UUModuleType).IsAssignableFrom(t)) ?? typeof(UUModuleType);
             IEnumerable<FieldInfo> moduleTypeValuesInfo = runtime_ModuleType.GetFields(BindingFlags.Static | BindingFlags.Public).Where(f => f.GetValue(null) is UUModuleType);
-            Log.InfoWithContext($"DB1");
 
             foreach (Type type in assembly.GetTypes())
             {

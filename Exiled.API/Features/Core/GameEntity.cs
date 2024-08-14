@@ -163,7 +163,6 @@ namespace Exiled.API.Features.Core
         public EActor AddComponent(Type type, string name = "")
         {
             EActor component = EObject.CreateDefaultSubobject(type, GameObject).Cast<EActor>();
-            component.Base = GameObject;
 
             if (!component)
                 return null;
