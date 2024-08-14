@@ -203,6 +203,11 @@ namespace Exiled.API.Features.Pickups
         public ItemType Type => Base.NetworkInfo.ItemId;
 
         /// <summary>
+        /// Gets the <see cref="ItemCategory"/> of the item.
+        /// </summary>
+        public ItemCategory Category => Type.GetCategory();
+
+        /// <summary>
         /// Gets or sets a value indicating whether the pickup is locked (can't be picked up).
         /// </summary>
         [EProperty(category: nameof(Pickup))]

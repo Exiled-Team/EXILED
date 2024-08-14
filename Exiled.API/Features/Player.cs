@@ -4124,6 +4124,22 @@ namespace Exiled.API.Features
             MirrorExtensions.SendSpawnMessageMethodInfo?.Invoke(null, new object[] { identity, Connection });
         }
 
+        /// Scales an object for the specified player.
+        /// </summary>
+        /// <param name="identity">The <see cref="Mirror.NetworkIdentity"/> to scale.</param>
+        /// <param name="scale">The scale the object needs to be set to.</param>
+        public void ScaleNetworkIdentityObject(NetworkIdentity identity, Vector3 scale)
+        {
+            identity.gameObject.transform.localScale = scale;
+            ObjectDestroyMessage objectDestroyMessage = new()
+            {
+                netId = identity.netId,
+            };
+
+            Connection.Send(objectDestroyMessage, 0);
+            MirrorExtensions.SendSpawnMessageMethodInfo?.Invoke(null, new object[] { identity, Connection });
+        }
+
         /// <summary>
         /// Converts the player in a human-readable format.
         /// </summary>
