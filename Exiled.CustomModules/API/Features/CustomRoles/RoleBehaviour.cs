@@ -355,9 +355,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         protected override void OnBeginPlay()
         {
             base.OnBeginPlay();
-
             if (!Owner)
             {
+                Log.WarnWithContext("Owner is null");
                 Destroy();
                 return;
             }
@@ -369,6 +369,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 Owner.ChangeAppearance(FakeAppearance, false);
 
             PermanentEffects?.ForEach(x => Owner.SyncEffect(x));
+
+            SubscribeEvents();
         }
 
         /// <inheritdoc/>
@@ -450,9 +452,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             base.SubscribeEvents();
 
-            EscapingEventDispatcher.Bind(this, OnEscaping);
-            EscapedEventDispatcher.Bind(this, OnEscaped);
-
             Exiled.Events.Handlers.Player.ChangingItem += ChangingItemBehaviour;
             Exiled.Events.Handlers.Player.Destroying += DestroyOnLeave;
             Exiled.Events.Handlers.Player.ChangingRole += DestroyOnChangingRole;
@@ -474,6 +473,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             Exiled.Events.Handlers.Player.Handcuffing += HandcuffingBehavior;
             Exiled.Events.Handlers.Map.PlacingBlood += PlacingBloodBehavior;
             Exiled.Events.Handlers.Player.ChangingNickname += OnInternalChangingNickname;
+            EscapingEventDispatcher.Bind(this, OnEscaping);
+            EscapedEventDispatcher.Bind(this, OnEscaped);
         }
 
         /// <inheritdoc/>
@@ -759,21 +760,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEnteringPocketDimension(EnteringPocketDimensionEventArgs)"/>
         protected virtual void DroppingItemBehavior(DroppingItemEventArgs ev)
         {
-            if (ev.Item is null)
-            {
-                Log.Error("Item is null");
-            }
-
-            Log.InfoWithContext($"{ev.Player} is trying to drop {ev.Item.Type}");
-
-            Log.WarnWithContext(Settings.CanDropItems);
             if (!Check(ev.Player) || Settings.CanDropItems)
-            {
-                Log.InfoWithContext($"{ev.Player} is not {CustomRole.Name} or can drop items as {CustomRole.Name}");
                 return;
-            }
-
-            Log.InfoWithContext($"{ev.Player} cannot drop items");
 
             ev.IsAllowed = false;
         }

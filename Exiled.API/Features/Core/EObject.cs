@@ -919,4 +919,3 @@ namespace Exiled.API.Features.Core
         }
     }
 }
-

@@ -481,7 +481,6 @@ namespace Exiled.API.Features.Core
         /// </summary>
         protected virtual void OnBeginPlay()
         {
-            SubscribeEvents();
         }
 
         /// <summary>
