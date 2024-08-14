@@ -654,15 +654,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 Log.Error("Pickup is null");
             }
 
-            Log.InfoWithContext($"{ev.Player} is trying to pick up {ev.Pickup.Type}");
-
             if (!Check(ev.Player) || Settings.CanPickupItems)
-            {
-                Log.InfoWithContext($"{ev.Player} is not {CustomRole.Name} or can pick up items as {CustomRole.Name}");
                 return;
-            }
-
-            Log.InfoWithContext($"{ev.Player} cannot pick up items");
 
             ev.IsAllowed = false;
         }
