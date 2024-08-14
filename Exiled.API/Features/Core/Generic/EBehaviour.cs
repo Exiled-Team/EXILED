@@ -29,7 +29,6 @@ namespace Exiled.API.Features.Core.Generic
         /// Initializes a new instance of the <see cref="EBehaviour{T}"/> class.
         /// </summary>
         protected EBehaviour()
-            : base()
         {
         }
 
@@ -78,11 +77,18 @@ namespace Exiled.API.Features.Core.Generic
             base.PostInitialize();
 
             FindOwner();
+
             if (!Owner && DisposeOnNullOwner)
             {
                 Destroy();
                 return;
             }
+        }
+
+        /// <inheritdoc />
+        protected override void OnBeginPlay()
+        {
+            base.OnBeginPlay();
         }
 
         /// <inheritdoc/>

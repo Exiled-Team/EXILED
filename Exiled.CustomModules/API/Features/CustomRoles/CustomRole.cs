@@ -627,9 +627,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </remarks>
         public static void EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomRoles.Name))
+            if (CustomModules.Instance.Config.Modules is null || !CustomModules.Instance.Config.Modules.Contains("CustomRoles"))
                 throw new Exception("ModuleType::CustomRoles must be enabled in order to load any custom roles");
 
+            Player.DEFAULT_ROLE_BEHAVIOUR = typeof(RoleBehaviour);
             List<CustomRole> customRoles = new();
             foreach (Type type in assembly.GetTypes())
             {
@@ -972,7 +973,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         private void ForceSpawn_Internal(Pawn player, bool preservePosition, SpawnReason spawnReason = null, RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All)
         {
             Instances += 1;
-            RoleBehaviour roleBehaviour = EObject.CreateDefaultSubobject<RoleBehaviour>(BehaviourComponent, $"ECS-{Name}");
+            RoleBehaviour roleBehaviour = EObject.CreateDefaultSubobject<EActor>(BehaviourComponent, $"ECS-{Name}").Cast<RoleBehaviour>();
             roleBehaviour.Settings.PreservePosition = preservePosition;
 
             spawnReason ??= SpawnReason.ForceClass;
@@ -982,7 +983,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (roleSpawnFlags != roleBehaviour.Settings.SpawnFlags)
                 roleBehaviour.Settings.SpawnFlags = roleSpawnFlags;
 
-            player.AddComponent(roleBehaviour);
+            EActor ea = player.AddComponent(roleBehaviour);
         }
     }
 }

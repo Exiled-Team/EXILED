@@ -24,7 +24,6 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Represents a marker class for custom modules.
@@ -54,14 +53,14 @@ namespace Exiled.CustomModules.API.Features
         /// </summary>
         [YamlIgnore]
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<ModuleInfo> OnEnabled { get; set; }
+        public static TDynamicEventDispatcher<ModuleInfo> OnEnabled { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired when a module gets disabled.
         /// </summary>
         [YamlIgnore]
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<ModuleInfo> OnDisabled { get; set; }
+        public static TDynamicEventDispatcher<ModuleInfo> OnDisabled { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="CustomModule"/>'s name.
@@ -239,7 +238,6 @@ namespace Exiled.CustomModules.API.Features
             .WithTypeConverter(new EnumClassConverter())
             .WithTypeConverter(new PrivateConstructorConverter())
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithNodeDeserializer(_ => new CustomModuleDeserializer(), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
             .WithDuplicateKeyChecking()
             .IgnoreFields()
             .IgnoreUnmatchedProperties()
@@ -329,17 +327,12 @@ namespace Exiled.CustomModules.API.Features
                 return source.ElementAt(matches.IndexOf(matches.Min())).GetValue(null) as UUModuleType;
             }
 
-            Type runtime_ModuleType = assembly.GetTypes().FirstOrDefault(t => !t.IsAbstract && typeof(UUModuleType).IsAssignableFrom(t));
-            if (runtime_ModuleType is null)
-            {
-                Log.Debug("No UUModuleType-derived types were found. Custom modules must have an identifier based on UUModuleType.");
-                return;
-            }
-
+            Type runtime_ModuleType = assembly.GetTypes().FirstOrDefault(t => !t.IsAbstract && typeof(UUModuleType).IsAssignableFrom(t)) ?? typeof(UUModuleType);
             IEnumerable<FieldInfo> moduleTypeValuesInfo = runtime_ModuleType.GetFields(BindingFlags.Static | BindingFlags.Public).Where(f => f.GetValue(null) is UUModuleType);
+
             foreach (Type type in assembly.GetTypes())
             {
-                if (type.IsAbstract || type.BaseType != typeof(CustomModule) || Loader.Any(m => m.Type == type))
+                if (type.IsAbstract || (type.BaseType != typeof(CustomModule) && !type.IsSubclassOf(typeof(CustomModule))))
                     continue;
 
                 IEnumerable<MethodInfo> rhMethods = type.GetMethods(ModuleInfo.SIGNATURE_BINDINGS)
@@ -564,6 +557,9 @@ namespace Exiled.CustomModules.API.Features
 
         private void CopyProperties(CustomModule source)
         {
+            if (source is null)
+                throw new NullReferenceException("Source is null. Was the custom module deserialized?");
+
             foreach (PropertyInfo property in GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 if (property.CanWrite)

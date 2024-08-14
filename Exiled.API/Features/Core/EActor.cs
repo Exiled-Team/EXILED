@@ -45,9 +45,6 @@ namespace Exiled.API.Features.Core
         {
             IsEditable = true;
             fixedTickRate = DEFAULT_FIXED_TICK_RATE;
-            PostInitialize();
-            Timing.CallDelayed(fixedTickRate, OnBeginPlay);
-            Timing.CallDelayed(fixedTickRate * 2, () => serverTick = Timing.RunCoroutine(ServerTick()));
         }
 
         /// <summary>
@@ -454,13 +451,23 @@ namespace Exiled.API.Features.Core
 
         /// <inheritdoc/>
         public bool HasComponent<T>(bool depthInheritance = false) => depthInheritance
-            ? ComponentsInChildren.Any(comp => typeof(T).IsAssignableFrom(comp.GetType()))
+            ? ComponentsInChildren.Any(comp => comp is T)
             : ComponentsInChildren.Any(comp => typeof(T) == comp.GetType());
 
         /// <inheritdoc/>
         public bool HasComponent(Type type, bool depthInheritance = false) => depthInheritance
-            ? ComponentsInChildren.Any(comp => type.IsAssignableFrom(comp.GetType()))
+            ? ComponentsInChildren.Any(type.IsInstanceOfType)
             : ComponentsInChildren.Any(comp => type == comp.GetType());
+
+        /// <summary>
+        /// Called when the <see cref="EActor"/> is initialized.
+        /// </summary>
+        public void ComponentInitialize()
+        {
+            PostInitialize();
+            Timing.CallDelayed(fixedTickRate, OnBeginPlay);
+            Timing.CallDelayed(fixedTickRate * 2, () => serverTick = Timing.RunCoroutine(ServerTick()));
+        }
 
         /// <summary>
         /// Fired after the <see cref="EActor"/> instance is created.
@@ -474,7 +481,6 @@ namespace Exiled.API.Features.Core
         /// </summary>
         protected virtual void OnBeginPlay()
         {
-            SubscribeEvents();
         }
 
         /// <summary>
@@ -485,7 +491,6 @@ namespace Exiled.API.Features.Core
             if (DestroyNextTick)
             {
                 Destroy();
-                return;
             }
         }
 

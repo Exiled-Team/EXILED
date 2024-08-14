@@ -119,7 +119,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets or sets the <see cref="SpawnReason"/>.
         /// </summary>
-        public virtual SpawnReason SpawnReason { get; set; } = SpawnReason.ForceClass;
+        public virtual RoleChangeReason SpawnReason { get; set; } = RoleChangeReason.RemoteAdmin;
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="CustomRole"/> assignment should maintain the player's current inventory.

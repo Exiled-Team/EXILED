@@ -15,7 +15,6 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Core.Generic;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
     using Exiled.CustomModules.API.Features.CustomAbilities;
@@ -41,7 +40,7 @@ namespace Exiled.CustomModules.API.Features
     /// <br>It serves as a comprehensive representation of an in-game entity, encapsulating the associated <see cref="ReferenceHub"/> with an expanded set of features.</br>
     /// </remarks>
     /// </summary>
-    [DefaultPlayerClass(enforceAuthority: false)]
+    [DefaultPlayerClass(enforceAuthority: true)]
     public class Pawn : Player
     {
         private readonly List<ActiveAbilityBehaviour> abilityBehaviours = new();
@@ -83,21 +82,21 @@ namespace Exiled.CustomModules.API.Features
         /// <para/>
         /// Can be <see langword="null"/>.
         /// </summary>
-        public CustomRole CustomRole => roleBehaviour.CustomRole;
+        public CustomRole CustomRole => roleBehaviour?.CustomRole;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomRoles.CustomTeam"/>.
         /// <para/>
         /// Can be <see langword="null"/>.
         /// </summary>
-        public CustomTeam CustomTeam => roleBehaviour.CustomTeam;
+        public CustomTeam CustomTeam => roleBehaviour?.CustomTeam;
 
         /// <summary>
         /// Gets the pawn's <see cref="CustomEscapes.CustomEscape"/>.
         /// <para/>
         /// Can be <see langword="null"/>.
         /// </summary>
-        public CustomEscape CustomEscape => escapeBehaviour.CustomEscape;
+        public CustomEscape CustomEscape => escapeBehaviour?.CustomEscape;
 
         /// <summary>
         /// Gets the pawn's current <see cref="CustomItem"/>.

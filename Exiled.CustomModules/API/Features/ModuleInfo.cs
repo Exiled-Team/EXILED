@@ -33,7 +33,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// The binding flags for identifying the registration handlers.
         /// </summary>
-        public const BindingFlags SIGNATURE_BINDINGS = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.IgnoreCase;
+        public const BindingFlags SIGNATURE_BINDINGS = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy;
 #pragma warning restore SA1310
 
 #pragma warning disable SA1202

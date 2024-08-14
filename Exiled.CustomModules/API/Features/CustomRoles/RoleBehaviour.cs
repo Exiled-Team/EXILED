@@ -37,7 +37,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IAdditiveSettings{T}"/>.
     /// <br/>It provides a foundation for creating custom behaviors associated with in-game player roles.
     /// </remarks>
-    public abstract class RoleBehaviour : ModuleBehaviour<Player>, IAdditiveSettings<RoleSettings>
+    public class RoleBehaviour : ModuleBehaviour<Player>, IAdditiveSettings<RoleSettings>
     {
         private Vector3 lastPosition;
         private RoleTypeId fakeAppearance;
@@ -235,8 +235,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             }
 
             Owner.UniqueRole = CustomRole.Name;
-            Owner.TryAddCustomRoleFriendlyFire(Name, Settings.FriendlyFireMultiplier);
 
+            // TODO: Owner.TryAddCustomRoleFriendlyFire(Name, Settings.FriendlyFireMultiplier);
             if (CustomRole.EscapeBehaviourComponent is not null)
             {
                 Owner.AddComponent(CustomRole.EscapeBehaviourComponent);
@@ -316,9 +316,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 Owner.CustomInfo += Settings.CustomInfo;
 
             if (Settings.HideInfoArea)
-            {
                 Owner.InfoArea = Owner.InfoArea.RemoveFlags(PlayerInfoArea.UnitName, PlayerInfoArea.Role);
-            }
 
             if (isHuman && !Settings.PreserveInventory)
             {
@@ -357,9 +355,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         protected override void OnBeginPlay()
         {
             base.OnBeginPlay();
-
             if (!Owner)
             {
+                Log.WarnWithContext("Owner is null");
                 Destroy();
                 return;
             }
@@ -371,6 +369,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 Owner.ChangeAppearance(FakeAppearance, false);
 
             PermanentEffects?.ForEach(x => Owner.SyncEffect(x));
+
+            SubscribeEvents();
         }
 
         /// <inheritdoc/>
@@ -452,9 +452,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             base.SubscribeEvents();
 
-            EscapingEventDispatcher.Bind(this, OnEscaping);
-            EscapedEventDispatcher.Bind(this, OnEscaped);
-
             Exiled.Events.Handlers.Player.ChangingItem += ChangingItemBehaviour;
             Exiled.Events.Handlers.Player.Destroying += DestroyOnLeave;
             Exiled.Events.Handlers.Player.ChangingRole += DestroyOnChangingRole;
@@ -476,6 +473,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             Exiled.Events.Handlers.Player.Handcuffing += HandcuffingBehavior;
             Exiled.Events.Handlers.Map.PlacingBlood += PlacingBloodBehavior;
             Exiled.Events.Handlers.Player.ChangingNickname += OnInternalChangingNickname;
+            EscapingEventDispatcher.Bind(this, OnEscaping);
+            EscapedEventDispatcher.Bind(this, OnEscaped);
         }
 
         /// <inheritdoc/>
@@ -650,6 +649,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnSearchPickupRequest(SearchingPickupEventArgs)"/>
         protected virtual void PickingUpItemBehavior(SearchingPickupEventArgs ev)
         {
+            if (ev.Pickup is null)
+            {
+                Log.Error("Pickup is null");
+            }
+
             if (!Check(ev.Player) || Settings.CanPickupItems)
                 return;
 

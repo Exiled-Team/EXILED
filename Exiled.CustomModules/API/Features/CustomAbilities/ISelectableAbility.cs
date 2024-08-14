@@ -7,10 +7,6 @@
 
 namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
-    using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Interfaces;
-    using Exiled.CustomModules.API.Features.PlayerAbilities;
-
     /// <summary>
     /// Represents a marker interface for custom ability that can be selected.
     /// </summary>

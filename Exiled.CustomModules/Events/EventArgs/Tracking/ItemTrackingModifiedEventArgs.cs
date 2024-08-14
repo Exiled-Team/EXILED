@@ -11,8 +11,6 @@ namespace Exiled.CustomModules.Events.EventArgs.Tracking
 
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
-    using Exiled.CustomModules.API.Features;
-    using Exiled.CustomModules.API.Features.CustomAbilities;
     using Exiled.CustomModules.API.Interfaces;
     using Exiled.Events.EventArgs.Interfaces;
 
