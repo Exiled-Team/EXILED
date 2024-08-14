@@ -4124,6 +4124,7 @@ namespace Exiled.API.Features
             MirrorExtensions.SendSpawnMessageMethodInfo?.Invoke(null, new object[] { identity, Connection });
         }
 
+        /// <summary>
         /// Scales an object for the specified player.
         /// </summary>
         /// <param name="identity">The <see cref="Mirror.NetworkIdentity"/> to scale.</param>

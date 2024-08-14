@@ -377,6 +377,7 @@ namespace Exiled.API.Features
             }
         }
 
+        /// <summary>
         /// Scales an object for all players.
         /// </summary>
         /// <param name="identity">The <see cref="Mirror.NetworkIdentity"/> to scale.</param>
