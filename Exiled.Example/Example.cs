@@ -7,9 +7,7 @@
 
 namespace Exiled.Example
 {
-    using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.CustomModules.API.Features.CustomRoles;
 
     /// <summary>
     /// The example plugin.
@@ -22,7 +20,10 @@ namespace Exiled.Example
         public static Example Instance { get; private set; }
 
         /// <inheritdoc/>
-        public override PluginPriority Priority { get; } = PluginPriority.Last;
+        public override string Name { get; } = "Exiled.Example";
+
+        /// <inheritdoc/>
+        public override string Author { get; } = "Exiled Team";
 
         /// <summary>
         /// Gets the current instance of the event handler.
@@ -38,7 +39,6 @@ namespace Exiled.Example
             // Create new instance of the event handler
             EventHandler = new();
 
-            CustomRole.EnableAll();
             base.OnEnabled();
         }
 

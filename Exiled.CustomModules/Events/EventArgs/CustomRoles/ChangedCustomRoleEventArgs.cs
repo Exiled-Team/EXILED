@@ -7,13 +7,8 @@
 
 namespace Exiled.CustomModules.Events.EventArgs.CustomRoles
 {
-    using System.Collections.Generic;
-
-    using API.Enums;
     using Exiled.API.Features;
-    using Exiled.CustomModules.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
-    using PlayerRoles;
 
     /// <summary>
     /// Contains all information after a player changes role to a custom role.

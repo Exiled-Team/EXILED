@@ -15,6 +15,7 @@ namespace Exiled.API.Features.Core.Generic
     using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Interfaces;
     using LiteNetLib.Utils;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// A class which allows <see langword="unmanaged"/> data implicit conversions.
@@ -51,11 +52,13 @@ namespace Exiled.API.Features.Core.Generic
         /// <summary>
         /// Gets the value of the enum item.
         /// </summary>
+        [YamlIgnore]
         public TSource Value { get; }
 
         /// <summary>
         /// Gets the name determined from reflection.
         /// </summary>
+        [YamlMember(Alias = "name")]
         public string Name
         {
             get

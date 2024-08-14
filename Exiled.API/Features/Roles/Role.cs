@@ -261,8 +261,8 @@ namespace Exiled.API.Features.Roles
         /// Sets the player's <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleTypeId"/> to be set.</param>
-        /// <param name="reason">The <see cref="Enums.SpawnReason"/> defining why the player's role was changed.</param>
-        public virtual void Set(RoleTypeId newRole, SpawnReason reason = null) => Set(newRole, reason ?? Enums.SpawnReason.ForceClass, RoleSpawnFlags.All);
+        /// <param name="reason">The <see cref="RoleChangeReason"/> defining why the player's role was changed.</param>
+        public virtual void Set(RoleTypeId newRole, RoleChangeReason reason = RoleChangeReason.RemoteAdmin) => Set(newRole, reason, RoleSpawnFlags.All);
 
         /// <summary>S
         /// Sets the player's <see cref="RoleTypeId"/>.
@@ -275,9 +275,9 @@ namespace Exiled.API.Features.Roles
         /// Sets the player's <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleTypeId"/> to be set.</param>
-        /// <param name="reason">The <see cref="Enums.SpawnReason"/> defining why the player's role was changed.</param>
+        /// <param name="reason">The <see cref="RoleChangeReason"/> defining why the player's role was changed.</param>
         /// <param name="spawnFlags">The <see cref="RoleSpawnFlags"/> defining player spawn logic.</param>
-        public virtual void Set(RoleTypeId newRole, SpawnReason reason, RoleSpawnFlags spawnFlags) =>
+        public virtual void Set(RoleTypeId newRole, RoleChangeReason reason, RoleSpawnFlags spawnFlags) =>
             Owner.RoleManager.ServerSetRole(newRole, reason, spawnFlags);
 
         /// <summary>

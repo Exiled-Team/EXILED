@@ -627,7 +627,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </remarks>
         public static void EnableAll(Assembly assembly)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains("CustomRoles"))
+            if (CustomModules.Instance.Config.Modules is null || !CustomModules.Instance.Config.Modules.Contains("CustomRoles"))
                 throw new Exception("ModuleType::CustomRoles must be enabled in order to load any custom roles");
 
             Player.DEFAULT_ROLE_BEHAVIOUR = typeof(RoleBehaviour);

@@ -669,10 +669,10 @@ namespace Exiled.API.Features
         /// This role is automatically cached until it changes, and it is recommended to use this property directly rather than storing the property yourself.
         /// </para>
         /// <para>
-        /// Roles and RoleTypeIds can be compared directly. <c>Player.Role == RoleTypeId.Scp079</c> is valid and will return <see langword="true"/> if the player is SCP-079. To set the player's role, see <see cref="Role.Set(RoleTypeId, SpawnReason, RoleSpawnFlags)"/>.
+        /// Roles and RoleTypeIds can be compared directly. <c>Player.Role == RoleTypeId.Scp079</c> is valid and will return <see langword="true"/> if the player is SCP-079. To set the player's role, see <see cref="Role.Set(RoleTypeId, RoleChangeReason, RoleSpawnFlags)"/>.
         /// </para>
         /// </summary>
-        /// <seealso cref="Role.Set(RoleTypeId, SpawnReason, RoleSpawnFlags)"/>
+        /// <seealso cref="Role.Set(RoleTypeId, RoleChangeReason, RoleSpawnFlags)"/>
         [EProperty(readOnly: true, category: ROLES_CATEGORY)]
         public Role Role
         {
@@ -3993,8 +3993,9 @@ namespace Exiled.API.Features
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public void ChangeAppearance(RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
         {
-            if (ReferenceHub.gameObject == null || !RoleExtensions.TryGetRoleBase(type, out PlayerRoleBase roleBase))
+            if (ReferenceHub.gameObject == null || !type.TryGetRoleBase(out PlayerRoleBase roleBase))
                 return;
+
             bool isRisky = type.GetRoleBase().Team is Team.Dead || IsDead;
 
             NetworkWriterPooled writer = NetworkWriterPool.Get();
@@ -4006,6 +4007,7 @@ namespace Exiled.API.Features
             {
                 if (Role.Base is not PHumanRole)
                     isRisky = true;
+
                 writer.WriteByte(unitId);
             }
 
@@ -4016,8 +4018,7 @@ namespace Exiled.API.Features
                 else
                     fpc = playerfpc;
 
-                ushort value = 0;
-                fpc?.FpcModule.MouseLook.GetSyncValues(0, out value, out ushort _);
+                fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort value, out ushort _);
                 writer.WriteRelativePosition(RelativePosition);
                 writer.WriteUShort(value);
             }
