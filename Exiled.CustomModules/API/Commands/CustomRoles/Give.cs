@@ -39,7 +39,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
         public string[] Aliases { get; } = { "g" };
 
         /// <inheritdoc/>
-        public string Description { get; } = "Gives the specified custom role to the indicated player(s).";
+        public string Description { get; } = "Gives the specified custom role (using ID) to the indicated player(s).";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -52,13 +52,19 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
                     return false;
                 }
 
-                if (arguments.Count == 0)
+                if (arguments.Count < 2)
                 {
-                    response = "give <Custom role name/Custom role ID> [Nickname/PlayerID/UserID/all/*]";
+                    response = "give Custom role ID> [Nickname/PlayerID/UserID/all/*]";
                     return false;
                 }
 
-                if (!CustomRole.TryGet(uint.Parse(arguments.At(0)), out CustomRole role) || role is null)
+                if (!uint.TryParse(arguments.At(0), out uint id))
+                {
+                    response = "Invalid custom role ID";
+                    return false;
+                }
+
+                if (!CustomRole.TryGet(id, out CustomRole role) || role is null)
                 {
                     response = $"Custom role {arguments.At(0)} not found!";
                     return false;
@@ -86,7 +92,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
                     case "*":
                     case "all":
                         List<Pawn> players = ListPool<Player>.Pool.Get(Player.List).Select(player => player.Cast<Pawn>()).ToList();
-                        role.Spawn(players);
+                        role.ForceSpawn(players);
 
                         response = $"Custom role {role.Name} given to all players.";
                         ListPool<Pawn>.Pool.Return(players);
