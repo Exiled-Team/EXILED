@@ -370,6 +370,7 @@ namespace Exiled.CustomModules.API.Features
                 };
 
                 ModuleInfo.AllModules.Add(moduleInfo);
+                CustomModules.Instance.RegistrationHandler.OnModuleEnabled(moduleInfo);
 
                 if (!shouldBeEnabled)
                     continue;

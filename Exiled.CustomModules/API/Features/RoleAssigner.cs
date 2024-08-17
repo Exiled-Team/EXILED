@@ -60,7 +60,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets or sets the human roles queue.
         /// </summary>
-        public Team[] HumanRolesQueue { get; protected set; } = { };
+        public Team[] HumanRolesQueue { get; protected set; } = { Team.ClassD, Team.Scientists, Team.FoundationForces, Team.ChaosInsurgency, };
 
         /// <summary>
         /// Gets the next human role to spawn from the Queue.
@@ -83,9 +83,7 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets a filter to retrieve all available human custom roles.
         /// </summary>
-        public Func<CustomRole, bool> FilterHumans => customRole =>
-            customRole.AssignFromRole is RoleTypeId.None &&
-            (HumanRolesQueue.Contains(RoleExtensions.GetTeam(customRole.Role)) || customRole.TeamsOwnership.Any(to => HumanRolesQueue.Contains(to)));
+        public Func<CustomRole, bool> FilterHumans => customRole => HumanRolesQueue.Contains(RoleExtensions.GetTeam(customRole.Role)) || customRole.TeamsOwnership.Any(to => HumanRolesQueue.Contains(to));
 
         /// <summary>
         /// Gets a filter to retrieve all available SCP custom roles.
@@ -139,7 +137,7 @@ namespace Exiled.CustomModules.API.Features
             AssigningHumanCustomRolesDispatcher.InvokeAll(ev);
             EnqueuedHumans = ev.Roles;
 
-            DistributeOrEnqueue(hubs.ToList(), EnqueuedHumans.Where(o => o is uint).Cast<uint>(), FilterHumans);
+            DistributeOrEnqueue(hubs.ToList(), spawnable, FilterHumans);
             EnqueuedHumans.RemoveAll(o => o is not RoleTypeId);
 
             for (int j = 0; j < num; j++)
@@ -193,7 +191,7 @@ namespace Exiled.CustomModules.API.Features
                 ScpSpawner.AssignScp(chosenPlayers, scp, enqueuedScps);
             }
 
-            DistributeOrEnqueue(chosenPlayers, EnqueuedScps.Where(o => o is uint).Cast<uint>(), FilterScps);
+            DistributeOrEnqueue(chosenPlayers, spawnable, FilterScps);
             EnqueuedScps.Clear();
         }
 
@@ -224,11 +222,11 @@ namespace Exiled.CustomModules.API.Features
             int spawned = 0;
             foreach (uint id in roles)
             {
-                if (!CustomRole.TryGet(id, out CustomRole role) || (role.Instances >= role.MaxInstances || !role.EvaluateConditions))
+                if (!CustomRole.TryGet(id, out CustomRole role) || (role.GlobalInstances >= role.MaxInstances || (!role.EvaluateConditions && role.AssignFromRole is RoleTypeId.None)) || !role.CanSpawnByProbability)
                     continue;
 
                 ReferenceHub target = players[0];
-                Player.Get(target).Cast<Pawn>().SetRole(role);
+                role.Spawn(Player.Get(target).Cast<Pawn>(), roleSpawnFlags: RoleSpawnFlags.All, force: true);
                 players.RemoveAt(0);
                 ++spawned;
             }
@@ -238,8 +236,10 @@ namespace Exiled.CustomModules.API.Features
                 for (int i = spawned; i == roles.Count(); i++)
                 {
                     ReferenceHub target = players[0];
-                    Player.Get(target).Cast<Pawn>().SetRole(FindAvailableRole(predicate));
+                    CustomRole role = FindAvailableRole(predicate);
+                    role.Spawn(Player.Get(target).Cast<Pawn>(), false, force: true);
                     players.RemoveAt(0);
+                    EnqueuedPlayers.Remove(Player.Get(target).Cast<Pawn>());
                 }
             }
         }
@@ -260,16 +260,12 @@ namespace Exiled.CustomModules.API.Features
         public CustomRole FindAvailableRole(List<CustomRole> toEvaluate)
         {
             if (toEvaluate.IsEmpty())
-            {
-                throw new Exception(
-                    "Couldn't find any alternative custom role to assign." +
-                    "Common causes may be circular dependencies into conditions, overridden SCPs or a wrong defined amount of maximum allowed instances.");
-            }
+                return null;
 
             CustomRole role = toEvaluate[0];
 
-            if ((role.IsScp && !role.OverrideScps.IsEmpty()) || role.Instances >= role.MaxInstances ||
-                (role.AssignFromRole is RoleTypeId.None && !role.EvaluateConditions))
+            if ((role.IsScp && role.OverrideScps is not null && !role.OverrideScps.IsEmpty()) || role.GlobalInstances >= role.MaxInstances ||
+                (role.AssignFromRole is RoleTypeId.None && !role.EvaluateConditions) || !role.CanSpawnByProbability)
             {
                 toEvaluate.RemoveAt(0);
                 return FindAvailableRole(toEvaluate);
@@ -285,16 +281,19 @@ namespace Exiled.CustomModules.API.Features
         /// <returns>All evaluated custom roles.</returns>
         public virtual IEnumerable<uint> GetCustomRolesByProbability(IEnumerable<CustomRole> customRoles)
         {
+            List<uint> roles = new();
             foreach (CustomRole customRole in customRoles)
             {
-                for (int i = 0; i == customRole.MaxInstances; i++)
+                for (int i = 0; i < customRole.MaxInstances; i++)
                 {
                     if (!customRole.CanSpawnByProbability)
                         continue;
 
-                    yield return customRole.Id;
+                    roles.Add(customRole.Id);
                 }
             }
+
+            return roles;
         }
 
         /// <inheritdoc/>
@@ -306,7 +305,6 @@ namespace Exiled.CustomModules.API.Features
             Exiled.Events.Handlers.Server.PreAssigningScpRoles += OnPreAssigningScpRoles;
 
             Exiled.Events.Handlers.Player.ChangingRole += OnChangingRole;
-            Exiled.Events.Handlers.Player.Spawning += OnSpawning;
         }
 
         /// <inheritdoc/>
@@ -318,7 +316,6 @@ namespace Exiled.CustomModules.API.Features
             Exiled.Events.Handlers.Server.PreAssigningScpRoles -= OnPreAssigningScpRoles;
 
             Exiled.Events.Handlers.Player.ChangingRole -= OnChangingRole;
-            Exiled.Events.Handlers.Player.Spawning -= OnSpawning;
         }
 
         private void OnPreAssigningHumanRoles(PreAssigningHumanRolesEventArgs ev)
@@ -339,19 +336,6 @@ namespace Exiled.CustomModules.API.Features
                 return;
 
             EnqueuedPlayers.Add(ev.Player.Cast<Pawn>());
-        }
-
-        private void OnSpawning(SpawningEventArgs ev)
-        {
-            if (!EnqueuedPlayers.Contains(ev.Player) || ev.Player.Cast<Pawn>().HasCustomRole)
-                return;
-
-            CustomRole customRole = FindAvailableRole(role => role.AssignFromRole == ev.Player.Role);
-
-            if (!customRole)
-                return;
-
-            customRole.ForceSpawn(ev.Player.Cast<Pawn>(), true);
         }
 
         private IHumanSpawnHandler GetHumanSpawnHandler(Team team)

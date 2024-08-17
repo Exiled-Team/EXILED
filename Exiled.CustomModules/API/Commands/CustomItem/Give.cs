@@ -56,13 +56,7 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
                 return false;
             }
 
-            if (!uint.TryParse(arguments.At(0), out uint id))
-            {
-                response = "Invalid custom item ID";
-                return false;
-            }
-
-            if (!CustomItem.TryGet(id, out CustomItem item))
+            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item) && (!uint.TryParse(arguments.At(0), out uint id) || !CustomItem.TryGet(id, out item)) && item is null)
             {
                 response = $"Custom item {arguments.At(0)} not found!";
                 return false;

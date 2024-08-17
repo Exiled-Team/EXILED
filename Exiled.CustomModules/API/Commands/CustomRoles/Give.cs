@@ -58,13 +58,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
                     return false;
                 }
 
-                if (!uint.TryParse(arguments.At(0), out uint id))
-                {
-                    response = "Invalid custom role ID";
-                    return false;
-                }
-
-                if (!CustomRole.TryGet(id, out CustomRole role) || role is null)
+                if (!CustomRole.TryGet(arguments.At(0), out CustomRole role) && (!uint.TryParse(arguments.At(0), out uint id) || !CustomRole.TryGet(id, out role)) && role is null)
                 {
                     response = $"Custom role {arguments.At(0)} not found!";
                     return false;
@@ -80,7 +74,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
                         return false;
                     }
 
-                    role.Spawn(player);
+                    role.Spawn(player, false, force: true);
                     response = $"{role.Name} given to {player.Nickname}.";
                     return true;
                 }
@@ -92,7 +86,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
                     case "*":
                     case "all":
                         List<Pawn> players = ListPool<Player>.Pool.Get(Player.List).Select(player => player.Cast<Pawn>()).ToList();
-                        role.ForceSpawn(players);
+                        role.Spawn(players, true);
 
                         response = $"Custom role {role.Name} given to all players.";
                         ListPool<Pawn>.Pool.Return(players);
