@@ -39,7 +39,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
         public string[] Aliases { get; } = { "g" };
 
         /// <inheritdoc/>
-        public string Description { get; } = "Gives the specified custom role to the indicated player(s).";
+        public string Description { get; } = "Gives the specified custom role (using ID) to the indicated player(s).";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -52,13 +52,13 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
                     return false;
                 }
 
-                if (arguments.Count == 0)
+                if (arguments.Count < 2)
                 {
-                    response = "give <Custom role name/Custom role ID> [Nickname/PlayerID/UserID/all/*]";
+                    response = "give Custom role ID> [Nickname/PlayerID/UserID/all/*]";
                     return false;
                 }
 
-                if (!CustomRole.TryGet(uint.Parse(arguments.At(0)), out CustomRole role) || role is null)
+                if (!CustomRole.TryGet(arguments.At(0), out CustomRole role) && (!uint.TryParse(arguments.At(0), out uint id) || !CustomRole.TryGet(id, out role)) && role is null)
                 {
                     response = $"Custom role {arguments.At(0)} not found!";
                     return false;
@@ -74,7 +74,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
                         return false;
                     }
 
-                    role.Spawn(player);
+                    role.Spawn(player, false, force: true);
                     response = $"{role.Name} given to {player.Nickname}.";
                     return true;
                 }
@@ -86,7 +86,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
                     case "*":
                     case "all":
                         List<Pawn> players = ListPool<Player>.Pool.Get(Player.List).Select(player => player.Cast<Pawn>()).ToList();
-                        role.Spawn(players);
+                        role.Spawn(players, true);
 
                         response = $"Custom role {role.Name} given to all players.";
                         ListPool<Pawn>.Pool.Return(players);

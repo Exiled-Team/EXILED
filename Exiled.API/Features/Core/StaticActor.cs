@@ -54,9 +54,10 @@ namespace Exiled.API.Features.Core
         /// <returns>The created or already existing <see cref="StaticActor"/> instance.</returns>
         public static StaticActor CreateNewInstance(Type type)
         {
-            EObject @object = CreateDefaultSubobject<StaticActor>(type);
+            EActor @object = CreateDefaultSubobject<StaticActor>(type);
             @object.Name = "__" + type.Name + " (StaticActor)";
             @object.SearchForHostObjectIfNull = true;
+            @object.ComponentInitialize();
             return @object.Cast<StaticActor>();
         }
 
@@ -181,6 +182,7 @@ namespace Exiled.API.Features.Core
         /// </remarks>
         protected virtual void BeginPlay_Static()
         {
+            SubscribeEvents();
         }
 
         /// <summary>

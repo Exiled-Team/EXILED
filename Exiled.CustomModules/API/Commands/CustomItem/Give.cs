@@ -52,11 +52,11 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
 
             if (arguments.Count == 0)
             {
-                response = "give <Custom item name/Custom item ID> [Nickname/PlayerID/UserID/all/*]";
+                response = "give <Custom item ID> [Nickname/PlayerID/UserID/all/*]";
                 return false;
             }
 
-            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item))
+            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item) && (!uint.TryParse(arguments.At(0), out uint id) || !CustomItem.TryGet(id, out item)) && item is null)
             {
                 response = $"Custom item {arguments.At(0)} not found!";
                 return false;

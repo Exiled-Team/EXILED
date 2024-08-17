@@ -99,6 +99,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
+        /// Gets the <see cref="InventoryManager"/>.
+        /// </summary>
+        protected virtual InventoryManager Inventory { get; }
+
+        /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> of the fake appearance applied by this <see cref="RoleBehaviour"/> component.
         /// </summary>
         protected virtual RoleTypeId FakeAppearance
@@ -110,11 +115,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 Owner.ChangeAppearance(value, false, 0);
             }
         }
-
-        /// <summary>
-        /// Gets the <see cref="InventoryManager"/>.
-        /// </summary>
-        protected virtual InventoryManager Inventory { get; }
 
         /// <summary>
         /// Gets or sets a <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> which should be permanently given to the player.

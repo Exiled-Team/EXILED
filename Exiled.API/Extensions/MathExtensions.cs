@@ -27,7 +27,7 @@ namespace Exiled.API.Extensions
         /// <param name="minInclusive">The minimum value to include in the range.</param>
         /// <param name="maxInclusive">The maximum value to include in the range.</param>
         /// <returns><see langword="true"/> if the probability occurred, otherwise <see langword="false"/>.</returns>
-        public static bool EvaluateProbability(this int probability, int minInclusive = 0, int maxInclusive = 100) => Random.Range(minInclusive, ++maxInclusive) <= probability;
+        public static bool EvaluateProbability(this int probability, int minInclusive = 0, int maxInclusive = 101) => probability == 100 || Random.Range(minInclusive, maxInclusive) <= probability;
 
         /// <summary>
         /// Evaluates a probability.
