@@ -152,14 +152,14 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// </summary>
         /// <param name="id">The custom item id to retrieve.</param>
         /// <returns>The retrieved <see cref="CustomItem"/> instance if found and enabled; otherwise, <see langword="null"/>.</returns>
-        public static CustomItem Get(uint id) => IdLookupTable[id];
+        public static CustomItem Get(uint id) => IdLookupTable.ContainsKey(id) ? IdLookupTable[id] : null;
 
         /// <summary>
         /// Retrieves a <see cref="CustomItem"/> instance based on the specified item name.
         /// </summary>
         /// <param name="name">The name of the custom item to retrieve.</param>
         /// <returns>The retrieved <see cref="CustomItem"/> instance if found; otherwise, <see langword="null"/>.</returns>
-        public static CustomItem Get(string name) => NameLookupTable[name];
+        public static CustomItem Get(string name) => NameLookupTable.ContainsKey(name) ? NameLookupTable[name] : null;
 
         /// <summary>
         /// Retrieves a <see cref="CustomItem"/> instance based on the specified type.
@@ -216,7 +216,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <param name="id">The id or <see cref="UUCustomItemType"/> of the custom item.</param>
         /// <param name="customItem">When this method returns, contains the <see cref="CustomItem"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomItem"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object id, out CustomItem customItem) => customItem = Get(id);
+        public static bool TryGet(object id, out CustomItem customItem)
+        {
+            customItem = Get(id);
+            return customItem is not null;
+        }
 
         /// <summary>
         /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified custom item id.
@@ -224,7 +228,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <param name="id">The custom item id to retrieve.</param>
         /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(uint id, out CustomItem customItem) => customItem = Get(id);
+        public static bool TryGet(uint id, out CustomItem customItem)
+        {
+            customItem = Get(id);
+            return customItem is not null;
+        }
 
         /// <summary>
         /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified item name.
@@ -232,7 +240,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <param name="name">The name of the custom item to retrieve.</param>
         /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out CustomItem customItem) => customItem = Get(name);
+        public static bool TryGet(string name, out CustomItem customItem)
+        {
+            customItem = Get(name);
+            return customItem is not null;
+        }
 
         /// <summary>
         /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified <see cref="Item"/> instance.
@@ -240,7 +252,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <param name="item">The <see cref="Item"/> instance to retrieve the custom item for.</param>
         /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Item item, out CustomItem customItem) => customItem = Get(item);
+        public static bool TryGet(Item item, out CustomItem customItem)
+        {
+            customItem = Get(item);
+            return customItem is not null;
+        }
 
         /// <summary>
         /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified <see cref="Pickup"/> instance.
@@ -248,7 +264,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <param name="pickup">The <see cref="Pickup"/> instance to retrieve the custom item for.</param>
         /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Pickup pickup, out CustomItem customItem) => customItem = Get(pickup);
+        public static bool TryGet(Pickup pickup, out CustomItem customItem)
+        {
+            customItem = Get(pickup);
+            return customItem is not null;
+        }
 
         /// <summary>
         /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified type.
@@ -256,7 +276,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <param name="type">The type to retrieve the custom item for.</param>
         /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out CustomItem customItem) => customItem = Get(type);
+        public static bool TryGet(Type type, out CustomItem customItem)
+        {
+            customItem = Get(type);
+            return customItem is not null;
+        }
 
         /// <summary>
         /// Tries to spawn a custom item at the specified position.

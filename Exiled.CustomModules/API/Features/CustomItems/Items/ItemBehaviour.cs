@@ -164,6 +164,13 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
             AdjustAdditivePipe();
         }
 
+        /// <inheritdoc />
+        protected override void OnBeginPlay()
+        {
+            base.OnBeginPlay();
+            this.SubscribeEvents();
+        }
+
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {

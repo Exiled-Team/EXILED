@@ -24,36 +24,39 @@ namespace Exiled.CustomModules.API.Extensions
         /// <inheritdoc cref="CustomRole.Get(Pawn)"/>
         public static CustomRole Get(this Player player) => CustomRole.Get(player.Cast<Pawn>());
 
-        /// <inheritdoc cref="CustomRole.Spawn(Pawn, CustomRole, bool, SpawnReason, RoleSpawnFlags)"/>
+        /// <inheritdoc cref="CustomRole.Spawn(Pawn, CustomRole, bool, SpawnReason, RoleSpawnFlags, bool)"/>
         public static bool Spawn(
             this Player player,
             CustomRole customRole,
             bool shouldKeepPosition = false,
             SpawnReason spawnReason = null,
-            RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All) =>
-            CustomRole.Spawn(player.Cast<Pawn>(), customRole, shouldKeepPosition, spawnReason, roleSpawnFlags);
+            RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All,
+            bool force = false) =>
+            CustomRole.Spawn(player.Cast<Pawn>(), customRole, shouldKeepPosition, spawnReason, roleSpawnFlags, force);
 
         /// <inheritdoc cref="CustomRole.Spawn{T}(Pawn)"/>
         public static bool Spawn<T>(this Player player)
             where T : CustomRole => CustomRole.Spawn<T>(player.Cast<Pawn>());
 
-        /// <inheritdoc cref="CustomRole.Spawn(Pawn, string, bool, SpawnReason, RoleSpawnFlags)"/>
+        /// <inheritdoc cref="CustomRole.Spawn(Pawn, string, bool, SpawnReason, RoleSpawnFlags, bool)"/>
         public static bool Spawn(
             this Player player,
             string name,
             bool shouldKeepPosition = false,
             SpawnReason spawnReason = null,
-            RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All) =>
-            CustomRole.Spawn(player.Cast<Pawn>(), name, shouldKeepPosition, spawnReason, roleSpawnFlags);
+            RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All,
+            bool force = false) =>
+            CustomRole.Spawn(player.Cast<Pawn>(), name, shouldKeepPosition, spawnReason, roleSpawnFlags, force);
 
-        /// <inheritdoc cref="CustomRole.Spawn(Pawn, uint, bool, SpawnReason, RoleSpawnFlags)"/>
+        /// <inheritdoc cref="CustomRole.Spawn(Pawn, uint, bool, SpawnReason, RoleSpawnFlags, bool)"/>
         public static bool Spawn(
             this Player player,
             uint id,
             bool shouldKeepPosition = false,
             SpawnReason spawnReason = null,
-            RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All) =>
-            CustomRole.Spawn(player.Cast<Pawn>(), id, shouldKeepPosition, spawnReason, roleSpawnFlags);
+            RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All,
+            bool force = false) =>
+            CustomRole.Spawn(player.Cast<Pawn>(), id, shouldKeepPosition, spawnReason, roleSpawnFlags, force);
 
         /// <inheritdoc cref="CustomRole.TrySpawn(Pawn, CustomRole)"/>
         public static bool TrySpawn(this Player player, CustomRole customRole) => CustomRole.TrySpawn(player.Cast<Pawn>(), customRole);
