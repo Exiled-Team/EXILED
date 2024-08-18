@@ -219,6 +219,11 @@ namespace Exiled.Events.Handlers
         public static Event<DroppingNothingEventArgs> DroppingNothing { get; set; } = new();
 
         /// <summary>
+        /// Invoked before playing an AudioLog.
+        /// </summary>
+        public static Event<PlayingAudioLogEventArgs> PlayingAudioLog { get; set; } = new();
+
+        /// <summary>
         /// Invoked before picking up an <see cref="API.Features.Items.Item"/>.
         /// </summary>
         public static Event<PickingUpItemEventArgs> PickingUpItem { get; set; } = new();
@@ -726,6 +731,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DroppingNothingEventArgs"/> instance.</param>
         public static void OnDroppingNothing(DroppingNothingEventArgs ev) => DroppingNothing.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> plays an AudioLog.
+        /// </summary>
+        /// <param name="ev">The <see cref="PlayingAudioLogEventArgs"/> instance.</param>
+        public static void OnPlayingAudioLog(PlayingAudioLogEventArgs ev) => PlayingAudioLog.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> picks up an item.
