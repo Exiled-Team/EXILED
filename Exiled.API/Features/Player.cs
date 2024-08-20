@@ -4114,6 +4114,23 @@ namespace Exiled.API.Features
         public void SendFakeSceneLoading(ScenesType newSceneName) => SendFakeSceneLoading(newSceneName.ToString());
 
         /// <summary>
+        /// Moves an object for the player.
+        /// </summary>
+        /// <param name="identity">The <see cref="Mirror.NetworkIdentity"/> to move.</param>
+        /// <param name="pos">The position to change.</param>
+        public void MoveNetworkIdentityObject(NetworkIdentity identity, Vector3 pos)
+        {
+            identity.gameObject.transform.position = pos;
+            ObjectDestroyMessage objectDestroyMessage = new()
+            {
+                netId = identity.netId,
+            };
+
+            Connection.Send(objectDestroyMessage, 0);
+            MirrorExtensions.SendSpawnMessageMethodInfo?.Invoke(null, new object[] { identity, Connection });
+        }
+
+        /// <summary>
         /// Scales an object for the specified player.
         /// </summary>
         /// <param name="identity">The <see cref="Mirror.NetworkIdentity"/> to scale.</param>

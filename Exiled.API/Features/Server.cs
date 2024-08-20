@@ -358,6 +358,26 @@ namespace Exiled.API.Features
         public static void ChangeSceneToAllClients(ScenesType scene) => ChangeSceneToAllClients(scene.ToString());
 
         /// <summary>
+        /// Moves an object for all players.
+        /// </summary>
+        /// <param name="identity">The <see cref="NetworkIdentity"/> to move.</param>
+        /// <param name="pos">The position to change.</param>
+        public static void MoveNetworkIdentityObject(NetworkIdentity identity, Vector3 pos)
+        {
+            identity.gameObject.transform.position = pos;
+            ObjectDestroyMessage objectDestroyMessage = new()
+            {
+                netId = identity.netId,
+            };
+
+            foreach (Player ply in Player.List)
+            {
+                ply.Connection.Send(objectDestroyMessage, 0);
+                MirrorExtensions.SendSpawnMessageMethodInfo?.Invoke(null, new object[] { identity, ply.Connection });
+            }
+        }
+
+        /// <summary>
         /// Scales an object for all players.
         /// </summary>
         /// <param name="identity">The <see cref="Mirror.NetworkIdentity"/> to scale.</param>
