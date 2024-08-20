@@ -12,7 +12,7 @@ namespace Exiled.CustomModules.API.Features
 
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Generic;
-    using Exiled.CustomModules.API.Features.Attributes;
+    using UnityEngine;
 
     /// <summary>
     /// Represents a marker class for a module's pointer.
@@ -25,14 +25,6 @@ namespace Exiled.CustomModules.API.Features
     public abstract class ModuleBehaviour<TEntity> : EBehaviour<TEntity>
         where TEntity : GameEntity
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleBehaviour{T}"/> class.
-        /// </summary>
-        protected ModuleBehaviour()
-            : base()
-        {
-        }
-
         /// <summary>
         /// Gets or sets the behaviour's configs.
         /// </summary>

@@ -9,7 +9,6 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomAbilities
 {
     using Exiled.API.Features.Core;
     using Exiled.CustomModules.API.Features.CustomAbilities;
-    using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// Contains all information after adding an ability.

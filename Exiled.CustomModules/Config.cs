@@ -10,7 +10,6 @@ namespace Exiled.CustomModules
     using System.ComponentModel;
 
     using Exiled.API.Interfaces;
-    using Exiled.CustomModules.API.Enums;
 
     /// <summary>
     /// The plugin's config.
@@ -48,7 +47,7 @@ namespace Exiled.CustomModules
         /// It negatively affects the performance in case of the presence of a big amount of plugins.
         /// </summary>
         [Description("Whether the automatic modules loader should be used.")]
-        public bool UseAutomaticModulesLoader { get; set; }
+        public bool UseAutomaticModulesLoader { get; set; } = true;
 
         /// <summary>
         /// Gets or sets all modules to be loaded.

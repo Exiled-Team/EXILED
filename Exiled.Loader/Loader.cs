@@ -199,19 +199,25 @@ namespace Exiled.Loader
                         continue;
                 }
 
+                bool foundAuthority = false;
                 foreach (Type type in assembly.GetTypes())
                 {
                     if (type.BaseType == typeof(Player) || type.IsSubclassOf(typeof(Player)))
-                    {
-                        Log.ErrorWithContext(type.Name);
                         defaultPlayerClass = type;
-                    }
 
-                    DefaultPlayerClassAttribute dpc = Player.DEFAULT_PLAYER_CLASS.GetCustomAttribute<DefaultPlayerClassAttribute>();
-                    if (Player.DEFAULT_PLAYER_CLASS != typeof(Player) && !dpc.EnforceAuthority && defaultPlayerClass is not null)
+                    DefaultPlayerClassAttribute dpc = type.GetCustomAttribute<DefaultPlayerClassAttribute>();
+
+                    if (Player.DEFAULT_PLAYER_CLASS == typeof(Player) && dpc is not null && defaultPlayerClass is not null)
                     {
-                        if (Player.DEFAULT_PLAYER_CLASS == typeof(Player) && dpc.EnforceAuthority)
+                        if (dpc.EnforceAuthority)
+                        {
                             Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
+                            foundAuthority = true;
+                        }
+                        else if (!dpc.EnforceAuthority && !foundAuthority)
+                        {
+                            Player.DEFAULT_PLAYER_CLASS = defaultPlayerClass;
+                        }
                     }
                 }
 

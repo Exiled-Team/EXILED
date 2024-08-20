@@ -62,12 +62,12 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Gets or sets the name of the <see cref="EObject"/> instance.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the tag of the <see cref="EObject"/> instance.
         /// </summary>
-        public string Tag { get; set; }
+        public string Tag { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="EObject"/> values can be edited.
@@ -357,7 +357,13 @@ namespace Exiled.API.Features.Core
         public static EObject CreateDefaultSubobject(Type type, params object[] parameters)
         {
             const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-            EObject @object = Activator.CreateInstance(type, flags, null, parameters, null) as EObject;
+            EObject @object = Activator.CreateInstance(type, flags, null, null, null) as EObject;
+
+            if (@object is not null && Player.DEFAULT_ROLE_BEHAVIOUR is not null && type.BaseType == Player.DEFAULT_ROLE_BEHAVIOUR)
+            {
+                @object.Base = parameters[0] as GameObject;
+                @object.Cast<EActor>().ComponentInitialize();
+            }
 
             // Do not use implicit bool conversion as @object may be null
             if (@object != null)
@@ -369,6 +375,65 @@ namespace Exiled.API.Features.Core
             }
 
             throw new NullReferenceException($"Couldn't create an EObject instance of type {type.Name}.");
+        }
+
+        /// <summary>
+        /// Initializes an instance of the specified generic type <typeparamref name="T"/>.
+        /// If no constructors are found, the base type is initialized.
+        /// </summary>
+        /// <typeparam name="T">The type that inherits from <see cref="EObject"/>.</typeparam>
+        /// <returns>An instance of the specified type <typeparamref name="T"/>.</returns>
+        public static T InitializeBaseType<T>()
+            where T : EObject
+        {
+            return InitializeBaseType(typeof(T)).Cast<T>();
+        }
+
+        /// <summary>
+        /// Initializes an instance of the specified type.
+        /// If no constructors are found, the base type is initialized.
+        /// </summary>
+        /// <param name="type">The type to be initialized.</param>
+        /// <param name="parameters">Constructor parameters for the type.</param>
+        /// <returns>An instance of the specified <see cref="EObject"/> type.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown if the provided <paramref name="type"/> is not a subclass of <see cref="EObject"/>.
+        /// </exception>
+        public static EObject InitializeBaseType(Type type, params object[] parameters)
+        {
+            const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+            if (type.BaseType != typeof(EObject) && !type.IsSubclassOf(typeof(EObject)) && type != typeof(EObject))
+                throw new InvalidOperationException("The requested type is not a subclass of EObject.");
+
+            // Get the base type of T
+            Type baseType = type.BaseType;
+
+            if (baseType == null)
+            {
+                throw new InvalidOperationException("The requested type does not have a base type.");
+            }
+
+            // Get the constructors of the base type
+            ConstructorInfo[] constructors = baseType.GetConstructors(flags);
+
+            if (constructors.Length == 0)
+            {
+                throw new InvalidOperationException("The base type does not have public constructors.");
+            }
+
+            // Here we assume you want to use the default constructor if available
+            ConstructorInfo constructor = Array.Find(constructors, c => c.GetParameters().Length == 0);
+
+            if (constructor == null)
+            {
+                throw new InvalidOperationException("The base type does not have a parameterless constructor.");
+            }
+
+            // Create an instance of the base type
+            object baseInstance = constructor.Invoke(null);
+
+            // Return the instance as the requested type
+            return baseInstance as EObject;
         }
 
         /// <summary>

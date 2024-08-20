@@ -14,6 +14,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
     using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.Permissions.Extensions;
+    using PlayerRoles;
 
     /// <summary>
     /// The command to view info about a specific role.
@@ -63,9 +64,13 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
 
             builder.Append("<color=#E6AC00>-</color> <color=#00D639>").Append(role.Name)
                 .Append("</color> <color=#05C4E8>(").Append(role.Id).Append(")</color>")
+                .AppendLine("- Probability: ").Append(role.Probability)
                 .Append("- ").AppendLine(role.Description)
                 .AppendLine(role.Role.ToString())
-                .Append("- Health: ").AppendLine(role.Settings.MaxHealth.ToString()).AppendLine();
+                .Append("- Health: ").AppendLine(role.Settings.MaxHealth.ToString())
+                .AppendLine("- Team: ");
+            foreach (Team team in role.TeamsOwnership)
+                builder.AppendLine(team.ToString());
 
             response = StringBuilderPool.Pool.ToStringReturn(builder);
             return true;
