@@ -132,7 +132,7 @@ namespace Exiled.CustomModules.API.Features.Generic
             if (trackableBehaviours.IsEmpty())
                 return false;
 
-            if (TrackedItemSerials.ContainsKey(pickup.Serial))
+            if (TrackedPickupSerials.ContainsKey(pickup.Serial))
             {
                 IEnumerable<T> previousTrackableItems = TrackedPickupSerials[pickup.Serial];
                 TrackedPickupSerials[pickup.Serial].AddRange(trackableBehaviours.Cast<T>());
@@ -249,7 +249,8 @@ namespace Exiled.CustomModules.API.Features.Generic
         /// <returns><see langword="true"/> if the item was restored successfully; otherwise, <see langword="false"/>.</returns>
         public virtual bool Restore(Item item, Pickup pickup)
         {
-            if (!pickup || !item || !TrackedPickupSerials.ContainsKey(pickup.Serial) || !TrackedItemSerials.ContainsKey(item.Serial))
+            if (!pickup || !item || !TrackedPickupSerials.ContainsKey(pickup.Serial) ||
+                !TrackedItemSerials.ContainsKey(item.Serial))
                 return false;
 
             foreach (T behaviour in TrackedPickupSerials[pickup.Serial])
