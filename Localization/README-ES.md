@@ -1,16 +1,25 @@
+<div align="center">
+  <img src="../assets/logo.svg" alt="Logo" width="96px" />
+</div>
 <h1 align="center">EXILED - EXtended In-runtime Library for External Development</h1>
 <div align="center">
-    
-[<img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" alt="CI"/>](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg?branch=master)
-<a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
-<img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
-![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
-<a href="https://discord.gg/exiledreboot">
-    <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
-</a>    
-
+  <a href="https://github.com/Exiled-Team/EXILED/releases/latest" target="_blank">
+    <img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" alt="Build" />
+  </a>
+  <a href="https://github.com/Exiled-Team/EXILED/releases" target="_blank">
+    <img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" alt="Releases" />
+  </a>
+  <a href="https://github.com/Exiled-Team/EXILED/releases/latest" target="_blank">
+    <img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads" />
+  </a>
+  <a href="https://github.com/Exiled-Team/EXILED/commits/dev" target="_blank">
+    <img src="https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev?style=for-the-badge&logo=git" alt="Commits" />
+  </a>
+  <a href="https://discord.gg/exiledreboot" target="_blank">
+    <img src="https://img.shields.io/discord/1261714360854646905?style=for-the-badge&logo=discord" alt="Discord" />
+  </a>
 </div>
-
+<br />
 
 EXILED es una plataforma de desarrollo de plugins para servidores de SCP: Secret Laboratory. Ofrece un sistema de eventos para desarrolladores y poder modificar o cambiar código del juego, o implementar sus propias funciones.
 Todos los eventos de EXILED están hechos con Harmony, lo que significa que no es necesario editar el código del juego/servidor para funcionar, esto ofrece dos beneficios únicos.
@@ -21,11 +30,16 @@ Todos los eventos de EXILED están hechos con Harmony, lo que significa que no e
 # READMEs Traducidas
 - [Русский](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-Русский.md)
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
-- [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
 - [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
+- [Italiano](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-IT.md)
 - [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
 - [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
+- [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
+- [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
+- [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
+- [한국어](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-KR.md)
+- [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # Instalación
 La instalación de EXILED es, en realidad, muy simple. Se carga por sí solo por la API de plugins de NW. Por este motivo hay dos carpetas en ``Exiled.tar.gz`` en el apartado de descarga. ``SCP Secret Laboratory`` contiene los archivos necesarios para cargar los recursos de la carpeta ``EXILED``. Con eso dicho, lo único que se debe hacer es mover estas carpetas al sitio adecuado, que se explican debajo, ¡y listo!
@@ -92,7 +106,7 @@ Mira la documentación o pregúntale al creador del plugin en particular si tien
 
 # Para desarrolladores
 
-Si deseas hacer un plugin para EXILED, es bastante fácil. Si prefieres ver algún tipo de tutorial, visita nuestra página de [Primeros Pasos](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md).
+Si deseas hacer un plugin para EXILED, es bastante fácil. Si prefieres ver algún tipo de tutorial, visita nuestra página de [Primeros Pasos](https://exiled.to/Archive/GettingStarted).
 
 Para una guía más comprensible y tutoriales regularmente actualizados, échale un vistazo a [la página de EXILED](https://exiled.to).
 

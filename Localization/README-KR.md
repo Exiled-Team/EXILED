@@ -1,15 +1,25 @@
+<div align="center">
+  <img src="../assets/logo.svg" alt="Logo" width="96px" />
+</div>
 <h1 align="center">EXILED - EXtended In-runtime Library for External Development</h1>
 <div align="center">
-    
-[<img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" alt="CI"/>](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg?branch=master)
-<a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
-<img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
-![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
-<a href="https://discord.gg/exiledreboot">
-    <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
-</a>
-
+  <a href="https://github.com/Exiled-Team/EXILED/releases/latest" target="_blank">
+    <img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" alt="Build" />
+  </a>
+  <a href="https://github.com/Exiled-Team/EXILED/releases" target="_blank">
+    <img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" alt="Releases" />
+  </a>
+  <a href="https://github.com/Exiled-Team/EXILED/releases/latest" target="_blank">
+    <img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads" />
+  </a>
+  <a href="https://github.com/Exiled-Team/EXILED/commits/dev" target="_blank">
+    <img src="https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev?style=for-the-badge&logo=git" alt="Commits" />
+  </a>
+  <a href="https://discord.gg/exiledreboot" target="_blank">
+    <img src="https://img.shields.io/discord/1261714360854646905?style=for-the-badge&logo=discord" alt="Discord" />
+  </a>
 </div>
+<br />
 
 EXILED는 SCP: 비밀 연구소 서버들을 위한 고급 플러그인 프레임워크입니다. 개발자가 게임의 코드를 바꾸거나 자신만의 기능을 넣을 수 있는 이벤트 시스템을 제공하며, 모든 EXILED 이벤트들은 Harmony로 작성되어 직접적으로 서버의 어셈블리를 바꿀 필요가 없어, 2가지의 장점을 만들어냅니다.
 
@@ -17,7 +27,6 @@ EXILED는 SCP: 비밀 연구소 서버들을 위한 고급 플러그인 프레�
 - 둘째로, 프레임워크가 관련된 모든 코드가 서버 어셈블리 밖에서 작동되기 때문에, 만약 작은 업데이트가 존재하더라도, 프레임워크에는 아주 작은 영향을 미치게 됩니다. 이로 하여금 계속되는 업데이트와의 호환성이 (거의) 보장되며, 업데이트를 _필요할 때_ 할 수 있습니다.
 
 # 번역본
-
 - [Русский](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-Русский.md)
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
@@ -29,7 +38,7 @@ EXILED는 SCP: 비밀 연구소 서버들을 위한 고급 플러그인 프레�
 - [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
 - [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
 - [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
-- [한국어](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-KR.md)
+- [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # EXILED 설치하기
 
@@ -106,7 +115,7 @@ EXILED 자체도 몇 가지 설정을 가지고 있습니다. 이 설정들은 �
 
 # 개발자들을 위한 정보
 
-만약 EXILED 플러그인을 만들고 싶다면, 사실 간단합니다. 튜토리얼을 원한다면 [여기 (영어)](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md)를 읽어주세요.
+만약 EXILED 플러그인을 만들고 싶다면, 사실 간단합니다. 튜토리얼을 원한다면 [여기 (영어)](https://exiled.to/Archive/GettingStarted)를 읽어주세요.
 
 좀 더 상세하고 자주 업데이트 되는 튜토리얼을 원한다면, [EXILED 웹사이트](https://exiled.to)를 방문해보세요.
 
