@@ -35,43 +35,43 @@ namespace Exiled.CustomModules.API.Features.Generic
         public TDynamicEventDispatcher<Item> ItemAddedDispatcher { get; set; }
 
         /// <summary>
-        /// Gets or sets  the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when an item is removed.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when an item is removed.
         /// </summary>
         [DynamicEventDispatcher]
         public TDynamicEventDispatcher<ushort> ItemRemovedDispatcher { get; set; }
 
         /// <summary>
-        /// Gets or sets  the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when an item is restored.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when an item is restored.
         /// </summary>
         [DynamicEventDispatcher]
         public TDynamicEventDispatcher<Item> ItemRestoredDispatcher { get; set; }
 
         /// <summary>
-        /// Gets or sets  the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when an item tracking is modified.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when an item tracking is modified.
         /// </summary>
         [DynamicEventDispatcher]
         public TDynamicEventDispatcher<ItemTrackingModifiedEventArgs> ItemTrackingModifiedDispatcher { get; set; }
 
         /// <summary>
-        /// Gets or sets  the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when a pickup is added.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when a pickup is added.
         /// </summary>
         [DynamicEventDispatcher]
         public TDynamicEventDispatcher<Pickup> PickupAddedDispatcher { get; set; }
 
         /// <summary>
-        /// Gets or sets  the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when a pickup is removed.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when a pickup is removed.
         /// </summary>
         [DynamicEventDispatcher]
         public TDynamicEventDispatcher<ushort> PickupRemovedDispatcher { get; set; }
 
         /// <summary>
-        /// Gets or sets  the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when a pickup is restored.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when a pickup is restored.
         /// </summary>
         [DynamicEventDispatcher]
         public TDynamicEventDispatcher<Pickup> PickupRestoredDispatcher { get; set; }
 
         /// <summary>
-        /// Gets or sets  the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when a pickup tracking is modified.
+        /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when a pickup tracking is modified.
         /// </summary>
         [DynamicEventDispatcher]
         public TDynamicEventDispatcher<PickupTrackingModifiedEventArgs> PickupTrackingModifiedDispatcher { get; set; }
