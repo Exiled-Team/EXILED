@@ -11,6 +11,7 @@ namespace Exiled.CustomModules.API.Features.Generic
     using System.Linq;
 
     using Exiled.API.Extensions;
+    using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.DynamicEvents;
@@ -20,6 +21,7 @@ namespace Exiled.CustomModules.API.Features.Generic
     using Exiled.CustomModules.Events.EventArgs.Tracking;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
+    using UnityEngine;
 
     /// <summary>
     /// The actor which handles all tracking-related tasks for items.
@@ -106,7 +108,7 @@ namespace Exiled.CustomModules.API.Features.Generic
                 TrackedItemSerials[item.Serial].AddRange(trackableBehaviours.Cast<T>());
                 ItemTrackingModifiedEventArgs ev = new(item, previousTrackableItems.Cast<ITrackable>(), TrackedItemSerials[item.Serial].Cast<ITrackable>());
                 ItemTrackingModifiedDispatcher.InvokeAll(ev);
-
+                Log.WarnWithContext($"Item with serial {item.Serial} of type {item.Type} was added or tracked.");
                 return true;
             }
 
@@ -114,6 +116,7 @@ namespace Exiled.CustomModules.API.Features.Generic
             TrackedItemSerials[item.Serial].AddRange(trackableBehaviours.Cast<T>());
 
             ItemAddedDispatcher.InvokeAll(item);
+            Log.WarnWithContext($"Item with serial {item.Serial} of type {item.Type} was added.");
 
             return true;
         }
@@ -138,6 +141,7 @@ namespace Exiled.CustomModules.API.Features.Generic
                 TrackedPickupSerials[pickup.Serial].AddRange(trackableBehaviours.Cast<T>());
                 PickupTrackingModifiedEventArgs ev = new(pickup, previousTrackableItems.Cast<ITrackable>(), TrackedPickupSerials[pickup.Serial].Cast<ITrackable>());
                 PickupTrackingModifiedDispatcher.InvokeAll(ev);
+                Log.WarnWithContext($"Pickup with serial {pickup.Serial} of type {pickup.Type} was added or tracked.");
 
                 return true;
             }
@@ -146,6 +150,7 @@ namespace Exiled.CustomModules.API.Features.Generic
             TrackedPickupSerials[pickup.Serial].AddRange(trackableBehaviours.Cast<T>());
 
             PickupAddedDispatcher.InvokeAll(pickup);
+            Log.WarnWithContext($"Pickup with serial {pickup.Serial} of type {pickup.Type} was added.");
 
             return true;
         }
@@ -189,6 +194,7 @@ namespace Exiled.CustomModules.API.Features.Generic
             }
 
             ItemRestoredDispatcher.InvokeAll(item);
+            Log.WarnWithContext($"Item with serial {serial} was restored to item with serial {item.Serial} of type {item.Type}.");
 
             return true;
         }
@@ -212,6 +218,7 @@ namespace Exiled.CustomModules.API.Features.Generic
             }
 
             PickupRestoredDispatcher.InvokeAll(pickup);
+            Log.WarnWithContext($"Pickup with serial {serial} was restored.");
 
             return true;
         }
@@ -237,6 +244,7 @@ namespace Exiled.CustomModules.API.Features.Generic
             }
 
             PickupRestoredDispatcher.InvokeAll(pickup);
+            Log.WarnWithContext($"Pickup with serial {pickup.Serial} was restored to item with serial {item.Serial} of type {item.Type}.");
 
             return true;
         }
@@ -262,6 +270,7 @@ namespace Exiled.CustomModules.API.Features.Generic
             }
 
             PickupRestoredDispatcher.InvokeAll(pickup);
+            Log.WarnWithContext($"Item with serial {item.Serial} was restored to pickup with serial {pickup.Serial} of type {pickup.Type}.");
 
             return true;
         }
@@ -272,6 +281,7 @@ namespace Exiled.CustomModules.API.Features.Generic
         /// <param name="item">The item to be removed.</param>
         public virtual void Remove(Item item)
         {
+            Log.WarnWithContext($"Item with serial {item.Serial} of type {item.Type} is being untracked.");
             if (TrackedItemSerials.ContainsKey(item.Serial))
             {
                 TrackedItemSerials.Remove(item.Serial);
@@ -283,6 +293,8 @@ namespace Exiled.CustomModules.API.Features.Generic
                 });
 
                 ItemRemovedDispatcher.InvokeAll(item.Serial);
+                Log.WarnWithContext($"Item with serial {item.Serial} of type {item.Type} was untracked.");
+
             }
         }
 
@@ -293,6 +305,8 @@ namespace Exiled.CustomModules.API.Features.Generic
         /// <param name="behaviour">The <see cref="ITrackable"/> to be removed.</param>
         public virtual void Remove(Item item, T behaviour)
         {
+            Log.WarnWithContext($"Item with serial {item.Serial} of type {item.Type} is being untracked ({behaviour.GetType().Name}).");
+
             if (TrackedItemSerials.ContainsKey(item.Serial))
             {
                 IEnumerable<T> previousTrackedItems = TrackedItemSerials[item.Serial];
@@ -300,6 +314,8 @@ namespace Exiled.CustomModules.API.Features.Generic
                 item.GetComponent(behaviour.GetType()).Destroy();
                 ItemTrackingModifiedEventArgs ev = new(item, previousTrackedItems.Cast<ITrackable>(), TrackedItemSerials[item.Serial].Cast<ITrackable>());
                 ItemTrackingModifiedDispatcher.InvokeAll(ev);
+                Log.WarnWithContext($"Item with serial {item.Serial} of type {item.Type} was untracked: ({behaviour.GetType().Name}).");
+
             }
         }
 
@@ -309,6 +325,8 @@ namespace Exiled.CustomModules.API.Features.Generic
         /// <param name="pickup">The pickup to be removed.</param>
         public virtual void Remove(Pickup pickup)
         {
+            Log.WarnWithContext($"Pickup with serial {pickup.Serial} of type {pickup.Type} is being untracked.");
+
             if (TrackedPickupSerials.ContainsKey(pickup.Serial))
             {
                 TrackedPickupSerials.Remove(pickup.Serial);
@@ -320,6 +338,8 @@ namespace Exiled.CustomModules.API.Features.Generic
                 });
 
                 PickupRemovedDispatcher.InvokeAll(pickup.Serial);
+                Log.WarnWithContext($"Pickup with serial {pickup.Serial} of type {pickup.Type} was untracked.");
+
             }
         }
 
@@ -330,6 +350,8 @@ namespace Exiled.CustomModules.API.Features.Generic
         /// <param name="behaviour">The <typeparamref name="T"/> to be removed.</param>
         public virtual void Remove(Pickup pickup, T behaviour)
         {
+            Log.WarnWithContext($"Pickup with serial {pickup.Serial} of type {pickup.Type} is being untracked: ({behaviour.GetType().Name}).");
+
             if (TrackedPickupSerials.ContainsKey(pickup.Serial))
             {
                 IEnumerable<T> previousTrackableItems = TrackedPickupSerials[pickup.Serial].Cast<T>();
@@ -337,6 +359,8 @@ namespace Exiled.CustomModules.API.Features.Generic
                 pickup.GetComponent(behaviour.GetType()).Destroy();
                 PickupTrackingModifiedEventArgs ev = new(pickup, previousTrackableItems.Cast<ITrackable>(), TrackedPickupSerials[pickup.Serial].Cast<ITrackable>());
                 PickupTrackingModifiedDispatcher.InvokeAll(ev);
+                Log.WarnWithContext($"Pickup with serial {pickup.Serial} of type {pickup.Type} was untracked: ({behaviour.GetType().Name}).");
+
             }
         }
 
@@ -356,6 +380,7 @@ namespace Exiled.CustomModules.API.Features.Generic
 
                 ItemTrackingModifiedEventArgs ev = new(Item.Get(serial), previousTrackableItems.Cast<ITrackable>(), TrackedItemSerials[serial].Cast<ITrackable>());
                 ItemTrackingModifiedDispatcher.InvokeAll(ev);
+                Log.WarnWithContext($"Item with serial {serial} was untracked.");
             }
 
             if (TrackedPickupSerials.ContainsKey(serial))
@@ -367,6 +392,7 @@ namespace Exiled.CustomModules.API.Features.Generic
 
                 PickupTrackingModifiedEventArgs ev = new(Pickup.Get(serial), previousTrackableItems.Cast<ITrackable>(), TrackedPickupSerials[serial].Cast<ITrackable>());
                 PickupTrackingModifiedDispatcher.InvokeAll(ev);
+                Log.WarnWithContext($"Pickup with serial {serial} was untracked.");
             }
         }
 
