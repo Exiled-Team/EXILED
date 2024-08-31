@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="SpawnedEventArgs.cs" company="Exiled Team">
+// <copyright file="ChangedRoleEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -16,16 +16,16 @@ namespace Exiled.Events.EventArgs.Player
     using PlayerRoles;
 
     /// <summary>
-    /// Contains all information after spawning a player.
+    /// Contains all information after changed a player's role.
     /// </summary>
-    public class SpawnedEventArgs : IPlayerEvent
+    public class ChangedRoleEventArgs : IPlayerEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpawnedEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ChangedRoleEventArgs" /> class.
         /// </summary>
         /// <param name="player">the spawned player.</param>
         /// <param name="oldRole">the spawned player's old <see cref="PlayerRoleBase">role</see>.</param>
-        public SpawnedEventArgs(Player player, PlayerRoleBase oldRole)
+        public ChangedRoleEventArgs(Player player, PlayerRoleBase oldRole)
         {
             Player = player;
             OldRole = Role.Create(oldRole);
