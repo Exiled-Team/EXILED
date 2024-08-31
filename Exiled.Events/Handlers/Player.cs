@@ -294,9 +294,9 @@ namespace Exiled.Events.Handlers
         public static Event<SpawningEventArgs> Spawning { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> has spawned.
+        /// Invoked after a <see cref="API.Features.Player"/> has changed role.
         /// </summary>
-        public static Event<SpawnedEventArgs> Spawned { get; set; } = new();
+        public static Event<ChangedRoleEventArgs> ChangedRole { get; set; } = new();
 
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> held <see cref="API.Features.Items.Item"/> changes.
@@ -823,10 +823,10 @@ namespace Exiled.Events.Handlers
         public static void OnSpawning(SpawningEventArgs ev) => Spawning.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after a <see cref="API.Features.Player"/> has spawned.
+        /// Called after a <see cref="API.Features.Player"/> has changed role.
         /// </summary>
-        /// <param name="ev">The <see cref="SpawnedEventArgs"/> instance.</param>
-        public static void OnSpawned(SpawnedEventArgs ev) => Spawned.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ChangedRoleEventArgs"/> instance.</param>
+        public static void OnChangedRole(ChangedRoleEventArgs ev) => ChangedRole.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="API.Features.Player"/> held item changes.
