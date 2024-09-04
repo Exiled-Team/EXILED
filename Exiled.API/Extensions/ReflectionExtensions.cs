@@ -65,5 +65,31 @@ namespace Exiled.API.Extensions
             foreach (PropertyInfo sourceProperty in type.GetProperties())
                 type.GetProperty(sourceProperty.Name)?.SetValue(target, sourceProperty.GetValue(source, null), null);
         }
+
+        /// <summary>
+        /// Removes the generic type suffix (e.g., '`1' from `List`1`) from a type name if it exists.
+        /// </summary>
+        /// <param name="typeName">The name of the type, which may include a generic suffix.</param>
+        /// <returns>The type name without the generic suffix if it was present; otherwise, returns the original type name.</returns>
+        public static string RemoveGenericSuffix(this string typeName)
+        {
+            int indexOfBacktick = typeName.IndexOf('`');
+            return indexOfBacktick >= 0 ? typeName.Substring(0, indexOfBacktick) : typeName;
+        }
+
+        /// <summary>
+        /// Gets the first non-generic base type of a given type.
+        /// </summary>
+        /// <param name="type">The type for which to find the first non-generic base type.</param>
+        /// <returns>The first non-generic base type, or null if none is found.</returns>
+        public static Type GetFirstNonGenericBaseType(this Type type)
+        {
+            Type baseType = type.BaseType;
+
+            while (baseType != null && baseType.IsGenericType)
+                baseType = baseType.BaseType;
+
+            return baseType;
+        }
     }
 }

@@ -7,29 +7,11 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
 {
-    using System;
-
-    using Exiled.API.Extensions;
-    using Exiled.CustomModules.API.Features.CustomItems.Items;
-
     /// <summary>
     /// A tool to easily setup grenades.
     /// </summary>
-    public class GrenadeSettings : ItemSettings
+    public class GrenadeSettings : Settings
     {
-        /// <inheritdoc/>
-        public override ItemType ItemType
-        {
-            get => base.ItemType;
-            set
-            {
-                if (!value.IsThrowable() && value != ItemType.None)
-                    throw new ArgumentOutOfRangeException($"{nameof(Type)}", value, "Invalid grenade type.");
-
-                base.ItemType = value;
-            }
-        }
-
         /// <summary>
         /// Gets or sets a value indicating whether the grenade should explode immediately when contacting any surface.
         /// </summary>

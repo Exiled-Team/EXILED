@@ -21,7 +21,6 @@ namespace Exiled.CustomModules.API.Features.Generic
     using Exiled.CustomModules.Events.EventArgs.Tracking;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
-    using UnityEngine;
 
     /// <summary>
     /// The actor which handles all tracking-related tasks for items.
@@ -294,7 +293,6 @@ namespace Exiled.CustomModules.API.Features.Generic
 
                 ItemRemovedDispatcher.InvokeAll(item.Serial);
                 Log.WarnWithContext($"Item with serial {item.Serial} of type {item.Type} was untracked.");
-
             }
         }
 
@@ -315,7 +313,6 @@ namespace Exiled.CustomModules.API.Features.Generic
                 ItemTrackingModifiedEventArgs ev = new(item, previousTrackedItems.Cast<ITrackable>(), TrackedItemSerials[item.Serial].Cast<ITrackable>());
                 ItemTrackingModifiedDispatcher.InvokeAll(ev);
                 Log.WarnWithContext($"Item with serial {item.Serial} of type {item.Type} was untracked: ({behaviour.GetType().Name}).");
-
             }
         }
 
@@ -339,7 +336,6 @@ namespace Exiled.CustomModules.API.Features.Generic
 
                 PickupRemovedDispatcher.InvokeAll(pickup.Serial);
                 Log.WarnWithContext($"Pickup with serial {pickup.Serial} of type {pickup.Type} was untracked.");
-
             }
         }
 
@@ -360,7 +356,6 @@ namespace Exiled.CustomModules.API.Features.Generic
                 PickupTrackingModifiedEventArgs ev = new(pickup, previousTrackableItems.Cast<ITrackable>(), TrackedPickupSerials[pickup.Serial].Cast<ITrackable>());
                 PickupTrackingModifiedDispatcher.InvokeAll(ev);
                 Log.WarnWithContext($"Pickup with serial {pickup.Serial} of type {pickup.Type} was untracked: ({behaviour.GetType().Name}).");
-
             }
         }
 

@@ -8,11 +8,12 @@
 namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
 {
     using Exiled.CustomModules.API.Features.Generic;
+    using Exiled.CustomModules.API.Interfaces;
 
     /// <summary>
     /// The actor which handles all tracking-related tasks for pickups.
     /// </summary>
-    public class PickupTracker : TrackerBase<IPickupBehaviour>
+    public class PickupTracker : TrackerBase<ITrackable>
     {
     }
 }

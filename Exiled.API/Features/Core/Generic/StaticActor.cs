@@ -86,7 +86,6 @@ namespace Exiled.API.Features.Core.Generic
 
             if (!IsInitialized)
             {
-                Log.Debug($"Start() StaticActor with type {GetType().Name} in the Actor {Name}");
                 PostInitialize_Static();
                 IsInitialized = true;
             }

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="EConfig.cs" company="Exiled Team">
+// <copyright file="ConfigSubsystem.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -28,64 +28,48 @@ namespace Exiled.API.Features
     /// <summary>
     /// The base class that handles the config subsystem.
     /// </summary>
-    public sealed class EConfig : TypeCastObject<object>
+    public sealed class ConfigSubsystem : TypeCastObject<object>
     {
         /// <inheritdoc cref="List"/>
-        internal static readonly List<EConfig> ConfigsValue = new();
+        internal static readonly List<ConfigSubsystem> ConfigsValue = new();
 
-        private static readonly Dictionary<EConfig, string> Cache = new();
-        private static readonly List<EConfig> MainConfigsValue = new();
+        private static readonly Dictionary<ConfigSubsystem, string> Cache = new();
+        private static readonly List<ConfigSubsystem> MainConfigsValue = new();
 
-        private readonly HashSet<EConfig> data = new();
+        private readonly HashSet<ConfigSubsystem> data = new();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EConfig"/> class.
+        /// Initializes a new instance of the <see cref="ConfigSubsystem"/> class.
         /// </summary>
         /// <param name="obj">The config object.</param>
-        public EConfig(object obj) => Base = obj;
+        public ConfigSubsystem(object obj) => Base = obj;
 
         /// <summary>
         /// Gets or sets the serializer for configs and translations.
         /// </summary>
-        public static ISerializer Serializer { get; set; } = new SerializerBuilder()
-            .WithTypeConverter(new VectorsConverter())
-            .WithTypeConverter(new ColorConverter())
-            .WithTypeConverter(new AttachmentIdentifiersConverter())
-            .WithTypeConverter(new EnumClassConverter())
-            .WithTypeConverter(new PrivateConstructorConverter())
-            .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
-            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
-            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .IgnoreFields()
-            .DisableAliases()
-            .Build();
+        public static ISerializer Serializer { get; set; } = GetDefaultSerializerBuilder().Build();
 
         /// <summary>
         /// Gets or sets the deserializer for configs and translations.
         /// </summary>
-        public static IDeserializer Deserializer { get; set; } = new DeserializerBuilder()
-            .WithTypeConverter(new VectorsConverter())
-            .WithTypeConverter(new ColorConverter())
-            .WithTypeConverter(new AttachmentIdentifiersConverter())
-            .WithTypeConverter(new EnumClassConverter())
-            .WithTypeConverter(new PrivateConstructorConverter())
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
-            .WithDuplicateKeyChecking()
-            .IgnoreFields()
-            .IgnoreUnmatchedProperties()
+        public static IDeserializer Deserializer { get; set; } = GetDefaultDeserializerBuilder().Build();
+
+        /// <summary>
+        /// Gets or sets the JSON compatible serializer.
+        /// </summary>
+        public static ISerializer JsonSerializer { get; set; } = new SerializerBuilder()
+            .JsonCompatible()
             .Build();
 
         /// <summary>
-        /// Gets a <see cref="IReadOnlyCollection{T}"/> containing all the <see cref="EConfig"/>.
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> containing all the <see cref="ConfigSubsystem"/>.
         /// </summary>
-        public static IReadOnlyCollection<EConfig> List => ConfigsValue;
+        public static IReadOnlyCollection<ConfigSubsystem> List => ConfigsValue;
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> containing all the subconfigs.
         /// </summary>
-        public IEnumerable<EConfig> Subconfigs => data;
+        public IEnumerable<ConfigSubsystem> Subconfigs => data;
 
         /// <summary>
         /// Gets the base config instance.
@@ -108,15 +92,48 @@ namespace Exiled.API.Features
         public string? AbsolutePath => Folder is not null && Name is not null ? Path.Combine(Paths.Configs, Path.Combine(Folder, Name)) : null;
 
         /// <summary>
-        /// Gets a <see cref="EConfig"/> instance given the specified type <typeparamref name="T"/>.
+        /// Gets the default serializer builder.
+        /// </summary>
+        /// <returns>The default serializer builder.</returns>
+        public static SerializerBuilder GetDefaultSerializerBuilder() => new SerializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new ColorConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithTypeConverter(new EnumClassConverter())
+            .WithTypeConverter(new PrivateConstructorConverter())
+            .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
+            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
+            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .IgnoreFields()
+            .DisableAliases();
+
+        /// <summary>
+        /// Gets the default deserializer builder.
+        /// </summary>
+        /// <returns>The default deserializer builder.</returns>
+        public static DeserializerBuilder GetDefaultDeserializerBuilder() => new DeserializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new ColorConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithTypeConverter(new EnumClassConverter())
+            .WithTypeConverter(new PrivateConstructorConverter())
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .WithDuplicateKeyChecking()
+            .IgnoreFields()
+            .IgnoreUnmatchedProperties();
+
+        /// <summary>
+        /// Gets a <see cref="ConfigSubsystem"/> instance given the specified type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type of the config to look for.</typeparam>
         /// <param name="generateNew">Whether a new config should be generated, if not found.</param>
-        /// <returns>The corresponding <see cref="EConfig"/> instance or <see langword="null"/> if not found.</returns>
-        public static EConfig? Get<T>(bool generateNew = false)
+        /// <returns>The corresponding <see cref="ConfigSubsystem"/> instance or <see langword="null"/> if not found.</returns>
+        public static ConfigSubsystem? Get<T>(bool generateNew = false)
             where T : class
         {
-            EConfig? config = ConfigsValue.FirstOrDefault(config => config?.Base?.GetType() == typeof(T));
+            ConfigSubsystem? config = ConfigsValue.FirstOrDefault(config => config?.Base?.GetType() == typeof(T));
 
             if (!config && generateNew)
                 config = GenerateNew<T>();
@@ -125,21 +142,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="EConfig"/> instance given the specified folder.
+        /// Gets a <see cref="ConfigSubsystem"/> instance given the specified folder.
         /// </summary>
         /// <param name="folder">The folder of the config to look for.</param>
-        /// <returns>The corresponding <see cref="EConfig"/> instance or <see langword="null"/> if not found.</returns>
-        public static EConfig Get(string folder) => List.FirstOrDefault(cfg => cfg.Folder == folder) ?? throw new InvalidOperationException();
+        /// <returns>The corresponding <see cref="ConfigSubsystem"/> instance or <see langword="null"/> if not found.</returns>
+        public static ConfigSubsystem Get(string folder) => List.FirstOrDefault(cfg => cfg.Folder == folder) ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Generates a new config of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type of the config.</typeparam>
         /// <returns>The generated config.</returns>
-        public static EConfig? GenerateNew<T>()
+        public static ConfigSubsystem? GenerateNew<T>()
             where T : class
         {
-            EConfig? config = Get<T>();
+            ConfigSubsystem? config = Get<T>();
             if (config is not null)
                 return config;
 
@@ -167,8 +184,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="type">The config type.</param>
         /// <param name="attribute">The config data.</param>
-        /// <returns>The <see cref="EConfig"/> object.</returns>
-        public static EConfig? Load(Type type, ConfigAttribute? attribute = null)
+        /// <returns>The <see cref="ConfigSubsystem"/> object.</returns>
+        public static ConfigSubsystem? Load(Type type, ConfigAttribute? attribute = null)
         {
             try
             {
@@ -191,7 +208,7 @@ namespace Exiled.API.Features
                     return null;
                 }
 
-                EConfig wrapper = new(config);
+                ConfigSubsystem wrapper = new(config);
                 if (string.IsNullOrEmpty(wrapper.Folder))
                 {
                     if (string.IsNullOrEmpty(attribute.Folder))
@@ -233,8 +250,8 @@ namespace Exiled.API.Features
                         wrapper.data.Add(wrapper);
                         MainConfigsValue.Add(wrapper);
 
-                        Dictionary<EConfig, string> localCache = new(Cache);
-                        foreach (KeyValuePair<EConfig, string> elem in localCache)
+                        Dictionary<ConfigSubsystem, string> localCache = new(Cache);
+                        foreach (KeyValuePair<ConfigSubsystem, string> elem in localCache)
                             LoadFromCache(elem.Key);
 
                         return wrapper;
@@ -273,12 +290,12 @@ namespace Exiled.API.Features
         /// Loads a config from the cached configs.
         /// </summary>
         /// <param name="config">The config to load.</param>
-        public static void LoadFromCache(EConfig config)
+        public static void LoadFromCache(ConfigSubsystem config)
         {
             if (!Cache.TryGetValue(config, out string path))
                 return;
 
-            foreach (EConfig cfg in MainConfigsValue)
+            foreach (ConfigSubsystem cfg in MainConfigsValue)
             {
                 if (string.IsNullOrEmpty(cfg.Folder) || cfg.Folder != config.Folder)
                     continue;
@@ -295,7 +312,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="config">The config to load.</param>
         /// <param name="path">The config's path.</param>
-        public static void Load(EConfig config, string? path = null)
+        public static void Load(ConfigSubsystem config, string? path = null)
         {
             path ??= config.AbsolutePath;
             if (File.Exists(path))
@@ -317,7 +334,40 @@ namespace Exiled.API.Features
             where T : class
         {
             object? config = Get<T>();
-            return config is null || config is not EConfig configBase ? null : configBase.AbsolutePath;
+            return config is null || config is not ConfigSubsystem configBase ? null : configBase.AbsolutePath;
+        }
+
+        /// <inheritdoc cref="Serializer.Serialize(object?)"/>
+        public static string Serialize(object? graph) => Serializer.Serialize(graph);
+
+        /// <inheritdoc cref="Serializer.Serialize(object?, Type)"/>
+        public static string Serialize(object? graph, Type type) => Serializer.Serialize(graph, type);
+
+        /// <inheritdoc cref="Deserializer.Deserialize(string)"/>
+        public static object? Deserialize(string input) => Deserializer.Deserialize(input);
+
+        /// <inheritdoc cref="Deserializer.Deserialize(string, Type)"/>
+        public static object? Deserialize(string input, Type type) => Deserializer.Deserialize(input, type);
+
+        /// <inheritdoc cref="Deserializer.Deserialize{T}(string)"/>
+        public static T Deserialize<T>(string input) => Deserializer.Deserialize<T>(input);
+
+        /// <summary>
+        /// Converts a dictionary of key-value pairs into a YAML formatted string.
+        /// </summary>
+        /// <param name="dictionary">The dictionary containing keys and values to be converted to YAML format.</param>
+        /// <returns>A YAML formatted string representing the dictionary contents.</returns>
+        /// <remarks>
+        /// The keys in the dictionary must be of type <see cref="string"/>, and the values can be of any object type.
+        /// This method ensures compatibility with JSON format before converting to YAML.
+        /// </remarks>
+        public static string ConvertDictionaryToYaml(Dictionary<string, object> dictionary)
+        {
+            Dictionary<string, object> convertedDictionary = dictionary.ToDictionary(
+                kvp => kvp.Key.ToString(),
+                kvp => kvp.Value);
+
+            return JsonSerializer.Serialize(convertedDictionary);
         }
 
         /// <summary>
@@ -328,7 +378,7 @@ namespace Exiled.API.Features
         public T? Read<T>()
             where T : class
         {
-            EConfig? t = Get<T>();
+            ConfigSubsystem? t = Get<T>();
 
             if (t is null)
                 return default;

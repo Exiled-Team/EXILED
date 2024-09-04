@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Core
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Core.Generic;
 
     /// <summary>
     /// This is a generic Singleton implementation for components.
@@ -54,11 +55,12 @@ namespace Exiled.API.Features.Core
         /// <returns>The created or already existing <see cref="StaticActor"/> instance.</returns>
         public static StaticActor CreateNewInstance(Type type)
         {
-            EActor @object = CreateDefaultSubobject<StaticActor>(type);
+            EObject @object = CreateDefaultSubobject(type);
             @object.Name = "__" + type.Name + " (StaticActor)";
             @object.SearchForHostObjectIfNull = true;
-            @object.ComponentInitialize();
-            return @object.Cast<StaticActor>();
+            StaticActor actor = @object.Cast<StaticActor>();
+            actor.ComponentInitialize();
+            return actor;
         }
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace Exiled.API.Features.Core
                 if (!actor.Cast(out StaticActor staticActor) || staticActor.GetType() != typeof(T))
                     continue;
 
-                return actor.Cast<T>();
+                return staticActor.Cast<T>();
             }
 
             return CreateNewInstance<T>().Cast<T>();
@@ -133,7 +135,6 @@ namespace Exiled.API.Features.Core
             if (IsInitialized)
                 return;
 
-            Log.Debug($"Start() StaticActor with type {GetType().Name} in the Actor {Name}");
             PostInitialize_Static();
             IsInitialized = true;
         }

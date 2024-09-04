@@ -56,9 +56,9 @@ namespace Exiled.API.Features.VirtualAssemblies
         public static IEnumerable<VirtualPlugin> List => Registered;
 
         /// <summary>
-        /// Gets or sets the <see cref="EConfig"/> object.
+        /// Gets or sets the <see cref="ConfigSubsystem"/> object.
         /// </summary>
-        public abstract EConfig Config { get; protected set; }
+        public abstract ConfigSubsystem Config { get; protected set; }
 
         /// <summary>
         /// Gets the plugin's master branch name.
@@ -207,7 +207,7 @@ namespace Exiled.API.Features.VirtualAssemblies
             if (!Config)
                 return false;
 
-            EConfig.Load(Config);
+            ConfigSubsystem.Load(Config);
             return true;
         }
 

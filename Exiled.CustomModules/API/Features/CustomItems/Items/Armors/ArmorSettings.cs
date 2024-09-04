@@ -7,30 +7,13 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Items.Armors
 {
-    using System;
     using System.ComponentModel;
-
-    using Exiled.API.Extensions;
-    using Exiled.CustomModules.API.Features.CustomItems.Items;
 
     /// <summary>
     /// A tool to easily setup armors.
     /// </summary>
-    public class ArmorSettings : ItemSettings
+    public class ArmorSettings : Settings
     {
-        /// <inheritdoc/>
-        public override ItemType ItemType
-        {
-            get => base.ItemType;
-            set
-            {
-                if (!value.IsArmor() && value != ItemType.None)
-                    throw new ArgumentOutOfRangeException($"{nameof(Type)}", value, "Invalid armor type.");
-
-                base.ItemType = value;
-            }
-        }
-
         /// <summary>
         /// Gets or sets how much faster stamina will drain when wearing this armor.
         /// </summary>

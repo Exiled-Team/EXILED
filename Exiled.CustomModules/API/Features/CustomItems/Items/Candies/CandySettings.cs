@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="CandySettings.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -7,8 +7,6 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
 {
-    using System;
-
     using Exiled.API.Features;
     using InventorySystem.Items.Usables.Scp330;
     using UnityEngine;
@@ -16,21 +14,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
     /// <summary>
     /// A tool to easily setup candies.
     /// </summary>
-    public class CandySettings : ItemSettings
+    public class CandySettings : Settings
     {
-        /// <inheritdoc/>
-        public override ItemType ItemType
-        {
-            get => base.ItemType;
-            set
-            {
-                if (value != ItemType.SCP330)
-                    throw new ArgumentOutOfRangeException(nameof(Type), value, "ItemType must be ItemType.SCP330");
-
-                base.ItemType = value;
-            }
-        }
-
         /// <summary>
         /// Gets or sets a <see cref="CandyKindID"/> of a custom candy.
         /// </summary>

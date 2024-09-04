@@ -32,7 +32,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
     /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IItemBehaviour"/> and <see cref="IAdditiveSettings{T}"/>.
     /// <br/>It provides a foundation for creating custom behaviors associated with in-game items.
     /// </remarks>
-    public abstract class ItemBehaviour : ModuleBehaviour<Item>, IItemBehaviour, IAdditiveSettings<ItemSettings>
+    public abstract class ItemBehaviour : ModuleBehaviour<Item>, IItemBehaviour, IAdditiveSettings<SettingsBase>
     {
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item changes role.
@@ -97,7 +97,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         public CustomItem CustomItem { get; private set; }
 
         /// <inheritdoc/>
-        public ItemSettings Settings { get; set; }
+        public SettingsBase Settings { get; set; }
 
         /// <summary>
         /// Gets the item's owner.
@@ -109,7 +109,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         {
             ImplementConfigs();
 
-            if (CustomItem.TryGet(GetType(), out CustomItem customItem) && customItem.Settings is ItemSettings itemSettings)
+            if (CustomItem.TryGet(GetType(), out CustomItem customItem) && customItem.Settings is SettingsBase itemSettings)
             {
                 CustomItem = customItem;
                 Settings = itemSettings;
@@ -126,7 +126,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
         {
             targetInfo?.SetValue(
-                typeof(ItemSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
+                typeof(Settings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
                 propertyInfo.GetValue(Config, null));
         }
 
@@ -247,7 +247,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         /// <param name="ev"><see cref="ChangingItemEventArgs"/>.</param>
         protected virtual void OnChangingItem(ChangingItemEventArgs ev)
         {
-            if (Settings.ShouldMessageOnGban)
+            if (Settings.NotifyItemToSpectators)
             {
                 foreach (Player player in Player.Get(RoleTypeId.Spectator))
                 {

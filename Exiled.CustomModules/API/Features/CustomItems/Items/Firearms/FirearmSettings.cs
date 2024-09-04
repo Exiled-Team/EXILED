@@ -7,33 +7,15 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 {
-    using System;
-
     using CameraShaking;
-
-    using Exiled.API.Extensions;
     using Exiled.CustomModules.API.Enums;
-    using Exiled.CustomModules.API.Features.CustomItems.Items;
     using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
     /// A tool to easily setup firearms.
     /// </summary>
-    public class FirearmSettings : ItemSettings
+    public class FirearmSettings : SettingsBase
     {
-        /// <inheritdoc/>
-        public override ItemType ItemType
-        {
-            get => base.ItemType;
-            set
-            {
-                if (!value.IsWeapon(false) && value != ItemType.None)
-                    throw new ArgumentOutOfRangeException($"{nameof(Type)}", value, "Invalid weapon type.");
-
-                base.ItemType = value;
-            }
-        }
-
         /// <summary>
         /// Gets or sets a value indicating whether the custom reload logic should be used.
         /// <para/>

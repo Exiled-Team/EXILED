@@ -23,7 +23,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.Events.EventArgs.CustomRoles;
-    using MEC;
     using PlayerRoles;
     using Respawning;
     using YamlDotNet.Serialization;
@@ -554,7 +553,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (!TryGet(name, out CustomRole customRole))
                 return false;
 
-            Spawn(player, customRole, preservePosition, spawnReason, roleSpawnFlags);
+            customRole.Spawn(player, preservePosition, spawnReason, roleSpawnFlags);
             return true;
         }
 
@@ -634,27 +633,16 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Enables all the custom roles present in the assembly.
         /// </summary>
+        /// <param name="assembly">The assembly to enable the module instances from.</param>
+        /// <returns>The amount of enabled module instances.</returns>
         /// <remarks>
-        /// This method dynamically enables all custom roles found in the calling assembly. Custom roles
-        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling. If
-        /// a custom role is enabled successfully, it is added to the returned list.
+        /// This method dynamically enables all module instances found in the calling assembly that were
+        /// not previously registered.
         /// </remarks>
-        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
-
-        /// <summary>
-        /// Enables all the custom roles present in the assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly to enable the roles from.</param>
-        /// <remarks>
-        /// This method dynamically enables all custom roles found in the calling assembly. Custom roles
-        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling.
-        /// </remarks>
-        public static void EnableAll(Assembly assembly)
+        public static int EnableAll(Assembly assembly = null)
         {
-            if (CustomModules.Instance.Config.Modules is null || !CustomModules.Instance.Config.Modules.Contains("CustomRoles"))
-                throw new Exception("ModuleType::CustomRoles must be enabled in order to load any custom roles");
+            assembly ??= Assembly.GetCallingAssembly();
 
-            Player.DEFAULT_ROLE_BEHAVIOUR = typeof(RoleBehaviour);
             List<CustomRole> customRoles = new();
             foreach (Type type in assembly.GetTypes())
             {
@@ -672,23 +660,24 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     customRoles.Add(customRole);
             }
 
-            if (customRoles.Count != Registered.Count)
-                Log.Info($"{customRoles.Count} custom roles have been successfully registered!");
+            return customRoles.Count;
         }
 
         /// <summary>
         /// Disables all the custom roles present in the assembly.
         /// </summary>
+        /// <param name="assembly">The assembly to disable the module instances from.</param>
+        /// <returns>The amount of disabled module instances.</returns>
         /// <remarks>
-        /// This method dynamically disables all custom roles found in the calling assembly that were
+        /// This method dynamically disables all module instances found in the calling assembly that were
         /// previously registered.
         /// </remarks>
-        public static void DisableAll()
+        public static int DisableAll(Assembly assembly = null)
         {
+            assembly ??= Assembly.GetCallingAssembly();
             List<CustomRole> customRoles = new();
-            customRoles.AddRange(Registered.Where(customRole => customRole.TryUnregister()));
-
-            Log.Info($"{customRoles.Count} custom roles have been successfully unregistered!");
+            customRoles.AddRange(Registered.Where(customRole => customRole.GetType().Assembly == assembly && customRole.TryUnregister()));
+            return customRoles.Count;
         }
 
         /// <summary>
@@ -728,7 +717,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return role.Spawn(player, preservePosition, spawnReason, roleSpawnFlags);
 
             object prevRole = player.CustomRole ? player.CustomRole.Id : player.Role.Type;
-            player.AddComponent(BehaviourComponent);
+            player.AddComponent(BehaviourComponent, $"ECS-{Name}");
             PlayersValue.Remove(player);
             PlayersValue.Add(player, this);
             Instances += 1;
@@ -859,22 +848,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             NameLookupTable.Remove(Name);
 
             return true;
-        }
-
-        private void ForceSpawn_Internal(Pawn player, bool preservePosition, SpawnReason spawnReason = null, RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All)
-        {
-            Instances += 1;
-            RoleBehaviour roleBehaviour = EObject.CreateDefaultSubobject<EActor>(BehaviourComponent, $"ECS-{Name}").Cast<RoleBehaviour>();
-            roleBehaviour.Settings.PreservePosition = preservePosition;
-
-            spawnReason ??= SpawnReason.ForceClass;
-            if (roleBehaviour.Settings.SpawnReason != spawnReason)
-                roleBehaviour.Settings.SpawnReason = spawnReason;
-
-            if (roleSpawnFlags != roleBehaviour.Settings.SpawnFlags)
-                roleBehaviour.Settings.SpawnFlags = roleSpawnFlags;
-
-            EActor ea = player.AddComponent(roleBehaviour);
         }
     }
 }

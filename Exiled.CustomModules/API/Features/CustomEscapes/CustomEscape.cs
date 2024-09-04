@@ -181,16 +181,18 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Enables all the custom escapes present in the assembly.
         /// </summary>
-        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
-
-        /// <summary>
-        /// Enables all the custom escapes present in the assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly to enable the escapes from.</param>
-        public static void EnableAll(Assembly assembly)
+        /// <param name="assembly">The assembly to enable the module instances from.</param>
+        /// <returns>The amount of enabled module instances.</returns>
+        /// <remarks>
+        /// This method dynamically enables all module instances found in the calling assembly that were
+        /// not previously registered.
+        /// </remarks>
+        public static int EnableAll(Assembly assembly = null)
         {
             if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomEscapes.Name))
                 throw new Exception("ModuleType::CustomEscapes must be enabled in order to load any custom escapes");
+
+            assembly ??= Assembly.GetCallingAssembly();
 
             List<CustomEscape> customEscapes = new();
             foreach (Type type in assembly.GetTypes())
@@ -209,19 +211,25 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                     customEscapes.Add(customEscape);
             }
 
-            if (customEscapes.Count() != List.Count())
-                Log.Info($"{customEscapes.Count()} custom escapes have been successfully registered!");
+            return customEscapes.Count;
         }
 
         /// <summary>
         /// Disables all the custom escapes present in the assembly.
         /// </summary>
-        public static void DisableAll()
+        /// <param name="assembly">The assembly to disable the module instances from.</param>
+        /// <returns>The amount of disabled module instances.</returns>
+        /// <remarks>
+        /// This method dynamically disables all module instances found in the calling assembly that were
+        /// previously registered.
+        /// </remarks>
+        public static int DisableAll(Assembly assembly = null)
         {
-            List<CustomEscape> customEscapes = new();
-            customEscapes.AddRange(List.Where(customEscape => customEscape.TryUnregister()));
+            assembly ??= Assembly.GetCallingAssembly();
 
-            Log.Info($"{customEscapes.Count()} custom escapes have been successfully unregistered!");
+            List<CustomEscape> customEscapes = new();
+            customEscapes.AddRange(List.Where(customEscape => customEscape.GetType().Assembly == assembly && customEscape.TryUnregister()));
+            return customEscapes.Count;
         }
 
         /// <summary>

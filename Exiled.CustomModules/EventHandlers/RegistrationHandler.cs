@@ -21,7 +21,7 @@ namespace Exiled.CustomModules.EventHandlers
     /// </summary>
     internal class RegistrationHandler
     {
-        private Config config;
+        private readonly Config config;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RegistrationHandler"/> class.
@@ -35,6 +35,11 @@ namespace Exiled.CustomModules.EventHandlers
         /// <param name="moduleInfo">The module which is being enabled.</param>
         internal void OnModuleEnabled(ModuleInfo moduleInfo)
         {
+            if (moduleInfo.Type.IsGenericType && moduleInfo.Type.BaseType != typeof(CustomModule))
+                return;
+
+            Log.InfoWithContext($"Module '{moduleInfo.Name}' has been deployed.", Log.CONTEXT_DEPLOYMENT);
+
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomRoles.Name && config.UseDefaultRoleAssigner)
             {
                 StaticActor.Get<RoleAssigner>();
@@ -73,6 +78,8 @@ namespace Exiled.CustomModules.EventHandlers
         /// <param name="moduleInfo">The module which is being disabled.</param>
         internal void OnModuleDisabled(ModuleInfo moduleInfo)
         {
+            Log.InfoWithContext($"Module '{moduleInfo.Name}' has been disabled.", Log.CONTEXT_DEPLOYMENT);
+
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomRoles.Name && config.UseDefaultRoleAssigner)
             {
                 StaticActor.Get<RoleAssigner>()?.Destroy();
@@ -87,7 +94,7 @@ namespace Exiled.CustomModules.EventHandlers
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomGameModes.Name)
             {
-                World.Get().Destroy();
+                World.Get()?.Destroy();
                 return;
             }
 
@@ -102,6 +109,7 @@ namespace Exiled.CustomModules.EventHandlers
                 GlobalPatchProcessor.UnpatchAll("exiled.customitems.unpatch", nameof(CustomItem));
                 StaticActor.Get<ItemTracker>()?.Destroy();
                 StaticActor.Get<PickupTracker>()?.Destroy();
+                return;
             }
         }
     }

@@ -12,7 +12,6 @@ namespace Exiled.CustomModules.API.Features
 
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Generic;
-    using UnityEngine;
 
     /// <summary>
     /// Represents a marker class for a module's pointer.

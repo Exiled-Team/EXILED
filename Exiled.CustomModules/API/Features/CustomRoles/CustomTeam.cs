@@ -455,16 +455,18 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Enables all the custom teams present in the assembly.
         /// </summary>
-        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
-
-        /// <summary>
-        /// Enables all the custom teams present in the assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly to enable the teams from.</param>
-        public static void EnableAll(Assembly assembly)
+        /// <param name="assembly">The assembly to enable the module instances from.</param>
+        /// <returns>The amount of enabled module instances.</returns>
+        /// <remarks>
+        /// This method dynamically enables all module instances found in the calling assembly that were
+        /// not previously registered.
+        /// </remarks>
+        public static int EnableAll(Assembly assembly = null)
         {
             if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomTeams.Name))
                 throw new Exception("ModuleType::CustomTeams must be enabled in order to load any custom teams");
+
+            assembly ??= Assembly.GetCallingAssembly();
 
             List<CustomTeam> customTeams = new();
             foreach (Type type in assembly.GetTypes())
@@ -483,19 +485,25 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     customTeams.Add(customTeam);
             }
 
-            if (customTeams.Count() != Registered.Count())
-                Log.SendRaw($"{customTeams.Count()} custom teams have been successfully registered!", ConsoleColor.Cyan);
+            return customTeams.Count;
         }
 
         /// <summary>
         /// Disables all the custom teams present in the assembly.
         /// </summary>
-        public static void DisableAll()
+        /// <param name="assembly">The assembly to disable the module instances from.</param>
+        /// <returns>The amount of disabled module instances.</returns>
+        /// <remarks>
+        /// This method dynamically disables all module instances found in the calling assembly that were
+        /// previously registered.
+        /// </remarks>
+        public static int DisableAll(Assembly assembly = null)
         {
-            List<CustomTeam> customTeams = new();
-            customTeams.AddRange(Registered.Where(customTeam => customTeam.TryUnregister()));
+            assembly ??= Assembly.GetCallingAssembly();
 
-            Log.SendRaw($"{customTeams.Count()} custom teams have been successfully unregistered!", ConsoleColor.Cyan);
+            List<CustomTeam> customTeams = new();
+            customTeams.AddRange(Registered.Where(customTeam => customTeam.GetType().Assembly == assembly && customTeam.TryUnregister()));
+            return customTeams.Count;
         }
 
         /// <summary>

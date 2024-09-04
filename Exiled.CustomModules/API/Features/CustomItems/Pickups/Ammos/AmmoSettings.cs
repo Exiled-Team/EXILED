@@ -7,12 +7,10 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Pickups.Ammos
 {
-    using Exiled.CustomModules.API.Features.CustomItems.Pickups;
-
     /// <summary>
     /// A tool to easily setup ammos.
     /// </summary>
-    public class AmmoSettings : PickupSettings
+    public class AmmoSettings : SettingsBase
     {
         /// <summary>
         /// Gets or sets the sizes of the ammo box.

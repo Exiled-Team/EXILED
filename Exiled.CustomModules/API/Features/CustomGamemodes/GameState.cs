@@ -63,7 +63,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <summary>
         /// Gets or sets the <see cref="GameState"/>'s config.
         /// </summary>
-        public EConfig Config { get; set; }
+        public ConfigSubsystem Config { get; set; }
 
         /// <summary>
         /// Gets all <see cref="PlayerState"/> instances.

@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Attributes
     using System;
 
     /// <summary>
-    /// This attribute determines whether the class which is being applied to should be treated as <see cref="EConfig"/>.
+    /// This attribute determines whether the class which is being applied to should be treated as <see cref="ConfigSubsystem"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class ConfigAttribute : Attribute
@@ -46,7 +46,7 @@ namespace Exiled.API.Features.Attributes
         public string Name { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the class on which this attribute is being applied to should be treated as parent <see cref="EConfig"/>.
+        /// Gets a value indicating whether the class on which this attribute is being applied to should be treated as parent <see cref="ConfigSubsystem"/>.
         /// </summary>
         public bool IsParent { get; }
     }

@@ -16,6 +16,6 @@ namespace Exiled.Example
         public bool IsEnabled { get; set; } = true;
 
         /// <inheritdoc />
-        public bool Debug { get; set; } = false;
+        public bool Debug { get; set; } = true;
     }
 }

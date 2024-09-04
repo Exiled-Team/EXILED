@@ -17,6 +17,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Pickups;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
+    using Exiled.CustomModules.API.Interfaces;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp914;
 
@@ -27,7 +28,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
     /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IPickupBehaviour"/> and <see cref="IAdditiveSettings{T}"/>.
     /// <br/>It provides a foundation for creating custom behaviors associated with in-game pickup.
     /// </remarks>
-    public abstract class PickupBehaviour : ModuleBehaviour<Pickup>, IPickupBehaviour, IAdditiveSettings<PickupSettings>
+    public abstract class PickupBehaviour : ModuleBehaviour<Pickup>, ITrackable, IAdditiveSettings<SettingsBase>
     {
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before the pickup is gets picked up.
@@ -44,17 +45,17 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
         public CustomItem CustomItem { get; private set; }
 
         /// <inheritdoc/>
-        public PickupSettings Settings { get; set; }
+        public SettingsBase Settings { get; set; }
 
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
             ImplementConfigs();
 
-            if (CustomItem.TryGet(GetType(), out CustomItem customItem) && customItem.Settings is PickupSettings pickupSettings)
+            if (CustomItem.TryGet(GetType(), out CustomItem customItem) && customItem.Settings is SettingsBase settings)
             {
                 CustomItem = customItem;
-                Settings = pickupSettings;
+                Settings = settings;
             }
 
             if (CustomItem is null || Settings is null)
@@ -68,7 +69,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
         protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
         {
             targetInfo?.SetValue(
-                typeof(ItemSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
+                typeof(Settings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
                 propertyInfo.GetValue(Config, null));
         }
 

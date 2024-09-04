@@ -9,12 +9,14 @@ namespace Exiled.API.Features.Core
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Core.Generic.Pools;
+    using Exiled.API.Features.Items;
     using MEC;
     using UnityEngine;
 
@@ -357,20 +359,17 @@ namespace Exiled.API.Features.Core
         public static EObject CreateDefaultSubobject(Type type, params object[] parameters)
         {
             const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-            EObject @object = Activator.CreateInstance(type, flags, null, null, null) as EObject;
-
-            if (@object is not null && Player.DEFAULT_ROLE_BEHAVIOUR is not null && type.BaseType == Player.DEFAULT_ROLE_BEHAVIOUR)
-            {
-                @object.Base = parameters[0] as GameObject;
-                @object.Cast<EActor>().ComponentInitialize();
-            }
 
             // Do not use implicit bool conversion as @object may be null
-            if (@object != null)
+            if (Activator.CreateInstance(type, flags, null, null, null) is EObject @object)
             {
                 if (type.GetCustomAttribute<ManagedObjectTypeAttribute>() is not null && GetObjectTypeFromRegisteredTypes(type) == null)
                     RegisterObjectType(type, type.Name);
 
+                if (parameters is not null && parameters.Any() && parameters[0] is GameObject go)
+                    @object.Base = go;
+
+                @object.Cast<EActor>().ComponentInitialize();
                 return @object;
             }
 

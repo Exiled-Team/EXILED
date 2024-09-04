@@ -21,7 +21,7 @@ namespace Exiled.Loader
 
     using YamlDotNet.Core;
 
-    using Serialization = API.Features.EConfig;
+    using Serialization = API.Features.ConfigSubsystem;
 
     /// <summary>
     /// Used to handle plugin translations.
