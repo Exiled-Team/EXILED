@@ -33,49 +33,49 @@ namespace Exiled.CustomModules.API.Features.Generic
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when an item is added.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<Item> ItemAddedDispatcher { get; set; }
+        public TDynamicEventDispatcher<Item> ItemAddedDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when an item is removed.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<ushort> ItemRemovedDispatcher { get; set; }
+        public TDynamicEventDispatcher<ushort> ItemRemovedDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when an item is restored.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<Item> ItemRestoredDispatcher { get; set; }
+        public TDynamicEventDispatcher<Item> ItemRestoredDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when an item tracking is modified.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<ItemTrackingModifiedEventArgs> ItemTrackingModifiedDispatcher { get; set; }
+        public TDynamicEventDispatcher<ItemTrackingModifiedEventArgs> ItemTrackingModifiedDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when a pickup is added.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<Pickup> PickupAddedDispatcher { get; set; }
+        public TDynamicEventDispatcher<Pickup> PickupAddedDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when a pickup is removed.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<ushort> PickupRemovedDispatcher { get; set; }
+        public TDynamicEventDispatcher<ushort> PickupRemovedDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when a pickup is restored.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<Pickup> PickupRestoredDispatcher { get; set; }
+        public TDynamicEventDispatcher<Pickup> PickupRestoredDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired when a pickup tracking is modified.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<PickupTrackingModifiedEventArgs> PickupTrackingModifiedDispatcher { get; set; }
+        public TDynamicEventDispatcher<PickupTrackingModifiedEventArgs> PickupTrackingModifiedDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all serials and their corresponding <typeparamref name="T"/> items.
