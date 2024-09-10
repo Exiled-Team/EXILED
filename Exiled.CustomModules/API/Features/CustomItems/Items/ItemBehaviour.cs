@@ -38,55 +38,55 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item changes role.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<OwnerChangingRoleEventArgs> OwnerChangingRoleDispatcher { get; set; }
+        public TDynamicEventDispatcher<OwnerChangingRoleEventArgs> OwnerChangingRoleDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item dies.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<OwnerDyingEventArgs> OwnerDyingDispatcher { get; set; }
+        public TDynamicEventDispatcher<OwnerDyingEventArgs> OwnerDyingDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item escapes.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<OwnerEscapingEventArgs> OwnerEscapingDispatcher { get; set; }
+        public TDynamicEventDispatcher<OwnerEscapingEventArgs> OwnerEscapingDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item gets handcuffed.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<OwnerHandcuffingEventArgs> OwnerHandcuffingDispatcher { get; set; }
+        public TDynamicEventDispatcher<OwnerHandcuffingEventArgs> OwnerHandcuffingDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item drops it.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<DroppingItemEventArgs> DroppingItemDispatcher { get; set; }
+        public TDynamicEventDispatcher<DroppingItemEventArgs> DroppingItemDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item picks it up.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<PickingUpItemEventArgs> PickingUpItemDispatcher { get; set; }
+        public TDynamicEventDispatcher<PickingUpItemEventArgs> PickingUpItemDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item changes it.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<ChangingItemEventArgs> ChangingItemDispatcher { get; set; }
+        public TDynamicEventDispatcher<ChangingItemEventArgs> ChangingItemDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item upgrades it.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<UpgradingEventArgs> UpgradingPickupDispatcher { get; set; }
+        public TDynamicEventDispatcher<UpgradingEventArgs> UpgradingPickupDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item upgrades it through his inventory.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<UpgradingItemEventArgs> UpgradingItemDispatcher { get; set; }
+        public TDynamicEventDispatcher<UpgradingItemEventArgs> UpgradingItemDispatcher { get; set; } = new();
 
         /// <inheritdoc/>
         public override bool DisposeOnNullOwner { get; protected set; } = false;

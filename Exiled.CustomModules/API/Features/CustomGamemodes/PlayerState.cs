@@ -38,19 +38,19 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after the <see cref="PlayerState"/> has been deployed.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<PlayerState> DeployedDispatcher { get; set; }
+        public static TDynamicEventDispatcher<PlayerState> DeployedDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after the <see cref="PlayerState"/> has been activated.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<PlayerState> ActivatedDispatcher { get; set; }
+        public static TDynamicEventDispatcher<PlayerState> ActivatedDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired after the <see cref="PlayerState"/> has been deactivated.
         /// </summary>
         [DynamicEventDispatcher]
-        public static TDynamicEventDispatcher<PlayerState> DeactivatedDispatcher { get; set; }
+        public static TDynamicEventDispatcher<PlayerState> DeactivatedDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="PlayerState"/> can behave regularly.

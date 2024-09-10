@@ -47,13 +47,13 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
         /// </summary>
         [DynamicEventDispatcher]
-        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingDispatcher { get; set; }
+        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
         /// </summary>
         [DynamicEventDispatcher]
-        protected TDynamicEventDispatcher<Player> EscapedDispatcher { get; set; }
+        protected TDynamicEventDispatcher<Player> EscapedDispatcher { get; set; } = new();
 
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()

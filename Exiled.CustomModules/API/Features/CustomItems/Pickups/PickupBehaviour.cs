@@ -34,7 +34,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before the pickup is gets picked up.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<PickingUpItemEventArgs> PickingUpItemDispatcher { get; set; }
+        public TDynamicEventDispatcher<PickingUpItemEventArgs> PickingUpItemDispatcher { get; set; } = new();
 
         /// <inheritdoc/>
         public override bool DisposeOnNullOwner { get; protected set; } = false;
