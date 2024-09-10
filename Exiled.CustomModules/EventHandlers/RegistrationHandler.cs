@@ -60,15 +60,14 @@ namespace Exiled.CustomModules.EventHandlers
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomAbilities.Name)
             {
-                StaticActor.Get<AbilityTracker>();
+                StaticActor.Get<TrackerBase>();
                 return;
             }
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomItems.Name)
             {
                 GlobalPatchProcessor.PatchAll("exiled.customitems.patch", nameof(CustomItem));
-                StaticActor.Get<ItemTracker>();
-                StaticActor.Get<PickupTracker>();
+                StaticActor.Get<TrackerBase>();
             }
         }
 
@@ -100,15 +99,14 @@ namespace Exiled.CustomModules.EventHandlers
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomAbilities.Name)
             {
-                StaticActor.Get<AbilityTracker>()?.Destroy();
+                StaticActor.Get<TrackerBase>()?.Destroy();
                 return;
             }
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomItems.Name)
             {
                 GlobalPatchProcessor.UnpatchAll("exiled.customitems.unpatch", nameof(CustomItem));
-                StaticActor.Get<ItemTracker>()?.Destroy();
-                StaticActor.Get<PickupTracker>()?.Destroy();
+                StaticActor.Get<TrackerBase>()?.Destroy();
                 return;
             }
         }

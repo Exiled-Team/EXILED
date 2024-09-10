@@ -16,7 +16,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Pickups;
-    using Exiled.CustomModules.API.Features.CustomItems.Items;
+    using Exiled.CustomModules.API.Features.Generic;
     using Exiled.CustomModules.API.Interfaces;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp914;
@@ -46,6 +46,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
 
         /// <inheritdoc/>
         public SettingsBase Settings { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="TrackerBase"/>.
+        /// </summary>
+        protected static TrackerBase Tracker { get; } = StaticActor.Get<TrackerBase>();
 
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
@@ -81,12 +86,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
         /// <see langword="true"/> if the specified pickup is being tracked and associated with this item; otherwise, <see langword="false"/>.
         /// </returns>
         /// <remarks>
-        /// This method ensures that the provided pickup is being tracked by the <see cref="ItemTracker"/>
+        /// This method ensures that the provided pickup is being tracked by the <see cref="TrackerBase"/>
         /// and the tracked values associated with the pickup contain this item instance.
         /// </remarks>
         protected override bool Check(Pickup pickup) =>
-            base.Check(pickup) && StaticActor.Get<PickupTracker>() is PickupTracker pickupTracker &&
-            pickupTracker.IsTracked(pickup) && pickupTracker.GetTrackedValues(pickup).Contains(this);
+            base.Check(pickup) && Tracker.IsTracked(pickup) && Tracker.GetTrackedValues(pickup).Any(c => c.GetHashCode() == GetHashCode());
 
         /// <inheritdoc/>
         protected override void PostInitialize()
@@ -145,9 +149,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
                 return;
 
             OnPickingUp(ev);
-
-            if (!ev.IsAllowed)
-                return;
         }
 
         private void OnInternalAddingItem(AddingItemEventArgs ev)

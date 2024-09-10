@@ -92,9 +92,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
         }
 
         /// <inheritdoc/>
-        protected override void OnAcquired(Player player, Item item, bool displayMessage = true)
+        protected override void OnAcquired(Player player, bool displayMessage = true)
         {
-            base.OnAcquired(player, item, displayMessage);
+            base.OnAcquired(player, displayMessage);
 
             if (Scp330.Candies.Count == 0)
             {

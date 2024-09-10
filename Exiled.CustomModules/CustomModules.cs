@@ -64,7 +64,7 @@ namespace Exiled.CustomModules
 
             base.OnEnabled();
 
-            Timing.CallDelayed(DISPATCH_OPERATION_DELAY, () => CustomModule.LoadAll());
+            Timing.CallDelayed(DISPATCH_OPERATION_DELAY, CustomModule.LoadAll);
         }
 
         /// <inheritdoc/>

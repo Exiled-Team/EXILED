@@ -865,7 +865,10 @@ namespace Exiled.API.Features.Core
             unchecked
             {
                 int hash = 23;
-                hash = (hash * 29) + Base.GetHashCode();
+
+                if (Base)
+                    hash = (hash * 29) + Base.GetHashCode();
+
                 hash = (hash * 29) + Name.GetHashCode();
                 hash = (hash * 29) + Tag.GetHashCode();
                 return hash;

@@ -510,7 +510,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
             item.AddComponent(BehaviourComponent);
             Pickup pickup = item.CreatePickup(position);
 
-            ItemTracker tracker = StaticActor.Get<ItemTracker>();
+            TrackerBase tracker = StaticActor.Get<TrackerBase>();
             tracker.AddOrTrack(item, pickup);
             tracker.Restore(pickup, item);
 
@@ -619,7 +619,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
             try
             {
                 item.AddComponent(BehaviourComponent);
-                StaticActor.Get<ItemTracker>().AddOrTrack(item);
+                StaticActor.Get<TrackerBase>().AddOrTrack(item);
                 player.AddItem(item);
                 ItemsValue.Add(item, this);
             }

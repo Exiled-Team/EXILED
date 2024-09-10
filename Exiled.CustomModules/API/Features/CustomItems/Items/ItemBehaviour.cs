@@ -34,6 +34,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
     /// </remarks>
     public abstract class ItemBehaviour : ModuleBehaviour<Item>, IItemBehaviour, IAdditiveSettings<SettingsBase>
     {
+        private static TrackerBase tracker;
+
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item changes role.
         /// </summary>
@@ -102,7 +104,12 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         /// <summary>
         /// Gets the item's owner.
         /// </summary>
-        public Player ItemOwner => Owner.Owner;
+        public Player ItemOwner { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="TrackerBase"/>.
+        /// </summary>
+        protected static TrackerBase Tracker => tracker ??= StaticActor.Get<TrackerBase>();
 
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
@@ -149,12 +156,15 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         /// <see langword="true"/> if the specified pickup is being tracked and associated with this item; otherwise, <see langword="false"/>.
         /// </returns>
         /// <remarks>
-        /// This method ensures that the provided pickup is being tracked by the <see cref="ItemTracker"/>
+        /// This method ensures that the provided pickup is being tracked by the <see cref="TrackerBase"/>
         /// and the tracked values associated with the pickup contain this item instance.
         /// </remarks>
         protected virtual bool Check(Pickup pickup) =>
-            pickup && StaticActor.Get<ItemTracker>() is ItemTracker itemTracker &&
-            itemTracker.IsTracked(pickup) && itemTracker.GetTrackedValues(pickup).Contains(this);
+            pickup is not null && Tracker.IsTracked(pickup) && Tracker.GetTrackedValues(pickup).Any(c => c.GetHashCode() == GetHashCode());
+
+        /// <inheritdoc/>
+        protected override bool Check(Item item) =>
+            item is not null && Tracker.IsTracked(item) && Tracker.GetTrackedValues(item).Any(c => c.GetHashCode() == GetHashCode());
 
         /// <inheritdoc/>
         protected override void PostInitialize()
@@ -162,13 +172,32 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
             base.PostInitialize();
 
             AdjustAdditivePipe();
+            FixedTickRate = 0.5f;
+            CanEverTick = true;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         protected override void OnBeginPlay()
         {
             base.OnBeginPlay();
-            this.SubscribeEvents();
+
+            SubscribeEvents();
+
+            if (Owner is not null)
+            {
+                ItemOwner = Owner.Owner;
+                OnAcquired(ItemOwner);
+            }
+
+            FixedTickRate = 1f;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+
+            ItemOwner = null;
         }
 
         /// <inheritdoc/>
@@ -178,10 +207,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
 
             Exiled.Events.Handlers.Player.Dying += OnInternalOwnerDying;
             Exiled.Events.Handlers.Player.DroppingItem += OnInternalDropping;
-            Exiled.Events.Handlers.Player.ChangingItem += OnInternalChanging;
+            Exiled.Events.Handlers.Player.ChangingItem += OnInternalChangingItem;
             Exiled.Events.Handlers.Player.Escaping += OnInternalOwnerEscaping;
             Exiled.Events.Handlers.Player.PickingUpItem += OnInternalPickingUp;
-            Exiled.Events.Handlers.Player.ItemAdded += OnInternalItemAdded;
             Exiled.Events.Handlers.Scp914.UpgradingPickup += OnInternalUpgradingPickup;
             Exiled.Events.Handlers.Player.Handcuffing += OnInternalOwnerHandcuffing;
             Exiled.Events.Handlers.Player.ChangingRole += OnInternalOwnerChangingRole;
@@ -195,10 +223,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
 
             Exiled.Events.Handlers.Player.Dying -= OnInternalOwnerDying;
             Exiled.Events.Handlers.Player.DroppingItem -= OnInternalDropping;
-            Exiled.Events.Handlers.Player.ChangingItem -= OnInternalChanging;
+            Exiled.Events.Handlers.Player.ChangingItem -= OnInternalChangingItem;
             Exiled.Events.Handlers.Player.Escaping -= OnInternalOwnerEscaping;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnInternalPickingUp;
-            Exiled.Events.Handlers.Player.ItemAdded -= OnInternalItemAdded;
             Exiled.Events.Handlers.Scp914.UpgradingPickup -= OnInternalUpgradingPickup;
             Exiled.Events.Handlers.Player.Handcuffing -= OnInternalOwnerHandcuffing;
             Exiled.Events.Handlers.Player.ChangingRole -= OnInternalOwnerChangingRole;
@@ -273,9 +300,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         /// Called anytime the item enters a player's inventory by any means.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
-        /// <param name="item">The <see cref="Item"/> being acquired.</param>
         /// <param name="displayMessage">Whether the pickup hint should be displayed.</param>
-        protected virtual void OnAcquired(Player player, Item item, bool displayMessage = true)
+        protected virtual void OnAcquired(Player player, bool displayMessage = true)
         {
             if (displayMessage)
                 ShowPickedUpMessage(player);
@@ -392,21 +418,20 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
 
         private void OnInternalPickingUp(PickingUpItemEventArgs ev)
         {
+            Log.Error($"CHECK({Check(ev.Pickup)})");
             if (!Check(ev.Pickup) || ev.Player.Items.Count >= 8)
                 return;
 
             OnPickingUp(ev);
+
+            if (ev.IsAllowed && Owner is not null)
+            {
+                ItemOwner = Owner.Owner;
+                OnAcquired(ItemOwner);
+            }
         }
 
-        private void OnInternalItemAdded(ItemAddedEventArgs ev)
-        {
-            if (!Check(ev.Pickup))
-                return;
-
-            OnAcquired(ev.Player, ev.Item, true);
-        }
-
-        private void OnInternalChanging(ChangingItemEventArgs ev)
+        private void OnInternalChangingItem(ChangingItemEventArgs ev)
         {
             if (!Check(ev.Item))
             {

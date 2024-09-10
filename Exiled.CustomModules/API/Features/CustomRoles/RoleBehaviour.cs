@@ -355,6 +355,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         protected override void OnBeginPlay()
         {
             base.OnBeginPlay();
+
             if (!Owner)
             {
                 Log.WarnWithContext("Owner is null");
