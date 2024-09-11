@@ -40,9 +40,9 @@ namespace Exiled.API.Enums
         public static readonly UEBranchType Alpha = new(4);
 
         /// <summary>
-        /// The prealpha branch.
+        /// The pre alpha branch.
         /// </summary>
-        public static readonly UEBranchType Prealpha = new(5);
+        public static readonly UEBranchType PreAlpha = new(5);
 
         /// <summary>
         /// The unstable branch.
