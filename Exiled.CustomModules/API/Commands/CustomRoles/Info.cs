@@ -44,13 +44,13 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
         {
             if (!sender.CheckPermission("customroles.info"))
             {
-                response = "Permission Denied, required: customroles.info";
+                response = "Permission denied, customroles.info is required.";
                 return false;
             }
 
             if (arguments.Count < 1)
             {
-                response = "info [Custom role name/Custom role ID]";
+                response = "info [Custom role name / Custom role ID]";
                 return false;
             }
 

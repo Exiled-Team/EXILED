@@ -42,7 +42,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles.List
         {
             if (!sender.CheckPermission("customroles.list.registered"))
             {
-                response = "Permission Denied, required: customroles.list.registered";
+                response = "Permission denied, customroles.list.registered is required.";
                 return false;
             }
 
