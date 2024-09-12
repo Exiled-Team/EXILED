@@ -12,7 +12,7 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
     using CommandSystem;
 
     /// <summary>
-    /// The main parent command for custom items..
+    /// The main parent command for custom items.
     /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]

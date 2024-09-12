@@ -12,7 +12,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
     using CommandSystem;
 
     /// <summary>
-    /// The main parent command for customroles.
+    /// The main parent command for custom roles.
     /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
