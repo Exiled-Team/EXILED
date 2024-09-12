@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features.Items;
-
 namespace Exiled.API.Features.Core.Generic
 {
     using System;

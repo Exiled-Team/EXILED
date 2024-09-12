@@ -52,7 +52,6 @@ namespace Exiled.CustomModules.API.Features
 
                 if (typeof(ModulePointer).IsAssignableFrom(type))
                 {
-                    ModulePointer modulePointer;
                     Type constructedType = null;
 
                     if (type.BaseType.IsGenericType)
@@ -61,7 +60,7 @@ namespace Exiled.CustomModules.API.Features
                     if (constructedType != baseModuleType)
                         continue;
 
-                    modulePointer = Activator.CreateInstance(type) as ModulePointer;
+                    ModulePointer modulePointer = Activator.CreateInstance(type) as ModulePointer;
 
                     if (modulePointer.Id != customModule.Id)
                         continue;

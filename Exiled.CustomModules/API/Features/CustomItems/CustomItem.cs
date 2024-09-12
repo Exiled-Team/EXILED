@@ -26,6 +26,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
+    using Exiled.CustomModules.API.Features.CustomItems.Pickups;
     using MEC;
     using UnityEngine;
     using YamlDotNet.Serialization;
@@ -43,13 +44,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         private static readonly Dictionary<uint, CustomItem> IdLookupTable = new();
         private static readonly Dictionary<string, CustomItem> NameLookupTable = new();
         private static readonly Dictionary<string, Type> SettingsTypeLookupTable = new();
-
-        /// <summary>
-        /// Gets all tracked behaviours.
-        /// </summary>
-#pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly Dictionary<Pickup, ItemBehaviour> TrackedBehaviours = new();
-#pragma warning restore SA1202 // Elements should be ordered by access
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomItem"/>'s.
@@ -180,7 +174,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <returns>The retrieved <see cref="CustomItem"/> instance if found and enabled; otherwise, <see langword="null"/>.</returns>
         public static CustomItem Get(Type type) =>
             typeof(CustomItem).IsAssignableFrom(type) ? TypeLookupTable[type] :
-            typeof(ItemBehaviour).IsAssignableFrom(type) ? BehaviourLookupTable[type] : null;
+            typeof(ICustomItemBehaviour).IsAssignableFrom(type) ? BehaviourLookupTable[type] : null;
 
         /// <summary>
         /// Retrieves a <see cref="CustomItem"/> instance based on the specified <see cref="Item"/> instance.
@@ -507,12 +501,20 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <returns>The <see cref="Pickup"/> of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(Vector3 position, Item item, Player previousOwner = null)
         {
-            item.AddComponent(BehaviourComponent);
-            Pickup pickup = item.CreatePickup(position);
+            TrackerBase tracker = TrackerBase.Get();
 
-            TrackerBase tracker = StaticActor.Get<TrackerBase>();
-            tracker.AddOrTrack(item, pickup);
-            tracker.Restore(pickup, item);
+            if (typeof(ItemBehaviour).IsAssignableFrom(BehaviourComponent))
+            {
+                item.AddComponent(BehaviourComponent);
+                tracker.AddOrTrack(item);
+            }
+
+            Pickup pickup = item.CreatePickup(position);
+            if (typeof(PickupBehaviour).IsAssignableFrom(BehaviourComponent))
+            {
+                pickup.AddComponent(BehaviourComponent);
+                tracker.AddOrTrack(pickup);
+            }
 
             if (Settings is not SettingsBase settings)
                 throw new InvalidCastException("Settings is not set to an instance of a derived SettingsBase type.");
@@ -618,10 +620,23 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         {
             try
             {
-                item.AddComponent(BehaviourComponent);
-                StaticActor.Get<TrackerBase>().AddOrTrack(item);
-                player.AddItem(item);
-                ItemsValue.Add(item, this);
+                if (typeof(ItemBehaviour).IsAssignableFrom(BehaviourComponent))
+                {
+                    item.AddComponent(BehaviourComponent);
+                    TrackerBase.Get().AddOrTrack(item);
+                    player.AddItem(item);
+                    ItemsValue.Add(item, this);
+                    return;
+                }
+
+                if (typeof(PickupBehaviour).IsAssignableFrom(BehaviourComponent))
+                {
+                    Pickup pickup = item.CreatePickup(Vector3.zero);
+                    pickup.AddComponent(BehaviourComponent);
+                    TrackerBase.Get().AddOrTrack(pickup);
+                    player.AddItem(pickup);
+                    PickupValue.Add(pickup, this);
+                }
             }
             catch (Exception e)
             {
@@ -652,40 +667,47 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <returns><see langword="true"/> if the <see cref="CustomItem"/> was registered; otherwise, <see langword="false"/>.</returns>
         protected override bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
-            if (!Registered.Contains(this))
+            if (Registered.Contains(this))
             {
-                if (attribute is not null && Id == 0)
-                {
-                    if (attribute.Id != 0)
-                        Id = attribute.Id;
-                    else
-                        throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
-                }
+                Log.Warn($"Unable to register {Name}. Item already exists.");
 
-                CustomItem duplicate = Registered.FirstOrDefault(x => x.Id == Id || x.Name == Name || x.BehaviourComponent == BehaviourComponent);
-                if (duplicate)
-                {
-                    Log.Warn($"Unable to register {Name}. Another item with the same ID, Name or Behaviour Component already exists: {duplicate.Name}");
-
-                    return false;
-                }
-
-                EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
-                Registered.Add(this);
-
-                base.TryRegister(assembly, attribute);
-
-                TypeLookupTable.TryAdd(GetType(), this);
-                BehaviourLookupTable.TryAdd(BehaviourComponent, this);
-                IdLookupTable.TryAdd(Id, this);
-                NameLookupTable.TryAdd(Name, this);
-
-                return true;
+                return false;
             }
 
-            Log.Warn($"Unable to register {Name}. Item already exists.");
+            if (!typeof(EActor).IsAssignableFrom(BehaviourComponent) || BehaviourComponent.GetInterfaces()
+                    .All(i => !typeof(ICustomItemBehaviour).IsAssignableFrom(i)))
+            {
+                Log.Error($"Unable to register {Name}. Behaviour Component must implement EActor and ICustomItemBehaviour.");
+                return false;
+            }
 
-            return false;
+            if (attribute is not null && Id == 0)
+            {
+                if (attribute.Id != 0)
+                    Id = attribute.Id;
+                else
+                    throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
+            }
+
+            CustomItem duplicate = Registered.FirstOrDefault(x => x.Id == Id || x.Name == Name || x.BehaviourComponent == BehaviourComponent);
+            if (duplicate)
+            {
+                Log.Warn($"Unable to register {Name}. Another item with the same ID, Name or Behaviour Component already exists: {duplicate.Name}");
+
+                return false;
+            }
+
+            EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
+            Registered.Add(this);
+
+            base.TryRegister(assembly, attribute);
+
+            TypeLookupTable.TryAdd(GetType(), this);
+            BehaviourLookupTable.TryAdd(BehaviourComponent, this);
+            IdLookupTable.TryAdd(Id, this);
+            NameLookupTable.TryAdd(Name, this);
+
+            return true;
         }
 
         /// <summary>
@@ -696,7 +718,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         {
             if (!Registered.Contains(this))
             {
-                Log.Debug($"Unable to unregister {Name}. Item is not yet registered.");
+                Log.Warn($"Unable to unregister {Name}. Item is not yet registered.");
 
                 return false;
             }
@@ -739,7 +761,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 
         private IEnumerator<float> EnqueueDeserialization_Internal()
         {
-            Log.Debug("Coroutine");
             yield return Timing.WaitUntilTrue(() => !SettingsTypeLookupTable.IsEmpty());
 
             string settingsPropertyName = nameof(Settings).ToKebabCase();
@@ -761,14 +782,10 @@ namespace Exiled.CustomModules.API.Features.CustomItems
             CustomItem deserializedCustomItem = ModuleDeserializer.Deserialize(rawCustomItem, GetType()) as CustomItem;
             SettingsBase settingsBase = ConfigSubsystem.Deserializer.Deserialize(serializedSettings, SettingsTypeLookupTable[settingsTypeName]) as SettingsBase;
             deserializedCustomItem.Settings = settingsBase;
-            Log.Debug($"Is settings null? {deserializedCustomItem.Settings is null}");
-            Log.Debug($"Settings::Scale? {deserializedCustomItem.Settings.Scale}");
 
             CopyProperties(deserializedCustomItem);
 
             Config = ModuleDeserializer.Deserialize(File.ReadAllText(PointerPath), ModulePointer.Get(this, GetType().Assembly).GetType()) as ModulePointer;
-
-            Log.Debug("Finalized deserialization");
         }
     }
 }

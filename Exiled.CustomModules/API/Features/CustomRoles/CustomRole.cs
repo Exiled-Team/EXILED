@@ -796,6 +796,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
             }
 
+            if (!typeof(RoleBehaviour).IsAssignableFrom(BehaviourComponent))
+            {
+                Log.Error($"Unable to register {Name}. Behaviour Component must implement RoleBehaviour.");
+                return false;
+            }
+
             if (attribute is not null && Id == 0)
             {
                 if (attribute.Id != 0)

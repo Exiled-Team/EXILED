@@ -58,7 +58,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies.Patches
 
             candyBehaviour.TrackedCandies.Remove(msg.CandyID);
 
-            StaticActor.Get<TrackerBase>().AddOrTrack(pickup);
+            TrackerBase.Get().AddOrTrack(pickup);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 
     /// <inheritdoc/>
     public abstract class CustomItem<T> : CustomItem
-        where T : ItemBehaviour
+        where T : ICustomItemBehaviour
     {
         /// <inheritdoc/>
         public override Type BehaviourComponent => typeof(T);

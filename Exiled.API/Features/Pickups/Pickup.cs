@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+
 namespace Exiled.API.Features.Pickups
 {
     using System.Collections.Generic;
@@ -590,7 +592,12 @@ namespace Exiled.API.Features.Pickups
         /// Destroys the already spawned pickup.
         /// </summary>
         /// <seealso cref="UnSpawn"/>
-        public void Destroy() => Base.DestroySelf();
+        public void Destroy()
+        {
+            Base.DestroySelf();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
 
         /// <summary>
         /// Clones the current pickup with a different serial.

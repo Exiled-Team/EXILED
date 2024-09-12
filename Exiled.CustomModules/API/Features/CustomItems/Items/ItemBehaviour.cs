@@ -14,11 +14,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
+    using Exiled.CustomModules.API.Features.Generic;
     using Exiled.CustomModules.Events.EventArgs.CustomItems;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp914;
@@ -29,12 +29,13 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
     /// Represents the base class for custom item behaviors.
     /// </summary>
     /// <remarks>
-    /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IItemBehaviour"/> and <see cref="IAdditiveSettings{T}"/>.
+    /// This class extends <see cref="ModuleBehaviour{TEntity}"/> and implements <see cref="IItemBehaviour"/> and <see cref="IAdditiveSettings{T}"/>.
     /// <br/>It provides a foundation for creating custom behaviors associated with in-game items.
     /// </remarks>
     public abstract class ItemBehaviour : ModuleBehaviour<Item>, IItemBehaviour, IAdditiveSettings<SettingsBase>
     {
         private static TrackerBase tracker;
+        private ushort serial;
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item changes role.
@@ -109,7 +110,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         /// <summary>
         /// Gets the <see cref="TrackerBase"/>.
         /// </summary>
-        protected static TrackerBase Tracker => tracker ??= StaticActor.Get<TrackerBase>();
+        protected static TrackerBase Tracker => tracker ??= TrackerBase.Get();
 
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
@@ -133,7 +134,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
         {
             targetInfo?.SetValue(
-                typeof(Settings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
+                typeof(SettingsBase).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
                 propertyInfo.GetValue(Config, null));
         }
 
@@ -160,11 +161,13 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         /// and the tracked values associated with the pickup contain this item instance.
         /// </remarks>
         protected virtual bool Check(Pickup pickup) =>
-            pickup is not null && Tracker.IsTracked(pickup) && Tracker.GetTrackedValues(pickup).Any(c => c.GetHashCode() == GetHashCode());
+            pickup is not null && pickup.Serial == serial && Tracker.IsTracked(pickup) &&
+            Tracker.GetTrackedValues(pickup).Any(c => c.GetHashCode() == GetHashCode());
 
         /// <inheritdoc/>
         protected override bool Check(Item item) =>
-            item is not null && Tracker.IsTracked(item) && Tracker.GetTrackedValues(item).Any(c => c.GetHashCode() == GetHashCode());
+            item is not null && serial == item.Serial && Tracker.IsTracked(item) &&
+            Tracker.GetTrackedValues(item).Any(c => c.GetHashCode() == GetHashCode());
 
         /// <inheritdoc/>
         protected override void PostInitialize()
@@ -172,7 +175,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
             base.PostInitialize();
 
             AdjustAdditivePipe();
-            FixedTickRate = 0.5f;
+
+            FixedTickRate = 1f;
             CanEverTick = true;
         }
 
@@ -183,13 +187,10 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
 
             SubscribeEvents();
 
-            if (Owner is not null)
-            {
-                ItemOwner = Owner.Owner;
-                OnAcquired(ItemOwner);
-            }
+            serial = Owner.Serial;
+            ItemOwner = Owner.Owner;
 
-            FixedTickRate = 1f;
+            OnAcquired(Settings.ShowPickedUpTextOnItemGiven);
         }
 
         /// <inheritdoc/>
@@ -197,6 +198,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         {
             base.OnRemoved();
 
+            Owner = null;
             ItemOwner = null;
         }
 
@@ -210,6 +212,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
             Exiled.Events.Handlers.Player.ChangingItem += OnInternalChangingItem;
             Exiled.Events.Handlers.Player.Escaping += OnInternalOwnerEscaping;
             Exiled.Events.Handlers.Player.PickingUpItem += OnInternalPickingUp;
+            Exiled.Events.Handlers.Player.ItemAdded += OnInternalItemAdded;
+            Exiled.Events.Handlers.Player.ItemRemoved += OnInternalItemRemoved;
             Exiled.Events.Handlers.Scp914.UpgradingPickup += OnInternalUpgradingPickup;
             Exiled.Events.Handlers.Player.Handcuffing += OnInternalOwnerHandcuffing;
             Exiled.Events.Handlers.Player.ChangingRole += OnInternalOwnerChangingRole;
@@ -226,6 +230,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
             Exiled.Events.Handlers.Player.ChangingItem -= OnInternalChangingItem;
             Exiled.Events.Handlers.Player.Escaping -= OnInternalOwnerEscaping;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnInternalPickingUp;
+            Exiled.Events.Handlers.Player.ItemAdded -= OnInternalItemAdded;
+            Exiled.Events.Handlers.Player.ItemRemoved -= OnInternalItemRemoved;
             Exiled.Events.Handlers.Scp914.UpgradingPickup -= OnInternalUpgradingPickup;
             Exiled.Events.Handlers.Player.Handcuffing -= OnInternalOwnerHandcuffing;
             Exiled.Events.Handlers.Player.ChangingRole -= OnInternalOwnerChangingRole;
@@ -283,7 +289,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
                 }
             }
 
-            ShowSelectedMessage(ev.Player);
+            ShowSelectedMessage();
             ChangingItemDispatcher.InvokeAll(ev);
         }
 
@@ -299,29 +305,26 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         /// <summary>
         /// Called anytime the item enters a player's inventory by any means.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
         /// <param name="displayMessage">Whether the pickup hint should be displayed.</param>
-        protected virtual void OnAcquired(Player player, bool displayMessage = true)
+        protected virtual void OnAcquired(bool displayMessage = true)
         {
             if (displayMessage)
-                ShowPickedUpMessage(player);
+                ShowPickedUpMessage();
         }
 
         /// <summary>
         /// Shows a message to the player upon picking up a custom item.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
-        protected virtual void ShowPickedUpMessage(Player player) => player.ShowTextDisplay(Settings.PickedUpText);
+        protected virtual void ShowPickedUpMessage() => ItemOwner.ShowTextDisplay(Settings.PickedUpText);
 
         /// <summary>
         /// Shows a message to the player upon selecting a custom item.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
-        protected virtual void ShowSelectedMessage(Player player)
+        protected virtual void ShowSelectedMessage()
         {
             string text = Settings.SelectedText.Content.Replace("{item}", CustomItem.Name).Replace("{description}", CustomItem.Description);
             TextDisplay textDisplay = new(text, Settings.SelectedText.Duration, Settings.SelectedText.CanBeDisplayed, Settings.SelectedText.Channel);
-            player.ShowTextDisplay(textDisplay);
+            ItemOwner.ShowTextDisplay(textDisplay);
         }
 
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
@@ -329,11 +332,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
             if (ev.Reason.Equals(SpawnReason.Escaped))
                 return;
 
-            foreach (Item item in ev.Player.Items.ToList())
+            foreach (Item item in ev.Player.Items.ToList().Where(Check))
             {
-                if (!Check(item))
-                    continue;
-
                 OnOwnerChangingRole(new(item, CustomItem, this, ev));
 
                 CustomItem.Spawn(ev.Player, item, ev.Player);
@@ -348,11 +348,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
             if (ItemOwner is null || ev.Player != ItemOwner)
                 return;
 
-            foreach (Item item in ev.Player.Items.ToList())
+            foreach (Item item in ev.Player.Items.ToList().Where(Check))
             {
-                if (!Check(item))
-                    continue;
-
                 OnOwnerDying(new(item, CustomItem, this, ev));
 
                 if (!ev.IsAllowed)
@@ -372,11 +369,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
             if (ItemOwner is null || ev.Player != ItemOwner)
                 return;
 
-            foreach (Item item in ev.Player.Items.ToList())
+            foreach (Item item in ev.Player.Items.ToList().Where(Check))
             {
-                if (!Check(item))
-                    continue;
-
                 OnOwnerEscaping(new(item, CustomItem, this, ev));
 
                 if (!ev.IsAllowed)
@@ -393,11 +387,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
 
         private void OnInternalOwnerHandcuffing(HandcuffingEventArgs ev)
         {
-            foreach (Item item in ev.Target.Items.ToList())
+            foreach (Item item in ev.Target.Items.ToList().Where(Check))
             {
-                if (!Check(item))
-                    continue;
-
                 OnOwnerHandcuffing(new(item, CustomItem, this, ev));
 
                 if (!ev.IsAllowed)
@@ -410,7 +401,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
 
         private void OnInternalDropping(DroppingItemEventArgs ev)
         {
-            if (!Check(ev.Item) || !Check(Owner))
+            if (!Check(ev.Item) || !Check(ItemOwner))
                 return;
 
             OnDropping(ev);
@@ -418,17 +409,28 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
 
         private void OnInternalPickingUp(PickingUpItemEventArgs ev)
         {
-            Log.Error($"CHECK({Check(ev.Pickup)})");
             if (!Check(ev.Pickup) || ev.Player.Items.Count >= 8)
                 return;
 
             OnPickingUp(ev);
+        }
 
-            if (ev.IsAllowed && Owner is not null)
-            {
-                ItemOwner = Owner.Owner;
-                OnAcquired(ItemOwner);
-            }
+        private void OnInternalItemAdded(ItemAddedEventArgs ev)
+        {
+            if (!Check(ev.Item))
+                return;
+
+            Owner = ev.Item;
+            ItemOwner = ev.Player;
+            OnAcquired();
+        }
+
+        private void OnInternalItemRemoved(ItemRemovedEventArgs ev)
+        {
+            if (!Check(ev.Item))
+                return;
+
+            Owner = null;
         }
 
         private void OnInternalChangingItem(ChangingItemEventArgs ev)

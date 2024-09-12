@@ -12,12 +12,10 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
 
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Pickups;
     using Exiled.CustomModules.API.Features.Generic;
-    using Exiled.CustomModules.API.Interfaces;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp914;
 
@@ -28,8 +26,11 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
     /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IPickupBehaviour"/> and <see cref="IAdditiveSettings{T}"/>.
     /// <br/>It provides a foundation for creating custom behaviors associated with in-game pickup.
     /// </remarks>
-    public abstract class PickupBehaviour : ModuleBehaviour<Pickup>, ITrackable, IAdditiveSettings<SettingsBase>
+    public abstract class PickupBehaviour : ModuleBehaviour<Pickup>, IPickupBehaviour, IAdditiveSettings<SettingsBase>
     {
+        private static TrackerBase tracker;
+        private ushort serial;
+
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before the pickup is gets picked up.
         /// </summary>
@@ -50,7 +51,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
         /// <summary>
         /// Gets the <see cref="TrackerBase"/>.
         /// </summary>
-        protected static TrackerBase Tracker { get; } = StaticActor.Get<TrackerBase>();
+        protected static TrackerBase Tracker => tracker ??= TrackerBase.Get();
 
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
@@ -74,7 +75,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
         protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
         {
             targetInfo?.SetValue(
-                typeof(Settings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
+                typeof(SettingsBase).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
                 propertyInfo.GetValue(Config, null));
         }
 
@@ -89,8 +90,14 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
         /// This method ensures that the provided pickup is being tracked by the <see cref="TrackerBase"/>
         /// and the tracked values associated with the pickup contain this item instance.
         /// </remarks>
-        protected override bool Check(Pickup pickup) =>
-            base.Check(pickup) && Tracker.IsTracked(pickup) && Tracker.GetTrackedValues(pickup).Any(c => c.GetHashCode() == GetHashCode());
+        protected override bool Check(Pickup pickup)
+        {
+            bool isTracked = pickup is not null;
+            isTracked = isTracked && serial == pickup.Serial;
+            isTracked = isTracked && Tracker.IsTracked(pickup);
+            isTracked = isTracked && Tracker.GetTrackedValues(pickup).Any(c => c.GetHashCode() == GetHashCode());
+            return isTracked;
+        }
 
         /// <inheritdoc/>
         protected override void PostInitialize()
@@ -98,6 +105,19 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
             base.PostInitialize();
 
             AdjustAdditivePipe();
+
+            FixedTickRate = 1f;
+            CanEverTick = true;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnBeginPlay()
+        {
+            base.OnBeginPlay();
+
+            SubscribeEvents();
+
+            serial = Owner.Serial;
         }
 
         /// <inheritdoc/>
@@ -106,7 +126,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
             base.SubscribeEvents();
 
             Exiled.Events.Handlers.Player.PickingUpItem += OnInternalPickingUp;
-            Exiled.Events.Handlers.Player.AddingItem += OnInternalAddingItem;
+            Exiled.Events.Handlers.Player.ItemAdded += OnInternalItemAdded;
+            Exiled.Events.Handlers.Player.ItemRemoved += OnInternalItemRemoved;
             Exiled.Events.Handlers.Scp914.UpgradingPickup += OnInternalUpgradingPickup;
         }
 
@@ -116,7 +137,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
             base.UnsubscribeEvents();
 
             Exiled.Events.Handlers.Player.PickingUpItem -= OnInternalPickingUp;
-            Exiled.Events.Handlers.Player.AddingItem -= OnInternalAddingItem;
+            Exiled.Events.Handlers.Player.ItemAdded -= OnInternalItemAdded;
+            Exiled.Events.Handlers.Player.ItemRemoved -= OnInternalItemRemoved;
             Exiled.Events.Handlers.Scp914.UpgradingPickup -= OnInternalUpgradingPickup;
         }
 
@@ -145,19 +167,27 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
 
         private void OnInternalPickingUp(PickingUpItemEventArgs ev)
         {
-            if (!Check(ev.Pickup) || ev.Player.Items.Count >= 8)
+            if (!Check(ev.Pickup))
                 return;
 
             OnPickingUp(ev);
         }
 
-        private void OnInternalAddingItem(AddingItemEventArgs ev)
+        private void OnInternalItemAdded(ItemAddedEventArgs ev)
         {
             if (!Check(ev.Pickup))
                 return;
 
-            ev.IsAllowed = false;
-            OnAcquired(ev.Player, true);
+            Owner = null;
+            OnAcquired(ev.Player);
+        }
+
+        private void OnInternalItemRemoved(ItemRemovedEventArgs ev)
+        {
+            if (!Check(ev.Pickup))
+                return;
+
+            Owner = ev.Pickup;
         }
 
         private void OnInternalUpgradingPickup(UpgradingPickupEventArgs ev)

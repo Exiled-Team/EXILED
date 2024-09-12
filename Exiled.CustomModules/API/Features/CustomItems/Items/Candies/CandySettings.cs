@@ -7,6 +7,8 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
 {
+    using System.ComponentModel;
+
     using Exiled.API.Features;
     using InventorySystem.Items.Usables.Scp330;
     using UnityEngine;
@@ -19,11 +21,13 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
         /// <summary>
         /// Gets or sets a <see cref="CandyKindID"/> of a custom candy.
         /// </summary>
+        [Description("The CandyKindID of a custom candy.")]
         public virtual CandyKindID CandyType { get; set; }
 
         /// <summary>
-        /// Gets or sets chance that player would get a custom candy.
+        /// Gets or sets the chance of getting a custom candy.
         /// </summary>
+        [Description("The chance of getting a custom candy.")]
         public override float Weight
         {
             get => base.Weight;
@@ -31,16 +35,15 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="TextDisplay"/> that will be displayed when player ate custom candy..
+        /// Gets or sets the <see cref="TextDisplay"/> to be displayed when a player ate the custom candy.
         /// </summary>
-        public virtual TextDisplay EatenCustomCandyMessage { get; set; }
+        [Description("The TextDisplay to be displayed when a player ate the custom candy.")]
+        public virtual TextDisplay EatenCustomCandyText { get; set; }
 
         /// <summary>
         /// Gets or sets a <see cref="TextDisplay"/> that will be displayed when player has received custom candy.
         /// </summary>
-        public virtual TextDisplay ReceivedCustomCandyMessage { get; set; }
-
-        /// <inheritdoc/>
-        public override TextDisplay SelectedText { get; set; }
+        [Description("The TextDisplay to be displayed when a player has received a custom candy.")]
+        public virtual TextDisplay ReceivedCustomCandyText { get; set; }
     }
 }

@@ -484,7 +484,7 @@ namespace Exiled.CustomModules.API.Features
         {
             CustomModule deserializedModule = ModuleDeserializer.Deserialize(File.ReadAllText(FilePath), GetType()) as CustomModule;
             CopyProperties(deserializedModule);
-            Config = ModuleDeserializer.Deserialize(File.ReadAllText(PointerPath), ModulePointer.Get(this).GetType()) as ModulePointer;
+            Config = ModuleDeserializer.Deserialize(File.ReadAllText(PointerPath), ModulePointer.Get(this, GetType().Assembly).GetType()) as ModulePointer;
         }
 
         /// <summary>

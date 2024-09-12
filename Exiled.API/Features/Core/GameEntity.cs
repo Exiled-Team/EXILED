@@ -40,14 +40,16 @@ namespace Exiled.API.Features.Core
         protected GameEntity(GameObject gameObject)
         {
             GameObject = gameObject;
-
-            // List.Add(this);
         }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="GameEntity"/> class.
         /// </summary>
-        ~GameEntity() => List.Remove(this);
+        ~GameEntity()
+        {
+            foreach (EActor component in ComponentsInChildren)
+                component.Destroy();
+        }
 
         /// <summary>
         /// Gets all active <see cref="GameEntity"/> instances.
@@ -379,15 +381,19 @@ namespace Exiled.API.Features.Core
         public void RemoveComponents(IEnumerable<Type> types) => types.ForEach(type => RemoveComponent(type));
 
         /// <inheritdoc />
-        public void RemoveComponents(IEnumerable<EActor> actors) => actors.ForEach(actor => RemoveComponent(actor));
+        public void RemoveComponents(IEnumerable<EActor> actors) => actors.ToList().ForEach(actor => RemoveComponent(actor));
 
         /// <inheritdoc />
         public void RemoveComponents<T>(IEnumerable<T> actors)
-            where T : EActor => actors.ForEach(actor => RemoveComponent(actor));
+            where T : EActor => actors.ToList().ForEach(actor => RemoveComponent(actor));
 
         /// <inheritdoc />
-        public void RemoveComponents<T>(IEnumerable<EActor> types)
-            where T : EActor => types.ForEach(type => RemoveComponent(type));
+        public void RemoveComponents<T>(IEnumerable<EActor> actors)
+            where T : EActor => actors.ToList().ForEach(actor =>
+        {
+            if (actor.GetType() == typeof(T))
+                RemoveComponent(actor);
+        });
 
         /// <inheritdoc/>
         public T GetComponent<T>()

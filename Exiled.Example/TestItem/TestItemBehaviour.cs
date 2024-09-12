@@ -19,7 +19,23 @@ namespace Exiled.Example.TestItem
         {
             base.OnPickingUp(ev);
 
-            Log.InfoWithContext("Test Item is being picked up.");
+            Log.ErrorWithContext("Test Item is being picked up.");
+        }
+
+        /// <inheritdoc/>
+        protected override void OnAcquired(bool displayMessage = true)
+        {
+            base.OnAcquired(displayMessage);
+
+            Log.ErrorWithContext("Test Item is was picked up.");
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDropping(DroppingItemEventArgs ev)
+        {
+            base.OnDropping(ev);
+
+            Log.ErrorWithContext("Test Item is being dropped.");
         }
     }
 }

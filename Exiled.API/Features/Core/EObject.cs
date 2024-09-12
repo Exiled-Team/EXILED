@@ -9,14 +9,13 @@ namespace Exiled.API.Features.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Attributes;
     using Exiled.API.Features.Core.Generic.Pools;
-    using Exiled.API.Features.Items;
     using MEC;
     using UnityEngine;
 
@@ -26,6 +25,8 @@ namespace Exiled.API.Features.Core
     public abstract class EObject : TypeCastObject<EObject>
     {
         private static readonly Dictionary<Type, List<string>> RegisteredTypesValue = new();
+        private static int lastInstanceId;
+        private int instanceId;
         private bool destroyedValue;
         private bool searchForHostObjectIfNull;
         private CoroutineHandle addHostObjectInternalHandle;
@@ -38,6 +39,7 @@ namespace Exiled.API.Features.Core
         {
             IsEditable = true;
             InternalObjects.Add(this);
+            instanceId = Interlocked.Increment(ref lastInstanceId);
         }
 
         /// <summary>
@@ -855,6 +857,7 @@ namespace Exiled.API.Features.Core
         /// </summary>
         public void Destroy()
         {
+            Log.Debug($"Destroyed EACTOR");
             Destroy(true);
             GC.SuppressFinalize(this);
         }
@@ -864,13 +867,9 @@ namespace Exiled.API.Features.Core
         {
             unchecked
             {
-                int hash = 23;
-
-                if (Base)
-                    hash = (hash * 29) + Base.GetHashCode();
-
-                hash = (hash * 29) + Name.GetHashCode();
-                hash = (hash * 29) + Tag.GetHashCode();
+                int hash = 17;
+                hash = (hash * 23) + instanceId.GetHashCode();
+                hash = (hash * 23) + (Name?.GetHashCode() ?? 0);
                 return hash;
             }
         }

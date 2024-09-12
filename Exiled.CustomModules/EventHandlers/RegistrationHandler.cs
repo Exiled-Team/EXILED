@@ -60,14 +60,14 @@ namespace Exiled.CustomModules.EventHandlers
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomAbilities.Name)
             {
-                StaticActor.Get<TrackerBase>();
+                TrackerBase.Get();
                 return;
             }
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomItems.Name)
             {
                 GlobalPatchProcessor.PatchAll("exiled.customitems.patch", nameof(CustomItem));
-                StaticActor.Get<TrackerBase>();
+                TrackerBase.Get();
             }
         }
 
@@ -99,14 +99,14 @@ namespace Exiled.CustomModules.EventHandlers
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomAbilities.Name)
             {
-                StaticActor.Get<TrackerBase>()?.Destroy();
+                TrackerBase.Get()?.Destroy();
                 return;
             }
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomItems.Name)
             {
                 GlobalPatchProcessor.UnpatchAll("exiled.customitems.unpatch", nameof(CustomItem));
-                StaticActor.Get<TrackerBase>()?.Destroy();
+                TrackerBase.Get()?.Destroy();
                 return;
             }
         }

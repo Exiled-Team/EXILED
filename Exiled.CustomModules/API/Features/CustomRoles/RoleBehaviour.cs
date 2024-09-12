@@ -24,6 +24,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Features.Spawn;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomEscapes;
+    using Exiled.CustomModules.API.Features.Generic;
     using Exiled.CustomModules.API.Features.Inventory;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -34,7 +35,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// Represents the base class for custom role behaviors.
     /// </summary>
     /// <remarks>
-    /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IAdditiveSettings{T}"/>.
+    /// This class extends <see cref="ModuleBehaviour{TEntity}"/> and implements <see cref="IAdditiveSettings{T}"/>.
     /// <br/>It provides a foundation for creating custom behaviors associated with in-game player roles.
     /// </remarks>
     public class RoleBehaviour : ModuleBehaviour<Player>, IAdditiveSettings<RoleSettings>

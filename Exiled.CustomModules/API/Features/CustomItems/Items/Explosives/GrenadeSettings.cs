@@ -7,6 +7,8 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
 {
+    using System.ComponentModel;
+
     /// <summary>
     /// A tool to easily setup grenades.
     /// </summary>
@@ -15,11 +17,13 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
         /// <summary>
         /// Gets or sets a value indicating whether the grenade should explode immediately when contacting any surface.
         /// </summary>
+        [Description("Indicates whether the grenade should explode immediately when contacting any surface.")]
         public virtual bool ExplodeOnCollision { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating how long the grenade's fuse time should be.
         /// </summary>
+        [Description("Indicates how long the grenade's fuse time should be.")]
         public virtual float FuseTime { get; set; }
     }
 }

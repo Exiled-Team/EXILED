@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Core
 {
     using System;
+    using System.Collections.Generic;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Core.Generic;
@@ -28,6 +29,10 @@ namespace Exiled.API.Features.Core
     /// </remarks>
     public abstract class StaticActor : EActor
     {
+#pragma warning disable SA1309
+        private static readonly Dictionary<Type, StaticActor> __fastCall = new();
+#pragma warning restore SA1309
+
         /// <summary>
         /// Gets a value indicating whether the <see cref="PostInitialize()"/> method has already been called by Unity.
         /// </summary>
@@ -60,6 +65,7 @@ namespace Exiled.API.Features.Core
             @object.SearchForHostObjectIfNull = true;
             StaticActor actor = @object.Cast<StaticActor>();
             actor.ComponentInitialize();
+            __fastCall[type] = actor;
             return actor;
         }
 
@@ -71,12 +77,16 @@ namespace Exiled.API.Features.Core
         public static T Get<T>()
             where T : StaticActor, new()
         {
+            if (__fastCall.TryGetValue(typeof(T), out StaticActor staticActor))
+                return staticActor.Cast<T>();
+
             foreach (StaticActor actor in FindActiveObjectsOfType<StaticActor>())
             {
-                if (!actor.Cast(out StaticActor staticActor) || staticActor.GetType() != typeof(T))
+                if (actor.GetType() != typeof(T))
                     continue;
 
-                return staticActor.Cast<T>();
+                __fastCall[typeof(T)] = actor.Cast<T>();
+                return actor.Cast<T>();
             }
 
             return CreateNewInstance<T>().Cast<T>();
@@ -91,11 +101,15 @@ namespace Exiled.API.Features.Core
         public static T Get<T>(Type type)
             where T : StaticActor
         {
+            if (__fastCall.TryGetValue(typeof(T), out StaticActor staticActor))
+                return staticActor.Cast<T>();
+
             foreach (StaticActor actor in FindActiveObjectsOfType<StaticActor>())
             {
-                if (!actor.Cast(out StaticActor staticActor) || staticActor.GetType() != type)
+                if (actor.GetType() != type)
                     continue;
 
+                __fastCall[typeof(T)] = actor.Cast<T>();
                 return actor.Cast<T>();
             }
 
@@ -109,11 +123,15 @@ namespace Exiled.API.Features.Core
         /// <returns>The corresponding <see cref="StaticActor"/>.</returns>
         public static StaticActor Get(Type type)
         {
+            if (__fastCall.TryGetValue(type, out StaticActor staticActor))
+                return staticActor;
+
             foreach (StaticActor actor in FindActiveObjectsOfType<StaticActor>())
             {
-                if (!actor.Cast(out StaticActor staticActor) || staticActor.GetType() != type)
+                if (actor.GetType() != type)
                     continue;
 
+                __fastCall[type] = actor;
                 return actor;
             }
 

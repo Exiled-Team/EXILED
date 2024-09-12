@@ -13,8 +13,13 @@ namespace Exiled.Example.TestItem
     public class CustomItemType : UUCustomItemType
     {
         /// <summary>
-        /// Initializes a new custom item id.
+        /// Initializes a new custom item id for test item.
         /// </summary>
         public static readonly CustomItemType TestItem = new();
+
+        /// <summary>
+        /// Initializes a new custom item id for test pickup.
+        /// </summary>
+        public static readonly CustomItemType TestPickup = new();
     }
 }

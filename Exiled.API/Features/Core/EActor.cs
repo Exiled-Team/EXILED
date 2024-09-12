@@ -43,7 +43,6 @@ namespace Exiled.API.Features.Core
         protected EActor()
             : base()
         {
-            IsEditable = true;
             fixedTickRate = DEFAULT_FIXED_TICK_RATE;
         }
 
@@ -542,6 +541,9 @@ namespace Exiled.API.Features.Core
         protected override void OnBeginDestroy()
         {
             base.OnBeginDestroy();
+
+            foreach (EActor component in ComponentsInChildren)
+                component.Destroy();
 
             HashSetPool<EActor>.Pool.Return(componentsInChildren);
             Timing.KillCoroutines(serverTick);

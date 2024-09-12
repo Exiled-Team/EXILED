@@ -14,7 +14,6 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
     using Exiled.CustomModules.API.Features.CustomAbilities;
-    using Exiled.CustomModules.API.Features.Generic;
 
     /// <summary>
     /// Represents a base class for custom abilities associated with a specific <see cref="Pickup"/>.
@@ -41,7 +40,7 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
         /// <summary>
         /// Gets the <see cref="TrackerBase"/>.
         /// </summary>
-        protected static TrackerBase Tracker { get; } = StaticActor.Get<TrackerBase>();
+        protected static TrackerBase Tracker { get; } = TrackerBase.Get();
 
         /// <summary>
         /// Gets a <see cref="PickupAbility"/> given the specified id.

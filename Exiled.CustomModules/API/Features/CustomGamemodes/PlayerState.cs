@@ -13,13 +13,14 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.DynamicEvents;
+    using Exiled.CustomModules.API.Features.Generic;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Warhead;
     using MEC;
     using PlayerRoles;
 
     /// <summary>
-    /// Represents the state of an individual player within the custom game mode, derived from <see cref="ModuleBehaviour{T}"/>.
+    /// Represents the state of an individual player within the custom game mode, derived from <see cref="ModuleBehaviour{TEntity}"/>.
     /// </summary>
     /// <remarks>
     /// <para>

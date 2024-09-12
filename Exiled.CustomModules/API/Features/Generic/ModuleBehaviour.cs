@@ -5,7 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features
+using System.Threading;
+
+namespace Exiled.CustomModules.API.Features.Generic
 {
     using System;
     using System.Reflection;

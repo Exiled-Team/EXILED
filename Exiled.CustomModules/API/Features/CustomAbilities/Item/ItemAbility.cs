@@ -40,7 +40,7 @@ namespace Exiled.CustomModules.API.Features.ItemAbilities
         /// <summary>
         /// Gets the <see cref="TrackerBase"/>.
         /// </summary>
-        protected static TrackerBase Tracker { get; } = StaticActor.Get<TrackerBase>();
+        protected static TrackerBase Tracker { get; } = TrackerBase.Get();
 
         /// <summary>
         /// Gets a <see cref="ItemAbility"/> given the specified id.
