@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.CustomModules.API.Features.Generic;
+
 namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
     using System;
@@ -44,6 +46,8 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     {
         private readonly List<PlayerState> playerStates = new();
         private Type cachedPlayerStateType;
+        private GameModeSettings settings;
+        private ModulePointer config;
 
         /// <summary>
         /// Gets the relative <see cref="CustomGameModes.CustomGameMode"/>.
@@ -53,17 +57,26 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <summary>
         /// Gets the <see cref="PlayerState"/> associated to the current <see cref="CustomGameMode"/>.
         /// </summary>
-        public Type PlayerStateComponent => cachedPlayerStateType ??= CustomGameMode.BehaviourComponents.FirstOrDefault(t => typeof(PlayerState).IsAssignableFrom(t));
+        public Type PlayerStateComponent => cachedPlayerStateType ??=
+            CustomGameMode.BehaviourComponents.FirstOrDefault(t => typeof(PlayerState).IsAssignableFrom(t));
 
         /// <summary>
         /// Gets or sets the settings associated with the custom game mode.
         /// </summary>
-        public GameModeSettings Settings { get; set; }
+        public GameModeSettings Settings
+        {
+            get => settings ??= CustomGameMode.Settings;
+            set => settings = value;
+        }
 
         /// <summary>
-        /// Gets or sets the <see cref="GameState"/>'s config.
+        /// Gets or sets the game state's configs.
         /// </summary>
-        public ConfigSubsystem Config { get; set; }
+        public virtual ModulePointer Config
+        {
+            get => config ??= CustomGameMode.Config;
+            protected set => config = value;
+        }
 
         /// <summary>
         /// Gets all <see cref="PlayerState"/> instances.
@@ -93,27 +106,12 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            if (Config is not null && Config.GetType().GetInterfaces().Contains(typeof(IConfig)))
-            {
-                Type inType = GetType();
-                foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
-                {
-                    PropertyInfo targetInfo = inType.GetProperty(propertyInfo.Name);
-                    targetInfo?.SetValue(
-                        typeof(GameModeSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
-                        propertyInfo.GetValue(Config, null));
-                }
-            }
-
-            if (CustomGameMode.TryGet(GetType(), out CustomGameMode customGameMode) && customGameMode.Settings is GameModeSettings settings)
-            {
+            if (CustomGameMode.TryGet(GetType(), out CustomGameMode customGameMode))
                 CustomGameMode = customGameMode;
 
-                if (Config is null)
-                    Settings = settings;
-            }
+            ModuleBehaviour<GameEntity>.ImplementConfigs_DefaultImplementation(this, Config);
 
-            if (CustomGameMode is null || Settings is null)
+            if (CustomGameMode is null || Settings is null || Config is null)
             {
                 Log.Error($"Custom game mode ({GetType().Name}) has invalid configuration.");
                 Destroy();

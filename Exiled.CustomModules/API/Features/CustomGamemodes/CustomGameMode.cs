@@ -75,10 +75,6 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         public static IEnumerable<CustomGameMode> List => Registered;
 
         /// <inheritdoc/>
-        [YamlIgnore]
-        public override ModulePointer Config { get; set; }
-
-        /// <inheritdoc/>
         public override string Name { get; set; }
 
         /// <inheritdoc/>
@@ -87,14 +83,18 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <inheritdoc/>
         public override bool IsEnabled { get; set; }
 
-        /// <inheritdoc/>
-        [YamlIgnore]
-        public virtual Type[] BehaviourComponents { get; }
-
         /// <summary>
         /// Gets or sets the <see cref="GameModeSettings"/>.
         /// </summary>
         public virtual GameModeSettings Settings { get; set; }
+
+        /// <inheritdoc/>
+        [YamlIgnore]
+        public override ModulePointer Config { get; set; }
+
+        /// <inheritdoc/>
+        [YamlIgnore]
+        public virtual Type[] BehaviourComponents { get; }
 
         /// <summary>
         /// Gets a value indicating whether the game mode can start automatically based on the configured probability, if automatic.

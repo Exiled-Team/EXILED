@@ -30,6 +30,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
     {
         private static TrackerBase tracker;
         private ushort serial;
+        private SettingsBase settings;
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before the pickup is gets picked up.
@@ -46,7 +47,18 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
         public CustomItem CustomItem { get; private set; }
 
         /// <inheritdoc/>
-        public SettingsBase Settings { get; set; }
+        public SettingsBase Settings
+        {
+            get => settings ??= CustomItem.Settings;
+            set => settings = value;
+        }
+
+        /// <inheritdoc/>
+        public override ModulePointer Config
+        {
+            get => config ??= CustomItem.Config;
+            protected set => config = value;
+        }
 
         /// <summary>
         /// Gets the <see cref="TrackerBase"/>.
@@ -56,27 +68,16 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            ImplementConfigs();
-
-            if (CustomItem.TryGet(GetType(), out CustomItem customItem) && customItem.Settings is SettingsBase settings)
-            {
+            if (CustomItem.TryGet(GetType(), out CustomItem customItem))
                 CustomItem = customItem;
-                Settings = settings;
-            }
 
-            if (CustomItem is null || Settings is null)
+            if (CustomItem is null || Settings is null || Config is null)
             {
                 Log.Error($"Custom pickup ({GetType().Name}) has invalid configuration.");
                 Destroy();
             }
-        }
 
-        /// <inheritdoc/>
-        protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
-        {
-            targetInfo?.SetValue(
-                typeof(SettingsBase).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
-                propertyInfo.GetValue(Config, null));
+            ImplementConfigs();
         }
 
         /// <summary>
@@ -90,14 +91,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
         /// This method ensures that the provided pickup is being tracked by the <see cref="TrackerBase"/>
         /// and the tracked values associated with the pickup contain this item instance.
         /// </remarks>
-        protected override bool Check(Pickup pickup)
-        {
-            bool isTracked = pickup is not null;
-            isTracked = isTracked && serial == pickup.Serial;
-            isTracked = isTracked && Tracker.IsTracked(pickup);
-            isTracked = isTracked && Tracker.GetTrackedValues(pickup).Any(c => c.GetHashCode() == GetHashCode());
-            return isTracked;
-        }
+        protected override bool Check(Pickup pickup) =>
+            pickup is not null && serial == pickup.Serial && Tracker.IsTracked(pickup) &&
+            Tracker.GetTrackedValues(pickup).Any(c => c.GetHashCode() == GetHashCode());
 
         /// <inheritdoc/>
         protected override void PostInitialize()

@@ -36,6 +36,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
     {
         private static TrackerBase tracker;
         private ushort serial;
+        private SettingsBase settings;
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before owner of the item changes role.
@@ -100,7 +101,18 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         public CustomItem CustomItem { get; private set; }
 
         /// <inheritdoc/>
-        public SettingsBase Settings { get; set; }
+        public SettingsBase Settings
+        {
+            get => settings ??= CustomItem.Settings;
+            set => settings = value;
+        }
+
+        /// <inheritdoc/>
+        public override ModulePointer Config
+        {
+            get => config ??= CustomItem.Config;
+            protected set => config = value;
+        }
 
         /// <summary>
         /// Gets the item's owner.
@@ -115,27 +127,16 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            ImplementConfigs();
-
-            if (CustomItem.TryGet(GetType(), out CustomItem customItem) && customItem.Settings is SettingsBase itemSettings)
-            {
+            if (CustomItem.TryGet(GetType(), out CustomItem customItem))
                 CustomItem = customItem;
-                Settings = itemSettings;
-            }
 
-            if (CustomItem is null || Settings is null)
+            if (CustomItem is null || Settings is null || Config is null)
             {
                 Log.Error($"Custom item ({GetType().Name}) has invalid configuration.");
                 Destroy();
             }
-        }
 
-        /// <inheritdoc/>
-        protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
-        {
-            targetInfo?.SetValue(
-                typeof(SettingsBase).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
-                propertyInfo.GetValue(Config, null));
+            ImplementConfigs();
         }
 
         /// <summary>

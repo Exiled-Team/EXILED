@@ -46,6 +46,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         private bool wasNoClipPermitted;
         private bool useCustomEscape;
         private bool wasEscaped;
+        private RoleSettings settings;
 
         /// <summary>
         /// Gets a <see cref="HashSet{T}"/> of <see cref="Player"/> containing all players to be spawned without affecting their current position (static).
@@ -65,7 +66,18 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets or sets the <see cref="RoleSettings"/>.
         /// </summary>
-        public virtual RoleSettings Settings { get; set; }
+        public RoleSettings Settings
+        {
+            get => settings ??= CustomRole.Settings;
+            set => settings = value;
+        }
+
+        /// <inheritdoc/>
+        public override ModulePointer Config
+        {
+            get => config ??= CustomRole.Config;
+            protected set => config = value;
+        }
 
         /// <summary>
         /// Gets a random spawn point based on existing settings.
@@ -215,26 +227,20 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            ImplementConfigs();
-
             if (CustomTeam.TryGet(Owner.Cast<Pawn>(), out CustomTeam customTeam))
                 CustomTeam = customTeam;
 
-            if (CustomRole.TryGet(GetType(), out CustomRole customRole) && customRole.Settings is RoleSettings settings)
-            {
+            if (CustomRole.TryGet(GetType(), out CustomRole customRole))
                 CustomRole = customRole;
-                Settings = settings;
-            }
 
-            Log.Debug($"CR NULL? {CustomRole is null}");
-            Log.Debug($"Settings NULL? {Settings is null}");
-
-            if (CustomRole is null || Settings is null)
+            if (CustomRole is null || Settings is null || Config is null)
             {
                 Log.Error($"Custom role ({GetType().Name}) has invalid configuration.");
                 Destroy();
                 return;
             }
+
+            ImplementConfigs();
 
             Owner.UniqueRole = CustomRole.Name;
 
@@ -244,16 +250,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 Owner.AddComponent(CustomRole.EscapeBehaviourComponent);
                 useCustomEscape = true;
             }
-        }
-
-        /// <inheritdoc/>
-        protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
-        {
-            targetInfo?.SetValue(
-                typeof(RoleSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings :
-                typeof(InventoryManager).IsAssignableFrom(targetInfo.DeclaringType) ? Inventory :
-                this,
-                propertyInfo.GetValue(Config, null));
         }
 
         /// <inheritdoc/>
