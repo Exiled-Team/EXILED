@@ -223,10 +223,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (CustomRole.TryGet(GetType(), out CustomRole customRole) && customRole.Settings is RoleSettings settings)
             {
                 CustomRole = customRole;
-
-                if (customRole is null || customRole.Config is null)
-                    Settings = settings;
+                Settings = settings;
             }
+
+            Log.Debug($"CR NULL? {CustomRole is null}");
+            Log.Debug($"Settings NULL? {Settings is null}");
 
             if (CustomRole is null || Settings is null)
             {

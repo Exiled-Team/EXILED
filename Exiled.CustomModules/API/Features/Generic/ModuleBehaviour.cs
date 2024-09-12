@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Threading;
-
 namespace Exiled.CustomModules.API.Features.Generic
 {
     using System;
@@ -49,9 +47,7 @@ namespace Exiled.CustomModules.API.Features.Generic
         /// </summary>
         /// <param name="propertyInfo">The source property from the config object.</param>
         /// <param name="targetInfo">The target property in the current instance.</param>
-        protected virtual void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
-        {
+        protected virtual void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo) =>
             targetInfo?.SetValue(this, propertyInfo.GetValue(Config, null));
-        }
     }
 }

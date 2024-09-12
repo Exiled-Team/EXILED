@@ -11,10 +11,7 @@ namespace Exiled.CustomModules.EventHandlers
     using Exiled.API.Features.Core;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features;
-    using Exiled.CustomModules.API.Features.CustomAbilities;
     using Exiled.CustomModules.API.Features.CustomItems;
-    using Exiled.CustomModules.API.Features.CustomItems.Items;
-    using Exiled.CustomModules.API.Features.CustomItems.Pickups;
 
     /// <summary>
     /// Handles the all the module's registration.
