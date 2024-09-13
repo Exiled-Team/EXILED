@@ -9,6 +9,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -88,36 +89,43 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <summary>
         /// Gets or sets the <see cref="CustomItem"/>'s name.
         /// </summary>
+        [Description("The name of the custom item.")]
         public override string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomItem"/>'s id.
         /// </summary>
+        [Description("The id of the custom item.")]
         public override uint Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="CustomItem"/> is enabled.
-        /// </summary>
-        public override bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomItem"/>'s description.
         /// </summary>
+        [Description("The description of the custom item.")]
         public virtual string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="CustomItem"/> is enabled.
+        /// </summary>
+        [Description("Indicates whether the custom item is enabled.")]
+        public override bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomItem"/>'s <see cref="global::ItemType"/>.
         /// </summary>
+        [Description("The type of the custom item.")]
         public virtual ItemType ItemType { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomItem"/>'s <see cref="global::ItemCategory"/>.
         /// </summary>
+        [Description("The category of the custom item.")]
         public virtual ItemCategory ItemCategory { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Settings"/>.
         /// </summary>
+        [Description("The settings of the custom item.")]
         public virtual SettingsBase Settings { get; set; }
 
         /// <summary>

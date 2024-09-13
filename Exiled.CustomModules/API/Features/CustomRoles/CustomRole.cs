@@ -9,6 +9,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
 
@@ -91,31 +92,37 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets or sets the <see cref="CustomRole"/>'s name.
         /// </summary>
+        [Description("The name of the custom role.")]
         public override string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomRole"/>'s id.
         /// </summary>
+        [Description("The id of the custom role.")]
         public override uint Id { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomRole"/>'s description.
         /// </summary>
+        [Description("The description of the custom role.")]
         public virtual string Description { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="CustomRole"/> is enabled.
         /// </summary>
+        [Description("Indicates whether the custom role is enabled.")]
         public override bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomRole"/>'s <see cref="RoleTypeId"/>.
         /// </summary>
+        [Description("The custom role's RoleTypeId.")]
         public virtual RoleTypeId Role { get; set; }
 
         /// <summary>
         /// Gets or sets the relative spawn chance of the <see cref="CustomRole"/>.
         /// </summary>
+        [Description("The custom role's spawn chance.")]
         public virtual int Probability { get; set; }
 
         /// <summary>
@@ -124,6 +131,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <remarks>
         /// This property specifies the required alive team to be eligible for spawning in the <see cref="CustomRole"/>.
         /// </remarks>
+        [Description("The custom role's required team to spawn.")]
         public virtual Team RequiredTeamToSpawn { get; set; } = Team.Dead;
 
         /// <summary>
@@ -132,6 +140,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <remarks>
         /// This property specifies the required role type for players to be eligible for spawning in the <see cref="CustomRole"/>.
         /// </remarks>
+        [Description("The custom role's required RoleTypeId to spawn.")]
         public virtual RoleTypeId RequiredRoleToSpawn { get; set; } = RoleTypeId.None;
 
         /// <summary>
@@ -140,6 +149,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <remarks>
         /// This property specifies the required alive custom team to be eligible for spawning in the <see cref="CustomRole"/>.
         /// </remarks>
+        [Description("The custom role's required custom team to spawn.")]
         public virtual uint RequiredCustomTeamToSpawn { get; set; }
 
         /// <summary>
@@ -148,21 +158,19 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <remarks>
         /// This property specifies the required custom role for players to be eligible for spawning in the <see cref="CustomRole"/>.
         /// </remarks>
+        [Description("The custom role's required custom role to spawn.")]
         public virtual uint RequiredCustomRoleToSpawn { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="RoleSettings"/>.
-        /// </summary>
-        public virtual RoleSettings Settings { get; set; } = RoleSettings.Default;
 
         /// <summary>
         /// Gets or sets the <see cref="CustomEscapes.EscapeSettings"/>.
         /// </summary>
+        [Description("The escape settings for the custom role.")]
         public virtual List<EscapeSettings> EscapeSettings { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a value representing the maximum instances of the <see cref="CustomRole"/> that can be automatically assigned.
         /// </summary>
+        [Description("The maximum number of instances for the custom role.")]
         public virtual int MaxInstances { get; set; }
 
         /// <summary>
@@ -171,31 +179,43 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <remarks>
         /// This property specifies the teams the <see cref="CustomRole"/> belongs to.
         /// </remarks>
+        [Description("The required teams for the custom role to win.")]
         public virtual Team[] TeamsOwnership { get; set; } = { };
 
         /// <summary>
         /// Gets or sets the <see cref="SpawnableTeamType"/> from which to retrieve players for assigning the <see cref="CustomRole"/>.
         /// </summary>
+        [Description("The spawnable team type for assigning players to the custom role.")]
         public virtual SpawnableTeamType AssignFromTeam { get; set; } = SpawnableTeamType.None;
 
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> from which to retrieve players for assigning the <see cref="CustomRole"/>.
         /// </summary>
+        [Description("The role type ID for assigning players to the custom role.")]
         public virtual RoleTypeId AssignFromRole { get; set; }
 
         /// <summary>
-        /// Gets or sets all roles to override, preventing the specified roles to spawn.
+        /// Gets or sets all roles to override, preventing the specified roles from spawning.
         /// </summary>
+        [Description("All roles to override and prevent from spawning.")]
         public virtual RoleTypeId[] OverrideScps { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="CustomRole"/> should be treated as a separate team unit.
         /// </summary>
+        [Description("Indicates whether the custom role should be treated as a separate team unit.")]
         public virtual bool IsTeamUnit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="RoleSettings"/>.
+        /// </summary>
+        [Description("The role settings associated with the custom role.")]
+        public virtual RoleSettings Settings { get; set; } = RoleSettings.Default;
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="CustomRole"/> should be considered an SCP.
         /// </summary>
+        [Description("Indicates whether the custom role should be considered an SCP.")]
         public virtual bool IsScp { get; set; }
 
         /// <summary>
@@ -214,6 +234,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets all the instances of this <see cref="CustomRole"/> in the global context.
         /// </summary>
+        [YamlIgnore]
         public int GlobalInstances { get; private set; }
 
         /// <summary>

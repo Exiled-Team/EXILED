@@ -9,6 +9,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
 
@@ -129,29 +130,34 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         public abstract Type BehaviourComponent { get; }
 
         /// <summary>
-        /// Gets the ability's settings.
-        /// </summary>
-        public virtual AbilitySettings Settings { get; } = AbilitySettings.Default;
-
-        /// <summary>
         /// Gets or sets the <see cref="CustomAbility{T}"/>'s name.
         /// </summary>
+        [Description("The name of the custom ability.")]
         public override string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomAbility{T}"/>'s id.
         /// </summary>
+        [Description("The id of the custom ability.")]
         public override uint Id { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the ability is enabled.
         /// </summary>
+        [Description("Indicates whether the ability is enabled.")]
         public override bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the ability.
         /// </summary>
+        [Description("The description of the custom ability.")]
         public virtual string Description { get; set; }
+
+        /// <summary>
+        /// Gets the ability's settings.
+        /// </summary>
+        [Description("The settings for the custom ability.")]
+        public virtual AbilitySettings Settings { get; } = AbilitySettings.Default;
 
         /// <summary>
         /// Gets the reflected generic type.

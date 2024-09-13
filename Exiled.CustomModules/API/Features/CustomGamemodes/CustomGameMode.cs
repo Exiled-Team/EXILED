@@ -9,6 +9,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
 
@@ -74,18 +75,28 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         [YamlIgnore]
         public static IEnumerable<CustomGameMode> List => Registered;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets or sets the <see cref="CustomGameMode"/> name.
+        /// </summary>
+        [Description("The name of the game mode.")]
         public override string Name { get; set; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets or sets the <see cref="CustomGameMode"/>'s id.
+        /// </summary>
+        [Description("The id of the game mode.")]
         public override uint Id { get; set; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="CustomGameMode"/> is enabled.
+        /// </summary>
+        [Description("Indicates whether the game mode is enabled.")]
         public override bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="GameModeSettings"/>.
         /// </summary>
+        [Description("The settings for the game mode.")]
         public virtual GameModeSettings Settings { get; set; }
 
         /// <inheritdoc/>
