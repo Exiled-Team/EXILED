@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.CustomModules.API.Features.Generic;
-
 namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
     using System;
@@ -24,6 +22,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using Exiled.API.Interfaces;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomRoles;
+    using Exiled.CustomModules.API.Features.Generic;
     using Exiled.CustomModules.Events.EventArgs.CustomRoles;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;

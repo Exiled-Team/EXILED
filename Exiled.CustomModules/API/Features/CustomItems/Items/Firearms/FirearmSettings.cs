@@ -5,10 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel;
-
 namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 {
+    using System.ComponentModel;
+
     using CameraShaking;
     using Exiled.CustomModules.API.Enums;
     using InventorySystem.Items.Firearms.Attachments;

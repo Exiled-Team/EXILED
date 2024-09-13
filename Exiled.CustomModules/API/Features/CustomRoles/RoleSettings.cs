@@ -5,11 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel;
-
 namespace Exiled.CustomModules.API.Features.CustomRoles
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
