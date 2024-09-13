@@ -42,12 +42,13 @@ namespace Exiled.CustomModules.API.Commands.GameModes
             RegisterCommand(End.Instance);
             RegisterCommand(Info.Instance);
             RegisterCommand(Enqueue.Instance);
+            RegisterCommand(List.List.Instance);
         }
 
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Invalid subcommand! Available: start, end, info, enqueue";
+            response = "Invalid subcommand! Available: start, end, info, enqueue, list";
             return false;
         }
     }
