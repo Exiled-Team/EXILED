@@ -857,7 +857,6 @@ namespace Exiled.API.Features.Core
         /// </summary>
         public void Destroy()
         {
-            Log.Debug($"Destroyed EACTOR");
             Destroy(true);
             GC.SuppressFinalize(this);
         }
