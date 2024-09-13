@@ -13,6 +13,7 @@ namespace Exiled.API.Features
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Reflection.Emit;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Attributes;
@@ -93,14 +94,18 @@ namespace Exiled.API.Features
         public bool IsStandAlone { get; set; }
 
         /// <summary>
-        /// Gets or sets the individual path.
-        /// </summary>
-        public string? StandAlonePath { get; set; }
-
-        /// <summary>
         /// Gets the absolute path.
         /// </summary>
-        public string? AbsolutePath => Folder is not null && Name is not null ? Path.Combine(Paths.Configs, Path.Combine(Folder, Name)) : null;
+        public string? AbsolutePath
+        {
+            get
+            {
+                bool isObjectInitialized = Folder is not null && Name is not null;
+                return !IsStandAlone ?
+                    isObjectInitialized ? Path.Combine(Paths.Configs, Path.Combine(Folder, Name)) : null :
+                    isObjectInitialized ? Path.Combine(Folder, Name) : null;
+            }
+        }
 
         /// <summary>
         /// Gets the default serializer builder.
@@ -249,19 +254,16 @@ namespace Exiled.API.Features
 
                 ConfigSubsystem wrapper = new(target);
 
-                if (!wrapper.IsStandAlone)
+                if (string.IsNullOrEmpty(wrapper.Folder))
                 {
-                    if (string.IsNullOrEmpty(wrapper.Folder))
+                    if (string.IsNullOrEmpty(attribute.Folder))
                     {
-                        if (string.IsNullOrEmpty(attribute.Folder))
-                        {
-                            Log.Warn($"The folder of the object of type {target.GetType()} ({wrapper.Name}) has not been set. It's not possible to determine the parent config which it belongs to, hence it won't be read.");
+                        Log.Warn($"The folder of the object of type {target.GetType()} ({wrapper.Name}) has not been set. It's not possible to determine the parent config which it belongs to, hence it won't be read.");
 
-                            return null;
-                        }
-
-                        wrapper.Folder = attribute.Folder;
+                        return null;
                     }
+
+                    wrapper.Folder = attribute.Folder;
                 }
 
                 if (string.IsNullOrEmpty(wrapper.Name))
@@ -281,37 +283,36 @@ namespace Exiled.API.Features
                 if (!wrapper.Name!.Contains(".yml"))
                     wrapper.Name += ".yml";
 
-                if (wrapper.IsStandAlone && !string.IsNullOrEmpty(wrapper.StandAlonePath))
+                if (wrapper.IsStandAlone)
                 {
-                    Load(wrapper, wrapper.StandAlonePath);
+                    Directory.CreateDirectory(wrapper.Folder);
+
+                    Load(wrapper, wrapper.AbsolutePath);
                     wrapper.data.Add(wrapper);
                     MainConfigsValue.Add(wrapper);
 
                     return wrapper;
                 }
 
-                if (wrapper.Folder is not null)
+                string path = Path.Combine(Paths.Configs, wrapper.Folder);
+                if (attribute.IsParent)
                 {
-                    string path = Path.Combine(Paths.Configs, wrapper.Folder);
-                    if (attribute.IsParent)
-                    {
-                        Directory.CreateDirectory(path);
+                    Directory.CreateDirectory(path);
 
-                        Load(wrapper, wrapper.AbsolutePath!);
-                        wrapper.data.Add(wrapper);
-                        MainConfigsValue.Add(wrapper);
+                    Load(wrapper, wrapper.AbsolutePath!);
+                    wrapper.data.Add(wrapper);
+                    MainConfigsValue.Add(wrapper);
 
-                        Dictionary<ConfigSubsystem, string> localCache = new(Cache);
-                        foreach (KeyValuePair<ConfigSubsystem, string> elem in localCache)
-                            LoadFromCache(elem.Key);
+                    Dictionary<ConfigSubsystem, string> localCache = new(Cache);
+                    foreach (KeyValuePair<ConfigSubsystem, string> elem in localCache)
+                        LoadFromCache(elem.Key);
 
-                        return wrapper;
-                    }
-
-                    Cache.Add(wrapper, wrapper.AbsolutePath!);
-                    if (!Directory.Exists(path) || MainConfigsValue.All(cfg => cfg.Folder != wrapper.Folder))
-                        return wrapper;
+                    return wrapper;
                 }
+
+                Cache.Add(wrapper, wrapper.AbsolutePath!);
+                if (!Directory.Exists(path) || MainConfigsValue.All(cfg => cfg.Folder != wrapper.Folder))
+                    return wrapper;
 
                 LoadFromCache(wrapper);
 
@@ -383,15 +384,19 @@ namespace Exiled.API.Features
         /// and <see cref="YamlIgnoreAttribute"/> if specified.
         /// </summary>
         /// <param name="sourceType">The <see cref="Type"/> for which to generate the dynamic configuration at runtime.</param>
-        /// <param name="path">The path from which to load the configuration.</param>
+        /// <param name="folder">The folder from which to load the configuration.</param>
+        /// <param name="name">The name of the configuration file.</param>
         /// <returns>A <see cref="ConfigSubsystem"/> instance for the dynamically generated configuration, or <see langword="null"/> if not found.</returns>
-        public static ConfigSubsystem? LoadDynamic(Type sourceType, string path) =>
+        public static ConfigSubsystem? LoadDynamic(Type sourceType, string folder, string name)
+        {
+            CustomAttributeBuilder configAttribute =
+                DynamicTypeGenerator.BuildAttribute(
+                    typeof(ConfigAttribute), new object[] { folder, name, false, true });
 
-            // TODO: Implement support for specifying a path and file for the dynamic type.
-            // TODO: Additionally, add a method to initialize the ConfigAttribute so that the dynamic configuration can function independently.
-            Get(
+            return Get(
                 sourceType.GenerateDynamicTypeWithConstructorFromExistingType(
-                    sourceType.Name + "Config", new[] { typeof(ConfigAttribute) }, true, new[] { typeof(YamlIgnoreAttribute) }), true);
+                    sourceType.Name + "Config", new[] { configAttribute }, true, new[] { typeof(YamlIgnoreAttribute) }), true);
+        }
 
         /// <summary>
         /// Gets the path of the specified data object of type <typeparamref name="T"/>.
@@ -438,51 +443,145 @@ namespace Exiled.API.Features
             return JsonSerializer.Serialize(convertedDictionary);
         }
 
+#pragma warning disable CS8603 // Possible null reference return.
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+        /// <inheritdoc/>
+        public override TObject Cast<TObject>() => Base as TObject;
+
+        /// <inheritdoc/>
+        public override bool Cast<TObject>(out TObject param)
+        {
+            if (Base is not TObject cast)
+            {
+                param = default;
+                return false;
+            }
+
+            param = cast;
+            return true;
+        }
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+#pragma warning restore CS8603 // Possible null reference return.
+
+        /// <summary>
+        /// Reads a property of type <typeparamref name="T"></typeparamref>.
+        /// </summary>
+        /// <typeparam name="T">The type of the property to be read.</typeparam>
+        /// <param name="name">The name of the property to be read.</param>
+        /// <returns>The corresponding <typeparamref name="T"/> instance or <see langword="null"/> if not found.</returns>
+        public T? Read<T>(string name)
+        {
+            PropertyInfo? propertyInfo = Base?.GetType().GetProperty(name);
+
+            if (propertyInfo is null || propertyInfo.GetCustomAttribute<YamlIgnoreAttribute>() != null)
+                return default;
+
+            object? value = propertyInfo.GetValue(Base);
+
+            if (value is null && !typeof(T).IsClass && Nullable.GetUnderlyingType(typeof(T)) == null)
+                return default;
+
+            try
+            {
+                return (T)value!;
+            }
+            catch (InvalidCastException)
+            {
+                Log.Error($"Failed to read the property '{name}' because its type is incompatible with the expected type '{typeof(T).Name}'.");
+                return default;
+            }
+        }
+
         /// <summary>
         /// Reads a data object of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type of the data to be read.</typeparam>
         /// <returns>The corresponding <typeparamref name="T"/> instance or <see langword="null"/> if not found.</returns>
-        public T? Read<T>()
-            where T : class
-        {
-            ConfigSubsystem? t = Get<T>();
-
-            if (t is null)
-                return default;
-
-            return t.data.FirstOrDefault(data => data.Base!.GetType() == typeof(T)) as T ?? default;
-        }
+        public T? ReadDataObject<T>()
+            where T : class => data.FirstOrDefault(data => data.Base!.GetType() == typeof(T)) as T;
 
         /// <summary>
-        /// Reads the base data object of type <typeparamref name="T"/>.
+        /// Reads a data object of type <typeparamref name="TSource"/> and retrieves a property value of type <typeparamref name="TValue"/>.
         /// </summary>
-        /// <typeparam name="T">The type of the data to be read.</typeparam>
-        /// <returns>The corresponding <typeparamref name="T"/> instance or <see langword="null"/> if not found.</returns>
-        public T? BaseAs<T>() => Base is not T t ? default : t;
+        /// <typeparam name="TSource">The type of the data object to be read.</typeparam>
+        /// <typeparam name="TValue">The type of the property value to be retrieved.</typeparam>
+        /// <param name="name">The name of the property to be read.</param>
+        /// <returns>The corresponding <typeparamref name="TValue"/> instance or <see langword="null"/> if not found or if the type is incompatible.</returns>
+        /// <remarks>
+        /// This method searches for a data object of type <typeparamref name="TSource"/> within the data collection,
+        /// and then attempts to read a property value of type <typeparamref name="TValue"/> from it.
+        /// </remarks>
+        public TValue? ReadDataObjectValue<TSource, TValue>(string name)
+            where TSource : class => data.FirstOrDefault(data => data.Base!.GetType() == typeof(TSource)).Read<TValue>(name);
 
         /// <summary>
-        /// Writes a new value contained in the specified config of type <typeparamref name="T"/>.
+        /// Updates the value of a specified property in the config of type <typeparamref name="T"/> and writes the updated config to a file.
         /// </summary>
-        /// <typeparam name="T">The type of the data to be written.</typeparam>
-        /// <param name="name">The name of the parameter to be modified.</param>
-        /// <param name="value">The new value to be written.</param>
+        /// <typeparam name="T">The type of the data to be written. This should be a class type that represents the configuration.</typeparam>
+        /// <param name="name">The name of the property within the config object whose value is to be modified.</param>
+        /// <param name="value">The new value to assign to the specified property.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the file path is null.</exception>
+        /// <remarks>
+        /// This method reads the current configuration of type <typeparamref name="T"/> using the <see cref="Read{T}(string)"/> method.
+        /// It then updates the specified property with the new value. The updated configuration is serialized and written to a file.
+        /// The file path is determined by the <see cref="GetPath{T}"/> method.
+        /// The method also updates the current instance with the deserialized configuration data from the file.
+        /// </remarks>
         public void Write<T>(string name, object value)
             where T : class
         {
-            T? param = Read<T>();
+            T? param = Read<T>(name);
             if (param is null)
                 return;
 
             string? path = GetPath<T>();
-            PropertyInfo? propertyInfo = param.GetType().GetProperty(name);
 
-            if (propertyInfo is null)
+            PropertyInfo? propertyInfo = param.GetType().GetProperty(name);
+            if (propertyInfo is null || propertyInfo.GetCustomAttribute<YamlIgnoreAttribute>() is not null)
                 return;
 
             propertyInfo.SetValue(param, value);
-            File.WriteAllText(path ?? throw new ArgumentNullException(), Serializer.Serialize(param));
-            this.CopyProperties(Deserializer.Deserialize(File.ReadAllText(path), GetType()));
+
+            if (path is null)
+                throw new ArgumentNullException(nameof(path));
+
+            File.WriteAllText(path, Serializer.Serialize(param));
+            this.CopyProperties(Deserializer.Deserialize(File.ReadAllText(path), Base!.GetType()));
+        }
+
+        /// <summary>
+        /// Writes a new value to a specified property of a data object of type <typeparamref name="TConfig"/>.
+        /// </summary>
+        /// <typeparam name="TConfig">The type of the data object to be modified.</typeparam>
+        /// <typeparam name="TValue">The type of the new value to be written.</typeparam>
+        /// <param name="name">The name of the property to be modified.</param>
+        /// <param name="value">The new value to be written to the property.</param>
+        /// <remarks>
+        /// This method searches for a data object of type <typeparamref name="TConfig"/> within the data collection,
+        /// and then writes the specified value to the property of the data object.
+        /// After modifying the property, it serializes the data object to a file and updates the current instance
+        /// with the deserialized properties from the file.
+        /// </remarks>
+        public void WriteDataObjectValue<TConfig, TValue>(string name, TValue value)
+            where TConfig : class
+        {
+            ConfigSubsystem? dataObject = data.FirstOrDefault(d => d.Base!.GetType() == typeof(TConfig));
+            if (dataObject is null)
+                return;
+
+            string? path = GetPath<TConfig>();
+
+            PropertyInfo? propertyInfo = dataObject.GetType().GetProperty(name);
+            if (propertyInfo is null || propertyInfo.GetCustomAttribute<YamlIgnoreAttribute>() is not null)
+                return;
+
+            propertyInfo.SetValue(dataObject, value);
+
+            if (path is null)
+                throw new ArgumentNullException(nameof(path));
+
+            File.WriteAllText(path, Serializer.Serialize(dataObject));
+            this.CopyProperties(Deserializer.Deserialize(File.ReadAllText(path), Base!.GetType()));
         }
     }
 }

@@ -51,11 +51,13 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Copy all properties from the source class to the target one.
+        /// Copies all properties from the source object to the target object, performing a deep copy if necessary.
         /// </summary>
-        /// <param name="target">The target object.</param>
+        /// <param name="target">The target object to copy properties to.</param>
         /// <param name="source">The source object to copy properties from.</param>
-        public static void CopyProperties(this object target, object source)
+        /// <param name="deepCopy">Indicates whether to perform a deep copy of properties that are of class type.</param>
+        /// <exception cref="InvalidTypeException">Thrown when the target and source types do not match.</exception>
+        public static void CopyProperties(this object target, object source, bool deepCopy = false)
         {
             Type type = target.GetType();
 
@@ -63,7 +65,24 @@ namespace Exiled.API.Extensions
                 throw new InvalidTypeException("Target and source type mismatch!");
 
             foreach (PropertyInfo sourceProperty in type.GetProperties())
-                type.GetProperty(sourceProperty.Name)?.SetValue(target, sourceProperty.GetValue(source, null), null);
+            {
+                if (sourceProperty.CanWrite)
+                {
+                    object value = sourceProperty.GetValue(source, null);
+
+                    if (deepCopy && value is not null && sourceProperty.PropertyType.IsClass &&
+                        sourceProperty.PropertyType != typeof(string))
+                    {
+                        object targetValue = Activator.CreateInstance(sourceProperty.PropertyType);
+                        CopyProperties(targetValue, value, true);
+                        sourceProperty.SetValue(target, targetValue, null);
+                    }
+                    else
+                    {
+                        sourceProperty.SetValue(target, value, null);
+                    }
+                }
+            }
         }
 
         /// <summary>

@@ -78,7 +78,7 @@ namespace Exiled.API.Features.Core.Generic
 
             FindOwner();
 
-            if (!Owner && DisposeOnNullOwner)
+            if (Owner is null && DisposeOnNullOwner)
             {
                 Destroy();
                 return;

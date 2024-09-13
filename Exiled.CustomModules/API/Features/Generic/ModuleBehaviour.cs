@@ -44,8 +44,8 @@ namespace Exiled.CustomModules.API.Features.Generic
         /// Implements the behaviour's configs by copying properties from the config object to the current instance.
         /// </summary>
         /// <param name="instance">The instance of the object to implement the configs to.</param>
-        /// <param name="config">The <see cref="ModulePointer"/> to be implemented.</param>
-        public static void ImplementConfigs_DefaultImplementation(object instance, ModulePointer config)
+        /// <param name="config">The <see cref="ModulePointer"/> or any config object to be implemented.</param>
+        public static void ImplementConfigs_DefaultImplementation(object instance, object config)
         {
             Type inType = instance.GetType();
             foreach (PropertyInfo propertyInfo in config.GetType().GetProperties())

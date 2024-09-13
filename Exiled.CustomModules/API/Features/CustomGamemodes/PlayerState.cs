@@ -19,6 +19,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using Exiled.Events.EventArgs.Warhead;
     using MEC;
     using PlayerRoles;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Represents the state of an individual player within the custom game mode, derived from <see cref="ModuleBehaviour{TEntity}"/>.
@@ -55,8 +56,21 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         public static TDynamicEventDispatcher<PlayerState> DeactivatedDispatcher { get; set; } = new();
 
         /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="PlayerState"/> is respawnable.
+        /// </summary>
+        public virtual bool IsRespawnable { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="ConfigSubsystem"/>.
+        /// </summary>
+        [YamlIgnore]
+        public virtual new ConfigSubsystem Config =>
+            ConfigSubsystem.LoadDynamic(GetType(), World.Get().GameState.CustomGameMode.ChildPath, $"{GetType().Name}-Config");
+
+        /// <summary>
         /// Gets or sets a value indicating whether the <see cref="PlayerState"/> can behave regularly.
         /// </summary>
+        [YamlIgnore]
         public virtual bool IsActive
         {
             get => isActive;
@@ -78,39 +92,33 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="PlayerState"/> is respawnable.
-        /// </summary>
-        public virtual bool IsRespawnable { get; set; }
-
-        /// <summary>
         /// Gets the respawn time for individual players.
         /// </summary>
+        [YamlIgnore]
         public float RespawnTime => World.Get().GameState.Settings.RespawnTime;
 
         /// <summary>
         /// Gets or sets the <see cref="PlayerState"/> score.
         /// </summary>
+        [YamlIgnore]
         public int Score { get; protected set; }
 
         /// <summary>
         /// Gets or sets the last time the player died.
         /// </summary>
+        [YamlIgnore]
         public DateTime LastDeath { get; protected set; }
-
-        /// <summary>
-        /// Gets the <see cref="ConfigSubsystem"/>.
-        /// </summary>
-        public virtual new ConfigSubsystem Config =>
-            ConfigSubsystem.LoadDynamic(GetType(), Path.Combine(World.Get().GameState.CustomGameMode.ChildPath, $"{GetType().Name}-Config.yml"));
 
         /// <summary>
         /// Gets a value indicating whether the player is ready to respawn.
         /// </summary>
+        [YamlIgnore]
         public virtual bool CanRespawn => DateTime.Now > LastDeath + TimeSpan.FromSeconds(RespawnTime);
 
         /// <summary>
         /// Gets or sets the remaining respawn time.
         /// </summary>
+        [YamlIgnore]
         public virtual float RemainingRespawnTime
         {
             get => (float)Math.Max(0f, (LastDeath + TimeSpan.FromSeconds(RespawnTime) - DateTime.Now).TotalSeconds);
@@ -173,6 +181,8 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         protected override void PostInitialize()
         {
             base.PostInitialize();
+
+            ImplementConfigs_DefaultImplementation(this, Config);
 
             World.Get().GameState.AddPlayerState(this);
         }
