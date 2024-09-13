@@ -11,7 +11,6 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using System.Reflection;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
@@ -19,7 +18,6 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Roles;
-    using Exiled.API.Interfaces;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Features.Generic;

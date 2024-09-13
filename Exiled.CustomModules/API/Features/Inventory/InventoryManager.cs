@@ -8,6 +8,7 @@
 namespace Exiled.CustomModules.API.Features.Inventory
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
 
     using Exiled.API.Enums;
 
@@ -43,21 +44,26 @@ namespace Exiled.CustomModules.API.Features.Inventory
         }
 
         /// <inheritdoc/>
+        [Description("The list of items to be given.")]
         public List<ItemType> Items { get; set; } = new();
 
         /// <inheritdoc/>
+        [Description("The list of custom items to be given.")]
         public List<object> CustomItems { get; set; } = new();
 
         /// <inheritdoc/>
+        [Description("The ammo box settings to be applied.")]
         public Dictionary<AmmoType, ushort> AmmoBox { get; set; } = new();
 
         /// <inheritdoc/>
+        [Description("The custom ammo box settings to be applied.")]
         public Dictionary<uint, ushort> CustomAmmoBox { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the probability associated with this inventory slot.
         /// <br>Useful for inventory tweaks involving one or more probability values.</br>
         /// </summary>
+        [Description("The probability associated with this inventory slot. Useful for inventory tweaks involving one or more probability values.")]
         public float Chance { get; set; }
     }
 }

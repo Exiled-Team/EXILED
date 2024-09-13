@@ -8,6 +8,7 @@
 namespace Exiled.CustomModules.API.Features
 {
     using System;
+    using System.ComponentModel;
     using System.Reflection;
 
     using Exiled.API.Features.Core;
@@ -21,11 +22,13 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets or sets the module's id the <see cref="ModulePointer"/> is pointing to.
         /// </summary>
+        [Description("The module's id the module pointer is pointing to.")]
         public abstract uint Id { get; set; }
 
         /// <summary>
         /// Gets or sets the module type which the module pointer is pointing to.
         /// </summary>
+        [Description("The module type which the module pointer is pointing to.")]
         public virtual string ModuleTypeIndicator { get; set; }
 
         /// <summary>
