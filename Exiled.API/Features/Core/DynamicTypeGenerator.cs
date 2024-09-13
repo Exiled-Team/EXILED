@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Exiled.API.Features.Core
 {
     using System;
@@ -26,7 +28,12 @@ namespace Exiled.API.Features.Core
         /// <param name="rwOnly">Optional value indicating whether only read and write properties should be collected.</param>
         /// <param name="attributes">Optional array containing all type attributes the property must implement to be dynamically generated.</param>
         /// <returns>The dynamically generated type.</returns>
-        public static Type GenerateDynamicTypeWithConstructorFromExistingType(this Type baseType, string typeName = null, Type[] classAttributes = null, bool rwOnly = true, Type[] attributes = null)
+        public static Type GenerateDynamicTypeWithConstructorFromExistingType(
+            this Type baseType,
+            string typeName = null,
+            CustomAttributeBuilder[] classAttributes = null,
+            bool rwOnly = true,
+            Type[] attributes = null)
         {
             AssemblyName assemblyName = new($"ExiledDynamic_{Guid.NewGuid()}");
             AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
@@ -36,7 +43,7 @@ namespace Exiled.API.Features.Core
             TypeBuilder typeBuilder = moduleBuilder.AddClass(fullName, baseType);
 
             if (classAttributes is not null && !classAttributes.IsEmpty())
-                classAttributes.ForEach(att => typeBuilder.SetCustomAttribute(BuildAttribute_Internal(att)));
+                classAttributes.ForEach(att => typeBuilder.SetCustomAttribute(att));
 
             typeBuilder.AddConstructor();
 
@@ -65,6 +72,78 @@ namespace Exiled.API.Features.Core
                     GenerateFieldAndProperty(property);
                 }
             }
+
+            return typeBuilder.CreateType();
+        }
+
+        /// <summary>
+        /// Generates a dynamic type with a constructor, allowing external actions to modify the type before creation.
+        /// </summary>
+        /// <param name="typeName">The name of the generated type.</param>
+        /// <param name="constructorParams">The types of the constructor parameters.</param>
+        /// <param name="preCreateActions">A list of actions to modify the type before it is created.</param>
+        /// <returns>The dynamically generated type with a constructor.</returns>
+        public static Type GenerateDynamicTypeWithConstructor(
+            string typeName,
+            Type[] constructorParams = null,
+            List<Action<TypeBuilder>> preCreateActions = null)
+        {
+            AssemblyName assemblyName = new($"ExiledDynamic_{Guid.NewGuid()}");
+            AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("MainModule");
+
+            TypeBuilder typeBuilder = moduleBuilder.AddClass(typeName);
+
+            typeBuilder.AddConstructor(constructorParams);
+
+            preCreateActions?.ForEach(action => action(typeBuilder));
+
+            return typeBuilder.CreateType();
+        }
+
+        /// <summary>
+        /// Generates a dynamic type with custom attributes and external actions to modify the type before creation.
+        /// </summary>
+        /// <param name="typeName">The name of the generated type.</param>
+        /// <param name="classAttributes">Optional array containing attributes to apply on the generated type.</param>
+        /// <param name="propertyAttributes">Optional dictionary specifying attributes for each property.</param>
+        /// <param name="fields">A dictionary where the key is the field name and the value is the field type.</param>
+        /// <param name="preCreateActions">A list of actions to modify the type before it is created.</param>
+        /// <returns>The dynamically generated type with custom class and property attributes.</returns>
+        public static Type GenerateDynamicTypeWithAttributes(
+            string typeName,
+            CustomAttributeBuilder[] classAttributes = null,
+            Dictionary<string, CustomAttributeBuilder[]> propertyAttributes = null,
+            Dictionary<string, Type> fields = null,
+            List<Action<TypeBuilder>> preCreateActions = null)
+        {
+            AssemblyName assemblyName = new($"ExiledDynamic_{Guid.NewGuid()}");
+            AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("MainModule");
+
+            TypeBuilder typeBuilder = moduleBuilder.AddClass(typeName);
+
+            if (classAttributes != null && classAttributes.Length > 0)
+            {
+                foreach (CustomAttributeBuilder att in classAttributes)
+                    typeBuilder.SetCustomAttribute(att);
+            }
+
+            foreach (KeyValuePair<string, Type> field in fields)
+            {
+                typeBuilder.AddField(field.Key, field.Value);
+                typeBuilder.AddProperty(field.Key, field.Value);
+
+                if (propertyAttributes != null && propertyAttributes.TryGetValue(field.Key, out CustomAttributeBuilder[] attrs))
+                {
+                    foreach (CustomAttributeBuilder attr in attrs)
+                        typeBuilder.SetCustomAttribute(attr);
+                }
+            }
+
+            typeBuilder.AddConstructor();
+
+            preCreateActions?.ForEach(action => action(typeBuilder));
 
             return typeBuilder.CreateType();
         }
@@ -189,7 +268,8 @@ namespace Exiled.API.Features.Core
         /// Adds a default constructor to the type builder.
         /// </summary>
         /// <param name="typeBuilder">The type builder to add the constructor to.</param>
-        public static void AddConstructor(this TypeBuilder typeBuilder)
+        /// <param name="parameterTypes">The types of the constructor parameters.</param>
+        public static void AddConstructor(this TypeBuilder typeBuilder, Type[] parameterTypes = null)
         {
             ConstructorBuilder constructorBuilder = typeBuilder.DefineConstructor(
                 MethodAttributes.Public,
@@ -197,34 +277,19 @@ namespace Exiled.API.Features.Core
                 Type.EmptyTypes);
 
             ILGenerator constructorIL = constructorBuilder.GetILGenerator();
-            constructorIL.Emit(OpCodes.Ldarg_0);
-            constructorIL.Emit(OpCodes.Call, typeof(object).GetConstructor(Type.EmptyTypes));
-            constructorIL.Emit(OpCodes.Ret);
-        }
-
-        /// <summary>
-        /// Adds a constructor with parameters to the type builder.
-        /// </summary>
-        /// <param name="typeBuilder">The type builder to add the constructor to.</param>
-        /// <param name="parameterTypes">The types of the constructor parameters.</param>
-        public static void AddConstructor(this TypeBuilder typeBuilder, Type[] parameterTypes)
-        {
-            ConstructorBuilder constructorBuilder = typeBuilder.DefineConstructor(
-                MethodAttributes.Public,
-                CallingConventions.Standard,
-                parameterTypes);
-
-            ILGenerator constructorIL = constructorBuilder.GetILGenerator();
 
             constructorIL.Emit(OpCodes.Ldarg_0);
             constructorIL.Emit(OpCodes.Call, typeof(object).GetConstructor(Type.EmptyTypes));
 
-            for (int i = 0; i < parameterTypes.Length; i++)
+            if (parameterTypes is not null && !parameterTypes.IsEmpty())
             {
-                constructorIL.Emit(OpCodes.Ldarg_0);
-                constructorIL.Emit(OpCodes.Ldarg, i + 1);
-                FieldInfo field = typeBuilder.DefineField($"_param{i}", parameterTypes[i], FieldAttributes.Private);
-                constructorIL.Emit(OpCodes.Stfld, field);
+                for (int i = 0; i < parameterTypes.Length; i++)
+                {
+                    constructorIL.Emit(OpCodes.Ldarg_0);
+                    constructorIL.Emit(OpCodes.Ldarg, i + 1);
+                    FieldInfo field = typeBuilder.DefineField($"_param{i}", parameterTypes[i], FieldAttributes.Private);
+                    constructorIL.Emit(OpCodes.Stfld, field);
+                }
             }
 
             constructorIL.Emit(OpCodes.Ret);
@@ -292,7 +357,7 @@ namespace Exiled.API.Features.Core
             Type attributeType,
             object[] constructorArguments = null,
             (string Name, object Value)[] namedArguments = null) =>
-            fieldBuilder.SetCustomAttribute(BuildAttribute_Internal(attributeType, constructorArguments, namedArguments));
+            fieldBuilder.SetCustomAttribute(BuildAttribute(attributeType, constructorArguments, namedArguments));
 
         /// <summary>
         /// Adds a custom attribute to the specified property.
@@ -307,7 +372,7 @@ namespace Exiled.API.Features.Core
             Type attributeType,
             object[] constructorArguments = null,
             (string Name, object Value)[] namedArguments = null) =>
-            propertyBuilder.SetCustomAttribute(BuildAttribute_Internal(attributeType, constructorArguments, namedArguments));
+            propertyBuilder.SetCustomAttribute(BuildAttribute(attributeType, constructorArguments, namedArguments));
 
         /// <summary>
         /// Adds a custom attribute to the specified method.
@@ -322,9 +387,17 @@ namespace Exiled.API.Features.Core
             Type attributeType,
             object[] constructorArguments = null,
             (string Name, object Value)[] namedArguments = null) =>
-            methodBuilder.SetCustomAttribute(BuildAttribute_Internal(attributeType, constructorArguments, namedArguments));
+            methodBuilder.SetCustomAttribute(BuildAttribute(attributeType, constructorArguments, namedArguments));
 
-        private static CustomAttributeBuilder BuildAttribute_Internal(
+        /// <summary>
+        /// Builds a custom attribute for the specified <see cref="Type"/> using the provided constructor and named arguments.
+        /// </summary>
+        /// <param name="attributeType">The <see cref="Type"/> of the attribute to build.</param>
+        /// <param name="constructorArguments">Optional constructor arguments to be passed to the attribute constructor.</param>
+        /// <param name="namedArguments">Optional named arguments to set as properties on the attribute.</param>
+        /// <returns>A <see cref="CustomAttributeBuilder"/> instance representing the custom attribute.</returns>
+        /// <exception cref="ArgumentException">Thrown when a matching constructor cannot be found for the attribute type.</exception>
+        public static CustomAttributeBuilder BuildAttribute(
             Type attributeType,
             object[] constructorArguments = null,
             (string Name, object Value)[] namedArguments = null)
