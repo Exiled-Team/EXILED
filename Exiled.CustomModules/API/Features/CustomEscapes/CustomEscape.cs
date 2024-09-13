@@ -189,9 +189,6 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// </remarks>
         public static int EnableAll(Assembly assembly = null)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomEscapes.Name))
-                throw new Exception("ModuleType::CustomEscapes must be enabled in order to load any custom escapes");
-
             assembly ??= Assembly.GetCallingAssembly();
 
             List<CustomEscape> customEscapes = new();

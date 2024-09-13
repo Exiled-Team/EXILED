@@ -463,9 +463,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </remarks>
         public static int EnableAll(Assembly assembly = null)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomTeams.Name))
-                throw new Exception("ModuleType::CustomTeams must be enabled in order to load any custom teams");
-
             assembly ??= Assembly.GetCallingAssembly();
 
             List<CustomTeam> customTeams = new();
