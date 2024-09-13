@@ -35,6 +35,7 @@ namespace Exiled.API.Features
 
         private static readonly Dictionary<ConfigSubsystem, string> Cache = new();
         private static readonly List<ConfigSubsystem> MainConfigsValue = new();
+        private static bool isLoaded = false;
 
         private readonly HashSet<ConfigSubsystem> data = new();
 
@@ -87,6 +88,16 @@ namespace Exiled.API.Features
         public string? Name { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the config does not rely on any path.
+        /// </summary>
+        public bool IsStandAlone { get; set; }
+
+        /// <summary>
+        /// Gets or sets the individual path.
+        /// </summary>
+        public string? StandAlonePath { get; set; }
+
+        /// <summary>
         /// Gets the absolute path.
         /// </summary>
         public string? AbsolutePath => Folder is not null && Name is not null ? Path.Combine(Paths.Configs, Path.Combine(Folder, Name)) : null;
@@ -125,23 +136,6 @@ namespace Exiled.API.Features
             .IgnoreUnmatchedProperties();
 
         /// <summary>
-        /// Gets a <see cref="ConfigSubsystem"/> instance given the specified type <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of the config to look for.</typeparam>
-        /// <param name="generateNew">Whether a new config should be generated, if not found.</param>
-        /// <returns>The corresponding <see cref="ConfigSubsystem"/> instance or <see langword="null"/> if not found.</returns>
-        public static ConfigSubsystem? Get<T>(bool generateNew = false)
-            where T : class
-        {
-            ConfigSubsystem? config = ConfigsValue.FirstOrDefault(config => config?.Base?.GetType() == typeof(T));
-
-            if (!config && generateNew)
-                config = GenerateNew<T>();
-
-            return config;
-        }
-
-        /// <summary>
         /// Gets a <see cref="ConfigSubsystem"/> instance given the specified folder.
         /// </summary>
         /// <param name="folder">The folder of the config to look for.</param>
@@ -149,34 +143,79 @@ namespace Exiled.API.Features
         public static ConfigSubsystem Get(string folder) => List.FirstOrDefault(cfg => cfg.Folder == folder) ?? throw new InvalidOperationException();
 
         /// <summary>
+        /// Gets a <see cref="ConfigSubsystem"/> instance given the specified <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> of the config to look for.</param>
+        /// <param name="generateNew">Whether a new config should be generated, if not found.</param>
+        /// <returns>The corresponding <see cref="ConfigSubsystem"/> instance or <see langword="null"/> if not found.</returns>
+        public static ConfigSubsystem? Get(Type type, bool generateNew = false)
+        {
+            ConfigSubsystem? config = ConfigsValue.FirstOrDefault(config => config?.Base?.GetType() == type);
+
+            if (config == null && generateNew)
+                config = GenerateNew(type);
+
+            return config;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="ConfigSubsystem"/> instance given the specified type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the config to look for.</typeparam>
+        /// <param name="generateNew">Whether a new config should be generated, if not found.</param>
+        /// <returns>The corresponding <see cref="ConfigSubsystem"/> instance or <see langword="null"/> if not found.</returns>
+        public static ConfigSubsystem? Get<T>(bool generateNew = false)
+            where T : class => Get(typeof(T), generateNew);
+
+        /// <summary>
+        /// Generates a new config for the specified <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> of the config.</param>
+        /// <returns>The generated config.</returns>
+        public static ConfigSubsystem? GenerateNew(Type type) => Load(type, type.GetCustomAttribute<ConfigAttribute>());
+
+        /// <summary>
         /// Generates a new config of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type of the config.</typeparam>
         /// <returns>The generated config.</returns>
         public static ConfigSubsystem? GenerateNew<T>()
-            where T : class
-        {
-            ConfigSubsystem? config = Get<T>();
-            if (config is not null)
-                return config;
-
-            return Load(typeof(T), typeof(T).GetCustomAttribute<ConfigAttribute>());
-        }
+            where T : class => GenerateNew(typeof(T));
 
         /// <summary>
         /// Loads all configs.
         /// </summary>
-        public static void LoadAll()
+        /// <param name="toLoad">The assemblies to load the configs from.</param>
+        public static void LoadAll(IEnumerable<Assembly> toLoad)
         {
-            MainConfigsValue.Clear();
-            ConfigsValue.Clear();
-            Cache.Clear();
+            if (!isLoaded)
+            {
+                isLoaded = true;
+                MainConfigsValue.Clear();
+                ConfigsValue.Clear();
+                Cache.Clear();
+            }
 
-            Assembly.GetCallingAssembly()
-                .GetTypes()
-                .Where(t => t.IsClass && !t.IsInterface && !t.IsAbstract)
-                .ToList()
-                .ForEach(t => Load(t));
+            void LoadFromAssembly(Assembly asm) =>
+                asm.GetTypes()
+                    .Where(t => t.IsClass && !t.IsInterface && !t.IsAbstract)
+                    .ToList()
+                    .ForEach(t =>
+                    {
+                        ConfigAttribute attribute = t.GetCustomAttribute<ConfigAttribute>();
+                        if (attribute is null)
+                            return;
+
+                        Load(t, attribute);
+                    });
+
+            if (toLoad is not null && !toLoad.IsEmpty())
+            {
+                toLoad.ForEach(LoadFromAssembly);
+                return;
+            }
+
+            LoadFromAssembly(Assembly.GetCallingAssembly());
         }
 
         /// <summary>
@@ -185,7 +224,7 @@ namespace Exiled.API.Features
         /// <param name="type">The config type.</param>
         /// <param name="attribute">The config data.</param>
         /// <returns>The <see cref="ConfigSubsystem"/> object.</returns>
-        public static ConfigSubsystem? Load(Type type, ConfigAttribute? attribute = null)
+        public static ConfigSubsystem? Load(Type type, ConfigAttribute? attribute)
         {
             try
             {
@@ -194,13 +233,13 @@ namespace Exiled.API.Features
                     return null;
 
                 ConstructorInfo? constructor = type.GetConstructor(Type.EmptyTypes);
-                object? config = constructor is not null ?
+                object? target = constructor is not null ?
                     constructor.Invoke(null)!
                     : Array.Find(
                         type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public),
                         property => property.PropertyType == type)?.GetValue(null)!;
 
-                if (config is null)
+                if (target is null)
                 {
                     Log.Error($"{type.FullName} is a valid config, but it cannot be instantiated!" +
                         $"It either doesn't have a public default constructor without any arguments or a static property of the {type.FullName} type!");
@@ -208,25 +247,29 @@ namespace Exiled.API.Features
                     return null;
                 }
 
-                ConfigSubsystem wrapper = new(config);
-                if (string.IsNullOrEmpty(wrapper.Folder))
+                ConfigSubsystem wrapper = new(target);
+
+                if (!wrapper.IsStandAlone)
                 {
-                    if (string.IsNullOrEmpty(attribute.Folder))
+                    if (string.IsNullOrEmpty(wrapper.Folder))
                     {
-                        Log.Warn($"The folder of the object of type {config.GetType()} ({wrapper.Name}) has not been set. It's not possible to determine the parent config which it belongs to, hence it won't be read.");
+                        if (string.IsNullOrEmpty(attribute.Folder))
+                        {
+                            Log.Warn($"The folder of the object of type {target.GetType()} ({wrapper.Name}) has not been set. It's not possible to determine the parent config which it belongs to, hence it won't be read.");
 
-                        return null;
+                            return null;
+                        }
+
+                        wrapper.Folder = attribute.Folder;
                     }
-
-                    wrapper.Folder = attribute.Folder;
                 }
 
                 if (string.IsNullOrEmpty(wrapper.Name))
                 {
                     if (string.IsNullOrEmpty(attribute.Name))
                     {
-                        wrapper.Name = config.GetType().Name;
-                        Log.Warn($"The config's name of the object of type {config.GetType()} has not been set. The object's type name ({config.GetType().Name}) will be used instead.");
+                        wrapper.Name = target.GetType().Name;
+                        Log.Warn($"The config's name of the object of type {target.GetType()} has not been set. The object's type name ({target.GetType().Name}) will be used instead.");
                     }
                     else
                     {
@@ -238,13 +281,21 @@ namespace Exiled.API.Features
                 if (!wrapper.Name!.Contains(".yml"))
                     wrapper.Name += ".yml";
 
+                if (wrapper.IsStandAlone && !string.IsNullOrEmpty(wrapper.StandAlonePath))
+                {
+                    Load(wrapper, wrapper.StandAlonePath);
+                    wrapper.data.Add(wrapper);
+                    MainConfigsValue.Add(wrapper);
+
+                    return wrapper;
+                }
+
                 if (wrapper.Folder is not null)
                 {
                     string path = Path.Combine(Paths.Configs, wrapper.Folder);
                     if (attribute.IsParent)
                     {
-                        if (!Directory.Exists(Path.Combine(path)))
-                            Directory.CreateDirectory(path);
+                        Directory.CreateDirectory(path);
 
                         Load(wrapper, wrapper.AbsolutePath!);
                         wrapper.data.Add(wrapper);
@@ -324,6 +375,23 @@ namespace Exiled.API.Features
 
             File.WriteAllText(path ?? throw new ArgumentNullException(nameof(path)), Serializer.Serialize(config.Base!));
         }
+
+        /// <summary>
+        /// Loads a dynamic configuration for the specified <see cref="Type"/> from the given path.
+        /// This method generates a new type at runtime that mirrors the <paramref name="sourceType"/>,
+        /// including all serializable properties, and applies attributes like <see cref="ConfigAttribute"/>
+        /// and <see cref="YamlIgnoreAttribute"/> if specified.
+        /// </summary>
+        /// <param name="sourceType">The <see cref="Type"/> for which to generate the dynamic configuration at runtime.</param>
+        /// <param name="path">The path from which to load the configuration.</param>
+        /// <returns>A <see cref="ConfigSubsystem"/> instance for the dynamically generated configuration, or <see langword="null"/> if not found.</returns>
+        public static ConfigSubsystem? LoadDynamic(Type sourceType, string path) =>
+
+            // TODO: Implement support for specifying a path and file for the dynamic type.
+            // TODO: Additionally, add a method to initialize the ConfigAttribute so that the dynamic configuration can function independently.
+            Get(
+                sourceType.GenerateDynamicTypeWithConstructorFromExistingType(
+                    sourceType.Name + "Config", new[] { typeof(ConfigAttribute) }, true, new[] { typeof(YamlIgnoreAttribute) }), true);
 
         /// <summary>
         /// Gets the path of the specified data object of type <typeparamref name="T"/>.
@@ -413,7 +481,7 @@ namespace Exiled.API.Features
                 return;
 
             propertyInfo.SetValue(param, value);
-            File.WriteAllText(path ?? throw new InvalidOperationException(), Serializer.Serialize(param));
+            File.WriteAllText(path ?? throw new ArgumentNullException(), Serializer.Serialize(param));
             this.CopyProperties(Deserializer.Deserialize(File.ReadAllText(path), GetType()));
         }
     }

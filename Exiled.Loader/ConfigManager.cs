@@ -29,6 +29,11 @@ namespace Exiled.Loader
     public static class ConfigManager
     {
         /// <summary>
+        /// Implements the <see cref="ConfigSubsystem"/>.
+        /// </summary>
+        public static void LoadConfigSubsystem() => Serialization.LoadAll(Loader.Plugins.Select(asm => asm.Assembly));
+
+        /// <summary>
         /// Loads all the plugin configs.
         /// </summary>
         /// <param name="rawConfigs">The raw configs to be loaded.</param>

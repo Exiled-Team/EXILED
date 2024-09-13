@@ -49,5 +49,15 @@ namespace Exiled.API.Features.Attributes
         /// Gets a value indicating whether the class on which this attribute is being applied to should be treated as parent <see cref="ConfigSubsystem"/>.
         /// </summary>
         public bool IsParent { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the config is individual.
+        /// </summary>
+        public bool IsStandAlone { get; }
+
+        /// <summary>
+        /// Gets the individual path.
+        /// </summary>
+        public string StandAlonePath { get; }
     }
 }

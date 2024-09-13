@@ -416,8 +416,8 @@ namespace Exiled.Loader
             LoadDependencies();
             LoadPlugins();
 
-            ConfigSubsystem.LoadAll();
             ConfigManager.Reload();
+            ConfigManager.LoadConfigSubsystem();
             TranslationManager.Reload();
 
             EnablePlugins();

@@ -9,6 +9,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
     using System;
     using System.Diagnostics;
+    using System.IO;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
@@ -95,6 +96,12 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// Gets or sets the last time the player died.
         /// </summary>
         public DateTime LastDeath { get; protected set; }
+
+        /// <summary>
+        /// Gets the <see cref="ConfigSubsystem"/>.
+        /// </summary>
+        public virtual new ConfigSubsystem Config =>
+            ConfigSubsystem.LoadDynamic(GetType(), Path.Combine(World.Get().GameState.CustomGameMode.ChildPath, $"{GetType().Name}-Config.yml"));
 
         /// <summary>
         /// Gets a value indicating whether the player is ready to respawn.
