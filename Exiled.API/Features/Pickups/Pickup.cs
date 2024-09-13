@@ -591,12 +591,7 @@ namespace Exiled.API.Features.Pickups
         /// Destroys the already spawned pickup.
         /// </summary>
         /// <seealso cref="UnSpawn"/>
-        public void Destroy()
-        {
-            Base.DestroySelf();
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-        }
+        public void Destroy() => Base.DestroySelf();
 
         /// <summary>
         /// Clones the current pickup with a different serial.
