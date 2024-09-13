@@ -39,12 +39,14 @@ namespace Exiled.CustomModules.API.Commands.CustomTeams
         public override void LoadGeneratedCommands()
         {
             RegisterCommand(Spawn.Instance);
+            RegisterCommand(Info.Instance);
+            RegisterCommand(List.List.Instance);
         }
 
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Invalid subcommand! Available: ";
+            response = "Invalid subcommand! Available: spawn, info, list";
             return false;
         }
     }
