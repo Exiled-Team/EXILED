@@ -424,8 +424,6 @@ namespace Exiled.CustomModules.API.Features
         /// <exception cref="ArgumentNullException">Thrown when <see cref="ChildPath"/> is null.</exception>
         public virtual void SerializeModule()
         {
-            Log.Debug("serializing");
-
             if (string.IsNullOrEmpty(Name))
             {
                 Log.Error($"[{BaseModuleTypeName}] {GetType().Name}::Name property was not defined. A module must define a name, or it won't load.");
