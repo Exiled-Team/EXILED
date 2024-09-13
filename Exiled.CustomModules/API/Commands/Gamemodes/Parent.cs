@@ -33,7 +33,7 @@ namespace Exiled.CustomModules.API.Commands.GameModes
         public override string[] Aliases { get; } = { "gmd", "gmds" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = string.Empty;
+        public override string Description { get; } = "Exiled Gamemode Commands";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()

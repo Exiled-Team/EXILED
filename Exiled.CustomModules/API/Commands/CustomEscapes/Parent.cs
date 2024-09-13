@@ -33,7 +33,7 @@ namespace Exiled.CustomModules.API.Commands.CustomEscapes
         public override string[] Aliases { get; } = { "esc" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = string.Empty;
+        public override string Description { get; } = "Exiled Custom Escape Commands";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()

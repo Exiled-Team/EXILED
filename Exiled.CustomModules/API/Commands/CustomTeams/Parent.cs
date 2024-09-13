@@ -33,7 +33,7 @@ namespace Exiled.CustomModules.API.Commands.CustomTeams
         public override string[] Aliases { get; } = { "tms" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = string.Empty;
+        public override string Description { get; } = "Exiled Custom Team Commands";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()
