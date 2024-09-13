@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Features.Core
 {
-    using System;
-
     /// <summary>
     /// The base class which defines nullable objects.
     /// </summary>
