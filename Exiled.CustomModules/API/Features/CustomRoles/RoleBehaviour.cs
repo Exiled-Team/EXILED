@@ -202,23 +202,21 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 case 1: return true;
 
                 default:
-                    // @Nao, i mouve repeted code here to see better
-                    // For me this following condition are always true.
-                    // Expete if it existe a case where there is -1 Chaos
                     summaryInfo = World.Get().SummaryInfo;
 
-                    bool hasChaos = summaryInfo.ChaosInsurgency <= 0;
-                    bool hasFondtion = summaryInfo.FoundationForces <= 0;
-                    bool hasScp = summaryInfo.ChaosInsurgency <= 0;
+                    bool noChaos = summaryInfo.ChaosInsurgency <= 0;
+                    bool noFondation = summaryInfo.FoundationForces <= 0;
+                    bool noScp = summaryInfo.ChaosInsurgency <= 0;
 
-                    if (CustomRole.TeamsOwnership.Contains(Team.SCPs) && hasFondtion && hasChaos)
-                        return true; // @Nao Why true, that mean the round can end, but if there is some fondation left, the round should not end...
-
-                    if (CustomRole.TeamsOwnership.Any(team => team is Team.ClassD or Team.ChaosInsurgency) && hasFondtion && hasScp)
+                    if (noFondation && noChaos && CustomRole.TeamsOwnership.Contains(Team.SCPs))
                         return true;
 
-                    if (CustomRole.TeamsOwnership.Any(team => team is Team.FoundationForces or Team.Scientists) && hasChaos && hasScp)
+                    if (noFondation && noScp && CustomRole.TeamsOwnership.Any(team => team is Team.ClassD or Team.ChaosInsurgency))
                         return true;
+
+                    if (noChaos && noScp && CustomRole.TeamsOwnership.Any(team => team is Team.FoundationForces or Team.Scientists))
+                        return true;
+
                     return false;
             }
         }
