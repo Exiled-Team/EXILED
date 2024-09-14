@@ -48,9 +48,6 @@ namespace Exiled.API.Features.Core
         /// </summary>
         ~ConstProperty()
         {
-            // @Nao Never be call, it need to remove it reference from List beffor the dtor call
-            List.Remove(this);
-
             foreach (MethodInfo methodInfo in PatchedMethods)
             {
                 try
