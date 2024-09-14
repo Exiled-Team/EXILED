@@ -24,7 +24,7 @@ namespace Exiled.API.Features.Core.Components
         /// The default fixed tick rate (60 per second).
         /// </summary>
 #pragma warning disable SA1310
-        public const float DEFAULT_FIXED_TICK_RATE = 0.016f;
+        public const float DEFAULT_FIXED_TICK_RATE = 1f / 60f;
 #pragma warning restore SA1310
 
         private readonly HashSet<CoroutineHandle> boundHandles;
