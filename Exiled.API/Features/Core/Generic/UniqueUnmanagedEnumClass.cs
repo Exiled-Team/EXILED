@@ -28,39 +28,33 @@ namespace Exiled.API.Features.Core.Generic
         where TObject : UniqueUnmanagedEnumClass<TSource, TObject>
     {
         private static SortedList<TSource, TObject> values;
-        private static int nextValue = int.MinValue;
+        private static long nextValue;
         private static bool isDefined;
 
         private string name;
 
+        static UniqueUnmanagedEnumClass()
+        {
+            values = new SortedList<TSource, TObject>();
+            nextValue = (int)typeof(TSource).GetField("MinValue").GetValue(null);
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UniqueUnmanagedEnumClass{TSource, TObject}"/> class.
         /// </summary>
-        public UniqueUnmanagedEnumClass()
+        internal protected UniqueUnmanagedEnumClass()
         {
-            values ??= new();
-            TypeCode code = Convert.GetTypeCode(typeof(TSource).GetField("MinValue").GetValue(null));
-
-            // @Nao If the value is not an Uxxxxx it will get an overflow. Like if it use an Int16, Byte or SByte
-            // Maybe use a long for nextValue and do "nextValue = typeof(TSource).GetField("MinValue").GetValue(null)"
-            // it also be a struct containing only unmanged struct. The best solution is proably to
-            // look for upper version of the framwork to resolve this with the new numeric interfaces.
-            if (code is TypeCode.UInt16 or TypeCode.UInt32 or TypeCode.UInt64)
-                nextValue = 0;
-
             lock (values)
             {
                 TSource value;
                 do
                 {
-                    value = (TSource)Convert.ChangeType(nextValue++, code);
+                    value = (TSource)Convert.ChangeType(nextValue++, Value.GetTypeCode());
                 }
                 while (values.ContainsKey(value));
 
                 Value = value;
 
-                // @nao If the value is register when a new instance is created.
-                // Maybe put the ctor in protected to avoid exteranal code (outisde the enum) to create new values
                 values.Add(value, (TObject)this);
             }
         }
