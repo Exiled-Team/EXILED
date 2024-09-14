@@ -59,18 +59,15 @@ namespace Exiled.API.Features.Core.Generic
         /// </remarks>
         protected virtual void FindOwner()
         {
-            // @Nao T is a GameEntity, why not add in inisde of it the method a abstract.
-            // Or create an specific Interaface requesting to implement this method
             MethodInfo method = typeof(T).GetMethod("Get", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(GameObject) }, null);
 
-            if (method != null)
-            {
-                Owner = (T)method.Invoke(null, new object[] { Base });
-            }
-            else
-            {
+            if (method == null)
                 throw new MissingMethodException($"Method 'Get(GameObject)' not found in class '{typeof(T).Name}'.");
-            }
+
+            if (typeof(T).IsAssignableFrom(method.ReturnType))
+                throw new MissingMethodException($"Method 'Get(GameObject)' in class '{typeof(T).Name}' do not return an instance of {typeof(T).Name} but {method.ReturnType}.");
+
+            Owner = (T)method.Invoke(null, new object[] { Base });
         }
 
         /// <inheritdoc/>
