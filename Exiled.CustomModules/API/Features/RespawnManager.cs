@@ -174,7 +174,9 @@ namespace Exiled.CustomModules.API.Features
         {
             PreviousKnownTeam = NextKnownTeam;
 
-            // @Nao are you sur that is "or SpawnableTeamType" and not "or not SpawnableTeamType"
+            if (!ev.IsAllowed)
+                return;
+
             if (NextKnownTeam is null or SpawnableTeamType)
                 return;
 
@@ -188,10 +190,6 @@ namespace Exiled.CustomModules.API.Features
                 return;
             }
 
-            // @Nao, it cool to use the event system for this. But if an other plugin
-            // allready say "ev.IsAllowed = false". it will get ignore
-            // and the team will still spawn...
-            // And post event shoold be here to spawn. Or an EventHandler handling last
             ev.IsAllowed = false;
             Spawn();
             Respawning.RespawnManager.Singleton?.RestartSequence();

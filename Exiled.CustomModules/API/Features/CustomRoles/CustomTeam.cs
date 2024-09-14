@@ -114,7 +114,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// This property provides access to a curated collection of <see cref="uint"/> objects, encapsulating all available custom role  within the context of units.
         /// <br/>The collection is designed to be both queried and modified as needed to accommodate dynamic scenarios within the game architecture.
         /// </remarks>
-        // @Nao, adding the possiblity to have custom roles
         public virtual IEnumerable<uint> Units { get; set; } = new uint[] { };
 
         /// <summary>
