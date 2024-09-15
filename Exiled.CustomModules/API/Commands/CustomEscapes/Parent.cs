@@ -1,18 +1,18 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Parent.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Commands.CustomItem
+namespace Exiled.CustomModules.API.Commands.CustomEscapes
 {
     using System;
 
     using CommandSystem;
 
     /// <summary>
-    /// The main parent command for custom items.
+    /// The main parent command for custom escapes.
     /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -27,19 +27,19 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
         }
 
         /// <inheritdoc/>
-        public override string Command { get; } = "customitems";
+        public override string Command { get; } = "escapes";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = { "ci", "cis" };
+        public override string[] Aliases { get; } = { "esc" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = "Exiled Custom Item Commands";
+        public override string Description { get; } = "Exiled Custom Escape Commands";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()
         {
-            RegisterCommand(Give.Instance);
-            RegisterCommand(Spawn.Instance);
+            RegisterCommand(Attach.Instance);
+            RegisterCommand(Detach.Instance);
             RegisterCommand(Info.Instance);
             RegisterCommand(List.List.Instance);
         }
@@ -47,7 +47,7 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Invalid subcommand! Available: give, spawn, info, list";
+            response = "Invalid subcommand! Available: attach, detach, info, list";
             return false;
         }
     }
