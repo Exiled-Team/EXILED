@@ -30,8 +30,9 @@ function Move-File {
     }
 }
  
-Move-File -sourcePath ".\EXILED-DLL-Archiver.exe" -destinationPath ".\bin\Release\EXILED-DLL-Archiver.exe"
+Move-File -sourcePath ".\Exiled.Archiver.exe" -destinationPath ".\bin\Release\Exiled.Archiver.exe"
+Move-File -sourcePath ".\References\Newtonsoft.Json.dll" -destinationPath ".\bin\Release\MNewtonsoft.Json.dll"
 Move-File -sourcePath ".\References\Mono.Posix.dll" -destinationPath ".\bin\Release\Mono.Posix.dll"
 Move-File -sourcePath ".\References\System.ComponentModel.DataAnnotations.dll" -destinationPath ".\bin\Release\System.ComponentModel.DataAnnotations.dll"
 CD .\bin\Release
-.\EXILED-DLL-Archiver.exe
+.\Exiled.Archiver.exe
