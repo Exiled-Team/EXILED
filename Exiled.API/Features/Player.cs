@@ -4011,6 +4011,14 @@ namespace Exiled.API.Features
                 writer.WriteByte(unitId);
             }
 
+            if (roleBase is ZombieRole)
+            {
+                if (Role.Base is not ZombieRole)
+                    isRisky = true;
+
+                writer.WriteUShort((ushort)Mathf.Clamp(Mathf.CeilToInt(MaxHealth), ushort.MinValue, ushort.MaxValue));
+            }
+
             if (roleBase is FpcStandardRoleBase fpc)
             {
                 if (Role.Base is not FpcStandardRoleBase playerfpc)
@@ -4021,14 +4029,6 @@ namespace Exiled.API.Features
                 fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort value, out ushort _);
                 writer.WriteRelativePosition(RelativePosition);
                 writer.WriteUShort(value);
-            }
-
-            if (roleBase is ZombieRole)
-            {
-                if (Role.Base is not ZombieRole)
-                    isRisky = true;
-
-                writer.WriteUShort((ushort)Mathf.Clamp(Mathf.CeilToInt(MaxHealth), ushort.MinValue, ushort.MaxValue));
             }
 
             foreach (Player target in playersToAffect)
