@@ -9,6 +9,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
 
@@ -23,7 +24,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomEscapes;
     using Exiled.CustomModules.Events.EventArgs.CustomRoles;
-    using MEC;
     using PlayerRoles;
     using Respawning;
     using YamlDotNet.Serialization;
@@ -92,31 +92,37 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets or sets the <see cref="CustomRole"/>'s name.
         /// </summary>
+        [Description("The name of the custom role.")]
         public override string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomRole"/>'s id.
         /// </summary>
+        [Description("The id of the custom role.")]
         public override uint Id { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomRole"/>'s description.
         /// </summary>
+        [Description("The description of the custom role.")]
         public virtual string Description { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="CustomRole"/> is enabled.
         /// </summary>
+        [Description("Indicates whether the custom role is enabled.")]
         public override bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomRole"/>'s <see cref="RoleTypeId"/>.
         /// </summary>
+        [Description("The custom role's RoleTypeId.")]
         public virtual RoleTypeId Role { get; set; }
 
         /// <summary>
         /// Gets or sets the relative spawn chance of the <see cref="CustomRole"/>.
         /// </summary>
+        [Description("The custom role's spawn chance.")]
         public virtual int Probability { get; set; }
 
         /// <summary>
@@ -125,6 +131,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <remarks>
         /// This property specifies the required alive team to be eligible for spawning in the <see cref="CustomRole"/>.
         /// </remarks>
+        [Description("The custom role's required team to spawn.")]
         public virtual Team RequiredTeamToSpawn { get; set; } = Team.Dead;
 
         /// <summary>
@@ -133,6 +140,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <remarks>
         /// This property specifies the required role type for players to be eligible for spawning in the <see cref="CustomRole"/>.
         /// </remarks>
+        [Description("The custom role's required RoleTypeId to spawn.")]
         public virtual RoleTypeId RequiredRoleToSpawn { get; set; } = RoleTypeId.None;
 
         /// <summary>
@@ -141,6 +149,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <remarks>
         /// This property specifies the required alive custom team to be eligible for spawning in the <see cref="CustomRole"/>.
         /// </remarks>
+        [Description("The custom role's required custom team to spawn.")]
         public virtual uint RequiredCustomTeamToSpawn { get; set; }
 
         /// <summary>
@@ -149,21 +158,19 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <remarks>
         /// This property specifies the required custom role for players to be eligible for spawning in the <see cref="CustomRole"/>.
         /// </remarks>
+        [Description("The custom role's required custom role to spawn.")]
         public virtual uint RequiredCustomRoleToSpawn { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="RoleSettings"/>.
-        /// </summary>
-        public virtual RoleSettings Settings { get; set; } = RoleSettings.Default;
 
         /// <summary>
         /// Gets or sets the <see cref="CustomEscapes.EscapeSettings"/>.
         /// </summary>
+        [Description("The escape settings for the custom role.")]
         public virtual List<EscapeSettings> EscapeSettings { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a value representing the maximum instances of the <see cref="CustomRole"/> that can be automatically assigned.
         /// </summary>
+        [Description("The maximum number of instances for the custom role.")]
         public virtual int MaxInstances { get; set; }
 
         /// <summary>
@@ -172,31 +179,43 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <remarks>
         /// This property specifies the teams the <see cref="CustomRole"/> belongs to.
         /// </remarks>
+        [Description("The required teams for the custom role to win.")]
         public virtual Team[] TeamsOwnership { get; set; } = { };
 
         /// <summary>
         /// Gets or sets the <see cref="SpawnableTeamType"/> from which to retrieve players for assigning the <see cref="CustomRole"/>.
         /// </summary>
+        [Description("The spawnable team type for assigning players to the custom role.")]
         public virtual SpawnableTeamType AssignFromTeam { get; set; } = SpawnableTeamType.None;
 
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> from which to retrieve players for assigning the <see cref="CustomRole"/>.
         /// </summary>
+        [Description("The role type ID for assigning players to the custom role.")]
         public virtual RoleTypeId AssignFromRole { get; set; }
 
         /// <summary>
-        /// Gets or sets all roles to override, preventing the specified roles to spawn.
+        /// Gets or sets all roles to override, preventing the specified roles from spawning.
         /// </summary>
+        [Description("All roles to override and prevent from spawning.")]
         public virtual RoleTypeId[] OverrideScps { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="CustomRole"/> should be treated as a separate team unit.
         /// </summary>
+        [Description("Indicates whether the custom role should be treated as a separate team unit.")]
         public virtual bool IsTeamUnit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="RoleSettings"/>.
+        /// </summary>
+        [Description("The role settings associated with the custom role.")]
+        public virtual RoleSettings Settings { get; set; } = RoleSettings.Default;
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="CustomRole"/> should be considered an SCP.
         /// </summary>
+        [Description("Indicates whether the custom role should be considered an SCP.")]
         public virtual bool IsScp { get; set; }
 
         /// <summary>
@@ -215,6 +234,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets all the instances of this <see cref="CustomRole"/> in the global context.
         /// </summary>
+        [YamlIgnore]
         public int GlobalInstances { get; private set; }
 
         /// <summary>
@@ -554,7 +574,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (!TryGet(name, out CustomRole customRole))
                 return false;
 
-            Spawn(player, customRole, preservePosition, spawnReason, roleSpawnFlags);
+            customRole.Spawn(player, preservePosition, spawnReason, roleSpawnFlags);
             return true;
         }
 
@@ -634,27 +654,16 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Enables all the custom roles present in the assembly.
         /// </summary>
+        /// <param name="assembly">The assembly to enable the module instances from.</param>
+        /// <returns>The amount of enabled module instances.</returns>
         /// <remarks>
-        /// This method dynamically enables all custom roles found in the calling assembly. Custom roles
-        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling. If
-        /// a custom role is enabled successfully, it is added to the returned list.
+        /// This method dynamically enables all module instances found in the calling assembly that were
+        /// not previously registered.
         /// </remarks>
-        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
-
-        /// <summary>
-        /// Enables all the custom roles present in the assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly to enable the roles from.</param>
-        /// <remarks>
-        /// This method dynamically enables all custom roles found in the calling assembly. Custom roles
-        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling.
-        /// </remarks>
-        public static void EnableAll(Assembly assembly)
+        public static int EnableAll(Assembly assembly = null)
         {
-            if (CustomModules.Instance.Config.Modules is null || !CustomModules.Instance.Config.Modules.Contains("CustomRoles"))
-                throw new Exception("ModuleType::CustomRoles must be enabled in order to load any custom roles");
+            assembly ??= Assembly.GetCallingAssembly();
 
-            Player.DEFAULT_ROLE_BEHAVIOUR = typeof(RoleBehaviour);
             List<CustomRole> customRoles = new();
             foreach (Type type in assembly.GetTypes())
             {
@@ -672,23 +681,24 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     customRoles.Add(customRole);
             }
 
-            if (customRoles.Count != Registered.Count)
-                Log.Info($"{customRoles.Count} custom roles have been successfully registered!");
+            return customRoles.Count;
         }
 
         /// <summary>
         /// Disables all the custom roles present in the assembly.
         /// </summary>
+        /// <param name="assembly">The assembly to disable the module instances from.</param>
+        /// <returns>The amount of disabled module instances.</returns>
         /// <remarks>
-        /// This method dynamically disables all custom roles found in the calling assembly that were
+        /// This method dynamically disables all module instances found in the calling assembly that were
         /// previously registered.
         /// </remarks>
-        public static void DisableAll()
+        public static int DisableAll(Assembly assembly = null)
         {
+            assembly ??= Assembly.GetCallingAssembly();
             List<CustomRole> customRoles = new();
-            customRoles.AddRange(Registered.Where(customRole => customRole.TryUnregister()));
-
-            Log.Info($"{customRoles.Count} custom roles have been successfully unregistered!");
+            customRoles.AddRange(Registered.Where(customRole => customRole.GetType().Assembly == assembly && customRole.TryUnregister()));
+            return customRoles.Count;
         }
 
         /// <summary>
@@ -728,7 +738,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return role.Spawn(player, preservePosition, spawnReason, roleSpawnFlags);
 
             object prevRole = player.CustomRole ? player.CustomRole.Id : player.Role.Type;
-            player.AddComponent(BehaviourComponent);
+            player.AddComponent(BehaviourComponent, $"ECS-{Name}");
             PlayersValue.Remove(player);
             PlayersValue.Add(player, this);
             Instances += 1;
@@ -807,6 +817,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 return false;
             }
 
+            if (!typeof(RoleBehaviour).IsAssignableFrom(BehaviourComponent))
+            {
+                Log.Error($"Unable to register {Name}. Behaviour Component must implement RoleBehaviour.");
+                return false;
+            }
+
             if (attribute is not null && Id == 0)
             {
                 if (attribute.Id != 0)
@@ -859,22 +875,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             NameLookupTable.Remove(Name);
 
             return true;
-        }
-
-        private void ForceSpawn_Internal(Pawn player, bool preservePosition, SpawnReason spawnReason = null, RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All)
-        {
-            Instances += 1;
-            RoleBehaviour roleBehaviour = EObject.CreateDefaultSubobject<EActor>(BehaviourComponent, $"ECS-{Name}").Cast<RoleBehaviour>();
-            roleBehaviour.Settings.PreservePosition = preservePosition;
-
-            spawnReason ??= SpawnReason.ForceClass;
-            if (roleBehaviour.Settings.SpawnReason != spawnReason)
-                roleBehaviour.Settings.SpawnReason = spawnReason;
-
-            if (roleSpawnFlags != roleBehaviour.Settings.SpawnFlags)
-                roleBehaviour.Settings.SpawnFlags = roleSpawnFlags;
-
-            EActor ea = player.AddComponent(roleBehaviour);
         }
     }
 }

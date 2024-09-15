@@ -9,6 +9,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
 
@@ -64,34 +65,39 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         public override ModulePointer Config { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="CustomEscape"/>'s name.
-        /// </summary>
-        public override string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets or sets the <see cref="CustomEscape"/>'s id.
-        /// </summary>
-        public override uint Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="CustomEscape"/> is enabled.
-        /// </summary>
-        public override bool IsEnabled { get; set; }
-
-        /// <summary>
         /// Gets the <see cref="CustomEscape"/>'s <see cref="Type"/>.
         /// </summary>
         [YamlIgnore]
         public virtual Type BehaviourComponent { get; }
 
         /// <summary>
-        /// Gets or sets all <see cref="Hint"/>'s to be displayed based on the relative <see cref="UUEscapeScenarioType"/>.
+        /// Gets or sets the <see cref="CustomEscape"/>'s name.
         /// </summary>
+        [Description("The name of the custom escape.")]
+        public override string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="CustomEscape"/>'s id.
+        /// </summary>
+        [Description("The id of the custom escape.")]
+        public override uint Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="CustomEscape"/> is enabled.
+        /// </summary>
+        [Description("Indicates whether the custom escape is enabled.")]
+        public override bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets all <see cref="Hint"/>s to be displayed based on the relative <see cref="UUEscapeScenarioType"/>.
+        /// </summary>
+        [Description("A dictionary of hints to be displayed based on the scenario type.")]
         public virtual Dictionary<byte, Hint> Scenarios { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape settings.
         /// </summary>
+        [Description("A list of escape settings, including the default settings.")]
         public virtual List<EscapeSettings> Settings { get; set; } = new() { EscapeSettings.Default, };
 
         /// <summary>
@@ -181,16 +187,15 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Enables all the custom escapes present in the assembly.
         /// </summary>
-        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
-
-        /// <summary>
-        /// Enables all the custom escapes present in the assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly to enable the escapes from.</param>
-        public static void EnableAll(Assembly assembly)
+        /// <param name="assembly">The assembly to enable the module instances from.</param>
+        /// <returns>The amount of enabled module instances.</returns>
+        /// <remarks>
+        /// This method dynamically enables all module instances found in the calling assembly that were
+        /// not previously registered.
+        /// </remarks>
+        public static int EnableAll(Assembly assembly = null)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomEscapes.Name))
-                throw new Exception("ModuleType::CustomEscapes must be enabled in order to load any custom escapes");
+            assembly ??= Assembly.GetCallingAssembly();
 
             List<CustomEscape> customEscapes = new();
             foreach (Type type in assembly.GetTypes())
@@ -209,19 +214,25 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
                     customEscapes.Add(customEscape);
             }
 
-            if (customEscapes.Count() != List.Count())
-                Log.Info($"{customEscapes.Count()} custom escapes have been successfully registered!");
+            return customEscapes.Count;
         }
 
         /// <summary>
         /// Disables all the custom escapes present in the assembly.
         /// </summary>
-        public static void DisableAll()
+        /// <param name="assembly">The assembly to disable the module instances from.</param>
+        /// <returns>The amount of disabled module instances.</returns>
+        /// <remarks>
+        /// This method dynamically disables all module instances found in the calling assembly that were
+        /// previously registered.
+        /// </remarks>
+        public static int DisableAll(Assembly assembly = null)
         {
-            List<CustomEscape> customEscapes = new();
-            customEscapes.AddRange(List.Where(customEscape => customEscape.TryUnregister()));
+            assembly ??= Assembly.GetCallingAssembly();
 
-            Log.Info($"{customEscapes.Count()} custom escapes have been successfully unregistered!");
+            List<CustomEscape> customEscapes = new();
+            customEscapes.AddRange(List.Where(customEscape => customEscape.GetType().Assembly == assembly && customEscape.TryUnregister()));
+            return customEscapes.Count;
         }
 
         /// <summary>

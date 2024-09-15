@@ -1,5 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Scp999Role.cs" company="Exiled Team">
+// -----------------------------------------------------------------------
+// <copyright file="TestRole.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -14,19 +14,19 @@ namespace Exiled.Example.TestRole
 
     /// <inheritdoc />
     [ModuleIdentifier]
-    public class Scp999Role : CustomRole<Scp999Behaviour>
+    public class TestRole : CustomRole<TestRoleBehaviour>
     {
         /// <inheritdoc />
-        public override string Name { get; set; } = "SCP-999";
+        public override string Name { get; set; } = "TestRole";
 
         /// <inheritdoc />
-        public override uint Id { get; set; } = CustomRoleType.Scp999;
+        public override uint Id { get; set; } = CustomRoleType.TestRole;
 
         /// <inheritdoc />
         public override bool IsEnabled { get; set; } = true;
 
         /// <inheritdoc />
-        public override string Description { get; set; } = "SCP-999";
+        public override string Description { get; set; } = "Custom role for testing purposes.";
 
         /// <inheritdoc />
         public override RoleTypeId Role { get; set; } = RoleTypeId.ClassD;
@@ -55,9 +55,9 @@ namespace Exiled.Example.TestRole
             Health = 300,
             MaxHealth = 400,
             Scale = 0.90f,
-            CustomInfo = "SCP-999",
+            CustomInfo = "Test Role",
 
-            SpawnedText = new("You've been spawned as SCP-999", 10, channel: TextChannelType.Broadcast),
+            SpawnedText = new("You've been spawned as Test Role", 10, channel: TextChannelType.Broadcast),
 
             PreservePosition = true,
 

@@ -9,6 +9,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
 
@@ -74,27 +75,37 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         [YamlIgnore]
         public static IEnumerable<CustomGameMode> List => Registered;
 
+        /// <summary>
+        /// Gets or sets the <see cref="CustomGameMode"/> name.
+        /// </summary>
+        [Description("The name of the game mode.")]
+        public override string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="CustomGameMode"/>'s id.
+        /// </summary>
+        [Description("The id of the game mode.")]
+        public override uint Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="CustomGameMode"/> is enabled.
+        /// </summary>
+        [Description("Indicates whether the game mode is enabled.")]
+        public override bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="GameModeSettings"/>.
+        /// </summary>
+        [Description("The settings for the game mode.")]
+        public virtual GameModeSettings Settings { get; set; }
+
         /// <inheritdoc/>
         [YamlIgnore]
         public override ModulePointer Config { get; set; }
 
         /// <inheritdoc/>
-        public override string Name { get; set; }
-
-        /// <inheritdoc/>
-        public override uint Id { get; set; }
-
-        /// <inheritdoc/>
-        public override bool IsEnabled { get; set; }
-
-        /// <inheritdoc/>
         [YamlIgnore]
         public virtual Type[] BehaviourComponents { get; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="GameModeSettings"/>.
-        /// </summary>
-        public virtual GameModeSettings Settings { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the game mode can start automatically based on the configured probability, if automatic.
@@ -203,16 +214,15 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// <summary>
         /// Enables all the custom game modes present in the assembly.
         /// </summary>
-        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
-
-        /// <summary>
-        /// Enables all the custom game modes present in the assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly to enable the game modes from.</param>
-        public static void EnableAll(Assembly assembly)
+        /// <param name="assembly">The assembly to enable the module instances from.</param>
+        /// <returns>The amount of enabled module instances.</returns>
+        /// <remarks>
+        /// This method dynamically enables all module instances found in the calling assembly that were
+        /// not previously registered.
+        /// </remarks>
+        public static int EnableAll(Assembly assembly = null)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomGameModes.Name))
-                throw new Exception("ModuleType::CustomGameModes must be enabled in order to load any custom game modes");
+            assembly ??= Assembly.GetCallingAssembly();
 
             List<CustomGameMode> customGameModes = new();
             foreach (Type type in assembly.GetTypes())
@@ -238,19 +248,25 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
                     customGameModes.Add(customGameMode);
             }
 
-            if (customGameModes.Count() != Registered.Count)
-                Log.Info($"{customGameModes.Count()} custom game modes have been successfully registered!");
+            return customGameModes.Count;
         }
 
         /// <summary>
         /// Disables all the custom game modes present in the assembly.
         /// </summary>
-        public static void DisableAll()
+        /// <param name="assembly">The assembly to disable the module instances from.</param>
+        /// <returns>The amount of disabled module instances.</returns>
+        /// <remarks>
+        /// This method dynamically disables all module instances found in the calling assembly that were
+        /// previously registered.
+        /// </remarks>
+        public static int DisableAll(Assembly assembly = null)
         {
-            List<CustomGameMode> customGameModes = new();
-            customGameModes.AddRange(List.Where(customGameMode => customGameMode.TryUnregister()));
+            assembly ??= Assembly.GetCallingAssembly();
 
-            Log.Info($"{customGameModes.Count()} custom game modes have been successfully unregistered!");
+            List<CustomGameMode> customGameModes = new();
+            customGameModes.AddRange(List.Where(customGameMode => customGameMode.GetType().Assembly == assembly && customGameMode.TryUnregister()));
+            return customGameModes.Count;
         }
 
         /// <summary>

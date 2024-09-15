@@ -65,7 +65,7 @@ namespace Exiled.API.Features.Serialization.CustomConverters
         /// <param name="emitter">The YAML emitter used to write the data.</param>
         /// <param name="value">The object to serialize.</param>
         /// <param name="type">The type of the object to serialize.</param>
-        public void WriteYaml(IEmitter emitter, object value, Type type) => EConfig.Serializer.Serialize(emitter, value);
+        public void WriteYaml(IEmitter emitter, object value, Type type) => ConfigSubsystem.Serializer.Serialize(emitter, value);
 
         private void ApplyYamlData(object instance, Dictionary<string, object> yamlData)
         {

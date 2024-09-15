@@ -7,6 +7,8 @@
 
 namespace Exiled.CustomModules.API.Features.CustomAbilities.Settings
 {
+    using System.ComponentModel;
+
     using Exiled.API.Features;
 
     /// <summary>
@@ -17,6 +19,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities.Settings
         /// <summary>
         /// Gets or sets the message to display when the ability is unlocked.
         /// </summary>
+        [Description("The message to display when the ability is unlocked.")]
         public virtual TextDisplay Unlocked { get; set; }
     }
 }

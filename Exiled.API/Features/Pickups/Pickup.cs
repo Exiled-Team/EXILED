@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -77,7 +78,7 @@ namespace Exiled.API.Features.Pickups
         {
             ItemBase itemBase = type.GetItemBase();
 
-            Base = Object.Instantiate(itemBase.PickupDropModel);
+            Base = UnityEngine.Object.Instantiate(itemBase.PickupDropModel);
             GameObject = Base.gameObject;
 
             PickupSyncInfo psi = new()

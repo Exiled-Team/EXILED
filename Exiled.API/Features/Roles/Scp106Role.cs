@@ -204,8 +204,6 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float SinkholeSpeedMultiplier => SinkholeController.SpeedMultiplier;
 
-        // TODO: ReAdd Setter but before making an propper way to overwrite NW constant only when the propperty has been used
-
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when being stationary.
         /// </summary>

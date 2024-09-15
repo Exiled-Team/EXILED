@@ -78,7 +78,7 @@ namespace Exiled.API.Features.Core.Generic
 
             FindOwner();
 
-            if (!Owner && DisposeOnNullOwner)
+            if (Owner is null && DisposeOnNullOwner)
             {
                 Destroy();
                 return;
@@ -112,6 +112,15 @@ namespace Exiled.API.Features.Core.Generic
                 return;
         }
 
+        /// <inheritdoc/>
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+
+            if (Owner is null)
+                FindOwner();
+        }
+
         /// <summary>
         /// Checks if the specified owner is not null and matches the stored owner.
         /// </summary>
@@ -121,6 +130,6 @@ namespace Exiled.API.Features.Core.Generic
         /// This method verifies if the provided owner is not null and matches the stored owner.
         /// <br/>It is typically used to ensure that the owner being checked is valid and corresponds to the expected owner for the current context.
         /// </remarks>
-        protected virtual bool Check(T owner) => owner && Owner == owner;
+        protected virtual bool Check(T owner) => owner is not null && Owner is not null && Owner == owner;
     }
 }

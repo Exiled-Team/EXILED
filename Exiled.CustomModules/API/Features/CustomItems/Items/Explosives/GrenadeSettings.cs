@@ -7,37 +7,23 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Items.Explosives
 {
-    using System;
-
-    using Exiled.API.Extensions;
-    using Exiled.CustomModules.API.Features.CustomItems.Items;
+    using System.ComponentModel;
 
     /// <summary>
     /// A tool to easily setup grenades.
     /// </summary>
-    public class GrenadeSettings : ItemSettings
+    public class GrenadeSettings : Settings
     {
-        /// <inheritdoc/>
-        public override ItemType ItemType
-        {
-            get => base.ItemType;
-            set
-            {
-                if (!value.IsThrowable() && value != ItemType.None)
-                    throw new ArgumentOutOfRangeException($"{nameof(Type)}", value, "Invalid grenade type.");
-
-                base.ItemType = value;
-            }
-        }
-
         /// <summary>
         /// Gets or sets a value indicating whether the grenade should explode immediately when contacting any surface.
         /// </summary>
+        [Description("Indicates whether the grenade should explode immediately when contacting any surface.")]
         public virtual bool ExplodeOnCollision { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating how long the grenade's fuse time should be.
         /// </summary>
+        [Description("Indicates how long the grenade's fuse time should be.")]
         public virtual float FuseTime { get; set; }
     }
 }

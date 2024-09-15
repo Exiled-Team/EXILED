@@ -34,13 +34,13 @@ namespace Exiled.CustomModules.API.Features
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before assigning human roles.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<AssigningHumanCustomRolesEventArgs> AssigningHumanCustomRolesDispatcher { get; set; }
+        public TDynamicEventDispatcher<AssigningHumanCustomRolesEventArgs> AssigningHumanCustomRolesDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before assigning SCP roles.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<AssigningScpCustomRolesEventArgs> AssigningScpCustomRolesDispatcher { get; set; }
+        public TDynamicEventDispatcher<AssigningScpCustomRolesEventArgs> AssigningScpCustomRolesDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets all enqueued SCPs.

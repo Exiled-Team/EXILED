@@ -24,6 +24,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Features.Spawn;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomEscapes;
+    using Exiled.CustomModules.API.Features.Generic;
     using Exiled.CustomModules.API.Features.Inventory;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -34,7 +35,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// Represents the base class for custom role behaviors.
     /// </summary>
     /// <remarks>
-    /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IAdditiveSettings{T}"/>.
+    /// This class extends <see cref="ModuleBehaviour{TEntity}"/> and implements <see cref="IAdditiveSettings{T}"/>.
     /// <br/>It provides a foundation for creating custom behaviors associated with in-game player roles.
     /// </remarks>
     public class RoleBehaviour : ModuleBehaviour<Player>, IAdditiveSettings<RoleSettings>
@@ -45,6 +46,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         private bool wasNoClipPermitted;
         private bool useCustomEscape;
         private bool wasEscaped;
+        private RoleSettings settings;
 
         /// <summary>
         /// Gets a <see cref="HashSet{T}"/> of <see cref="Player"/> containing all players to be spawned without affecting their current position (static).
@@ -64,7 +66,18 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets or sets the <see cref="RoleSettings"/>.
         /// </summary>
-        public virtual RoleSettings Settings { get; set; }
+        public RoleSettings Settings
+        {
+            get => settings ??= CustomRole.Settings;
+            set => settings = value;
+        }
+
+        /// <inheritdoc/>
+        public override ModulePointer Config
+        {
+            get => config ??= CustomRole.Config;
+            protected set => config = value;
+        }
 
         /// <summary>
         /// Gets a random spawn point based on existing settings.
@@ -154,12 +167,12 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
         /// </summary>
-        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingEventDispatcher { get; set; }
+        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingEventDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
         /// </summary>
-        protected TDynamicEventDispatcher<Player> EscapedEventDispatcher { get; set; }
+        protected TDynamicEventDispatcher<Player> EscapedEventDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets a value indicating whether the specified <see cref="DamageType"/> is allowed.
@@ -214,25 +227,20 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            ImplementConfigs();
-
             if (CustomTeam.TryGet(Owner.Cast<Pawn>(), out CustomTeam customTeam))
                 CustomTeam = customTeam;
 
-            if (CustomRole.TryGet(GetType(), out CustomRole customRole) && customRole.Settings is RoleSettings settings)
-            {
+            if (CustomRole.TryGet(GetType(), out CustomRole customRole))
                 CustomRole = customRole;
 
-                if (customRole is null || customRole.Config is null)
-                    Settings = settings;
-            }
-
-            if (CustomRole is null || Settings is null)
+            if (CustomRole is null || Settings is null || Config is null)
             {
                 Log.Error($"Custom role ({GetType().Name}) has invalid configuration.");
                 Destroy();
                 return;
             }
+
+            ImplementConfigs();
 
             Owner.UniqueRole = CustomRole.Name;
 
@@ -242,16 +250,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 Owner.AddComponent(CustomRole.EscapeBehaviourComponent);
                 useCustomEscape = true;
             }
-        }
-
-        /// <inheritdoc/>
-        protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
-        {
-            targetInfo?.SetValue(
-                typeof(RoleSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings :
-                typeof(InventoryManager).IsAssignableFrom(targetInfo.DeclaringType) ? Inventory :
-                this,
-                propertyInfo.GetValue(Config, null));
         }
 
         /// <inheritdoc/>
@@ -355,9 +353,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         protected override void OnBeginPlay()
         {
             base.OnBeginPlay();
+
             if (!Owner)
             {
-                Log.WarnWithContext("Owner is null");
                 Destroy();
                 return;
             }

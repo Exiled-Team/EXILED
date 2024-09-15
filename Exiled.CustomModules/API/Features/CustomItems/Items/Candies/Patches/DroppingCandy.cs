@@ -53,12 +53,12 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies.Patches
         private static void DropCandy(Item item, SelectScp330Message msg, Pickup pickup)
         {
             if (!item.Is(out Scp330 _) || !CustomItem.TryGet(item, out CustomItem customItem)
-                                            || customItem.BehaviourComponent != typeof(CandyBehaviour) || !item.TryGetComponent(out CandyBehaviour candyBehaviour))
+                || customItem.BehaviourComponent != typeof(CandyBehaviour) || !item.TryGetComponent(out CandyBehaviour candyBehaviour))
                 return;
 
             candyBehaviour.TrackedCandies.Remove(msg.CandyID);
 
-            StaticActor.Get<ItemTracker>().AddOrTrack(pickup);
+            TrackerBase.Get().AddOrTrack(pickup);
         }
     }
 }

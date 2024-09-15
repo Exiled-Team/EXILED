@@ -8,6 +8,7 @@
 namespace Exiled.CustomModules.API.Features
 {
     using System;
+    using System.ComponentModel;
     using System.Reflection;
 
     using Exiled.API.Features.Core;
@@ -21,7 +22,14 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Gets or sets the module's id the <see cref="ModulePointer"/> is pointing to.
         /// </summary>
+        [Description("The module's id the module pointer is pointing to.")]
         public abstract uint Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the module type which the module pointer is pointing to.
+        /// </summary>
+        [Description("The module type which the module pointer is pointing to.")]
+        public virtual string ModuleTypeIndicator { get; set; }
 
         /// <summary>
         /// Gets the module pointer for the specified custom module and assembly.
@@ -32,7 +40,12 @@ namespace Exiled.CustomModules.API.Features
         public static ModulePointer Get(CustomModule customModule, Assembly assembly = null)
         {
             assembly ??= Assembly.GetCallingAssembly();
-            Type customModuleType = customModule.GetType();
+
+            Type customModuleType = customModule.GetType().BaseType;
+
+            Type baseModuleType = customModuleType.IsGenericType ? customModuleType.BaseType : customModuleType;
+            if (baseModuleType == typeof(CustomModule))
+                baseModuleType = customModuleType;
 
             foreach (Type type in assembly.GetTypes())
             {
@@ -40,28 +53,23 @@ namespace Exiled.CustomModules.API.Features
                 if (moduleIdentifier == null)
                     continue;
 
-                bool isPointing = moduleIdentifier.Id > 0 && moduleIdentifier.Id == customModule.Id;
                 if (typeof(ModulePointer).IsAssignableFrom(type))
                 {
-                    ModulePointer modulePointer;
-                    if (type.IsGenericTypeDefinition)
-                    {
-                        Type constructedType = type.MakeGenericType(customModuleType);
-                        modulePointer = Activator.CreateInstance(constructedType) as ModulePointer;
-                    }
-                    else
-                    {
-                        modulePointer = Activator.CreateInstance(type) as ModulePointer;
-                    }
+                    Type constructedType = null;
 
-                    if (isPointing)
-                    {
-                        modulePointer.Id = moduleIdentifier.Id;
-                        return modulePointer;
-                    }
+                    if (type.BaseType.IsGenericType)
+                        constructedType = type.BaseType.GetGenericArguments()[0];
+
+                    if (constructedType != baseModuleType)
+                        continue;
+
+                    ModulePointer modulePointer = Activator.CreateInstance(type) as ModulePointer;
 
                     if (modulePointer.Id != customModule.Id)
                         continue;
+
+                    if (string.IsNullOrEmpty(modulePointer.ModuleTypeIndicator))
+                        modulePointer.ModuleTypeIndicator = constructedType.Name;
 
                     return modulePointer;
                 }
@@ -69,12 +77,5 @@ namespace Exiled.CustomModules.API.Features
 
             return null;
         }
-
-        /// <summary>
-        /// Gets the module pointer for the specified custom module from the calling assembly.
-        /// </summary>
-        /// <param name="customModule">The custom module to get the pointer for.</param>
-        /// <returns>The module pointer for the specified custom module, or null if not found.</returns>
-        public static ModulePointer Get(CustomModule customModule) => Get(customModule, Assembly.GetCallingAssembly());
     }
 }
