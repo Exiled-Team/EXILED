@@ -32,6 +32,11 @@ namespace Exiled.CustomModules
         /// </summary>
         public static CustomModules Instance { get; private set; }
 
+        /// <summary>
+        /// Gets a value indicating whether <see cref="CustomModules"/> assembly is loaded.
+        /// </summary>
+        public static bool IsLoaded => Instance is not null;
+
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.Last;
 
