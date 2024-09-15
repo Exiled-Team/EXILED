@@ -52,13 +52,13 @@ namespace Exiled.CustomModules.API.Commands.CustomTeams
 
                 if (arguments.Count < 1)
                 {
-                    response = "spawn <Custom Team ID>";
+                    response = "spawn <Custom Team>";
                     return false;
                 }
 
                 if (!CustomTeam.TryGet(arguments.At(0), out CustomTeam team) && (!uint.TryParse(arguments.At(0), out uint id) || !CustomTeam.TryGet(id, out team)) && team is null)
                 {
-                    response = $"Custom Team {arguments.At(0)} not found!";
+                    response = $"Custom team {arguments.At(0)} not found!";
                     return false;
                 }
 
@@ -70,7 +70,7 @@ namespace Exiled.CustomModules.API.Commands.CustomTeams
 
                 team.Respawn(true);
 
-                response = $"Custom Team {team.Name} has been spawned.";
+                response = $"Custom team {team.Name} has been spawned.";
                 return true;
             }
             catch (Exception ex)

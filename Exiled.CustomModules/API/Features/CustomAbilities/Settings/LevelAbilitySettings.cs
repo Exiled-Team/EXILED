@@ -45,7 +45,5 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities.Settings
         /// </summary>
         [Description("The message shown when the ability reaches its maximum level.")]
         public virtual TextDisplay MaxLevelReached { get; set; }
-
-
     }
 }

@@ -54,7 +54,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
 
                 if (arguments.Count < 2)
                 {
-                    response = "give <Custom role ID> [Nickname / PlayerID / UserID / all / *]";
+                    response = "give <Custom Role> [Nickname / PlayerID / UserID / all / *]";
                     return false;
                 }
 

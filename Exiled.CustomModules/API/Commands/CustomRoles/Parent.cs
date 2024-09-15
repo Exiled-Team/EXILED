@@ -33,7 +33,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
         public override string[] Aliases { get; } = { "cr", "crs" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = "Exiled Custom Role Commands";
+        public override string Description { get; } = "Commands for managing custom roles.";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()

@@ -52,13 +52,13 @@ namespace Exiled.CustomModules.API.Commands.GameModes
 
                 if (arguments.Count < 1)
                 {
-                    response = "info [Gamemode ID]";
+                    response = "info <Custom Gamemode>";
                     return false;
                 }
 
                 if ((!(uint.TryParse(arguments.At(0), out uint id) && CustomGameMode.TryGet(id, out CustomGameMode gameMode)) && !CustomGameMode.TryGet(arguments.At(0), out gameMode)) || gameMode is null)
                 {
-                    response = $"{arguments.At(0)} is not a valid Custom Gamemode.";
+                    response = $"{arguments.At(0)} is not a valid custom gamemode.";
                     return false;
                 }
 

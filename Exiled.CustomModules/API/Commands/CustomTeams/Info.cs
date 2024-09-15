@@ -52,13 +52,13 @@ namespace Exiled.CustomModules.API.Commands.CustomTeams
 
                 if (arguments.Count < 1)
                 {
-                    response = "info [Custom Team ID]";
+                    response = "info <Custom Team>";
                     return false;
                 }
 
                 if ((!(uint.TryParse(arguments.At(0), out uint id) && CustomTeam.TryGet(id, out CustomTeam team)) && !CustomTeam.TryGet(arguments.At(0), out team)) || team is null)
                 {
-                    response = $"{arguments.At(0)} is not a valid Custom Team.";
+                    response = $"{arguments.At(0)} is not a valid custom team.";
                     return false;
                 }
 

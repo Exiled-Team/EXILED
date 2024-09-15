@@ -51,13 +51,15 @@ namespace Exiled.CustomModules.API.Commands.GameModes
 
                 if (arguments.Count < 1)
                 {
-                    response = "Usage: enqueue <gamemode>";
+                    response = "Usage: enqueue <Custom Gamemode>";
                     return false;
                 }
 
-                if (CustomGameMode.TryGet(arguments.At(0), out CustomGameMode gameMode) && (!uint.TryParse(arguments.At(0), out uint id) || !CustomGameMode.TryGet(id, out gameMode)) && gameMode is null)
+                if (CustomGameMode.TryGet(arguments.At(0), out CustomGameMode gameMode) &&
+                    (!uint.TryParse(arguments.At(0), out uint id) ||
+                     !CustomGameMode.TryGet(id, out gameMode)) && gameMode is null)
                 {
-                    response = $"Custom GameMode {arguments.At(0)} not found!";
+                    response = $"Custom gamemode {arguments.At(0)} not found!";
                     return false;
                 }
 

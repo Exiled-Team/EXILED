@@ -53,13 +53,13 @@ namespace Exiled.CustomModules.API.Commands.CustomEscapes
 
                 if (arguments.Count < 2)
                 {
-                    response = "attach [Custom Escape ID > Nickname / PlayerID / UserID / all / *]";
+                    response = "attach <Custom Escape> [Nickname / PlayerID / UserID / all / *]";
                     return false;
                 }
 
                 if (!CustomEscape.TryGet(arguments.At(0), out CustomEscape escape) && (!uint.TryParse(arguments.At(0), out uint id) || !CustomEscape.TryGet(id, out escape)) && escape is null)
                 {
-                    response = $"Custom Escape {arguments.At(0)} not found!";
+                    response = $"Custom escape {arguments.At(0)} not found!";
                     return false;
                 }
 

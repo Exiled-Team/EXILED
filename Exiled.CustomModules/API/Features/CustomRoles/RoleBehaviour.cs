@@ -356,7 +356,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             if (!Owner)
             {
-                Log.WarnWithContext("Owner is null");
                 Destroy();
                 return;
             }

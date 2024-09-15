@@ -27,13 +27,13 @@ namespace Exiled.CustomModules.API.Commands.GameModes
         }
 
         /// <inheritdoc/>
-        public override string Command { get; } = "gamemodes";
+        public override string Command { get; } = "customgamemodes";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = { "gmd", "gmds" };
+        public override string[] Aliases { get; } = { "gm", "cgm", "cgmds" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = "Exiled Gamemode Commands";
+        public override string Description { get; } = "Commands for managing custom gamemodes.";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()

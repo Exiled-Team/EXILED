@@ -50,7 +50,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
 
             if (arguments.Count < 1)
             {
-                response = "info [Custom role name / Custom role ID]";
+                response = "info <Custom Role>";
                 return false;
             }
 

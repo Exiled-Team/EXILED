@@ -24,12 +24,21 @@ namespace Exiled.CustomModules.API.Features.Generic
     public abstract class ModuleBehaviour<TEntity> : EBehaviour<TEntity>
         where TEntity : GameEntity
     {
+#pragma warning disable SA1310
+#pragma warning disable SA1401
+        /// <summary>
+        /// The binding flags in use to implement configs through reflection.
+        /// </summary>
+        internal const BindingFlags CONFIG_IMPLEMENTATION_BINDING_FLAGS =
+            BindingFlags.Public | BindingFlags.Static | BindingFlags.NonPublic |
+            BindingFlags.Instance | BindingFlags.DeclaredOnly;
+
         /// <summary>
         /// The behaviour's config.
         /// </summary>
-#pragma warning disable SA1401
         protected ModulePointer config;
 #pragma warning restore SA1401
+#pragma warning restore SA1310
 
         /// <summary>
         /// Gets or sets the behaviour's config.
@@ -48,18 +57,25 @@ namespace Exiled.CustomModules.API.Features.Generic
         public static void ImplementConfigs_DefaultImplementation(object instance, object config)
         {
             Type inType = instance.GetType();
-            foreach (PropertyInfo propertyInfo in config.GetType().GetProperties())
+
+            foreach (PropertyInfo propertyInfo in config.GetType().GetProperties(CONFIG_IMPLEMENTATION_BINDING_FLAGS))
             {
-                PropertyInfo targetProperty = inType.GetProperty(propertyInfo.Name);
-                if (targetProperty?.PropertyType.IsClass == true && targetProperty.PropertyType != typeof(string))
+                PropertyInfo targetProperty = inType.GetProperty(propertyInfo.Name, CONFIG_IMPLEMENTATION_BINDING_FLAGS);
+
+                if (targetProperty is null || targetProperty.PropertyType != propertyInfo.PropertyType)
+                    continue;
+
+                if (targetProperty.PropertyType.IsClass && targetProperty.PropertyType != typeof(string))
                 {
                     object targetInstance = targetProperty.GetValue(instance);
-                    if (targetInstance != null)
+
+                    if (targetInstance is not null)
                         ApplyConfig_DefaultImplementation(propertyInfo.GetValue(config), targetInstance);
                 }
                 else
                 {
-                    ApplyConfig_DefaultImplementation(propertyInfo, targetProperty);
+                    if (targetProperty.CanWrite)
+                        targetProperty.SetValue(instance, propertyInfo.GetValue(config));
                 }
             }
         }
@@ -71,62 +87,58 @@ namespace Exiled.CustomModules.API.Features.Generic
         /// <param name="target">The target instance where the config should be applied.</param>
         public static void ApplyConfig_DefaultImplementation(object source, object target)
         {
-            if (source == null || target == null)
+            if (source is null || target is null)
                 return;
 
             Type sourceType = source.GetType();
             Type targetType = target.GetType();
 
-            foreach (PropertyInfo sourceProperty in sourceType.GetProperties())
+            foreach (PropertyInfo sourceProperty in sourceType.GetProperties(CONFIG_IMPLEMENTATION_BINDING_FLAGS))
             {
                 PropertyInfo targetProperty = targetType.GetProperty(sourceProperty.Name);
-                targetProperty?.SetValue(target, sourceProperty.GetValue(source, null));
+
+                if (targetProperty is null || !targetProperty.CanWrite || targetProperty.PropertyType != sourceProperty.PropertyType)
+                    continue;
+
+                object value = sourceProperty.GetValue(source);
+
+                if (value is not null && targetProperty.PropertyType.IsClass && targetProperty.PropertyType != typeof(string))
+                {
+                    object targetInstance = targetProperty.GetValue(target);
+
+                    if (targetInstance is null)
+                    {
+                        targetInstance = Activator.CreateInstance(targetProperty.PropertyType);
+                        targetProperty.SetValue(target, targetInstance);
+                    }
+
+                    ApplyConfig_DefaultImplementation(value, targetInstance);
+                }
+                else
+                {
+                    targetProperty.SetValue(target, value);
+                }
             }
         }
 
         /// <summary>
-        /// Implements the behaviour's configs by copying properties from the config object to the current instance.
+        /// Implements the behaviour's configs by copying properties from the config object to the current instance,
+        /// stopping at the current class type (including its base classes up to the current type).
         /// </summary>
         protected virtual void ImplementConfigs()
         {
             if (Config is null)
                 return;
 
-            Type inType = GetType();
-            foreach (PropertyInfo propertyInfo in Config.GetType().GetProperties())
-            {
-                PropertyInfo targetProperty = inType.GetProperty(propertyInfo.Name);
-                if (targetProperty?.PropertyType.IsClass == true && targetProperty.PropertyType != typeof(string))
-                {
-                    object targetInstance = targetProperty.GetValue(this);
-                    if (targetInstance != null)
-                        ApplyConfig(propertyInfo.GetValue(Config), targetInstance);
-                }
-                else
-                {
-                    ApplyConfig(propertyInfo, targetProperty);
-                }
-            }
+            ImplementConfigs_DefaultImplementation(this, Config);
         }
 
         /// <summary>
-        /// Applies a configuration property value from the source property to the target property.
+        /// Applies the configuration from the source property to the target property by copying the value.
+        /// Handles nested objects and primitive types appropriately.
         /// </summary>
-        /// <param name="source">The source property value from the config object.</param>
-        /// <param name="target">The target instance where the config should be applied.</param>
-        protected virtual void ApplyConfig(object source, object target)
-        {
-            if (source == null || target == null)
-                return;
-
-            Type sourceType = source.GetType();
-            Type targetType = target.GetType();
-
-            foreach (PropertyInfo sourceProperty in sourceType.GetProperties())
-            {
-                PropertyInfo targetProperty = targetType.GetProperty(sourceProperty.Name);
-                targetProperty?.SetValue(target, sourceProperty.GetValue(source, null));
-            }
-        }
+        /// <param name="source">The source property from which to copy the value.</param>
+        /// <param name="target">The target property to which the value will be copied.</param>
+        protected virtual void ApplyConfig(object source, object target) => ApplyConfig_DefaultImplementation(source, target);
     }
 }

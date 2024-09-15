@@ -27,13 +27,13 @@ namespace Exiled.CustomModules.API.Commands.CustomEscapes
         }
 
         /// <inheritdoc/>
-        public override string Command { get; } = "escapes";
+        public override string Command { get; } = "customescapes";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = { "esc" };
+        public override string[] Aliases { get; } = { "ce", "ces", "escapes", "esc" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = "Exiled Custom Escape Commands";
+        public override string Description { get; } = "Commands for managing custom escapes.";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()

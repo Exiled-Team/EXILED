@@ -8,10 +8,10 @@
 namespace Exiled.API.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
 
     using HarmonyLib;
-
     using LiteNetLib.Utils;
 
     /// <summary>
@@ -109,6 +109,38 @@ namespace Exiled.API.Extensions
                 baseType = baseType.BaseType;
 
             return baseType;
+        }
+
+        /// <summary>
+        /// Retrieves the names and values of all properties of an object based on the specified binding flags.
+        /// </summary>
+        /// <param name="obj">The object whose properties are to be retrieved.</param>
+        /// <param name="bindingFlags">Optional. Specifies the binding flags to use for retrieving properties. Default is <see cref="BindingFlags.Instance"/> and <see cref="BindingFlags.Public"/>.</param>
+        /// <returns>A dictionary containing property names as keys and their respective values as values.</returns>
+        public static Dictionary<string, object> GetPropertiesWithValue(this object obj, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public)
+        {
+            Dictionary<string, object> propertyValues = new();
+
+            obj.GetType().GetProperties(bindingFlags)
+                .ForEach(property => propertyValues.Add(property.Name, property.GetValue(obj, null)));
+
+            return propertyValues;
+        }
+
+        /// <summary>
+        /// Retrieves the names and values of all fields of an object based on the specified binding flags.
+        /// </summary>
+        /// <param name="obj">The object whose fields are to be retrieved.</param>
+        /// <param name="bindingFlags">Optional. Specifies the binding flags to use for retrieving fields. Default is <see cref="BindingFlags.Instance"/> and <see cref="BindingFlags.Public"/>.</param>
+        /// <returns>A dictionary containing field names as keys and their respective values as values.</returns>
+        public static Dictionary<string, object> GetFieldsWithValue(this object obj, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public)
+        {
+            Dictionary<string, object> propertyValues = new();
+
+            obj.GetType().GetFields(bindingFlags)
+                .ForEach(field => propertyValues.Add(field.Name, field.GetValue(obj)));
+
+            return propertyValues;
         }
     }
 }

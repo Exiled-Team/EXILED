@@ -27,13 +27,13 @@ namespace Exiled.CustomModules.API.Commands.CustomTeams
         }
 
         /// <inheritdoc/>
-        public override string Command { get; } = "teams";
+        public override string Command { get; } = "customteams";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = { "tms" };
+        public override string[] Aliases { get; } = { "cts" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = "Exiled Custom Team Commands";
+        public override string Description { get; } = "Commands for managing custom teams.";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()

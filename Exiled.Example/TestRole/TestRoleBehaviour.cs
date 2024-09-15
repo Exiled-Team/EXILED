@@ -7,10 +7,23 @@
 
 namespace Exiled.Example.TestRole
 {
+    using Exiled.API.Features;
     using Exiled.CustomModules.API.Features.CustomRoles;
 
     /// <inheritdoc />
     public class TestRoleBehaviour : RoleBehaviour
     {
+        /// <summary>
+        /// Gets or sets a integer value.
+        /// </summary>
+        public int Value { get; set; }
+
+        /// <inheritdoc />
+        protected override void OnBeginPlay()
+        {
+            base.OnBeginPlay();
+
+            Log.Info($"Value: {Value}");
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace Exiled.CustomModules.API.Commands.GameModes
         public string[] Aliases { get; } = { "e" };
 
         /// <inheritdoc/>
-        public string Description { get; } = "End the running gamemode.";
+        public string Description { get; } = "Ends the running gamemode.";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -52,7 +52,7 @@ namespace Exiled.CustomModules.API.Commands.GameModes
 
                 if (world.GameState)
                 {
-                    world.RemoveComponent(world.GameState).Destroy();
+                    world.GameState.End(true);
 
                     response = "The gamemode has been ended.";
                     return true;

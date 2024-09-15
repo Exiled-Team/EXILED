@@ -38,7 +38,7 @@ namespace Exiled.CustomModules.API.Commands.CustomEscapes
         public string[] Aliases { get; } = { "d" };
 
         /// <inheritdoc/>
-        public string Description { get; } = "Detach the specified custom escape from a player(s).";
+        public string Description { get; } = "Detaches the specified custom escape from a player(s).";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -53,13 +53,15 @@ namespace Exiled.CustomModules.API.Commands.CustomEscapes
 
                 if (arguments.Count < 2)
                 {
-                    response = "detach [Custom Escape ID > Nickname / PlayerID / UserID / all / *]";
+                    response = "detach <Custom Escape> [Nickname / PlayerID / UserID / all / *]";
                     return false;
                 }
 
-                if (!CustomEscape.TryGet(arguments.At(0), out CustomEscape escape) && (!uint.TryParse(arguments.At(0), out uint id) || !CustomEscape.TryGet(id, out escape)) && escape is null)
+                if (!CustomEscape.TryGet(arguments.At(0), out CustomEscape escape) &&
+                    (!uint.TryParse(arguments.At(0), out uint id) ||
+                     !CustomEscape.TryGet(id, out escape)) && escape is null)
                 {
-                    response = $"Custom Escape {arguments.At(0)} not found!";
+                    response = $"Custom escape {arguments.At(0)} not found!";
                     return false;
                 }
 
