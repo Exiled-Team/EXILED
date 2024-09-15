@@ -43,7 +43,6 @@ namespace Exiled.API.Features.Core
         protected EActor()
             : base()
         {
-            IsEditable = true;
             fixedTickRate = DEFAULT_FIXED_TICK_RATE;
         }
 
@@ -164,6 +163,7 @@ namespace Exiled.API.Features.Core
                 return null;
 
             componentsInChildren.Add(component);
+            component.OnAdded();
 
             return component.Cast(out T param) ? param : throw new InvalidCastException("The provided EActor cannot be cast to the specified type.");
         }
@@ -177,6 +177,7 @@ namespace Exiled.API.Features.Core
                 return null;
 
             componentsInChildren.Add(component);
+            component.OnAdded();
 
             return component.Cast(out T param) ? param : throw new InvalidCastException("The provided EActor cannot be cast to the specified type.");
         }
@@ -193,6 +194,7 @@ namespace Exiled.API.Features.Core
 
             AttachTo(Base, actor);
             componentsInChildren.Add(actor);
+            actor.OnAdded();
 
             return actor.Cast(out T param) ? param : throw new InvalidCastException("The provided EActor cannot be cast to the specified type.");
         }
@@ -205,6 +207,8 @@ namespace Exiled.API.Features.Core
                 return null;
 
             componentsInChildren.Add(component);
+            component.OnAdded();
+
             return component;
         }
 
@@ -219,6 +223,7 @@ namespace Exiled.API.Features.Core
 
             AttachTo(Base, actor);
             componentsInChildren.Add(actor);
+            actor.OnAdded();
 
             return actor;
         }
@@ -257,68 +262,61 @@ namespace Exiled.API.Features.Core
         public T RemoveComponent<T>(string name = "")
             where T : EActor
         {
-            T comp = null;
-
             if (string.IsNullOrEmpty(name))
             {
-                if (!TryGetComponent<T>(out comp))
+                if (!TryGetComponent(out T comp))
                     return null;
 
-                comp.Base = null;
-                componentsInChildren.Remove(comp);
+                RemoveComponent_Internal(comp);
                 return comp;
             }
 
-            foreach (EActor actor in GetComponents<T>())
+            foreach (T actor in GetComponents<T>())
             {
                 if (actor.Name != name)
                     continue;
 
-                comp = actor.Cast<T>();
+                RemoveComponent_Internal(actor);
+                return actor;
             }
 
-            return comp;
+            return default;
         }
 
         /// <inheritdoc />
         public T RemoveComponent<T>(EActor actor, string name = "")
             where T : EActor
         {
-            T comp = null;
-
             if (string.IsNullOrEmpty(name))
             {
-                if (!TryGetComponent<T>(out comp) || comp != actor)
+                if (!TryGetComponent(out T comp) || comp != actor)
                     return null;
 
-                comp.Base = null;
-                componentsInChildren.Remove(comp);
+                RemoveComponent_Internal(comp);
                 return comp;
             }
 
-            foreach (EActor component in GetComponents<T>())
+            foreach (T component in GetComponents<T>())
             {
                 if (component.Name != name && component == actor)
                     continue;
 
-                comp = component.Cast<T>();
+                RemoveComponent_Internal(component);
+                return component;
             }
 
-            return comp;
+            return default;
         }
 
         /// <inheritdoc />
         public EActor RemoveComponent(Type type, string name = "")
         {
-            EActor comp = null;
-
             if (string.IsNullOrEmpty(name))
             {
-                if (!TryGetComponent(type, out comp))
+                if (!TryGetComponent(type, out EActor comp))
                     return null;
 
-                comp.Base = null;
-                componentsInChildren.Remove(comp);
+                RemoveComponent_Internal(comp);
                 return comp;
             }
 
@@ -327,10 +325,11 @@ namespace Exiled.API.Features.Core
                 if (actor.Name != name)
                     continue;
 
-                comp = actor;
+                RemoveComponent_Internal(actor);
+                return actor;
             }
 
-            return comp;
+            return default;
         }
 
         /// <inheritdoc />
@@ -341,8 +340,7 @@ namespace Exiled.API.Features.Core
 
             if (string.IsNullOrEmpty(name))
             {
-                actor.Base = null;
-                componentsInChildren.Remove(actor);
+                RemoveComponent_Internal(actor);
                 return actor;
             }
 
@@ -351,10 +349,11 @@ namespace Exiled.API.Features.Core
                 if (component != actor || actor.Name != name)
                     continue;
 
-                actor = component;
+                RemoveComponent_Internal(actor);
+                return actor;
             }
 
-            return actor;
+            return default;
         }
 
         /// <inheritdoc />
@@ -469,6 +468,26 @@ namespace Exiled.API.Features.Core
             Timing.CallDelayed(fixedTickRate * 2, () => serverTick = Timing.RunCoroutine(ServerTick()));
         }
 
+        /// <inheritdoc cref="OnAdded"/>
+        internal void OnAdded_Internal() => OnAdded();
+
+        /// <inheritdoc cref="OnRemoved"/>
+        internal void OnRemoved_Internal() => OnRemoved();
+
+        /// <summary>
+        /// Called when the <see cref="EActor"/> is added to an entity.
+        /// </summary>
+        protected virtual void OnAdded()
+        {
+        }
+
+        /// <summary>
+        /// Called when the <see cref="EActor"/> is removed from an entity.
+        /// </summary>
+        protected virtual void OnRemoved()
+        {
+        }
+
         /// <summary>
         /// Fired after the <see cref="EActor"/> instance is created.
         /// </summary>
@@ -523,6 +542,9 @@ namespace Exiled.API.Features.Core
         {
             base.OnBeginDestroy();
 
+            foreach (EActor component in ComponentsInChildren)
+                component.Destroy();
+
             HashSetPool<EActor>.Pool.Return(componentsInChildren);
             Timing.KillCoroutines(serverTick);
 
@@ -537,6 +559,13 @@ namespace Exiled.API.Features.Core
 
                 Tick();
             }
+        }
+
+        private void RemoveComponent_Internal(EActor actor)
+        {
+            actor.Base = null;
+            componentsInChildren.Remove(actor);
+            actor.OnRemoved();
         }
     }
 }

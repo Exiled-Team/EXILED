@@ -11,17 +11,14 @@ namespace Exiled.CustomModules.EventHandlers
     using Exiled.API.Features.Core;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features;
-    using Exiled.CustomModules.API.Features.CustomAbilities;
     using Exiled.CustomModules.API.Features.CustomItems;
-    using Exiled.CustomModules.API.Features.CustomItems.Items;
-    using Exiled.CustomModules.API.Features.CustomItems.Pickups;
 
     /// <summary>
     /// Handles the all the module's registration.
     /// </summary>
     internal class RegistrationHandler
     {
-        private Config config;
+        private readonly Config config;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RegistrationHandler"/> class.
@@ -35,6 +32,11 @@ namespace Exiled.CustomModules.EventHandlers
         /// <param name="moduleInfo">The module which is being enabled.</param>
         internal void OnModuleEnabled(ModuleInfo moduleInfo)
         {
+            if (moduleInfo.Type.IsGenericType && moduleInfo.Type.BaseType != typeof(CustomModule))
+                return;
+
+            Log.InfoWithContext($"Module '{moduleInfo.Name}' has been deployed.", Log.CONTEXT_DEPLOYMENT);
+
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomRoles.Name && config.UseDefaultRoleAssigner)
             {
                 StaticActor.Get<RoleAssigner>();
@@ -55,15 +57,14 @@ namespace Exiled.CustomModules.EventHandlers
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomAbilities.Name)
             {
-                StaticActor.Get<AbilityTracker>();
+                TrackerBase.Get();
                 return;
             }
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomItems.Name)
             {
                 GlobalPatchProcessor.PatchAll("exiled.customitems.patch", nameof(CustomItem));
-                StaticActor.Get<ItemTracker>();
-                StaticActor.Get<PickupTracker>();
+                TrackerBase.Get();
             }
         }
 
@@ -73,6 +74,8 @@ namespace Exiled.CustomModules.EventHandlers
         /// <param name="moduleInfo">The module which is being disabled.</param>
         internal void OnModuleDisabled(ModuleInfo moduleInfo)
         {
+            Log.InfoWithContext($"Module '{moduleInfo.Name}' has been disabled.", Log.CONTEXT_DEPLOYMENT);
+
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomRoles.Name && config.UseDefaultRoleAssigner)
             {
                 StaticActor.Get<RoleAssigner>()?.Destroy();
@@ -87,21 +90,21 @@ namespace Exiled.CustomModules.EventHandlers
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomGameModes.Name)
             {
-                World.Get().Destroy();
+                World.Get()?.Destroy();
                 return;
             }
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomAbilities.Name)
             {
-                StaticActor.Get<AbilityTracker>()?.Destroy();
+                TrackerBase.Get()?.Destroy();
                 return;
             }
 
             if (moduleInfo.ModuleType.Name == UUModuleType.CustomItems.Name)
             {
                 GlobalPatchProcessor.UnpatchAll("exiled.customitems.unpatch", nameof(CustomItem));
-                StaticActor.Get<ItemTracker>()?.Destroy();
-                StaticActor.Get<PickupTracker>()?.Destroy();
+                TrackerBase.Get()?.Destroy();
+                return;
             }
         }
     }

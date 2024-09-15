@@ -12,6 +12,7 @@ namespace Exiled.CustomModules.API.Features
     using System.Linq;
     using System.Reflection;
 
+    using Exiled.API.Features;
     using Exiled.CustomModules.API.Enums;
 
     /// <summary>
@@ -62,18 +63,30 @@ namespace Exiled.CustomModules.API.Features
         /// <summary>
         /// Callback method for enabling all instances of the module.
         /// </summary>
-        public Action<Assembly> EnableAll_Callback;
+        public Func<Assembly, int> EnableAll_Callback;
 
         /// <summary>
         /// Callback method for disabling all instances of the module.
         /// </summary>
-        public Action DisableAll_Callback;
+        public Func<Assembly, int> DisableAll_Callback;
 #pragma warning restore SA1310
 
         /// <summary>
         /// Gets the module <see cref="Type"/>'s name.
         /// </summary>
-        public string Name => Type.Name;
+        public readonly string Name => Type.Name;
+
+        /// <summary>
+        /// Gets the assembly which is defined the module in.
+        /// </summary>
+        public readonly Assembly Assembly => Type.Assembly;
+
+        /// <summary>
+        /// Gets all <see cref="ModuleInfo"/> instances of all defined types in the specified <see cref="System.Reflection.Assembly"/>.
+        /// </summary>
+        /// <param name="assembly">The assembly look for.</param>
+        /// <returns>All <see cref="ModuleInfo"/> instances of all defined types in the <see cref="Assembly"/>.</returns>
+        public static IEnumerable<ModuleInfo> Get(Assembly assembly) => AllModules.Where(m => m.Assembly == assembly);
 
         /// <summary>
         /// Gets a <see cref="ModuleInfo"/> instance based on the module type or name.
@@ -101,22 +114,38 @@ namespace Exiled.CustomModules.API.Features
         /// </summary>
         /// <param name="name">The name of the callback to invoke ("EnableAll" or "DisableAll").</param>
         /// <param name="assembly">The assembly to pass to the callback method.</param>
-        public void InvokeCallback(string name, Assembly assembly = null)
+        public void InvokeCallback(string name, Assembly assembly)
         {
+            if (assembly is null)
+                return;
+
             bool isEnableAllCallback = string.Equals(name, ENABLE_ALL_CALLBACK, StringComparison.CurrentCultureIgnoreCase);
             if (!isEnableAllCallback && !string.Equals(name, DISABLE_ALL_CALLBACK, StringComparison.CurrentCultureIgnoreCase))
                 return;
 
-            IsCurrentlyLoaded = isEnableAllCallback && !IsCurrentlyLoaded;
+            if (CustomModules.Instance.Config.Modules is null || !CustomModules.Instance.Config.Modules.Contains(ModuleType.Name))
+                throw new Exception($"ModuleType::{ModuleType.Name} must be enabled in order to load any {Type.Name} instances.");
+
+            if (!IsCurrentlyLoaded && isEnableAllCallback)
+            {
+                IsCurrentlyLoaded = true;
+                CustomModule.OnEnabled.InvokeAll(this);
+            }
+
             if (IsCurrentlyLoaded)
             {
-                CustomModule.OnEnabled.InvokeAll(this);
-                EnableAll_Callback(assembly ?? Assembly.GetCallingAssembly());
+                int enabledInstancesCount = EnableAll_Callback(assembly);
+                if (enabledInstancesCount > 0)
+                    Log.Info($"{assembly.GetName().Name} deployed {enabledInstancesCount} {Type.Name} {(enabledInstancesCount > 1 ? "instances" : "instance")}.");
+
                 return;
             }
 
             CustomModule.OnDisabled.InvokeAll(this);
-            DisableAll_Callback();
+
+            int disabledInstancesCount = DisableAll_Callback(assembly);
+            if (disabledInstancesCount > 0)
+                Log.Info($"{assembly.GetName().Name} disabled {disabledInstancesCount} {Type.Name} {(disabledInstancesCount > 1 ? "instances" : "instance")}.");
         }
     }
 }

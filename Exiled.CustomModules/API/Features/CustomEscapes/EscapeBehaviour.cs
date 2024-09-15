@@ -17,17 +17,20 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomRoles;
+    using Exiled.CustomModules.API.Features.Generic;
     using PlayerRoles;
 
     /// <summary>
     /// Represents the base class for custom escape behaviors.
     /// </summary>
     /// <remarks>
-    /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IAdditiveSettingsCollection{T}"/>.
+    /// This class extends <see cref="ModuleBehaviour{TEntity}"/> and implements <see cref="IAdditiveSettingsCollection{T}"/>.
     /// <br/>It serves as the foundation for creating custom escape behaviors associated with in-game player actions.
     /// </remarks>
     public abstract class EscapeBehaviour : ModuleBehaviour<Player>, IAdditiveSettingsCollection<EscapeSettings>
     {
+        private List<EscapeSettings> settings;
+
         /// <summary>
         /// Gets the relative <see cref="CustomEscapes.CustomEscape"/>.
         /// </summary>
@@ -36,7 +39,18 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Gets or sets a <see cref="List{T}"/> of <see cref="EscapeSettings"/> containing all escape's settings.
         /// </summary>
-        public virtual List<EscapeSettings> Settings { get; set; }
+        public virtual List<EscapeSettings> Settings
+        {
+            get => settings ??= CustomEscape.Settings;
+            set => settings = value;
+        }
+
+        /// <inheritdoc/>
+        public override ModulePointer Config
+        {
+            get => config ??= CustomEscape.Config;
+            protected set => config = value;
+        }
 
         /// <summary>
         /// Gets the current escape scenario.
@@ -47,41 +61,33 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
         /// </summary>
         [DynamicEventDispatcher]
-        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingDispatcher { get; set; }
+        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
         /// </summary>
         [DynamicEventDispatcher]
-        protected TDynamicEventDispatcher<Player> EscapedDispatcher { get; set; }
+        protected TDynamicEventDispatcher<Player> EscapedDispatcher { get; set; } = new();
 
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            ImplementConfigs();
-
             CustomRole customRole = Owner.Cast<Pawn>().CustomRole;
-            if (CustomEscape.TryGet(GetType(), out CustomEscape customEscape) && customEscape.Settings is List<EscapeSettings> settings)
+
+            if (CustomEscape.TryGet(GetType(), out CustomEscape customEscape))
             {
                 CustomEscape = customEscape;
-
-                if (Config is null)
-                    Settings = customRole && !customRole.EscapeSettings.IsEmpty() ? customRole.EscapeSettings : settings;
+                Settings = customRole is not null && !customRole.EscapeSettings.IsEmpty() ?
+                    customRole.EscapeSettings : CustomEscape.Settings;
             }
 
-            if (CustomEscape is null || Settings is null)
+            if (CustomEscape is null || Settings is null || Config is null)
             {
                 Log.Error($"Custom escape ({GetType().Name}) has invalid configuration.");
                 Destroy();
             }
-        }
 
-        /// <inheritdoc/>
-        protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
-        {
-            targetInfo?.SetValue(
-                typeof(List<EscapeSettings>).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
-                propertyInfo.GetValue(Config, null));
+            ImplementConfigs();
         }
 
         /// <inheritdoc/>

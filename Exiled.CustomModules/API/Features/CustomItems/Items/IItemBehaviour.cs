@@ -7,12 +7,10 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Items
 {
-    using Exiled.CustomModules.API.Interfaces;
-
     /// <summary>
     /// Represents a marker interface for custom item behaviors.
     /// </summary>
-    public interface IItemBehaviour : ITrackable
+    public interface IItemBehaviour : ICustomItemBehaviour
     {
     }
 }

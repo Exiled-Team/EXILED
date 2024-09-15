@@ -36,7 +36,7 @@ namespace Exiled.CustomModules.Patches
             LocalBuilder item = generator.DeclareLocal(typeof(Item));
             LocalBuilder customItem = generator.DeclareLocal(typeof(CustomItem));
 
-            int offset = 0;
+            const int offset = 0;
             int index = newInstructions.FindIndex(i => (i.opcode == OpCodes.Ldfld) && ((FieldInfo)i.operand == Field(typeof(ItemBase), nameof(ItemBase.ItemTypeId)))) + offset;
 
             Label continueLabel = generator.DefineLabel();

@@ -1,18 +1,18 @@
 // -----------------------------------------------------------------------
-// <copyright file="ItemTracker.cs" company="Exiled Team">
+// <copyright file="ICustomItemBehaviour.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomModules.API.Features.CustomItems.Items
+namespace Exiled.CustomModules.API.Features.CustomItems
 {
-    using Exiled.CustomModules.API.Features.Generic;
+    using Exiled.CustomModules.API.Interfaces;
 
     /// <summary>
-    /// The actor which handles all tracking-related tasks for items.
+    /// Represents a marker interface for custom item behaviors.
     /// </summary>
-    public class ItemTracker : TrackerBase<IItemBehaviour>
+    public interface ICustomItemBehaviour : ITrackable
     {
     }
 }

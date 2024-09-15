@@ -8,7 +8,6 @@
 namespace Exiled.CustomModules.API.Features.PickupAbilities
 {
     using System;
-
     using System.Collections.Generic;
     using System.Linq;
 
@@ -37,6 +36,11 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
         /// Gets all owners belonging to a <see cref="PickupAbility"/>.
         /// </summary>
         public static IEnumerable<Pickup> Owners => Manager.Keys.ToHashSet();
+
+        /// <summary>
+        /// Gets the <see cref="TrackerBase"/>.
+        /// </summary>
+        protected static TrackerBase Tracker { get; } = TrackerBase.Get();
 
         /// <summary>
         /// Gets a <see cref="PickupAbility"/> given the specified id.
@@ -104,33 +108,33 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
         /// <param name="type">The type to search for.</param>
         /// <param name="customAbility">The found <see cref="PickupAbility"/>, <see langword="null"/> if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="PickupAbility"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(Type type, out PickupAbility customAbility) => customAbility = Get(type.GetType());
+        public static bool TryGet(Type type, out PickupAbility customAbility) => customAbility = Get(type);
 
         /// <inheritdoc cref="CustomAbility{T}.Add{TAbility}(T, out TAbility)"/>
         public static new bool Add<TAbility>(Pickup entity, out TAbility param)
             where TAbility : PickupAbility => CustomAbility<Pickup>.Add(entity, out param);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, Type)"/>
-        public static new bool Add(Pickup entity, Type type) => CustomAbility<Pickup>.Add(entity, type) && StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
+        public static new bool Add(Pickup entity, Type type) => CustomAbility<Pickup>.Add(entity, type) && Tracker.AddOrTrack(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, string)"/>
-        public static new bool Add(Pickup entity, string name) => CustomAbility<Pickup>.Add(entity, name) && StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
+        public static new bool Add(Pickup entity, string name) => CustomAbility<Pickup>.Add(entity, name) && Tracker.AddOrTrack(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, uint)"/>
-        public static new bool Add(Pickup entity, uint id) => CustomAbility<Pickup>.Add(entity, id) && StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
+        public static new bool Add(Pickup entity, uint id) => CustomAbility<Pickup>.Add(entity, id) && Tracker.AddOrTrack(entity);
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, IEnumerable{Type})"/>
         public static new void Add(Pickup entity, IEnumerable<Type> types)
         {
             CustomAbility<Pickup>.Add(entity, types);
-            StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
+            Tracker.AddOrTrack(entity);
         }
 
         /// <inheritdoc cref="CustomAbility{T}.Add(T, IEnumerable{string})"/>
         public static new void Add(Pickup entity, IEnumerable<string> names)
         {
             CustomAbility<Pickup>.Add(entity, names);
-            StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
+            Tracker.AddOrTrack(entity);
         }
 
         /// <inheritdoc cref="CustomAbility{T}.Remove{TAbility}(T)"/>
@@ -147,7 +151,7 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
             if (!entity.TryGetComponent(pickupAbility.BehaviourComponent, out EActor component) || component is not IAbilityBehaviour behaviour)
                 return false;
 
-            StaticActor.Get<AbilityTracker>().Remove(entity, behaviour);
+            Tracker.Remove(entity, behaviour);
             return CustomAbility<Pickup>.Remove(entity, type);
         }
 
@@ -159,7 +163,7 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
                 component is not IAbilityBehaviour behaviour)
                 return false;
 
-            StaticActor.Get<AbilityTracker>().Remove(entity, behaviour);
+            Tracker.Remove(entity, behaviour);
             return CustomAbility<Pickup>.Remove(entity, name);
         }
 
@@ -171,14 +175,14 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
                 component is not IAbilityBehaviour behaviour)
                 return false;
 
-            StaticActor.Get<AbilityTracker>().Remove(entity, behaviour);
+            Tracker.Remove(entity, behaviour);
             return CustomAbility<Pickup>.Remove(entity, id);
         }
 
         /// <inheritdoc cref="CustomAbility{T}.RemoveAll(T)"/>
         public static new void RemoveAll(Pickup entity)
         {
-            StaticActor.Get<AbilityTracker>().Remove(entity);
+            Tracker.Remove(entity);
             CustomAbility<Pickup>.RemoveAll(entity);
         }
 
@@ -214,7 +218,7 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
         {
             base.Add(entity);
 
-            StaticActor.Get<AbilityTracker>().AddOrTrack(entity);
+            Tracker.AddOrTrack(entity);
         }
 
         /// <inheritdoc cref="CustomAbility{T}.Remove(T)"/>
@@ -223,7 +227,7 @@ namespace Exiled.CustomModules.API.Features.PickupAbilities
             if (!entity.TryGetComponent(BehaviourComponent, out EActor component) || component is not IAbilityBehaviour behaviour)
                 return false;
 
-            StaticActor.Get<AbilityTracker>().Remove(entity, behaviour);
+            Tracker.Remove(entity, behaviour);
 
             return base.Remove(entity);
         }

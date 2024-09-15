@@ -14,6 +14,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.CustomModules.API.Features.CustomAbilities.Settings;
+    using Exiled.CustomModules.API.Features.Generic;
 
     /// <summary>
     /// Represents the base class for ability behaviors associated with a specific entity type.
@@ -22,6 +23,8 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
     public abstract class AbilityBehaviourBase<TEntity> : ModuleBehaviour<TEntity>, IAbilityBehaviour, IAdditiveSettings<AbilitySettings>
         where TEntity : GameEntity
     {
+        private AbilitySettings settings;
+
         /// <summary>
         /// Gets the relative <see cref="CustomAbility{T}"/>.
         /// </summary>
@@ -36,35 +39,32 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <summary>
         /// Gets or sets the <see cref="AbilitySettings"/>.
         /// </summary>
-        public AbilitySettings Settings { get; set; }
+        public AbilitySettings Settings
+        {
+            get => settings ??= CustomAbility.Settings;
+            set => settings = value;
+        }
+
+        /// <inheritdoc/>
+        public override ModulePointer Config
+        {
+            get => config ??= CustomAbility.Config;
+            protected set => config = value;
+        }
 
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            ImplementConfigs();
-
-            if (CustomAbility<TEntity>.TryGet(GetType(), out CustomAbility<TEntity> customAbility) &&
-                customAbility.Settings is AbilitySettings settings)
-            {
+            if (CustomAbility<TEntity>.TryGet(GetType(), out CustomAbility<TEntity> customAbility))
                 CustomAbility = customAbility;
 
-                if (Config is null)
-                    Settings = settings;
-            }
-
-            if (customAbility is null || Settings is null)
+            if (CustomAbility is null || Settings is null || Config is null)
             {
                 Log.Error($"Custom ability ({GetType().Name}) has invalid configuration.");
                 Destroy();
             }
-        }
 
-        /// <inheritdoc/>
-        protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
-        {
-            targetInfo?.SetValue(
-                typeof(AbilitySettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
-                propertyInfo.GetValue(Config, null));
+            ImplementConfigs();
         }
 
         /// <inheritdoc/>

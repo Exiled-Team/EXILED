@@ -45,17 +45,18 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
         {
             if (!sender.CheckPermission("customitems.info"))
             {
-                response = "Permission Denied, required: customitems.info";
+                response = "Permission denied, customitems.info is required.";
                 return false;
             }
 
             if (arguments.Count < 1)
             {
-                response = "info [Custom item name/Custom item ID]";
+                response = "info <Custom Item>";
                 return false;
             }
 
-            if (!(uint.TryParse(arguments.At(0), out uint id) && CustomItem.TryGet(id, out CustomItem item)) &&
+            if (!(uint.TryParse(arguments.At(0), out uint id) &&
+                  CustomItem.TryGet(id, out CustomItem item)) &&
                 !CustomItem.TryGet(arguments.At(0), out item))
             {
                 response = $"{arguments.At(0)} is not a valid custom item.";

@@ -21,13 +21,18 @@ namespace Exiled.Loader
     using Exiled.API.Features.Core.Generic.Pools;
     using YamlDotNet.Core;
 
-    using Serialization = API.Features.EConfig;
+    using Serialization = API.Features.ConfigSubsystem;
 
     /// <summary>
     /// Used to handle plugin configs.
     /// </summary>
     public static class ConfigManager
     {
+        /// <summary>
+        /// Implements the <see cref="ConfigSubsystem"/>.
+        /// </summary>
+        public static void LoadConfigSubsystem() => Serialization.LoadAll(Loader.Plugins.Select(asm => asm.Assembly));
+
         /// <summary>
         /// Loads all the plugin configs.
         /// </summary>

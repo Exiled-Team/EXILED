@@ -40,14 +40,16 @@ namespace Exiled.API.Features.Core
         protected GameEntity(GameObject gameObject)
         {
             GameObject = gameObject;
-
-            // List.Add(this);
         }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="GameEntity"/> class.
         /// </summary>
-        ~GameEntity() => List.Remove(this);
+        ~GameEntity()
+        {
+            foreach (EActor component in ComponentsInChildren)
+                component.Destroy();
+        }
 
         /// <summary>
         /// Gets all active <see cref="GameEntity"/> instances.
@@ -156,6 +158,7 @@ namespace Exiled.API.Features.Core
                 return null;
 
             componentsInChildren.Add(component);
+
             return component;
         }
 
@@ -168,6 +171,7 @@ namespace Exiled.API.Features.Core
                 return null;
 
             componentsInChildren.Add(component);
+
             return component;
         }
 
@@ -178,11 +182,15 @@ namespace Exiled.API.Features.Core
             if (!actor)
                 throw new NullReferenceException("The provided EActor is null.");
 
+            if (componentsInChildren.Contains(actor))
+                return actor.Cast<T>();
+
             if (!string.IsNullOrEmpty(name))
                 actor.Name = name;
 
             EActor.AttachTo(GameObject, actor);
             componentsInChildren.Add(actor);
+            actor.OnAdded_Internal();
 
             return actor.Cast(out T param) ? param : throw new InvalidCastException("The provided EActor cannot be cast to the specified type.");
         }
@@ -206,11 +214,15 @@ namespace Exiled.API.Features.Core
             if (!actor)
                 throw new NullReferenceException("The provided EActor is null.");
 
+            if (componentsInChildren.Contains(actor))
+                return actor;
+
             if (!string.IsNullOrEmpty(name))
                 actor.Name = name;
 
             EActor.AttachTo(GameObject, actor);
             componentsInChildren.Add(actor);
+            actor.OnAdded_Internal();
 
             return actor;
         }
@@ -245,19 +257,16 @@ namespace Exiled.API.Features.Core
                 yield return AddComponent<T>(type);
         }
 
-                /// <inheritdoc />
+        /// <inheritdoc />
         public T RemoveComponent<T>(string name = "")
             where T : EActor
         {
-            T comp = null;
-
             if (string.IsNullOrEmpty(name))
             {
-                if (!TryGetComponent(out comp))
+                if (!TryGetComponent(out T comp))
                     return null;
 
-                comp.Base = null;
-                componentsInChildren.Remove(comp);
+                RemoveComponent_Internal(comp);
                 return comp;
             }
 
@@ -266,25 +275,23 @@ namespace Exiled.API.Features.Core
                 if (actor.Name != name)
                     continue;
 
-                comp = actor.Cast<T>();
+                RemoveComponent_Internal(actor);
+                return actor;
             }
 
-            return comp;
+            return default;
         }
 
         /// <inheritdoc />
         public T RemoveComponent<T>(EActor actor, string name = "")
             where T : EActor
         {
-            T comp = null;
-
             if (string.IsNullOrEmpty(name))
             {
-                if (!TryGetComponent(out comp) || comp != actor)
+                if (!TryGetComponent(out T comp) || comp != actor)
                     return null;
 
-                comp.Base = null;
-                componentsInChildren.Remove(comp);
+                RemoveComponent_Internal(comp);
                 return comp;
             }
 
@@ -293,24 +300,22 @@ namespace Exiled.API.Features.Core
                 if (component.Name != name && component == actor)
                     continue;
 
-                comp = component.Cast<T>();
+                RemoveComponent_Internal(component);
+                return component;
             }
 
-            return comp;
+            return default;
         }
 
         /// <inheritdoc />
         public EActor RemoveComponent(Type type, string name = "")
         {
-            EActor comp = null;
-
             if (string.IsNullOrEmpty(name))
             {
-                if (!TryGetComponent(type, out comp))
+                if (!TryGetComponent(type, out EActor comp))
                     return null;
 
-                comp.Base = null;
-                componentsInChildren.Remove(comp);
+                RemoveComponent_Internal(comp);
                 return comp;
             }
 
@@ -319,10 +324,11 @@ namespace Exiled.API.Features.Core
                 if (actor.Name != name)
                     continue;
 
-                comp = actor;
+                RemoveComponent_Internal(actor);
+                return actor;
             }
 
-            return comp;
+            return default;
         }
 
         /// <inheritdoc />
@@ -333,8 +339,7 @@ namespace Exiled.API.Features.Core
 
             if (string.IsNullOrEmpty(name))
             {
-                actor.Base = null;
-                componentsInChildren.Remove(actor);
+                RemoveComponent_Internal(actor);
                 return actor;
             }
 
@@ -343,7 +348,7 @@ namespace Exiled.API.Features.Core
                 if (component != actor || actor.Name != name)
                     continue;
 
-                actor = component;
+                RemoveComponent_Internal(actor);
             }
 
             return actor;
@@ -376,15 +381,19 @@ namespace Exiled.API.Features.Core
         public void RemoveComponents(IEnumerable<Type> types) => types.ForEach(type => RemoveComponent(type));
 
         /// <inheritdoc />
-        public void RemoveComponents(IEnumerable<EActor> actors) => actors.ForEach(actor => RemoveComponent(actor));
+        public void RemoveComponents(IEnumerable<EActor> actors) => actors.ToList().ForEach(actor => RemoveComponent(actor));
 
         /// <inheritdoc />
         public void RemoveComponents<T>(IEnumerable<T> actors)
-            where T : EActor => actors.ForEach(actor => RemoveComponent(actor));
+            where T : EActor => actors.ToList().ForEach(actor => RemoveComponent(actor));
 
         /// <inheritdoc />
-        public void RemoveComponents<T>(IEnumerable<EActor> types)
-            where T : EActor => types.ForEach(type => RemoveComponent(type));
+        public void RemoveComponents<T>(IEnumerable<EActor> actors)
+            where T : EActor => actors.ToList().ForEach(actor =>
+        {
+            if (actor.GetType() == typeof(T))
+                RemoveComponent(actor);
+        });
 
         /// <inheritdoc/>
         public T GetComponent<T>()
@@ -426,5 +435,12 @@ namespace Exiled.API.Features.Core
         public bool HasComponent(Type type, bool depthInheritance = false) => depthInheritance
             ? componentsInChildren.Any(type.IsInstanceOfType)
             : componentsInChildren.Any(comp => type == comp.GetType());
+
+        private void RemoveComponent_Internal(EActor actor)
+        {
+            actor.Base = null;
+            componentsInChildren.Remove(actor);
+            actor.OnRemoved_Internal();
+        }
     }
 }

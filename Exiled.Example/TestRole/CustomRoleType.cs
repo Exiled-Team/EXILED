@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="CustomRoleType.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -17,6 +17,6 @@ namespace Exiled.Example.TestRole
         /// <summary>
         /// Initializes a new custom role id.
         /// </summary>
-        public static readonly CustomRoleType Scp999 = new();
+        public static readonly CustomRoleType TestRole = new();
     }
 }

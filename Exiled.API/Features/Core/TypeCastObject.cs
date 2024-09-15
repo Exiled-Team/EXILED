@@ -24,11 +24,11 @@ namespace Exiled.API.Features.Core
         }
 
         /// <inheritdoc/>
-        public TObject Cast<TObject>()
+        public virtual TObject Cast<TObject>()
             where TObject : class, T => this as TObject;
 
         /// <inheritdoc/>
-        public bool Cast<TObject>(out TObject param)
+        public virtual bool Cast<TObject>(out TObject param)
             where TObject : class, T
         {
             if (this is not TObject cast)

@@ -12,7 +12,7 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
     using CommandSystem;
 
     /// <summary>
-    /// The main parent command for custom items..
+    /// The main parent command for custom items.
     /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -33,7 +33,7 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
         public override string[] Aliases { get; } = { "ci", "cis" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = string.Empty;
+        public override string Description { get; } = "Commands for managing custom items.";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()

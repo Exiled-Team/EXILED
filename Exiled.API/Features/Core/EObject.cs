@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Core
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core.Attributes;
@@ -24,6 +25,8 @@ namespace Exiled.API.Features.Core
     public abstract class EObject : TypeCastObject<EObject>
     {
         private static readonly Dictionary<Type, List<string>> RegisteredTypesValue = new();
+        private static int lastInstanceId;
+        private int instanceId;
         private bool destroyedValue;
         private bool searchForHostObjectIfNull;
         private CoroutineHandle addHostObjectInternalHandle;
@@ -36,6 +39,7 @@ namespace Exiled.API.Features.Core
         {
             IsEditable = true;
             InternalObjects.Add(this);
+            instanceId = Interlocked.Increment(ref lastInstanceId);
         }
 
         /// <summary>
@@ -357,20 +361,17 @@ namespace Exiled.API.Features.Core
         public static EObject CreateDefaultSubobject(Type type, params object[] parameters)
         {
             const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-            EObject @object = Activator.CreateInstance(type, flags, null, null, null) as EObject;
-
-            if (@object is not null && Player.DEFAULT_ROLE_BEHAVIOUR is not null && type.BaseType == Player.DEFAULT_ROLE_BEHAVIOUR)
-            {
-                @object.Base = parameters[0] as GameObject;
-                @object.Cast<EActor>().ComponentInitialize();
-            }
 
             // Do not use implicit bool conversion as @object may be null
-            if (@object != null)
+            if (Activator.CreateInstance(type, flags, null, null, null) is EObject @object)
             {
                 if (type.GetCustomAttribute<ManagedObjectTypeAttribute>() is not null && GetObjectTypeFromRegisteredTypes(type) == null)
                     RegisterObjectType(type, type.Name);
 
+                if (parameters is not null && parameters.Any() && parameters[0] is GameObject go)
+                    @object.Base = go;
+
+                @object.Cast<EActor>().ComponentInitialize();
                 return @object;
             }
 
@@ -865,10 +866,9 @@ namespace Exiled.API.Features.Core
         {
             unchecked
             {
-                int hash = 23;
-                hash = (hash * 29) + Base.GetHashCode();
-                hash = (hash * 29) + Name.GetHashCode();
-                hash = (hash * 29) + Tag.GetHashCode();
+                int hash = 17;
+                hash = (hash * 23) + instanceId.GetHashCode();
+                hash = (hash * 23) + (Name?.GetHashCode() ?? 0);
                 return hash;
             }
         }
