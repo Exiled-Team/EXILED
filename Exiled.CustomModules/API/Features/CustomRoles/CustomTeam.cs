@@ -469,14 +469,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 if (!typeof(CustomTeam).IsAssignableFrom(type) || attribute is null)
                     continue;
 
-                Log.Debug($"Custom Team found.");
-
                 CustomTeam customTeam = Activator.CreateInstance(type) as CustomTeam;
-
-                Log.Debug($"Custom Team: {customTeam.Name}.");
-
                 customTeam.DeserializeModule();
-                Log.Debug($"Custom Team deser.");
 
                 if (!customTeam.IsEnabled)
                     continue;
