@@ -166,7 +166,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = new(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             int firstGetDebugModeIndex = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(StandardHitregBase), nameof(StandardHitregBase.DebugMode))));
 
@@ -198,7 +198,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(Miss), nameof(ProcessMiss), new[] { typeof(ReferenceHub), typeof(Firearm), typeof(Ray) })),
             });
 
-            return newInstructions;
+            for (int i = 0; i < newInstructions.Count; i++)
+                yield return newInstructions[i];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 
