@@ -282,6 +282,5 @@ namespace Exiled.API.Features.Core.Generic
         /// Greater than zero This instance follows other in the sort order.
         /// </returns>
         public int CompareTo(object obj) => obj is TSource value ? CompareTo(value) : CompareTo(obj as TObject);
-
     }
 }
