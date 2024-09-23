@@ -143,14 +143,14 @@ namespace Exiled.Events.Patches.Events.Player
     }
 
     /// <summary>
-    ///     Patches the "else" branch of ServerPerformShot raycast attempt to fire OnShot even if the raycast didn't hit anything.
+    /// Patches the "else" branch of ServerPerformShot raycast attempt to fire OnShot even if the raycast didn't hit anything.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Shot))]
     [HarmonyPatch(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.ServerPerformShot))]
     internal static class Miss
     {
         /// <summary>
-        ///     Method to fire the OnShot event when raycast fails.
+        /// Method to fire the OnShot event when raycast fails.
         /// </summary>
         private static void ProcessMiss(ReferenceHub player, Firearm firearm, Ray ray)
         {
