@@ -55,7 +55,7 @@ namespace Exiled.CustomModules.API.Commands.GameModes
                     return false;
                 }
 
-                if (CustomGameMode.TryGet(arguments.At(0), out CustomGameMode gameMode) && (!uint.TryParse(arguments.At(0), out uint id) || !CustomGameMode.TryGet(id, out gameMode)) && gameMode is null)
+                if (!uint.TryParse(arguments.At(0), out uint id) || (!CustomGameMode.TryGet(id, out CustomGameMode gameMode) && gameMode is null))
                 {
                     response = $"Custom gamemode {arguments.At(0)} not found!";
                     return false;
