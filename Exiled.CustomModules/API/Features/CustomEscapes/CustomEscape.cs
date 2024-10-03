@@ -10,6 +10,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
 
@@ -437,6 +438,43 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
             NameLookupTable.Remove(Name);
 
             return true;
+        }
+
+        /// <inheritdoc />
+        protected override void DeserializeModule_Implementation()
+        {
+            string scenariosProperty = nameof(Scenarios).ToKebabCase();
+            string settingsProperty = nameof(Settings).ToKebabCase();
+
+            Dictionary<string, object> deserializedModule = ConfigSubsystem.Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(FilePath));
+
+            object scenarios = null;
+            if (deserializedModule.TryGetValue(scenariosProperty, out object outScenarios))
+            {
+                scenarios = outScenarios;
+                deserializedModule.Remove(scenariosProperty);
+            }
+
+            object settings = null;
+            if (deserializedModule.TryGetValue(settingsProperty, out object outSettings))
+            {
+                settings = outSettings;
+                deserializedModule.Remove(scenariosProperty);
+            }
+
+            string rawCustomEscape = ConfigSubsystem.ConvertDictionaryToYaml(deserializedModule);
+            string serializedScenarios = ConfigSubsystem.Serializer.Serialize(scenarios);
+            string serializedSettings = ConfigSubsystem.Serializer.Serialize(settings);
+
+            CustomEscape deserializedCustomEscape = ModuleDeserializer.Deserialize(rawCustomEscape, GetType()) as CustomEscape;
+            Dictionary<byte, Hint> scenariosInstance = ConfigSubsystem.Deserializer.Deserialize<Dictionary<byte, Hint>>(serializedScenarios);
+            List<EscapeSettings> settingsInstance = ConfigSubsystem.Deserializer.Deserialize<List<EscapeSettings>>(serializedSettings);
+            deserializedCustomEscape.Scenarios = scenariosInstance;
+            deserializedCustomEscape.Settings = settingsInstance;
+
+            CopyProperties(deserializedCustomEscape);
+
+            Config = ModuleDeserializer.Deserialize(File.ReadAllText(PointerPath), ModulePointer.Get(this, GetType().Assembly).GetType()) as ModulePointer;
         }
     }
 }

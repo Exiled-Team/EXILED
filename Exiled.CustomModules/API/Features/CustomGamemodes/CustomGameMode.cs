@@ -97,7 +97,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         /// Gets or sets the <see cref="GameModeSettings"/>.
         /// </summary>
         [Description("The settings for the game mode.")]
-        public virtual GameModeSettings Settings { get; set; }
+        public virtual GameModeSettings Settings { get; set; } = new();
 
         /// <inheritdoc/>
         [YamlIgnore]
