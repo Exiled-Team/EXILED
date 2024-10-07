@@ -232,7 +232,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                     }
                 }
 
-                return (RequiredCustomTeamToSpawn > 0 && CustomTeam.TryGet(RequiredCustomTeamToSpawn, out CustomTeam team) && !team.Owners.IsEmpty()) ||
+                return (RequiredCustomTeamToSpawn > 0 && TryGet(RequiredCustomTeamToSpawn, out CustomTeam team) && !team.Owners.IsEmpty()) ||
                        (RequiredCustomRoleToSpawn > 0 && CustomRole.TryGet(RequiredCustomRoleToSpawn, out CustomRole role) && !role.Owners.IsEmpty());
             }
         }
@@ -283,21 +283,21 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// </summary>
         /// <param name="id">The id to check.</param>
         /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
-        public static CustomTeam Get(uint id) => IdLookupTable[id];
+        public static CustomTeam Get(uint id) => IdLookupTable.ContainsKey(id) ? IdLookupTable[id] : null;
 
         /// <summary>
         /// Gets a <see cref="CustomTeam"/> instance based on the specified name.
         /// </summary>
         /// <param name="name">The specified name.</param>
         /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
-        public static CustomTeam Get(string name) => NameLookupTable[name];
+        public static CustomTeam Get(string name) => NameLookupTable.ContainsKey(name) ? NameLookupTable[name] : null;
 
         /// <summary>
         /// Gets a <see cref="CustomTeam"/> instance associated with a specific <see cref="Player"/>.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns>The <see cref="CustomTeam"/> matching the search, or <see langword="null"/> if not registered.</returns>
-        public static CustomTeam Get(Player player) => !PlayersValue.TryGetValue(player, out CustomTeam customTeam) ? null : customTeam;
+        public static CustomTeam Get(Player player) => PlayersValue.TryGetValue(player, out CustomTeam customTeam) ? customTeam : null;
 
         /// <summary>
         /// Attempts to retrieve a <see cref="CustomTeam"/> based on the provided id or <see cref="UUCustomTeamType"/>.
@@ -305,15 +305,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="id">The id or <see cref="UUCustomTeamType"/> of the custom team.</param>
         /// <param name="customTeam">When this method returns, contains the <see cref="CustomTeam"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomTeam"/> was found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(object id, out CustomTeam customTeam) => customTeam = Get(id);
-
-        /// <summary>
-        /// Tries to get a <see cref="CustomTeam"/> given the specified id.
-        /// </summary>
-        /// <param name="id">The id to look for.</param>
-        /// <param name="customTeam">The found <see cref="CustomTeam"/>, null if not registered.</param>
-        /// <returns><see langword="true"/> if a <see cref="CustomTeam"/> is found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(uint id, out CustomTeam customTeam) => customTeam = Get(id);
+        public static bool TryGet(object id, out CustomTeam customTeam)
+        {
+            customTeam = Get(id);
+            return customTeam is not null;
+        }
 
         /// <summary>
         /// Tries to get a <see cref="CustomTeam"/> given the specified name.
@@ -321,7 +317,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <param name="name">The name to look for.</param>
         /// <param name="customTeam">The found <see cref="CustomTeam"/>, null if not registered.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomTeam"/> is found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(string name, out CustomTeam customTeam) => customTeam = Get(name);
+        public static bool TryGet(string name, out CustomTeam customTeam)
+        {
+            customTeam = Get(name);
+            return customTeam is not null;
+        }
 
         /// <summary>
         /// Tries to get a <see cref="CustomTeam"/> belonging to the specified <see cref="Player"/>.

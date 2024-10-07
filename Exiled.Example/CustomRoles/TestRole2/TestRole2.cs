@@ -5,11 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Example.TestRole
+namespace Exiled.Example.CustomRoles.TestRole2
 {
     using Exiled.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomRoles;
+    using Exiled.Example.TestRole;
     using PlayerRoles;
 
     /// <inheritdoc />

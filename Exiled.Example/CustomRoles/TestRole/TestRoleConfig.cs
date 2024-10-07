@@ -5,11 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Example.TestRole
+namespace Exiled.Example.CustomRoles.TestRole
 {
     using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomRoles;
     using Exiled.CustomModules.API.Features.Generic;
+    using Exiled.Example.TestRole;
 
     /// <inheritdoc />
     [ModuleIdentifier]

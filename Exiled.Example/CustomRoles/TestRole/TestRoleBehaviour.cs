@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Example.TestRole
+namespace Exiled.Example.CustomRoles.TestRole
 {
     using Exiled.API.Features;
     using Exiled.CustomModules.API.Features.CustomRoles;

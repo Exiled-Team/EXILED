@@ -8,8 +8,10 @@
 namespace Exiled.CustomModules.API.Features.Generic
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Generic;
 
@@ -30,8 +32,7 @@ namespace Exiled.CustomModules.API.Features.Generic
         /// The binding flags in use to implement configs through reflection.
         /// </summary>
         internal const BindingFlags CONFIG_IMPLEMENTATION_BINDING_FLAGS =
-            BindingFlags.Public | BindingFlags.Static | BindingFlags.NonPublic |
-            BindingFlags.Instance | BindingFlags.DeclaredOnly;
+            BindingFlags.Public | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Instance;
 
         /// <summary>
         /// The behaviour's config.
@@ -56,6 +57,9 @@ namespace Exiled.CustomModules.API.Features.Generic
         /// <param name="config">The <see cref="ModulePointer"/> or any config object to be implemented.</param>
         public static void ImplementConfigs_DefaultImplementation(object instance, object config)
         {
+            if (instance is null || config is null)
+                return;
+
             Type inType = instance.GetType();
 
             foreach (PropertyInfo propertyInfo in config.GetType().GetProperties(CONFIG_IMPLEMENTATION_BINDING_FLAGS))
@@ -65,16 +69,41 @@ namespace Exiled.CustomModules.API.Features.Generic
                 if (targetProperty is null || targetProperty.PropertyType != propertyInfo.PropertyType)
                     continue;
 
-                if (targetProperty.PropertyType.IsClass && targetProperty.PropertyType != typeof(string))
+                if (typeof(System.Collections.IEnumerable).IsAssignableFrom(targetProperty.PropertyType))
                 {
+                    object sourceCollection = propertyInfo.GetValue(config);
+                    object targetCollection = targetProperty.GetValue(instance);
+
+                    if (targetCollection is not null && sourceCollection is not null)
+                    {
+                        if (targetProperty.PropertyType.IsGenericType)
+                        {
+                            Type genericType = targetProperty.PropertyType.GetGenericTypeDefinition();
+
+                            if (genericType == typeof(List<>))
+                                targetCollection.CopyListElements(sourceCollection);
+                            else if (genericType == typeof(Dictionary<,>))
+                                targetCollection.CopyDictionaryElements(sourceCollection);
+                        }
+                    }
+                }
+                else if (targetProperty.PropertyType.IsClass && targetProperty.PropertyType != typeof(string))
+                {
+                    object value = propertyInfo.GetValue(config);
                     object targetInstance = targetProperty.GetValue(instance);
 
-                    if (targetInstance is not null)
-                        ApplyConfig_DefaultImplementation(propertyInfo.GetValue(config), targetInstance);
+                    if (targetInstance is null)
+                    {
+                        targetInstance = Activator.CreateInstance(targetProperty.PropertyType);
+                        targetProperty.SetValue(instance, targetInstance);
+                    }
+
+                    if (value is not null)
+                        ApplyConfig_DefaultImplementation(value, targetInstance);
                 }
                 else
                 {
-                    if (targetProperty.CanWrite)
+                    if (targetProperty.SetMethod is not null)
                         targetProperty.SetValue(instance, propertyInfo.GetValue(config));
                 }
             }
@@ -97,12 +126,33 @@ namespace Exiled.CustomModules.API.Features.Generic
             {
                 PropertyInfo targetProperty = targetType.GetProperty(sourceProperty.Name);
 
-                if (targetProperty is null || !targetProperty.CanWrite || targetProperty.PropertyType != sourceProperty.PropertyType)
+                if (targetProperty is null || !targetProperty.CanWrite ||
+                    targetProperty.PropertyType != sourceProperty.PropertyType)
                     continue;
 
                 object value = sourceProperty.GetValue(source);
 
-                if (value is not null && targetProperty.PropertyType.IsClass && targetProperty.PropertyType != typeof(string))
+                if (value is null)
+                    continue;
+
+                if (typeof(System.Collections.IEnumerable).IsAssignableFrom(targetProperty.PropertyType))
+                {
+                    object targetCollection = targetProperty.GetValue(target);
+
+                    if (targetCollection is not null)
+                    {
+                        if (!targetProperty.PropertyType.IsGenericType)
+                            continue;
+
+                        Type genericType = targetProperty.PropertyType.GetGenericTypeDefinition();
+
+                        if (genericType == typeof(List<>))
+                            targetCollection.CopyListElements(value);
+                        else if (genericType == typeof(Dictionary<,>))
+                            targetCollection.CopyDictionaryElements(value);
+                    }
+                }
+                else if (targetProperty.PropertyType.IsClass && targetProperty.PropertyType != typeof(string))
                 {
                     object targetInstance = targetProperty.GetValue(target);
 

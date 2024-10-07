@@ -237,18 +237,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         }
 
         /// <summary>
-        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified custom item id.
-        /// </summary>
-        /// <param name="id">The custom item id to retrieve.</param>
-        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
-        /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(uint id, out CustomItem customItem)
-        {
-            customItem = Get(id);
-            return customItem is not null;
-        }
-
-        /// <summary>
         /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified item name.
         /// </summary>
         /// <param name="name">The name of the custom item to retrieve.</param>

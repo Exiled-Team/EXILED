@@ -142,5 +142,33 @@ namespace Exiled.API.Extensions
 
             return propertyValues;
         }
+
+        /// <summary>
+        /// Copies elements from the source list to the target list by invoking the Add method on the target list.
+        /// </summary>
+        /// <param name="targetList">The target list where elements will be added.</param>
+        /// <param name="sourceList">The source list containing the elements to be copied.</param>
+        /// <remarks>
+        /// The method uses reflection to find and invoke the Add method of the target list.
+        /// </remarks>
+        public static void CopyListElements(this object targetList, object sourceList)
+        {
+            foreach (object item in (System.Collections.IEnumerable)sourceList)
+                targetList.GetType().GetMethod("Add").Invoke(targetList, new[] { item });
+        }
+
+        /// <summary>
+        /// Copies elements from the source dictionary to the target dictionary by invoking the Add method on the target dictionary.
+        /// </summary>
+        /// <param name="targetDict">The target dictionary where key-value pairs will be added.</param>
+        /// <param name="sourceDict">The source dictionary containing the key-value pairs to be copied.</param>
+        /// <remarks>
+        /// The method uses reflection to find and invoke the Add method of the target dictionary.
+        /// </remarks>
+        public static void CopyDictionaryElements(this object targetDict, object sourceDict)
+        {
+            foreach (System.Collections.DictionaryEntry entry in (System.Collections.IDictionary)sourceDict)
+                targetDict.GetType().GetMethod("Add").Invoke(targetDict, new[] { entry.Key, entry.Value });
+        }
     }
 }

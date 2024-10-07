@@ -24,7 +24,7 @@ namespace Exiled.CustomModules
         /// The delay to be applied in order to execute any dispatch operation.
         /// </summary>
 #pragma warning disable SA1310 // Field names should not contain underscore
-        private const float DISPATCH_OPERATION_DELAY = 0.5f;
+        private const float DISPATCH_OPERATION_DELAY = 2.5f;
 #pragma warning restore SA1310 // Field names should not contain underscore
 
         /// <summary>

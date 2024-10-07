@@ -10,7 +10,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
 
     using Exiled.API.Enums;
@@ -112,14 +111,14 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Gets the <see cref="InventoryManager"/>.
+        /// Gets or sets the <see cref="InventoryManager"/>.
         /// </summary>
-        protected virtual InventoryManager Inventory { get; }
+        public virtual InventoryManager Inventory { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> of the fake appearance applied by this <see cref="RoleBehaviour"/> component.
         /// </summary>
-        protected virtual RoleTypeId FakeAppearance
+        public virtual RoleTypeId FakeAppearance
         {
             get => fakeAppearance;
             set
@@ -132,22 +131,27 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets or sets a <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> which should be permanently given to the player.
         /// </summary>
-        protected virtual IEnumerable<Effect> PermanentEffects { get; set; }
+        public virtual IEnumerable<Effect> PermanentEffects { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether <see cref="FakeAppearance"/> should be used.
         /// </summary>
-        protected virtual bool UseFakeAppearance { get; }
+        public virtual bool UseFakeAppearance { get; }
 
         /// <summary>
         /// Gets a value indicating whether an existing spawnpoint should be used.
         /// </summary>
-        protected virtual bool UseCustomSpawnpoint => true;
+        public virtual bool UseCustomSpawnpoint => true;
 
         /// <summary>
         /// Gets or sets a value indicating whether the effects should persistently remain active.
         /// </summary>
-        protected virtual bool SustainEffects { get; set; }
+        public virtual bool SustainEffects { get; set; }
+
+        /// <summary>
+        /// Gets or sets the the escape settings.
+        /// </summary>
+        public virtual List<EscapeSettings> EscapeSettings { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="RoleBehaviour"/> component.
@@ -158,11 +162,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// Gets the current speed of the  <see cref="EBehaviour{T}.Owner"/>.
         /// </summary>
         protected float CurrentSpeed { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the the escape settings.
-        /// </summary>
-        protected virtual List<EscapeSettings> EscapeSettings { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
@@ -316,20 +315,29 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (Settings.HideInfoArea)
                 Owner.InfoArea = Owner.InfoArea.RemoveFlags(PlayerInfoArea.UnitName, PlayerInfoArea.Role);
 
-            if (isHuman && !Settings.PreserveInventory)
+            if (isHuman && !Settings.PreserveInventory && Inventory is not null)
             {
                 Owner.ClearInventory();
 
-                if (Inventory.Items is not null)
-                    Owner.AddItem(Inventory.Items);
-
-                if (Inventory.CustomItems is not null)
-                    Owner.Cast<Pawn>().AddItem(Inventory.CustomItems);
-
-                if (Inventory.AmmoBox is not null)
+                if (Inventory.Chance == 0 || (Inventory.Chance > 0 && Inventory.Chance.EvaluateProbability()))
                 {
-                    foreach (KeyValuePair<AmmoType, ushort> kvp in Inventory.AmmoBox)
-                        Owner.AddAmmo(kvp.Key, kvp.Value);
+                    if (Inventory.Items is not null)
+                        Owner.AddItem(Inventory.Items);
+
+                    if (Inventory.CustomItems is not null)
+                        Owner.Cast<Pawn>().AddItem(Inventory.CustomItems);
+
+                    if (Inventory.AmmoBox is not null)
+                    {
+                        foreach (KeyValuePair<AmmoType, ushort> kvp in Inventory.AmmoBox)
+                            Owner.AddAmmo(kvp.Key, kvp.Value);
+                    }
+
+                    if (Inventory.CustomAmmoBox is not null)
+                    {
+                        foreach (KeyValuePair<uint, ushort> kvp in Inventory.CustomAmmoBox)
+                            Owner.Cast<Pawn>().AddAmmo(kvp.Key, kvp.Value);
+                    }
                 }
             }
 
@@ -647,11 +655,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnSearchPickupRequest(SearchingPickupEventArgs)"/>
         protected virtual void PickingUpItemBehavior(SearchingPickupEventArgs ev)
         {
-            if (ev.Pickup is null)
-            {
-                Log.Error("Pickup is null");
-            }
-
             if (!Check(ev.Player) || Settings.CanPickupItems)
                 return;
 
@@ -661,7 +664,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs)"/>
         protected virtual void PreventPlayerFromEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs ev)
         {
-            if (!Check(ev.Player) || useCustomEscape || wasEscaped || !EscapeSettings.IsEmpty())
+            if (!Check(ev.Player) || useCustomEscape || wasEscaped || (EscapeSettings is not null && !EscapeSettings.IsEmpty()))
                 return;
 
             ev.IsAllowed = false;
