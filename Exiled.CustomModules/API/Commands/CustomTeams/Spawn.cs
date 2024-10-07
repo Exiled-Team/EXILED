@@ -56,7 +56,7 @@ namespace Exiled.CustomModules.API.Commands.CustomTeams
                     return false;
                 }
 
-                if (!CustomTeam.TryGet(arguments.At(0), out CustomTeam team) && (!uint.TryParse(arguments.At(0), out uint id) || !CustomTeam.TryGet(id, out team)) && team is null)
+                if (!uint.TryParse(arguments.At(0), out uint id) || (!CustomTeam.TryGet(id, out CustomTeam team) && team is null))
                 {
                     response = $"Custom team {arguments.At(0)} not found!";
                     return false;

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="TestRole.cs" company="Exiled Team">
+// <copyright file="TestRole2.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -14,13 +14,13 @@ namespace Exiled.Example.TestRole
 
     /// <inheritdoc />
     [ModuleIdentifier]
-    public class TestRole : CustomRole<TestRoleBehaviour>
+    public class TestRole2 : CustomRole<TestRole2Behaviour>
     {
         /// <inheritdoc />
-        public override string Name { get; set; } = "TestRole";
+        public override string Name { get; set; } = "TestRole2";
 
         /// <inheritdoc />
-        public override uint Id { get; set; } = CustomRoleType.TestRole;
+        public override uint Id { get; set; } = CustomRoleType.TestRole2;
 
         /// <inheritdoc />
         public override bool IsEnabled { get; set; } = true;
@@ -29,7 +29,7 @@ namespace Exiled.Example.TestRole
         public override string Description { get; set; } = "Custom role for testing purposes.";
 
         /// <inheritdoc />
-        public override RoleTypeId Role { get; set; } = RoleTypeId.ClassD;
+        public override RoleTypeId Role { get; set; } = RoleTypeId.Scientist;
 
         /// <inheritdoc />
         public override int Probability { get; set; } = 100;
@@ -38,10 +38,10 @@ namespace Exiled.Example.TestRole
         public override int MaxInstances { get; set; } = 1;
 
         /// <inheritdoc />
-        public override Team[] TeamsOwnership { get; set; } = { Team.ClassD };
+        public override Team[] TeamsOwnership { get; set; } = { Team.Scientists };
 
         /// <inheritdoc />
-        public override RoleTypeId AssignFromRole { get; set; } = RoleTypeId.ClassD;
+        public override RoleTypeId AssignFromRole { get; set; } = RoleTypeId.Scientist;
 
         /// <inheritdoc />
         public override bool IsScp { get; set; } = true;

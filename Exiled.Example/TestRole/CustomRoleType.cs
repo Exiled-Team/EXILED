@@ -18,5 +18,10 @@ namespace Exiled.Example.TestRole
         /// Initializes a new custom role id.
         /// </summary>
         public static readonly CustomRoleType TestRole = new();
+
+        /// <summary>
+        /// Initializes a new custom role id.
+        /// </summary>
+        public static readonly CustomRoleType TestRole2 = new();
     }
 }
