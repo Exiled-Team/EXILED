@@ -249,5 +249,13 @@ namespace Exiled.API.Enums
         /// Damage caused by the marshmallow man.
         /// </summary>
         Marshmallow,
+
+#pragma warning disable CS1591 // Missing XML documentation
+#pragma warning disable SA1602 // Enumeration items should be documented
+        Silent,
+
+        MetalPipe,
+#pragma warning restore SA1602 // Enumeration items should be documented
+#pragma warning restore CS1591 // Missing XML documentation
     }
 }

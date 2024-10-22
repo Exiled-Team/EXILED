@@ -49,6 +49,7 @@ namespace Exiled.API.Extensions
             { DeathTranslations.MicroHID.Id, DamageType.MicroHid },
             { DeathTranslations.Hypothermia.Id, DamageType.Hypothermia },
             { DeathTranslations.MarshmallowMan.Id, DamageType.Marshmallow },
+            { DeathTranslations.MetalPipe.Id, DamageType.MetalPipe },
         };
 
         private static readonly Dictionary<DeathTranslation, DamageType> TranslationConversionInternal = new()
@@ -80,6 +81,7 @@ namespace Exiled.API.Extensions
             { DeathTranslations.MicroHID, DamageType.MicroHid },
             { DeathTranslations.Hypothermia, DamageType.Hypothermia },
             { DeathTranslations.MarshmallowMan, DamageType.Marshmallow },
+            { DeathTranslations.MetalPipe, DamageType.MetalPipe },
         };
 
         private static readonly Dictionary<ItemType, DamageType> ItemConversionInternal = new()
@@ -164,6 +166,10 @@ namespace Exiled.API.Extensions
             {
                 case CustomReasonDamageHandler:
                     return DamageType.Custom;
+                case SilentDamageHandler:
+                    return DamageType.Silent;
+                case MetalPipeDamageHandler:
+                    return DamageType.MetalPipe;
                 case WarheadDamageHandler:
                     return DamageType.Warhead;
                 case ExplosionDamageHandler:

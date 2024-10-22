@@ -216,7 +216,6 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Makes you a marshmallow guy.
         /// </summary>
-        [Obsolete("Not functional in-game")]
         Marshmallow,
 
         /// <summary>
@@ -239,5 +238,30 @@ namespace Exiled.API.Enums
         /// <see cref="CustomPlayerEffects.Slowness"/>.
         /// </summary>
         Slowness,
+
+        /// <summary>
+        /// Effect given when eating the orange candy.
+        /// </summary>
+        OrangeCandy,
+
+#pragma warning disable CS1591 // Missing XML documentation
+#pragma warning disable SA1602 // Enumeration items should be documented
+        Spicy,
+
+        SugarCrave,
+
+        SugarHigh,
+
+        SugarRush,
+
+        TraumatizedByEvil,
+
+        Metal,
+
+        Prismatic,
+
+        SlowMetabolism,
+#pragma warning restore SA1602 // Enumeration items should be documented
+#pragma warning restore CS1591 // Missing XML documentation
     }
 }
