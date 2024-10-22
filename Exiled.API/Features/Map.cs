@@ -28,6 +28,7 @@ namespace Exiled.API.Features
     using MapGeneration;
     using MapGeneration.Distributors;
     using Mirror;
+    using Mirror.LiteNetLib4Mirror;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Scp939;
@@ -63,8 +64,32 @@ namespace Exiled.API.Features
 
         private static TantrumEnvironmentalHazard tantrumPrefab;
         private static Scp939AmnesticCloudInstance amnesticCloudPrefab;
+        private static PrismaticCloud prismaticCloudPrefab;
 
         private static AmbientSoundPlayer ambientSoundPlayer;
+
+        /// <summary>
+        /// Gets the prismatic cloud prefab.
+        /// </summary>
+        public static PrismaticCloud PrismaticCloud
+        {
+            get
+            {
+                if (prismaticCloudPrefab != null)
+                    return prismaticCloudPrefab;
+
+                foreach (GameObject prefab in LiteNetLib4MirrorNetworkManager.singleton.spawnPrefabs)
+                {
+                    if (!prefab.TryGetComponent(out PrismaticCloud prismaticCloud))
+                        continue;
+
+                    prismaticCloudPrefab = prismaticCloud;
+                    break;
+                }
+
+                return prismaticCloudPrefab;
+            }
+        }
 
         /// <summary>
         /// Gets the tantrum prefab.
@@ -73,13 +98,13 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (tantrumPrefab == null)
-                {
-                    Scp173GameRole scp173Role = (Scp173GameRole)RoleTypeId.Scp173.GetRoleBase();
+                if (tantrumPrefab != null)
+                    return tantrumPrefab;
 
-                    if (scp173Role.SubroutineModule.TryGetSubroutine(out Scp173TantrumAbility scp173TantrumAbility))
-                        tantrumPrefab = scp173TantrumAbility._tantrumPrefab;
-                }
+                Scp173GameRole scp173Role = (Scp173GameRole)RoleTypeId.Scp173.GetRoleBase();
+
+                if (scp173Role.SubroutineModule.TryGetSubroutine(out Scp173TantrumAbility scp173TantrumAbility))
+                    tantrumPrefab = scp173TantrumAbility._tantrumPrefab;
 
                 return tantrumPrefab;
             }
@@ -92,13 +117,13 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (amnesticCloudPrefab == null)
-                {
-                    Scp939GameRole scp939Role = (Scp939GameRole)RoleTypeId.Scp939.GetRoleBase();
+                if (amnesticCloudPrefab != null)
+                    return amnesticCloudPrefab;
 
-                    if (scp939Role.SubroutineModule.TryGetSubroutine(out Scp939AmnesticCloudAbility ability))
-                        amnesticCloudPrefab = ability._instancePrefab;
-                }
+                Scp939GameRole scp939Role = (Scp939GameRole)RoleTypeId.Scp939.GetRoleBase();
+
+                if (scp939Role.SubroutineModule.TryGetSubroutine(out Scp939AmnesticCloudAbility ability))
+                    amnesticCloudPrefab = ability._instancePrefab;
 
                 return amnesticCloudPrefab;
             }
