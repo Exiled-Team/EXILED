@@ -81,6 +81,15 @@ namespace Exiled.API.Features.Hazards
         }
 
         /// <summary>
+        /// Gets or sets the teams that will be affected by this Tantrum.
+        /// </summary>
+        public Team[] TargetedTeams
+        {
+            get => Base._targetedTeams;
+            set => Base._targetedTeams = value;
+        }
+
+        /// <summary>
         /// Places a Tantrum (SCP-173's ability) in the indicated position.
         /// </summary>
         /// <param name="position">The position where you want to spawn the Tantrum.</param>

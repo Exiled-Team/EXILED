@@ -155,7 +155,6 @@ namespace Exiled.API.Features
 #pragma warning restore SA1401
 
         private ReferenceHub referenceHub;
-        private CustomHealthStat healthStat;
         private CustomHumeShieldStat humeShieldStat;
         private CustomStaminaStat staminaStat;
         private Role role;
@@ -244,7 +243,7 @@ namespace Exiled.API.Features
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
 
-                value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[Array.IndexOf(PlayerStats.DefinedModules, typeof(HealthStat))] = healthStat = new CustomHealthStat { Hub = value };
+                // value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[Array.IndexOf(PlayerStats.DefinedModules, typeof(HealthStat))] = healthStat = new CustomHealthStat { Hub = value };
                 value.playerStats._dictionarizedTypes[typeof(HumeShieldStat)] = value.playerStats.StatModules[Array.IndexOf(PlayerStats.DefinedModules, typeof(HumeShieldStat))] = humeShieldStat = new CustomHumeShieldStat { Hub = value };
                 value.playerStats._dictionarizedTypes[typeof(StaminaStat)] = value.playerStats.StatModules[Array.IndexOf(PlayerStats.DefinedModules, typeof(StaminaStat))] = staminaStat = new CustomStaminaStat { Hub = value };
             }
@@ -964,8 +963,8 @@ namespace Exiled.API.Features
         [EProperty(category: STATS_CATEGORY)]
         public float Health
         {
-            get => healthStat.CurValue;
-            set => healthStat.CurValue = value;
+            get => ReferenceHub.playerStats.GetModule<HealthStat>().CurValue;
+            set => ReferenceHub.playerStats.GetModule<HealthStat>().CurValue = value;
         }
 
         /// <summary>
@@ -974,8 +973,8 @@ namespace Exiled.API.Features
         [EProperty(category: STATS_CATEGORY)]
         public float MaxHealth
         {
-            get => healthStat.MaxValue;
-            set => healthStat.CustomMaxValue = value;
+            get => ReferenceHub.playerStats.GetModule<MaxHealthStat>().CurValue;
+            set => ReferenceHub.playerStats.GetModule<MaxHealthStat>().CurValue = value;
         }
 
         /// <summary>
@@ -1039,6 +1038,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the players maximum Hume Shield.
         /// </summary>
+        [EProperty(category: STATS_CATEGORY)]
         public float MaxHumeShield
         {
             get => HumeShieldStat.MaxValue;
@@ -1048,6 +1048,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the players multiplier for gaining HumeShield.
         /// </summary>
+        [EProperty(category: STATS_CATEGORY)]
         public float HumeShieldRegenerationMultiplier
         {
             get => HumeShieldStat.ShieldRegenerationMultiplier;
@@ -1112,6 +1113,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the players maximum stamina.
         /// </summary>
+        [EProperty(category: STATS_CATEGORY)]
         public float MaxStamina
         {
             get => StaminaStat.MaxValue;
@@ -2443,7 +2445,7 @@ namespace Exiled.API.Features
             if (overrideMaxHealth)
                 Health += amount;
             else
-                healthStat.ServerHeal(amount);
+                ReferenceHub.playerStats.GetModule<HealthStat>().ServerHeal(amount);
         }
 
         /// <summary>
