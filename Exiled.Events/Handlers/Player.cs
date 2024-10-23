@@ -1120,30 +1120,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
         /// </summary>
-        /// <param name="userId"><inheritdoc cref="PreAuthenticatingEventArgs.UserId"/></param>
-        /// <param name="ipAddress"><inheritdoc cref="PreAuthenticatingEventArgs.IpAddress"/></param>
-        /// <param name="expiration"><inheritdoc cref="PreAuthenticatingEventArgs.Expiration"/></param>
-        /// <param name="flags"><inheritdoc cref="PreAuthenticatingEventArgs.Flags"/></param>
-        /// <param name="country"><inheritdoc cref="PreAuthenticatingEventArgs.Country"/></param>
-        /// <param name="signature"><inheritdoc cref="PreAuthenticatingEventArgs.Signature"/></param>
-        /// <param name="request"><inheritdoc cref="PreAuthenticatingEventArgs.Request"/></param>
-        /// <param name="readerStartPosition"><inheritdoc cref="PreAuthenticatingEventArgs.ReaderStartPosition"/></param>
-        /// <returns>Returns the <see cref="PreauthCancellationData"/> instance.</returns>
-        [PluginEvent(ServerEventType.PlayerPreauth)]
-        public PreauthCancellationData OnPreAuthenticating(
-            string userId,
-            string ipAddress,
-            long expiration,
-            CentralAuthPreauthFlags flags,
-            string country,
-            byte[] signature,
-            LiteNetLib.ConnectionRequest request,
-            int readerStartPosition)
-        {
-            PreAuthenticatingEventArgs ev = new(userId, ipAddress, expiration, flags, country, signature, request, readerStartPosition);
-            PreAuthenticating.InvokeSafely(ev);
+        /// <param name="ev"><The cref="PreAuthenticatingEventArgs"/> instance.</param>
+        public static void OnPreAuthenticating(PreAuthenticatingEventArgs ev) => PreAuthenticating.InvokeSafely(ev);
 
-            return ev.CachedPreauthData;
-        }
     }
 }
