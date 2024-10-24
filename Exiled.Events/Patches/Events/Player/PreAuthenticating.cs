@@ -59,16 +59,16 @@ namespace Exiled.Events.Patches.Events.Player
                     //position
                     new (OpCodes.Ldloc_S, 9),
                     //PreAuthenticatingEventArgs ev = new (userid, ipaddress, expiration, flags, country, signature, request, position)
-                    new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(PreAuthenticatingEventArgs))[0]),
-                    new CodeInstruction(OpCodes.Dup),
-                    new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
+                    new (OpCodes.Newobj, GetDeclaredConstructors(typeof(PreAuthenticatingEventArgs))[0]),
+                    new (OpCodes.Dup),
+                    new (OpCodes.Stloc_S, ev.LocalIndex),
                     //OnPreAuthenticating(ev)
-                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPreAuthenticating))),
-                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new (OpCodes.Call, AccessTools.Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPreAuthenticating))),
+                    new (OpCodes.Ldloc_S, ev.LocalIndex),
                     // if ev.IsAllowed==false 
-                    new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.IsAllowed))),
+                    new (OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.IsAllowed))),
                     //ret
-                    new CodeInstruction(OpCodes.Brfalse_S, ret),
+                    new (OpCodes.Brfalse_S, ret),
                 });
 
 
