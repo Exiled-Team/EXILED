@@ -1,4 +1,9 @@
-
+// -----------------------------------------------------------------------
+// <copyright file="PreAuthenticating.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Player
 {
@@ -19,7 +24,6 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="CustomLiteNetLib4MirrorTransport.ProcessConnectionRequest(ConnectionRequest)" />.
     /// Adds the <see cref="Handlers.Player.PreAuthenticating" /> event.
     /// </summary>
-    ///
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.PreAuthenticating))]
     [HarmonyPatch(typeof(CustomLiteNetLib4MirrorTransport), nameof(CustomLiteNetLib4MirrorTransport.ProcessConnectionRequest))]
     internal static class PreAuthenticating
@@ -38,38 +42,33 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new CodeInstruction[]
                 {
-
+                    //userid
                     new CodeInstruction(OpCodes.Ldloc_S, 10),
                     //ipaddress
-                    new CodeInstruction(OpCodes.Ldloc_S, 15),
+                    new (OpCodes.Ldloc_S, 15),
                     //expiration
-                    new CodeInstruction(OpCodes.Ldloc_S, 11),
+                    new (OpCodes.Ldloc_S, 11),
                     //flags
-                    new CodeInstruction(OpCodes.Ldloc_S, 12),
+                    new (OpCodes.Ldloc_S, 12),
                     //country
-                    new CodeInstruction(OpCodes.Ldloc_S, 13),
+                    new (OpCodes.Ldloc_S, 13),
                     //signature
-                    new CodeInstruction(OpCodes.Ldloc_S, 14),
+                    new (OpCodes.Ldloc_S, 14),
                     //request
-                    new CodeInstruction(OpCodes.Ldarg_1),
+                    new (OpCodes.Ldarg_1),
                     //position
-                    new CodeInstruction(OpCodes.Ldloc_S, 9),
-                    
+                    new (OpCodes.Ldloc_S, 9),
                     //PreAuthenticatingEventArgs ev = new (userid, ipaddress, expiration, flags, country, signature, request, position)
                     new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(PreAuthenticatingEventArgs))[0]),
                     new CodeInstruction(OpCodes.Dup),
                     new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
-
+                    //OnPreAuthenticating(ev)
                     new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPreAuthenticating))),
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                     // if ev.IsAllowed==false 
-
-
                     new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.IsAllowed))),
+                    //ret
                     new CodeInstruction(OpCodes.Brfalse_S, ret),
-
-
-
                 });
 
 
