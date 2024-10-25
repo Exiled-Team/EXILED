@@ -85,6 +85,7 @@ namespace Exiled.API.Features
         private readonly HashSet<EActor> componentsInChildren = new();
 
         private ReferenceHub referenceHub;
+        private CustomHealthStat healthStat;
         private Role role;
 
         /// <summary>
@@ -164,6 +165,7 @@ namespace Exiled.API.Features
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
+                value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[Array.IndexOf(PlayerStats.DefinedModules, typeof(HealthStat))] = healthStat = new CustomHealthStat { Hub = value };
             }
         }
 
@@ -853,13 +855,13 @@ namespace Exiled.API.Features
         /// </summary>
         public float Health
         {
-            get => ReferenceHub.playerStats.GetModule<HealthStat>().CurValue;
+            get => healthStat.CurValue;
             set
             {
                 if (value > MaxHealth)
                     MaxHealth = value;
 
-                ReferenceHub.playerStats.GetModule<HealthStat>().CurValue = value;
+                healthStat.CurValue = value;
             }
         }
 
@@ -868,8 +870,8 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxHealth
         {
-            get => ReferenceHub.playerStats.GetModule<MaxHealthStat>().CurValue;
-            set => ReferenceHub.playerStats.GetModule<MaxHealthStat>().CurValue = value;
+            get => healthStat.MaxValue;
+            set => healthStat.CustomMaxValue = value;
         }
 
         /// <summary>
