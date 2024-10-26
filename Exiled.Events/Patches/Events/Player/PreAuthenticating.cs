@@ -12,12 +12,15 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
     
     using API.Features.Pools;
-    using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
+
     using HarmonyLib;
+
     using Hazards;
+    
     using LiteNetLib;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>
@@ -33,8 +36,8 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label ret = generator.DefineLabel();
-
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
+
             LocalBuilder ev = generator.DeclareLocal(typeof(PreAuthenticatingEventArgs));
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr && instruction.operand == "{0};{1};{2};{3}");
 
@@ -42,35 +45,34 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new CodeInstruction[]
                 {
-                    //userid
+                    // userid
                     new CodeInstruction(OpCodes.Ldloc_S, 10),
-                    //ipaddress
+                    // ipaddress
                     new (OpCodes.Ldloc_S, 15),
-                    //expiration
+                    // expiration
                     new (OpCodes.Ldloc_S, 11),
-                    //flags
+                    // flags
                     new (OpCodes.Ldloc_S, 12),
-                    //country
+                    // country
                     new (OpCodes.Ldloc_S, 13),
-                    //signature
+                    // signature
                     new (OpCodes.Ldloc_S, 14),
-                    //request
+                    // request
                     new (OpCodes.Ldarg_1),
-                    //position
+                    // position
                     new (OpCodes.Ldloc_S, 9),
-                    //PreAuthenticatingEventArgs ev = new (userid, ipaddress, expiration, flags, country, signature, request, position)
+                    // PreAuthenticatingEventArgs ev = new (userid, ipaddress, expiration, flags, country, signature, request, position)
                     new (OpCodes.Newobj, GetDeclaredConstructors(typeof(PreAuthenticatingEventArgs))[0]),
                     new (OpCodes.Dup),
                     new (OpCodes.Stloc_S, ev.LocalIndex),
-                    //OnPreAuthenticating(ev)
+                    // OnPreAuthenticating(ev)
                     new (OpCodes.Call, AccessTools.Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPreAuthenticating))),
                     new (OpCodes.Ldloc_S, ev.LocalIndex),
                     // if ev.IsAllowed==false 
                     new (OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.IsAllowed))),
-                    //ret
+                    // ret
                     new (OpCodes.Brfalse_S, ret),
                 });
-
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
