@@ -1122,6 +1122,5 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev"><The cref="PreAuthenticatingEventArgs"/> instance.</param>
         public static void OnPreAuthenticating(PreAuthenticatingEventArgs ev) => PreAuthenticating.InvokeSafely(ev);
-
     }
 }
