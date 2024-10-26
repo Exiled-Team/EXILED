@@ -37,8 +37,8 @@
         "repo": "https://github.com/Exiled-Team/EXILED",
         "branch": "dev"
       },
-      "_appLogoPath": "assets/Exiled_Icon_50x50.png",
-      "_appFaviconPath": "assets/Exiled_Icon.ico"
+      "_appLogoPath": "assets/logo.png",
+      "_appFaviconPath": "assets/logo.png"
     }
   }
 }
