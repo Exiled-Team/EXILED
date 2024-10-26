@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Fixes
 {
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Reflection.Emit;
 
     using API.Features.Pools;
@@ -27,11 +28,15 @@ namespace Exiled.Events.Patches.Fixes
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(UnityEngine.Mathf), nameof(UnityEngine.Mathf.Abs), new System.Type[] { typeof(float) }))) + 11;
+            int offset = 0;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newarr) + offset;
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
+                // popped 24000
                 new CodeInstruction(OpCodes.Pop),
-                new CodeInstruction(OpCodes.Ldc_I4_S, 480),
+
+                // loadded 480
+                new CodeInstruction(OpCodes.Ldc_I4, 480),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
