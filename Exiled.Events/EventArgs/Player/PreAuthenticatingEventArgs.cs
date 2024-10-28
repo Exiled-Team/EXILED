@@ -94,9 +94,9 @@ namespace Exiled.Events.EventArgs.Player
         public ConnectionRequest Request { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the player can be authenticated or not.
+        /// Gets or sets a value indicating whether the player can be authenticated or not.
         /// </summary>
-        public bool IsAllowed { get; private set; } = true;
+        public bool IsAllowed { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the cached <see cref="CachedPreauthData"/> that is returned back to the NwPluginAPI.
