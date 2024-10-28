@@ -57,5 +57,10 @@ namespace Exiled.Events.EventArgs.Player
         /// Gets a value indicating whether the ban is forced or not.
         /// </summary>
         public bool IsForced { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the ban is an offline ban or not.
+        /// </summary>
+        public bool IsOffline => Details.OriginalName == "Unknown - offline ban";
     }
 }
