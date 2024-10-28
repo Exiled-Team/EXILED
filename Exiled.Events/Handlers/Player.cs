@@ -554,6 +554,11 @@ namespace Exiled.Events.Handlers
         public static Event<ChangingNicknameEventArgs> ChangingNickname { get; set; } = new();
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/>'s sends proper RA command.
+        /// </summary>
+        public static Event<SendingCommandEventArgs> SendingCommand { get; set; } = new();
+
+        /// <summary>
         /// Invoked before displaying the hitmarker to the player.
         /// </summary>
         public static Event<DisplayingHitmarkerEventArgs> ShowingHitMarker { get; set; } = new();
@@ -1197,6 +1202,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingNicknameEventArgs"/> instance.</param>
         public static void OnChangingNickname(ChangingNicknameEventArgs ev) => ChangingNickname.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="Player"/>'s sends propper RA command.
+        /// </summary>
+        /// <param name="ev">The <see cref="SendingCommandEventArgs"/> instance.</param>
+        public static void OnSendingCommand(SendingCommandEventArgs ev) => SendingCommand.InvokeSafely(ev);
 
         /// <summary>
         /// Called before displaying the hitmarker to the player.
