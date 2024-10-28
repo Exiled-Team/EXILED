@@ -29,7 +29,6 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="CommandProcessor.ProcessQuery(string, CommandSender)" />.
     /// Adds the <see cref="Handlers.Player.SendingCommand" /> event.
     /// </summary>
-    ///
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.SendingCommand))]
     [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery))]
     internal static class SendingCommand
