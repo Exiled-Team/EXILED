@@ -51,9 +51,9 @@ namespace Exiled.Events.EventArgs.Player
         public ICommand Command { get; }
 
         /// <summary>
-        /// Gets querry.
+        /// Gets query.
         /// </summary>
-        public string Querry { get; }
+        public string Query { get; }
 
         /// <summary>
         /// Gets the player who's sending the command.
