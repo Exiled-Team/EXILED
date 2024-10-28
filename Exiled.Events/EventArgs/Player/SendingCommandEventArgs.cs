@@ -46,12 +46,12 @@ namespace Exiled.Events.EventArgs.Player
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        /// Gets command interface.
+        /// Gets the command that is being executed.
         /// </summary>
         public ICommand Command { get; }
 
         /// <summary>
-        /// Gets query.
+        /// Gets the query of the command.
         /// </summary>
         public string Query { get; }
 
