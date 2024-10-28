@@ -30,14 +30,14 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="command">
         /// <inheritdoc cref="Command" />
         /// </param>
-        /// <param name="querry">
-        /// <inheritdoc cref="Querry" />
+        /// <param name="query">
+        /// <inheritdoc cref="Query" />
         /// </param>
-        public SendingCommandEventArgs(Player player, ICommand command, string querry)
+        public SendingCommandEventArgs(Player player, ICommand command, string query)
         {
             Command = command;
             Player = player;
-            Querry = querry;
+            Query = query;
         }
 
         /// <summary>
