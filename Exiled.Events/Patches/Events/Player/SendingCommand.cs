@@ -58,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // command
                     new CodeInstruction(OpCodes.Ldloc_1),
 
-                    // querry
+                    // query
                     new CodeInstruction(OpCodes.Ldarg_0),
 
                     // SendingCommandEventArgs ev = new SendingCommandEventArgs(Player, ICommand, Querry)
