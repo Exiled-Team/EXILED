@@ -36,6 +36,8 @@ namespace Exiled.Events.Patches.Events.Player
             Label continueLabel = generator.DefineLabel();
             Label ev = generator.DefineLabel();
             Label cardCheck = generator.DefineLabel();
+            Label openLabel = generator.DefineLabel();
+            Label endLabel = generator.DefineLabel();
 
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
             LocalBuilder allowed = generator.DeclareLocal(typeof(bool));
@@ -110,8 +112,44 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ret),
                 });
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldloc_2);
+
+            // Removes componentInParent.NetworkkeycardEntered = true; to apply custom logic
+            newInstructions.RemoveRange(index, 3);
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Load AlphaWarheadOutsitePanel onto the stack
+                    new CodeInstruction(OpCodes.Ldloc_2),
+                    new(OpCodes.Dup),
+
+                    // if AlphaWarheadOutsitePanel::NetworkkeycardEntered is false, goto openLabel
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(AlphaWarheadOutsitePanel), nameof(AlphaWarheadOutsitePanel.NetworkkeycardEntered))),
+                    new(OpCodes.Brfalse_S, openLabel),
+
+                    // if Config::WarheadButtonClosable, goto endLabel
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Config))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.WarheadButtonClosable))),
+                    new(OpCodes.Brfalse_S, endLabel),
+
+                    // Set AlphaWarheadOutsitePanel::NetworkkeycardEntered to false if its true and WarheadButtonClosable is true, then goto endLabel
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Callvirt, PropertySetter(typeof(AlphaWarheadOutsitePanel), nameof(AlphaWarheadOutsitePanel.NetworkkeycardEntered))),
+                    new(OpCodes.Br_S, endLabel),
+
+                    // Set AlphaWarheadOutsitePanel::NetworkkeycardEntered to true
+                    new CodeInstruction(OpCodes.Nop).WithLabels(openLabel),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Callvirt, PropertySetter(typeof(AlphaWarheadOutsitePanel), nameof(AlphaWarheadOutsitePanel.NetworkkeycardEntered))),
+
+                    new CodeInstruction(OpCodes.Nop).WithLabels(endLabel),
+                });
+
+            foreach (CodeInstruction instruction in newInstructions)
+                yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }

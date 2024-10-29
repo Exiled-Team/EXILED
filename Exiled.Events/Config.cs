@@ -81,6 +81,12 @@ namespace Exiled.Events
         public bool CanKeycardThrowAffectDoors { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating whether warhead can be closed or not.
+        /// </summary>
+        [Description("Indicates whether warhead can be closed or not")]
+        public bool WarheadButtonClosable { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets a value indicating whether configs has to be reloaded every time a round restarts.
         /// </summary>
         [Description("Indicates whether configs have to be reloaded every round restart")]
