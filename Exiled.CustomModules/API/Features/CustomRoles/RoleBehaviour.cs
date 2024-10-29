@@ -479,6 +479,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             Exiled.Events.Handlers.Player.Handcuffing += HandcuffingBehavior;
             Exiled.Events.Handlers.Map.PlacingBlood += PlacingBloodBehavior;
             Exiled.Events.Handlers.Player.ChangingNickname += OnInternalChangingNickname;
+            Exiled.Events.Handlers.Player.Spawning += OverrideSpawnPoint;
+            Exiled.Events.Handlers.Player.SpawningRagdoll += OnSpawningRagdoll;
+
             EscapingEventDispatcher.Bind(this, OnEscaping);
             EscapedEventDispatcher.Bind(this, OnEscaped);
         }
@@ -509,6 +512,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             Exiled.Events.Handlers.Player.Handcuffing -= HandcuffingBehavior;
             Exiled.Events.Handlers.Map.PlacingBlood -= PlacingBloodBehavior;
             Exiled.Events.Handlers.Player.ChangingNickname -= OnInternalChangingNickname;
+            Exiled.Events.Handlers.Player.Spawning -= OverrideSpawnPoint;
+            Exiled.Events.Handlers.Player.SpawningRagdoll -= OnSpawningRagdoll;
+
+            EscapingEventDispatcher.Unbind(this, OnEscaping);
+            EscapedEventDispatcher.Unbind(this, OnEscaped);
         }
 
         /// <summary>
@@ -661,8 +669,8 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             ev.IsAllowed = false;
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs)"/>
-        protected virtual void PreventPlayerFromEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs ev)
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscaping(EscapingEventArgs)"/>
+        protected virtual void PreventPlayerFromEscaping(EscapingEventArgs ev)
         {
             if (!Check(ev.Player) || useCustomEscape || wasEscaped || (EscapeSettings is not null && !EscapeSettings.IsEmpty()))
                 return;
