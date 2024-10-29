@@ -129,7 +129,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(AlphaWarheadOutsitePanel), nameof(AlphaWarheadOutsitePanel.NetworkkeycardEntered))),
                     new(OpCodes.Brfalse_S, openLabel),
 
-                    // if Config::WarheadButtonClosable, goto endLabel
+                    // if Config::WarheadButtonClosable is false, goto endLabel
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Config))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.WarheadButtonClosable))),
