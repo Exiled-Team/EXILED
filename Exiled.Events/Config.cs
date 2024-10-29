@@ -81,9 +81,9 @@ namespace Exiled.Events
         public bool CanKeycardThrowAffectDoors { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets a value indicating whether warhead can be closed or not.
+        /// Gets or sets a value indicating whether the warhead button glass cover can be closed or not.
         /// </summary>
-        [Description("Indicates whether warhead can be closed or not")]
+        [Description("Indicates whether the warhead button glass cover can be closed or not")]
         public bool WarheadButtonClosable { get; set; } = false;
 
         /// <summary>
