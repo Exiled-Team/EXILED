@@ -4,6 +4,12 @@ sidebar_position: 1
 
 # Exiled Introduction
 
+:::danger
+
+This documentation is outdated! Please, read the docs at [exiled.to](https://exiled.to)!
+
+:::
+
 ## About EXILED
 
 **EXILED** is a low level plugin framework for SCP: Secret Laboratory.

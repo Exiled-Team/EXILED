@@ -11,7 +11,7 @@ export default function Home() {
       title={`${siteConfig.title}`}>
 
         <div className="main">
-            <b className="title">Exiled</b>
+            <b className="title">EXILED</b>
             <p className="desc">Low-Level plugin framework for SCP: Secret Laboratory servers.</p>
             <img alt="exiled load" className="vid" src="https://imgur.com/wzxq6AF.gif" />
         </div>

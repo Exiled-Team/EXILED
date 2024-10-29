@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Exiled',
+  title: 'EXILED',
   tagline: 'SCP:SL Low Level Plugin Framework',
   url: 'https://exiled-team.github.io',
   baseUrl: '/EXILED/',
@@ -61,18 +61,13 @@ const config = {
             label: 'Documentation',
           },
           {
-            href: 'https://exiled.host/',
-            position: 'left',
-            label: 'Exiled Hosting',
-          },
-          {
             href: 'https://github.com/Exiled-Team/EXILED',
             className: 'header-github-link',
             'aria-label': 'GitHub repository',
             position: 'right',
           },
           {
-            href: 'https://discord.gg/PyUkWTg',
+            href: 'https://discord.gg/exiledreboot',
             className: 'header-discord-link',
             'aria-label': 'Discord server',
             position: 'right',

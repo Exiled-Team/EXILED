@@ -1,15 +1,25 @@
+<div align="center">
+  <img src="../assets/logo.svg" alt="Logo" width="96px" />
+</div>
 <h1 align="center">EXILED - EXtended In-runtime Library for External Development</h1>
 <div align="center">
-    
-[<img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" alt="CI"/>](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg?branch=master)
-<a href="https://github.com/Exiled-Team/EXILED/releases"><img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" href="https://github.com/Exiled-Team/EXILED/releases" alt="GitHub Releases"></a>
-<img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads">
-![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/apis-rework?style=for-the-badge&logo=git)
-<a href="https://discord.gg/exiledreboot">
-    <img src="https://img.shields.io/discord/656673194693885975?style=for-the-badge&logo=discord" alt="Chat on Discord">
-</a>    
-
+  <a href="https://github.com/Exiled-Team/EXILED/releases/latest" target="_blank">
+    <img src="https://img.shields.io/github/actions/workflow/status/Exiled-Team/EXILED/main.yml?style=for-the-badge&logo=githubactions&label=build" alt="Build" />
+  </a>
+  <a href="https://github.com/Exiled-Team/EXILED/releases" target="_blank">
+    <img src="https://img.shields.io/github/v/release/Exiled-Team/EXILED?display_name=tag&style=for-the-badge&logo=gitbook&label=Release" alt="Releases" />
+  </a>
+  <a href="https://github.com/Exiled-Team/EXILED/releases/latest" target="_blank">
+    <img src="https://img.shields.io/github/downloads/Exiled-Team/EXILED/total?style=for-the-badge&logo=github" alt="Downloads" />
+  </a>
+  <a href="https://github.com/Exiled-Team/EXILED/commits/dev" target="_blank">
+    <img src="https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev?style=for-the-badge&logo=git" alt="Commits" />
+  </a>
+  <a href="https://discord.gg/exiledreboot" target="_blank">
+    <img src="https://img.shields.io/discord/1261714360854646905?style=for-the-badge&logo=discord" alt="Discord" />
+  </a>
 </div>
+<br />
 
 EXILED je vysokoúrovňové rozhraní pro pluginy na servery hry SCP: Secret Laboratory. Nabízí systém "eventů", tedy událostí, které mohou vývojáři využít k manipulaci nebo změně herního kódu či implementaci vlastních funkcí.
 Všechny EXILED eventy jsou kódovány pomocí Harmony, což znamená, že ke svému fungování nevyžadují přímé úpravy serverových sestav, což přináší dvě jedinečné výhody.
@@ -23,8 +33,13 @@ Všechny EXILED eventy jsou kódovány pomocí Harmony, což znamená, že ke sv
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
 - [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
-- [Čeština](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-CS.md)
+- [Italiano](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-IT.md)
 - [Dansk](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DK.md)
+- [Türkçe](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-TR.md)
+- [German](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-DE.md)
+- [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
+- [한국어](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-KR.md)
+- [ไทย](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ไทย.md)
 
 # Instalace
 Instalace EXILED je poměrně jednoduchá. Načítá se prostřednictvím rozhraní NW Plugin API. Proto jsou uvnitř archivu ``Exiled.tar.gz`` ve vydaných verzích EXILED dvě složky. Složka ``SCP Secret Laboratory`` obsahuje soubory potřebné k načtení funkcí EXILED ve složce ``EXILED``. Vzhledem k tomu stačí tyto dvě složky přesunout do příslušné cesty, která je vysvětlena níže, a je hotovo!
@@ -90,7 +105,7 @@ Některé pluginy však mohou získávat svá konfigurační nastavení z jinýc
 
 # Pro vývojáře
 
-Pokud si přejete vytvořit plugin pro EXILED, je to poměrně jednoduché. Pokud byste chtěli více návodů, navštivte prosím naši stránku [Getting Started.](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
+Pokud si přejete vytvořit plugin pro EXILED, je to poměrně jednoduché. Pokud byste chtěli více návodů, navštivte prosím naši stránku [Getting Started.](https://exiled.to/Archive/GettingStarted).
 
 Obsáhlejší a aktivně aktualizované tutoriály naleznete na [webové stránce EXILED](https://exiled.to).
 
