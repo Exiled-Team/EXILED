@@ -45,8 +45,10 @@ namespace Exiled.Events.Patches.Events.Server
                 {
                     // Getting a old value
                     new CodeInstruction(OpCodes.Ldarg_1),
+                    
                     // Getting a new value
                     new CodeInstruction(OpCodes.Ldc_I4, -1),
+                    
                     // If the value is not equal, jump
                     new CodeInstruction(OpCodes.Bne_Un, contlabel),
 
