@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Server
                     
                     // If the value is not equal, jump
                     new CodeInstruction(OpCodes.Bne_Un, contlabel),
-
+                    
                     // RoundStartingEventArgs ev = new
                     new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(RoundStartingEventArgs))[0]),
                     new CodeInstruction(OpCodes.Dup),
