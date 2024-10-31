@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// Patch the <see cref="RoundStart.NetworkTimer" />.
     /// Adds the <see cref="Server.RoundStarting" /> event.
     /// </summary>
-    [EventPatch(typeof(Server), nameof(Server.ReportingCheater))]
+    [EventPatch(typeof(Server), nameof(Server.RoundStarting))]
     [HarmonyPatch(typeof(RoundStart), nameof(RoundStart.NetworkTimer), MethodType.Setter)]
     internal static class RoundStarting
     {
