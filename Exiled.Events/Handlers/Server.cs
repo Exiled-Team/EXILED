@@ -104,7 +104,7 @@ namespace Exiled.Events.Handlers
         public static Event ReloadedPermissions { get; set; } = new();
 
         /// <summary>
-        /// Invoked before round will started.
+        /// Invoked before the round starts.
         /// </summary>
         public static Event<RoundStartingEventArgs> RoundStarting { get; set; } = new();
 
