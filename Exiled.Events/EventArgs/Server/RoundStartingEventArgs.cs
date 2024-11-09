@@ -8,7 +8,7 @@
 namespace Exiled.Events.EventArgs.Server
 {
     /// <summary>
-    /// Contains nothing.
+    /// Contains isallowed or not.
     /// </summary>
     public class RoundStartingEventArgs
     {
@@ -24,7 +24,7 @@ namespace Exiled.Events.EventArgs.Server
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can continue.
+        /// Gets or sets a value indicating whether the round can start or not.
         /// </summary>
         public bool IsAllowed { get; set; }
     }
