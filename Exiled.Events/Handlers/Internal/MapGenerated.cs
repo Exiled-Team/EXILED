@@ -74,8 +74,6 @@ namespace Exiled.Events.Handlers.Internal
                 if (Item.Create(firearmType.GetItemType()) is not Firearm firearm)
                     continue;
 
-                Firearm.ItemTypeToFirearmInstance.Add(firearmType, firearm);
-
                 List<AttachmentIdentifier> attachmentIdentifiers = ListPool<AttachmentIdentifier>.Pool.Get();
                 HashSet<AttachmentSlot> attachmentsSlots = HashSetPool<AttachmentSlot>.Pool.Get();
 
@@ -87,6 +85,8 @@ namespace Exiled.Events.Handlers.Internal
                     attachmentIdentifiers.Add(new(code, attachment.Name, attachment.Slot));
                     code *= 2U;
                 }
+
+                firearm.Destroy();
 
                 uint baseCode = 0;
 

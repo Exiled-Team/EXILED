@@ -9,6 +9,7 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
 
@@ -129,29 +130,34 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         public abstract Type BehaviourComponent { get; }
 
         /// <summary>
-        /// Gets the ability's settings.
-        /// </summary>
-        public virtual AbilitySettings Settings { get; } = AbilitySettings.Default;
-
-        /// <summary>
         /// Gets or sets the <see cref="CustomAbility{T}"/>'s name.
         /// </summary>
+        [Description("The name of the custom ability.")]
         public override string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomAbility{T}"/>'s id.
         /// </summary>
+        [Description("The id of the custom ability.")]
         public override uint Id { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the ability is enabled.
         /// </summary>
+        [Description("Indicates whether the ability is enabled.")]
         public override bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the ability.
         /// </summary>
+        [Description("The description of the custom ability.")]
         public virtual string Description { get; set; }
+
+        /// <summary>
+        /// Gets the ability's settings.
+        /// </summary>
+        [Description("The settings for the custom ability.")]
+        public virtual AbilitySettings Settings { get; } = AbilitySettings.Default;
 
         /// <summary>
         /// Gets the reflected generic type.
@@ -487,16 +493,15 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
         /// <summary>
         /// Enables all the custom abilities present in the assembly.
         /// </summary>
-        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
-
-        /// <summary>
-        /// Enables all the custom abilities present in the assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly to enable the abilities from.</param>
-        public static void EnableAll(Assembly assembly)
+        /// <param name="assembly">The assembly to enable the module instances from.</param>
+        /// <returns>The amount of enabled module instances.</returns>
+        /// <remarks>
+        /// This method dynamically enables all module instances found in the calling assembly that were
+        /// not previously registered.
+        /// </remarks>
+        public static int EnableAll(Assembly assembly = null)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomAbilities.Name))
-                throw new Exception("ModuleType::CustomAbilities must be enabled in order to load any custom abilities");
+            assembly ??= Assembly.GetCallingAssembly();
 
             List<CustomAbility<T>> customAbilities = new();
             foreach (Type type in assembly.GetTypes())
@@ -515,19 +520,25 @@ namespace Exiled.CustomModules.API.Features.CustomAbilities
                     customAbilities.Add(customAbility);
             }
 
-            if (customAbilities.Count != Registered.Count)
-                Log.Info($"{customAbilities.Count()} custom abilities have been successfully registered!");
+            return customAbilities.Count;
         }
 
         /// <summary>
         /// Disables all the custom abilities present in the assembly.
         /// </summary>
-        public static void DisableAll()
+        /// <param name="assembly">The assembly to disable the module instances from.</param>
+        /// <returns>The amount of disabled module instances.</returns>
+        /// <remarks>
+        /// This method dynamically disables all module instances found in the calling assembly that were
+        /// previously registered.
+        /// </remarks>
+        public static int DisableAll(Assembly assembly = null)
         {
-            List<CustomAbility<T>> customAbilities = new();
-            customAbilities.AddRange(UnorderedRegistered.Where(ability => ability.TryUnregister()));
+            assembly ??= Assembly.GetCallingAssembly();
 
-            Log.Info($"{customAbilities.Count()} custom abilities have been successfully unregistered!");
+            List<CustomAbility<T>> customAbilities = new();
+            customAbilities.AddRange(UnorderedRegistered.Where(ability => ability.GetType().Assembly == assembly && ability.TryUnregister()));
+            return customAbilities.Count;
         }
 
         /// <summary>

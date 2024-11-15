@@ -93,6 +93,13 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
+        /// Converts a <see cref="string"/> to kebab case convention.
+        /// </summary>
+        /// <param name="input">Input string.</param>
+        /// <returns>A string converted to kebab case.</returns>
+        public static string ToKebabCase(this string input) => Regex.Replace(input, "([a-z])([A-Z])", "$1_$2").ToLower();
+
+        /// <summary>
         /// Converts a <see cref="string"/> from snake_case convention.
         /// </summary>
         /// <param name="str">The string to be converted.</param>
@@ -203,6 +210,24 @@ namespace Exiled.API.Extensions
             byte[] textData = Encoding.UTF8.GetBytes(userId.Substring(0, userId.LastIndexOf('@')));
             byte[] hash = Sha256.ComputeHash(textData);
             return BitConverter.ToString(hash).Replace("-", string.Empty);
+        }
+
+        /// <summary>
+        /// Encrypts a value using SHA-256 and returns a hexadecimal hash string.
+        /// </summary>
+        /// <param name="value">The value to encrypt.</param>
+        /// <returns>A hexadecimal hash string of the encrypted value.</returns>
+        public static string GetHashedValue(this string value)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(value);
+            byte[] hashBytes = Sha256.ComputeHash(bytes);
+
+            StringBuilder hashStringBuilder = new();
+
+            foreach (byte b in hashBytes)
+                hashStringBuilder.Append(b.ToString("x2"));
+
+            return hashStringBuilder.ToString();
         }
     }
 }

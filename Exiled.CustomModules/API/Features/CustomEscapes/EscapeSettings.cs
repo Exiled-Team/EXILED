@@ -16,12 +16,14 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
     /// <summary>
     /// A tool to easily setup escapes.
     /// </summary>
-    public class EscapeSettings : TypeCastObject<EscapeSettings>, IAdditiveProperty
+    public sealed class EscapeSettings : TypeCastObject<EscapeSettings>, IAdditiveProperty
     {
+#pragma warning disable SA1310
         /// <summary>
         /// The default distance tolerance value.
         /// </summary>
-        public const float DefaultMaxDistanceTolerance = 3f;
+        public const float DEFAULT_MAX_DISTANCE_TOLERANCE = 3f;
+#pragma warning restore SA1310
 
         /// <summary>
         /// Gets the default escape position.
@@ -36,10 +38,17 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <summary>
         /// Initializes a new instance of the <see cref="EscapeSettings"/> class.
         /// </summary>
+        public EscapeSettings()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EscapeSettings"/> class.
+        /// </summary>
         /// <param name="role"><inheritdoc cref="Role"/></param>
         /// <param name="position"><inheritdoc cref="Position"/></param>
         /// <param name="distanceThreshold"><inheritdoc cref="DistanceThreshold"/></param>
-        public EscapeSettings(RoleTypeId role, Vector3 position = default, float distanceThreshold = DefaultMaxDistanceTolerance)
+        public EscapeSettings(RoleTypeId role, Vector3 position = default, float distanceThreshold = DEFAULT_MAX_DISTANCE_TOLERANCE)
             : this(true, role: role, position: position, distanceThreshold: distanceThreshold)
         {
         }
@@ -50,7 +59,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
         /// <param name="customRole"><inheritdoc cref="CustomRole"/></param>
         /// <param name="position"><inheritdoc cref="Position"/></param>
         /// <param name="distanceThreshold"><inheritdoc cref="DistanceThreshold"/></param>
-        public EscapeSettings(uint customRole, Vector3 position = default, float distanceThreshold = DefaultMaxDistanceTolerance)
+        public EscapeSettings(uint customRole, Vector3 position = default, float distanceThreshold = DEFAULT_MAX_DISTANCE_TOLERANCE)
             : this(true, customRole: customRole, position: position, distanceThreshold: distanceThreshold)
         {
         }
@@ -68,7 +77,7 @@ namespace Exiled.CustomModules.API.Features.CustomEscapes
             RoleTypeId role = RoleTypeId.None,
             uint customRole = 0,
             Vector3 position = default,
-            float distanceThreshold = DefaultMaxDistanceTolerance)
+            float distanceThreshold = DEFAULT_MAX_DISTANCE_TOLERANCE)
         {
             IsAllowed = isAllowed;
             Role = role;

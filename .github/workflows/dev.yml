@@ -12,7 +12,7 @@ on:
 env:
   EXILED_REFERENCES_URL: https://cdn.exiled.to/Dev.zip
   EXILED_REFERENCES_PATH: ${{ github.workspace }}/References
-  EXILED_DLL_ARCHIVER_URL: https://github.com/Exiled-Team/EXILED-DLL-Archiver/releases/latest/download/EXILED-DLL-Archiver.exe
+  EXILED_DLL_ARCHIVER_URL: https://github.com/Exiled-Team/Exiled.Archiver/releases/latest/download/Exiled.Archiver.exe
 
 jobs:
 
@@ -56,7 +56,7 @@ jobs:
     - name: Get references
       shell: pwsh
       run: |
-        Invoke-WebRequest -Uri ${{ env.EXILED_DLL_ARCHIVER_URL }} -OutFile ${{ github.workspace }}/EXILED-DLL-Archiver.exe
+        Invoke-WebRequest -Uri ${{ env.EXILED_DLL_ARCHIVER_URL }} -OutFile ${{ github.workspace }}/Exiled.Archiver.exe
   
     - name: Packaging results as tar.gz
       shell: pwsh

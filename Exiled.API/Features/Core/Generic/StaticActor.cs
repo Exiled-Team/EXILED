@@ -28,6 +28,10 @@ namespace Exiled.API.Features.Core.Generic
     public abstract class StaticActor<T> : EActor
         where T : EActor
     {
+#pragma warning disable SA1309
+        private static T __fastCall;
+#pragma warning restore SA1309
+
         /// <summary>
         /// Gets a value indicating whether the <see cref="PostInitialize()"/> method has already been called by Unity.
         /// </summary>
@@ -49,6 +53,9 @@ namespace Exiled.API.Features.Core.Generic
         /// <returns>The existing <typeparamref name="T"/> instance, or <see langword="null"/> if not found.</returns>
         public static T FindExistingInstance()
         {
+            if (__fastCall)
+                return __fastCall;
+
             T[] existingInstances = FindActiveObjectsOfType<T>();
             return existingInstances?.Length == 0 ? null : existingInstances[0];
         }
@@ -62,6 +69,7 @@ namespace Exiled.API.Features.Core.Generic
             EObject @object = CreateDefaultSubobject<T>();
             @object.Name = "__" + typeof(T).Name + " (StaticActor)";
             @object.SearchForHostObjectIfNull = true;
+            __fastCall = @object.Cast<T>();
             return @object.Cast<T>();
         }
 
@@ -86,7 +94,6 @@ namespace Exiled.API.Features.Core.Generic
 
             if (!IsInitialized)
             {
-                Log.Debug($"Start() StaticActor with type {GetType().Name} in the Actor {Name}");
                 PostInitialize_Static();
                 IsInitialized = true;
             }
@@ -100,6 +107,7 @@ namespace Exiled.API.Features.Core.Generic
             if (IsStarted)
                 return;
 
+            SubscribeEvents();
             BeginPlay_Static();
             IsStarted = true;
         }
@@ -108,6 +116,7 @@ namespace Exiled.API.Features.Core.Generic
         protected override void OnEndPlay()
         {
             IsDestroyed = true;
+            UnsubscribeEvents();
             EndPlay_Static();
         }
 

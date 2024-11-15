@@ -83,6 +83,7 @@ namespace Exiled.Events
             RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
             ItemPickupBase.OnPickupAdded += Handlers.Internal.PickupEvent.OnSpawnedPickup;
             ItemPickupBase.OnPickupDestroyed += Handlers.Internal.PickupEvent.OnRemovedPickup;
+
             ServerConsole.ReloadServerName();
 
             EventManager.RegisterEvents<Handlers.Player>(this);

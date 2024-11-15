@@ -13,6 +13,7 @@ namespace Exiled.CustomModules
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features;
     using Exiled.CustomModules.EventHandlers;
+    using MEC;
 
     /// <summary>
     /// Handles all custom role API functions.
@@ -20,9 +21,21 @@ namespace Exiled.CustomModules
     public class CustomModules : Plugin<Config>
     {
         /// <summary>
+        /// The delay to be applied in order to execute any dispatch operation.
+        /// </summary>
+#pragma warning disable SA1310 // Field names should not contain underscore
+        private const float DISPATCH_OPERATION_DELAY = 2.5f;
+#pragma warning restore SA1310 // Field names should not contain underscore
+
+        /// <summary>
         /// Gets a static reference to the plugin's instance.
         /// </summary>
         public static CustomModules Instance { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether <see cref="CustomModules"/> assembly is loaded.
+        /// </summary>
+        public static bool IsLoaded => Instance is not null;
 
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.Last;
@@ -56,7 +69,7 @@ namespace Exiled.CustomModules
 
             base.OnEnabled();
 
-            CustomModule.LoadAll();
+            Timing.CallDelayed(DISPATCH_OPERATION_DELAY, CustomModule.LoadAll);
         }
 
         /// <inheritdoc/>
@@ -65,6 +78,8 @@ namespace Exiled.CustomModules
             base.OnDisabled();
 
             CustomModule.UnloadAll();
+
+            Instance = null;
         }
 
         /// <inheritdoc/>
@@ -76,6 +91,8 @@ namespace Exiled.CustomModules
 
             Exiled.Events.Handlers.Player.ChangingItem += PlayerHandler.OnChangingItem;
             Exiled.Events.Handlers.Server.RoundStarted += ServerHandler.OnRoundStarted;
+            CustomModule.OnEnabled += RegistrationHandler.OnModuleEnabled;
+            CustomModule.OnDisabled += RegistrationHandler.OnModuleDisabled;
 
             DynamicEventManager.CreateFromTypeInstance(RegistrationHandler);
         }
@@ -85,6 +102,8 @@ namespace Exiled.CustomModules
         {
             Exiled.Events.Handlers.Player.ChangingItem -= PlayerHandler.OnChangingItem;
             Exiled.Events.Handlers.Server.RoundStarted -= ServerHandler.OnRoundStarted;
+            CustomModule.OnEnabled -= RegistrationHandler.OnModuleEnabled;
+            CustomModule.OnDisabled -= RegistrationHandler.OnModuleDisabled;
 
             DynamicEventManager.DestroyFromTypeInstance(RegistrationHandler);
 

@@ -7,12 +7,10 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
 {
-    using Exiled.CustomModules.API.Interfaces;
-
     /// <summary>
     /// Represents a marker interface for custom pickup behaviors.
     /// </summary>
-    public interface IPickupBehaviour : ITrackable
+    public interface IPickupBehaviour : ICustomItemBehaviour
     {
     }
 }

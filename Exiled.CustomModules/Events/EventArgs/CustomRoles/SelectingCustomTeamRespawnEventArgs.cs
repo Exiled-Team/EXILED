@@ -21,10 +21,10 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomRoles
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectingCustomTeamRespawnEventArgs" /> class.
         /// </summary>
-        /// <param name="team"><inheritdoc cref="Team"/></param>
-        public SelectingCustomTeamRespawnEventArgs(object team)
+        /// <param name="inTeam"><inheritdoc cref="Team"/></param>
+        public SelectingCustomTeamRespawnEventArgs(object inTeam)
         {
-            this.team = team;
+            team = inTeam;
         }
 
         /// <summary>

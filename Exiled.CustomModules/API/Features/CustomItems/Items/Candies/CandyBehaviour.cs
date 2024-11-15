@@ -60,7 +60,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
                 Destroy();
             }
 
-            CandySettings.SelectedText = new($"Custom candies in this bag:\n{string.Join("\n", TrackedCandies.Select(x => x++))}");
+            CandySettings.SelectedText = new($"Custom candies in this bag:\n{string.Join("\n", TrackedCandies.Select(x => ++x))}");
             TrackedCandies = new();
         }
 
@@ -92,9 +92,9 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
         }
 
         /// <inheritdoc/>
-        protected override void OnAcquired(Player player, Item item, bool displayMessage = true)
+        protected override void OnAcquired(bool displayMessage = true)
         {
-            base.OnAcquired(player, item, displayMessage);
+            base.OnAcquired(displayMessage);
 
             if (Scp330.Candies.Count == 0)
             {
@@ -122,7 +122,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
                 return;
 
             ev.Candy = new BaseCandy(CandySettings, ApplyEffects);
-            ev.Player.ShowTextDisplay(CandySettings.EatenCustomCandyMessage);
+            ev.Player.ShowTextDisplay(CandySettings.EatenCustomCandyText);
 
             OnEatingCandy(ev);
         }

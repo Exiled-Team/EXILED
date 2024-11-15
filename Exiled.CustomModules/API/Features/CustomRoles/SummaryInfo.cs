@@ -46,7 +46,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
 
             foreach (Player alive in Player.List)
             {
-                if (alive is not Pawn pawn || Round.IgnoredPlayers.Contains(alive))
+                if (alive is not Pawn || Round.IgnoredPlayers.Contains(alive))
                     continue;
 
                 switch (RoleExtensions.GetTeam(alive.Role.Type))
@@ -61,6 +61,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                         break;
                     case Team.SCPs:
                         ++summary.Anomalies;
+                        break;
+                    case Team.Dead:
+                        break;
+                    case Team.OtherAlive:
                         break;
                     default:
                         ++summary.Neutral;
@@ -78,7 +82,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         {
             foreach (Player alive in Player.List)
             {
-                if (alive is not Pawn pawn || Round.IgnoredPlayers.Contains(alive))
+                if (alive is not Pawn || Round.IgnoredPlayers.Contains(alive))
                     continue;
 
                 switch (RoleExtensions.GetTeam(alive.Role.Type))
@@ -93,6 +97,10 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                         break;
                     case Team.SCPs:
                         ++Anomalies;
+                        break;
+                    case Team.Dead:
+                        break;
+                    case Team.OtherAlive:
                         break;
                     default:
                         ++Neutral;

@@ -143,6 +143,69 @@ namespace Exiled.Events.Patches.Events.Player
     }
 
     /// <summary>
+    /// Patches the "else" branch of ServerPerformShot raycast attempt to fire OnShot even if the raycast didn't hit anything.
+    /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Shot))]
+    [HarmonyPatch(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.ServerPerformShot))]
+    internal static class Miss
+    {
+        /// <summary>
+        /// Method to fire the OnShot event when raycast fails.
+        /// </summary>
+        private static void ProcessMiss(ReferenceHub player, Firearm firearm, Ray ray)
+        {
+            RaycastHit hit = new();
+            hit.distance = firearm.BaseStats.MaxDistance(); // Assign artificial values to raycast hit
+            hit.point = ray.GetPoint(hit.distance);
+            hit.normal = -ray.direction;
+
+            ShotEventArgs shotEvent = new(Player.Get(player), Item.Get(firearm) as API.Features.Items.Firearm, hit, null, 0f);
+
+            Handlers.Player.OnShot(shotEvent);
+        }
+
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            int firstGetDebugModeIndex = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(StandardHitregBase), nameof(StandardHitregBase.DebugMode))));
+
+            int secondGetDebugModeIndex = newInstructions.FindIndex( // There are two calls to get_DebugMode, we need the second one
+                firstGetDebugModeIndex + 1,
+                instruction => instruction.Calls(PropertyGetter(typeof(StandardHitregBase), nameof(StandardHitregBase.DebugMode))));
+
+            /*
+            call         bool InventorySystem.Items.Firearms.Modules.StandardHitregBase::get_DebugMode()
+            [] <----  we insert instructions here so they fire only in else branch
+            brfalse.s    IL_00c1
+            */
+            int falseReturnIndex = secondGetDebugModeIndex + 1;
+
+            newInstructions.InsertRange(falseReturnIndex, new CodeInstruction[]
+            {
+                // this.Hub
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(StandardHitregBase), nameof(StandardHitregBase.Hub))),
+
+                // this.Firearm
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(StandardHitregBase), nameof(StandardHitregBase.Firearm))),
+
+                // ray
+                new(OpCodes.Ldarg_1),
+
+                // ProcessMiss
+                new(OpCodes.Call, Method(typeof(Miss), nameof(ProcessMiss), new[] { typeof(ReferenceHub), typeof(Firearm), typeof(Ray) })),
+            });
+
+            for (int i = 0; i < newInstructions.Count; i++)
+                yield return newInstructions[i];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+    }
+
+    /// <summary>
     /// Patches <see cref="BuckshotHitreg.ShootPellet" />.
     /// Adds the <see cref="Handlers.Player.Shot" /> events.
     /// </summary>

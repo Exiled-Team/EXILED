@@ -48,17 +48,19 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
             {
                 if (!sender.CheckPermission("customroles.give"))
                 {
-                    response = "Permission Denied, required: customroles.give";
+                    response = "Permission denied, customroles.give is required.";
                     return false;
                 }
 
                 if (arguments.Count < 2)
                 {
-                    response = "give Custom role ID> [Nickname/PlayerID/UserID/all/*]";
+                    response = "give <Custom Role> [Nickname / PlayerID / UserID / all / *]";
                     return false;
                 }
 
-                if (!CustomRole.TryGet(arguments.At(0), out CustomRole role) && (!uint.TryParse(arguments.At(0), out uint id) || !CustomRole.TryGet(id, out role)) && role is null)
+                if (!CustomRole.TryGet(arguments.At(0), out CustomRole role) &&
+                    (!uint.TryParse(arguments.At(0), out uint id) ||
+                     !CustomRole.TryGet(id, out role)) && role is null)
                 {
                     response = $"Custom role {arguments.At(0)} not found!";
                     return false;
@@ -70,7 +72,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
 
                     if (player is null)
                     {
-                        response = "Player not found";
+                        response = "Player not found.";
                         return false;
                     }
 

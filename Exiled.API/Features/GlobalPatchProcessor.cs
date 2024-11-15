@@ -57,7 +57,9 @@ namespace Exiled.API.Features
                 }
             }
 
-            Log.Debug("Events patched by attributes successfully!");
+#if DEBUG
+            Log.DebugWithContext("Events patched by attributes successfully!");
+#endif
         }
 
         /// <summary>
@@ -86,7 +88,7 @@ namespace Exiled.API.Features
                     }
 
                     if (string.IsNullOrEmpty(patchGroup.GroupId))
-                        throw new ArgumentNullException("GroupId");
+                        throw new ArgumentNullException(nameof(groupId));
 
                     if (string.IsNullOrEmpty(groupId) || patchGroup.GroupId != groupId)
                         continue;
@@ -111,15 +113,13 @@ namespace Exiled.API.Features
                 }
 
 #if DEBUG
-                MethodBase callee = new StackTrace().GetFrame(1).GetMethod();
-                Log.Debug($"Patching completed. Requested by: ({callee.DeclaringType.Name}::{callee.Name})");
+                Log.DebugWithContext($"Patching completed.");
 #endif
                 return harmony;
             }
             catch (Exception ex)
             {
-                MethodBase callee = new StackTrace().GetFrame(1).GetMethod();
-                Log.Error($"Callee ({callee.DeclaringType.Name}::{callee.Name}) Patching failed!, " + ex);
+                Log.ErrorWithContext($"Patching failed!\n" + ex);
             }
 
             return null;
@@ -136,7 +136,7 @@ namespace Exiled.API.Features
             Harmony harmony = new(id);
             foreach (MethodBase methodBase in Harmony.GetAllPatchedMethods().ToList())
             {
-                PatchProcessor processor = harmony.CreateProcessor(methodBase);
+                harmony.CreateProcessor(methodBase);
 
                 Patches patchInfo = Harmony.GetPatchInfo(methodBase);
                 if (!patchInfo.Owners.Contains(id))
@@ -147,7 +147,7 @@ namespace Exiled.API.Features
                     goto Unpatch;
 
                 if (string.IsNullOrEmpty(patchGroup.GroupId))
-                    throw new ArgumentNullException("GroupId");
+                    throw new ArgumentNullException(nameof(groupId));
 
                 if (string.IsNullOrEmpty(groupId) || patchGroup.GroupId != groupId)
                     continue;

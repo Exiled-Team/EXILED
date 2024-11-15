@@ -12,7 +12,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
     using CommandSystem;
 
     /// <summary>
-    /// The main parent command for customroles.
+    /// The main parent command for custom roles.
     /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -33,7 +33,7 @@ namespace Exiled.CustomModules.API.Commands.CustomRoles
         public override string[] Aliases { get; } = { "cr", "crs" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = string.Empty;
+        public override string Description { get; } = "Commands for managing custom roles.";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()
