@@ -15,6 +15,7 @@ namespace Exiled.API.Features.Core.Generic
     using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Interfaces;
     using LiteNetLib.Utils;
+    using YamlDotNet.Core.Tokens;
     using YamlDotNet.Serialization;
 
     /// <summary>
@@ -27,10 +28,9 @@ namespace Exiled.API.Features.Core.Generic
         where TSource : unmanaged, IComparable, IFormattable, IConvertible, IComparable<TSource>, IEquatable<TSource>
         where TObject : UniqueUnmanagedEnumClass<TSource, TObject>
     {
-        // @Nao
-        private static SortedList<TSource, TObject> values; // Binary search and comparing the index with the value can help to find the gap value faster
+        private static SortedList<TSource, TObject> values;
         private static long nextValue;
-        private static bool isDefined; // Can create issue for naming, no indirect heritage possible
+        private static bool isDefined;
 
         private string name;
 

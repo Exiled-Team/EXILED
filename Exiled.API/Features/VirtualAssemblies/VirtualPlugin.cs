@@ -283,10 +283,6 @@ namespace Exiled.API.Features.VirtualAssemblies
         protected virtual void DestroyInstance()
         {
             Config = null;
-
-            // @Nao If by default the class set it self inside of a singleton.
-            // You will need to use a TSlef. This will avoid rewriting over an other class.
-            // Singleton<VirtualPlugin>.Destroy(this);
         }
 
         /// <summary>
