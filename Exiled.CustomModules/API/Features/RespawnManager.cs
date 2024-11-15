@@ -34,7 +34,7 @@ namespace Exiled.CustomModules.API.Features
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all delegates to be fired when selecting the next known team.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<SelectingCustomTeamRespawnEventArgs> SelectingCustomTeamRespawnDispatcher { get; set; }
+        public TDynamicEventDispatcher<SelectingCustomTeamRespawnEventArgs> SelectingCustomTeamRespawnDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the next known team.
@@ -44,20 +44,30 @@ namespace Exiled.CustomModules.API.Features
             get => nextKnownTeam;
             set
             {
-                switch (value)
+                if (value is null)
+                    return;
+
+                if (value is SpawnableTeamType)
                 {
-                    case SpawnableTeamType:
-                        nextKnownTeam = value;
-                        return;
-                    case CustomTeam customTeam:
-                        nextKnownTeam = customTeam.Id;
-                        return;
-                    case uint id when CustomTeam.TryGet(id, out CustomTeam _):
-                        nextKnownTeam = id;
-                        return;
-                    default:
-                        throw new ArgumentException("NextKnownTeam only accepts SpawnableTeamType, parsed uint & CustomTeam.");
+                    nextKnownTeam = value;
+                    return;
                 }
+
+                CustomTeam customTeam = value as CustomTeam;
+
+                if (customTeam is not null)
+                {
+                    nextKnownTeam = customTeam.Id;
+                    return;
+                }
+
+                if (CustomTeam.TryGet(value, out customTeam))
+                {
+                    nextKnownTeam = customTeam.Id;
+                    return;
+                }
+
+                throw new ArgumentException($"NextKnownTeam only accepts SpawnableTeamType, parsed uint & CustomTeam. The given type was: {value.GetType().Name}");
             }
         }
 
@@ -99,6 +109,13 @@ namespace Exiled.CustomModules.API.Features
         /// </summary>
         public void Spawn()
         {
+            if (NextKnownTeam is null)
+            {
+                NextKnownTeam = Respawning.RespawnManager.Singleton.NextKnownTeam;
+                Respawning.RespawnManager.Singleton.Spawn();
+                return;
+            }
+
             CustomTeam team = CustomTeam.Get((uint)NextKnownTeam);
             List<Player> toSpawn = Player.Get(x => x.Role is SpectatorRole { IsReadyToRespawn: true }).ToList();
             CustomTeam.TrySpawn(toSpawn.Cast<Pawn>(), team);
@@ -160,7 +177,7 @@ namespace Exiled.CustomModules.API.Features
                 if ((team.UseTickets && team.Tickets <= 0) || !team.EvaluateConditions || !team.CanSpawnByProbability)
                     continue;
 
-                SelectingCustomTeamRespawnEventArgs @event = new((object)team.Id);
+                SelectingCustomTeamRespawnEventArgs @event = new(team.Id);
                 SelectingCustomTeamRespawnDispatcher.InvokeAll(@event);
 
                 NextKnownTeam = @event.Team;
@@ -178,7 +195,10 @@ namespace Exiled.CustomModules.API.Features
                 return;
 
             if (NextKnownTeam is null or SpawnableTeamType)
+            {
+                ev.IsAllowed = true;
                 return;
+            }
 
             CustomTeam customTeam = CustomTeam.Get((uint)NextKnownTeam);
             if (customTeam is null)
@@ -197,7 +217,7 @@ namespace Exiled.CustomModules.API.Features
 
         private void OnRespawningTeam(RespawningTeamEventArgs ev)
         {
-            if (NextKnownTeam is not SpawnableTeamType team)
+            if (NextKnownTeam is null || NextKnownTeam is not SpawnableTeamType team)
                 return;
 
             foreach (CustomRole customRole in CustomRole.List)
@@ -205,7 +225,7 @@ namespace Exiled.CustomModules.API.Features
                 if (!customRole.IsTeamUnit || customRole.AssignFromTeam != team || !customRole.EvaluateConditions)
                     continue;
 
-                for (int i = customRole.Instances; i <= customRole.Instances; i++)
+                for (int i = customRole.Instances; i <= customRole.MaxInstances; i++)
                 {
                     if (!customRole.CanSpawnByProbability)
                         continue;
@@ -231,25 +251,26 @@ namespace Exiled.CustomModules.API.Features
 
         private void OnDeployingTeamRole(DeployingTeamRoleEventArgs ev)
         {
-            if (NextKnownTeam is SpawnableTeamType)
+            if (NextKnownTeam is not null && NextKnownTeam is not SpawnableTeamType)
             {
-                object role = EnqueuedRoles.Random();
-
-                if (role is not uint)
-                {
-                    EnqueuedRoles.Remove(role);
-                    return;
-                }
-
-                ev.Delegate = () =>
-                {
-                    CustomRole customRole = CustomRole.Get((uint)role);
-                    ev.Player.Cast<Pawn>().SetRole(customRole);
-                    EnqueuedRoles.Remove(role);
-                };
+                ev.Delegate = () => CustomTeam.TrySpawn(ev.Player.Cast<Pawn>(), (uint)NextKnownTeam);
+                return;
             }
 
-            ev.Delegate = () => CustomTeam.TrySpawn(ev.Player.Cast<Pawn>(), (uint)NextKnownTeam);
+            object role = EnqueuedRoles.Random();
+
+            if (role is not uint)
+            {
+                EnqueuedRoles.Remove(role);
+                return;
+            }
+
+            ev.Delegate = () =>
+            {
+                CustomRole customRole = CustomRole.Get((uint)role);
+                ev.Player.Cast<Pawn>().SetRole(customRole);
+                EnqueuedRoles.Remove(role);
+            };
         }
 
         private void OnRespawnedTeam(RespawnedTeamEventArgs ev)

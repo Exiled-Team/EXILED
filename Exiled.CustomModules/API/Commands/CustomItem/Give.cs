@@ -46,17 +46,19 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
         {
             if (!sender.CheckPermission("customitems.give"))
             {
-                response = "Permission Denied, required: customitems.give";
+                response = "Permission denied, customitems.give is required.";
                 return false;
             }
 
             if (arguments.Count == 0)
             {
-                response = "give <Custom item ID> [Nickname/PlayerID/UserID/all/*]";
+                response = "give <Custom Item> [Nickname / PlayerID / UserID / all / *]";
                 return false;
             }
 
-            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item) && (!uint.TryParse(arguments.At(0), out uint id) || !CustomItem.TryGet(id, out item)) && item is null)
+            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item) &&
+                (!uint.TryParse(arguments.At(0), out uint id) ||
+                 !CustomItem.TryGet(id, out item)) && item is null)
             {
                 response = $"Custom item {arguments.At(0)} not found!";
                 return false;
@@ -93,7 +95,7 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
                     foreach (Player ply in eligiblePlayers)
                         item?.Give(ply);
 
-                    response = $"Custom item {item?.Name} given to all players who can receive them ({eligiblePlayers.Count} players)";
+                    response = $"Custom item {item?.Name} given to all players who can receive them ({eligiblePlayers.Count} players).";
                     return true;
                 default:
                     if (Player.Get(identifier) is not { } player)

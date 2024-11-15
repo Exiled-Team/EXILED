@@ -12,11 +12,10 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
 
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Core;
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.DynamicEvents;
     using Exiled.API.Features.Pickups;
-    using Exiled.CustomModules.API.Features.CustomItems.Items;
+    using Exiled.CustomModules.API.Features.Generic;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp914;
 
@@ -27,13 +26,17 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
     /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IPickupBehaviour"/> and <see cref="IAdditiveSettings{T}"/>.
     /// <br/>It provides a foundation for creating custom behaviors associated with in-game pickup.
     /// </remarks>
-    public abstract class PickupBehaviour : ModuleBehaviour<Pickup>, IPickupBehaviour, IAdditiveSettings<PickupSettings>
+    public abstract class PickupBehaviour : ModuleBehaviour<Pickup>, IPickupBehaviour, IAdditiveSettings<SettingsBase>
     {
+        private static TrackerBase tracker;
+        private ushort serial;
+        private SettingsBase settings;
+
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before the pickup is gets picked up.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<PickingUpItemEventArgs> PickingUpItemDispatcher { get; set; }
+        public TDynamicEventDispatcher<PickingUpItemEventArgs> PickingUpItemDispatcher { get; set; } = new();
 
         /// <inheritdoc/>
         public override bool DisposeOnNullOwner { get; protected set; } = false;
@@ -44,32 +47,37 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
         public CustomItem CustomItem { get; private set; }
 
         /// <inheritdoc/>
-        public PickupSettings Settings { get; set; }
+        public SettingsBase Settings
+        {
+            get => settings ??= CustomItem.Settings;
+            set => settings = value;
+        }
+
+        /// <inheritdoc/>
+        public override ModulePointer Config
+        {
+            get => config ??= CustomItem.Config;
+            protected set => config = value;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="TrackerBase"/>.
+        /// </summary>
+        protected static TrackerBase Tracker => tracker ??= TrackerBase.Get();
 
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            ImplementConfigs();
-
-            if (CustomItem.TryGet(GetType(), out CustomItem customItem) && customItem.Settings is PickupSettings pickupSettings)
-            {
+            if (CustomItem.TryGet(GetType(), out CustomItem customItem))
                 CustomItem = customItem;
-                Settings = pickupSettings;
-            }
 
-            if (CustomItem is null || Settings is null)
+            if (CustomItem is null || Settings is null || Config is null)
             {
                 Log.Error($"Custom pickup ({GetType().Name}) has invalid configuration.");
                 Destroy();
             }
-        }
 
-        /// <inheritdoc/>
-        protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
-        {
-            targetInfo?.SetValue(
-                typeof(ItemSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings : this,
-                propertyInfo.GetValue(Config, null));
+            ImplementConfigs();
         }
 
         /// <summary>
@@ -80,12 +88,12 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
         /// <see langword="true"/> if the specified pickup is being tracked and associated with this item; otherwise, <see langword="false"/>.
         /// </returns>
         /// <remarks>
-        /// This method ensures that the provided pickup is being tracked by the <see cref="ItemTracker"/>
+        /// This method ensures that the provided pickup is being tracked by the <see cref="TrackerBase"/>
         /// and the tracked values associated with the pickup contain this item instance.
         /// </remarks>
         protected override bool Check(Pickup pickup) =>
-            base.Check(pickup) && StaticActor.Get<PickupTracker>() is PickupTracker pickupTracker &&
-            pickupTracker.IsTracked(pickup) && pickupTracker.GetTrackedValues(pickup).Contains(this);
+            pickup is not null && serial == pickup.Serial && Tracker.IsTracked(pickup) &&
+            Tracker.GetTrackedValues(pickup).Any(c => c.GetHashCode() == GetHashCode());
 
         /// <inheritdoc/>
         protected override void PostInitialize()
@@ -93,6 +101,19 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
             base.PostInitialize();
 
             AdjustAdditivePipe();
+
+            FixedTickRate = 1f;
+            CanEverTick = true;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnBeginPlay()
+        {
+            base.OnBeginPlay();
+
+            SubscribeEvents();
+
+            serial = Owner.Serial;
         }
 
         /// <inheritdoc/>
@@ -101,7 +122,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
             base.SubscribeEvents();
 
             Exiled.Events.Handlers.Player.PickingUpItem += OnInternalPickingUp;
-            Exiled.Events.Handlers.Player.AddingItem += OnInternalAddingItem;
+            Exiled.Events.Handlers.Player.ItemAdded += OnInternalItemAdded;
+            Exiled.Events.Handlers.Player.ItemRemoved += OnInternalItemRemoved;
             Exiled.Events.Handlers.Scp914.UpgradingPickup += OnInternalUpgradingPickup;
         }
 
@@ -111,7 +133,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
             base.UnsubscribeEvents();
 
             Exiled.Events.Handlers.Player.PickingUpItem -= OnInternalPickingUp;
-            Exiled.Events.Handlers.Player.AddingItem -= OnInternalAddingItem;
+            Exiled.Events.Handlers.Player.ItemAdded -= OnInternalItemAdded;
+            Exiled.Events.Handlers.Player.ItemRemoved -= OnInternalItemRemoved;
             Exiled.Events.Handlers.Scp914.UpgradingPickup -= OnInternalUpgradingPickup;
         }
 
@@ -140,22 +163,27 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Pickups
 
         private void OnInternalPickingUp(PickingUpItemEventArgs ev)
         {
-            if (!Check(ev.Pickup) || ev.Player.Items.Count >= 8)
+            if (!Check(ev.Pickup))
                 return;
 
             OnPickingUp(ev);
-
-            if (!ev.IsAllowed)
-                return;
         }
 
-        private void OnInternalAddingItem(AddingItemEventArgs ev)
+        private void OnInternalItemAdded(ItemAddedEventArgs ev)
         {
             if (!Check(ev.Pickup))
                 return;
 
-            ev.IsAllowed = false;
-            OnAcquired(ev.Player, true);
+            Owner = null;
+            OnAcquired(ev.Player);
+        }
+
+        private void OnInternalItemRemoved(ItemRemovedEventArgs ev)
+        {
+            if (!Check(ev.Pickup))
+                return;
+
+            Owner = ev.Pickup;
         }
 
         private void OnInternalUpgradingPickup(UpgradingPickupEventArgs ev)

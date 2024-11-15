@@ -7,41 +7,10 @@
 
 namespace Exiled.CustomModules.API.Features.CustomItems
 {
-    using Exiled.API.Features;
-    using Exiled.API.Features.Core;
-    using Exiled.API.Features.Core.Interfaces;
-    using Exiled.API.Features.Spawn;
-
-    using UnityEngine;
-
     /// <summary>
-    /// Defines the contract for config features related to custom entities.
+    /// Defines the contract for config features related to custom items.
     /// </summary>
-    public class Settings : TypeCastObject<Settings>, IAdditiveProperty
+    public class Settings : SettingsBase
     {
-        /// <summary>
-        /// Gets or sets the custom entity's <see cref="global::ItemType"/>.
-        /// </summary>
-        public virtual ItemType ItemType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="Exiled.API.Features.Spawn.SpawnProperties"/>.
-        /// </summary>
-        public virtual SpawnProperties SpawnProperties { get; set; }
-
-        /// <summary>
-        /// Gets or sets the weight of the entity.
-        /// </summary>
-        public virtual float Weight { get; set; }
-
-        /// <summary>
-        /// Gets or sets the scale of the entity.
-        /// </summary>
-        public virtual Vector3 Scale { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="TextDisplay"/> to be displayed when the entity has been picked up.
-        /// </summary>
-        public virtual TextDisplay PickedUpText { get; set; }
     }
 }

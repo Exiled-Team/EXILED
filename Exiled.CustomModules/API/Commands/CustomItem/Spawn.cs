@@ -39,24 +39,28 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
         public string[] Aliases { get; } = { "sp" };
 
         /// <inheritdoc/>
-        public string Description { get; } = "Spawn an item at the specified Spawn Location, coordinates, or at the designated player's feet.";
+        public string Description { get; } = "Spawns an item at the specified spawn location, coordinates, or at the designated player's position.";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("customitems.spawn"))
             {
-                response = "Permission Denied, required: customitems.spawn";
+                response = "Permission denied, customitems.spawn is required.";
                 return false;
             }
 
             if (arguments.Count < 2)
             {
-                response = "spawn [Custom item name] [Location name]\nspawn [Custom item name] [Nickname/PlayerID/UserID]\nspawn [Custom item name] [X] [Y] [Z]";
+                response = "spawn <Custom Item> [Location name]" +
+                           "\nspawn <Custom Item> [Nickname / PlayerID / UserID]" +
+                           "\nspawn <Custom Item> [X] [Y] [Z]";
                 return false;
             }
 
-            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item))
+            if (!(uint.TryParse(arguments.At(0), out uint id) &&
+                  CustomItem.TryGet(id, out CustomItem item)) &&
+                !CustomItem.TryGet(arguments.At(0), out item))
             {
                 response = $" {arguments.At(0)} is not a valid custom item.";
                 return false;
@@ -84,7 +88,7 @@ namespace Exiled.CustomModules.API.Commands.CustomItem
                 {
                     if (!float.TryParse(arguments.At(1), out float x) || !float.TryParse(arguments.At(2), out float y) || !float.TryParse(arguments.At(3), out float z))
                     {
-                        response = "Invalid coordinates selected.";
+                        response = "Invalid coordinates.";
                         return false;
                     }
 

@@ -13,6 +13,6 @@ namespace Exiled.API.Features.VirtualAssemblies.Generics
         where TConfig : class
     {
         /// <inheritdoc/>
-        public override EConfig Config { get; protected set; } = EConfig.Get<TConfig>(true);
+        public override ConfigSubsystem Config { get; protected set; } = ConfigSubsystem.Get<TConfig>(true);
     }
 }

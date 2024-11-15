@@ -11,6 +11,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
     using System.Linq;
 
     using Exiled.API.Features.Items;
+    using Exiled.CustomModules.API.Features.Generic;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp330;
     using UnityEngine;
@@ -18,7 +19,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Candies
     /// <summary>
     /// A custom tracker for candies.
     /// </summary>
-    public class CandyTracker : ItemTracker
+    public class CandyTracker : TrackerBase
     {
         /// <inheritdoc cref="Exiled.Events.Handlers.Scp330.OnInteractingScp330"/>
         internal void OnInteractingScp330(InteractingScp330EventArgs ev)

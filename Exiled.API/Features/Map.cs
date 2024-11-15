@@ -381,7 +381,6 @@ namespace Exiled.API.Features
 
             Ragdoll.BasicRagdollToRagdoll.Clear();
 
-            Items.Firearm.ItemTypeToFirearmInstance.Clear();
             Items.Firearm.BaseCodesValue.Clear();
             Items.Firearm.AvailableAttachmentsValue.Clear();
 

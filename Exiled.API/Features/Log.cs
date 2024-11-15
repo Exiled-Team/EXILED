@@ -72,6 +72,11 @@ namespace Exiled.API.Features
         /// Represents serialization context, used for de/serialize operations and issues.
         /// </summary>
         public const string CONTEXT_SERIALIZATION = "SERIALIZATION";
+
+        /// <summary>
+        /// Represents deployent context, used for deployment and un/registration operations and issues.
+        /// </summary>
+        public const string CONTEXT_DEPLOYMENT = "DEPLOYMENT";
 #pragma warning restore
 
         /// <summary>
@@ -390,13 +395,18 @@ namespace Exiled.API.Features
 
         private static string GetContextInfo()
         {
+            StackFrame sourceStackFrame = new(1, true);
             StackFrame stackFrame = new(2, true);
+            MethodBase sourceMethod = sourceStackFrame.GetMethod();
             MethodBase method = stackFrame.GetMethod();
+            string sourceMethodName = sourceMethod?.Name ?? "UnknownMethod";
             string methodName = method?.Name ?? "UnknownMethod";
+            string sourceClassName = sourceMethod?.DeclaringType?.Name ?? "UnknownClass";
             string className = method?.DeclaringType?.Name ?? "UnknownClass";
+            int sourceLineNumber = sourceStackFrame.GetFileLineNumber();
             int lineNumber = stackFrame.GetFileLineNumber();
 
-            return $"[{className}::{methodName} at line {lineNumber}]";
+            return $"{sourceClassName}::{sourceMethodName} (line {sourceLineNumber}) called {className}::{methodName} (line {lineNumber})";
         }
     }
 }

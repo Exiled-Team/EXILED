@@ -50,7 +50,7 @@ namespace Exiled.CustomModules.API.Features.PlayerAbilities
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> which handles all the delegates fired before SCP-079 gains experience.
         /// </summary>
         [DynamicEventDispatcher]
-        public TDynamicEventDispatcher<Scp079AbilityBehaviour> OnGainedExperienceDispatcher { get; set; }
+        public TDynamicEventDispatcher<Scp079AbilityBehaviour> OnGainedExperienceDispatcher { get; set; } = new();
 
         /// <inheritdoc/>
         protected override void FindOwner()

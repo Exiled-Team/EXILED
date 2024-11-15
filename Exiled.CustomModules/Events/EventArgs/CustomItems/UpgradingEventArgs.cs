@@ -31,7 +31,7 @@ namespace Exiled.CustomModules.Events.EventArgs.CustomItems
         /// <param name="knobSetting"><inheritdoc cref="UpgradingPickupEventArgs.KnobSetting"/></param>
         /// <param name="isAllowed"><inheritdoc cref="UpgradingPickupEventArgs.IsAllowed"/></param>
         public UpgradingEventArgs(Pickup pickup, CustomItem customItem, ItemBehaviour itemBehaviour, Vector3 newPos, Scp914KnobSetting knobSetting, bool isAllowed = true)
-            : base(pickup.Base, newPos, knobSetting, Exiled.API.Features.Scp914.GetProcessor(customItem.Settings.ItemType))
+            : base(pickup.Base, newPos, knobSetting, Exiled.API.Features.Scp914.GetProcessor(customItem.ItemType))
         {
             IsAllowed = isAllowed;
             CustomItem = customItem;

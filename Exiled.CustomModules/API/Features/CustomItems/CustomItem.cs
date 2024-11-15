@@ -9,6 +9,8 @@ namespace Exiled.CustomModules.API.Features.CustomItems
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
 
@@ -20,10 +22,13 @@ namespace Exiled.CustomModules.API.Features.CustomItems
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Lockers;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Serialization.CustomConverters;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.Attributes;
     using Exiled.CustomModules.API.Features.CustomItems.Items;
+    using Exiled.CustomModules.API.Features.CustomItems.Pickups;
+    using MEC;
     using UnityEngine;
     using YamlDotNet.Serialization;
 
@@ -39,13 +44,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         private static readonly Dictionary<Type, CustomItem> BehaviourLookupTable = new();
         private static readonly Dictionary<uint, CustomItem> IdLookupTable = new();
         private static readonly Dictionary<string, CustomItem> NameLookupTable = new();
-
-        /// <summary>
-        /// Gets all tracked behaviours.
-        /// </summary>
-#pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly Dictionary<Pickup, ItemBehaviour> TrackedBehaviours = new();
-#pragma warning restore SA1202 // Elements should be ordered by access
+        private static readonly Dictionary<string, Type> SettingsTypeLookupTable = new();
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> which contains all registered <see cref="CustomItem"/>'s.
@@ -90,37 +89,44 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <summary>
         /// Gets or sets the <see cref="CustomItem"/>'s name.
         /// </summary>
+        [Description("The name of the custom item.")]
         public override string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomItem"/>'s id.
         /// </summary>
+        [Description("The id of the custom item.")]
         public override uint Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="CustomItem"/> is enabled.
-        /// </summary>
-        public override bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomItem"/>'s description.
         /// </summary>
+        [Description("The description of the custom item.")]
         public virtual string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="CustomItem"/> is enabled.
+        /// </summary>
+        [Description("Indicates whether the custom item is enabled.")]
+        public override bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomItem"/>'s <see cref="global::ItemType"/>.
         /// </summary>
+        [Description("The type of the custom item.")]
         public virtual ItemType ItemType { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomItem"/>'s <see cref="global::ItemCategory"/>.
         /// </summary>
+        [Description("The category of the custom item.")]
         public virtual ItemCategory ItemCategory { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Settings"/>.
         /// </summary>
-        public virtual Settings Settings { get; set; }
+        [Description("The settings of the custom item.")]
+        public virtual SettingsBase Settings { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="CustomItem"/> is registered.
@@ -139,6 +145,14 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// </summary>
         [YamlIgnore]
         public IEnumerable<Item> Items => ItemsValue.Where(x => x.Value.Id == Id).Select(x => x.Key);
+
+        /// <summary>
+        /// Gets the deserializer specifically made for custom items.
+        /// </summary>
+        protected static IDeserializer CustomItemDeserializer { get; } =
+            ConfigSubsystem.GetDefaultDeserializerBuilder()
+            .WithTypeConverter(new DynamicTypeConverter<SettingsBase>())
+            .Build();
 
         /// <summary>
         /// Gets a <see cref="CustomItem"/> based on the provided id or <see cref="UUCustomItemType"/>.
@@ -168,7 +182,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <returns>The retrieved <see cref="CustomItem"/> instance if found and enabled; otherwise, <see langword="null"/>.</returns>
         public static CustomItem Get(Type type) =>
             typeof(CustomItem).IsAssignableFrom(type) ? TypeLookupTable[type] :
-            typeof(ItemBehaviour).IsAssignableFrom(type) ? BehaviourLookupTable[type] : null;
+            typeof(ICustomItemBehaviour).IsAssignableFrom(type) ? BehaviourLookupTable[type] : null;
 
         /// <summary>
         /// Retrieves a <see cref="CustomItem"/> instance based on the specified <see cref="Item"/> instance.
@@ -217,18 +231,6 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <param name="customItem">When this method returns, contains the <see cref="CustomItem"/> associated with the specified id, if the id was found; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if a <see cref="CustomItem"/> was found; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(object id, out CustomItem customItem)
-        {
-            customItem = Get(id);
-            return customItem is not null;
-        }
-
-        /// <summary>
-        /// Tries to retrieve a <see cref="CustomItem"/> instance based on the specified custom item id.
-        /// </summary>
-        /// <param name="id">The custom item id to retrieve.</param>
-        /// <param name="customItem">The retrieved <see cref="CustomItem"/> instance, if successful; otherwise, <see langword="null"/>.</param>
-        /// <returns><see langword="true"/> if the retrieval is successful; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet(uint id, out CustomItem customItem)
         {
             customItem = Get(id);
             return customItem is not null;
@@ -393,24 +395,16 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <summary>
         /// Enables all the custom items present in the assembly.
         /// </summary>
+        /// <param name="assembly">The assembly to enable the module instances from.</param>
+        /// <returns>The amount of enabled module instances.</returns>
         /// <remarks>
-        /// This method dynamically enables all custom items found in the calling assembly. Custom items
-        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling.
+        /// This method dynamically enables all module instances found in the calling assembly that were
+        /// not previously registered.
         /// </remarks>
-        public static void EnableAll() => EnableAll(Assembly.GetCallingAssembly());
-
-        /// <summary>
-        /// Enables all the custom items present in the assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly to enable the items from.</param>
-        /// <remarks>
-        /// This method dynamically enables all custom items found in the calling assembly. Custom items
-        /// must be marked with the <see cref="ModuleIdentifierAttribute"/> to be considered for enabling.
-        /// </remarks>
-        public static void EnableAll(Assembly assembly)
+        public static int EnableAll(Assembly assembly = null)
         {
-            if (!CustomModules.Instance.Config.Modules.Contains(UUModuleType.CustomItems.Name))
-                throw new Exception("ModuleType::CustomItems must be enabled in order to load any custom items");
+            assembly ??= Assembly.GetCallingAssembly();
+            AddSettingsDerivedTypes(assembly);
 
             List<CustomItem> customItems = new();
             foreach (Type type in assembly.GetTypes())
@@ -429,23 +423,25 @@ namespace Exiled.CustomModules.API.Features.CustomItems
                     customItems.Add(customItem);
             }
 
-            if (customItems.Count != Registered.Count)
-                Log.Info($"{customItems.Count} custom items have been successfully registered!");
+            return customItems.Count;
         }
 
         /// <summary>
         /// Disables all the custom items present in the assembly.
         /// </summary>
+        /// <param name="assembly">The assembly to disable the module instances from.</param>
+        /// <returns>The amount of disabled module instances.</returns>
         /// <remarks>
-        /// This method dynamically disables all custom items found in the calling assembly that were
+        /// This method dynamically disables all module instances found in the calling assembly that were
         /// previously registered.
         /// </remarks>
-        public static void DisableAll()
+        public static int DisableAll(Assembly assembly = null)
         {
-            List<CustomItem> customItems = new();
-            customItems.AddRange(Registered.Where(customItem => customItem.TryUnregister()));
+            assembly ??= Assembly.GetCallingAssembly();
 
-            Log.Info($"{customItems.Count} custom items have been successfully unregistered!");
+            List<CustomItem> customItems = new();
+            customItems.AddRange(Registered.Where(customItem => customItem.GetType().Assembly == assembly && customItem.TryUnregister()));
+            return customItems.Count;
         }
 
         /// <summary>
@@ -501,17 +497,28 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <returns>The <see cref="Pickup"/> of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(Vector3 position, Item item, Player previousOwner = null)
         {
-            item.AddComponent(BehaviourComponent);
+            TrackerBase tracker = TrackerBase.Get();
+
+            if (typeof(ItemBehaviour).IsAssignableFrom(BehaviourComponent))
+            {
+                item.AddComponent(BehaviourComponent);
+                tracker.AddOrTrack(item);
+            }
+
             Pickup pickup = item.CreatePickup(position);
+            if (typeof(PickupBehaviour).IsAssignableFrom(BehaviourComponent))
+            {
+                pickup.AddComponent(BehaviourComponent);
+                tracker.AddOrTrack(pickup);
+            }
 
-            ItemTracker tracker = StaticActor.Get<ItemTracker>();
-            tracker.AddOrTrack(item, pickup);
-            tracker.Restore(pickup, item);
+            if (Settings is not SettingsBase settings)
+                throw new InvalidCastException("Settings is not set to an instance of a derived SettingsBase type.");
 
-            pickup.Scale = Settings.Scale;
+            pickup.Scale = settings.Scale;
 
-            if (Settings.Weight != -1)
-                pickup.Weight = Settings.Weight;
+            if (settings.Weight != -1f)
+                pickup.Weight = settings.Weight;
 
             if (previousOwner)
                 pickup.PreviousOwner = previousOwner;
@@ -581,7 +588,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// </summary>
         public virtual void SpawnAll()
         {
-            if (Settings is null || Settings.SpawnProperties is not SpawnProperties spawnProperties)
+            if (Settings is null || Settings is not SettingsBase settings || settings.SpawnProperties is not SpawnProperties spawnProperties)
                 return;
 
             // This will go over each spawn property type (static, dynamic and role) to try and spawn the item.
@@ -609,10 +616,23 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         {
             try
             {
-                item.AddComponent(BehaviourComponent);
-                StaticActor.Get<ItemTracker>().AddOrTrack(item);
-                player.AddItem(item);
-                ItemsValue.Add(item, this);
+                if (typeof(ItemBehaviour).IsAssignableFrom(BehaviourComponent))
+                {
+                    item.AddComponent(BehaviourComponent);
+                    TrackerBase.Get().AddOrTrack(item);
+                    player.AddItem(item);
+                    ItemsValue.Add(item, this);
+                    return;
+                }
+
+                if (typeof(PickupBehaviour).IsAssignableFrom(BehaviourComponent))
+                {
+                    Pickup pickup = item.CreatePickup(Vector3.zero);
+                    pickup.AddComponent(BehaviourComponent);
+                    TrackerBase.Get().AddOrTrack(pickup);
+                    player.AddItem(pickup);
+                    PickupValue.Add(pickup, this);
+                }
             }
             catch (Exception e)
             {
@@ -643,40 +663,47 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         /// <returns><see langword="true"/> if the <see cref="CustomItem"/> was registered; otherwise, <see langword="false"/>.</returns>
         protected override bool TryRegister(Assembly assembly, ModuleIdentifierAttribute attribute = null)
         {
-            if (!Registered.Contains(this))
+            if (Registered.Contains(this))
             {
-                if (attribute is not null && Id == 0)
-                {
-                    if (attribute.Id != 0)
-                        Id = attribute.Id;
-                    else
-                        throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
-                }
+                Log.Warn($"Unable to register {Name}. Item already exists.");
 
-                CustomItem duplicate = Registered.FirstOrDefault(x => x.Id == Id || x.Name == Name || x.BehaviourComponent == BehaviourComponent);
-                if (duplicate)
-                {
-                    Log.Warn($"Unable to register {Name}. Another item with the same ID, Name or Behaviour Component already exists: {duplicate.Name}");
-
-                    return false;
-                }
-
-                EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
-                Registered.Add(this);
-
-                base.TryRegister(assembly, attribute);
-
-                TypeLookupTable.TryAdd(GetType(), this);
-                BehaviourLookupTable.TryAdd(BehaviourComponent, this);
-                IdLookupTable.TryAdd(Id, this);
-                NameLookupTable.TryAdd(Name, this);
-
-                return true;
+                return false;
             }
 
-            Log.Warn($"Unable to register {Name}. Item already exists.");
+            if (!typeof(EActor).IsAssignableFrom(BehaviourComponent) || BehaviourComponent.GetInterfaces()
+                    .All(i => !typeof(ICustomItemBehaviour).IsAssignableFrom(i)))
+            {
+                Log.Error($"Unable to register {Name}. Behaviour Component must implement EActor and ICustomItemBehaviour.");
+                return false;
+            }
 
-            return false;
+            if (attribute is not null && Id == 0)
+            {
+                if (attribute.Id != 0)
+                    Id = attribute.Id;
+                else
+                    throw new ArgumentException($"Unable to register {Name}. The ID 0 is reserved for special use.");
+            }
+
+            CustomItem duplicate = Registered.FirstOrDefault(x => x.Id == Id || x.Name == Name || x.BehaviourComponent == BehaviourComponent);
+            if (duplicate)
+            {
+                Log.Warn($"Unable to register {Name}. Another item with the same ID, Name or Behaviour Component already exists: {duplicate.Name}");
+
+                return false;
+            }
+
+            EObject.RegisterObjectType(BehaviourComponent, Name, assembly);
+            Registered.Add(this);
+
+            base.TryRegister(assembly, attribute);
+
+            TypeLookupTable.TryAdd(GetType(), this);
+            BehaviourLookupTable.TryAdd(BehaviourComponent, this);
+            IdLookupTable.TryAdd(Id, this);
+            NameLookupTable.TryAdd(Name, this);
+
+            return true;
         }
 
         /// <summary>
@@ -687,7 +714,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems
         {
             if (!Registered.Contains(this))
             {
-                Log.Debug($"Unable to unregister {Name}. Item is not yet registered.");
+                Log.Warn($"Unable to unregister {Name}. Item is not yet registered.");
 
                 return false;
             }
@@ -703,6 +730,58 @@ namespace Exiled.CustomModules.API.Features.CustomItems
             NameLookupTable.Remove(Name);
 
             return true;
+        }
+
+        /// <inheritdoc/>
+        protected override void DeserializeModule_Implementation() => Timing.RunCoroutine(EnqueueDeserialization_Internal());
+
+        private static void AddSettingsDerivedTypes(Assembly assembly = null)
+        {
+            assembly ??= Assembly.GetCallingAssembly();
+
+            foreach (Type t in assembly.GetTypes())
+            {
+                if (t.IsAbstract || !typeof(SettingsBase).IsAssignableFrom(t))
+                    continue;
+
+                try
+                {
+                    SettingsTypeLookupTable[t.Name] = t;
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+        }
+
+        private IEnumerator<float> EnqueueDeserialization_Internal()
+        {
+            yield return Timing.WaitUntilTrue(() => !SettingsTypeLookupTable.IsEmpty());
+
+            string settingsPropertyName = nameof(Settings).ToKebabCase();
+            string settingsTypePropertyName = nameof(Settings.SettingsType).ToKebabCase();
+
+            Dictionary<string, object> deserializedModule = CustomItemDeserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(FilePath));
+
+            object settings = null;
+            if (deserializedModule.TryGetValue(settingsPropertyName, out object value))
+            {
+                settings = value;
+                deserializedModule.Remove(settingsPropertyName);
+            }
+
+            string settingsTypeName = (string)(settings as Dictionary<object, object>)[settingsTypePropertyName];
+            string rawCustomItem = ConfigSubsystem.ConvertDictionaryToYaml(deserializedModule);
+            string serializedSettings = ConfigSubsystem.Serializer.Serialize(settings);
+
+            CustomItem deserializedCustomItem = ModuleDeserializer.Deserialize(rawCustomItem, GetType()) as CustomItem;
+            SettingsBase settingsBase = ConfigSubsystem.Deserializer.Deserialize(serializedSettings, SettingsTypeLookupTable[settingsTypeName]) as SettingsBase;
+            deserializedCustomItem.Settings = settingsBase;
+
+            CopyProperties(deserializedCustomItem);
+
+            Config = ModuleDeserializer.Deserialize(File.ReadAllText(PointerPath), ModulePointer.Get(this, GetType().Assembly).GetType()) as ModulePointer;
         }
     }
 }

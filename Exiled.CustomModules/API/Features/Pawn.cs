@@ -23,6 +23,7 @@ namespace Exiled.CustomModules.API.Features
     using Exiled.CustomModules.API.Features.CustomItems.Items;
     using Exiled.CustomModules.API.Features.CustomItems.Pickups.Ammos;
     using Exiled.CustomModules.API.Features.CustomRoles;
+    using Exiled.CustomModules.API.Features.Generic;
     using Exiled.CustomModules.API.Features.PlayerAbilities;
     using Exiled.CustomModules.Events.EventArgs.CustomAbilities;
     using PlayerRoles;
@@ -73,7 +74,7 @@ namespace Exiled.CustomModules.API.Features
         }
 
         /// <summary>
-        /// Gets all pawn's <see cref="ModuleBehaviour{T}"/>'s.
+        /// Gets all pawn's <see cref="ModuleBehaviour{TEntity}"/>'s.
         /// </summary>
         public IEnumerable<ModuleBehaviour<Player>> ModuleBehaviours => GetComponents<ModuleBehaviour<Player>>();
 

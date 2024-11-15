@@ -10,7 +10,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
 
     using Exiled.API.Enums;
@@ -24,6 +23,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     using Exiled.API.Features.Spawn;
     using Exiled.CustomModules.API.Enums;
     using Exiled.CustomModules.API.Features.CustomEscapes;
+    using Exiled.CustomModules.API.Features.Generic;
     using Exiled.CustomModules.API.Features.Inventory;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -34,7 +34,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
     /// Represents the base class for custom role behaviors.
     /// </summary>
     /// <remarks>
-    /// This class extends <see cref="ModuleBehaviour{T}"/> and implements <see cref="IAdditiveSettings{T}"/>.
+    /// This class extends <see cref="ModuleBehaviour{TEntity}"/> and implements <see cref="IAdditiveSettings{T}"/>.
     /// <br/>It provides a foundation for creating custom behaviors associated with in-game player roles.
     /// </remarks>
     public class RoleBehaviour : ModuleBehaviour<Player>, IAdditiveSettings<RoleSettings>
@@ -45,6 +45,7 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         private bool wasNoClipPermitted;
         private bool useCustomEscape;
         private bool wasEscaped;
+        private RoleSettings settings;
 
         /// <summary>
         /// Gets a <see cref="HashSet{T}"/> of <see cref="Player"/> containing all players to be spawned without affecting their current position (static).
@@ -64,7 +65,18 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets or sets the <see cref="RoleSettings"/>.
         /// </summary>
-        public virtual RoleSettings Settings { get; set; }
+        public RoleSettings Settings
+        {
+            get => settings ??= CustomRole.Settings;
+            set => settings = value;
+        }
+
+        /// <inheritdoc/>
+        public override ModulePointer Config
+        {
+            get => config ??= CustomRole.Config;
+            protected set => config = value;
+        }
 
         /// <summary>
         /// Gets a random spawn point based on existing settings.
@@ -99,14 +111,14 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         }
 
         /// <summary>
-        /// Gets the <see cref="InventoryManager"/>.
+        /// Gets or sets the <see cref="InventoryManager"/>.
         /// </summary>
-        protected virtual InventoryManager Inventory { get; }
+        public virtual InventoryManager Inventory { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> of the fake appearance applied by this <see cref="RoleBehaviour"/> component.
         /// </summary>
-        protected virtual RoleTypeId FakeAppearance
+        public virtual RoleTypeId FakeAppearance
         {
             get => fakeAppearance;
             set
@@ -119,22 +131,27 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Gets or sets a <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> which should be permanently given to the player.
         /// </summary>
-        protected virtual IEnumerable<Effect> PermanentEffects { get; set; }
+        public virtual IEnumerable<Effect> PermanentEffects { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether <see cref="FakeAppearance"/> should be used.
         /// </summary>
-        protected virtual bool UseFakeAppearance { get; }
+        public virtual bool UseFakeAppearance { get; }
 
         /// <summary>
         /// Gets a value indicating whether an existing spawnpoint should be used.
         /// </summary>
-        protected virtual bool UseCustomSpawnpoint => true;
+        public virtual bool UseCustomSpawnpoint => true;
 
         /// <summary>
         /// Gets or sets a value indicating whether the effects should persistently remain active.
         /// </summary>
-        protected virtual bool SustainEffects { get; set; }
+        public virtual bool SustainEffects { get; set; }
+
+        /// <summary>
+        /// Gets or sets the the escape settings.
+        /// </summary>
+        public virtual List<EscapeSettings> EscapeSettings { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="RoleBehaviour"/> component.
@@ -147,19 +164,14 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         protected float CurrentSpeed { get; private set; }
 
         /// <summary>
-        /// Gets or sets the the escape settings.
-        /// </summary>
-        protected virtual List<EscapeSettings> EscapeSettings { get; set; } = new();
-
-        /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired before escaping.
         /// </summary>
-        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingEventDispatcher { get; set; }
+        protected TDynamicEventDispatcher<Events.EventArgs.CustomEscapes.EscapingEventArgs> EscapingEventDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the <see cref="TDynamicEventDispatcher{T}"/> handling all bound delegates to be fired after escaping.
         /// </summary>
-        protected TDynamicEventDispatcher<Player> EscapedEventDispatcher { get; set; }
+        protected TDynamicEventDispatcher<Player> EscapedEventDispatcher { get; set; } = new();
 
         /// <summary>
         /// Gets a value indicating whether the specified <see cref="DamageType"/> is allowed.
@@ -224,25 +236,20 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <inheritdoc/>
         public virtual void AdjustAdditivePipe()
         {
-            ImplementConfigs();
-
             if (CustomTeam.TryGet(Owner.Cast<Pawn>(), out CustomTeam customTeam))
                 CustomTeam = customTeam;
 
-            if (CustomRole.TryGet(GetType(), out CustomRole customRole) && customRole.Settings is RoleSettings settings)
-            {
+            if (CustomRole.TryGet(GetType(), out CustomRole customRole))
                 CustomRole = customRole;
 
-                if (customRole is null || customRole.Config is null)
-                    Settings = settings;
-            }
-
-            if (CustomRole is null || Settings is null)
+            if (CustomRole is null || Settings is null || Config is null)
             {
                 Log.Error($"Custom role ({GetType().Name}) has invalid configuration.");
                 Destroy();
                 return;
             }
+
+            ImplementConfigs();
 
             Owner.UniqueRole = CustomRole.Name;
 
@@ -252,16 +259,6 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
                 Owner.AddComponent(CustomRole.EscapeBehaviourComponent);
                 useCustomEscape = true;
             }
-        }
-
-        /// <inheritdoc/>
-        protected override void ApplyConfig(PropertyInfo propertyInfo, PropertyInfo targetInfo)
-        {
-            targetInfo?.SetValue(
-                typeof(RoleSettings).IsAssignableFrom(targetInfo.DeclaringType) ? Settings :
-                typeof(InventoryManager).IsAssignableFrom(targetInfo.DeclaringType) ? Inventory :
-                this,
-                propertyInfo.GetValue(Config, null));
         }
 
         /// <inheritdoc/>
@@ -328,20 +325,29 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             if (Settings.HideInfoArea)
                 Owner.InfoArea = Owner.InfoArea.RemoveFlags(PlayerInfoArea.UnitName, PlayerInfoArea.Role);
 
-            if (isHuman && !Settings.PreserveInventory)
+            if (isHuman && !Settings.PreserveInventory && Inventory is not null)
             {
                 Owner.ClearInventory();
 
-                if (Inventory.Items is not null)
-                    Owner.AddItem(Inventory.Items);
-
-                if (Inventory.CustomItems is not null)
-                    Owner.Cast<Pawn>().AddItem(Inventory.CustomItems);
-
-                if (Inventory.AmmoBox is not null)
+                if (Inventory.Chance == 0 || (Inventory.Chance > 0 && Inventory.Chance.EvaluateProbability()))
                 {
-                    foreach (KeyValuePair<AmmoType, ushort> kvp in Inventory.AmmoBox)
-                        Owner.AddAmmo(kvp.Key, kvp.Value);
+                    if (Inventory.Items is not null)
+                        Owner.AddItem(Inventory.Items);
+
+                    if (Inventory.CustomItems is not null)
+                        Owner.Cast<Pawn>().AddItem(Inventory.CustomItems);
+
+                    if (Inventory.AmmoBox is not null)
+                    {
+                        foreach (KeyValuePair<AmmoType, ushort> kvp in Inventory.AmmoBox)
+                            Owner.AddAmmo(kvp.Key, kvp.Value);
+                    }
+
+                    if (Inventory.CustomAmmoBox is not null)
+                    {
+                        foreach (KeyValuePair<uint, ushort> kvp in Inventory.CustomAmmoBox)
+                            Owner.Cast<Pawn>().AddAmmo(kvp.Key, kvp.Value);
+                    }
                 }
             }
 
@@ -365,9 +371,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         protected override void OnBeginPlay()
         {
             base.OnBeginPlay();
+
             if (!Owner)
             {
-                Log.WarnWithContext("Owner is null");
                 Destroy();
                 return;
             }
@@ -483,6 +489,9 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             Exiled.Events.Handlers.Player.Handcuffing += HandcuffingBehavior;
             Exiled.Events.Handlers.Map.PlacingBlood += PlacingBloodBehavior;
             Exiled.Events.Handlers.Player.ChangingNickname += OnInternalChangingNickname;
+            Exiled.Events.Handlers.Player.Spawning += OverrideSpawnPoint;
+            Exiled.Events.Handlers.Player.SpawningRagdoll += OnSpawningRagdoll;
+
             EscapingEventDispatcher.Bind(this, OnEscaping);
             EscapedEventDispatcher.Bind(this, OnEscaped);
         }
@@ -513,6 +522,11 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
             Exiled.Events.Handlers.Player.Handcuffing -= HandcuffingBehavior;
             Exiled.Events.Handlers.Map.PlacingBlood -= PlacingBloodBehavior;
             Exiled.Events.Handlers.Player.ChangingNickname -= OnInternalChangingNickname;
+            Exiled.Events.Handlers.Player.Spawning -= OverrideSpawnPoint;
+            Exiled.Events.Handlers.Player.SpawningRagdoll -= OnSpawningRagdoll;
+
+            EscapingEventDispatcher.Unbind(this, OnEscaping);
+            EscapedEventDispatcher.Unbind(this, OnEscaped);
         }
 
         /// <summary>
@@ -659,21 +673,16 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnSearchPickupRequest(SearchingPickupEventArgs)"/>
         protected virtual void PickingUpItemBehavior(SearchingPickupEventArgs ev)
         {
-            if (ev.Pickup is null)
-            {
-                Log.Error("Pickup is null");
-            }
-
             if (!Check(ev.Player) || Settings.CanPickupItems)
                 return;
 
             ev.IsAllowed = false;
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs)"/>
-        protected virtual void PreventPlayerFromEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs ev)
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscaping(EscapingEventArgs)"/>
+        protected virtual void PreventPlayerFromEscaping(EscapingEventArgs ev)
         {
-            if (!Check(ev.Player) || useCustomEscape || wasEscaped || !EscapeSettings.IsEmpty())
+            if (!Check(ev.Player) || useCustomEscape || wasEscaped || (EscapeSettings is not null && !EscapeSettings.IsEmpty()))
                 return;
 
             ev.IsAllowed = false;
