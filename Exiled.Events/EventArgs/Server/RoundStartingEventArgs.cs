@@ -8,7 +8,7 @@
 namespace Exiled.Events.EventArgs.Server
 {
     /// <summary>
-    /// Contains isallowed or not.
+    /// Contains all information before the start of the round.
     /// </summary>
     public class RoundStartingEventArgs
     {
