@@ -104,6 +104,11 @@ namespace Exiled.Events.Handlers
         public static Event ReloadedPermissions { get; set; } = new();
 
         /// <summary>
+        /// Invoked before the round starts.
+        /// </summary>
+        public static Event<RoundStartingEventArgs> RoundStarting { get; set; } = new();
+
+        /// <summary>
         /// Called before waiting for players.
         /// </summary>
         public static void OnWaitingForPlayers() => WaitingForPlayers.InvokeSafely();
@@ -195,5 +200,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SelectingRespawnTeamEventArgs"/> instance.</param>
         public static void OnSelectingRespawnTeam(SelectingRespawnTeamEventArgs ev) => SelectingRespawnTeam.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before round started.
+        /// </summary>
+        /// <param name="ev">The <see cref="RoundStartingEventArgs"/> instance.</param>
+        public static void OnRoundStarting(RoundStartingEventArgs ev) => RoundStarting.InvokeSafely(ev);
     }
 }
