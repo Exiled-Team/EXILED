@@ -33,12 +33,6 @@ namespace Exiled.Events.Handlers.Internal
     /// </summary>
     internal static class Round
     {
-#pragma warning disable SA1600
-#pragma warning disable SA1401
-        internal static CoroutineHandle EndOfSupportHandle;
-#pragma warning restore SA1401
-#pragma warning restore SA1600
-
         /// <inheritdoc cref="Handlers.Player.OnUsedItem" />
         public static void OnServerOnUsingCompleted(ReferenceHub hub, UsableItem usable) => Handlers.Player.OnUsedItem(new (hub, usable));
 
@@ -46,8 +40,6 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnWaitingForPlayers()
         {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.WAITING_FOR_PLAYERS);
-
-            EndOfSupportHandle = Timing.RunCoroutine(EndOfSupportNotification());
 
             if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
                 ConfigManager.Reload();
@@ -108,21 +100,6 @@ namespace Exiled.Events.Handlers.Internal
             {
                 ev.Player.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkLightsEnabled), true);
                 ev.Player.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkLightsEnabled), false);
-            }
-        }
-
-        private static IEnumerator<float> EndOfSupportNotification()
-        {
-            if (LoaderPlugin.Config.Reboot)
-                yield break;
-
-            for (; ;)
-            {
-                ServerConsole.AddLog("Exiled support has ended. For updates and new releases, join us at https://exiled.to/discord!", ConsoleColor.DarkRed);
-                ServerConsole.AddLog("Exiled Reboot will not load plugins until you acknowledge this message by setting the 'Reboot' Loader config to true.", ConsoleColor.DarkRed);
-                ServerConsole.AddLog("Run the commands 'exiled reboot', 'exiled ack' or 'exiled exboot' to temporary suppress the logs.", ConsoleColor.DarkRed);
-
-                yield return Timing.WaitForSeconds(20f);
             }
         }
     }
