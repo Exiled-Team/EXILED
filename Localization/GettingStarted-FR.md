@@ -198,7 +198,7 @@ Vous pouvez ajouter n'importe quelle option de configuration là-dedans et y fai
 Et félicitations ! Vous avez créé votre tout premier plugin Exiled ! Il est important de noter que tous les plugins **doivent** avoir une configuration IsEnabled. Cette configuration permet aux propriétaires de serveurs d'activer et de désactiver le plugin à leur guise. La configuration IsEnabled sera lue par le chargeur Exiled (votre plugin n'a pas besoin de vérifier si `IsEnabled == true` ou non).
 
 ### Que faire Maintenant ?
-Si vous voulez plus d'informations, vous devriez rejoindre notre [discord!](https://exiled.to/discord)
+Si vous voulez plus d'informations, vous devriez rejoindre notre [discord!](https://discord.gg/835XQcCCVv)
 
 Nous avons un canal #resources que vous pourriez trouver utile, ainsi que des contributeurs Exiled et des développeurs de plugins qui seraient prêts à vous aider dans la création de votre/vos plugin(s).
 
