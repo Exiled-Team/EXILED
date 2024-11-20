@@ -199,7 +199,7 @@ Você pode adicionar qualquer opção de configuração ali e referenciá-la ass
 E parabéns! Você fez o seu primeiro Plug-in para o Exiled! É importante destacar que todos os plug-ins **devem** ter uma configuração IsEnabled. Essa configuração permite que donos de servidor ativem e desativem o plug-in quando quiserem. A configuração IsEnabled será lida pelo carregador do Exiled (seu plug-in não precisa verificar se `IsEnabled == true` ou não).
 
 ### E agora?
-Se você quiser mais informações, você deve entrar no nosso [discord!](https://discord.gg/exiledreboot)
+Se você quiser mais informações, você deve entrar no nosso [discord!](https://discord.gg/835XQcCCVv)
 
 Nós temos um canal de #resources que você pode considerar útil, assim como colaboradores do EXILED e desenvolvedores de plug-in que estariam dispostos a ajudá-lo na criação de seus plug-ins.
 
