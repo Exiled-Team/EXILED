@@ -88,12 +88,5 @@ namespace Exiled.Loader
         /// </summary>
         [Description("Indicates whether Exiled should auto-update itself as soon as a new release is available.")]
         public bool EnableAutoUpdates { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the Exiled plugins will load.
-        /// Set this to true to acknowledge the end of Exiled support and enable plugin loading.
-        /// </summary>
-        [Description("Indicates whether Exiled plugins will load. Join the new Exiled Discord at discord.gg/exiledreboot")]
-        public bool Reboot { get; set; }
     }
 }
