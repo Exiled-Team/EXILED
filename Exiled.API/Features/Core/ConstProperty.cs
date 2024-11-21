@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ConstProperty.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -48,8 +48,6 @@ namespace Exiled.API.Features.Core
         /// </summary>
         ~ConstProperty()
         {
-            List.Remove(this);
-
             foreach (MethodInfo methodInfo in PatchedMethods)
             {
                 try

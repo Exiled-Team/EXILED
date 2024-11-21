@@ -191,6 +191,9 @@ namespace Exiled.CustomModules.API.Features
         {
             PreviousKnownTeam = NextKnownTeam;
 
+            if (!ev.IsAllowed)
+                return;
+
             if (NextKnownTeam is null or SpawnableTeamType)
             {
                 ev.IsAllowed = true;
@@ -201,9 +204,7 @@ namespace Exiled.CustomModules.API.Features
             if (customTeam is null)
                 return;
 
-            if (customTeam.TeamsOwnership.Any(t =>
-                    t == (ev.NextKnownTeam is SpawnableTeamType.ChaosInsurgency ?
-                        Team.ChaosInsurgency : Team.FoundationForces)))
+            if (customTeam.TeamsOwnership.Any(t => t == (Team)ev.NextKnownTeam))
             {
                 ev.MaxWaveSize = customTeam.Size;
                 return;

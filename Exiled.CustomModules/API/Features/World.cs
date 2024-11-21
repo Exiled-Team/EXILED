@@ -234,7 +234,7 @@ namespace Exiled.CustomModules.API.Features
             if (!ev.IsAllowed)
                 return;
 
-            foreach (CustomRole role in CustomRole.Get(cr => cr.TeamsOwnership.Length != 1 && cr.Instances > 1))
+            foreach (CustomRole role in CustomRole.Get(cr => cr.Instances > 1))
             {
                 if (role.Owners.First().RoleBehaviour.EvaluateEndingConditions())
                     continue;

@@ -19,66 +19,53 @@ namespace Exiled.API.Features.Core.Generic
     public sealed class Singleton<T> : TypeCastObject<T>
         where T : class
     {
-        private static readonly Dictionary<T, Singleton<T>> Instances = new();
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Singleton{T}"/> class.
-        /// </summary>
-        /// <param name="value">The branch to instantiate.</param>
-        public Singleton(T value)
-        {
-            Destroy(value);
-            Value = value;
-            Instances.Add(value, this);
-        }
-
-        /// <summary>
-        /// Finalizes an instance of the <see cref="Singleton{T}"/> class.
-        /// </summary>
-        ~Singleton() => Instances.Remove(Value);
-
         /// <summary>
         /// Gets the relative value.
         /// </summary>
-        public static T Instance => Instances.FirstOrDefault(@object => @object.Key.GetType() == typeof(T)).Value;
-
-        /// <summary>
-        /// Gets the singleton value.
-        /// </summary>
-        internal T Value { get; private set; }
-
-        /// <summary>
-        /// Converts the given <see cref="Singleton{T}"/> instance into <typeparamref name="T"/>.
-        /// </summary>
-        /// <param name="instance">The <see cref="Singleton{T}"/> instance to convert.</param>
-        public static implicit operator T(Singleton<T> instance) => instance?.Value;
+        public static T Instance { get; private set; }
 
         /// <summary>
         /// Tries to get the relative value.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="instance">The object instance.</param>
         /// <returns><see langword="true"/> if the object instance is not null and can be casted as the specified type; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGet<TObject>(out TObject instance)
-            where TObject : class => (instance = Instance as TObject) is not null;
-
-        /// <inheritdoc cref="Singleton{T}"/>
-        public static void Create(T @object) => new Singleton<T>(@object);
+        public static bool TryGet(out T instance)
+            => (instance = Instance) is not null;
 
         /// <summary>
-        /// Destroys the given <typeparamref name="T"/> instance.
+        /// Define the value of the <see cref="Instance"/> if not already defined.
+        /// If you want to replace first call <see cref="Destroy()"/>.
+        /// </summary>
+        /// <param name="object">The object use to create the singleton.</param>
+        public static void Create(T @object)
+        {
+            if (Instance is not null)
+                return;
+            Instance = @object;
+        }
+
+        /// <summary>
+        /// Set to null <see cref="Instance"/> if <paramref name="object"/> is the same.
         /// </summary>
         /// <param name="object">The object to destroy.</param>
         /// <returns><see langword="true"/> if the instance was destroyed; otherwise, <see langword="false"/>.</returns>
         public static bool Destroy(T @object)
         {
-            if (Instances.TryGetValue(@object, out Singleton<T> _))
+            if (Instance == @object)
             {
-                Instances[@object] = null;
-                return Instances.Remove(@object);
+                Instance = null;
+                return true;
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Set to null <see cref="Instance"/>.
+        /// </summary>
+        public static void Destroy()
+        {
+            Instance = null;
         }
     }
 }

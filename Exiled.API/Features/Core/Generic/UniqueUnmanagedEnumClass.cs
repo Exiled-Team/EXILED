@@ -15,6 +15,7 @@ namespace Exiled.API.Features.Core.Generic
     using Exiled.API.Features.Core.Generic.Pools;
     using Exiled.API.Interfaces;
     using LiteNetLib.Utils;
+    using YamlDotNet.Core.Tokens;
     using YamlDotNet.Serialization;
 
     /// <summary>
@@ -23,37 +24,38 @@ namespace Exiled.API.Features.Core.Generic
     /// </summary>
     /// <typeparam name="TSource">The type of the <see langword="unmanaged"/> source object to handle the instance of.</typeparam>
     /// <typeparam name="TObject">The type of the child object to handle the instance of.</typeparam>
-    public abstract class UniqueUnmanagedEnumClass<TSource, TObject> : IComparable, IEquatable<TObject>, IComparable<TObject>, IComparer<TObject>, IConvertible, IEnumClass
+    public abstract class UniqueUnmanagedEnumClass<TSource, TObject> : IComparable, IEquatable<TObject>, IComparable<TObject>, IConvertible, IEnumClass
         where TSource : unmanaged, IComparable, IFormattable, IConvertible, IComparable<TSource>, IEquatable<TSource>
         where TObject : UniqueUnmanagedEnumClass<TSource, TObject>
     {
         private static SortedList<TSource, TObject> values;
-        private static int nextValue = int.MinValue;
+        private static long nextValue;
         private static bool isDefined;
 
         private string name;
 
+        static UniqueUnmanagedEnumClass()
+        {
+            values = new SortedList<TSource, TObject>();
+            nextValue = (int)typeof(TSource).GetField("MinValue").GetValue(null);
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UniqueUnmanagedEnumClass{TSource, TObject}"/> class.
         /// </summary>
-        public UniqueUnmanagedEnumClass()
+        internal protected UniqueUnmanagedEnumClass()
         {
-            values ??= new();
-            TypeCode code = Convert.GetTypeCode(typeof(TSource).GetField("MinValue").GetValue(null));
-
-            if (code is TypeCode.UInt16 or TypeCode.UInt32 or TypeCode.UInt64)
-                nextValue = 0;
-
             lock (values)
             {
                 TSource value;
                 do
                 {
-                    value = (TSource)Convert.ChangeType(nextValue++, code);
+                    value = (TSource)Convert.ChangeType(nextValue++, Value.GetTypeCode());
                 }
                 while (values.ContainsKey(value));
 
                 Value = value;
+
                 values.Add(value, (TObject)this);
             }
         }
@@ -227,17 +229,29 @@ namespace Exiled.API.Features.Core.Generic
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
-        /// <param name="obj">The object to compare.</param>
+        /// <param name="other">The object to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public override bool Equals(object obj) =>
-            obj != null && (obj is TSource value ? Value.Equals(value) : obj is TObject derived && Value.Equals(derived.Value));
+        public bool Equals(TSource other) => Value.Equals(other);
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
         /// <param name="other">The object to compare.</param>
         /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
-        public bool Equals(TObject other) => Value.Equals(other.Value);
+        public bool Equals(TObject other)
+        {
+            if (other is null)
+                return false;
+
+            return Equals(other.Value);
+        }
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object.
+        /// </summary>
+        /// <param name="obj">The object to compare.</param>
+        /// <returns><see langword="true"/> if the object was equal; otherwise, <see langword="false"/>.</returns>
+        public override bool Equals(object obj) => obj is TSource value ? Equals(value) : Equals(obj as TObject);
 
         /// <summary>
         /// Returns a the 32-bit signed hash code of the current object instance.
@@ -257,7 +271,27 @@ namespace Exiled.API.Features.Core.Generic
         /// Zero This instance occurs in the same position in the sort order as other.
         /// Greater than zero This instance follows other in the sort order.
         /// </returns>
-        public int CompareTo(TObject other) => Value.CompareTo(other.Value);
+        public int CompareTo(TSource other) => Comparer<TSource>.Default.Compare(Value, other);
+
+        /// <summary>
+        /// Compares the current instance with another object of the same type and returns
+        /// an integer that indicates whether the current instance precedes, follows, or
+        /// occurs in the same position in the sort order as the other object.
+        /// </summary>
+        /// <param name="other">An object to compare with this instance.</param>
+        /// <returns>
+        /// A value that indicates the relative order of the objects being compared.
+        /// The return value has these meanings: Value Meaning Less than zero This instance precedes other in the sort order.
+        /// Zero This instance occurs in the same position in the sort order as other.
+        /// Greater than zero This instance follows other in the sort order.
+        /// </returns>
+        public int CompareTo(TObject other)
+        {
+            if (other is null)
+                return 1;
+
+            return CompareTo(other.Value);
+        }
 
         /// <summary>
         /// Compares the current instance with another object of the same type and returns
@@ -271,25 +305,9 @@ namespace Exiled.API.Features.Core.Generic
         /// Zero This instance occurs in the same position in the sort order as other.
         /// Greater than zero This instance follows other in the sort order.
         /// </returns>
-        public int CompareTo(object obj) =>
-            obj == null ? -1 : obj is TSource value ? Value.CompareTo(value) : obj is TObject derived ? Value.CompareTo(derived.Value) : -1;
+        public int CompareTo(object obj) => obj is TSource value ? CompareTo(value) : CompareTo(obj as TObject);
 
-        /// <summary>
-        /// Compares the specified object instance with another object of the same type and returns
-        /// an integer that indicates whether the current instance precedes, follows, or
-        /// occurs in the same position in the sort order as the other object.
-        /// </summary>
-        /// <param name="x">An object to compare.</param>
-        /// <param name="y">Another object to compare.</param>
-        /// <returns>
-        /// A value that indicates the relative order of the objects being compared.
-        /// The return value has these meanings: Value Meaning Less than zero This instance precedes other in the sort order.
-        /// Zero This instance occurs in the same position in the sort order as other.
-        /// Greater than zero This instance follows other in the sort order.
-        /// </returns>
-        public int Compare(TObject x, TObject y) => x == null ? -1 : y == null ? 1 : x.Value.CompareTo(y.Value);
-
-/// <inheritdoc/>
+        /// <inheritdoc/>
         TypeCode IConvertible.GetTypeCode() => Value.GetTypeCode();
 
         /// <inheritdoc/>

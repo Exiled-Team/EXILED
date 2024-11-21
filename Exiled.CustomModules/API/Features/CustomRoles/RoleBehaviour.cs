@@ -190,37 +190,47 @@ namespace Exiled.CustomModules.API.Features.CustomRoles
         /// <summary>
         /// Evaluates the specified conditions affecting the round's ending conditions.
         /// </summary>
-        /// <returns>The corresponding evaluation.</returns>
+        /// <returns>
+        /// <see langword="false"/> if the round should continue.
+        /// <br/>Otherwise, <see langword="true"/> if the round can end.
+        /// All other condition need to be <see langword="true"/> to end the round.
+        /// </returns>
         public virtual bool EvaluateEndingConditions()
         {
-            if (CustomRole.TeamsOwnership.Length == 1)
-                return true;
-
-            SummaryInfo summaryInfo = World.Get().SummaryInfo;
-
-            if (CustomRole.TeamsOwnership.Contains(Team.SCPs) && summaryInfo.FoundationForces <= 0 && summaryInfo.ChaosInsurgency <= 0)
-                return true;
-
-            if (CustomRole.TeamsOwnership.Any(team => team is Team.ClassD or Team.ChaosInsurgency) && summaryInfo.FoundationForces <= 0 && summaryInfo.Anomalies <= 0)
-                return true;
-
-            if (CustomRole.TeamsOwnership.Any(team => team is Team.FoundationForces or Team.Scientists) && summaryInfo.ChaosInsurgency <= 0 && summaryInfo.Anomalies <= 0)
-                return true;
-
-            if (CustomRole.TeamsOwnership.IsEmpty())
+            SummaryInfo summaryInfo;
+            switch (CustomRole.TeamsOwnership.Length)
             {
-                int uniqueFaction = 0;
-                if (summaryInfo.FoundationForces > 0)
-                    ++uniqueFaction;
-                if (summaryInfo.ChaosInsurgency > 0)
-                    ++uniqueFaction;
-                if (summaryInfo.Anomalies > 0)
-                    ++uniqueFaction;
+                case 0:
+                    summaryInfo = World.Get().SummaryInfo;
+                    int uniqueFaction = 0;
+                    if (summaryInfo.FoundationForces > 0)
+                        ++uniqueFaction;
+                    if (summaryInfo.ChaosInsurgency > 0)
+                        ++uniqueFaction;
+                    if (summaryInfo.Anomalies > 0)
+                        ++uniqueFaction;
+                    return uniqueFaction <= 1;
 
-                return uniqueFaction <= 1;
+                case 1: return true;
+
+                default:
+                    summaryInfo = World.Get().SummaryInfo;
+
+                    bool noChaos = summaryInfo.ChaosInsurgency <= 0;
+                    bool noFondation = summaryInfo.FoundationForces <= 0;
+                    bool noScp = summaryInfo.ChaosInsurgency <= 0;
+
+                    if (noFondation && noChaos && CustomRole.TeamsOwnership.Contains(Team.SCPs))
+                        return true;
+
+                    if (noFondation && noScp && CustomRole.TeamsOwnership.Any(team => team is Team.ClassD or Team.ChaosInsurgency))
+                        return true;
+
+                    if (noChaos && noScp && CustomRole.TeamsOwnership.Any(team => team is Team.FoundationForces or Team.Scientists))
+                        return true;
+
+                    return false;
             }
-
-            return false;
         }
 
         /// <inheritdoc/>

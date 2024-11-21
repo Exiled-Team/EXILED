@@ -214,7 +214,7 @@ namespace Exiled.CustomModules.API.Features.CustomGameModes
         public virtual uint[] NonSpawnableCustomRoles { get; set; }
 
         /// <summary>
-        /// Gets or sets a <see cref="UUCustomTeamType"/>[] containing all non spawnable custom teams.
+        /// Gets or sets a <see cref="SpawnableTeamType"/>[] containing all non spawnable custom teams.
         /// <para/>
         /// If not empty, all undefined teams will be able to spawn.
         /// <br/>

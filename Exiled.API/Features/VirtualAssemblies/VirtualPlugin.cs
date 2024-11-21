@@ -175,7 +175,7 @@ namespace Exiled.API.Features.VirtualAssemblies
                     continue;
 
                 VirtualPlugin vp = Activator.CreateInstance(type) as VirtualPlugin;
-                vp.TryRegister(type.GetCustomAttribute(typeof(VirtualPluginAttribute)) as VirtualPluginAttribute);
+                vp.TryRegister(type.GetCustomAttribute<VirtualPluginAttribute>());
                 vps.Add(vp);
             }
 
@@ -274,7 +274,7 @@ namespace Exiled.API.Features.VirtualAssemblies
         /// </summary>
         protected virtual void CreateInstance()
         {
-            Singleton<VirtualPlugin>.Create(this);
+            // Singleton<VirtualPlugin>.Create(this);
         }
 
         /// <summary>
@@ -283,7 +283,6 @@ namespace Exiled.API.Features.VirtualAssemblies
         protected virtual void DestroyInstance()
         {
             Config = null;
-            Singleton<VirtualPlugin>.Destroy(this);
         }
 
         /// <summary>

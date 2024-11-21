@@ -4049,10 +4049,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Send CASSIE announcement that only <see cref="Player"/> can hear.
         /// </summary>
-        /// <param name="words">Announcement words.</param>
-        /// <param name="makeHold">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isHeld.</param>
-        /// <param name="makeNoise">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isNoisy.</param>
-        /// <param name="isSubtitles">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isSubtitles.</param>
+        /// <param name="words"><inheritdoc cref="Cassie.Message(string, bool, bool, bool)" path="/param[@name='message']"/></param>
+        /// <param name="makeHold"><inheritdoc cref="Cassie.Message(string, bool, bool, bool)" path="/param[@name='isHeld']"/></param>
+        /// <param name="makeNoise"><inheritdoc cref="Cassie.Message(string, bool, bool, bool)" path="/param[@name='isNoisy']"/></param>
+        /// <param name="isSubtitles"><inheritdoc cref="Cassie.Message(string, bool, bool, bool)" path="/param[@name='isSubtitles']"/></param>
         public void PlayCassieAnnouncement(string words, bool makeHold = false, bool makeNoise = true, bool isSubtitles = false)
         {
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
@@ -4067,11 +4067,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Send CASSIE announcement with custom subtitles for translation that only <see cref="Player"/> can hear and see it.
         /// </summary>
-        /// <param name="words">The message to be reproduced.</param>
-        /// <param name="translation">The translation should be show in the subtitles.</param>
-        /// <param name="makeHold">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isHeld.</param>
-        /// <param name="makeNoise">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isNoisy.</param>
-        /// <param name="isSubtitles">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isSubtitles.</param>
+        /// <param name="words"><inheritdoc cref="Cassie.MessageTranslated(string, string, bool, bool, bool)" path="/param[@name='message']"/></param>
+        /// <param name="translation"><inheritdoc cref="Cassie.MessageTranslated(string, string, bool, bool, bool)" path="/param[@name='translation']"/></param>
+        /// <param name="makeHold"><inheritdoc cref="Cassie.MessageTranslated(string, string, bool, bool, bool)" path="/param[@name='isHeld']"/></param>
+        /// <param name="makeNoise"><inheritdoc cref="Cassie.MessageTranslated(string, string, bool, bool, bool)" path="/param[@name='isNoisy']"/></param>
+        /// <param name="isSubtitles"><inheritdoc cref="Cassie.MessageTranslated(string, string, bool, bool, bool)" path="/param[@name='isSubtitles']"/></param>
+        // @Nao, why not inherit the documentation for the param ?
         public void SendCassieAnnouncement(string words, string translation, bool makeHold = false, bool makeNoise = true, bool isSubtitles = true)
         {
             StringBuilder announcement = StringBuilderPool.Pool.Get();
