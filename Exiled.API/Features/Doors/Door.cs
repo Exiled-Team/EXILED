@@ -20,8 +20,6 @@ namespace Exiled.API.Features.Doors
     using Mirror;
     using UnityEngine;
 
-    using static Interactables.Interobjects.ElevatorManager;
-
     using BaseBreakableDoor = Interactables.Interobjects.BreakableDoor;
     using BaseKeycardPermissions = Interactables.Interobjects.DoorUtils.KeycardPermissions;
     using Breakable = BreakableDoor;
@@ -717,7 +715,8 @@ namespace Exiled.API.Features.Doors
                     },
                     "Elevator" => (Base as Interactables.Interobjects.ElevatorDoor) switch
                     {
-                        { Group: ElevatorGroup.Nuke } => DoorType.ElevatorNuke,
+                        { Group: ElevatorGroup.Nuke01 } => DoorType.ElevatorNuke1,
+                        { Group: ElevatorGroup.Nuke02 } => DoorType.ElevatorNuke2,
                         { Group: ElevatorGroup.Scp049 } => DoorType.ElevatorScp049,
                         { Group: ElevatorGroup.GateB } => DoorType.ElevatorGateB,
                         { Group: ElevatorGroup.GateA } => DoorType.ElevatorGateA,

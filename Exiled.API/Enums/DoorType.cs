@@ -7,9 +7,8 @@
 
 namespace Exiled.API.Enums
 {
-    using Exiled.API.Features.Doors;
-
-    using static Interactables.Interobjects.ElevatorManager;
+    using Features.Doors;
+    using Interactables.Interobjects;
 
     /// <summary>
     /// Unique identifier for the different types of doors.
@@ -269,9 +268,14 @@ namespace Exiled.API.Enums
         ElevatorGateB,
 
         /// <summary>
-        /// Represents the Elevator door for <see cref="ElevatorGroup.Nuke"/>.
+        /// Represents the Elevator door for <see cref="ElevatorGroup.Nuke01"/>.
         /// </summary>
-        ElevatorNuke,
+        ElevatorNuke1,
+
+        /// <summary>
+        /// Represents the Elevator door for <see cref="ElevatorGroup.Nuke02"/>.
+        /// </summary>
+        ElevatorNuke2,
 
         /// <summary>
         /// Represents the Elevator door for <see cref="ElevatorGroup.Scp049"/>.

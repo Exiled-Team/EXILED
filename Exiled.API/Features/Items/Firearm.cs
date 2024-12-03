@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -18,12 +17,11 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
     using Extensions;
+    using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
-    using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
-    using UnityEngine;
 
     using BaseFirearm = InventorySystem.Items.Firearms.Firearm;
 
@@ -52,13 +50,12 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the firearm.</param>
         internal Firearm(ItemType type)
-            : this((BaseFirearm)Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
+            : this((BaseFirearm)Server.Host.Inventory.CreateItemInstance(new ItemIdentifier(type, 0), false))
         {
-            FirearmStatusFlags firearmStatusFlags = FirearmStatusFlags.MagazineInserted;
-            if (Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.Flashlight))
-                firearmStatusFlags = firearmStatusFlags.AddFlags(FirearmStatusFlags.FlashlightEnabled);
+            FlashlightAttachment flashlightAttachment = Attachments.OfType<FlashlightAttachment>().FirstOrDefault();
 
-            Base.Status = new(MaxAmmo, firearmStatusFlags, Base.GetCurrentAttachmentsCode());
+            if (flashlightAttachment is not null && flashlightAttachment.IsEnabled)
+                flashlightAttachment.ServerSendStatus(true);
         }
 
         /// <inheritdoc cref="BaseCodesValue"/>.
@@ -96,13 +93,18 @@ namespace Exiled.API.Features.Items
         public new BaseFirearm Base { get; }
 
         /// <summary>
+        /// Gets the modules associated with this firearm.
+        /// </summary>
+        public IEnumerable<ModuleBase> Modules => Base.Modules;
+
+        /// <summary>
         /// Gets or sets the amount of ammo in the firearm.
         /// </summary>
         [EProperty(category: nameof(Firearm))]
-        public byte Ammo
+        public int Ammo
         {
-            get => Base.Status.Ammo;
-            set => Base.Status = new FirearmStatus(value, Base.Status.Flags, Base.Status.Attachments);
+            get => (Modules.FirstOrDefault(module => module is MagazineModule) as MagazineModule)?.AmmoStored ?? 0;
+            set => ((MagazineModule)Modules.FirstOrDefault(module => module is MagazineModule))!.AmmoStored = value;
         }
 
         /// <summary>
@@ -110,27 +112,10 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <remarks>Disruptor can't be used for MaxAmmo.</remarks>
         [EProperty(category: nameof(Firearm))]
-        public byte MaxAmmo
+        public int MaxAmmo
         {
-            get => Base.AmmoManagerModule?.MaxAmmo ?? 0;
-            set
-            {
-                switch (Base.AmmoManagerModule)
-                {
-                    case TubularMagazineAmmoManager tubularMagazineAmmoManager:
-                        tubularMagazineAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier) - (Base.Status.Flags.HasFlagFast(FirearmStatusFlags.Cocked) ? tubularMagazineAmmoManager.ChamberedRounds : 0));
-                        break;
-                    case ClipLoadedInternalMagAmmoManager clipLoadedInternalMagAmmoManager:
-                        clipLoadedInternalMagAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier));
-                        break;
-                    case AutomaticAmmoManager automaticAmmoManager:
-                        automaticAmmoManager.MaxAmmo = (byte)(value - Base.AttachmentsValue(AttachmentParam.MagazineCapacityModifier) - automaticAmmoManager.ChamberedAmount);
-                        break;
-                    default:
-                        Log.Warn($"MaxAmmo can't be used for this Item: {Type} ({Base.AmmoManagerModule})");
-                        return;
-                }
-            }
+            get => (Modules.FirstOrDefault(module => module is MagazineModule) as MagazineModule)?.AmmoMax ?? 0;
+            set => ((MagazineModule)Modules.FirstOrDefault(module => module is MagazineModule))!._defaultCapacity = value;
         }
 
         /// <summary>
@@ -140,24 +125,16 @@ namespace Exiled.API.Features.Items
         public FirearmType FirearmType => Type.GetFirearmType();
 
         /// <summary>
-        /// Gets or sets the <see cref="Enums.AmmoType"/> of the firearm.
+        /// Gets the <see cref="Enums.AmmoType"/> of the firearm.
         /// </summary>
         [EProperty(category: nameof(Firearm))]
-        public AmmoType AmmoType
-        {
-            get => Base.AmmoType.GetAmmoType();
-            set
-            {
-                if (Base is AutomaticFirearm automaticFirearm)
-                    automaticFirearm._ammoType = value.GetItemType();
-            }
-        }
+        public AmmoType AmmoType => (Modules.OfType<MagazineModule>().FirstOrDefault()?.AmmoType ?? ItemType.None).GetAmmoType();
 
         /// <summary>
         /// Gets a value indicating whether the firearm is being aimed.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Firearm))]
-        public bool Aiming => Base.AdsModule.ServerAds;
+        public bool Aiming => Modules.OfType<LinearAdsModule>().FirstOrDefault()?.AdsTarget ?? false;
 
         /// <summary>
         /// Gets a value indicating whether the firearm Flashlight.
@@ -169,7 +146,7 @@ namespace Exiled.API.Features.Items
         /// Gets a value indicating whether the firearm's flashlight module is enabled.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Firearm))]
-        public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
+        public bool FlashlightEnabled => Base.IsEmittingLight;
 
         /// <summary>
         /// Gets a value indicating whether the firearm's NightVision is being used.
@@ -187,7 +164,7 @@ namespace Exiled.API.Features.Items
         /// Gets a value indicating whether or not the firearm is automatic.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Firearm))]
-        public bool IsAutomatic => Base is AutomaticFirearm;
+        public bool IsAutomatic => Modules.Any(module => module is AutomaticActionModule);
 
         /// <summary>
         /// Gets the <see cref="Attachment"/>s of the firearm.
@@ -214,11 +191,23 @@ namespace Exiled.API.Features.Items
         public uint BaseCode => BaseCodesValue[FirearmType];
 
         /// <summary>
-        /// Gets the fire rate of the firearm, if it is an automatic weapon.
+        /// Gets or sets the fire rate of the firearm, if it is an automatic weapon.
         /// </summary>
         /// <seealso cref="IsAutomatic"/>
         [EProperty(readOnly: true, category: nameof(Firearm))]
-        public float FireRate => Base is AutomaticFirearm auto ? auto._fireRate : 1f;
+        public float FireRate
+        {
+            get => Modules.OfType<AutomaticActionModule>().FirstOrDefault()?.BaseFireRate ?? 0f;
+            set
+            {
+                AutomaticActionModule module = Modules.OfType<AutomaticActionModule>().FirstOrDefault();
+
+                if (module is null)
+                    return;
+
+                module.BaseFireRate = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the recoil settings of the firearm, if it's an automatic weapon.
@@ -228,39 +217,19 @@ namespace Exiled.API.Features.Items
         [EProperty(category: nameof(Firearm))]
         public RecoilSettings Recoil
         {
-            get => Base is AutomaticFirearm auto ? auto._recoil : default;
+            get => Base.Modules.OfType<RecoilPatternModule>().FirstOrDefault()?.BaseRecoil ?? default;
             set
             {
-                if (Base is not AutomaticFirearm auto)
+                RecoilPatternModule module = Base.Modules.OfType<RecoilPatternModule>().FirstOrDefault();
+
+                if (module is null)
                     return;
 
-                auto.ActionModule = new AutomaticAction(
-                    Base,
-                    auto._semiAutomatic,
-                    auto._boltTravelTime,
-                    1f / auto._fireRate,
-                    auto._dryfireClipId,
-                    auto._triggerClipId,
-                    auto._gunshotPitchRandomization,
-                    value,
-                    auto._recoilPattern,
-                    false,
-                    Mathf.Max(1, auto._chamberSize));
+                module.BaseRecoil = value;
             }
         }
 
-        /// <summary>
-        /// Gets the firearm's <see cref="FirearmRecoilPattern"/>. Will be <see langword="null"/> for non-automatic weapons.
-        /// </summary>
-        [EProperty(readOnly: true, category: nameof(Firearm))]
-        public FirearmRecoilPattern RecoilPattern => Base is AutomaticFirearm auto ? auto._recoilPattern : null;
-
-        /// <summary>
-        /// Gets the <see cref="FirearmBaseStats"/>.
-        /// </summary>
-        [EProperty(readOnly: true, category: nameof(Firearm))]
-        public FirearmBaseStats Stats => Base.BaseStats;
-
+        /* TODO
         /// <summary>
         /// Gets the base damage.
         /// </summary>
@@ -272,6 +241,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Firearm))]
         public float MaxRange => Stats.MaxDistance();
+        */
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] which contains all available attachments for all firearms.
@@ -473,7 +443,9 @@ namespace Exiled.API.Features.Items
                 : identifier.Code;
 
             Base.ApplyAttachmentsCode((Base.GetCurrentAttachmentsCode() & ~toRemove) | newCode, true);
-            Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
+
+            // TODO
+            // Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
         }
 
         /// <summary>
@@ -515,10 +487,12 @@ namespace Exiled.API.Features.Items
 
             Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~code, true);
 
+            /* TODO
             if (identifier.Name == AttachmentName.Flashlight)
                 Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags & ~FirearmStatusFlags.FlashlightEnabled, Base.GetCurrentAttachmentsCode());
             else
                 Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
+            */
         }
 
         /// <summary>
@@ -531,10 +505,12 @@ namespace Exiled.API.Features.Items
 
             Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~code, true);
 
+            /* TODO
             if (attachmentName == AttachmentName.Flashlight)
                 Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags & ~FirearmStatusFlags.FlashlightEnabled, Base.GetCurrentAttachmentsCode());
             else
                 Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
+            */
         }
 
         /// <summary>
@@ -552,10 +528,12 @@ namespace Exiled.API.Features.Items
 
             Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~code, true);
 
+            /* TODO
             if (firearmAttachment.Name == AttachmentName.Flashlight)
                 Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags & ~FirearmStatusFlags.FlashlightEnabled, Base.GetCurrentAttachmentsCode());
             else
                 Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
+            */
         }
 
         /// <summary>
@@ -636,12 +614,14 @@ namespace Exiled.API.Features.Items
             return true;
         }
 
+        /* TODO
         /// <summary>
         /// Gets the damage based on the specified distance.
         /// </summary>
         /// <param name="distance">The distance to evaluate.</param>
         /// <returns>The corresponding damage based on the specified distance.</returns>
         public float GetDamageAtDistance(float distance) => Stats.DamageAtDistance(Base, distance);
+        */
 
         /// <summary>
         /// Clones current <see cref="Firearm"/> object.
@@ -668,22 +648,7 @@ namespace Exiled.API.Features.Items
         internal override void ChangeOwner(Player oldOwner, Player newOwner)
         {
             Base.Owner = newOwner.ReferenceHub;
-
-            Base.HitregModule = Base switch
-            {
-                AutomaticFirearm automaticFirearm =>
-                    new SingleBulletHitreg(automaticFirearm, automaticFirearm.Owner, automaticFirearm._recoilPattern),
-                Shotgun shotgun =>
-                    new BuckshotHitreg(shotgun, shotgun.Owner, shotgun.GetBuckshotPattern),
-                ParticleDisruptor particleDisruptor =>
-                    new DisruptorHitreg(particleDisruptor, particleDisruptor.Owner, particleDisruptor._explosionSettings),
-                Revolver revolver =>
-                    new SingleBulletHitreg(revolver, revolver.Owner),
-                _ => throw new NotImplementedException("Should never happend"),
-            };
-
-            Base._sendStatusNextFrame = true;
-            Base._footprintValid = false;
+            Base._footprintCacheSet = false;
         }
 
         /// <inheritdoc/>
@@ -695,7 +660,6 @@ namespace Exiled.API.Features.Items
                 return;
 
             Base.OnAdded(firearm.Base);
-            AmmoType = firearm.AmmoType;
 
             if (Base is not ParticleDisruptor)
                 MaxAmmo = firearm.MaxAmmo;

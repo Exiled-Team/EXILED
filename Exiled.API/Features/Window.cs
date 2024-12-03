@@ -86,15 +86,15 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not this window is breakable.
         /// </summary>
-        public bool IsBreakable => !Base.isBroken;
+        public bool IsBreakable => !Base.NetworkisBroken;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not this window is broken.
         /// </summary>
         public bool IsBroken
         {
-            get => Base.isBroken;
-            set => Base.isBroken = value;
+            get => Base.NetworkisBroken;
+            set => Base.NetworkisBroken = value;
         }
 
         /// <summary>
@@ -113,15 +113,6 @@ namespace Exiled.API.Features
         {
             get => Base._preventScpDamage;
             set => Base._preventScpDamage = value;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not this window is broken.
-        /// </summary>
-        public BreakableWindow.BreakableWindowStatus SyncStatus
-        {
-            get => Base.NetworksyncStatus;
-            set => Base.NetworksyncStatus = value;
         }
 
         /// <summary>

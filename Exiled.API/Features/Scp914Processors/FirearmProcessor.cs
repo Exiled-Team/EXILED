@@ -34,15 +34,6 @@ namespace Exiled.API.Features.Scp914Processors
         public new FirearmItemProcessor Base { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not magazine should be refilled.
-        /// </summary>
-        public bool RefillAmmo
-        {
-            get => Base._refillAmmo;
-            set => Base._refillAmmo = value;
-        }
-
-        /// <summary>
         /// Gets or sets a list of items that replace upgrading item when <see cref="Scp914KnobSetting"/> is <see cref="Scp914KnobSetting.Rough"/>.
         /// </summary>
         public IEnumerable<FirearmItemProcessor.FirearmOutput> RoughOutputs

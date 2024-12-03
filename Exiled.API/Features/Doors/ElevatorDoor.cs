@@ -10,8 +10,9 @@ namespace Exiled.API.Features.Doors
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Enums;
+    using Enums;
     using Interactables.Interobjects;
+    using UnityEngine;
 
     /// <summary>
     /// Represents an elevator door.
@@ -28,6 +29,7 @@ namespace Exiled.API.Features.Doors
         {
             Base = door;
             Lift = Lift.Get(x => x.Group == Group).FirstOrDefault();
+            Panel = Object.FindObjectsOfType<ElevatorPanel>().FirstOrDefault(x => x._door == door);
         }
 
         /// <summary>
@@ -36,28 +38,29 @@ namespace Exiled.API.Features.Doors
         public new Interactables.Interobjects.ElevatorDoor Base { get; }
 
         /// <summary>
-        /// Gets the <see cref="ElevatorManager.ElevatorGroup"/> that this door's <see cref="Lift"/> belongs to.
+        /// Gets the <see cref="ElevatorGroup"/> that this door's <see cref="Lift"/> belongs to.
         /// </summary>
-        public ElevatorManager.ElevatorGroup Group => Base.Group;
+        public ElevatorGroup Group => Base.Group;
 
         /// <summary>
         /// Gets the type according to <see cref="Group"/>.
         /// </summary>
         public ElevatorType ElevatorType => Group switch
         {
-            ElevatorManager.ElevatorGroup.Scp049 => ElevatorType.Scp049,
-            ElevatorManager.ElevatorGroup.GateA => ElevatorType.GateA,
-            ElevatorManager.ElevatorGroup.GateB => ElevatorType.GateB,
-            ElevatorManager.ElevatorGroup.LczA01 or ElevatorManager.ElevatorGroup.LczA02 => ElevatorType.LczA,
-            ElevatorManager.ElevatorGroup.LczB01 or ElevatorManager.ElevatorGroup.LczB02 => ElevatorType.LczB,
-            ElevatorManager.ElevatorGroup.Nuke => ElevatorType.Nuke,
+            ElevatorGroup.Scp049 => ElevatorType.Scp049,
+            ElevatorGroup.GateA => ElevatorType.GateA,
+            ElevatorGroup.GateB => ElevatorType.GateB,
+            ElevatorGroup.LczA01 or ElevatorGroup.LczA02 => ElevatorType.LczA,
+            ElevatorGroup.LczB01 or ElevatorGroup.LczB02 => ElevatorType.LczB,
+            ElevatorGroup.Nuke01 => ElevatorType.Nuke1,
+            ElevatorGroup.Nuke02 => ElevatorType.Nuke2,
             _ => ElevatorType.Unknown,
         };
 
         /// <summary>
         /// Gets the target panel for this lift.
         /// </summary>
-        public ElevatorPanel Panel => Base.TargetPanel;
+        public ElevatorPanel Panel { get; }
 
         /// <summary>
         /// Gets the <see cref="Lift"/> associated with this elevator door.

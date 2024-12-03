@@ -13,7 +13,6 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using InventorySystem.Items;
-    using InventorySystem.Items.Firearms;
 
     using BaseFirearm = InventorySystem.Items.Firearms.FirearmPickup;
     using FirearmItem = InventorySystem.Items.Firearms.Firearm;
@@ -41,7 +40,7 @@ namespace Exiled.API.Features.Pickups
             : base(type)
         {
             Base = (BaseFirearm)((Pickup)this).Base;
-            IsDistributed = true;
+            Base.OnDistributed();
 
             if (type is ItemType.ParticleDisruptor && Status.Ammo <= 0)
                 Status = new FirearmStatus(5, FirearmStatusFlags.MagazineInserted, 0);
@@ -63,16 +62,6 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         [EProperty(category: nameof(FirearmPickup))]
         public AmmoType AmmoType { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the pickup is already distributed.
-        /// </summary>
-        [EProperty(category: nameof(FirearmPickup))]
-        public bool IsDistributed
-        {
-            get => Base.Distributed;
-            set => Base.Distributed = value;
-        }
 
         /// <summary>
         /// Gets or sets the <see cref="FirearmStatus"/>.

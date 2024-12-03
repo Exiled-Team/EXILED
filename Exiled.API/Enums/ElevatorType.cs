@@ -30,9 +30,14 @@ namespace Exiled.API.Enums
         GateB,
 
         /// <summary>
-        /// Heavy Containment Zone Nuke elevator.
+        /// Heavy Containment Zone Nuke 1 elevator.
         /// </summary>
-        Nuke,
+        Nuke1,
+
+        /// <summary>
+        /// Heavy Containment Zone Nuke 2 elevator.
+        /// </summary>
+        Nuke2,
 
         /// <summary>
         /// Heavy Containment Zone SCP-049 elevator.

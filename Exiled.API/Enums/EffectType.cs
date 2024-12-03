@@ -9,7 +9,7 @@ namespace Exiled.API.Enums
 {
     using System;
 
-    using Exiled.API.Extensions;
+    using Extensions;
 
     /// <summary>
     /// Status effects as enum.
@@ -239,5 +239,25 @@ namespace Exiled.API.Enums
         /// <see cref="CustomPlayerEffects.Slowness"/>.
         /// </summary>
         Slowness,
+
+        /// <summary>
+        /// <see cref="CustomPlayerEffects.Scp1344"/>.
+        /// </summary>
+        Scp1344,
+
+        /// <summary>
+        /// <see cref="CustomPlayerEffects.SeveredEyes"/>.
+        /// </summary>
+        SeveredEyes,
+
+        /// <summary>
+        /// <see cref="CustomPlayerEffects.PitDeath"/>.
+        /// </summary>
+        PitDeath,
+
+        /// <summary>
+        /// <see cref="CustomPlayerEffects.Blurred"/>.
+        /// </summary>
+        Blurred,
     }
 }

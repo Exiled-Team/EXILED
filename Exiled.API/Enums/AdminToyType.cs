@@ -27,5 +27,10 @@ namespace Exiled.API.Enums
         /// ShootingTarget toy.
         /// </summary>
         ShootingTarget,
+
+        /// <summary>
+        /// Speaker toy.
+        /// </summary>
+        Speaker,
     }
 }

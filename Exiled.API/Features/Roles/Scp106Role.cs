@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Roles
         private readonly ConstProperty<float> corrodingTime = new(Scp106Attack.CorrodingTime, new[] { typeof(Scp106Attack) });
         private readonly ConstProperty<float> vigorCaptureReward = new(Scp106Attack.VigorCaptureReward, new[] { typeof(Scp106Attack) });
         private readonly ConstProperty<float> cooldownReductionReward = new(Scp106Attack.CooldownReductionReward, new[] { typeof(Scp106Attack) });
-        private readonly ConstProperty<double> sinkholeCooldownDuration = new(Scp106SinkholeController.CooldownDuration, new[] { typeof(Scp106SinkholeController) });
+        private readonly ConstProperty<double> sinkholeCooldownDuration = new(Scp106SinkholeController.EmergeCooldownDuration, new[] { typeof(Scp106SinkholeController) });
         private readonly ConstProperty<float> huntersAtlasCostPerMeter = new(Scp106HuntersAtlasAbility.CostPerMeter, new[] { typeof(Scp106HuntersAtlasAbility) });
 
         /// <summary>
@@ -137,8 +137,12 @@ namespace Exiled.API.Features.Roles
         [EProperty(category: nameof(Scp106Role))]
         public bool IsSubmerged
         {
-            get => Base.IsSubmerged;
-            set => HuntersAtlasAbility.SetSubmerged(value);
+            get => HuntersAtlasAbility._syncSubmerged;
+            set
+            {
+                HuntersAtlasAbility._syncSubmerged = value;
+                HuntersAtlasAbility.ServerSendRpc(true);
+            }
         }
 
         /// <summary>
@@ -166,12 +170,6 @@ namespace Exiled.API.Features.Roles
         public float SinkholeCurrentTime => SinkholeController.ElapsedToggle;
 
         /// <summary>
-        /// Gets a value indicating the normalized state of the sinkhole.
-        /// </summary>
-        [EProperty(readOnly: true, category: nameof(Scp106Role))]
-        public float SinkholeNormalizedState => SinkholeController.NormalizedState;
-
-        /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently in the middle of an animation.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp106Role))]
@@ -184,25 +182,10 @@ namespace Exiled.API.Features.Roles
         public bool IsSinkholeHidden => SinkholeController.IsHidden;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the current sinkhole state.
-        /// </summary>
-        [EProperty(category: nameof(Scp106Role))]
-        public bool SinkholeState
-        {
-            get => SinkholeController.State;
-            set => SinkholeController.State = value;
-        }
-
-        /// <summary>
         /// Gets the sinkhole target duration.
         /// </summary>
         [EProperty(readOnly: true, category: nameof(Scp106Role))]
-        public float SinkholeTargetDuration => SinkholeController.TargetDuration;
-
-        /// <summary>
-        /// Gets the speed multiplier of the sinkhole.
-        /// </summary>
-        public float SinkholeSpeedMultiplier => SinkholeController.SpeedMultiplier;
+        public float SinkholeTargetDuration => SinkholeController.TargetTransitionDuration;
 
         /// <summary>
         /// Gets or sets how mush cost the Ability Stalk will cost per tick when being stationary.
@@ -306,10 +289,10 @@ namespace Exiled.API.Features.Roles
         [EProperty(category: nameof(Scp106Role))]
         public float RemainingSinkholeCooldown
         {
-            get => SinkholeController.Cooldown.Remaining;
+            get => SinkholeController._submergeCooldown.Remaining;
             set
             {
-                SinkholeController.Cooldown.Remaining = value;
+                SinkholeController._submergeCooldown.Remaining = value;
                 SinkholeController.ServerSendRpc(true);
             }
         }
@@ -320,8 +303,8 @@ namespace Exiled.API.Features.Roles
         [EProperty(category: nameof(Scp106Role))]
         public bool IsStalking
         {
-            get => StalkAbility.IsActive;
-            set => StalkAbility.IsActive = value;
+            get => StalkAbility.StalkActive;
+            set => StalkAbility.ServerSetStalk(value);
         }
 
         /// <summary>
@@ -347,7 +330,7 @@ namespace Exiled.API.Features.Roles
                 return false;
 
             HuntersAtlasAbility._estimatedCost = cost;
-            HuntersAtlasAbility.SetSubmerged(true);
+            HuntersAtlasAbility._syncSubmerged = true;
 
             return true;
         }
@@ -361,6 +344,7 @@ namespace Exiled.API.Features.Roles
         {
             if (player is null)
                 return false;
+
             Attack._targetHub = player.ReferenceHub;
             DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, AttackDamage, DeathTranslations.PocketDecay);
 

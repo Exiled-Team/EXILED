@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -198,6 +197,16 @@ namespace Exiled.API.Features.Items
         /// Gets the <see cref="Player"/> who owns the item.
         /// </summary>
         public Player Owner => Player.Get(Base.Owner) ?? Server.Host;
+
+        /// <summary>
+        /// Gets or sets a reason for adding this item to the inventory.
+        /// </summary>
+        [EProperty(category: nameof(Item))]
+        public ItemAddReason AddReason
+        {
+            get => Base.ServerAddReason;
+            set => Base.ServerAddReason = value;
+        }
 
         /// <summary>
         /// Gets an existing <see cref="Item"/> or creates a new instance of one.

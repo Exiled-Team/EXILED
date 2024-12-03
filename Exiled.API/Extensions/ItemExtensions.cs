@@ -15,8 +15,8 @@ namespace Exiled.API.Extensions
     using Features.Items;
     using InventorySystem;
     using InventorySystem.Items;
-    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
+    using InventorySystem.Items.Firearms.Modules;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
     using Structs;
@@ -125,10 +125,11 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The <see cref="FirearmType">weapon</see> that you want to get maximum of.</param>
         /// <returns>Returns the maximum.</returns>
-        public static byte GetMaxAmmo(this FirearmType type)
+        public static int GetMaxAmmo(this FirearmType type)
         {
             InventorySystem.Items.Firearms.Firearm firearm = GetItemBase<InventorySystem.Items.Firearms.Firearm>(type.GetItemType());
-            return firearm is null ? (byte)0 : firearm.AmmoManagerModule.MaxAmmo;
+            IAmmoContainerModule ammoModule = firearm.Modules.OfType<IAmmoContainerModule>().FirstOrDefault();
+            return ammoModule?.AmmoMax ?? 0;
         }
 
         /// <summary>

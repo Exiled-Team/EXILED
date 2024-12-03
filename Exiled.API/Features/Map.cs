@@ -91,14 +91,14 @@ namespace Exiled.API.Features
             set
             {
                 if (!SeedSynchronizer.MapGenerated)
-                    SeedSynchronizer._singleton.Network_syncSeed = value;
+                    SeedSynchronizer.Seed = value;
             }
         }
 
         /// <summary>
         /// Gets the <see cref="global::AmbientSoundPlayer"/>.
         /// </summary>
-        public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer ??= ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>();
+        public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer ??= ReferenceHub._hostHub.GetComponent<AmbientSoundPlayer>();
 
         /// <summary>
         /// Gets the <see cref="global::SqueakSpawner"/>.
@@ -274,6 +274,7 @@ namespace Exiled.API.Features
                 ragDoll.Destroy();
         }
 
+        /* TODO
         /// <summary>
         /// Places a decal.
         /// </summary>
@@ -288,6 +289,7 @@ namespace Exiled.API.Features
         /// <param name="position">The position of the blood decal.</param>
         /// <param name="direction">The direction of the blood decal.</param>
         public static void PlaceBlood(Vector3 position, Vector3 direction) => PlaceDecal(position, direction, DecalPoolType.Blood);
+        */
 
         /// <summary>
         /// Gets all the near cameras.
@@ -348,7 +350,8 @@ namespace Exiled.API.Features
         /// <param name="audioClipId">The audio clip ID to play.</param>
         public static void PlayGunSound(Vector3 position, ItemType firearmType, byte maxDistance = 45, byte audioClipId = 0)
         {
-            GunAudioMessage msg = new()
+            // TODO
+            /*GunAudioMessage msg = new()
             {
                 Weapon = firearmType,
                 AudioClipId = audioClipId,
@@ -356,7 +359,7 @@ namespace Exiled.API.Features
                 ShooterHub = ReferenceHub.HostHub,
                 ShooterPosition = new RelativePosition(position),
             };
-            msg.SendToAuthenticated();
+            msg.SendToAuthenticated();*/
         }
 
         /// <summary>
