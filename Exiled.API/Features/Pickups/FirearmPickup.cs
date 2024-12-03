@@ -61,10 +61,10 @@ namespace Exiled.API.Features.Pickups
         public FirearmType FirearmType => Type.GetFirearmType();
 
         /// <summary>
-        /// Gets or sets the <see cref="Enums.AmmoType"/> of the firearm.
+        /// Gets the <see cref="Enums.AmmoType"/> of the firearm.
         /// </summary>
         [EProperty(category: nameof(FirearmPickup))]
-        public AmmoType AmmoType { get; set; }
+        public AmmoType AmmoType { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating how many ammo have this <see cref="FirearmPickup"/>.
@@ -103,10 +103,9 @@ namespace Exiled.API.Features.Pickups
         {
             base.ReadItemInfo(item);
 
-            if (item is Items.Firearm firearm)
+            if (item is Firearm firearm)
             {
                 MaxAmmo = firearm.MaxAmmo;
-                AmmoType = firearm.AmmoType;
             }
         }
 
@@ -117,14 +116,8 @@ namespace Exiled.API.Features.Pickups
 
             if (itemBase is FirearmItem firearm)
             {
-                MaxAmmo = firearm switch
-                {
-                    AutomaticFirearm autoFirearm => autoFirearm._baseMaxAmmo,
-                    Revolver => 6,
-                    Shotgun shotgun => shotgun._ammoCapacity,
-                    _ => 0
-                };
-                AmmoType = firearm is AutomaticFirearm automaticFirearm ? automaticFirearm._ammoType.GetAmmoType() : firearm.ItemTypeId.GetAmmoType();
+                MaxAmmo = firearm.GetTotalMaxAmmo();
+                AmmoType = (firearm.Modules.OfType<MagazineModule>().FirstOrDefault()?.AmmoType ?? ItemType.None).GetAmmoType();
             }
         }
     }
