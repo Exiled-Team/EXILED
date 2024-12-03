@@ -7,20 +7,26 @@
 
 namespace Exiled.Events.Patches.Generic
 {
+#pragma warning disable SA1313
+#pragma warning disable SA1402
     using API.Features;
     using HarmonyLib;
-    using MapGeneration;
 
     /// <summary>
-    /// Patches <see cref="ImageGenerator.GenerateMap(int, string, out string)"/>.
+    /// Patches <see cref="PocketDimensionTeleport.Awake"/>.
     /// </summary>
-    [HarmonyPatch(typeof(ImageGenerator), nameof(ImageGenerator.GenerateMap))]
+    [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.Awake))]
     internal class TeleportList
     {
-        private static void Prefix()
-        {
-            Map.TeleportsValue.Clear();
-            Map.TeleportsValue.AddRange(UnityEngine.Object.FindObjectsOfType<PocketDimensionTeleport>());
-        }
+        private static void Postfix(PocketDimensionTeleport __instance) => Map.TeleportsValue.Add(__instance);
+    }
+
+    /// <summary>
+    /// Patches <see cref="PocketDimensionTeleport.OnDestroy"/>.
+    /// </summary>
+    [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.OnDestroy))]
+    internal class TeleportListRemove
+    {
+        private static void Postfix(PocketDimensionTeleport __instance) => Map.TeleportsValue.Remove(__instance);
     }
 }

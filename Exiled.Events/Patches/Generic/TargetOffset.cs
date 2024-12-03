@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Generic
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             static bool IsField(CodeInstruction instruction) => instruction.opcode == OpCodes.Ldfld
-                && (FieldInfo)instruction.operand == Field(typeof(RoundSummary), nameof(RoundSummary._chaosTargetCount));
+                && (FieldInfo)instruction.operand == Field(typeof(RoundSummary), nameof(RoundSummary._extraTargets));
 
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 

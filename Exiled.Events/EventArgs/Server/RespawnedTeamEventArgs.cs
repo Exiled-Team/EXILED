@@ -13,6 +13,7 @@ namespace Exiled.Events.EventArgs.Server
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
     using Respawning;
+    using Respawning.Waves;
 
     /// <summary>
     /// Contains all information after a team has spawned.
@@ -24,7 +25,7 @@ namespace Exiled.Events.EventArgs.Server
         /// </summary>
         /// <param name="hubs"><inheritdoc cref="Players"/></param>
         /// <param name="team"><inheritdoc cref="Team"/></param>
-        public RespawnedTeamEventArgs(SpawnableTeamType team, IEnumerable<ReferenceHub> hubs)
+        public RespawnedTeamEventArgs(SpawnableWaveBase team, IEnumerable<ReferenceHub> hubs)
         {
             Players = hubs.Select(Player.Get);
             Team = team;
@@ -38,6 +39,6 @@ namespace Exiled.Events.EventArgs.Server
         /// <summary>
         /// Gets the spawned team.
         /// </summary>
-        public SpawnableTeamType Team { get; }
+        public SpawnableWaveBase Team { get; }
     }
 }
