@@ -158,19 +158,24 @@ namespace Exiled.API.Enums
         HeavyContainmentDoor,
 
         /// <summary>
+        /// Represents the new door style introduced in 14.0 (Bulk Doors in Heavy).
+        /// </summary>
+        HeavyBulkDoor,
+
+        /// <summary>
         /// Represents the HID door.
         /// </summary>
-        HID,
+        HidChamber,
 
         /// <summary>
-        /// Represents the HID_LEFT door.
+        /// Represents the HID_UPPER door.
         /// </summary>
-        HIDLeft,
+        HidUpper,
 
         /// <summary>
-        /// Represents the HID_RIGHT door.
+        /// Represents the HID_LOWER door.
         /// </summary>
-        HIDRight,
+        HidLower,
 
         /// <summary>
         /// Represents the INTERCOM door.
@@ -228,9 +233,14 @@ namespace Exiled.API.Enums
         Scp330Chamber,
 
         /// <summary>
-        /// Represents the Gate in the Checkpoint between EZ and HCZ.
+        /// Represents the Gate in the Checkpoint between EZ and HCZ (Checkpoint A).
         /// </summary>
-        CheckpointGate,
+        CheckpointGateA,
+
+        /// <summary>
+        /// Represents the Gate in the Checkpoint between EZ and HCZ (Checkpoint B).
+        /// </summary>
+        CheckpointGateB,
 
         /// <summary>
         /// Represents the Gate in the Checkpoint between EZ and HCZ.
@@ -311,5 +321,10 @@ namespace Exiled.API.Enums
         /// Represents the New Gate where Scp173 spawn in the <see cref="RoomType.Hcz049"/>.
         /// </summary>
         Scp173NewGate,
+
+        /// <summary>
+        /// Represents the ESCAPE_FINAL door.
+        /// </summary>
+        EscapeFinal,
     }
 }

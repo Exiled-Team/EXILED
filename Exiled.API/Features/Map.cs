@@ -12,7 +12,6 @@ namespace Exiled.API.Features
     using System.Collections.ObjectModel;
     using System.Linq;
 
-    using Decals;
     using Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Lockers;
@@ -20,18 +19,14 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Scp914Processors;
     using Exiled.API.Features.Toys;
     using InventorySystem;
-    using InventorySystem.Items.Firearms;
-    using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
     using Items;
     using LightContainmentZoneDecontamination;
     using MapGeneration;
     using PlayerRoles.Ragdolls;
-    using RelativePositioning;
     using UnityEngine;
     using Utils;
-    using Utils.Networking;
 
     using Object = UnityEngine.Object;
 
@@ -274,23 +269,6 @@ namespace Exiled.API.Features
                 ragDoll.Destroy();
         }
 
-        /* TODO
-        /// <summary>
-        /// Places a decal.
-        /// </summary>
-        /// <param name="position">The position of the blood decal.</param>
-        /// <param name="direction">The direction of the blood decal.</param>
-        /// <param name="type">The type of decal to place.</param>
-        public static void PlaceDecal(Vector3 position, Vector3 direction, DecalPoolType type) => new GunDecalMessage(position, direction, type).SendToAuthenticated(0);
-
-        /// <summary>
-        /// Places a blood decal.
-        /// </summary>
-        /// <param name="position">The position of the blood decal.</param>
-        /// <param name="direction">The direction of the blood decal.</param>
-        public static void PlaceBlood(Vector3 position, Vector3 direction) => PlaceDecal(position, direction, DecalPoolType.Blood);
-        */
-
         /// <summary>
         /// Gets all the near cameras.
         /// </summary>
@@ -339,27 +317,6 @@ namespace Exiled.API.Features
             if ((item = projectileType.GetItemType()) is ItemType.None)
                 return;
             ExplosionUtils.ServerSpawnEffect(position, item);
-        }
-
-        /// <summary>
-        /// Plays a gun sound at the specified position.
-        /// </summary>
-        /// <param name="position">Position to play the sound at.</param>
-        /// <param name="firearmType">The type of firearm to play the sound of.</param>
-        /// <param name="maxDistance">The maximum distance the sound can be heard from.</param>
-        /// <param name="audioClipId">The audio clip ID to play.</param>
-        public static void PlayGunSound(Vector3 position, ItemType firearmType, byte maxDistance = 45, byte audioClipId = 0)
-        {
-            // TODO
-            /*GunAudioMessage msg = new()
-            {
-                Weapon = firearmType,
-                AudioClipId = audioClipId,
-                MaxDistance = maxDistance,
-                ShooterHub = ReferenceHub.HostHub,
-                ShooterPosition = new RelativePosition(position),
-            };
-            msg.SendToAuthenticated();*/
         }
 
         /// <summary>

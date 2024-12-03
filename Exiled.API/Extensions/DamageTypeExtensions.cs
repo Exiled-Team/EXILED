@@ -51,6 +51,7 @@ namespace Exiled.API.Extensions
             { DeathTranslations.MicroHID, DamageType.MicroHid },
             { DeathTranslations.Hypothermia, DamageType.Hypothermia },
             { DeathTranslations.MarshmallowMan, DamageType.Marshmallow },
+            { DeathTranslations.Scp1344, DamageType.Scp1344 },
         };
 
         private static readonly Dictionary<ItemType, DamageType> ItemConversionInternal = new()

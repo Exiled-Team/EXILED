@@ -124,6 +124,19 @@ namespace Exiled.API.Enums
         Hcz173ContChamber,
         Hcz173Hallway,
         HczCurve,
+        HczJunkMain,
+        HczJunkHallway,
+        HczCornerDeep,
+        HczDss08,
+        HczMicroHidStairs,
+        HczPipesHallway,
+        HczWarheadStarboardElevator,
+        HczMicroHidMain,
+        HczWarheadTopElevators,
+        HczWarheadConnector,
+        HczWarheadPortElevator,
+        HczMicroHidLab,
+        HczPipesMain,
         #endregion
     }
 }

@@ -698,6 +698,7 @@ namespace Exiled.API.Features.Doors
                         _ => DoorType.LightContainmentDoor,
                     },
                     "HCZ" => DoorType.HeavyContainmentDoor,
+                    "BulkDoor" => DoorType.HeavyBulkDoor,
                     "EZ" => DoorType.EntranceDoor,
                     "Prison" => DoorType.PrisonDoor,
                     "914" => DoorType.Scp914Door,
@@ -709,7 +710,8 @@ namespace Exiled.API.Features.Doors
                     },
                     "Unsecured" => Room switch
                     {
-                        { Type: RoomType.EzCheckpointHallway } => DoorType.CheckpointGate,
+                        { Type: RoomType.EzCheckpointHallwayA } => DoorType.CheckpointGateA,
+                        { Type: RoomType.EzCheckpointHallwayB } => DoorType.CheckpointGateB,
                         { Type: RoomType.Hcz049 } => Position.y < -805 ? DoorType.Scp049Gate : DoorType.Scp173NewGate,
                         _ => DoorType.UnknownGate,
                     },
@@ -743,7 +745,7 @@ namespace Exiled.API.Features.Doors
                 "NUKE_ARMORY" => DoorType.NukeArmory,
                 "LCZ_ARMORY" => DoorType.LczArmory,
                 "SURFACE_NUKE" => DoorType.NukeSurface,
-                "HID" => DoorType.HID,
+                "HID_CHAMBER" => DoorType.HidChamber,
                 "HCZ_ARMORY" => DoorType.HczArmory,
                 "096" => DoorType.Scp096,
                 "049_ARMORY" => DoorType.Scp049Armory,
@@ -756,8 +758,8 @@ namespace Exiled.API.Features.Doors
                 "SERVERS_BOTTOM" => DoorType.ServersBottom,
                 "173_CONNECTOR" => DoorType.Scp173Connector,
                 "LCZ_WC" => DoorType.LczWc,
-                "HID_RIGHT" => DoorType.HIDRight,
-                "HID_LEFT" => DoorType.HIDLeft,
+                "HID_UPPER" => DoorType.HidUpper,
+                "HID_LOWER" => DoorType.HidLower,
                 "173_ARMORY" => DoorType.Scp173Armory,
                 "173_GATE" => DoorType.Scp173Gate,
                 "GR18" => DoorType.GR18Gate,
@@ -766,6 +768,7 @@ namespace Exiled.API.Features.Doors
                 "330_CHAMBER" => DoorType.Scp330Chamber,
                 "GR18_INNER" => DoorType.GR18Inner,
                 "939_CRYO" => DoorType.Scp939Cryo,
+                "ESCAPE_FINAL" => DoorType.EscapeFinal,
 
                 // Doors spawned by the DoorSpawnPoint component
                 "LCZ_CAFE" => DoorType.LczCafe,

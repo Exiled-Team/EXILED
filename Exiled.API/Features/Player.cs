@@ -40,9 +40,9 @@ namespace Exiled.API.Features
     using InventorySystem.Disarming;
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
-    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
-    using InventorySystem.Items.Firearms.BasicMessages;
+    using InventorySystem.Items.Firearms.Modules;
+    using InventorySystem.Items.Firearms.ShotEvents;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
     using MEC;
@@ -679,7 +679,7 @@ namespace Exiled.API.Features
             get => role ??= Role.Create(RoleManager.CurrentRole);
             internal set
             {
-                PreviousRole = role;
+                PreviousRole = role?.Type ?? RoleTypeId.None;
                 role = value;
             }
         }
@@ -688,7 +688,7 @@ namespace Exiled.API.Features
         /// Gets the previous player's role.
         /// </summary>
         [EProperty(readOnly: true, category: ROLES_CATEGORY)]
-        public Role PreviousRole { get; private set; }
+        public RoleTypeId PreviousRole { get; private set; }
 
         /// <summary>
         /// Gets or sets the player's SCP preferences.
@@ -711,11 +711,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <remarks>Players can be cuffed without another player being the cuffer.</remarks>
         public bool IsCuffed => Inventory.IsDisarmed();
-
-        /// <summary>
-        /// Gets a value indicating whether or not the player is reloading a weapon.
-        /// </summary>
-        public bool IsReloading => CurrentItem is Firearm firearm && !firearm.Base.AmmoManagerModule.Standby;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is aiming with a weapon.
@@ -2026,54 +2021,6 @@ namespace Exiled.API.Features
         public bool TryRemoveCustomRoleFriendlyFire(string role) => CustomRoleFriendlyFireMultiplier.Remove(role);
 
         /// <summary>
-        /// Forces the player to reload their current <see cref="Firearm"></see>.
-        /// </summary>
-        /// <returns><see langword="true"/> if firearm was successfully reloaded. Otherwise, <see langword="false"/>.</returns>
-        public bool ReloadWeapon()
-        {
-            if (CurrentItem is Firearm firearm)
-            {
-                bool result = firearm.Base.AmmoManagerModule.ServerTryReload();
-                if (result)
-                    Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
-                return result;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Forces the player to unload their current <see cref="Firearm"></see>.
-        /// </summary>
-        /// <returns><see langword="true"/> if the weapon unload request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
-        public bool UnloadWeapon()
-        {
-            if (CurrentItem is Firearm firearm)
-            {
-                bool result = firearm.Base.AmmoManagerModule.ServerTryUnload();
-                if (result)
-                    Connection.Send(new RequestMessage(firearm.Serial, RequestType.Unload));
-                return result;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Forces the player to toggle the Flashlight Attachment on their current <see cref="Firearm"></see>.
-        /// </summary>
-        /// <returns><see langword="true"/> if the weapon flashlight toggle request is received. Returns <see langword="false"/> otherwise, or if the player is not an <see cref="IFpcRole"/> or is not holding a <see cref="Firearm"/>.</returns>
-        public bool ToggleWeaponFlashlight()
-        {
-            if (RoleManager.CurrentRole is not IFpcRole || CurrentItem is not Firearm firearm)
-                return false;
-
-            bool oldCheck = firearm.FlashlightEnabled; // Temporary Solution
-            FirearmBasicMessagesHandler.ServerRequestReceived(ReferenceHub.connectionToClient, new RequestMessage(firearm.Serial, RequestType.ToggleFlashlight));
-            return oldCheck != firearm.FlashlightEnabled;
-        }
-
-        /// <summary>
         /// Tries to get an item from a player's inventory.
         /// </summary>
         /// <param name="serial">The unique identifier of the item.</param>
@@ -2413,7 +2360,7 @@ namespace Exiled.API.Features
         /// <param name="force">The throw force.</param>
         /// <param name="armorPenetration">The armor penetration amount.</param>
         public void Hurt(Player attacker, float damage, Vector3 force = default, int armorPenetration = 0) =>
-            Hurt(new ExplosionDamageHandler(attacker.Footprint, force, damage, armorPenetration));
+            Hurt(new ExplosionDamageHandler(attacker.Footprint, force, damage, armorPenetration, ExplosionType.Grenade));
 
         /// <summary>
         /// Hurts the player.
@@ -2511,7 +2458,7 @@ namespace Exiled.API.Features
             if ((Role.Side != Side.Scp) && !string.IsNullOrEmpty(cassieAnnouncement))
                 Cassie.Message(cassieAnnouncement);
 
-            Kill(new DisruptorDamageHandler(attacker?.Footprint ?? Footprint, -1));
+            Kill(new DisruptorDamageHandler(new DisruptorShotEvent(Item.Create(ItemType.ParticleDisruptor, attacker).Base as InventorySystem.Items.Firearms.Firearm, DisruptorActionModule.FiringState.FiringSingle), Vector3.up, -1));
         }
 
         /// <summary>
@@ -2897,12 +2844,13 @@ namespace Exiled.API.Features
                 else if (Preferences is not null && Preferences.TryGetValue(firearmType, out AttachmentIdentifier[] attachments))
                     firearm.Base.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
 
-                FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
+                // TODO:
+                /*FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
 
                 if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
                     flags = flags.AddFlags(FirearmStatusFlags.FlashlightEnabled);
 
-                firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
+                firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());*/
             }
 
             AddItem(item);
@@ -3023,7 +2971,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="pickup">The <see cref="Pickup"/> of the item to be added.</param>
         /// <returns>The <see cref="Item"/> that was added.</returns>
-        public Item AddItem(Pickup pickup) => Item.Get(Inventory.ServerAddItem(pickup.Type, pickup.Serial, pickup.Base));
+        public Item AddItem(Pickup pickup) => Item.Get(Inventory.ServerAddItem(pickup.Type, ItemAddReason.AdminCommand, pickup.Serial, pickup.Base));
 
         /// <summary>
         /// Adds an item to the player's inventory.
@@ -3033,7 +2981,7 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="Item"/> that was added.</returns>
         public Item AddItem(FirearmPickup pickup, IEnumerable<AttachmentIdentifier> identifiers)
         {
-            Firearm firearm = (Firearm)Item.Get(Inventory.ServerAddItem(pickup.Type, pickup.Serial, pickup.Base));
+            Firearm firearm = (Firearm)Item.Get(Inventory.ServerAddItem(pickup.Type, ItemAddReason.AdminCommand, pickup.Serial, pickup.Base));
 
             if (identifiers is not null)
                 firearm.AddAttachment(identifiers);
@@ -3046,12 +2994,14 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="itemBase">The item to be added.</param>
         /// <param name="item">The <see cref="Item"/> object of the item.</param>
+        /// <param name="addReason">The reason the item was added.</param>
         /// <returns>The <see cref="Item"/> that was added.</returns>
-        public Item AddItem(ItemBase itemBase, Item item = null)
+        public Item AddItem(ItemBase itemBase, Item item = null, ItemAddReason addReason = ItemAddReason.AdminCommand)
         {
             try
             {
                 item ??= Item.Get(itemBase);
+                item.AddReason = addReason;
 
                 Inventory.UserInventory.Items[item.Serial] = itemBase;
 
@@ -3744,13 +3694,6 @@ namespace Exiled.API.Features
             Connection.Send(new RoundRestartMessage(roundRestartType, delay, newPort, reconnect, false));
         }
 
-        /// <inheritdoc cref="PlayGunSound(Vector3, ItemType, byte, byte)"/>
-        public void PlayGunSound(ItemType type, byte volume, byte audioClipId = 0) =>
-            PlayGunSound(Position, type, volume, audioClipId);
-
-        /// <inheritdoc cref="Map.PlaceBlood(Vector3, Vector3)"/>
-        public void PlaceBlood(Vector3 direction) => Map.PlaceBlood(Position, direction);
-
         /// <inheritdoc cref="Map.GetNearCameras(Vector3, float)"/>
         public IEnumerable<Camera> GetNearCameras(float toleration = 15f) => Map.GetNearCameras(Position, toleration);
 
@@ -3908,7 +3851,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Triggers an explosion for the player.
         /// </summary>
-        public void Explode() => ExplosionUtils.ServerExplode(ReferenceHub);
+        public void Explode() => ExplosionUtils.ServerExplode(ReferenceHub, ExplosionType.Grenade);
 
         /// <summary>
         /// Triggers an explosion for the player.
@@ -3937,28 +3880,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Plays a beep sound that only the player can hear.
         /// </summary>
-        public void PlayBeepSound() => MirrorExtensions.SendFakeTargetRpc(ReferenceHub, ReferenceHub.HostHub.networkIdentity, typeof(AmbientSoundPlayer), nameof(AmbientSoundPlayer.RpcPlaySound), 7);
-
-        /// <summary>
-        /// Plays a gun sound that only the target can hear.
-        /// </summary>
-        /// <param name="position">Position to play on.</param>
-        /// <param name="itemType">Weapon' sound to play.</param>
-        /// <param name="volume">Sound's volume to set.</param>
-        /// <param name="audioClipId">GunAudioMessage's audioClipId to set (default = 0).</param>
-        public void PlayGunSound(Vector3 position, ItemType itemType, byte volume, byte audioClipId = 0)
-        {
-            GunAudioMessage message = new()
-            {
-                Weapon = itemType,
-                AudioClipId = audioClipId,
-                MaxDistance = volume,
-                ShooterHub = ReferenceHub,
-                ShooterPosition = new RelativePosition(position),
-            };
-
-            Connection.Send(message);
-        }
+        public void PlayBeepSound() => MirrorExtensions.SendFakeTargetRpc(ReferenceHub, ReferenceHub._hostHub.networkIdentity, typeof(AmbientSoundPlayer), nameof(AmbientSoundPlayer.RpcPlaySound), 7);
 
         /// <summary>
         /// Set <see cref="CustomInfo"/> to the player that only <paramref name="target"/> can see.

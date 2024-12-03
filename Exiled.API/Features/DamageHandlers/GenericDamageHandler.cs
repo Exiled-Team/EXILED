@@ -52,6 +52,7 @@ namespace Exiled.API.Features.DamageHandlers
             [DamageType.Scp0492] = DeathTranslations.Zombie,
             [DamageType.Scp106] = DeathTranslations.PocketDecay,
             [DamageType.Scp3114] = DeathTranslations.Scp3114Slap,
+            [DamageType.Scp1344] = DeathTranslations.Scp1344,
         };
 
         private static readonly Dictionary<DamageType, ItemType> DamageToItemType = new()

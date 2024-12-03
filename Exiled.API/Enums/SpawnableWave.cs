@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="BloodType.cs" company="Exiled Team">
+// <copyright file="SpawnableWave.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -8,28 +8,28 @@
 namespace Exiled.API.Enums
 {
     /// <summary>
-    /// Unique identifier for the different types of blood decals.
+    /// All spawnable factions and mini-waves available.
     /// </summary>
-    public enum BloodType
+    public enum SpawnableWave
     {
         /// <summary>
-        /// The default blood decal.
+        /// Represents a normal spawnable Ntf wave.
         /// </summary>
-        Default,
+        NtfWave,
 
         /// <summary>
-        /// The blood decal placed after Scp106 sends someone to the pocket dimension.
+        /// Represents a spawnable smaller Ntf wave.
         /// </summary>
-        Scp106,
+        NtfMiniWave,
 
         /// <summary>
-        /// The spreaded blood decal.
+        /// Represents a normal spawnable Chaos wave.
         /// </summary>
-        Spreaded,
+        ChaosWave,
 
         /// <summary>
-        /// The faded blood decal.
+        /// Represents a spawnable smaller Chaos wave.
         /// </summary>
-        Faded,
+        ChaosMiniWave,
     }
 }

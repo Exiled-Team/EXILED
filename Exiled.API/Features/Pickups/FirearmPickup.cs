@@ -87,7 +87,7 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the max ammo the Firearm can have.
         /// </summary>
         [EProperty(category: nameof(FirearmPickup))]
-        public byte MaxAmmo { get; set; }
+        public int MaxAmmo { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="FirearmStatusFlags"/>.

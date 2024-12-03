@@ -49,7 +49,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
 
             FiringMode = FirearmSettings.FiringMode;
 
-            ReplicatedClip = new ReplicatedProperty<Firearm, byte>(
+            ReplicatedClip = new ReplicatedProperty<Firearm, int>(
                 firearm => firearm.Ammo,
                 (firearm, value) => firearm.Ammo = value,
                 Firearm);
@@ -84,7 +84,7 @@ namespace Exiled.CustomModules.API.Features.CustomItems.Items.Firearms
             }
             else if (FiringMode is FiringMode.Burst)
             {
-                byte burstLength = ReplicatedClip.ReplicatedValue >= FirearmSettings.BurstLength ? FirearmSettings.BurstLength : ReplicatedClip.Value;
+                int burstLength = ReplicatedClip.ReplicatedValue >= FirearmSettings.BurstLength ? FirearmSettings.BurstLength : ReplicatedClip.Value;
                 ReplicatedClip.Send((byte)(ReplicatedClip.ReplicatedValue - burstLength));
                 ReplicatedClip.Replicate(burstLength);
             }
