@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Generic
     using Interactables.Interobjects;
 
     /// <summary>
-    /// Patches <see cref="ElevatorManager.SpawnChamber"/>.
+    /// Patches <see cref="ElevatorManager.SpawnAllChambers"/>.
     /// </summary>
     [HarmonyPatch(typeof(ElevatorManager), nameof(ElevatorManager.SpawnAllChambers))]
     internal class LiftList

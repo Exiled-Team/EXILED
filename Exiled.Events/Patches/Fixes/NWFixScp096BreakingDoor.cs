@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Fixes
     using System.Reflection.Emit;
 
     using API.Features.Core.Generic.Pools;
+    using Footprinting;
     using HarmonyLib;
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
@@ -20,7 +21,7 @@ namespace Exiled.Events.Patches.Fixes
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="Scp096HitHandler.CheckDoorHit(Collider)"/> delegate.
+    /// Patches the <see cref="Scp096HitHandler.CheckDoorHit(Collider, Footprint)"/> delegate.
     /// Fixes open doors getting easily broke.
     /// Bug reported to NW (https://trello.com/c/6Nz7Isjm/4637-scp096-easily-breaking-opened-doors).
     /// </summary>
@@ -32,7 +33,7 @@ namespace Exiled.Events.Patches.Fixes
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label ret = generator.DefineLabel();
-            int offset = -4;
+            const int offset = -5;
             int index = newInstructions.FindIndex(x => x.operand == (object)Method(typeof(IDamageableDoor), nameof(IDamageableDoor.ServerDamage))) + offset;
 
             newInstructions.InsertRange(index, new[]
@@ -44,8 +45,8 @@ namespace Exiled.Events.Patches.Fixes
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+            foreach (CodeInstruction instruction in newInstructions)
+                yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }

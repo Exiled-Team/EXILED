@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Fixes
                 index,
                 new CodeInstruction[]
                 {
-                    new(OpCodes.Ldloc_S, 8),
+                    new(OpCodes.Ldloc_S, 7),
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(Footprint))[0]),

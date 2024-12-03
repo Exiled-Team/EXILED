@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Fixes
         private static void Postfix()
         {
             AlphaWarheadSyncInfo networkInfo = default;
-            networkInfo.ScenarioId = Array.IndexOf(AlphaWarheadController.Singleton._startScenarios, AlphaWarheadController.Singleton._startScenarios.OrderBy(d => Math.Abs(d.TimeToDetonate - ConfigFile.ServerConfig.GetInt("warhead_tminus_start_duration", 90))).First());
+            networkInfo.ScenarioId = (byte)Array.IndexOf(AlphaWarheadController.Singleton._startScenarios, AlphaWarheadController.Singleton._startScenarios.OrderBy(d => Math.Abs(d.TimeToDetonate - ConfigFile.ServerConfig.GetInt("warhead_tminus_start_duration", 90))).First());
 
             AlphaWarheadController.Singleton.NetworkInfo = networkInfo;
             return;
