@@ -51,6 +51,7 @@ namespace Exiled.API.Features
     using NorthwoodLib;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.FirstPersonControl.Thirdperson.Subcontrollers;
     using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
     using PlayerRoles.RoleAssign;
@@ -1053,6 +1054,15 @@ namespace Exiled.API.Features
         /// Gets the player's <see cref="PlayerStatsSystem.HumeShieldStat"/>.
         /// </summary>
         public CustomHumeShieldStat HumeShieldStat => humeShieldStat;
+
+        /// <summary>
+        /// Gets or sets the player's emotion.
+        /// </summary>
+        public EmotionPresetType Emotion
+        {
+            get => EmotionSync.GetEmotionPreset(ReferenceHub);
+            set => ReferenceHub.ServerSetEmotionPreset(value);
+        }
 
         /// <summary>
         /// Gets or sets the item in the player's hand. Value will be <see langword="null"/> if the player is not holding anything.
