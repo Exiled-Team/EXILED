@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ExplosionGrenade.Explode(Footprint, Vector3, ExplosionGrenade)"/>.
+    /// Patches <see cref="ExplosionGrenade.Explode(Footprint, Vector3, ExplosionGrenade, ExplosionType)"/>.
     /// Adds the <see cref="Handlers.Map.ExplodingGrenade"/> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.ExplodingGrenade))]
